@@ -1,38 +1,38 @@
 # Appva.Core.Configuration
 
-## Synchronous
-### Read Configuration
+### Synchronous
+#### Read Configuration
 ```c#
 ConfigurableApplicationContext.Read<ConfigurableResource>().From("config.json").ToObject();
 ```
-### Write Configuration
+#### Write Configuration
 ```c#
 ConfigurableApplicationContext.Write(new { Foo = "bar" }).To("config.json").Execute();
 ```
-## Asynchronous
-### Read Configuration Async
+### Asynchronous
+#### Read Configuration Async
 ```c#
 await ConfigurableApplicationContext.Read<ConfigurableResource>().From("config.json").ToObjectAsync();
 ```
-### Write Configuration Async
+#### Write Configuration Async
 ```c#
 await ConfigurableApplicationContext.Write(new { Foo = "bar" }).To("config.json").ExecuteAsync();
 ```
-## Protect
-### Read Protected Configuration
+### Protect
+#### Read Protected Configuration
 ```c#
 ConfigurableApplicationContext.Read<ConfigurableResource>().From("config.json").Unprotect().ToObject();
 await ConfigurableApplicationContext.Read<ConfigurableResource>().From("config.json").Unprotect().ToObjectAsync();
 ```
-### Write Protected Configuration
+#### Write Protected Configuration
 ```c#
 ConfigurableApplicationContext.Write(new { Foo = "bar" }).To("config.json").Protect().Execute();
 await ConfigurableApplicationContext.Write(new { Foo = "bar" }).To("config.json").Protect().ExecuteAsync();
 ```
-## Store Configuration
-### Read Protected Configuration
+### Store Configuration
+#### Read And Store Configuration
 ```c#
-var config = ConfigurableApplicationContext.Read<ConfigurableResource>().From("config.json").Unprotect().ToObjectAsync();
+var config = ConfigurableApplicationContext.Read<ConfigurableResource>().From("config.json").ToObject();
 ConfigurableApplicationContext.Add(config);
 ConfigurableApplicationContext.Get<ConfigurableResource>().Equals(config);
 ```

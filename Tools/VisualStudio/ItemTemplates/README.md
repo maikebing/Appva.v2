@@ -1,5 +1,4 @@
 # Install notes
-======
 ## Class.cs
 1. Replace Class.cs with custom Class.cs in
    `C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\ItemTemplates\CSharp\Code\1033\Class\Class.cs`

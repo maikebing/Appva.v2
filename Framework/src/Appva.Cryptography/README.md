@@ -1,13 +1,13 @@
 # Appva.Cryptography
+
 ### Password Hashing
-```javascript
+```c#
 var random = Password.Random();
 var hashed = Password.Pbkdf2(original);
 Password.Equals(random, hashed);
 ```
-
 ### Hashing
-```javascript
+```c#
 Hash.Using<MurmurHash>("foo").Build();
 Hash.Random();
 Checksum.Using<MurmurHash>("foo").Build();

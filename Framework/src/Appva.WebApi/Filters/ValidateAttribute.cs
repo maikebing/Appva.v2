@@ -61,7 +61,7 @@ namespace Appva.WebApi.Filters
 
         #endregion
 
-        #region Overrides.
+        #region ActionFilterAttribute Overrides.
 
         /// <inheritdoc />
         public override void OnActionExecuting(HttpActionContext context)
@@ -106,7 +106,7 @@ namespace Appva.WebApi.Filters
             private readonly string message;
 
             /// <summary>
-            /// The vallidation errors.
+            /// The validation errors.
             /// </summary>
             private readonly List<ValidationError> errors;
 

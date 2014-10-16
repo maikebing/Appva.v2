@@ -43,7 +43,7 @@ namespace Appva.WebApi.Results
 
         #endregion
 
-        #region NegotiatedContentResult{T} Overrides.
+        #region NegotiatedContentResult<T> Overrides.
 
         /// <inheritdoc/>
         public override async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)

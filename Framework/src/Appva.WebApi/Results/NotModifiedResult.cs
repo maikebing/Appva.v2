@@ -41,7 +41,7 @@ namespace Appva.WebApi.Results
 
         #endregion
 
-        #region IHttpActionResult Members
+        #region IHttpActionResult Members.
 
         /// <inheritdoc />
         public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)

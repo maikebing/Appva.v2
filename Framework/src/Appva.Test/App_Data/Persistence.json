@@ -1,0 +1,11 @@
+{
+  "ConnectionString": "data source=:memory:",
+  "Assembly": "Appva.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "Properties": {
+    "connection.connection_string": "data source=:memory:",
+    "connection.release_mode": "on_close",
+    "connection.driver_class": "NHibernate.Driver.SQLite20Driver, NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4",
+    "dialect": "NHibernate.Dialect.SQLiteDialect, NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4",
+    "cache.show_sql": "true"
+  }
+}

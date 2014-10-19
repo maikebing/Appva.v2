@@ -7,11 +7,14 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.IdentityModel.Tokens;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Security.Claims;
     using System.Security.Cryptography;
+    using System.Security.Principal;
     using System.Threading;
     using System.Web;
     using System.Web.Http;
@@ -22,6 +25,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
     using Common.Logging;
     using DotNetOpenAuth.Messaging;
     using DotNetOpenAuth.OAuth2;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -33,9 +37,24 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         #region Variabels.
 
         /// <summary>
+        /// The user authenticate header.
+        /// </summary>
+        private const string UserAuthHeader = "X-Authenticated-User";
+
+        /// <summary>
+        /// The access token extra claims key.
+        /// </summary>
+        private const string AccessTokenClaimsKey = "claims";
+
+        /// <summary>
         /// The logger for <see cref="AuthorizeTokenAttribute"/>.
         /// </summary>
         private static readonly ILog Log = LogManager.GetLogger<AuthorizeTokenAttribute>();
+
+        /// <summary>
+        /// The <see cref="ResourceServerConfiguration"/>.
+        /// </summary>
+        private readonly ResourceServerConfiguration configuration;
 
         /// <summary>
         /// Responsible for providing the key to verify the token is intended for this resource.
@@ -62,6 +81,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// <param name="scopes">The required scopes (OR) - one must match</param>
         public AuthorizeTokenAttribute(params string[] scopes)
         {
+            this.configuration = ConfigurableApplicationContext.Get<ResourceServerConfiguration>();
             this.decrypter = new ResourceServerSigningKeyHandler();
             this.signatureVerifier = new AuthorizationServerSigningKeyHandler();
             this.scopes = scopes;
@@ -74,7 +94,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// <inheritdoc />
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            if (ConfigurableApplicationContext.Get<ResourceServerConfiguration>().SkipTokenAndScopeAuthorization)
+            if (this.configuration.IsNotNull() && configuration.SkipTokenAndScopeAuthorization)
             {
                 return;
             }
@@ -87,6 +107,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
                     {
                         ReasonPhrase = "HTTPS Required"
                     };
+                    return;
                 }
                 var authHeader = request.Headers.FirstOrDefault(x => x.Key.Equals("Authorization"));
                 if (authHeader.Value.IsNull() || !authHeader.Value.Any())
@@ -103,19 +124,19 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
                     return;
                 }
                 var resourceServer = new ResourceServer(new StandardAccessTokenAnalyzer(this.signatureVerifier.Provider, this.decrypter.Provider));
-                var access = resourceServer.GetAccessToken(request);
-                if (! access.Scope.Overlaps(this.scopes))
+                var accessToken = resourceServer.GetAccessToken(request);
+                if (! accessToken.Scope.Overlaps(this.scopes))
                 {
                     actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-                    Log.Error(x => x("Missing Scopes! Required: {0}, Granted: {1}", this.scopes, access.Scope));
+                    Log.Error(x => x("Missing Scopes! Required: {0}, Granted: {1}", this.scopes, accessToken.Scope));
                     return;
                 }
                 var principal = resourceServer.GetPrincipal(request);
                 if (principal.IsNotNull())
                 {
-                    Thread.CurrentPrincipal = principal;
-                    HttpContext.Current.User = principal;
+                    MintPrincipal(actionContext, accessToken, principal);
                     actionContext.Response = null;
+                    return;
                 }
                 else
                 {
@@ -129,7 +150,59 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
                 actionContext.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 return;
             }
-            base.OnAuthorization(actionContext);
+        }
+
+        #endregion
+
+        #region Private Functions.
+
+        /// <summary>
+        /// Mints a <see cref="ClaimsPrincipal"/>.
+        /// </summary>
+        /// <param name="context">The <see cref="HttpActionContext"/></param>
+        /// <param name="accessToken">The <see cref="AccessToken"/></param>
+        private void MintPrincipal(HttpActionContext context, AccessToken accessToken, IPrincipal principal)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, principal.Identity.Name),
+                new Claim(AppvaClaimTypes.Client, accessToken.ClientIdentifier)
+            };
+            if (accessToken.ExtraData.ContainsKey(AccessTokenClaimsKey))
+            {
+                var accessTokenClaims = JsonConvert.DeserializeObject<AccessTokenClaims>(accessToken.ExtraData[AccessTokenClaimsKey]);
+                claims.AddRange(accessTokenClaims.Claims.Select(x => new Claim(x.Key, x.Value)));
+            }
+            if (context.Request.Headers.Contains(UserAuthHeader))
+            {
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, context.Request.Headers.GetValues(UserAuthHeader).First()));
+            }
+            var cPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, principal.Identity.AuthenticationType));
+            Thread.CurrentPrincipal = cPrincipal;
+            context.RequestContext.Principal = cPrincipal;
+            if (HttpContext.Current.IsNotNull())
+            {
+                HttpContext.Current.User = cPrincipal;
+            }
+        }
+
+        #endregion
+
+        #region Private Classes.
+
+        /// <summary>
+        /// The serialized access token claim.
+        /// </summary>
+        public class AccessTokenClaims
+        {
+            /// <summary>
+            /// The extra claims.
+            /// </summary>
+            public IDictionary<string, string> Claims
+            {
+                get;
+                set;
+            }
         }
 
         #endregion

@@ -164,10 +164,6 @@
       <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
       <Name>Appva.Persistence</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Appva.WebApi.OAuth\Appva.WebApi.OAuth.csproj">
-      <Project>{8a4862a3-b3e2-4ddc-a930-aa88848586ae}</Project>
-      <Name>Appva.WebApi.OAuth</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Appva.WebApi\Appva.WebApi.csproj">
       <Project>{5603a0f9-3666-4fc9-9af9-b21c7432ba02}</Project>
       <Name>Appva.WebApi</Name>

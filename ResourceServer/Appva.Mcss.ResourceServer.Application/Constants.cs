@@ -42,4 +42,26 @@ namespace Appva.Mcss.ResourceServer.Application
         /// </summary>
         public const string AllowedHistorySize = "MCSS.Device.Security.HistoryLength";
     }
+
+    /// <summary>
+    /// Extra claim types for the resource server.
+    /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
+    public static class AppvaClaimTypes
+    {
+        /// <summary>
+        /// The client identifier claim schema.
+        /// </summary>
+        public const string Client = "https://schemas.appva.se/identity/claims/client";
+
+        /// <summary>
+        /// The tenant identifier claim schema.
+        /// </summary>
+        public const string Tenant = "https://schemas.appva.se/identity/claims/tenant";
+
+        /// <summary>
+        /// The audience identifier claim schema.
+        /// </summary>
+        public const string Audience = "https://schemas.appva.se/identity/claims/tenant";
+    }
 }

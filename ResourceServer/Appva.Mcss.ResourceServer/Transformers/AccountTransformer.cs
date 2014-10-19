@@ -75,7 +75,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
             {
                 MaxResults = pageableSet.TotalCount,
                 PageNumber = pageableSet.CurrentPage,
-                //// FIXME: NextPageNumber = pageableSet.NextPage,
+                NextPageNumber = pageableSet.NextPage,
                 Entities = ToList(pageableSet.Entities)
             };
         }

@@ -16,7 +16,7 @@ namespace Appva.Test.OAuth2
     using System.Web;
     using Appva.OAuth;
     using Appva.Test.OAuth2.Impl;
-    using Appva.WebApi.OAuth;
+    //using Appva.WebApi.OAuth;
     using DotNetOpenAuth.OAuth2;
     using Moq;
     using Newtonsoft.Json;
@@ -27,7 +27,7 @@ namespace Appva.Test.OAuth2
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public class OAuth2Tests
+    /*public class OAuth2Tests
     {
         #region Variables.
 
@@ -127,27 +127,6 @@ namespace Appva.Test.OAuth2
             public string scopes { get; set; }
         }
 
-        /*
-        [Fact]
-        public void OAuth2_AuthorizeResourceOwnerCredentialGrant_IsAuthenticated()
-        {
-            var request = new Mock<HttpRequestBase>();
-            request.Setup(x => x.Headers).Returns(
-                new System.Net.WebHeaderCollection
-                {
-                    { "Content-Type", "application/x-www-form-urlencoded;charset=UTF-8" },
-                    { "Authorization", BasicAuthentication }
-                });
-            request.Setup(x => x.Form).Returns(
-                    new NameValueCollection()
-                    { 
-                        { "scope", "https://test.api.resource" },
-                        { "grant_type", "refresh_token" },
-                        { "refresh_token", "xxx" }
-                    });
-
-            this.authorizationServer.HandleTokenRequest();
-        }*/
         #endregion
-    }
+    }*/
 }

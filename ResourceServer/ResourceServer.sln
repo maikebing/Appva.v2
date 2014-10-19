@@ -33,6 +33,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.ResourceServer.Application", "Appva.Mcss.ResourceServer.Application\Appva.Mcss.ResourceServer.Application.csproj", "{31D08438-70B1-4844-8159-B5ACD0F6589A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.ResourceServer.Test", "Appva.Mcss.ResourceServer.Test\Appva.Mcss.ResourceServer.Test.csproj", "{4EBA3854-8C4C-432E-927C-5E025FE0668E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{77E9C558-E8E9-49D4-AA8B-70C928BCFE83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,10 @@ Global
 		{31D08438-70B1-4844-8159-B5ACD0F6589A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D08438-70B1-4844-8159-B5ACD0F6589A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31D08438-70B1-4844-8159-B5ACD0F6589A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EBA3854-8C4C-432E-927C-5E025FE0668E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EBA3854-8C4C-432E-927C-5E025FE0668E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EBA3854-8C4C-432E-927C-5E025FE0668E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EBA3854-8C4C-432E-927C-5E025FE0668E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +103,6 @@ Global
 		{A75EF3C8-318A-47DD-8BD1-FD04FD6A24AA} = {1A2BA971-96AC-4C65-9BD3-ED07F2EAC7E3}
 		{5BE49BE7-2309-42D7-92A9-B9243DF59BBF} = {D15A3D75-D78E-4420-9D96-EEE2D54B5ECB}
 		{31D08438-70B1-4844-8159-B5ACD0F6589A} = {54DB483D-1F69-4D38-9B16-2EC39780E140}
+		{4EBA3854-8C4C-432E-927C-5E025FE0668E} = {77E9C558-E8E9-49D4-AA8B-70C928BCFE83}
 	EndGlobalSection
 EndGlobal

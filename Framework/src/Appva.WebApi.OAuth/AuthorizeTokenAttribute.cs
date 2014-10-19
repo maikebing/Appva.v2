@@ -1,4 +1,4 @@
-﻿// <copyright file="OAuthAuthorizeAttribute.cs" company="Appva AB">
+﻿// <copyright file="AuthorizeTokenAttribute.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
@@ -25,19 +25,19 @@ namespace Appva.WebApi.OAuth
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class OAuthAuthorizeAttribute : AuthorizeAttribute
+    public sealed class AuthorizeTokenAttribute : AuthorizeAttribute
     {
         #region Variabels.
 
         /// <summary>
         /// Responsible for providing the key to verify the token is intended for this resource.
         /// </summary>
-        private static readonly RSACryptoServiceProvider Decrypter;
+        private readonly ResourceServerSigningKeyHandler decrypter;
 
         /// <summary>
         /// Responsible for providing the key to verify the token came from the authorization server.
         /// </summary>
-        private static readonly RSACryptoServiceProvider SignatureVerifier;
+        private readonly AuthorizationServerSigningKeyHandler signatureVerifier;
 
         /// <summary>
         /// The required scopes.
@@ -49,20 +49,13 @@ namespace Appva.WebApi.OAuth
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OAuthAuthorizeAttribute"/> class.
-        /// </summary>
-        static OAuthAuthorizeAttribute()
-        {
-            Decrypter = new ResourceServerSigningKeyHandler().PrivateKey;
-            SignatureVerifier = new AuthorizationServerSigningKeyHandler().PublicKey;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OAuthAuthorizeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="AuthorizeTokenAttribute"/> class.
         /// </summary>
         /// <param name="scopes">The required scopes</param>
-        public OAuthAuthorizeAttribute(params string[] scopes)
+        public AuthorizeTokenAttribute(params string[] scopes)
         {
+            this.decrypter = new ResourceServerSigningKeyHandler();
+            this.signatureVerifier = new AuthorizationServerSigningKeyHandler();
             this.scopes = scopes;
         }
 
@@ -99,7 +92,7 @@ namespace Appva.WebApi.OAuth
                 // Have the DotNetOpenAuth resource server inspect the provided request using the configured keys
                 // This checks both that the token is ok and that the token grants the scope required by
                 // the required scope parameters to this attribute
-                var resourceServer = new ResourceServer(new StandardAccessTokenAnalyzer(SignatureVerifier, Decrypter));
+                var resourceServer = new ResourceServer(new StandardAccessTokenAnalyzer(this.signatureVerifier.PublicKey, this.decrypter.PrivateKey));
                 var principal = resourceServer.GetPrincipal(actionContext.Request, this.scopes);
                 if (principal.IsNotNull())
                 {

@@ -273,6 +273,10 @@ namespace Appva.Core.Extensions
         /// <returns>A byte array</returns>
         public static byte[] FromBase64(this string str)
         {
+            if (str.IsEmpty())
+            {
+                return null;
+            }
             return Convert.FromBase64String(str);
         }
     }

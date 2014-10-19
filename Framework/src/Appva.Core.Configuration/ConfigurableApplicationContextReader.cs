@@ -6,6 +6,7 @@ namespace Appva.Core.Configuration
 {
     #region Imports.
 
+    using System;
     using System.Threading.Tasks;
     using Cryptography.DataProtection;
     using IO;
@@ -14,7 +15,7 @@ namespace Appva.Core.Configuration
     #endregion
 
     //// Interface constraints in order to make the fluent interface follow
-    //// explicitly 1. From, 2a. Unprotect or 2b. ToObject. 
+    //// explicitly 1. From, 2a. AsMachineNameSpecific, 2b. Unprotect or 2c. ToObject. 
 
     #region Constraints.
 
@@ -29,15 +30,30 @@ namespace Appva.Core.Configuration
         /// </summary>
         /// <param name="location">The path of the configurable resource</param>
         /// <returns>IConfigurableApplicationContextReaderUnprotectOrExecute{T}</returns>
-        IConfigurableApplicationContextReaderUnprotectOrExecute<T> From(string location);
+        IConfigurableApplicationContextReaderAsMachineNameSpecificOrUnprotectOrExecute<T> From(string location);
+    }
+
+    /// <summary>
+    /// Constraint which allows the AsMachineNameSpecific() method.
+    /// </summary>
+    /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
+    public interface IConfigurableApplicationContextReaderAsMachineNameSpecificOrUnprotectOrExecute<T>
+        : IConfigurableApplicationContextReaderUnprotectOrExecute<T>
+    {
+        /// <summary>
+        /// Applies the machine name to the configurable resource (Only in DEBUG mode), e.g. 
+        /// application.config becomes application.WIN-1234567.config.
+        /// </summary>
+        /// <returns>IConfigurableApplicationContextReaderUnprotectOrExecute{T}</returns>
+        IConfigurableApplicationContextReaderUnprotectOrExecute<T> AsMachineNameSpecific();
     }
 
     /// <summary>
     /// Constraint which allows either Unprotect() or ToObject() method.
     /// </summary>
     /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
-    public interface IConfigurableApplicationContextReaderUnprotectOrExecute<T> :
-        IConfigurableApplicationContextReaderExecute<T>
+    public interface IConfigurableApplicationContextReaderUnprotectOrExecute<T>
+        : IConfigurableApplicationContextReaderExecute<T>
     {
         /// <summary>
         /// Decrypts a configurable resource.
@@ -95,6 +111,7 @@ namespace Appva.Core.Configuration
     /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
     internal sealed class ConfigurableApplicationContextReader<T> :
         IConfigurableApplicationContextReaderFrom<T>,
+        IConfigurableApplicationContextReaderAsMachineNameSpecificOrUnprotectOrExecute<T>,
         IConfigurableApplicationContextReaderUnprotectOrExecute<T>
         where T : class, IConfigurableResource
     {
@@ -125,10 +142,23 @@ namespace Appva.Core.Configuration
         #region IConfigurableApplicationContextReaderFrom<T> Members.
 
         /// <inheritdoc />
-        IConfigurableApplicationContextReaderUnprotectOrExecute<T> IConfigurableApplicationContextReaderFrom<T>.From(string location)
+        IConfigurableApplicationContextReaderAsMachineNameSpecificOrUnprotectOrExecute<T> IConfigurableApplicationContextReaderFrom<T>.From(string location)
         {
             Requires.NotNullOrEmpty(location, "location");
             this.location = location;
+            return this;
+        }
+
+        #endregion
+
+        #region IConfigurableApplicationContextReaderAsMachineNameSpecificOrUnprotectOrExecute<T> Members
+
+        /// <inheritdoc />
+        public IConfigurableApplicationContextReaderUnprotectOrExecute<T> AsMachineNameSpecific()
+        {
+            #if DEBUG
+                this.location = this.location.Insert(this.location.LastIndexOf('.'), "." + Environment.MachineName);
+            #endif
             return this;
         }
 

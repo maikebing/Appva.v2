@@ -126,6 +126,17 @@ namespace Appva.Repository
                 .Where(Restrictions.On(expression).IsLike(query, matchMode));
         }
 
+        /// <summary>
+        /// Builds a filtering <code>QueryOver</code> clause and adds an alias
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="alias"></param>
+        /// <returns></returns>
+        protected IQueryOver<T, T> Alias(Expression<Func<T>> alias)
+        {
+            return this._persistenceContext.QueryOver<T>(alias);
+        }
+
         #endregion
     }
 }

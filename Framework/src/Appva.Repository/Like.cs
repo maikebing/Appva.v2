@@ -25,6 +25,10 @@
         /// </summary>
         public string Value { get; set; }
 
+        /// <summary>
+        /// Defines if this like is AND or OR
+        /// </summary>
+        public Operator Operator { get; set; }
     }
-
+    public enum Operator { And, Or }
 }

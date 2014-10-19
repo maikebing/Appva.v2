@@ -8,29 +8,35 @@ namespace Appva.Persistence.Autofac
 
     using System.Data;
     using global::Autofac;
-    using Core.Configuration;
-    using Providers;
     using Validation;
 
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// An NHibernate session per request on application level model.
     /// </summary>
     public sealed class PersistenceModule : Module
     {
-        #region Public Properties.
+        #region Variables.
 
         /// <summary>
-        /// Returns or sets the persistence configuration
-        /// file path.
+        /// The <see cref="PersistenceConfiguration"/>.
         /// </summary>
-        public string FilePath
-        {
-            get;
-            set;
-        }
+        private readonly PersistenceConfiguration configuration;
 
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersistenceModule"/> class.
+        /// </summary>
+        /// <param name="configuration">The <see cref="PersistenceConfiguration"/></param>
+        public PersistenceModule(PersistenceConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+        
         #endregion
 
         #region Module Overrides.
@@ -39,9 +45,11 @@ namespace Appva.Persistence.Autofac
         protected override void Load(ContainerBuilder builder)
         {
             Requires.NotNull(builder, "builder");
-            var persistenceContextFactory = ConfigurableApplicationContext.Read<SinglePersistenceConfiguration>().From("App_Data\\Persistence.json").ToObject().Build();
+            var persistenceContextFactory = this.configuration.Build();
             builder.Register(x => persistenceContextFactory).As<IPersistenceContextFactory>().SingleInstance();
-            builder.Register(x => x.Resolve<IPersistenceContextFactory>().Build()).As<IPersistenceContext>().InstancePerLifetimeScope().OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
+            builder.Register(x => x.Resolve<IPersistenceContextFactory>().Build()).As<IPersistenceContext>()
+                .InstancePerLifetimeScope()
+                .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
             builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerLifetimeScope();
         }
 

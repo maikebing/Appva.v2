@@ -16,12 +16,28 @@ namespace Appva.Persistence.Providers
     /// </summary>
     public sealed class MultiPersistenceConfiguration : PersistenceConfiguration
     {
+        #region Public Properties.
+
+        public bool SkipMultiTenant
+        { 
+            get; 
+            set; 
+        }
+
+        public string SkipMultiTenantConnectionString
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
         #region ConfigurablePersistenceContext Overrides.
 
         /// <inheritdoc />
         public override IPersistenceContextFactory Build()
         {
-            return new MultiTenantPersistenceContextFactory();
+            return new MultiTenantPersistenceContextFactory(this.SkipMultiTenant, this.SkipMultiTenantConnectionString);
         }
 
         #endregion
@@ -33,6 +49,24 @@ namespace Appva.Persistence.Providers
         /// </summary>
         private sealed class MultiTenantPersistenceContextFactory : PersistenceContextFactory
         {
+            #region Variables.
+
+            private readonly bool skipMultiTenant;
+
+            private readonly string skipMultiTenantConnectionString;
+
+            #endregion
+
+            #region Constructor.
+
+            public MultiTenantPersistenceContextFactory(bool skipMultiTenant, string skipMultiTenantConnectionString)
+            {
+                this.skipMultiTenant = skipMultiTenant;
+                this.skipMultiTenantConnectionString = skipMultiTenantConnectionString;
+            }
+
+            #endregion
+
             #region PersistenceContextFactory Overrides.
 
             /// <inheritdoc />

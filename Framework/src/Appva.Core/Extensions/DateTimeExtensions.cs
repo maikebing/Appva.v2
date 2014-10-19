@@ -40,11 +40,11 @@ namespace Appva.Core.Extensions
         }
 
         /// <summary>
-        /// Returns the last instance of the day.
+        /// Returns the last instant of the day.
         /// </summary>
         /// <param name="dateTime">The base date time</param>
         /// <returns>The last instance of the day e.g. Y-m-dT23:59:59:999</returns>
-        public static DateTime LastInstanceOfDay(this DateTime dateTime)
+        public static DateTime LastInstantOfDay(this DateTime dateTime)
         {
             return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59, 999);
         }

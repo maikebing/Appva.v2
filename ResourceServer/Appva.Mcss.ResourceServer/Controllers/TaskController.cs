@@ -282,6 +282,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// </summary>
         /// <param name="id">The task id</param>
         /// <returns>Nothing but status 200</returns>
+        [AuthorizeToken(Scope.ReadWrite)]
         [HttpPut, Route("{id:guid}/refill")]
         public IHttpActionResult UpdateRefill(Guid id)
         {

@@ -127,6 +127,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         /// <inheritdoc />
         public IList<Task> ListByTaxonId(Guid taxonId, DateTime? fromDate, DateTime? endDate, bool? isDelayed = null, bool? isDelayHandled = null, bool isOnNeedsBased = false)
         {
+            Schedule schedule = null;
             var tasks = Where(x => x.Active == true)
                 .And(x => x.OnNeedBasis == isOnNeedsBased);
             if (fromDate.HasValue)
@@ -145,6 +146,8 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
             {
                 tasks.And(x => x.DelayHandled == isDelayHandled);
             }
+            tasks.JoinAlias(x => x.Schedule, () => schedule)
+                .Where(() => schedule.Active == true);
             tasks.JoinQueryOver<Taxon>(x => x.Taxon)
                 .Where(Restrictions.On<Taxon>(x => x.Path)
                     .IsLike(taxonId.ToString(), MatchMode.Anywhere));

@@ -192,7 +192,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 }
             }
             //// Nurse should be able to sign everything
-            if (user.IsInRole("_TITLE_NURSE"))
+            if (user.IsInRole("_TITLE_N"))
             {
                 retval.Add("complete");
             }

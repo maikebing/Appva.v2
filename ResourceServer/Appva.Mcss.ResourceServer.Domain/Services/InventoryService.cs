@@ -84,7 +84,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
                 Account = account,
                 CurrentInventoryValue = inventory.CurrentLevel + redoValue,
                 PreviousInventoryValue = inventory.CurrentLevel,
-                Operation = "readd", //// FIXME: Is this correct? "readd"? Not "read"?
+                Operation = "readd", 
                 Value = redoValue,
                 Sequence = sequence,
                 Task = task,

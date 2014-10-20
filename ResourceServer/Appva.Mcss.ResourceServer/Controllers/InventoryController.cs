@@ -118,7 +118,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 Sequence = sequence,
                 Value = model.Amount,
                 CurrentInventoryValue = inventory.CurrentLevel,
-                    PreviousInventoryValue = prevInventoryValue                    
+                PreviousInventoryValue = prevInventoryValue                    
             };
             transaction.Account = this.accountRepository.Get(this.User.Identity.Id());
             this.inventoryTransactionItemRepository.Save(transaction);

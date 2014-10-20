@@ -68,7 +68,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
             {
                 query.Where(x => x.StartDate <= date)
                     .And(x => x.EndDate == null || x.EndDate >= date);
-            }  
+            }
             query.JoinQueryOver<Schedule>(x => x.Schedule)
                 .Where(x => x.Active == true);
             return query.List();
@@ -77,10 +77,15 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         /// <inheritdoc />
         public IList<Sequence> ListByTaxonId(Guid taxonId, bool isNeedBased = false)
         {
+            Schedule schedule = null;
             return Where(x => x.Active == true)
                 .And(x => x.Active == true)
                 .And(x => x.OnNeedBasis == isNeedBased)
+                .JoinAlias(x => x.Schedule, () => schedule)
+                    .Where(() => schedule.Active)
                 .JoinQueryOver<Patient>(x => x.Patient)
+                    .Where(x => x.Active == true)
+                    .And(x => x.Deceased == false)
                 .JoinQueryOver<Taxon>(x => x.Taxon)
                     .Where(Restrictions.On<Taxon>(x => x.Path)
                         .IsLike(taxonId.ToString(), MatchMode.Anywhere))

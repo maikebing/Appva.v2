@@ -8,7 +8,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
 
     using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using System.Web.Http;
     using Appva.Core.Extensions;
     using Appva.Mcss.Domain.Entities;

@@ -8,9 +8,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
 
     using System;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Http.Description;
     using Appva.Core.Extensions;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Application;

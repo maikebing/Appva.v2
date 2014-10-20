@@ -6,11 +6,6 @@ namespace Appva.Mcss.ResourceServer
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Web.Http;
     using Appva.WebApi.Formatters;
     using Newtonsoft.Json;
@@ -31,7 +26,6 @@ namespace Appva.Mcss.ResourceServer
         {
             config.MapHttpAttributeRoutes();
             config.Formatters.Remove(config.Formatters.XmlFormatter);
-            //// config.Formatters.Remove(config.Formatters.FormUrlEncodedFormatter);
             config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings { ContractResolver = new LowerCaseUnderScoreContractResolver() };
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
         }

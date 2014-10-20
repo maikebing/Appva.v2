@@ -11,11 +11,10 @@ namespace Appva.Mcss.ResourceServer
     using System.Web.Http;
     using Appva.Core.Configuration;
     using Appva.Mcss.ResourceServer.Application.Configuration;
+    using Appva.Mcss.ResourceServer.Application.ExceptionHandling;
     using Appva.Mcss.ResourceServer.Application.Persistence;
     using Appva.Mcss.ResourceServer.Domain.Services;
     using Appva.Persistence;
-    using Appva.Persistence.Autofac;
-    using Appva.Persistence.Providers;
     using Appva.Repository;
     using Autofac;
     using Autofac.Integration.WebApi;
@@ -50,6 +49,7 @@ namespace Appva.Mcss.ResourceServer
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebApiFilterProvider(GlobalConfiguration.Configuration);
             builder.Register(x => new PersistenceAttribute(x.Resolve<IPersistenceContext>())).AsWebApiActionFilterFor<ApiController>().InstancePerRequest();
+            builder.RegisterType<ExceptionFilterAttribute>().AsWebApiExceptionFilterFor<ApiController>().InstancePerRequest();
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(builder.Build());
         }
     }

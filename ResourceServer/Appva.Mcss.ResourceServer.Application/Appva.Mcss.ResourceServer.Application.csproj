@@ -100,6 +100,7 @@
     <Compile Include="Authorization\IdentityExtensions.cs" />
     <Compile Include="Authorization\ResourceServerSigningKeyHandler.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ExceptionHandling\ExceptionFilterAttribute.cs" />
     <Compile Include="Persistence\MultiTenantPersistenceConfiguration.cs" />
     <Compile Include="Persistence\PersistenceAttribute.cs" />
     <Compile Include="Persistence\TenantService.cs" />

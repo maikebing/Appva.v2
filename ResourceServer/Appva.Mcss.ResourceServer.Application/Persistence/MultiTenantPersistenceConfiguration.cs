@@ -120,6 +120,11 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
 
             #region Constructor.
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MultiTenantPersistenceContextFactory"/> class.
+            /// </summary>
+            /// <param name="assembly">The assembly</param>
+            /// <param name="properties">The properties</param>
             public MultiTenantPersistenceContextFactory(string assembly, IDictionary<string, string> properties)
             {
                 this.assembly = assembly;
@@ -157,10 +162,6 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
                     throw new Exception("No HttpContext or no tenant!");
                 }
             }
-
-            #endregion
-
-            #region Private Functions.
 
             #endregion
         }

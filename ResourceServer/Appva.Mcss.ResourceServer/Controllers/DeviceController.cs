@@ -66,7 +66,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <param name="deviceRepository">The <see cref="IDeviceRepository"/></param>
         /// <param name="settingRepository">The <see cref="ISettingRepository"/></param>
         /// <param name="taxonRepository">The <see cref="ITaxonRepository"/></param>
-        
         public DeviceController(ITenantService tenantService, IDeviceRepository deviceRepository, ISettingRepository settingRepository, ITaxonRepository taxonRepository)
         {
             this.tenantService = tenantService;

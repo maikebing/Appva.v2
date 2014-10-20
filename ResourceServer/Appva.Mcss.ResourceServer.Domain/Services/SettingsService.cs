@@ -21,7 +21,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public interface ISettingsService
+    public interface ISettingsService : IService
     {
         /// <summary>
         /// Returns a setting by key. If not found in cache the default
@@ -112,13 +112,32 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
                     }
                 }
             }
-            return (TValue) this.cache.Get(key);
+            if (! this.cache.Contains(key))
+            {
+                if (defaultValue == null)
+                {
+                    return default(TValue);
+                }
+                else
+                {
+                    return (TValue) defaultValue;
+                }
+            }
+            else
+            {
+                return (TValue) this.cache.Get(key);
+            }
         }
 
         /// <inheritdoc />
         public bool Add(Setting setting)
         {
-            var value = JsonConvert.DeserializeObject(setting.Value, setting.Type);
+            var settingValue = setting.Value;
+            if (setting.Type.Equals(typeof(string)))
+            {
+                settingValue = string.Format("'{0}'", setting.Value);
+            }
+            var value = JsonConvert.DeserializeObject(settingValue, setting.Type);
             return this.cache.Add(
                 new CacheItem(setting.MachineName, value),
                 new CacheItemPolicy

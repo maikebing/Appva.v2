@@ -107,7 +107,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="App_Data\Persistence.config" />
+    <Content Include="App_Data\Persistence.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="App_Data\Persistence.WIN-TSHTNQFBTHH.config">
       <DependentUpon>Persistence.config</DependentUpon>
     </None>
@@ -115,6 +117,7 @@
     <None Include="App_Data\Application.WIN-TSHTNQFBTHH.config">
       <DependentUpon>Application.config</DependentUpon>
     </None>
+    <None Include="Properties\PublishProfiles\Resource Server Release.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -124,7 +127,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AutoFacConfig.cs" />

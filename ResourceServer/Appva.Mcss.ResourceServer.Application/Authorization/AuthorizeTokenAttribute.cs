@@ -105,11 +105,14 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
             var request = actionContext.Request;
             try
             {
-                /*if (request.RequestUri.Scheme != Uri.UriSchemeHttps)
+                if (Configuration.IsNotNull() && Configuration.IsSslRequired)
                 {
-                    actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
-                    return;
-                }*/
+                    if (request.RequestUri.Scheme != Uri.UriSchemeHttps)
+                    {
+                        actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
+                        return;
+                    }
+                }
                 var authHeader = request.Headers.FirstOrDefault(x => x.Key.Equals("Authorization"));
                 if (authHeader.Value.IsNull() || ! authHeader.Value.Any())
                 {

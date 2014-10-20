@@ -30,6 +30,15 @@ namespace Appva.Mcss.ResourceServer.Application.Configuration
         }
 
         /// <summary>
+        /// Whether or not SSL is required or not.
+        /// </summary>
+        public bool IsSslRequired
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Whether or not to skip access token authorization
         /// and scope verification.
         /// </summary>

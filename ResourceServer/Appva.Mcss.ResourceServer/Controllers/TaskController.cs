@@ -133,7 +133,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 return this.NotFound();
             }
             var taxons = this.taxonRepository.Search(null, true, new List<string> { "SST" });
-            var account = this.accountRepository.Get(this.User.Identity.Id()); 
+            var account = this.accountRepository.Get(this.User.Identity.Id());
             return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, taxons, account));
         }
 
@@ -151,7 +151,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         {
             var time = DateTime.ParseExact(timeslot, "yyyyMMddHHmmss", CultureInfo.InvariantCulture);
             var account = this.accountRepository.Get(this.User.Identity.Id());
-            var taxons = this.taxonRepository.Search(null, true, new List<string> { "SST" }); 
+            var taxons = this.taxonRepository.Search(null, true, new List<string> { "SST" });
             var tasks = this.taskService.ListTasksByPatient(patientId, time, time);
             return this.Ok(TaskTransformer.ToTaskModel(tasks, time, taxons, account));
         }

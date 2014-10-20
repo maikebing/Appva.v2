@@ -9,19 +9,20 @@ namespace Appva.Mcss.ResourceServer.Controllers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Web.Http;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Domain.Entities;
-    using Appva.Mcss.ResourceServer.Application;
-    using Appva.Mcss.ResourceServer.Application.Authorization;
-    using Appva.Mcss.ResourceServer.Domain.Repositories;
-    using Appva.Mcss.ResourceServer.Domain.Services;
-    using Appva.WebApi.Filters;
-    using Models;
-    using Transformers;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.Http;
+using Appva.Core.Extensions;
+using Appva.Mcss.Domain.Entities;
+using Appva.Mcss.ResourceServer.Application;
+using Appva.Mcss.ResourceServer.Application.Authorization;
+using Appva.Mcss.ResourceServer.Domain.Repositories;
+using Appva.Mcss.ResourceServer.Domain.Services;
+using Appva.WebApi.Filters;
+using Common.Logging;
+using Models;
+using Transformers;
 
     #endregion
 
@@ -32,6 +33,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
     public class TaskController : ApiController
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="ILog"/> for <see cref="TaskController"/>.
+        /// </summary>
+        private static readonly ILog Log = LogManager.GetLogger<TaskController>();
 
         /// <summary>
         /// The <see cref="ITaskRepository"/>.
@@ -64,6 +70,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
         private readonly ITaskService taskService;
 
         /// <summary>
+        /// The <see cref="IInventoryService"/>.
+        /// </summary>
+        private readonly IInventoryService inventoryService;
+
+        /// <summary>
         /// The <see cref="ISettingsService"/>.
         /// </summary>
         private readonly ISettingsService settingsService;
@@ -81,6 +92,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <param name="accountRepository">The <see cref="IAccountRepository"/></param>
         /// <param name="inventoryTransactionItemRepository">The <see cref="IInventoryTransactionItemRepository"/></param>
         /// <param name="taskService">The <see cref="ITaskService"/></param>
+        /// <param name="inventoryService">The <see cref="IInventoryService"/></param>
         /// <param name="settingsService">The <see cref="ISettingsService"/></param>
         public TaskController(
             ITaskRepository taskRepository, 
@@ -89,6 +101,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             IAccountRepository accountRepository,
             IInventoryTransactionItemRepository inventoryTransactionItemRepository,
             ITaskService taskService,
+            IInventoryService inventoryService,
             ISettingsService settingsService)
         {
             this.taskRepository = taskRepository;
@@ -97,6 +110,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             this.accountRepository = accountRepository;
             this.inventoryTransactionItemRepository = inventoryTransactionItemRepository;
             this.taskService = taskService;
+            this.inventoryService = inventoryService;
             this.settingsService = settingsService;
         }
 
@@ -240,7 +254,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.NotFound();
             }
-            //// Remove this when app is updated
+            var account = this.accountRepository.Get(this.User.Identity.Id());
+            //// FIXME: Remove this when app is updated
             if (model.StatusId.IsEmpty() || model.StatusId.IsNull())
             {
                 model.StatusId = "incomplete";
@@ -249,9 +264,16 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 case "incomplete":
                     task.Active = false;
-                    //// Log.Info(x => x("User: {0} changed status of task {1} to incomplete", model.AccountId, id));
+                    if (task.InventoryTransactions.IsNotNull() && task.InventoryTransactions.Count > 0)
+                    {
+                        var transaction = this.inventoryService.RedoInventoryWithdrawal(task, account);
+                        task.InventoryTransactions.Add(transaction);
+                        Log.Info(x => x("User: {0} ({1}) readded {2} units to inventory {3} by transaction {4}", account.FullName, account.Id, transaction.Value, transaction.Inventory.Id, transaction.Id));
+                    }
+                    Log.Info(x => x("User: {0} ({1}) changed status of task {2} to incomplete", account.FullName, account.Id, id));
                     break;
             }
+            this.taskRepository.Update(task);
             return this.Ok();
         }
 

@@ -8,12 +8,10 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
 
     using System;
     using System.Collections.Generic;
-    using System.IdentityModel.Tokens;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Security.Claims;
-    using System.Security.Cryptography;
     using System.Security.Principal;
     using System.Threading;
     using System.Web;
@@ -23,7 +21,6 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
     using Appva.Core.Extensions;
     using Appva.Mcss.ResourceServer.Application.Configuration;
     using Common.Logging;
-    using DotNetOpenAuth.Messaging;
     using DotNetOpenAuth.OAuth2;
     using Newtonsoft.Json;
 
@@ -54,17 +51,17 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// <summary>
         /// The <see cref="ResourceServerConfiguration"/>.
         /// </summary>
-        private readonly ResourceServerConfiguration configuration;
+        private static readonly ResourceServerConfiguration Configuration;
 
         /// <summary>
         /// Responsible for providing the key to verify the token is intended for this resource.
         /// </summary>
-        private readonly ResourceServerSigningKeyHandler decrypter;
+        private static readonly ResourceServerSigningKeyHandler ResourceServerSigningKey;
 
         /// <summary>
         /// Responsible for providing the key to verify the token came from the authorization server.
         /// </summary>
-        private readonly AuthorizationServerSigningKeyHandler signatureVerifier;
+        private static readonly AuthorizationServerSigningKeyHandler AuthorizationServerSigningKey;
 
         /// <summary>
         /// The required scopes.
@@ -78,12 +75,19 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorizeTokenAttribute"/> class.
         /// </summary>
+        static AuthorizeTokenAttribute()
+        {
+            Configuration = ConfigurableApplicationContext.Get<ResourceServerConfiguration>();
+            ResourceServerSigningKey = new ResourceServerSigningKeyHandler();
+            AuthorizationServerSigningKey = new AuthorizationServerSigningKeyHandler();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizeTokenAttribute"/> class.
+        /// </summary>
         /// <param name="scopes">The required scopes (OR) - one must match</param>
         public AuthorizeTokenAttribute(params string[] scopes)
         {
-            this.configuration = ConfigurableApplicationContext.Get<ResourceServerConfiguration>();
-            this.decrypter = new ResourceServerSigningKeyHandler();
-            this.signatureVerifier = new AuthorizationServerSigningKeyHandler();
             this.scopes = scopes;
         }
 
@@ -94,7 +98,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// <inheritdoc />
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            if (this.configuration.IsNotNull() && configuration.SkipTokenAndScopeAuthorization)
+            if (Configuration.IsNotNull() && Configuration.SkipTokenAndScopeAuthorization)
             {
                 return;
             }
@@ -103,14 +107,11 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
             {
                 if (request.RequestUri.Scheme != Uri.UriSchemeHttps)
                 {
-                    actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden)
-                    {
-                        ReasonPhrase = "HTTPS Required"
-                    };
+                    actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
                     return;
                 }
                 var authHeader = request.Headers.FirstOrDefault(x => x.Key.Equals("Authorization"));
-                if (authHeader.Value.IsNull() || !authHeader.Value.Any())
+                if (authHeader.Value.IsNull() || ! authHeader.Value.Any())
                 {
                     actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     Log.Warn("Missing Authorization header!");
@@ -123,7 +124,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
                     Log.Warn("Missing Bearer token!");
                     return;
                 }
-                var resourceServer = new ResourceServer(new StandardAccessTokenAnalyzer(this.signatureVerifier.Provider, this.decrypter.Provider));
+                var resourceServer = new ResourceServer(new StandardAccessTokenAnalyzer(AuthorizationServerSigningKey.Provider, ResourceServerSigningKey.Provider));
                 var accessToken = resourceServer.GetAccessToken(request);
                 if (! accessToken.Scope.Overlaps(this.scopes))
                 {
@@ -134,7 +135,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
                 var principal = resourceServer.GetPrincipal(request);
                 if (principal.IsNotNull())
                 {
-                    MintPrincipal(actionContext, accessToken, principal);
+                    this.MintPrincipal(actionContext, accessToken, principal);
                     actionContext.Response = null;
                     return;
                 }
@@ -161,6 +162,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// </summary>
         /// <param name="context">The <see cref="HttpActionContext"/></param>
         /// <param name="accessToken">The <see cref="AccessToken"/></param>
+        /// <param name="principal">The <see cref="IPrincipal"/></param>
         private void MintPrincipal(HttpActionContext context, AccessToken accessToken, IPrincipal principal)
         {
             var claims = new List<Claim>
@@ -177,12 +179,12 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
             {
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, context.Request.Headers.GetValues(UserAuthHeader).First()));
             }
-            var cPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, principal.Identity.AuthenticationType));
-            Thread.CurrentPrincipal = cPrincipal;
-            context.RequestContext.Principal = cPrincipal;
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, principal.Identity.AuthenticationType));
+            Thread.CurrentPrincipal = claimsPrincipal;
+            context.RequestContext.Principal = claimsPrincipal;
             if (HttpContext.Current.IsNotNull())
             {
-                HttpContext.Current.User = cPrincipal;
+                HttpContext.Current.User = claimsPrincipal;
             }
         }
 

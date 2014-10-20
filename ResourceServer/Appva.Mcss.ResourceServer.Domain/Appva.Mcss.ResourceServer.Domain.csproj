@@ -87,6 +87,7 @@
     <Compile Include="Repositories\TaxonRepository.cs" />
     <Compile Include="Repositories\TimelineRepository.cs" />
     <Compile Include="Services\AbstractTaskService.cs" />
+    <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\TaskService.cs" />

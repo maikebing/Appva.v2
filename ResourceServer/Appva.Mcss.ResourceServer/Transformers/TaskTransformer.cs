@@ -78,15 +78,15 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 Description = task.Sequence.Description,
                 Id = task.Id,
                 SequenceId = task.Sequence.Id,
-                Inventory = GetInventory(task), // FIXME: inventory
+                Inventory = GetInventory(task), //// TODO: Inventory has static reasons 
                 Name = task.Name,
                 Permissions = GetPermissions(task, user), 
                 Statuses = GetStatuses(task),
                 StatusItems = GetStatusItems(task, stdStatusItems, ref contacts),
-                Type = new List<string>(), // FIXME: Task type
+                Type = new List<string>(), //// FIXME: Task type
                 Refill = GetRefillModel(task.Sequence),
                 Completed = GetCompletedStatus(task),
-                Contacts = contacts // FIXME: Shall include accounts to contact also
+                Contacts = contacts //// FIXME: Shall include accounts to contact also
             };
         }
 
@@ -184,6 +184,13 @@ namespace Appva.Mcss.ResourceServer.Transformers
         private static List<string> GetPermissions(Task task, Account user)
         {
             var retval = new List<string>();
+            if (task.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar)
+            {
+                if (! task.Sequence.CanRaiseAlert)
+                {
+                    return retval;
+                }
+            }
             //// Nurse should be able to sign everything
             if (user.IsInRole("_TITLE_NURSE"))
             {
@@ -245,7 +252,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
 
         /// <summary>
         /// Gets the inventory for current task.
-        /// FIXME: update to new inventorymodel
+        /// FIXME: Should be defineable statuses and amounts.
         /// </summary>
         /// <param name="task">TODO: task</param>
         /// <returns>TODO: returns</returns>

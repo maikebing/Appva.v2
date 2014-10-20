@@ -1,8 +1,8 @@
 # Appva.Mcss.ResourceServer
 
 #### Using Machine Name Configuration File
+##### Application.config
 ```javascript
-Application.cs
 {
   "IsProduction": "false",
   "IsSslRequired": "false",
@@ -11,7 +11,9 @@ Application.cs
   "ResourceServerSigningKey": "NotUsedInSkipTokenAndScopeAuthorizationIsTrue",
   "AuthorizationServerSigningKey": "NotUsedInSkipTokenAndScopeAuthorizationIsTrue"
 }
-Persistence.cs
+```
+##### Persistence.config
+```javascript
 {
   "SkipMultiTenant": "true",
   "ConnectionString": "Server=localhost;Database=GoldFinger;Trusted_Connection=False;User ID=JamesBond;Password=007",
@@ -23,10 +25,9 @@ Persistence.cs
   }
 }
 ```
-
 #### Things to remember
 ```c#
 this.User.Identity.Id();
 ```
-
-Currently, the `IIdentity` extension method `Id()` is dependent on `AuthorizeAttraibute.cs` and will trigger an exception when used in `"SkipTokenAndScopeAuthorization": "true"`
+Currently, the `IIdentity` extension method `Id()` is dependent on `AuthorizeAttraibute.cs` and will trigger an exception when 
+used in `"SkipTokenAndScopeAuthorization": "true"`. 

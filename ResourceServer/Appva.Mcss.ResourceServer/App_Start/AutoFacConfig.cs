@@ -11,7 +11,9 @@ namespace Appva.Mcss.ResourceServer
     using System.Web.Http;
     using Appva.Core.Configuration;
     using Appva.Mcss.ResourceServer.Application.Configuration;
+    using Appva.Mcss.ResourceServer.Application.Persistence;
     using Appva.Mcss.ResourceServer.Domain.Services;
+    using Appva.Persistence;
     using Appva.Persistence.Autofac;
     using Appva.Persistence.Providers;
     using Appva.Repository;
@@ -34,16 +36,20 @@ namespace Appva.Mcss.ResourceServer
             var builder = new ContainerBuilder();
             var applicationConfiguration = ConfigurableApplicationContext.Read<ResourceServerConfiguration>()
                 .From("App_Data\\Application.config").AsMachineNameSpecific().ToObject();
-            var persistenceConfiguration = ConfigurableApplicationContext.Read<SinglePersistenceConfiguration>()
-                .From("App_Data\\Persistence.config").AsMachineNameSpecific().ToObject();
             ConfigurableApplicationContext.Add<ResourceServerConfiguration>(applicationConfiguration);
-            builder.RegisterModule(new PersistenceModule(persistenceConfiguration));
+            var persistenceConfiguration = ConfigurableApplicationContext.Read<MultiTenantPersistenceConfiguration>()
+                .From("App_Data\\Persistence.config").AsMachineNameSpecific().ToObject();
+            var persistenceContextFactory = persistenceConfiguration.Build();
+            builder.Register(x => persistenceContextFactory).As<IPersistenceContextFactory>().SingleInstance();
+            builder.Register(x => x.Resolve<IPersistenceContextFactory>().Build()).As<IPersistenceContext>().InstancePerRequest();
+            builder.RegisterType<TenantService>().As<ITenantService>().InstancePerRequest();
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
             builder.RegisterGeneric(typeof(PagingAndSortingRepository<>)).As(typeof(IPagingAndSortingRepository<>));
             builder.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(Repository<>)).AsImplementedInterfaces().InstancePerRequest();
             builder.RegisterAssemblyTypes(assembly).Where(x => x.GetInterfaces().Any(y => y.IsAssignableFrom(typeof(IService)))).AsImplementedInterfaces().InstancePerRequest();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebApiFilterProvider(GlobalConfiguration.Configuration);
+            builder.Register(x => new PersistenceAttribute(x.Resolve<IPersistenceContext>())).AsWebApiActionFilterFor<ApiController>().InstancePerRequest();
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(builder.Build());
         }
     }

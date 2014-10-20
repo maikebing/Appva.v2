@@ -18,6 +18,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Application;
     using Appva.Mcss.ResourceServer.Application.Authorization;
+    using Appva.Mcss.ResourceServer.Application.Persistence;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Appva.Repository;
     using Appva.WebApi.Filters;
@@ -33,6 +34,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
     public class DeviceController : ApiController
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="ITenantService"/>.
+        /// </summary>
+        private readonly ITenantService tenantService;
 
         /// <summary>
         /// The <see cref="IDeviceRepository"/>.
@@ -56,11 +62,14 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceController"/> class.
         /// </summary>
+        /// <param name="tenantService">The <see cref="ITenantService"/></param>
         /// <param name="deviceRepository">The <see cref="IDeviceRepository"/></param>
         /// <param name="settingRepository">The <see cref="ISettingRepository"/></param>
         /// <param name="taxonRepository">The <see cref="ITaxonRepository"/></param>
-        public DeviceController(IDeviceRepository deviceRepository, ISettingRepository settingRepository, ITaxonRepository taxonRepository)
+        
+        public DeviceController(ITenantService tenantService, IDeviceRepository deviceRepository, ISettingRepository settingRepository, ITaxonRepository taxonRepository)
         {
+            this.tenantService = tenantService;
             this.deviceRepository = deviceRepository;
             this.settingRepository = settingRepository;
             this.taxonRepository = taxonRepository;
@@ -130,62 +139,28 @@ namespace Appva.Mcss.ResourceServer.Controllers
             var taxon = this.taxonRepository.Get(deviceModel.TaxonId);
             if (taxon.IsNull())
             {
-                this.InternalServerError(new Exception("No taxon found, attempting to rollback!"));
+                return this.InternalServerError(new Exception("No taxon found, attempting to rollback!"));
             }
             device.Taxon = taxon;
             var id = (Guid) this.deviceRepository.Save(device);
             if (id.IsEmpty())
             {
-                this.InternalServerError(new Exception("No taxon found, attempting to rollback!"));
+                return this.InternalServerError(new Exception("No taxon found, attempting to rollback!"));
             }
-            ////FIXME: Add oauth call
-            /*Client client = null;
-            using (var httpClient = new HttpClient())
+            var client = this.tenantService.GetClientByTenantId(this.User.Identity.Tenant());
+            if (client.IsNull())
             {
-                var response = httpClient.GetAsync(string.Format(WebConfigurationManager.AppSettings.Get("ClientUrl"), HttpContext.Current.Items["tenant"]));
-                System.Threading.Tasks.Task.WaitAll(response);
-                if (response.Result.IsSuccessStatusCode)
-                {
-                    client = response.Result.Content.ReadAsAsync<Client>();
-                }
-                else
-                {
-                    throw new Exception("No Client! Device not saved, attempting to rollback!");
-                }
-            }*/
+                return this.InternalServerError(new Exception("No client found, attempting to rollback!"));
+            }
             return this.Ok(new
             {
                 Id = device.Id,
-                Name = device.Name////,
-                ////ClientIdentifier = client.Identifier,
-                ////ClientSecret = client.Secret
+                Name = device.Name,
+                ClientIdentifier = client.Identifier,
+                ClientSecret = client.Secret
             });
         }
 
         #endregion
-
-        /// <summary>
-        /// The tenant model.
-        /// </summary>
-        public class Client
-        {
-            /// <summary>
-            /// FIXME: remove
-            /// </summary>
-            public string Identifier
-            {
-                get;
-                set;
-            }
-
-            /// <summary>
-            /// FIXME: remove
-            /// </summary>
-            public string Secret
-            {
-                get;
-                set;
-            }
-        }
     }
 }

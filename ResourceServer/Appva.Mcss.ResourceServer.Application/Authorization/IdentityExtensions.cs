@@ -24,12 +24,25 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// <summary>
         /// Returns the user id.
         /// </summary>
-        /// <param name="principal">The <see cref="IPrincipal"/></param>
+        /// <param name="identity">The <see cref="IIdentity"/></param>
         /// <returns>The user id</returns>
-        public static object Id(this IIdentity principal)
+        public static object Id(this IIdentity identity)
         {
-            var identity = principal as ClaimsIdentity;
-            return new Guid(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var claimsIdentity = identity as ClaimsIdentity;
+            var user = claimsIdentity.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).SingleOrDefault();
+            return new Guid(user.Value);
+        }
+
+        /// <summary>
+        /// Returns the tenant id.
+        /// </summary>
+        /// <param name="identity">The <see cref="IIdentity"/></param>
+        /// <returns>The tenant id</returns>
+        public static object Tenant(this IIdentity identity)
+        {
+            var claimsIdentity = identity as ClaimsIdentity;
+            var tenant = claimsIdentity.Claims.Where(x => x.Type == AppvaClaimTypes.Tenant).SingleOrDefault();
+            return new Guid(tenant.Value);
         }
     }
 }

@@ -73,7 +73,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthorizeTokenAttribute"/> class.
+        /// Initializes static members of the <see cref="AuthorizeTokenAttribute" /> class.
         /// </summary>
         static AuthorizeTokenAttribute()
         {
@@ -105,11 +105,11 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
             var request = actionContext.Request;
             try
             {
-                if (request.RequestUri.Scheme != Uri.UriSchemeHttps)
+                /*if (request.RequestUri.Scheme != Uri.UriSchemeHttps)
                 {
                     actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
                     return;
-                }
+                }*/
                 var authHeader = request.Headers.FirstOrDefault(x => x.Key.Equals("Authorization"));
                 if (authHeader.Value.IsNull() || ! authHeader.Value.Any())
                 {

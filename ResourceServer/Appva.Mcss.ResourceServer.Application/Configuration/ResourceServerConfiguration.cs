@@ -38,5 +38,14 @@ namespace Appva.Mcss.ResourceServer.Application.Configuration
             get;
             set;
         }
+
+        /// <summary>
+        /// The tenant server url.
+        /// </summary>
+        public Uri TenantServerUri
+        {
+            get;
+            set;
+        }
     }
 }

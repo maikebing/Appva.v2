@@ -108,15 +108,15 @@
     <Compile Include="Configuration\ResourceServerConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
       <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
       <Name>Appva.Core.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\src\Appva.Core\Appva.Core.csproj">
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Core\Appva.Core.csproj">
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
       <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
       <Name>Appva.Persistence</Name>
     </ProjectReference>

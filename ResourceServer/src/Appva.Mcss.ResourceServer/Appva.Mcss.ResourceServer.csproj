@@ -156,35 +156,35 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Appva.web\Mcss\Infrastructure\Appva.Mcss.Domain\Appva.Mcss.Domain\Appva.Mcss.Domain.csproj">
+    <ProjectReference Include="..\..\..\..\Appva.web\Mcss\Infrastructure\Appva.Mcss.Domain\Appva.Mcss.Domain\Appva.Mcss.Domain.csproj">
       <Project>{7b456880-fe43-4fa5-9786-883a7dbfed76}</Project>
       <Name>Appva.Mcss.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Appva.web\Mcss\Infrastructure\Appva.Mcss.Utils\Appva.Mcss.Utils\Appva.Mcss.Utils.csproj">
+    <ProjectReference Include="..\..\..\..\Appva.web\Mcss\Infrastructure\Appva.Mcss.Utils\Appva.Mcss.Utils\Appva.Mcss.Utils.csproj">
       <Project>{21c8a633-11be-4ea7-a6c1-be78f40ec36f}</Project>
       <Name>Appva.Mcss.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
       <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
       <Name>Appva.Core.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\src\Appva.Core\Appva.Core.csproj">
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Core\Appva.Core.csproj">
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\src\Appva.Persistence.Autofac\Appva.Persistence.Autofac.csproj">
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.Autofac\Appva.Persistence.Autofac.csproj">
       <Project>{9041f4f2-26b2-44de-ad32-3edaeaed35d2}</Project>
       <Name>Appva.Persistence.Autofac</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
       <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
       <Name>Appva.Persistence</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
       <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
       <Name>Appva.Repository</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\src\Appva.WebApi\Appva.WebApi.csproj">
+    <ProjectReference Include="..\..\..\Framework\src\Appva.WebApi\Appva.WebApi.csproj">
       <Project>{5603a0f9-3666-4fc9-9af9-b21c7432ba02}</Project>
       <Name>Appva.WebApi</Name>
     </ProjectReference>

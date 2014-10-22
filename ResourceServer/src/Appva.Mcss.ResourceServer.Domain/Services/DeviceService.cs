@@ -1,4 +1,4 @@
-﻿// <copyright file="InventoryService.cs" company="Appva AB">
+﻿// <copyright file="DeviceService.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author><a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a></author>
@@ -6,10 +6,10 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
 {
     #region Imports.
 
+    using System;
     using Appva.Core.Extensions;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
-    using System;
 
     #endregion
 
@@ -56,7 +56,6 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         /// </summary>
         private readonly ISettingsService settingsService;
 
-
         #endregion
 
         #region Constructor.
@@ -65,11 +64,12 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         /// Initializes a new instance of the <see cref="DeviceService"/> class.
         /// </summary>
         /// <param name="deviceRepository">The <see cref="IDeviceRepository"/></param>
+        /// <param name="taxonRepository">The <see cref="ITaxonRepository"/></param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/></param>
         public DeviceService(
             IDeviceRepository deviceRepository,
             ITaxonRepository taxonRepository,
-            ISettingsService settingsService
-        )
+            ISettingsService settingsService)
         {
             this.deviceRepository = deviceRepository;
             this.taxonRepository = taxonRepository;

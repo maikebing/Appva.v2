@@ -29,6 +29,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// </summary>
         /// <param name="taxon">TODO: taxon</param>
         /// <param name="isParent">TODO: isParent</param>
+        /// <param name="filter">TODO: filter</param>
         /// <param name="patientCount">TODO: patientCount</param>
         /// <returns>TODO: returns</returns>
         public static TaxonModel ToTaxon(Taxon taxon, bool isParent, string filter, int patientCount = 0)
@@ -52,6 +53,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="taxons">TODO: taxons</param>
         /// <param name="parents">TODO: parents</param>
         /// <param name="patientCounts">TODO: patientCounts</param>
+        /// <param name="filter">TODO: filter</param>
         /// <returns>TODO: returns</returns>
         public static IList<TaxonModel> ToTaxon(IList<Taxon> taxons, IList<Guid> parents, IDictionary<Guid, int> patientCounts, string filter)
         {

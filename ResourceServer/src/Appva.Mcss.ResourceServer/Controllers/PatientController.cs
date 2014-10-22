@@ -11,9 +11,9 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.ResourceServer.Application;
     using Appva.Mcss.ResourceServer.Application.Authorization;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
+    using Appva.Mcss.ResourceServer.Domain.Services;
     using Models;
     using Transformers;
-using Appva.Mcss.ResourceServer.Domain.Services;
 
     #endregion
 
@@ -43,9 +43,11 @@ using Appva.Mcss.ResourceServer.Domain.Services;
         /// Initializes a new instance of the <see cref="PatientController"/> class.
         /// </summary>
         /// <param name="patientRepository">The <see cref="IPatientRepository"/></param>
-        public PatientController(IPatientRepository patientRepository)
+        /// <param name="deviceService">The <see cref="IDeviceService"/></param>
+        public PatientController(IPatientRepository patientRepository, IDeviceService deviceService)
         {
             this.patientRepository = patientRepository;
+            this.deviceService = deviceService;
         }
         
         #endregion

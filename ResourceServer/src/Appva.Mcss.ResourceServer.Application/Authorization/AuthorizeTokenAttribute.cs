@@ -191,6 +191,10 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
             {
                 claims.Add(new Claim(AppvaClaimTypes.Device, context.Request.Headers.GetValues(DeviceHeader).First()));
             }
+            else
+            {
+                claims.Add(new Claim(AppvaClaimTypes.Device, Guid.Empty.ToString()));
+            }
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, principal.Identity.AuthenticationType));
             Thread.CurrentPrincipal = claimsPrincipal;
             context.RequestContext.Principal = claimsPrincipal;

@@ -41,7 +41,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         public static object Device(this IIdentity identity)
         {
             var claimsIdentitiy = identity as ClaimsIdentity;
-            var device = claimsIdentitiy.Claims.Where(x => x.Type == AppvaClaimTypes.Device ).SingleOrDefault();
+            var device = claimsIdentitiy.Claims.Where(x => x.Type == AppvaClaimTypes.Device ).SingleOrDefault();    
             return new Guid(device.Value);
         }
 

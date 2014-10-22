@@ -16,6 +16,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Transformers;
     using Appva.Mcss.ResourceServer.Domain.Services;
+    using Common.Logging;
 
     #endregion
 
@@ -26,6 +27,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
     public class TaxonController : ApiController
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="ILog"/> for <see cref="TaskController"/>.
+        /// </summary>
+        private static readonly ILog Log = LogManager.GetLogger<TaskController>();
 
         /// <summary>
         /// The <see cref="ITaxonRepository"/>.
@@ -118,6 +124,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         {
             var types = type_ids != null ? TaxonTransformer.FromTypeToTaxonomy(type_ids) : null;
             var taxonFilter = this.deviceService.GetDeviceOrganisationRootId((Guid)this.User.Identity.Device());
+            Log.Debug(string.Format("Taxon-id for filter is {0} and Device-id is {1}", taxonFilter, (Guid)this.User.Identity.Device()));
             var taxons = this.taxonRepository.Search(query, is_root, types, taxonFilter);
             var parents = this.taxonRepository.GetParents(taxons);
             var patients = this.taxonRepository.CountPatients(taxons);

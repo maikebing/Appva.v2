@@ -86,13 +86,13 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
                     .WhereRestrictionOn(t => t.MachineName)
                     .IsIn(taxonomy);
             }
-            if (filter.IsNotNull())
+            if (filter.IsNotEmpty())
             {
                 sqlQuery.Where(x => x.Path.IsLike(filter, MatchMode.Anywhere));
             }
             if (isRoot.HasValue)
             {
-                if (filter.IsNotNull())
+                if (filter.IsNotEmpty())
                 {
                     sqlQuery.Where(x => x.IsRoot == isRoot || x.Id == new Guid(filter));
                 }

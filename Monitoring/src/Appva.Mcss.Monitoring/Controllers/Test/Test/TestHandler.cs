@@ -11,6 +11,7 @@ namespace Appva.Mcss.Monitoring.Controllers.Test
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Appva.Mcss.Monitoring.Domain.Entities;
     using Appva.Mcss.Monitoring.Infrastructure.Persistence;
     using Appva.Persistence;
 
@@ -38,8 +39,9 @@ namespace Appva.Mcss.Monitoring.Controllers.Test
         /// <inheritdoc />
         public override TestResponse Handle(TestRequest message)
         {
-            var t = this.Persistence.Get<Domain.Entities.Test>(new Guid("144cbb7a-968b-4d51-8fb2-a1b709136440"));
-            return new TestResponse { FooBar = "Baz " + t.Id  };
+            var log = new Log("test", Environment.MachineName, "", "", 200);
+            var id = (Guid) this.Persistence.Save(log);
+            return new TestResponse { FooBar = "Baz " + id.ToString()  };
         }
 
         #endregion

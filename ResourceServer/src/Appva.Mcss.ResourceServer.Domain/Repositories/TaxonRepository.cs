@@ -29,6 +29,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         /// <param name="query">TODO: query</param>
         /// <param name="isRoot">TODO: isRoot</param>
         /// <param name="taxonomy">TODO: taxonomy</param>
+        /// <param name="filter">TODO: filter</param>
         /// <param name="count">TODO: count</param>
         /// <param name="cursor">TODO: cursor</param>
         /// <returns>A collection of <see cref="Taxon"/></returns>
@@ -100,7 +101,6 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
                 {
                     sqlQuery.Where(x => x.IsRoot == isRoot);
                 }
-                
             }
             if (query.IsNotEmpty())
             {

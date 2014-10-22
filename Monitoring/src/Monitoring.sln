@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.Monitoring.Domai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.Monitoring", "Appva.Mcss.Monitoring\Appva.Mcss.Monitoring.csproj", "{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Common", "..\..\Framework\src\Appva.Common\Appva.Common.csproj", "{4B12B272-329E-42DA-B8C9-BC49D9544766}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B12B272-329E-42DA-B8C9-BC49D9544766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B12B272-329E-42DA-B8C9-BC49D9544766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B12B272-329E-42DA-B8C9-BC49D9544766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B12B272-329E-42DA-B8C9-BC49D9544766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

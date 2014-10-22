@@ -14,8 +14,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.ResourceServer.Application;
     using Appva.Mcss.ResourceServer.Application.Authorization;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
-    using Transformers;
     using Appva.Mcss.ResourceServer.Domain.Services;
+    using Transformers;
 
     #endregion
 
@@ -151,9 +151,9 @@ namespace Appva.Mcss.ResourceServer.Controllers
         public IHttpActionResult Parent(Guid id)
         {
             var taxonFilter = this.deviceService.GetDeviceOrganisationRootId((Guid)this.User.Identity.Device());
-            if(id.Equals(new Guid(taxonFilter)))
+            if (id.Equals(new Guid(taxonFilter)))
             {
-                return NotFound();
+                return this.NotFound();
             }
             var taxon = this.taxonRepository.Get(id);
             return this.Ok(TaxonTransformer.ToTaxon(taxon.Parent, true, taxonFilter));

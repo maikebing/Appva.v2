@@ -5,10 +5,24 @@
   namespace="Appva.Mcss.Monitoring.Domain.Entities">
 
   <!-- System classes. -->
-  <!-- Test -->
-  <class name="Test" table="Tests" dynamic-insert="true" dynamic-update="true">
+  <!-- HTTP Request/Response Log. -->
+  <class name="Log" table="Logs">
     <id name="Id">
       <generator class="guid.comb" />
     </id>
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <property name="Application" index="IDX_Logs_Application" />
+    <property name="MachineName" />
+    <property name="Tenant" index="IDX_Logs_Tenant" />
+    <property name="UserName" index="IDX_Logs_Principal" />
+    <property name="HttpStatusCode" />
+    <property name="HttpStatusDefinition" />
+    <property name="RequestData" type="StringClob">
+      <column name="RequestData" sql-type="NTEXT"/>
+    </property>
+    <property name="IsException" />
+    <property name="ExceptionType" />
+    <property name="ExceptionSource" />
   </class>
 </hibernate-mapping>

@@ -1,0 +1,81 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{2988F11F-56FD-4698-8334-CE6FCF19DA0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{10ECE153-5180-4513-8D26-D382AEFF9CB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Persistence", "..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj", "{6DB8CEAE-D19E-4F16-8EEC-8D300B70DED1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Core", "..\..\Framework\src\Appva.Core\Appva.Core.csproj", "{56D99634-8D47-4B88-A057-EE24BCCE546A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Core.Configuration", "..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj", "{338B5BA3-4825-42C7-9C77-819999EC12EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Cryptography", "..\..\Framework\src\Appva.Cryptography\Appva.Cryptography.csproj", "{D3B336CC-9A4A-4CAD-8AB5-32A92E028726}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.WebApi", "..\..\Framework\src\Appva.WebApi\Appva.WebApi.csproj", "{5603A0F9-3666-4FC9-9AF9-B21C7432BA02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Cqrs", "..\..\Framework\src\Appva.Cqrs\Appva.Cqrs.csproj", "{0C3CC633-42B5-413F-B1A6-57DA6F65A61A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.Monitoring.Infrastructure", "Appva.Mcss.Monitoring.Infrastructure\Appva.Mcss.Monitoring.Infrastructure.csproj", "{91679956-E9FB-4FC5-B07D-B04EAC19150E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{2F64ED4F-C074-478F-9B02-95259606617E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.Monitoring.Domain", "Appva.Mcss.Monitoring.Domain\Appva.Mcss.Monitoring.Domain.csproj", "{DE589777-667D-4F6E-A1E9-B1EFA62D1BE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.Monitoring", "Appva.Mcss.Monitoring\Appva.Mcss.Monitoring.csproj", "{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6DB8CEAE-D19E-4F16-8EEC-8D300B70DED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DB8CEAE-D19E-4F16-8EEC-8D300B70DED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DB8CEAE-D19E-4F16-8EEC-8D300B70DED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DB8CEAE-D19E-4F16-8EEC-8D300B70DED1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D99634-8D47-4B88-A057-EE24BCCE546A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D99634-8D47-4B88-A057-EE24BCCE546A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D99634-8D47-4B88-A057-EE24BCCE546A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D99634-8D47-4B88-A057-EE24BCCE546A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{338B5BA3-4825-42C7-9C77-819999EC12EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{338B5BA3-4825-42C7-9C77-819999EC12EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{338B5BA3-4825-42C7-9C77-819999EC12EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{338B5BA3-4825-42C7-9C77-819999EC12EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3B336CC-9A4A-4CAD-8AB5-32A92E028726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3B336CC-9A4A-4CAD-8AB5-32A92E028726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3B336CC-9A4A-4CAD-8AB5-32A92E028726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3B336CC-9A4A-4CAD-8AB5-32A92E028726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5603A0F9-3666-4FC9-9AF9-B21C7432BA02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5603A0F9-3666-4FC9-9AF9-B21C7432BA02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5603A0F9-3666-4FC9-9AF9-B21C7432BA02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5603A0F9-3666-4FC9-9AF9-B21C7432BA02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C3CC633-42B5-413F-B1A6-57DA6F65A61A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C3CC633-42B5-413F-B1A6-57DA6F65A61A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C3CC633-42B5-413F-B1A6-57DA6F65A61A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C3CC633-42B5-413F-B1A6-57DA6F65A61A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91679956-E9FB-4FC5-B07D-B04EAC19150E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91679956-E9FB-4FC5-B07D-B04EAC19150E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91679956-E9FB-4FC5-B07D-B04EAC19150E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91679956-E9FB-4FC5-B07D-B04EAC19150E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE589777-667D-4F6E-A1E9-B1EFA62D1BE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE589777-667D-4F6E-A1E9-B1EFA62D1BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE589777-667D-4F6E-A1E9-B1EFA62D1BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE589777-667D-4F6E-A1E9-B1EFA62D1BE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{91679956-E9FB-4FC5-B07D-B04EAC19150E} = {2F64ED4F-C074-478F-9B02-95259606617E}
+		{DE589777-667D-4F6E-A1E9-B1EFA62D1BE7} = {10ECE153-5180-4513-8D26-D382AEFF9CB6}
+		{C8629FE6-ADE7-43C7-AD29-6821C00C0C8F} = {2988F11F-56FD-4698-8334-CE6FCF19DA0C}
+	EndGlobalSection
+EndGlobal

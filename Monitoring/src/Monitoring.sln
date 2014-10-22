@@ -7,17 +7,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{2988F11F-5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{10ECE153-5180-4513-8D26-D382AEFF9CB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Persistence", "..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj", "{6DB8CEAE-D19E-4F16-8EEC-8D300B70DED1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Persistence", "..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj", "{6DB8CEAE-D19E-4F16-8EEC-8D300B70DED1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Core", "..\..\..\Framework\src\Appva.Core\Appva.Core.csproj", "{56D99634-8D47-4B88-A057-EE24BCCE546A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Core", "..\..\Framework\src\Appva.Core\Appva.Core.csproj", "{56D99634-8D47-4B88-A057-EE24BCCE546A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Core.Configuration", "..\..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj", "{338B5BA3-4825-42C7-9C77-819999EC12EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Core.Configuration", "..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj", "{338B5BA3-4825-42C7-9C77-819999EC12EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Cryptography", "..\..\..\Framework\src\Appva.Cryptography\Appva.Cryptography.csproj", "{D3B336CC-9A4A-4CAD-8AB5-32A92E028726}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Cryptography", "..\..\Framework\src\Appva.Cryptography\Appva.Cryptography.csproj", "{D3B336CC-9A4A-4CAD-8AB5-32A92E028726}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.WebApi", "..\..\..\Framework\src\Appva.WebApi\Appva.WebApi.csproj", "{5603A0F9-3666-4FC9-9AF9-B21C7432BA02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.WebApi", "..\..\Framework\src\Appva.WebApi\Appva.WebApi.csproj", "{5603A0F9-3666-4FC9-9AF9-B21C7432BA02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Cqrs", "..\..\..\Framework\src\Appva.Cqrs\Appva.Cqrs.csproj", "{0C3CC633-42B5-413F-B1A6-57DA6F65A61A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Cqrs", "..\..\Framework\src\Appva.Cqrs\Appva.Cqrs.csproj", "{0C3CC633-42B5-413F-B1A6-57DA6F65A61A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.Monitoring.Infrastructure", "Appva.Mcss.Monitoring.Infrastructure\Appva.Mcss.Monitoring.Infrastructure.csproj", "{91679956-E9FB-4FC5-B07D-B04EAC19150E}"
 EndProject

@@ -63,5 +63,10 @@ namespace Appva.Mcss.ResourceServer.Application
         /// The audience identifier claim schema.
         /// </summary>
         public const string Audience = "https://schemas.appva.se/identity/claims/tenant";
+
+        /// <summary>
+        /// The device identifier claim schema
+        /// </summary>
+        public const string Device = "https://schemas.appva.se/identity/claims/device";
     }
 }

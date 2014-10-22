@@ -13,6 +13,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Models;
     using Transformers;
+using Appva.Mcss.ResourceServer.Domain.Services;
 
     #endregion
 
@@ -28,6 +29,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// The <see cref="IPatientRepository"/>.
         /// </summary>
         private readonly IPatientRepository patientRepository;
+
+        /// <summary>
+        /// The <see cref="IDeviceService"/>
+        /// </summary>
+        private readonly IDeviceService deviceService;
         
         #endregion
 
@@ -74,7 +80,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
         [AuthorizeToken(Scope.ReadWrite)]
         [HttpGet, Route("search")]
         public IHttpActionResult Search([FromUri(Name = "taxon_id")] Guid? taxonId = null, [FromUri] string query = null, [FromUri] string status = null)
-        { 
+        {
+            var taxon = this.deviceService.GetFilterTaxonIdForDevice((Guid)this.User.Identity.Device(), taxonId.GetValueOrDefault());
             var patients = this.patientRepository.Search(query, taxonId.GetValueOrDefault(), status);
             var patientsWithDelayedTask = this.patientRepository.GetPatientsWithAlarm(patients);
             return this.Ok(PatientTransformer.ToPatient(patients, patientsWithDelayedTask));

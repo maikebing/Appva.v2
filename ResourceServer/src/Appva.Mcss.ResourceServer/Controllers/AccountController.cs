@@ -119,9 +119,16 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 {
                     return this.Ok();
                 }
-                if (uid.Length > 8 && !uid.Contains("-"))
+                if (uid.Length > 6 && !uid.Contains("-"))
                 {
-                    uid = string.Format("{0}-{1}", uid.Substring(0, 8), uid.Substring(8));
+                    if (uid.StartsWith("19") || uid.StartsWith("20"))
+                    {
+                        uid = string.Format("{0}-{1}", uid.Substring(0, 8), uid.Substring(8));
+                    }
+                    else 
+                    {
+                        uid = string.Format("{0}-{1}", uid.Substring(0, 6), uid.Substring(6));
+                    }
                 }
                 searchable.MatchBy(x => x.UniqueIdentifier, uid);
             }
@@ -131,7 +138,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 searchable = searchable.FilterBy(x => x.Beacon.Major == major).FilterBy(x => x.Beacon.Minor == minor);   
             }
             var account = this.accountRepository.Search(searchable);
-            if (account.Entities.Count == 1)
+            if (account.TotalCount == 1)
             {
                 return this.Ok(AccountTransformer.ToSingle(account.Entities.First()));
             }

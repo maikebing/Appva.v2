@@ -31,7 +31,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="isParent">TODO: isParent</param>
         /// <param name="patientCount">TODO: patientCount</param>
         /// <returns>TODO: returns</returns>
-        public static TaxonModel ToTaxon(Taxon taxon, bool isParent, int patientCount = 0)
+        public static TaxonModel ToTaxon(Taxon taxon, bool isParent, string filter, int patientCount = 0)
         {
             return new TaxonModel
             {
@@ -39,7 +39,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 Name = taxon.Name,
                 Description = taxon.Description,
                 Type = FromTaxonomyToType(taxon.Taxonomy),
-                IsRoot = taxon.IsRoot,
+                IsRoot = taxon.Id.ToString().Equals(filter) ? true : taxon.IsRoot,
                 IncompleteTask = 0,
                 PatientCount = patientCount,
                 HasChildren = isParent
@@ -53,13 +53,13 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="parents">TODO: parents</param>
         /// <param name="patientCounts">TODO: patientCounts</param>
         /// <returns>TODO: returns</returns>
-        public static IList<TaxonModel> ToTaxon(IList<Taxon> taxons, IList<Guid> parents, IDictionary<Guid, int> patientCounts)
+        public static IList<TaxonModel> ToTaxon(IList<Taxon> taxons, IList<Guid> parents, IDictionary<Guid, int> patientCounts, string filter)
         {
             var retval = new List<TaxonModel>();
             foreach (var taxon in taxons)
             {
                 var pc = patientCounts.ContainsKey(taxon.Id) ? patientCounts[taxon.Id] : 0;
-                retval.Add(ToTaxon(taxon, parents.Contains(taxon.Id), pc));
+                retval.Add(ToTaxon(taxon, parents.Contains(taxon.Id), filter, pc));
             }
             return retval;
         }

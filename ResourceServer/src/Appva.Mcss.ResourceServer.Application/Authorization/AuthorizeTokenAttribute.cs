@@ -39,6 +39,11 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         private const string UserAuthHeader = "X-Authenticated-User";
 
         /// <summary>
+        /// The device id header
+        /// </summary>
+        private const string DeviceHeader = "X-Device";
+
+        /// <summary>
         /// The access token extra claims key.
         /// </summary>
         private const string AccessTokenClaimsKey = "claims";
@@ -181,6 +186,10 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
             if (context.Request.Headers.Contains(UserAuthHeader))
             {
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, context.Request.Headers.GetValues(UserAuthHeader).First()));
+            }
+            if (context.Request.Headers.Contains(DeviceHeader)) 
+            {
+                claims.Add(new Claim(AppvaClaimTypes.Device, context.Request.Headers.GetValues(DeviceHeader).First()));
             }
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, principal.Identity.AuthenticationType));
             Thread.CurrentPrincipal = claimsPrincipal;

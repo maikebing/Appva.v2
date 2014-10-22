@@ -33,7 +33,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 PersonalIdentityNumber = patient.UniqueIdentifier,
                 HasIncompleteTasks = hasIncompleteTask,
                 Profiles = TaxonTransformer.ToProfile(patient.SeniorAlerts),
-                OrganisationTaxon = TaxonTransformer.ToTaxon(patient.Taxon, false) //// FIXME: Should not be static false and have patientcount
+                OrganisationTaxon = TaxonTransformer.ToTaxon(patient.Taxon, false, string.Empty) //// FIXME: Should not be static false and have patientcount
             };
         }
 

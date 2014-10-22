@@ -8,6 +8,7 @@ namespace Appva.Mcss.ResourceServer
 
     using System.Web;
     using System.Web.Http;
+    using HibernatingRhinos.Profiler.Appender.NHibernate;
 
     #endregion
 
@@ -19,6 +20,7 @@ namespace Appva.Mcss.ResourceServer
         /// <inheritdoc />
         protected void Application_Start()
         {
+            NHibernateProfiler.Initialize();
             AutoFacConfig.Configure();
             GlobalConfiguration.Configure(WebApiConfig.Configure);
         }

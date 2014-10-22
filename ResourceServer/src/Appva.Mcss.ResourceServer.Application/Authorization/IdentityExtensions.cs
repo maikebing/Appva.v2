@@ -34,6 +34,18 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         }
 
         /// <summary>
+        /// Returns the device id
+        /// </summary>
+        /// <param name="identity">The <see cref="IIdentity"/></param>
+        /// <returns>The device id</returns>
+        public static object Device(this IIdentity identity)
+        {
+            var claimsIdentitiy = identity as ClaimsIdentity;
+            var device = claimsIdentitiy.Claims.Where(x => x.Type == AppvaClaimTypes.Device ).SingleOrDefault();
+            return new Guid(device.Value);
+        }
+
+        /// <summary>
         /// Returns the tenant id.
         /// </summary>
         /// <param name="identity">The <see cref="IIdentity"/></param>

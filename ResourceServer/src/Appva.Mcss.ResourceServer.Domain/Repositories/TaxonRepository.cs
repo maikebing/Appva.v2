@@ -32,7 +32,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         /// <param name="count">TODO: count</param>
         /// <param name="cursor">TODO: cursor</param>
         /// <returns>A collection of <see cref="Taxon"/></returns>
-        IList<Taxon> Search(string query, bool? isRoot, List<string> taxonomy = null, int count = 200, int cursor = -1);
+        IList<Taxon> Search(string query, bool? isRoot, List<string> taxonomy = null, string filter = null, int count = 200, int cursor = -1);
 
         /// <summary>
         /// Returns children of a <see cref="Taxon"/>.
@@ -77,7 +77,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         #region ITaxonRepository Members.
 
         /// <inheritdoc />
-        public IList<Taxon> Search(string query, bool? isRoot, List<string> taxonomy = null, int count = 200, int cursor = -1)
+        public IList<Taxon> Search(string query, bool? isRoot, List<string> taxonomy = null, string filter = null, int count = 200, int cursor = -1)
         {
             var sqlQuery = Where(x => x.Active);
             if (taxonomy != null && taxonomy.Count > 0)
@@ -86,9 +86,21 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
                     .WhereRestrictionOn(t => t.MachineName)
                     .IsIn(taxonomy);
             }
+            if (filter.IsNotNull())
+            {
+                sqlQuery.Where(x => x.Path.IsLike(filter, MatchMode.Anywhere));
+            }
             if (isRoot.HasValue)
             {
-                sqlQuery.Where(x => x.IsRoot == isRoot);
+                if (filter.IsNotNull())
+                {
+                    sqlQuery.Where(x => x.IsRoot == isRoot || x.Id == new Guid(filter));
+                }
+                else
+                {
+                    sqlQuery.Where(x => x.IsRoot == isRoot);
+                }
+                
             }
             if (query.IsNotEmpty())
             {

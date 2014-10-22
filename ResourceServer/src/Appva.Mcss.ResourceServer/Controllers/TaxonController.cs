@@ -15,6 +15,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.ResourceServer.Application.Authorization;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Transformers;
+    using Appva.Mcss.ResourceServer.Domain.Services;
 
     #endregion
 
@@ -31,6 +32,16 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// </summary>
         private readonly ITaxonRepository taxonRepository;
 
+        /// <summary>
+        /// The <see cref="IDeviceService"/>.
+        /// </summary>
+        private readonly IDeviceService deviceService;
+
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingService;
+
         #endregion
 
         #region Constructor.
@@ -39,9 +50,16 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// Initializes a new instance of the <see cref="TaxonController"/> class.
         /// </summary>
         /// <param name="taxonRepository">The <see cref="ITaxonRepository"/></param>
-        public TaxonController(ITaxonRepository taxonRepository)
+        /// <param name="deviceService">The <see cref="IDeviceService"/></param>
+        /// <param name="settingService">The <see cref="ISettingsService"/></param>
+        public TaxonController(
+            ITaxonRepository taxonRepository,
+            IDeviceService deviceService,
+            ISettingsService settingService)
         {
             this.taxonRepository = taxonRepository;
+            this.deviceService = deviceService;
+            this.settingService = settingService;
         }
 
         #endregion
@@ -62,9 +80,10 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.NotFound();
             }
+            var taxonFilter = this.deviceService.GetDeviceOrganisationRootId((Guid)this.User.Identity.Device());
             var parents = this.taxonRepository.GetParents(new List<Taxon> { taxon });
             var patients = this.taxonRepository.CountPatients(new List<Taxon> { taxon });
-            return this.Ok(TaxonTransformer.ToTaxon(taxon, parents.Contains(taxon.Id), patients.ContainsKey(taxon.Id) ? patients[taxon.Id] : 0 ));
+            return this.Ok(TaxonTransformer.ToTaxon(taxon, parents.Contains(taxon.Id), taxonFilter, patients.ContainsKey(taxon.Id) ? patients[taxon.Id] : 0));
         }
 
         /// <summary>
@@ -79,10 +98,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
         public IHttpActionResult List([FromUri] List<string> type_ids, [FromUri] int count = 200, [FromUri] int cursor = -1)
         {
             var types = type_ids != null ? TaxonTransformer.FromTypeToTaxonomy(type_ids) : null;
-            var taxons = this.taxonRepository.Search(string.Empty, null, types, count, cursor);
+            var taxonFilter = this.deviceService.GetDeviceOrganisationRootId((Guid)this.User.Identity.Device());
+            var taxons = this.taxonRepository.Search(string.Empty, null, types, taxonFilter, count, cursor);
             var parents = this.taxonRepository.GetParents(taxons);
             var patients = this.taxonRepository.CountPatients(taxons);
-            return this.Ok(TaxonTransformer.ToTaxon(taxons, parents, patients));
+            return this.Ok(TaxonTransformer.ToTaxon(taxons, parents, patients, taxonFilter));
         }
 
         /// <summary>
@@ -97,10 +117,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
         public IHttpActionResult Search([FromUri] List<string> type_ids, [FromUri] bool? is_root = null, [FromUri] string query = null)
         {
             var types = type_ids != null ? TaxonTransformer.FromTypeToTaxonomy(type_ids) : null;
-            var taxons = this.taxonRepository.Search(query, is_root, types);
+            var taxonFilter = this.deviceService.GetDeviceOrganisationRootId((Guid)this.User.Identity.Device());
+            var taxons = this.taxonRepository.Search(query, is_root, types, taxonFilter);
             var parents = this.taxonRepository.GetParents(taxons);
             var patients = this.taxonRepository.CountPatients(taxons);
-            return this.Ok(TaxonTransformer.ToTaxon(taxons, parents, patients));
+            return this.Ok(TaxonTransformer.ToTaxon(taxons, parents, patients, taxonFilter));
         }
 
         /// <summary>
@@ -113,10 +134,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
         [HttpGet, Route("{id:guid}/children")]
         public IHttpActionResult Children(Guid id, [FromUri] List<string> status_ids)
         {
+            var taxonFilter = this.deviceService.GetDeviceOrganisationRootId((Guid)this.User.Identity.Device());
             var taxons = this.taxonRepository.GetChildren(id);
             var parents = this.taxonRepository.GetParents(taxons);
             var patients = this.taxonRepository.CountPatients(taxons);
-            return this.Ok(TaxonTransformer.ToTaxon(taxons, parents, patients));
+            return this.Ok(TaxonTransformer.ToTaxon(taxons, parents, patients, taxonFilter));
         }
 
         /// <summary>
@@ -128,8 +150,13 @@ namespace Appva.Mcss.ResourceServer.Controllers
         [HttpGet, Route("{id:guid}/parent")]
         public IHttpActionResult Parent(Guid id)
         {
+            var taxonFilter = this.deviceService.GetDeviceOrganisationRootId((Guid)this.User.Identity.Device());
+            if(id.Equals(new Guid(taxonFilter)))
+            {
+                return NotFound();
+            }
             var taxon = this.taxonRepository.Get(id);
-            return this.Ok(TaxonTransformer.ToTaxon(taxon.Parent, true));
+            return this.Ok(TaxonTransformer.ToTaxon(taxon.Parent, true, taxonFilter));
         }
 
         #endregion

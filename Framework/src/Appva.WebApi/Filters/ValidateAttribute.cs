@@ -30,7 +30,7 @@ namespace Appva.WebApi.Filters
     /// semantically erroneous, XML instructions.
     /// <link>https://tools.ietf.org/html/rfc4918</link>
     /// </summary>
-    public sealed class ValidateAttribute : ActionFilterAttribute
+    public sealed class ValidateAttribute : ActionFilterAttribute, IOrderedFilter
     {
         #region Variables.
 
@@ -57,6 +57,18 @@ namespace Appva.WebApi.Filters
         public ValidateAttribute(HttpMethod httpMethod)
         {
             this.httpMethod = httpMethod;
+            this.Order = 100;
+        }
+
+        #endregion
+
+        #region IOrderedFilter Members
+
+        /// <inheritdoc />
+        public int Order
+        {
+            get;
+            set;
         }
 
         #endregion

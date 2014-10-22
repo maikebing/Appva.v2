@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="ETag.cs" />
     <Compile Include="Extensions\ApiControllerExtensions.cs" />
+    <Compile Include="Filters\IOrderedFilter.cs" />
+    <Compile Include="Filters\OrderedFilterProvider.cs" />
     <Compile Include="Filters\ValidateAttribute.cs" />
     <Compile Include="Formatters\LowerCaseUnderScoreContractResolver.cs" />
     <Compile Include="Handlers\CultureHandler.cs" />

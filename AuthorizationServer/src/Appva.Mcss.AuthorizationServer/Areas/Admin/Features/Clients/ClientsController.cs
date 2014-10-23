@@ -151,7 +151,7 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
 
         #endregion
 
-        #region Scopes.
+        #region Scopes. 
 
         /// <summary>
         /// The application scopes child action for details page.

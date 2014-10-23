@@ -265,16 +265,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Content\Content.css" />
-    <Content Include="Areas\Admin\Content\css\font-awesome.css" />
-    <Content Include="Areas\Admin\Content\css\font-awesome.min.css" />
     <Content Include="Areas\Admin\Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Areas\Admin\Content\logo-sm.png" />
-    <Content Include="Areas\Admin\Content\oauth-admin.css" />
-    <Content Include="Areas\Admin\Content\oauth-admin.min.css">
-      <DependentUpon>oauth-admin.css</DependentUpon>
-    </Content>
-    <Content Include="Areas\Admin\Content\SignIn.css" />
+    <Content Include="Areas\Admin\Content\css\oauth-admin.css" />
     <Content Include="Content\images\logo-sm.png" />
     <Content Include="Content\css\oauth-errors.css" />
     <Content Include="Global.asax" />
@@ -450,9 +443,6 @@
     <Content Include="Features\Home\Index\Index.cshtml" />
     <Content Include="Areas\Admin\Features\Clients\List\List.cshtml" />
     <Content Include="Areas\Admin\Features\Shared\EditorTemplates\Tickable.cshtml" />
-    <Content Include="Areas\Admin\Content\oauth-admin.css.map">
-      <DependentUpon>oauth-admin.css</DependentUpon>
-    </Content>
     <Content Include="Features\Error\InternalServerError\InternalServerError.cshtml" />
     <Content Include="Features\Error\NotFound\NotFound.cshtml" />
     <Content Include="Features\Shared\Errors.cshtml" />

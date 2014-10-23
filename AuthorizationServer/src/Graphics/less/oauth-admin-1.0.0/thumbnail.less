@@ -1,0 +1,138 @@
+/*!
+ * Thumbnail.less
+ * Copyright (c) 2014 Appva AB. All rights reserved.
+ */
+ 
+/**
+ * Variants of an icon.
+ * @param color
+ * @param background-color
+ * @param border-color
+ */
+.thumbnail-icon-variant(@color, @background-color, @border-color)
+{
+    color: @color;
+    background-color: @background-color;
+    border-color: @border-color;
+}
+
+/**
+ * Variants of an icon size.
+ * @param width-height
+ * @param padding-top-bottom
+ * @param font-size
+ */
+.thumbnail-icon-size(@width-height, @padding-top-bottom, @font-size) {
+    width: @width-height;
+    height: @width-height;
+    font-size: @font-size;
+    border-radius: @width-height;
+    padding: @padding-top-bottom;
+}
+
+/**
+ * The base icon.
+ */
+.thumbnail-icon
+{
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    background-image: none;
+    background-color: transparent;
+    border-color: transparent;
+    border-style: solid;
+    line-height: 1;
+}
+
+/* Small icon 20px */
+.thumbnail-icon-sm
+{
+    .thumbnail-icon-size(25px, 3px, 14px);
+}
+
+/* Medium icon 50px */
+.thumbnail-icon-md
+{
+    .thumbnail-icon-size(50px, 10px, 25px);
+}
+
+/* Medium icon 150px */
+.thumbnail-icon-lg
+{
+    .thumbnail-icon-size(150px, 20px, 80px);
+    border-width: 10px;
+}
+
+/* Default color */
+.thumbnail-icon-default
+{
+    .thumbnail-icon-variant(@btn-default-color, @btn-default-bg, @btn-default-border);
+}
+
+/* Primary color */
+.thumbnail-icon-primary
+{
+    .thumbnail-icon-variant(@btn-primary-color, @btn-primary-bg, @btn-primary-border);
+}
+
+/* Success color */
+.thumbnail-icon-success
+{
+    .thumbnail-icon-variant(@btn-success-color, @btn-success-bg, @btn-success-border);
+}
+
+/* Info color */
+.thumbnail-icon-info
+{
+    .thumbnail-icon-variant(@btn-info-color, @btn-info-bg, @btn-info-border);
+}
+
+/* Warning color */
+.thumbnail-icon-warning
+{
+    .thumbnail-icon-variant(@btn-warning-color, @btn-warning-bg, @btn-warning-border);
+}
+
+/* Danger color */
+.thumbnail-icon-danger
+{
+    .thumbnail-icon-variant(@btn-danger-color, @btn-danger-bg, @btn-danger-border);
+}
+
+/* Default color with border and bg inverted */
+.thumbnail-icon-default-inverted
+{
+    .thumbnail-icon-variant(@btn-default-color, @btn-default-border, @btn-default-bg);
+}
+
+/* Primary color with border and bg inverted */
+.thumbnail-icon-primary-inverted
+{
+    .thumbnail-icon-variant(@btn-primary-color, @btn-primary-border, @btn-primary-bg);
+}
+
+/* Success color with border and bg inverted */
+.thumbnail-icon-success-inverted
+{
+    .thumbnail-icon-variant(@btn-success-color, @btn-success-border, @btn-success-bg);
+}
+
+/* Info color with border and bg inverted */
+.thumbnail-icon-info-inverted
+{
+    .thumbnail-icon-variant(@btn-info-color, @btn-info-border, @btn-info-bg);
+}
+
+/* Warning color with border and bg inverted */
+.thumbnail-icon-warning-inverted
+{
+    .thumbnail-icon-variant(@btn-warning-color, @btn-warning-border, @btn-warning-bg);
+}
+
+/* Danger color with border and bg inverted */
+.thumbnail-icon-danger-inverted
+{
+    .thumbnail-icon-variant(@btn-danger-color, @btn-danger-border, @btn-danger-bg);
+}

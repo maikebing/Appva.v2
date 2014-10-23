@@ -1,0 +1,117 @@
+/*!
+ * Modals.less
+ * Copyright (c) 2014 Appva AB. All rights reserved.
+ */
+
+.modal-dialog
+{
+  @animation-duration: .8s;
+  -webkit-animation-duration: @animation-duration;
+  -moz-animation-duration: @animation-duration;
+  -ms-animation-duration: @animation-duration;
+  animation-duration: @animation-duration;
+}
+
+.modal-content
+{
+  border: none;
+  border-radius: @border-radius-base;
+  .box-shadow(0 1px 3px rgba(0, 0, 0, .1));
+  .clearfix();
+}
+
+.modal-header
+{
+  background: lighten(#eee, 4%);
+  padding: 12px 20px;
+  .border-top-radius(@border-radius-base);
+}
+
+.modal-dialog .close
+{
+  color: @text-color;
+  font-size: 20px;
+  margin-top: 3px;
+  &.fa-times
+  {
+    font-size: 15px;
+    margin-top: 2px;
+  }
+}
+
+.modal-footer
+{
+  padding: 12px 20px;
+  margin-top: 0;
+  background: #fff;
+  .border-bottom-radius(@border-radius-base);
+}
+
+/* Tablets */
+@media (min-width: @screen-small)
+{
+  .modal-alert
+  {
+    .modal-dialog
+    {
+      width: 350px;
+    }
+  }
+}
+
+.modal-alert
+{
+  .modal-header,
+  .modal-title,
+  .modal-body,
+  .modal-footer
+  {
+    background:none;
+    border: none;
+    margin: 0;
+    padding: 0 20px;
+    text-align: center !important;
+  }
+  .modal-header
+  {
+    color: #fff;
+    margin-bottom: 20px;
+    padding: 25px 0 18px 0;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .15);
+    border-bottom: 4px solid rgba(0, 0, 0, .08);
+    .fa
+    {
+      font-size: 90px;
+    }
+  }
+  .modal-title
+  {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .modal-body
+  {
+    color: #888;
+  }
+  .modal-footer
+  {
+    margin: 25px 0 20px 0;
+  }
+  &.modal-info .modal-header
+  {
+    background: @info-color;
+  }
+  &.modal-danger .modal-header
+  {
+    background: @danger-color;
+  }
+  &.modal-warning .modal-header
+  {
+    background: @warning-color;
+  }
+  &.modal-success .modal-header
+  {
+    background: @success-color;
+  }
+}

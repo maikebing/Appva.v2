@@ -1,0 +1,16 @@
+﻿@model Install
+@{
+    Layout = "";
+    Title("Install");
+}
+@if (! Model.IsInstalled)
+{ 
+    using (Html.Post())
+    {
+        @Html.Submit("Install", new { @class = "btn-primary btn-lg" })
+    }
+}
+else
+{
+    <h1>Installed!</h1>
+}

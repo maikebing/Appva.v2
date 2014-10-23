@@ -1,0 +1,35 @@
+﻿@model CreateUser
+@{
+    Title("Create new user");
+}
+<div class="page-title">
+    <span class="text-semibold">Create New</span> User
+</div>
+@using (Html.PostWithAttachment())
+{
+    @Html.ValidationAlert("Validation errors occured", "Please correct the errors in the form")
+    <div class="row">
+        <div class="col-md-9">
+            @Html.FormGroup(x => x.PersonalIdentityNumber).AsteriskLabel("User Personal Identity Number").TextBox().Validate().Help("A unique identification number").Build()
+            @Html.FormGroup(x => x.FirstName).AsteriskLabel("User first name").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.LastName).AsteriskLabel("User last name").TextBox().Validate().Build()
+        </div>
+        <div class="col-md-3">
+            @Html.Hr(new { @class = "page-hr no-grid-gutter-h" })
+            <div class="profile-block">
+                <div class="panel profile-avatar">
+                    @Html.Thumbnail(new { @class = "thumbnail-icon-info thumbnail-icon-lg thumbnail-icon-lg-border" }, new { @class = "fa-user" })
+                </div>
+                @Html.Br()
+                @Html.File(x => x.ProfileImage, "Browse ...", new { @class = "btn-primary" })
+            </div>
+        </div>
+    </div>
+    @Html.Hr()
+    @Html.FormGroup(x => x.EmailAddress).AsteriskLabel("User E-mail address").TextBox().Validate().Build()
+    @Html.FormGroup(x => x.MobilePhoneNumber).Label("User mobile telephone number").TextBox("Optional").Validate().Help("Used for 2fa authentication instead of E-mail").Build()
+    @Html.Hr()
+    @Html.FormGroup(x => x.Roles).AsteriskLabel("User roles").CheckboxList().Validate().Build()
+    @Html.Hr(new { @class = "no-grid-gutter-h" })
+    @Html.Submit("Create new user", new { @class = "btn-primary btn-lg" })
+}

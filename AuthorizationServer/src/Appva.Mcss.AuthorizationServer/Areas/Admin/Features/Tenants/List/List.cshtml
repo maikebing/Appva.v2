@@ -1,0 +1,42 @@
+﻿@model Pageable<ListTenants>
+@{
+    Title("Tenants");
+}
+<div class="page-title">
+    <span class="text-semibold">Tenant</span> search results
+</div>
+<div class="search-text">
+    <strong>@Model.Items.Count</strong> results found for: <span class="text-primary">@Model.SearchQuery</span>
+</div>
+<div class="search-panel">
+    @using (Html.Get(new { @class = "search-form bg-primary" }))
+    {
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon no-background"><i class="fa fa-search"></i></span>
+            @Html.TextBoxFor(x => x.SearchQuery, new { @class = "form-control", @placeholder = "Type your search here..." })
+            <span class="input-group-btn">
+                @Html.Submit("Search")
+            </span>
+        </div>
+    }
+    @if (Model.Items.IsNotEmpty())
+    {
+        <table class="table panel">
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td class="avatar avatar-35">@Html.Logotype(x => item.Logotype, new { @class = "thumbnail-icon-info thumbnail-icon-sm" }, new { @class = "fa-cloud-upload" })</td>
+                    <td class="avatar-content single">
+                        <div class="action btn-group">
+                            <a href="@Url.Action("Details", new { Id = item.Id, Slug = item.Slug })" class="btn btn-primary unrounded"><i class="fa fa-arrow-circle-o-right"></i></a>
+                            <a href="@Url.Action("Update",  new { Id = item.Id })" class="btn btn-info unrounded"><i class="fa fa-pencil"></i></a>
+                            <a href="@Url.Action("Delete",  new { Id = item.Id })" class="btn btn-danger unrounded"><i class="fa fa-close"></i></a>
+                        </div>
+                        <p class="header">@item.Name</p>
+                        <p class="description">@item.Description</p>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</div>

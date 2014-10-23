@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        @Html.Partial("Meta")
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/Areas/Admin/Content/Content.css")">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/Areas/Admin/Content/SignIn.css")">
+    </head>
+    <body>
+        <div class="signin-container">
+            <div class="signin-info">
+                <a href="index.html" class="logo">
+                    <img src="assets/demo/logo-big.png" alt="" style="margin-top: -5px;">&nbsp;
+                    OAuth Server
+                </a>
+                <div class="slogan">
+                    Easy access :D
+                </div>
+            </div>
+            <div class="signin-form">
+                @RenderBody()
+                <div class="signin-with">
+                    <a href="index.html" class="signin-with-btn" style="background:#4f6faa;background:rgba(79, 111, 170, .8);">Sign In with <span>Facebook</span></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

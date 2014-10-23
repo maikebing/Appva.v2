@@ -1,0 +1,47 @@
+﻿@using Appva.Mcss.AuthorizationServer.Domain.Services
+@model IEnumerable<IMenuNode>
+@if (Model != null && Model.Count() > 0)
+{
+    <ul class="navigation">@MenuList(Model, true)</ul>
+}
+@helper MenuList(IEnumerable<IMenuNode> items, bool isRoot)
+{
+    foreach (var item in items)
+    {
+        var classes = new List<string>();
+        var isDropDown = (item.Children != null && item.Children.Count() > 0);
+        var isSelected = (item.IsSelected);
+        if (isDropDown && isSelected)
+        {
+            classes.Add("open");
+        }
+        if (isSelected)
+        {
+            classes.Add("active");
+        }
+        if (isDropDown)
+        {
+            classes.Add("mm-dropdown");
+        }
+        if (isDropDown && isRoot)
+        {
+            classes.Add("mm-dropdown-root");
+        }
+        var classesForElement = (classes.Count > 0) ? string.Join(" ", classes.ToArray()) : string.Empty;
+        <li class="@classesForElement">
+            <a href="@item.Url">
+                @if (! string.IsNullOrEmpty(item.CssClass))
+                {
+                    <i class="menu-icon fa @item.CssClass"></i>
+                }
+                <span class="mm-text">@item.Label</span>
+            </a>
+            @if (isDropDown)
+            {
+                <ul>
+                    @MenuList(item.Children, false)
+                </ul>
+            }
+        </li>
+    }
+}

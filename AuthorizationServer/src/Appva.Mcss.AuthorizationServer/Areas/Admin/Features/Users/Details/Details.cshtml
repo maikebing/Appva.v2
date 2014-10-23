@@ -1,0 +1,83 @@
+﻿@model DetailsUser
+@{
+    Title("Test");
+}
+<div class="profile">
+    <div class="profile-title">
+        <span class="text-semibold">@Model.FirstName</span> @Model.LastName's profile 
+        <span class="label label-info">Active</span>
+    </div>
+    <div class="profile-bar panel clearfix">
+        <ul class="nav navbar-nav pull-right right-navbar-nav">
+            <li class="tab">
+                <span class="title">Created</span>
+                <span class="fa fa-clock-o"></span> @Model.Resource.CreatedAt.ToShortDateString()
+            </li>
+            <li class="tab">
+                <span class="title">Last updated</span>
+                <span class="fa fa-clock-o"></span> @Model.Resource.UpdatedAt.ToShortDateString()
+            </li>
+            <li>
+                <a href="#" class="btn">
+                    <span class="thumbnail-25"><span class="fa fa-history"></span></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    @Html.Alert()
+    <div class="profile-row">
+        <div class="left-col">
+            <div class="profile-block">
+                <div class="panel profile-thumbnail">
+                    @Html.ProfilePicture(x => x.ProfilePicture, new { @class = "thumbnail-icon-info thumbnail-icon-lg thumbnail-icon-lg-border" }, new { @class = "fa-user" })
+                </div>
+                <br />
+                <div class="btn-group">
+                    <a href="@Url.Action("Update", new { Id = Model.Id })" class="btn btn-info unrounded"><i class="fa fa-pencil"></i></a>
+                    <a href="@Url.Action("Delete", new { Id = Model.Id })" class="btn btn-danger unrounded"><i class="fa fa-close"></i></a>
+                </div>
+            </div>
+            @Html.Action("DetailsUserRoles", new { id = Model.Id })
+        </div>
+        <div class="right-col">
+            <hr class="page-hr no-grid-gutter-h" />
+            <div class="content">
+                <table class="table">
+                    <tr>
+                        <td>Personal Identity Number</td>
+                        <td>@Model.PersonalIdentityNumber</td>
+                    </tr>
+                    <tr>
+                        <td>First name</td>
+                        <td>@Model.FullName</td>
+                    </tr>
+                    <tr>
+                        <td>E-mail address</td>
+                        <td>@Model.EmailAddress</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile telephone number</td>
+                        <td>@Model.MobilePhoneNumber</td>
+                    </tr>
+                </table>
+                @Html.Action("DetailsUserAuthentications", new { id = Model.Id })
+                <table class="table">
+                    <tr>
+                        <td class="avatar avatar-35"></td>
+                        <td class="avatar-content">
+                            <p class="header">Tenant</p>
+                            <p class="description">Somthing</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="avatar avatar-35"></td>
+                        <td class="avatar-content">
+                            <p class="header">Tenant</p>
+                            <p class="description">Something</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

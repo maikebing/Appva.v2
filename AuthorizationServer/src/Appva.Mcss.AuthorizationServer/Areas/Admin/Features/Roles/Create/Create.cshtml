@@ -1,0 +1,18 @@
+﻿@model CreateRole
+@{
+    Title("Create New Role");
+}
+<div class="page-title">
+    <span class="text-semibold">Create new</span> Role
+</div>
+@using (Html.Post())
+{
+    @Html.ValidationAlert("Validation errors occured", "Please correct the errors in the form")
+    @Html.FormGroup(x => x.Key).AsteriskLabel("Role key").TextBox().Validate().Help("A key to uniquely identify a role").Build()
+    @Html.FormGroup(x => x.Name).AsteriskLabel("Role name").TextBox().Validate().Help("Something users will recognize and trust").Build()
+    @Html.FormGroup(x => x.Description).AsteriskLabel("Role description").TextArea("Optional").Validate().Help("This is displayed to all potential users of your application").Build()
+    @Html.Hr()
+    @Html.FormGroup(x => x.Permissions).AsteriskLabel("Permissions").CheckboxList().Validate().Build()
+    @Html.Hr(new { @class = "no-grid-gutter-h" })
+    @Html.Submit("Create new role", new { @class = "btn-primary btn-lg" })
+}

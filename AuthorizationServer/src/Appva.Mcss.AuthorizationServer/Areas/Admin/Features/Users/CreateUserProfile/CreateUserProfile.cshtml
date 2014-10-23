@@ -1,0 +1,19 @@
+﻿@model CreateUserProfile
+@{
+    Title("Create new user");
+}
+<div class="page-title">
+    <span class="text-semibold">Create New</span> User
+</div>
+@using (Html.Post())
+{
+    @Html.ValidationAlert("Validation errors occured", "Please correct the errors in the form")
+    @Html.FormGroup(x => x.PersonalIdentityNumber).AsteriskLabel("User Personal Identity Number").TextBox().Validate().Help("A unique identification number").Build()
+    @Html.FormGroup(x => x.FirstName).AsteriskLabel("User first name").TextBox().Validate().Build()
+    @Html.FormGroup(x => x.LastName).AsteriskLabel("User last name").TextBox().Validate().Build()
+    @Html.Hr()
+    @Html.FormGroup(x => x.EmailAddress).AsteriskLabel("User E-mail address").TextBox().Validate().Build()
+    @Html.FormGroup(x => x.MobilePhoneNumber).Label("User mobile telephone number").TextBox("Optional").Validate().Help("Used for 2T authentication instead of E-mail").Build()    
+    @Html.Hr()
+    @Html.Submit("Create new user", new { @class = "btn-primary btn-lg" })
+}

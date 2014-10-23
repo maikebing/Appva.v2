@@ -1,0 +1,21 @@
+﻿@model IList<DetailsUserAuthentication>
+@if (Model.IsNotEmpty())
+{
+    <table class="table panel unrounded">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <p class="header">@item.Key</p>
+                    <p class="description">@item.Name</p>
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a href="@Url.Action("Update", new { Id = item.Key })" class="btn btn-info unrounded"><i class="fa fa-pencil"></i></a>
+                        <a href="@Url.Action("Delete", new { Id = item.Key })" class="btn btn-danger unrounded"><i class="fa fa-close"></i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+}

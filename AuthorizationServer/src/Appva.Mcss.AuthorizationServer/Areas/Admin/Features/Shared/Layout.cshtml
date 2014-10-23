@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if IE 9]><html class="ie9 gt-ie8"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="gt-ie8 gt-ie9 not-ie">
+<!--<![endif]-->
+<head>
+    <title>@Title() - OAuth Server</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="Content-Language" content="@UICulture" />
+    @RenderMeta()
+    <!--
+    <link rel="fluid-icon" href="" title="Authorization Server" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-114.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-144.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144.png" />
+    -->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Areas/Admin/Content/oauth-admin.css")" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js"></script>
+</head>
+<body class="theme-default">
+    <div id="main-wrapper">
+        <div id="main-navbar" class="navbar" role="navigation">
+            <button type="button" id="main-menu-toggle">
+                <i class="navbar-icon fa fa-bars icon"></i>
+            </button>
+            <div class="navbar-inner">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand">
+                        <img src="@Url.Content("~/Areas/Admin/Content/logo-sm.png")" />
+                        <span>&nbsp</span>
+                    </a>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse">
+                        <i class="navbar-icon fa fa-bars"></i>
+                    </button>
+                </div>
+                <div id="main-navbar-collapse" class="collapse navbar-collapse main-navbar-collapse">
+                    <div>
+                        <div class="right clearfix">
+                            <ul class="nav navbar-nav pull-right right-navbar-nav">
+                                @Html.Partial("UserInfo")
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="main-menu" role="navigation">
+            <div id="main-menu-inner">
+                @Html.Action("Render", "Menus", new { menuKey = "oauth_main_navigation", uri = Request.Url })
+            </div>
+        </div>
+        <div id="content-wrapper">
+            @RenderBody()
+        </div>
+        <div id="main-menu-bg"></div>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    @RenderSection("Scripts", required: false)
+    <script type="text/javascript">
+        $('#Avatar').change(function (event) {
+            $(".profile-avatar img").fadeIn("slow").attr('src', URL.createObjectURL(event.target.files[0]));
+        });
+    </script>
+</body>
+</html>

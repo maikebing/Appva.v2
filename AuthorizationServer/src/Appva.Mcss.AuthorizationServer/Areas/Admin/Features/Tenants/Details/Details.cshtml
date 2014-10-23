@@ -1,0 +1,85 @@
+﻿@model DetailsTenant
+@{
+    Title(Model.Name);
+}
+<div class="profile">
+    <div class="profile-title">
+        <span class="text-semibold">@Model.Name</span>'s profile
+        @Html.IsActive(x => x.IsActive)
+    </div>
+    <div class="profile-bar panel clearfix">
+        <ul class="nav navbar-nav pull-right right-navbar-nav">
+            <li class="tab">
+                <span class="title">Created</span>
+                <span class="fa fa-clock-o"></span> @Model.Resource.CreatedAt.ToShortDateString()
+            </li>
+            <li class="tab">
+                <span class="title">Last updated</span>
+                <span class="fa fa-clock-o"></span> @Model.Resource.UpdatedAt.ToShortDateString()
+            </li>
+            <li>
+                <a href="#" class="btn">
+                    <span class="thumbnail-25"><span class="fa fa-history"></span></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="profile-row">
+        <div class="left-col">
+            <div class="profile-block">
+                <div class="panel profile-thumbnail">
+                    @Html.Logotype(x => x.Logotype, new { @class = "thumbnail-icon-info thumbnail-icon-lg thumbnail-icon-lg-border" }, new { @class = "fa-cloud-upload" })
+                </div>
+                <br />
+                <div class="btn-group">
+                    <a href="@Url.Action("Update", new { Id = Model.Id })" class="btn btn-info unrounded"><i class="fa fa-pencil"></i></a>
+                    <a href="@Url.Action("Delete", new { Id = Model.Id })" class="btn btn-danger unrounded"><i class="fa fa-close"></i></a>
+                </div>
+            </div>
+            <div class="panel panel-transparent">
+                <div class="panel-heading">
+                    <span class="panel-title">Description</span>
+                </div>
+                <div class="panel-body">
+                    @Model.Description
+                </div>
+            </div>
+            <div class="panel panel-transparent">
+                <div class="panel-heading">
+                    <span class="panel-title">Tags</span>
+                </div>
+                <div class="panel-body">
+                    <span class="label label-primary">iPad</span>
+                    <span class="label label-primary">admin</span>
+                    <span class="label label-primary">test</span>
+                </div>
+            </div>
+        </div>
+        <div class="right-col">
+            <hr class="page-hr no-grid-gutter-h" />
+            <div class="content">
+                @Html.Alert()
+                <div class="panel unrounded">
+                    <table class="table">
+                        <tr>
+                            <td>Description</td>
+                            <td>@Html.IsSetFor(x => x.Description)</td>
+                        </tr>
+                        <tr>
+                            <td>Identifier</td>
+                            <td>@Html.IsSetFor(x => x.Identifier)</td>
+                        </tr>
+                        <tr>
+                            <td>Host name</td>
+                            <td>@Html.IsSetFor(x => x.HostName)</td>
+                        </tr>
+                        <tr>
+                            <td>ConnectionString</td>
+                            <td>@Html.IsSetFor(x => x.ConnectionString)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -84,7 +84,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         public IHttpActionResult Search([FromUri(Name = "taxon_id")] Guid? taxonId = null, [FromUri] string query = null, [FromUri] string status = null)
         {
             var taxon = this.deviceService.GetFilterTaxonIdForDevice((Guid)this.User.Identity.Device(), taxonId.GetValueOrDefault());
-            var patients = this.patientRepository.Search(query, taxonId.GetValueOrDefault(), status);
+            var patients = this.patientRepository.Search(query, taxon, status);
             var patientsWithDelayedTask = this.patientRepository.GetPatientsWithAlarm(patients);
             return this.Ok(PatientTransformer.ToPatient(patients, patientsWithDelayedTask));
         }
@@ -101,7 +101,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
         [HttpGet, Route("list")]
         public IHttpActionResult List([FromUri(Name = "taxon_id")] Guid? taxonId = null, [FromUri] string status = null, int count = 200, int page = 0)
         {
-            var patients = this.patientRepository.Search(string.Empty, taxonId.GetValueOrDefault(), status, count: count, page: page);
+            var taxon = this.deviceService.GetFilterTaxonIdForDevice((Guid)this.User.Identity.Device(), taxonId.GetValueOrDefault());
+            var patients = this.patientRepository.Search(string.Empty, taxon, status, count: count, page: page);
             var patientsWithDelayedTask = this.patientRepository.GetPatientsWithAlarm(patients);
             return this.Ok(PatientTransformer.ToPatient(patients, patientsWithDelayedTask));
         }

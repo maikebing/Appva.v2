@@ -9,6 +9,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
     using System;
     using Appva.Core.Extensions;
     using Appva.Mcss.Domain.Entities;
+    using Appva.Mcss.ResourceServer.Domain.Constants;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
 
     #endregion
@@ -83,7 +84,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         /// <inheritdoc />
         public string GetDeviceOrganisationRootId(Guid deviceId)
         {
-            if (this.settingsService.Get<bool>("MCSS.Security.Device.LockToOrgTaxon", false))
+            if (this.settingsService.Get<bool>(Settings.LockToOrgTaxon, false))
             {
                 if (deviceId.IsNotEmpty())
                 {
@@ -98,7 +99,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         /// <inheritdoc />
         public Guid GetFilterTaxonIdForDevice(Guid deviceId, Guid taxonId)
         {
-            if (this.settingsService.Get<bool>("MCSS.Security.Device.LockToOrgTaxon", false))
+            if (this.settingsService.Get<bool>(Settings.LockToOrgTaxon, false))
             {
                 if (deviceId.IsNotEmpty())
                 {

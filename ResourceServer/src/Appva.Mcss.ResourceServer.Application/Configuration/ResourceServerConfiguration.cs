@@ -56,5 +56,25 @@ namespace Appva.Mcss.ResourceServer.Application.Configuration
             get;
             set;
         }
+
+        /// <summary>
+        /// Account identity in debug without headers and
+        /// access token authorization
+        /// </summary>
+        public string AccountGuidForDebug
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Device id used in debug  without headers and
+        /// access token authorization
+        /// </summary>
+        public string DeviceGuidForDebug
+        {
+            get;
+            set;
+        }
     }
 }

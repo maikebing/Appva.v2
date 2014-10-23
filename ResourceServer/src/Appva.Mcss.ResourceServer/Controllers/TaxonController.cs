@@ -15,8 +15,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.ResourceServer.Application.Authorization;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Appva.Mcss.ResourceServer.Domain.Services;
-    using Transformers;
     using Common.Logging;
+    using Transformers;
 
     #endregion
 

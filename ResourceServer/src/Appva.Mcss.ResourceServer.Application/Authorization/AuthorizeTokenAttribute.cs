@@ -103,11 +103,23 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// <inheritdoc />
         public override void OnAuthorization(HttpActionContext actionContext)
         {
+            var request = actionContext.Request;
             if (Configuration.IsNotNull() && Configuration.SkipTokenAndScopeAuthorization)
             {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, Configuration.AccountGuidForDebug),
+                    new Claim(AppvaClaimTypes.Device, Configuration.DeviceGuidForDebug)
+                };
+                var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, "Anonymous"));
+                Thread.CurrentPrincipal = claimsPrincipal;
+                actionContext.RequestContext.Principal = claimsPrincipal;
+                if (HttpContext.Current.IsNotNull())
+                {
+                    HttpContext.Current.User = claimsPrincipal;
+                }
                 return;
             }
-            var request = actionContext.Request;
             try
             {
                 if (Configuration.IsNotNull() && Configuration.IsSslRequired)

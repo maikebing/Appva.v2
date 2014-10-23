@@ -32,18 +32,6 @@ namespace Appva.Mcss.ResourceServer.Application
     }
 
     /// <summary>
-    /// Available settings for the resource server.
-    /// </summary>
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
-    public static class Settings
-    {
-        /// <summary>
-        /// The history length.
-        /// </summary>
-        public const string AllowedHistorySize = "MCSS.Device.Security.HistoryLength";
-    }
-
-    /// <summary>
     /// Extra claim types for the resource server.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]

@@ -128,7 +128,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 //// TODO: Remove DEBUG code.
                 #if !DEBUG
-                return InternalServerError(new Exception(string.Format("UUID {0} is already enrolled.", device.Uuid)));
+                return this.InternalServerError(new Exception(string.Format("UUID {0} is already enrolled.", device.Uuid)));
                 #endif
             }
             var taxon = this.taxonRepository.Get(deviceModel.TaxonId);

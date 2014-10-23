@@ -80,11 +80,6 @@ namespace Appva.Mcss.AuthorizationServer
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
             var value = (bool) modelMetadata.Model;
-            /*var icon = new TagBuilder("i");
-            icon.AddCssClass("fa " + ((value) ? "fa-check" : "fa-exclamation-circle"));
-            var alert = new TagBuilder("span");
-            alert.AddCssClass("btn btn-" + ((value) ? "success" : "danger"));
-            alert.InnerHtml = icon + "&nbsp;&nbsp;" + ((value) ? "Active" : "Inactive");*/
             var alert = new TagBuilder("span");
             alert.AddCssClass("label label-" + ((value) ? "info" : "danger"));
             alert.InnerHtml = "&nbsp;&nbsp;" + ((value) ? "Active" : "Inactive");

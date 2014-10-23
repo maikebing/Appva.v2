@@ -273,7 +273,7 @@ namespace Appva.Mvc.Html.Extensions
             {
                 label.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
             }
-            label.InnerHtml = (string.IsNullOrEmpty(labelText) ? modelMetadata.DisplayName : labelText) + " <span class=\"asterisk\">*</span>";
+            label.InnerHtml = (string.IsNullOrEmpty(labelText) ? modelMetadata.DisplayName : labelText) + " <span class=\"required\">*</span>";
             return MvcHtmlString.Create(label.ToString());
         }
     }

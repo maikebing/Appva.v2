@@ -14,7 +14,7 @@
             @Html.FormGroup(x => x.Description).AsteriskLabel("Application description").TextArea("Application description is optional").Validate().Help("This is displayed to all potential users of your application").Build()
         </div>
         <div class="col-md-3">
-            @Html.Hr(new { @class = "page-hr no-grid-gutter-h" })
+            @Html.Hr(new { @class = "profile-content-hr no-grid-gutter-h" })
             <div class="profile-block">
                 <div class="panel profile-avatar">
                     @Html.Thumbnail(new { @class = "thumbnail-icon-info thumbnail-icon-lg thumbnail-icon-lg-border" }, new { @class = "fa-cog" })

@@ -82,7 +82,7 @@ namespace Appva.Mcss.AuthorizationServer
             var value = (bool) modelMetadata.Model;
             var alert = new TagBuilder("span");
             alert.AddCssClass("label label-" + ((value) ? "info" : "danger"));
-            alert.InnerHtml = "&nbsp;&nbsp;" + ((value) ? "Active" : "Inactive");
+            alert.SetInnerText((value) ? "Active" : "Inactive");
             return MvcHtmlString.Create(alert.ToString());
         }
 

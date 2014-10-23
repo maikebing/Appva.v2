@@ -56,29 +56,27 @@
             </div>
         </div>
         <div class="right-col">
-            <hr class="page-hr no-grid-gutter-h" />
+            <hr class="profile-content-hr no-grid-gutter-h" />
             <div class="content">
                 @Html.Alert()
-                <div class="panel unrounded">
-                    <table class="table">
-                        <tr>
-                            <td>Description</td>
-                            <td>@Html.IsSetFor(x => x.Description)</td>
-                        </tr>
-                        <tr>
-                            <td>Identifier</td>
-                            <td>@Html.IsSetFor(x => x.Identifier)</td>
-                        </tr>
-                        <tr>
-                            <td>Host name</td>
-                            <td>@Html.IsSetFor(x => x.HostName)</td>
-                        </tr>
-                        <tr>
-                            <td>ConnectionString</td>
-                            <td>@Html.IsSetFor(x => x.ConnectionString)</td>
-                        </tr>
-                    </table>
-                </div>
+                <table class="table panel">
+                    <tr>
+                        <td>Description</td>
+                        <td>@Html.IsSetFor(x => x.Description)</td>
+                    </tr>
+                    <tr>
+                        <td>Identifier</td>
+                        <td>@Html.IsSetFor(x => x.Identifier)</td>
+                    </tr>
+                    <tr>
+                        <td>Host name</td>
+                        <td>@Html.IsSetFor(x => x.HostName)</td>
+                    </tr>
+                    <tr>
+                        <td>ConnectionString</td>
+                        <td>@Html.IsSetFor(x => x.ConnectionString)</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

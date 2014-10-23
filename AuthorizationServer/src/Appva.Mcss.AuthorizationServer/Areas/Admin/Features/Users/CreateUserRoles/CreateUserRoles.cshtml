@@ -1,0 +1,12 @@
+﻿@model CreateUserRoles
+@{
+    Title("");
+}
+<div class="page-title">
+    <span class="text-semibold">Create New</span> User
+</div>
+@using (Html.Post())
+{
+    @Html.ValidationAlert("Validation errors occured", "Please correct the errors in the form")
+    @Html.FormGroup(x => x.Roles).AsteriskLabel("User Roles").CheckboxList().Validate().Help("The user roles").Build()
+}

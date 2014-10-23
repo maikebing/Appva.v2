@@ -1,0 +1,16 @@
+﻿@model Upgrade
+@{
+    Layout = "";
+    Title("Upgrade");
+}
+@if (! Model.IsUpgraded)
+{ 
+    using (Html.Post())
+    {
+        @Html.Submit("Upgrade", new { @class = "btn-primary btn-lg" })
+    }
+}
+else
+{
+    <h1>Upgraded!</h1>
+}

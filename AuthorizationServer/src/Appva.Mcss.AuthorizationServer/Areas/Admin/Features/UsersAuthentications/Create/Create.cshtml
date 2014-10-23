@@ -1,0 +1,26 @@
+﻿@model CreateUserAuthentication
+@{
+    Title("Create user authentication");
+}
+<div class="page-title">
+    <span class="text-semibold">Create New</span> User Authentication
+</div>
+@using (Html.Post(new { Id = Model.Id }, new { @class = "form" }))
+{
+    @Html.ValidationAlert("Validation errors occured", "Please correct the errors in the form", new { @class = "unrounded" })
+    @Html.HiddenFor(x => x.Id)
+    <div class="form-group">
+        @Html.LabelWithAsteriskFor(x => x.Password, "Password")
+        @Html.TextBoxFor(x => x.Password, new { @autofocus = "autofocus", @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Password)
+        @Html.Help("A unique identification number")
+    </div>
+    <div class="form-group">
+        @Html.LabelWithAsteriskFor(x => x.AuthenticationMethodKey, "Authentication method")
+        @Html.DropDownListFor(x => x.AuthenticationMethodKey, Model.AuthenticationMethods, new { @class = "form-control" })
+    </div>
+    <hr />
+    <div class="submit">
+        @Html.Submit("Register application", new { @class = "btn-primary" })
+    </div>
+}

@@ -1,0 +1,16 @@
+﻿@model IList<ClientTenant>
+@if (Model.IsNotEmpty())
+{
+    <table class="table panel unrounded">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.Logotype(x => item.Logotype, new { @class = "thumbnail-icon-info thumbnail-icon-sm" }, new { @class = "fa-cloud-upload" })
+                    <p class="header">@item.Name</p>
+                    <p class="description">@item.Description</p>
+                </td>
+            </tr>
+        }
+    </table>
+}

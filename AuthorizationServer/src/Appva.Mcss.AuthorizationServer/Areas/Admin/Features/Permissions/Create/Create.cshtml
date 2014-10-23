@@ -1,0 +1,18 @@
+﻿@model CreatePermission
+@{
+    Title("Create New Permission");
+}
+<div class="page-title">
+    <span class="text-semibold">Create new</span> permission
+</div>
+@using (Html.Post())
+{
+    @Html.ValidationAlert("Validation errors occured", "Please correct the errors in the form")
+    @Html.FormGroup(x => x.Key).AsteriskLabel("Permission policy key").TextBox().Validate().Help("A unique alphanumeric key, e.g. users_create, users_update or users_delete").Build()
+    @Html.FormGroup(x => x.Name).AsteriskLabel("Permission policy name").TextBox().Validate().Help("Something users will recognize and trust").Build()
+    @Html.FormGroup(x => x.Description).AsteriskLabel("Permission policy description").TextArea("Optional").Validate().Help("This is displayed to all potential users of your application").Build()   
+    @Html.FormGroup(x => x.Context).Label("Permission context").TextBox().Validate().Help("?").Build()
+    @Html.Hr()
+    @Html.Hr(new { @class = "no-grid-gutter-h" })
+    @Html.Submit("Create new permission", new { @class = "btn-primary btn-lg" })
+}

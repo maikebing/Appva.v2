@@ -1,0 +1,27 @@
+﻿@model IList<Appva.Mcss.AuthorizationServer.Models.ListPermission>
+@{
+    Title("Permissions");
+    var context = string.Empty;
+}
+<table class="table panel unrounded">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Friendly Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    @foreach (var permission in Model)
+    {
+        if (! permission.Context.Equals(context))
+        {
+            <tr><td class="active" colspan="3">@permission.Context</td></tr>
+            context = permission.Context;
+        }
+        <tr>
+            <td>@permission.Key</td>
+            <td>@permission.Name</td>
+            <td>@permission.Description</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,84 @@
+﻿@model DetailsClient
+@{
+    Title(Model.Name);
+}
+<div class="profile">
+    <div class="profile-title">
+        <span class="text-semibold">@Model.Name</span>'s profile
+        @Html.IsActive(x => x.IsActive)
+    </div>
+    <div class="profile-bar panel clearfix">
+        <ul class="nav navbar-nav pull-right right-navbar-nav">
+            <li class="tab">
+                <span class="title">Created</span>
+                <span class="fa fa-clock-o"></span> @Model.Resource.CreatedAt.ToShortDateString()
+            </li>
+            <li class="tab">
+                <span class="title">Last updated</span>
+                <span class="fa fa-clock-o"></span> @Model.Resource.UpdatedAt.ToShortDateString()
+            </li>
+            <li>
+                <a href="#" class="btn">
+                    <span class="thumbnail-25"><span class="fa fa-history"></span></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    @Html.Alert()
+    <div class="profile-row">
+        <div class="left-col">
+            <div class="profile-block">
+                <div class="panel profile-thumbnail">
+                    @Html.Logotype(x => x.Logotype, new { @class = "thumbnail-icon-info thumbnail-icon-lg thumbnail-icon-lg-border" }, new { @class = "fa-cog" })
+                </div>
+                @Html.Br()
+                <div class="btn-group">
+                    <a href="@Url.Action("Update", new { Id = Model.Id })" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                    <a href="@Url.Action("Delete", new { Id = Model.Id })" class="btn btn-danger"><i class="fa fa-close"></i></a>
+                </div>
+            </div>
+            <div class="panel panel-transparent">
+                <div class="panel-heading">
+                    <span class="panel-title">Description</span>
+                </div>
+                <div class="panel-body">
+                    @Model.Description
+                </div>
+            </div>
+        </div>
+        <div class="right-col">
+            <hr class="page-hr no-grid-gutter-h" />
+            <div class="content">
+                <table class="table panel unrounded">
+                    <tr>
+                        <td>Identifier</td>
+                        <td>@Model.Identifier</td>
+                    </tr>
+                    <tr>
+                        <td>Secret</td>
+                        <td>@Model.Secret</td>
+                    </tr>
+                    <tr>
+                        <td>Access token lifetime</td>
+                        <td>@Model.AccessTokenLifetime</td>
+                    </tr>
+                    <tr>
+                        <td>Refresh token lifetime</td>
+                        <td>@Model.RefreshTokenLifetime</td>
+                    </tr>
+                    <tr>
+                        <td>Callback URL</td>
+                        <td>@Html.IsSetFor(x => x.RedirectionEndpoint)</td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td>@Html.IsSetFor(x => x.Password)</td>
+                    </tr>
+                </table>
+                @Html.Action("AuthorizationGrants", new { id = Model.Id })
+                @Html.Action("Scopes", new { id = Model.Id })
+                @Html.Action("Tenants", new { id = Model.Id })
+            </div>
+        </div>
+    </div>
+</div>

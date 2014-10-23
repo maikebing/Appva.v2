@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Tenant">
+    <Position X="3.75" Y="1" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgCAAAECAAAAQAAAAAAHAAAAAAQAQAAAA=</HashCode>
+      <FileName>Entities\Tenant\Tenant.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Tags" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Client">
+    <Position X="1.25" Y="1" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgCIBAECAAAAQAAAABABACAQAAYEQABAA=</HashCode>
+      <FileName>Entities\Client\Client.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="AuthorizationGrants" />
+      <Property Name="Tenants" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.User">
+    <Position X="6.25" Y="1" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACIAAGCAAAAEAAgAAABAAAAAABAQAAAA=</HashCode>
+      <FileName>Entities\User\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Roles" />
+      <Property Name="Tenants" />
+      <Property Name="UserAuthentications" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.UserAuthentication">
+    <Position X="6.25" Y="4.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\User\UserAuthentication.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+      <Property Name="UserAuthenticationMethod" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.UserAuthenticationMethod">
+    <Position X="6.25" Y="6.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAgAAQAAAAAAAQAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\User\UserAuthenticationMethod.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Role">
+    <Position X="8.75" Y="1" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAgAAQAAAAAQAQAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Role\Role.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Parent" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Permissions" />
+      <Property Name="Users" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Permission">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIgAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Entities\Permission\Permission.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Context" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Menu">
+    <Position X="11.25" Y="1" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Entities\Menu\Menu.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="MenuLinks" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.MenuLink">
+    <Position X="11.25" Y="3.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAQQAAAAAAoAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Menu\MenuLink.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Menu" />
+      <Property Name="Permission" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.PermissionContext">
+    <Position X="8.75" Y="6.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Permission\PermissionContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.AuthorizationGrant">
+    <Position X="1.25" Y="5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\AuthorizationGrant\AuthorizationGrant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Tag">
+    <Position X="3.75" Y="4.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Tag\Tag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

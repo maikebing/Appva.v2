@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping
+  xmlns="urn:nhibernate-mapping-2.2"
+  assembly="Appva.Mcss.AuthorizationServer.Domain"
+  namespace="Appva.Mcss.AuthorizationServer.Domain.Entities">
+
+  <!-- System classes. -->
+  <!-- Clients -->
+  <class name="Client" table="Clients" dynamic-insert="true" dynamic-update="true">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <component name="Slug" class="Slug">
+      <property name="Name" column="Slug" />
+    </component>
+    <property name="Name" />
+    <property name="Description" />
+    <component name="Image" class="Image">
+      <property name="FileName" column="ImageName" />
+      <property name="MimeType" column="ImageMimeType" />
+    </component>
+    <property name="Identifier" index="IDX_Clients_Identifier" />
+    <property name="Secret" />
+    <property name="Password" />
+    <property name="AccessTokenLifetime" />
+    <property name="RefreshTokenLifetime" />
+    <property name="RedirectionEndpoint" />
+    <property name="IsGlobal" />
+    <property name="Type" column="ClientType" />
+    <bag name="AuthorizationGrants" table="ClientAuthorizationGrants" inverse="false">
+      <key column="ClientId" />
+      <many-to-many column="AuthorizationGrantId" class="AuthorizationGrant" />
+    </bag>
+    <bag name="Tenants" table="ClientTenants" inverse="false">
+      <key column="ClientId" />
+      <many-to-many column="TenantId" class="Tenant" />
+    </bag>
+    <bag name="Scopes" table="ClientScopes" inverse="false">
+      <key column="ClientId" />
+      <many-to-many column="ScopeId" class="Scope" />
+    </bag>
+  </class>
+
+  <!-- Authorizations -->
+  <class name="Authorization" table="Authorizations">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <many-to-one name="Client" column="ClientId" class="Client" />
+    <property name="UserIdentifier" />
+    <property name="Scope" />
+    <property name="CreatedAt" />
+    <property name="ExpiresAt" />
+  </class>
+  
+  <!-- Authorization Grants -->
+  <class name="AuthorizationGrant" table="AuthorizationGrants">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Key">
+      <column name="UniqueKey" unique="true" index="IDX_AuthorizationGrants_UniqueKey"/>
+    </property>
+    <property name="Description" type="StringClob">
+      <column name="Description" sql-type="NTEXT" />
+    </property>
+  </class>
+
+  <!-- SymmetricCryptoKeys -->
+  <class name="SymmetricCryptoKey" table="SymmetricCryptoKeys">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Bucket" index="IDX_SymmetricCryptoKeys_Bucket" />
+    <property name="Handle" index="IDX_SymmetricCryptoKeys_Handle" />
+    <property name="ExpiresAt" index="IDX_SymmetricCryptoKeys_ExpiresAt" />
+    <property name="Secret" />
+  </class>
+
+  <!-- Resources -->
+  <class name="Resource" table="Resources">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <component name="Slug" class="Slug">
+      <property name="Name" column="Slug" />
+    </component>
+    <property name="Name" />
+    <property name="Description" />
+    <property name="TokenLifetime" />
+    <property name="PublicAccessTokenEncryptionKey" type="StringClob">
+      <column name="PublicAccessTokenEncryptionKey" sql-type="NTEXT" />
+    </property>
+    <bag name="Scopes" table="ResourceScopes" inverse="false">
+      <key column="ResourceId" />
+      <many-to-many column="ScopeId" class="Scope" />
+    </bag>
+  </class>
+
+  <!-- Nonces -->
+  <class name="Nonce" table="Nonces">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Context" index="IDX_Nonces_Context" />
+    <property name="Code" index="IDX_Nonces_Code" />
+    <property name="Timestamp" index="IDX_Nonces_Timestamp" />
+  </class>
+  
+  <!-- Scopes -->
+  <class name="Scope" table="Scopes">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Key">
+      <column name="UniqueKey" unique="true" index="IDX_Roles_UniqueKey"/>
+    </property>
+    <property name="Name" />
+    <property name="Description" />
+    <bag name="Clients" table="ClientScopes" inverse="true">
+      <key column="ScopeId" />
+      <many-to-many column="ClientId" class="Client" />
+    </bag>
+  </class>
+  
+  <!-- Tenants -->
+  <class name="Tenant" table="Tenants" dynamic-insert="true" dynamic-update="true">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <component name="Slug" class="Slug">
+      <property name="Name" column="Slug" />
+    </component>
+    <property name="Identifier" />
+    <property name="HostName" />
+    <property name="Name" />
+    <property name="Description" />
+    <component name="Image" class="Image">
+      <property name="FileName" column="ImageName" />
+      <property name="MimeType" column="ImageMimeType" />
+    </component>
+    <component name="DatabaseConnection" class="DatabaseConnection">
+      <property name="ConnectionString" column="DatabaseConnectionString" />
+    </component>
+    <bag name="Tags" table="TenantTags" inverse="false">
+      <key column="TenantId" />
+      <many-to-many column="TagId" class="Tag" />
+    </bag>
+  </class>
+
+  <!-- Users. -->
+  <class name="User" table="Users" dynamic-insert="true" dynamic-update="true">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <component name="Slug" class="Slug">
+      <property name="Name" column="Slug" />
+    </component>
+    <property name="PersonalIdentityNumber" index="IDX_Users_PersonalIdentityNumber" />
+    <component name="FullName" class="FullName">
+      <property name="FirstName" />
+      <property name="LastName" />
+    </component>
+    <component name="Contact" class="Contact">
+      <property name="EmailAddress" />
+      <property name="MobilePhoneNumber" />
+    </component>
+    <component name="Image" class="Image">
+      <property name="FileName" column="ImageName" />
+      <property name="MimeType" column="ImageMimeType" />
+    </component>
+    <bag name="Roles" table="UserRoles">
+      <key column="UserId" />
+      <many-to-many column="RoleId" class="Role" fetch="join" />
+    </bag>
+    <bag name="Tenants" table="UserTenants">
+      <key column="UserId" />
+      <many-to-many column="TenantId" class="Tenant" fetch="join" />
+    </bag>
+    <bag name="UserAuthentications" cascade="all-delete-orphan" >
+      <key column="UserId" />
+      <one-to-many class="UserAuthentication" />
+    </bag>
+  </class>
+
+  <!-- UserAuthentications. -->
+  <class name="UserAuthentication" table="UserAuthentications">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Authentication" />
+    <many-to-one name="User" column="UserId" class="User" />
+    <many-to-one name="UserAuthenticationMethod" column="UserAuthenticationMethodId" class="UserAuthenticationMethod" />
+  </class>
+
+  <!-- UserAuthenticationMethods. -->
+  <class name="UserAuthenticationMethod" table="UserAuthenticationMethods">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Key">
+      <column name="UniqueKey" unique="true" index="IDX_Menus_UniqueKey"/>
+    </property>
+    <property name="Name" />
+    <property name="Description" />
+    <property name="Service" />
+    <property name="FormView" />
+  </class>
+  
+  <!-- Menus. -->
+  <class name="Menu" table="Menus">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Key">
+      <column name="UniqueKey" unique="true" index="IDX_Menus_UniqueKey"/>
+    </property>
+    <property name="Name" />
+    <property name="Description" />
+    <list name="MenuLinks" cascade="all-delete-orphan" >
+      <key column="Menu"/>
+      <index column="Sort"/>
+      <one-to-many class="MenuLink" />
+    </list>
+  </class>
+
+  <!-- Menu links. -->
+  <class name="MenuLink" table="MenuLinks">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Label" />
+    <property name="Url" />
+    <property name="Sort" />
+    <property name="CssClass" />
+    <many-to-one name="Menu" class="Menu" index="IDX_MenuLinks_Menu" />
+    <many-to-one name="Parent" class="MenuLink" index="IDX_MenuLinks_Parent" />
+    <many-to-one name="Permission" class="Permission" index="IDX_MenuLinks_Permission" />
+  </class>
+
+  <!-- Roles. -->
+  <class name="Role" table="Roles">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Key">
+      <column name="UniqueKey" unique="true" index="IDX_Roles_UniqueKey"/>
+    </property>
+    <property name="Name" />
+    <property name="Description" />
+    <many-to-one name="Parent" class="Role" index="IDX_Roles_Parent" />
+    <bag name="Permissions" table="RolesPermissions">
+      <key column="RoleId" />
+      <many-to-many column="PermissionId" class="Permission" fetch="join" />
+    </bag>
+    <bag name="Users" table="UserRoles" inverse="true">
+      <key column="RoleId" />
+      <many-to-many column="UserId" class="User" fetch="join" />
+    </bag>
+  </class>
+
+  <!-- Permissions. -->
+  <class name="Permission" table="Permissions">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Name" />
+    <property name="Description" />
+    <property name="Resource" />
+    <property name="Action" />
+    <many-to-one name="Context" class="PermissionContext" />
+  </class>
+
+  <!-- Permission contexts. -->
+  <class name="PermissionContext" table="PermissionContexts">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Key">
+      <column name="UniqueKey" unique="true" index="IDX_Roles_UniqueKey"/>
+    </property>
+    <property name="Name" />
+    <property name="Description" />
+  </class>
+
+  <!-- Settings. -->
+  <class name="Setting" table="Settings">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Key">
+      <column name="UniqueKey" unique="true" index="IDX_Settings_UniqueKey"/>
+    </property>
+    <property name="Value" type="StringClob">
+      <column name="Value" sql-type="NTEXT" />
+    </property>
+    <property name="Type" />
+  </class>
+
+  <!-- Tags. -->
+  <class name="Tag" table="Tags">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Name">
+      <column name="Name" unique="true" index="IDX_Tags_Name"/>
+    </property>
+  </class>
+</hibernate-mapping>

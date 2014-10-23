@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Register Application - OAuth Server</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin" />
+		<script src="js/modernizr.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/oauth-admin.css" />
+    </head>
+    <body class="theme-default">
+        <div id="main-wrapper">
+            <div id="main-navbar" class="navbar" role="navigation">
+                <button type="button" id="main-menu-toggle">
+                    <i class="navbar-icon fa fa-bars icon"></i>
+                </button>
+                <div class="navbar-inner">
+                    <div class="navbar-header">
+                        <a href="/" class="navbar-brand">
+                            <img src="img/logo-sm.png" />
+                        </a>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse">
+                            <i class="navbar-icon fa fa-bars"></i>
+                        </button>
+                    </div>
+                    <div id="main-navbar-collapse" class="collapse navbar-collapse main-navbar-collapse">
+                        <div>
+                            
+                            <div class="right clearfix">
+                                <ul class="nav navbar-nav pull-right right-navbar-nav">
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle user-menu" data-toggle="dropdown">
+											<span class="thumbnail-25"><span class="fa fa-cogs"></span></span>
+											<span>Johan S&#228;ll Larsson</span>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="#"><span class="label label-warning pull-right">New</span>Profile</a></li>
+											<li><a href="#"><span class="badge badge-primary pull-right">New</span>Account</a></li>
+											<li><a href="#"><i class="dropdown-icon fa fa-cog"></i>&nbsp;&nbsp;Settings</a></li>
+											<li class="divider"></li>
+											<li><a href="pages-signin.html"><i class="dropdown-icon fa fa-power-off"></i>&nbsp;&nbsp;Log Out</a></li>
+										</ul>
+									</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="main-menu" role="navigation">
+                <div id="main-menu-inner">
+                    <ul class="navigation">        
+						<li>
+							<a href="/admin/dashboard/">
+								<i class="menu-icon fa fa-dashboard"></i>
+								<span class="mm-text">Dashboard</span>
+							</a>
+						</li>
+						<li class="open active mm-dropdown mm-dropdown-root">
+							<a href="/admin/applications/">
+								<i class="menu-icon fa fa-cog"></i>
+								<span class="mm-text">Applications</span>
+							</a>
+							<ul>
+								<li class="active">
+									<a href="/admin/application/register">
+										<span class="mm-text">Register application</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="mm-dropdown mm-dropdown-root">
+							<a href="/admin/tenants/">
+								<i class="menu-icon fa fa-cloud-upload"></i>
+								<span class="mm-text">Tenants</span>
+							</a>
+							<ul>
+								<li>
+									<a href="/admin/tenant/register">
+										<span class="mm-text">Register tenant</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+                </div>
+            </div>
+            <div id="content-wrapper">
+				<div class="profile">
+					<div class="profile-title">
+						<span class="text-semibold">Johan</span> S&auml;ll Larsson's profile <span class="label label-info">Active</span>
+					</div>
+					<div class="profile-bar panel clearfix">
+						<ul class="nav navbar-nav pull-right right-navbar-nav">
+							<li class="tab"><span class="title">Created</span><span class="fa fa-clock-o"></span> 2014-06-02</li>
+							<li class="tab"><span class="title">Last updated</span><span class="fa fa-clock-o"></span> 2014-06-02</li>
+							<li><a href="#" class="btn"><span class="thumbnail-25"><span class="fa fa-history"></span></span></a></li>
+						</ul>
+					</div>
+					<div class="profile-row">
+						<div class="left-col">
+							<div class="profile-block">
+								<div class="panel profile-thumbnail">
+									<span class="thumbnail-150"><span class="fa fa-cogs"></span></span>
+								</div>
+								<br/>
+								<a class="btn btn-info"><span class="thumbnail-25"><i class="fa fa-pencil"></i></span></a>
+									<a class="btn btn-danger"><span class="thumbnail-25"><i class="fa fa-close"></i></span></a>
+								<!--<span style="border-radius:20px; padding:10px 20px 10px 10px; background:#fff;">
+									<span class="thumbnail-25"><span class="fa fa-history"></span></span> Update
+								</span>
+								<span class="btn btn-danger"><i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Inactive</span>-->
+								<div class="btn-group">
+									
+									<!--<a class="btn btn-info"><i class="fa fa-pencil"></i></a>
+									<a class="btn btn-danger"><i class="fa fa-close"></i></a>-->
+								</div>
+							</div>
+							<div class="panel panel-transparent">
+								<div class="panel-heading">
+									<span class="panel-title">Roles</span>
+								</div>
+								<div class="panel-body">
+									<span class="label label-primary">Admin God</span>
+								</div>
+							</div>
+						</div>
+						<div class="right-col">
+							<!--<hr class="page-hr no-grid-gutter-h" />-->
+							<div class="content">
+								<table class="table">
+									<tr>
+										<td>Personal Identity Number</td>
+										<td>19810602-4915</td>
+									</tr>
+									<tr>
+										<td>First name</td>
+										<td>Johan S&#228;ll Larsson</td>
+									</tr>
+									<tr>
+										<td>E-mail address</td>
+										<td>johansalllarsson@appva.se</td>
+									</tr>
+									<tr>
+										<td>Mobile telephone number</td>
+										<td>+66876808202</td>
+									</tr>
+								</table>
+								<table class="table">
+									<tr>
+										<td>
+											<p class="header">oauth</p>
+											<p class="description">OAuth</p>
+										</td>
+										<td>
+											<div class="btn-group">
+												<a class="btn btn-info unrounded"><i class="fa fa-pencil"></i></a>
+												<a class="btn btn-danger unrounded"><i class="fa fa-close"></i></a>
+											</div>
+										</td>
+									</tr>
+								</table>
+								<table class="table">
+									<tr>
+										<td class="avatar avatar-35"><span class="thumbnail-25"><span class="fa fa-cogs"></span></td>
+										<td class="avatar-content">
+											<p class="header">Tenant</p>
+											<p class="description">Somthing</p>
+										</td>
+									</tr>
+									<tr>
+										<td class="avatar avatar-35"><span class="thumbnail-25"><span class="fa fa-cogs"></span></span></td>
+										<td class="avatar-content">
+											<p class="header">Tenant</p>
+											<p class="description">Something</p>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+            <div id="main-menu-bg"></div>
+        </div>
+	</body>
+</html>

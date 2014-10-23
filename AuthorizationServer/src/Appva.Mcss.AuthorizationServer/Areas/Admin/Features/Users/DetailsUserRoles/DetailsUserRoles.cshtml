@@ -1,0 +1,15 @@
+﻿@model IList<DetailsUserRoles>
+@if (Model.IsNotEmpty())
+{
+    <div class="panel panel-transparent">
+        <div class="panel-heading">
+            <span class="panel-title">Roles</span>
+        </div>
+        <div class="panel-body">
+            @foreach (var item in Model)
+            {
+                <span class="label label-primary">@item.Name</span>
+            }
+        </div>
+    </div>
+}

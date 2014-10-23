@@ -1,0 +1,15 @@
+﻿@model IList<ClientScope>
+@if (Model.IsNotEmpty())
+{
+    <table class="table panel unrounded">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <p class="header">@item.Name</p>
+                    <p class="description">@item.Description</p>
+                </td>
+            </tr>
+        }
+    </table>
+}

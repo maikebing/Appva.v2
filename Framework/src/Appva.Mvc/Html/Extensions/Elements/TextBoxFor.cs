@@ -2,7 +2,7 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-namespace Appva.Mcss.AuthorizationServer.Infrastructure.Extensions.Html.Elements
+namespace Appva.Mvc.Html.Extensions.Elements
 {
     #region Imports.
 
@@ -65,6 +65,7 @@ namespace Appva.Mcss.AuthorizationServer.Infrastructure.Extensions.Html.Elements
         /// <inheritdoc />
         public override MvcHtmlString Build()
         {
+            var modelMetadata = ModelMetadata.FromLambdaExpression(this.expression, this.Root.HtmlHelper.ViewData);
             var modelState = this.Root.HtmlHelper.ViewData.ModelState;
             var id = this.Root.HtmlHelper.IdFor(expression).ToString();
             var name = this.Root.HtmlHelper.IdFor(expression).ToString();
@@ -82,13 +83,18 @@ namespace Appva.Mcss.AuthorizationServer.Infrastructure.Extensions.Html.Elements
                 textbox.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
             }
             textbox.AddCssClass("form-control");
+            string value = null;
             if (modelState.ContainsKey(name))
             {
-                var value = Convert.ToString(modelState[name].Value, CultureInfo.InvariantCulture);
-                if (value.IsNotEmpty())
-                {
-                    textbox.InnerHtml = HttpUtility.HtmlEncode(value);
-                }
+                value = Convert.ToString(modelState[name].Value, CultureInfo.InvariantCulture);
+            }
+            if (! modelMetadata.IsComplexType)
+            {
+                value = Convert.ToString(modelMetadata.Model, CultureInfo.InvariantCulture);
+            }
+            if (value.IsNotEmpty())
+            {
+                textbox.Attributes.Add("value", HttpUtility.HtmlEncode(value));
             }
             return MvcHtmlString.Create(textbox.ToString(TagRenderMode.SelfClosing));
         }

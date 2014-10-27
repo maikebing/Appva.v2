@@ -10,13 +10,14 @@ namespace Appva.Mcss.AuthorizationServer.Models
     using System.ComponentModel.DataAnnotations;
     using System.Web;
     using Appva.Cqrs;
+    using Appva.Mvc.Html.Models;
 
     #endregion
 
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public class CreateUser : IRequest<CreateUserAuthenticationUserId>
+    public class CreateUser : IRequest<DetailsUserId>
     {
         /// <summary>
         /// A unique identitier for a user.
@@ -73,11 +74,28 @@ namespace Appva.Mcss.AuthorizationServer.Models
         }
 
         /// <summary>
+        /// The user's password.
+        /// </summary>
+        public string Password
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The users' last name.
         /// E.g. "Doe".
         /// </summary>
-        [Required]
         public IList<Tickable> Roles
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The users' tenants.
+        /// </summary>
+        public IList<Tickable> Tenants
         {
             get;
             set;
@@ -91,6 +109,5 @@ namespace Appva.Mcss.AuthorizationServer.Models
             get;
             set;
         }
-
     }
 }

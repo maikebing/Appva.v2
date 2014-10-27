@@ -6,7 +6,10 @@ namespace Appva.Mvc.Html.Extensions
 {
     #region Imports.
 
+    using System;
+    using System.Linq.Expressions;
     using System.Web.Mvc;
+    using Elements;
     using Filters;
 
     #endregion
@@ -16,6 +19,26 @@ namespace Appva.Mvc.Html.Extensions
     /// </summary>
     public static class HtmlHelperExtensions
     {
+        /// <summary>
+        /// Creates a form group with elements.
+        /// </summary>
+        /// <example>
+        /// @Html.FormGroup(x => x.Name)
+        ///     .Label("Name", new { @class = "label" })
+        ///     .TextBox(new { @class = "input" })
+        ///     .Validate()
+        ///     .Help("A help message").Build()
+        /// </example>
+        /// <typeparam name="TModel">The model type</typeparam>
+        /// <typeparam name="TProperty">The property type</typeparam>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
+        /// <param name="expression">The expression</param>
+        /// <returns></returns>
+        public static FormGroupFor<TModel, TProperty> FormGroup<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
+        {
+            return new FormGroupFor<TModel, TProperty>(htmlHelper, expression);
+        }
+
         /// <summary>
         /// 
         /// </summary>

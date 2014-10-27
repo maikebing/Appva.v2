@@ -1,5 +1,5 @@
-﻿@model Appva.Mcss.AuthorizationServer.Models.Tickable
+﻿@model Tickable
 <li>
     @Html.HiddenFor(x => x.Id)
-    @Html.CheckBoxWithLabelFor(Model.Name, x => x.Selected)
+    @Html.CheckBoxWithLabelFor(Model.Label, x => x.IsSelected)
 </li>

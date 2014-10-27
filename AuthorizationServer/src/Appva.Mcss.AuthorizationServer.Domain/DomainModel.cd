@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Tenant">
-    <Position X="3.75" Y="1" Width="1.5" />
+    <Position X="5.75" Y="1" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgCAAAECAAAAQAAAAAAHAAAAAAQAQAAAA=</HashCode>
+      <HashCode>gAAAAAAAAAAgCABAECAAAAQAAAAAAHAAAAAAQAQABAA=</HashCode>
       <FileName>Entities\Tenant\Tenant.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -15,27 +15,28 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Client">
-    <Position X="1.25" Y="1" Width="1.5" />
+    <Position X="3.25" Y="1" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgCIBAECAAAAQAAAABABACAQAAYEQABAA=</HashCode>
+      <HashCode>AAAAAAQAAAAgCKJAECAAAAQEAAABABACAQAAYEQABAA=</HashCode>
       <FileName>Entities\Client\Client.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="AuthorizationGrants" />
       <Property Name="Tenants" />
+      <Property Name="Scopes" />
     </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.User">
-    <Position X="6.25" Y="1" Width="1.5" />
+    <Position X="8.25" Y="1" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACIAAGCAAAAEAAgAAABAAAAAABAQAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACIBAGCAAAAEAAgAAABAAAAAABAQABAA=</HashCode>
       <FileName>Entities\User\User.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -46,7 +47,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.UserAuthentication">
-    <Position X="6.25" Y="4.25" Width="1.5" />
+    <Position X="8.25" Y="4.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -60,7 +61,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.UserAuthenticationMethod">
-    <Position X="6.25" Y="6.5" Width="1.5" />
+    <Position X="8.25" Y="6.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -70,7 +71,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Role">
-    <Position X="8.75" Y="1" Width="1.5" />
+    <Position X="10.75" Y="1" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -87,7 +88,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Permission">
-    <Position X="8.75" Y="3.5" Width="1.5" />
+    <Position X="10.75" Y="3.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -100,7 +101,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Menu">
-    <Position X="11.25" Y="1" Width="1.5" />
+    <Position X="13.25" Y="1" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -113,7 +114,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.MenuLink">
-    <Position X="11.25" Y="3.5" Width="1.5" />
+    <Position X="13.25" Y="3.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -127,7 +128,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.PermissionContext">
-    <Position X="8.75" Y="6.25" Width="1.5" />
+    <Position X="10.75" Y="6.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -137,17 +138,18 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.AuthorizationGrant">
-    <Position X="1.25" Y="5" Width="1.5" />
+    <Position X="3.25" Y="6" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ACAAAgBAAAAgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\AuthorizationGrant\AuthorizationGrant.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Tag">
-    <Position X="3.75" Y="4.5" Width="1.5" />
+    <Position X="5.75" Y="4.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -155,6 +157,33 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Tag\Tag.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Resource">
+    <Position X="0.75" Y="1" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAgCCBIECAAIAQAgAAAQAAAAAAAAAQABAA=</HashCode>
+      <FileName>Entities\Resource\Resource.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Scopes" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Appva.Mcss.AuthorizationServer.Domain.Entities.Scope">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAACAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Scope\Scope.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Clients" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>

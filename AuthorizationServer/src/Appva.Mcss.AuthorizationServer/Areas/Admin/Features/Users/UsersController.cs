@@ -97,46 +97,6 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
 
         #endregion
 
-        #region Create Wizard.
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet, Hydrate, Route("user/new/step/profile")]
-        public ActionResult CreateUserProfile()
-        {
-            this.Wizard<CreateUserWizard>(new CreateUserWizard());
-            return View(new CreateUserProfile());
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost, Validate, ValidateAntiForgeryToken, Route("user/new/step/profile")]
-        public ActionResult CreateUserProfile(CreateUserProfile request)
-        {
-            this.Wizard<CreateUserWizard>().Model.StepOne = request;
-            return RedirectToAction("CreateUserRoles");
-        }
-
-        [HttpGet, Hydrate, Route("user/new/step/roles")]
-        public ActionResult CreateUserRoles()
-        {
-            return View(this.Send(new CreateUserRoles()));
-        }
-
-        [HttpPost, Validate, ValidateAntiForgeryToken, Route("user/new/step/roles")]
-        public ActionResult CreateUserRoles(CreateUserRoles request)
-        {
-            this.Wizard<CreateUserWizard>().Model.StepTwo = request;
-            return RedirectToAction("CreateUserRoles");
-        }
-
-        #endregion
-
         #endregion
 
         #region Child Actions.
@@ -161,7 +121,16 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
 
         #endregion
 
+        #region UserTenants
+
+        [ChildActionOnly, Dispatch, Route("DetailsUserTenants")]
+        public ActionResult DetailsUserTenants(DetailsUserTenantsId request)
+        {
+            return PartialView();
+        }
+
         #endregion
 
+        #endregion
     }
 }

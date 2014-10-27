@@ -77,7 +77,13 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
         {
             try
             {
+                var setting = this.Persistence.QueryOver<Setting>()
+                .Where(x => x.Key == "system.update.1")
+                .SingleOrDefault();
+                if (setting.IsNotNull())
+                {
 
+                }
             }
             catch(Exception e)
             {

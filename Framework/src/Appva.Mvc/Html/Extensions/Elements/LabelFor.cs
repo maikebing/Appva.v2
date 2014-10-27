@@ -1,22 +1,23 @@
-﻿// <copyright file="LabelAndAsteriskFor.cs" company="Appva AB">
+﻿// <copyright file="LabelFor.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-namespace Appva.Mcss.AuthorizationServer.Infrastructure.Extensions.Html.Elements
+namespace Appva.Mvc.Html.Extensions.Elements
 {
     #region Imports.
 
     using System;
     using System.Linq.Expressions;
     using System.Web.Mvc;
-    using Mvc.Html.Extensions;
+    using System.Web.Mvc.Html;
+    using Appva.Mvc.Html.Extensions;
 
     #endregion
 
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public class LabelAndAsteriskFor<TRoot, TModel, TProperty> : Element<TRoot>
+    public class LabelFor<TRoot, TModel, TProperty> : Element<TRoot>
         where TRoot : ElementBuilder<TModel>, IFormGroupFor<TModel, TProperty>
     {
         #region Variables.
@@ -41,13 +42,13 @@ namespace Appva.Mcss.AuthorizationServer.Infrastructure.Extensions.Html.Elements
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LabelAndAsteriskFor{TRoot, TModel, TProperty}"/> class.
+        /// Initializes a new instance of the <see cref="LabelFor{TRoot, TModel, TProperty}"/> class.
         /// </summary>
         /// <param name="root">The root</param>
         /// <param name="expression">The expression</param>
         /// <param name="labelText">Optional label text</param>
         /// <param name="htmlAttributes">Optional html attributes</param>
-        internal LabelAndAsteriskFor(TRoot root, Expression<Func<TModel, TProperty>> expression, string labelText = null, object htmlAttributes = null)
+        internal LabelFor(TRoot root, Expression<Func<TModel, TProperty>> expression, string labelText = null, object htmlAttributes = null)
             : base(root)
         {
             this.expression = expression;
@@ -62,7 +63,15 @@ namespace Appva.Mcss.AuthorizationServer.Infrastructure.Extensions.Html.Elements
         /// <inheritdoc />
         public override MvcHtmlString Build()
         {
-            return this.Root.HtmlHelper.LabelWithAsteriskFor(this.expression, this.labelText, this.htmlAttributes);
+            var modelMetadata = ModelMetadata.FromLambdaExpression(this.expression, this.Root.HtmlHelper.ViewData);
+            if (modelMetadata.IsRequired)
+            {
+                return this.Root.HtmlHelper.LabelWithAsteriskFor(this.expression, this.labelText, this.htmlAttributes);
+            }
+            else
+            {
+                return this.Root.HtmlHelper.LabelFor(this.expression, this.labelText, this.htmlAttributes);
+            }
         }
 
         #endregion

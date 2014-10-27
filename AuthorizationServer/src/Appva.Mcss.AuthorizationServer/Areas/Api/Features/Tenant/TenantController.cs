@@ -13,7 +13,7 @@ namespace Appva.Mcss.AuthorizationServer.Infrastructure.WebApi
     using Appva.Persistence;
     using Appva.Core.Extensions;
     using System.Collections.Generic;
-    using Appva.Mcss.AuthorizationServer.Infrastructure.Extensions;
+    using Appva.WebApi.Extensions;
 
     #endregion
 

@@ -60,6 +60,7 @@
                         <td>@Model.MobilePhoneNumber</td>
                     </tr>
                 </table>
+                @Html.Action("DetailsUserTenants", new { id = Model.Id })
                 @Html.Action("DetailsUserAuthentications", new { id = Model.Id })
             </div>
         </div>

@@ -1,0 +1,15 @@
+﻿@model IList<DetailsUserTenants>
+@if (Model.IsNotEmpty())
+{
+    <table class="table panel">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <p class="header">@item.Name</p>
+                    <p class="description">@item.ToolTip</p>
+                </td>
+            </tr>
+        }
+    </table>
+}

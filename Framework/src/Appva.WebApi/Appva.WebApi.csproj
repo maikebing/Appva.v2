@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="ETag.cs" />
     <Compile Include="Extensions\ApiControllerExtensions.cs" />
+    <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Filters\IOrderedFilter.cs" />
     <Compile Include="Filters\OrderedFilterProvider.cs" />
     <Compile Include="Filters\ValidateAttribute.cs" />

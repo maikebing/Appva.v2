@@ -2,7 +2,7 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-namespace Appva.Mcss.AuthorizationServer.Infrastructure.Extensions.Html.Elements
+namespace Appva.Mvc.Html.Extensions.Elements
 {
     #region Imports.
 
@@ -12,9 +12,8 @@ namespace Appva.Mcss.AuthorizationServer.Infrastructure.Extensions.Html.Elements
     using System.Text;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
-    using Appva.Mcss.AuthorizationServer.Models;
-    using Appva.Mvc.Html.Extensions;
     using Appva.Core.Extensions;
+    using Models;
 
     #endregion
 

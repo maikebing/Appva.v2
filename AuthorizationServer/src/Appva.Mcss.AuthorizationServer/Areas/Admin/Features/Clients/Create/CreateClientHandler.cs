@@ -13,6 +13,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     using Appva.Cryptography;
     using Appva.Mcss.AuthorizationServer.Domain.Entities;
     using Appva.Mcss.AuthorizationServer.Models;
+    using Appva.Mvc.Html.Models;
     using Appva.Mvc.Imaging;
     using Appva.Persistence;
     using NHibernate.Criterion;
@@ -50,19 +51,19 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             var tenants = this.Persistence.QueryOver<Tenant>()
                 .Select(Projections.ProjectionList()
                     .Add(Projections.Property<Tenant>(x => x.Id).WithAlias(() => tickable.Id))
-                    .Add(Projections.Property<Tenant>(x => x.Name).WithAlias(() => tickable.Name))
+                    .Add(Projections.Property<Tenant>(x => x.Name).WithAlias(() => tickable.Label))
                     .Add(Projections.Property<Tenant>(x => x.Description).WithAlias(() => tickable.HelpText))
                 ).TransformUsing(Transformers.AliasToBean<Tickable>()).List<Tickable>();
             var authorizationGrants = this.Persistence.QueryOver<AuthorizationGrant>()
                 .Select(Projections.ProjectionList()
                     .Add(Projections.Property<AuthorizationGrant>(x => x.Id).WithAlias(() => tickable.Id))
-                    .Add(Projections.Property<AuthorizationGrant>(x => x.Key).WithAlias(() => tickable.Name))
+                    .Add(Projections.Property<AuthorizationGrant>(x => x.Key).WithAlias(() => tickable.Label))
                     .Add(Projections.Property<AuthorizationGrant>(x => x.Description).WithAlias(() => tickable.HelpText))
                 ).TransformUsing(Transformers.AliasToBean<Tickable>()).List<Tickable>();
             var scopes = this.Persistence.QueryOver<Scope>()
                 .Select(Projections.ProjectionList()
                     .Add(Projections.Property<Scope>(x => x.Id).WithAlias(() => tickable.Id))
-                    .Add(Projections.Property<Scope>(x => x.Name).WithAlias(() => tickable.Name))
+                    .Add(Projections.Property<Scope>(x => x.Name).WithAlias(() => tickable.Label))
                     .Add(Projections.Property<Scope>(x => x.Description).WithAlias(() => tickable.HelpText))
                 ).TransformUsing(Transformers.AliasToBean<Tickable>()).List<Tickable>();
             return new CreateClient
@@ -70,7 +71,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
                 Tenants = tenants,
                 Scopes = scopes,
                 AuthorizationGrants = authorizationGrants,
-                IsConfidential = new Tickable() { Id = Guid.NewGuid(), Name = string.Empty }
+                IsConfidential = new Tickable() { Id = Guid.NewGuid(), Label = string.Empty }
             };
         }
 
@@ -125,7 +126,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
                 imageMimeType = message.Logotype.ContentType;
                 this.imageProcessor.Save(message.Logotype, out imageFileName);
             }
-            var client = new Client(message.Name, message.Description, imageFileName, imageMimeType, message.AccessTokenLifetime, message.RefreshTokenLifetime, message.RedirectionEndpoint, ! message.IsConfidential.Selected, authorizationGrants, tenants, scopes);
+            var client = new Client(message.Name, message.Description, imageFileName, imageMimeType, message.AccessTokenLifetime, message.RefreshTokenLifetime, message.RedirectionEndpoint, ! message.IsConfidential.IsSelected, authorizationGrants, tenants, scopes);
             this.Persistence.Save(client);
             return new DetailsClientId()
             {
@@ -141,7 +142,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
         /// <returns></returns>
         private IList<Tenant> ResolveTenants(CreateClient message)
         {
-            var ids = message.Tenants.Where(x => x.Selected.Equals(true)).Select(x => x.Id).ToArray();
+            var ids = message.Tenants.Where(x => x.IsSelected.Equals(true)).Select(x => x.Id).ToArray();
             var tenants = this.Persistence.QueryOver<Tenant>().WhereRestrictionOn(x => x.Id).IsIn(ids).List();
             Requires.ValidState(tenants.Count > 0, "Zero tenants found while trying to create client");
             return tenants;
@@ -154,7 +155,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
         /// <returns></returns>
         private IList<Scope> ResolveScopes(CreateClient message)
         {
-            var ids = message.Scopes.Where(x => x.Selected.Equals(true)).Select(x => x.Id).ToArray();
+            var ids = message.Scopes.Where(x => x.IsSelected.Equals(true)).Select(x => x.Id).ToArray();
             var scopes = this.Persistence.QueryOver<Scope>().WhereRestrictionOn(x => x.Id).IsIn(ids).List();
             Requires.ValidState(scopes.Count > 0, "Zero scopes found while trying to create client");
             return scopes;
@@ -167,7 +168,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
         /// <returns></returns>
         private IList<AuthorizationGrant> ResolveAuthorizationGrants(CreateClient message)
         {
-            var ids = message.AuthorizationGrants.Where(x => x.Selected.Equals(true)).Select(x => x.Id).ToArray();
+            var ids = message.AuthorizationGrants.Where(x => x.IsSelected.Equals(true)).Select(x => x.Id).ToArray();
             var authorizationGrants = this.Persistence.QueryOver<AuthorizationGrant>().WhereRestrictionOn(x => x.Id).IsIn(ids).List();
             Requires.ValidState(authorizationGrants.Count > 0, "Zero authorization grants found while trying to create client");
             return authorizationGrants;

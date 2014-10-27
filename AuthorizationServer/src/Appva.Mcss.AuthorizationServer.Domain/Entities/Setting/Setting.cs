@@ -8,6 +8,7 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
 
     using System;
     using Appva.Common.Domain;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -24,11 +25,11 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         /// <param name="key">The settings key</param>
         /// <param name="value">The settings value</param>
         /// <param name="type">The value type</param>
-        public Setting(string key, string value, Type type)
+        public Setting(string key, object value)
         {
             this.Key = key;
-            this.Value = value;
-            this.Type = type;
+            this.Value = JsonConvert.SerializeObject(value);
+            this.Type = value.GetType();
         }
 
         /// <summary>

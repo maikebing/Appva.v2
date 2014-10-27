@@ -10,7 +10,6 @@ namespace Appva.Mcss.AuthorizationServer
     using System.Linq.Expressions;
     using System.Web.Mvc;
     using Core.Extensions;
-    using Infrastructure.Extensions.Html.Elements;
     using Models;
 
     #endregion
@@ -20,26 +19,6 @@ namespace Appva.Mcss.AuthorizationServer
     /// </summary>
     public static class HtmlExtensions
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <example>
-        /// @Html.FormGroup(x => x.Name)
-        ///     .Label("Name", new { @class = "label" })
-        ///     .TextBox(new { @class = "input" })
-        ///     .Validate()
-        ///     .Help("A help message").Build()
-        /// </example>
-        /// <typeparam name="TModel"></typeparam>
-        /// <typeparam name="TProperty"></typeparam>
-        /// <param name="htmlHelper"></param>
-        /// <param name="expression"></param>
-        /// <returns></returns>
-        public static FormGroupFor<TModel, TProperty> FormGroup<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
-        {
-            return new FormGroupFor<TModel, TProperty>(htmlHelper, expression);
-        }
-
         /// <summary>
         /// 
         /// </summary>

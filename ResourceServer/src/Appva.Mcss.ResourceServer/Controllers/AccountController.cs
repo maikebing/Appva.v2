@@ -121,14 +121,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 }
                 if (uid.Length > 6 && !uid.Contains("-"))
                 {
-                    if (uid.StartsWith("19") || uid.StartsWith("20"))
-                    {
-                        uid = string.Format("{0}-{1}", uid.Substring(0, 8), uid.Substring(8));
-                    }
-                    else 
-                    {
-                        uid = string.Format("{0}-{1}", uid.Substring(0, 6), uid.Substring(6));
-                    }
+                    var uniqueIdentifierSize = ((uid.StartsWith("19") || uid.StartsWith("20")) && uid.Length > 8) ? 8 : 6;
+                    uid = "{0}-{1}".FormatWith(uid.Substring(0, uniqueIdentifierSize), uid.Substring(uniqueIdentifierSize));
                 }
                 searchable.MatchBy(x => x.UniqueIdentifier, uid);
             }

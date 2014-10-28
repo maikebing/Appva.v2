@@ -90,29 +90,22 @@
 				<div class="page-title">
 					<span class="text-semibold">Register</span> Application
 				</div>
-				<span class="thumbnail-icon thumbnail-icon-info">
-					<span class="fa fa-user"></span>
-				</span>
-				<span class="thumbnail-icon thumbnail-icon-md thumbnail-icon-border">
-					<span class="fa fa-user"></span>
-				</span>
-				<span class="thumbnail-icon thumbnail-icon-info-inverted thumbnail-icon-lg thumbnail-icon-lg-border">
-					<span class="fa fa-user"></span>
-				</span>
 				<form accept-charset="utf-8" action="/admin/application/register" class="form" enctype="multipart/form-data" method="post" role="form">
-					<div class="alert alert-danger unrounded" role="alert">
+					<div class="alert alert-danger" role="alert">
 						<span class="alert-title">Validation errors occured</span> Please correct the errors in the form
 					</div>    
 					<div class="row">
 						<div class="col-md-9">
 							<div class="form-group"><label for="Name">Application name <span class="required">*</span></label><input class="form-control" id="Name" maxlength="255" name="Name" type="text" /><span class="field-validation-error" data-valmsg-for="Name" data-valmsg-replace="true">The Name field is required.</span><span class="help-block">Something users will recognize and trust</span></div>
-							<div class="form-group"><label for="Description">Application description <span class="required">*</span></label><textarea class="form-control" id="Description" maxlength="255" name="Description" placeholder="Application description is optional" rows="3" size="255">System.Web.Mvc.ValueProviderResult</textarea><span class="field-validation-error" data-valmsg-for="Description" data-valmsg-replace="true">The Description field is required.</span><span class="help-block">This is displayed to all potential users of your application</span></div>
+							<div class="form-group"><label for="Description">Application description <span class="required">*</span></label><textarea class="form-control" id="Description" maxlength="255" name="Description" placeholder="Application description is optional" rows="3" size="255"></textarea><span class="field-validation-error" data-valmsg-for="Description" data-valmsg-replace="true">The Description field is required.</span><span class="help-block">This is displayed to all potential users of your application</span></div>
 						</div>
 						<div class="col-md-3">
 							<hr class="page-hr no-grid-gutter-h" />
 							<div class="profile-block">
-								<div class="panel profile-avatar">
-									<img src="img/client.notfound.png"></img>
+								<div class="profile-avatar">
+									<span class="thumbnail-icon thumbnail-icon-info-inverted thumbnail-icon-lg thumbnail-icon-lg-border">
+										<span class="fa fa-user"></span>
+									</span>
 								</div><br />
 								<span class="btn btn-block btn-default btn-file btn-primary">Browse ... <input id="Avatar" name="Avatar" type="file" /></span>
 							</div>

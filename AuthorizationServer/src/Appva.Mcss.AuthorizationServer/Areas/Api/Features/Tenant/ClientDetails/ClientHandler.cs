@@ -43,9 +43,10 @@ namespace Appva.Mcss.AuthorizationServer.Api.Models.Handlers
         public override ClientModel Handle(TenantIdForClient message)
         {
             var clients = this.Persistence.QueryOver<Client>()
+                .Where(x => x.IsActive == true)
                 .Where(x => x.IsGlobal != true)
                 .JoinQueryOver<Tenant>(x => x.Tenants)
-                .Where(x => x.Id == message.Id)
+                    .Where(x => x.Id == message.Id)
                 .TransformUsing(Transformers.DistinctRootEntity)
                 .List();
             var client = clients.FirstOrDefault();

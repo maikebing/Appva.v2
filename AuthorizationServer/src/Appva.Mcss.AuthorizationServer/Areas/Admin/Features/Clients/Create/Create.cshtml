@@ -30,7 +30,7 @@
     @Html.FormGroup(x => x.RedirectionEndpoint).Label("Application callback").TextBox().Validate().Help("Your application's callback URL. Read our OAuth documentation for more information").Build()
     @Html.Hr()
     @Html.FormGroup(x => x.AuthorizationGrants).AsteriskLabel("Application grant").CheckboxList().Validate().Build()
-    @Html.FormGroup(x => x.IsConfidential.Selected).Checkbox("Confidential?").Validate().Help("Whether your application is public or confidential").Build()
+    @Html.FormGroup(x => x.IsConfidential.IsSelected).Checkbox("Confidential?").Validate().Help("Whether your application is public or confidential").Build()
     @Html.Hr()
     @Html.FormGroup(x => x.Scopes).AsteriskLabel("Scopes").CheckboxList().Validate().Build()
     @Html.Hr()

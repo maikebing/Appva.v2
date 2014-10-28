@@ -18,7 +18,7 @@ using Appva.Cqrs;
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public class DetailsUserId : Identity, IRequest<DetailsUser>
+    public class DetailsUserId : IdentityAndSlug, IRequest<DetailsUser>
     {
     }
 }

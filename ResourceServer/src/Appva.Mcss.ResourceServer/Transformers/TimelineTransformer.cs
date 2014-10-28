@@ -123,9 +123,9 @@ namespace Appva.Mcss.ResourceServer.Transformers
             CompletedDetailsModel isCompleted = new CompletedDetailsModel();
             DateTime dateStart = item.Key;
             DateTime dateEnd = item.Key;
-            // If not all tasks is completed should the first coming start of the incomplete tasks be the timeslot-start
+            //// If not all tasks is completed should the first coming start of the incomplete tasks be the timeslot-start
             DateTime? firstStart = null;
-            // If not all tasks is completed should the first coming end of the incomplete tasks be the timeslot-end
+            //// If not all tasks is completed should the first coming end of the incomplete tasks be the timeslot-end
             DateTime? firstEnd = null;
             foreach (var j in patientKv.Value)
             {
@@ -149,7 +149,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     {
                         isCompleted = null;
                         
-                        //If not completed check if start or end should be adjusted
+                        //// If not completed check if start or end should be adjusted
                         if (!firstStart.HasValue || firstStart > k.Scheduled.AddMinutes(-k.RangeInMinutesBefore))
                         {
                             firstStart = k.Scheduled.AddMinutes(-k.RangeInMinutesBefore);
@@ -158,7 +158,6 @@ namespace Appva.Mcss.ResourceServer.Transformers
                         {
                             firstEnd = k.Scheduled.AddMinutes(k.RangeInMinutesAfter);
                         } 
-                        
                     }
                     if (k.IsCompleted && isCompleted != null)
                     {
@@ -214,9 +213,9 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 isCompleted = new CompletedDetailsModel();
                 dateStart = item.Key;
                 dateEnd = item.Key;
-                // If not all tasks is completed should the first coming start of the incomplete tasks be the timeslot-start
+                //// If not all tasks is completed should the first coming start of the incomplete tasks be the timeslot-start
                 firstStart = null;
-                // If not all tasks is completed should the first coming end of the incomplete tasks be the timeslot-end
+                //// If not all tasks is completed should the first coming end of the incomplete tasks be the timeslot-end
                 firstEnd = null;
                 foreach (var k in j.Value)
                 {
@@ -236,7 +235,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     {
                         isCompleted = null;
 
-                        //If not completed check if start or end should be adjusted
+                        //// If not completed check if start or end should be adjusted
                         if (!firstStart.HasValue || firstStart > k.Scheduled.AddMinutes(-k.RangeInMinutesBefore))
                         {
                             firstStart = k.Scheduled.AddMinutes(-k.RangeInMinutesBefore);

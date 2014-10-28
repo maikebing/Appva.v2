@@ -255,11 +255,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 return this.NotFound();
             }
             var account = this.accountRepository.Get(this.User.Identity.Id());
-            //// FIXME: Remove this when app is updated
-            if (model.StatusId.IsEmpty() || model.StatusId.IsNull())
-            {
-                model.StatusId = "incomplete";
-            }
             switch (model.StatusId)
             {
                 case "incomplete":

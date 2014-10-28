@@ -128,7 +128,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             }
             var client = new Client(message.Name, message.Description, imageFileName, imageMimeType, message.AccessTokenLifetime, message.RefreshTokenLifetime, message.RedirectionEndpoint, ! message.IsConfidential.IsSelected, authorizationGrants, tenants, scopes);
             this.Persistence.Save(client.Activate());
-            return new DetailsClientId()
+            return new DetailsClientId
             {
                 Id = client.Id,
                 Slug = client.Slug.Name

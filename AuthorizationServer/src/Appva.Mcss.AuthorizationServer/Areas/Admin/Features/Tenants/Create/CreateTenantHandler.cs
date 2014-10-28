@@ -55,7 +55,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             {
                 this.imageProcessor.Save(message.Logotype, out fileName);
             }
-            var tenant = new Tenant(message.Identifier, message.HostName, message.Name, message.Description, fileName, message.ConnectionString);
+            var tenant = new Tenant(message.Identifier, message.HostName, message.Name, message.Description, fileName, message.ConnectionString).Activate();
             return new DetailsTenantId
             {
                 Id = (Guid) this.Persistence.Save(tenant),

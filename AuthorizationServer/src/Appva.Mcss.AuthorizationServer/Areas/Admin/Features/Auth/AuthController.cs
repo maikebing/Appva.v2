@@ -6,6 +6,7 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
 {
     #region Imports.
 
+    using System.Linq;
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.AuthorizationServer.Code;
@@ -85,12 +86,15 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
             Entities.User user;
             if (this.userService.AuthenticateWithPersonalIdentityNumber(request.UserName, request.Password, "oauth", out user))
             {
-                this.authenticationService.SignIn(user, true);
-                if (request.ReturnUrl.IsNotEmpty() && Url.IsLocalUrl(request.ReturnUrl))
+                if (user.Roles != null && user.Roles.Where(x => x.Key.Equals("admin_god")).Any())
                 {
-                    return Redirect(request.ReturnUrl);
+                    this.authenticationService.SignIn(user, true);
+                    if (request.ReturnUrl.IsNotEmpty() && Url.IsLocalUrl(request.ReturnUrl))
+                    {
+                        return Redirect(request.ReturnUrl);
+                    }
+                    return RedirectToAction("Dashboard", "Dashboard");
                 }
-                return RedirectToAction("Dashboard", "Dashboard");
             }
             ModelState.AddModelError(string.Empty, "Invalid Username or Password");
             return View(request);

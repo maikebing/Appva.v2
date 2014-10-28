@@ -32,6 +32,8 @@ namespace Appva.Mvc.Engines
         {
             "~/Features/{1}/{0}.cshtml",
             "~/Features/{1}/{0}/{0}.cshtml",
+            "~/Features/{1}/Partials/{0}.cshtml",
+            "~/Features/{1}/Partials/{0}/{0}.cshtml",
             "~/Features/Shared/{0}.cshtml"
         };
 
@@ -42,6 +44,8 @@ namespace Appva.Mvc.Engines
         {
             "~/Areas/{2}/Features/{1}/{0}.cshtml",
             "~/Areas/{2}/Features/{1}/{0}/{0}.cshtml",
+            "~/Areas/{2}/Features/{1}/Partials/{0}.cshtml",
+            "~/Areas/{2}/Features/{1}/Partials/{0}/{0}.cshtml",
             "~/Areas/{2}/Features/Shared/{0}.cshtml"
         };
 

@@ -6,7 +6,7 @@
 
   <!-- System classes. -->
   <!-- HTTP Request/Response Log. -->
-  <class name="Log" table="Logs">
+  <class name="Log" table="Logs" dynamic-update="true">
     <id name="Id">
       <generator class="guid.comb" />
     </id>
@@ -24,5 +24,26 @@
     <property name="IsException" />
     <property name="ExceptionType" />
     <property name="ExceptionSource" />
+  </class>
+
+  <!-- Resources. -->
+  <class name="Resource" table="Resources" dynamic-insert="true" dynamic-update="true">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <property name="Name" />
+    <property name="Description" />
+  </class>
+
+  <!-- Hearbeat. -->
+  <class name="Heartbeat" table="Heartbeats" dynamic-insert="true" dynamic-update="true">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <many-to-one name="Resource" column="ResourceId" class="Resource" />
   </class>
 </hibernate-mapping>

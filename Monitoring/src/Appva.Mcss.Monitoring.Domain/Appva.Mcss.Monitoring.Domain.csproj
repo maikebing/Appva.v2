@@ -39,7 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Heartbeat\Heartbeat.cs" />
     <Compile Include="Entities\Log\Log.cs" />
+    <Compile Include="Entities\Resource\Resource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

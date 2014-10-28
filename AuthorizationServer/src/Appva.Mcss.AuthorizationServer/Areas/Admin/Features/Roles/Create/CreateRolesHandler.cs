@@ -17,6 +17,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     using NHibernate.Criterion;
     using NHibernate.Transform;
     using Appva.Core.Extensions;
+    using Appva.Mvc.Html.Models;
 
     #endregion
 
@@ -49,7 +50,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             var permissions = this.Persistence.QueryOver<Permission>()
                 .Select(Projections.ProjectionList()
                     .Add(Projections.Property<Permission>(x => x.Id).WithAlias(() => tickable.Id))
-                    .Add(Projections.Property<Permission>(x => x.Name).WithAlias(() => tickable.Name))
+                    .Add(Projections.Property<Permission>(x => x.Name).WithAlias(() => tickable.Label))
                     .Add(Projections.Property<Permission>(x => x.Description).WithAlias(() => tickable.HelpText))
                     .Add(Projections.Property<Permission>(x => x.Context).WithAlias(() => tickable.Group))
                 )
@@ -93,11 +94,11 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
         /// <inheritdocs />
         public override Guid Handle(CreateRole message)
         {
-            if (message.Permissions.IsEmpty() || message.Permissions.Select(x => x.Selected).All(x => x != true))
+            if (message.Permissions.IsEmpty() || message.Permissions.Select(x => x.IsSelected).All(x => x != true))
             {
                 throw new ArgumentException("Permissions must be selected!");
             }
-            var permissionIds = message.Permissions.Where(x => x.Selected).Select(x => x.Id).ToArray();
+            var permissionIds = message.Permissions.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
             var permissions = this.Persistence.QueryOver<Permission>().Where(Restrictions.In(Projections.Property<Permission>(x => x.Id), permissionIds)).List();
             var role = new Role(message.Key, message.Name, message.Description, permissions);
             return (Guid) this.Persistence.Save(role);

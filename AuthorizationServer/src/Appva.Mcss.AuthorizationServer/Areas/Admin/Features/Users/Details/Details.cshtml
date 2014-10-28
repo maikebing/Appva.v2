@@ -40,9 +40,9 @@
             @Html.Action("DetailsUserRoles", new { id = Model.Id })
         </div>
         <div class="right-col">
-            <hr class="page-hr no-grid-gutter-h" />
+            <hr class="profile-content-hr no-grid-gutter-h" />
             <div class="content">
-                <table class="table">
+                <table class="table panel">
                     <tr>
                         <td>Personal Identity Number</td>
                         <td>@Model.PersonalIdentityNumber</td>
@@ -60,23 +60,8 @@
                         <td>@Model.MobilePhoneNumber</td>
                     </tr>
                 </table>
+                @Html.Action("DetailsUserTenants", new { id = Model.Id })
                 @Html.Action("DetailsUserAuthentications", new { id = Model.Id })
-                <table class="table">
-                    <tr>
-                        <td class="avatar avatar-35"></td>
-                        <td class="avatar-content">
-                            <p class="header">Tenant</p>
-                            <p class="description">Somthing</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="avatar avatar-35"></td>
-                        <td class="avatar-content">
-                            <p class="header">Tenant</p>
-                            <p class="description">Something</p>
-                        </td>
-                    </tr>
-                </table>
             </div>
         </div>
     </div>

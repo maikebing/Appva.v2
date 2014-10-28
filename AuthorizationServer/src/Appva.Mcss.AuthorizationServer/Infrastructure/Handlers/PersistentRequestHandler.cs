@@ -6,7 +6,6 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
 {
     #region Imports.
 
-    using System.Web;
     using Cqrs;
     using Persistence;
 
@@ -52,28 +51,6 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             get
             {
                 return this.persistenceContext;
-            }
-        }
-
-        /// <summary>
-        /// Returns whether or not the request is a post.
-        /// </summary>
-        protected bool IsPost
-        {
-            get
-            {
-                return HttpContext.Current.Request.HttpMethod.Equals("POST");
-            }
-        }
-
-        /// <summary>
-        /// Returns whether or not the request is a get.
-        /// </summary>
-        protected bool IsGet
-        {
-            get
-            {
-                return HttpContext.Current.Request.HttpMethod.Equals("GET");
             }
         }
 

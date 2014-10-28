@@ -75,21 +75,27 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
         /// <inheritdocs />
         public override Install Handle(Install message)
         {
+            var setting = this.Persistence.QueryOver<Setting>()
+                .Where(x => x.Key == "system.installed")
+                .SingleOrDefault();
+            var isInstalled = setting.IsNull() ? false : setting.Value.Equals("True");
             var isException = false;
             var exceptionMessage = string.Empty;
             try
             {
-                var tenants = this.CreateTenants();
-                var scopes = this.CreateScopes();
-                var grants = this.CreateAuthorizationGrants();
-                this.CreateClients(tenants, scopes, grants);
-                this.CreateResources(scopes);
-                var permissions = this.CreatePermissions();
-                var roles = this.CreateRoles(permissions);
-                this.CreateUsers(roles, tenants);
-                this.CreateMenu(permissions);
-                this.CreateSettings();
-                
+                if (!isInstalled)
+                {
+                    var tenants = this.CreateTenants();
+                    var scopes = this.CreateScopes();
+                    var grants = this.CreateAuthorizationGrants();
+                    this.CreateClients(tenants, scopes, grants);
+                    this.CreateResources(scopes);
+                    var permissions = this.CreatePermissions();
+                    var roles = this.CreateRoles(permissions);
+                    this.CreateUsers(roles, tenants);
+                    this.CreateMenu(permissions);
+                    this.CreateSettings();
+                }
             }
             catch (Exception e)
             {
@@ -227,7 +233,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             //// Users
             var user = new MenuLink("Users", "/admin/users/", 3, "fa-user", menu, null, permissions["ViewUsers"]);
             this.Persistence.Save(user);
-            this.Persistence.Save(new MenuLink("New user", "/admin/users/new", 0, null, menu, user, permissions["CreateUsers"]));
+            this.Persistence.Save(new MenuLink("New user", "/admin/user/new", 0, null, menu, user, permissions["CreateUsers"]));
             //// Roles
             var role = new MenuLink("Roles", "/admin/roles/", 4, "fa-tags", menu, null, permissions["ViewRoles"]);
             this.Persistence.Save(role);
@@ -252,7 +258,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             };
             foreach (var kv in settings)
             {
-                this.Persistence.Save(new Setting(kv.Key, kv.Value.ToString(), kv.Value.GetType()));
+                this.Persistence.Save(new Setting(kv.Key, kv.Value));
             }
         }
 

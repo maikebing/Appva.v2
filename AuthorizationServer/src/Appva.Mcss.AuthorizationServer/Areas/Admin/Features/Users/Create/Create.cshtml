@@ -29,7 +29,11 @@
     @Html.FormGroup(x => x.EmailAddress).AsteriskLabel("User E-mail address").TextBox().Validate().Build()
     @Html.FormGroup(x => x.MobilePhoneNumber).Label("User mobile telephone number").TextBox("Optional").Validate().Help("Used for 2fa authentication instead of E-mail").Build()
     @Html.Hr()
+    @Html.FormGroup(x => x.Password).AsteriskLabel("User password").TextBox().Validate().Build()
+    @Html.Hr()
     @Html.FormGroup(x => x.Roles).AsteriskLabel("User roles").CheckboxList().Validate().Build()
+    @Html.Hr()
+    @Html.FormGroup(x => x.Tenants).AsteriskLabel("User tenants").CheckboxList().Validate().Build()
     @Html.Hr(new { @class = "no-grid-gutter-h" })
     @Html.Submit("Create new user", new { @class = "btn-primary btn-lg" })
 }

@@ -1,9 +1,13 @@
 ﻿<!DOCTYPE html>
-<html>
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if IE 9]><html class="ie9 gt-ie8"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="gt-ie8 gt-ie9 not-ie">
+<!--<![endif]-->
     <head>
         @Html.Partial("Meta")
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/Areas/Admin/Content/Content.css")">
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/Areas/Admin/Content/SignIn.css")">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/Content.css")">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/SignIn.css")">
     </head>
     <body>
         <div class="signin-container">

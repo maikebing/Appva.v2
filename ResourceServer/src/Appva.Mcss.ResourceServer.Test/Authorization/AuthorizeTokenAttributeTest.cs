@@ -43,7 +43,7 @@ namespace Appva.Mcss.ResourceServer.Test.Authorization
         /// Granted scopes: 
         /// https://appvaapis.se/auth/resource
         /// </summary>
-        private static readonly string ClientCredentialsBearerToken = "gAAAABW7k6nU9GoC5mUAJASxfNTbykoMb7ecVwyCPE3HCluRFft5jshBSiwyDccVSXZV5loshfvCy3sbjRjO1x8Qt8nzayT58Z48xfIAfrhCXWKhB9NiBn9IHwtgiQCfZGetG3N3TUwin-qNrOmFaco5FQi_JVX4Ds73pSFnTwh7jLxIhAIAAIAAAAAAGtNFJHkCvpIAV9gI1Iu3nnc3skaQoAt9F5CDhmA0iR9USF-BxOTyj3K6LY48Tr-87pMxuv1Uf15uFFHjQ7B16LW_PfUaGu0CVeB2BdOGDuoC-r2L_jx3qjOI4u0hSHc9lH4RkMs7KjKrBtrhSp9smqoQ5HwAIaRYhwSpBKaOWDQsMIYxjLbj6p_AcCo1DQe5QeNt8P7kNxJ2i-8Lkef44IAaf2bhfeqM8Vt82PjbIiOPaKJTYaqb3v-mbm9v7qpryOsH5G2gzMxTk6msEo_o-YUGm63E5qqMjqbb7vYO-Xi2rNOmrY5aZVRHZGSxnFv3I6w7j9f2AoQLfZ7tGnP9Jwcy5G3ksy1Z44xGw00lJLSNmNdk9S6IbTCSH4RITR1o4BoLJpnSeWsS6EfjrMRR6f2GvDWW5zm706MVy-KS8wMumUOhJfqcO1FggcopfbzSkV3zjQcEyPqlMdGEizmkCdFBQ19_IFblC9FIIncmeZqM7gDUQK_CPXymmuRdjoxawvm32RVlGX5AfR-7zZlxz39NBuCSe8RBKEZmoB9wpyn0-xhMrxFmeg84UIgtVHBnB_f9kwWju61BucP1Nu15Mm-90muPxlOqwQmle10UN_j-b6ZkH2V3sUOyIPyIL03WpG5IuBTf6s3xY_cuBOhRuyGs7qyCnhsVvgFkxA2QYxkrAYrQBKZFRJOjuyv_G0wsbyxLRVR34PDkVBhiAhytW0ZRLr04g98fmBVD07rYncOro7RcK8LmKuoEs3SUagKybcUUy7kt_AdEGPvLGKDHsCLExiEY7dJqw7EwhnUpdnvXiMUGm5CWD1pHXvECPIJY9ehUjbZqmfEIkiQMs0HR";
+        private static readonly string ClientCredentialsBearerToken = "gAAAAFWO9bMlcK6Qxe38XgsPmHmNE2b2ltN4Pl6LpLQ81qiw02ieqxo-ezEA-PTvchqCHbJsvGnKVlWuajaG2U9-wSvmkH6NQ9r2gZZXR5Ya4RpASmuRYKr5CxQdBXXkPFCYh_zhZ_fGZEPmm-CjP8PGnLoP-IIXfqiZsXv7DrVPAGy7dAIAAIAAAABxlXZqPU0W5o9fyAdDORXnvK9lNhi6Ef2wLKtMPr2PMZ8PNlanwXUFrCx7acoi8-OQ9INEtp9zWojsBKOafLPM4EF9Jx-ffYdepnT8XFmQQEgGuJUCztFGv3sAaIWn4rj2o5UMwMVZ4w-RrLg2q2R3ipjw_LWqOy4TYh0AWFAYg6WqnnZL4W-N2aoCI969WG_Mz-YG36L6zZPmZK3r3t6RQwHQZ-iIPmbyiDqQZw678PwQ8vz41Uomg2YAmkRCJQqSV7bNaQW2jo01Dgcb2TdraTnY-_kwQcgEcWvGnyKwelff781FmSCnKVNp87uK8iwtUIeM66yo7EXEUi_9T6_btvryzXOZQHg6jGYo8fKf1GJq4MzTHDlngKGVhYgeY9nxAYxSd7F_B2F2zZj9CC_tGchT10JyUMB-68BGyJYNznePOvmswlgK_O905KsaNMLhiZH5Em1dqRg7pr4_cqVGxnDmfRiPLyJY6uEpNwh3cW-S9GaLI5l80MVzCEJ7uRd--OGTHkbe6LJwQnERPwEa77ogvrv4H_E4_wnVeQhJr3eUjSaOSz4828j30CovoGs6nvS1jfivDlMwQf5vzEdSVGRWH63AISsWrFZzlaqUY_VSjarCF7CkPgqXRPBXVOik_FnUJFRn15f9d1W5rQz-7QWgwSqjVMkba4Tx8EKMWnKJDuOE_3gXxpgsG1YXtDz_EpeBFRxr0bzItI7xwbfH-k-Sn4KTsq0T-7Bpnttg0ta10R_4IPe7IcnzAlUO7-kzkEp25kDCXHLmQXpkO8atV4lX2V2vuqsRXxqmLbLihnQQN6Zbuk7-R0K6gnBXdMQ";
         
         #endregion
 
@@ -118,7 +118,7 @@ namespace Appva.Mcss.ResourceServer.Test.Authorization
 
         /// <summary>
         /// Verifies that the bearer tokens are valid but the required scopes
-        /// are not granted
+        /// are not granted.
         /// </summary>
         /// <param name="testData">The data to test</param>
         [Theory, PropertyData("UnauthorizedTokenTestData")]

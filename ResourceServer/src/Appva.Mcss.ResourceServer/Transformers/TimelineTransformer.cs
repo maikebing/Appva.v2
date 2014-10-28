@@ -54,7 +54,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     }
                 }
             }
-            grouping.Entities = entities.OrderBy(x => x.DateTimeScheduled).ToList();
+            grouping.Entities = entities.OrderBy(x => x.DateTimeScheduled).ThenBy(x => x.DateTimeStart).ToList();
             return grouping;
         }
 
@@ -123,6 +123,10 @@ namespace Appva.Mcss.ResourceServer.Transformers
             CompletedDetailsModel isCompleted = new CompletedDetailsModel();
             DateTime dateStart = item.Key;
             DateTime dateEnd = item.Key;
+            // If not all tasks is completed should the first coming start of the incomplete tasks be the timeslot-start
+            DateTime? firstStart = null;
+            // If not all tasks is completed should the first coming end of the incomplete tasks be the timeslot-end
+            DateTime? firstEnd = null;
             foreach (var j in patientKv.Value)
             {
                 groups.Add(j.Key.Name);
@@ -136,6 +140,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     {
                         dateEnd = k.Scheduled.AddMinutes(k.RangeInMinutesBefore);
                     }
+
                     if (k.Delayed && (!k.DelayHandled))
                     {
                         hasDelays = true;
@@ -143,6 +148,17 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     if (!k.IsCompleted)
                     {
                         isCompleted = null;
+                        
+                        //If not completed check if start or end should be adjusted
+                        if (!firstStart.HasValue || firstStart > k.Scheduled.AddMinutes(-k.RangeInMinutesBefore))
+                        {
+                            firstStart = k.Scheduled.AddMinutes(-k.RangeInMinutesBefore);
+                        }
+                        if (!firstEnd.HasValue || firstEnd > k.Scheduled.AddMinutes(k.RangeInMinutesAfter))
+                        {
+                            firstEnd = k.Scheduled.AddMinutes(k.RangeInMinutesAfter);
+                        } 
+                        
                     }
                     if (k.IsCompleted && isCompleted != null)
                     {
@@ -160,8 +176,8 @@ namespace Appva.Mcss.ResourceServer.Transformers
             return new TimelineTaxonGroupingStrategyModel
             {
                 DateTimeScheduled = string.Format("{0:u}", item.Key),
-                DateTimeStart = string.Format("{0:u}", dateStart),
-                DateTimeEnd = string.Format("{0:u}", dateEnd),
+                DateTimeStart = string.Format("{0:u}", firstStart.GetValueOrDefault(dateStart)),
+                DateTimeEnd = string.Format("{0:u}", firstEnd.GetValueOrDefault(dateEnd)),
                 Patient = new
                 {
                     Id = patient.Id,
@@ -190,21 +206,27 @@ namespace Appva.Mcss.ResourceServer.Transformers
             var timelineObj = new List<TimelineTaxonGroupingStrategyModel>();
             DateTime dateStart = item.Key;
             DateTime dateEnd = item.Key;
+            DateTime? firstStart = null;
+            DateTime? firstEnd = null;
             foreach (var j in patientKv.Value)
             {
                 hasDelays = false;
                 isCompleted = new CompletedDetailsModel();
                 dateStart = item.Key;
                 dateEnd = item.Key;
+                // If not all tasks is completed should the first coming start of the incomplete tasks be the timeslot-start
+                firstStart = null;
+                // If not all tasks is completed should the first coming end of the incomplete tasks be the timeslot-end
+                firstEnd = null;
                 foreach (var k in j.Value)
                 {
                     if (dateStart > k.Scheduled.AddMinutes(-k.RangeInMinutesBefore))
                     {
                         dateStart = k.Scheduled.AddMinutes(-k.RangeInMinutesBefore);
                     }
-                    if (dateEnd < k.Scheduled.AddMinutes(k.RangeInMinutesAfter))
+                    if (dateEnd > k.Scheduled.AddMinutes(k.RangeInMinutesAfter) && !k.IsCompleted)
                     {
-                        dateEnd = k.Scheduled.AddMinutes(k.RangeInMinutesBefore);
+                        dateEnd = k.Scheduled.AddMinutes(k.RangeInMinutesAfter);
                     }
                     if (k.Delayed && (!k.DelayHandled) && (!k.IsCompleted))
                     {
@@ -213,6 +235,16 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     if (! k.IsCompleted)
                     {
                         isCompleted = null;
+
+                        //If not completed check if start or end should be adjusted
+                        if (!firstStart.HasValue || firstStart > k.Scheduled.AddMinutes(-k.RangeInMinutesBefore))
+                        {
+                            firstStart = k.Scheduled.AddMinutes(-k.RangeInMinutesBefore);
+                        }
+                        if (!firstEnd.HasValue || firstEnd > k.Scheduled.AddMinutes(k.RangeInMinutesAfter))
+                        {
+                            firstEnd = k.Scheduled.AddMinutes(k.RangeInMinutesAfter);
+                        } 
                     }
                     if (k.IsCompleted && isCompleted != null)
                     {
@@ -261,8 +293,8 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     timelineObj.Add(new TimelineTaxonGroupingStrategyModel
                     {
                         DateTimeScheduled = string.Format("{0:u}", item.Key),
-                        DateTimeStart = string.Format("{0:u}", dateStart),
-                        DateTimeEnd = string.Format("{0:u}", dateEnd),
+                        DateTimeStart = string.Format("{0:u}", firstStart.GetValueOrDefault(dateStart)),
+                        DateTimeEnd = string.Format("{0:u}", firstEnd.GetValueOrDefault(dateEnd)),
                         Categories = new List<string>() { j.Key.Name },
                         HasIncompleteTasks = hasDelays,
                         Patient = new 

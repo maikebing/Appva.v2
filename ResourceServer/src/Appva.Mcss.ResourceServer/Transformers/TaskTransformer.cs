@@ -78,7 +78,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 Description = task.Sequence.Description,
                 Id = task.Id,
                 SequenceId = task.Sequence.Id,
-                Inventory = GetInventory(task), //// TODO: Inventory has static reasons 
+                Inventory = GetInventory(task), //// TODO: Inventory has static reasons and static amounts
                 Name = task.Name,
                 Permissions = GetPermissions(task, user), 
                 Statuses = GetStatuses(task),
@@ -260,20 +260,29 @@ namespace Appva.Mcss.ResourceServer.Transformers
         {
             if (task.Schedule.ScheduleSettings.HasInventory)
             {
-                return new InventoryModel
-                { 
-                    Id = task.Sequence.Inventory.Id, 
-                    Value = task.Sequence.Inventory.CurrentLevel,
-                    Reasons = new List<string>
+                //// FIXME: Load available amounts for current inventory
+                var amounts = new List<double>();
+                for (double i = 0; i < 100; i++)
+                {
+                    amounts.Add(i);
+                }
+                    return new InventoryModel
                     {
-                        "Medicinering",
-                        "Tidigare uttag oanvändbart",
+                        Id = task.Sequence.Inventory.Id,
+                        Value = task.Sequence.Inventory.CurrentLevel,
+                        //// FIXME: Store reasons in Taxon and load reasons for current inventory
+                        Reasons = new List<string>
+                    {
+                        "Delning boende",
                         "Dosettdelning",
                         "Kassering",
-                        "Delning hos anna patient"
+                        "Utgången datum",
+                        "Utsatt av läkare",
+                        "Till annan brukare"
                     },
-                    Amounts = new List<double> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
-                };
+                        //// FIXME: Load available amounts for current inventory
+                        Amounts = amounts
+                    };
             }
             return null;
         }

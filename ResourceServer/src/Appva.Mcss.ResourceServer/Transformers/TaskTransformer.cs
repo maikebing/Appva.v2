@@ -276,7 +276,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                         "Delning boende",
                         "Dosettdelning",
                         "Kassering",
-                        "Utgången datum",
+                        "Utgånget datum",
                         "Utsatt av läkare",
                         "Till annan brukare"
                     },

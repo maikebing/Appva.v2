@@ -42,10 +42,9 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             var setting = this.Persistence.QueryOver<Setting>()
                 .Where(x => x.Key == "system.installed")
                 .SingleOrDefault();
-            var isInstalled = setting.IsNull() ? false : setting.Value.Equals("True");
             return new Install()
             {
-                IsInstalled = isInstalled
+                IsInstalled = setting.IsNotNull()
             };
         }
 
@@ -78,12 +77,11 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             var setting = this.Persistence.QueryOver<Setting>()
                 .Where(x => x.Key == "system.installed")
                 .SingleOrDefault();
-            var isInstalled = setting.IsNull() ? false : setting.Value.Equals("True");
             var isException = false;
             var exceptionMessage = string.Empty;
             try
             {
-                if (!isInstalled)
+                if (setting.IsNotNull())
                 {
                     var tenants = this.CreateTenants();
                     var scopes = this.CreateScopes();

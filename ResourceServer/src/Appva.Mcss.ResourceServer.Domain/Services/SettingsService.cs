@@ -94,7 +94,8 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
             {
                 this.Initialize(region);
             }
-            var value = Cache.Get(key, region);
+            key = region + "." + key;
+            var value = Cache.Get(key);
             if (value == null)
             {
                 var setting = this.persistenceContext.QueryOver<Setting>()
@@ -106,7 +107,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
                 else
                 {
                     this.Add(setting, region);
-                    value = Cache.Get(key, region);
+                    value = Cache.Get(key);
                 }
             }
             return (TValue) value;
@@ -123,7 +124,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
             }
             var value = JsonConvert.DeserializeObject(settingValue, setting.Type);
             return Cache.Add(
-                new CacheItem(setting.MachineName, value, regionName),
+                new CacheItem(regionName + "." + setting.MachineName, value),
                 new CacheItemPolicy
                 {
                     AbsoluteExpiration = DateTimeOffset.Now.AddDays(1),
@@ -153,7 +154,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
                     return tenant.Value;
                 }
             }
-            return null;
+            return "default";
         }
 
         /// <summary>

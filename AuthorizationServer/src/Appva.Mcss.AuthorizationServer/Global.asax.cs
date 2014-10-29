@@ -29,7 +29,7 @@ namespace Appva.Mcss.AuthorizationServer
         {
             //// FIXME: Remove web api!
             //// FIXME: NHibernateProfiler nuget!
-            NHibernateProfiler.Initialize();
+            //// NHibernateProfiler.Initialize();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(ApiRouteConfig.RegisterRoutes);

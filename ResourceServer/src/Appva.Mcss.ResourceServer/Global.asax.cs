@@ -20,7 +20,7 @@ namespace Appva.Mcss.ResourceServer
         /// <inheritdoc />
         protected void Application_Start()
         {
-            NHibernateProfiler.Initialize();
+            //NHibernateProfiler.Initialize();
             AutoFacConfig.Configure();
             GlobalConfiguration.Configure(WebApiConfig.Configure);
         }

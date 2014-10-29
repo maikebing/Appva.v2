@@ -105,7 +105,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
                 }
                 else
                 {
-                    this.Add(setting);
+                    this.Add(setting, region);
                     value = Cache.Get(key, region);
                 }
             }
@@ -126,7 +126,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
                 new CacheItem(setting.MachineName, value, regionName),
                 new CacheItemPolicy
                 {
-                    AbsoluteExpiration = DateTimeOffset.Now.AddDays(7),
+                    AbsoluteExpiration = DateTimeOffset.Now.AddDays(1),
                     Priority = CacheItemPriority.Default
                 });
         }

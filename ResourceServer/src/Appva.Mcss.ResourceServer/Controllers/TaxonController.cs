@@ -43,11 +43,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// </summary>
         private readonly IDeviceService deviceService;
 
-        /// <summary>
-        /// The <see cref="ISettingsService"/>.
-        /// </summary>
-        private readonly ISettingsService settingService;
-
         #endregion
 
         #region Constructor.
@@ -57,15 +52,12 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// </summary>
         /// <param name="taxonRepository">The <see cref="ITaxonRepository"/></param>
         /// <param name="deviceService">The <see cref="IDeviceService"/></param>
-        /// <param name="settingService">The <see cref="ISettingsService"/></param>
         public TaxonController(
             ITaxonRepository taxonRepository,
-            IDeviceService deviceService,
-            ISettingsService settingService)
+            IDeviceService deviceService)
         {
             this.taxonRepository = taxonRepository;
             this.deviceService = deviceService;
-            this.settingService = settingService;
         }
 
         #endregion

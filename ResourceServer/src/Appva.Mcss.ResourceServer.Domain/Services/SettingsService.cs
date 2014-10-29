@@ -10,8 +10,13 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Caching;
+    using System.Security.Claims;
+    using System.Security.Principal;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
+    using System.Web;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Domain.Entities;
     using Appva.Persistence;
     using Newtonsoft.Json;
@@ -34,11 +39,12 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         TValue Get<TValue>(string key, object defaultValue = null);
 
         /// <summary>
-        /// Adds a setting to the cache.
+        /// Adds a regionized setting to the cache.
         /// </summary>
-        /// <param name="setting">The <see cref="Segging"/></param>
+        /// <param name="setting">The <see cref="Setting"/></param>
+        /// <param name="region">Optional region</param>
         /// <returns>True if the <see cref="Setting"/> is successfully cached</returns>
-        bool Add(Setting setting);
+        bool Add(Setting setting, string region = null);
     }
 
     /// <summary>
@@ -49,19 +55,19 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         #region Variables.
 
         /// <summary>
+        /// The cache.
+        /// </summary>
+        private static readonly MemoryCache Cache = MemoryCache.Default;
+
+        /// <summary>
+        /// Whether or not the region cache has been initialized.
+        /// </summary>
+        private static readonly IList<string> InitializedTenants = new List<string>();
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>
         /// </summary>
         private readonly IPersistenceContext persistenceContext;
-
-        /// <summary>
-        /// The cache.
-        /// </summary>
-        private readonly MemoryCache cache;
-
-        /// <summary>
-        /// Whether or not the cache has been initiated.
-        /// </summary>
-        private bool isInitiated;
 
         #endregion
 
@@ -74,7 +80,6 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         public SettingsService(IPersistenceContext persistenceContext)
         {
             this.persistenceContext = persistenceContext;
-            this.cache = MemoryCache.Default;
         }
 
         #endregion
@@ -84,65 +89,45 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         /// <inheritdoc />
         public TValue Get<TValue>(string key, object defaultValue = null)
         {
-            var value = this.cache.Get(key);
+            var region = this.GetRegion();
+            if (! InitializedTenants.Contains(region))
+            {
+                this.Initialize(region);
+            }
+            var value = Cache.Get(key, region);
             if (value == null)
             {
-                if (!this.isInitiated)
+                var setting = this.persistenceContext.QueryOver<Setting>()
+                    .Where(x => x.MachineName == key).SingleOrDefault();
+                if (setting == null)
                 {
-                    this.Instantiate();
+                    return (defaultValue == null) ? default(TValue) : (TValue) defaultValue;
                 }
                 else
                 {
-                    var setting = this.persistenceContext.QueryOver<Setting>()
-                        .Where(x => x.MachineName == key).SingleOrDefault();
-                    if (setting == null)
-                    {
-                        if (defaultValue == null)
-                        {
-                            return default(TValue);
-                        }
-                        else
-                        {
-                            return (TValue) defaultValue;
-                        }
-                    }
-                    else
-                    {
-                        this.Add(setting);
-                    }
+                    this.Add(setting);
+                    value = Cache.Get(key, region);
                 }
             }
-            if (! this.cache.Contains(key))
-            {
-                if (defaultValue == null)
-                {
-                    return default(TValue);
-                }
-                else
-                {
-                    return (TValue) defaultValue;
-                }
-            }
-            else
-            {
-                return (TValue) this.cache.Get(key);
-            }
+            return (TValue) value;
         }
 
         /// <inheritdoc />
-        public bool Add(Setting setting)
+        public bool Add(Setting setting, string region = null)
         {
+            var regionName = region ?? this.GetRegion();
             var settingValue = setting.Value;
             if (setting.Type.Equals(typeof(string)))
             {
                 settingValue = string.Format("'{0}'", setting.Value);
             }
             var value = JsonConvert.DeserializeObject(settingValue, setting.Type);
-            return this.cache.Add(
-                new CacheItem(setting.MachineName, value),
+            return Cache.Add(
+                new CacheItem(setting.MachineName, value, regionName),
                 new CacheItemPolicy
                 {
-                    Priority = CacheItemPriority.NotRemovable
+                    AbsoluteExpiration = DateTimeOffset.Now.AddDays(7),
+                    Priority = CacheItemPriority.Default
                 });
         }
 
@@ -151,16 +136,38 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         #region Private Methods.
 
         /// <summary>
-        /// Initialize the settings cache.
+        /// Returns the region.
+        /// FIXME: This should not be here. Fix this somehow without breaking namespaces and 
+        /// creating a mess in the code.
         /// </summary>
-        private void Instantiate()
+        /// <returns>The region</returns>
+        private string GetRegion()
+        {
+            IIdentity identity = HttpContext.Current.IsNull() ? Thread.CurrentPrincipal.Identity : HttpContext.Current.User.Identity;
+            if (identity.IsNotNull())
+            {
+                var claimsIdentity = identity as ClaimsIdentity;
+                var tenant = claimsIdentity.Claims.Where(x => x.Type == "https://schemas.appva.se/identity/claims/tenant").SingleOrDefault();
+                if (tenant.IsNotNull())
+                {
+                    return tenant.Value;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Initialize the settings region cache.
+        /// </summary>
+        /// <param name="region">The region</param>
+        private void Initialize(string region)
         {
             var settings = this.persistenceContext.QueryOver<Setting>().List();
             foreach (var setting in settings)
             {
-                this.Add(setting);
+                this.Add(setting, region);
             }
-            this.isInitiated = true;
+            InitializedTenants.Add(region);
         }
 
         #endregion

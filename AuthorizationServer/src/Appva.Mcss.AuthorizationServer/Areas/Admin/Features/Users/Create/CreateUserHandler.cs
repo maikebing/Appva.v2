@@ -147,7 +147,8 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             this.Persistence.Save(new UserAuthentication(user, new PersonalIdentityNumberPasswordAuthentication { LastLoginAt = DateTime.Now, Password = new Credentials(message.Password).Password }, uam));
             return new DetailsUserId
             {
-                Id = user.Id
+                Id = user.Id,
+                Slug = user.Slug.Name
             };
         }
 

@@ -109,6 +109,7 @@ namespace Appva.Mcss.AuthorizationServer.Application
             //// FIXME: Add MintAccessToken in stand alone service
             //// FIXME: BuildClaims should be separated
             Requires.NotNull(request, "request");
+            Requires.ValidState(request.ClientAuthenticated, "Not authenticated");
             var client = this.persistenceContext.QueryOver<Client>()
                 .Where(x => x.Identifier == request.ClientIdentifier)
                 .And(x => x.IsActive == true)
@@ -137,9 +138,8 @@ namespace Appva.Mcss.AuthorizationServer.Application
             var accessTokenClaim = new AccessTokenClaim();
             accessTokenClaim.Claims.Add("https://schemas.appva.se/identity/claims/client", client.Identifier);
             accessTokenClaim.Claims.Add("https://schemas.appva.se/identity/claims/audience", resource.Slug.Name);
-            accessTokenClaim.Claims.Add("https://schemas.appva.se/identity/claims/tenant", client.Tenants.Count == 1 ? client.Tenants.First().Id.ToString() : null);
+            accessTokenClaim.Claims.Add("https://schemas.appva.se/identity/claims/tenant", request.ExtraData["tenant"]);
             token.ExtraData.Add("claims", JsonConvert.SerializeObject(accessTokenClaim));
-            //// token.ExtraData.Add("test", request.ExtraData["x"]);
         }
 
         /// <inheritdoc />
@@ -156,26 +156,37 @@ namespace Appva.Mcss.AuthorizationServer.Application
         /// <inheritdoc />
         public AutomatedUserAuthorizationCheckResponse CheckAuthorizeResourceOwnerCredentialGrant(IAccessTokenRequest request, string userName, string password)
         {
-            //// FIXME: CheckAuthorizeResourceOwnerCredentialGrant Service call.
-            //// FIXME: Add claims here!
-            var isApproved = false;
-            var client = this.persistenceContext.QueryOver<Client>()
-                .Where(x => x.Identifier == request.ClientIdentifier)
-                .SingleOrDefault();
-            Requires.ValidState(client.IsNotNull(), "Invalid client identifier");
-            var grantedScopes = new HashSet<string>(client.Scopes.Select(x => x.Key).ToList());
-            isApproved = request.Scope.IsSubsetOf(grantedScopes);
             User user = null;
-            this.userService.AuthenticateWithPersonalIdentityNumber(userName, password, "oauth", out user);
-            if (user.IsNull())
+            var client = this.persistenceContext.QueryOver<Client>()
+                .Where(x => x.IsActive == true)
+                .And(x => x.Identifier == request.ClientIdentifier)
+                .SingleOrDefault();
+            //// The client must not be null.
+            Requires.ValidState(client.IsNotNull(), "Invalid client identifier");
+            //// In these cases we have to use a global client.
+            Requires.ValidState(client.IsGlobal, "Client is not global");
+            //// The client must have permission for ResourceOwnerPasswordCredentials.
+            if (! client.AuthorizationGrants.Where(x => x.Key.Equals("ResourceOwnerPasswordCredentials")).Any())
             {
-                isApproved = false;
+                return new AutomatedUserAuthorizationCheckResponse(request, false, null);
             }
-            if (isApproved)
+            //// The client must have the proper scopes.
+            var grantedScopes = new HashSet<string>(client.Scopes.Select(x => x.Key).ToList());
+            if (! request.Scope.IsSubsetOf(grantedScopes))
             {
-                this.persistenceContext.Save(new Authorization(client, userName, request.Scope.ToList(), DateTime.UtcNow.AddYears(100)));
+                return new AutomatedUserAuthorizationCheckResponse(request, false, null);
             }
-            return new AutomatedUserAuthorizationCheckResponse(request, isApproved, userName);
+            //// The user must be authenticated.
+            if (! this.userService.AuthenticateWithPersonalIdentityNumber(userName, password, "oauth", out user))
+            {
+                return new AutomatedUserAuthorizationCheckResponse(request, false, null);
+            }
+            //// The user must only have 1 tenant.
+            Requires.ValidState(user.Tenants.IsNotNull() && user.Tenants.Count == 1, "A user can not have more than one tenant");
+            var lifetime = client.RefreshTokenLifetime <= 0 ? DateTime.UtcNow.AddYears(100) : DateTime.UtcNow.AddMinutes(client.RefreshTokenLifetime);
+            request.ExtraData.Add("tenant", user.Tenants.First().Id.ToString());
+            this.persistenceContext.Save(new Authorization(client, userName, request.Scope.ToList(), lifetime));
+            return new AutomatedUserAuthorizationCheckResponse(request, true, userName);
         }
 
         /// <inheritdoc />
@@ -184,12 +195,26 @@ namespace Appva.Mcss.AuthorizationServer.Application
             //// FIXME: CheckAuthorizeClientCredentialsGrant Service call
             //// FIXME: Add claims here!
             var client = this.persistenceContext.QueryOver<Client>()
-                .Where(x => x.Identifier == request.ClientIdentifier)
+                .Where(x => x.IsActive == true)
+                .And(x => x.Identifier == request.ClientIdentifier)
                 .SingleOrDefault();
+            //// The client must not be null. 
             Requires.ValidState(client.IsNotNull(), "Invalid client identifier");
+            //// The client must have permission for ClientCredentials.
+            if (!client.AuthorizationGrants.Where(x => x.Key.Equals("ClientCredentials")).Any())
+            {
+                return new AutomatedAuthorizationCheckResponse(request, false);
+            }
+            //// The client must only have 1 tenant.
+            Requires.ValidState(client.Tenants.IsNotNull() && client.Tenants.Count == 1, "A client can not have more than one tenant in this context");
+            //// The client must have the proper scopes.
             var grantedScopes = new HashSet<string>(client.Scopes.Select(x => x.Key).ToList());
-            var isApproved = request.Scope.IsSubsetOf(grantedScopes);
-            return new AutomatedAuthorizationCheckResponse(request, isApproved);
+            if (! request.Scope.IsSubsetOf(grantedScopes))
+            {
+                return new AutomatedAuthorizationCheckResponse(request, false);
+            }
+            request.ExtraData.Add("tenant", client.Tenants.First().Id.ToString());
+            return new AutomatedAuthorizationCheckResponse(request, true);
         }
 
         #endregion

@@ -17,6 +17,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Application;
     using Appva.Mcss.ResourceServer.Application.Authorization;
+    using Appva.Mcss.ResourceServer.Domain.Constants;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Appva.Mcss.ResourceServer.Domain.Services;
     using Appva.WebApi.Filters;
@@ -255,11 +256,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 return this.NotFound();
             }
             var account = this.accountRepository.Get(this.User.Identity.Id());
-            //// FIXME: Remove this when app is updated
-            if (model.StatusId.IsEmpty() || model.StatusId.IsNull())
-            {
-                model.StatusId = "incomplete";
-            }
             switch (model.StatusId)
             {
                 case "incomplete":
@@ -394,7 +390,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                     Type = types
                 });
             }
-            var historyLength = this.settingsService.Get<int>("MCSS.Device.Security.HistoryLength", 7);
+            var historyLength = this.settingsService.Get<int>(Settings.AllowedHistorySize, 7);
             return this.Ok(new TimelineGroupModel<BaseTaskModel>()
             {
                 Entities = retval,

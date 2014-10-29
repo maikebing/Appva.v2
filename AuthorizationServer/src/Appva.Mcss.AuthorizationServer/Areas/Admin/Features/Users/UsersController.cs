@@ -89,7 +89,7 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost, Validate, ValidateAntiForgeryToken, Route("user/new"), Dispatch("Create", "UsersAuthentications")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Route("user/new"), Dispatch("Details", "Users")]
         public ActionResult Create(CreateUser request)
         {
             return View();

@@ -125,11 +125,17 @@
     <Content Include="App_Data\Persistence.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="App_Data\Persistence.WIN-TSHTNQFBTHH.config">
+    <None Include="App_Data\Persistence.WIN-OLL39JT07TP.config">
+      <DependentUpon>Persistence.config</DependentUpon>
+    </None>
+    <None Include="App_Data\Persistence.RICHARDHENRIKSS.config">
       <DependentUpon>Persistence.config</DependentUpon>
     </None>
     <Content Include="App_Data\Application.config" />
-    <None Include="App_Data\Application.WIN-TSHTNQFBTHH.config">
+    <None Include="App_Data\Application.WIN-OLL39JT07TP.config">
+      <DependentUpon>Application.config</DependentUpon>
+    </None>
+    <None Include="App_Data\Application.RICHARDHENRIKSS.config">
       <DependentUpon>Application.config</DependentUpon>
     </None>
     <None Include="Properties\PublishProfiles\Resource Server Release.pubxml" />

@@ -11,8 +11,6 @@ namespace Appva.Mcss.AuthorizationServer
     using System.Web.Http;
     using System.Web.Mvc;
     using Application;
-    using Appva.Mcss.AuthorizationServer.Infrastructure;
-    using Appva.Mcss.AuthorizationServer.Infrastructure.WebApi;
     using Appva.OAuth;
     using Appva.Persistence.Autofac;
     using Autofac;
@@ -24,11 +22,9 @@ namespace Appva.Mcss.AuthorizationServer
     using Domain.Services;
     using DotNetOpenAuth.Messaging.Bindings;
     using DotNetOpenAuth.OAuth2;
-    using HibernatingRhinos.Profiler.Appender.NHibernate;
     using Microsoft.Owin;
     using Mvc.Imaging;
     using Owin;
-    using Persistence;
     using Persistence.Providers;
 
     #endregion

@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.ResourceServer.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{77E9C558-E8E9-49D4-AA8B-70C928BCFE83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Azure", "Appva.Azure.PushNotifications\Appva.Azure.csproj", "{6366C860-2558-478B-BDE1-D2928B1B3AC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{4EBA3854-8C4C-432E-927C-5E025FE0668E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EBA3854-8C4C-432E-927C-5E025FE0668E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EBA3854-8C4C-432E-927C-5E025FE0668E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6366C860-2558-478B-BDE1-D2928B1B3AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6366C860-2558-478B-BDE1-D2928B1B3AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6366C860-2558-478B-BDE1-D2928B1B3AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6366C860-2558-478B-BDE1-D2928B1B3AC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

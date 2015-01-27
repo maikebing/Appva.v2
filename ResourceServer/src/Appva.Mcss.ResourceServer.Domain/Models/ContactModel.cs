@@ -6,6 +6,7 @@ namespace Appva.Mcss.ResourceServer.Models
 {
     #region Imports
 
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
 
@@ -41,7 +42,7 @@ namespace Appva.Mcss.ResourceServer.Models
         /// Account to contact in the dialog.
         /// </summary>
         [JsonProperty(PropertyName = "accounts")]
-        public List<AccountModel> Accounts 
+        public IDictionary<Guid, string> Accounts 
         { 
             get; 
             set; 

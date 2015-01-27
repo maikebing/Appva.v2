@@ -28,7 +28,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="stdStatusItems">TODO: stdStatusItems</param>
         /// <param name="user">TODO: user</param>
         /// <returns>TODO: returns</returns>
-        public static dynamic ToTaskModel(IList<Task> tasks, DateTime time, IList<Taxon> stdStatusItems, Account user)
+        public static dynamic ToTaskModel(IList<Task> tasks, DateTime time, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null)
         {
             var retval = new Dictionary<string, TimeslotModel>();
             foreach (var task in tasks) 
@@ -44,7 +44,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     };
                     retval.Add(schedule, timeslotModel);
                 }
-                retval[schedule].Tasks.Add(ToTaskModel(task, stdStatusItems, user));
+                retval[schedule].Tasks.Add(ToTaskModel(task, stdStatusItems, user, nurses));
             }
 
             return retval.Select(x => x.Value).ToList();
@@ -57,7 +57,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="stdStatusItems">TODO: stdStatusItems</param>
         /// <param name="user">TODO: user</param>
         /// <returns>TODO: returns</returns>
-        public static HydratedTaskModel ToTaskModel(Task task, IList<Taxon> stdStatusItems, Account user)
+        public static HydratedTaskModel ToTaskModel(Task task, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null)
         {
             List<string> dateTimeInterval = new List<string>();
             if (task.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar)
@@ -82,7 +82,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 Name = task.Name,
                 Permissions = GetPermissions(task, user), 
                 Statuses = GetStatuses(task),
-                StatusItems = GetStatusItems(task, stdStatusItems, ref contacts),
+                StatusItems = GetStatusItems(task, stdStatusItems, ref contacts, nurses),
                 Type = new List<string>(), //// FIXME: Task type
                 Refill = GetRefillModel(task.Sequence),
                 Completed = GetCompletedStatus(task),
@@ -99,7 +99,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="stdStatusItems">TODO: stdStatusItems</param>
         /// <param name="contacts">TODO: contacts></param>
         /// <returns>TODO: returns</returns>
-        private static List<StatusItemModel> GetStatusItems(Task task, IList<Taxon> stdStatusItems, ref Dictionary<string, ContactModel> contacts)
+        private static List<StatusItemModel> GetStatusItems(Task task, IList<Taxon> stdStatusItems, ref Dictionary<string, ContactModel> contacts, IList<Account> nurses = null)
         {
             var items = task.Schedule.ScheduleSettings.StatusTaxons.Count > 0 ? task.Schedule.ScheduleSettings.StatusTaxons : stdStatusItems;
             if (task.Schedule.ScheduleSettings.NurseConfirmDeviation)
@@ -110,7 +110,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     retval.Add(TaxonTransformer.ToStatusItemModel(item, task.Schedule.ScheduleSettings.Id.ToString()));
                     if (! contacts.ContainsKey(task.Schedule.ScheduleSettings.Id.ToString())) 
                     {
-                        contacts.Add(task.Schedule.ScheduleSettings.Id.ToString(), CreateContactModel(task.Schedule.ScheduleSettings));
+                        contacts.Add(task.Schedule.ScheduleSettings.Id.ToString(), CreateContactModel(task.Schedule.ScheduleSettings, nurses));
                     }
                 }
                 return retval;
@@ -124,14 +124,16 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// </summary>
         /// <param name="scheduleSettings">TODO: scheduleSettings</param>
         /// <returns>TODO: returns</returns>
-        private static ContactModel CreateContactModel(ScheduleSettings scheduleSettings)
+        private static ContactModel CreateContactModel(ScheduleSettings scheduleSettings, IList<Account> nurses = null)
         {
             var stdMessage = string.Format("<h2>Kontakta sjuksköterska</h2><form method='post' action='#'><div class='text'><p>Du måste kontakta sjuksköterska vid avvikelse.");
-            var message = scheduleSettings.NurseConfirmDeviationMessage.IsNotEmpty() ? scheduleSettings.NurseConfirmDeviationMessage : stdMessage; 
+            var message = scheduleSettings.NurseConfirmDeviationMessage.IsNotEmpty() ? scheduleSettings.NurseConfirmDeviationMessage : stdMessage;
+            IDictionary<Guid,string> accounts = scheduleSettings.SpecificNurseConfirmDeviation ? AccountTransformer.ToSimpleList(nurses) : null;
             return new ContactModel
             { 
                 Title = message.Substring(4, message.IndexOf("</h2>")-4),
-                Text = message.Substring(message.IndexOf("<p>")+3)
+                Text = message.Substring(message.IndexOf("<p>")+3),
+                Accounts = accounts
             };
         }
 
@@ -210,7 +212,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                             if (delegation.Active && !delegation.Pending && delegation.StartDate <= DateTime.Now && delegation.EndDate >= DateTime.Now)
                             {
                                 //// Check if delegation is the same as needed for task
-                                if (delegation.Taxon.Equals(task.Taxon))
+                                if (delegation.Taxon.Equals(task.Sequence.Taxon))
                                 {
                                     //// Check if delegation is guilty for current patient
                                     if (delegation.IsGlobal || delegation.Patients.Contains(task.Patient))

@@ -80,5 +80,15 @@ namespace Appva.Mcss.ResourceServer.Models
             get; 
             set; 
         }
+
+        /// <summary>
+        /// If someone was contacted because of a deviation
+        /// </summary>
+        [JsonProperty(PropertyName = "contacted_id")]
+        public Guid ContactedId
+        {
+            get;
+            set;
+        }
     }
 }

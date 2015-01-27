@@ -203,6 +203,10 @@
       <Project>{5603a0f9-3666-4fc9-9af9-b21c7432ba02}</Project>
       <Name>Appva.WebApi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Appva.Azure.PushNotifications\Appva.Azure.csproj">
+      <Project>{6366c860-2558-478b-bde1-d2928b1b3ac0}</Project>
+      <Name>Appva.Azure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.ResourceServer.Application\Appva.Mcss.ResourceServer.Application.csproj">
       <Project>{31d08438-70b1-4844-8159-b5acd0f6589a}</Project>
       <Name>Appva.Mcss.ResourceServer.Application</Name>

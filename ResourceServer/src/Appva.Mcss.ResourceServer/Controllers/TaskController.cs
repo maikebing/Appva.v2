@@ -176,6 +176,9 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.NotFound();
             }
+
+            Account contactedAccount = model.ContactedId.IsNotEmpty() ? this.accountRepository.Get(model.ContactedId) : null;
+            
             var taxon = this.taxonRepository.Get(model.StatusId);
             if (taxon.IsNull())
             {
@@ -188,6 +191,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 inventoryTransactions.AddRange(model.InventoryIds.Select(transaction => this.inventoryTransactionItemRepository.Get(transaction)));
             }
             var task = this.taskRepository.GetBySequenceAndScheduledDate(model.SequenceId, model.DateTimeScheduled);
+            
             if (task.IsNull())
             {
                 DateTime? startDate = null;
@@ -220,7 +224,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
                     Absent = sequence.Absent,
                     CanRaiseAlert = sequence.CanRaiseAlert,
                     Overview = sequence.Overview,
-                    PauseAnyAlerts = sequence.PauseAnyAlerts
+                    PauseAnyAlerts = sequence.PauseAnyAlerts,
+                    DeviationConfirmedBy = contactedAccount
                 };
                 this.taskRepository.Save(task);
             } 
@@ -232,6 +237,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 task.CompletedDate = DateTime.Now;
                 task.StatusTaxon = taxon;
                 task.InventoryTransactions = inventoryTransactions;
+                task.DeviationConfirmedBy = contactedAccount;
             }
             foreach (var transaction in inventoryTransactions)
             {
@@ -370,7 +376,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 }
                 retval.Add(new BaseTaskModel
                 {
-                    Id = ! task.OnNeedBasis ? task.Id : task.Sequence.Id, //// TODO: ?type_ids=need_based skall ge alla tillgänglig vid behovs ordinationer ?type_ids=need_based&status_ids=completed skall ge alla signerad vid behov
+                    Id = task.Id,
                     Category = task.Schedule.ScheduleSettings.Name,
                     Completed = task.IsCompleted ? new CompletedDetailsModel
                     { 

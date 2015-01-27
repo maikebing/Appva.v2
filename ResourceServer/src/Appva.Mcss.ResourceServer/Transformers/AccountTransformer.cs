@@ -6,6 +6,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
 {
     #region Imports
 
+    using System;
     using System.Collections.Generic;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Models;
@@ -60,6 +61,16 @@ namespace Appva.Mcss.ResourceServer.Transformers
             foreach (var account in accounts)
             {
                 retval.Add(ToSingle(account));
+            }
+            return retval;
+        }
+
+        public static IDictionary<Guid, string> ToSimpleList(IList<Account> accounts)
+        {
+            var retval = new Dictionary<Guid, string>();
+            foreach (var account in accounts)
+            {
+                retval.Add(account.Id, account.FullName);
             }
             return retval;
         }

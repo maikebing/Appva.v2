@@ -105,7 +105,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         {
             if (typeIds.IsNull() || typeIds.Count.Equals(0)) 
             {
-                typeIds = new List<string> { "ordination" };
+                typeIds = new List<string> { "ordination", "calendar" };
             }
             var tasks = this.timelineService.FindByTaxon(id, date, date.LastInstantOfDay(), typeIds);
             var patients = this.patientRepository.Search(string.Empty, id, string.Empty);

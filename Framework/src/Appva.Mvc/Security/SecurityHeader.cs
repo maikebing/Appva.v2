@@ -1,7 +1,7 @@
 ﻿// <copyright file="SecurityHeader.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:your@email.address">Your name</a></author>
+// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
 namespace Appva.Mvc.Security
 {
     #region Imports.
@@ -11,7 +11,8 @@ namespace Appva.Mvc.Security
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-using System.Web.Mvc;
+    using System.Web.Mvc;
+    using Appva.Core.Extensions;
 
     #endregion
 
@@ -67,7 +68,11 @@ using System.Web.Mvc;
         /// <inheritdoc />
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            filterContext.HttpContext.Response.AppendHeader(this.field, this.value);
+            var headerValue = this.value.IsNotEmpty() ? this.value : this.DefaultValue;
+            if (headerValue.IsNotEmpty())
+            {
+                filterContext.HttpContext.Response.AppendHeader(this.field, headerValue);
+            }
             base.OnResultExecuted(filterContext);
         }
 

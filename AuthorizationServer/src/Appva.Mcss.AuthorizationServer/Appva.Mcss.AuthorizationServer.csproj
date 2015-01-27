@@ -417,6 +417,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\DispatchAttribute.cs" />
+    <Compile Include="Infrastructure\TestEventListener.cs" />
     <Compile Include="Infrastructure\WebApi\DispatchApiController.cs" />
     <Compile Include="Infrastructure\WebApi\PersistenceAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

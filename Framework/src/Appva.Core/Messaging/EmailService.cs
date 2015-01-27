@@ -6,8 +6,10 @@ namespace Appva.Core.Messaging
 {
     #region Imports.
 
+    using System;
     using System.Net.Mail;
     using System.Threading.Tasks;
+    using Appva.Logging;
 
     #endregion
 
@@ -23,23 +25,44 @@ namespace Appva.Core.Messaging
     /// </summary>
     public sealed class EmailService : IEmailService
     {
+        #region Variables.
+
+        /// <summary>
+        /// Logging for <see cref="EmailMessage"/>.
+        /// </summary>
+        private static readonly ILog Logger = LogProvider.For<EmailMessage>();
+
+        #endregion
+
         #region IMessageService Members.
 
         /// <inheritdoc />
         public void Send(IMessage message)
         {
-            using (var client = new SmtpClient())
+            try
             {
-                client.Send(message as EmailMessage);
+                using (var client = new SmtpClient())
+                {
+                    client.Send(message as EmailMessage);
+                }
+            } catch (Exception ex)
+            {
+                Logger.ErrorException("An exception occured in <EmailService>", ex);
             }
         }
 
         /// <inheritdoc />
         public async Task SendAsync(IMessage message)
         {
-            using (var client = new SmtpClient())
+            try
             {
-                await client.SendMailAsync(message as EmailMessage);
+                using (var client = new SmtpClient())
+                {
+                    await client.SendMailAsync(message as EmailMessage);
+                }
+            } catch (Exception ex)
+            {
+                Logger.ErrorException("An exception occured in <EmailService>", ex);
             }
         }
 

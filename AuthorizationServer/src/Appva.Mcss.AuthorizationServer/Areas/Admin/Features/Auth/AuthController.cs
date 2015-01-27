@@ -17,12 +17,14 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
     using Appva.Core.Extensions;
     using Entities = Appva.Mcss.AuthorizationServer.Domain.Entities;
     using Appva.Mcss.AuthorizationServer.Domain.Services;
+    using Appva.Mvc.Security;
 
     #endregion
 
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
+    [ContentSecurityPolicy, StrictTransportSecurity, XssProtection, ContentTypeOptions]
     public class AuthController : AdminController
     {
         #region Variables.

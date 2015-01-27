@@ -11,6 +11,7 @@ namespace Appva.Core.Messaging
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
+    using Appva.Logging;
     using Extensions;
 
     #endregion
@@ -31,7 +32,12 @@ namespace Appva.Core.Messaging
         /// The URL format.
         /// </summary>
         private const string UriFormat = "https://www.smsteknik.se/Member/SMSConnectDirect/SendSMSv3.asp?id={0}&user={1}&pass={2}";
-        
+
+        /// <summary>
+        /// Logging for <see cref="EmailMessage"/>.
+        /// </summary>
+        private static readonly ILog Logger = LogProvider.For<SmsService>();
+
         /// <summary>
         /// The SMS Teknik endpoint URL.
         /// </summary>
@@ -109,9 +115,9 @@ namespace Appva.Core.Messaging
                     await responseStream.CopyToAsync(memoryStream);
                 }
             }
-            catch (WebException)
+            catch (Exception ex)
             {
-                //// TODO: logging.
+                Logger.ErrorException("An exception occured in <SmsService>", ex);
             }
             finally
             {

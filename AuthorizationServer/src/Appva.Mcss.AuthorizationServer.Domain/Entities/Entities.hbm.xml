@@ -11,8 +11,8 @@
       <generator class="guid.comb" />
     </id>
     <property name="IsActive" />
-    <property name="CreatedAt" />
-    <property name="UpdatedAt" />
+    <property name="CreatedAt" type="Timestamp" />
+    <property name="UpdatedAt" type="Timestamp" />
     <component name="Slug" class="Slug">
       <property name="Name" column="Slug" />
     </component>
@@ -52,8 +52,8 @@
     <many-to-one name="Client" column="ClientId" class="Client" />
     <property name="UserIdentifier" />
     <property name="Scope" />
-    <property name="CreatedAt" />
-    <property name="ExpiresAt" />
+    <property name="CreatedAt" type="Timestamp" />
+    <property name="ExpiresAt" type="Timestamp" />
   </class>
   
   <!-- Authorization Grants -->
@@ -86,8 +86,8 @@
       <generator class="guid.comb" />
     </id>
     <property name="IsActive" />
-    <property name="CreatedAt" />
-    <property name="UpdatedAt" />
+    <property name="CreatedAt" type="Timestamp" />
+    <property name="UpdatedAt" type="Timestamp" />
     <component name="Slug" class="Slug">
       <property name="Name" column="Slug" />
     </component>
@@ -135,8 +135,8 @@
       <generator class="guid.comb" />
     </id>
     <property name="IsActive" />
-    <property name="CreatedAt" />
-    <property name="UpdatedAt" />
+    <property name="CreatedAt" type="Timestamp" />
+    <property name="UpdatedAt" type="Timestamp" />
     <component name="Slug" class="Slug">
       <property name="Name" column="Slug" />
     </component>
@@ -163,8 +163,8 @@
       <generator class="guid.comb" />
     </id>
     <property name="IsActive" />
-    <property name="CreatedAt" />
-    <property name="UpdatedAt" />
+    <property name="CreatedAt" type="Timestamp" />
+    <property name="UpdatedAt" type="Timestamp" />
     <component name="Slug" class="Slug">
       <property name="Name" column="Slug" />
     </component>

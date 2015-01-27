@@ -26,11 +26,6 @@ namespace Appva.Mvc.Html.Extensions.Elements
         #region Variables.
 
         /// <summary>
-        /// The checkbox label text.
-        /// </summary>
-        private readonly string labelText;
-
-        /// <summary>
         /// The html attributes.
         /// </summary>
         private readonly object htmlAttributes;

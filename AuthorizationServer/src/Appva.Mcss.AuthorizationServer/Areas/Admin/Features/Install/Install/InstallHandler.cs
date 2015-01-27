@@ -77,34 +77,32 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             var setting = this.Persistence.QueryOver<Setting>()
                 .Where(x => x.Key == "system.installed")
                 .SingleOrDefault();
-            var isException = false;
-            var exceptionMessage = string.Empty;
+            if (setting.IsNotNull())
+            {
+                return new Install();
+            }
             try
             {
-                if (setting.IsNotNull())
-                {
-                    var tenants = this.CreateTenants();
-                    var scopes = this.CreateScopes();
-                    var grants = this.CreateAuthorizationGrants();
-                    this.CreateClients(tenants, scopes, grants);
-                    this.CreateResources(scopes);
-                    var permissions = this.CreatePermissions();
-                    var roles = this.CreateRoles(permissions);
-                    this.CreateUsers(roles, tenants);
-                    this.CreateMenu(permissions);
-                    this.CreateSettings();
-                }
+                var tenants = this.CreateTenants();
+                var scopes = this.CreateScopes();
+                var grants = this.CreateAuthorizationGrants();
+                this.CreateClients(tenants, scopes, grants);
+                this.CreateResources(scopes);
+                var permissions = this.CreatePermissions();
+                var roles = this.CreateRoles(permissions);
+                this.CreateUsers(roles, tenants);
+                this.CreateMenu(permissions);
+                this.CreateSettings();
             }
             catch (Exception e)
             {
-                isException = true;
-                exceptionMessage = e.StackTrace;
+                return new Install()
+                {
+                    IsException = true,
+                    ExceptionMessage = e.StackTrace
+                };
             }
-            return new Install()
-            {
-                IsException = isException,
-                ExceptionMessage = exceptionMessage
-            };
+            return new Install();
         }
 
         private IList<Tenant> CreateTenants()

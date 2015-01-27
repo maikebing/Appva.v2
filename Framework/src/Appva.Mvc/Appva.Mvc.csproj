@@ -105,6 +105,12 @@
     <Compile Include="Imaging\ImageProcessor.cs" />
     <Compile Include="Imaging\ImageResizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\ContentSecurityPolicyAttribute.cs" />
+    <Compile Include="Security\ContentTypeOptionsAttribute.cs" />
+    <Compile Include="Security\FrameOptionsAttribute.cs" />
+    <Compile Include="Security\SecurityHeader.cs" />
+    <Compile Include="Security\StrictTransportSecurityAttribute.cs" />
+    <Compile Include="Security\XssProtectionAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

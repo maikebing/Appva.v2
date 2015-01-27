@@ -150,7 +150,7 @@
       <HintPath>..\..\..\packages\DotNetOpenAuth.OpenIdOAuth.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenIdOAuth.dll</HintPath>
     </Reference>
     <Reference Include="HibernatingRhinos.Profiler.Appender">
-      <HintPath>..\..\..\Tools\Profiler\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+      <HintPath>..\..\..\Packages\NHibernateProfiler.2.0.2238.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -263,6 +263,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Validation.2.0.4.14103\lib\portable-windows8+net40+sl5+wp8+wpa81+wp81+MonoAndroid+MonoTouch\Validation.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivator">
+      <HintPath>..\..\..\Packages\WebActivator.1.4\lib\NETFramework40\WebActivator.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
@@ -271,6 +274,9 @@
     <Content Include="Content\css\oauth-errors.css" />
     <Content Include="Global.asax" />
     <Content Include="App_Data\persistence.json" />
+    <None Include="App_Data\persistence.WIN-OLL39JT07TP.json">
+      <DependentUpon>persistence.json</DependentUpon>
+    </None>
     <Content Include="Areas\Admin\Features\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Features\Shared\Layout.cshtml" />
     <Content Include="Areas\Admin\Features\Shared\Meta.cshtml" />

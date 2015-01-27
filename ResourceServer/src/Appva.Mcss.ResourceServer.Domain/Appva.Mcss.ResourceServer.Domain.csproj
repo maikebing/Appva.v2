@@ -59,6 +59,7 @@
     <Compile Include="Models\CompletedDetailsModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\DelegationModel.cs" />
+    <Compile Include="Models\UpdateDeviceModel.cs" />
     <Compile Include="Models\DeviceModel.cs" />
     <Compile Include="Models\HydratedTaskModel.cs" />
     <Compile Include="Models\IGroupingStrategy.cs" />

@@ -154,6 +154,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.NotFound();
             }
+            if(!transaction.Active)
+            {
+                //// TODO: Should not return 200 ok. Probably 500 or something, needs to be fixed in app. Can't delete an deleted inventory-transaction
+                return this.Ok();
+            }
             transaction.Active = false;
             switch (transaction.Operation)
             {

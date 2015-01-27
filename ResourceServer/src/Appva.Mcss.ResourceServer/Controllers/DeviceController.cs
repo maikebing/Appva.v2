@@ -10,6 +10,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System;
     using System.Collections.Generic;
     using System.Web.Http;
+    using Appva.Azure;
     using Appva.Core.Extensions;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Application;
@@ -147,6 +148,12 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.InternalServerError(new Exception("No client found, attempting to rollback!"));
             }
+            if (deviceModel.RemoteMessagingId.IsNotEmpty())
+            {
+                var tags = new List<string>() { "deviceId:" + device.Id.ToString() };
+                device.AzurePushId = Appva.Azure.PushNotifications.Messaging.PushNotifications.RegisterDevice(deviceModel.RemoteMessagingId, tags);
+                device.PushUuid = deviceModel.RemoteMessagingId;
+            }
             return this.Ok(new
             {
                 Id = device.Id,
@@ -154,6 +161,27 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 ClientIdentifier = client.Identifier,
                 ClientSecret = client.Secret
             });
+        }
+
+        [AuthorizeToken(Scope.ReadWrite)]
+        [HttpPost, Validate, Route("{id}/update")]
+        public IHttpActionResult Update(Guid id, UpdateDeviceModel model)
+        {
+            var device = this.deviceRepository.Get(id);
+            if (model.RemoteMessagingId.IsNotNull())
+            {
+                if (device.AzurePushId.IsEmpty())
+                {
+                    var tags = new List<string>() { "deviceId:" + device.Id.ToString() };
+                    device.AzurePushId = Appva.Azure.PushNotifications.Messaging.PushNotifications.RegisterDevice(model.RemoteMessagingId, tags);
+                }
+                else 
+                {
+                    Appva.Azure.PushNotifications.Messaging.PushNotifications.UpdateDevice(device.AzurePushId, model.RemoteMessagingId);
+                }
+                device.PushUuid = model.RemoteMessagingId;
+            }
+            return this.Ok();
         }
 
         #endregion

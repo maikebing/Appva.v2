@@ -29,7 +29,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ILog"/> for <see cref="TaskController"/>.
+        /// The <see cref="ILog"/> for <see cref="TaxonController"/>.
         /// </summary>
         private static readonly ILog Log = LogManager.GetLogger<TaskController>();
 

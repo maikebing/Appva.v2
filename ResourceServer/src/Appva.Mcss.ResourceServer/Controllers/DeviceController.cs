@@ -19,6 +19,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Appva.Repository;
     using Appva.WebApi.Filters;
+    using Common.Logging;
     using Models;
     using Transformers;
 
@@ -31,6 +32,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
     public class DeviceController : ApiController
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="ILog"/> for <see cref="DeviceController"/>.
+        /// </summary>
+        private static readonly ILog Log = LogManager.GetLogger<DeviceController>();
 
         /// <summary>
         /// The <see cref="ITenantService"/>.
@@ -151,7 +157,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             if (deviceModel.RemoteMessagingId.IsNotEmpty())
             {
                 var tags = new List<string>() { "deviceId:" + device.Id.ToString() };
-                device.AzurePushId = Appva.Azure.PushNotifications.Messaging.PushNotifications.RegisterDevice(deviceModel.RemoteMessagingId, tags);
+                device.AzurePushId = Appva.Azure.PushNotifications.RegisterDevice(deviceModel.RemoteMessagingId, tags);
                 device.PushUuid = deviceModel.RemoteMessagingId;
             }
             return this.Ok(new
@@ -163,24 +169,64 @@ namespace Appva.Mcss.ResourceServer.Controllers
             });
         }
 
+        /// <summary>
+        /// Update a device
+        /// </summary>
+        /// <param name="id">The <see cref="Device"/> id.</param>
+        /// <param name="model">The update model</param>
+        /// <returns>Http 200</returns>
         [AuthorizeToken(Scope.ReadWrite)]
         [HttpPost, Validate, Route("{id}/update")]
         public IHttpActionResult Update(Guid id, UpdateDeviceModel model)
         {
+            Log.Debug("Device id is " + id);
+            var device = this.deviceRepository.Get(id);
+            Log.Debug("Remote messaging id is " + model.RemoteMessagingId);
+            if (model.RemoteMessagingId.IsNotNull() && device.PushUuid != model.RemoteMessagingId)
+            {
+                if (device.AzurePushId.IsEmpty())
+                {
+                    Log.Debug("Adding to Azure");
+                    var tags = new List<string>() { "deviceId:" + device.Id.ToString() };
+                    device.AzurePushId = Appva.Azure.PushNotifications.RegisterDevice(model.RemoteMessagingId, tags);
+                }
+                else 
+                {
+                    Log.Debug("Updating id in Azure");
+                    Appva.Azure.PushNotifications.UpdateDevice(device.AzurePushId, model.RemoteMessagingId);
+                }
+                device.PushUuid = model.RemoteMessagingId;
+            }
+            return this.Ok();
+        }
+
+        /// <summary>
+        /// Test-funktion för att debugga push
+        /// TODO: Remove on launch
+        /// </summary>
+        /// <param name="id">The Device id</param>
+        /// <returns>Http 200</returns>
+        [AuthorizeToken(Scope.ReadWrite)]
+        [HttpGet, Validate, Route("{id}/push")]
+        public IHttpActionResult Update(Guid id)
+        {
+            var model = new UpdateDeviceModel();
+            model.RemoteMessagingId = "997187ed6249c5d62215179c8493be32bc7a81e5b9fe9a5bfa01abbfccfa13f3";
             var device = this.deviceRepository.Get(id);
             if (model.RemoteMessagingId.IsNotNull())
             {
                 if (device.AzurePushId.IsEmpty())
                 {
                     var tags = new List<string>() { "deviceId:" + device.Id.ToString() };
-                    device.AzurePushId = Appva.Azure.PushNotifications.Messaging.PushNotifications.RegisterDevice(model.RemoteMessagingId, tags);
+                    device.AzurePushId = Appva.Azure.PushNotifications.RegisterDevice(model.RemoteMessagingId, tags);
                 }
                 else 
                 {
-                    Appva.Azure.PushNotifications.Messaging.PushNotifications.UpdateDevice(device.AzurePushId, model.RemoteMessagingId);
+                    Appva.Azure.PushNotifications.UpdateDevice(device.AzurePushId, model.RemoteMessagingId);
                 }
                 device.PushUuid = model.RemoteMessagingId;
             }
+            this.deviceRepository.Update(device);
             return this.Ok();
         }
 

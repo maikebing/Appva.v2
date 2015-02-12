@@ -158,6 +158,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Transformers\AccountTransformer.cs" />
     <Compile Include="Transformers\DelegationTransformer.cs" />
     <Compile Include="Transformers\DeviceTransformer.cs" />
+    <Compile Include="Transformers\NotificationTransformer.cs" />
     <Compile Include="Transformers\PatientTransformer.cs" />
     <Compile Include="Transformers\TaskTransformer.cs" />
     <Compile Include="Transformers\TaxonTransformer.cs" />
@@ -184,6 +186,10 @@
     <ProjectReference Include="..\..\..\..\Appva.web\Mcss\Infrastructure\Appva.Mcss.Utils\Appva.Mcss.Utils\Appva.Mcss.Utils.csproj">
       <Project>{21c8a633-11be-4ea7-a6c1-be78f40ec36f}</Project>
       <Name>Appva.Mcss.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Azure\Appva.Azure.csproj">
+      <Project>{6366c860-2558-478b-bde1-d2928b1b3ac0}</Project>
+      <Name>Appva.Azure</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
       <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
@@ -208,10 +214,6 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.WebApi\Appva.WebApi.csproj">
       <Project>{5603a0f9-3666-4fc9-9af9-b21c7432ba02}</Project>
       <Name>Appva.WebApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Appva.Azure.PushNotifications\Appva.Azure.csproj">
-      <Project>{6366c860-2558-478b-bde1-d2928b1b3ac0}</Project>
-      <Name>Appva.Azure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.ResourceServer.Application\Appva.Mcss.ResourceServer.Application.csproj">
       <Project>{31d08438-70b1-4844-8159-b5acd0f6589a}</Project>

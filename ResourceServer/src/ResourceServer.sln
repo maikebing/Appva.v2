@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Core", "..\..\Framework\src\Appva.Core\Appva.Core.csproj", "{56D99634-8D47-4B88-A057-EE24BCCE546A}"
 EndProject
@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.ResourceServer.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{77E9C558-E8E9-49D4-AA8B-70C928BCFE83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Azure", "Appva.Azure.PushNotifications\Appva.Azure.csproj", "{6366C860-2558-478B-BDE1-D2928B1B3AC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Azure", "..\..\Framework\src\Appva.Azure\Appva.Azure.csproj", "{6366C860-2558-478B-BDE1-D2928B1B3AC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

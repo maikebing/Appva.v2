@@ -6,6 +6,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
 {
     #region Imports.
 
+    using System.Collections.Generic;
     using Appva.Persistence;
     using Appva.Repository;
     using Mcss.Domain.Entities;
@@ -32,6 +33,13 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         /// <param name="password">The account password</param>
         /// <returns><see cref="Account"/></returns>
         Account VerifyCredentialsByPersonalIdentityNumber(string personalIdentityNumber, string password);
+
+        /// <summary>
+        /// Returns all accounts with a specified role.
+        /// </summary>
+        /// <param name="machineName"></param>
+        /// <returns></returns>
+        IList<Account> GetAccountsByRole(string machineName);
     }
 
     /// <summary>
@@ -68,6 +76,15 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
             return Where(x => x.UniqueIdentifier == personalIdentityNumber)
                 .And(x => x.Password == password)
                 .SingleOrDefault();
+        }
+
+        /// <inheritdoc />
+        public IList<Account> GetAccountsByRole(string machineName)
+        {
+            return Where(x => x.Active)
+                .JoinQueryOver<Role>(x => x.Roles)
+                    .Where(r => r.MachineName == machineName)
+                .List();
         }
 
         #endregion

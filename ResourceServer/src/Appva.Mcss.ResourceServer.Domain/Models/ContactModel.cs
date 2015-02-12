@@ -42,7 +42,7 @@ namespace Appva.Mcss.ResourceServer.Models
         /// Account to contact in the dialog.
         /// </summary>
         [JsonProperty(PropertyName = "accounts")]
-        public IDictionary<Guid, string> Accounts 
+        public IList<AccountModel> Accounts 
         { 
             get; 
             set; 

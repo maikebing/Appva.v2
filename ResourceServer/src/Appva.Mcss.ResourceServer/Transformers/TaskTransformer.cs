@@ -27,6 +27,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="time">TODO: time</param>
         /// <param name="stdStatusItems">TODO: stdStatusItems</param>
         /// <param name="user">TODO: user</param>
+        /// <param name="nurses">TODO: nurses</param>
         /// <returns>TODO: returns</returns>
         public static dynamic ToTaskModel(IList<Task> tasks, DateTime time, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null)
         {
@@ -56,6 +57,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="task">TODO: task</param>
         /// <param name="stdStatusItems">TODO: stdStatusItems</param>
         /// <param name="user">TODO: user</param>
+        /// <param name="nurses">TODO: nurses</param>
         /// <returns>TODO: returns</returns>
         public static HydratedTaskModel ToTaskModel(Task task, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null)
         {
@@ -98,6 +100,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="task">TODO: task</param>
         /// <param name="stdStatusItems">TODO: stdStatusItems</param>
         /// <param name="contacts">TODO: contacts></param>
+        /// <param name="nurses">TODO: nurses</param>
         /// <returns>TODO: returns</returns>
         private static List<StatusItemModel> GetStatusItems(Task task, IList<Taxon> stdStatusItems, ref Dictionary<string, ContactModel> contacts, IList<Account> nurses = null)
         {
@@ -123,12 +126,13 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// FIXME: if scheduleSettings.SpecificNurseConfirm shall Accounts be populated with accounts to contact
         /// </summary>
         /// <param name="scheduleSettings">TODO: scheduleSettings</param>
+        /// <param name="nurses">TODO: nurses</param>
         /// <returns>TODO: returns</returns>
         private static ContactModel CreateContactModel(ScheduleSettings scheduleSettings, IList<Account> nurses = null)
         {
             var stdMessage = string.Format("<h2>Kontakta sjuksköterska</h2><form method='post' action='#'><div class='text'><p>Du måste kontakta sjuksköterska vid avvikelse.");
             var message = scheduleSettings.NurseConfirmDeviationMessage.IsNotEmpty() ? scheduleSettings.NurseConfirmDeviationMessage : stdMessage;
-            IDictionary<Guid,string> accounts = scheduleSettings.SpecificNurseConfirmDeviation ? AccountTransformer.ToSimpleList(nurses) : null;
+            IList<AccountModel> accounts = scheduleSettings.SpecificNurseConfirmDeviation ? AccountTransformer.ToList(nurses) : null;
             return new ContactModel
             { 
                 Title = message.Substring(4, message.IndexOf("</h2>")-4),

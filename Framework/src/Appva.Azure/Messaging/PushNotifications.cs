@@ -2,16 +2,16 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author><a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a></author>
-namespace Appva.Azure.PushNotifications.Messaging
+namespace Appva.Azure
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Configuration;
     using Microsoft.ServiceBus.Notifications;
 
     #endregion
@@ -24,11 +24,9 @@ namespace Appva.Azure.PushNotifications.Messaging
         #region Static fields
 
         /// <summary>
-        /// An instance of <see cref="PushNotifications"/>
+        /// The azure notificationhub
         /// </summary>
-        public static PushNotifications Instance = new PushNotifications();
-
-        private static NotificationHubClient hub { get; set; }
+        private static NotificationHubClient Hub { get; set; }
 
         #endregion
 
@@ -40,7 +38,7 @@ namespace Appva.Azure.PushNotifications.Messaging
         public PushNotifications()
         {
             ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["azureNotificationHub"];
-            hub = NotificationHubClient.CreateClientFromConnectionString(connectionString.ConnectionString, connectionString.ProviderName);
+            Hub = NotificationHubClient.CreateClientFromConnectionString(connectionString.ConnectionString, connectionString.ProviderName);
         }
 
         #endregion
@@ -50,14 +48,15 @@ namespace Appva.Azure.PushNotifications.Messaging
         /// <summary>
         /// Register a new device in the notification hub and returns the Registration-id in the hub
         /// </summary>
-        /// <param name="pushId"></param>
-        /// <param name="tags"></param>
-        /// <returns></returns>
+        /// <param name="pushId">The Pushid</param>
+        /// <param name="tags">List of tags</param>
+        /// <returns>The Azure registration id</returns>
         public static string RegisterDevice(string pushId, IList<string> tags)
         {
             RegistrationDescription reg;
-            try {
-                var task = hub.CreateAppleNativeRegistrationAsync(pushId, tags);
+            try 
+            {
+                var task = Hub.CreateAppleNativeRegistrationAsync(pushId, tags);
                 reg = task.Result;
             }
             catch (ArgumentException)
@@ -71,24 +70,51 @@ namespace Appva.Azure.PushNotifications.Messaging
         /// <summary>
         /// Updates an already registered iOS-device
         /// </summary>
-        /// <param name="regId"></param>
-        /// <param name="pushId"></param>
-        /// <param name="tags"></param>
-        /// <returns></returns>
+        /// <param name="regId">The Azure registration id</param>
+        /// <param name="pushId">The Pushid</param>
+        /// <param name="tags">List of tags</param>
+        /// <returns>If success, true</returns>
         public static bool UpdateDevice(string regId, string pushId, IList<string> tags = null)
         {
-            AppleRegistrationDescription device = hub.GetRegistrationAsync<AppleRegistrationDescription>(regId).Result;
+            AppleRegistrationDescription device = Hub.GetRegistrationAsync<AppleRegistrationDescription>(regId).Result;
 
-            if (pushId != null && pushId != "")
+            if (pushId != null && pushId != string.Empty)
             {
                 device.DeviceToken = pushId;
             }
 
             try
             {
-                var reg = hub.CreateOrUpdateRegistrationAsync(device).Result;
+                var reg = Hub.CreateOrUpdateRegistrationAsync(device).Result;
             } 
             catch (ArgumentException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Sends notifications to given tags
+        /// </summary>
+        /// <param name="devices">List of device id</param>
+        /// <param name="payload">The push payload</param>
+        /// <returns>If success, true</returns>
+        public static bool SendPush(List<string> devices, string payload)
+        {
+            List<string> tags = new List<string>();
+            foreach (var d in devices)
+            {
+                tags.Add(string.Format("deviceId:{0}", d));
+            }
+            NotificationOutcome result = null;
+            try
+            {
+                var send = Hub.SendAppleNativeNotificationAsync(payload, tags);
+                result = send.Result;
+            }
+            catch (Exception)
             {
                 return false;
             }

@@ -135,7 +135,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
             }
             var taxons = this.taxonRepository.Search(null, true, new List<string> { "SST" });
             var account = this.accountRepository.Get(this.User.Identity.Id());
-            return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, taxons, account));
+            var nurses = this.accountRepository.GetAccountsByRole("TITLE_N");
+            return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, taxons, account, nurses));
         }
 
         /// <summary>
@@ -154,7 +155,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
             var account = this.accountRepository.Get(this.User.Identity.Id());
             var taxons = this.taxonRepository.Search(null, true, new List<string> { "SST" });
             var tasks = this.taskService.ListTasksByPatient(patientId, time, time);
-            return this.Ok(TaskTransformer.ToTaskModel(tasks, time, taxons, account));
+            var nurses = this.accountRepository.GetAccountsByRole("_TITLE_N");
+            return this.Ok(TaskTransformer.ToTaskModel(tasks, time, taxons, account, nurses));
         }
 
         /// <summary>

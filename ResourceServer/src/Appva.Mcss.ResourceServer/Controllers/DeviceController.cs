@@ -15,16 +15,14 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System.Collections.Generic;
     using System.Web.Http;
     using Appva.Apis.TenantServer;
-    using Appva.Azure;
     using Appva.Core.Extensions;
+    using Appva.Logging;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Application;
     using Appva.Mcss.ResourceServer.Application.Authorization;
-    using Appva.Mcss.ResourceServer.Application.Persistence;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Appva.Repository;
     using Appva.WebApi.Filters;
-    using Common.Logging;
     using Models;
     using Transformers;
 
@@ -41,7 +39,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <summary>
         /// The <see cref="ILog"/> for <see cref="DeviceController"/>.
         /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger<DeviceController>();
+        private static readonly ILog Log = LogProvider.For<DeviceController>();
 
         /// <summary>
         /// The <see cref="ITenantClient"/>.
@@ -184,9 +182,9 @@ namespace Appva.Mcss.ResourceServer.Controllers
         [HttpPost, Validate, Route("{id}/update")]
         public IHttpActionResult Update(Guid id, UpdateDeviceModel model)
         {
-            Log.Debug("Device id is " + id);
+            Log.DebugFormat("Device id is {0}", id);
             var device = this.deviceRepository.Get(id);
-            Log.Debug("Remote messaging id is " + model.RemoteMessagingId);
+            Log.DebugFormat("Remote messaging id is {0}", model.RemoteMessagingId);
             if (model.RemoteMessagingId.IsNotNull() && device.PushUuid != model.RemoteMessagingId)
             {
                 if (device.AzurePushId.IsEmpty())

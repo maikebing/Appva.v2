@@ -1,7 +1,9 @@
 ﻿// <copyright file="SettingsService.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.ResourceServer.Domain.Services
 {
     #region Imports.
@@ -12,9 +14,7 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
     using System.Runtime.Caching;
     using System.Security.Claims;
     using System.Security.Principal;
-    using System.Text;
     using System.Threading;
-    using System.Threading.Tasks;
     using System.Web;
     using Appva.Core.Extensions;
     using Appva.Mcss.Domain.Entities;

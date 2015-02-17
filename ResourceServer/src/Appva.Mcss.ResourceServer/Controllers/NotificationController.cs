@@ -1,22 +1,20 @@
 // <copyright file="NotificationController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:richard.henrikssonappva.se">Richard Henriksson</a></author>
+// <author>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+// </author>
 namespace Appva.Mcss.ResourceServer.Controllers
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Web.Http;
+    using Appva.Logging;
     using Appva.Mcss.ResourceServer.Application;
     using Appva.Mcss.ResourceServer.Application.Authorization;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Appva.Mcss.ResourceServer.Transformers;
-    using Common.Logging;
 
     #endregion
 
@@ -31,7 +29,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <summary>
         /// The <see cref="ILog"/> for <see cref="NotificationController"/>.
         /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger<NotificationController>();
+        private static readonly ILog Log = LogProvider.For<NotificationController>();
 
         /// <summary>
         /// The <see cref="ITaskRepository"/>.

@@ -1,9 +1,15 @@
 ﻿// <copyright file="TaskController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a></author>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-// <author><a href="mailto:christoffer.rosenqvist@invativa.se">Christoffer Rosenqvist</a></author>
+// <author>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+// </author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
+// <author>
+//     <a href="mailto:christoffer.rosenqvist@invativa.se">Christoffer Rosenqvist</a>
+// </author>
 namespace Appva.Mcss.ResourceServer.Controllers
 {
     #region Imports.
@@ -14,6 +20,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System.Linq;
     using System.Web.Http;
     using Appva.Core.Extensions;
+    using Appva.Logging;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Application;
     using Appva.Mcss.ResourceServer.Application.Authorization;
@@ -21,7 +28,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Appva.Mcss.ResourceServer.Domain.Services;
     using Appva.WebApi.Filters;
-    using Common.Logging;
     using Models;
     using Transformers;
 
@@ -38,7 +44,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <summary>
         /// The <see cref="ILog"/> for <see cref="TaskController"/>.
         /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger<TaskController>();
+        private static readonly ILog Log = LogProvider.For<TaskController>();
 
         /// <summary>
         /// The <see cref="ITaskRepository"/>.
@@ -272,9 +278,9 @@ namespace Appva.Mcss.ResourceServer.Controllers
                     {
                         var transaction = this.inventoryService.RedoInventoryWithdrawal(task, account);
                         task.InventoryTransactions.Add(transaction);
-                        Log.Info(x => x("User: {0} ({1}) readded {2} units to inventory {3} by transaction {4}", account.FullName, account.Id, transaction.Value, transaction.Inventory.Id, transaction.Id));
+                        Log.InfoFormat("User: {0} ({1}) readded {2} units to inventory {3} by transaction {4}", account.FullName, account.Id, transaction.Value, transaction.Inventory.Id, transaction.Id);
                     }
-                    Log.Info(x => x("User: {0} ({1}) changed status of task {2} to incomplete", account.FullName, account.Id, id));
+                    Log.InfoFormat("User: {0} ({1}) changed status of task {2} to incomplete", account.FullName, account.Id, id);
                     break;
             }
             this.taskRepository.Update(task);

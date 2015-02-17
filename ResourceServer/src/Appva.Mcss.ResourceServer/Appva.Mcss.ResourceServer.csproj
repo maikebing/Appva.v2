@@ -52,22 +52,11 @@
     <Reference Include="Autofac.Integration.WebApi.Owin">
       <HintPath>..\..\..\Packages\Autofac.WebApi2.Owin.3.2.0\lib\net45\Autofac.Integration.WebApi.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Log4Net1211">
-      <HintPath>..\..\..\Packages\Common.Logging.Log4Net1211.2.2.0\lib\net40\Common.Logging.Log4Net1211.dll</HintPath>
-    </Reference>
     <Reference Include="HibernatingRhinos.Profiler.Appender">
       <HintPath>..\..\..\Packages\NHibernateProfiler.2.0.2238.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\Packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>..\..\..\Packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin">
@@ -161,6 +150,7 @@
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
@@ -173,6 +163,7 @@
     <Compile Include="Transformers\AccountTransformer.cs" />
     <Compile Include="Transformers\DelegationTransformer.cs" />
     <Compile Include="Transformers\DeviceTransformer.cs" />
+    <Compile Include="Transformers\NotificationTransformer.cs" />
     <Compile Include="Transformers\PatientTransformer.cs" />
     <Compile Include="Transformers\TaskTransformer.cs" />
     <Compile Include="Transformers\TaxonTransformer.cs" />

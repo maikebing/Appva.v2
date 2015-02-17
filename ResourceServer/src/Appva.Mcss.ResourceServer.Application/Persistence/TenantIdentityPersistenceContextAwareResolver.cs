@@ -8,9 +8,6 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web;
     using Appva.Logging;
     using Appva.Persistence;
@@ -52,10 +49,10 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         /// <inheritdoc />
         public override ISessionFactory Resolve()
         {
-            Log.Debug("Resolving <ISessionFactory> from <DefaultPersistenceContextAwareResolver>");
             var datasource = this.Datasource as IMultiTenantDatasource;
-            var tenantId = HttpContext.Current.User.Identity.Tenant();
-            var sessionFactory = datasource.Lookup(tenantId.ToString());
+            var id = HttpContext.Current.User.Identity.Tenant();
+            var sessionFactory = datasource.Lookup(id.ToString());
+            Log.DebugFormat("Resolving <ISessionFactory> from <DefaultPersistenceContextAwareResolver> for tenant id {0}", id);
             return sessionFactory;
         }
 

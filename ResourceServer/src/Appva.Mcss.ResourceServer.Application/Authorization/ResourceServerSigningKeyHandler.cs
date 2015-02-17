@@ -1,18 +1,15 @@
 ﻿// <copyright file="ResourceServerSigningKeyHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.ResourceServer.Application.Authorization
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.Configuration;
-    using System.Linq;
     using System.Security.Cryptography;
-    using System.Text;
-    using System.Threading.Tasks;
     using Appva.Core.Extensions;
 
     #endregion

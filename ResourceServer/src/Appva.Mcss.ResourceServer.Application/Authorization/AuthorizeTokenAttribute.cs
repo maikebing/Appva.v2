@@ -1,7 +1,9 @@
 ﻿// <copyright file="AuthorizeTokenAttribute.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.ResourceServer.Application.Authorization
 {
     #region Imports.
@@ -19,8 +21,8 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
     using System.Web.Http.Controllers;
     using Appva.Core.Configuration;
     using Appva.Core.Extensions;
+    using Appva.Logging;
     using Appva.Mcss.ResourceServer.Application.Configuration;
-    using Common.Logging;
     using DotNetOpenAuth.OAuth2;
     using Newtonsoft.Json;
 
@@ -51,7 +53,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// <summary>
         /// The logger for <see cref="AuthorizeTokenAttribute"/>.
         /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger<AuthorizeTokenAttribute>();
+        private static readonly ILog Log = LogProvider.For<AuthorizeTokenAttribute>();
 
         /// <summary>
         /// The <see cref="ResourceServerConfiguration"/>.
@@ -150,7 +152,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
                 if (! accessToken.Scope.Overlaps(this.scopes))
                 {
                     actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-                    Log.Error(x => x("Missing Scopes! Required: {0}, Granted: {1}", this.scopes, accessToken.Scope));
+                    Log.ErrorFormat("Missing Scopes! Required: {0}, Granted: {1}", this.scopes, accessToken.Scope);
                     return;
                 }
                 var principal = resourceServer.GetPrincipal(request);
@@ -168,7 +170,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
             }
             catch (Exception ex)
             {
-                Log.Info("Bad request or unauthorized", ex);
+                Log.InfoException("Bad request or unauthorized", ex);
                 actionContext.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 return;
             }

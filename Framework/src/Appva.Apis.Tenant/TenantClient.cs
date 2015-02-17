@@ -27,11 +27,6 @@ namespace Appva.Apis.TenantServer
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ITenantServerConfiguration"/>.
-        /// </summary>
-        private readonly ITenantServerConfiguration configuration;
-
-        /// <summary>
         /// The re-usable <see cref="HttpClient"/> instance.
         /// </summary>
         private readonly HttpClient httpClient;

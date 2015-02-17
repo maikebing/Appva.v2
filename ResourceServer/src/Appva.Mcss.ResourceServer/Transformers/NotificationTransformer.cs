@@ -1,15 +1,13 @@
 // <copyright file="NotificationTransformer.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a></author>
+// <author>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+// </author>
 namespace Appva.Mcss.ResourceServer.Transformers
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Domain.Models;
 

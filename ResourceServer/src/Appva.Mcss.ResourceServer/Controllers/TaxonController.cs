@@ -1,8 +1,12 @@
 ﻿// <copyright file="TaxonController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a></author>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+// </author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.ResourceServer.Controllers
 {
     #region Imports.
@@ -10,12 +14,12 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System;
     using System.Collections.Generic;
     using System.Web.Http;
+    using Appva.Logging;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Application;
     using Appva.Mcss.ResourceServer.Application.Authorization;
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Appva.Mcss.ResourceServer.Domain.Services;
-    using Common.Logging;
     using Transformers;
 
     #endregion
@@ -31,7 +35,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <summary>
         /// The <see cref="ILog"/> for <see cref="TaxonController"/>.
         /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger<TaskController>();
+        private static readonly ILog Log = LogProvider.For<TaskController>();
 
         /// <summary>
         /// The <see cref="ITaxonRepository"/>.

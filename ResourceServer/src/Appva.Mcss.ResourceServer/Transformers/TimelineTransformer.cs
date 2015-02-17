@@ -1,7 +1,9 @@
 ﻿// <copyright file="TimelineTransformer.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a></author>
+// <author>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+// </author>
 namespace Appva.Mcss.ResourceServer.Transformers
 {
     #region Imports

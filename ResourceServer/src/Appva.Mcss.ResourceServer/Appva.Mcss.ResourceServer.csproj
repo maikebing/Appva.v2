@@ -130,6 +130,7 @@
       <DependentUpon>Application.config</DependentUpon>
     </None>
     <None Include="Properties\PublishProfiles\Resource Server Release.pubxml" />
+    <None Include="Properties\PublishProfiles\ResourceServer Profile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

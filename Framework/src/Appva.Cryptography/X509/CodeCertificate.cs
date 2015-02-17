@@ -1,4 +1,4 @@
-﻿// <copyright file="ClientCertificate.cs" company="Appva AB">
+﻿// <copyright file="CodeCertificate.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -43,7 +43,7 @@ namespace Appva.Cryptography.X509
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientCertificate"/> class.
+        /// Initializes a new instance of the <see cref="CodeCertificate"/> class.
         /// </summary>
         /// <param name="subjectName">The root cert distinguished subject name, e.g. CN=CARootTest</param>
         /// <param name="location">The location of the X.509 certificate store</param>

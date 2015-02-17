@@ -113,7 +113,7 @@ namespace Appva.Persistence
                     exceptions.Add(ex);
                 }
             }
-            if (exceptionHandler.IsNotNull())
+            if (exceptions.IsNotNull())
             {
                 this.exceptionHandler.Handle(exceptions);
             }

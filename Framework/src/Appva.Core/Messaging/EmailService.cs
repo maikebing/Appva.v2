@@ -1,7 +1,9 @@
 ﻿// <copyright file="EmailService.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Core.Messaging
 {
     #region Imports.
@@ -45,7 +47,8 @@ namespace Appva.Core.Messaging
                 {
                     client.Send(message as EmailMessage);
                 }
-            } catch (Exception ex)
+            } 
+            catch (Exception ex)
             {
                 Logger.ErrorException("An exception occured in <EmailService>", ex);
             }
@@ -60,7 +63,8 @@ namespace Appva.Core.Messaging
                 {
                     await client.SendMailAsync(message as EmailMessage);
                 }
-            } catch (Exception ex)
+            } 
+            catch (Exception ex)
             {
                 Logger.ErrorException("An exception occured in <EmailService>", ex);
             }

@@ -89,16 +89,15 @@ namespace Appva.Persistence.MultiTenant
         public override void Connect()
         {
             var units = new List<PersistenceUnit>();
-            var tenants = client.ListAll();
+            var tenants = this.client.ListAll();
             Requires.ValidState(tenants.Count > 0, "No Tenants found!");
-            foreach(var tenant in tenants)
+            foreach (var tenant in tenants)
             {
                 units.Add(new PersistenceUnit(
                     tenant.connection_string,
                     this.configuration.Assembly,
                     this.configuration.Properties,
-                    tenant.id
-                ));
+                    tenant.id));
             }
             this.SessionFactories = this.Build(units);
         }

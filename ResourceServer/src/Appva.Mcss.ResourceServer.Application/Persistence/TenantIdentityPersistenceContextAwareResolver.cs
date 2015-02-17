@@ -10,10 +10,10 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
 
     using System.Web;
     using Appva.Logging;
-    using Appva.Persistence;
     using Appva.Mcss.ResourceServer.Application.Authorization;
-    using NHibernate;
+    using Appva.Persistence;
     using Appva.Persistence.MultiTenant;
+    using NHibernate;
 
     #endregion
 

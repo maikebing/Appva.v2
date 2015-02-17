@@ -8,8 +8,8 @@ namespace Appva.Mcss.ResourceServer.Domain.Models
 {
     #region Imports.
 
-    using Newtonsoft.Json;
     using System;
+    using Newtonsoft.Json;
 
     #endregion
 

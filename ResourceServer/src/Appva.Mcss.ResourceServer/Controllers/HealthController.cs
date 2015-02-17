@@ -9,9 +9,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
     #region Imports.
 
     using System.Web.Http;
-    using Appva.Mcss.ResourceServer.Application;
-    using Appva.Mcss.ResourceServer.Application.Authorization;
-    using Appva.Persistence;
 
     #endregion
 
@@ -20,26 +17,27 @@ namespace Appva.Mcss.ResourceServer.Controllers
     /// </summary>
     public sealed class HealthController : ApiController
     {
-        private readonly IPersistenceContext context;
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HealthController"/> class.
         /// </summary>
-        public HealthController(IPersistenceContext context)
+        public HealthController()
         {
-            this.context = context;
         }
 
         #endregion
 
         #region Routes.
 
+        /// <summary>
+        /// Returns ok if everything is ok :D
+        /// </summary>
+        /// <returns>Ok</returns>
         [HttpGet, Route("v1/health")]
-        [AuthorizeToken(Scope.ReadWrite)]
         public IHttpActionResult Health()
         {
-            return Ok("ok");
+            return this.Ok("ok");
         }
 
         #endregion

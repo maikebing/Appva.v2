@@ -1,13 +1,16 @@
 ﻿// <copyright file="EmailMessageSignerKey.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cryptography.Messaging
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Net.Mail;
@@ -57,6 +60,7 @@ namespace Appva.Cryptography.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="EmailMessageSignerKey"/> class.
         /// </summary>
+        /// <param name="x509Certificate">The signing certificate</param>
         public EmailMessageSignerKey(X509Certificate2 x509Certificate)
         {
             Requires.NotNull(x509Certificate, "x509Certificate");
@@ -65,9 +69,24 @@ namespace Appva.Cryptography.Messaging
 
         #endregion
 
+        #region Public Static Functions.
+
+        /// <summary>
+        /// TODO: Summary.
+        /// </summary>
+        public static void ReadFrom()
+        {
+            ////new X509Certificate2("C:\my certificate.pfx", "The password I Used");
+        }
+
+        #endregion
+
         #region IEmailMessageSignerKey Members
 
-        /// <inheritdoc />
+        /// <summary>
+        /// TODO: Summary.
+        /// </summary>
+        /// <param name="message">TODO: message</param>
         public void SignAndEncrypt(EmailMessage message)
         {
             var signerKey = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, this.x509Certificate);
@@ -86,19 +105,13 @@ namespace Appva.Cryptography.Messaging
             message.Body = null;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// TODO: Summary.
+        /// </summary>
+        /// <param name="message">TODO: message</param>
         public void Encrypt(EmailMessage message)
         {
             //// No ops.
-        }
-
-        #endregion
-
-        #region Public Static Functions.
-
-        public static void ReadFrom()
-        {
-            ////new X509Certificate2("C:\my certificate.pfx", "The password I Used");
         }
 
         #endregion
@@ -107,6 +120,7 @@ namespace Appva.Cryptography.Messaging
     /// <summary>
     /// Implementation of <see cref="IEmailMessageSignerKey"/>.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     public sealed class EmailMessageWithoutSignerKey : IEmailMessageSignerKey
     {
         #region IEmailMessageSignerKey Members
@@ -127,6 +141,10 @@ namespace Appva.Cryptography.Messaging
 
         #region IEmailMessageSignerKey Members
 
+        /// <summary>
+        /// TODO: Summary.
+        /// </summary>
+        /// <param name="message">TODO: message</param>
         public void SignAndEncrypt(EmailMessage message)
         {
             throw new NotImplementedException();

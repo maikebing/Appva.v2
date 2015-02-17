@@ -38,6 +38,7 @@ namespace Appva.Apis.TenantServer
         /// <summary>
         /// Initializes a new instance of the <see cref="TenantClient"/> class.
         /// </summary>
+        /// <param name="configuration">The tenant server configuration</param>
         public TenantClient(ITenantServerConfiguration configuration)
         {
             this.httpClient = new HttpClient();

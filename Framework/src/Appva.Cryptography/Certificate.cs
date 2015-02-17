@@ -8,30 +8,11 @@ namespace Appva.Cryptography
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using Org.BouncyCastle.Asn1;
-    using Org.BouncyCastle.Asn1.X509;
-    using Org.BouncyCastle.Crypto;
-    using Org.BouncyCastle.Crypto.Generators;
-    using Org.BouncyCastle.Crypto.Prng;
-    using Org.BouncyCastle.Math;
-    using Org.BouncyCastle.Pkcs;
-    using Org.BouncyCastle.Security;
-    using Org.BouncyCastle.Utilities;
-    using Org.BouncyCastle.X509;
-    using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
-    using X509KeyStorageFlags = System.Security.Cryptography.X509Certificates.X509KeyStorageFlags;
-    using X509ContentType = System.Security.Cryptography.X509Certificates.X509ContentType;
-    using X509Store = System.Security.Cryptography.X509Certificates.X509Store;
-    using X509Certificate2Collection = System.Security.Cryptography.X509Certificates.X509Certificate2Collection;
-    using X509FindType = System.Security.Cryptography.X509Certificates.X509FindType;
-    using OpenFlags = System.Security.Cryptography.X509Certificates.OpenFlags;
-    using StoreName = System.Security.Cryptography.X509Certificates.StoreName;
-    using Appva.Cryptography.X509;
     using System.Security.Cryptography.X509Certificates;
+    using Appva.Cryptography.X509;
+    using StoreName = System.Security.Cryptography.X509Certificates.StoreName;
+    using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
+    using X509FindType = System.Security.Cryptography.X509Certificates.X509FindType;
 
     #endregion
     
@@ -59,7 +40,6 @@ namespace Appva.Cryptography
         /// <summary>
         /// Creates a self signed CA certificate.
         /// </summary>
-        /// <example>
         /// <returns><see cref="ISelfSignedCertificate"/></returns>
         public static ISelfSignedCertificate CertificateAuthority()
         {
@@ -70,6 +50,7 @@ namespace Appva.Cryptography
         /// Creates a self signed server certificate signed by a CA certificate.
         /// </summary>
         /// <param name="signer">The client certificate CA signer</param>
+        /// <returns><see cref="ISelfSignedCertificate"/></returns>
         public static ISelfSignedCertificate Server(X509Certificate2 signer)
         {
             return new ServerCertificate(signer);
@@ -94,6 +75,7 @@ namespace Appva.Cryptography
         /// Creates a self signed client certificate signed by a CA certificate.
         /// </summary>
         /// <param name="signer">The client certificate CA signer</param>
+        /// <returns><see cref="ISelfSignedCertificate"/></returns>
         public static ISelfSignedCertificate Client(X509Certificate2 signer)
         {
             return new ClientCertificate(signer);
@@ -118,6 +100,7 @@ namespace Appva.Cryptography
         /// Creates a self signed code certificate signed by a CA certificate.
         /// </summary>
         /// <param name="signer">The client certificate CA signer</param>
+        /// <returns><see cref="ISelfSignedCertificate"/></returns>
         public static ISelfSignedCertificate Code(X509Certificate2 signer)
         {
             return new CodeCertificate(signer);
@@ -142,8 +125,8 @@ namespace Appva.Cryptography
         /// Finds a certificate by subject distinguished name.
         /// </summary>
         /// <param name="subjectDistinguishedName">The subject distinguished name to find</param>
-        /// <param name="location">The location of the X.509 certificate store</param>
         /// <param name="store">The name of the X.509 certificate store to open</param>
+        /// <param name="location">The location of the X.509 certificate store</param>
         /// <returns>A instance of <see cref="X509Certificate2"/> or null if not found</returns>
         public static X509Certificate2 FindBySubjectDistinguishedName(
             object subjectDistinguishedName,
@@ -158,8 +141,8 @@ namespace Appva.Cryptography
         /// Finds a certificate by thumbprint.
         /// </summary>
         /// <param name="thumbprint">The thumbprint to find</param>
-        /// <param name="location">The location of the X.509 certificate store</param>
         /// <param name="store">The name of the X.509 certificate store to open</param>
+        /// <param name="location">The location of the X.509 certificate store</param>
         /// <returns>A instance of <see cref="X509Certificate2"/> or null if not found</returns>
         public static X509Certificate2 FindByThumbprint(
             object thumbprint,
@@ -174,8 +157,8 @@ namespace Appva.Cryptography
         /// Finds a certificate by serial number.
         /// </summary>
         /// <param name="serialNumber">The serial number to find</param>
-        /// <param name="location">The location of the X.509 certificate store</param>
         /// <param name="store">The name of the X.509 certificate store to open</param>
+        /// <param name="location">The location of the X.509 certificate store</param>
         /// <returns>A instance of <see cref="X509Certificate2"/> or null if not found</returns>
         public static X509Certificate2 FindBySerialNumber(
             object serialNumber, 

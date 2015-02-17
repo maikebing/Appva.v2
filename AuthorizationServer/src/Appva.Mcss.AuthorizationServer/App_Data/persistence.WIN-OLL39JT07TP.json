@@ -1,5 +1,5 @@
 {
   "ConnectionString": "Server=localhost;Database=AuthorizationServer;Trusted_Connection=False;User ID=dev;Password=foo1!BAR",
-  "Properties": { "generate_statistics" : "true" },
+  "Properties": { "generate_statistics" : "false" },
   "Assembly": "Appva.Mcss.AuthorizationServer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 }

@@ -13,6 +13,7 @@ namespace Appva.Mcss.ResourceServer
     using System.Web.Http;
     using Appva.Apis.TenantServer;
     using Appva.Core.Configuration;
+    using Appva.Core.Messaging;
     using Appva.Mcss.ResourceServer.Application.Configuration;
     using Appva.Mcss.ResourceServer.Application.ExceptionHandling;
     using Appva.Mcss.ResourceServer.Application.Persistence;
@@ -54,13 +55,14 @@ namespace Appva.Mcss.ResourceServer
 
         private static void ConfigurePersistence(ContainerBuilder builder)
         {
+            var messaging = new EmailService();
             var configuration = ConfigurableApplicationContext.Read<MultiTenantDatasourceConfiguration>()
                 .From("App_Data\\Persistence.config").AsMachineNameSpecific().ToObject();
             var client = new TenantClient(new TenantServerConfiguration
             {
                 Uri = ConfigurableApplicationContext.Get<ResourceServerConfiguration>().TenantServerUri
             });
-            var datasource = new MultiTenantDatasource(client, configuration, new DefaultDatasourceExceptionHandler(), new DefaultDatasourceEventInterceptor());
+            var datasource = new MultiTenantDatasource(client, configuration, new DatasourceEmailExceptionHandler(messaging), new DefaultDatasourceEventInterceptor());
             var persistence = new TenantIdentityPersistenceContextAwareResolver(datasource);
             builder.Register(x => persistence).As<IPersistenceContextAwareResolver>().SingleInstance();
             builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerRequest();

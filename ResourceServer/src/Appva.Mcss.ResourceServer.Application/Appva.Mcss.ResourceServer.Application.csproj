@@ -99,6 +99,7 @@
     <Compile Include="Authorization\ResourceServerSigningKeyHandler.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ExceptionHandling\ExceptionFilterAttribute.cs" />
+    <Compile Include="Persistence\DatasourceEmailExceptionHandler.cs" />
     <Compile Include="Persistence\PersistenceAttribute.cs" />
     <Compile Include="Persistence\TenantIdentityPersistenceContextAwareResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

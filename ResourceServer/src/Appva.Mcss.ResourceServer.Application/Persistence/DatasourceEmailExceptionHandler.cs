@@ -10,15 +10,14 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using Appva.Core.Messaging;
-    using Appva.Logging;
-    using Appva.Persistence;
-    using Appva.Core.Extensions;
+    using System.Net.Mail;
     using System.Text;
     using Appva.Core.Configuration;
+    using Appva.Core.Extensions;
+    using Appva.Core.Messaging;
+    using Appva.Logging;
     using Appva.Mcss.ResourceServer.Application.Configuration;
-    using System.Net.Mail;
+    using Appva.Persistence;
 
     #endregion
 
@@ -56,6 +55,7 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         /// <summary>
         /// Initializes a new instance of the <see cref="DatasourceEmailExceptionHandler"/> class.
         /// </summary>
+        /// <param name="service">The <see cref="IEmailService"/></param>
         public DatasourceEmailExceptionHandler(IEmailService service)
         {
             this.service = service;
@@ -70,7 +70,7 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         /// <inheritdoc />
         public void Handle(Exception exception)
         {
- 	        if (exception.IsNotNull())
+            if (exception.IsNotNull())
             {
                 Log.ErrorException("An error occured during database initialization", exception);
             }
@@ -79,10 +79,10 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         /// <inheritdoc />
         public void Handle(IEnumerable<Exception> exceptions)
         {
- 	        if (exceptions.IsNotNull())
+            if (exceptions.IsNotNull())
             {
                 var sb = new StringBuilder();
-                foreach(var exception in exceptions)
+                foreach (var exception in exceptions)
                 {
                     Log.ErrorException("An error occured during database initialization", exception);
                     if (this.isProduction)
@@ -94,13 +94,16 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
                 {
                     try
                     {
-                        this.service.Send(new EmailMessage("noreply@appva.se", "johansalllarsson@appva.se,richard.henriksson@appva.se")
-                            {
-                                Priority = MailPriority.High,
-                                Subject = "Database failed to establish a connection for ResourceServer in " + this.environment,
-                                Body = sb.ToString()
-                            });
-                    } catch (Exception)
+                        this.service.Send(new EmailMessage(
+                            "noreply@appva.se",
+                            "johansalllarsson@appva.se,richard.henriksson@appva.se")
+                        {
+                            Priority = MailPriority.High,
+                            Subject = "Database failed to establish a connection for ResourceServer in " + this.environment,
+                            Body = sb.ToString()
+                        });
+                    }
+                    catch (Exception)
                     {
                         Log.Error("Failed to send e-mail");
                     }
@@ -125,16 +128,17 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
                         exception.GetType().Name,
                         exception.Message,
                         exception.StackTrace));
-                sb.Append("<h3>System information</h3>" +
+                sb.Append(("<h3>System information</h3>" +
                         "<p><strong>Environment:</strong> {0}</p>" +
                         "<p><strong>Site:</strong> {1}</p>" +
                         "<p><strong>Version:</strong> {2}</p>" +
-                        "<p><strong>Machine:</strong> {3}</p>".FormatWith(
+                        "<p><strong>Machine:</strong> {3}</p>").FormatWith(
                         this.environment,
                         "ResourceServer",
                         "1.0.0",
                         Environment.MachineName));
-            } catch (Exception)
+            } 
+            catch (Exception)
             {
                 //// No ops.
             }

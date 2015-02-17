@@ -48,7 +48,7 @@ namespace Appva.Persistence.Transformers
                  .AliasToBean<TEntity>()
                  .TransformTuple(tuple, propertyAliases.ToArray());
 
-            TransformPersistentChain(tuple, complexAliases, result, list);
+            this.TransformPersistentChain(tuple, complexAliases, result, list);
 
             return result;
         }

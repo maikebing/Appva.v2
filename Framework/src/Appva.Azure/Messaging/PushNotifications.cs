@@ -1,7 +1,9 @@
 // <copyright file="PushNotifications.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a></author>
+// <author>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+// </author>
 namespace Appva.Azure
 {
     #region Imports.
@@ -9,9 +11,6 @@ namespace Appva.Azure
     using System;
     using System.Collections.Generic;
     using System.Configuration;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Microsoft.ServiceBus.Notifications;
 
     #endregion
@@ -21,15 +20,6 @@ namespace Appva.Azure
     /// </summary>
     public class PushNotifications
     {
-        #region Static fields
-
-        /// <summary>
-        /// The azure notificationhub
-        /// </summary>
-        private static NotificationHubClient Hub { get; set; }
-
-        #endregion
-
         #region Constructor.
 
         /// <summary>
@@ -43,7 +33,20 @@ namespace Appva.Azure
 
         #endregion
 
-        #region Public functions
+        #region Private Static Properties.
+
+        /// <summary>
+        /// The azure notificationhub
+        /// </summary>
+        private static NotificationHubClient Hub
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
+        #region Public functions.
 
         /// <summary>
         /// Register a new device in the notification hub and returns the Registration-id in the hub

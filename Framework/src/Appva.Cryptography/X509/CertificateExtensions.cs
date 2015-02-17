@@ -114,7 +114,9 @@ namespace Appva.Cryptography.X509
         {
             builder.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(true));
             builder.AddExtension(X509Extensions.KeyUsage, true, new KeyUsage(KeyUsage.KeyCertSign | KeyUsage.CrlSign));
-            builder.AddExtension(X509Extensions.ExtendedKeyUsage, true, 
+            builder.AddExtension(
+                X509Extensions.ExtendedKeyUsage, 
+                true, 
                 new ExtendedKeyUsage( 
                     KeyPurposeID.IdKPServerAuth, 
                     KeyPurposeID.IdKPClientAuth, 

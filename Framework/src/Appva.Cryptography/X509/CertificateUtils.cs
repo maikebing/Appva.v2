@@ -72,7 +72,6 @@ namespace Appva.Cryptography.X509
         /// Creates a self signed X.509 certificate by usage. 
         /// </summary>
         /// <param name="usage">The certificate usage</param>
-        /// <param name="location">The store location</param>
         /// <param name="name">The subject name</param>
         /// <param name="validity">The validity of the certificate</param>
         /// <param name="issuer">The certificate issuer/signer</param>

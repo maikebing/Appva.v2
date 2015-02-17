@@ -39,8 +39,8 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         /// <summary>
         /// Returns all accounts with a specified role.
         /// </summary>
-        /// <param name="machineName"></param>
-        /// <returns></returns>
+        /// <param name="machineName">The role machine name</param>
+        /// <returns>A collection of <see cref="Account"/></returns>
         IList<Account> GetAccountsByRole(string machineName);
     }
 

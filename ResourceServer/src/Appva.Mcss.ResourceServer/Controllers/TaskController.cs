@@ -233,7 +233,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                     CanRaiseAlert = sequence.CanRaiseAlert,
                     Overview = sequence.Overview,
                     PauseAnyAlerts = sequence.PauseAnyAlerts,
-                    //DeviationConfirmedBy = contactedAccount
+                    DeviationConfirmedBy = contactedAccount
                 };
                 this.taskRepository.Save(task);
             } 
@@ -245,7 +245,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 task.CompletedDate = DateTime.Now;
                 task.StatusTaxon = taxon;
                 task.InventoryTransactions = inventoryTransactions;
-                //task.DeviationConfirmedBy = contactedAccount;
+                task.DeviationConfirmedBy = contactedAccount;
             }
             foreach (var transaction in inventoryTransactions)
             {

@@ -94,7 +94,7 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
                 {
                     try
                     {
-                        this.service.Send(new EmailMessage("noreply@appva.se", "johansalllarsson@appva.se,richard.henriksson@appva.se")
+                        this.service.SendAsync(new EmailMessage("noreply@appva.se", "johansalllarsson@appva.se,richard.henriksson@appva.se")
                             {
                                 Priority = MailPriority.High,
                                 Subject = "Database failed to establish a connection for ResourceServer in " + this.environment,
@@ -125,11 +125,11 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
                         exception.GetType().Name,
                         exception.Message,
                         exception.StackTrace));
-                sb.Append("<h3>System information</h3>" +
+                sb.Append(("<h3>System information</h3>" +
                         "<p><strong>Environment:</strong> {0}</p>" +
                         "<p><strong>Site:</strong> {1}</p>" +
                         "<p><strong>Version:</strong> {2}</p>" +
-                        "<p><strong>Machine:</strong> {3}</p>".FormatWith(
+                        "<p><strong>Machine:</strong> {3}</p>").FormatWith(
                         this.environment,
                         "ResourceServer",
                         "1.0.0",

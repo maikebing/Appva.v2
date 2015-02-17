@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Core", "..\..\Framework\src\Appva.Core\Appva.Core.csproj", "{56D99634-8D47-4B88-A057-EE24BCCE546A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{227BB330-A5D5-4BC2-9177-DA61D207D6D7} = {227BB330-A5D5-4BC2-9177-DA61D207D6D7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Core.Configuration", "..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj", "{338B5BA3-4825-42C7-9C77-819999EC12EA}"
 EndProject

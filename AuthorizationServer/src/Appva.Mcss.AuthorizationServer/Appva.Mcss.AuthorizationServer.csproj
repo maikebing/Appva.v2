@@ -276,6 +276,7 @@
     <Content Include="Content\css\oauth-errors.css" />
     <Content Include="Global.asax" />
     <Content Include="App_Data\persistence.json" />
+    <Content Include="App_Data\Persistence.RICHARDHENRIKSS.json" />
     <None Include="App_Data\persistence.WIN-OLL39JT07TP.json">
       <DependentUpon>persistence.json</DependentUpon>
     </None>

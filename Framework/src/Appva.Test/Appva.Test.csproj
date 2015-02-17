@@ -63,10 +63,10 @@
       <HintPath>..\..\..\Packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">
-      <HintPath>..\..\..\packages\NHibernate.4.0.1.4000\lib\net40\NHibernate.dll</HintPath>
+      <HintPath>..\..\..\Packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -79,9 +79,9 @@
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\..\..\Packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Primitives">
       <HintPath>..\..\..\Packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
@@ -89,14 +89,16 @@
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Serialization" />
     <Reference Include="xunit">
       <HintPath>..\..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
@@ -121,6 +123,8 @@
     <Compile Include="Configuration\ReadableResource.cs" />
     <Compile Include="Cryptography\CertificateTests.cs" />
     <Compile Include="Cryptography\ChecksumTests.cs" />
+    <Compile Include="Cryptography\SecureEmailTests.cs" />
+    <Compile Include="Fhir\XmlSerializationTests.cs" />
     <Compile Include="OAuth2\Impl\OAuth2CryptoKeyStore.cs" />
     <Compile Include="OAuth2\Impl\OAuth2NonceStore.cs" />
     <Compile Include="OAuth2\Impl\OAuth2Service.cs" />
@@ -156,6 +160,10 @@
     <ProjectReference Include="..\Appva.Cryptography\Appva.Cryptography.csproj">
       <Project>{d3b336cc-9a4a-4cad-8ab5-32a92e028726}</Project>
       <Name>Appva.Cryptography</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Fhir\Appva.Fhir.csproj">
+      <Project>{3983ff1b-a557-4b58-a363-bcee62182f1e}</Project>
+      <Name>Appva.Fhir</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appva.OAuth\Appva.OAuth.csproj">
       <Project>{112ad9da-0382-44ed-8f4c-93ad23674f44}</Project>

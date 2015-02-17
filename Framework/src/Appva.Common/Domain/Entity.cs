@@ -7,7 +7,6 @@ namespace Appva.Common.Domain
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
 
     #endregion
 
@@ -15,7 +14,7 @@ namespace Appva.Common.Domain
     /// Implementation of an <see cref="IEntity{T}"/>.
     /// </summary>
     /// <typeparam name="T">The entity type</typeparam>
-    public class Entity<T> : IEquatable<Entity<T>>, IEntity<T> where T : class
+    public abstract class Entity<T> : IEquatable<Entity<T>>, IEntity<T> where T : class
     {
         #region Properties.
 
@@ -32,15 +31,6 @@ namespace Appva.Common.Domain
         /// Concurrency checking (Optimistic concurrency).
         /// </summary>
         public virtual int Version
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// A list of domain events.
-        /// </summary>
-        public virtual IList<IDomainEvent> Events
         {
             get;
             protected set;
@@ -97,23 +87,6 @@ namespace Appva.Common.Domain
                 return thisType.IsAssignableFrom(thatType) || thatType.IsAssignableFrom(thisType);
             }
             return false;
-        }
-
-        #endregion
-
-        #region Public Methods.
-
-        /// <summary>
-        /// Registers a new <see cref="IDomainEvent"/>.
-        /// </summary>
-        /// <param name="domainEvent">A new event which has taken place</param>
-        public virtual void RegisterEvent(IDomainEvent domainEvent)
-        {
-            if (this.Events == null)
-            {
-                this.Events = new List<IDomainEvent>();
-            }
-            this.Events.Add(domainEvent);
         }
 
         #endregion

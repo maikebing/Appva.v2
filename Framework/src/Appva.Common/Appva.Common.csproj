@@ -39,13 +39,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\AggregateRoot.cs" />
+    <Compile Include="Domain\DomainEvent.cs" />
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\IAggregateRoot.cs" />
     <Compile Include="Domain\IDomainEvent.cs" />
     <Compile Include="Domain\IEntity.cs" />
+    <Compile Include="Domain\IIdentity.cs" />
     <Compile Include="Domain\IValueObject.cs" />
     <Compile Include="Domain\ValueObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -58,6 +58,16 @@ namespace Appva.Mcss.ResourceServer.Application.Configuration
         }
 
         /// <summary>
+        /// Tenant guid in debug mode which enables correct resolving of
+        /// persistence context.
+        /// </summary>
+        public string TenantGuidForDebug
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Account identity in debug without headers and
         /// access token authorization
         /// </summary>

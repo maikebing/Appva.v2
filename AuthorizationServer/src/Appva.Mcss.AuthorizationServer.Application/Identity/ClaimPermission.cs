@@ -21,6 +21,14 @@ namespace Appva.Mcss.AuthorizationServer.Application.Identity
     [Serializable]
     public sealed class ClaimPermission : IPermission
     {
+        #region Variables.
+
+        private string context;
+        private string resource;
+        private string action;
+
+        #endregion
+
         #region Constructor.
 
         /// <summary>
@@ -28,6 +36,9 @@ namespace Appva.Mcss.AuthorizationServer.Application.Identity
         /// </summary>
         public ClaimPermission(string context, string resource, string action)
         {
+            this.context = context;
+            this.resource = resource;
+            this.action = action;
         }
 
         #endregion

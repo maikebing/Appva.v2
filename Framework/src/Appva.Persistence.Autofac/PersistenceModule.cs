@@ -15,7 +15,7 @@ namespace Appva.Persistence.Autofac
     /// <summary>
     /// An NHibernate session per request on application level model.
     /// </summary>
-    public sealed class PersistenceModule : Module
+    /*public sealed class PersistenceModule : Module
     {
         #region Variables.
 
@@ -32,7 +32,7 @@ namespace Appva.Persistence.Autofac
         /// Initializes a new instance of the <see cref="PersistenceModule"/> class.
         /// </summary>
         /// <param name="configuration">The <see cref="PersistenceConfiguration"/></param>
-        public PersistenceModule(PersistenceConfiguration configuration)
+        public PersistenceModule(DefaultDatasourceConfiguration configuration)
         {
             this.configuration = configuration;
         }
@@ -46,7 +46,7 @@ namespace Appva.Persistence.Autofac
         {
             Requires.NotNull(builder, "builder");
             var persistenceContextFactory = this.configuration.Build();
-            builder.Register(x => persistenceContextFactory).As<IPersistenceContextFactory>().SingleInstance();
+            builder.Register(x => persistenceContextFactory).As<IPersistenceContextAwareResolver>().SingleInstance();
             builder.Register(x => x.Resolve<IPersistenceContextFactory>().Build()).As<IPersistenceContext>()
                 .InstancePerLifetimeScope()
                 .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
@@ -54,5 +54,5 @@ namespace Appva.Persistence.Autofac
         }
 
         #endregion
-    }
+    }*/
 }

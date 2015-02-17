@@ -1,7 +1,9 @@
 ﻿// <copyright file="ListTenantsHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.AuthorizationServer.Models.Handlers
 {
     #region Imports.
@@ -10,15 +12,16 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     using Appva.Mcss.AuthorizationServer.Infrastructure;
     using Appva.Mcss.AuthorizationServer.Models;
     using Appva.Persistence;
+    using Appva.Persistence.Transformers;
     using NHibernate.Criterion;
-    using NHibernate.Transform;
 
     #endregion
 
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ListTenantsHandler : PersistentRequestHandler<PageableQueryParams<Pageable<ListTenants>>, Pageable<ListTenants>>
+    internal sealed class ListTenantsHandler 
+        : PersistentRequestHandler<PageableQueryParams<Pageable<ListTenants>>, Pageable<ListTenants>>
     {
         #region Constructors.
 
@@ -45,9 +48,10 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
                     .Add(Projections.Property<Tenant>(x => x.Slug.Name).WithAlias(() => tenants.Slug))
                     .Add(Projections.Property<Tenant>(x => x.Name).WithAlias(() => tenants.Name))
                     .Add(Projections.Property<Tenant>(x => x.Description).WithAlias(() => tenants.Description))
-                    .Add(Projections.Property<Tenant>(x => x.Image).WithAlias(() => tenants.Logotype))
+                    .Add(Projections.Property<Tenant>(x => x.Image.FileName).As("Logotype.FileName"))
+                    .Add(Projections.Property<Tenant>(x => x.Image.MimeType).As("Logotype.MimeType"))
                 )
-                .TransformUsing(Transformers.AliasToBean<ListTenants>());
+                .TransformUsing(new DeepTransformer<ListTenants>());
             return PageableHelper.ToPageable<Tenant, ListTenants>(message, query);
         }
 

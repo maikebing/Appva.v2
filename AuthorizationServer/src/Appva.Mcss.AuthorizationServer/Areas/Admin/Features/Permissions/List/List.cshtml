@@ -13,7 +13,7 @@
     </thead>
     @foreach (var permission in Model)
     {
-        if (! permission.Context.Equals(context))
+        if (permission.Context != null && ! permission.Context.Equals(context))
         {
             <tr><td class="active" colspan="3">@permission.Context</td></tr>
             context = permission.Context;

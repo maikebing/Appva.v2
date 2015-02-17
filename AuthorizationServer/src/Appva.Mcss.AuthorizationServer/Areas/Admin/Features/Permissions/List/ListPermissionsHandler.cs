@@ -45,7 +45,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
                     .Add(Projections.Property<Permission>(x => x.Id).WithAlias(() => list.Id))
                     .Add(Projections.Property<Permission>(x => x.Name).WithAlias(() => list.Name))
                     .Add(Projections.Property<Permission>(x => x.Description).WithAlias(() => list.Description))
-                    .Add(Projections.Property<Permission>(x => x.Context).WithAlias(() => list.Context))
+                    //.Add(Projections.Property<Permission>(x => x.Context.Name).WithAlias(() => list.Context))
                 )
                 .TransformUsing(Transformers.AliasToBean<ListPermission>())
                 .List<ListPermission>();

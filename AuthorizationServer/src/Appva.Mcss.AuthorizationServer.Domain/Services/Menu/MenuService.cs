@@ -159,7 +159,7 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Services
                 {
                     return;
                 }
-                if (!cache.ContainsKey(parentId))
+                if (! cache.ContainsKey(parentId))
                 {
                     return;
                 }

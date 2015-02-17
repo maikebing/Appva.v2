@@ -8,6 +8,7 @@ namespace Appva.Cryptography.Messaging
 
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net.Mail;
     using System.Security.Cryptography.Pkcs;
@@ -56,7 +57,7 @@ namespace Appva.Cryptography.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="EmailMessageSignerKey"/> class.
         /// </summary>
-        private EmailMessageSignerKey(X509Certificate2 x509Certificate)
+        public EmailMessageSignerKey(X509Certificate2 x509Certificate)
         {
             Requires.NotNull(x509Certificate, "x509Certificate");
             this.x509Certificate = x509Certificate;
@@ -68,20 +69,21 @@ namespace Appva.Cryptography.Messaging
 
         /// <inheritdoc />
         public void SignAndEncrypt(EmailMessage message)
-        {/*
+        {
             var signerKey = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, this.x509Certificate);
             var signedCms = new SignedCms(new ContentInfo(message.Body.ToUtf8Bytes()));
             signedCms.ComputeSignature(signerKey);
             
             EnvelopedCms envelopedCms = new EnvelopedCms(new ContentInfo(signedCms.Encode()));
-            CmsRecipient recipient = new CmsRecipient(SubjectIdentifierType.SubjectKeyIdentifier, this.certificate);
+            CmsRecipient recipient = new CmsRecipient(SubjectIdentifierType.SubjectKeyIdentifier, this.x509Certificate);
             envelopedCms.Encrypt(recipient);
 
             byte[] encryptedBytes = envelopedCms.Encode();
 
             MemoryStream encryptedStream = new MemoryStream(encryptedBytes);
             AlternateView encryptedView = new AlternateView(encryptedStream, "application/pkcs7-mime; smime-type=enveloped-data");
-            message.AlternateViews.Add(encryptedView);*/
+            message.AlternateViews.Add(encryptedView);
+            message.Body = null;
         }
 
         /// <inheritdoc />

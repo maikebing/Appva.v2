@@ -15,7 +15,7 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
     /// <summary>
     /// Represents a user account in the system.
     /// </summary>
-    public class User : Entity<User>, IAggregateRoot
+    public class User : AggregateRoot<User>
     {
         #region Constructor.
 
@@ -77,24 +77,6 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         /// Whether the user is active or not.
         /// </summary>
         public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// The user created at date time.
-        /// </summary>
-        public virtual DateTime CreatedAt
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// The user last updated at date time.
-        /// </summary>
-        public virtual DateTime UpdatedAt
         {
             get;
             protected set;

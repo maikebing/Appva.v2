@@ -1,7 +1,9 @@
 ﻿// <copyright file="Thumbnail.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.AuthorizationServer.Models
 {
     #region Imports.
@@ -21,12 +23,12 @@ namespace Appva.Mcss.AuthorizationServer.Models
         /// <summary>
         /// The thumbnail image file name.
         /// </summary>
-        private readonly string fileName;
+        private string fileName;
 
         /// <summary>
         /// The thumbnail image mime type as hexadecimal.
         /// </summary>
-        private readonly string mimeType;
+        private string mimeType;
 
         #endregion
 
@@ -52,6 +54,14 @@ namespace Appva.Mcss.AuthorizationServer.Models
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Thumbnail"/> class.
+        /// </summary>
+        /// <remarks>Required by NHibernate</remarks>
+        protected Thumbnail()
+        {
+        }
+
         #endregion
 
         #region Properties
@@ -65,6 +75,10 @@ namespace Appva.Mcss.AuthorizationServer.Models
             {
                 return this.fileName;
             }
+            protected set
+            {
+                this.fileName = value;
+            }
         }
 
         /// <summary>
@@ -75,6 +89,10 @@ namespace Appva.Mcss.AuthorizationServer.Models
             get
             {
                 return this.mimeType;
+            }
+            protected set
+            {
+                this.mimeType = value;
             }
         }
 

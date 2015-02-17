@@ -85,7 +85,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     /// <summary>
     /// Handler for create client POST request.
     /// </summary>
-    internal class CreateClientPostHandler : PersistentRequestHandler<CreateClient, DetailsClientId>
+    internal class CreateClientPostHandler : PersistentRequestHandler<CreateClient, Id<DetailsClient>>
     {
         #region Variables.
 
@@ -114,7 +114,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
         #region Overrides.
 
         /// <inheritdocs />
-        public override DetailsClientId Handle(CreateClient message)
+        public override Id<DetailsClient> Handle(CreateClient message)
         {
             var authorizationGrants = this.ResolveAuthorizationGrants(message);
             var tenants = this.ResolveTenants(message);
@@ -128,7 +128,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
             }
             var client = new Client(message.Name, message.Description, imageFileName, imageMimeType, message.AccessTokenLifetime, message.RefreshTokenLifetime, message.RedirectionEndpoint, ! message.IsConfidential.IsSelected, authorizationGrants, tenants, scopes);
             this.Persistence.Save(client.Activate());
-            return new DetailsClientId
+            return new Id<DetailsClient>
             {
                 Id = client.Id,
                 Slug = client.Slug.Name

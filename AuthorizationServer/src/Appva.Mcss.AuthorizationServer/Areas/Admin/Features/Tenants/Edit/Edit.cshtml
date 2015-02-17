@@ -1,0 +1,32 @@
+﻿@model EditTenantRequest
+@{
+    Title("Edit tenant");
+}
+<div class="page-title">
+    <span class="text-semibold">Edit</span> Tenant @Model.Name
+</div>
+@using (Html.PostWithAttachment())
+{
+    @Html.ValidationAlert("Validation errors occured", "Please correct the errors in the form")
+    <div class="row">
+        <div class="col-md-9">
+            @Html.FormGroup(x => x.Name).AsteriskLabel("Tenant name").TextBox().Validate().Help("Something users will recognize and trust").Build()
+            @Html.FormGroup(x => x.Description).AsteriskLabel("Tenant description").TextArea("Optional").Validate().Help("This is displayed to all potential users of the system").Build()
+            @Html.FormGroup(x => x.ConnectionString).AsteriskLabel("Tenant connection string").TextArea("Server=localhost;Database=FromRussiaWithLove;Trusted_Connection=False;User ID=007;Password=JamesBond").Validate().Help("An ASP.NET database connection string").Build()
+        </div>
+        <div class="col-md-3">
+            <hr class="page-hr no-grid-gutter-h" />
+            <div class="profile-block">
+                <div class="panel profile-avatar">
+                    @Html.Thumbnail(x => x.Logotype, new { @class = "thumbnail-icon-info thumbnail-icon-lg thumbnail-icon-lg-border" }, new { @class = "fa-cloud-upload" })
+                </div><br>
+                @Html.File(x => x.Logotype, "Browse ...", new { @class = "btn-primary" })
+            </div>
+        </div>
+    </div>
+    @Html.Br()
+    @Html.FormGroup(x => x.Identifier).AsteriskLabel("Tenant identifier").TextBox().Validate().Help("A unique identifier for this tenant").Build()
+    @Html.FormGroup(x => x.HostName).AsteriskLabel("Tenant host name").TextBox().Validate().Help("A unique host name for this tenant").Build()
+    @Html.Br()
+    @Html.Submit("Edit tenant", new { @class = "btn-primary btn-lg" })
+}

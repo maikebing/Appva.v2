@@ -47,7 +47,7 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         public virtual string FileName
         {
             get;
-            private set;
+            protected set;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         public virtual string MimeType
         {
             get;
-            private set;
+            protected set;
         }
 
         #endregion

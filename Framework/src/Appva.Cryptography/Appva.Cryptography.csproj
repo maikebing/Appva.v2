@@ -57,6 +57,23 @@
     <Compile Include="NonCryptographicHash.cs" />
     <Compile Include="Password.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="X509\CertificateUtils.cs" />
+    <Compile Include="X509\CertificateExtensions.cs" />
+    <Compile Include="X509\CodeCertificate.cs" />
+    <Compile Include="X509\Curve.cs" />
+    <Compile Include="X509\Ecdh.cs" />
+    <Compile Include="X509\ICertificate.cs" />
+    <Compile Include="X509\ICipher.cs" />
+    <Compile Include="X509\Cipher.cs" />
+    <Compile Include="X509\KeySize.cs" />
+    <Compile Include="X509\CACertificate.cs" />
+    <Compile Include="X509\Rsa.cs" />
+    <Compile Include="X509\SelfSignedCertificate.cs" />
+    <Compile Include="X509\ServerCertificate.cs" />
+    <Compile Include="X509\Signature.cs" />
+    <Compile Include="X509\ClientCertificate.cs" />
+    <Compile Include="X509\Usage.cs" />
+    <Compile Include="X509\Validity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

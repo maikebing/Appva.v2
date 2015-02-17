@@ -20,7 +20,7 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public class Resource : Entity<Client>, IAggregateRoot
+    public class Resource : AggregateRoot<Client>
     {
         #region Constructor.
 
@@ -61,24 +61,6 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         /// Whether the resource is active or not.
         /// </summary>
         public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// The resource created at date time.
-        /// </summary>
-        public virtual DateTime CreatedAt
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// The resource last updated at date time.
-        /// </summary>
-        public virtual DateTime UpdatedAt
         {
             get;
             protected set;

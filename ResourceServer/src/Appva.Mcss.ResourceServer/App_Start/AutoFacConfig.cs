@@ -9,12 +9,14 @@ namespace Appva.Mcss.ResourceServer
     using System.Linq;
     using System.Reflection;
     using System.Web.Http;
+    using Appva.Apis.TenantServer;
     using Appva.Core.Configuration;
     using Appva.Mcss.ResourceServer.Application.Configuration;
     using Appva.Mcss.ResourceServer.Application.ExceptionHandling;
     using Appva.Mcss.ResourceServer.Application.Persistence;
     using Appva.Mcss.ResourceServer.Domain.Services;
     using Appva.Persistence;
+    using Appva.Persistence.MultiTenant;
     using Appva.Repository;
     using Autofac;
     using Autofac.Integration.WebApi;
@@ -33,15 +35,10 @@ namespace Appva.Mcss.ResourceServer
         {
             var assembly = typeof(IService).Assembly;
             var builder = new ContainerBuilder();
-            var applicationConfiguration = ConfigurableApplicationContext.Read<ResourceServerConfiguration>()
+            var configuration = ConfigurableApplicationContext.Read<ResourceServerConfiguration>()
                 .From("App_Data\\Application.config").AsMachineNameSpecific().ToObject();
-            ConfigurableApplicationContext.Add<ResourceServerConfiguration>(applicationConfiguration);
-            var persistenceConfiguration = ConfigurableApplicationContext.Read<MultiTenantPersistenceConfiguration>()
-                .From("App_Data\\Persistence.config").AsMachineNameSpecific().ToObject();
-            var persistenceContextFactory = persistenceConfiguration.Build();
-            builder.Register(x => persistenceContextFactory).As<IPersistenceContextFactory>().SingleInstance();
-            builder.Register(x => x.Resolve<IPersistenceContextFactory>().Build()).As<IPersistenceContext>().InstancePerRequest();
-            builder.RegisterType<TenantService>().As<ITenantService>().InstancePerRequest();
+            ConfigurableApplicationContext.Add<ResourceServerConfiguration>(configuration);
+            ConfigurePersistence(builder);
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
             builder.RegisterGeneric(typeof(PagingAndSortingRepository<>)).As(typeof(IPagingAndSortingRepository<>));
             builder.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(Repository<>)).AsImplementedInterfaces().InstancePerRequest();
@@ -51,6 +48,21 @@ namespace Appva.Mcss.ResourceServer
             builder.Register(x => new PersistenceAttribute(x.Resolve<IPersistenceContext>())).AsWebApiActionFilterFor<ApiController>().InstancePerRequest();
             builder.RegisterType<ExceptionFilterAttribute>().AsWebApiExceptionFilterFor<ApiController>().InstancePerRequest();
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(builder.Build());
+        }
+
+        private static void ConfigurePersistence(ContainerBuilder builder)
+        {
+            var configuration = ConfigurableApplicationContext.Read<MultiTenantDatasourceConfiguration>()
+                .From("App_Data\\Persistence.config").AsMachineNameSpecific().ToObject();
+            var client = new TenantClient(new TenantServerConfiguration
+            {
+                Uri = ConfigurableApplicationContext.Get<ResourceServerConfiguration>().TenantServerUri
+            });
+            var datasource = new MultiTenantDatasource(client, configuration, new DefaultDatasourceExceptionHandler(), new DefaultDatasourceEventInterceptor());
+            var persistence = new TenantIdentityPersistenceContextAwareResolver(datasource);
+            builder.Register(x => persistence).As<IPersistenceContextAwareResolver>().SingleInstance();
+            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerRequest();
+            builder.Register(x => client).As<ITenantClient>().SingleInstance();
         }
     }
 }

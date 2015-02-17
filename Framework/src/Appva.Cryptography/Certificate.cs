@@ -1,14 +1,18 @@
 ﻿// <copyright file="Certificate.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cryptography
 {
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.IO;
-    using System.Security.Cryptography.X509Certificates;
+    using System.Linq;
+    using Org.BouncyCastle.Asn1;
     using Org.BouncyCastle.Asn1.X509;
     using Org.BouncyCastle.Crypto;
     using Org.BouncyCastle.Crypto.Generators;
@@ -16,273 +20,170 @@ namespace Appva.Cryptography
     using Org.BouncyCastle.Math;
     using Org.BouncyCastle.Pkcs;
     using Org.BouncyCastle.Security;
+    using Org.BouncyCastle.Utilities;
     using Org.BouncyCastle.X509;
+    using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
+    using X509KeyStorageFlags = System.Security.Cryptography.X509Certificates.X509KeyStorageFlags;
+    using X509ContentType = System.Security.Cryptography.X509Certificates.X509ContentType;
+    using X509Store = System.Security.Cryptography.X509Certificates.X509Store;
+    using X509Certificate2Collection = System.Security.Cryptography.X509Certificates.X509Certificate2Collection;
+    using X509FindType = System.Security.Cryptography.X509Certificates.X509FindType;
+    using OpenFlags = System.Security.Cryptography.X509Certificates.OpenFlags;
+    using StoreName = System.Security.Cryptography.X509Certificates.StoreName;
+    using Appva.Cryptography.X509;
+    using System.Security.Cryptography.X509Certificates;
 
     #endregion
     
     /// <summary>
-    /// X509 v3 Certificate helper. http://tools.ietf.org/html/rfc5280
+    /// X.509 v3 Certificate helper.
+    /// <externalLink>
+    ///     <linkText>RFC 5280</linkText>
+    ///     <linkUri>http://tools.ietf.org/html/rfc5280</linkUri>
+    /// </externalLink>
     /// </summary>
+    /// <example>
+    /// Create CA Certificate:
+    /// Certificate.CertificateAuthority().Subject("MyTrustedCARoot")
+    ///     .Use(Cipher.Ecdh(Curve.P384)).Signature(Signature.Sha512WithEcdsa)
+    ///     .WriteToDisk("C:\\cacert.pfx", "password")
+    /// </example>
+    /// <example>
+    /// Create Client Certificate:
+    /// Certificate.Client("MyTrustedCARoot").Subject("MyClientCertificate")
+    ///     .Use(Cipher.Ecdh(Curve.P384)).Signature(Signature.Sha512WithEcdsa)
+    ///     .WriteToDisk("C:\\clientcert.pfx", "password")
+    /// </example>
     public static class Certificate
     {
         /// <summary>
-        /// 
+        /// Creates a self signed CA certificate.
         /// </summary>
-        /// <param name="subject"></param>
-        /// <param name="issuer"></param>
-        /// <returns></returns>
-        public static X509Certificate2 CreateNew(string subject, string issuer)
+        /// <example>
+        /// <returns><see cref="ISelfSignedCertificate"/></returns>
+        public static ISelfSignedCertificate CertificateAuthority()
         {
-            var keyPairGenerator = new RsaKeyPairGenerator();
-            keyPairGenerator.Init(new KeyGenerationParameters(new SecureRandom(new CryptoApiRandomGenerator()), 2048));
-            var keyPair = keyPairGenerator.GenerateKeyPair();
-            var certificateGenerator = new X509V3CertificateGenerator();
-            certificateGenerator.SetSerialNumber(BigInteger.ProbablePrime(120, new Random()));
-            certificateGenerator.SetSubjectDN(new X509Name("CN=" + subject));
-            certificateGenerator.SetIssuerDN(new X509Name("CN=" + issuer));
-            certificateGenerator.SetNotAfter(DateTime.MaxValue);
-            certificateGenerator.SetNotBefore(DateTime.Now.Subtract(new TimeSpan(7, 0, 0, 0)));
-            certificateGenerator.SetSignatureAlgorithm("SHA512withRSA");
-            certificateGenerator.SetPublicKey(keyPair.Public);
-            var certificate = certificateGenerator.Generate(keyPair.Private);
-            //var certificate = DotNetUtilities.ToX509Certificate((Org.BouncyCastle.X509.X509Certificate)newCert);
-            var store = new Pkcs12Store();
-
-            // What Bouncy Castle calls "alias" is the same as what Windows terms the "friendly name".
-            string friendlyName = certificate.SubjectDN.ToString();
-
-            // Add the certificate.
-            var certificateEntry = new X509CertificateEntry(certificate);
-            store.SetCertificateEntry(friendlyName, certificateEntry);
-
-            // Add the private key.
-            store.SetKeyEntry(friendlyName, new AsymmetricKeyEntry(keyPair.Private), new[] { certificateEntry });
-
-            // Convert it to an X509Certificate2 object by saving/loading it from a MemoryStream.
-            // It needs a password. Since we'll remove this later, it doesn't particularly matter what we use.
-            const string password = "password";
-            var stream = new MemoryStream();
-            store.Save(stream, password.ToCharArray(), new SecureRandom(new CryptoApiRandomGenerator()));
-            
-            var convertedCertificate =
-                new X509Certificate2(stream.ToArray(),
-                                     password,
-                                     X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
-            return convertedCertificate;
-        }
-
-        private static SecureRandom GetSecureRandom()
-        {
-            // Since we're on Windows, we'll use the CryptoAPI one (on the assumption
-            // that it might have access to better sources of entropy than the built-in
-            // Bouncy Castle ones):
-            var randomGenerator = new CryptoApiRandomGenerator();
-            var random = new SecureRandom(randomGenerator);
-            return random;
-        }
-
-        private static X509Certificate GenerateCertificate(SecureRandom random,
-                                                           string subjectName,
-                                                           AsymmetricCipherKeyPair subjectKeyPair,
-                                                           BigInteger subjectSerialNumber,
-                                                           string[] subjectAlternativeNames,
-                                                           string issuerName,
-                                                           AsymmetricCipherKeyPair issuerKeyPair,
-                                                           BigInteger issuerSerialNumber,
-                                                           bool isCertificateAuthority,
-                                                           KeyPurposeID[] usages)
-        {
-            var certificateGenerator = new X509V3CertificateGenerator();
-
-            certificateGenerator.SetSerialNumber(subjectSerialNumber);
-
-            // Set the signature algorithm. This is used to generate the thumbprint which is then signed
-            // with the issuer's private key. We'll use SHA-256, which is (currently) considered fairly strong.
-            const string signatureAlgorithm = "SHA256WithRSA";
-            certificateGenerator.SetSignatureAlgorithm(signatureAlgorithm);
-
-            var issuerDN = new X509Name(issuerName);
-            certificateGenerator.SetIssuerDN(issuerDN);
-
-            // Note: The subject can be omitted if you specify a subject alternative name (SAN).
-            var subjectDN = new X509Name(subjectName);
-            certificateGenerator.SetSubjectDN(subjectDN);
-
-            // Our certificate needs valid from/to values.
-            var notBefore = DateTime.UtcNow.Date;
-            var notAfter = notBefore.AddYears(2);
-
-            certificateGenerator.SetNotBefore(notBefore);
-            certificateGenerator.SetNotAfter(notAfter);
-
-            // The subject's public key goes in the certificate.
-            certificateGenerator.SetPublicKey(subjectKeyPair.Public);
-
-            AddAuthorityKeyIdentifier(certificateGenerator, issuerDN, issuerKeyPair, issuerSerialNumber);
-            AddSubjectKeyIdentifier(certificateGenerator, subjectKeyPair);
-            AddBasicConstraints(certificateGenerator, isCertificateAuthority);
-
-            if (usages != null && usages.Any())
-                AddExtendedKeyUsage(certificateGenerator, usages);
-
-            if (subjectAlternativeNames != null && subjectAlternativeNames.Any())
-                AddSubjectAlternativeNames(certificateGenerator, subjectAlternativeNames);
-
-            // The certificate is signed with the issuer's private key.
-            var certificate = certificateGenerator.Generate(issuerKeyPair.Private, random);
-            return certificate;
+            return new CACertificate();
         }
 
         /// <summary>
-        /// The certificate needs a serial number. This is used for revocation,
-        /// and usually should be an incrementing index (which makes it easier to revoke a range of certificates).
-        /// Since we don't have anywhere to store the incrementing index, we can just use a random number.
+        /// Creates a self signed server certificate signed by a CA certificate.
         /// </summary>
-        /// <param name="random"></param>
-        /// <returns></returns>
-        private static BigInteger GenerateSerialNumber(SecureRandom random)
+        /// <param name="signer">The client certificate CA signer</param>
+        public static ISelfSignedCertificate Server(X509Certificate2 signer)
         {
-            var serialNumber =
-                BigIntegers.CreateRandomInRange(
-                    BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), random);
-            return serialNumber;
+            return new ServerCertificate(signer);
         }
 
         /// <summary>
-        /// Generate a key pair.
+        /// Creates a self signed server certificate signed by a CA certificate.
         /// </summary>
-        /// <param name="random">The random number generator.</param>
-        /// <param name="strength">The key length in bits. For RSA, 2048 bits should be considered the minimum acceptable these days.</param>
-        /// <returns></returns>
-        private static AsymmetricCipherKeyPair GenerateKeyPair(SecureRandom random, int strength)
+        /// <param name="subjectName">The root cert distinguished subject name, e.g. CN=CARootTest</param>
+        /// <param name="location">The location of the X.509 certificate store</param>
+        /// <param name="store">The name of the X.509 certificate store to open</param>
+        /// <returns><see cref="ISelfSignedCertificate"/></returns>
+        public static ISelfSignedCertificate Server(
+            string subjectName,
+            StoreLocation location = StoreLocation.CurrentUser,
+            StoreName store = StoreName.Root)
         {
-            var keyGenerationParameters = new KeyGenerationParameters(random, strength);
-
-            var keyPairGenerator = new RsaKeyPairGenerator();
-            keyPairGenerator.Init(keyGenerationParameters);
-            var subjectKeyPair = keyPairGenerator.GenerateKeyPair();
-            return subjectKeyPair;
+            return new ServerCertificate(subjectName, location, store);
         }
 
         /// <summary>
-        /// Add the Authority Key Identifier. According to http://www.alvestrand.no/objectid/2.5.29.35.html, this
-        /// identifies the public key to be used to verify the signature on this certificate.
-        /// In a certificate chain, this corresponds to the "Subject Key Identifier" on the *issuer* certificate.
-        /// The Bouncy Castle documentation, at http://www.bouncycastle.org/wiki/display/JA1/X.509+Public+Key+Certificate+and+Certification+Request+Generation,
-        /// shows how to create this from the issuing certificate. Since we're creating a self-signed certificate, we have to do this slightly differently.
+        /// Creates a self signed client certificate signed by a CA certificate.
         /// </summary>
-        /// <param name="certificateGenerator"></param>
-        /// <param name="issuerDN"></param>
-        /// <param name="issuerKeyPair"></param>
-        /// <param name="issuerSerialNumber"></param>
-        private static void AddAuthorityKeyIdentifier(X509V3CertificateGenerator certificateGenerator,
-                                                      X509Name issuerDN,
-                                                      AsymmetricCipherKeyPair issuerKeyPair,
-                                                      BigInteger issuerSerialNumber)
+        /// <param name="signer">The client certificate CA signer</param>
+        public static ISelfSignedCertificate Client(X509Certificate2 signer)
         {
-            var authorityKeyIdentifierExtension =
-                new AuthorityKeyIdentifier(
-                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(issuerKeyPair.Public),
-                    new GeneralNames(new GeneralName(issuerDN)),
-                    issuerSerialNumber);
-            certificateGenerator.AddExtension(
-                X509Extensions.AuthorityKeyIdentifier.Id, false, authorityKeyIdentifierExtension);
+            return new ClientCertificate(signer);
         }
 
         /// <summary>
-        /// Add the "Subject Alternative Names" extension. Note that you have to repeat
-        /// the value from the "Subject Name" property.
+        /// Creates a self signed client certificate signed by a CA certificate.
         /// </summary>
-        /// <param name="certificateGenerator"></param>
-        /// <param name="subjectAlternativeNames"></param>
-        private static void AddSubjectAlternativeNames(X509V3CertificateGenerator certificateGenerator,
-                                                       IEnumerable<string> subjectAlternativeNames)
+        /// <param name="subjectName">The root cert distinguished subject name, e.g. CN=CARootTest</param>
+        /// <param name="location">The location of the X.509 certificate store</param>
+        /// <param name="store">The name of the X.509 certificate store to open</param>
+        /// <returns><see cref="ISelfSignedCertificate"/></returns>
+        public static ISelfSignedCertificate Client(
+            string subjectName,
+            StoreLocation location = StoreLocation.CurrentUser,
+            StoreName store = StoreName.Root)
         {
-            var subjectAlternativeNamesExtension =
-                new DerSequence(
-                    subjectAlternativeNames.Select(name => new GeneralName(GeneralName.DnsName, name))
-                                           .ToArray<Asn1Encodable>());
-
-            certificateGenerator.AddExtension(
-                X509Extensions.SubjectAlternativeName.Id, false, subjectAlternativeNamesExtension);
+            return new ClientCertificate(subjectName, location, store);
         }
 
         /// <summary>
-        /// Add the "Extended Key Usage" extension, specifying (for example) "server authentication".
+        /// Creates a self signed code certificate signed by a CA certificate.
         /// </summary>
-        /// <param name="certificateGenerator"></param>
-        /// <param name="usages"></param>
-        private static void AddExtendedKeyUsage(X509V3CertificateGenerator certificateGenerator, KeyPurposeID[] usages)
+        /// <param name="signer">The client certificate CA signer</param>
+        public static ISelfSignedCertificate Code(X509Certificate2 signer)
         {
-            certificateGenerator.AddExtension(
-                X509Extensions.ExtendedKeyUsage.Id, false, new ExtendedKeyUsage(usages));
+            return new CodeCertificate(signer);
         }
 
         /// <summary>
-        /// Add the "Basic Constraints" extension.
+        /// Creates a self signed code certificate signed by a CA certificate.
         /// </summary>
-        /// <param name="certificateGenerator"></param>
-        /// <param name="isCertificateAuthority"></param>
-        private static void AddBasicConstraints(X509V3CertificateGenerator certificateGenerator,
-                                                bool isCertificateAuthority)
+        /// <param name="subjectName">The root cert distinguished subject name, e.g. CN=CARootTest</param>
+        /// <param name="location">The location of the X.509 certificate store</param>
+        /// <param name="store">The name of the X.509 certificate store to open</param>
+        /// <returns><see cref="ISelfSignedCertificate"/></returns>
+        public static ISelfSignedCertificate Code(
+            string subjectName,
+            StoreLocation location = StoreLocation.CurrentUser,
+            StoreName store = StoreName.Root)
         {
-            certificateGenerator.AddExtension(
-                X509Extensions.BasicConstraints.Id, true, new BasicConstraints(isCertificateAuthority));
+            return new ClientCertificate(subjectName, location, store);
         }
 
         /// <summary>
-        /// Add the Subject Key Identifier.
+        /// Finds a certificate by subject distinguished name.
         /// </summary>
-        /// <param name="certificateGenerator"></param>
-        /// <param name="subjectKeyPair"></param>
-        private static void AddSubjectKeyIdentifier(X509V3CertificateGenerator certificateGenerator,
-                                                    AsymmetricCipherKeyPair subjectKeyPair)
+        /// <param name="subjectDistinguishedName">The subject distinguished name to find</param>
+        /// <param name="location">The location of the X.509 certificate store</param>
+        /// <param name="store">The name of the X.509 certificate store to open</param>
+        /// <returns>A instance of <see cref="X509Certificate2"/> or null if not found</returns>
+        public static X509Certificate2 FindBySubjectDistinguishedName(
+            object subjectDistinguishedName,
+            StoreName store = StoreName.Root,
+            StoreLocation location = StoreLocation.CurrentUser)
         {
-            var subjectKeyIdentifierExtension =
-                new SubjectKeyIdentifier(
-                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(subjectKeyPair.Public));
-            certificateGenerator.AddExtension(
-                X509Extensions.SubjectKeyIdentifier.Id, false, subjectKeyIdentifierExtension);
+            return CertificateUtils.LoadCertificate(
+                X509FindType.FindBySubjectDistinguishedName, subjectDistinguishedName, store, location);
         }
 
-        private static X509Certificate2 ConvertCertificate(X509Certificate certificate,
-                                                           AsymmetricCipherKeyPair subjectKeyPair,
-                                                           SecureRandom random)
+        /// <summary>
+        /// Finds a certificate by thumbprint.
+        /// </summary>
+        /// <param name="thumbprint">The thumbprint to find</param>
+        /// <param name="location">The location of the X.509 certificate store</param>
+        /// <param name="store">The name of the X.509 certificate store to open</param>
+        /// <returns>A instance of <see cref="X509Certificate2"/> or null if not found</returns>
+        public static X509Certificate2 FindByThumbprint(
+            object thumbprint,
+            StoreName store = StoreName.Root,
+            StoreLocation location = StoreLocation.CurrentUser)
         {
-            // Now to convert the Bouncy Castle certificate to a .NET certificate.
-            // See http://web.archive.org/web/20100504192226/http://www.fkollmann.de/v2/post/Creating-certificates-using-BouncyCastle.aspx
-            // ...but, basically, we create a PKCS12 store (a .PFX file) in memory, and add the public and private key to that.
-            var store = new Pkcs12Store();
-
-            // What Bouncy Castle calls "alias" is the same as what Windows terms the "friendly name".
-            string friendlyName = certificate.SubjectDN.ToString();
-
-            // Add the certificate.
-            var certificateEntry = new X509CertificateEntry(certificate);
-            store.SetCertificateEntry(friendlyName, certificateEntry);
-
-            // Add the private key.
-            store.SetKeyEntry(friendlyName, new AsymmetricKeyEntry(subjectKeyPair.Private), new[] { certificateEntry });
-
-            // Convert it to an X509Certificate2 object by saving/loading it from a MemoryStream.
-            // It needs a password. Since we'll remove this later, it doesn't particularly matter what we use.
-            const string password = "password";
-            var stream = new MemoryStream();
-            store.Save(stream, password.ToCharArray(), random);
-
-            var convertedCertificate =
-                new X509Certificate2(stream.ToArray(),
-                                     password,
-                                     X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
-            return convertedCertificate;
+            return CertificateUtils.LoadCertificate(
+                X509FindType.FindByThumbprint, thumbprint, store, location);
         }
 
-        private static void WriteCertificate(X509Certificate2 certificate, string outputFileName)
+        /// <summary>
+        /// Finds a certificate by serial number.
+        /// </summary>
+        /// <param name="serialNumber">The serial number to find</param>
+        /// <param name="location">The location of the X.509 certificate store</param>
+        /// <param name="store">The name of the X.509 certificate store to open</param>
+        /// <returns>A instance of <see cref="X509Certificate2"/> or null if not found</returns>
+        public static X509Certificate2 FindBySerialNumber(
+            object serialNumber, 
+            StoreName store = StoreName.Root, 
+            StoreLocation location = StoreLocation.CurrentUser)
         {
-            // This password is the one attached to the PFX file. Use 'null' for no password.
-            const string password = "password";
-            var bytes = certificate.Export(X509ContentType.Pfx, password);
-            File.WriteAllBytes(outputFileName, bytes);
+            return CertificateUtils.LoadCertificate(
+                X509FindType.FindBySerialNumber, serialNumber, store, location);
         }
     }
 }

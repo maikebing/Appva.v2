@@ -15,16 +15,8 @@ namespace Appva.Common.Domain
     /// by a thread of continuity and its identity.
     /// </summary>
     /// <typeparam name="T">The entity type</typeparam>
-    public interface IEntity<T>
+    public interface IEntity<T> : IIdentity
     {
-        /// <summary>
-        /// The identity.
-        /// </summary>
-        Guid Id
-        {
-            get;
-        }
-
         /// <summary>
         /// The version.
         /// </summary>

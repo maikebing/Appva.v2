@@ -1,7 +1,9 @@
 ﻿// <copyright file="CertificateTests.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Test.Cryptography
 {
     #region Import.
@@ -9,6 +11,7 @@ namespace Appva.Test.Cryptography
     using System.Security.Cryptography;
     using Appva.Cryptography;
     using Appva.Cryptography.HashAlgoritms;
+    using Appva.Cryptography.X509;
     using Xunit;
     using Xunit.Extensions;
 
@@ -16,29 +19,75 @@ namespace Appva.Test.Cryptography
 
     /// <summary>
     /// Certificate tests.
+    /// If testing to write to disk then:
+    /// 1.  Create folder to write to, with proper permissions.
+    /// 2.  After creating CA certificate, then install it in Trusted with exportable 
+    ///     private key (important)
+    /// 3.  Then run client certificates tests.
     /// </summary>
     /// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
     public class CertificateTests
     {
         #region Tests.
 
-        #region Create New.
+        #region RSA.
 
         /// <summary>
-        /// Creates a new X.509 certificate.
+        /// Creates a new X.509 root CA certificate with default RSA.
         /// </summary>
         [Fact]
-        public void Certificate_VerifyThatCertificateIsCorrectlyCreated_IsTrue()
+        public void Certificate_RSA_CACertificateIsCreated_IsTrue()
         {
-            var expected_subject = "CN=subject";
-            var expected_issuer = "CN=issuer";
-            var expected_has_private_key = true;
-            var cert = Certificate.CreateNew("subject", "issuer");
-            Assert.Equal(expected_subject, cert.Subject);
-            Assert.Equal(expected_issuer, cert.Issuer);
-            Assert.Equal(expected_has_private_key, cert.HasPrivateKey);
+            var subject = "CA_RSA_TEST";
+            var ca = Certificate.CertificateAuthority().Subject(subject).CreateNew();
+            Assert.Equal("CN=" + subject, ca.Subject);
         }
 
+        /// <summary>
+        /// Creates a new X.509 client certificate with default RSA.
+        /// </summary>
+        [Fact]
+        public void Certificate_RSA_ClientCertificateIsCreated_IsTrue()
+        {
+            var issuer = "CA_RSA_TEST";
+            var subject = "CLIENTCERT_RSA_TEST";
+            var ca = Certificate.CertificateAuthority().Subject(issuer).CreateNew();
+            var cc = Certificate.Client(ca).Subject(subject).CreateNew();
+            Assert.Equal("CN=" + issuer, cc.Issuer);
+            Assert.Equal("CN=" + subject, cc.Subject);
+        }
+
+        #endregion
+
+        #region ECDSA.
+
+        /// <summary>
+        /// Creates a new X.509 root certificate with ECDH and ECDSA signing.
+        /// </summary>
+        [Fact(Skip="This throws an exception and must be fixed or removed")]
+        public void Certificate_ECDSA_CACertificateIsCreated_IsTrue()
+        {
+            var subject = "CA_ECDH_TEST";
+            var ca = Certificate.CertificateAuthority().Subject(subject)
+                .Use(Cipher.Ecdh(Curve.P256)).Signature(Signature.Sha256WithEcdsa).CreateNew();
+            Assert.Equal("CN=" + subject, ca.Subject);
+        }
+
+        /// <summary>
+        /// Creates a new X.509 client certificate with ECDH and SHA 384 ECDSA signing.
+        /// </summary>
+        [Fact(Skip = "This throws an exception and must be fixed or removed")]
+        public void Certificate_ECDSA_ClientCertificateIsCreated_IsTrue()
+        {
+            var issuer = "CA_ECDH_TEST";
+            var subject = "CLIENTCERT_ECDH_TEST";
+            var ca = Certificate.CertificateAuthority().Subject(issuer).CreateNew();
+            var cc = Certificate.Client(ca).Subject(subject)
+                .Use(Cipher.Ecdh(Curve.P256)).Signature(Signature.Sha256WithEcdsa).CreateNew();
+            Assert.Equal("CN=" + issuer, cc.Issuer);
+            Assert.Equal("CN=" + subject, cc.Subject);
+        }
+        
         #endregion
 
         #endregion

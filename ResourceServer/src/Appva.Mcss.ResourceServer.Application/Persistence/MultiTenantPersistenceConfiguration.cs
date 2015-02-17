@@ -15,15 +15,14 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
     using Appva.Core.Extensions;
     using Appva.Mcss.ResourceServer.Application.Authorization;
     using Appva.Persistence;
-    using Appva.Persistence.Providers;
-    using NHibernate;
+ 
 
     #endregion
 
     /// <summary>
     /// A multi tenancy configuration implementation of a <see cref="PersistenceConfiguration"/>.
     /// </summary>
-    public sealed class MultiTenantPersistenceConfiguration : PersistenceConfiguration
+    /*public sealed class MultiTenantPersistenceConfiguration : PersistenceConfiguration
     {
         #region Public Properties.
 
@@ -144,6 +143,10 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
 
             #endregion
 
+            #region Create Session Factories.
+
+            #endregion
+
             #region PersistenceContextFactory Overrides.
 
             /// <inheritdoc />
@@ -154,10 +157,15 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
                     if (HttpContext.Current.IsNotNull())
                     {
                         var tenantId = HttpContext.Current.User.Identity.Tenant();
-                        if (this.sessionFactories.ContainsKey(tenantId.ToString()))
+                        if (! this.sessionFactories.ContainsKey(tenantId.ToString()))
                         {
-                            return this.sessionFactories[tenantId.ToString()];
+                            var tenant = this.tenantService.GetTenantById(tenantId);
+                            if (tenant.IsNull())
+                            {
+
+                            }
                         }
+                        return this.sessionFactories[tenantId.ToString()];
                     }
                     throw new Exception("No HttpContext or no tenant!");
                 }
@@ -167,5 +175,5 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         }
 
         #endregion
-    }
+    }*/
 }

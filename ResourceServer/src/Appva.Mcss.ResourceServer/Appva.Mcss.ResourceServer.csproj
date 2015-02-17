@@ -39,8 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\..\..\Packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Autofac.Integration.Owin">
       <HintPath>..\..\..\Packages\Autofac.Owin.3.1.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
@@ -72,8 +73,9 @@
     <Reference Include="Microsoft.Owin">
       <HintPath>..\..\..\Packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\Packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -83,9 +85,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Primitives, Version=4.2.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -101,13 +103,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -157,6 +159,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
+    <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\SupportController.cs" />
@@ -185,6 +188,10 @@
       <Project>{21c8a633-11be-4ea7-a6c1-be78f40ec36f}</Project>
       <Name>Appva.Mcss.Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Apis.Tenant\Appva.Apis.TenantServer.csproj">
+      <Project>{84a3404b-798f-43d7-85d9-d2a510895f9e}</Project>
+      <Name>Appva.Apis.TenantServer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
       <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
       <Name>Appva.Core.Configuration</Name>
@@ -193,9 +200,13 @@
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.Autofac\Appva.Persistence.Autofac.csproj">
-      <Project>{9041f4f2-26b2-44de-ad32-3edaeaed35d2}</Project>
-      <Name>Appva.Persistence.Autofac</Name>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
+      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
+      <Name>Appva.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.MultiTenant\Appva.Persistence.MultiTenant.csproj">
+      <Project>{3d8f0261-b3b3-4202-adfd-ceb0ec3d93e3}</Project>
+      <Name>Appva.Persistence.MultiTenant</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
       <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>

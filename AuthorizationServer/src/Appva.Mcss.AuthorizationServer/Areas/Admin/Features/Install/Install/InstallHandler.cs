@@ -107,7 +107,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
 
         private IList<Tenant> CreateTenants()
         {
-            var tenant = new Tenant("test-tenant-unique-id", "test-tenant", "Test Tenant", "Just a test tenant", null, "Server=localhost;Database=AuthServer;Trusted_Connection=False;User ID=McssTest;Password=foo1!BAR");
+            var tenant = new Tenant("test-tenant-unique-id", "test-tenant", "Test Tenant", "Just a test tenant", null, null, "Server=localhost;Database=AuthServer;Trusted_Connection=False;User ID=McssTest;Password=foo1!BAR");
             tenant.Activate();
             this.Persistence.Save(tenant);
             return new List<Tenant>() { tenant };

@@ -1,7 +1,9 @@
 ﻿// <copyright file="Logotype.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.AuthorizationServer.Models
 {
     #region Imports.
@@ -13,7 +15,7 @@ namespace Appva.Mcss.AuthorizationServer.Models
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class Logotype : Thumbnail
+    public class Logotype : Thumbnail
     {
         #region Constructor.
 
@@ -33,6 +35,14 @@ namespace Appva.Mcss.AuthorizationServer.Models
         /// <param name="mimeType">The mime type</param>
         public Logotype(string fileName, string mimeType)
             : base(fileName, mimeType)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Logotype"/> class.
+        /// </summary>
+        /// <remarks>Required by NHibernate</remarks>
+        protected Logotype()
         {
         }
 

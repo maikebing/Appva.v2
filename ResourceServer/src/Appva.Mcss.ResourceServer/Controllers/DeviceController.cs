@@ -10,6 +10,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System;
     using System.Collections.Generic;
     using System.Web.Http;
+    using Appva.Apis.TenantServer;
     using Appva.Azure;
     using Appva.Core.Extensions;
     using Appva.Mcss.Domain.Entities;
@@ -33,9 +34,9 @@ namespace Appva.Mcss.ResourceServer.Controllers
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ITenantService"/>.
+        /// The <see cref="ITenantClient"/>.
         /// </summary>
-        private readonly ITenantService tenantService;
+        private readonly ITenantClient client;
 
         /// <summary>
         /// The <see cref="IDeviceRepository"/>.
@@ -59,13 +60,13 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceController"/> class.
         /// </summary>
-        /// <param name="tenantService">The <see cref="ITenantService"/></param>
+        /// <param name="client">The <see cref="ITenantClient"/></param>
         /// <param name="deviceRepository">The <see cref="IDeviceRepository"/></param>
         /// <param name="settingRepository">The <see cref="ISettingRepository"/></param>
         /// <param name="taxonRepository">The <see cref="ITaxonRepository"/></param>
-        public DeviceController(ITenantService tenantService, IDeviceRepository deviceRepository, ISettingRepository settingRepository, ITaxonRepository taxonRepository)
+        public DeviceController(ITenantClient client, IDeviceRepository deviceRepository, ISettingRepository settingRepository, ITaxonRepository taxonRepository)
         {
-            this.tenantService = tenantService;
+            this.client = client;
             this.deviceRepository = deviceRepository;
             this.settingRepository = settingRepository;
             this.taxonRepository = taxonRepository;
@@ -120,7 +121,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// </summary>
         /// <param name="deviceModel">The device model</param>
         /// <returns><code>Device</code> ID and name</returns>
-        [AuthorizeToken(Scope.AdminOnly)]
+        /*[AuthorizeToken(Scope.AdminOnly)]
         [HttpPost, Validate, Route("enroll")]
         public IHttpActionResult Enroll(DeviceModel deviceModel)
         {
@@ -143,7 +144,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.InternalServerError(new Exception("No taxon found, attempting to rollback!"));
             }
-            var client = this.tenantService.GetClientByTenantId(this.User.Identity.Tenant());
+            var client = this.client.GetClientByTenantId(this.User.Identity.Tenant());
             if (client.IsNull())
             {
                 return this.InternalServerError(new Exception("No client found, attempting to rollback!"));
@@ -183,7 +184,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             }
             return this.Ok();
         }
-
+        */
         #endregion
     }
 }

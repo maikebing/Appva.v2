@@ -1,7 +1,9 @@
 ﻿// <copyright file="CreateTenantHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.AuthorizationServer.Models.Handlers
 {
     #region Imports.
@@ -19,7 +21,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class CreateTenantHandler : PersistentRequestHandler<CreateTenant, DetailsTenantId>
+    internal sealed class CreateTenantHandler : PersistentRequestHandler<CreateTenant, Id<DetailsTenant>>
     {
         #region Variables.
 
@@ -48,17 +50,20 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
         #region Overrides.
 
         /// <inheritdocs />
-        public override DetailsTenantId Handle(CreateTenant message)
+        public override Id<DetailsTenant> Handle(CreateTenant message)
         {
             string fileName = null;
+            string mimeType = null;
             if (message.Logotype.IsNotNull())
             {
                 this.imageProcessor.Save(message.Logotype, out fileName);
+                mimeType = message.Logotype.ContentType;
             }
-            var tenant = new Tenant(message.Identifier, message.HostName, message.Name, message.Description, fileName, message.ConnectionString).Activate();
-            return new DetailsTenantId
+            var tenant = new Tenant(message.Identifier, message.HostName, message.Name, message.Description, fileName, mimeType, message.ConnectionString).Activate();
+            this.Persistence.Save(tenant);
+            return new Id<DetailsTenant>
             {
-                Id = (Guid) this.Persistence.Save(tenant),
+                Id   = tenant.Id,
                 Slug = tenant.Slug.Name
             };
         }

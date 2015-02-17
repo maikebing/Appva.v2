@@ -17,11 +17,6 @@ namespace Appva.Common.Domain
     public interface IDomainEvent
     {
         /// <summary>
-        /// The domain event version.
-        /// </summary>
-        int Version { get; }
-
-        /// <summary>
         /// The date time when the event occured at.
         /// </summary>
         DateTime Occurred { get; }

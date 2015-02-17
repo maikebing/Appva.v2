@@ -16,7 +16,6 @@ namespace Appva.Test.Persistence
     using System.Web.Http;
     using Appva.Core.Configuration;
     using Appva.Persistence;
-    using Appva.Persistence.Providers;
     using Xunit;
     using System.Reflection;
     using Appva.Test.Tools;

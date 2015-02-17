@@ -1,7 +1,9 @@
 ﻿// <copyright file="Global.asax.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.AuthorizationServer
 {
     #region Imports.
@@ -15,7 +17,7 @@ namespace Appva.Mcss.AuthorizationServer
     using Appva.Mcss.AuthorizationServer.Code;
     using Appva.Mvc.Engines;
     using HibernatingRhinos.Profiler.Appender.NHibernate;
-
+    using log4net.Config;
 
     #endregion
 
@@ -28,8 +30,8 @@ namespace Appva.Mcss.AuthorizationServer
         protected void Application_Start()
         {
             //// FIXME: Remove web api!
-            //// FIXME: NHibernateProfiler nuget!
             //// NHibernateProfiler.Initialize();
+            XmlConfigurator.Configure();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(ApiRouteConfig.RegisterRoutes);

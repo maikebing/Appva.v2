@@ -1,7 +1,9 @@
 ﻿// <copyright file="Client.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.AuthorizationServer.Domain.Entities
 {
     #region Imports.
@@ -15,30 +17,30 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
     #endregion
 
     /// <summary>
-    /// An application making protected resource requests on behalf of the
-    /// resource owner and with its authorization.  The term "client" does
-    /// not imply any particular implementation characteristics (e.g.,
-    /// whether the application executes on a server, a desktop, or other
-    /// devices).
+    /// An application making protected resource requests on behalf of the resource 
+    /// owner and with its authorization.  The term "client" does not imply any 
+    /// particular implementation characteristics (e.g. whether the application executes 
+    /// on a server, a desktop, or other devices).
     /// </summary>
-    public class Client : Entity<Client>, IAggregateRoot
+    public class Client : AggregateRoot<Client>
     {
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="imageFileName"></param>
-        /// <param name="imageMimeType"></param>
-        /// <param name="accessTokenLifetime"></param>
-        /// <param name="refreshTokenLifetime"></param>
-        /// <param name="redirectionEndpoint"></param>
-        /// <param name="isPublic"></param>
-        /// <param name="authorizationGrants"></param>
-        /// <param name="tenants"></param>
-        /// <param name="scopes"></param>
+        /// <param name="name">The client name</param>
+        /// <param name="description">The client description</param>
+        /// <param name="imageFileName">The client logotype file path</param>
+        /// <param name="imageMimeType">The client logotype mime type</param>
+        /// <param name="accessTokenLifetime">The access token lifetime in minutes</param>
+        /// <param name="refreshTokenLifetime">The refresh token lifetime in minutes</param>
+        /// <param name="redirectionEndpoint">The redirection endpoint (i.e. application callback)</param>
+        /// <param name="isPublic">The clients ability to authenticate securely with the authorization 
+        /// server</param>
+        /// <param name="authorizationGrants">Credential representing the resource owner's authorization</param>
+        /// <param name="tenants">The client tenants</param>
+        /// <param name="scopes">The client scopes</param>
         public Client(string name, string description, string imageFileName, string imageMimeType, int accessTokenLifetime, int refreshTokenLifetime, string redirectionEndpoint, bool isPublic, IList<AuthorizationGrant> authorizationGrants, IList<Tenant> tenants, IList<Scope> scopes)
             : this(name, description, new Image(imageFileName, imageMimeType), null, null, null, accessTokenLifetime, refreshTokenLifetime, redirectionEndpoint, (isPublic) ? ClientType.Public : ClientType.Confidential, authorizationGrants, tenants, scopes)
         {
@@ -47,19 +49,20 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="image"></param>
-        /// <param name="identifier"></param>
-        /// <param name="secret"></param>
-        /// <param name="password"></param>
-        /// <param name="accessTokenLifetime"></param>
-        /// <param name="refreshTokenLifetime"></param>
-        /// <param name="redirectionEndpoint"></param>
-        /// <param name="type"></param>
-        /// <param name="authorizationGrants"></param>
-        /// <param name="tenants"></param>
-        /// <param name="scopes"></param>
+        /// <param name="name">The client name</param>
+        /// <param name="description">The client description</param>
+        /// <param name="image">The client logotype</param>
+        /// <param name="identifier">The client public identifier</param>
+        /// <param name="secret">The client secret</param>
+        /// <param name="password">The client credentials</param>
+        /// <param name="accessTokenLifetime">The access token lifetime in minutes</param>
+        /// <param name="refreshTokenLifetime">The refresh token lifetime in minutes</param>
+        /// <param name="redirectionEndpoint">The redirection endpoint (i.e. application callback)</param>
+        /// <param name="type">The clients ability to authenticate securely with the authorization 
+        /// server</param>
+        /// <param name="authorizationGrants">Credential representing the resource owner's authorization</param>
+        /// <param name="tenants">The client tenants</param>
+        /// <param name="scopes">The client scopes</param>
         public Client(string name, string description, Image image, string identifier, string secret, string password, int accessTokenLifetime, int refreshTokenLifetime, string redirectionEndpoint, ClientType type, IList<AuthorizationGrant> authorizationGrants, IList<Tenant> tenants, IList<Scope> scopes)
         {
             this.IsActive = false;
@@ -98,24 +101,6 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         /// Whether the client is active or not.
         /// </summary>
         public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// The client created at date time.
-        /// </summary>
-        public virtual DateTime CreatedAt
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// The client last updated at date time.
-        /// </summary>
-        public virtual DateTime UpdatedAt
         {
             get;
             protected set;
@@ -251,6 +236,7 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
 
         /// <summary>
         /// Whether or not the client is connected to multiple tenants.
+        /// FIXME: Calculate the value and change variable name.
         /// </summary>
         public virtual bool IsGlobal
         {
@@ -296,6 +282,64 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         {
             this.IsActive = false;
             return this;
+        }
+
+        /// <summary>
+        /// Updates the client.
+        /// FIXME: Split into separate updates, e.g. update tenants, update scopes etc.
+        /// </summary>
+        /// <param name="name">The client name</param>
+        /// <param name="description">The client description</param>
+        /// <param name="imageFileName">The client logotype file path</param>
+        /// <param name="imageMimeType">The client logotype mime type</param>
+        /// <param name="secret">The client secret</param>
+        /// <param name="password">The client credentials</param>
+        /// <param name="accessTokenLifetime">The access token lifetime in minutes</param>
+        /// <param name="refreshTokenLifetime">The refresh token lifetime in minutes</param>
+        /// <param name="redirectionEndpoint">The redirection endpoint (i.e. application callback)</param>
+        /// <param name="isPublic">The clients ability to authenticate securely with the authorization 
+        /// server</param>
+        /// <param name="authorizationGrants">Credential representing the resource owner's authorization</param>
+        /// <param name="tenants">The client tenants</param>
+        /// <param name="scopes">The client scopes</param>
+        public virtual void Update(string name, string description, string imageFileName, string imageMimeType, string secret, string password, int accessTokenLifetime, int refreshTokenLifetime, string redirectionEndpoint, bool isPublic, IList<AuthorizationGrant> authorizationGrants, IList<Tenant> tenants, IList<Scope> scopes)
+        {
+            this.Update(name, description, new Image(imageFileName, imageMimeType), secret, password, accessTokenLifetime, refreshTokenLifetime, redirectionEndpoint, (isPublic) ? ClientType.Public : ClientType.Confidential, authorizationGrants, tenants, scopes);
+        }
+
+        /// <summary>
+        /// Updates the client.
+        /// FIXME: Split into separate updates, e.g. update tenants, update scopes etc.
+        /// </summary>
+        /// <param name="name">The client name</param>
+        /// <param name="description">The client description</param>
+        /// <param name="image">The client logotype</param>
+        /// <param name="secret">The client secret</param>
+        /// <param name="password">The client credentials</param>
+        /// <param name="accessTokenLifetime">The access token lifetime in minutes</param>
+        /// <param name="refreshTokenLifetime">The refresh token lifetime in minutes</param>
+        /// <param name="redirectionEndpoint">The redirection endpoint (i.e. application callback)</param>
+        /// <param name="type">The clients ability to authenticate securely with the authorization 
+        /// server</param>
+        /// <param name="authorizationGrants">Credential representing the resource owner's authorization</param>
+        /// <param name="tenants">The client tenants</param>
+        /// <param name="scopes">The client scopes</param>
+        public virtual void Update(string name, string description, Image image, string secret, string password, int accessTokenLifetime, int refreshTokenLifetime, string redirectionEndpoint, ClientType type, IList<AuthorizationGrant> authorizationGrants, IList<Tenant> tenants, IList<Scope> scopes)
+        {
+            this.UpdatedAt = DateTime.Now;
+            this.Slug = new Slug(name);
+            this.Name = name;
+            this.Description = description;
+            this.Image = image;
+            this.RedirectionEndpoint = redirectionEndpoint;
+            this.Secret = secret ?? Hash.Random(16).ToUrlSafeBase64();
+            this.Password = password ?? Hash.Random(32).ToUrlSafeBase64();
+            this.AccessTokenLifetime = accessTokenLifetime;
+            this.RefreshTokenLifetime = refreshTokenLifetime;
+            this.Type = type;
+            this.AuthorizationGrants = authorizationGrants;
+            this.Tenants = tenants;
+            this.Scopes = scopes;
         }
 
         #endregion

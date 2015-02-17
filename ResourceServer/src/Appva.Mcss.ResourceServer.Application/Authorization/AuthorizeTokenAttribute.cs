@@ -110,7 +110,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
                 {
                     new Claim(ClaimTypes.NameIdentifier, Configuration.AccountGuidForDebug),
                     new Claim(AppvaClaimTypes.Device, Configuration.DeviceGuidForDebug),
-                    new Claim(AppvaClaimTypes.Tenant, "00000000-0000-0000-0000-000000000000"),
+                    new Claim(AppvaClaimTypes.Tenant, Configuration.TenantGuidForDebug),
                 };
                 var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, "Anonymous"));
                 Thread.CurrentPrincipal = claimsPrincipal;

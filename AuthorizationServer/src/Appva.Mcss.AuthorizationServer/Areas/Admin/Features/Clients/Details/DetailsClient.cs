@@ -7,7 +7,7 @@ namespace Appva.Mcss.AuthorizationServer.Models
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class DetailsClient : Identity
+    public sealed class DetailsClient : Idg
     {
         /// <summary>
         /// Whether the client is active or not.

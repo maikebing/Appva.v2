@@ -1,14 +1,15 @@
 ﻿// <copyright file="InMemoryDatabase.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Test.Tools
 {
     #region Imports.
 
     using Appva.Core.Configuration;
     using Appva.Persistence;
-    using Appva.Persistence.Providers;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -38,11 +39,12 @@ namespace Appva.Test.Tools
         /// </summary>
         public InMemoryDatabase()
         {
-            var persistenceFactory = ConfigurableApplicationContext.Read<PersistenceConfiguration>()
+            var configuration = ConfigurableApplicationContext.Read<DefaultDatasourceConfiguration>()
                 .From("App_Data\\Persistence.json")
-                .ToObject()
-                .Build();
-            this.persistenceContext = persistenceFactory.Build().Open();
+                .ToObject();
+            var persistenceResolver = new DefaultPersistenceContextAwareResolver(
+                new DefaultDatasource(configuration, null, null));
+            this.persistenceContext = persistenceResolver.CreateNew().Open();
         }
 
         #endregion

@@ -14,53 +14,8 @@ namespace Appva.Mcss.AuthorizationServer.Models
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public class CreateTenant : Identity, IRequest<DetailsTenantId>
+    public class CreateTenant : CommonTenant<Id<DetailsTenant>>
     {
-        /// <summary>
-        /// The tenant identifier.
-        /// </summary>
-        public string Identifier
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The tenant host name.
-        /// </summary>
-        public string HostName
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The tenant name.
-        /// </summary>
-        public string Name
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The tenant description.
-        /// </summary>
-        public string Description
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The tenant database connection.
-        /// </summary>
-        public string ConnectionString
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// The tenant logotype if any.
         /// </summary>

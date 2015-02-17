@@ -16,7 +16,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     /// </summary>
     /// <typeparam name="TRequest">The request type</typeparam>
     /// <typeparam name="TResponse">The response type</typeparam>
-    internal abstract class PersistentRequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
+    public abstract class PersistentRequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
         #region Variables.

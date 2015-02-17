@@ -1,7 +1,9 @@
 ﻿// <copyright file="DetailsTenantHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.AuthorizationServer.Models.Handlers
 {
     #region Imports.
@@ -20,7 +22,8 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class DetailsTenantHandler : PersistentRequestHandler<DetailsTenantId, DetailsTenant>
+    internal sealed class DetailsTenantHandler 
+        : PersistentRequestHandler<Id<DetailsTenant>, DetailsTenant>
     {
         #region Constructors.
 
@@ -38,7 +41,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
         #region Overrides.
 
         /// <inheritdocs />
-        public override DetailsTenant Handle(DetailsTenantId message)
+        public override DetailsTenant Handle(Id<DetailsTenant> message)
         {
             var tenant = this.Persistence.Get<Tenant>(message.Id);
             return new DetailsTenant

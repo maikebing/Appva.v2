@@ -17,35 +17,40 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
     /// A representation of a tenant, or in our bounded context more of a
     /// customer or consumer of the product.
     /// </summary>
-    public class Tenant : Entity<Tenant>, IAggregateRoot
+    public class Tenant : AggregateRoot<Tenant>
     {
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tenant"/> class.
         /// </summary>
-        /// <param name="identifier"></param>
-        /// <param name="hostName"></param>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="fileName"></param>
-        /// <param name="connectionString"></param>
-        /// <param name="tags"></param>
-        public Tenant(string identifier, string hostName, string name, string description, string fileName, string connectionString, IList<Tag> tags = null)
-            : this(identifier, hostName, name, description, new Image(fileName, null), new DatabaseConnection(connectionString), tags)
+        /// <param name="identifier">A unique identifier, e.g. a certificate thumbprint or serial
+        /// number, a text string etc</param>
+        /// <param name="hostName">A unique user friendly host name which may be used to
+        /// identify a tenant by host name</param>
+        /// <param name="name">The tenant name</param>
+        /// <param name="description">The tenant description</param>
+        /// <param name="fileName">The tenant logotype file path</param>
+        /// <param name="mimeType">The tenant logotype mime type</param>
+        /// <param name="connectionString">The tenant database connection string</param>
+        /// <param name="tags">The tenant tags</param>
+        public Tenant(string identifier, string hostName, string name, string description, string fileName, string mimeType, string connectionString, IList<Tag> tags = null)
+            : this(identifier, hostName, name, description, new Image(fileName, mimeType), new DatabaseConnection(connectionString), tags)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tenant"/> class.
         /// </summary>
-        /// <param name="identifier"></param>
-        /// <param name="hostName"></param>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="image"></param>
-        /// <param name="databaseConnection"></param>
-        /// <param name="tags"></param>
+        /// <param name="identifier">A unique identifier, e.g. a certificate thumbprint or serial
+        /// number, a text string etc.</param>
+        /// <param name="hostName">A unique user friendly host name which may be used to
+        /// identify a tenant by host name</param>
+        /// <param name="name">The tenant name</param>
+        /// <param name="description">The tenant description</param>
+        /// <param name="image">The tenant logotype</param>
+        /// <param name="databaseConnection">The tenant database connection</param>
+        /// <param name="tags">The tenant tags</param>
         public Tenant(string identifier, string hostName, string name, string description, Image image, DatabaseConnection databaseConnection, IList<Tag> tags = null)
         {
             this.IsActive = false;
@@ -77,24 +82,6 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         /// Whether the tenant is active or not.
         /// </summary>
         public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// The tenant created at date time.
-        /// </summary>
-        public virtual DateTime CreatedAt
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// The tenant last updated at date time.
-        /// </summary>
-        public virtual DateTime UpdatedAt
         {
             get;
             protected set;
@@ -195,6 +182,69 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
             this.IsActive = false;
             return this;
         }
+
+        public virtual void UpdateName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name) || this.Name.Equals(name))
+            {
+                return;
+            }
+            this.Name = name;
+            this.Slug = new Slug(name);
+        }
+
+        public virtual void UpdateIdentifier(string identifier)
+        {
+            if (string.IsNullOrWhiteSpace(identifier) || this.Identifier.Equals(identifier))
+            {
+                return;
+            }
+            this.Identifier = identifier;
+        }
+
+        /// <summary>
+        /// Updates the <see cref="Tenant"/> instance.
+        /// </summary>
+        /// <param name="identifier">A unique identifier, e.g. a certificate thumbprint or serial
+        /// number, a text string etc</param>
+        /// <param name="hostName">A unique user friendly host name which may be used to
+        /// identify a tenant by host name</param>
+        /// <param name="name">The tenant name</param>
+        /// <param name="description">The tenant description</param>
+        /// <param name="fileName">The tenant logotype file path</param>
+        /// <param name="mimeType">The tenant logotype mime type</param>
+        /// <param name="connectionString">The tenant database connection string</param>
+        /// <param name="tags">The tenant tags</param>
+        public virtual void Update(string identifier, string hostName, string name, string description, string fileName, string mimeType, string connectionString, IList<Tag> tags = null)
+        {
+            this.Update(identifier, hostName, name, description, new Image(fileName, mimeType), new DatabaseConnection(connectionString), tags);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="Tenant"/> instance.
+        /// </summary>
+        /// <param name="identifier">A unique identifier, e.g. a certificate thumbprint or serial
+        /// number, a text string etc</param>
+        /// <param name="hostName">A unique user friendly host name which may be used to
+        /// identify a tenant by host name</param>
+        /// <param name="name">The tenant name</param>
+        /// <param name="description">The tenant description</param>
+        /// <param name="image">The tenant logotype</param>
+        /// <param name="databaseConnection">The tenant database connection</param>
+        /// <param name="tags">The tenant tags</param>
+        public virtual void Update(string identifier, string hostName, string name, string description, Image image, DatabaseConnection databaseConnection, IList<Tag> tags = null)
+        {
+            this.UpdatedAt = DateTime.Now;
+            this.Slug = new Slug(name);
+            this.Identifier = identifier;
+            this.HostName = new Slug(hostName).Name;
+            this.Name = name;
+            this.Description = description;
+            this.Image = image;
+            this.DatabaseConnection = databaseConnection;
+            this.Tags = tags;
+        }
+        
 
         #endregion
     }

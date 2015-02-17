@@ -7,6 +7,7 @@ namespace Appva.Common.Domain
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -33,5 +34,19 @@ namespace Appva.Common.Domain
         {
             get;
         }
+
+        /// <summary>
+        /// A list of domain events.
+        /// </summary>
+        IList<IDomainEvent> Events
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Registers a new <see cref="IDomainEvent"/>.
+        /// </summary>
+        /// <param name="domainEvent">A new event which has taken place</param>
+        void RegisterEvent(IDomainEvent domainEvent);
     }
 }

@@ -13,7 +13,7 @@ namespace Appva.Persistence.Autofac
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class TrackablePersistenceContext : IDisposable
+    public sealed class TrackablePersistenceContext : IDisposable
     {
         #region Variables.
 

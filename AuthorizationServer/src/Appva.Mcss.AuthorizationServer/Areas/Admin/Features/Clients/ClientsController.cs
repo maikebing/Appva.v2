@@ -1,7 +1,9 @@
 ﻿// <copyright file="ClientsController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
 {
     #region Imports.
@@ -10,6 +12,7 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
     using Appva.Cqrs;
     using Appva.Mcss.AuthorizationServer.Code;
     using Appva.Mcss.AuthorizationServer.Models;
+    using Http = Appva.Mcss.AuthorizationServer.Common;
     using Appva.Mvc.Filters;
     using Appva.Mcss.AuthorizationServer.Infrastructure;
     using Appva.Persistence;
@@ -42,10 +45,10 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="request">The client id</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The client id and slug</param>
+        /// <returns><see cref="DetailsClient"/></returns>
         [HttpGet, Dispatch, Route("application/{slug}/{id:guid}")]
-        public ActionResult Details(DetailsClientId request)
+        public ActionResult Details(Id<DetailsClient> request)
         {
             return View();
         }
@@ -58,7 +61,7 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
         /// Returns a paged list of all clients.
         /// </summary>
         /// <param name="request">The paging parameters</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <returns><see cref="Pageable{ListClients}"/></returns>
         [HttpGet, Dispatch, Route("applications")]
         public ActionResult List(PageableQueryParams<Pageable<ListClients>> request)
         {
@@ -84,7 +87,8 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
         /// </summary>
         /// <param name="request">The form model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Clients"), Route("application/register"), AlertSuccess("Application created successfully!")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [Dispatch("Details", "Clients"), Route("application/register"), AlertSuccess("Application created successfully!")]
         public ActionResult Create(CreateClient request)
         {
             return View();
@@ -93,13 +97,13 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
         #endregion
 
         #region Update.
-        /*
+        
         /// <summary>
         /// Returns the update form.
         /// </summary>
-        /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, Hydrate, Dispatch]
-        public ActionResult Update(UpdateClientId request)
+        /// <returns><see cref="ReadUpdateClientForm"/></returns>
+        [HttpGet, Hydrate, Dispatch, Route("application/{slug}/{id:guid}/edit")]
+        public ActionResult Update(Id<ReadUpdateClientForm> request)
         {
             return View();
         }
@@ -109,12 +113,13 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
         /// </summary>
         /// <param name="request">The form model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Clients"), AlertSuccess("Client created successfully!")]
-        public ActionResult Update(UpdateClient request)
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [Dispatch("Details", "Clients"), Route("application/{slug}/{id:guid}/edit"), AlertSuccess("Client edited successfully!")]
+        public ActionResult Update(PostUpdateClientForm request)
         {
             return View();
         }
-        */
+        
         #endregion
 
         #endregion

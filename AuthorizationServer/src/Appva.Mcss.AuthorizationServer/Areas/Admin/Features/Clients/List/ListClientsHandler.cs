@@ -1,7 +1,9 @@
 ﻿// <copyright file="ListClientsHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.AuthorizationServer.Models.Handlers
 {
     #region Imports.
@@ -12,14 +14,15 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     using Appva.Persistence;
     using Appva.Core.Extensions;
     using NHibernate.Criterion;
-    using NHibernate.Transform;
+    using Appva.Persistence.Transformers;
 
     #endregion
 
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ListClientsHandler : PersistentRequestHandler<PageableQueryParams<Pageable<ListClients>>, Pageable<ListClients>>
+    internal sealed class ListClientsHandler 
+        : PersistentRequestHandler<PageableQueryParams<Pageable<ListClients>>, Pageable<ListClients>>
     {
         #region Constructors.
 
@@ -46,9 +49,10 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
                     .Add(Projections.Property<Client>(x => x.Slug.Name).WithAlias(() => clients.Slug))
                     .Add(Projections.Property<Client>(x => x.Name).WithAlias(() => clients.Name))
                     .Add(Projections.Property<Client>(x => x.Description).WithAlias(() => clients.Description))
-                    .Add(Projections.Property<Client>(x => x.Image).WithAlias(() => clients.Logotype))
+                    .Add(Projections.Property<Client>(x => x.Image.FileName).As("Logotype.FileName"))
+                    .Add(Projections.Property<Client>(x => x.Image.MimeType).As("Logotype.MimeType"))
                 )
-                .TransformUsing(Transformers.AliasToBean<ListClients>());
+                .TransformUsing(new DeepTransformer<ListClients>());
             if (message.SearchQuery.IsNotEmpty())
             {
                 query.WhereRestrictionOn(x => x.Name).IsLike(message.SearchQuery, MatchMode.Anywhere);

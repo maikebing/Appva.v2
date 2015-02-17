@@ -20,7 +20,7 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
     using Newtonsoft.Json;
 
     #endregion
-
+    /*
     /// <summary>
     /// The tenant service. 
     /// </summary>
@@ -180,5 +180,5 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
             get;
             set;
         }
-    }
+    }*/
 }

@@ -65,9 +65,19 @@ namespace Appva.Mcss.ResourceServer.Transformers
             return retval;
         }
 
+        /// <summary>
+        /// Transforms a collection of <see cref="Accounts"/> to a dictionary of account-id and name
+        /// </summary>
+        /// <param name="accounts">The accounts</param>
+        /// <returns>Dictionary of with account-id and name</returns>
         public static IDictionary<Guid, string> ToSimpleList(IList<Account> accounts)
         {
             var retval = new Dictionary<Guid, string>();
+            if (accounts == null)
+            {
+                return retval;
+            }
+
             foreach (var account in accounts)
             {
                 retval.Add(account.Id, account.FullName);

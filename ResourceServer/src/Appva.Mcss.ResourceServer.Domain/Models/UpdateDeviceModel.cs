@@ -61,7 +61,7 @@ namespace Appva.Mcss.ResourceServer.Models
         /// Taxon ID.
         /// </summary>
         [JsonProperty(PropertyName = "taxon_id")]
-        public Guid TaxonId 
+        public Guid? TaxonId 
         { 
             get; 
             set; 

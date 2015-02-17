@@ -7,8 +7,8 @@
     <ProjectGuid>{6366C860-2558-478B-BDE1-D2928B1B3AC0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Appva.Azure.PushNotifications</RootNamespace>
-    <AssemblyName>Appva.Azure.PushNotifications</AssemblyName>
+    <RootNamespace>Appva.Azure</RootNamespace>
+    <AssemblyName>Appva.Azure</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

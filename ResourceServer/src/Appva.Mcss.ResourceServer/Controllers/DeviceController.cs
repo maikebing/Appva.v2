@@ -1,8 +1,12 @@
 ﻿// <copyright file="DeviceController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-// <author><a href="mailto:christoffer.rosenqvist@invativa.se">Christoffer Rosenqvist</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
+// <author>
+//     <a href="mailto:christoffer.rosenqvist@invativa.se">Christoffer Rosenqvist</a>
+// </author>
 namespace Appva.Mcss.ResourceServer.Controllers
 {
     #region Imports.
@@ -20,6 +24,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Appva.Mcss.ResourceServer.Domain.Repositories;
     using Appva.Repository;
     using Appva.WebApi.Filters;
+    using Common.Logging;
     using Models;
     using Transformers;
 
@@ -34,9 +39,14 @@ namespace Appva.Mcss.ResourceServer.Controllers
         #region Variables.
 
         /// <summary>
+        /// The <see cref="ILog"/> for <see cref="DeviceController"/>.
+        /// </summary>
+        private static readonly ILog Log = LogManager.GetLogger<DeviceController>();
+
+        /// <summary>
         /// The <see cref="ITenantClient"/>.
         /// </summary>
-        private readonly ITenantClient client;
+        private readonly ITenantClient tenantClient;
 
         /// <summary>
         /// The <see cref="IDeviceRepository"/>.
@@ -60,13 +70,13 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceController"/> class.
         /// </summary>
-        /// <param name="client">The <see cref="ITenantClient"/></param>
+        /// <param name="tenantClient">The <see cref="ITenantClient"/></param>
         /// <param name="deviceRepository">The <see cref="IDeviceRepository"/></param>
         /// <param name="settingRepository">The <see cref="ISettingRepository"/></param>
         /// <param name="taxonRepository">The <see cref="ITaxonRepository"/></param>
-        public DeviceController(ITenantClient client, IDeviceRepository deviceRepository, ISettingRepository settingRepository, ITaxonRepository taxonRepository)
+        public DeviceController(ITenantClient tenantClient, IDeviceRepository deviceRepository, ISettingRepository settingRepository, ITaxonRepository taxonRepository)
         {
-            this.client = client;
+            this.tenantClient = tenantClient;
             this.deviceRepository = deviceRepository;
             this.settingRepository = settingRepository;
             this.taxonRepository = taxonRepository;
@@ -121,7 +131,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// </summary>
         /// <param name="deviceModel">The device model</param>
         /// <returns><code>Device</code> ID and name</returns>
-        /*[AuthorizeToken(Scope.AdminOnly)]
+        [AuthorizeToken(Scope.AdminOnly)]
         [HttpPost, Validate, Route("enroll")]
         public IHttpActionResult Enroll(DeviceModel deviceModel)
         {
@@ -144,7 +154,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.InternalServerError(new Exception("No taxon found, attempting to rollback!"));
             }
-            var client = this.client.GetClientByTenantId(this.User.Identity.Tenant());
+            var client = this.tenantClient.GetClientByTenantId(this.User.Identity.Tenant());
             if (client.IsNull())
             {
                 return this.InternalServerError(new Exception("No client found, attempting to rollback!"));
@@ -152,7 +162,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             if (deviceModel.RemoteMessagingId.IsNotEmpty())
             {
                 var tags = new List<string>() { "deviceId:" + device.Id.ToString() };
-                device.AzurePushId = Appva.Azure.PushNotifications.Messaging.PushNotifications.RegisterDevice(deviceModel.RemoteMessagingId, tags);
+                device.AzurePushId = Appva.Azure.PushNotifications.RegisterDevice(deviceModel.RemoteMessagingId, tags);
                 device.PushUuid = deviceModel.RemoteMessagingId;
             }
             return this.Ok(new
@@ -164,27 +174,67 @@ namespace Appva.Mcss.ResourceServer.Controllers
             });
         }
 
+        /// <summary>
+        /// Update a device
+        /// </summary>
+        /// <param name="id">The <see cref="Device"/> id.</param>
+        /// <param name="model">The update model</param>
+        /// <returns>Http 200</returns>
         [AuthorizeToken(Scope.ReadWrite)]
         [HttpPost, Validate, Route("{id}/update")]
         public IHttpActionResult Update(Guid id, UpdateDeviceModel model)
         {
+            Log.Debug("Device id is " + id);
+            var device = this.deviceRepository.Get(id);
+            Log.Debug("Remote messaging id is " + model.RemoteMessagingId);
+            if (model.RemoteMessagingId.IsNotNull() && device.PushUuid != model.RemoteMessagingId)
+            {
+                if (device.AzurePushId.IsEmpty())
+                {
+                    Log.Debug("Adding to Azure");
+                    var tags = new List<string>() { "deviceId:" + device.Id.ToString() };
+                    device.AzurePushId = Appva.Azure.PushNotifications.RegisterDevice(model.RemoteMessagingId, tags);
+                }
+                else 
+                {
+                    Log.Debug("Updating id in Azure");
+                    Appva.Azure.PushNotifications.UpdateDevice(device.AzurePushId, model.RemoteMessagingId);
+                }
+                device.PushUuid = model.RemoteMessagingId;
+            }
+            return this.Ok();
+        }
+
+        /// <summary>
+        /// Test-funktion för att debugga push
+        /// TODO: Remove on launch
+        /// </summary>
+        /// <param name="id">The Device id</param>
+        /// <returns>Http 200</returns>
+        [AuthorizeToken(Scope.ReadWrite)]
+        [HttpGet, Validate, Route("{id}/push")]
+        public IHttpActionResult Update(Guid id)
+        {
+            var model = new UpdateDeviceModel();
+            model.RemoteMessagingId = "997187ed6249c5d62215179c8493be32bc7a81e5b9fe9a5bfa01abbfccfa13f3";
             var device = this.deviceRepository.Get(id);
             if (model.RemoteMessagingId.IsNotNull())
             {
                 if (device.AzurePushId.IsEmpty())
                 {
                     var tags = new List<string>() { "deviceId:" + device.Id.ToString() };
-                    device.AzurePushId = Appva.Azure.PushNotifications.Messaging.PushNotifications.RegisterDevice(model.RemoteMessagingId, tags);
+                    device.AzurePushId = Appva.Azure.PushNotifications.RegisterDevice(model.RemoteMessagingId, tags);
                 }
                 else 
                 {
-                    Appva.Azure.PushNotifications.Messaging.PushNotifications.UpdateDevice(device.AzurePushId, model.RemoteMessagingId);
+                    Appva.Azure.PushNotifications.UpdateDevice(device.AzurePushId, model.RemoteMessagingId);
                 }
                 device.PushUuid = model.RemoteMessagingId;
             }
+            this.deviceRepository.Update(device);
             return this.Ok();
         }
-        */
+
         #endregion
     }
 }

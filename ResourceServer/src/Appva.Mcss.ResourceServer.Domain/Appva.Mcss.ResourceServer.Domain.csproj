@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Constants\Settings.cs" />
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\AlarmNotificationModel.cs" />
     <Compile Include="Models\AuthenticationCredentialsModel.cs" />
     <Compile Include="Models\BaseTaskModel.cs" />
     <Compile Include="Models\BeaconModel.cs" />

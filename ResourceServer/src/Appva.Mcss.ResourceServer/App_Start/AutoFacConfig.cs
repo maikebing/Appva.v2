@@ -71,7 +71,7 @@ namespace Appva.Mcss.ResourceServer
         /// <param name="builder">The <see cref="ContainerBuilder"/></param>
         private static void ConfigurePushNotification(ContainerBuilder builder)
         {
-            builder.RegisterType<NoOpPushNotification>().As<IPushNotification>().SingleInstance();
+            builder.RegisterType<PushNotification>().As<IPushNotification>().SingleInstance();
         }
 
         /// <summary>

@@ -8,10 +8,7 @@ namespace Appva.Apis.TenantServer.Contracts
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -20,24 +17,13 @@ namespace Appva.Apis.TenantServer.Contracts
     /// </summary>
     public sealed class Tenant
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Tenant"/> class.
-        /// </summary>
-        public Tenant()
-        {
-        }
-
-        #endregion
-
         #region Public Properties.
 
         /// <summary>
         /// The tenant id.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Reviewed.")]
-        public string id
+        [JsonProperty("id")]
+        public string Id
         {
             get;
             set;
@@ -46,8 +32,8 @@ namespace Appva.Apis.TenantServer.Contracts
         /// <summary>
         /// The tenant database connection.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Reviewed.")]
-        public string connection_string
+        [JsonProperty("connection_string")]
+        public string ConnectionString
         {
             get;
             set;

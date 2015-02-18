@@ -452,6 +452,7 @@
     <Content Include="Areas\Admin\Features\Tenants\Edit\Edit.cshtml" />
     <Content Include="Areas\Admin\Features\Clients\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Authorization Server Release.pubxml" />
+    <None Include="Properties\PublishProfiles\OAuthServer Profile.pubxml" />
     <None Include="Properties\PublishProfiles\OAuthServer.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -8,9 +8,9 @@ namespace Appva.Apis.TenantServer
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
-    using Appva.Apis.TenantServer.Contracts;
+    using System.Threading.Tasks;
+    using Contracts;
 
     #endregion
 
@@ -27,10 +27,23 @@ namespace Appva.Apis.TenantServer
         Tenant Get(object id);
 
         /// <summary>
+        /// Returns a tenant by id asyncronous.
+        /// </summary>
+        /// <param name="id">The tenant id</param>
+        /// <returns>A <see cref="Tenant"/></returns>
+        Task<Tenant> GetAsync(object id);
+
+        /// <summary>
         /// Returns a collection of <see cref="Tenant"/>.
         /// </summary>
         /// <returns>A collection of <see cref="Tenant"/></returns>
         IList<Tenant> ListAll();
+
+        /// <summary>
+        /// Returns a collection of <see cref="Tenant"/> asyncronous.
+        /// </summary>
+        /// <returns>A collection of <see cref="Tenant"/></returns>
+        Task<IList<Tenant>> ListAllAsync();
 
         /// <summary>
         /// Returns a client by tenant id.
@@ -38,5 +51,12 @@ namespace Appva.Apis.TenantServer
         /// <param name="id">The tenant id</param>
         /// <returns>A <see cref="Client"/></returns>
         Client GetClientByTenantId(object id);
+
+        /// <summary>
+        /// Returns a client by tenant id asyncronous.
+        /// </summary>
+        /// <param name="id">The tenant id</param>
+        /// <returns>A <see cref="Client"/></returns>
+        Task<Client> GetClientByTenantIdAsync(object id);
     }
 }

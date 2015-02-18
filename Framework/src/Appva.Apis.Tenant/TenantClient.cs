@@ -10,11 +10,10 @@ namespace Appva.Apis.TenantServer
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
-    using Appva.Apis.TenantServer.Contracts;
+    using Contracts;
     using Newtonsoft.Json;
 
     #endregion
@@ -38,13 +37,29 @@ namespace Appva.Apis.TenantServer
         /// <summary>
         /// Initializes a new instance of the <see cref="TenantClient"/> class.
         /// </summary>
-        /// <param name="configuration">The tenant server configuration</param>
-        public TenantClient(ITenantServerConfiguration configuration)
+        /// <param name="baseAddress">The tenant server base uri address</param>
+        public TenantClient(Uri baseAddress)
         {
-            this.httpClient = new HttpClient();
-            this.httpClient.BaseAddress = configuration.Uri;
+            this.httpClient = new HttpClient
+            {
+                BaseAddress = baseAddress
+            };
             this.httpClient.DefaultRequestHeaders.Accept.Clear();
             this.httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json")); 
+        }
+
+        #endregion
+
+        #region Public Static Functions.
+
+        /// <summary>
+        /// Creates a new tenant server client.
+        /// </summary>
+        /// <param name="baseAddress">The tenant server base uri address</param>
+        /// <returns>A new <see cref="ITenantClient"/> instance</returns>
+        public static ITenantClient CreateNew(Uri baseAddress)
+        {
+            return new TenantClient(baseAddress);
         }
 
         #endregion
@@ -69,6 +84,24 @@ namespace Appva.Apis.TenantServer
             return this.GetRequest<Client>(string.Format("tenant/{0}/client", id));
         }
 
+        /// <inheritdoc />
+        public async Task<Tenant> GetAsync(object id)
+        {
+            return await this.GetRequestAsync<Tenant>(string.Format("tenant/{0}", id));
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<Tenant>> ListAllAsync()
+        {
+            return await this.GetRequestAsync<IList<Tenant>>("tenants");
+        }
+
+        /// <inheritdoc />
+        public async Task<Client> GetClientByTenantIdAsync(object id)
+        {
+            return await this.GetRequestAsync<Client>(string.Format("tenant/{0}/client", id));
+        }
+
         #endregion
 
         #region Private Functions.
@@ -83,12 +116,12 @@ namespace Appva.Apis.TenantServer
         private T GetRequest<T>(string uri)
         {
             var response = this.httpClient.GetAsync(uri).Result;
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                var content = response.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject<T>(content);
+                return default(T);
             }
-            return default(T);
+            var content = response.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<T>(content);
         }
 
         /// <summary>
@@ -101,12 +134,12 @@ namespace Appva.Apis.TenantServer
         private async Task<T> GetRequestAsync<T>(string uri)
         {
             var response = await this.httpClient.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(content);
+                return default(T);
             }
-            return default(T);
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(content);
         }
 
         #endregion

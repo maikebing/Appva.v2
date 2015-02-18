@@ -17,17 +17,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
     /// </summary>
     public sealed class HealthController : ApiController
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HealthController"/> class.
-        /// </summary>
-        public HealthController()
-        {
-        }
-
-        #endregion
-
         #region Routes.
 
         /// <summary>

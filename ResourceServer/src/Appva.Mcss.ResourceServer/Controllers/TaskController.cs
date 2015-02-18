@@ -19,17 +19,17 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System.Globalization;
     using System.Linq;
     using System.Web.Http;
-    using Appva.Core.Extensions;
-    using Appva.Logging;
-    using Appva.Mcss.Domain.Entities;
-    using Appva.Mcss.ResourceServer.Application;
-    using Appva.Mcss.ResourceServer.Application.Authorization;
-    using Appva.Mcss.ResourceServer.Domain.Constants;
-    using Appva.Mcss.ResourceServer.Domain.Repositories;
-    using Appva.Mcss.ResourceServer.Domain.Services;
-    using Appva.WebApi.Filters;
+    using Application;
+    using Application.Authorization;
+    using Core.Extensions;
+    using Domain.Constants;
+    using Domain.Repositories;
+    using Domain.Services;
+    using Logging;
+    using Mcss.Domain.Entities;
     using Models;
     using Transformers;
+    using WebApi.Filters;
 
     #endregion
 

@@ -1,12 +1,15 @@
 ﻿// <copyright file="Response.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cqrs
 {
     #region Imports.
 
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     #endregion
 
@@ -26,9 +29,6 @@ namespace Appva.Cqrs
             {
                 return Unit.Value;
             }
-            set
-            {
-            }
         }
 
         #endregion
@@ -37,9 +37,10 @@ namespace Appva.Cqrs
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
+    /// <typeparam name="TResponseData">The response data</typeparam>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     public class Response<TResponseData>
     {
-
         /// <summary>
         /// The message response data.
         /// </summary>
@@ -64,7 +65,7 @@ namespace Appva.Cqrs
         /// <returns>True if an <see cref="Exception"/> was raised</returns>
         public virtual bool HasException()
         {
-            return Exception != null;
+            return this.Exception != null;
         }
     }
 }

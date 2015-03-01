@@ -9,12 +9,10 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Runtime.Serialization;
     using System.Xml.Serialization;
-    using Appva.Fhir.Complex;
-    using Appva.Fhir.Primitives;
+    using Complex;
+    using Primitives;
     using Validation;
 
     #endregion
@@ -38,15 +36,15 @@ namespace Appva.Fhir.Resources.Security
         /// Initializes a new instance of the <see cref="SecurityEventEvent"/> class.
         /// </summary>
         /// <param name="type">
-        /// Identifier for a family of the event, see <see cref="SecurityEventType"/>
+        /// Identifier for a family of the event, see <c>SecurityEventType</c>
         /// </param>
         /// <param name="action">
         /// Indicator for type of action performed during the event that generated the 
-        /// audit, see <see cref="SecurityEventAction"/>
+        /// audit, see <c>SecurityEventAction</c>
         /// </param>
         /// <param name="outcome">
         /// Indicates whether the event succeeded or failed, see 
-        /// <see cref="SecurityEventOutcome"/>
+        /// <c>SecurityEventOutcome</c>
         /// </param>
         public SecurityEventEvent(CodeableConcept type, Code action, Code outcome)
             : this(type, null, action, DateTime.Now, outcome, null)
@@ -57,21 +55,21 @@ namespace Appva.Fhir.Resources.Security
         /// Initializes a new instance of the <see cref="SecurityEventEvent"/> class.
         /// </summary>
         /// <param name="type">
-        /// Identifier for a family of the event, see <see cref="SecurityEventType"/>
+        /// Identifier for a family of the event, see <c>SecurityEventType</c>
         /// </param>
         /// <param name="subtypes">
-        /// Identifier for the category of event, see <see cref="SecurityEventSubType"/>
+        /// Identifier for the category of event, see <c>SecurityEventSubType</c>
         /// </param>
         /// <param name="action">
         /// Indicator for type of action performed during the event that generated the 
-        /// audit, see <see cref="SecurityEventAction"/>
+        /// audit, see <c>SecurityEventAction</c>
         /// </param>
         /// <param name="dateTime">
         /// The time when the event occurred on the source.
         /// </param>
         /// <param name="outcome">
         /// Indicates whether the event succeeded or failed, see 
-        /// <see cref="SecurityEventOutcome"/>
+        /// <c>SecurityEventOutcome</c>
         /// </param>
         /// <param name="outcomeDescription">
         /// A free text description of the outcome of the event
@@ -94,7 +92,7 @@ namespace Appva.Fhir.Resources.Security
         #region Properties.
 
         /// <summary>
-        /// Identifier for a family of the event, see <see cref="SecurityEventType"/>.
+        /// Identifier for a family of the event, see <c>SecurityEventType</c>.
         /// <externalLink>
         ///     <linkText>Type</linkText>
         ///     <linkUri>
@@ -111,7 +109,7 @@ namespace Appva.Fhir.Resources.Security
         }
 
         /// <summary>
-        /// Identifier for the category of event, see <see cref="SecurityEventSubType"/>.
+        /// Identifier for the category of event, see <c>SecurityEventSubType</c>.
         /// <externalLink>
         ///     <linkText>Subtype</linkText>
         ///     <linkUri>
@@ -128,7 +126,7 @@ namespace Appva.Fhir.Resources.Security
 
         /// <summary>
         /// Indicator for type of action performed during the event that generated the 
-        /// audit, see <see cref="SecurityEventAction"/>.
+        /// audit, see <c>SecurityEventAction</c>.
         /// <externalLink>
         ///     <linkText>Subtype</linkText>
         ///     <linkUri>
@@ -162,7 +160,7 @@ namespace Appva.Fhir.Resources.Security
         }
 
         /// <summary>
-        /// Indicates whether the event succeeded or failed, see <see cref="SecurityEventOutcome"/>.
+        /// Indicates whether the event succeeded or failed, see <c>SecurityEventOutcome</c>.
         /// <externalLink>
         ///     <linkText>Outcome</linkText>
         ///     <linkUri>

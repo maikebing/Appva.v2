@@ -22,7 +22,7 @@
         /// <summary>
         /// 
         /// </summary>
-        private IList<Like<TEntity>> _likes;
+        private IList<Like<TEntity>> likes;
 
         #endregion
 
@@ -33,7 +33,7 @@
         /// </summary>
         internal IList<Like<TEntity>> Likes { 
             get {
-                return this._likes;
+                return this.likes;
             }
         }
 
@@ -62,10 +62,10 @@
         {
             var instance = new Searchable<TEntity>();
             if (property != null && value != null) {
-                if (instance._likes == null) {
-                    instance._likes = new List<Like<TEntity>>();
+                if (instance.likes == null) {
+                    instance.likes = new List<Like<TEntity>>();
                 }
-                instance._likes.Add(new Like<TEntity>() { Property = property, Value = value });
+                instance.likes.Add(new Like<TEntity>() { Property = property, Value = value });
             }
             return instance;
         }
@@ -78,10 +78,10 @@
         /// <returns></returns>
         public Searchable<TEntity> MatchBy(Expression<Func<TEntity, object>> property, string value)
         {
-            if (this._likes == null) {
-                this._likes = new List<Like<TEntity>>();
+            if (this.likes == null) {
+                this.likes = new List<Like<TEntity>>();
             }
-            this._likes.Add(new Like<TEntity>() { Property = property, Value = value });
+            this.likes.Add(new Like<TEntity>() { Property = property, Value = value });
             return this;
         }
 

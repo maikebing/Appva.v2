@@ -11,13 +11,13 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System;
     using System.Collections.Generic;
     using System.Web.Http;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Domain.Entities;
-    using Appva.Mcss.ResourceServer.Application;
-    using Appva.Mcss.ResourceServer.Application.Authorization;
-    using Appva.Mcss.ResourceServer.Domain.Repositories;
-    using Appva.WebApi.Filters;
+    using Application;
+    using Application.Authorization;
+    using Core.Extensions;
+    using Domain.Repositories;
+    using Mcss.Domain.Entities;
     using Models;
+    using WebApi.Filters;
 
     #endregion
 
@@ -108,8 +108,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 case "withdrawal":
                     inventory.CurrentLevel = inventory.CurrentLevel - model.Amount;
                     break;
-                default:
-                    break;
             }
             var transaction = new InventoryTransactionItem
             { 
@@ -171,6 +169,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                     var previousTransaction = this.inventoryTransactionItemRepository.GetLastActiveTransaction(transaction);
                     if (previousTransaction.Operation != "recount")
                     {
+                        //// TODO: The recount variable does nothing
                         var previousRecount = this.inventoryTransactionItemRepository.GetLastActiveTransaction(transaction, "recount"); 
                     }   
                     transaction.Inventory.CurrentLevel = transaction.Value;
@@ -178,8 +177,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
                     break;
                 case "withdrawal":
                     transaction.Inventory.CurrentLevel += transaction.Value;
-                    break;
-                default:
                     break;
             }
             //// TODO: 200 is success? 

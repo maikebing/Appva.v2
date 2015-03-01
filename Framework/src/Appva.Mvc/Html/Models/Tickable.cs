@@ -1,7 +1,9 @@
 ﻿// <copyright file="Tickable.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Models
 {
     #region Imports.
@@ -11,23 +13,10 @@ namespace Appva.Mvc.Html.Models
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// A tickable (checkbox) element.
     /// </summary>
     public class Tickable
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Tickable"/> class.
-        /// </summary>
-        public Tickable()
-        {
-        }
-
-        #endregion
-
-        #region Public Properties.
-
         /// <summary>
         /// The id of the tickable checkbox.
         /// </summary>
@@ -73,15 +62,5 @@ namespace Appva.Mvc.Html.Models
             get;
             set;
         }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
-    /// </summary>
-    /// <typeparam name="TModel">The model type</typeparam>
-    public class Tickable<TModel> : Tickable
-    {
     }
 }

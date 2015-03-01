@@ -1,7 +1,9 @@
 ﻿// <copyright file="Checksum.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cryptography
 {
     #region Imports.
@@ -11,12 +13,24 @@ namespace Appva.Cryptography
     #endregion
 
     /// <summary>
-    /// Creates a non cryptographic hash using a <see cref="HashAlgorithm"/>. 
-    /// Used primarily for easy (unreliable) verification of data integrity.
+    /// Creates a non cryptographic hash using a <see cref="HashAlgorithm"/>. Used 
+    /// primarily for easy (unreliable) verification of data integrity.
     /// </summary>
-    /// <example>Checksum.Using{MurmurHash}(value: "foo").Build();</example>
-    /// <example>Checksum.Using{MurmurHash}(value: "foo").BuildAsBase64();</example>
-    /// <example>Checksum.Assert{MurmurHash}(value: "foo").Equals(hash: "bar");</example>
+    /// <example>
+    ///     <code language="cs" title="Example #1">
+    ///         Checksum.Using{MurmurHash}(value: "foo").Build();
+    ///     </code>
+    /// </example>
+    /// <example>
+    ///     <code language="cs" title="Example #2">
+    ///         Checksum.Using{MurmurHash}(value: "foo").BuildAsBase64();
+    ///     </code>
+    /// </example>
+    /// <example>
+    ///     <code language="cs" title="Example #3">
+    ///         Checksum.Assert{MurmurHash}(value: "foo").Equals(hash: "bar");
+    ///     </code>
+    /// </example>
     public static class Checksum
     {
         /// <summary>
@@ -25,7 +39,7 @@ namespace Appva.Cryptography
         /// <typeparam name="T">An implementation of <see cref="HashAlgorithm"/></typeparam>
         /// <param name="value">The value which is to be hashed</param>
         /// <returns>The hashed value</returns>
-        public static INonCryptographicHashBuild<T> Using<T>(string value) 
+        public static INonCryptographicHashBuild Using<T>(string value) 
             where T : HashAlgorithm, new()
         {
             return new NonCryptographicHash<T>(value);
@@ -37,7 +51,7 @@ namespace Appva.Cryptography
         /// <typeparam name="T">An implementation of <see cref="HashAlgorithm"/></typeparam>
         /// <param name="bytes">The bytes</param>
         /// <returns>The hashed value</returns>
-        public static INonCryptographicHashBuild<T> Using<T>(byte[] bytes)
+        public static INonCryptographicHashBuild Using<T>(byte[] bytes)
             where T : HashAlgorithm, new()
         {
             return new NonCryptographicHash<T>(bytes);
@@ -49,7 +63,7 @@ namespace Appva.Cryptography
         /// <typeparam name="T">An implementation of <see cref="HashAlgorithm"/></typeparam>
         /// <param name="unhashed">The original unhashed value</param>
         /// <returns>False if the hash does not match the original value</returns>
-        public static INonCryptographicHashEquals<T> Assert<T>(string unhashed) 
+        public static INonCryptographicHashEquals Assert<T>(string unhashed) 
             where T : HashAlgorithm, new()
         {
             return new NonCryptographicHash<T>(unhashed);

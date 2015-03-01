@@ -1,11 +1,14 @@
 ﻿// <copyright file="ConfigurableApplicationContextWriter.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Core.Configuration
 {
     #region Imports.
 
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using Cryptography.DataProtection;
     using IO;
@@ -21,58 +24,55 @@ namespace Appva.Core.Configuration
     /// <summary>
     /// Constraint which allows the To() method.
     /// </summary>
-    /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
-    public interface IConfigurableApplicationContextWriterTo<T>
+    public interface IConfigurableApplicationContextWriterTo
     {
         /// <summary>
         /// Sets the location which the configurable resource should be written to.
         /// </summary>
         /// <param name="location">The path of the configurable resource</param>
-        /// <returns><see cref="IConfigurableApplicationContextWriterProtectOrExecute{T}"/></returns>
-        IConfigurableApplicationContextWriterProtectOrExecute<T> To(string location);
+        /// <returns><see cref="IConfigurableApplicationContextWriterProtectOrExecute"/></returns>
+        IConfigurableApplicationContextWriterProtectOrExecute To(string location);
     }
 
     /// <summary>
     /// Constraint which allows either the Protect() or Execute() method.
     /// </summary>
-    /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
-    public interface IConfigurableApplicationContextWriterProtectOrExecute<T> :
-        IConfigurableApplicationContextWriterExecute<T>
+    public interface IConfigurableApplicationContextWriterProtectOrExecute :
+        IConfigurableApplicationContextWriterExecute
     {
         /// <summary>
         /// Encrypts a configurable resource.
         /// </summary>
-        /// <returns><see cref="IConfigurableApplicationContextWriterExecute{T}"/></returns>
-        IConfigurableApplicationContextWriterExecute<T> Protect();
+        /// <returns><see cref="IConfigurableApplicationContextWriterExecute"/></returns>
+        IConfigurableApplicationContextWriterExecute Protect();
 
         /// <summary>
         /// Encrypts a configurable resource.
         /// </summary>
         /// <param name="protect">If protect should be used</param>
-        /// <returns><see cref="IConfigurableApplicationContextWriterExecute{T}"/></returns>
-        IConfigurableApplicationContextWriterExecute<T> Protect(bool protect);
+        /// <returns><see cref="IConfigurableApplicationContextWriterExecute"/></returns>
+        IConfigurableApplicationContextWriterExecute Protect(bool protect);
 
         /// <summary>
         /// Encrypts a configurable resource.
         /// </summary>
         /// <param name="protector">A protector implementation</param>
-        /// <returns><see cref="IConfigurableApplicationContextWriterExecute{T}"/></returns>
-        IConfigurableApplicationContextWriterExecute<T> Protect(IDataProtector protector);
+        /// <returns><see cref="IConfigurableApplicationContextWriterExecute"/></returns>
+        IConfigurableApplicationContextWriterExecute Protect(IDataProtector protector);
 
         /// <summary>
         /// Encrypts a configurable resource.
         /// </summary>
         /// <param name="protector">A protector implementation</param>
         /// <param name="protect">If protect should be used</param>
-        /// <returns><see cref="IConfigurableApplicationContextWriterExecute{T}"/></returns>
-        IConfigurableApplicationContextWriterExecute<T> Protect(IDataProtector protector, bool protect);
+        /// <returns><see cref="IConfigurableApplicationContextWriterExecute"/></returns>
+        IConfigurableApplicationContextWriterExecute Protect(IDataProtector protector, bool protect);
     }
 
     /// <summary>
     /// Constraint which allows the Execute() method.
     /// </summary>
-    /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
-    public interface IConfigurableApplicationContextWriterExecute<T>
+    public interface IConfigurableApplicationContextWriterExecute
     {
         /// <summary>
         /// Writes the <see cref="IConfigurableResource"/> to disk.
@@ -93,8 +93,8 @@ namespace Appva.Core.Configuration
     /// </summary>
     /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
     internal sealed class ConfigurableApplicationContextWriter<T> :
-        IConfigurableApplicationContextWriterTo<T>,
-        IConfigurableApplicationContextWriterProtectOrExecute<T>
+        IConfigurableApplicationContextWriterTo,
+        IConfigurableApplicationContextWriterProtectOrExecute
         where T : class, IConfigurableResource
     {
         #region Variables.
@@ -114,7 +114,8 @@ namespace Appva.Core.Configuration
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurableApplicationContextWriter{T}"/> class.
+        /// Initializes a new instance of the 
+        /// <see cref="ConfigurableApplicationContextWriter{T}"/> class.
         /// </summary>
         /// <param name="configuration">The configurable resource</param>
         public ConfigurableApplicationContextWriter(T configuration)
@@ -154,7 +155,8 @@ namespace Appva.Core.Configuration
         #region IConfigurableApplicationContextWriterTo<T> Members.
 
         /// <inheritdoc />
-        IConfigurableApplicationContextWriterProtectOrExecute<T> IConfigurableApplicationContextWriterTo<T>.To(string location)
+        [SuppressMessage("ReSharper", "ParameterHidesMember", Justification = "Reviewed.")]
+        IConfigurableApplicationContextWriterProtectOrExecute IConfigurableApplicationContextWriterTo.To(string location)
         {
             Requires.NotNullOrEmpty(location, "location");
             this.location = location;
@@ -166,13 +168,13 @@ namespace Appva.Core.Configuration
         #region IConfigurableApplicationContextWriterProtectOrExecute<T> Members.
 
         /// <inheritdoc />
-        IConfigurableApplicationContextWriterExecute<T> IConfigurableApplicationContextWriterProtectOrExecute<T>.Protect()
+        IConfigurableApplicationContextWriterExecute IConfigurableApplicationContextWriterProtectOrExecute.Protect()
         {
             return new ConfigurableApplicationContextProtectedWriter<T>(this);
         }
 
         /// <inheritdoc />
-        IConfigurableApplicationContextWriterExecute<T> IConfigurableApplicationContextWriterProtectOrExecute<T>.Protect(bool protect)
+        IConfigurableApplicationContextWriterExecute IConfigurableApplicationContextWriterProtectOrExecute.Protect(bool protect)
         {
             if (protect)
             {
@@ -182,13 +184,13 @@ namespace Appva.Core.Configuration
         }
 
         /// <inheritdoc />
-        IConfigurableApplicationContextWriterExecute<T> IConfigurableApplicationContextWriterProtectOrExecute<T>.Protect(IDataProtector protector)
+        IConfigurableApplicationContextWriterExecute IConfigurableApplicationContextWriterProtectOrExecute.Protect(IDataProtector protector)
         {
             return new ConfigurableApplicationContextProtectedWriter<T>(protector, this);
         }
 
         /// <inheritdoc />
-        IConfigurableApplicationContextWriterExecute<T> IConfigurableApplicationContextWriterProtectOrExecute<T>.Protect(IDataProtector protector, bool protect)
+        IConfigurableApplicationContextWriterExecute IConfigurableApplicationContextWriterProtectOrExecute.Protect(IDataProtector protector, bool protect)
         {
             if (protect)
             {
@@ -202,20 +204,20 @@ namespace Appva.Core.Configuration
         #region IConfigurableApplicationContextWriterExecute<T> Members.
 
         /// <inheritdoc />
-        void IConfigurableApplicationContextWriterExecute<T>.Execute()
+        void IConfigurableApplicationContextWriterExecute.Execute()
         {
             using (var source = new JsonConfigurableSource(this.location))
             {
-                source.Write<T>(this.configuration);
+                source.Write(this.configuration);
             }
         }
 
         /// <inheritdoc />
-        async Task IConfigurableApplicationContextWriterExecute<T>.ExecuteAsync()
+        async Task IConfigurableApplicationContextWriterExecute.ExecuteAsync()
         {
             using (var source = new JsonConfigurableSource(this.location))
             {
-                await source.WriteAsync<T>(this.configuration);
+                await source.WriteAsync(this.configuration);
             }
         }
 

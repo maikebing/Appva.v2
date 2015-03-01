@@ -11,15 +11,15 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System;
     using System.Linq;
     using System.Web.Http;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Domain.Entities;
-    using Appva.Mcss.ResourceServer.Application;
-    using Appva.Mcss.ResourceServer.Application.Authorization;
-    using Appva.Mcss.ResourceServer.Domain.Repositories;
-    using Appva.Repository;
-    using Appva.WebApi.Filters;
+    using Application;
+    using Application.Authorization;
+    using Core.Extensions;
+    using Domain.Repositories;
+    using Mcss.Domain.Entities;
     using Models;
+    using Repository;
     using Transformers;
+    using WebApi.Filters;
 
     #endregion
 

@@ -18,17 +18,6 @@ namespace Appva.Persistence
     /// </summary>
     public sealed class DefaultDatasourceConfiguration : IDefaultDatasourceConfiguration
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultDatasourceConfiguration"/> class.
-        /// </summary>
-        public DefaultDatasourceConfiguration()
-        {
-        }
-
-        #endregion
-
         #region IDefaultDatasourceConfiguration Members.
 
         /// <inheritdoc />

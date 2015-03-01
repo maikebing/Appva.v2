@@ -30,7 +30,7 @@ namespace Appva.Cryptography.X509
         /// <summary>
         /// Creates the X.509 certificate and writes to disk as a .pfx file.
         /// </summary>
-        /// <param name="certificate">The current <see cref="X509Certificate2"/></param>
+        /// <param name="certificate">The current <c>X509Certificate2</c></param>
         /// <param name="outputFile">The file path, e.g. C:\cert.pfx</param>
         /// <param name="password">The .pfx password, defaults to null - no password</param>
         public static void WriteToDisk(this MSX509.X509Certificate2 certificate, string outputFile, string password = null)
@@ -42,7 +42,7 @@ namespace Appva.Cryptography.X509
         /// <summary>
         /// Returns the subject as a <see cref="X509Name"/>.
         /// </summary>
-        /// <param name="certificate">The current <see cref="X509Certificate2"/></param>
+        /// <param name="certificate">The current <c>X509Certificate2</c></param>
         /// <returns>A subject <see cref="X509Name"/></returns>
         public static X509Name GetSubject(this MSX509.X509Certificate2 certificate)
         {
@@ -64,7 +64,7 @@ namespace Appva.Cryptography.X509
         /// </summary>
         /// <param name="builder">The current <see cref="X509V3CertificateGenerator"/></param>
         /// <param name="issuerName">The issuer name</param>
-        public static void SetIssuerDN(this X509V3CertificateGenerator builder, string issuerName)
+        public static void SetIssuerDn(this X509V3CertificateGenerator builder, string issuerName)
         {
             builder.SetIssuerDN(issuerName.Contains("=") ? new X509Name(issuerName) : new X509Name("CN=" + issuerName));
         }
@@ -74,7 +74,7 @@ namespace Appva.Cryptography.X509
         /// </summary>
         /// <param name="builder">The current <see cref="X509V3CertificateGenerator"/></param>
         /// <param name="subjectName">The subject name</param>
-        public static void SetSubjectDN(this X509V3CertificateGenerator builder, string subjectName)
+        public static void SetSubjectDn(this X509V3CertificateGenerator builder, string subjectName)
         {
             builder.SetSubjectDN(subjectName.Contains("=") ? new X509Name(subjectName) : new X509Name("CN=" + subjectName));
         }
@@ -176,14 +176,14 @@ namespace Appva.Cryptography.X509
         /// Add the Authority Key Identifier.
         /// </summary>
         /// <param name="builder">The current <see cref="X509V3CertificateGenerator"/></param>
-        /// <param name="issuerDN">Issuer distinguished name (DN)</param>
+        /// <param name="issuerDn">Issuer distinguished name (DN)</param>
         /// <param name="issuerKeyPair">Issuer asymmetric key pair</param>
         /// <param name="issuerSerialNumber">Issuer serial number</param>
-        public static void AddAuthorityKeyIdentifier(this X509V3CertificateGenerator builder, X509Name issuerDN, AsymmetricCipherKeyPair issuerKeyPair, BigInteger issuerSerialNumber)
+        public static void AddAuthorityKeyIdentifier(this X509V3CertificateGenerator builder, X509Name issuerDn, AsymmetricCipherKeyPair issuerKeyPair, BigInteger issuerSerialNumber)
         {
             var authorityKeyIdentifierExtension = new AuthorityKeyIdentifier(
                     SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(issuerKeyPair.Public),
-                    new GeneralNames(new GeneralName(issuerDN)),
+                    new GeneralNames(new GeneralName(issuerDn)),
                     issuerSerialNumber);
             builder.AddExtension(X509Extensions.AuthorityKeyIdentifier.Id, false, authorityKeyIdentifierExtension);
         }

@@ -10,10 +10,10 @@ namespace Appva.Mcss.ResourceServer.Controllers
 
     using System;
     using System.Web.Http;
-    using Appva.Mcss.ResourceServer.Application;
-    using Appva.Mcss.ResourceServer.Application.Authorization;
-    using Appva.Mcss.ResourceServer.Domain.Repositories;
-    using Appva.Mcss.ResourceServer.Domain.Services;
+    using Application;
+    using Application.Authorization;
+    using Domain.Repositories;
+    using Domain.Services;
     using Models;
     using Transformers;
 

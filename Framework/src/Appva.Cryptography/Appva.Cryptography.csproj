@@ -51,7 +51,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="HashAlgorithms\MurmurHash128.cs" />
-    <Compile Include="HashAlgorithms\XXHash32.cs" />
+    <Compile Include="HashAlgorithms\XxHash32.cs" />
     <Compile Include="HashFormat.cs" />
     <Compile Include="Messaging\EmailMessageSignerKey.cs" />
     <Compile Include="NonCryptographicHash.cs" />
@@ -66,7 +66,7 @@
     <Compile Include="X509\ICipher.cs" />
     <Compile Include="X509\Cipher.cs" />
     <Compile Include="X509\KeySize.cs" />
-    <Compile Include="X509\CACertificate.cs" />
+    <Compile Include="X509\CaCertificate.cs" />
     <Compile Include="X509\Rsa.cs" />
     <Compile Include="X509\SelfSignedCertificate.cs" />
     <Compile Include="X509\ServerCertificate.cs" />

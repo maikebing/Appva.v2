@@ -6,13 +6,6 @@
 // </author>
 namespace Appva.Persistence
 {
-    #region Imports.
-
-    using System;
-    using System.Collections.Generic;
-
-    #endregion
-
     /// <summary>
     /// Marker interface for data source events.
     /// </summary>

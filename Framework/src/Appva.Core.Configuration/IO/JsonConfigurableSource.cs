@@ -1,7 +1,9 @@
 ﻿// <copyright file="JsonConfigurableSource.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Core.Configuration.IO
 {
     #region Imports.
@@ -9,7 +11,7 @@ namespace Appva.Core.Configuration.IO
     using System.IO;
     using System.Threading.Tasks;
     using Extensions;
-    using Newtonsoft.Json;
+    using Newtonsoft.Json;    
 
     #endregion
 

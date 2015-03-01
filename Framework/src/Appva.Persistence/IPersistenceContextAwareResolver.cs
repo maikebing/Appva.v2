@@ -28,6 +28,7 @@ namespace Appva.Persistence
         /// <summary>
         /// Returns the current <see cref="ISessionFactory"/>.
         /// </summary>
+        /// <returns>An <see cref="ISessionFactory"/> instance</returns>
         ISessionFactory Resolve();
 
         /// <summary>

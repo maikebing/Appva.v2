@@ -1,41 +1,42 @@
 ﻿// <copyright file="ProtectedDataProtector.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cryptography.DataProtection
 {
     #region Imports.
 
     using System.Security.Cryptography;
-    using System.Text;
     using Core.Extensions;
 
     #endregion
 
     /// <summary>
     /// This class provides access to the Data Protection API (DPAPI) available in 
-    /// Microsoft Windows 2000 and later operating systems. This is a service that 
-    /// is provided by the operating system and does not require additional libraries. 
+    /// Microsoft Windows 2000 and later operating systems. This is a service that is 
+    /// provided by the operating system and does not require additional libraries. 
+    /// <para>
     /// It provides protection using the user or machine credentials to encrypt or 
-    /// decrypt data. 
-    /// The class consists of two wrappers for the unmanaged DPAPI, Protect and 
-    /// Unprotect. These two methods can be used to encrypt and decrypt data such 
-    /// as passwords, keys, and connection strings.
+    /// decrypt data. The class consists of two wrappers for the unmanaged DPAPI, Protect 
+    /// and Unprotect. These two methods can be used to encrypt and decrypt data such as 
+    /// passwords, keys, and connection strings.
+    /// </para>
     /// </summary>
     public sealed class ProtectedDataProtector : IDataProtector
     {
         #region Variables.
 
         /// <summary>
-        /// One of the enumeration values that specifies the scope of the data 
-        /// protection (either the current user or the local machine). 
-        /// The default is CurrentUser.
+        /// One of the enumeration values that specifies the scope of the data protection 
+        /// (either the current user or the local machine). The default is CurrentUser.
         /// </summary>
         private readonly DataProtectionScope scope;
         
         /// <summary>
-        /// An additional byte array used to increase the complexity of the encryption, 
-        /// or null for no additional complexity.
+        /// An additional byte array used to increase the complexity of the encryption, or 
+        /// null for no additional complexity.
         /// </summary>
         private readonly byte[] entropy;
 

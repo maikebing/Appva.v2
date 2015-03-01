@@ -10,11 +10,10 @@ namespace Appva.Mcss.ResourceServer.Controllers
 
     using System;
     using System.Web.Http;
-    using Appva.Logging;
-    using Appva.Mcss.ResourceServer.Application;
-    using Appva.Mcss.ResourceServer.Application.Authorization;
-    using Appva.Mcss.ResourceServer.Domain.Repositories;
-    using Appva.Mcss.ResourceServer.Transformers;
+    using Application;
+    using Application.Authorization;
+    using Domain.Repositories;
+    using Transformers;
 
     #endregion
 
@@ -25,11 +24,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
     public class NotificationController : ApiController
     {
         #region Variables.
-
-        /// <summary>
-        /// The <see cref="ILog"/> for <see cref="NotificationController"/>.
-        /// </summary>
-        private static readonly ILog Log = LogProvider.For<NotificationController>();
 
         /// <summary>
         /// The <see cref="ITaskRepository"/>.
@@ -57,13 +51,12 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// Endpoint for devices to check if an alarm is still active. Returns the notification-message.
         /// </summary>
         /// <param name="id">The Alarm id</param>
-        /// <returns>The <see cref="AlarmNotificationModel"/></returns>
+        /// <returns>The <c>AlarmNotificationModel</c></returns>
         [AuthorizeToken(Scope.ReadWrite)]
         [HttpGet, Route("alarm/{id}")]
         public IHttpActionResult CheckAlarm(Guid id)
         {
             var alarm = this.taskRepository.Get(id);
-
             return this.Ok(NotificationTransformer.ToAlarmNotification(alarm));
         }
 

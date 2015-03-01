@@ -8,26 +8,39 @@ namespace Appva.Test.Cryptography
 {
     #region Import.
 
-    using System.Security.Cryptography;
     using Appva.Cryptography;
-    using Appva.Cryptography.HashAlgoritms;
     using Appva.Cryptography.X509;
     using Xunit;
-    using Xunit.Extensions;
 
     #endregion
 
     /// <summary>
-    /// Certificate tests.
-    /// If testing to write to disk then:
-    /// 1.  Create folder to write to, with proper permissions.
-    /// 2.  After creating CA certificate, then install it in Trusted with exportable 
-    ///     private key (important)
-    /// 3.  Then run client certificates tests.
+    /// Test suite for <see cref="Certificate"/>.
+    /// For tests using the currently omitted writeToDisk():
+    /// <list type="number">
+    ///     <item>Create a folder with appropriate write permissions</item>
+    ///     <item>Create the CA certificate</item>
+    ///     <item>Install the CA certificate in Trusted with exportable private key</item>
+    ///     <item>Run any tests with FindBySerial or other</item>
+    /// </list>
     /// </summary>
     /// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
     public class CertificateTests
     {
+        #region Variables.
+
+        /// <summary>
+        /// The CA issuer.
+        /// </summary>
+        private const string CaIssuer = "CN=CA_TEST";
+
+        /// <summary>
+        /// The Client certificate issuer.
+        /// </summary>
+        private const string CcIssuer = "CN=CLIENTCERT_TEST";
+
+        #endregion
+
         #region Tests.
 
         #region RSA.
@@ -36,25 +49,22 @@ namespace Appva.Test.Cryptography
         /// Creates a new X.509 root CA certificate with default RSA.
         /// </summary>
         [Fact]
-        public void Certificate_RSA_CACertificateIsCreated_IsTrue()
+        public void CreateRsaCaCertificate_ShouldBeCreated()
         {
-            var subject = "CA_RSA_TEST";
-            var ca = Certificate.CertificateAuthority().Subject(subject).CreateNew();
-            Assert.Equal("CN=" + subject, ca.Subject);
+            var ca = Certificate.CertificateAuthority().Subject(CaIssuer).CreateNew();
+            Assert.Equal(CaIssuer, ca.Subject);
         }
 
         /// <summary>
         /// Creates a new X.509 client certificate with default RSA.
         /// </summary>
         [Fact]
-        public void Certificate_RSA_ClientCertificateIsCreated_IsTrue()
+        public void CreateRsaClientCertificate_ShouldBeCreated()
         {
-            var issuer = "CA_RSA_TEST";
-            var subject = "CLIENTCERT_RSA_TEST";
-            var ca = Certificate.CertificateAuthority().Subject(issuer).CreateNew();
-            var cc = Certificate.Client(ca).Subject(subject).CreateNew();
-            Assert.Equal("CN=" + issuer, cc.Issuer);
-            Assert.Equal("CN=" + subject, cc.Subject);
+            var ca = Certificate.CertificateAuthority().Subject(CaIssuer).CreateNew();
+            var cc = Certificate.Client(ca).Subject(CcIssuer).CreateNew();
+            Assert.Equal(CaIssuer, cc.Issuer);
+            Assert.Equal(CcIssuer, cc.Subject);
         }
 
         #endregion
@@ -65,27 +75,24 @@ namespace Appva.Test.Cryptography
         /// Creates a new X.509 root certificate with ECDH and ECDSA signing.
         /// </summary>
         [Fact(Skip="This throws an exception and must be fixed or removed")]
-        public void Certificate_ECDSA_CACertificateIsCreated_IsTrue()
+        public void CreateEcdsaCaCertificate_ShouldBeCreated()
         {
-            var subject = "CA_ECDH_TEST";
-            var ca = Certificate.CertificateAuthority().Subject(subject)
+            var ca = Certificate.CertificateAuthority().Subject(CaIssuer)
                 .Use(Cipher.Ecdh(Curve.P256)).Signature(Signature.Sha256WithEcdsa).CreateNew();
-            Assert.Equal("CN=" + subject, ca.Subject);
+            Assert.Equal(CaIssuer, ca.Subject);
         }
 
         /// <summary>
         /// Creates a new X.509 client certificate with ECDH and SHA 384 ECDSA signing.
         /// </summary>
         [Fact(Skip = "This throws an exception and must be fixed or removed")]
-        public void Certificate_ECDSA_ClientCertificateIsCreated_IsTrue()
+        public void CreateEcdsaClientCertificate_ShouldBeCreated()
         {
-            var issuer = "CA_ECDH_TEST";
-            var subject = "CLIENTCERT_ECDH_TEST";
-            var ca = Certificate.CertificateAuthority().Subject(issuer).CreateNew();
-            var cc = Certificate.Client(ca).Subject(subject)
+            var ca = Certificate.CertificateAuthority().Subject(CaIssuer).CreateNew();
+            var cc = Certificate.Client(ca).Subject(CcIssuer)
                 .Use(Cipher.Ecdh(Curve.P256)).Signature(Signature.Sha256WithEcdsa).CreateNew();
-            Assert.Equal("CN=" + issuer, cc.Issuer);
-            Assert.Equal("CN=" + subject, cc.Subject);
+            Assert.Equal(CaIssuer, cc.Issuer);
+            Assert.Equal(CcIssuer, cc.Subject);
         }
         
         #endregion

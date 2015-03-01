@@ -1,52 +1,55 @@
 ﻿// <copyright file="Mediator.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cqrs
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Threading.Tasks;
 
     #endregion
 
     /// <summary>
-    /// 
+    /// Intermediary to decouple many peers.
     /// </summary>
     public interface IMediator
     {
         /// <summary>
-        /// 
+        /// Sends a request.
         /// </summary>
-        /// <typeparam name="TResponse"></typeparam>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <typeparam name="TResponse">The response type</typeparam>
+        /// <param name="request">The request</param>
+        /// <returns>The responce {T}</returns>
         TResponse Send<TResponse>(IRequest<TResponse> request);
 
         /// <summary>
-        /// 
+        /// Sends a request asynchronously.
         /// </summary>
-        /// <typeparam name="TResponse"></typeparam>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <typeparam name="TResponse">The response type</typeparam>
+        /// <param name="request">The request</param>
+        /// <returns>The responce {T}</returns>
         Task<TResponse> SendAsync<TResponse>(IAsyncRequest<TResponse> request);
 
         /// <summary>
-        /// 
+        /// Publish a notification.
         /// </summary>
-        /// <typeparam name="TNotification"></typeparam>
-        /// <param name="notification"></param>
+        /// <typeparam name="TNotification">The notification type</typeparam>
+        /// <param name="notification">The notification to be published</param>
         void Publish<TNotification>(TNotification notification) where TNotification : INotification;
 
         /// <summary>
-        /// 
+        /// Publish a notification asynchronously.
         /// </summary>
-        /// <typeparam name="TNotification"></typeparam>
-        /// <param name="notification"></param>
-        /// <returns></returns>
+        /// <typeparam name="TNotification">The notification type</typeparam>
+        /// <param name="notification">The notification to be published</param>
+        /// <returns>Task</returns>
         Task PublishAsync<TNotification>(TNotification notification) where TNotification : IAsyncNotification;
     }
 
@@ -84,21 +87,23 @@ namespace Appva.Cqrs
             var handler = this.dependencyResolver.GetInstance(handlerType);
             if (handler == null)
             {
-                throw new InvalidOperationException("Handler was not found for request of type " + handlerType.GetType());
+                throw new InvalidOperationException("Handler was not found for request of type " + handlerType);
             }
-            return (TResponse) this.GetHandlerMethod(handlerType, "Handle", request.GetType()).Invoke(handler, new[] { request });
+            return (TResponse) this.GetHandlerMethod(handlerType, "Handle", request.GetType()).Invoke(handler, new object[] { request });
         }
 
         /// <inheritdoc />
+        [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1008:OpeningParenthesisMustBeSpacedCorrectly", Justification = "Reviewed.")]
         public async Task<TResponse> SendAsync<TResponse>(IAsyncRequest<TResponse> request)
         {
             var handlerType = typeof(IAsyncRequestHandler<,>).MakeGenericType(request.GetType(), typeof(TResponse));
             var handler = this.dependencyResolver.GetInstance(handlerType);
             if (handler == null)
             {
-                throw new InvalidOperationException("Handler was not found for request of type " + handlerType.GetType());
+                throw new InvalidOperationException("Handler was not found for request of type " + handlerType);
             }
-            return await (Task<TResponse>) this.GetHandlerMethod(handlerType, "Handle", request.GetType()).Invoke(handler, new[] { request });
+            return await (Task<TResponse>) this.GetHandlerMethod(handlerType, "Handle", request.GetType())
+                .Invoke(handler, new object[] { request });
         }
 
         /// <inheritdoc />
@@ -122,10 +127,10 @@ namespace Appva.Cqrs
         }
 
         /// <summary>
-        /// 
+        /// Dispatch the notification handler.
         /// </summary>
-        /// <typeparam name="TNotification"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="TNotification">The notification type</typeparam>
+        /// <returns>An enumerable notification handler collection</returns>
         private IEnumerable<INotificationHandler<TNotification>> NotificationHandlers<TNotification>()
             where TNotification : INotification
         {
@@ -133,10 +138,10 @@ namespace Appva.Cqrs
         }
 
         /// <summary>
-        /// 
+        /// Dispatch the notification handler asynchronously.
         /// </summary>
-        /// <typeparam name="TNotification"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="TNotification">The notification type</typeparam>
+        /// <returns>An enumerable notification handler collection</returns>
         private IEnumerable<IAsyncNotificationHandler<TNotification>> AsyncNotificationHandlers<TNotification>()
             where TNotification : IAsyncNotification
         {
@@ -144,18 +149,19 @@ namespace Appva.Cqrs
         }
 
         /// <summary>
-        /// 
+        /// Returns the handler method.
         /// </summary>
-        /// <param name="handlerType"></param>
-        /// <param name="handlerMethodName"></param>
-        /// <param name="messageType"></param>
-        /// <returns></returns>
+        /// <param name="handlerType">The handler type</param>
+        /// <param name="handlerMethodName">The handler method name</param>
+        /// <param name="messageType">The message type</param>
+        /// <returns>The <see cref="MethodInfo"/></returns>
         private MethodInfo GetHandlerMethod(Type handlerType, string handlerMethodName, Type messageType)
         {
-            return handlerType
-                .GetMethod(handlerMethodName,
+            return handlerType.GetMethod(
+                    handlerMethodName,
                     BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod,
-                    null, CallingConventions.HasThis,
+                    null, 
+                    CallingConventions.HasThis,
                     new[] { messageType },
                     null);
         }

@@ -18,8 +18,7 @@ namespace Appva.Core.Extensions
     public static class DateTimeExtensions
     {
         /// <summary>
-        /// Returns whether the date time is greater than 
-        /// the other date time.
+        /// Returns whether the date time is greater than the other date time.
         /// </summary>
         /// <param name="dateTime">The date time to be checked</param>
         /// <param name="other">The date time to compare</param>
@@ -30,8 +29,7 @@ namespace Appva.Core.Extensions
         }
 
         /// <summary>
-        /// Returns whether the date time is less than 
-        /// the other date time.
+        /// Returns whether the date time is less than the other date time.
         /// </summary>
         /// <param name="dateTime">The date time to be checked</param>
         /// <param name="other">The date time to compare</param>

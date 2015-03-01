@@ -6,15 +6,6 @@
 // </author>
 namespace Appva.Persistence
 {
-    #region Imports.
-
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using NHibernate;
-
-    #endregion
-
     /// <summary>
     /// The data source for which the database connection will be made.
     /// </summary>

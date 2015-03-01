@@ -1,4 +1,4 @@
-﻿// <copyright file="CACertificate.cs" company="Appva AB">
+﻿// <copyright file="CaCertificate.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -27,7 +27,7 @@ namespace Appva.Cryptography.X509
     ///     <linkUri>https://msdn.microsoft.com/en-us/library/bfsktky3%28v=vs.110%29.aspx</linkUri>
     /// </externalLink>
     /// </summary>
-    public sealed class CACertificate : SelfSignedCertificate
+    public sealed class CaCertificate : SelfSignedCertificate
     {
         #region SelfSignedCertificate Overrides.
 

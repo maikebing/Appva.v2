@@ -1,12 +1,15 @@
 ﻿// <copyright file="TextBoxFor.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Extensions.Elements
 {
     #region Imports.
 
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq.Expressions;
     using System.Web;
@@ -17,8 +20,11 @@ namespace Appva.Mvc.Html.Extensions.Elements
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// Creates an HTML text input element.
     /// </summary>
+    /// <typeparam name="TRoot">The root type</typeparam>
+    /// <typeparam name="TModel">The model type</typeparam>
+    /// <typeparam name="TProperty">The property type</typeparam>
     public class TextBoxFor<TRoot, TModel, TProperty> : Element<TRoot>
         where TRoot : ElementBuilder<TModel>, IFormGroupFor<TModel, TProperty>
     {
@@ -63,12 +69,13 @@ namespace Appva.Mvc.Html.Extensions.Elements
         #region Public Methods.
 
         /// <inheritdoc />
+        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute", Justification = "Reviewed.")]
         public override MvcHtmlString Build()
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(this.expression, this.Root.HtmlHelper.ViewData);
             var modelState = this.Root.HtmlHelper.ViewData.ModelState;
-            var id = this.Root.HtmlHelper.IdFor(expression).ToString();
-            var name = this.Root.HtmlHelper.IdFor(expression).ToString();
+            var id = this.Root.HtmlHelper.IdFor(this.expression).ToString();
+            var name = this.Root.HtmlHelper.IdFor(this.expression).ToString();
             var textbox = new TagBuilder("input");
             textbox.Attributes.Add("id", id);
             textbox.Attributes.Add("name", name);
@@ -78,9 +85,9 @@ namespace Appva.Mvc.Html.Extensions.Elements
             {
                 textbox.Attributes.Add("placeholder", this.placeholder);
             }
-            if (htmlAttributes.IsNotNull())
+            if (this.htmlAttributes.IsNotNull())
             {
-                textbox.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+                textbox.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(this.htmlAttributes));
             }
             textbox.AddCssClass("form-control");
             string value = null;

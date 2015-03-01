@@ -1,7 +1,9 @@
 ﻿// <copyright file="ConfigurableApplicationContextProtectedWriter.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Core.Configuration
 {
     #region Imports
@@ -14,11 +16,12 @@ namespace Appva.Core.Configuration
     #endregion
 
     /// <summary>
-    /// Internal protected implemantation of a <see cref="IConfigurableResource"/> writer.
+    /// Internal protected implemantation of a <see cref="IConfigurableResource"/> 
+    /// writer.
     /// </summary>
     /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
     internal sealed class ConfigurableApplicationContextProtectedWriter<T> :
-        IConfigurableApplicationContextWriterExecute<T>
+        IConfigurableApplicationContextWriterExecute
         where T : class, IConfigurableResource
     {
         #region Variables;
@@ -38,7 +41,8 @@ namespace Appva.Core.Configuration
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurableApplicationContextProtectedWriter{T}"/> class.
+        /// Initializes a new instance of the 
+        /// <see cref="ConfigurableApplicationContextProtectedWriter{T}"/> class.
         /// </summary>
         /// <param name="writer">The configurable writer</param>
         public ConfigurableApplicationContextProtectedWriter(ConfigurableApplicationContextWriter<T> writer)
@@ -47,7 +51,8 @@ namespace Appva.Core.Configuration
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurableApplicationContextProtectedWriter{T}"/> class.
+        /// Initializes a new instance of the 
+        /// <see cref="ConfigurableApplicationContextProtectedWriter{T}"/> class.
         /// </summary>
         /// <param name="protector">A protector implementation</param>
         /// <param name="writer">The configurable writer</param>
@@ -64,7 +69,7 @@ namespace Appva.Core.Configuration
         #region IConfigurableApplicationContextWriterExecute<T> Members.
 
         /// <inheritdoc />
-        void IConfigurableApplicationContextWriterExecute<T>.Execute()
+        void IConfigurableApplicationContextWriterExecute.Execute()
         {
             using (this.protector)
             using (var source = new ProtectedJsonConfigurableSource(this.protector, this.writer.Location))
@@ -74,7 +79,7 @@ namespace Appva.Core.Configuration
         }
 
         /// <inheritdoc />
-        async Task IConfigurableApplicationContextWriterExecute<T>.ExecuteAsync()
+        async Task IConfigurableApplicationContextWriterExecute.ExecuteAsync()
         {
             using (this.protector)
             using (var source = new ProtectedJsonConfigurableSource(this.protector, this.writer.Location))

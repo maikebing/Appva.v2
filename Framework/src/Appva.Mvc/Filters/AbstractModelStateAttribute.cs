@@ -1,7 +1,9 @@
 ﻿// <copyright file="AbstractModelStateAttribute.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Filters
 {
     #region Imports.
@@ -14,7 +16,7 @@ namespace Appva.Mvc.Filters
     /// <summary>
     /// Abstract base class for transfering <see cref="ModelState"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Method)]
     public abstract class AbstractModelStateAttribute : ActionFilterAttribute
     {
         #region Variables.

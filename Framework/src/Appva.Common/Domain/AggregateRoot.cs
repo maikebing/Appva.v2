@@ -10,7 +10,6 @@ namespace Appva.Common.Domain
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -20,19 +19,9 @@ namespace Appva.Common.Domain
     /// changes being made within the aggregate by forbidding external objects from 
     /// holding references to its members.
     /// </summary>
+    /// <typeparam name="T">The entity type</typeparam>
     public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot where T : class
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AggregateRoot{T}"/> class.
-        /// </summary>
-        protected AggregateRoot()
-        {
-        }
-
-        #endregion
-
         #region IAggregateRoot<T> Members.
 
         /// <inheritdoc />

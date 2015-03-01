@@ -11,19 +11,20 @@ namespace Appva.Mcss.ResourceServer
     using System.Linq;
     using System.Reflection;
     using System.Web.Http;
-    using Appva.Apis.TenantServer;
-    using Appva.Core.Configuration;
-    using Appva.Core.Messaging;
-    using Appva.Mcss.ResourceServer.Application.Configuration;
-    using Appva.Mcss.ResourceServer.Application.ExceptionHandling;
-    using Appva.Mcss.ResourceServer.Application.Persistence;
-    using Appva.Mcss.ResourceServer.Controllers;
-    using Appva.Mcss.ResourceServer.Domain.Services;
-    using Appva.Persistence;
-    using Appva.Persistence.MultiTenant;
-    using Appva.Repository;
+    using Apis.TenantServer;
+    using Application.Configuration;
+    using Application.ExceptionHandling;
+    using Application.Persistence;
     using Autofac;
     using Autofac.Integration.WebApi;
+    using Azure;
+    using Controllers;
+    using Core.Configuration;
+    using Core.Messaging;
+    using Domain.Services;
+    using Persistence;
+    using Persistence.MultiTenant;
+    using Repository;
 
     #endregion
 
@@ -35,12 +36,12 @@ namespace Appva.Mcss.ResourceServer
         /// <summary>
         /// The application config path.
         /// </summary>
-        private static readonly string ApplicationConfig = "App_Data\\Application.config";
+        private const string ApplicationConfig = "App_Data\\Application.config";
 
         /// <summary>
         /// The persistence config path.
         /// </summary>
-        private static readonly string PersistenceConfig = "App_Data\\Persistence.config";
+        private const string PersistenceConfig = "App_Data\\Persistence.config";
 
         /// <summary>
         /// Configures AutoFac and Persistence. 
@@ -52,6 +53,7 @@ namespace Appva.Mcss.ResourceServer
             var configuration = ConfigurableApplicationContext.Read<ResourceServerConfiguration>().From(ApplicationConfig).AsMachineNameSpecific().ToObject();
             ConfigurableApplicationContext.Add<ResourceServerConfiguration>(configuration);
             ConfigurePersistence(builder);
+            ConfigurePushNotification(builder);
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
             builder.RegisterGeneric(typeof(PagingAndSortingRepository<>)).As(typeof(IPagingAndSortingRepository<>));
             builder.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(Repository<>)).AsImplementedInterfaces().InstancePerRequest();
@@ -64,6 +66,15 @@ namespace Appva.Mcss.ResourceServer
         }
 
         /// <summary>
+        /// Configures push notifications.
+        /// </summary>
+        /// <param name="builder">The <see cref="ContainerBuilder"/></param>
+        private static void ConfigurePushNotification(ContainerBuilder builder)
+        {
+            builder.RegisterType<NoOpPushNotification>().As<IPushNotification>().SingleInstance();
+        }
+
+        /// <summary>
         /// Configures persistence.
         /// </summary>
         /// <param name="builder">The <see cref="ContainerBuilder"/></param>
@@ -72,7 +83,7 @@ namespace Appva.Mcss.ResourceServer
             var messaging = new EmailService();
             var tenantServerUri = ConfigurableApplicationContext.Get<ResourceServerConfiguration>().TenantServerUri;
             var configuration = ConfigurableApplicationContext.Read<MultiTenantDatasourceConfiguration>().From(PersistenceConfig).AsMachineNameSpecific().ToObject();
-            var client = new TenantClient(new TenantServerConfiguration { Uri = tenantServerUri });
+            var client = TenantClient.CreateNew(tenantServerUri);
             var datasource = new MultiTenantDatasource(client, configuration, new DatasourceEmailExceptionHandler(messaging), new DefaultDatasourceEventInterceptor());
             var persistence = new TenantIdentityPersistenceContextAwareResolver(datasource);
             builder.Register(x => client).As<ITenantClient>().SingleInstance();

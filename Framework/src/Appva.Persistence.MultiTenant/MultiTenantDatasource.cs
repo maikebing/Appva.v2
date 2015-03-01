@@ -8,10 +8,9 @@ namespace Appva.Persistence.MultiTenant
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Apis.TenantServer;
+    using Apis.TenantServer;
     using NHibernate;
     using Validation;
 
@@ -76,7 +75,7 @@ namespace Appva.Persistence.MultiTenant
             {
                 return null;
             }
-            ISessionFactory retval = null;
+            ISessionFactory retval;
             this.SessionFactories.TryGetValue(key, out retval);
             return retval;
         }
@@ -88,17 +87,9 @@ namespace Appva.Persistence.MultiTenant
         /// <inheritdoc />
         public override void Connect()
         {
-            var units = new List<PersistenceUnit>();
             var tenants = this.client.ListAll();
             Requires.ValidState(tenants.Count > 0, "No Tenants found!");
-            foreach (var tenant in tenants)
-            {
-                units.Add(new PersistenceUnit(
-                    tenant.connection_string,
-                    this.configuration.Assembly,
-                    this.configuration.Properties,
-                    tenant.id));
-            }
+            var units = tenants.Select(x => new PersistenceUnit(x.ConnectionString, this.configuration.Assembly, this.configuration.Properties, x.Id)).ToList();
             this.SessionFactories = this.Build(units);
         }
 

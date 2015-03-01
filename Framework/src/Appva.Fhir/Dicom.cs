@@ -8,7 +8,7 @@ namespace Appva.Fhir
 {
     #region Imports.
 
-    using Appva.Fhir.Primitives;
+    using Primitives;
 
     #endregion
 

@@ -1,7 +1,9 @@
 ﻿// <copyright file="ImageContentResult.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Imaging
 {
     #region Imports.
@@ -22,7 +24,7 @@ namespace Appva.Mvc.Imaging
         /// <summary>
         /// Cache expiration in minutes.
         /// </summary>
-        private readonly int expires = -1;
+        private readonly int expires;
 
         /// <summary>
         /// Last updated date time.

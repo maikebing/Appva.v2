@@ -8,8 +8,6 @@ namespace Appva.Persistence
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using NHibernate;
 
     #endregion

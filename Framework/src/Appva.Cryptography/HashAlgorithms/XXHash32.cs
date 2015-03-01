@@ -1,8 +1,10 @@
-﻿// <copyright file="XXHash32.cs" company="Appva AB">
+﻿// <copyright file="XxHash32.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-namespace Appva.Cryptography.HashAlgoritms
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
+namespace Appva.Cryptography.HashAlgorithms
 {
     #region Imports.
 
@@ -10,15 +12,21 @@ namespace Appva.Cryptography.HashAlgoritms
     using System.Diagnostics.CodeAnalysis;
     using System.Security.Cryptography;
     using Core.Extensions;
+    using Extensions;
 
     #endregion
 
     /// <summary>
     /// XxHash is an extremely fast non-cryptographic Hash algorithm, working at speeds 
     /// close to RAM limits.
-    /// <a href="https://code.google.com/p/xxhash/">xxHash</a>
+    /// <externalLink>
+    ///     <linkText>xxHash</linkText>
+    ///     <linkUri>
+    ///         https://code.google.com/p/xxhash/
+    ///     </linkUri>
+    /// </externalLink>
     /// </summary>
-    public sealed class XXHash32 : HashAlgorithm 
+    public sealed class XxHash32 : HashAlgorithm 
     {
         #region Variables.
 
@@ -50,17 +58,17 @@ namespace Appva.Cryptography.HashAlgoritms
         /// <summary>
         /// The state.
         /// </summary>
-        private XXHashState state;
+        private XxHashState state;
 
         #endregion
 
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="XXHash32"/> class.
+        /// Initializes a new instance of the <see cref="XxHash32"/> class.
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification="Justified")]
-        public XXHash32()
+        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Reviewed.")]
+        public XxHash32()
         {
             this.Initialize();
         }
@@ -117,10 +125,10 @@ namespace Appva.Cryptography.HashAlgoritms
             if (this.state.MemorySize > 0)
             {
                 Array.Copy(array, 0, this.state.Memory, this.state.MemorySize, 16 - this.state.MemorySize);
-                this.state.V1 = CalculateSubHash(this.state.V1, this.state.Memory, ibStart);
-                this.state.V2 = CalculateSubHash(this.state.V3, this.state.Memory, ibStart);
-                this.state.V3 = CalculateSubHash(this.state.V4, this.state.Memory, ibStart);
-                this.state.V4 = CalculateSubHash(this.state.V4, this.state.Memory, ibStart);
+                this.state.V1 = CalculateSubHash(this.state.V1, this.state.Memory, ref ibStart);
+                this.state.V2 = CalculateSubHash(this.state.V3, this.state.Memory, ref ibStart);
+                this.state.V3 = CalculateSubHash(this.state.V4, this.state.Memory, ref ibStart);
+                this.state.V4 = CalculateSubHash(this.state.V4, this.state.Memory, ref ibStart);
                 this.state.MemorySize = 0;
                 ibStart = 0;
             }
@@ -133,10 +141,10 @@ namespace Appva.Cryptography.HashAlgoritms
                 var v4 = this.state.V4;
                 do
                 {
-                    v1 = CalculateSubHash(v1, array, ibStart);
-                    v2 = CalculateSubHash(v2, array, ibStart);
-                    v3 = CalculateSubHash(v3, array, ibStart);
-                    v4 = CalculateSubHash(v4, array, ibStart);
+                    v1 = CalculateSubHash(v1, array, ref ibStart);
+                    v2 = CalculateSubHash(v2, array, ref ibStart);
+                    v3 = CalculateSubHash(v3, array, ref ibStart);
+                    v4 = CalculateSubHash(v4, array, ref ibStart);
                 } 
                 while (ibStart <= limit);
                 this.state.V1 = v1;
@@ -195,9 +203,9 @@ namespace Appva.Cryptography.HashAlgoritms
         /// <param name="buf">The bytes</param>
         /// <param name="index">The index</param>
         /// <returns>An unsigned int</returns>
-        private static uint CalculateSubHash(uint value, byte[] buf, int index)
+        private static uint CalculateSubHash(uint value, byte[] buf, ref int index)
         {
-            uint readValue = buf.ToUInt32(index);
+            var readValue = buf.ToUInt32(index);
             value += readValue * Prime2;
             value  = value.RotateLeft(13);
             value *= Prime1;
@@ -207,12 +215,12 @@ namespace Appva.Cryptography.HashAlgoritms
 
         #endregion
 
-        #region XXHash State.
+        #region XxHash State.
 
         /// <summary>
         /// The state.
         /// </summary>
-        public struct XXHashState
+        public struct XxHashState
         {
             /// <summary>
             /// See doc online.

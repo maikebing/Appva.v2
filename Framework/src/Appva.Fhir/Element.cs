@@ -38,8 +38,6 @@ namespace Appva.Fhir
     [XmlTypeAttribute(Namespace = Fhir.Namespace)]
     public abstract class Element : IExtendable
     {
-        #region Properties.
-
         /// <summary>
         /// Unique id for the element within a resource (for internal references).
         /// <externalLink>
@@ -76,7 +74,5 @@ namespace Appva.Fhir
             get;
             set;
         }
-
-        #endregion
     }
 }

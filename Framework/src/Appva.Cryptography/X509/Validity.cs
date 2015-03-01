@@ -9,9 +9,6 @@ namespace Appva.Cryptography.X509
     #region Imports.
 
     using System;
-    using System.Globalization;
-    using Appva.Core.Extensions;
-    using Validation;
 
     #endregion
 
@@ -87,8 +84,8 @@ namespace Appva.Cryptography.X509
         /// <param name="defaultValidity">Default validity in years for notAfter</param>
         internal Validity(DateTime? notBefore, DateTime? notAfter, int defaultValidity)
         {
-            this.notBefore = notBefore.HasValue ? notBefore.Value : DateTime.UtcNow;
-            this.notAfter = notAfter.HasValue ? notAfter.Value : DateTime.UtcNow.AddYears(defaultValidity);
+            this.notBefore = notBefore ?? DateTime.UtcNow;
+            this.notAfter = notAfter ?? DateTime.UtcNow.AddYears(defaultValidity);
         }
 
         #endregion

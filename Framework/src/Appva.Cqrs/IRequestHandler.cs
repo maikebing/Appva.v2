@@ -1,11 +1,14 @@
 ﻿// <copyright file="IRequestHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cqrs
 {
     #region Imports.
 
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
 
     #endregion
@@ -69,10 +72,10 @@ namespace Appva.Cqrs
     }
 
     /// <summary>
-    /// 
+    /// Abstract base <see cref="IRequestHandler{TRequest, TResponse}"/> implementation.
     /// </summary>
-    /// <typeparam name="TRequest"></typeparam>
-    /// <typeparam name="TResponse"></typeparam>
+    /// <typeparam name="TRequest">The request type</typeparam>
+    /// <typeparam name="TResponse">The response type</typeparam>
     public abstract class RequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
@@ -95,10 +98,11 @@ namespace Appva.Cqrs
     }
 
     /// <summary>
-    /// 
+    /// Abstract base <see cref="IAsyncRequestHandler{TRequest, TResponse}"/> implementation.
     /// </summary>
-    /// <typeparam name="TRequest"></typeparam>
-    /// <typeparam name="TResponse"></typeparam>
+    /// <typeparam name="TRequest">The request type</typeparam>
+    /// <typeparam name="TResponse">The response type</typeparam>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     public abstract class AsyncRequestHandler<TRequest, TResponse> : IAsyncRequestHandler<TRequest, TResponse>
         where TRequest : IAsyncRequest<TResponse>
     {

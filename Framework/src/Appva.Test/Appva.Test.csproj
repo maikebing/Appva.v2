@@ -119,21 +119,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Caching\InMemoryCacheProviderTests.cs" />
     <Compile Include="Configuration\ConfigurableApplicationContextTests.cs" />
-    <Compile Include="Configuration\ReadableResource.cs" />
     <Compile Include="Cryptography\CertificateTests.cs" />
     <Compile Include="Cryptography\ChecksumTests.cs" />
     <Compile Include="Cryptography\SecureEmailTests.cs" />
     <Compile Include="Fhir\XmlSerializationTests.cs" />
-    <Compile Include="OAuth2\Impl\OAuth2CryptoKeyStore.cs" />
-    <Compile Include="OAuth2\Impl\OAuth2NonceStore.cs" />
-    <Compile Include="OAuth2\Impl\OAuth2Service.cs" />
     <Compile Include="OAuth2\OAuth2Tests.cs" />
+    <Compile Include="Tools\HttpRequest.cs" />
     <Compile Include="WebApi\ETagResultTests.cs" />
     <Compile Include="WebApi\ETagController.cs" />
     <Compile Include="WebApi\Resources\ETagRequestModel.cs" />
     <Compile Include="WebApi\Resources\ETagResponseModel.cs" />
-    <Compile Include="Persistence\Entities\Entity.cs" />
     <Compile Include="Persistence\PersistanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\InMemoryDatabase.cs" />
@@ -149,6 +146,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Appva.Caching\Appva.Caching.csproj">
+      <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
+      <Name>Appva.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
       <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
       <Name>Appva.Core.Configuration</Name>
@@ -179,7 +180,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Persistence\Entities\Entities.hbm.xml" />
+    <EmbeddedResource Include="Persistence\Entities.hbm.xml" />
   </ItemGroup>
   <ItemGroup />
   <Choose>

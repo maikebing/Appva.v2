@@ -1,7 +1,9 @@
 ﻿// <copyright file="HtmlHelperExtensions.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Extensions
 {
     #region Imports.
@@ -22,29 +24,22 @@ namespace Appva.Mvc.Html.Extensions
         /// <summary>
         /// Creates a form group with elements.
         /// </summary>
-        /// <example>
-        /// @Html.FormGroup(x => x.Name)
-        ///     .Label("Name", new { @class = "label" })
-        ///     .TextBox(new { @class = "input" })
-        ///     .Validate()
-        ///     .Help("A help message").Build()
-        /// </example>
         /// <typeparam name="TModel">The model type</typeparam>
         /// <typeparam name="TProperty">The property type</typeparam>
         /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
         /// <param name="expression">The expression</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="FormGroupFor{TModel, TProperty}"/></returns>
         public static FormGroupFor<TModel, TProperty> FormGroup<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
         {
             return new FormGroupFor<TModel, TProperty>(htmlHelper, expression);
         }
 
         /// <summary>
-        /// 
+        /// Creates an alert message from a controller attribute.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
         public static MvcHtmlString Alert(this HtmlHelper htmlHelper, object htmlAttributes = null)
         {
             var key = typeof(AbstractAlertAttribute).FullName;
@@ -65,12 +60,12 @@ namespace Appva.Mvc.Html.Extensions
         }
 
         /// <summary>
-        /// 
+        /// Creates a span help text element.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="text"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="text">The help text</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
         public static MvcHtmlString Help(this HtmlHelper htmlHelper, string text, object htmlAttributes = null)
         {
             var span = new TagBuilder("span");

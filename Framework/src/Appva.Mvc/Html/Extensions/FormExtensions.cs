@@ -1,7 +1,9 @@
 ﻿// <copyright file="FormExtensions.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Extensions
 {
     #region Imports.
@@ -15,55 +17,55 @@ namespace Appva.Mvc.Html.Extensions
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// Extension helpers for HtmlHelper.
     /// </summary>
     public static class FormExtensions
     {
         /// <summary>
-        /// 
+        /// Creates a HTTP GET request form element.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="htmlAttributes">The HTML attributes</param>
+        /// <returns>An <see cref="MvcForm"/></returns>
         public static MvcForm Get(this HtmlHelper htmlHelper, object htmlAttributes)
         {
             return Get(htmlHelper, null, null, null, htmlAttributes);
         }
 
         /// <summary>
-        /// 
+        /// Creates a HTTP GET request form.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="routeValues"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="routeValues">The route values</param>
+        /// <param name="htmlAttributes">The HTML attributes</param>
+        /// <returns>An <see cref="MvcForm"/></returns>
         public static MvcForm Get(this HtmlHelper htmlHelper, object routeValues, object htmlAttributes)
         {
             return Get(htmlHelper, null, null, routeValues, htmlAttributes);
         }
 
         /// <summary>
-        /// 
+        /// Creates a HTTP GET request form element.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="actionName"></param>
-        /// <param name="controllerName"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="actionName">The action name</param>
+        /// <param name="controllerName">The controller name</param>
+        /// <param name="htmlAttributes">The HTML attributes</param>
+        /// <returns>An <see cref="MvcForm"/></returns>
         public static MvcForm Get(this HtmlHelper htmlHelper, string actionName, string controllerName, object htmlAttributes)
         {
             return Get(htmlHelper, actionName, controllerName, null, htmlAttributes);
         }
 
         /// <summary>
-        /// 
+        /// Creates a HTTP GET request form element.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="actionName"></param>
-        /// <param name="controllerName"></param>
-        /// <param name="routeValues"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="actionName">The action name</param>
+        /// <param name="controllerName">The controller name</param>
+        /// <param name="routeValues">The route values</param>
+        /// <param name="htmlAttributes">The HTML attributes</param>
+        /// <returns>An <see cref="MvcForm"/></returns>
         public static MvcForm Get(this HtmlHelper htmlHelper, string actionName, string controllerName, object routeValues, object htmlAttributes)
         {
             var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext);
@@ -82,52 +84,52 @@ namespace Appva.Mvc.Html.Extensions
         }
 
         /// <summary>
-        /// 
+        /// Creates an HTTP POST request form element.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <param name="routeValues"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <param name="routeValues">Optional route values</param>
+        /// <returns>An <see cref="MvcForm"/></returns>
         public static MvcForm PostWithAttachment(this HtmlHelper htmlHelper, object htmlAttributes = null, object routeValues = null)
         {
             return Post(htmlHelper, null, null, routeValues, htmlAttributes, true);
         }
 
         /// <summary>
-        /// 
+        /// Creates an HTTP POST request form element.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <param name="routeValues"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <param name="routeValues">Optional route values</param>
+        /// <returns>An <see cref="MvcForm"/></returns>
         public static MvcForm Post(this HtmlHelper htmlHelper, object htmlAttributes = null, object routeValues = null)
         {
             return Post(htmlHelper, null, null, routeValues, htmlAttributes, false);
         }
 
         /// <summary>
-        /// 
+        /// Creates an HTTP POST request form element.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="actionName"></param>
-        /// <param name="controllerName"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="actionName">The action name</param>
+        /// <param name="controllerName">The controller name</param>
+        /// <param name="htmlAttributes">The HTML attributes</param>
+        /// <returns>An <see cref="MvcForm"/></returns>
         public static MvcForm Post(this HtmlHelper htmlHelper, string actionName, string controllerName, object htmlAttributes)
         {
             return Post(htmlHelper, actionName, controllerName, null, htmlAttributes, false);
         }
 
         /// <summary>
-        /// 
+        /// Creates an HTTP POST request form element.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="actionName"></param>
-        /// <param name="controllerName"></param>
-        /// <param name="routeValues"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <param name="isMultiPart"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="actionName">The action name</param>
+        /// <param name="controllerName">The controller name</param>
+        /// <param name="routeValues">The route values</param>
+        /// <param name="htmlAttributes">The HTML attributes</param>
+        /// <param name="isMultiPart">Whether or not there should be file upload control</param>
+        /// <returns>An <see cref="MvcForm"/></returns>
         public static MvcForm Post(this HtmlHelper htmlHelper, string actionName, string controllerName, object routeValues, object htmlAttributes, bool isMultiPart)
         {
             var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext);
@@ -152,13 +154,14 @@ namespace Appva.Mvc.Html.Extensions
         }
 
         /// <summary>
-        /// 
+        /// Creates a validation alert if the model state is invalid.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="header"></param>
-        /// <param name="body"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <typeparam name="TModel">The model type</typeparam>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
+        /// <param name="header">The validation title</param>
+        /// <param name="body">The validation message</param>
+        /// <param name="htmlAttributes">Optional HTML attributes </param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
         public static MvcHtmlString ValidationAlert<TModel>(this HtmlHelper<TModel> htmlHelper, string header, string body, object htmlAttributes = null)
         {
             if (! htmlHelper.ViewData.ModelState.IsValid)
@@ -180,12 +183,12 @@ namespace Appva.Mvc.Html.Extensions
         }
 
         /// <summary>
-        /// 
+        /// Creates a submit button element (not an submit input element).
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="text"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="text">The submit text</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
         public static MvcHtmlString Submit(this HtmlHelper htmlHelper, string text, object htmlAttributes = null)
         {
             var button = new TagBuilder("button");
@@ -200,29 +203,29 @@ namespace Appva.Mvc.Html.Extensions
         }
 
         /// <summary>
-        /// 
+        /// Creates a file input element.
         /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="htmlHelper"></param>
-        /// <param name="expression"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <typeparam name="TModel">The model type</typeparam>
+        /// <typeparam name="TValue">The value type</typeparam>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
+        /// <param name="expression">The property expression</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
         public static MvcHtmlString File<TModel, TValue>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, object htmlAttributes = null)
         {
             return File(htmlHelper, expression, null, htmlAttributes);
         }
 
         /// <summary>
-        /// 
+        /// Creates a file input element.
         /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="htmlHelper"></param>
-        /// <param name="expression"></param>
-        /// <param name="text"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <typeparam name="TModel">The model type</typeparam>
+        /// <typeparam name="TValue">The value type</typeparam>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
+        /// <param name="expression">The property expression</param>
+        /// <param name="text">The text message</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
         public static MvcHtmlString File<TModel, TValue>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, string text, object htmlAttributes = null)
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
@@ -241,29 +244,29 @@ namespace Appva.Mvc.Html.Extensions
         }
 
         /// <summary>
-        /// 
+        /// Creates an HTML label element with an asterisk (*) suffix.
         /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="htmlHelper"></param>
-        /// <param name="expression"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <typeparam name="TModel">The model type</typeparam>
+        /// <typeparam name="TValue">The value type</typeparam>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
+        /// <param name="expression">The property expression</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
         public static MvcHtmlString LabelWithAsteriskFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, object htmlAttributes = null)
         {
             return LabelWithAsteriskFor(htmlHelper, expression, null, htmlAttributes);
         }
 
         /// <summary>
-        /// 
+        /// Creates an HTML label element with an asterisk (*) suffix.
         /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="htmlHelper"></param>
-        /// <param name="expression"></param>
-        /// <param name="labelText"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <typeparam name="TModel">The model type</typeparam>
+        /// <typeparam name="TValue">The value type</typeparam>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
+        /// <param name="expression">The property expression</param>
+        /// <param name="labelText">The label text</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
         public static MvcHtmlString LabelWithAsteriskFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TValue>> expression, string labelText, object htmlAttributes = null)
         {
             var modelMetadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);

@@ -1,26 +1,25 @@
 ﻿// <copyright file="Log4NetLogProvider.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="https://github.com/damianh/LibLog">Damian Hickey</a></author>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-
-// Copyright © 2011-2014 Damian Hickey.  All rights reserved.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
+// <author>
+//     <a href="https://github.com/damianh/LibLog">Damian Hickey</a>
+// </author>
+// Copyright © 2011-2014 Damian Hickey. All rights reserved.
+// Permission is hereby granted, free of charge, to any person obtaining a copy of 
+// this software and associated documentation files (the "Software"), to deal in 
+// the Software without restriction, including without limitation the rights to 
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of 
+// the Software, and to permit persons to whom the Software is furnished to do so, 
+// subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all 
+// copies or substantial portions of the Software.
+// 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 namespace Appva.Logging
@@ -29,7 +28,6 @@ namespace Appva.Logging
 
     using System;
     using System.Linq.Expressions;
-    using System.Reflection;
 
     #endregion
 
@@ -54,7 +52,7 @@ namespace Appva.Logging
         /// </summary>
         public Log4NetLogProvider()
         {
-            if (!IsLoggerAvailable())
+            if (! IsLoggerAvailable())
             {
                 throw new InvalidOperationException("log4net.LogManager not found");
             }
@@ -75,7 +73,7 @@ namespace Appva.Logging
         }
 
         /// <summary>
-        /// Returns the <see cref="ILog"/> by name
+        /// Returns the <see cref="ILog"/> by name.
         /// </summary>
         /// <param name="name">The logger name</param>
         /// <returns>An <see cref="ILog"/> instance</returns>
@@ -103,11 +101,11 @@ namespace Appva.Logging
         /// <returns>A delegate</returns>
         private static Func<string, object> GetGetLoggerMethodCall()
         {
-            Type logManagerType = GetLogManagerType();
-            MethodInfo method = logManagerType.GetMethod("GetLogger", new[] { typeof(string) });
-            ParameterExpression nameParam = Expression.Parameter(typeof(string), "name");
-            MethodCallExpression methodCall = Expression.Call(null, method, new Expression[] { nameParam });
-            return Expression.Lambda<Func<string, object>>(methodCall, new[] { nameParam }).Compile();
+            var logManagerType = GetLogManagerType();
+            var method = logManagerType.GetMethod("GetLogger", new[] { typeof(string) });
+            var parameter = Expression.Parameter(typeof(string), "name");
+            var methodCall = Expression.Call(null, method, parameter);
+            return Expression.Lambda<Func<string, object>>(methodCall, parameter).Compile();
         }
 
         #endregion

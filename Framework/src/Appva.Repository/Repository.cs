@@ -26,7 +26,7 @@ namespace Appva.Repository
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
-        private readonly IPersistenceContext _persistenceContext;
+        private readonly IPersistenceContext persistenceContext;
 
         #endregion
 
@@ -37,7 +37,7 @@ namespace Appva.Repository
         /// </summary>
         public Repository(IPersistenceContext persistenceContext)
         {
-            this._persistenceContext = persistenceContext;
+            this.persistenceContext = persistenceContext;
         }
 
         #endregion
@@ -51,7 +51,7 @@ namespace Appva.Repository
         {
             get
             {
-                return this._persistenceContext;
+                return this.persistenceContext;
             }
         }
 
@@ -62,25 +62,25 @@ namespace Appva.Repository
         /// <inheritdoc />
         public T Get(object id)
         {
-            return this._persistenceContext.Get<T>(id);
+            return this.persistenceContext.Get<T>(id);
         }
 
         /// <inheritdoc />
         public object Save(T entity)
         {
-            return this._persistenceContext.Save(entity);
+            return this.persistenceContext.Save(entity);
         }
 
         /// <inheritdoc />
         public void Update(T entity)
         {
-            this._persistenceContext.Update(entity);
+            this.persistenceContext.Update(entity);
         }
 
         /// <inheritdoc />
         public void Delete(T entity)
         {
-            this._persistenceContext.Delete(entity);
+            this.persistenceContext.Delete(entity);
         }
 
         /// <inheritdoc />
@@ -106,7 +106,7 @@ namespace Appva.Repository
         /// <returns><see cref="IQueryOver"/></returns>
         protected IQueryOver<T, T> Where(Expression<Func<T, bool>> expression)
         {
-            return this._persistenceContext.QueryOver<T>().Where(expression);
+            return this.persistenceContext.QueryOver<T>().Where(expression);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Appva.Repository
             {
                 matchMode = MatchMode.Anywhere;
             }
-            return this._persistenceContext.QueryOver<T>()
+            return this.persistenceContext.QueryOver<T>()
                 .Where(Restrictions.On(expression).IsLike(query, matchMode));
         }
 
@@ -134,7 +134,7 @@ namespace Appva.Repository
         /// <returns></returns>
         protected IQueryOver<T, T> Alias(Expression<Func<T>> alias)
         {
-            return this._persistenceContext.QueryOver<T>(alias);
+            return this.persistenceContext.QueryOver<T>(alias);
         }
 
         #endregion

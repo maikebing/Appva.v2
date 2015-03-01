@@ -8,7 +8,8 @@ namespace Appva.Persistence
 {
     #region Imports.
 
-    using Appva.Logging;
+    using System.Diagnostics;
+    using Logging;
     using NHibernate;
 
     #endregion
@@ -47,6 +48,7 @@ namespace Appva.Persistence
         {
             Log.Debug("Resolving <ISessionFactory> from <DefaultPersistenceContextAwareResolver>");
             var datasource = this.Datasource as IDefaultDatasource;
+            Debug.Assert(datasource != null, "datasource != null");
             return datasource.SessionFactory;
         }
 

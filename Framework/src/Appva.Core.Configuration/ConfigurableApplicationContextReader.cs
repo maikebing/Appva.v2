@@ -1,12 +1,15 @@
 ﻿// <copyright file="ConfigurableApplicationContextReader.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Core.Configuration
 {
     #region Imports.
 
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using Cryptography.DataProtection;
     using IO;
@@ -111,8 +114,7 @@ namespace Appva.Core.Configuration
     /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
     internal sealed class ConfigurableApplicationContextReader<T> :
         IConfigurableApplicationContextReaderFrom<T>,
-        IConfigurableApplicationContextReaderAsMachineNameSpecificOrUnprotectOrExecute<T>,
-        IConfigurableApplicationContextReaderUnprotectOrExecute<T>
+        IConfigurableApplicationContextReaderAsMachineNameSpecificOrUnprotectOrExecute<T>
         where T : class, IConfigurableResource
     {
         #region Variables.
@@ -142,6 +144,7 @@ namespace Appva.Core.Configuration
         #region IConfigurableApplicationContextReaderFrom<T> Members.
 
         /// <inheritdoc />
+        [SuppressMessage("ReSharper", "ParameterHidesMember", Justification = "Reviewed.")]
         IConfigurableApplicationContextReaderAsMachineNameSpecificOrUnprotectOrExecute<T> IConfigurableApplicationContextReaderFrom<T>.From(string location)
         {
             Requires.NotNullOrEmpty(location, "location");

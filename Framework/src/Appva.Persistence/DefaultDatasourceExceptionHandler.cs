@@ -18,18 +18,6 @@ namespace Appva.Persistence
     /// </summary>
     public sealed class DefaultDatasourceExceptionHandler : IDatasourceExceptionHandler
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the 
-        /// <see cref="DefaultDatasourceExceptionHandler"/> class.
-        /// </summary>
-        public DefaultDatasourceExceptionHandler()
-        {
-        }
-
-        #endregion
-
         #region IDatasourceExceptionHandler Members.
 
         /// <inheritdoc />

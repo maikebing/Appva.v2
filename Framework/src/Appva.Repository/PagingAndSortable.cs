@@ -23,17 +23,17 @@
         /// <summary>
         /// The page number to be returned.
         /// </summary>
-        private int _pageNumber = 1;
+        private int pageNumber = 1;
 
         /// <summary>
         /// The number of items to be returned.
         /// </summary>
-        private int _pageSize = 10;
+        private int pageSize = 10;
 
         /// <summary>
         /// The sorting parameters.
         /// </summary>
-        private Sort<TEntity> _sort;
+        private Sort<TEntity> sort;
 
         /// <summary>
         /// The query filters.
@@ -49,7 +49,7 @@
         /// </summary>
         internal int PageNumber { 
             get {
-                return this._pageNumber; 
+                return this.pageNumber; 
             } 
         }
 
@@ -59,7 +59,7 @@
         internal int PageSize
         {
             get {
-                return this._pageSize;
+                return this.pageSize;
             }
         }
 
@@ -69,7 +69,7 @@
         internal Sort<TEntity> PageSort
         {
             get {
-                return this._sort;
+                return this.sort;
             }
         }
 
@@ -94,7 +94,7 @@
         /// <returns></returns>
         public TClass Page(int pageNumber)
         {
-            this._pageNumber = pageNumber;
+            this.pageNumber = pageNumber;
             return this as TClass;
         }
 
@@ -105,7 +105,7 @@
         /// <returns></returns>
         public TClass Size(int pageSize)
         {
-            this._pageSize = pageSize;
+            this.pageSize = pageSize;
             return this as TClass;
         }
 
@@ -128,7 +128,7 @@
         public TClass OrderBy(Expression<Func<TEntity, object>> order)
         {
             CreateSortIfNull();
-            this._sort.Order = order;
+            this.sort.Order = order;
             return this as TClass;
         }
 
@@ -139,7 +139,7 @@
         public TClass Asc()
         {
             CreateSortIfNull();
-            this._sort.Direction = Direction.Asc;
+            this.sort.Direction = Direction.Asc;
             return this as TClass;
         }
 
@@ -151,7 +151,7 @@
         public TClass Desc()
         {
             CreateSortIfNull();
-            this._sort.Direction = Direction.Desc;
+            this.sort.Direction = Direction.Desc;
             return this as TClass;
         }
 
@@ -164,8 +164,8 @@
         /// </summary>
         protected void CreateSortIfNull()
         {
-            if (this._sort == null) {
-                this._sort = new Sort<TEntity>();
+            if (this.sort == null) {
+                this.sort = new Sort<TEntity>();
             }
         }
 

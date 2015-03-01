@@ -6,13 +6,6 @@
 // </author>
 namespace Appva.Cryptography.X509
 {
-    #region Imports.
-
-    using System;
-    using Core.Extensions;
-
-    #endregion
-
     /// <summary>
     /// The following are supported:
     /// <externalLink>

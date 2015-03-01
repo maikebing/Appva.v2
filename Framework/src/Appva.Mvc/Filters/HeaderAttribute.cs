@@ -1,7 +1,9 @@
 ﻿// <copyright file="HeaderAttribute.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Filters
 {
     #region Imports.
@@ -11,7 +13,8 @@ namespace Appva.Mvc.Filters
     #endregion
 
     /// <summary>
-    /// Represents an attribute that is used to add HTTP Headers to a Controller Action response.
+    /// Represents an attribute that is used to add HTTP Headers to a Controller Action 
+    /// response.
     /// </summary>
     public sealed class HeaderAttribute : ActionFilterAttribute
     {

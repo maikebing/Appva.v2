@@ -25,7 +25,7 @@ namespace Appva.Persistence
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPersistenceContextFactory"/>. Manages and resolves  
+        /// The <see cref="IPersistenceContextAwareResolver"/>. Manages and resolves  
         /// NHibernate ISessionFactories.
         /// </summary>
         private readonly IPersistenceContextAwareResolver contextAwareResolver;
@@ -110,8 +110,6 @@ namespace Appva.Persistence
         /// <inheritdoc />
         public void Commit(bool commit = true)
         {
-            Requires.ValidState(this.session != null, "No open session!");
-            Requires.ValidState(this.session.Transaction != null, "No transaction started!");
             using (this.session)
             using (var transaction = this.session.Transaction)
             {
@@ -153,7 +151,7 @@ namespace Appva.Persistence
         /// <inheritdoc />
         public IQueryOver<T, T> QueryOver<T>(Expression<Func<T>> alias) where T : class
         {
-            return this.session.QueryOver<T>(alias);
+            return this.session.QueryOver(alias);
         }
 
         /// <inheritdoc />

@@ -2,7 +2,6 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Appva.Logging")]

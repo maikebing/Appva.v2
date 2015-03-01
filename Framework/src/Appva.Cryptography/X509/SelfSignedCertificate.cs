@@ -9,7 +9,6 @@ namespace Appva.Cryptography.X509
     #region Imports.
 
     using System;
-    using System.IO;
     using System.Security.Cryptography.X509Certificates;
 
     #endregion
@@ -112,17 +111,6 @@ namespace Appva.Cryptography.X509
     public abstract class SelfSignedCertificate : 
         ISelfSignedCertificate
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelfSignedCertificate"/> class.
-        /// </summary>
-        protected SelfSignedCertificate()
-        {
-        }
-
-        #endregion
-
         #region Properties.
 
         /// <summary>

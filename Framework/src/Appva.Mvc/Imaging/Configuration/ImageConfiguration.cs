@@ -1,7 +1,9 @@
 ﻿// <copyright file="ImageConfiguration.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Imaging
 {
     #region Imports.
@@ -15,10 +17,8 @@ namespace Appva.Mvc.Imaging
     /// </summary>
     public sealed class ImageConfiguration : IConfigurableResource
     {
-        #region Public Properties.
-
         /// <summary>
-        /// 
+        /// The file path.
         /// </summary>
         public string Path
         {
@@ -27,7 +27,7 @@ namespace Appva.Mvc.Imaging
         }
 
         /// <summary>
-        /// 
+        /// The resize width.
         /// </summary>
         public int Width
         {
@@ -36,7 +36,7 @@ namespace Appva.Mvc.Imaging
         }
 
         /// <summary>
-        /// 
+        /// The resize height.
         /// </summary>
         public int Height
         {
@@ -45,14 +45,12 @@ namespace Appva.Mvc.Imaging
         }
 
         /// <summary>
-        /// 
+        /// The resize quility.
         /// </summary>
         public int Quality
         {
             get;
             set;
         }
-
-        #endregion
     }
 }

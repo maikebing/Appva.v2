@@ -22,7 +22,7 @@ namespace Appva.Persistence
         /// Handle <see cref="Datasource"/> failure when attempting to establish a database 
         /// connection.
         /// </summary>
-        /// <param name="exceptions">An exception</param>
+        /// <param name="exception">An exception</param>
         void Handle(Exception exception);
 
         /// <summary>

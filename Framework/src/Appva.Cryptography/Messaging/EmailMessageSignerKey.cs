@@ -4,32 +4,34 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
+// ReSharper disable All
 namespace Appva.Cryptography.Messaging
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using System.Linq;
     using System.Net.Mail;
     using System.Security.Cryptography.Pkcs;
     using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-    using System.Threading.Tasks;
     using Core.Extensions;
     using Core.Messaging;
-    using Validation;
+    using Validation;    
 
     #endregion
 
     /// <summary>
-    /// S/MIME (Secure/Multipurpose Internet Mail Extensions) is a standard for 
-    /// public key encryption and signing of MIME data. S/MIME is on an IETF standards 
-    /// track and defined in a number of documents, most importantly RFCs 3369, 3370, 
-    /// 3850 and 3851.
-    /// See <a href="http://en.wikipedia.org/wiki/S/MIME">S/MIME</a>
+    /// S/MIME (Secure/Multipurpose Internet Mail Extensions) is a standard for public 
+    /// key encryption and signing of MIME data. S/MIME is on an IETF standards track 
+    /// and defined in a number of documents, most importantly RFCs 3369, 3370, 3850 and 
+    /// 3851.
+    /// <externalLink>
+    ///     <linkText>S/MIME</linkText>
+    ///     <linkUri>
+    ///         http://en.wikipedia.org/wiki/S/MIME
+    ///     </linkUri>
+    /// </externalLink>
     /// </summary>
     public interface IEmailMessageSignerKey
     {
@@ -48,8 +50,8 @@ namespace Appva.Cryptography.Messaging
         #region Variables.
 
         /// <summary>
-        /// The <see cref="X509Certificate2"/> used for encryption
-        /// and signing the E-mail message.
+        /// The <see cref="X509Certificate2"/> used for encryption and signing the E-mail 
+        /// message.
         /// </summary>
         private readonly X509Certificate2 x509Certificate;
 

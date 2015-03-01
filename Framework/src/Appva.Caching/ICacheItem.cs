@@ -1,7 +1,9 @@
 ﻿// <copyright file="ICacheItem.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Caching
 {
     /// <summary>
@@ -9,6 +11,8 @@ namespace Appva.Caching
     /// </summary>
     public interface ICacheItem
     {
+        #region Public Properties.
+
         /// <summary>
         /// The cache key.
         /// </summary>
@@ -26,7 +30,7 @@ namespace Appva.Caching
         }
 
         /// <summary>
-        /// Hits as amount of requests.
+        /// The amount of times the cache item has been accessed since creation.
         /// </summary>
         long Hits
         {
@@ -34,27 +38,44 @@ namespace Appva.Caching
         }
 
         /// <summary>
-        /// The cached item created timestamp.
+        /// The timestamp of the cache item first creation date time.
         /// </summary>
-        long Created
+        long CreatedAt
         {
             get;
         }
 
         /// <summary>
-        /// The cached item last modified timestamp.
+        /// The timestamp of the cache item last modification date time.
         /// </summary>
-        long LastModified
+        long ModifiedAt
         {
             get;
         }
 
         /// <summary>
-        /// The cached item last accessed timestamp.
+        /// The timestamp of the cached item last accessed date time.
         /// </summary>
-        long LastAccessed
+        long AccessedAt
         {
             get;
         }
+
+        #endregion
+
+        #region Public Methods.
+
+        /// <summary>
+        /// Updates the value of the cached item.
+        /// </summary>
+        /// <param name="value">The object to be updated</param>
+        void UpdateValue(object value);
+
+        /// <summary>
+        /// Updates the cached item hit count.
+        /// </summary>
+        void UpdateHit();
+
+        #endregion
     }
 }

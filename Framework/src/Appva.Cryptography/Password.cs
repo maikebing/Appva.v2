@@ -1,7 +1,9 @@
 ﻿// <copyright file="Password.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cryptography
 {
     #region Imports.
@@ -10,6 +12,7 @@ namespace Appva.Cryptography
     using System.Collections.Generic;
     using System.Security.Cryptography;
     using Core.Extensions;
+    using Extensions;
     using Validation;
 
     #endregion
@@ -17,16 +20,32 @@ namespace Appva.Cryptography
     /// <summary>
     /// Helper class for password generation, hashing and verification.
     /// </summary>
-    /// <example>Password.Pbkdf2(plainText: "foo");</example>
-    /// <example>Password.Equals(plainText: "foo", hashedPassword: "4934.a+fwhJygTAB82U2Umlvhgs8YYhr8myJmXALnG4YwNDI=.K3wLfSYqEZTlSSQcXmYtuPqOnD4SJBdBfVPJHWMnnG8=");</example>
-    /// <example>Password.Random();</example>
+    /// <example>
+    ///     <code language="cs" title="Example #1">
+    ///         Password.Pbkdf2(plainText: "foo");
+    ///     </code>
+    /// </example>
+    /// <example>
+    ///     <code language="cs" title="Example #2">
+    ///         Password.Equals(plainText: "foo", hashedPassword: "4934.a+fwhJygTAB82U2Umlvhgs8YYhr8myJmXALnG4YwNDI=.K3wLfSYqEZTlSSQcXmYtuPqOnD4SJBdBfVPJHWMnnG8=");
+    ///     </code>
+    /// </example>
+    /// <example>
+    ///     <code language="cs" title="Example #3">
+    ///         Password.Random();
+    ///     </code>
+    /// </example>
     public static class Password
     {
         /// <summary>
-        /// A salted (256 bit) PBKDF2 (256 bit) with a random
-        /// iteration between 10000 and 50000.
-        /// Password format: {iterations}.{base64 salt}.{base64 hashed password}.
-        /// See <a href="http://en.wikipedia.org/wiki/PBKDF2">PBKDF2</a>
+        /// A salted (256 bit) PBKDF2 (256 bit) with a random iteration between 10000 and 
+        /// 50000. Password format: {iterations}.{base64 salt}.{base64 hashed password}.
+        /// <externalLink>
+        ///     <linkText>PBKDF2</linkText>
+        ///     <linkUri>
+        ///         http://en.wikipedia.org/wiki/PBKDF2
+        ///     </linkUri>
+        /// </externalLink>
         /// </summary>
         /// <param name="plainText">The password as plain text</param>
         /// <returns>A PBKDF2 hashed password</returns>
@@ -76,12 +95,13 @@ namespace Appva.Cryptography
         }
 
         /// <summary>
-        /// Generates a random password with the format 4114 -
-        /// three a-z characters, one digit, one special character
-        /// and three A-Z characters. If shuffle is used then the
-        /// latter format will be shuffled in random order. 
+        /// Generates a random password with the format 4114 - three a-z characters, one 
+        /// digit, one special character and three A-Z characters. If shuffle is used then 
+        /// the latter format will be shuffled in random order. 
         /// </summary>
-        /// <param name="shuffle">Whether to keep the 4114 format or shuffle the result</param>
+        /// <param name="shuffle">
+        /// Whether to keep the 4114 format or shuffle the result
+        /// </param>
         /// <returns>A random password</returns>
         public static string Random(bool shuffle = false)
         {
@@ -105,8 +125,12 @@ namespace Appva.Cryptography
         /// Generates a random password by the dictionary key values.
         /// </summary>
         /// <param name="length">The total length of the random string</param>
-        /// <param name="items">Key (characters available) value (number of characters to pick)</param>
-        /// <param name="shuffle">Whether to keep the original format of the items or shuffle the result</param>
+        /// <param name="items">
+        /// Key (characters available) value (number of characters to pick)
+        /// </param>
+        /// <param name="shuffle">
+        /// Whether to keep the original format of the items or shuffle the result
+        /// </param>
         /// <returns>A random password</returns>
         public static string Random(int length, IDictionary<char[], int> items, bool shuffle = false)
         {
@@ -135,15 +159,20 @@ namespace Appva.Cryptography
 
         /// <summary>
         /// Prevent timing attack with a slow equals.
-        /// See <a href="http://en.wikipedia.org/wiki/Timing_attack">Timing attack</a>
+        /// <externalLink>
+        ///     <linkText>Timing attack</linkText>
+        ///     <linkUri>
+        ///         http://en.wikipedia.org/wiki/Timing_attack
+        ///     </linkUri>
+        /// </externalLink>
         /// </summary>
         /// <param name="a">The first byte array</param>
         /// <param name="b">The second byte array</param>
         /// <returns>True if the byte arrays are equal</returns>
-        private static bool TimingAttackEquals(byte[] a, byte[] b)
+        private static bool TimingAttackEquals(IReadOnlyList<byte> a, IReadOnlyList<byte> b)
         {
-            var diff = a.Length ^ b.Length;
-            for (var i = 0; i < a.Length && i < b.Length; i++)
+            var diff = a.Count ^ b.Count;
+            for (var i = 0; i < a.Count && i < b.Count; i++)
             {
                 diff |= a[i] ^ b[i];
             }

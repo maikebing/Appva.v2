@@ -8,18 +8,18 @@ namespace Appva.Test.Tools
 {
     #region Imports.
 
-    using Appva.Core.Configuration;
-    using Appva.Persistence;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Appva.Core.Configuration;
+    using Appva.Persistence;
 
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// An in memory database for persistence tests.
     /// </summary>
     public class InMemoryDatabase : IDisposable
     {
@@ -43,13 +43,16 @@ namespace Appva.Test.Tools
                 .From("App_Data\\Persistence.json")
                 .ToObject();
             var persistenceResolver = new DefaultPersistenceContextAwareResolver(
-                new DefaultDatasource(configuration, null, null));
+                new DefaultDatasource(
+                    configuration, 
+                    new DefaultDatasourceExceptionHandler(), 
+                    new DefaultDatasourceEventInterceptor()));
             this.persistenceContext = persistenceResolver.CreateNew().Open();
         }
 
         #endregion
 
-        #region Inherited.
+        #region Protected Properties.
 
         /// <summary>
         /// Returns the <see cref="IPersistenceContext"/>.
@@ -64,7 +67,7 @@ namespace Appva.Test.Tools
 
         #endregion
 
-        #region IDisposable Implementation.
+        #region IDisposable Members.
 
         /// <summary>
         /// Disposes the instance.

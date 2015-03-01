@@ -11,12 +11,12 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System;
     using System.Collections.Generic;
     using System.Web.Http;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.ResourceServer.Application;
-    using Appva.Mcss.ResourceServer.Application.Authorization;
-    using Appva.Mcss.ResourceServer.Domain.Constants;
-    using Appva.Mcss.ResourceServer.Domain.Repositories;
-    using Appva.Mcss.ResourceServer.Domain.Services;
+    using Application;
+    using Application.Authorization;
+    using Core.Extensions;
+    using Domain.Constants;
+    using Domain.Repositories;
+    using Domain.Services;
     using Transformers;
 
     #endregion
@@ -35,7 +35,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         private readonly ITimelineService timelineService;
 
         /// <summary>
-        /// The <see cref="ISettings"/>.
+        /// The <see cref="ISettingsService"/>.
         /// </summary>
         private readonly ISettingsService settingsService;
 
@@ -78,11 +78,13 @@ namespace Appva.Mcss.ResourceServer.Controllers
         [HttpGet, Route("{date:datetime}/patient/{id:guid}")]
         public IHttpActionResult ListByPatient([FromUri(Name = "date")] DateTime date, [FromUri(Name = "id")] Guid id, string groupingStrategy = "patient", [FromUri(Name = "status_ids")] List<string> statusIds = null, [FromUri(Name = "type_ids")] List<string> typeIds = null)
         {
+            //// TODO: use isEmpty
             if (typeIds.IsNull() || typeIds.Count.Equals(0))
             {
                 typeIds = new List<string> { "ordination", "calendar" };
             }
             var tasks = this.timelineService.FindByPatient(id, date, date.LastInstantOfDay(), typeIds);
+            //// TODO: Patient varible is not used.
             var patient = this.patientRepository.Get(id);
             var patientsWithDelays = new List<Guid>();
             if (this.patientRepository.PatientHasAlarm(id))
@@ -105,6 +107,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         [HttpGet, Route("{date:datetime}/taxon/{id:guid}")]
         public IHttpActionResult ListByTaxon([FromUri(Name = "date")] DateTime date, [FromUri(Name = "id")] Guid id, string groupingStrategy = "taxon", [FromUri(Name = "status_ids")] List<string> statusIds = null, [FromUri(Name = "type_ids")] List<string> typeIds = null)
         {
+            //// TODO: use isEmpty
             if (typeIds.IsNull() || typeIds.Count.Equals(0)) 
             {
                 typeIds = new List<string> { "ordination", "calendar" };

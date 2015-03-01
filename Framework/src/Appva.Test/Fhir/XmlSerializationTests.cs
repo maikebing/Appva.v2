@@ -4,24 +4,18 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Test.Cryptography
+namespace Appva.Test.Fhir
 {
     #region Import.
 
+    using System;
     using System.IO;
+    using System.Text;
     using System.Xml;
     using System.Xml.Serialization;
-    using Xunit;
-    using System.Text;
     using Appva.Fhir.Primitives;
-    using Appva.Fhir.Resources.Security;
-    using Appva.Fhir.Complex;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
-    using Newtonsoft.Json.Converters;
-    using System;
 
     #endregion
 
@@ -77,7 +71,7 @@ namespace Appva.Test.Cryptography
             Assert.Equal("2", json);
         }*/
 
-        public string serializeJson<T>(T obj) where T : class
+        public string SerializeJson<T>(T obj) where T : class
         {
             /*using (var stream = new MemoryStream())
             using (var writer = new StreamWriter(stream))
@@ -96,7 +90,7 @@ namespace Appva.Test.Cryptography
             });
         }
 
-        public string serialize<T>(T obj) where T : class
+        public string Serialize<T>(T obj) where T : class
         {
             var serializer = new XmlSerializer(typeof(T));
             using (var stream = new MemoryStream())
@@ -115,11 +109,9 @@ namespace Appva.Test.Cryptography
 
     public class ConverterContractResolver : CamelCasePropertyNamesContractResolver
     {
-        public new static readonly ConverterContractResolver Instance = new ConverterContractResolver();
-
         protected override JsonContract CreateContract(Type objectType)
         {
-            JsonContract contract = base.CreateContract(objectType);
+            var contract = base.CreateContract(objectType);
             if (objectType == typeof(Code))
                 contract.Converter = new StringEnumConverter();
 

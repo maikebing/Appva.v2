@@ -8,7 +8,7 @@ namespace Appva.Persistence
 {
     #region Imports.
 
-    using Appva.Logging;
+    using Logging;
     using NHibernate;
     using Validation;
 
@@ -27,7 +27,7 @@ namespace Appva.Persistence
         private static readonly ILog Log = LogProvider.For<PersistenceContextAwareResolver>();
 
         /// <summary>
-        /// The <see cref="Datasource{T}"/> instance.
+        /// The <see cref="IDatasource"/> instance.
         /// </summary>
         private readonly IDatasource datasource;
 

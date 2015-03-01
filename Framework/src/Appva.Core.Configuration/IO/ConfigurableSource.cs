@@ -1,7 +1,9 @@
 ﻿// <copyright file="ConfigurableSource.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Core.Configuration.IO
 {
     #region Imports.
@@ -68,7 +70,7 @@ namespace Appva.Core.Configuration.IO
         {
             using (var stream = new FileStream(this.path, FileMode.Create, FileAccess.Write))
             {
-                this.Write<T>(obj, stream);
+                this.Write(obj, stream);
             } 
         }
 
@@ -77,7 +79,7 @@ namespace Appva.Core.Configuration.IO
         {
             using (var stream = new FileStream(this.path, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
             {
-                await this.WriteAsync<T>(obj, stream);
+                await this.WriteAsync(obj, stream);
             }
         }
 

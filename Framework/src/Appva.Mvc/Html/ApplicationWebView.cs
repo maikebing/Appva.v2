@@ -1,18 +1,19 @@
 ﻿// <copyright file="ApplicationWebView.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-
-using Appva.Core.Extensions;
-
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html
 {
     #region Imports.
 
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Security.Claims;
     using System.Text;
     using System.Web.Mvc;
+    using Core.Extensions;
 
     #endregion
     
@@ -89,6 +90,7 @@ namespace Appva.Mvc.Html
         /// Renders the HTML meta attributes.
         /// </summary>
         /// <returns>The meta data attributes</returns>
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException", Justification = "Reviewed.")]
         public MvcHtmlString RenderMeta()
         {
             if (this.ViewBag.Meta == null)
@@ -110,5 +112,12 @@ namespace Appva.Mvc.Html
             return MvcHtmlString.Create(builder.ToString());
         }
     }
-    public abstract class ApplicationWebView : WebViewPage<dynamic> { }
+
+    /// <summary>
+    /// Custom <see cref="WebViewPage"/>.
+    /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
+    public abstract class ApplicationWebView : WebViewPage<dynamic>
+    {
+    }
 }

@@ -1,7 +1,9 @@
 ﻿// <copyright file="CheckboxFor.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Extensions.Elements
 {
     #region Imports.
@@ -9,16 +11,17 @@ namespace Appva.Mvc.Html.Extensions.Elements
     using System;
     using System.Linq.Expressions;
     using System.Web.Mvc;
-    using Mvc.Html.Extensions;
 
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// Creates an input checkbox for a model and property.
     /// </summary>
+    /// <typeparam name="TRoot">The root type</typeparam>
+    /// <typeparam name="TModel">The model type</typeparam>
+    /// <typeparam name="TProperty">The property type</typeparam>
     public class CheckboxFor<TRoot, TModel, TProperty> : Element<TRoot>
         where TRoot : ElementBuilder<TModel>, IFormGroupFor<TModel, TProperty>
-        
     {
         #region Variables.
 
@@ -63,7 +66,7 @@ namespace Appva.Mvc.Html.Extensions.Elements
         /// <inheritdoc />
         public override MvcHtmlString Build()
         {
-            return this.Root.HtmlHelper.CheckBoxWithLabelFor(this.labelText, (this.expression as Expression<Func<TModel, bool>>), this.htmlAttributes);
+            return this.Root.HtmlHelper.CheckBoxWithLabelFor(this.labelText, this.expression as Expression<Func<TModel, bool>>, this.htmlAttributes);
         }
 
         #endregion

@@ -157,12 +157,12 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.InternalServerError(new Exception("No client found, attempting to rollback!"));
             }
-            if (deviceModel.RemoteMessagingId.IsNotEmpty())
+            /*if (deviceModel.RemoteMessagingId.IsNotEmpty())
             {
                 var tags = new List<string>() { "deviceId:" + device.Id.ToString() };
                 device.AzurePushId = Appva.Azure.PushNotifications.RegisterDevice(deviceModel.RemoteMessagingId, tags);
                 device.PushUuid = deviceModel.RemoteMessagingId;
-            }
+            }*/
             return this.Ok(new
             {
                 Id = device.Id,

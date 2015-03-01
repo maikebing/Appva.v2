@@ -9,7 +9,7 @@ namespace Appva.Fhir.Resources
     #region Imports.
 
     using System.Xml.Serialization;
-    using Appva.Fhir.Primitives;
+    using Primitives;
 
     #endregion
 
@@ -67,17 +67,6 @@ namespace Appva.Fhir.Resources
     [XmlTypeAttribute(Namespace = Fhir.Namespace)]
     public class Resource
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Resource"/> class.
-        /// </summary>
-        public Resource()
-        {
-        }
-
-        #endregion
-
         /// <summary>
         /// The metadata about the resource. This is content that is maintained by the 
         /// infrastructure. Changes to the content may not always be associated with version 

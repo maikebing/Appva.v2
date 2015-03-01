@@ -117,31 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConstructorInitialization" xml:space="preserve">
+    <value>&lt;PushNotification&gt; Initialized</value>
+  </data>
   <data name="PushException" xml:space="preserve">
-    <value>"Exception while sending push to: {0} with payload: {1}"</value>
+    <value>&lt;SendPush&gt; Exception raised for &lt;tags&gt;: {0} with &lt;payload&gt;: {1}</value>
   </data>
-  <data name="PushExecute" xml:space="preserve">
-    <value>Sending a push notification executing</value>
+  <data name="PushExecuting" xml:space="preserve">
+    <value>&lt;SendPush&gt;Executing for &lt;tags&gt;: {0}</value>
   </data>
-  <data name="PushOutcomeResponse" xml:space="preserve">
-    <value>"Push responded with success: {0}, failure: {1}, state: {2} for devices: {3}"</value>
+  <data name="PushResponse" xml:space="preserve">
+    <value>&lt;SendPush&gt; Response: &lt;success&gt;: {0} &lt;failure&gt;: {1} &lt;state&gt;: {2}</value>
   </data>
   <data name="RegistrationException" xml:space="preserve">
-    <value>Exception while registrering device with device token: {0}</value>
+    <value>&lt;RegisterDevice&gt;Exception raised for &lt;device token&gt;: {0}</value>
   </data>
-  <data name="RegistrationExecute" xml:space="preserve">
-    <value>Register device for push notifications executing</value>
+  <data name="RegistrationExecuting" xml:space="preserve">
+    <value>&lt;RegisterDevice&gt; Executing for &lt;device token&gt;: {0}</value>
   </data>
   <data name="RegistrationResponse" xml:space="preserve">
-    <value>"Registration for device id: {0} responded with registration id: {1}, tags: {2}"</value>
+    <value>&lt;RegisterDevice&gt; Response: {0}</value>
   </data>
   <data name="UpdateException" xml:space="preserve">
-    <value>"Exception while updating device with registration id: {0} and device token: {1}"</value>
+    <value>&lt;UpdateDevice&gt; Exception raised for &lt;registration id&gt;: {0} and &lt;device token&gt;: {1}</value>
   </data>
   <data name="UpdateExecute" xml:space="preserve">
-    <value>Updating device for push notifications executing</value>
+    <value>&lt;UpdateDevice&gt; Executing for &lt;registration id&gt;: {0} with &lt;device token&gt;: {1}</value>
   </data>
-  <data name="UpdateRegistrationResponse" xml:space="preserve">
-    <value>"Update registration for device id: {0} responded with registration id: {1}, tags: {2}"</value>
+  <data name="UpdateResponse" xml:space="preserve">
+    <value>&lt;UpdateDevice&gt; Response: {0}</value>
   </data>
 </root>

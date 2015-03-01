@@ -9,7 +9,7 @@ namespace Appva.Cryptography
     #region Imports.
 
     using System.Security.Cryptography.X509Certificates;
-    using Appva.Cryptography.X509;
+    using X509;
     using StoreName = System.Security.Cryptography.X509Certificates.StoreName;
     using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
     using X509FindType = System.Security.Cryptography.X509Certificates.X509FindType;
@@ -24,16 +24,18 @@ namespace Appva.Cryptography
     /// </externalLink>
     /// </summary>
     /// <example>
-    /// Create CA Certificate:
-    /// Certificate.CertificateAuthority().Subject("MyTrustedCARoot")
-    ///     .Use(Cipher.Ecdh(Curve.P384)).Signature(Signature.Sha512WithEcdsa)
-    ///     .WriteToDisk("C:\\cacert.pfx", "password")
+    ///     <code language="cs" title="CA Certificate Example">
+    ///         Certificate.CertificateAuthority().Subject("MyTrustedCARoot")
+    ///             .Use(Cipher.Ecdh(Curve.P384)).Signature(Signature.Sha512WithEcdsa)
+    ///             .WriteToDisk("C:\\cacert.pfx", "password")
+    ///     </code>
     /// </example>
     /// <example>
-    /// Create Client Certificate:
-    /// Certificate.Client("MyTrustedCARoot").Subject("MyClientCertificate")
-    ///     .Use(Cipher.Ecdh(Curve.P384)).Signature(Signature.Sha512WithEcdsa)
-    ///     .WriteToDisk("C:\\clientcert.pfx", "password")
+    ///     <code language="cs" title="Client Certificate Example">
+    ///        Certificate.Client("MyTrustedCARoot").Subject("MyClientCertificate")
+    ///             .Use(Cipher.Ecdh(Curve.P384)).Signature(Signature.Sha512WithEcdsa)
+    ///             .WriteToDisk("C:\\clientcert.pfx", "password")
+    ///     </code>
     /// </example>
     public static class Certificate
     {
@@ -43,7 +45,7 @@ namespace Appva.Cryptography
         /// <returns><see cref="ISelfSignedCertificate"/></returns>
         public static ISelfSignedCertificate CertificateAuthority()
         {
-            return new CACertificate();
+            return new CaCertificate();
         }
 
         /// <summary>
@@ -59,7 +61,9 @@ namespace Appva.Cryptography
         /// <summary>
         /// Creates a self signed server certificate signed by a CA certificate.
         /// </summary>
-        /// <param name="subjectName">The root cert distinguished subject name, e.g. CN=CARootTest</param>
+        /// <param name="subjectName">
+        /// The root cert distinguished subject name, e.g. CN=CARootTest
+        /// </param>
         /// <param name="location">The location of the X.509 certificate store</param>
         /// <param name="store">The name of the X.509 certificate store to open</param>
         /// <returns><see cref="ISelfSignedCertificate"/></returns>
@@ -84,7 +88,9 @@ namespace Appva.Cryptography
         /// <summary>
         /// Creates a self signed client certificate signed by a CA certificate.
         /// </summary>
-        /// <param name="subjectName">The root cert distinguished subject name, e.g. CN=CARootTest</param>
+        /// <param name="subjectName">
+        /// The root cert distinguished subject name, e.g. CN=CARootTest
+        /// </param>
         /// <param name="location">The location of the X.509 certificate store</param>
         /// <param name="store">The name of the X.509 certificate store to open</param>
         /// <returns><see cref="ISelfSignedCertificate"/></returns>
@@ -109,7 +115,9 @@ namespace Appva.Cryptography
         /// <summary>
         /// Creates a self signed code certificate signed by a CA certificate.
         /// </summary>
-        /// <param name="subjectName">The root cert distinguished subject name, e.g. CN=CARootTest</param>
+        /// <param name="subjectName">
+        /// The root cert distinguished subject name, e.g. CN=CARootTest
+        /// </param>
         /// <param name="location">The location of the X.509 certificate store</param>
         /// <param name="store">The name of the X.509 certificate store to open</param>
         /// <returns><see cref="ISelfSignedCertificate"/></returns>

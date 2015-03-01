@@ -1,7 +1,9 @@
 ﻿// <copyright file="CheckBoxListFor.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Extensions.Elements
 {
     #region Imports.
@@ -12,14 +14,17 @@ namespace Appva.Mvc.Html.Extensions.Elements
     using System.Text;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
-    using Appva.Core.Extensions;
+    using Core.Extensions;
     using Models;
 
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// Creates a list of input checkbox for a List{model} and property.
     /// </summary>
+    /// <typeparam name="TRoot">The root type</typeparam>
+    /// <typeparam name="TModel">The model type</typeparam>
+    /// <typeparam name="TProperty">The property type</typeparam>
     public class CheckBoxListFor<TRoot, TModel, TProperty> : Element<TRoot>
         where TRoot : ElementBuilder<TModel>, IFormGroupFor<TModel, TProperty>
     {
@@ -65,7 +70,7 @@ namespace Appva.Mvc.Html.Extensions.Elements
             if (list.IsNotEmpty())
             {
                 builder.Append("<ul class=\"checkbox-grid\">");
-                builder.Append(this.Root.HtmlHelper.EditorFor(this.expression).ToString());
+                builder.Append(this.Root.HtmlHelper.EditorFor(this.expression));
                 builder.Append("</ul>");
                 return MvcHtmlString.Create(builder.ToString());
             }

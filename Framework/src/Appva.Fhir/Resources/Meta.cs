@@ -10,8 +10,8 @@ namespace Appva.Fhir.Resources
 
     using System.Collections.ObjectModel;
     using System.Xml.Serialization;
-    using Appva.Fhir.Complex;
-    using Appva.Fhir.Primitives;
+    using Complex;
+    using Primitives;
 
     #endregion
 
@@ -39,19 +39,6 @@ namespace Appva.Fhir.Resources
     [XmlTypeAttribute(Namespace = Fhir.Namespace)]
     public sealed class Meta : Element
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Meta"/> class.
-        /// </summary>
-        public Meta()
-        {
-        }
-
-        #endregion
-
-        #region Properties.
-
         /// <summary>
         /// The version specific identifier, as it appears in the version portion of the 
         /// url. This values changes when the resource is created, updated, or deleted.
@@ -136,7 +123,5 @@ namespace Appva.Fhir.Resources
             get;
             set;
         }
-
-        #endregion
     }
 }

@@ -9,6 +9,7 @@ namespace Appva.Core.Extensions
     #region Imports.
 
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
     #endregion
@@ -59,6 +60,25 @@ namespace Appva.Core.Extensions
         public static string ToBase64(this byte[] bytes)
         {
             return Convert.ToBase64String(bytes);
+        }
+
+        /// <summary>
+        /// Converts a byte array to hex format.
+        /// </summary>
+        /// <param name="bytes">The bytes to be converted</param>
+        /// <returns>A hex string representation</returns>
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1407:ArithmeticExpressionsMustDeclarePrecedence", Justification = "Reviewed.")]
+        public static string ToHex(this byte[] bytes)
+        {
+            var chars = new char[bytes.Length * 2];
+            for (var i = 0; i < bytes.Length; i++)
+            {
+                var b = bytes[i] >> 4;
+                chars[i * 2] = (char)(87 + b + (((b - 10) >> 31) & -39));
+                b = bytes[i] & 0xF;
+                chars[i * 2 + 1] = (char)(87 + b + (((b - 10) >> 31) & -39));
+            }
+            return new string(chars);
         }
 
         /// <summary>

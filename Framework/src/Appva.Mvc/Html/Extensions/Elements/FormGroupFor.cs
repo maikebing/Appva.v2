@@ -1,7 +1,9 @@
 ﻿// <copyright file="FormGroupFor.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Extensions.Elements
 {
     #region Imports.
@@ -15,66 +17,68 @@ namespace Appva.Mvc.Html.Extensions.Elements
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
+    /// <typeparam name="TModel">The model type</typeparam>
+    /// <typeparam name="TProperty">The property type</typeparam>
     public interface IFormGroupFor<TModel, TProperty>
     {
         /// <summary>
-        /// 
+        /// Creates an HTML label element.
         /// </summary>
-        /// <param name="labelText"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="labelText">The label text</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
         IFormGroupFor<TModel, TProperty> Label(string labelText = null, object htmlAttributes = null);
 
         /// <summary>
-        /// 
+        /// Creates an HTML label element with an asterisk (*) suffix.
         /// </summary>
-        /// <param name="labelText"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="labelText">The label text</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
         IFormGroupFor<TModel, TProperty> AsteriskLabel(string labelText = null, object htmlAttributes = null);
 
         /// <summary>
-        /// 
+        /// Creates an HTML text input element.
         /// </summary>
-        /// <param name="placeholder"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="placeholder">Optional placeholder</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
         IFormGroupFor<TModel, TProperty> TextBox(string placeholder = null, object htmlAttributes = null);
 
         /// <summary>
-        /// 
+        /// Creates an HTML textarea element.
         /// </summary>
-        /// <param name="placeholder"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="placeholder">Optional placeholder</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
         IFormGroupFor<TModel, TProperty> TextArea(string placeholder = null, object htmlAttributes = null);
 
         /// <summary>
-        /// 
+        /// Creates an HTML checkbox input element.
         /// </summary>
-        /// <param name="labelText"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="labelText">The label text</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
         IFormGroupFor<TModel, TProperty> Checkbox(string labelText, object htmlAttributes = null);
 
         /// <summary>
-        /// 
+        /// Creates a list of HTML checkbox input elements.
         /// </summary>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
         IFormGroupFor<TModel, TProperty> CheckboxList(object htmlAttributes = null);
 
         /// <summary>
-        /// 
+        /// Creates validation errors for an element, nothing if valid.  
         /// </summary>
-        /// <returns></returns>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
         IFormGroupFor<TModel, TProperty> Validate();
 
         /// <summary>
-        /// 
+        /// Creates a span element help text.
         /// </summary>
-        /// <param name="helpText"></param>
-        /// <returns></returns>
+        /// <param name="helpText">The help text to show</param>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
         IFormGroupFor<TModel, TProperty> Help(string helpText);
 
         /// <summary>
@@ -87,6 +91,8 @@ namespace Appva.Mvc.Html.Extensions.Elements
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
+    /// <typeparam name="TModel">The model type</typeparam>
+    /// <typeparam name="TProperty">The property type</typeparam>
     public class FormGroupFor<TModel, TProperty> : ElementBuilder<TModel>, IFormGroupFor<TModel, TProperty>
     {
         #region Variables.
@@ -103,8 +109,8 @@ namespace Appva.Mvc.Html.Extensions.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="FormGroupFor{TModel, TProperty}"/> class.
         /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <param name="expression"></param>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
+        /// <param name="expression">The property expression</param>
         internal FormGroupFor(HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
             : base(htmlHelper)
         {

@@ -1,14 +1,15 @@
 ﻿// <copyright file="NonCryptographicHash.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cryptography
 {
     #region Imports.
 
     using System.Globalization;
     using System.Security.Cryptography;
-    using System.Text;
     using Core.Extensions;
     using Validation;
 
@@ -22,8 +23,7 @@ namespace Appva.Cryptography
     /// <summary>
     /// Constraint for all bit hash build implementations.
     /// </summary>
-    /// <typeparam name="T">An implementation of <see cref="HashAlgorithm"/></typeparam>
-    public interface INonCryptographicHashBuild<T>
+    public interface INonCryptographicHashBuild
     {
         /// <summary>
         /// Creates a string representation of the hash.
@@ -41,8 +41,7 @@ namespace Appva.Cryptography
     /// <summary>
     /// Constraint for verify equality.
     /// </summary>
-    /// <typeparam name="T">An implementation of <see cref="HashAlgorithm"/></typeparam>
-    public interface INonCryptographicHashEquals<T>
+    public interface INonCryptographicHashEquals
     {
         /// <summary>
         /// Checks whether or not the unhashed is equal to the
@@ -65,12 +64,12 @@ namespace Appva.Cryptography
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// Implementation of hash functions.
     /// </summary>
     /// <typeparam name="T">An implementation of <see cref="HashAlgorithm"/></typeparam>
     internal sealed class NonCryptographicHash<T> : 
-        INonCryptographicHashBuild<T>,
-        INonCryptographicHashEquals<T>
+        INonCryptographicHashBuild,
+        INonCryptographicHashEquals
         where T : HashAlgorithm, new()
     {
         #region Variables.
@@ -124,12 +123,7 @@ namespace Appva.Cryptography
                     case 32:
                         return bytes.ToUInt32().ToString(CultureInfo.InvariantCulture);
                     default:
-                        var builder = new StringBuilder();
-                        for (int i = 0; i < bytes.Length; i++)
-                        {
-                            builder.Append(bytes[i].ToString("x2"));
-                        }
-                        return builder.ToString();
+                        return bytes.ToHex();
                 }
             }
         }
@@ -139,15 +133,15 @@ namespace Appva.Cryptography
         #region INonCryptographicHashBuild<T> Members.
 
         /// <inheritdoc />
-        string INonCryptographicHashBuild<T>.Build()
+        string INonCryptographicHashBuild.Build()
         {
             return this.Hash;
         }
 
         /// <inheritdoc />
-        string INonCryptographicHashBuild<T>.BuildAsBase64()
+        string INonCryptographicHashBuild.BuildAsBase64()
         {
-            return this.ComputeHash().ToBase64();
+            return this.Hash.ToBase64();
         }
 
         #endregion
@@ -155,14 +149,14 @@ namespace Appva.Cryptography
         #region INonCryptographicHashEquals<T> Members.
 
         /// <inheritdoc />
-        bool INonCryptographicHashEquals<T>.Equals(string hashed)
+        bool INonCryptographicHashEquals.Equals(string hashed)
         {
             Requires.NotNullOrEmpty(hashed, "hashed");
             return this.IsHashEqual(hashed, HashFormat.None); 
         }
 
         /// <inheritdoc />
-        bool INonCryptographicHashEquals<T>.Equals(string hashed, HashFormat format)
+        bool INonCryptographicHashEquals.Equals(string hashed, HashFormat format)
         {
             Requires.NotNullOrEmpty(hashed, "hashed");
             return this.IsHashEqual(hashed, format);
@@ -187,18 +181,6 @@ namespace Appva.Cryptography
         }
 
         /// <summary>
-        /// Computes the hash as a byte array.
-        /// </summary>
-        /// <returns>The hash as a byte array</returns>
-        private byte[] ComputeHash()
-        {
-            using (var provider = new T())
-            {
-                return provider.ComputeHash(this.value);
-            }
-        }
-
-        /// <summary>
         /// Checks whether or not the unhashed is equal to the
         /// hashed hash.
         /// </summary>
@@ -212,7 +194,7 @@ namespace Appva.Cryptography
                 case HashFormat.None:
                     return this.Hash.Equals(hashed);
                 case HashFormat.Base64:
-                    return this.ComputeHash().ToBase64().Equals(hashed);
+                    return this.Hash.ToBase64().Equals(hashed);
                 default:
                     return false;
             }

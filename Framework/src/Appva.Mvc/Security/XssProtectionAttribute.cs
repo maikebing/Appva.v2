@@ -1,15 +1,11 @@
 ﻿// <copyright file="XssProtectionAttribute.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Security
 {
-    #region Imports.
-
-    using System.Web.Mvc;
-
-    #endregion
-
     /// <summary>
     /// Cross-site scripting (XSS) filter header.
     /// See 

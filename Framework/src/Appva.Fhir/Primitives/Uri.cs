@@ -48,7 +48,7 @@ namespace Appva.Fhir.Primitives
         /// <returns>True if valid</returns>
         public static bool IsValid(string value)
         {
-            System.Uri uri = null;
+            System.Uri uri;
             try
             {
                 uri = new System.Uri(value, System.UriKind.RelativeOrAbsolute);

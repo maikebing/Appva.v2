@@ -8,7 +8,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
 {
     #region Imports.
 
-    using Appva.Fhir.Primitives;
+    using Primitives;
 
     #endregion
 
@@ -31,7 +31,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// IP Address.
         /// </summary>
-        public static readonly Code IPAddress = new Code("2");
+        public static readonly Code IpAddress = new Code("2");
 
         /// <summary>
         /// Telephone Number.

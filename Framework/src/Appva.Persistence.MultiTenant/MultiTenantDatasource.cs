@@ -4,14 +4,12 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-
-using System.Linq;
-
 namespace Appva.Persistence.MultiTenant
 {
     #region Imports.
 
     using System.Collections.Generic;
+    using System.Linq;
     using Apis.TenantServer;
     using NHibernate;
     using Validation;

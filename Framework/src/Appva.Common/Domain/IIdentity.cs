@@ -9,12 +9,11 @@ namespace Appva.Common.Domain
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
 
     #endregion
 
     /// <summary>
-    /// <see cref="IEntity{T}"/> identity.
+    /// <see cref="IEntity"/> identity.
     /// </summary>
     public interface IIdentity
     {

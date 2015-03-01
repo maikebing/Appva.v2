@@ -1,7 +1,9 @@
 ﻿// <copyright file="ConfigurableApplicationContextProtectedReader.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Core.Configuration
 {
     #region Imports.
@@ -14,7 +16,8 @@ namespace Appva.Core.Configuration
     #endregion
 
     /// <summary>
-    /// Internal protected implemantation of a <see cref="IConfigurableResource"/> reader.
+    /// Internal protected implemantation of a <see cref="IConfigurableResource"/> 
+    /// reader.
     /// </summary>
     /// <typeparam name="T">An implementation of <see cref="IConfigurableResource"/></typeparam>
     internal sealed class ConfigurableApplicationContextProtectedReader<T> :
@@ -38,7 +41,8 @@ namespace Appva.Core.Configuration
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurableApplicationContextProtectedReader{T}"/> class.
+        /// Initializes a new instance of the 
+        /// <see cref="ConfigurableApplicationContextProtectedReader{T}"/> class.
         /// </summary>
         /// <param name="reader">The configurable reader</param>
         public ConfigurableApplicationContextProtectedReader(ConfigurableApplicationContextReader<T> reader) 
@@ -47,7 +51,8 @@ namespace Appva.Core.Configuration
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurableApplicationContextProtectedReader{T}"/> class.
+        /// Initializes a new instance of the 
+        /// <see cref="ConfigurableApplicationContextProtectedReader{T}"/> class.
         /// </summary>
         /// <param name="protector">A protector implementation</param>
         /// <param name="reader">The configurable reader</param>

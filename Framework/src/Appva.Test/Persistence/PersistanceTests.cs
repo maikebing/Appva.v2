@@ -1,46 +1,103 @@
 ﻿// <copyright file="PersistanceTests.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Test.Persistence
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Web.Http;
-    using Appva.Core.Configuration;
-    using Appva.Persistence;
+    using System.Diagnostics.CodeAnalysis;
+    using Tools;
     using Xunit;
-    using System.Reflection;
-    using Appva.Test.Tools;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a sumamry for readability.
+    /// Test suite for <see cref="PersistenceContext"/>.
     /// </summary>
     public class PersistanceTests : InMemoryDatabase
     {
+        #region Variables.
+
         /// <summary>
-        /// TODO: Add a sumamry for readability.
+        /// The entity name.
+        /// </summary>
+        private const string Name = "foo";
+
+        #endregion
+
+        #region Tests.
+
+        /// <summary>
+        /// Test: Save an entity to the in memory database.
+        /// Expected Result: The entity iproperly s stored.
         /// </summary>
         [Fact]
-        public void Persistance_StoreAnEntity_ExpectStoredEntityIsEqual()
+        public void SaveEntity_ExpectEntityIsSaved()
         {
-            var expected = "foo";
-            var id = (Guid) this.PersistenceContext.Save<Entity>(new Entity()
-            {
-                Name = expected
-            });
+            var id = (Guid) this.PersistenceContext.Save<Entity>(new Entity(Name));
             var result = this.PersistenceContext.Get<Entity>(id);
             Assert.Equal(id, result.Id);
-            Assert.Equal(expected, result.Name);
+            Assert.Equal(Name, result.Name);
         }
+
+        #endregion
     }
+
+    #region Entities.
+
+    /// <summary>
+    /// Anemic Entity test.
+    /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
+    public class Entity
+    {
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Entity"/> class.
+        /// </summary>
+        /// <param name="name">The name</param>
+        public Entity(string name)
+        {
+            this.Name = name;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Entity"/> class.
+        /// </summary>
+        /// <remarks>Required by NHibernate</remarks>
+        protected Entity()
+        {
+        }
+
+        #endregion
+
+        #region Properties.
+
+        /// <summary>
+        /// Returns the id.
+        /// </summary>
+        public virtual Guid Id
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Returns the name.
+        /// </summary>
+        public virtual string Name
+        {
+            get;
+            protected set;
+        }
+
+        #endregion
+    }
+
+    #endregion
 }

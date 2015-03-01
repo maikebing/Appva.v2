@@ -1,7 +1,9 @@
 ﻿// <copyright file="ImageAttribute.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Imaging
 {
     #region Imports.
@@ -9,8 +11,8 @@ namespace Appva.Mvc.Imaging
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Web;
-    using Detection;
     using Core.Extensions;
+    using Detection;
 
     #endregion
 

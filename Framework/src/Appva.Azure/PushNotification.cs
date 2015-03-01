@@ -21,9 +21,25 @@ namespace Appva.Azure
     /// <summary>
     /// Azure IOS push notification <see cref="IPushNotification"/> implementation.
     /// </summary>
+    /// <example>
+    /// The preferred usage is to use the push notification client as a singleton.
+    /// <code language="cs" title="Not Preferred Example">
+    ///     var notifications = PushNotification.CreateNew();
+    ///     notifications.RegisterDevice("foo", new [] { "bar", "baz" });
+    /// </code>
+    /// <code language="cs" title="Preferred Example with IoC">
+    ///     var builder = new ContainerBuilder();
+    ///     builder.RegisterType{PushNotification}().As{IPushNotification}().SingleInstance();
+    /// </code>
+    /// </example>
     public sealed class PushNotification : IPushNotification
     {
         #region Varables.
+
+        /// <summary>
+        /// The Azure notification hub connection string key.
+        /// </summary>
+        private const string ConnectionStringKey = "Azure.Notifications.Hub";
 
         /// <summary>
         /// The <see cref="ILog"/> for <see cref="PushNotification"/>.
@@ -43,11 +59,62 @@ namespace Appva.Azure
         /// Initializes a new instance of the <see cref="PushNotification"/> class.
         /// </summary>
         public PushNotification()
+            : this(ConfigurationManager.ConnectionStrings[ConnectionStringKey])
         {
-            var hubConfiguration = ConfigurationManager.ConnectionStrings["azureNotificationHub"];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PushNotification"/> class.
+        /// </summary>
+        /// <param name="hubConfiguration">The connection settings</param>
+        private PushNotification(ConnectionStringSettings hubConfiguration)
+            : this(hubConfiguration.ConnectionString, hubConfiguration.ProviderName)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PushNotification"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string</param>
+        /// <param name="providerName">The provider name</param>
+        private PushNotification(string connectionString, string providerName)
+        {
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ArgumentNullException("connectionString");
+            }
+            if (string.IsNullOrWhiteSpace(providerName))
+            {
+                throw new ArgumentNullException("providerName");
+            }
+            Log.Debug(Debug.Messages.ConstructorInitialization);
             this.hub = NotificationHubClient.CreateClientFromConnectionString(
-                hubConfiguration.ConnectionString, 
-                hubConfiguration.ProviderName);
+                connectionString,
+                providerName);
+        }
+
+        #endregion
+
+        #region Public Static Functions.
+
+        /// <summary>
+        /// Creates a new push notification client.
+        /// </summary>
+        /// <returns>A new <see cref="IPushNotification"/> instance</returns>
+        public static IPushNotification CreateNew()
+        {
+            return new PushNotification();
+        }
+
+        /// <summary>
+        /// Creates a new push notification client.
+        /// </summary>
+        /// <param name="connectionString">The azure connection string</param>
+        /// <param name="providerName">The azure provider name</param>
+        /// <returns>A new <see cref="IPushNotification"/> instance</returns>
+        public static IPushNotification CreateNew(string connectionString, string providerName)
+        {
+            return new PushNotification(connectionString, providerName);
         }
 
         #endregion
@@ -55,115 +122,88 @@ namespace Appva.Azure
         #region IPushNotification Members.
 
         /// <inheritdoc />
-        public string RegisterDevice(string pushId, IList<string> tags)
+        public string RegisterDevice(string deviceToken, IList<string> tags)
+        {
+            return this.RegisterDeviceAsync(deviceToken, tags).Result;
+        }
+
+        /// <inheritdoc />
+        public bool UpdateDevice(string registrationId, string deviceToken, IList<string> tags = null)
+        {
+            return this.UpdateDeviceAsync(registrationId, deviceToken, tags).Result;
+        }
+
+        /// <inheritdoc />
+        public bool SendPush(IList<string> devices, string payload)
+        {
+            return this.SendPushAsync(devices, payload).Result;
+        }
+
+        /// <inheritdoc />
+        public async Task<string> RegisterDeviceAsync(string deviceToken, IList<string> tags)
         {
             try
             {
-                Log.Debug(DebugFormats.RegistrationExecute);
-                var registration = this.hub.CreateAppleNativeRegistrationAsync(pushId, tags).Result;
-                Log.DebugFormat(DebugFormats.RegistrationResponse, pushId, registration.RegistrationId, registration.Tags);
+                Log.DebugFormat(Debug.Messages.RegistrationExecuting, deviceToken);
+                var registration = await this.hub.CreateAppleNativeRegistrationAsync(deviceToken, tags);
+                if (Log.IsDebugEnabled())
+                {
+                    Log.DebugFormat(Debug.Messages.RegistrationResponse, registration.Serialize());
+                }
                 return registration.RegistrationId;
             }
             catch (Exception ex)
             {
-                Log.DebugException(string.Format(DebugFormats.RegistrationException, pushId), ex);
+                Log.DebugException(string.Format(Debug.Messages.RegistrationException, deviceToken), ex);
                 return null;
             }
         }
 
         /// <inheritdoc />
-        public async Task<string> RegisterDeviceAsync(string pushId, IList<string> tags)
+        public async Task<bool> UpdateDeviceAsync(string registrationId, string deviceToken, IList<string> tags = null)
         {
             try
             {
-                Log.Debug(DebugFormats.RegistrationExecute);
-                var registration = await this.hub.CreateAppleNativeRegistrationAsync(pushId, tags);
-                Log.DebugFormat(DebugFormats.RegistrationResponse, pushId, registration.RegistrationId, registration.Tags);
-                return registration.RegistrationId;
-            }
-            catch (Exception ex)
-            {
-                Log.DebugException(string.Format(DebugFormats.RegistrationException, pushId), ex);
-                return null;
-            }
-        }
-
-        /// <inheritdoc />
-        public bool UpdateDevice(string registrationId, string pushId, IList<string> tags = null)
-        {
-            try
-            {
-                Log.Debug(DebugFormats.UpdateExecute);
-                var device = this.hub.GetRegistrationAsync<AppleRegistrationDescription>(registrationId).Result;
-                if (! string.IsNullOrEmpty(pushId))
+                Log.DebugFormat(Debug.Messages.UpdateExecute, registrationId, deviceToken);
+                var registration = await this.hub.GetRegistrationAsync<AppleRegistrationDescription>(registrationId);
+                if (!string.IsNullOrEmpty(deviceToken))
                 {
-                    device.DeviceToken = pushId;
+                    registration.DeviceToken = deviceToken;
                 }
-                var updatedDevice = this.hub.CreateOrUpdateRegistrationAsync(device).Result;
-                Log.DebugFormat(DebugFormats.UpdateRegistrationResponse, pushId, updatedDevice.RegistrationId, updatedDevice.Tags);
+                var response = await this.hub.CreateOrUpdateRegistrationAsync(registration);
+                if (Log.IsDebugEnabled())
+                {
+                    Log.DebugFormat(Debug.Messages.UpdateResponse, response.Serialize());
+                }
                 return true;
             }
             catch (Exception ex)
             {
-                Log.DebugException(string.Format(DebugFormats.UpdateException, registrationId, pushId), ex);
+                Log.DebugException(string.Format(Debug.Messages.UpdateException, registrationId, deviceToken), ex);
                 return false;
             }
         }
 
         /// <inheritdoc />
-        public async Task<bool> UpdateDeviceAsync(string registrationId, string pushId, IList<string> tags = null)
+        public async Task<bool> SendPushAsync(IList<string> devices, string payload)
         {
+            var tags = devices.Select(x => string.Format("deviceId:{0}", x)).ToList();
             try
             {
-                Log.Debug(DebugFormats.UpdateExecute);
-                var device = await this.hub.GetRegistrationAsync<AppleRegistrationDescription>(registrationId);
-                if (! string.IsNullOrEmpty(pushId))
+                if (Log.IsDebugEnabled())
                 {
-                    device.DeviceToken = pushId;
+                    Log.DebugFormat(Debug.Messages.PushExecuting, string.Join(",", tags));
                 }
-                var updatedDevice = await this.hub.CreateOrUpdateRegistrationAsync(device);
-                Log.DebugFormat(DebugFormats.UpdateRegistrationResponse, pushId, updatedDevice.RegistrationId, updatedDevice.Tags);
-                return true;
+                var response = await this.hub.SendAppleNativeNotificationAsync(payload, tags);
+                Log.DebugFormat(Debug.Messages.PushResponse, response.Success, response.Failure, response.State);
+                return response.Success > 0;
             }
             catch (Exception ex)
             {
-                Log.DebugException(string.Format(DebugFormats.UpdateException, registrationId, pushId), ex);
-                return false;
-            }
-        }
-
-        /// <inheritdoc />
-        public bool SendPush(List<string> devices, string payload)
-        {
-            try
-            {
-                Log.Debug(DebugFormats.PushExecute);
-                var tags = devices.Select(x => string.Format("deviceId:{0}", x)).ToList();
-                var outcome = this.hub.SendAppleNativeNotificationAsync(payload, tags).Result;
-                Log.DebugFormat(DebugFormats.PushOutcomeResponse, outcome.Success, outcome.Failure, outcome.State, devices);
-                return outcome.Success > 0;
-            }
-            catch (Exception ex)
-            {
-                Log.DebugException(string.Format(DebugFormats.PushException, devices, payload), ex);
-                return false;
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task<bool> SendPushAsync(List<string> devices, string payload)
-        {
-            try
-            {
-                Log.Debug(DebugFormats.PushExecute);
-                var tags = devices.Select(x => string.Format("deviceId:{0}", x)).ToList();
-                var outcome = await this.hub.SendAppleNativeNotificationAsync(payload, tags);
-                Log.DebugFormat(DebugFormats.PushOutcomeResponse, outcome.Success, outcome.Failure, outcome.State, devices);
-                return outcome.Success > 0;
-            }
-            catch (Exception ex)
-            {
-                Log.DebugException(string.Format(DebugFormats.PushException, devices, payload), ex);
+                if (Log.IsDebugEnabled())
+                {
+                    Log.DebugException(string.Format(Debug.Messages.PushException, string.Join(",", tags), payload), ex);
+                }
                 return false;
             }
         }

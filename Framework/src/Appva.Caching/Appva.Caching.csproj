@@ -30,12 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Core">
-      <HintPath>..\..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Validation">
@@ -44,19 +38,36 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheItem.cs" />
-    <Compile Include="Policies\CachePolicy.cs" />
+    <Compile Include="Debug\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Policies\EvicationPolicy.cs" />
     <Compile Include="Providers\CacheProvider.cs" />
     <Compile Include="ICacheItem.cs" />
-    <Compile Include="Policies\ICachePolicy.cs" />
+    <Compile Include="Policies\IEvicationPolicy.cs" />
     <Compile Include="Providers\ICacheProvider.cs" />
     <Compile Include="Policies\FirstInFirstOutPolicy.cs" />
     <Compile Include="Policies\LeastFrequentlyUsedPolicy.cs" />
-    <Compile Include="Policies\LeastRecentlyUsedCachePolicy.cs" />
+    <Compile Include="Policies\LeastRecentlyUsedPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\InMemoryCacheProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appva.Logging\Appva.Logging.csproj">
+      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
+      <Name>Appva.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Debug\Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

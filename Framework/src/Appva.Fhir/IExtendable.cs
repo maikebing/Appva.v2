@@ -8,7 +8,6 @@ namespace Appva.Fhir
 {
     #region Imports.
 
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
     #endregion

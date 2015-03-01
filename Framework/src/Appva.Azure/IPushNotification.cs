@@ -22,37 +22,37 @@ namespace Appva.Azure
         /// Register a new device in the notification hub and returns the 
         /// <c>Registration-id</c> in the hub.
         /// </summary>
-        /// <param name="pushId">The push id / device token</param>
+        /// <param name="deviceToken">The device token</param>
         /// <param name="tags">List of tags</param>
         /// <returns>The Azure registration id</returns>
-        string RegisterDevice(string pushId, IList<string> tags);
+        string RegisterDevice(string deviceToken, IList<string> tags);
 
         /// <summary>
         /// Register a new device in the notification hub and returns the 
         /// <c>Registration-id</c> in the hub.
         /// </summary>
-        /// <param name="pushId">The push id / device token</param>
+        /// <param name="deviceToken">The device token</param>
         /// <param name="tags">List of tags</param>
         /// <returns>The Azure registration id</returns>
-        Task<string> RegisterDeviceAsync(string pushId, IList<string> tags);
+        Task<string> RegisterDeviceAsync(string deviceToken, IList<string> tags);
 
         /// <summary>
         /// Updates an already registered iOS-device.
         /// </summary>
         /// <param name="registrationId">The Azure registration id</param>
-        /// <param name="pushId">The push id / device token</param>
+        /// <param name="deviceToken">The device token</param>
         /// <param name="tags">List of tags</param>
         /// <returns>True if successful</returns>
-        bool UpdateDevice(string registrationId, string pushId, IList<string> tags = null);
+        bool UpdateDevice(string registrationId, string deviceToken, IList<string> tags = null);
 
         /// <summary>
         /// Updates an already registered iOS-device.
         /// </summary>
         /// <param name="registrationId">The Azure registration id</param>
-        /// <param name="pushId">The push id / device token</param>
+        /// <param name="deviceToken">The device token</param>
         /// <param name="tags">List of tags</param>
         /// <returns>True if successful</returns>
-        Task<bool> UpdateDeviceAsync(string registrationId, string pushId, IList<string> tags = null);
+        Task<bool> UpdateDeviceAsync(string registrationId, string deviceToken, IList<string> tags = null);
 
         /// <summary>
         /// Sends notifications to given tags.
@@ -60,7 +60,7 @@ namespace Appva.Azure
         /// <param name="devices">List of device id</param>
         /// <param name="payload">The push payload</param>
         /// <returns>True if successful</returns>
-        bool SendPush(List<string> devices, string payload);
+        bool SendPush(IList<string> devices, string payload);
 
         /// <summary>
         /// Sends notifications to given tags.
@@ -68,6 +68,6 @@ namespace Appva.Azure
         /// <param name="devices">List of device id</param>
         /// <param name="payload">The push payload</param>
         /// <returns>True if successful</returns>
-        Task<bool> SendPushAsync(List<string> devices, string payload);
+        Task<bool> SendPushAsync(IList<string> devices, string payload);
     }
 }

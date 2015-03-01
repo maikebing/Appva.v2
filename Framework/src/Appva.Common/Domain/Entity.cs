@@ -1,7 +1,9 @@
 ﻿// <copyright file="Entity.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Common.Domain
 {
     #region Imports.
@@ -11,10 +13,10 @@ namespace Appva.Common.Domain
     #endregion
 
     /// <summary>
-    /// Implementation of an <see cref="IEntity{T}"/>.
+    /// Implementation of an <see cref="IEntity"/>.
     /// </summary>
     /// <typeparam name="T">The entity type</typeparam>
-    public abstract class Entity<T> : IEquatable<Entity<T>>, IEntity<T> where T : class
+    public abstract class Entity<T> : IEquatable<Entity<T>>, IEntity where T : class
     {
         #region Properties.
 
@@ -37,8 +39,8 @@ namespace Appva.Common.Domain
         }
 
         /// <summary>
-        /// Determine if the entity is transient - an object not yet 
-        /// been persisted to the database.
+        /// Determine if the entity is transient - an object not yet been persisted to the 
+        /// database.
         /// </summary>
         /// <returns>True if the entity is transient</returns>
         public virtual bool IsTransient
@@ -76,7 +78,7 @@ namespace Appva.Common.Domain
         /// <inheritdoc />
         public virtual bool Equals(Entity<T> other)
         {
-            if (object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }

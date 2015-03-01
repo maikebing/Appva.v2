@@ -11,7 +11,8 @@ namespace Appva.Core.Messaging
     using System;
     using System.Net.Mail;
     using System.Threading.Tasks;
-    using Appva.Logging;
+    using Logging;
+    using Validation;
 
     #endregion
 
@@ -41,11 +42,12 @@ namespace Appva.Core.Messaging
         /// <inheritdoc />
         public void Send(IMessage message)
         {
+            Requires.NotNull(message, "message");
             try
             {
                 using (var client = new SmtpClient())
                 {
-                    client.Send(message as EmailMessage);
+                    client.Send((EmailMessage) message);
                 }
             } 
             catch (Exception ex)
@@ -57,11 +59,12 @@ namespace Appva.Core.Messaging
         /// <inheritdoc />
         public async Task SendAsync(IMessage message)
         {
+            Requires.NotNull(message, "message");
             try
             {
                 using (var client = new SmtpClient())
                 {
-                    await client.SendMailAsync(message as EmailMessage);
+                    await client.SendMailAsync((EmailMessage) message);
                 }
             } 
             catch (Exception ex)

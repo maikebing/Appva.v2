@@ -46,8 +46,12 @@ namespace Appva.Core.Extensions
         /// Replaces the format item in a specified string with the string representation
         /// of a corresponding object in a specified array.
         /// </summary>
-        /// <param name="str">A composite format string</param>
-        /// <param name="args">An object array that contains zero or more objects to format</param>
+        /// <param name="str">
+        /// A composite format string
+        /// </param>
+        /// <param name="args">
+        /// An object array that contains zero or more objects to format
+        /// </param>
         /// <returns>
         /// A copy of format in which the format items have been replaced by the string
         /// representation of the corresponding objects in args
@@ -114,7 +118,7 @@ namespace Appva.Core.Extensions
         /// <returns>An UTF-8 byte array</returns>
         public static byte[] ToUtf8Bytes(this string value)
         {
-            return Encoding.UTF8.GetBytes(value);
+            return value.IsEmpty() ? null : Encoding.UTF8.GetBytes(value);
         }
 
         /// <summary>
@@ -141,7 +145,6 @@ namespace Appva.Core.Extensions
         /// </summary>
         /// <param name="str">The string to be converted</param>
         /// <returns>Hex string</returns>
-        [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1008:OpeningParenthesisMustBeSpacedCorrectly", Justification = "Reviewed.")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1407:ArithmeticExpressionsMustDeclarePrecedence", Justification = "Reviewed.")]
         public static string ToHex(this string str)
         {
@@ -149,16 +152,7 @@ namespace Appva.Core.Extensions
             {
                 return str;
             }
-            byte[] bytes = str.ToUtf8Bytes(); 
-            var chars = new char[bytes.Length * 2];
-            for (var i = 0; i < bytes.Length; i++)
-            {
-                var b = bytes[i] >> 4;
-                chars[i * 2] = (char) (55 + b + (((b - 10) >> 31) & -7));
-                b = bytes[i] & 0xF;
-                chars[i * 2 + 1] = (char) (55 + b + (((b - 10) >> 31) & -7));
-            }
-            return new string(chars);
+            return str.ToUtf8Bytes().ToHex(); 
         }
 
         /// <summary>
@@ -239,8 +233,8 @@ namespace Appva.Core.Extensions
         }
 
         /// <summary>
-        /// Converts a string to lowercase underscore. E.g. 
-        /// My Little Pony will convert to my_little_pony.
+        /// Converts a string to lowercase underscore. E.g. My Little Pony will convert to 
+        /// my_little_pony.
         /// </summary>
         /// <param name="str">The string to be converted</param>
         /// <returns>A new lowercased underscored string</returns>
@@ -269,17 +263,23 @@ namespace Appva.Core.Extensions
         }
 
         /// <summary>
+        /// Converts a string to base64.
+        /// </summary>
+        /// <param name="str">The string to be converted</param>
+        /// <returns>A base64 string</returns>
+        public static string ToBase64(this string str)
+        {
+            return str.IsEmpty() ? str : Convert.ToBase64String(str.ToUtf8Bytes());
+        }
+
+        /// <summary>
         /// Converts a base64 string to bytes.
         /// </summary>
         /// <param name="str">The string to be converted</param>
         /// <returns>A byte array</returns>
         public static byte[] FromBase64(this string str)
         {
-            if (str.IsEmpty())
-            {
-                return null;
-            }
-            return Convert.FromBase64String(str);
+            return str.IsEmpty() ? null : Convert.FromBase64String(str);
         }
     }
 }

@@ -40,10 +40,10 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugFormats.Designer.cs">
+    <Compile Include="Debug\Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DebugFormats.resx</DependentUpon>
+      <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="IPushNotification.cs" />
     <Compile Include="Messaging\PushNotifications.cs" />
@@ -62,9 +62,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DebugFormats.resx">
+    <EmbeddedResource Include="Debug\Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>DebugFormats.Designer.cs</LastGenOutput>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,7 +9,7 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System.Xml.Serialization;
-    using Appva.Fhir.Complex;
+    using Complex;
     using Validation;
 
     #endregion
@@ -46,7 +46,7 @@ namespace Appva.Fhir.Resources.Security
         /// </param>
         /// <param name="type">
         /// Code specifying the type of source where event originated, see 
-        /// <see cref="SecurityEventSourceType"/>.
+        /// <c>SecurityEventSourceType</c>.
         /// </param>
         public SecurityEventSource(string site, string identifier, Coding type)
         {
@@ -97,7 +97,7 @@ namespace Appva.Fhir.Resources.Security
 
         /// <summary>
         /// Code specifying the type of source where event originated, see 
-        /// <see cref="SecurityEventSourceType"/>.
+        /// <c>SecurityEventSourceType</c>.
         /// <externalLink>
         ///     <linkText>Type</linkText>
         ///     <linkUri>

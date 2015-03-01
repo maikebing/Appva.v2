@@ -14,7 +14,6 @@ namespace Appva.Test.Cryptography
     using System.Security.Cryptography;
     using Appva.Core.Messaging;
     using Appva.Cryptography;
-    using Appva.Cryptography.HashAlgoritms;
     using Appva.Cryptography.Messaging;
     using Appva.Cryptography.X509;
     using Xunit;

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Appva.Azure {
+namespace Appva.Caching.Debug {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Appva.Azure {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class DebugFormats {
+    internal class Messages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal DebugFormats() {
+        internal Messages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Appva.Azure {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Appva.Azure.DebugFormats", typeof(DebugFormats).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Appva.Caching.Debug.Messages", typeof(Messages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,83 +61,65 @@ namespace Appva.Azure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Exception while sending push to: {0} with payload: {1}&quot;.
+        ///   Looks up a localized string similar to &lt;CacheItem&gt; Initialized with &lt;key&gt;: {0} and &lt;value&gt;: {1}.
         /// </summary>
-        internal static string PushException {
+        internal static string CacheItemConstructorInitialization {
             get {
-                return ResourceManager.GetString("PushException", resourceCulture);
+                return ResourceManager.GetString("CacheItemConstructorInitialization", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sending a push notification executing.
+        ///   Looks up a localized string similar to &lt;CacheItem&gt; Updated hit with &lt;hit&gt;: {0}.
         /// </summary>
-        internal static string PushExecute {
+        internal static string CacheItemUpdateHit {
             get {
-                return ResourceManager.GetString("PushExecute", resourceCulture);
+                return ResourceManager.GetString("CacheItemUpdateHit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Push responded with success: {0}, failure: {1}, state: {2} for devices: {3}&quot;.
+        ///   Looks up a localized string similar to &lt;CacheItem&gt; Updated with &lt;value&gt;: {0}.
         /// </summary>
-        internal static string PushOutcomeResponse {
+        internal static string CacheItemUpdateValue {
             get {
-                return ResourceManager.GetString("PushOutcomeResponse", resourceCulture);
+                return ResourceManager.GetString("CacheItemUpdateValue", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exception while registrering device with device token: {0}.
+        ///   Looks up a localized string similar to &lt;EvicationPolicy&gt; Found eviction candidate &lt;key&gt;:(0), &lt;value&gt;: {1}, &lt;createdAt&gt;: {2}, &lt;modifiedAt&gt;: {3}, &lt;accessedAt&gt;: {4}, &lt;hits&gt;: {5}.
         /// </summary>
-        internal static string RegistrationException {
+        internal static string EvicationPolicyCandidateFound {
             get {
-                return ResourceManager.GetString("RegistrationException", resourceCulture);
+                return ResourceManager.GetString("EvicationPolicyCandidateFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Register device for push notifications executing.
+        ///   Looks up a localized string similar to &lt;EvicationPolicy&gt; Found 0 candidates to evict.
         /// </summary>
-        internal static string RegistrationExecute {
+        internal static string EvicationPolicyCandidateNotFound {
             get {
-                return ResourceManager.GetString("RegistrationExecute", resourceCulture);
+                return ResourceManager.GetString("EvicationPolicyCandidateNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Registration for device id: {0} responded with registration id: {1}, tags: {2}&quot;.
+        ///   Looks up a localized string similar to &lt;InMemoryCacheProvider&gt; Removed cache item &lt;key&gt;: {0}.
         /// </summary>
-        internal static string RegistrationResponse {
+        internal static string InMemoryCacheProviderCacheItemRemoved {
             get {
-                return ResourceManager.GetString("RegistrationResponse", resourceCulture);
+                return ResourceManager.GetString("InMemoryCacheProviderCacheItemRemoved", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Exception while updating device with registration id: {0} and device token: {1}&quot;.
+        ///   Looks up a localized string similar to &lt;InMemoryCacheProvider&gt; Cleared cache.
         /// </summary>
-        internal static string UpdateException {
+        internal static string InMemoryCacheProviderClearStore {
             get {
-                return ResourceManager.GetString("UpdateException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Updating device for push notifications executing.
-        /// </summary>
-        internal static string UpdateExecute {
-            get {
-                return ResourceManager.GetString("UpdateExecute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &quot;Update registration for device id: {0} responded with registration id: {1}, tags: {2}&quot;.
-        /// </summary>
-        internal static string UpdateRegistrationResponse {
-            get {
-                return ResourceManager.GetString("UpdateRegistrationResponse", resourceCulture);
+                return ResourceManager.GetString("InMemoryCacheProviderClearStore", resourceCulture);
             }
         }
     }

@@ -31,7 +31,7 @@ namespace Appva.Cryptography.X509
         /// <param name="value">The value to search for</param>
         /// <param name="name">The name of the X.509 certificate store to open</param>
         /// <param name="location">The location of the X.509 certificate store</param>
-        /// <returns>An instance of <see cref="X509Certificate2"/> or null if not found</returns>
+        /// <returns>An instance of <c>X509Certificate2</c> or null if not found</returns>
         public static MSX509.X509Certificate2 LoadCertificate(MSX509.X509FindType findBy, object value, MSX509.StoreName name = MSX509.StoreName.Root, MSX509.StoreLocation location = MSX509.StoreLocation.CurrentUser)
         {
             MSX509.X509Store store = null;
@@ -60,7 +60,7 @@ namespace Appva.Cryptography.X509
         /// </summary>
         /// <param name="inputFile">The input file, e.g. C:\cert.pfx</param>
         /// <param name="password">The certificate password</param>
-        /// <returns>An instance of <see cref="X509Certificate2"/></returns>
+        /// <returns>An instance of <c>X509Certificate2</c></returns>
         public static MSX509.X509Certificate2 LoadCertificateFromDisk(string inputFile, string password)
         {
             return new MSX509.X509Certificate2(inputFile, password);
@@ -77,7 +77,7 @@ namespace Appva.Cryptography.X509
         /// <param name="issuer">The certificate issuer/signer</param>
         /// <param name="cipher">Optional cipher used, defaults to RSA 2048</param>
         /// <param name="signature">Optional signature algorithm used, defaults to SHA256</param>
-        /// <returns>An instance of <see cref="X509Certificate2"/></returns>
+        /// <returns>An instance of <c>X509Certificate2</c></returns>
         public static MSX509.X509Certificate2 CreateCertificate(Usage usage, X509Name name, Validity validity, MSX509.X509Certificate2 issuer = null, ICipher cipher = null, Signature signature = null)
         {
             cipher = cipher ?? Cipher.Rsa(KeySize.Bit2048);
@@ -104,8 +104,7 @@ namespace Appva.Cryptography.X509
             //// Sign the certificate with the issuers private key.
             var certificate = builder.Generate(signer.Private, cipher.Random);
             //// Convert from Bouncy Castle to X509Certificate2
-            var t = DotNetUtilities.ToX509Certificate(certificate);
-            var i = t.Subject;
+            DotNetUtilities.ToX509Certificate(certificate);
             var store = new Pkcs12StoreBuilder().Build();
             store.SetKeyEntry(certificate.FriendlyName(), new AsymmetricKeyEntry(keys.Private), new[] { new X509CertificateEntry(certificate) });
             using (var stream = new MemoryStream())

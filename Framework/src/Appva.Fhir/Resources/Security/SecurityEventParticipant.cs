@@ -10,7 +10,7 @@ namespace Appva.Fhir.Resources.Security
 
     using System.Collections.Generic;
     using System.Xml.Serialization;
-    using Appva.Fhir.Complex;
+    using Complex;
 
     #endregion
 
@@ -56,7 +56,7 @@ namespace Appva.Fhir.Resources.Security
         /// Logical network location for application activity, if the activity has a network 
         /// location
         /// </param>
-        public SecurityEventParticipant(IList<CodeableConcept> roles, string userId, string alternativeId, string name, bool isRequestor, Coding media, SecurityEventParticipantNetwork network)
+        public SecurityEventParticipant(IEnumerable<CodeableConcept> roles, string userId, string alternativeId, string name, bool isRequestor, Coding media, SecurityEventParticipantNetwork network)
         {
             this.Roles = roles;
             this.UserId = userId;

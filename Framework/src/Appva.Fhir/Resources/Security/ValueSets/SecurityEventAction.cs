@@ -8,7 +8,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
 {
     #region Imports.
 
-    using Appva.Fhir.Primitives;
+    using Primitives;
 
     #endregion
 

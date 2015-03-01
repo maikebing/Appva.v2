@@ -1,7 +1,9 @@
 ﻿// <copyright file="Element.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Extensions.Elements
 {
     #region Imports.
@@ -15,12 +17,17 @@ namespace Appva.Mvc.Html.Extensions.Elements
     /// </summary>
     public interface IElement
     {
+        /// <summary>
+        /// Builds the element.
+        /// </summary>
+        /// <returns>The Html string</returns>
         MvcHtmlString Build();
     }
 
     /// <summary>
-    /// 
+    /// Abstract base <see cref="IElement"/> implementation.
     /// </summary>
+    /// <typeparam name="TRoot">The root type</typeparam>
     public abstract class Element<TRoot> : IElement
     {
         #region Variables.
@@ -57,7 +64,6 @@ namespace Appva.Mvc.Html.Extensions.Elements
                 return this.root;
             }
         }
-
 
         #endregion
 

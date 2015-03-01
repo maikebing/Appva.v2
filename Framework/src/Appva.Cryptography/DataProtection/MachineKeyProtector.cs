@@ -1,7 +1,9 @@
 ﻿// <copyright file="MachineKeyProtector.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cryptography.DataProtection
 {
     #region Imports.
@@ -11,7 +13,7 @@ namespace Appva.Cryptography.DataProtection
     #endregion
 
     /// <summary>
-    /// Provides a way to encrypt or hash data (or both) by using the same algorithms 
+    /// Provides a way to encrypt or hash data (or both) by using the same algorithms  
     /// and key values that are used for ASP.NET forms authentication and view state.
     /// </summary>
     public sealed class MachineKeyProtector : IDataProtector
@@ -19,9 +21,8 @@ namespace Appva.Cryptography.DataProtection
         #region Variables.
 
         /// <summary>
-        /// A list of purposes for the data. If this value is specified, 
-        /// the same list must be passed to the Unprotect method in order to 
-        /// decipher the returned ciphertext.
+        /// A list of purposes for the data. If this value is specified, the same list must 
+        /// be passed to the Unprotect method in order to decipher the returned ciphertext.
         /// </summary>
         private readonly string[] purposes;
 

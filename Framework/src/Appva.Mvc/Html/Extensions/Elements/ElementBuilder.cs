@@ -1,7 +1,9 @@
 ﻿// <copyright file="ElementBuilder.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Extensions.Elements
 {
     #region Imports.
@@ -15,6 +17,7 @@ namespace Appva.Mvc.Html.Extensions.Elements
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
+    /// <typeparam name="TModel">The model type</typeparam>
     public abstract class ElementBuilder<TModel>
     {
         #region Variables.
@@ -36,6 +39,7 @@ namespace Appva.Mvc.Html.Extensions.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementBuilder{TModel}"/> class.
         /// </summary>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
         internal ElementBuilder(HtmlHelper<TModel> htmlHelper)
         {
             this.htmlHelper = htmlHelper;
@@ -59,12 +63,24 @@ namespace Appva.Mvc.Html.Extensions.Elements
 
         #endregion
 
+        #region Public Abstract Methods.
+
+        /// <summary>
+        /// Builds a single element as HTML. 
+        /// </summary>
+        /// <returns>The element as an <see cref="MvcHtmlString"/></returns>
+        public abstract MvcHtmlString Build();
+
+        #endregion
+
         #region Protected Methods.
 
         /// <summary>
-        /// 
+        /// Adds an {T} element to the collection of HTML elements to be processed.
         /// </summary>
-        /// <param name="element"></param>
+        /// <typeparam name="TElement">The TElement type</typeparam>
+        /// <param name="element">The element to add</param>
+        /// <returns>The added TElement instance</returns>
         protected TElement Add<TElement>(TElement element)
             where TElement : IElement
         {
@@ -76,25 +92,18 @@ namespace Appva.Mvc.Html.Extensions.Elements
         }
 
         /// <summary>
-        /// 
+        /// Builds the HTML string.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An HTML string</returns>
         protected string ToHtml()
         {
             var builder = new StringBuilder();
-            foreach(var element in this.elements)
+            foreach (var element in this.elements)
             {
                 builder.Append(element.Build().ToHtmlString());
             }
             return builder.ToString();
         }
-
-        #endregion
-
-        #region Public Abstract Methods.
-
-        /// <inheritdoc />
-        public abstract MvcHtmlString Build();
 
         #endregion
     }

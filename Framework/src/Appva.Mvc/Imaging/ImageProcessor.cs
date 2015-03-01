@@ -1,7 +1,9 @@
 ﻿// <copyright file="ImageProcessor.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Imaging
 {
     #region Imports.
@@ -11,23 +13,23 @@ namespace Appva.Mvc.Imaging
     using System.IO;
     using System.Security.Cryptography;
     using System.Web;
-    using Cryptography;
     using Core.Extensions;
+    using Cryptography;
     using Validation;
 
     #endregion
 
     /// <summary>
-    /// 
+    /// Image processor and reader.
     /// </summary>
     public interface IImageProcessor
     {
         /// <summary>
-        /// 
+        /// Reads the image from disk.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="mimeType"></param>
-        /// <returns></returns>
+        /// <param name="fileName">The file name</param>
+        /// <param name="mimeType">The file mime type</param>
+        /// <returns>A <see cref="ImageContentResult"/></returns>
         ImageContentResult Read(string fileName, string mimeType);
 
         /// <summary>
@@ -41,7 +43,7 @@ namespace Appva.Mvc.Imaging
     }
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// Implementation of <see cref="IImageProcessor"/>.
     /// </summary>
     public sealed class ImageProcessor : IImageProcessor
     {
@@ -74,6 +76,7 @@ namespace Appva.Mvc.Imaging
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageProcessor"/> class.
         /// </summary>
+        /// <param name="configuration">The image configuration</param>
         public ImageProcessor(ImageConfiguration configuration)
         {
             Requires.NotNull(configuration, "configuration");
@@ -109,7 +112,7 @@ namespace Appva.Mvc.Imaging
             Requires.NotNull(file, "file");
             using (var stream = file.InputStream)
             using (var image = Image.FromStream(stream))
-            using (var resizer = new ImageResizer(image, 150, 150))
+            using (var resizer = new ImageResizer(image, this.width, this.height, this.quality))
             {
                 resizer.Resize();
                 fileName = this.CreateFileName(resizer.Stream);

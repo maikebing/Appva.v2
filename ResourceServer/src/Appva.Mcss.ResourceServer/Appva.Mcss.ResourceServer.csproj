@@ -156,6 +156,7 @@
     <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\TaxonController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

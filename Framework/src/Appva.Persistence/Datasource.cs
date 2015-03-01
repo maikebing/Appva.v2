@@ -10,6 +10,7 @@ namespace Appva.Persistence
 
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using Core.Extensions;
     using Logging;
     using NHibernate;
@@ -21,6 +22,9 @@ namespace Appva.Persistence
     /// <summary>
     /// Abstract base implementation of <see cref="IDatasource"/>.
     /// </summary>
+    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration", Justification = "Reviewed.")]
+    [SuppressMessage("ReSharper", "PossibleNullReferenceException", Justification = "Reviewed.")]
+    [SuppressMessage("ReSharper", "NotAccessedField.Local", Justification = "Reviewed.")]
     public abstract class Datasource : IDatasource
     {
         #region Variables.
@@ -47,8 +51,8 @@ namespace Appva.Persistence
         /// <summary>
         /// Initializes a new instance of the <see cref="Datasource"/> class.
         /// </summary>
-        /// <param name="exceptionHandler"></param>
-        /// <param name="eventInterceptor"></param>
+        /// <param name="exceptionHandler">The exception handler</param>
+        /// <param name="eventInterceptor">The event interceptor</param>
         protected Datasource(
             IDatasourceExceptionHandler exceptionHandler, 
             IDatasourceEventInterceptor eventInterceptor)
@@ -93,7 +97,7 @@ namespace Appva.Persistence
         /// <summary>
         /// Builds a key value <see cref="ISessionFactory"/> pairs.
         /// </summary>
-        /// <param name="unit">The <see cref="IPersistenceUnit"/></param>
+        /// <param name="units">The <see cref="IPersistenceUnit"/></param>
         /// <returns>An <see cref="ISessionFactory"/> key value pairs or null if failed</returns>
         protected IDictionary<string, ISessionFactory> Build(IEnumerable<IPersistenceUnit> units)
         {
@@ -129,7 +133,7 @@ namespace Appva.Persistence
         /// </summary>
         /// <param name="unit">The <see cref="IPersistenceUnit"/> to connect</param>
         /// <returns>A new <see cref="ISessionFactory"/> instance</returns>
-        /// <exception cref="SqlException">An exception if a connection cannot be established</exception>
+        /// <exception cref="System.Data.SqlClient.SqlException">An exception if a connection cannot be established</exception>
         private ISessionFactory CreateConnection(IPersistenceUnit unit)
         {
             var configuration = new Configuration();

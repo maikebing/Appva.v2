@@ -9,7 +9,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     #region Imports.
 
     using System;
-    using Appva.Fhir.Primitives;
+    using Primitives;
 
     #endregion
 

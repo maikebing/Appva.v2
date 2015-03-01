@@ -9,7 +9,7 @@ namespace Appva.Fhir.Complex
     #region Imports.
 
     using System.Xml.Serialization;
-    using Appva.Fhir.Primitives;
+    using Primitives;
 
     #endregion
 

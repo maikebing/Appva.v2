@@ -9,8 +9,8 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     #region Imports.
 
     using System.Collections.ObjectModel;
-    using Appva.Fhir.Complex;
-    using Appva.Fhir.Primitives;
+    using Complex;
+    using Primitives;
 
     #endregion
 

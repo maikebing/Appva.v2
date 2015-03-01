@@ -1,7 +1,9 @@
 ﻿// <copyright file="ImageResizer.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Imaging
 {
     #region Imports.
@@ -17,6 +19,9 @@ namespace Appva.Mvc.Imaging
 
     #endregion
 
+    /// <summary>
+    /// Image resizer.
+    /// </summary>
     public interface IImageResizer : IDisposable
     {
         /// <summary>
@@ -96,6 +101,10 @@ namespace Appva.Mvc.Imaging
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageResizer"/> class.
         /// </summary>
+        /// <param name="original">The original image</param>
+        /// <param name="width">The resize width</param>
+        /// <param name="height">The resize height</param>
+        /// <param name="quality">The resize quality</param>
         public ImageResizer(Image original, int width, int height, int quality = 90)
         {
             this.original = original;
@@ -198,22 +207,24 @@ namespace Appva.Mvc.Imaging
         #region IImageResizer Members
 
         /// <inheritdoc />
+        [SuppressMessage("ReSharper", "PossibleLossOfFraction", Justification = "Reviewed.")]
+        [SuppressMessage("ReSharper", "LocalVariableHidesMember", Justification = "Reviewed.")]
         [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1008:OpeningParenthesisMustBeSpacedCorrectly", Justification = "Reviewed.")]
         public void Resize()
         {
             double aspectRatio = this.original.Width / this.original.Height;
             double boxRatio = this.Width / this.Height;
-            double scaleFactor = 0;
+            double scaleFactor;
             if (boxRatio >= aspectRatio)
             {
-                scaleFactor = (double) this.Height / (double) original.Height;
+                scaleFactor = (double) this.Height / this.original.Height;
             }
             else
             {
-                scaleFactor = (double) this.Width / (double) original.Width;
+                scaleFactor = (double) this.Width / this.original.Width;
             }
-            var width  = (int) (original.Width * scaleFactor);
-            var height = (int) (original.Height * scaleFactor);
+            var width  = (int) (this.original.Width * scaleFactor);
+            var height = (int) (this.original.Height * scaleFactor);
             using (var image = new Bitmap(width, height))
             using (var graphics = Graphics.FromImage(image))
             {

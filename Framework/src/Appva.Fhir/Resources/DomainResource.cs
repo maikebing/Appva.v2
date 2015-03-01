@@ -8,7 +8,6 @@ namespace Appva.Fhir.Resources
 {
     #region Imports.
 
-    using System.Collections.ObjectModel;
     using System.Xml.Serialization;
 
     #endregion
@@ -49,19 +48,6 @@ namespace Appva.Fhir.Resources
     [XmlTypeAttribute(Namespace = Fhir.Namespace)]
     public abstract class DomainResource : Resource
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DomainResource"/> class.
-        /// </summary>
-        protected DomainResource()
-        {
-        }
-
-        #endregion
-
-        #region Properties.
-
         /// <summary>
         /// A human-readable narrative that contains a summary of the resource, and may be 
         /// used to represent the content of the resource to a human. The narrative need not 
@@ -82,7 +68,5 @@ namespace Appva.Fhir.Resources
             get;
             set;
         }
-
-        #endregion
     }
 }

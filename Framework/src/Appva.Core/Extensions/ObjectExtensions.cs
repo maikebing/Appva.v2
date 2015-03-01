@@ -34,8 +34,7 @@ namespace Appva.Core.Extensions
         }
 
         /// <summary>
-        /// Checks whether or not the <see cref="T"/> not equals
-        /// the other.
+        /// Checks whether or not the <see cref="T"/> not equals the other.
         /// </summary>
         /// <typeparam name="T">The type</typeparam>
         /// <param name="obj">The object to be checked for equality</param>

@@ -11,15 +11,5 @@ namespace Appva.Persistence
     /// </summary>
     public sealed class DefaultDatasourceEventInterceptor : IDatasourceEventInterceptor
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultDatasourceEventInterceptor"/> class.
-        /// </summary>
-        public DefaultDatasourceEventInterceptor()
-        {
-        }
-
-        #endregion
     }
 }

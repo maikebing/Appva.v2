@@ -1,7 +1,9 @@
 ﻿// <copyright file="DependencyResolver.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Cqrs
 {
     #region Imports.
@@ -49,7 +51,8 @@ namespace Appva.Cqrs
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediatorDependencyResolver"/> class.
+        /// Initializes a new instance of the <see cref="MediatorDependencyResolver"/> 
+        /// class.
         /// </summary>
         /// <param name="container">A <see cref="ILifetimeScope"/></param>
         public MediatorDependencyResolver(ILifetimeScope container)

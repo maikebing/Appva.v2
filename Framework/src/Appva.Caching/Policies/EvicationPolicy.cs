@@ -1,27 +1,34 @@
-﻿// <copyright file="CachePolicy.cs" company="Appva AB">
+﻿// <copyright file="EvicationPolicy.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Caching.Policies
 {
     #region Imports.
 
     using System;
-    using System.Runtime.Serialization;
+    using Logging;
 
     #endregion
 
     /// <summary>
-    /// Abstract base implementation of <see cref="ICachePolicy"/>.
+    /// Abstract base implementation of <see cref="IEvicationPolicy"/>.
     /// </summary>
-    public abstract class CachePolicy : ICachePolicy
+    public abstract class EvictionPolicy : IEvicationPolicy
     {
         #region Private Variables.
 
         /// <summary>
         /// The sample size to use.
         /// </summary>
-        private static readonly int DefaultSampleSize = 30;
+        private const int DefaultSampleSize = 30;
+
+        /// <summary>
+        /// The <see cref="ILog"/> for <see cref="EvictionPolicy"/>.
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<EvictionPolicy>();
 
         /// <summary>
         /// To select random numbers.
@@ -64,32 +71,49 @@ namespace Appva.Caching.Policies
 
         #endregion
 
-        #region Implementation.
+        #region IEvicationPolicy Members.
 
         /// <inheritdoc />
-        public ICacheItem FindEvictionCandidate(ICacheItem[] sampledElements)
+        public ICacheItem FindCandidate(ICacheItem[] samples)
         {
-            if (sampledElements.Length == 1)
+            ICacheItem item = null;
+            if (samples.Length == 1)
             {
-                return sampledElements[0];
+                item = samples[0];
             }
-            ICacheItem lowestElement = null;
-            foreach (var element in sampledElements)
+            else
             {
-                if (element == null)
+                foreach (var sample in samples)
                 {
-                    continue;
-                }
-                if (lowestElement == null)
-                {
-                    lowestElement = element;
-                } 
-                else if (this.Compare(lowestElement, element))
-                {
-                    lowestElement = element;
+                    if (sample == null)
+                    {
+                        continue;
+                    }
+                    if (item == null)
+                    {
+                        item = sample;
+                    }
+                    else if (this.Compare(item, sample))
+                    {
+                        item = sample;
+                    }
                 }
             }
-            return lowestElement;
+            if (item != null)
+            {
+                Log.DebugFormat(
+                    Debug.Messages.EvicationPolicyCandidateFound, 
+                    item.Key, 
+                    item.Value, 
+                    item.CreatedAt, 
+                    item.ModifiedAt, 
+                    item.Hits);
+            }
+            else
+            {
+                Log.Debug(Debug.Messages.EvicationPolicyCandidateNotFound);
+            }
+            return item;
         }
 
         /// <inheritdoc />

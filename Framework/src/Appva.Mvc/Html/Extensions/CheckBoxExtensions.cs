@@ -1,7 +1,9 @@
 ﻿// <copyright file="CheckBoxExtensions.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mvc.Html.Extensions
 {
     #region Imports.
@@ -15,22 +17,24 @@ namespace Appva.Mvc.Html.Extensions
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    ///  Extension helpers for HtmlHelper.
     /// </summary>
     public static class CheckBoxExtensions
     {
         /// <summary>
-        /// 
+        /// Creates a checkbox element.
         /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="htmlHelper"></param>
-        /// <param name="labelText"></param>
-        /// <param name="expression"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <returns></returns>
-        public static MvcHtmlString CheckBoxWithLabelFor<TModel>(this HtmlHelper<TModel> htmlHelper,
-          string labelText, Expression<Func<TModel, bool>> expression,
-          object htmlAttributes = null)
+        /// <typeparam name="TModel">The model type</typeparam>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
+        /// <param name="labelText">The label text</param>
+        /// <param name="expression">The property expression</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
+        public static MvcHtmlString CheckBoxWithLabelFor<TModel>(
+            this HtmlHelper<TModel> htmlHelper, 
+            string labelText, 
+            Expression<Func<TModel, bool>> expression, 
+            object htmlAttributes = null)
         {
             var label = new TagBuilder("label");
             label.Attributes.Add("for", htmlHelper.IdFor(expression).ToString());

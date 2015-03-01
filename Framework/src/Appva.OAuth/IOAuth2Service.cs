@@ -1,7 +1,9 @@
 ﻿// <copyright file="IOAuth2Service.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.OAuth
 {
     #region Imports.
@@ -13,45 +15,45 @@ namespace Appva.OAuth
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// The OAuth 2 service interface.
     /// </summary>
     public interface IOAuth2Service
     {
         /// <summary>
-        /// 
+        /// Whether or not the authorization is valid.
         /// </summary>
-        /// <param name="authorization"></param>
-        /// <returns></returns>
+        /// <param name="authorization">The authorization</param>
+        /// <returns>True if valid</returns>
         bool IsAuthorizationValid(IAuthorizationDescription authorization);
 
         /// <summary>
-        /// 
+        /// Mints the access token.
         /// </summary>
-        /// <param name="accessTokenRequest"></param>
-        /// <returns></returns>
+        /// <param name="accessTokenRequest">The request</param>
+        /// <returns>A minted access token</returns>
         AuthorizationServerAccessToken MintAccessToken(IAccessTokenRequest accessTokenRequest);
         
         /// <summary>
-        /// 
+        /// Returns a client description by the client identifier.
         /// </summary>
-        /// <param name="clientIdentifier"></param>
-        /// <returns></returns>
+        /// <param name="clientIdentifier">The identifier</param>
+        /// <returns>A new instance of a client</returns>
         IClientDescription FindClient(string clientIdentifier);
         
         /// <summary>
-        /// 
+        /// Authorize the resource owner crediential grant.
         /// </summary>
-        /// <param name="accessRequest"></param>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
+        /// <param name="accessRequest">The request</param>
+        /// <param name="userName">The username</param>
+        /// <param name="password">The password</param>
+        /// <returns>The response</returns>
         AutomatedUserAuthorizationCheckResponse CheckAuthorizeResourceOwnerCredentialGrant(IAccessTokenRequest accessRequest, string userName, string password);
         
         /// <summary>
-        /// 
+        /// Authorize the client credentials grant.
         /// </summary>
-        /// <param name="accessRequest"></param>
-        /// <returns></returns>
+        /// <param name="accessRequest">The request</param>
+        /// <returns>The response</returns>
         AutomatedAuthorizationCheckResponse CheckAuthorizeClientCredentialsGrant(IAccessTokenRequest accessRequest);
     }
 }

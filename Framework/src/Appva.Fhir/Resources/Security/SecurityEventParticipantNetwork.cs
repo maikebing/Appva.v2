@@ -9,7 +9,7 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System.Xml.Serialization;
-    using Appva.Fhir.Primitives;
+    using Primitives;
 
     #endregion
 
@@ -38,7 +38,7 @@ namespace Appva.Fhir.Resources.Security
         /// </param>
         /// <param name="type">
         /// An identifier for the type of network access point that originated the audit 
-        /// event, see <see cref="SecurityEventParticipantNetworkType"/>.
+        /// event, see <c>SecurityEventParticipantNetworkType</c>.
         /// </param>
         public SecurityEventParticipantNetwork(string identifier, Code type)
         {
@@ -70,7 +70,7 @@ namespace Appva.Fhir.Resources.Security
 
         /// <summary>
         /// An identifier for the type of network access point that originated the audit 
-        /// event, see <see cref="SecurityEventParticipantNetworkType"/>.
+        /// event, see <c>SecurityEventParticipantNetworkType</c>.
         /// <externalLink>
         ///     <linkText>Network.Type</linkText>
         ///     <linkUri>

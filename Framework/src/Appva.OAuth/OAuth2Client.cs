@@ -1,33 +1,35 @@
 ﻿// <copyright file="OAuth2Client.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.OAuth
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
-    using Appva.Core.Extensions;
+    using System.Diagnostics.CodeAnalysis;
+    using Core.Extensions;
     using DotNetOpenAuth.Messaging;
     using DotNetOpenAuth.OAuth2;
 
     #endregion
 
     /// <summary>
-    /// TODO Add a descriptive summary to increase readability.
+    /// A <see cref="IClientDescription"/> implementation.
     /// </summary>
     public class OAuth2Client : IClientDescription
     {
         #region Variables.
 
         /// <summary>
-        /// A client public identifier. The authorization server issues the registered client 
-        /// a client identifier -- a unique string representing the registration
-        /// information provided by the client.  The client identifier is not a
-        /// secret; it is exposed to the resource owner and MUST NOT be used
-        /// alone for client authentication.  The client identifier is unique to
-        /// the authorization server.
+        /// A client public identifier. The authorization server issues the registered 
+        /// client a client identifier - a unique string representing the registration
+        /// information provided by the client.  The client identifier is not a secret; it 
+        /// is exposed to the resource owner and MUST NOT be used alone for client 
+        /// authentication.  The client identifier is unique to the authorization server.
         /// The syntax is {Id}.{generated value}.
         /// </summary>
         private readonly string identifier;
@@ -38,20 +40,19 @@ namespace Appva.OAuth
         private readonly string name;
 
         /// <summary>
-        /// The client secret. Users are authenticated, while apps are authorized (the app is 
-        /// allowed to use or access the resources). The client secret protects a service from 
-        /// given out tokens to rogue apps.
+        /// The client secret. Users are authenticated, while apps are authorized (the app 
+        /// is allowed to use or access the resources). The client secret protects a service 
+        /// from given out tokens to rogue apps.
         /// </summary>
         private readonly string secret;
 
         /// <summary>
-        /// The redirection endpoint (i.e. application callback).
-        /// After completing its interaction with the resource owner, the
-        /// authorization server directs the resource owner's user-agent back to
-        /// the client.  The authorization server redirects the user-agent to the
-        /// client's redirection endpoint previously established with the
-        /// authorization server during the client registration process or when
-        /// making the authorization request..
+        /// The redirection endpoint (i.e. application callback). After completing its 
+        /// interaction with the resource owner, the authorization server directs the 
+        /// resource owner's user-agent back to the client.  The authorization server 
+        /// redirects the user-agent to the client's redirection endpoint previously 
+        /// established with the authorization server during the client registration process 
+        /// or when making the authorization request.
         /// </summary>
         private readonly Uri callback;
 
@@ -61,8 +62,8 @@ namespace Appva.OAuth
         private readonly HashSet<string> scopes;
 
         /// <summary>
-        /// The clients ability to authenticate securely with the authorization 
-        /// server (i.e., ability to maintain the confidentiality of their client credentials).
+        /// The clients ability to authenticate securely with the authorization server 
+        /// (i.e., ability to maintain the confidentiality of their client credentials).
         /// </summary>
         private readonly ClientType clientType;
 
@@ -87,6 +88,24 @@ namespace Appva.OAuth
             this.callback = callback.IsEmpty() ? null : new Uri(callback);
             this.scopes = scopes;
             this.clientType = (ClientType) clientType;
+        }
+
+        #endregion
+
+        #region Public Static Functions.
+
+        /// <summary>
+        /// Creates a new <see cref="OAuth2Client"/> instance.
+        /// </summary>
+        /// <param name="identifier">The client identifier</param>
+        /// <param name="name">The client name</param>
+        /// <param name="secret">The client secret</param>
+        /// <param name="callback">The client callback</param>
+        /// <param name="scopes">The client scopes</param>
+        /// <param name="clientType">The client type</param>
+        public static OAuth2Client CreateNew(string identifier, string name, string secret, string callback, HashSet<string> scopes, int clientType)
+        {
+            return new OAuth2Client(identifier, name, secret, callback, scopes, clientType);
         }
 
         #endregion
@@ -158,12 +177,14 @@ namespace Appva.OAuth
         }
 
         /// <inheritdoc />
+        [SuppressMessage("ReSharper", "ParameterHidesMember", Justification = "Reviewed.")]
         public bool IsCallbackAllowed(Uri callback)
         {
             return this.callback.IsNull() || this.callback.Equals(callback);
         }
 
         /// <inheritdoc />
+        [SuppressMessage("ReSharper", "ParameterHidesMember", Justification = "Reviewed.")]
         public bool IsValidClientSecret(string secret)
         {
             return MessagingUtilities.EqualsConstantTime(secret, this.secret);

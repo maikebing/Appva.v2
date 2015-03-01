@@ -6,17 +6,6 @@
 // </author>
 namespace Appva.Cryptography.X509
 {
-    #region Imports.
-
-    using System;
-    using Org.BouncyCastle.Asn1.Nist;
-    using Org.BouncyCastle.Crypto;
-    using Org.BouncyCastle.Crypto.Parameters;
-    using Org.BouncyCastle.Crypto.Prng;
-    using Org.BouncyCastle.Security;
-
-    #endregion
-
     /// <summary>
     /// A EC curve.
     /// <externalLink>
@@ -31,7 +20,7 @@ namespace Appva.Cryptography.X509
         /// <summary>
         /// The EC curve as string.
         /// </summary>
-        private string curve;
+        private readonly string curve;
 
         #endregion
 

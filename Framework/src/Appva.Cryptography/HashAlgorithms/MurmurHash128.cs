@@ -1,8 +1,10 @@
 ﻿// <copyright file="MurmurHash128.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-namespace Appva.Cryptography.HashAlgoritms
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
+namespace Appva.Cryptography.HashAlgorithms
 {
     #region Imports.
 
@@ -10,16 +12,22 @@ namespace Appva.Cryptography.HashAlgoritms
     using System.Diagnostics.CodeAnalysis;
     using System.Security.Cryptography;
     using Core.Extensions;
+    using Extensions;
 
     #endregion
 
     /// <summary>
     /// MurmurHash version 3, 128-bit variant for x64 processors.
-    /// <a href="http://en.wikipedia.org/wiki/MurmurHash">MurmurHash</a>
+    /// <externalLink>
+    ///     <linkText>MurmurHash</linkText>
+    ///     <linkUri>
+    ///         http://en.wikipedia.org/wiki/MurmurHash
+    ///     </linkUri>
+    /// </externalLink>
     /// </summary>
     /// <remarks>
-    /// The x86 and x64 versions do not produce the same results as the
-    /// algorithms are optimized for their respective platforms.
+    /// The x86 and x64 versions do not produce the same results as the algorithms are 
+    /// optimized for their respective platforms.
     /// </remarks>
     public sealed class MurmurHash128 : HashAlgorithm
     {

@@ -10,13 +10,13 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
 
     using System.Configuration;
     using System.Security.Cryptography;
-    using Appva.Core.Extensions;
+    using Core.Extensions;
 
     #endregion
 
     /// <summary>
-    /// Responsible for providing the key to verify the token is 
-    /// intended for this resource.
+    /// Responsible for providing the key to verify the token is intended for this 
+    /// resource.
     /// </summary>
     public sealed class ResourceServerSigningKeyHandler : ISigningKeyHandler
     {

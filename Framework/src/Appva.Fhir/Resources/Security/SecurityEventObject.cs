@@ -9,8 +9,8 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System.Xml.Serialization;
-    using Appva.Fhir.Complex;
-    using Appva.Fhir.Primitives;
+    using Complex;
+    using Primitives;
     using Validation;
 
     #endregion
@@ -41,20 +41,20 @@ namespace Appva.Fhir.Resources.Security
         /// Identifies a specific instance of the participant object
         /// </param>
         /// <param name="type">
-        /// Object type being audited, see <see cref="SecurityEventObjectType"/>
+        /// Object type being audited, see <c>SecurityEventObjectType</c>
         /// </param>
         /// <param name="role">
         /// Code representing the functional application role of Participant Object being 
-        /// audited, see <see cref="SecurityEventObjectRole"/>
+        /// audited, see <c>SecurityEventObjectRole"/></c>
         /// </param>
         /// <param name="lifeCycle">
         /// Identifier for the data life-cycle stage for the participant object, see
-        /// <see cref="SecurityEventObjectLifecycle"/>.
+        /// <c>SecurityEventObjectLifecycle</c>.
         /// </param>
         /// <param name="sensitivity">
         /// Denotes policy-defined sensitivity for the Participant Object ID such as VIP, 
         /// HIV status, mental health status or similar topics, see 
-        /// <see cref="SecurityEventObjectSensitivity"/>
+        /// <c>SecurityEventObjectSensitivity</c>
         /// </param>
         /// <param name="name">
         /// An instance-specific descriptor of the Participant Object ID audited, such as a 
@@ -109,7 +109,7 @@ namespace Appva.Fhir.Resources.Security
         }
 
         /// <summary>
-        /// Object type being audited, see <see cref="SecurityEventObjectType"/>.
+        /// Object type being audited, see <c>SecurityEventObjectType</c>.
         /// To describe the object being acted upon. In addition to queries on the subject 
         /// of the action in an auditable event, it is also important to be able to query on 
         /// the object type for the action.
@@ -131,7 +131,7 @@ namespace Appva.Fhir.Resources.Security
 
         /// <summary>
         /// Code representing the functional application role of Participant Object being 
-        /// audited, see <see cref="SecurityEventObjectRole"/>.
+        /// audited, see <c>SecurityEventObjectRole</c>.
         /// For some detailed audit analysis it may be necessary to indicate a more granular 
         /// type of participant, based on the application role it serves.
         /// See RFC 3881 for rules concerning matches between role and type.
@@ -151,7 +151,7 @@ namespace Appva.Fhir.Resources.Security
 
         /// <summary>
         /// Identifier for the data life-cycle stage for the participant object, see
-        /// <see cref="SecurityEventObjectLifecycle"/>.
+        /// <c>SecurityEventObjectLifecycle</c>.
         /// Institutional policies for privacy and security may optionally fall under 
         /// different accountability rules based on data life cycle. This provides a 
         /// differentiating value for those cases.
@@ -174,7 +174,7 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// Denotes policy-defined sensitivity for the Participant Object ID such as VIP, 
         /// HIV status, mental health status or similar topics, see 
-        /// <see cref="SecurityEventObjectSensitivity"/>.
+        /// <c>SecurityEventObjectSensitivity</c>.
         /// This field identifies a specific instance of an object, such as a patient, to 
         /// detect/track privacy and security issues.
         /// Values from ATNA are institution- and implementation-defined text strings (in 

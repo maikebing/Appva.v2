@@ -13,8 +13,8 @@ namespace Appva.Core.Messaging
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
-    using Appva.Logging;
     using Extensions;
+    using Logging;
 
     #endregion
 

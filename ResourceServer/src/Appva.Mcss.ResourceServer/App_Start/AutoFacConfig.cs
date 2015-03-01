@@ -15,9 +15,9 @@ namespace Appva.Mcss.ResourceServer
     using Application.Configuration;
     using Application.ExceptionHandling;
     using Application.Persistence;
-    using Appva.Azure;
     using Autofac;
     using Autofac.Integration.WebApi;
+    using Azure;
     using Controllers;
     using Core.Configuration;
     using Core.Messaging;
@@ -71,7 +71,7 @@ namespace Appva.Mcss.ResourceServer
         /// <param name="builder">The <see cref="ContainerBuilder"/></param>
         private static void ConfigurePushNotification(ContainerBuilder builder)
         {
-            builder.RegisterType<PushNotification>().As<IPushNotification>().SingleInstance();
+            builder.RegisterType<NoOpPushNotification>().As<IPushNotification>().SingleInstance();
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Appva.Mcss.ResourceServer
             var messaging = new EmailService();
             var tenantServerUri = ConfigurableApplicationContext.Get<ResourceServerConfiguration>().TenantServerUri;
             var configuration = ConfigurableApplicationContext.Read<MultiTenantDatasourceConfiguration>().From(PersistenceConfig).AsMachineNameSpecific().ToObject();
-            var client = new TenantClient(tenantServerUri);
+            var client = TenantClient.CreateNew(tenantServerUri);
             var datasource = new MultiTenantDatasource(client, configuration, new DatasourceEmailExceptionHandler(messaging), new DefaultDatasourceEventInterceptor());
             var persistence = new TenantIdentityPersistenceContextAwareResolver(datasource);
             builder.Register(x => client).As<ITenantClient>().SingleInstance();

@@ -2,7 +2,6 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Appva.Common")]
@@ -10,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Appva AB")]
 [assembly: AssemblyProduct("Appva.Common")]
-[assembly: AssemblyCopyright("Copyright © Appva AB 2014")]
+[assembly: AssemblyCopyright("Copyright © Appva AB 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

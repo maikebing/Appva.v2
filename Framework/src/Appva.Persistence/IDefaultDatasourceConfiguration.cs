@@ -8,9 +8,8 @@ namespace Appva.Persistence
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
-    using Appva.Core.Configuration;
+    using Core.Configuration;
 
     #endregion
 

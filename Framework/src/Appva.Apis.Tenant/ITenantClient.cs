@@ -8,6 +8,7 @@ namespace Appva.Apis.TenantServer
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Contracts;
@@ -15,9 +16,9 @@ namespace Appva.Apis.TenantServer
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// The tenant server client.
     /// </summary>
-    public interface ITenantClient
+    public interface ITenantClient : IDisposable
     {
         /// <summary>
         /// Returns a tenant by id.

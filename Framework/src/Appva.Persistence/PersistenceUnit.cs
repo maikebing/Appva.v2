@@ -9,6 +9,7 @@ namespace Appva.Persistence
     #region Imports.
 
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using Core.Extensions;
     using Validation;
 
@@ -63,6 +64,8 @@ namespace Appva.Persistence
         /// <param name="assembly">The assembly of which the entities resides</param>
         /// <param name="properties">Optional NHibernate properties</param>
         /// <param name="id">Optional multi tenancy identifier</param>
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration", Justification = "Reviewed.")]
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException", Justification = "Reviewed.")]
         public PersistenceUnit(string connectionString, string assembly, IEnumerable<KeyValuePair<string, string>> properties = null, string id = null)
         {
             Requires.NotNull(connectionString, "connectionString");

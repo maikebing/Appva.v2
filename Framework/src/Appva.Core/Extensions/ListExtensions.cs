@@ -41,8 +41,8 @@ namespace Appva.Core.Extensions
         }
 
         /// <summary>
-        /// Checks whether or not the <see cref="IList{T}"/> is null
-        /// or contains zero elements.
+        /// Checks whether or not the <see cref="IList{T}"/> is null or contains zero 
+        /// elements.
         /// </summary>
         /// <typeparam name="T">The type</typeparam>
         /// <param name="list">The list to be checked</param>
@@ -53,8 +53,8 @@ namespace Appva.Core.Extensions
         }
 
         /// <summary>
-        /// Checks whether or not the <see cref="IList{T}"/> is not null
-        /// or contains at least one element.
+        /// Checks whether or not the <see cref="IList{T}"/> is not null or contains at 
+        /// least one element.
         /// </summary>
         /// <typeparam name="T">The type</typeparam>
         /// <param name="list">The list to be checked</param>

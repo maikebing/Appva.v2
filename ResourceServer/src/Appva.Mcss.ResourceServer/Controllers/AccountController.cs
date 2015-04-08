@@ -20,6 +20,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Repository;
     using Transformers;
     using WebApi.Filters;
+using Appva.Mcss.ResourceServer.Domain.Services;
 
     #endregion
 
@@ -36,6 +37,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// </summary>
         private readonly IAccountRepository accountRepository;
 
+        /// <summary>
+        /// The <see cref="IAccountRepository"/>.
+        /// </summary>
+        private readonly ILogService logService;
+
         #endregion
 
         #region Constructor.
@@ -44,9 +50,10 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// Initializes a new instance of the <see cref="AccountController"/> class.
         /// </summary>
         /// <param name="accountRepository">The <see cref="IAccountRepository"/></param>
-        public AccountController(IAccountRepository accountRepository)
+        public AccountController(IAccountRepository accountRepository, ILogService logService)
         {
             this.accountRepository = accountRepository;
+            this.logService = logService;
         }
         
         #endregion
@@ -100,6 +107,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.Unauthorized();
             }
+            this.logService.ApiPost(string.Format("Användare {0} loggade in", account.FullName), account, null, this.Request.RequestUri.OriginalString);
             return this.Ok(AccountTransformer.ToSessionBoundAccount(account));
         }
 

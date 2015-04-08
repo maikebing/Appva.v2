@@ -27,5 +27,10 @@ namespace Appva.Mcss.ResourceServer.Domain.Constants
         /// The device organistaiton-lock setting
         /// </summary>
         public const string LockToOrgTaxon = "MCSS.Security.Device.LockToOrgTaxon";
+
+        /// <summary>
+        /// Which task-types should be included on overview timeline (e.g "ordination", "calendar")
+        /// </summary>
+        public const string OverviewTimelineTaskTypes = "MCSS.Device.Settings.Timeline.OverviewTimelineTaskTypes";
     }
 }

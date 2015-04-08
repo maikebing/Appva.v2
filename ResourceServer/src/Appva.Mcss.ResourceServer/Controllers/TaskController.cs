@@ -86,6 +86,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// </summary>
         private readonly ISettingsService settingsService;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ILogService logService;
+
         #endregion
 
         #region Constructor.
@@ -101,6 +106,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <param name="taskService">The <see cref="ITaskService"/></param>
         /// <param name="inventoryService">The <see cref="IInventoryService"/></param>
         /// <param name="settingsService">The <see cref="ISettingsService"/></param>
+        /// <param name="logService">The <see cref="ILogService"/></param>
         public TaskController(
             ITaskRepository taskRepository, 
             ITaxonRepository taxonRepository, 
@@ -109,7 +115,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
             IInventoryTransactionItemRepository inventoryTransactionItemRepository,
             ITaskService taskService,
             IInventoryService inventoryService,
-            ISettingsService settingsService)
+            ISettingsService settingsService,
+            ILogService logService)
         {
             this.taskRepository = taskRepository;
             this.taxonRepository = taxonRepository;
@@ -119,6 +126,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             this.taskService = taskService;
             this.inventoryService = inventoryService;
             this.settingsService = settingsService;
+            this.logService = logService;
         }
 
         #endregion
@@ -141,8 +149,10 @@ namespace Appva.Mcss.ResourceServer.Controllers
             }
             var taxons = this.taxonRepository.Search(null, true, new List<string> { "SST" });
             var account = this.accountRepository.Get(this.User.Identity.Id());
-            var nurses = this.accountRepository.GetAccountsByRole("TITLE_N");
-            return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, taxons, account, nurses));
+            var nurses = this.accountRepository.GetAccountsByRole("_TITLE_N", "_ADMIN_AS");
+            var withdrawalOptions = this.taxonRepository.Search(null, null, new List<string> { "WITHDRAWALOPTIONS" });
+            this.logService.ApiGet(string.Format("Användare {0} hämtade insats {1} (id {2})", account.FullName, task.Name, task.Id), account, task.Patient, this.Request.RequestUri.OriginalString);
+            return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, taxons, account, nurses, withdrawalOptions));
         }
 
         /// <summary>
@@ -160,9 +170,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
             var time = DateTime.ParseExact(timeslot, "yyyyMMddHHmmss", CultureInfo.InvariantCulture);
             var account = this.accountRepository.Get(this.User.Identity.Id());
             var taxons = this.taxonRepository.Search(null, true, new List<string> { "SST" });
+            var withdrawalOptions = this.taxonRepository.Search(null, null, new List<string> { "WITHDRAWALOPTIONS" });
             var tasks = this.taskService.ListTasksByPatient(patientId, time, time);
-            var nurses = this.accountRepository.GetAccountsByRole("_TITLE_N");
-            return this.Ok(TaskTransformer.ToTaskModel(tasks, time, taxons, account, nurses));
+            var nurses = this.accountRepository.GetAccountsByRole("_TITLE_N", "_ADMIN_AS");
+            this.logService.ApiGet(string.Format("Användare {0} hämtade insatser för tidsslot {1} för patient {2}", account.FullName, time, patientId), account.Id, patientId, this.Request.RequestUri.OriginalString);
+            return this.Ok(TaskTransformer.ToTaskModel(tasks, time, taxons, account, nurses:nurses, withdrawalOptions:withdrawalOptions));
         }
 
         /// <summary>
@@ -251,6 +263,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 transaction.Task = task;
             }
+
+            this.logService.ApiPost(string.Format("Användare {0} signerade insats {1} (id {2})", account.FullName, task.Name, task.Id), account, task.Patient, this.Request.RequestUri.OriginalString);
             return this.Ok(new { id = task.Id });
         }
 
@@ -279,8 +293,11 @@ namespace Appva.Mcss.ResourceServer.Controllers
                         var transaction = this.inventoryService.RedoInventoryWithdrawal(task, account);
                         task.InventoryTransactions.Add(transaction);
                         Log.InfoFormat("User: {0} ({1}) readded {2} units to inventory {3} by transaction {4}", account.FullName, account.Id, transaction.Value, transaction.Inventory.Id, transaction.Id);
+                        this.logService.ApiGet(string.Format("Användare {0} återförde {1} enheter till saldo {2} genom transaktion {3})", account.FullName, transaction.Value, transaction.Inventory.Id, transaction.Id), account, task.Patient, this.Request.RequestUri.OriginalString);
+
                     }
                     Log.InfoFormat("User: {0} ({1}) changed status of task {2} to incomplete", account.FullName, account.Id, id);
+                    this.logService.ApiPost(string.Format("Användare {0} ångrade insats {1} (id {2})", account.FullName, task.Name, task.Id), account, task.Patient, this.Request.RequestUri.OriginalString);
                     break;
             }
             this.taskRepository.Update(task);
@@ -308,6 +325,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 sequence.RefillOrderedDate = DateTime.Now;
                 sequence.RefillOrderedBy = account;
                 this.sequenceRepository.Update(sequence);
+                this.logService.ApiGet(string.Format("Användare {0} begärde påfyllning för insats {1} (id {2})", account.FullName, sequence.Name, sequence.Id), account, sequence.Patient, this.Request.RequestUri.OriginalString);
             }
             return this.Ok();
         }
@@ -405,6 +423,17 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 });
             }
             var historyLength = this.settingsService.Get<int>(Settings.AllowedHistorySize, 7);
+            this.logService.ApiGet(
+                string.Format(
+                    "Användare {0} listade insatser av typen {1} med status {2} för patient {3} och/eller nod {4}", 
+                    this.User.Identity.Id(),
+                    string.Join(", ", typeIds ?? new List<string>()),
+                    string.Join(", ", statusIds ?? new List<string>()), 
+                    patientId,
+                    nodeId),
+                new Guid(this.User.Identity.Id().ToString()), 
+                patientId.GetValueOrDefault(), 
+                this.Request.RequestUri.OriginalString);
             return this.Ok(new TimelineGroupModel<BaseTaskModel>()
             {
                 Entities = retval,
@@ -445,6 +474,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
                     LastCompletion = lastTask
                 });
             }
+            this.logService.ApiGet(string.Format("Användare {0} listade vid-behovs-insatser för {1}", this.User.Identity.Id(), patientId), new Guid(this.User.Identity.Id().ToString()), patientId, this.Request.RequestUri.OriginalString);
             return this.Ok(new TimelineGroupModel<BaseTaskModel>()
             {
                 Entities = needBasedTasks,
@@ -478,11 +508,15 @@ namespace Appva.Mcss.ResourceServer.Controllers
                 RangeInMinutesBefore = sequence.RangeInMinutesBefore,
                 Schedule = sequence.Schedule,
                 Sequence = sequence,
-                Scheduled = DateTime.Now
+                Scheduled = DateTime.Now,
             };
             var taxons = this.taxonRepository.Search(null, true, new List<string> { "SST" });
             var account = this.accountRepository.Get(this.User.Identity.Id());
-            return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, taxons, account));
+            var withdrawalOptions = this.taxonRepository.Search(null, null, new List<string> { "WITHDRAWALOPTIONS" });
+            var nurses = this.accountRepository.GetAccountsByRole("_TITLE_N", "_ADMIN_AS");
+            
+            this.logService.ApiGet(string.Format("Användare {0} hämtade vid-behovs-insatsen {1} (ref: {3}) för patient {2}", account.FullName, sequence.Name, sequence.Patient.FullName, sequence.Id), account, sequence.Patient, this.Request.RequestUri.OriginalString);
+            return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, taxons, account, nurses:nurses, withdrawalOptions:withdrawalOptions));
         }
 
         #endregion
@@ -522,6 +556,41 @@ namespace Appva.Mcss.ResourceServer.Controllers
             }
             var account = this.accountRepository.Get(this.User.Identity.Id());
             var stdStatusItems = this.taxonRepository.Search(null, true, new List<string>() { "SST" });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            this.logService.ApiGet(string.Format("Användare {0} hämtade kalender-insats {1} schemalagd {2} för patient {3}", account.FullName, task.Name, task.Scheduled, task.Patient), account, task.Patient, this.Request.RequestUri.OriginalString);
             return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, stdStatusItems, account));
         }
 

@@ -110,7 +110,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             //// TODO: use isEmpty
             if (typeIds.IsNull() || typeIds.Count.Equals(0)) 
             {
-                typeIds = new List<string> { "ordination", "calendar" };
+                typeIds = new List<string>(this.settingsService.Get<string>(Settings.OverviewTimelineTaskTypes, "ordination").Split(';'));
             }
             var tasks = this.timelineService.FindByTaxon(id, date, date.LastInstantOfDay(), typeIds);
             var patients = this.patientRepository.Search(string.Empty, id, string.Empty);

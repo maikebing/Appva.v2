@@ -193,7 +193,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         {
             Log.DebugFormat("Device id: {0} and remote messaging id: {1}", id, model.RemoteMessagingId);
             var device = this.deviceRepository.Get(id);
-            if (!model.RemoteMessagingId.IsNotNull() || device.PushUuid == model.RemoteMessagingId)
+            /*if (!model.RemoteMessagingId.IsNotNull() || device.PushUuid == model.RemoteMessagingId)
             {
                 return this.Ok();
             }
@@ -207,7 +207,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 this.notification.UpdateDevice(device.AzurePushId, model.RemoteMessagingId);
             }
-            device.PushUuid = model.RemoteMessagingId;
+            device.PushUuid = model.RemoteMessagingId;*/
             return this.Ok();
         }
 
@@ -217,7 +217,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// </summary>
         /// <param name="id">The Device id</param>
         /// <returns>Http 200</returns>
-        [AuthorizeToken(Scope.ReadWrite)]
+        /*[AuthorizeToken(Scope.ReadWrite)]
         [HttpGet, Validate, Route("{id}/push")]
         public IHttpActionResult Update(Guid id)
         {
@@ -242,7 +242,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             }
             this.deviceRepository.Update(device);
             return this.Ok();
-        }
+        }*/
 
         #endregion
     }

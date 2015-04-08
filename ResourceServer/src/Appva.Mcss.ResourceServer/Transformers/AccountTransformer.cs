@@ -60,10 +60,14 @@ namespace Appva.Mcss.ResourceServer.Transformers
         public static IList<AccountModel> ToList(IList<Account> accounts)
         {
             var retval = new List<AccountModel>();
-            foreach (var account in accounts)
+            if (accounts != null && accounts.Count > 0)
             {
-                retval.Add(ToSingle(account));
+                foreach (var account in accounts)
+                {
+                    retval.Add(ToSingle(account));
+                }
             }
+
             return retval;
         }
 

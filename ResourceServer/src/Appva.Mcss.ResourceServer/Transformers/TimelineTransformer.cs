@@ -13,6 +13,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
     using System.Linq;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Models;
+    using Appva.Logging;
 
     #endregion
 
@@ -48,7 +49,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     switch (groupingStrategy)
                     {
                         case "taxon":
-                            entities.Add(TaxonTimeline(item, patientKv, patientsWithDelay));
+                            entities.AddRange(TaxonTimeline(item, patientKv, date, patientsWithDelay));
                             break;
                         case "patient":
                             entities.AddRange(PatientTimeline(item, patientKv, date, patientsWithDelay));
@@ -70,6 +71,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
             var timeOfDayMap = new Dictionary<DateTime, Dictionary<Patient, Dictionary<ScheduleSettings, IList<Task>>>>();
             foreach (var item in tasks)
             {
+                
                 if (timeOfDayMap.ContainsKey(item.Scheduled))
                 {
                     if (!timeOfDayMap[item.Scheduled].ContainsKey(item.Patient))
@@ -117,8 +119,9 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="patientKv">TODO: patientKv</param>
         /// <param name="patientsWithDelay">TODO: patientsWithDelay</param>
         /// <returns>TODO: returns</returns>
-        private static TimelineTaxonGroupingStrategyModel TaxonTimeline(KeyValuePair<DateTime, Dictionary<Patient, Dictionary<ScheduleSettings, IList<Task>>>> item, KeyValuePair<Patient, Dictionary<ScheduleSettings, IList<Task>>> patientKv, IList<Guid> patientsWithDelay)
+        private static IList<TimelineTaxonGroupingStrategyModel> TaxonTimeline(KeyValuePair<DateTime, Dictionary<Patient, Dictionary<ScheduleSettings, IList<Task>>>> item, KeyValuePair<Patient, Dictionary<ScheduleSettings, IList<Task>>> patientKv, DateTime currentDate, IList<Guid> patientsWithDelay)
         {
+            IList<TimelineTaxonGroupingStrategyModel> retval = new List<TimelineTaxonGroupingStrategyModel>();
             var patient = patientKv.Key;
             var groups = new List<string> { };
             var hasDelays = false;
@@ -129,66 +132,112 @@ namespace Appva.Mcss.ResourceServer.Transformers
             DateTime? firstStart = null;
             //// If not all tasks is completed should the first coming end of the incomplete tasks be the timeslot-end
             DateTime? firstEnd = null;
+            var addGroup = false;
             foreach (var j in patientKv.Value)
             {
                 groups.Add(j.Key.Name);
                 foreach (var k in j.Value)
                 {
-                    if (dateStart > k.Scheduled.AddMinutes(-k.RangeInMinutesBefore))
+                    if (j.Key.ScheduleType == ScheduleType.Calendar)
                     {
-                        dateStart = k.Scheduled.AddMinutes(-k.RangeInMinutesBefore);
+                        CompletedDetailsModel completedDetails = null;
+                        DateTime scheduled = currentDate.Date;
+                        if (k.StartDate.GetValueOrDefault().Date == currentDate.Date)
+                        {
+                            scheduled = k.StartDate.GetValueOrDefault();
+                        }
+                        else if (k.EndDate.GetValueOrDefault().Date == currentDate.Date)
+                        {
+                            scheduled = k.EndDate.GetValueOrDefault();
+                        }
+                        if (k.IsCompleted)
+                        {
+                            completedDetails = new CompletedDetailsModel();
+                            completedDetails.Time = k.CompletedDate.GetValueOrDefault();
+                            completedDetails.Accounts.Add(k.CompletedBy.FullName);
+                        }
+                        retval.Add(new TimelineTaxonGroupingStrategyModel
+                        {
+                            DateTimeScheduled = string.Format("{0:u}", scheduled),
+                            DateTimeStart = string.Format("{0:u}", k.StartDate),
+                            DateTimeEnd = string.Format("{0:u}", k.EndDate.GetValueOrDefault()),
+                            Patient = new
+                            {
+                                Id = patient.Id,
+                                FullName = patient.FullName,
+                                HasIncompleteTasks = patientsWithDelay.Contains(patient.Id)
+                            },
+                            Categories = new List<string>() { j.Key.Name },
+                            HasIncompleteTasks = k.Delayed && !k.DelayHandled && !k.IsCompleted,
+                            Completed = completedDetails,
+                            TypeId = "calendar",
+                            IsAllDay = k.AllDay
+                        });
                     }
-                    if (dateEnd < k.Scheduled.AddMinutes(k.RangeInMinutesAfter))
+                    else
                     {
-                        dateEnd = k.Scheduled.AddMinutes(k.RangeInMinutesBefore);
-                    }
+                        addGroup = true;
+                        if (dateStart > k.Scheduled.AddMinutes(-k.RangeInMinutesBefore))
+                        {
+                            dateStart = k.Scheduled.AddMinutes(-k.RangeInMinutesBefore);
+                        }
+                        if (dateEnd < k.Scheduled.AddMinutes(k.RangeInMinutesAfter))
+                        {
+                            dateEnd = k.Scheduled.AddMinutes(k.RangeInMinutesBefore);
+                        }
 
-                    if (k.Delayed && (!k.DelayHandled))
-                    {
-                        hasDelays = true;
-                    }
-                    if (!k.IsCompleted)
-                    {
-                        isCompleted = null;
-                        
-                        //// If not completed check if start or end should be adjusted
-                        if (!firstStart.HasValue || firstStart > k.Scheduled.AddMinutes(-k.RangeInMinutesBefore))
+                        if (k.Delayed && (!k.DelayHandled))
                         {
-                            firstStart = k.Scheduled.AddMinutes(-k.RangeInMinutesBefore);
+                            hasDelays = true;
                         }
-                        if (!firstEnd.HasValue || firstEnd > k.Scheduled.AddMinutes(k.RangeInMinutesAfter))
+                        if (!k.IsCompleted)
                         {
-                            firstEnd = k.Scheduled.AddMinutes(k.RangeInMinutesAfter);
-                        } 
-                    }
-                    if (k.IsCompleted && isCompleted != null)
-                    {
-                        if (isCompleted.Time < k.CompletedDate.GetValueOrDefault())
-                        {
-                            isCompleted.Time = k.CompletedDate.GetValueOrDefault();
+                            isCompleted = null;
+
+                            //// If not completed check if start or end should be adjusted
+                            if (!firstStart.HasValue || firstStart > k.Scheduled.AddMinutes(-k.RangeInMinutesBefore))
+                            {
+                                firstStart = k.Scheduled.AddMinutes(-k.RangeInMinutesBefore);
+                            }
+                            if (!firstEnd.HasValue || firstEnd > k.Scheduled.AddMinutes(k.RangeInMinutesAfter))
+                            {
+                                firstEnd = k.Scheduled.AddMinutes(k.RangeInMinutesAfter);
+                            }
                         }
-                        if (!isCompleted.Accounts.Contains(k.CompletedBy.FullName))
+                        if (k.IsCompleted && isCompleted != null)
                         {
-                            isCompleted.Accounts.Add(k.CompletedBy.FullName);
+                            if (isCompleted.Time < k.CompletedDate.GetValueOrDefault())
+                            {
+                                isCompleted.Time = k.CompletedDate.GetValueOrDefault();
+                            }
+                            if (!isCompleted.Accounts.Contains(k.CompletedBy.FullName))
+                            {
+                                isCompleted.Accounts.Add(k.CompletedBy.FullName);
+                            }
                         }
                     }
                 }
             }
-            return new TimelineTaxonGroupingStrategyModel
+            if (addGroup)
             {
-                DateTimeScheduled = string.Format("{0:u}", item.Key),
-                DateTimeStart = string.Format("{0:u}", firstStart.GetValueOrDefault(dateStart)),
-                DateTimeEnd = string.Format("{0:u}", firstEnd.GetValueOrDefault(dateEnd)),
-                Patient = new
+                retval.Add(new TimelineTaxonGroupingStrategyModel
                 {
-                    Id = patient.Id,
-                    FullName = patient.FullName,
-                    HasIncompleteTasks = patientsWithDelay.Contains(patient.Id)
-                },
-                Categories = groups,
-                HasIncompleteTasks = hasDelays,
-                Completed = isCompleted
-            };
+                    DateTimeScheduled = string.Format("{0:u}", item.Key),
+                    DateTimeStart = string.Format("{0:u}", firstStart.GetValueOrDefault(dateStart)),
+                    DateTimeEnd = string.Format("{0:u}", firstEnd.GetValueOrDefault(dateEnd)),
+                    Patient = new
+                    {
+                        Id = patient.Id,
+                        FullName = patient.FullName,
+                        HasIncompleteTasks = patientsWithDelay.Contains(patient.Id)
+                    },
+                    Categories = groups,
+                    HasIncompleteTasks = hasDelays,
+                    Completed = isCompleted
+                });
+            }
+            
+            return retval;
         }
 
         /// <summary>

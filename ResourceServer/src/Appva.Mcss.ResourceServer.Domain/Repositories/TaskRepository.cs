@@ -107,11 +107,11 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
                 .And(x => x.OnNeedBasis == isOnNeedsBased);
             if (fromDate.HasValue)
             {
-                tasks.And(x => x.Scheduled >= fromDate.GetValueOrDefault());
+                tasks.And(x => x.Scheduled >= fromDate.GetValueOrDefault() || x.EndDate >= fromDate.GetValueOrDefault());
             }
             if (endDate.HasValue)
             {
-                tasks.And(x => x.Scheduled <= endDate.GetValueOrDefault());
+                tasks.And(x => x.Scheduled <= endDate.GetValueOrDefault() || x.StartDate <= endDate.GetValueOrDefault());
             }
             if (isDelayed.HasValue)
             {
@@ -134,11 +134,11 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
                 .And(x => x.OnNeedBasis == isOnNeedsBased);
             if (fromDate.HasValue)
             {
-                tasks.And(x => x.Scheduled >= fromDate.GetValueOrDefault());
+                tasks.And(x => x.Scheduled >= fromDate.GetValueOrDefault() || x.EndDate >= fromDate.GetValueOrDefault());
             }
             if (endDate.HasValue)
             {
-                tasks.And(x => x.Scheduled <= endDate.GetValueOrDefault());
+                tasks.And(x => x.Scheduled <= endDate.GetValueOrDefault() || x.StartDate <= endDate.GetValueOrDefault());
             }
             if (isDelayed.HasValue)
             {

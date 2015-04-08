@@ -31,7 +31,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="user">TODO: user</param>
         /// <param name="nurses">TODO: nurses</param>
         /// <returns>TODO: returns</returns>
-        public static dynamic ToTaskModel(IList<Task> tasks, DateTime time, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null)
+        public static dynamic ToTaskModel(IList<Task> tasks, DateTime time, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null, IList<Taxon> withdrawalOptions = null)
         {
             var retval = new Dictionary<string, TimeslotModel>();
             foreach (var task in tasks) 
@@ -47,7 +47,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                     };
                     retval.Add(schedule, timeslotModel);
                 }
-                retval[schedule].Tasks.Add(ToTaskModel(task, stdStatusItems, user, nurses));
+                retval[schedule].Tasks.Add(ToTaskModel(task, stdStatusItems, user, nurses, withdrawalOptions));
             }
 
             return retval.Select(x => x.Value).ToList();
@@ -61,7 +61,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="user">TODO: user</param>
         /// <param name="nurses">TODO: nurses</param>
         /// <returns>TODO: returns</returns>
-        public static HydratedTaskModel ToTaskModel(Task task, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null)
+        public static HydratedTaskModel ToTaskModel(Task task, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null, IList<Taxon> withdrawalOptions = null)
         {
             List<string> dateTimeInterval = new List<string>();
             if (task.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar)
@@ -74,7 +74,9 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 dateTimeInterval.Add(string.Format("{0:u}", task.Scheduled.AddMinutes(-task.RangeInMinutesBefore)));
                 dateTimeInterval.Add(string.Format("{0:u}", task.Scheduled.AddMinutes(task.RangeInMinutesAfter)));
             }
+            var isNurse = user.Roles.Where(x => x.MachineName.StartsWith("_TITLE_N")).FirstOrDefault() != null;
             var contacts = new Dictionary<string, ContactModel>();
+
             return new HydratedTaskModel
             {
                 DateTimeInterval = dateTimeInterval,
@@ -82,12 +84,12 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 Description = task.Sequence.Description,
                 Id = task.Id,
                 SequenceId = task.Sequence.Id,
-                Inventory = GetInventory(task), //// TODO: Inventory has static reasons and static amounts
+                Inventory = GetInventory(task, withdrawalOptions, isNurse), //// TODO: Inventory has static amounts
                 Name = task.Name,
                 Permissions = GetPermissions(task, user), 
                 Statuses = GetStatuses(task),
-                StatusItems = GetStatusItems(task, stdStatusItems, ref contacts, nurses),
-                Type = new List<string>(), //// FIXME: Task type
+                StatusItems = GetStatusItems(task, stdStatusItems, ref contacts, nurses, isNurse),
+                Type = GetTypeIds(task),
                 Refill = GetRefillModel(task.Sequence),
                 Completed = GetCompletedStatus(task),
                 Contacts = contacts //// FIXME: Shall include accounts to contact also
@@ -104,16 +106,16 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="contacts">TODO: contacts></param>
         /// <param name="nurses">TODO: nurses</param>
         /// <returns>TODO: returns</returns>
-        private static List<StatusItemModel> GetStatusItems(Task task, IList<Taxon> stdStatusItems, ref Dictionary<string, ContactModel> contacts, IList<Account> nurses = null)
+        private static List<StatusItemModel> GetStatusItems(Task task, IList<Taxon> stdStatusItems, ref Dictionary<string, ContactModel> contacts, IList<Account> nurses = null, bool isNurse = false)
         {
             var items = task.Schedule.ScheduleSettings.StatusTaxons.Count > 0 ? task.Schedule.ScheduleSettings.StatusTaxons : stdStatusItems;
-            if (task.Schedule.ScheduleSettings.NurseConfirmDeviation)
+            if (task.Schedule.ScheduleSettings.NurseConfirmDeviation && !isNurse)
             {
                 var retval = new List<StatusItemModel>();
                 foreach (var item in items.OrderBy(x => x.Weight).ToList())
                 {
                     retval.Add(TaxonTransformer.ToStatusItemModel(item, task.Schedule.ScheduleSettings.Id.ToString()));
-                    if (! contacts.ContainsKey(task.Schedule.ScheduleSettings.Id.ToString())) 
+                    if (!contacts.ContainsKey(task.Schedule.ScheduleSettings.Id.ToString())) 
                     {
                         contacts.Add(task.Schedule.ScheduleSettings.Id.ToString(), CreateContactModel(task.Schedule.ScheduleSettings, nurses));
                     }
@@ -264,35 +266,55 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// </summary>
         /// <param name="task">TODO: task</param>
         /// <returns>TODO: returns</returns>
-        private static InventoryModel GetInventory(Task task)
+        private static InventoryModel GetInventory(Task task, IList<Taxon> withdrawalOptions = null, bool isNurse = false)
         {
             if (task.Schedule.ScheduleSettings.HasInventory)
             {
+                IList<string> withdrawalOptionStrings = new List<string>() 
+                {
+                    "Delning boende",
+                    "Dosettdelning",
+                    "Kassering",
+                    "Utgånget datum",
+                    "Utsatt av läkare",
+                    "Till annan brukare"
+                };
+                if (withdrawalOptions.IsNotNull() && withdrawalOptions.Count > 0)
+                {
+                    if (!isNurse)
+                    {
+                        /// TODO: Why using is root, restrictions
+                        withdrawalOptions = withdrawalOptions.Where(x => x.IsRoot).ToList();
+                    }
+                    withdrawalOptionStrings = withdrawalOptions.OrderBy(x => x.Weight).Select(x => x.Name).ToList();
+                }
+                
                 //// FIXME: Load available amounts for current inventory
                 var amounts = new List<double>();
                 for (double i = 0; i < 100; i++)
                 {
                     amounts.Add(i);
                 }
-                    return new InventoryModel
-                    {
-                        Id = task.Sequence.Inventory.Id,
-                        Value = task.Sequence.Inventory.CurrentLevel,
-                        //// FIXME: Store reasons in Taxon and load reasons for current inventory
-                        Reasons = new List<string>
-                    {
-                        "Delning boende",
-                        "Dosettdelning",
-                        "Kassering",
-                        "Utgånget datum",
-                        "Utsatt av läkare",
-                        "Till annan brukare"
-                    },
-                        //// FIXME: Load available amounts for current inventory
-                        Amounts = amounts
-                    };
+                return new InventoryModel
+                {
+                    Id = task.Sequence.Inventory.Id,
+                    Value = task.Sequence.Inventory.CurrentLevel,
+                    Reasons = withdrawalOptionStrings,
+                    //// FIXME: Load available amounts for current inventory
+                    Amounts = amounts
+                };
             }
             return null;
+        }
+
+        private static List<string> GetTypeIds(Task task)
+        {
+            var retval = new List<string>();
+            if (task.Sequence.OnNeedBasis)
+            {
+                retval.Add("need_based");
+            }
+            return retval;
         }
         #endregion
     }

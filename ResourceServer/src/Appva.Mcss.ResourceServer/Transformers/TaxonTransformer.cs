@@ -24,7 +24,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <summary>
         /// TODO: contentDirectory.
         /// </summary> 
-        private static string contentDirectory = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority).Replace("http", "https").Replace(":8181", string.Empty) + "/Content/i/"; 
+        private static string contentDirectory = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority).Replace("http://", "https://").Replace(":8181", string.Empty) + "/Content/i/"; 
 
         /// <summary>
         /// Transforms a <see cref="Taxon"/> to a <see cref="TaxonModel"/>

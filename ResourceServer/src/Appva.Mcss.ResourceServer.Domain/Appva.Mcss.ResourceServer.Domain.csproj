@@ -86,6 +86,7 @@
     <Compile Include="Repositories\DeviceRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\InventoryTransactionItemRepository.cs" />
+    <Compile Include="Repositories\LogRepository.cs" />
     <Compile Include="Repositories\PatientRepository.cs" />
     <Compile Include="Repositories\SequenceRepository.cs" />
     <Compile Include="Repositories\SettingRepository.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Services\DeviceService.cs" />
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\IService.cs" />
+    <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\TaskService.cs" />
     <Compile Include="Services\TimelineService.cs" />

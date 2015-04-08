@@ -12,6 +12,8 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
     using Appva.Persistence;
     using Appva.Repository;
     using Mcss.Domain.Entities;
+    using System;
+    using NHibernate.Criterion;
 
     #endregion
 
@@ -40,8 +42,9 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         /// Returns all accounts with a specified role.
         /// </summary>
         /// <param name="machineName">The role machine name</param>
+        /// <param name="excludeMachineName">Accounts with this role will not be included</param>
         /// <returns>A collection of <see cref="Account"/></returns>
-        IList<Account> GetAccountsByRole(string machineName);
+        IList<Account> GetAccountsByRole(string machineName, string excludeMachineName = null);
     }
 
     /// <summary>
@@ -69,6 +72,8 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         {
             return Where(x => x.UserName == username)
                 .And(x => x.Password == password)
+                .And(x => x.Active)
+                .And(x => !x.IsPaused)
                 .SingleOrDefault();
         }
 
@@ -77,16 +82,32 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
         {
             return Where(x => x.UniqueIdentifier == personalIdentityNumber)
                 .And(x => x.Password == password)
+                .And(x => x.Active)
+                .And(x => !x.IsPaused)
                 .SingleOrDefault();
         }
 
         /// <inheritdoc />
-        public IList<Account> GetAccountsByRole(string machineName)
+        public IList<Account> GetAccountsByRole(string machineName, string excludeMachineName = null)
         {
-            return Where(x => x.Active)
+            var excludedMachineNames = new List<string>() { "_AA", "_ADMIN_D" };
+            if (excludeMachineName != null)
+            {
+                excludedMachineNames.Add(excludeMachineName);
+            }
+            var excludedQuery = QueryOver.Of<Account>()
+                .Where(x => x.Active)
+                .Select(x => x.Id)
                 .JoinQueryOver<Role>(x => x.Roles)
-                    .Where(r => r.MachineName == machineName)
-                .List();
+                    .WhereRestrictionOn(r => r.MachineName).IsIn(excludedMachineNames);
+            
+            return Where(x => x.Active)
+                .And(x => !x.IsPaused)
+                .OrderBy(x => x.LastName).Asc
+                .WithSubquery.WhereProperty(x => x.Id).NotIn<Account>(excludedQuery)
+                .JoinQueryOver<Role>(x => x.Roles)
+                    .Where(x => x.MachineName == machineName)
+                    .List();
         }
 
         #endregion

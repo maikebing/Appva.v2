@@ -13,6 +13,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System.Web.Http;
     using Application;
     using Application.Authorization;
+    using Appva.Mcss.ResourceServer.Domain.Services;
     using Core.Extensions;
     using Domain.Repositories;
     using Mcss.Domain.Entities;
@@ -20,7 +21,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Repository;
     using Transformers;
     using WebApi.Filters;
-using Appva.Mcss.ResourceServer.Domain.Services;
 
     #endregion
 
@@ -50,6 +50,7 @@ using Appva.Mcss.ResourceServer.Domain.Services;
         /// Initializes a new instance of the <see cref="AccountController"/> class.
         /// </summary>
         /// <param name="accountRepository">The <see cref="IAccountRepository"/></param>
+        /// /// <param name="logService">The <see cref="ILogService"/></param>
         public AccountController(IAccountRepository accountRepository, ILogService logService)
         {
             this.accountRepository = accountRepository;

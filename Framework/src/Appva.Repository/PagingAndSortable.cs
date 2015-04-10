@@ -1,6 +1,11 @@
-﻿namespace Appva.Repository
+﻿// <copyright file="PagingAndSortable.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
+namespace Appva.Repository
 {
-
     #region Imports.
 
     using System;
@@ -13,12 +18,16 @@
     /// Base class for paging and sorting.
     /// </summary>
     /// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <typeparam name="TClass"></typeparam>
+    /// <typeparam name="TClass">The <code>TClass</code></typeparam>
+    /// <typeparam name="TEntity">The <code>TEntity</code></typeparam>
     public class PagingAndSortable<TClass, TEntity> where TClass : class where TEntity : class
     {
-
         #region Private Fields.
+
+        /// <summary>
+        /// The query filters.
+        /// </summary>
+        private IList<Expression<Func<TEntity, bool>>> filters;
 
         /// <summary>
         /// The page number to be returned.
@@ -35,11 +44,6 @@
         /// </summary>
         private Sort<TEntity> sort;
 
-        /// <summary>
-        /// The query filters.
-        /// </summary>
-        protected IList<Expression<Func<TEntity, bool>>> _filters;
-
         #endregion
 
         #region Public Properties.
@@ -47,8 +51,10 @@
         /// <summary>
         /// The page number to be returned.
         /// </summary>
-        internal int PageNumber { 
-            get {
+        internal int PageNumber 
+        { 
+            get 
+            {
                 return this.pageNumber; 
             } 
         }
@@ -58,7 +64,8 @@
         /// </summary>
         internal int PageSize
         {
-            get {
+            get 
+            {
                 return this.pageSize;
             }
         }
@@ -68,7 +75,8 @@
         /// </summary>
         internal Sort<TEntity> PageSort
         {
-            get {
+            get 
+            {
                 return this.sort;
             }
         }
@@ -76,10 +84,15 @@
         /// <summary>
         /// The query filters.
         /// </summary>
-        internal IList<Expression<Func<TEntity, bool>>> Filters
+        protected internal IList<Expression<Func<TEntity, bool>>> Filters
         {
-            get {
-                return this._filters;
+            get 
+            {
+                return this.filters;
+            }
+
+            set
+            {
             }
         }
 
@@ -88,10 +101,10 @@
         #region Public Functions.
 
         /// <summary>
-        /// 
+        /// Returns the page with the given pagenumber
         /// </summary>
-        /// <param name="pageNumber"></param>
-        /// <returns></returns>
+        /// <param name="pageNumber">The pagenumber</param>
+        /// <returns>The page</returns>
         public TClass Page(int pageNumber)
         {
             this.pageNumber = pageNumber;
@@ -99,10 +112,10 @@
         }
 
         /// <summary>
-        /// 
+        /// Creates a TClass whit given pagesize
         /// </summary>
-        /// <param name="pageSize"></param>
-        /// <returns></returns>
+        /// <param name="pageSize">The size of the page</param>
+        /// <returns>The TClass</returns>
         public TClass Size(int pageSize)
         {
             this.pageSize = pageSize;
@@ -110,47 +123,47 @@
         }
 
         /// <summary>
-        /// 
+        /// Creates a TClass with given filter
         /// </summary>
-        /// <returns></returns>
+        /// <param name="filter">The filter expression</param>
+        /// <returns>The TClass</returns>
         public TClass FilterBy(Expression<Func<TEntity, bool>> filter)
         {
-            CreateFiltersIfNull();
-            this._filters.Add(filter);
+            this.CreateFiltersIfNull();
+            this.filters.Add(filter);
             return this as TClass;
         }
 
         /// <summary>
-        /// 
+        /// Creates a TClass with given order
         /// </summary>
-        /// <param name="order"></param>
-        /// <returns></returns>
+        /// <param name="order">The order expression</param>
+        /// <returns>The TClass</returns>
         public TClass OrderBy(Expression<Func<TEntity, object>> order)
         {
-            CreateSortIfNull();
+            this.CreateSortIfNull();
             this.sort.Order = order;
             return this as TClass;
         }
 
         /// <summary>
-        /// 
+        /// Creates a TClass with ascending direction
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The TClass</returns>
         public TClass Asc()
         {
-            CreateSortIfNull();
+            this.CreateSortIfNull();
             this.sort.Direction = Direction.Asc;
             return this as TClass;
         }
 
         /// <summary>
-        /// 
+        /// Creates a TClass with descending direction
         /// </summary>
-        /// <param name="direction"></param>
-        /// <returns></returns>
+        /// <returns>The TClass</returns>
         public TClass Desc()
         {
-            CreateSortIfNull();
+            this.CreateSortIfNull();
             this.sort.Direction = Direction.Desc;
             return this as TClass;
         }
@@ -160,27 +173,27 @@
         #region Protected Helpers.
 
         /// <summary>
-        /// 
+        /// Creates a sort when null
         /// </summary>
         protected void CreateSortIfNull()
         {
-            if (this.sort == null) {
+            if (this.sort == null) 
+            {
                 this.sort = new Sort<TEntity>();
             }
         }
 
         /// <summary>
-        /// 
+        /// Creates filter when null
         /// </summary>
         protected void CreateFiltersIfNull()
         {
-            if (this._filters == null) {
-                this._filters = new List<Expression<Func<TEntity, bool>>>();
+            if (this.filters == null) 
+            {
+                this.filters = new List<Expression<Func<TEntity, bool>>>();
             }
         }
 
         #endregion
-
     }
-
 }

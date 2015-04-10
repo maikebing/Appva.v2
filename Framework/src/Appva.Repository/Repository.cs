@@ -9,9 +9,9 @@ namespace Appva.Repository
     using System;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using Persistence;
     using NHibernate;
     using NHibernate.Criterion;
+    using Persistence;
 
     #endregion
 
@@ -33,8 +33,9 @@ namespace Appva.Repository
         #region Constructor.
 
         /// <summary>
-        /// Parameterized constructor.
+        /// Initializes a new instance of the <see cref="{T}" /> class.
         /// </summary>
+        /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
         public Repository(IPersistenceContext persistenceContext)
         {
             this.persistenceContext = persistenceContext;
@@ -102,7 +103,7 @@ namespace Appva.Repository
         /// <summary>
         /// Builds a filtering <code>WHERE</code> clause.
         /// </summary>
-        /// <param name="expression"></param>
+        /// <param name="expression">The <see cref="Expression"/></param>
         /// <returns><see cref="IQueryOver"/></returns>
         protected IQueryOver<T, T> Where(Expression<Func<T, bool>> expression)
         {
@@ -112,9 +113,9 @@ namespace Appva.Repository
         /// <summary>
         /// Builds a matching (<code>LIKE</code>) clause.
         /// </summary>
-        /// <param name="expression"></param>
-        /// <param name="query"></param>
-        /// <param name="matchMode"></param>
+        /// <param name="expression">The <see cref="Expression"/></param>
+        /// <param name="query">The query string</param>
+        /// <param name="matchMode">The <see cref="MatchMode"/></param>
         /// <returns><see cref="IQueryOver"/></returns>
         protected IQueryOver<T, T> IsLike(Expression<Func<T, object>> expression, string query, MatchMode matchMode = null)
         {
@@ -129,9 +130,8 @@ namespace Appva.Repository
         /// <summary>
         /// Builds a filtering <code>QueryOver</code> clause and adds an alias
         /// </summary>
-        /// <param name="expression"></param>
-        /// <param name="alias"></param>
-        /// <returns></returns>
+        /// <param name="alias">The alisa expression</param>
+        /// <returns><see cref="IQueryOver"/></returns>
         protected IQueryOver<T, T> Alias(Expression<Func<T>> alias)
         {
             return this.persistenceContext.QueryOver<T>(alias);

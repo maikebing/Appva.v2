@@ -18,6 +18,15 @@ namespace Appva.Repository
     public interface IRepository<T> where T : class
     {
         /// <summary>
+        /// Returns the current <see cref="IPersistenceContext"/>.
+        /// </summary>
+        /// <returns>A <see cref="IPersistenceContext"/></returns>
+        IPersistenceContext PersistenceContext
+        {
+            get;
+        }
+
+        /// <summary>
         /// Returns the entity {T} by primary id.
         /// </summary>
         /// <param name="id">The id of the entity</param>
@@ -56,14 +65,5 @@ namespace Appva.Repository
         /// <param name="entity">The entity to be saved</param>
         /// <returns>Returns the generated id as an object</returns>
         Task<object> SaveAsync(T entity);
-
-        /// <summary>
-        /// Returns the current <see cref="IPersistenceContext"/>.
-        /// </summary>
-        /// <returns>A <see cref="IPersistenceContext"/></returns>
-        IPersistenceContext PersistenceContext
-        {
-            get;
-        }
     }
 }

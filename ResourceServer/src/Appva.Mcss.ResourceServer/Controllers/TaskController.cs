@@ -174,7 +174,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             var tasks = this.taskService.ListTasksByPatient(patientId, time, time);
             var nurses = this.accountRepository.GetAccountsByRole("_TITLE_N", "_ADMIN_AS");
             this.logService.ApiGet(string.Format("Användare {0} hämtade insatser för tidsslot {1} för patient {2}", account.FullName, time, patientId), account.Id, patientId, this.Request.RequestUri.OriginalString);
-            return this.Ok(TaskTransformer.ToTaskModel(tasks, time, taxons, account, nurses:nurses, withdrawalOptions:withdrawalOptions));
+            return this.Ok(TaskTransformer.ToTaskModel(tasks, time, taxons, account, nurses: nurses, withdrawalOptions: withdrawalOptions));
         }
 
         /// <summary>
@@ -294,7 +294,6 @@ namespace Appva.Mcss.ResourceServer.Controllers
                         task.InventoryTransactions.Add(transaction);
                         Log.InfoFormat("User: {0} ({1}) readded {2} units to inventory {3} by transaction {4}", account.FullName, account.Id, transaction.Value, transaction.Inventory.Id, transaction.Id);
                         this.logService.ApiGet(string.Format("Användare {0} återförde {1} enheter till saldo {2} genom transaktion {3})", account.FullName, transaction.Value, transaction.Inventory.Id, transaction.Id), account, task.Patient, this.Request.RequestUri.OriginalString);
-
                     }
                     Log.InfoFormat("User: {0} ({1}) changed status of task {2} to incomplete", account.FullName, account.Id, id);
                     this.logService.ApiPost(string.Format("Användare {0} ångrade insats {1} (id {2})", account.FullName, task.Name, task.Id), account, task.Patient, this.Request.RequestUri.OriginalString);
@@ -516,7 +515,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             var nurses = this.accountRepository.GetAccountsByRole("_TITLE_N", "_ADMIN_AS");
             
             this.logService.ApiGet(string.Format("Användare {0} hämtade vid-behovs-insatsen {1} (ref: {3}) för patient {2}", account.FullName, sequence.Name, sequence.Patient.FullName, sequence.Id), account, sequence.Patient, this.Request.RequestUri.OriginalString);
-            return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, taxons, account, nurses:nurses, withdrawalOptions:withdrawalOptions));
+            return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, taxons, account, nurses: nurses, withdrawalOptions: withdrawalOptions));
         }
 
         #endregion
@@ -556,46 +555,10 @@ namespace Appva.Mcss.ResourceServer.Controllers
             }
             var account = this.accountRepository.Get(this.User.Identity.Id());
             var stdStatusItems = this.taxonRepository.Search(null, true, new List<string>() { "SST" });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             this.logService.ApiGet(string.Format("Användare {0} hämtade kalender-insats {1} schemalagd {2} för patient {3}", account.FullName, task.Name, task.Scheduled, task.Patient), account, task.Patient, this.Request.RequestUri.OriginalString);
             return this.Ok(TaskTransformer.ToTaskModel(new List<Task> { task }, task.Scheduled, stdStatusItems, account));
         }
-
         #endregion
-
         #endregion
     }
 }

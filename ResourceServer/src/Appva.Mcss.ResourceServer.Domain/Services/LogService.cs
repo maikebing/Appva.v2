@@ -8,10 +8,10 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
 {
     #region Imports.
 
-    using Appva.Mcss.Domain.Entities;
-    using Appva.Mcss.ResourceServer.Domain.Repositories;
     using System;
     using System.Collections.Generic;
+    using Appva.Mcss.Domain.Entities;
+    using Appva.Mcss.ResourceServer.Domain.Repositories;
 
     #endregion
 
@@ -23,37 +23,37 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         /// <summary>
         /// Logs post-action to Api
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="userId"></param>
-        /// <param name="patientId"></param>
-        /// <param name="url"></param>
+        /// <param name="message">The message to Log</param>
+        /// <param name="userId">The current user id</param>
+        /// <param name="patientId">The current patient id</param>
+        /// <param name="url">The current URL</param>
         void ApiPost(string message, Guid userId, Guid patientId, string url);
 
         /// <summary>
         /// Logs post-action to Api
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="user"></param>
-        /// <param name="patient"></param>
-        /// <param name="url"></param>
+        /// <param name="message">The message to Log</param>
+        /// <param name="user">The current user</param>
+        /// <param name="patient">The current patient</param>
+        /// <param name="url">The current URL</param>
         void ApiPost(string message, Account user, Patient patient, string url);
 
         /// <summary>
         /// Logs a get-action to Api
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="userId"></param>
-        /// <param name="patientId"></param>
-        /// <param name="url"></param>
+        /// <param name="message">The message to Log</param>
+        /// <param name="userId">The current user id</param>
+        /// <param name="patientId">The current patient id</param>
+        /// <param name="url">The current URL</param>
         void ApiGet(string message, Guid userId, Guid patientId, string url);
 
         /// <summary>
         /// Logs a get-action to Api
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="user"></param>
-        /// <param name="patient"></param>
-        /// <param name="url"></param>
+        /// <param name="message">The message to Log</param>
+        /// <param name="user">The current user</param>
+        /// <param name="patient">The current patient</param>
+        /// <param name="url">The current URL</param>
         void ApiGet(string message, Account user, Patient patient, string url);
     }
 
@@ -67,37 +67,36 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         /// <summary>
         /// The <see cref="IDeviceRepository"/>.
         /// </summary>
-        private readonly ILogRepository LogRepository;
+        private readonly ILogRepository logRepository;
 
         /// <summary>
         /// The <see cref="IDeviceRepository"/>.
         /// </summary>
-        private readonly IAccountRepository AccountRepository;
+        private readonly IAccountRepository accountRepository;
 
         /// <summary>
         /// The <see cref="IDeviceRepository"/>.
         /// </summary>
-        private readonly IPatientRepository PatientRepository;
-
+        private readonly IPatientRepository patientRepository;
 
         #endregion
 
         #region Constructor.
 
         /// <summary>
-        /// TODO: Add a descriptive summary to increase readability.
+        /// Initializes a new instance of the <see cref="LogService" /> class.
         /// </summary>
-        /// <param name="logRepository"></param>
-        /// <param name="accountRepository"></param>
-        /// <param name="patientRepository"></param>
+        /// <param name="logRepository">The <see cref="ILogRepository"/></param>
+        /// <param name="accountRepository">The <see cref="IAccountRepository"/></param>
+        /// <param name="patientRepository">The <see cref="IPatientRepository"/></param>
         public LogService(
             ILogRepository logRepository, 
             IAccountRepository accountRepository, 
             IPatientRepository patientRepository)
         {
-            this.LogRepository = logRepository;
-            this.AccountRepository = accountRepository;
-            this.PatientRepository = patientRepository;
+            this.logRepository = logRepository;
+            this.accountRepository = accountRepository;
+            this.patientRepository = patientRepository;
         }
 
         #endregion
@@ -107,29 +106,29 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         /// <inheritdoc />
         public void ApiPost(string message, Guid userId, Guid patientId, string url)
         {
-            var user = this.AccountRepository.Get(userId);
-            var patient = this.PatientRepository.Get(patientId);
-            Log(message, LogLevel.Info, user, patient, url, SystemType.ResourceApi, LogType.Write);
+            var user = this.accountRepository.Get(userId);
+            var patient = this.patientRepository.Get(patientId);
+            this.Log(message, LogLevel.Info, user, patient, url, SystemType.ResourceApi, LogType.Write);
         }
 
         /// <inheritdoc />
         public void ApiPost(string message, Account user, Patient patient, string url)
         {
-            Log(message, LogLevel.Info, user, patient, url, SystemType.ResourceApi, LogType.Write);
+            this.Log(message, LogLevel.Info, user, patient, url, SystemType.ResourceApi, LogType.Write);
         }
 
         /// <inheritdoc />
         public void ApiGet(string message, Guid userId, Guid patientId, string url)
         {
-            var user = this.AccountRepository.Get(userId);
-            var patient = this.PatientRepository.Get(patientId);
-            Log(message, LogLevel.Info, user, patient, url, SystemType.ResourceApi, LogType.Read);
+            var user = this.accountRepository.Get(userId);
+            var patient = this.patientRepository.Get(patientId);
+            this.Log(message, LogLevel.Info, user, patient, url, SystemType.ResourceApi, LogType.Read);
         }
 
         /// <inheritdoc />
         public void ApiGet(string message, Account user, Patient patient, string url)
         {
-            Log(message, LogLevel.Info, user, patient, url, SystemType.ResourceApi, LogType.Read);
+            this.Log(message, LogLevel.Info, user, patient, url, SystemType.ResourceApi, LogType.Read);
         }
 
         #endregion
@@ -139,13 +138,13 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
         /// <summary>
         /// Creates a log in log-database
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="level"></param>
-        /// <param name="user"></param>
-        /// <param name="patient"></param>
-        /// <param name="url"></param>
-        /// <param name="system"></param>
-        /// <param name="logType"></param>
+        /// <param name="message">The message to Log</param>
+        /// <param name="level">The log level</param>
+        /// <param name="user">The current user</param>
+        /// <param name="patient">The current patient</param>
+        /// <param name="url">The current URL</param>
+        /// <param name="system">The system</param>
+        /// <param name="logType">The log type</param>
         private void Log(string message, LogLevel level, Account user, Patient patient, string url, SystemType system, LogType logType)
         {
             var log = new Log
@@ -158,11 +157,9 @@ namespace Appva.Mcss.ResourceServer.Domain.Services
                 System = system,
                 Type = logType
             };
-            LogRepository.Save(log);
+            this.logRepository.Save(log);
         }
 
         #endregion
-
-
     }
 }

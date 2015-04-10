@@ -30,6 +30,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="stdStatusItems">TODO: stdStatusItems</param>
         /// <param name="user">TODO: user</param>
         /// <param name="nurses">TODO: nurses</param>
+        /// <param name="withdrawalOptions">TODO: withdrawalOptions</param>
         /// <returns>TODO: returns</returns>
         public static dynamic ToTaskModel(IList<Task> tasks, DateTime time, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null, IList<Taxon> withdrawalOptions = null)
         {
@@ -60,6 +61,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="stdStatusItems">TODO: stdStatusItems</param>
         /// <param name="user">TODO: user</param>
         /// <param name="nurses">TODO: nurses</param>
+        /// <param name="withdrawalOptions">TODO: withdrawalOptions</param>
         /// <returns>TODO: returns</returns>
         public static HydratedTaskModel ToTaskModel(Task task, IList<Taxon> stdStatusItems, Account user, IList<Account> nurses = null, IList<Taxon> withdrawalOptions = null)
         {
@@ -105,6 +107,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// <param name="stdStatusItems">TODO: stdStatusItems</param>
         /// <param name="contacts">TODO: contacts></param>
         /// <param name="nurses">TODO: nurses</param>
+        /// <param name="isNurse">TODO: isNurse</param>
         /// <returns>TODO: returns</returns>
         private static List<StatusItemModel> GetStatusItems(Task task, IList<Taxon> stdStatusItems, ref Dictionary<string, ContactModel> contacts, IList<Account> nurses = null, bool isNurse = false)
         {
@@ -265,6 +268,8 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// FIXME: Should be defineable statuses and amounts.
         /// </summary>
         /// <param name="task">TODO: task</param>
+        /// <param name="withdrawalOptions">TODO: withdrawalOptions</param>
+        /// <param name="isNurse">TODO: isNurse</param>
         /// <returns>TODO: returns</returns>
         private static InventoryModel GetInventory(Task task, IList<Taxon> withdrawalOptions = null, bool isNurse = false)
         {
@@ -283,7 +288,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
                 {
                     if (!isNurse)
                     {
-                        /// TODO: Why using is root, restrictions
+                        //// TODO: Why using is root, restrictions
                         withdrawalOptions = withdrawalOptions.Where(x => x.IsRoot).ToList();
                     }
                     withdrawalOptionStrings = withdrawalOptions.OrderBy(x => x.Weight).Select(x => x.Name).ToList();
@@ -307,6 +312,11 @@ namespace Appva.Mcss.ResourceServer.Transformers
             return null;
         }
 
+        /// <summary>
+        /// Gets the type-ids for a task
+        /// </summary>
+        /// <param name="task">The <see cref="Task"/></param>
+        /// <returns>List of type-ids</returns>
         private static List<string> GetTypeIds(Task task)
         {
             var retval = new List<string>();

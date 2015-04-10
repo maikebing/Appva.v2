@@ -13,6 +13,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
 
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using Apis.TenantServer;
     using Application;
@@ -139,7 +140,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <returns><code>Device</code> ID and name</returns>
         [AuthorizeToken(Scope.AdminOnly)]
         [HttpPost, Validate, Route("enroll")]
-        public IHttpActionResult Enroll(DeviceModel deviceModel)
+        public async Task<IHttpActionResult> Enroll(DeviceModel deviceModel)
         {
             var device = DeviceTransformer.ToDevice(deviceModel);
             if (this.deviceRepository.GetByUuid(device.Uuid).IsNotNull())
@@ -167,7 +168,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             }
             if (deviceModel.RemoteMessagingId.IsNotEmpty())
             {
-                device.AzurePushId = this.notification.RegisterDevice(
+                device.AzurePushId = await this.notification.RegisterDeviceAsync(
                     deviceModel.RemoteMessagingId, 
                     new[] { "deviceId:" + device.Id });
                 device.PushUuid = deviceModel.RemoteMessagingId;
@@ -189,25 +190,25 @@ namespace Appva.Mcss.ResourceServer.Controllers
         /// <returns>Http 200</returns>
         [AuthorizeToken(Scope.ReadWrite)]
         [HttpPost, Validate, Route("{id}/update")]
-        public IHttpActionResult Update(Guid id, UpdateDeviceModel model)
+        public async Task<IHttpActionResult> Update(Guid id, UpdateDeviceModel model)
         {
             Log.DebugFormat("Device id: {0} and remote messaging id: {1}", id, model.RemoteMessagingId);
             var device = this.deviceRepository.Get(id);
-            /*if (!model.RemoteMessagingId.IsNotNull() || device.PushUuid == model.RemoteMessagingId)
+            if (!model.RemoteMessagingId.IsNotNull() || device.PushUuid == model.RemoteMessagingId)
             {
                 return this.Ok();
             }
             if (device.AzurePushId.IsEmpty())
             {
-                device.AzurePushId = this.notification.RegisterDevice(
+                device.AzurePushId = await this.notification.RegisterDeviceAsync(
                     model.RemoteMessagingId, 
                     new[] { "deviceId:" + device.Id });
             }
             else 
             {
-                this.notification.UpdateDevice(device.AzurePushId, model.RemoteMessagingId);
+                device.AzurePushId = await this.notification.UpdateDeviceAsync(device.AzurePushId, model.RemoteMessagingId);
             }
-            device.PushUuid = model.RemoteMessagingId;*/
+            device.PushUuid = model.RemoteMessagingId;
             return this.Ok();
         }
 

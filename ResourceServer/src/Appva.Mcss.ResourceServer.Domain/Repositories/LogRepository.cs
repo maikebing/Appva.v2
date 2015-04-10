@@ -8,11 +8,11 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
 {
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
     using Appva.Mcss.Domain.Entities;
     using Appva.Persistence;
     using Appva.Repository;
-    using System;
-    using System.Collections.Generic;
 
     #endregion
 
@@ -30,13 +30,15 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
     {
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogRepository"/> class
+        /// </summary>
+        /// <param name="persistenceContext">The <see cref="IPersitenceContext"/></param>
         public LogRepository(IPersistenceContext persistenceContext)
             : base(persistenceContext)
         {
-
         }
 
         #endregion
-
     }
 }

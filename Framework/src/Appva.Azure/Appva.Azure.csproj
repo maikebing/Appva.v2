@@ -45,11 +45,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
-    <Compile Include="IPushNotification.cs" />
-    <Compile Include="Messaging\PushNotifications.cs" />
-    <Compile Include="NoOpPushNotification.cs" />
+    <Compile Include="Messaging\IPushNotification.cs" />
+    <Compile Include="Messaging\PushNotificationManager.cs" />
+    <Compile Include="Messaging\NoOpPushNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PushNotification.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

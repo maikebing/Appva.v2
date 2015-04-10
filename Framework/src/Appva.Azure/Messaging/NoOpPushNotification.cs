@@ -27,15 +27,15 @@ namespace Appva.Azure
         }
 
         /// <inheritdoc />
-        public bool UpdateDevice(string registrationId, string pushId, IList<string> tags = null)
+        public string UpdateDevice(string registrationId, string pushId, IList<string> tags = null)
         {
-            return true;
+            return null;
         }
 
         /// <inheritdoc />
-        public bool SendPush(IList<string> devices, string payload)
+        public string SendPush(IList<string> devices, string payload)
         {
-            return true;
+            return null;
         }
 
         /// <inheritdoc />
@@ -45,15 +45,15 @@ namespace Appva.Azure
         }
 
         /// <inheritdoc />
-        public Task<bool> UpdateDeviceAsync(string registrationId, string pushId, IList<string> tags = null)
+        public Task<string> UpdateDeviceAsync(string registrationId, string pushId, IList<string> tags = null)
         {
-            return Task.FromResult(true);
+            return Task.FromResult<string>(null);
         }
 
         /// <inheritdoc />
-        public Task<bool> SendPushAsync(IList<string> devices, string payload)
+        public Task<string> SendPushAsync(IList<string> devices, string payload)
         {
-            return Task.FromResult(true);
+            return Task.FromResult<string>(null);
         }
 
         #endregion

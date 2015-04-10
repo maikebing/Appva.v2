@@ -8,11 +8,11 @@ namespace Appva.Mcss.ResourceServer.Domain.Repositories
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using Appva.Persistence;
     using Appva.Repository;
     using Mcss.Domain.Entities;
-    using System;
     using NHibernate.Criterion;
 
     #endregion

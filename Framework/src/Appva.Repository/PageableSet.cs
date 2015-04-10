@@ -1,4 +1,10 @@
-﻿namespace Appva.Repository
+﻿// <copyright file="PageableSet.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
+namespace Appva.Repository
 {
     #region Imports.
 
@@ -10,7 +16,7 @@
     /// A collection of pageable entities.
     /// </summary>
     /// <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TEntity">The Entity</typeparam>
     public class PageableSet<TEntity> where TEntity : class
     {
         /// <summary>

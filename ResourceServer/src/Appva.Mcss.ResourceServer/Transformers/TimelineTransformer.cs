@@ -11,9 +11,9 @@ namespace Appva.Mcss.ResourceServer.Transformers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Logging;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Models;
-    using Appva.Logging;
 
     #endregion
 
@@ -71,7 +71,6 @@ namespace Appva.Mcss.ResourceServer.Transformers
             var timeOfDayMap = new Dictionary<DateTime, Dictionary<Patient, Dictionary<ScheduleSettings, IList<Task>>>>();
             foreach (var item in tasks)
             {
-                
                 if (timeOfDayMap.ContainsKey(item.Scheduled))
                 {
                     if (!timeOfDayMap[item.Scheduled].ContainsKey(item.Patient))
@@ -117,6 +116,7 @@ namespace Appva.Mcss.ResourceServer.Transformers
         /// </summary>
         /// <param name="item">TODO: item</param>
         /// <param name="patientKv">TODO: patientKv</param>
+        /// /// <param name="currentDate">TODO: currentDate</param>
         /// <param name="patientsWithDelay">TODO: patientsWithDelay</param>
         /// <returns>TODO: returns</returns>
         private static IList<TimelineTaxonGroupingStrategyModel> TaxonTimeline(KeyValuePair<DateTime, Dictionary<Patient, Dictionary<ScheduleSettings, IList<Task>>>> item, KeyValuePair<Patient, Dictionary<ScheduleSettings, IList<Task>>> patientKv, DateTime currentDate, IList<Guid> patientsWithDelay)

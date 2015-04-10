@@ -70,7 +70,7 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         /// <inheritdoc />
         public void Handle(Exception exception)
         {
- 	        if (exception.IsNotNull())
+            if (exception.IsNotNull())
             {
                 Log.ErrorException("An error occured during database initialization", exception);
             }
@@ -79,7 +79,7 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         /// <inheritdoc />
         public void Handle(IEnumerable<Exception> exceptions)
         {
- 	        if (exceptions.IsNotNull())
+            if (exceptions.IsNotNull())
             {
                 var sb = new StringBuilder();
                 foreach (var exception in exceptions)

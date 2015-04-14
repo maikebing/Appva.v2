@@ -15,6 +15,7 @@ namespace Appva.Mcss.ResourceServer
     using Application.Configuration;
     using Application.ExceptionHandling;
     using Application.Persistence;
+    using Appva.Caching.Providers;
     using Autofac;
     using Autofac.Integration.WebApi;
     using Azure;
@@ -83,8 +84,10 @@ namespace Appva.Mcss.ResourceServer
             var messaging = new EmailService();
             var tenantServerUri = ConfigurableApplicationContext.Get<ResourceServerConfiguration>().TenantServerUri;
             var configuration = ConfigurableApplicationContext.Read<MultiTenantDatasourceConfiguration>().From(PersistenceConfig).AsMachineNameSpecific().ToObject();
+            var cache = new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/admin");
+            builder.Register<RuntimeMemoryCache>(x => cache).As<IRuntimeMemoryCache>().SingleInstance();
             var client = TenantClient.CreateNew(tenantServerUri);
-            var datasource = new MultiTenantDatasource(client, configuration, new DatasourceEmailExceptionHandler(messaging), new DefaultDatasourceEventInterceptor());
+            var datasource = new MultiTenantDatasource(client, cache, configuration, new DatasourceEmailExceptionHandler(messaging));
             var persistence = new TenantIdentityPersistenceContextAwareResolver(datasource);
             builder.Register(x => client).As<ITenantClient>().SingleInstance();
             builder.Register(x => persistence).As<IPersistenceContextAwareResolver>().SingleInstance();

@@ -190,6 +190,10 @@
       <Project>{84a3404b-798f-43d7-85d9-d2a510895f9e}</Project>
       <Name>Appva.Apis.TenantServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Caching\Appva.Caching.csproj">
+      <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
+      <Name>Appva.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
       <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
       <Name>Appva.Core.Configuration</Name>

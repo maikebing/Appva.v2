@@ -77,17 +77,17 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         }
 
         /// <inheritdoc />
-        public void Handle(IEnumerable<Exception> exceptions)
+        public void Handle(AggregateException exception)
         {
-            if (exceptions.IsNotNull())
+            if (exception.IsNotNull())
             {
                 var sb = new StringBuilder();
-                foreach (var exception in exceptions)
+                foreach (var ex in exception.InnerExceptions)
                 {
-                    Log.ErrorException("An error occured during database initialization", exception);
+                    Log.ErrorException("An error occured during database initialization", ex);
                     if (this.isProduction)
                     {
-                        this.ExceptionAsHtml(sb, exception);
+                        this.ExceptionAsHtml(sb, ex);
                     }
                 }
                 if (this.isProduction)

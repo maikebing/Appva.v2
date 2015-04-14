@@ -11,24 +11,27 @@ namespace Appva.Fhir.Complex
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     #endregion
 
     /// <summary>
-    /// A <c>CodeableConcept</c> represents a value that is usually supplied by providing a 
-    /// reference to one or more terminologies or ontologies, but may also be defined by 
-    /// the provision of text. This is a common pattern in healthcare data.
+    /// A <c>CodeableConcept</c> represents a value that is usually supplied by 
+    /// providing a reference to one or more terminologies or ontologies, but may also 
+    /// be defined by the provision of text. This is a common pattern in healthcare 
+    /// data.
     /// <para>
     /// Each coding is a representation of the concept as described above. The concept 
     /// may be coded multiple times in different code systems (or even multiple times in 
-    /// the same code systems, where multiple forms are possible, such as with SNOMED CT). 
+    /// the same code systems, where multiple forms are possible, such as with SNOMED 
+    /// CT). 
     /// The different codings may have slightly different granularity due to the 
     /// differences in the definitions of the underlying codes. There is no meaning 
     /// associated with the ordering of coding within a <c>CodeableConcept</c>. 
-    /// A typical use of <c>CodeableConcept</c> is to send the local code that the concept was 
-    /// coded with, and also one or more translations to publicly defined code systems 
-    /// such as LOINC or SNOMED CT. Sending local codes is useful and important for the 
-    /// purposes of debugging and integrity auditing.
+    /// A typical use of <c>CodeableConcept</c> is to send the local code that the 
+    /// concept was coded with, and also one or more translations to publicly defined 
+    /// code systems such as LOINC or SNOMED CT. Sending local codes is useful and 
+    /// important for the purposes of debugging and integrity auditing.
     /// </para>
     /// <para>
     /// Whether or not coding elements are present, the text is the representation of 
@@ -69,8 +72,11 @@ namespace Appva.Fhir.Complex
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeableConcept"/> class.
         /// </summary>
-        /// <param name="coding">A reference to a code defined by a terminology system</param>
-        public CodeableConcept(Collection<Coding> coding) : this(null, coding)
+        /// <param name="coding">
+        /// A reference to a code defined by a terminology system
+        /// </param>
+        public CodeableConcept(Collection<Coding> coding)
+            : this(null, coding)
         {
         }
 
@@ -79,13 +85,25 @@ namespace Appva.Fhir.Complex
         /// </summary>
         /// <param name="text">
         /// A human language representation of the concept as seen/selected/uttered by the 
-        /// user who entered the data and/or which represents the intended meaning of the user
+        /// user who entered the data and/or which represents the intended meaning of the 
+        /// user
         /// </param>
-        /// <param name="coding">A reference to a code defined by a terminology system</param>
+        /// <param name="coding">
+        /// A reference to a code defined by a terminology system
+        /// </param>
         public CodeableConcept(string text, Collection<Coding> coding)
         {
             this.Text = text;
             this.Coding = coding;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeableConcept"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        public CodeableConcept()
+        {
         }
 
         #endregion
@@ -101,8 +119,9 @@ namespace Appva.Fhir.Complex
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [JsonProperty]
         [XmlElementAttribute("coding")]
-        public IEnumerable<Coding> Coding
+        public Collection<Coding> Coding
         {
             get;
             private set;
@@ -119,6 +138,7 @@ namespace Appva.Fhir.Complex
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [JsonProperty]
         [XmlElementAttribute("text")]
         public string Text
         {

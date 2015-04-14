@@ -9,6 +9,8 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System.Xml.Serialization;
+    using Appva.Fhir.Resources.Security.ValueSets;
+    using Newtonsoft.Json;
     using Primitives;
 
     #endregion
@@ -40,10 +42,19 @@ namespace Appva.Fhir.Resources.Security
         /// An identifier for the type of network access point that originated the audit 
         /// event, see <c>SecurityEventParticipantNetworkType</c>.
         /// </param>
-        public SecurityEventParticipantNetwork(string identifier, Code type)
+        public SecurityEventParticipantNetwork(string identifier, SecurityEventParticipantNetworkType type)
         {
             this.Identifier = identifier;
             this.Type = type;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventParticipantNetwork"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        protected SecurityEventParticipantNetwork()
+        {
         }
 
         #endregion
@@ -61,7 +72,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("identifier")]
+        [JsonProperty, XmlElementAttribute("identifier")]
         public string Identifier
         {
             get;
@@ -78,8 +89,8 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("type")]
-        public Code Type
+        [JsonProperty, XmlElementAttribute("type")]
+        public SecurityEventParticipantNetworkType Type
         {
             get;
             private set;

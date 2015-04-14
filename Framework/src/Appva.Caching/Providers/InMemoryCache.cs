@@ -16,6 +16,13 @@ namespace Appva.Caching.Providers
     #endregion
 
     /// <summary>
+    /// Marker interface for run time cache provider.
+    /// </summary>
+    public interface IInMemoryCache : ICacheProvider
+    {
+    }
+
+    /// <summary>
     /// In memory cache implementation of <see cref="CacheProvider"/>.
     /// </summary>
     /// <example>
@@ -30,14 +37,14 @@ namespace Appva.Caching.Providers
     ///     builder.Register{InMemoryCacheProvider}().As{ICacheProvider}().SingleInstance();
     /// </code>
     /// </example>
-    public sealed class InMemoryCacheProvider : CacheProvider
+    public sealed class InMemoryCache : CacheProvider, IInMemoryCache
     {
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ILog"/> for <see cref="InMemoryCacheProvider"/>.
+        /// The <see cref="ILog"/> for <see cref="InMemoryCache"/>.
         /// </summary>
-        private static readonly ILog Log = LogProvider.For<InMemoryCacheProvider>();
+        private static readonly ILog Log = LogProvider.For<InMemoryCache>();
 
         /// <summary>
         /// The sync lock.
@@ -64,7 +71,7 @@ namespace Appva.Caching.Providers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryCacheProvider"/> class.
+        /// Initializes a new instance of the <see cref="InMemoryCache"/> class.
         /// </summary>
         /// <param name="policy">The <see cref="IEvicationPolicy"/></param>
         /// <param name="capacity">
@@ -72,11 +79,30 @@ namespace Appva.Caching.Providers
         /// defaults to 1000
         /// </param>
         /// <exception cref="System.ArgumentNullException">If policy is null</exception>
-        public InMemoryCacheProvider(IEvicationPolicy policy, int capacity = 1000)
+        public InMemoryCache(IEvicationPolicy policy, int capacity = 1000)
         {
             Requires.NotNull(policy, "policy");
             this.policy = policy;
             this.capacity = capacity;
+        }
+
+        #endregion
+
+        #region Static Functions.
+
+        /// <summary>
+        /// Creates a new <see cref="InMemoryCache"/> instance.
+        /// </summary>
+        /// <param name="policy">The <see cref="IEvicationPolicy"/></param>
+        /// <param name="capacity">
+        /// The maximum capacity of cacheable items before the eviction policy is executed, 
+        /// defaults to 1000
+        /// </param>
+        /// <returns>A new <see cref="InMemoryCache"/> instance</returns>
+        /// <exception cref="System.ArgumentNullException">If policy is null</exception>
+        public static InMemoryCache CreateNew(IEvicationPolicy policy, int capacity = 1000)
+        {
+            return new InMemoryCache(policy, capacity);
         }
 
         #endregion
@@ -104,6 +130,21 @@ namespace Appva.Caching.Providers
                 item.UpdateHit();
                 return item.Value;
             }
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<CacheEntry> List()
+        {
+            var retval = new List<CacheEntry>();
+            using (var enumerator = this.store.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    var kv = enumerator.Current;
+                    retval.Add(CacheEntry.CreateNew(kv.Key, kv.Value));
+                }
+            }
+            return retval;
         }
 
         /// <inheritdoc />
@@ -186,7 +227,7 @@ namespace Appva.Caching.Providers
         }
 
         /// <inheritdoc />
-        public override int Count()
+        public override long Count()
         {
             return this.store.Count;
         }

@@ -79,14 +79,14 @@ namespace Appva.Cqrs
     public abstract class RequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        #region IRequestHandler<TRequest,TResponse> Members
+        #region IRequestHandler<TRequest,TResponse> Members.
 
         /// <inheritdoc />
         public abstract TResponse Handle(TRequest message);
 
         #endregion
 
-        #region IRequestHandler Members
+        #region IRequestHandler Members.
 
         /// <inheritdoc />
         public object Handle(object message)

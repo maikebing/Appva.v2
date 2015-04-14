@@ -39,6 +39,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Persistence.MultiTena
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Azure", "Appva.Azure\Appva.Azure.csproj", "{6366C860-2558-478B-BDE1-D2928B1B3AC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Apis.Audit", "Appva.Apis.Audit\Appva.Apis.Audit.csproj", "{C284208C-E6FF-4616-AD03-3BFF204636BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Apis.TenantServer.Legacy", "Appva.Apis.TenantServer.Legacy\Appva.Apis.TenantServer.Legacy.csproj", "{D6CD965A-FA1E-429E-94E7-7EFB4E66CE3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +121,14 @@ Global
 		{6366C860-2558-478B-BDE1-D2928B1B3AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6366C860-2558-478B-BDE1-D2928B1B3AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6366C860-2558-478B-BDE1-D2928B1B3AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C284208C-E6FF-4616-AD03-3BFF204636BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C284208C-E6FF-4616-AD03-3BFF204636BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C284208C-E6FF-4616-AD03-3BFF204636BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C284208C-E6FF-4616-AD03-3BFF204636BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6CD965A-FA1E-429E-94E7-7EFB4E66CE3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CD965A-FA1E-429E-94E7-7EFB4E66CE3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6CD965A-FA1E-429E-94E7-7EFB4E66CE3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6CD965A-FA1E-429E-94E7-7EFB4E66CE3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,7 @@ namespace Appva.Fhir.Primitives
 
     using System.Text.RegularExpressions;
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -42,6 +43,16 @@ namespace Appva.Fhir.Primitives
         /// </summary>
         /// <param name="value">The string OID value</param>
         public Oid(string value) : base(value)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Oid"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        public Oid()
+            : base(null)
         {
         }
 

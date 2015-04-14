@@ -27,7 +27,7 @@ namespace Appva.Persistence
         }
 
         /// <inheritdoc />
-        public void Handle(IEnumerable<Exception> exceptions)
+        public void Handle(AggregateException exception)
         {
             //// No op.
         }

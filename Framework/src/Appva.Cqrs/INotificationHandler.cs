@@ -40,4 +40,36 @@ namespace Appva.Cqrs
         /// <returns>A task</returns>
         Task Handle(TNotification notification);
     }
+
+    /// <summary>
+    /// Abstract base <see cref="INotificationHandler{TNotification}"/> 
+    /// implementation.
+    /// </summary>
+    /// <typeparam name="TNotification">The request type</typeparam>
+    public abstract class NotificationHandler<TNotification> : INotificationHandler<TNotification>
+         where TNotification : INotification
+    {
+        #region INotificationHandler<TNotification> Members.
+
+        /// <inheritdoc />
+        public abstract void Handle(TNotification notification);
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Abstract base <see cref="IAsyncNotificationHandler{TNotification}"/> 
+    /// implementation.
+    /// </summary>
+    /// <typeparam name="TNotification">The request type</typeparam>
+    public abstract class AsyncNotificationHandler<TNotification> : IAsyncNotificationHandler<TNotification>
+         where TNotification : IAsyncNotification
+    {
+        #region IAsyncNotificationHandler<TNotification> Members.
+
+        /// <inheritdoc />
+        public abstract Task Handle(TNotification notification);
+
+        #endregion
+    }
 }

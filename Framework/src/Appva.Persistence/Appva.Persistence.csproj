@@ -48,21 +48,16 @@
   <ItemGroup>
     <Compile Include="DefaultDatasourceEventInterceptor.cs" />
     <Compile Include="DefaultPersistenceContextAwareResolver.cs" />
-    <Compile Include="IDefaultDatasource.cs" />
-    <Compile Include="IPersistenceContext.cs" />
-    <Compile Include="IPersistenceUnit.cs" />
+    <Compile Include="Interceptors\LogSqlInterceptor.cs" />
     <Compile Include="PersistenceUnit.cs" />
     <Compile Include="Transformers\DeepTransformer.cs" />
-    <Compile Include="IDefaultDatasourceConfiguration.cs" />
     <Compile Include="Datasource.cs" />
     <Compile Include="DefaultDatasource.cs" />
     <Compile Include="DefaultDatasourceConfiguration.cs" />
     <Compile Include="DefaultDatasourceExceptionHandler.cs" />
-    <Compile Include="IDatasource.cs" />
     <Compile Include="IDatasourceConfiguration.cs" />
     <Compile Include="IDatasourceEventInterceptor.cs" />
     <Compile Include="IDatasourceExceptionHandler.cs" />
-    <Compile Include="IPersistenceContextAwareResolver.cs" />
     <Compile Include="PersistenceContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PersistenceContextAwareResolver.cs" />

@@ -21,26 +21,43 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    public static class SecurityEventObjectType
+    public sealed class SecurityEventObjectType : Code
     {
+        #region Variables.
+
         /// <summary>
         /// Person.
         /// </summary>
-        public static readonly Code Person = new Code("1");
+        public static readonly SecurityEventObjectType Person = new SecurityEventObjectType("1");
 
         /// <summary>
         /// System Object.
         /// </summary>
-        public static readonly Code SystemObject = new Code("2");
+        public static readonly SecurityEventObjectType SystemObject = new SecurityEventObjectType("2");
 
         /// <summary>
         /// Organization.
         /// </summary>
-        public static readonly Code Organization = new Code("3");
+        public static readonly SecurityEventObjectType Organization = new SecurityEventObjectType("3");
 
         /// <summary>
         /// Other.
         /// </summary>
-        public static readonly Code Other = new Code("4");
+        public static readonly SecurityEventObjectType Other = new SecurityEventObjectType("4");
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventObjectType"/> class.
+        /// </summary>
+        /// <param name="value">The string code value</param>
+        private SecurityEventObjectType(string value) 
+            : base(value)
+        {
+        }
+
+        #endregion
     }
 }

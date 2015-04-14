@@ -21,6 +21,10 @@ namespace Appva.Mcss.Scheduler.Infrastructure.UI
     {
         /// <summary>
         /// Prints the welcome message.
+        /// <externalLink>
+        ///     <linkText>ASCII art</linkText>
+        ///     <linkUri>http://patorjk.com/software/taag/#p=display&f=Slant&t=%20%20%20%20MCSS%0AScheduler</linkUri>
+        /// </externalLink>
         /// </summary>
         public static void Welcome()
         {

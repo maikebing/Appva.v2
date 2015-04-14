@@ -11,6 +11,7 @@ namespace Appva.Fhir.Resources
     using System.Collections.ObjectModel;
     using System.Xml.Serialization;
     using Complex;
+    using Newtonsoft.Json;
     using Primitives;
 
     #endregion
@@ -49,7 +50,7 @@ namespace Appva.Fhir.Resources
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElement("versionId")]
+        [JsonProperty, XmlElement("versionId")]
         public string VersionId
         {
             get;
@@ -65,7 +66,7 @@ namespace Appva.Fhir.Resources
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElement("lastUpdated")]
+        [JsonProperty, XmlElement("lastUpdated")]
         public System.DateTime LastUpdated
         {
             get;
@@ -82,7 +83,7 @@ namespace Appva.Fhir.Resources
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElement("profile")]
+        [JsonProperty, XmlElement("profile")]
         public Collection<Uri> Profile
         {
             get;
@@ -99,7 +100,7 @@ namespace Appva.Fhir.Resources
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElement("security")]
+        [JsonProperty, XmlElement("security")]
         public Collection<Coding> Security
         {
             get;
@@ -117,7 +118,7 @@ namespace Appva.Fhir.Resources
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElement("tag")]
+        [JsonProperty, XmlElement("tag")]
         public Collection<Coding> Tag
         {
             get;

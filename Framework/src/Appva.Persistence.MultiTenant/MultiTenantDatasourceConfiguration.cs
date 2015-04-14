@@ -11,11 +11,35 @@ namespace Appva.Persistence.MultiTenant
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Core.Configuration;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// A multi tenant data source configuration.
+    /// </summary>
+    public interface IMultiTenantDatasourceConfiguration : IDatasourceConfiguration, IConfigurableResource
+    {
+        /// <summary>
+        /// Assembly of which the NHibernate entities resides.
+        /// </summary>
+        string Assembly
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Persistence unit properties, i.e. NHibernate properties.
+        /// </summary>
+        /// <remarks>Optional</remarks>
+        IDictionary<string, string> Properties
+        {
+            get;
+        }
+    }
+
+    /// <summary>
+    /// A <see cref="IMultiTenantDatasourceConfiguration"/> configuration.
     /// </summary>
     public sealed class MultiTenantDatasourceConfiguration : IMultiTenantDatasourceConfiguration
     {

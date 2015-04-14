@@ -15,6 +15,20 @@ namespace Appva.Persistence
     #endregion
 
     /// <summary>
+    /// Default single database <see cref="IDatasource"/>.
+    /// </summary>
+    public interface IDefaultDatasource : IDatasource
+    {
+        /// <summary>
+        /// The <see cref="ISessionFactory"/> instance.
+        /// </summary>
+        ISessionFactory SessionFactory
+        {
+            get;
+        }
+    }
+
+    /// <summary>
     /// Single database data source implementation of <see cref="IDefaultDatasource"/>.
     /// </summary>
     public sealed class DefaultDatasource : Datasource, IDefaultDatasource
@@ -26,6 +40,11 @@ namespace Appva.Persistence
         /// </summary>
         private readonly IDefaultDatasourceConfiguration configuration;
 
+        /// <summary>
+        /// The <see cref="IDatasourceExceptionHandler"/> instance.
+        /// </summary>
+        private readonly IDatasourceExceptionHandler exceptionHandler;
+
         #endregion
 
         #region Constructor.
@@ -35,15 +54,14 @@ namespace Appva.Persistence
         /// </summary>
         /// <param name="configuration">The <see cref="IDefaultDatasourceConfiguration"/></param>
         /// <param name="exceptionHandler">The <see cref="IDatasourceExceptionHandler"/></param>
-        /// <param name="eventInterceptor">The <see cref="IDatasourceEventInterceptor"/></param>
         public DefaultDatasource(
             IDefaultDatasourceConfiguration configuration,
-            IDatasourceExceptionHandler exceptionHandler,
-            IDatasourceEventInterceptor eventInterceptor)
-            : base(exceptionHandler, eventInterceptor)
+            IDatasourceExceptionHandler exceptionHandler)
         {
             Requires.NotNull(configuration, "configuration");
+            Requires.NotNull(exceptionHandler, "exceptionHandler");
             this.configuration = configuration;
+            this.exceptionHandler = exceptionHandler;
         }
 
         #endregion
@@ -64,13 +82,16 @@ namespace Appva.Persistence
         /// <inheritdoc />
         public override void Connect()
         {
-            this.SessionFactory = this.Build(new PersistenceUnit(
-                this.configuration.ConnectionString, 
-                this.configuration.Assembly, 
-                this.configuration.Properties));
-            if (this.SessionFactory == null)
+            try
             {
-                throw new Exception("Unable to connect to database!");
+                this.SessionFactory = this.Build(new PersistenceUnit(
+                    this.configuration.ConnectionString,
+                    this.configuration.Assembly,
+                    this.configuration.Properties));
+            }
+            catch (Exception ex)
+            {
+                this.exceptionHandler.Handle(ex);
             }
         }
 

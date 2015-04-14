@@ -24,8 +24,10 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    public static class SecurityEventObjectSensitivity
+    public sealed class SecurityEventObjectSensitivity : CodeableConcept
     {
+        #region Variables.
+
         /// <summary>
         /// The identification of the code system that defines the meaning of the symbol in 
         /// the code. 
@@ -37,7 +39,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// value the Act.Confidentiality and Role.Confidentiality attribute in accordance 
         /// with the definition for concept domain "Confidentiality".
         /// </summary>
-        public static readonly CodeableConcept Confidentiality = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventObjectSensitivity Confidentiality = new SecurityEventObjectSensitivity(new Collection<Coding>
             {
                 new Coding(System, new Code("_Confidentiality"), "Confidentiality")
             });
@@ -59,7 +61,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// with a data use agreement.
         /// </para>
         /// </summary>
-        public static readonly CodeableConcept Low = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventObjectSensitivity Low = new SecurityEventObjectSensitivity(new Collection<Coding>
             {
                 new Coding(System, new Code("L"), "low")
             });
@@ -82,7 +84,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// with the receiver's terms of use or privacy policies.
         /// </para>
         /// </summary>
-        public static readonly CodeableConcept Moderate = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventObjectSensitivity Moderate = new SecurityEventObjectSensitivity(new Collection<Coding>
             {
                 new Coding(System, new Code("M"), "moderate")
             });
@@ -110,7 +112,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// with applicable jurisdictional privacy law or disclosure authorization.
         /// </para>
         /// </summary>
-        public static readonly CodeableConcept Normal = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventObjectSensitivity Normal = new SecurityEventObjectSensitivity(new Collection<Coding>
             {
                 new Coding(System, new Code("N"), "normal")
             });
@@ -140,7 +142,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// authorization.
         /// </para>
         /// </summary>
-        public static readonly CodeableConcept Restricted = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventObjectSensitivity Restricted = new SecurityEventObjectSensitivity(new Collection<Coding>
             {
                 new Coding(System, new Code("R"), "restricted")
             });
@@ -160,7 +162,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// "unrestricted" to that information even if it is publicly available.
         /// </para>
         /// </summary>
-        public static readonly CodeableConcept Unrestricted = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventObjectSensitivity Unrestricted = new SecurityEventObjectSensitivity(new Collection<Coding>
             {
                 new Coding(System, new Code("U"), "unrestricted")
             });
@@ -187,9 +189,26 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// information subject.
         /// </para>
         /// </summary>
-        public static readonly CodeableConcept VeryRestricted = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventObjectSensitivity VeryRestricted = new SecurityEventObjectSensitivity(new Collection<Coding>
             {
                 new Coding(System, new Code("V"), "very restricted")
             });
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventObjectSensitivity"/> class.
+        /// </summary>
+        /// <param name="coding">
+        /// A reference to a code defined by a terminology system
+        /// </param>
+        private SecurityEventObjectSensitivity(Collection<Coding> coding)
+            : base(null, coding)
+        {
+        }
+
+        #endregion
     }
 }

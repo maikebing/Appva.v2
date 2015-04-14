@@ -16,6 +16,44 @@ namespace Appva.Persistence
     #endregion
 
     /// <summary>
+    /// Persistence unit interface.
+    /// </summary>
+    public interface IPersistenceUnit
+    {
+        /// <summary>
+        /// The identifier for multi tenancy.
+        /// </summary>
+        string Id
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The database connection string.
+        /// </summary>
+        string ConnectionString
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Assembly of which the NHibernate entities resides.
+        /// </summary>
+        string Assembly
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Persistence unit properties, i.e. NHibernate properties.
+        /// </summary>
+        IDictionary<string, string> Properties
+        {
+            get;
+        }
+    }
+
+    /// <summary>
     /// Implementation of <see cref="IPersistenceUnit"/>.
     /// </summary>
     public sealed class PersistenceUnit : IPersistenceUnit

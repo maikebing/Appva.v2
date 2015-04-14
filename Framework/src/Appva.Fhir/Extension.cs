@@ -9,6 +9,7 @@ namespace Appva.Fhir
     #region Imports.
 
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
     using Primitives;
 
     #endregion
@@ -68,7 +69,7 @@ namespace Appva.Fhir
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlAttributeAttribute("url", DataType = "anyURI")]
+        [JsonProperty, XmlAttributeAttribute("url", DataType = "anyURI")]
         public Uri Url
         {
             get;
@@ -85,7 +86,7 @@ namespace Appva.Fhir
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlAttributeAttribute("value")]
+        [JsonProperty, XmlAttributeAttribute("value")]
         public Element Value
         {
             get;

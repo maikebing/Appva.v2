@@ -20,33 +20,59 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     ///         http://hl7.org/implement/standards/FHIR-Develop/security-event-action.html
     ///     </linkUri>
     /// </externalLink>
+    /// This is the equivalent of RIVTA EHR log <c>ActivityTypeType</c>, although the 
+    /// activities "Signera", "Vidimera", "Utskrift", "Nödöppning" are considered a sub 
+    /// type, see <c>SecutiryEventSubType</c>, to an event.
+    /// <externalLink>
+    ///     <linkText>EHR Log 1.2 RC2</linkText>
+    ///     <linkUri>
+    ///         http://rivta.se/downloads/ServiceContracts_ehr_log_1.2_RC2.zip
+    ///     </linkUri>
+    /// </externalLink>
     /// </summary>
-    public static class SecurityEventAction
+    public sealed class SecurityEventAction : Code
     {
+        #region Variables.
+
         /// <summary>
         /// Create a new database object, such as Placing an Order.
         /// </summary>
-        public static readonly Code Create = new Code("C");
+        public static readonly SecurityEventAction Create = new SecurityEventAction("C");
 
         /// <summary>
         /// Display or print data, such as a Doctor Census.
         /// </summary>
-        public static readonly Code Read = new Code("R");
+        public static readonly SecurityEventAction Read = new SecurityEventAction("R");
 
         /// <summary>
         /// Update data, such as Revise Patient Information.
         /// </summary>
-        public static readonly Code Update = new Code("U");
+        public static readonly SecurityEventAction Update = new SecurityEventAction("U");
 
         /// <summary>
         /// Delete items, such as a doctor master file record.
         /// </summary>
-        public static readonly Code Delete = new Code("D");
+        public static readonly SecurityEventAction Delete = new SecurityEventAction("D");
 
         /// <summary>
         /// Perform a system or application function such as log-on, program execution or 
         /// use of an object's method, or perform a query/search operation.
         /// </summary>
-        public static readonly Code Execute = new Code("E");
+        public static readonly SecurityEventAction Execute = new SecurityEventAction("E");
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventAction"/> class.
+        /// </summary>
+        /// <param name="value">The string code value</param>
+        private SecurityEventAction(string value) 
+            : base(value)
+        {
+        }
+
+        #endregion
     }
 }

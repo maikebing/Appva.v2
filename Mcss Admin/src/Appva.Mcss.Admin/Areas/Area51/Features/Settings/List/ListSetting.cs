@@ -1,38 +1,39 @@
-﻿// <copyright file="IMultiTenantDatasourceConfiguration.cs" company="Appva AB">
+﻿// <copyright file="ListSetting.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Persistence.MultiTenant
+namespace Appva.Mcss.Admin.Features.Area51.Cache
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
-    using Appva.Core.Configuration;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IMultiTenantDatasourceConfiguration : IDatasourceConfiguration, IConfigurableResource
+    public sealed class ListSetting
     {
         /// <summary>
-        /// Assembly of which the NHibernate entities resides.
+        /// The setting entry id.
         /// </summary>
-        string Assembly
+        public Guid Id
         {
             get;
+            set;
         }
 
         /// <summary>
-        /// Persistence unit properties, i.e. NHibernate properties.
+        /// The setting value.
         /// </summary>
-        /// <remarks>Optional</remarks>
-        IDictionary<string, string> Properties
+        public string Value
         {
             get;
+            set;
         }
     }
 }

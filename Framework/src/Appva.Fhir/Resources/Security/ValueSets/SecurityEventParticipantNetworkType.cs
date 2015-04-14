@@ -21,31 +21,48 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    public static class SecurityEventParticipantNetworkType
+    public sealed class SecurityEventParticipantNetworkType : Code
     {
+        #region Variables.
+
         /// <summary>
         /// Machine Name, including DNS name.
         /// </summary>
-        public static readonly Code MachineName = new Code("1");
+        public static readonly SecurityEventParticipantNetworkType MachineName = new SecurityEventParticipantNetworkType("1");
 
         /// <summary>
         /// IP Address.
         /// </summary>
-        public static readonly Code IpAddress = new Code("2");
+        public static readonly SecurityEventParticipantNetworkType IpAddress = new SecurityEventParticipantNetworkType("2");
 
         /// <summary>
         /// Telephone Number.
         /// </summary>
-        public static readonly Code TelephoneNumber = new Code("3");
+        public static readonly SecurityEventParticipantNetworkType TelephoneNumber = new SecurityEventParticipantNetworkType("3");
 
         /// <summary>
         /// Email address.
         /// </summary>
-        public static readonly Code EmailAddress = new Code("4");
+        public static readonly SecurityEventParticipantNetworkType EmailAddress = new SecurityEventParticipantNetworkType("4");
 
         /// <summary>
         /// URI (User directory, HTTP-PUT, ftp etc).
         /// </summary>
-        public static readonly Code Uri = new Code("5");
+        public static readonly SecurityEventParticipantNetworkType Uri = new SecurityEventParticipantNetworkType("5");
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventParticipantNetworkType"/> class.
+        /// </summary>
+        /// <param name="value">The string code value</param>
+        private SecurityEventParticipantNetworkType(string value) 
+            : base(value)
+        {
+        }
+
+        #endregion
     }
 }

@@ -10,6 +10,7 @@ namespace Appva.Fhir
 
     using System.Collections.ObjectModel;
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -47,7 +48,7 @@ namespace Appva.Fhir
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlAttributeAttribute("id")]
+        [JsonIgnore, XmlAttributeAttribute("id")]
         public string Id
         {
             get;
@@ -68,7 +69,7 @@ namespace Appva.Fhir
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("extension")]
+        [JsonProperty, XmlElementAttribute("extension")]
         public Collection<Extension> Extension
         {
             get;

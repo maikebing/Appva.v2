@@ -53,7 +53,7 @@ namespace Appva.Test.Caching
         [Fact]
         public void GetCachedItemOneThousandItems_ShouldNotBeModified()
         {
-            var cache = new InMemoryCacheProvider(new LeastFrequentlyUsedPolicy());
+            var cache = new InMemoryCache(new LeastFrequentlyUsedPolicy());
             cache.Add(Key, Zero);
             Parallel.For(
                 Zero,
@@ -72,7 +72,7 @@ namespace Appva.Test.Caching
         [Fact]
         public void AddOrUpdateOneThousandItems_ShouldContainsOneThousand()
         {
-            var cache = new InMemoryCacheProvider(new LeastFrequentlyUsedPolicy());
+            var cache = new InMemoryCache(new LeastFrequentlyUsedPolicy());
             Parallel.For(
                 Zero, 
                 OneThousand, 
@@ -91,7 +91,7 @@ namespace Appva.Test.Caching
         [Fact]
         public void AddOrUpdateUsingTheSameKeyOneThousandTimes_ShouldOnlyContainOne()
         {
-            var cache = new InMemoryCacheProvider(new LeastFrequentlyUsedPolicy());
+            var cache = new InMemoryCache(new LeastFrequentlyUsedPolicy());
             Parallel.For(
                 Zero,
                 OneThousand, 
@@ -111,7 +111,7 @@ namespace Appva.Test.Caching
         [Fact]
         public void AddAndRemoveTheSameKeyOneThousandTimes_ShouldBeEmpty()
         {
-            var cache = new InMemoryCacheProvider(new LeastFrequentlyUsedPolicy());
+            var cache = new InMemoryCache(new LeastFrequentlyUsedPolicy());
             Parallel.For(
                 Zero,
                 OneThousand,

@@ -9,6 +9,7 @@ namespace Appva.Fhir.Complex
     #region Imports.
 
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
     using Primitives;
 
     #endregion
@@ -18,11 +19,15 @@ namespace Appva.Fhir.Complex
     /// defined "code system" - see Using Codes in resources for more details.
     /// <externalLink>
     ///     <linkText>Using Codes in resources</linkText>
-    ///     <linkUri>http://hl7.org/implement/standards/FHIR-Develop/terminologies.html</linkUri>
+    ///     <linkUri>
+    ///         http://hl7.org/implement/standards/FHIR-Develop/terminologies.html
+    ///     </linkUri>
     /// </externalLink>
     /// <externalLink>
     ///     <linkText>Coding</linkText>
-    ///     <linkUri>http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#Coding</linkUri>
+    ///     <linkUri>
+    ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#Coding
+    ///     </linkUri>
     /// </externalLink>
     /// </summary>
     /// <example>
@@ -102,6 +107,15 @@ namespace Appva.Fhir.Complex
             this.ValueSet = valueSet;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Coding"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        public Coding()
+        {
+        }
+
         #endregion
 
         #region Properties.
@@ -116,6 +130,7 @@ namespace Appva.Fhir.Complex
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [JsonProperty]
         public Uri System
         {
             get;
@@ -133,6 +148,7 @@ namespace Appva.Fhir.Complex
         ///     <linkUri>http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#Coding.version</linkUri>
         /// </externalLink>
         /// </summary>
+        [JsonProperty]
         public string Version
         {
             get;
@@ -149,6 +165,7 @@ namespace Appva.Fhir.Complex
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [JsonProperty]
         public Code Code
         {
             get;
@@ -165,6 +182,7 @@ namespace Appva.Fhir.Complex
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [JsonProperty]
         public string Display
         {
             get;
@@ -181,6 +199,7 @@ namespace Appva.Fhir.Complex
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [JsonProperty]
         public bool? Primary
         {
             get;
@@ -196,6 +215,7 @@ namespace Appva.Fhir.Complex
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [JsonProperty]
         public string ValueSet
         {
             get;

@@ -15,6 +15,32 @@ namespace Appva.Persistence
     #endregion
 
     /// <summary>
+    /// Persistence context (<see cref="ISession"/>) provider and resolver interface. 
+    /// </summary>
+    public interface IPersistenceContextAwareResolver
+    {
+        /// <summary>
+        /// Returns the <see cref="IDatasource"/>.
+        /// </summary>
+        IDatasource Datasource
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the current <see cref="ISessionFactory"/>.
+        /// </summary>
+        /// <returns>An <see cref="ISessionFactory"/> instance</returns>
+        ISessionFactory Resolve();
+
+        /// <summary>
+        /// Creates a new <see cref="IPersistenceContext"/> instance.
+        /// </summary>
+        /// <returns>A new <see cref="IPersistenceContext"/> instance</returns>
+        IPersistenceContext CreateNew();
+    }
+
+    /// <summary>
     /// Abstract base <see cref="IPersistenceContextAwareResolver"/> implementation.
     /// </summary>
     public abstract class PersistenceContextAwareResolver : IPersistenceContextAwareResolver

@@ -14,7 +14,7 @@ namespace Appva.Apis.TenantServer
         /// <summary>
         /// The application settings key.
         /// </summary>
-        public const string AppSettingsKey = "TenantServer.TenantClient.BaseAddress";
+        public const string AppSettingsKey = "TenantServer.Client.BaseAddress";
 
         /// <summary>
         /// The media type header.

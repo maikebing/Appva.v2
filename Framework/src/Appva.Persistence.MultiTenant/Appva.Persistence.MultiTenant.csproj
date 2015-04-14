@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,8 +49,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMultiTenantDatasource.cs" />
-    <Compile Include="IMultiTenantDatasourceConfiguration.cs" />
     <Compile Include="MultiTenantDatasource.cs" />
     <Compile Include="MultiTenantDatasourceConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +57,10 @@
     <ProjectReference Include="..\Appva.Apis.Tenant\Appva.Apis.TenantServer.csproj">
       <Project>{84a3404b-798f-43d7-85d9-d2a510895f9e}</Project>
       <Name>Appva.Apis.TenantServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Caching\Appva.Caching.csproj">
+      <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
+      <Name>Appva.Caching</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
       <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>

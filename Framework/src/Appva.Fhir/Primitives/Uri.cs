@@ -9,6 +9,7 @@ namespace Appva.Fhir.Primitives
     #region Imports.
 
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -37,8 +38,18 @@ namespace Appva.Fhir.Primitives
         {
         }
 
-        #endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Uri"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        public Uri()
+            : base(null)
+        {
+        }
 
+        #endregion
+        
         #region Public static Functions.
 
         /// <summary>

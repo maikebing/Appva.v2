@@ -10,6 +10,7 @@ namespace Appva.Fhir.Primitives
 
     using System.Text.RegularExpressions;
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -36,6 +37,16 @@ namespace Appva.Fhir.Primitives
         /// </summary>
         /// <param name="value">The string UUID value</param>
         public Uuid(string value) : base(value)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Uuid"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        public Uuid()
+            : base(null)
         {
         }
 

@@ -9,6 +9,7 @@ namespace Appva.Fhir.Resources
     #region Imports.
 
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
     using Primitives;
 
     #endregion
@@ -78,7 +79,7 @@ namespace Appva.Fhir.Resources
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElement("meta")]
+        [JsonProperty, XmlElement("meta")]
         public Meta Meta
         {
             get;
@@ -100,8 +101,8 @@ namespace Appva.Fhir.Resources
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElement("language")]
-        public Code Language
+        [JsonProperty, XmlElement("language")]
+        public Language Language
         {
             get;
             set;
@@ -117,7 +118,7 @@ namespace Appva.Fhir.Resources
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElement("implicitRules")]
+        [JsonProperty, XmlElement("implicitRules")]
         public Uri ImplicitRules
         {
             get;

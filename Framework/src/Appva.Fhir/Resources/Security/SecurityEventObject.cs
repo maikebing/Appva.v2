@@ -9,7 +9,9 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System.Xml.Serialization;
+    using Appva.Fhir.Resources.Security.ValueSets;
     using Complex;
+    using Newtonsoft.Json;
     using Primitives;
     using Validation;
 
@@ -67,11 +69,11 @@ namespace Appva.Fhir.Resources.Security
         /// The actual query for a query-type participant object
         /// </param>
         public SecurityEventObject(
-            string identifier, 
-            Code type, 
-            Code role, 
-            CodeableConcept lifeCycle, 
-            CodeableConcept sensitivity, 
+            string identifier,
+            SecurityEventObjectType type,
+            SecurityEventObjectRole role,
+            SecurityEventObjectLifecycle lifeCycle,
+            SecurityEventObjectSensitivity sensitivity, 
             string name,
             string description,
             string query)
@@ -85,6 +87,15 @@ namespace Appva.Fhir.Resources.Security
             this.Name = name;
             this.Description = description;
             this.Query = query;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventObject"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        public SecurityEventObject()
+        {
         }
 
         #endregion
@@ -101,7 +112,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("identifier")]
+        [JsonProperty, XmlElementAttribute("identifier")]
         public string Identifier
         {
             get;
@@ -122,8 +133,8 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("type")]
-        public Code Type
+        [JsonProperty, XmlElementAttribute("type")]
+        public SecurityEventObjectType Type
         {
             get;
             set;
@@ -142,8 +153,8 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("role")]
-        public Code Role
+        [JsonProperty, XmlElementAttribute("role")]
+        public SecurityEventObjectRole Role
         {
             get;
             set;
@@ -164,8 +175,8 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("lifecycle")]
-        public CodeableConcept Lifecycle
+        [JsonProperty, XmlElementAttribute("lifecycle")]
+        public SecurityEventObjectLifecycle Lifecycle
         {
             get;
             set;
@@ -187,8 +198,8 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("sensitivity")]
-        public CodeableConcept Sensitivity
+        [JsonProperty, XmlElementAttribute("sensitivity")]
+        public SecurityEventObjectSensitivity Sensitivity
         {
             get;
             set;
@@ -209,7 +220,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("name")]
+        [JsonProperty, XmlElementAttribute("name")]
         public string Name
         {
             get;
@@ -225,7 +236,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("description")]
+        [JsonProperty, XmlElementAttribute("description")]
         public string Description
         {
             get;
@@ -246,7 +257,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("query")]
+        [JsonProperty, XmlElementAttribute("query")]
         public string Query
         {
             get;

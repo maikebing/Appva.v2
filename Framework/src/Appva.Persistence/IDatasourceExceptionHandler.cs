@@ -30,7 +30,6 @@ namespace Appva.Persistence
         /// connection.
         /// </summary>
         /// <param name="exceptions">A collection of exceptions</param>
-        /// <remarks>The collection may be null</remarks>
-        void Handle(IEnumerable<Exception> exceptions);
+        void Handle(AggregateException exception);
     }
 }

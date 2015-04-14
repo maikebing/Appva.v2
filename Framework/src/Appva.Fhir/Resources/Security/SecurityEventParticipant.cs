@@ -11,6 +11,7 @@ namespace Appva.Fhir.Resources.Security
     using System.Collections.Generic;
     using System.Xml.Serialization;
     using Complex;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -67,6 +68,15 @@ namespace Appva.Fhir.Resources.Security
             this.Network = network;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventParticipant"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        protected SecurityEventParticipant()
+        {
+        }
+
         #endregion
 
         #region Properties.
@@ -86,7 +96,7 @@ namespace Appva.Fhir.Resources.Security
         /// optional value that might be used to group events for analysis by user 
         /// functional role categories.
         /// </remarks>
-        [XmlElementAttribute("role")]
+        [JsonProperty, XmlElementAttribute("role")]
         public IEnumerable<CodeableConcept> Roles
         {
             get;
@@ -122,7 +132,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("userId")]
+        [JsonProperty, XmlElementAttribute("userId")]
         public string UserId
         {
             get;
@@ -147,7 +157,7 @@ namespace Appva.Fhir.Resources.Security
         /// then be the original identify used for authentication, and the User ID is the one 
         /// known to and used by the application.
         /// </remarks>
-        [XmlElementAttribute("altId")]
+        [JsonProperty, XmlElementAttribute("altId")]
         public string AlternativeId
         {
             get;
@@ -167,7 +177,7 @@ namespace Appva.Fhir.Resources.Security
         /// The User ID and Authorization User ID may be internal or otherwise obscure 
         /// values. This field assists the auditor in identifying the actual user.
         /// </remarks>
-        [XmlElementAttribute("name")]
+        [JsonProperty, XmlElementAttribute("name")]
         public string Name
         {
             get;
@@ -188,7 +198,7 @@ namespace Appva.Fhir.Resources.Security
         /// There can only be one initiator. If the initiator is not clear, then do not 
         /// choose any one participant as the initiator.
         /// </remarks>
-        [XmlElementAttribute("requestor")]
+        [JsonProperty, XmlElementAttribute("requestor")]
 
         public bool IsRequestor
         {
@@ -206,7 +216,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("media")]
+        [JsonProperty, XmlElementAttribute("media")]
         public Coding Media
         {
             get;
@@ -223,7 +233,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("network")]
+        [JsonProperty, XmlElementAttribute("network")]
         public SecurityEventParticipantNetwork Network
         {
             get;

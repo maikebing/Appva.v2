@@ -9,6 +9,7 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
     using Validation;
 
     #endregion
@@ -55,6 +56,15 @@ namespace Appva.Fhir.Resources.Security
             this.Object = @object;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEvent"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        public SecurityEvent()
+        {
+        }
+
         #endregion
 
         #region Properties.
@@ -62,7 +72,7 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// Identifies the name, action type, time, and disposition of the audited event.
         /// </summary>
-        [XmlElementAttribute("event")]
+        [JsonProperty, XmlElementAttribute("event")]
         public SecurityEventEvent Event
         {
             get;
@@ -72,7 +82,7 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// A person, a hardware device or software process.
         /// </summary>
-        [XmlElementAttribute("participant")]
+        [JsonProperty, XmlElementAttribute("participant")]
         public SecurityEventParticipant Participant
         {
             get;
@@ -82,7 +92,7 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// Application systems and processes.
         /// </summary>
-        [XmlElementAttribute("source")]
+        [JsonProperty, XmlElementAttribute("source")]
         public SecurityEventSource Source
         {
             get;
@@ -92,7 +102,7 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// Specific instances of data or objects that have been accessed.
         /// </summary>
-        [XmlElementAttribute("object")]
+        [JsonProperty, XmlElementAttribute("object")]
         public SecurityEventObject Object
         {
             get;

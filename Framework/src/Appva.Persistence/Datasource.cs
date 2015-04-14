@@ -9,15 +9,28 @@ namespace Appva.Persistence
     #region Imports.
 
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Core.Extensions;
+    using System.Threading.Tasks;
+    using Appva.Persistence.Interceptors;
     using Logging;
     using NHibernate;
     using NHibernate.Cfg;
     using Validation;
 
     #endregion
+
+    /// <summary>
+    /// The data source for which the database connection will be made.
+    /// </summary>
+    public interface IDatasource
+    {
+        /// <summary>
+        /// Attempts to connect to the data source and establish a database connection.
+        /// </summary>
+        void Connect();
+    }
 
     /// <summary>
     /// Abstract base implementation of <see cref="IDatasource"/>.
@@ -34,16 +47,6 @@ namespace Appva.Persistence
         /// </summary>
         private static readonly ILog Log = LogProvider.For<Datasource>();
 
-        /// <summary>
-        /// The <see cref="IDatasourceExceptionHandler"/>.
-        /// </summary>
-        private readonly IDatasourceExceptionHandler exceptionHandler;
-
-        /// <summary>
-        /// The <see cref="IDatasourceEventInterceptor"/>.
-        /// </summary>
-        private readonly IDatasourceEventInterceptor eventInterceptor;
-
         #endregion
 
         #region Constructor.
@@ -51,16 +54,8 @@ namespace Appva.Persistence
         /// <summary>
         /// Initializes a new instance of the <see cref="Datasource"/> class.
         /// </summary>
-        /// <param name="exceptionHandler">The exception handler</param>
-        /// <param name="eventInterceptor">The event interceptor</param>
-        protected Datasource(
-            IDatasourceExceptionHandler exceptionHandler, 
-            IDatasourceEventInterceptor eventInterceptor)
+        protected Datasource()
         {
-            Requires.NotNull(exceptionHandler, "exceptionHandler");
-            Requires.NotNull(eventInterceptor, "eventInterceptor");
-            this.exceptionHandler = exceptionHandler;
-            this.eventInterceptor = eventInterceptor;
         }
 
         #endregion
@@ -78,20 +73,22 @@ namespace Appva.Persistence
         /// Builds a single <see cref="ISessionFactory"/>.
         /// </summary>
         /// <param name="unit">The <see cref="IPersistenceUnit"/></param>
-        /// <returns>An <see cref="ISessionFactory"/> or null if failed</returns>
+        /// <returns>An <see cref="ISessionFactory"/> instance</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// If the <see cref="IPersistenceUnit"/> is null
+        /// </exception>
         protected ISessionFactory Build(IPersistenceUnit unit)
         {
-            Requires.NotNull(unit, "unit");
             try
             {
+                Requires.NotNull(unit, "unit");
                 return this.CreateConnection(unit);
             }
             catch (Exception ex)
             {
                 Log.ErrorException("Unable to create database connection!", ex);
-                this.exceptionHandler.Handle(ex);
+                throw;
             }
-            return null;
         }
 
         /// <summary>
@@ -99,27 +96,29 @@ namespace Appva.Persistence
         /// </summary>
         /// <param name="units">The <see cref="IPersistenceUnit"/></param>
         /// <returns>An <see cref="ISessionFactory"/> key value pairs or null if failed</returns>
+        /// <exception cref="System.AggregateException">
+        /// If one or several database connections failed
+        /// </exception>
         protected IDictionary<string, ISessionFactory> Build(IEnumerable<IPersistenceUnit> units)
         {
             Requires.NotNull(units, "units");
-            IDictionary<string, ISessionFactory> retval = new Dictionary<string, ISessionFactory>();
-            IList<Exception> exceptions = null;
-            foreach (var unit in units)
-            {
-                try
+            var exceptions = new ConcurrentQueue<Exception>();
+            var retval = new Dictionary<string, ISessionFactory>();
+            Parallel.ForEach(units, x =>
                 {
-                    retval.Add(unit.Id, this.CreateConnection(unit));
-                }
-                catch (Exception ex)
-                {
-                    Log.ErrorException("Unable to create database connection!", ex);
-                    exceptions = exceptions.IsNull() ? new List<Exception>() : exceptions;
-                    exceptions.Add(ex);
-                }
-            }
-            if (exceptions.IsNotNull())
+                    try
+                    {
+                        retval.Add(x.Id, this.CreateConnection(x));
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.ErrorException("Unable to create database connection!", ex);
+                        exceptions.Enqueue(ex);
+                    }
+                });
+            if (exceptions.Count > 0)
             {
-                this.exceptionHandler.Handle(exceptions);
+                //throw new AggregateException(exceptions);
             }
             return retval;
         }
@@ -143,6 +142,10 @@ namespace Appva.Persistence
                 {
                     x.ConnectionString = unit.ConnectionString;
                 });
+            if (Log.IsDebugEnabled())
+            {
+                configuration.SetInterceptor(new LogSqlInterceptor());
+            }
             return configuration.BuildSessionFactory();
         }
 

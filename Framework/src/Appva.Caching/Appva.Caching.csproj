@@ -32,11 +32,13 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="Validation">
       <HintPath>..\..\..\packages\Validation.2.0.4.14103\lib\portable-windows8+net40+sl5+wp8+wpa81+wp81+MonoAndroid+MonoTouch\Validation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacheEntry.cs" />
     <Compile Include="CacheItem.cs" />
     <Compile Include="Debug\Messages.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -44,15 +46,15 @@
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="Policies\EvicationPolicy.cs" />
+    <Compile Include="Policies\RuntimeEvictionPolicy.cs" />
     <Compile Include="Providers\CacheProvider.cs" />
-    <Compile Include="ICacheItem.cs" />
-    <Compile Include="Policies\IEvicationPolicy.cs" />
     <Compile Include="Providers\ICacheProvider.cs" />
     <Compile Include="Policies\FirstInFirstOutPolicy.cs" />
     <Compile Include="Policies\LeastFrequentlyUsedPolicy.cs" />
     <Compile Include="Policies\LeastRecentlyUsedPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\InMemoryCacheProvider.cs" />
+    <Compile Include="Providers\InMemoryCache.cs" />
+    <Compile Include="Providers\RuntimeMemoryCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

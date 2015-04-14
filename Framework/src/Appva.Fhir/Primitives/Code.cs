@@ -10,6 +10,7 @@ namespace Appva.Fhir.Primitives
 
     using System.Text.RegularExpressions;
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -28,7 +29,7 @@ namespace Appva.Fhir.Primitives
     /// </summary>
     [FhirVersion(Fhir.V040)]
     [XmlTypeAttribute(Namespace = Fhir.Namespace)]
-    public sealed class Code : Primitive<string>
+    public class Code : Primitive<string>
     {
         #region Constructor.
 
@@ -36,8 +37,18 @@ namespace Appva.Fhir.Primitives
         /// Initializes a new instance of the <see cref="Code"/> class.
         /// </summary>
         /// <param name="value">The string code value</param>
-        public Code(string value)
+        public Code(string value) 
             : base(value)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Code"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        public Code() 
+            : base(null)
         {
         }
 

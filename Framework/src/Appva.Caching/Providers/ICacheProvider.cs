@@ -6,6 +6,12 @@
 // </author>
 namespace Appva.Caching.Providers
 {
+    #region Imports.
+
+    using System.Collections.Generic;
+
+    #endregion
+
     /// <summary>
     /// Cache provider interface.
     /// </summary>
@@ -27,6 +33,12 @@ namespace Appva.Caching.Providers
         /// <returns>The object or null</returns>
         /// <exception cref="System.ArgumentNullException">If key is null</exception>
         object Get(object key);
+
+        /// <summary>
+        /// Returns an immutable collection of cache entries.
+        /// </summary>
+        /// <returns>An immutable collection of cache entries</returns>
+        IEnumerable<CacheEntry> List();
 
         /// <summary>
         /// Stores an object in the cache.
@@ -76,6 +88,6 @@ namespace Appva.Caching.Providers
         /// Returns the size of the cache.
         /// </summary>
         /// <returns>The size of the cache</returns>
-        int Count();
+        long Count();
     }
 }

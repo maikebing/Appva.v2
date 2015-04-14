@@ -10,6 +10,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
 
     using System.Collections.ObjectModel;
     using Complex;
+    using Newtonsoft.Json;
     using Primitives;
 
     #endregion
@@ -23,8 +24,10 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    public static class SecurityEventSourceType
+    public sealed class SecurityEventSourceType : CodeableConcept
     {
+        #region Variables.
+
         /// <summary>
         /// The identification of the code system that defines the meaning of the symbol in 
         /// the code. 
@@ -34,7 +37,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// End-user display device, diagnostic device.
         /// </summary>
-        public static readonly CodeableConcept UserDevice = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSourceType UserDevice = new SecurityEventSourceType(new Collection<Coding>
             {
                 new Coding(System, new Code("1"), "User Device")
             });
@@ -42,7 +45,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Data acquisition device or instrument.
         /// </summary>
-        public static readonly CodeableConcept DataInterface = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSourceType DataInterface = new SecurityEventSourceType(new Collection<Coding>
             {
                 new Coding(System, new Code("2"), "Data Interface")
             });
@@ -50,7 +53,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Web Server process or thread.
         /// </summary>
-        public static readonly CodeableConcept WebServer = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSourceType WebServer = new SecurityEventSourceType(new Collection<Coding>
             {
                 new Coding(System, new Code("3"), "Web Server")
             });
@@ -58,7 +61,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Application Server process or thread.
         /// </summary>
-        public static readonly CodeableConcept ApplicationServer = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSourceType ApplicationServer = new SecurityEventSourceType(new Collection<Coding>
             {
                 new Coding(System, new Code("4"), "Application Server")
             });
@@ -66,7 +69,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Database Server process or thread.
         /// </summary>
-        public static readonly CodeableConcept DatabaseServer = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSourceType DatabaseServer = new SecurityEventSourceType(new Collection<Coding>
             {
                 new Coding(System, new Code("5"), "Database Server")
             });
@@ -74,7 +77,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Security server, e.g., a domain controller.
         /// </summary>
-        public static readonly CodeableConcept SecurityServer = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSourceType SecurityServer = new SecurityEventSourceType(new Collection<Coding>
             {
                 new Coding(System, new Code("6"), "Security Server")
             });
@@ -82,7 +85,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// ISO level 1-3 network component.
         /// </summary>
-        public static readonly CodeableConcept NetworkDevice = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSourceType NetworkDevice = new SecurityEventSourceType(new Collection<Coding>
             {
                 new Coding(System, new Code("7"), "Network Device")
             });
@@ -90,7 +93,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// ISO level 4-6 operating software.
         /// </summary>
-        public static readonly CodeableConcept NetworkRouter = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSourceType NetworkRouter = new SecurityEventSourceType(new Collection<Coding>
             {
                 new Coding(System, new Code("8"), "Network Router")
             });
@@ -98,9 +101,31 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Other kind of device (defined by DICOM, but some other code/system can be used).
         /// </summary>
-        public static readonly CodeableConcept Other = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSourceType Other = new SecurityEventSourceType(new Collection<Coding>
             {
                 new Coding(System, new Code("9"), "Other")
             });
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventSourceType"/> class.
+        /// </summary>
+        /// <param name="coding">
+        /// A reference to a code defined by a terminology system
+        /// </param>
+        public SecurityEventSourceType(Collection<Coding> coding)
+            : base(null, coding)
+        {
+        }
+
+        [JsonConstructor]
+        public SecurityEventSourceType()
+        {
+        }
+
+        #endregion
     }
 }

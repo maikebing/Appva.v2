@@ -30,10 +30,40 @@ namespace Appva.Apis.TenantServer.Contracts
         }
 
         /// <summary>
+        /// The tenant identifier.
+        /// </summary>
+        [JsonProperty("identifier")]
+        public string Identifier
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The tenant database connection.
         /// </summary>
         [JsonProperty("connection_string")]
         public string ConnectionString
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The tenant name.
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The tenant host.
+        /// </summary>
+        [JsonProperty("host_name")]
+        public string HostName
         {
             get;
             set;

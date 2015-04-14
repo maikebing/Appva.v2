@@ -9,6 +9,7 @@ namespace Appva.Fhir.Primitives
     #region Imports.
 
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -34,15 +35,6 @@ namespace Appva.Fhir.Primitives
     [FhirVersion(Fhir.V040)]
     public abstract class Primitive<T> : Element, IValidate
     {
-        #region Variables.
-
-        /// <summary>
-        /// The primitive struct value.
-        /// </summary>
-        private readonly T value;
-
-        #endregion
-
         #region Constructor.
 
         /// <summary>
@@ -51,7 +43,7 @@ namespace Appva.Fhir.Primitives
         /// <param name="value">The struct value</param>
         protected Primitive(T value)
         {
-            this.value = value;
+            this.Value = value;
         }
 
         #endregion
@@ -61,13 +53,12 @@ namespace Appva.Fhir.Primitives
         /// <summary>
         /// The string value.
         /// </summary>
+        [JsonProperty]
         [XmlAttributeAttribute("value")]
         public T Value
         {
-            get
-            {
-                return this.value;
-            }
+            get;
+            private set;
         }
 
         #endregion

@@ -23,8 +23,10 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    public static class SecurityEventSubType
+    public sealed class SecurityEventSubType : CodeableConcept
     {
+        #region Variables.
+
         /// <summary>
         /// The identification of the code system that defines the meaning of the symbol in 
         /// the code. 
@@ -34,7 +36,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Application Entity has started.
         /// </summary>
-        public static readonly CodeableConcept ApplicationStart = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType ApplicationStart = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110120"), "Application Start")
             });
@@ -42,7 +44,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Application Entity has stopped.
         /// </summary>
-        public static readonly CodeableConcept ApplicationStop = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType ApplicationStop = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110121"), "Application Stop")
             });
@@ -50,7 +52,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: User login has been attempted.
         /// </summary>
-        public static readonly CodeableConcept Login = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Login = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110122"), "Login")
             });
@@ -58,7 +60,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: User logout has been attempted.
         /// </summary>
-        public static readonly CodeableConcept Logout = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Logout = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110123"), "Logout")
             });
@@ -66,7 +68,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Node has been attached.
         /// </summary>
-        public static readonly CodeableConcept Attach = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Attach = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110124"), "Attach")
             });
@@ -74,7 +76,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Node has been detached.
         /// </summary>
-        public static readonly CodeableConcept Detach = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Detach = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110125"), "Detach")
             });
@@ -82,7 +84,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Node Authentication has been attempted.
         /// </summary>
-        public static readonly CodeableConcept NodeAuthentication = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType NodeAuthentication = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110126"), "Node Authentication")
             });
@@ -90,7 +92,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Emergency Override has started.
         /// </summary>
-        public static readonly CodeableConcept EmergencyOverrideStarted = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType EmergencyOverrideStarted = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110127"), "Emergency Override Started")
             });
@@ -98,7 +100,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Network configuration has been changed.
         /// </summary>
-        public static readonly CodeableConcept NetworkConfiguration = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType NetworkConfiguration = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110128"), "Network Configuration")
             });
@@ -106,7 +108,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Security configuration has been changed.
         /// </summary>
-        public static readonly CodeableConcept SecurityConfiguration = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType SecurityConfiguration = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110129"), "Security Configuration")
             });
@@ -114,7 +116,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Hardware configuration has been changed.
         /// </summary>
-        public static readonly CodeableConcept HardwareConfiguration = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType HardwareConfiguration = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110130"), "Hardware Configuration")
             });
@@ -122,7 +124,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Software configuration has been changed.
         /// </summary>
-        public static readonly CodeableConcept SoftwareConfiguration = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType SoftwareConfiguration = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110131"), "Software Configuration")
             });
@@ -130,7 +132,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: A use of a restricted function has been attempted.
         /// </summary>
-        public static readonly CodeableConcept UseOfRestrictedFunction = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType UseOfRestrictedFunction = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110132"), "Use of Restricted Function")
             });
@@ -138,7 +140,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Audit recording has been stopped.
         /// </summary>
-        public static readonly CodeableConcept AuditRecordingStopped = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType AuditRecordingStopped = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110133"), "Audit Recording Stopped")
             });
@@ -146,7 +148,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Audit recording has been started.
         /// </summary>
-        public static readonly CodeableConcept AuditRecordingStarted = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType AuditRecordingStarted = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110134"), "Audit Recording Started")
             });
@@ -154,7 +156,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Security attributes of an object have been changed.
         /// </summary>
-        public static readonly CodeableConcept ObjectSecurityAttributesChanged = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType ObjectSecurityAttributesChanged = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110135"), "Object Security Attributes Changed")
             });
@@ -162,7 +164,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Security roles have been changed.
         /// </summary>
-        public static readonly CodeableConcept SecurityRolesChanged = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType SecurityRolesChanged = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110136"), "Security Roles Changed")
             });
@@ -170,7 +172,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Security attributes of a user have been changed.
         /// </summary>
-        public static readonly CodeableConcept UserSecurityAttributesChanged = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType UserSecurityAttributesChanged = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110137"), "User security Attributes Changed")
             });
@@ -178,7 +180,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Emergency Override has Stopped.
         /// </summary>
-        public static readonly CodeableConcept EmergencyOverrideStopped = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType EmergencyOverrideStopped = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110138"), "Emergency Override Stopped")
             });
@@ -186,7 +188,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Remote Service Operation has Begun.
         /// </summary>
-        public static readonly CodeableConcept RemoteServiceOperationStarted = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType RemoteServiceOperationStarted = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110139"), "Remote Service Operation Started")
             });
@@ -194,7 +196,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Remote Service Operation Stopped.
         /// </summary>
-        public static readonly CodeableConcept RemoteServiceOperationStopped = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType RemoteServiceOperationStopped = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110140"), "Remote Service Operation Stopped")
             });
@@ -202,7 +204,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Local Service Operation has Begun.
         /// </summary>
-        public static readonly CodeableConcept LocalServiceOperationStarted = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType LocalServiceOperationStarted = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110141"), "Local Service Operation Started")
             });
@@ -210,7 +212,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Audit event: Local Service Operation Stopped.
         /// </summary>
-        public static readonly CodeableConcept LocalServiceOperationStopped = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType LocalServiceOperationStopped = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(Dicom.System, new Code("110142"), "Local Service Operation Stopped")
             });
@@ -218,7 +220,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Read the current state of the resource.
         /// </summary>
-        public static readonly CodeableConcept Read = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Read = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("read"), "read")
             });
@@ -226,7 +228,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Read the state of a specific version of the resource.
         /// </summary>
-        public static readonly CodeableConcept VRead = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType VRead = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("vread"), "vread")
             });
@@ -234,7 +236,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Update an existing resource by its id (or create it if it is new).
         /// </summary>
-        public static readonly CodeableConcept Update = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Update = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("update"), "update")
             });
@@ -242,7 +244,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Delete a resource.
         /// </summary>
-        public static readonly CodeableConcept Delete = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Delete = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("delete"), "delete")
             });
@@ -250,7 +252,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Check that the content would be acceptable as an update.
         /// </summary>
-        public static readonly CodeableConcept Validate = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Validate = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("validate"), "validate")
             });
@@ -258,7 +260,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Create a new resource with a server assigned id.
         /// </summary>
-        public static readonly CodeableConcept Create = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Create = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("create"), "create")
             });
@@ -266,7 +268,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Retrieve the update history for a particular resource.
         /// </summary>
-        public static readonly CodeableConcept HistoryInstance = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType HistoryInstance = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("history-instance"), "history-instance")
             });
@@ -274,7 +276,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Retrieve the update history for a all resources of a particular type.
         /// </summary>
-        public static readonly CodeableConcept HistoryType = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType HistoryType = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("history-type"), "history-type")
             });
@@ -282,7 +284,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Retrieve the update history for all resources on a system.
         /// </summary>
-        public static readonly CodeableConcept HistorySystem = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType HistorySystem = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("history-system"), "history-system")
             });
@@ -290,7 +292,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Search all resources of the specified type based on some filter criteria.
         /// </summary>
-        public static readonly CodeableConcept SearchType = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType SearchType = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("search-type"), "search-type")
             });
@@ -298,7 +300,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Search all resources based on some filter criteria.
         /// </summary>
-        public static readonly CodeableConcept SearchSystem = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType SearchSystem = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("search-system"), "search-system")
             });
@@ -306,9 +308,26 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// <summary>
         /// Update, create or delete a set of resources as a single transaction.
         /// </summary>
-        public static readonly CodeableConcept Transaction = new CodeableConcept(new Collection<Coding>
+        public static readonly SecurityEventSubType Transaction = new SecurityEventSubType(new Collection<Coding>
             {
                 new Coding(System, new Code("transaction"), "transaction")
             });
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventSubType"/> class.
+        /// </summary>
+        /// <param name="coding">
+        /// A reference to a code defined by a terminology system
+        /// </param>
+        private SecurityEventSubType(Collection<Coding> coding) 
+            : base(null, coding)
+        {
+        }
+
+        #endregion
     }
 }

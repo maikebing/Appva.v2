@@ -13,6 +13,7 @@ namespace Appva.Mvc.Html.Extensions
     using System.Web.Mvc;
     using Elements;
     using Filters;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -76,6 +77,26 @@ namespace Appva.Mvc.Html.Extensions
             }
             span.AddCssClass("help-block");
             return MvcHtmlString.Create(span.ToString());
+        }
+
+        /// <summary>
+        /// Serialize an object to json string.
+        /// </summary>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="obj">The object to be serialized</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
+        public static MvcHtmlString Serialize(this HtmlHelper htmlHelper, object obj)
+        {
+            var code = new TagBuilder("code");
+            try
+            {
+                code.SetInnerText(JsonConvert.SerializeObject(obj));
+            }
+            catch (Exception)
+            {
+                code.SetInnerText(obj.GetType().AssemblyQualifiedName);
+            }
+            return MvcHtmlString.Create(code.ToString());
         }
     }
 }

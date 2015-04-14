@@ -11,7 +11,9 @@ namespace Appva.Fhir.Resources.Security
     using System;
     using System.Collections.ObjectModel;
     using System.Xml.Serialization;
+    using Appva.Fhir.Resources.Security.ValueSets;
     using Complex;
+    using Newtonsoft.Json;
     using Primitives;
     using Validation;
 
@@ -46,7 +48,7 @@ namespace Appva.Fhir.Resources.Security
         /// Indicates whether the event succeeded or failed, see 
         /// <c>SecurityEventOutcome</c>
         /// </param>
-        public SecurityEventEvent(CodeableConcept type, Code action, Code outcome)
+        public SecurityEventEvent(SecurityEventType type, SecurityEventAction action, SecurityEventOutcome outcome)
             : this(type, null, action, DateTime.Now, outcome, null)
         {
         }
@@ -74,7 +76,7 @@ namespace Appva.Fhir.Resources.Security
         /// <param name="outcomeDescription">
         /// A free text description of the outcome of the event
         /// </param>
-        public SecurityEventEvent(CodeableConcept type, Collection<CodeableConcept> subtypes, Code action, DateTime dateTime, Code outcome, string outcomeDescription)
+        public SecurityEventEvent(SecurityEventType type, Collection<SecurityEventSubType> subtypes, SecurityEventAction action, DateTime dateTime, SecurityEventOutcome outcome, string outcomeDescription)
         {
             Requires.NotNull(type, "type");
             Requires.NotNull(action, "action");
@@ -85,6 +87,15 @@ namespace Appva.Fhir.Resources.Security
             this.DateTime = dateTime;
             this.Outcome = outcome;
             this.OutcomeDescription = outcomeDescription;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventEvent"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        protected SecurityEventEvent()
+        {
         }
 
         #endregion
@@ -101,8 +112,8 @@ namespace Appva.Fhir.Resources.Security
         /// </externalLink>
         /// </summary>
         /// <remarks>Required</remarks>
-        [XmlElementAttribute("type")]
-        public CodeableConcept Type
+        [JsonProperty, XmlElementAttribute("type")]
+        public SecurityEventType Type
         {
             get;
             private set;
@@ -117,8 +128,8 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("subtype")]
-        public Collection<CodeableConcept> Subtypes
+        [JsonProperty, XmlElementAttribute("subtype")]
+        public Collection<SecurityEventSubType> Subtypes
         {
             get;
             private set;
@@ -135,8 +146,8 @@ namespace Appva.Fhir.Resources.Security
         /// </externalLink>
         /// </summary>
         /// <remarks>Required</remarks>
-        [XmlElementAttribute("action")]
-        public Code Action
+        [JsonProperty, XmlElementAttribute("action")]
+        public SecurityEventAction Action
         {
             get;
             private set;
@@ -152,7 +163,7 @@ namespace Appva.Fhir.Resources.Security
         /// </externalLink>
         /// </summary>
         /// <remarks>Required</remarks>
-        [XmlElementAttribute("dateTime")]
+        [JsonProperty, XmlElementAttribute("dateTime")]
         public DateTime DateTime
         {
             get;
@@ -174,8 +185,8 @@ namespace Appva.Fhir.Resources.Security
         /// interrupted transfer of a radiological study. For the purpose of establishing 
         /// accountability, these distinctions are not relevant.
         /// </remarks>
-        [XmlElementAttribute("outcome")]
-        public Code Outcome
+        [JsonProperty, XmlElementAttribute("outcome")]
+        public SecurityEventOutcome Outcome
         {
             get;
             private set;
@@ -190,7 +201,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("outcomeDesc")]
+        [JsonProperty, XmlElementAttribute("outcomeDesc")]
         public string OutcomeDescription
         {
             get;

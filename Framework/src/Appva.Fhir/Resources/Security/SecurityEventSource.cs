@@ -9,7 +9,9 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System.Xml.Serialization;
+    using Appva.Fhir.Resources.Security.ValueSets;
     using Complex;
+    using Newtonsoft.Json;
     using Validation;
 
     #endregion
@@ -48,12 +50,21 @@ namespace Appva.Fhir.Resources.Security
         /// Code specifying the type of source where event originated, see 
         /// <c>SecurityEventSourceType</c>.
         /// </param>
-        public SecurityEventSource(string site, string identifier, Coding type)
+        public SecurityEventSource(string site, string identifier, SecurityEventSourceType type)
         {
             Requires.NotNull(identifier, "identifier");
             this.Site = site;
             this.Identifier = identifier;
             this.Type = type;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEventSource"/> class.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private SecurityEventSource()
+        {
         }
 
         #endregion
@@ -70,7 +81,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("site")]
+        [JsonProperty, XmlElementAttribute("site")]
         public string Site
         {
             get;
@@ -88,7 +99,7 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("identifier")]
+        [JsonProperty, XmlElementAttribute("identifier")]
         public string Identifier
         {
             get;
@@ -105,8 +116,8 @@ namespace Appva.Fhir.Resources.Security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("type")]
-        public Coding Type
+        [JsonProperty, XmlElementAttribute("type")]
+        public SecurityEventSourceType Type
         {
             get;
             set;

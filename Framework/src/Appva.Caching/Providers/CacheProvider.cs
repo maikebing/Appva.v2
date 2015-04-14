@@ -6,6 +6,12 @@
 // </author>
 namespace Appva.Caching.Providers
 {
+    #region Imports.
+
+    using System.Collections.Generic;
+
+    #endregion
+
     /// <summary>
     /// Abstract base implementation of <see cref="ICacheProvider"/>.
     /// </summary>
@@ -35,7 +41,10 @@ namespace Appva.Caching.Providers
         public abstract void RemoveAll();
 
         /// <inheritdoc />
-        public abstract int Count();
+        public abstract IEnumerable<CacheEntry> List();
+
+        /// <inheritdoc />
+        public abstract long Count();
 
         #endregion
     }

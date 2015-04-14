@@ -9,6 +9,7 @@ namespace Appva.Fhir.Resources
     #region Imports.
 
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -62,7 +63,7 @@ namespace Appva.Fhir.Resources
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [XmlElementAttribute("text")]
+        [JsonProperty, XmlElementAttribute("text")]
         public string Text
         {
             get;

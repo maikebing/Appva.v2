@@ -1,0 +1,63 @@
+﻿@model Appva.Mcss.Web.ViewModels.DelegationRevisionViewModel
+@{ ViewBag.Title = string.Format("Alla mottagna delegeringar, {0}", Model.Account.FullName); }
+@Html.Partial("~/Views/Account/Partials/_AccountDetails.cshtml", Model.Account)
+@Html.Action("Menu", "Menu", new
+            {
+                Key = "admin_account_menu",
+                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
+                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
+                Id = Model.Account.Id.ToString(),
+                IgnoreAction = false
+            })
+
+<div id="subheader" class="cf">
+	<h1>Mottagna delegeringar</h1>
+     @using (Html.BeginForm(new { id = Model.AccountId })) {
+        <p class="filter">
+            <label>Visa delegering för datum:</label> 
+            @Html.EditorFor(m => m.Date)
+            @Html.ValidationMessageFor(m => m.Date)
+            @Html.Submit("Visa")
+        </p>
+     }
+</div>
+<div id="content" class="delegate-view">
+	<div id="content-primary">
+		<div id="signed-events">
+			<table>
+				<thead>
+					<tr class="head">
+						<th scope="col">Datum</th>
+						<th scope="col">Utfärdat av</th>
+					</tr>
+				</thead>
+				<tbody>
+                    @foreach (var changeset in Model.ChangeSets) {
+					    <tr>
+						    <td>@Html.ActionLink(string.Format("{0:yyyy-MM-dd}", changeset.Created), "Changeset", new { id = changeset.Id, accountId = Model.AccountId })</td>
+						    <td>@changeset.ModifiedBy.FullName</td>
+					    </tr>
+                    }
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        Date.format = 'yyyy-mm-dd';
+        $('.datepick').datePicker({ startDate: '@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddYears(-10))', clickInput: true });
+        $('.subheader form').validate({
+            'rules': {
+                'Date': {
+                    'date': true
+                }
+            },
+            'messages': {
+                'Date': {
+                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
+                }
+            }
+        });
+    });
+</script>

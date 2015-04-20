@@ -1,0 +1,26 @@
+﻿@model Appva.Mcss.Web.ViewModels.PreparePrintPopUpViewModel
+@{
+    ViewBag.Title = "Skriv ut pappersverion";
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PreparePrint" data-valparams="startdate=@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddYears(-10))">
+    @using (Html.BeginForm(new { id = Model.Id, scheduleId = Model.ScheduleId }))
+    {
+        <h3 class="section-title">Välj datum</h3>
+        <div class="text medium">
+            @Html.LabelFor(m => m.PrintStartDate)
+            @Html.EditorFor(m => m.PrintStartDate)
+            @Html.ValidationMessageFor(m => m.PrintStartDate)
+        </div>
+        <div class="text medium">
+			@Html.LabelFor(m => m.PrintEndDate)
+            @Html.EditorFor(m => m.PrintEndDate)
+            @Html.ValidationMessageFor(m => m.PrintEndDate)
+		</div>
+	    <div class="submit">
+            @Html.AntiForgeryToken()
+            @Html.Submit("Skriv ut")
+            @Html.Cancel("Avbryt")
+	    </div>
+    }
+</div>

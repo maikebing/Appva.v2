@@ -1,0 +1,21 @@
+﻿@model Appva.Mcss.Web.ViewModels.InventoryTransactionItemViewModel
+@{ ViewBag.Title = "Kontrollräkna"; }
+
+<div class="std-panel std-form lb-panel-small" data-valclass="RecalculateStock" data-valparams="">
+    @using (Html.BeginForm("Create", "Inventory", new { id = Model.InventoryId, returnUrl = Model.ReturnUrl })) {
+        <h3 class="section-title">Kontrollräkna @Model.InventoryName</h3>
+        <div class="text medium">
+            @Html.LabelFor(m => m.Value)
+            @Html.TextBoxFor(m => m.Value, new { @type = "number", @min = "0", @max = "9999" })
+            @Html.ValidationMessageFor(m => m.Value)
+            @Html.HiddenFor(m => m.SequenceId)
+            @Html.HiddenFor(m => m.InventoryId)
+            @Html.HiddenFor(m => m.Operation)
+        </div>
+        <div class="submit">
+            @Html.AntiForgeryToken()
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+	    </div>
+    }
+</div>

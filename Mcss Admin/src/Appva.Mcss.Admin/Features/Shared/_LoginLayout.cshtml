@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if IE 9]><html class="ie9 gt-ie8"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="gt-ie8 gt-ie9 not-ie">
+<!--<![endif]-->
+    <head>
+        <title>@Title() - Appva MCSS</title>
+        @Html.Partial("_Meta")
+        @Styles.Render("~/css")
+    </head>
+    <body>
+        <div id="login" class="std-panel">
+            @RenderBody()
+            <div class="footer">
+                <p>Appva MCSS version X.X.X</p>
+            </div>
+        </div>
+    </body>
+</html>

@@ -86,6 +86,7 @@
     <Compile Include="Filters\TimingAttribute.cs" />
     <Compile Include="Filters\ValidateAttribute.cs" />
     <Compile Include="Html\ApplicationWebView.cs" />
+    <Compile Include="Html\Extensions\ActionLinkExtensions.cs" />
     <Compile Include="Html\Extensions\CheckBoxExtensions.cs" />
     <Compile Include="Html\Extensions\Elements\CheckboxFor.cs" />
     <Compile Include="Html\Extensions\Elements\CheckBoxListFor.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Html\Extensions\Elements\Help.cs" />
     <Compile Include="Html\Extensions\Elements\LabelAndAsteriskFor.cs" />
     <Compile Include="Html\Extensions\Elements\LabelFor.cs" />
+    <Compile Include="Html\Extensions\Elements\PasswordFor.cs" />
     <Compile Include="Html\Extensions\Elements\TextAreaFor.cs" />
     <Compile Include="Html\Extensions\Elements\TextBoxFor.cs" />
     <Compile Include="Html\Extensions\Elements\ValidateFor.cs" />
@@ -116,6 +118,13 @@
     <Compile Include="Security\SecurityHeader.cs" />
     <Compile Include="Security\StrictTransportSecurityAttribute.cs" />
     <Compile Include="Security\XssProtectionAttribute.cs" />
+    <Compile Include="Html\DataAnnotations\DateGreaterThanAttribute.cs" />
+    <Compile Include="Html\DataAnnotations\DateGreaterThanOrEqualsAttribute.cs" />
+    <Compile Include="Html\DataAnnotations\DateLessThanAttribute.cs" />
+    <Compile Include="Html\DataAnnotations\DateLessThanOrEqualsAttribute.cs" />
+    <Compile Include="Html\DataAnnotations\PlaceHolderAttribute.cs" />
+    <Compile Include="Html\DataAnnotations\RequiredIfAttribute.cs" />
+    <Compile Include="Html\DataAnnotations\UniqueIdentifierAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

@@ -1,0 +1,43 @@
+﻿@model Appva.Mcss.Web.ViewModels.PatientViewModel
+           
+<div class="people people-item cf">
+	<div class="h">
+    	<h2>
+            @Model.FullName
+            @if (Model.SeniorAlerts.IsNotNull()) {
+                foreach (var sa in Model.SeniorAlerts) { 
+                    <img src="@String.Format("/Assets/i/{0}", sa.Type)" alt="Senior alert" title="@sa.Name"/>
+                }
+            }
+    	</h2>
+    	<span class="pnr">@Model.UniqueIdentifier</span>
+    </div>
+    @if (Permissions.CanShow(Permissions.PatientDelete))
+    {
+        @Html.ActionLink("Ta bort", "Inactivate", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
+    }
+    @if (Permissions.CanShow(Permissions.PatientUpdate))
+    {
+        @Html.ActionLink("Ändra boendeuppgifter", "Edit", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
+    }
+    @if (Model.Address.IsNotNull()) { 
+        <div class="i">
+    	    <strong>Adress:</strong>
+    	    <span>@Model.Address</span>
+        </div>
+    }
+    @if (Model.FirstLineContact.IsNotNull()) { 
+        <div class="i">
+    	    <strong>Ansvarig kontaktperson:</strong>
+            @Model.FirstLineContact
+        </div>
+    }
+    @if (Model.Overseeing.IsNotNull()) { 
+        <div class="i">
+    	    <strong>Ansvarig sjuksköterska:</strong>
+            @Model.Overseeing
+	    </div>
+    }
+    
+    
+</div>

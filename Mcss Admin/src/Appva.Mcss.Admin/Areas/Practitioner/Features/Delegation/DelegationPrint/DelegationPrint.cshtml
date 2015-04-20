@@ -1,0 +1,85 @@
+﻿@model Appva.Mcss.Web.ViewModels.DelegationPrintViewModel
+@{
+    ViewBag.Title = "Delegeringsbeslut";
+    Layout = "~/Views/Shared/_PrintLayout.cshtml";
+}
+<div id="header" class="cf">
+	<h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
+	<p>(Sparas i 10 år)</p>
+</div>
+
+<div id="signprint">
+	<table>
+		<tbody>
+			<tr>
+				<td>Namn<h2>@Model.Account.FullName</h2></td>
+				<td>Personnummer<h2>@Model.Account.UniqueIdentifier</h2></td>
+				<td>Titel<h2>@Appva.Mcss.Web.TitleHelper.GetTitle(Model.Account.Roles)</h2></td>
+			</tr>
+		</tbody>
+	</table>
+	<h2>Delegerade hälso- och sjukvårdsuppgifter:</h2>
+    <table>
+    	<caption>Den verksamhet där delegeringen gäller är: _____________________________________</caption>
+		<thead>
+			<tr>
+				<th colspan="3">Delegerade hälso- och sjukvårdsuppgifter:</th>
+			</tr>
+			<tr class="head">
+				<th scope="col">Delegering</th>
+				<th scope="col" class="pats">För boende</th>
+				<th scope="col">Gäller (max 1 år)</th>
+			</tr>
+		</thead>
+		<tbody>
+            @foreach (var delegation in Model.Delegations) {
+			<tr>
+				<td>@delegation.Name</td>
+				<td class="pats">
+					<ul>
+                        @foreach(var patient in delegation.Patients) {
+						    <li>@patient.FullName</li>
+                        }
+					</ul>
+				</td>
+				<td>@String.Format("{0:yyyy-MM-dd}", delegation.StartDate) till @String.Format("{0:yyyy-MM-dd}", delegation.EndDate)</td>
+			</tr>
+            }
+		</tbody>
+	</table>
+    @if (Model.KnowledgeTests.Count > 0) {
+	    <div class="intro">
+		    <p>Undertecknad delegerar, i enlighet med Patientsäkerhetslagen och författningsbestämmelserna i SOSFS 1997:14 - Socialstyrelsens föreskrifter och allmänna råd; Delegering av arbetsuppgifter inom hälso- och sjukvård och tandvård. Den som mottager delegationen har läst och förstått MAS-riktlinjen, delegering av hälso- och sjukvårdsuppgifter. Har genomgått följande kunskapstester:</p>
+		    <table>
+			    <thead>
+				    <tr>
+					    <th scope="col">Test</th>
+					    <th scope="col">Genomfördes</th>
+				    </tr>
+			    </thead>
+			    <tbody>
+                    @foreach (var test in Model.KnowledgeTests) {
+				    <tr>
+					    <td>@test.Name</td>
+					    <td>@String.Format("{0:yyyy-MM-dd}", test.CompletedDate)</td>
+				    </tr>
+                    }
+			    </tbody>
+		    </table>
+	    </div>
+    }
+	<div class="signature cf">
+		<div class="col">
+			<strong>Namnunderskrift delegerande sjuksköterska;</strong>
+			<p>Datum</p>
+			<p>Underskrift</p>
+			<p id="nameTitle">@Model.Identity.FullName</p>
+		</div>
+		<div class="col">
+			<strong>Namnunderskrift av den som tar emot delegeringen;</strong>
+			<p>Datum</p>
+			<p>Underskrift</p>
+		</div>
+		<p><br/><br/><strong>Sänd kopia till MAS och enhetschef.</strong></p>
+	</div>
+</div>

@@ -1,0 +1,316 @@
+﻿@model Appva.Mcss.Web.ViewModels.TaskListViewModel
+@{ 
+	ViewBag.Title = "Signerade händelser";
+	var today = DateTimeExt.Now().Date;
+	var yesterday = DateTimeExt.Now().Date.AddDays(-1);
+	var isFilterByTodaySelected = (Model.StartDate.HasValue && Model.StartDate.Value.Equals(today))
+		&& (Model.EndDate.HasValue && Model.EndDate.Value.Equals(today.Latest()));
+	var isFilterByYesterdaySelected = (Model.StartDate.HasValue && Model.StartDate.Value.Equals(yesterday))
+		&& (Model.EndDate.HasValue && Model.EndDate.Value.Equals(yesterday.Latest()));
+	var isInventory = (Model.Schedule != null) ? (Model.Schedule.HasInventory || Model.Schedule.CountInventory) : false;
+}
+@Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Action("Menu", "Menu", new
+            {
+                Key = "admin_patient_menu",
+                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
+                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
+                Id = Model.Patient.Id.ToString(),
+                IgnoreAction = false
+            })
+<div id="subheader" class="cf">
+	<h1>Signerade händelser</h1>
+	@if (Model.Schedule != null) {
+		using (Html.BeginForm("Sign", "Schedule", FormMethod.Get)) {
+			<p class="filter"><strong>Tid:</strong>
+			@Html.Hidden("scheduleSettingsId", Request["scheduleSettingsId"])
+			@Html.Hidden("order", (int)Model.Order)
+			@Html.DropDownList("year", Model.Years, "År")
+			@Html.DropDownList("month", Model.Months, "Månad")
+			@Html.Submit("Visa")
+			<strong>Typ:</strong>
+			@Html.ActionLink("Alla", "Sign",
+				new { id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id },
+				new { @class = (!Model.FilterByAnomalies && !Model.FilterByNeedsBasis) ? "sel div" : "div" })
+			@Html.ActionLink("Endast avvikelser", "Sign",
+				new { Id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id, year = Model.Year, month = Model.Month, filterByAnomalies = true },
+				new { @class = (Model.FilterByAnomalies) ? "sel div" : "div" })
+			@Html.ActionLink("Endast vid behov", "Sign",
+				new { Id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id, year = Model.Year, month = Model.Month, filterByNeedsBasis = true },
+				new { @class = (Model.FilterByNeedsBasis) ? "sel div" : "div" })
+			</p>
+			@Html.ActionLink("Skriv ut", "PrintPopUp",
+				new { id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id, startDate = Model.StartDate, endDate = Model.EndDate }, new { @class = "btn printp lb-link" })
+		}                                                                                                                        
+	}
+</div>
+<div id="content" class="has-nav cf">
+	@if (Model.Schedules.Count > 0) {
+		<ul id="nav-sub">
+			@foreach (var schedule in Model.Schedules) {
+				<li class="@(Model.Schedule.Id.Equals(schedule.Id) ? "sel" : "")"> 
+					@Html.ActionLink(schedule.Name, "Sign", new { id = Model.Patient.Id, scheduleSettingsId = schedule.Id })
+				</li>
+	  }
+		</ul>
+	}
+	<div id="content-primary">
+		@if (Model.Search == null || Model.Search.TotalItemCount == 0)
+        {
+			<div id="alarm-status">
+				<h2 class="ok">Inga signerade händelser för angiven tidsperiod.</h2>
+			</div>
+		}
+		else { 
+			<div id="signed-events">
+				<table>
+					<thead>
+						<tr class="head">
+							<th scope="col">
+								@Html.ActionLink(
+									isInventory ? "Gavs" : "Preparat",
+									"Sign",
+									new
+									{
+										id = Model.Patient.Id,
+										scheduleSettingsId = Model.Schedule.Id,
+										startDate = Model.StartDate,
+										endDate = Model.EndDate,
+										filterByAnomalies = Model.FilterByAnomalies,
+										page = Request["page"],
+										order = 0
+									},
+									new { @class = (int)Model.Order == 0 ? "sort" : "" })
+							</th>
+							<th scope="col">
+								@Html.ActionLink(
+									"Dag",
+									"Sign",
+									new
+									{
+										id = Model.Patient.Id,
+										scheduleSettingsId = Model.Schedule.Id,
+										startDate = Model.StartDate,
+										endDate = Model.EndDate,
+										filterByAnomalies = Model.FilterByAnomalies,
+										page = Request["page"],
+										order = 1
+									},
+									new { @class = (int)Model.Order == 1 ? "sort" : "" })
+							</th>
+							<th scope="col">
+								@Html.ActionLink(
+									"Tid",
+									"Sign",
+									new
+									{
+										id = Model.Patient.Id,
+										scheduleSettingsId = Model.Schedule.Id,
+										startDate = Model.StartDate,
+										endDate = Model.EndDate,
+										filterByAnomalies = Model.FilterByAnomalies,
+										page = Request["page"],
+										order = 2
+									},
+									new { @class = (int)Model.Order == 2 ? "sort" : "" })
+							</th>
+							<th scope="col">
+								@Html.ActionLink(
+									"Skulle ges",
+									"Sign",
+									new
+									{
+										id = Model.Patient.Id,
+										scheduleSettingsId = Model.Schedule.Id,
+										startDate = Model.StartDate,
+										endDate = Model.EndDate,
+										filterByAnomalies = Model.FilterByAnomalies,
+										page = Request["page"],
+										order = 3
+									},
+									new { @class = (int)Model.Order == 3 ? "sort" : "" })
+							</th>
+							<th scope="col">
+								@Html.ActionLink(
+									"Signerat av",
+									"Sign",
+									new
+									{
+										id = Model.Patient.Id,
+										scheduleSettingsId = Model.Schedule.Id,
+										startDate = Model.StartDate,
+										endDate = Model.EndDate,
+										filterByAnomalies = Model.FilterByAnomalies,
+										page = Request["page"],
+										order = 4
+									},
+									new { @class = (int)Model.Order == 4 ? "sort" : "" })
+							</th>
+							<th scope="col">
+								@Html.ActionLink(
+									"Status",
+									"Sign",
+									new
+									{
+										id = Model.Patient.Id,
+										scheduleSettingsId = Model.Schedule.Id,
+										startDate = Model.StartDate,
+										endDate = Model.EndDate,
+										filterByAnomalies = Model.FilterByAnomalies,
+										page = Request["page"],
+										order = 5
+									},
+									new { @class = (int)Model.Order == 5 ? "sort" : "" })
+							</th>
+							@if (User.IsInRole(RoleUtils.AppvaAccount))
+							{
+								<th scope="col"></th>
+							}
+						</tr>
+					</thead>
+					<tbody>
+						@if (Model.Search.IsNotNull())
+						{
+							foreach (var task in Model.Search.Items)
+							{
+								<tr class="@(!task.Active ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
+									<td>@task.Name</td>
+									<td>
+										@if (!task.IsCompleted) {
+											@:-
+										} else {
+											if (task.OnNeedBasis) {
+												@TimeSpanDifference.ToShortDateTime(task.Modified, "Idag", "Igår")
+											} else {
+												@TimeSpanDifference.ToShortDateTime(task.CompletedDate.GetValueOrDefault(), "Idag", "Igår")
+											}
+										}
+									</td>
+									<td>
+										@if (task.Delayed && task.CompletedBy.IsNull()) {
+											@:Ej signerad
+										} else {
+											if (task.OnNeedBasis) {
+												@:kl @String.Format("{0:HH:mm}", task.Modified)
+											} else {
+												@:kl @String.Format("{0:HH:mm}", task.CompletedDate.GetValueOrDefault())
+											}
+										}
+									</td>
+									<td>
+                                        @TimeSpanDifference.ToShortDateTime(task.Scheduled, "Idag", "Igår") kl @String.Format("{0:HH:mm}", task.Scheduled) 
+										@if (task.RangeInMinutesBefore.Equals(task.RangeInMinutesAfter)) {
+											@:±@task.RangeInMinutesBefore min
+										} else {
+											@:+@task.RangeInMinutesAfter -@task.RangeInMinutesBefore min
+										}
+									</td>
+									<td>
+										@if (task.CompletedBy.IsNotNull()) {
+											@task.CompletedBy.FullName
+										} else {
+											@:--
+										}
+									</td>
+									<td>
+										@if (task.StatusTaxon != null)
+										{
+											<img src="@Url.Image(task.StatusTaxon.Path)" alt="@task.StatusTaxon.Name" />
+											if (task.Delayed && task.StatusTaxon.Weight < 2)
+											{
+												<strong>Avvikelse:</strong> @String.Format("{0} för sent", task.StatusTaxon.Name)
+											}
+											else if (task.StatusTaxon.Weight > 1)
+											{
+												<strong>Avvikelse:</strong> @task.StatusTaxon.Name
+											}
+											else
+											{
+												@task.StatusTaxon.Name
+											}
+										}
+										else
+										{
+											if (task.Status.Equals(1))
+											{
+												<img src="@Url.Image("icn-ok.png")" alt="OK" />
+												if (task.Delayed)
+												{
+													<strong>Avvikelse:</strong> @:Given för sent
+												}
+												else
+												{
+													@:OK
+												}
+											}
+											else if (task.Status.Equals(2))
+											{
+												<img src="@Url.Image("icn-part.png")" alt="Delvis given" />
+												<strong>Avvikelse:</strong> @:Delvis given
+											}
+											else if (task.Status.Equals(3))
+											{
+												<img src="@Url.Image("icn-none.png")" alt="Ej given" />
+												<strong>Avvikelse:</strong> @:Ej given
+											}
+											else if (task.Status.Equals(4))
+											{
+												<img src="@Url.Image("icn-nothx.png")" alt="Kan ej ta" />
+												<strong>Avvikelse:</strong> @: Kan ej ta
+											}
+											else if (task.Status.Equals(5))
+											{
+												<img src="@Url.Image("icn-sent.png")" alt="Medskickad" /> @:Medskickad
+											}
+											else if (task.Status.Equals(6))
+											{
+												<img src="@Url.Image("icn-none.png")" alt="Larm" />
+												<strong>Avvikelse:</strong> @:Räknad mängd stämmer ej med saldo
+											}
+											else
+											{
+												if (task.Delayed)
+												{
+													<img src="@Url.Image("icn-alarm.png")" alt="Larm" />
+													<strong>Avvikelse:</strong>
+													if (task.DelayHandled)
+													{
+														@Html.ActionLink("Larm åtgärdat", "List", "Alert", new { id = Model.Patient.Id }, new { })
+													}
+													else
+													{
+														@:Ej given
+													}
+												}
+											}
+										}
+										
+									</td>
+									@if (User.IsInRole(RoleUtils.AppvaAccount))
+									{
+										<td>
+											@Html.ActionLink("Ta bort", "DeleteTask", new { id = Model.Patient.Id, taskId = task.Id }, new { @class = "btn" })
+										</td>
+									}
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
+				@if (Model.Search.IsNotNull())
+				{
+					@Html.Pager(Model.Search.PageSize, Model.Search.PageNumber, Model.Search.TotalItemCount).Options(o => o
+						.DisplayTemplate("Pagination")
+						.MaxNrOfPages(15)
+						.AlwaysAddFirstPageNumber()
+						.AddRouteValue("scheduleSettingsId", Model.Schedule.Id)
+						.AddRouteValue("startDate", Model.StartDate)
+						.AddRouteValue("endDate", Model.EndDate)
+						.AddRouteValue("filterByAnomalies", Model.FilterByAnomalies)
+						.AddRouteValue("filterByNeedsBasis", Model.FilterByNeedsBasis)
+						.AddRouteValue("order", (int)Model.Order))
+				}
+			</div>
+		}
+	</div>
+</div>

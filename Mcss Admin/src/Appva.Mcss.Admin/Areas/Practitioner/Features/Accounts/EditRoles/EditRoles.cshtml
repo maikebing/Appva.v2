@@ -1,0 +1,19 @@
+﻿@model Appva.Mcss.Web.ViewModels.AccountRolesViewModel
+@{ ViewBag.Title = "Ändra roll"; }
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.BeginForm())
+    {
+
+        <div class="form-tab form-tab-1">
+            <h3 class="section-title">Ändra roll</h3>
+            <div class="text">
+                @Html.CheckBoxListFor(x => x.SelectedRoles, Model.Roles)
+            </div>
+        </div>
+        <div class="submit">
+            @Html.AntiForgeryToken()
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

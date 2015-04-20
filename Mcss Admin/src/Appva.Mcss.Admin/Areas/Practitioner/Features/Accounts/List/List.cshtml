@@ -1,0 +1,106 @@
+﻿@model Appva.Mcss.Admin.Features.Accounts.List.ListAccountModel
+@{
+	Title("Medarbetare"); 
+	AddMeta("asd", "asd");
+}
+
+<div id="subheader" class="cf">
+	<h1>Medarbetare</h1>
+	@Html.ActionLink("Ny medarbetare", "Create", null, new { @class = "btn lb-link" })
+	@*Html.Partial("~/Views/Account/Partials/_AccountSearch.cshtml")*@
+</div>
+
+@foreach(var x in Model.Tests)
+{
+    @x.Id
+    @x.EndDate
+    <br />
+}
+<div class="col-wrap cols-2-1 cf">
+	<div class="col col-1">
+		<div class="filter-ctrl">
+			
+			@using (Html.BeginForm("List", "Account", FormMethod.Get, new { @class = "filter-form" }))
+			{
+				<div class="filter-row">
+					<strong>Visa:</strong>
+					<ul>
+						<li>@Html.ActionLink("Alla", "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled && Model.IsFilterByIsActiveEnabled) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Mina", "List", new { IsFilterByCreatedByEnabled = true }, new { @class = (Model.IsFilterByCreatedByEnabled) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Borttagna", "List", new { IsFilterByIsActiveEnabled = false, IsFilterByIsPausedEnabled = false }, new { @class = ((!Model.IsFilterByIsActiveEnabled) && (!Model.IsFilterByIsPausedEnabled)) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Inaktiverade", "List", new { IsFilterByIsActiveEnabled = false, IsFilterByIsPausedEnabled = true }, new { @class = (Model.IsFilterByIsPausedEnabled) ? "div sel" : "div" })</li>
+					</ul>
+				</div>
+				if (Model.Delegations.Count > 0)
+				{
+					<div class="filter-row">
+						<strong>Med delegering</strong>
+						@Html.DropDownListFor(x => x.DelegationFilterId, new SelectList(Model.Delegations, "Value", "Text"), "Alla")
+					</div>
+				}
+				<div class="filter-row">
+					<strong>Med titel:</strong>
+					@Html.DropDownListFor(x => x.RoleFilterId, new SelectList(Model.Roles, "Value", "Text"), "Alla")
+				</div>
+				<div class="filter-row">
+					@Html.Submit("Visa")
+				</div>
+		 }
+		</div>
+	</div>
+	@if (Model.Accounts.Count > 0)
+	{
+		<div class="col col-2">
+		<ul class="people delegate">
+			@foreach (var item in Model.Accounts)
+			{
+				<li class="cf" @*class="cf @((item.ShowAlertOnDaysLeft) ? "update" : "")"*@>
+					@if (item.IsActive) {
+						@Html.ActionLink("Ta bort", "Inactivate", "Account", new { Id = item.Id }, new { @class = "btn btn-del" })
+					} 
+					@if (!item.IsActive && !item.IsPaused) {
+						@Html.ActionLink("Aktivera", "Activate", "Account", new { Id = item.Id }, new { @class = "btn" })
+					}
+					@if (item.IsActive) {
+						@Html.ActionLink("Inaktivera", "Pause", "Account", new { Id = item.Id }, new { @class = "btn" })
+					}
+					@if (item.IsPaused) {
+						@Html.ActionLink("Aktivera", "UnPause", "Account", new { Id = item.Id }, new { @class = "btn" })
+					}
+					<div class="h">
+						<h2>
+							@if (item.IsActive)
+							{
+								@Html.ActionLink(item.FullName, "List", "Delegation", new { id = item.Id }, null)
+							}
+							else
+							{
+								@item.FullName
+							}
+						</h2>
+						<span class="pnr">
+							@item.PersonalIdentityNumber
+						</span>
+					</div>
+					<div class="i">
+						<strong>Titel:</strong>
+						<span>@*item.Title*@</span>
+					</div>
+					<div class="i">
+						<strong>Chef:</strong>
+						<span>@*item.Superior*@</span>
+					</div>
+				</li>
+			}
+		</ul>
+		@*Html.Pager(Model.Search.PageSize, Model.Search.PageNumber, Model.Search.TotalItemCount).Options(o => o
+			.DisplayTemplate("Pagination")
+			.MaxNrOfPages(15)
+			.AlwaysAddFirstPageNumber()
+			.AddRouteValue("IsActive", Model.IsActive)
+			.AddRouteValue("FilterByCreatedBy", Model.FilterByCreatedBy)
+			.AddRouteValue("FilterByDelegation", Model.FilterByDelegation)
+			.AddRouteValue("FilterByTitle", Model.FilterByTitle))*@
+	</div>
+	}
+</div>

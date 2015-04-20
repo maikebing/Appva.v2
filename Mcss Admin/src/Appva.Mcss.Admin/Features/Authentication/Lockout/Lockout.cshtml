@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Features/Shared/_LoginLayout.cshtml";
+    Title("Spärrat konto");
+}
+<div class="header cf">
+    <div id="logo">
+        <img src="@Url.Content("~/Assets/i/logo.png")" alt="Appva MCSS" />
+    </div>
+</div>
+<div class="body">
+    <div class="std-form">
+        <h2>Spärrat konto</h2>
+        <p>
+            Ditt konto har tillfälligt blivit spärrat efter upprepade misslyckade försök att logga in, var
+            vänlig försök igen senare.
+        </p>
+        @Html.ActionLink("Tillbaka till inloggning", "SignIn")
+        @Html.ActionLink("Glömt lösenord?", "Forgot")
+    </div>
+</div>

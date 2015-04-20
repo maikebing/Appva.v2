@@ -1,0 +1,99 @@
+﻿@model Appva.Mcss.Web.ViewModels.PatientFormViewModel
+@{ ViewBag.Title = "Ändra boendeuppgifter"; }
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PatientCreate" data-valparams="id=@((Model.PatientId.HasValue) ? Model.PatientId.Value.ToString() : "");uidUrl=@Url.Action("IsUnique");taxonUrl=@Url.Action("VerifyTaxon", "Taxonomy")">    
+    @using (Html.BeginForm(new { Id = Model.PatientId }))
+    {
+        if (Model.SeniorAlerts.IsNotNull()) { 
+            <div class="row form-tabgroup lb-nav cf">
+			    <ul class="nav cf">
+                    <li class="sel">
+                        <a class="rleft" href="#" data-formtab="form-tab-1">Personuppgifter</a>
+                    </li>
+                
+                    <li>
+                        <a class="rright" href="#" data-formtab="form-tab-2">Profiluppgifter</a>
+                    </li>
+               
+                </ul>
+		    </div>
+        }
+        <div class="form-tab form-tab-1 ">
+            <h3 class="section-title">Ändra boendeuppgifter</h3>
+	        <div class="text large">
+                @Html.LabelFor(m => m.FirstName)
+                @Html.EditorFor(m => m.FirstName)
+                @Html.ValidationMessageFor(m => m.FirstName)
+	        </div>
+            <div class="text large">
+                @Html.LabelFor(m => m.LastName)
+                @Html.EditorFor(m => m.LastName)
+                @Html.ValidationMessageFor(m => m.LastName)
+	        </div>
+	        <div class="text">
+                @Html.LabelFor(m => m.UniqueIdentifier)
+                @Html.EditorFor(m => m.UniqueIdentifier)
+                @Html.ValidationMessageFor(m => m.UniqueIdentifier)
+	        </div>
+            @if (Model.HasTagIdentifier)
+            {
+                <div class="text small">
+                    @Html.LabelFor(m => m.Tag)
+                    @Html.EditorFor(m => m.Tag)
+                    @Html.ValidationMessageFor(m => m.Tag)
+                </div>
+            }
+	        <div class="select selectgroup cf">
+		        <strong>Adress:</strong>
+                @if (Model.Taxons.IsNotNull())
+                {
+                    foreach (var taxon in Model.Taxons)
+                    {
+                    <div class="select">
+                        <label class="structural">@taxon.Label</label>
+                        @Html.DropDownList(taxon.Id,
+                            new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
+                            string.Format("Välj {0}...", taxon.OptionLabel),
+                            new { @class = "dropdown" }
+                        )
+                    </div>
+                    }
+                }
+                @Html.HiddenFor(m => m.Taxon)
+                @Html.ValidationMessageFor(m => m.Taxon)
+	        </div>
+            <div class="checkbox">
+	            @Html.LabelFor(m => m.Deceased)
+                @Html.EditorFor(m => m.Deceased)
+                @Html.ValidationMessageFor(m => m.Deceased)
+            </div>
+        </div>
+        
+        if (Model.SeniorAlerts.IsNotNull()) { 
+            <div class="form-tab form-tab-2">
+                <h3 class="section-title">Profiluppgifter</h3>
+                <ul class="health-attr">
+                    @foreach (var item in Model.SeniorAlerts)
+                    { 
+                        <li class="cf">
+                            <img src="@String.Format("/Assets/i/{0}", item.Type)" />
+                            <div class="checkbox">
+						        <input type="checkbox" name="PatientSeniorAlerts" id="@item.Id" value="@item.Id" @(Model.PatientSeniorAlerts.Contains(item.Id) ? "checked" : "") />
+					        </div>
+                            <div class="desc">
+						        <label for="health-attr">@item.Name</label>
+						        <p>@item.Description</p>
+					        </div>
+                        </li>
+                    }
+                </ul>
+            
+            </div>
+        }
+                
+        <div class="submit">
+            @Html.AntiForgeryToken()
+		    @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+	    </div>
+    }
+</div>

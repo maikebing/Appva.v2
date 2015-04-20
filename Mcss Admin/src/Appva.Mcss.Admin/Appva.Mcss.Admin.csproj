@@ -1,0 +1,750 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A58F3B0A-68BC-48C0-BE51-E8CEC1FDB313}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Appva.Mcss.Admin</RootNamespace>
+    <AssemblyName>Appva.Mcss.Admin</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac">
+      <HintPath>..\..\..\Packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc">
+      <HintPath>..\..\..\Packages\Autofac.Mvc5.3.3.3\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="DataAnnotationsExtensions">
+      <HintPath>..\..\..\Packages\DataAnnotationsExtensions.1.1.0.0\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\Packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.Identity.Core.2.2.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.Identity.Owin.2.2.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcPaging">
+      <HintPath>..\..\..\Packages\MvcPaging.2.1.2\lib\net40\MvcPaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\Packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Owin">
+      <HintPath>..\..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfiguration.cs" />
+    <Compile Include="App_Start\FilterConfiguration.cs" />
+    <Compile Include="App_Start\IocConfiguration.cs" />
+    <Compile Include="App_Start\PersistenceConfiguration.cs" />
+    <Compile Include="App_Start\RouteConfiguration.cs" />
+    <Compile Include="App_Start\AuthenticationConfiguration.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\AclController.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Activate\Activate.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Install\Install.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Install\InstallHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Preview\PreviewAcl.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Preview\PreviewAclHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\CachesController.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\Remove\RemoveCacheKey.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\Remove\RemoveHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\InventoryController.cs" />
+    <Compile Include="Areas\Patient\Features\Order\OrderController.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\PatientController.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\PrepareController.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\ScheduleController.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequence.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequencePostHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceViewHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Inactivate\InactivateSequence.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Inactivate\InactivateSequenceHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceNotificationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePasswordHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\Handlers\CreateAccountViewHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountCommand.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\List\TestBoll.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\List\ListCache.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\List\ListCacheHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Settings\List\ListSetting.cs" />
+    <Compile Include="Areas\Area51\Features\Settings\List\ListSettingsHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\AlertsController.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\CalendarController.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
+    <Compile Include="Areas\Practitioner\Features\Roles\RolesController.cs" />
+    <Compile Include="Areas\sdfsdfsdf\sdfsdfsdfAreaRegistration.cs" />
+    <Compile Include="Commands\AccountQuickSearch.cs" />
+    <Compile Include="Commands\CreateChartCommand.cs" />
+    <Compile Include="Commands\CreateOverviewCommand.cs" />
+    <Compile Include="Commands\CreateReportCommand.cs" />
+    <Compile Include="Commands\DateTimeUtils.cs" />
+    <Compile Include="Commands\DelegationReportFilter.cs" />
+    <Compile Include="Commands\FullReportFilter.cs" />
+    <Compile Include="Commands\InactivateOrActivateCommand.cs" />
+    <Compile Include="Commands\IReportFilter.cs" />
+    <Compile Include="Commands\IsUniqueIdentifierCommand.cs" />
+    <Compile Include="Commands\PatientQuickSearch.cs" />
+    <Compile Include="Commands\QuickSearchCommand.cs" />
+    <Compile Include="Commands\ScheduleReportFilter.cs" />
+    <Compile Include="Commands\SearchAccountCommand.cs" />
+    <Compile Include="Commands\SearchPatientCommand.cs" />
+    <Compile Include="Commands\SearchTaskCommand.cs" />
+    <Compile Include="Commands\TaskUtils.cs" />
+    <Compile Include="Features\Authentication\AuthenticationController.cs" />
+    <Compile Include="Features\Authentication\Forgot\ForgotPassword.cs" />
+    <Compile Include="Features\Authentication\SignIn\SignIn.cs" />
+    <Compile Include="Features\Home\HomeController.cs" />
+    <Compile Include="Features\Menus\Menu\Menu.cs" />
+    <Compile Include="Features\Menus\Menu\MenuHandler.cs" />
+    <Compile Include="Features\Menus\MenusController.cs" />
+    <Compile Include="Features\Taxa\TaxonFilter\TaxonFilter.cs" />
+    <Compile Include="Features\Taxa\TaxaController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\Attributes\DispatchAttribute.cs" />
+    <Compile Include="Infrastructure\Controllers\AbstractMediatorController.cs" />
+    <Compile Include="Infrastructure\Controllers\IdentityController.cs" />
+    <Compile Include="Infrastructure\Models\Parameterless.cs" />
+    <Compile Include="Models\AccountFormViewModel.cs" />
+    <Compile Include="Models\AccountInfoViewModel.cs" />
+    <Compile Include="Models\AccountListViewModel.cs" />
+    <Compile Include="Models\AccountMapper.cs" />
+    <Compile Include="Models\AccountRolesViewModel.cs" />
+    <Compile Include="Models\AccountViewModel.cs" />
+    <Compile Include="Models\AddToStockViewModel.cs" />
+    <Compile Include="Models\AjaxPanelViewModel.cs" />
+    <Compile Include="Models\AlertListViewModel.cs" />
+    <Compile Include="Models\AlertOverviewViewModel.cs" />
+    <Compile Include="Models\ChangePasswordViewModel.cs" />
+    <Compile Include="Models\ChartDataPointViewModel.cs" />
+    <Compile Include="Models\CheckBoxViewModel.cs" />
+    <Compile Include="Models\CreateSequencePageViewModelBuilder.cs" />
+    <Compile Include="Models\DateSpanViewModel.cs" />
+    <Compile Include="Models\DelegationDateSpanViewModel.cs" />
+    <Compile Include="Models\DelegationInactivateViewModel.cs" />
+    <Compile Include="Models\DelegationListViewModel.cs" />
+    <Compile Include="Models\DelegationOverviewViewModel.cs" />
+    <Compile Include="Models\DelegationPrintViewModel.cs" />
+    <Compile Include="Models\DelegationReportViewModel.cs" />
+    <Compile Include="Models\DelegationRevisionViewModel.cs" />
+    <Compile Include="Models\DelegationViewModel.cs" />
+    <Compile Include="Models\EventListViewModel.cs" />
+    <Compile Include="Models\EventOverviewViewModel.cs" />
+    <Compile Include="Models\EventViewModel.cs" />
+    <Compile Include="Models\ExcelTaskModel.cs" />
+    <Compile Include="Models\FullReportViewModel.cs" />
+    <Compile Include="Models\GlobalFilterCacheHelper.cs" />
+    <Compile Include="Models\GlobalFilterViewModel.cs" />
+    <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\InventoryOverviewViewModel.cs" />
+    <Compile Include="Models\InventoryTransactionItemViewModel.cs" />
+    <Compile Include="Models\IssuedDelegationsViewModel.cs" />
+    <Compile Include="Models\KnowledgeTestFormModel.cs" />
+    <Compile Include="Models\KnowledgeTestViewModel.cs" />
+    <Compile Include="Models\ListInventoryViewModel.cs" />
+    <Compile Include="Models\NotificationViewModel.cs" />
+    <Compile Include="Models\OrderOverviewViewModel.cs" />
+    <Compile Include="Models\PatientFormViewModel.cs" />
+    <Compile Include="Models\PatientListViewModel.cs" />
+    <Compile Include="Models\PatientMapper.cs" />
+    <Compile Include="Models\PatientViewModel.cs" />
+    <Compile Include="Models\PrepareAddSequenceViewModel.cs" />
+    <Compile Include="Models\PrepareEditSequenceViewModel.cs" />
+    <Compile Include="Models\PreparePrintPopUpViewModel.cs" />
+    <Compile Include="Models\PreparePrintViewModel.cs" />
+    <Compile Include="Models\PrepareSchemaViewModel.cs" />
+    <Compile Include="Models\PrintPopUpViewModel.cs" />
+    <Compile Include="Models\PrintViewModel.cs" />
+    <Compile Include="Models\RecalculateStockViewModel.cs" />
+    <Compile Include="Models\RecountOverviewItemViewModel.cs" />
+    <Compile Include="Models\ReportViewModel.cs" />
+    <Compile Include="Models\RoleFormViewModel.cs" />
+    <Compile Include="Models\RoleScheduleFormViewModel.cs" />
+    <Compile Include="Models\ScheduleDetailsViewModel.cs" />
+    <Compile Include="Models\ScheduleListViewModel.cs" />
+    <Compile Include="Models\SchedulePrintPopOverViewModel.cs" />
+    <Compile Include="Models\ScheduleReportViewModel.cs" />
+    <Compile Include="Models\ScheduleTabelPrintViewModel.cs" />
+    <Compile Include="Models\ScheduleViewModel.cs" />
+    <Compile Include="Models\SearchViewModel.cs" />
+    <Compile Include="Models\SequenceViewModel.cs" />
+    <Compile Include="Models\TaskListViewModel.cs" />
+    <Compile Include="Models\TaxonomyHelper.cs" />
+    <Compile Include="Models\TaxonViewModel.cs" />
+    <Compile Include="Models\TitleHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\css\datePicker.css" />
+    <Content Include="Assets\css\main.css" />
+    <Content Include="Assets\css\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-icons_222222_256x240.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Assets\css\ui-lightness\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Assets\css\ui-lightness\jquery-ui-1.9.0.custom.css" />
+    <Content Include="Assets\css\ui-lightness\jquery-ui-1.9.0.custom.min.css" />
+    <Content Include="Assets\i\ajax-load%402x.gif" />
+    <Content Include="Assets\i\ajax-load.gif" />
+    <Content Include="Assets\i\appva-footer-logo.png" />
+    <Content Include="Assets\i\bell.png" />
+    <Content Include="Assets\i\bg-stdbtn-del.png" />
+    <Content Include="Assets\i\bg-stdbtn.png" />
+    <Content Include="Assets\i\bg-texture.png" />
+    <Content Include="Assets\i\btn-delete.png" />
+    <Content Include="Assets\i\btn-edit.png" />
+    <Content Include="Assets\i\btn-lb-close.png" />
+    <Content Include="Assets\i\bubble-tip-left.png" />
+    <Content Include="Assets\i\bullet-action.png" />
+    <Content Include="Assets\i\ce-logo.png" />
+    <Content Include="Assets\i\clock.png" />
+    <Content Include="Assets\i\clock_red.png" />
+    <Content Include="Assets\i\clock_stop.png" />
+    <Content Include="Assets\i\dayslot-hover.png" />
+    <Content Include="Assets\i\dayslot-unsel.png" />
+    <Content Include="Assets\i\filter-sep.png" />
+    <Content Include="Assets\i\footer-shade.png" />
+    <Content Include="Assets\i\globalfilter-select.png" />
+    <Content Include="Assets\i\grad-12.png" />
+    <Content Include="Assets\i\grad-21.png" />
+    <Content Include="Assets\i\grad-btn.png" />
+    <Content Include="Assets\i\header-sep.png" />
+    <Content Include="Assets\i\header-tab.png" />
+    <Content Include="Assets\i\icn-alarm-s.png" />
+    <Content Include="Assets\i\icn-alarm.png" />
+    <Content Include="Assets\i\icn-arrows%402x.png" />
+    <Content Include="Assets\i\icn-arrows.png" />
+    <Content Include="Assets\i\icn-big-signlist.png" />
+    <Content Include="Assets\i\icn-caldel.png" />
+    <Content Include="Assets\i\icn-check.png" />
+    <Content Include="Assets\i\icn-cross.png" />
+    <Content Include="Assets\i\icn-delete.png" />
+    <Content Include="Assets\i\icn-health-fall.png" />
+    <Content Include="Assets\i\icn-health-oral.png" />
+    <Content Include="Assets\i\icn-health-pressure.png" />
+    <Content Include="Assets\i\icn-health-weight.png" />
+    <Content Include="Assets\i\icn-help.png" />
+    <Content Include="Assets\i\icn-home.png" />
+    <Content Include="Assets\i\icn-none%402x.png" />
+    <Content Include="Assets\i\icn-none.png" />
+    <Content Include="Assets\i\icn-nothome%402x.png" />
+    <Content Include="Assets\i\icn-nothome.png" />
+    <Content Include="Assets\i\icn-nothx%402x.png" />
+    <Content Include="Assets\i\icn-nothx.png" />
+    <Content Include="Assets\i\icn-ok%402x.png" />
+    <Content Include="Assets\i\icn-ok.png" />
+    <Content Include="Assets\i\icn-okg%402x.png" />
+    <Content Include="Assets\i\icn-okg.png" />
+    <Content Include="Assets\i\icn-part%402x.png" />
+    <Content Include="Assets\i\icn-part.png" />
+    <Content Include="Assets\i\icn-pen.png" />
+    <Content Include="Assets\i\icn-plus.png" />
+    <Content Include="Assets\i\icn-print.png" />
+    <Content Include="Assets\i\icn-sent%402x.png" />
+    <Content Include="Assets\i\icn-sent.png" />
+    <Content Include="Assets\i\icn-sleep.png" />
+    <Content Include="Assets\i\icn-toggle.png" />
+    <Content Include="Assets\i\icn-toolclock.png" />
+    <Content Include="Assets\i\icn-toolneed.png" />
+    <Content Include="Assets\i\icn-toolpics.png" />
+    <Content Include="Assets\i\icn-update.png" />
+    <Content Include="Assets\i\icn-warning-diabetes.png" />
+    <Content Include="Assets\i\icn-warning-varan.png" />
+    <Content Include="Assets\i\icn-warning-waran.png" />
+    <Content Include="Assets\i\icon-calendar.gif" />
+    <Content Include="Assets\i\ipad-htoggle-off.png" />
+    <Content Include="Assets\i\ipad-htoggle-on.png" />
+    <Content Include="Assets\i\ipad-late.png" />
+    <Content Include="Assets\i\ipad-nextarrow.png" />
+    <Content Include="Assets\i\ipad-now.png" />
+    <Content Include="Assets\i\ipad-toggledarrow.png" />
+    <Content Include="Assets\i\list-arrow.png" />
+    <Content Include="Assets\i\logo.png" />
+    <Content Include="Assets\i\minichart.jpg" />
+    <Content Include="Assets\i\no-connection.png" />
+    <Content Include="Assets\i\page_white_excel.png" />
+    <Content Include="Assets\i\popover.png" />
+    <Content Include="Assets\i\popover2.png" />
+    <Content Include="Assets\i\reportchart.png" />
+    <Content Include="Assets\i\select-arrow.png" />
+    <Content Include="Assets\i\shade-blue.png" />
+    <Content Include="Assets\i\shade-header.png" />
+    <Content Include="Assets\i\shade-small.png" />
+    <Content Include="Assets\i\shade-top.png" />
+    <Content Include="Assets\i\shade-white.png" />
+    <Content Include="Assets\i\sort-arrow.png" />
+    <Content Include="Assets\i\statusicons-tiles%402x.png" />
+    <Content Include="Assets\i\trenddn.png" />
+    <Content Include="Assets\i\trendup.png" />
+    <Content Include="Assets\i\trest-logo.png" />
+    <Content Include="Assets\i\web-ajax-loader.gif" />
+    <Content Include="Assets\js\jquery\jquery-1.6.3.js" />
+    <Content Include="Assets\js\jquery\jquery-1.6.3.min.js" />
+    <Content Include="Assets\js\jquery\jquery-1.8.2.js" />
+    <Content Include="Assets\js\jquery\jquery-1.8.2.min.js" />
+    <Content Include="Assets\js\jquery\jquery-ui-1.9.0.custom.js" />
+    <Content Include="Assets\js\jquery\jquery-ui-1.9.0.custom.min.js" />
+    <Content Include="Assets\js\jquery\plugins\date.js" />
+    <Content Include="Assets\js\jquery\plugins\excanvas.js" />
+    <Content Include="Assets\js\jquery\plugins\excanvas.min.js" />
+    <Content Include="Assets\js\jquery\plugins\jquery.datePicker.js" />
+    <Content Include="Assets\js\jquery\plugins\jquery.flot-0.7.0.js" />
+    <Content Include="Assets\js\jquery\plugins\jquery.flot-0.7.0.min.js" />
+    <Content Include="Assets\js\jquery\plugins\jquery.validate-1.10.0.js" />
+    <Content Include="Assets\js\jquery\plugins\jquery.validate-1.10.0.min.js" />
+    <Content Include="Assets\js\main.js" />
+    <Content Include="Assets\js\mcss.calendar.js" />
+    <Content Include="Assets\js\mcss.calendar.lb.js" />
+    <Content Include="Assets\js\mcss.chart.js" />
+    <Content Include="Assets\js\mcss.customselect.js" />
+    <Content Include="Assets\js\mcss.domready.js" />
+    <Content Include="Assets\js\mcss.js" />
+    <Content Include="Assets\js\mcss.lightbox.js" />
+    <Content Include="Assets\js\mcss.order.js" />
+    <Content Include="Assets\js\mcss.prepareweeks.js" />
+    <Content Include="Assets\js\mcss.validation.js" />
+    <Content Include="Assets\js\placeholder.v3.0.2.min.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Features\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Features\_ViewStart.cshtml" />
+    <Content Include="Features\Shared\Error.cshtml" />
+    <Content Include="Features\Shared\_Layout.cshtml" />
+    <Content Include="Features\Authentication\Lockout\Lockout.cshtml" />
+    <Content Include="Features\Shared\_LoginPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Home\Index\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Apis.TenantServer.Legacy\Appva.Apis.TenantServer.Legacy.csproj">
+      <Project>{d6cd965a-fa1e-429e-94e7-7efb4e66ce3f}</Project>
+      <Name>Appva.Apis.TenantServer.Legacy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Apis.Tenant\Appva.Apis.TenantServer.csproj">
+      <Project>{84a3404b-798f-43d7-85d9-d2a510895f9e}</Project>
+      <Name>Appva.Apis.TenantServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Caching\Appva.Caching.csproj">
+      <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
+      <Name>Appva.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Common\Appva.Common.csproj">
+      <Project>{4b12b272-329e-42da-b8c9-bc49d9544766}</Project>
+      <Name>Appva.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
+      <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
+      <Name>Appva.Core.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Core\Appva.Core.csproj">
+      <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
+      <Name>Appva.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Cqrs\Appva.Cqrs.csproj">
+      <Project>{0c3cc633-42b5-413f-b1a6-57da6f65a61a}</Project>
+      <Name>Appva.Cqrs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
+      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
+      <Name>Appva.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Mvc\Appva.Mvc.csproj">
+      <Project>{53a7fe5b-f451-4b7a-8932-9ad424f09165}</Project>
+      <Name>Appva.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.Autofac\Appva.Persistence.Autofac.csproj">
+      <Project>{9041f4f2-26b2-44de-ad32-3edaeaed35d2}</Project>
+      <Name>Appva.Persistence.Autofac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.MultiTenant\Appva.Persistence.MultiTenant.csproj">
+      <Project>{3d8f0261-b3b3-4202-adfd-ceb0ec3d93e3}</Project>
+      <Name>Appva.Persistence.MultiTenant</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
+      <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
+      <Name>Appva.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
+      <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
+      <Name>Appva.Tenant</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Mcss.Admin.Application\Appva.Mcss.Admin.Application.csproj">
+      <Project>{0e34a41f-f641-45d2-91e4-ff4c3e9b7853}</Project>
+      <Name>Appva.Mcss.Admin.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Mcss.Admin.Domain\Appva.Mcss.Admin.Domain.csproj">
+      <Project>{26d66f09-5072-4fb2-81c4-29df5249aaa7}</Project>
+      <Name>Appva.Mcss.Admin.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\Persistence.WIN-OLL39JT07TP.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Accounts\List\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Area51\Features\Cache\RemoveAll\" />
+    <Folder Include="Areas\Area51\Features\Settings\Create\" />
+    <Folder Include="Areas\Area51\Features\Settings\Edit\" />
+    <Folder Include="Areas\Patient\Features\Alerts\HandleAll\" />
+    <Folder Include="Areas\Patient\Features\Alerts\Handle\" />
+    <Folder Include="Areas\sdfsdfsdf\Controllers\" />
+    <Folder Include="Areas\sdfsdfsdf\Models\" />
+    <Folder Include="Areas\sdfsdfsdf\Views\Shared\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Area51\Features\Cache\List\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Area51\Features\Settings\List\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Authentication\SignIn\SignIn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\_LoginLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Menus\Menu\Menu.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\_Footer.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\_Meta.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Taxa\TaxonFilter\TaxonFilter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Area51\Features\web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Area51\Features\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\_MenuPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Area51\Features\Acl\Index\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Area51\Features\Shared\_Area51MenuPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\sdfsdfsdf\Views\web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Authentication\Forgot\Forgot.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Delegation\AddKnowledgeTest\AddKnowledgeTest.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Changeset\Changeset.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Create\Create.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\DelegationPrint\DelegationPrint.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\DelegationReport\DelegationReport.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\EditKnowledgeTests\EditKnowledgeTests.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Edit\Edit.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Inactivate\Inactivate.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Issued\Issued.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Delegation\List\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Delegation\Overview\Overview.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Revision\Revision.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Update\Update.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Alerts\List\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Alerts\Overview\Overview.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Calendar\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\EditActivity\EditActivity.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Edit\Edit.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Overview\Overview.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Inventory\Add\Add.cshtml" />
+    <Content Include="Areas\Patient\Features\Inventory\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Inventory\Overview\Overview.cshtml" />
+    <Content Include="Areas\Patient\Features\Inventory\Recount\Recount.cshtml" />
+    <Content Include="Areas\Patient\Features\Inventory\Withdrawal\withdrawal.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Order\Overview\Overview.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Patient\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Patient\Edit\Edit.cshtml" />
+    <Content Include="Areas\Patient\Features\Patient\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Patient\Partials\_PatientDetails.cshtml" />
+    <Content Include="Areas\Patient\Features\Patient\Partials\_PatientSearch.cshtml" />
+    <Content Include="Areas\Patient\Features\Patient\Partials\_PatientValidation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Prepare\Add\Add.cshtml" />
+    <Content Include="Areas\Patient\Features\Prepare\Edit\Edit.cshtml" />
+    <Content Include="Areas\Patient\Features\Prepare\PrintPopUp\PrintPopUp.cshtml" />
+    <Content Include="Areas\Patient\Features\Prepare\Print\Print.cshtml" />
+    <Content Include="Areas\Patient\Features\Prepare\Schema\Schema.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Schedule\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Schedule\Details\Details.cshtml" />
+    <Content Include="Areas\Patient\Features\Schedule\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Schedule\PrintPopUp\PrintPopUp.cshtml" />
+    <Content Include="Areas\Patient\Features\Schedule\PrintTable\PrintTable.cshtml" />
+    <Content Include="Areas\Patient\Features\Schedule\ScheduleReport\ScheduleReport.cshtml" />
+    <Content Include="Areas\Patient\Features\Schedule\Sign\Sign.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Sequence\Create\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Sequence\PrintPopUp\PrintPopUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Sequence\Update\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Accounts\Edit\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Accounts\EditRoles\EditRoles.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Practitioner\Features\Accounts\_AccountDetails.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Accounts\_AccountSearch.cshtml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>8082</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:8082/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

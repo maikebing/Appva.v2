@@ -1,0 +1,66 @@
+﻿@model Appva.Mcss.Web.ViewModels.InventoryOverviewViewModel
+<div>
+	<div class="heading cf"><h2>Kontrollräkning narkotika</h2></div>
+	<div class="panel-c">
+        @if (Model.DelayedStockCounts.Count > 0) {
+            <h3><img src="@Url.Image("icn-alarm-s.png")" alt=""> Försenade kontrollräkningar</h3>
+		    <table>
+		    	<thead>
+		    		<tr>
+		    			<th scope="col">Boende</th>
+		    			<th scope="col">Preparat</th>
+		    			<th scope="col">Dagar kvar</th>
+		    		</tr>
+		    	</thead>
+		    	<tbody>
+                @foreach (var item in Model.DelayedStockCounts) {
+                    var daysLeft = item.LastRecount.Value.Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
+                    <tr class="urgent">
+                        <td>
+                            @Html.ActionLink(item.Patient,
+                                "List", "Inventory", new { id = item.PatientId, inventoryId = item.InventoryId }, new { })
+                        </td>
+		    			<td>@item.SequenceName</td>
+		    			<td>
+                            <span>@daysLeft @((daysLeft == 1) ? "dag" : "dagar")</span>
+                        </td>
+                    </tr>
+                }
+		    	</tbody>
+		    </table>
+        }
+        @if (Model.StockCounts.Count > 0) {
+		    <h3>Kontrollräkningar</h3>
+		    <table>
+		    	<thead>
+		    		<tr>
+		    			<th scope="col">Boende</th>
+		    			<th scope="col">Preparat</th>
+		    			<th scope="col">Dagar kvar</th>
+		    		</tr>
+		    	</thead>
+		    	<tbody>
+                    @foreach (var item in Model.StockCounts) {
+                        var daysLeft = item.LastRecount.Value.Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
+                        <tr class="@((daysLeft <= 7) ? "urgent" : "")">
+		    				<td>
+                                @Html.ActionLink(item.Patient,
+                                 "List", "Inventory", new { id = item.PatientId, inventoryId = item.InventoryId }, new { })
+                            </td>
+		    				<td>@item.SequenceName</td>
+                                    
+		    				<td>
+                                <span>@daysLeft @((daysLeft == 1) ? "dag" : "dagar")</span>
+                            </td>
+		    			</tr>
+                    }
+		    	</tbody>
+		    </table>
+        }
+        @if (Model.StockCounts.Count == 0 && Model.DelayedStockCounts.Count == 0) {
+            <div class="no-data">
+                <h3>Inga försenade kontrollräkningar</h3>
+            </div>
+        }
+	</div>
+</div>

@@ -1,0 +1,63 @@
+﻿@model Appva.Mcss.Web.ViewModels.DelegationRevisionViewModel
+
+@{
+    ViewBag.Title = "Delegering";
+    var wasActive = true;
+    DateTime startDate = DateTime.Now;
+    DateTime endDate = DateTime.Now;
+    var patients = string.Empty;
+    foreach(var change in Model.ChangeSet.Changes) {
+        if (change.Property.Equals("Active")) {
+            wasActive = (change.NewState.Equals("True")) ? true : false;
+        }
+        if (change.Property.Equals("StartDate")) {
+            startDate = DateTime.Parse(change.NewState);
+        }
+        if (change.Property.Equals("EndDate")) {
+            endDate = DateTime.Parse(change.NewState);
+        }
+        if(change.Property.Equals("Patients")) {
+            patients = change.NewState;
+        }
+    }
+}
+@Html.Partial("~/Views/Account/Partials/_AccountDetails.cshtml", Model.Account)
+@Html.Action("Menu", "Menu", new
+            {
+                Key = "admin_account_menu",
+                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
+                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
+                Id = Model.Account.Id.ToString(),
+                IgnoreAction = false
+            })
+<div id="subheader" class="cf">
+		<h1>Delegering - @String.Format("{0:yyyy-MM-dd} {1:yyyy-MM-dd}", startDate, endDate)</h1>
+		@Html.ActionLink("Tillbaka", "Revision", new { id = Model.AccountId }, new { @class = "btn" })
+</div>
+<div id="content">
+	<div id="content-primary">
+		<div id="signed-events">
+			<table>
+				<thead>
+					<tr class="head">
+                        <th scope="col" colspan="2">Delegering</th>
+					    <th scope="col" class="pats">För boende</th>
+                        <th scope="col">Utfärdat av</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+                            @if (wasActive) {
+                                <img src="@Url.Image("icn-ok.png")" alt="Ja" />   
+                            }
+                        </td>
+						<td>@Model.Delegation.Name</td>
+                        <td>@patients</td>
+                        <td>@Model.Account.FullName</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

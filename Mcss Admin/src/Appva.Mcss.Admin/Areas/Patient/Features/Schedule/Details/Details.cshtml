@@ -1,0 +1,197 @@
+﻿﻿@model Appva.Mcss.Web.ViewModels.ScheduleDetailsViewModel
+
+@{
+    ViewBag.Title = "Ordinationer";
+    var intervalMap = new Dictionary<int, string>();
+    intervalMap.Add(0, "Annan");
+    intervalMap.Add(1, "Varje dag");
+    intervalMap.Add(2, "Varannan dag");
+    intervalMap.Add(3, "Var tredje dag");
+    intervalMap.Add(4, "Var fjärde dag");
+    intervalMap.Add(5, "Var femte dag");
+    intervalMap.Add(7, "Varje vecka");
+    intervalMap.Add(14, "Varannan vecka");
+    List<int> times = new List<int>();
+    foreach (var item in Model.ScheduleItems) {
+        if (!string.IsNullOrEmpty(item.Times)) {
+            foreach (string str in item.Times.Split(',')) {
+                int result = 0;
+                if (int.TryParse(str, out result)) {
+                    if (!times.Contains(result)) {
+                        times.Add(result);
+                    }
+                }
+            }
+        }  
+    }
+    if (times.Count == 0) {
+        times.AddRange(new List<int>() { 9, 12, 15, 17, 18, 21 });
+    }
+    times.Sort();
+}
+
+@Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("_ScheduleMenu", Model.Patient)
+
+<div id="subheader" class="cf">
+	<h1>Signeringslistor</h1>
+    @Html.ActionLink("Skriv ut pappersversion", "PrintPopUp", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })
+    @if (Permissions.CanShow(Permissions.PatientSchedulesCreate))
+    {
+        @Html.ActionLink("Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+    }
+</div>
+
+<div id="content" class="cf">
+	
+    <div id="content-primary" class="signlist-collection">
+		
+        <div id="signlist">
+			
+            <div class="h cf">
+				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.Modified)</h2>
+				@Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
+			</div>
+			
+            <ul class="nav cf">
+				@Html.MenuLink("Insatser", "Details", "Schedule", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
+                @if (Model.Schedule.ScheduleSettings.HasSetupDrugsPanel) { 
+                    @Html.MenuLink("Iordningsställande", "Schema", "Prepare", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
+                }
+			</ul>
+			<table>
+				<thead>
+					<tr class="head">
+						<th scope="col">Att ge</th>
+						<th scope="col">Frekvens</th>
+						<th scope="col">Ges inom</th>
+						<th scope="col" colspan="@times.Count">Tider</th>
+						<th scope="col" colspan="@((Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead)) ? 3 : 2)">Instruktion</th>
+                        @if (Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead))
+                        {
+                            <th scope="col">Saldo</th>
+                        }
+					</tr>
+					<tr>
+						<td colspan="3"></td>
+                        @foreach (var time in times)
+                        {
+                            <th scope="col">@time</th>
+                        }
+						<td colspan="@((Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead)) ? 4 : 2)"></td>
+					</tr>
+				</thead>
+				<tbody>
+                @foreach (var item in Model.ScheduleItems)
+                {
+                    var isPast = (item.EndDate.HasValue) ? item.EndDate.Value.Date < DateTime.Today : false;
+                    var isFuture = (item.StartDate.Date > DateTime.Today) ? true : false;
+                    <tr class="@( (isPast || isFuture) ? "inactive" : "active")" >
+						<td>@item.Name
+							<span class="date @(isFuture ? "future" : "") @(isPast ? "past" : "")">
+                                @String.Format("{0:yyyy-MM-dd}", item.StartDate)
+                                 — 
+                                @((item.EndDate.HasValue) ? string.Format("{0:yyyy-MM-dd}", item.EndDate) : string.Empty)
+                            </span>
+						</td>
+						<td class="freq">
+                            @if (item.OnNeedBasis)
+                            {
+                                @:Vid behov
+                            }
+                            else
+                            {
+                                @intervalMap[item.Interval]
+                            }
+                        </td>
+						<td class="frame">
+							@if (item.OnNeedBasis)
+                            {
+                                <span style="text-align:center;">–</span>
+                            }
+                            else
+                            {
+                                <span>@item.RangeInMinutesBefore min innan</span>
+                                <span>@item.RangeInMinutesAfter min efter</span>
+                            }
+						</td>
+                        @{   
+                            List<int> itemTimes = new List<int>();
+                            if (!String.IsNullOrEmpty(item.Times))
+                            {
+                                foreach (var str in item.Times.Split(','))
+                                {
+                                    var result = 0;
+                                    if (int.TryParse(str, out result))
+                                    {
+                                        itemTimes.Add(result);
+                                    }
+                                }
+                            }     
+                        }    
+                        @if (item.OnNeedBasis)
+                         {
+                            <td class="time" colspan="@times.Count.ToString()">
+                                –
+                            </td>
+                         }
+                        else
+                        {
+                            foreach (var time in times)
+                            {
+                                <td class="time @( itemTimes.Contains(time) ? "y" : "")">
+                                    @if (itemTimes.Contains(time))
+                                    {
+                                        <img src="@Url.Image("icn-check.png")" alt="ja" />
+                                    }
+                                </td>
+                            }
+                        }
+                        
+<td class="info"><p>@item.Description</p></td> 
+                        @if (Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead))
+                        {
+                            <td class="nedit">
+                            @if (Permissions.CanShow(Permissions.PatientInventoryRead))
+                            {
+                                @Html.ActionLink("Tillför mängd", "Add", "Inventory", new { id = item.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                            }
+                            @if (Permissions.CanShow(Permissions.PatientInventoryRead))
+                            {
+                                if (Model.Schedule.ScheduleSettings.CountInventory)
+                                {
+                                    @Html.ActionLink("Kontrollräkna", "Recount", "Inventory", new { id = item.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                }
+                            }
+                            </td>
+                        }
+                        @if (Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead))
+                        {
+                            <td>@item.Inventory.CurrentLevel</td>
+                        }
+						<td class="edit">
+                            @if (Permissions.CanShow(Permissions.PatientSchedulesUpdate))
+                            {
+                                @Html.ActionLink("Ändra", "Edit", "Sequence", new { id = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                            }
+                            @if (Permissions.CanShow(Permissions.PatientSchedulesDelete))
+                            {
+                                @Html.ActionLink("Ta bort", "Inactivate", "Sequence", new { id = item.Id }, new { @class = "delete", @title = "Ta bort raden" })
+						    }
+                        </td>
+					</tr>
+                }
+                </tbody>
+			</table>
+            @if (Permissions.CanShow(Permissions.PatientSchedulesCreate))
+            {
+            <div id="add-sign" class="cf">
+				@Html.ActionLink("Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+			</div>
+            }
+		</div>
+
+	</div>
+
+</div>
+

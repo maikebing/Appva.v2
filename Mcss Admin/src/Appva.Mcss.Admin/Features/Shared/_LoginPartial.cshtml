@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNet.Identity
+<div id="logged-info">
+    <p>
+        Inloggad som <strong>@User.Identity.Name</strong>
+        @Html.ActionLink("Byt lösenord", "ChangePassword", "Account")
+        @using (Html.Post("SignOut", "Authentication", new { Area = string.Empty }, null, false))
+        {
+            <button class="btn" type="submit">Logga ut</button>
+        }
+        @*Html.ActionLink("Logga ut", "SignOut", "Authentication", new { }, new { @class = "btn" })*@
+    </p>
+</div>

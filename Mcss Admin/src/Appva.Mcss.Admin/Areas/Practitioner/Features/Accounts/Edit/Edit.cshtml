@@ -1,0 +1,73 @@
+﻿@model Appva.Mcss.Web.ViewModels.AccountFormViewModel
+@{ ViewBag.Title = "Ändra medarbetaruppgifter"; }
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AccountCreate" data-valparams="id=@((Model.AccountId.HasValue) ? Model.AccountId.Value.ToString() : "");uidUrl=@Url.Action("IsUnique");taxonUrl=@Url.Action("VerifyTaxonLazy", "Taxonomy")">
+    @using (Html.BeginForm(new { id = Model.AccountId })) {
+        <h3 class="section-title">Ändra medarbetaruppgifter</h3>
+        <div class="text large">
+            @Html.LabelFor(m => m.FirstName)
+            @Html.EditorFor(m => m.FirstName)
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </div>
+        <div class="text large">
+            @Html.LabelFor(m => m.LastName)
+            @Html.EditorFor(m => m.LastName)
+            @Html.ValidationMessageFor(m => m.LastName)
+        </div>
+        <div class="text">
+            @Html.LabelFor(m => m.UniqueIdentifier)
+            @Html.EditorFor(m => m.UniqueIdentifier, new { @readonly = true })
+            @Html.ValidationMessageFor(m => m.UniqueIdentifier)
+        </div>
+        <div class="text">
+            @Html.LabelFor(m => m.Email)
+            @Html.EditorFor(m => m.Email)
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+        if (Model.DisplayUsername) {
+            <div class="text">
+                @Html.LabelFor(m => m.Username)
+                @Html.TextBoxFor(m => m.Username, new { disabled = "disabled", @readonly = "readonly" })
+            </div>
+        }
+        if (Model.EditableClientPassword) {
+            <div class="text small">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @value = Model.Password })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+        }
+        else {
+            @Html.HiddenFor(m => m.Password)
+        }
+
+        <div class="select">
+            @Html.LabelFor(m => m.TitleRole)
+            @if (Model.IsAdminStaff) {
+                @Html.DropDownList("dropdown", new SelectList(Model.Titles, "Value", "Text", Model.TitleRole), new { disabled = "disabled" })
+                @Html.HiddenFor(m => m.TitleRole)
+            }
+            else {
+                @Html.DropDownListFor(m => m.TitleRole, new SelectList(Model.Titles, "Value", "Text", Model.TitleRole), "Välj titel ...")
+            }
+            @Html.ValidationMessageFor(m => m.TitleRole)
+        </div>
+        <div class="select selectgroup cf">
+            <strong>Adress:</strong>
+            @if (Model.Taxons.IsNotNull()) {
+                foreach (var taxon in Model.Taxons) {
+                    <div class="select">
+                        <label class="structural">@taxon.Label</label>
+                        @Html.DropDownList(taxon.Id, new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected), string.Format("Välj {0}...", taxon.OptionLabel), new { @class = "dropdown" })
+                    </div>
+                }
+            }
+            @Html.HiddenFor(m => m.Taxon)
+            @Html.ValidationMessageFor(m => m.Taxon)
+        </div>
+        <div class="submit">
+            @Html.AntiForgeryToken()
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

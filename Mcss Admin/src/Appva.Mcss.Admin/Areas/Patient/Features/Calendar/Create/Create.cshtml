@@ -1,0 +1,116 @@
+﻿@model Appva.Mcss.Web.ViewModels.EventViewModel
+@{ 
+    ViewBag.Title = "Ny aktivitet";
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form calendar-edit" data-valclass="EventCreate">
+    @using (Html.BeginForm(new { id = Model.PatientId })) {         
+        <h3 class="section-title">Skapa ny</h3>        
+        <ul class="cal-settings new">
+            <li class="cf">
+                @Html.LabelFor(m => m.Category, new { @class = "col" });
+                <div class="col">
+                    @Html.DropDownListFor(m => m.Category, new SelectList(Model.Categories, "Value", "Text"), "Välj...", new { id = "Category" })
+                    @if(Model.Categories.Where(x => x.Value == "new").Count() > 0) {
+                        <span id="NewCat">
+                            @Html.TextBoxFor(m => m.NewCategory, new { @placeholder = "Ny kategori" })
+                        </span>
+                    }
+                </div>
+            </li>
+            <li class="cf">
+                @Html.LabelFor(m => m.Description, new { @class = "col" })
+                <div class="col text medium">
+                    @Html.TextAreaFor(m => m.Description, new { @placeholder = "Anteckning eller instruktion", @cols="80", @rows="24" })
+                </div>
+            </li>
+            <li class="cf">
+                 @Html.LabelFor(m => m.StartDate, new { @class = "col" })
+                <div class="col">
+                    @Html.EditorFor(m => m.StartDate)
+                    @Html.ValidationMessageFor(m => m.StartDate)
+                    @Html.LabelFor(m => m.StartTime, new { @class = "structural" }) <span class="hour">Klockan:</span>
+                    @Html.EditorFor(m => m.StartTime, new { @class = "time" })
+                    @Html.ValidationMessageFor(m => m.StartTime)
+                </div>
+            </li>
+            <li class="cf">
+                 @Html.LabelFor(m => m.EndDate, new { @class = "col" })
+                <div class="col">
+                    @Html.EditorFor(m => m.EndDate)
+                    @Html.ValidationMessageFor(m => m.EndDate)
+                    @Html.LabelFor(m => m.EndTime, new { @class = "structural" }) <span class="hour">Klockan:</span>
+                    @Html.EditorFor(m => m.EndTime, new { @class = "time" })
+                    @Html.ValidationMessageFor(m => m.EndTime)
+                </div>
+            </li>
+            <li class="cf">
+                @Html.LabelFor(m => m.AllDay, new { @class = "col" })
+                <div class="col">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(m => m.AllDay)
+                    </div>
+                </div>
+            </li>
+            <li class="cf">
+                @Html.LabelFor(m => m.Interval, new { @class = "col" })
+                <div class="col">
+                    @Html.DropDownListFor(m => m.Interval, new SelectList(Model.Intervals, "Value", "Text"))
+                </div>
+            </li>
+            <li class="factors cf">
+                @Html.LabelFor(m => m.IntervalFactor, new { @class = "col" })
+                <div class="col">
+                    @Html.DropDownListFor(m => m.IntervalFactor, new SelectList(Model.IntervalFactors, "Value", "Text"))
+                    <span id="intervalFactorText">månad</span>
+                    <div class="checkbox date">
+                        @Html.RadioButtonFor(x => x.SpecificDate, true, new { @class = "SpecificDate" })
+                        <span>På givet datum</span>
+                        @Html.RadioButtonFor(x => x.SpecificDate, false, new { @class = "SpecificDate" })
+                        <span>På veckodag</span>
+                    </div>
+                </div>
+            </li>
+            <li class="factors cf">
+                <label class="col">Sammnfattning:</label>
+                <div class="summary col">Upprepas <span id="dateSummary">den 1 torsdagen</span> <span id="intervalSummary">varje månad</span></div>
+            </li>
+            <li id="Absence" class="separate cf">
+                <label class="col">Frånvaro?</label>
+                @Html.HiddenFor(x => x.Absent)
+                <div class="col">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(m => m.PauseAnyAlerts)
+                        @Html.LabelFor(m => m.PauseAnyAlerts)
+                    </div>
+                </div>
+            </li>
+            @if ((Model.CalendarSettings.ContainsKey("HasOverview") && (bool)Model.CalendarSettings["HasOverview"]) || (Model.CalendarSettings.ContainsKey("SignableEvent") && (bool)Model.CalendarSettings["SignableEvent"]))
+            { 
+                <li class="separate cf">
+                    <label class="col">Påminnelse?</label>
+                    <div class="col">
+                        @if (Model.CalendarSettings.ContainsKey("HasOverview") && (bool)Model.CalendarSettings["HasOverview"])
+                        {
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.VisibleOnOverview)
+                                @Html.LabelFor(m => m.VisibleOnOverview)
+                            </div>
+                        }
+                        @if (Model.CalendarSettings.ContainsKey("SignableEvent") && (bool)Model.CalendarSettings["SignableEvent"]) { 
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.Signable)
+                                @Html.LabelFor(m => m.Signable)
+                            </div>
+                        }
+                    </div>
+                </li>
+            }
+            
+        </ul>
+	    <div class="input">
+            @Html.AntiForgeryToken()
+		    @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+	    </div>
+    }
+</div>

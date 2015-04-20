@@ -1,0 +1,28 @@
+﻿@model Appva.Mcss.Admin.Features.Taxa.Filter.TaxonFilter
+@using (Html.BeginForm("TaxonFilter", "Taxa", FormMethod.Post, new { id = "global-filter" }))
+{
+    if (Model != null)
+    {
+        <h2>@Model.RootName</h2>
+        @Html.Hidden("rootId", Model.RootId)
+        for (var i = 0; i < Model.Items.Count; i++)
+        {
+            <div class="@((i == 0) ? "first" : "") select">
+                @Html.DropDownList(Model.Items[i].Id, new SelectList(Model.Items[i].Taxons, "Value", "Text", Model.Items[i].Selected), "Välj ...", new { @class = "global-dropdown", @id = "GLOBAL_FILTER_"+Model.Items[i].Id })
+            </div>
+        }
+    }
+    <div class="submit">
+        @Html.Hidden("global-filter", true)
+        @Html.Submit("Visa")
+    </div>   
+}
+<script type="text/javascript">
+    $(function() {
+        $('#global-filter h2').click(function(e) {
+            e.preventDefault();
+            $('.select').unbind("change").remove();
+            $(this).parent().submit();
+        });
+    });
+</script>

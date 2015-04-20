@@ -1,0 +1,58 @@
+﻿@model Appva.Mcss.Web.ViewModels.OrderOverviewViewModel
+
+<div>
+    <div class="heading cf"><h2>Påfyllning av läkemedel</h2></div>
+    <div class="panel-c">
+        @if (Model.Orders == null || Model.Orders.Count == 0)
+        {
+            <div class="no-data">
+                <h3>Inga påfyllningar begärda</h3>
+            </div>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Boende</th>
+                        <th scope="col">Läkemedel</th>
+                        <th scope="col">Begärdes av</th>
+                        <th scope="col">Beställd</th>
+                        <th scope="col" class="check">Påfyllning klar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders) {
+    <tr>
+        <td>@Html.ActionLink(order.Patient.FullName, "List", "Schedule", new { id = order.Patient.Id }, new { })</td>
+        <td>@order.Name</td>
+        <td>@Html.ActionLink(order.RefillInfo.RefillOrderedBy.FullName, "List", "Delegation", new { id = order.RefillInfo.RefillOrderedBy.Id }, new { })<p class="orderTime">@TimeSpanDifference.ToReadableFromToday(order.RefillInfo.RefillOrderedDate.GetValueOrDefault())</p></td>
+        <td class="check">
+            <p class="order-check">
+                <input type="checkbox" name="pre-order" class="pre-order-checkbox" value="@order.Id.ToString()" @(order.RefillInfo.Ordered ? "checked" : "") />
+            </p>
+        </td>
+        <td class="check">
+            <p class="order-check">
+                <input type="checkbox" name="order-checkbox" class="order-checkbox" value="@order.Id.ToString()" />
+                @if (order.RefillInfo.Ordered) {
+                    <span class="order-status ordered">Beställd</span>
+                }
+                else {
+                    <span id="orderStatus"></span>
+                }
+            </p>
+        </td>
+
+    </tr>
+}
+                </tbody>
+
+            </table>
+        }
+        
+    </div>
+    <script type="text/javascript">
+        mcss.Order.init();
+    </script>
+</div>

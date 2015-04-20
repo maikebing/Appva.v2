@@ -8,6 +8,8 @@ namespace Appva.Apis.TenantServer.Contracts
 {
     #region Imports.
 
+    using System;
+    using Appva.Tenant.Interoperability.Client;
     using Newtonsoft.Json;
 
     #endregion
@@ -15,15 +17,15 @@ namespace Appva.Apis.TenantServer.Contracts
     /// <summary>
     /// The tenant model contract.
     /// </summary>
-    public sealed class Tenant
+    internal sealed class Tenant : ITenantDto
     {
-        #region Public Properties.
+        #region ITenantDto Members.
 
         /// <summary>
         /// The tenant id.
         /// </summary>
         [JsonProperty("id")]
-        public string Id
+        public Guid Id
         {
             get;
             set;

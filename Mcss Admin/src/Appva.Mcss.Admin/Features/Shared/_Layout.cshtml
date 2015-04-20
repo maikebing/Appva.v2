@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if IE 9]><html class="ie9 gt-ie8"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="gt-ie8 gt-ie9 not-ie">
+<!--<![endif]-->
+    <head>
+        <title>@Title()</title>
+        @Html.Partial("_Meta")
+        @Styles.Render("~/css")
+    </head>
+    <body>
+        <div class="environment">
+            <p>LOCALHOST</p>
+        </div>
+        <div class="global-filter">
+            @Html.Action("TaxonFilter", "Taxa", new { Area = string.Empty })
+        </div>
+        <div id="header" class="cf">
+            <div id="logo"><img src="logo.png" alt="" /></div>
+            @Html.Partial("_LoginPartial")
+            @Html.Partial("_MenuPartial")
+        </div>
+        <div id="main" class="@ViewBag.MainClass">
+            @RenderBody()
+        </div>
+        @Html.Partial("_Footer")
+        @Scripts.Render("~/js", "~/js/mcss")
+        @RenderSection("JavaScript", required: false)
+    </body>
+</html>

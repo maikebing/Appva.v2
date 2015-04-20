@@ -1,0 +1,590 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Appva.Mcss.Admin.Domain" namespace="Appva.Mcss.Admin.Domain.Entities">
+
+  <!-- System classes. -->
+
+  <!-- Setting -->
+  <class name="Setting">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="Value" type="StringClob">
+      <column name="Value" sql-type="NTEXT"/>
+    </property>
+    <property name="Description" type="StringClob">
+      <column name="Description" sql-type="NTEXT"/>
+    </property>
+    <property name="MachineName" unique="true" />
+    <property name="Namespace" />
+    <property name="Type" />
+  </class>
+
+  <!-- Log -->
+  <class name="Log">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="CreatedAt" column="Created" />
+    <property name="Level" />
+    <property name="Message" type="StringClob">
+      <column name="Message" sql-type="NTEXT"/>
+    </property>
+    <property name="Type" />
+    <property name="System" />
+    <property name="Route" type="StringClob">
+      <column name="Route" sql-type="NTEXT"/>
+    </property>
+    <property name="IpAddress" />
+    <many-to-one name="Account" class="Account" />
+    <many-to-one name="Patient" class="Patient" />
+  </class>
+
+  <!-- Notification
+  <class name="Notification">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Created" />
+    <property name="Modified" />
+    <property name="Title" />
+    <property name="Message" type="StringClob">
+      <column name="Message" sql-type="NTEXT"/>
+    </property>
+    <property name="Published" />
+    <property name="PublishedDate" />
+    <property name="UnPublishedDate" />
+  </class> -->
+
+  <!-- Account -->
+  <class name="Account" table="Account" dynamic-update="true">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="IsPaused" column="IsPaused" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="HsaId" column="HSAId" />
+    <property name="UserName" />
+    <property name="FirstName" />
+    <property name="LastName" />
+    <property name="FullName" />
+    <property name="EmailAddress" column="Email" />
+    <property name="TelephoneNumber" column="TelephoneNo" />
+    <property name="PersonalIdentityNumber" column="UniqueIdentifier" />
+    <property name="DevicePassword" column="Password" />
+    <property name="AdminPassword" column="HashedPassword" />
+    <property name="Salt" />
+    <property name="LastLoginDate" />
+    <property name="LastActivityDate" />
+    <property name="LockoutUntilDate" />
+    <property name="LastPasswordChangedDate" />
+    <property name="FailedPasswordAttemptsCount" />
+    <property name="PasswordResetDate" />
+    <property name="ShowAdminNewsNotice" not-null="true">
+      <column name="ShowAdminNewsNotice" default="1" />
+    </property>
+    <many-to-one name="Taxon" class="Taxon" />
+    <bag name="Roles" table="AccountRole" cascade="save-update">
+      <key column="AccountId" />
+      <many-to-many column="RoleId" class="Role" />
+    </bag>
+    <bag name="Delegations" cascade="save-update">
+      <key column="Account" />
+      <one-to-many class="Delegation" />
+    </bag>
+  </class>
+
+  <!-- Role -->
+  <class name="Role">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="Description" />
+    <property name="MachineName" unique="true" />
+    <property name="Weight" />
+    <property name="IsVisible" />
+    <property name="IsDeletable" />
+    <bag name="Accounts" table="AccountRole" cascade="save-update">
+      <key column="RoleId" />
+      <many-to-many column="AccountId" class="Account" />
+    </bag>
+    <bag name="Permissions" table="RolesPermissions" inverse="false">
+      <key column="RoleId" />
+      <many-to-many column="PermissionId" class="Permission" fetch="join" />
+    </bag>
+    <bag name="ScheduleSettings" table="RolesScheduleSettings">
+      <key column="RoleId" />
+      <many-to-many column="ScheduleSettingsId" class="ScheduleSettings" fetch="join" />
+    </bag>
+  </class>
+
+  <!-- Menus. -->
+  <class name="Menu" table="Menus">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Key">
+      <column name="UniqueKey" unique="true" index="IDX_Menus_UniqueKey"/>
+    </property>
+    <property name="Name" />
+    <property name="Description" />
+    <list name="MenuLinks" cascade="all-delete-orphan" >
+      <key column="Menu"/>
+      <index column="Sort"/>
+      <one-to-many class="MenuLink" />
+    </list>
+  </class>
+
+  <!-- Menu links. -->
+  <class name="MenuLink" table="MenuLinks">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Label" />
+    <property name="Action" />
+    <property name="Controller" />
+    <property name="Area" />
+    <property name="Sort" />
+    <property name="ListItemCssClass" />
+    <property name="AnchorCssClass" />
+    <many-to-one name="Menu" class="Menu" index="IDX_MenuLinks_Menu" />
+    <many-to-one name="Parent" class="MenuLink" index="IDX_MenuLinks_Parent" />
+    <many-to-one name="Permission" class="Permission" index="IDX_MenuLinks_Permission" />
+  </class>
+
+  <!-- Permissions. -->
+  <class name="Permission" table="Permissions">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Name" />
+    <property name="Description" />
+    <property name="Resource" />
+    <property name="Action" />
+    <property name="Context" />
+    <property name="Sort" />
+    <property name="IsVisible" />
+    <bag name="Roles" table="RolesPermissions" inverse="true">
+      <key column="PermissionId" />
+      <many-to-many column="RoleId" class="Role" fetch="join" />
+    </bag>
+  </class>
+
+  <!-- ChangeSet -->
+  <class name="ChangeSet">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="CreatedAt" column="Created" />
+    <property name="Revision" />
+    <property name="EntityId" />
+    <property name="Entity" />
+    <many-to-one name="ModifiedBy" class="Account" />
+    <bag name="Changes" cascade="save-update">
+      <key column="ChangeSet" />
+      <one-to-many class="Change" />
+    </bag>
+  </class>
+
+  <!-- Change -->
+  <class name="Change">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Property" />
+    <property name="TypeOf" />
+    <property name="OldState" />
+    <property name="NewState" />
+    <many-to-one name="ChangeSet" class="ChangeSet" />
+  </class>
+
+  <!-- Taxonomy -->
+  <class name="Taxonomy">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="Description" />
+    <property name="MachineName" />
+    <property name="Weight" />
+  </class>
+
+  <!-- Taxon -->
+  <class name="Taxon">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="Description" />
+    <property name="Path" type="StringClob">
+      <column name="Path" sql-type="NTEXT"/>
+    </property>
+    <property name="Type" />
+    <property name="IsRoot" />
+    <property name="Weight" />
+    <many-to-one name="Parent" class="Taxon" />
+    <many-to-one name="Taxonomy" class="Taxonomy" />
+  </class>
+
+  <!-- EscalationLevel -->
+  <class name="EscalationLevel">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="Description" />
+    <property name="Minutes" />
+    <property name="Weight" />
+    <bag name="Items" table="EscalationLevelAlerts" cascade="save-update">
+      <key column="EscalationLevelId" />
+      <many-to-many column="EscalationAlertId" class="EscalationAlert" />
+    </bag>
+  </class>
+
+  <!-- EscalationAlert -->
+  <class name="EscalationAlert">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="Email" />
+    <bag name="EscalationLevels" table="EscalationLevelAlerts" cascade="save-update">
+      <key column="EscalationAlertId" />
+      <many-to-many column="EscalationLevelId" class="EscalationLevel" />
+    </bag>
+    <bag name="Taxons" table="EscalationAlertTaxons" cascade="save-update">
+      <key column="AlertId" />
+      <many-to-many column="TaxonId" class="Taxon" />
+    </bag>
+  </class>
+
+  <!-- End System classes. -->
+
+  <!-- Device -->
+  <class name="Device">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="UDID" />
+    <property name="LastPingedDate" />
+    <many-to-one name="Taxon" class="Taxon" />
+  </class>
+
+  <!-- Patient -->
+  <class name="Patient">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="FirstName" />
+    <property name="LastName" />
+    <property name="FullName" />
+    <property name="PersonalIdentityNumber" column="UniqueIdentifier" />
+    <property name="Deceased" />
+    <property name="HasUnattendedTasks" />
+    <many-to-one name="Taxon" class="Taxon" />
+    <bag name="SeniorAlerts" cascade="save-update">
+      <key column="PatientId" />
+      <many-to-many class="Taxon" column="TaxonId" property-ref="" />
+    </bag>
+    <bag name="Delegations" cascade="save-update" table="DelegationPatient">
+      <key column="PatientId" />
+      <many-to-many class="Delegation" column="DelegationId" property-ref="" />
+    </bag>
+    <bag name="Tasks" cascade="save-update">
+      <key column="Patient" />
+      <one-to-many class="Task" />
+    </bag>
+    <property name="Identifier" />
+  </class>
+
+  <!-- Delegation -->
+  <class name="Delegation">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Pending" />
+    <property name="Name" />
+    <property name="StartDate" />
+    <property name="EndDate" />
+    <property name="IsGlobal" />
+    <many-to-one name="Account" class="Account" lazy="false" />
+    <many-to-one name="CreatedBy" class="Account" />
+    <many-to-one name="Taxon" class="Taxon" />
+    <many-to-one name="OrganisationTaxon" class="Taxon" />
+    <bag name="Patients" cascade="save-update" table="DelegationPatient" lazy="false">
+      <key column="DelegationId" />
+      <many-to-many class="Patient" column="PatientId" />
+    </bag>
+  </class>
+
+  <!-- Knowledge Test -->
+  <class name="KnowledgeTest">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="CompletedDate" />
+    <many-to-one name="Account" class="Account" />
+    <many-to-one name="KnowledgeTestTaxon" class="Taxon" />
+    <many-to-one name="DelegationTaxon" class="Taxon" />
+  </class>
+
+  <!-- Schedule Settings -->
+  <class name="ScheduleSettings">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="AlternativeName" />
+    <property name="MachineName" />
+    <property name="IsPausable" />
+    <property name="CanRaiseAlerts" />
+    <property name="HasSetupDrugsPanel" />
+    <property name="HasInventory" />
+    <property name="CountInventory" />
+    <property name="NurseConfirmDeviation" />
+    <property name="SpecificNurseConfirmDeviation" />
+    <property name="NurseConfirmDeviationMessage" />
+    <many-to-one name="DelegationTaxon" class="Taxon" />
+    <many-to-one name="CombineWith" class="ScheduleSettings" />
+    <property name="ScheduleType" />
+    <property name="Absence" />
+    <bag name="StatusTaxons" cascade="save-update">
+      <key column="ScheduleSettingsId" />
+      <many-to-many class="Taxon" column="TaxonId" property-ref="" />
+    </bag>
+    <property name="OrderRefill" />
+  </class>
+
+  <!-- Schedule -->
+  <class name="Schedule">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <many-to-one name="Patient" class="Patient" />
+    <many-to-one name="ScheduleSettings" class="ScheduleSettings" lazy="false" />
+    <bag name="Sequences" cascade="save-update">
+      <key column="Schedule" />
+      <one-to-many class="Sequence" />
+    </bag>
+  </class>
+
+  <!-- Sequence -->
+  <class name="Sequence">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="Description" />
+    <property name="StartDate" />
+    <property name="EndDate" />
+    <property name="RangeInMinutesBefore" />
+    <property name="RangeInMinutesAfter" />
+    <property name="Times" />
+    <property name="Dates" type="StringClob">
+      <column name="Dates" sql-type="NTEXT"/>
+    </property>
+    <property name="Minute" />
+    <property name="Hour" />
+    <property name="Interval" />
+    <property name="IntervalFactor" />
+    <property name="IntervalIsDate" />
+    <property name="OnNeedBasis" />
+    <property name="Reminder" />
+    <property name="ReminderInMinutesBefore" />
+    <many-to-one name="ReminderRecipient" class="Account" />
+    <property name="LastReminderSent" />
+    <property name="StockAmount" />
+    <property name="LastStockAmountCalculation" />
+    <property name="Overview" />
+    <property name="CanRaiseAlert" />
+    <property name="PauseAnyAlerts" />
+    <property name="AllDay" />
+    <property name="Absent" />
+    <many-to-one name="Patient" class="Patient" />
+    <many-to-one name="Schedule" class="Schedule" />
+    <many-to-one name="Taxon" class="Taxon" />
+    <many-to-one name="Role"  class="Role" />
+    <many-to-one name="Inventory"  class="Inventory" />
+    <component name="RefillInfo" class="RefillModel">
+      <property name="Refill" />
+      <property name="RefillOrderedDate" />
+      <many-to-one name="RefillOrderedBy"  class="Account" />
+      <property name="Ordered" />
+      <property name="OrderedDate" />
+      <many-to-one name="OrderedBy"  class="Account" />
+    </component>
+
+  </class>
+
+  <!-- Transaction -->
+  <class name="InventoryTransactionItem">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Description" />
+    <property name="Value" />
+    <property name="Operation" />
+    <property name="CurrentInventoryValue" />
+    <property name="PreviousInventoryValue" />
+    <many-to-one name="Account" class="Account" lazy="false" />
+    <many-to-one name="Sequence" class="Sequence" lazy="false" />
+    <many-to-one name="Task" class="Task" lazy="false" />
+    <many-to-one name="Inventory" class="Inventory" lazy="false" />
+  </class>
+
+  <!-- Task -->
+  <class name="Task">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <property name="Scheduled" />
+    <property name="IsCompleted" />
+    <property name="CompletedDate" />
+    <property name="Status" />
+    <property name="RangeInMinutesBefore" />
+    <property name="RangeInMinutesAfter" />
+    <property name="OnNeedBasis" />
+    <property name="Delayed" />
+    <property name="DelayHandled" />
+    <!--<component name="Inventory" class="InventoryOld">
+      <property name="Increased" />
+      <property name="Reduced" />
+      <property name="Level" />
+      <property name ="RecalculatedLevel" />
+    </component>-->
+    <property name="CurrentEscalationLevel" />
+    <property name="Quittanced" />
+    <many-to-one name="QuittancedBy" class="Account" lazy="false" />
+    <many-to-one name="DelayHandledBy" class="Account" lazy="false" />
+    <many-to-one name="CompletedBy" class="Account" lazy="false" />
+    <many-to-one name="Patient" class="Patient" />
+    <many-to-one name="Schedule" class="Schedule" />
+    <many-to-one name="Sequence" class="Sequence" lazy="false" />
+    <many-to-one name="Taxon" class="Taxon" />
+    <many-to-one name="StatusTaxon" class="Taxon" />
+    <property name="Overview" />
+    <property name="CanRaiseAlert" />
+    <property name="PauseAnyAlerts" />
+    <property name="AllDay" />
+    <property name="Absent" />
+    <property name="StartDate" />
+    <property name="EndDate" />
+    <bag name="InventoryTransactions" cascade="save-update">
+      <key column="Task" />
+      <one-to-many class="InventoryTransactionItem" />
+    </bag>
+  </class>
+
+  <!-- Inventory -->
+  <class name="Inventory">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Description" />
+    <property name="CurrentLevel" />
+    <property name="LastRecount" />
+    <bag name="Transactions" cascade="save-update">
+      <key column="Inventory" />
+      <one-to-many class="InventoryTransactionItem" />
+    </bag>
+  </class>
+
+  <!-- PrepareSequence -->
+  <class name="PreparedSequence" table="PrepareSequence">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Name" />
+    <many-to-one name="Schedule" class="Schedule" />
+  </class>
+
+  <!-- PreparedTask -->
+  <class name="PreparedTask">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Date" />
+    <many-to-one name="PreparedBy" class="Account" lazy="false" />
+    <many-to-one name="PreparedSequence" class="PreparedSequence" />
+    <many-to-one name="Schedule" class="Schedule" />
+  </class>
+
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+﻿@model Appva.Mcss.Web.ViewModels.KnowledgeTestFormModel
+@{ ViewBag.Title = "Lägg till kunskapstest"; }
+<div class="std-panel std-form lb-validate-form" data-valclass="KnowledgeTestAdd">
+@using (Html.BeginForm(new { id = Model.AccountId, taxonId = Model.TaxonId })) {
+    <h3 class="section-title">Lägg till kunskapstest</h3>
+    <div class="text">
+        @Html.LabelFor(m => m.Name)
+        @Html.EditorFor(m => m.Name)
+        @Html.ValidationMessageFor(m => m.Name)
+	</div>
+    <div class="text">
+        @Html.LabelFor(m => m.CompletedDate)
+        @Html.EditorFor(m => m.CompletedDate)
+        @Html.ValidationMessageFor(m => m.CompletedDate)
+	</div>
+	<div class="submit">
+        @Html.AntiForgeryToken()
+        @Html.Submit("Spara")
+        @Html.Cancel("Avbryt")
+	</div>
+}
+</div>

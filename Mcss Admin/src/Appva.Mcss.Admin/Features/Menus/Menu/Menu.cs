@@ -46,5 +46,14 @@ using Appva.Cqrs;
             get;
             set;
         }
+
+        /// <summary>
+        /// The current area route.
+        /// </summary>
+        public string Area
+        {
+            get;
+            set;
+        }
     }
 }

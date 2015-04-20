@@ -12,9 +12,11 @@ namespace Appva.Persistence.MultiTenant
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Caching;
-    using Apis.TenantServer;
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
+    using Appva.Core.Extensions;
+    using Appva.Core.Resources;
+    using Appva.Tenant.Interoperability.Client;
     using NHibernate;
     using Validation;
 
@@ -110,15 +112,16 @@ namespace Appva.Persistence.MultiTenant
         /// <inheritdoc />
         public ISessionFactory Lookup(string key)
         {
-            if (! this.cache.Contains("https://schemas.appva.se/persistence/" + key))
+            var cacheKey = CacheTypes.Persistence.FormatWith(key);
+            if (! this.cache.Contains(cacheKey))
             {
                 try
                 {
-                    var tenant = this.client.Get(key);
+                    var tenant = this.client.FindByIdentifier(key);
                     if (tenant != null)
                     {
-                        var factory = this.Build(new PersistenceUnit(tenant.ConnectionString, this.configuration.Assembly, this.configuration.Properties, tenant.Id));
-                        this.cache.Add<ISessionFactory>("https://schemas.appva.se/persistence/" + key, factory, new RuntimeEvictionPolicy
+                        var factory = this.Build(new PersistenceUnit(tenant.ConnectionString, this.configuration.Assembly, this.configuration.Properties, tenant.Identifier));
+                        this.cache.Add<ISessionFactory>(cacheKey, factory, new RuntimeEvictionPolicy
                         {
                             Priority = CacheItemPriority.NotRemovable
                         });
@@ -130,7 +133,7 @@ namespace Appva.Persistence.MultiTenant
                 }
                 return null;
             }
-            return this.cache.Find<ISessionFactory>("https://schemas.appva.se/persistence/" + key);
+            return this.cache.Find<ISessionFactory>(cacheKey);
         }
 
         #endregion
@@ -142,13 +145,14 @@ namespace Appva.Persistence.MultiTenant
         {
             try
             {
-                var tenants = this.client.ListAll();
+                var tenants = this.client.List();
                 Requires.ValidState(tenants.Count > 0, "No Tenants found!");
-                var units = tenants.Select(x => new PersistenceUnit(x.ConnectionString, this.configuration.Assembly, this.configuration.Properties, x.Id)).ToList();
+                var units = tenants.Select(x => new PersistenceUnit(x.ConnectionString, this.configuration.Assembly, this.configuration.Properties, x.Identifier)).ToList();
                 var factories = this.Build(units);
                 foreach (var factory in factories)
                 {
-                    this.cache.Upsert<ISessionFactory>("https://schemas.appva.se/persistence/" + factory.Key, factory.Value, new RuntimeEvictionPolicy
+                    var cacheKey = CacheTypes.Persistence.FormatWith(factory.Key);
+                    this.cache.Upsert<ISessionFactory>(cacheKey, factory.Value, new RuntimeEvictionPolicy
                     {
                         Priority = CacheItemPriority.NotRemovable
                     });

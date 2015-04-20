@@ -38,6 +38,14 @@ namespace Appva.Mvc.Html.Extensions.Elements
         IFormGroupFor<TModel, TProperty> AsteriskLabel(string labelText = null, object htmlAttributes = null);
 
         /// <summary>
+        /// Creates an HTML text password element.
+        /// </summary>
+        /// <param name="placeholder">Optional placeholder</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
+        IFormGroupFor<TModel, TProperty> Password(string placeholder = null, object htmlAttributes = null);
+
+        /// <summary>
         /// Creates an HTML text input element.
         /// </summary>
         /// <param name="placeholder">Optional placeholder</param>
@@ -102,6 +110,11 @@ namespace Appva.Mvc.Html.Extensions.Elements
         /// </summary>
         private readonly Expression<Func<TModel, TProperty>> expression;
 
+        /// <summary>
+        /// The outer element group css class.
+        /// </summary>
+        private readonly string group;
+
         #endregion
 
         #region Constructor.
@@ -111,10 +124,12 @@ namespace Appva.Mvc.Html.Extensions.Elements
         /// </summary>
         /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
         /// <param name="expression">The property expression</param>
-        internal FormGroupFor(HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
+        /// <param name="group">The outer element css class; defaults to 'form-group'</param>
+        internal FormGroupFor(HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string group = "form-group")
             : base(htmlHelper)
         {
             this.expression = expression;
+            this.group = group;
         }
 
         #endregion
@@ -132,6 +147,13 @@ namespace Appva.Mvc.Html.Extensions.Elements
         public IFormGroupFor<TModel, TProperty> AsteriskLabel(string labelText = null, object htmlAttributes = null)
         {
             this.Add(new LabelAndAsteriskFor<FormGroupFor<TModel, TProperty>, TModel, TProperty>(this, this.expression, labelText, htmlAttributes));
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IFormGroupFor<TModel, TProperty> Password(string placeholder = null, object htmlAttributes = null)
+        {
+            this.Add(new PasswordFor<FormGroupFor<TModel, TProperty>, TModel, TProperty>(this, this.expression, placeholder, htmlAttributes));
             return this;
         }
 
@@ -180,7 +202,7 @@ namespace Appva.Mvc.Html.Extensions.Elements
         /// <inheritdoc />
         public override MvcHtmlString Build()
         {
-            return MvcHtmlString.Create("<div class=\"form-group\">" + this.ToHtml() + "</div>");
+            return MvcHtmlString.Create("<div class=\"" + this.group + "\">" + this.ToHtml() + "</div>");
         }
 
         #endregion

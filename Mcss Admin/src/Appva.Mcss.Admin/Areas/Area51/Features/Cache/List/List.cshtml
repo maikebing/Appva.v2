@@ -1,0 +1,29 @@
+﻿@model Appva.Mcss.Admin.Features.Area51.Cache.ListCache
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>Cache</h1>
+</div>
+<table id="signed-events" style="background:#fff;">
+    <thead class="head">
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>@Html.Serialize(item.Value)</td>
+                <td>
+                    @using (Html.Post("Remove", "Cache", new { CacheKey = item.Key }, null, false))
+                    {
+                        @Html.Submit("Ta bort", new { @class = "btn btn-del" })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

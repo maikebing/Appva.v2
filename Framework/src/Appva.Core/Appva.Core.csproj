@@ -48,6 +48,7 @@
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\OperatorExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Http\RestfulClient.cs" />
@@ -59,6 +60,28 @@
     <Compile Include="Messaging\SmsMessage.cs" />
     <Compile Include="Messaging\SmsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\CacheTypes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CacheTypes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ClaimTypes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClaimTypes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\PermissionTypes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PermissionTypes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\RoleTypes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RoleTypes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\DateTimeUtilities.cs" />
+    <Compile Include="Utilities\ExpressionUtil.cs" />
     <Compile Include="Utilities\StringUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +95,22 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Debug\Messages.resx" />
+    <EmbeddedResource Include="Resources\CacheTypes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CacheTypes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ClaimTypes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClaimTypes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\PermissionTypes.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PermissionTypes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\RoleTypes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RoleTypes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

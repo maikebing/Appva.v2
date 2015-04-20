@@ -1,0 +1,46 @@
+﻿@model Appva.Mcss.Web.ViewModels.PatientFormViewModel
+<script type="text/javascript">
+    $(function () {
+        var id = "@((Model.PatientId.HasValue) ? Model.PatientId.Value.ToString() : "")";
+        var uidUrl = "@Url.Action("IsUnique")", 
+            taxonUrl = "@Url.Action("VerifyTaxon", "Taxonomy")";
+        $('.std-form form').validate({
+            'rules': {
+                'FirstName': 'required',
+                'LastName': 'required',
+                'UniqueIdentifier': {
+                    'required': true,
+                    'socialsecuritynumber': 'socialsecuritynumber',
+                    'remote': {
+                        'url': uidUrl,
+                        'type': "post",
+                        'data': {
+                            'id': id, 
+                            'uniqueIdentifier': $('#UniqueIdentifier').val()
+                        }
+                    }
+                },
+                'Taxon': {
+                    'required': true,
+                    'remote': {
+                        'url': taxonUrl,
+                        'type': "post",
+                        'data': {
+                            'taxon': $('#Taxon').val()
+                        }
+                    }
+                }
+            },
+            'messages': {
+                'FirstName': "Förnamn måste fyllas i.",
+                'LastName': "Efternamn måste fyllas i.",
+                'UniqueIdentifier': {
+                    'required': "Personnummer måste fyllas i.",
+                    'remote': "Personnumret finns redan tidigare redan i MCSS.",
+                    'socialsecuritynumber': "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001."
+                },
+                'Taxon': "Adress måste väljas."
+            }
+        });
+    });
+</script>

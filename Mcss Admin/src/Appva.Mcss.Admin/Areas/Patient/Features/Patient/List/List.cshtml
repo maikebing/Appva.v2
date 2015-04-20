@@ -1,0 +1,95 @@
+﻿@model Appva.Mcss.Web.ViewModels.PatientListViewModel
+@{ ViewBag.Title = "Boende"; }
+<div id="main">
+    <div id="subheader" class="cf">
+	    <h1>Boende</h1>
+        @if (Permissions.CanShow(Permissions.PatientCreate))
+        {
+            @Html.ActionLink("Ny boende", "Create", new { }, new { @class = "btn lb-link" })
+        }
+        <p class="filter">
+            <strong>Visa:</strong>
+            @Html.ActionLink("Alla", "List", new { }, new { @class = (Model.IsActive && !Model.IsDeceased) ? "sel div" : "div" })
+            @Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = (!Model.IsActive) ? "sel div" : "div" })
+            @Html.ActionLink("Avlidna", "List", new { isDeceased = true }, new { @class = (Model.IsDeceased) ? "sel div" : "div" })
+        </p>
+        @Html.Partial("~/Views/Patient/Partials/_PatientSearch.cshtml")
+    </div>
+    @if (Model.Search.Items.Count > 0)
+{
+    <ul class="people">
+        @foreach (var item in Model.Search.Items)
+        {
+            <li class="cf @(item.HasUnattendedTasks ? "alarm" : "")">
+                @if (Permissions.CanShow(Permissions.PatientCreate))
+                {
+                    if (!item.Active)
+                    {
+                        @Html.ActionLink("Aktivera", "Activate", "Patient", new { Id = item.Id }, new { @class = "btn" })
+                    }
+                }
+                <div class="h">
+                    <h2>
+                        @Html.ActionLink(item.FullName, "List", (item.HasUnattendedTasks) ? "Alert" : "Schedule", new { id = item.Id }, new { })
+                        @if (item.SeniorAlerts.IsNotNull())
+                        {
+                            foreach (var sa in item.SeniorAlerts)
+                            {
+                                <img src="@String.Format("/Assets/i/{0}", sa.Type)" alt="Senior Alert" title="@sa.Name" />
+                            }
+                        }
+                    </h2>
+                    <span class="pnr">@item.UniqueIdentifier</span>
+                </div>
+                @if (item.HasUnattendedTasks)
+                {
+                    if (Permissions.CanShow(Permissions.PatientAlertsRead))
+                    {
+                        @Html.ActionLink("Larm!", "List", "Alert", new { id = item.Id }, new { @class = "alert" })
+                    }
+                }
+                else
+                {
+                    <div class="emptyalert">&nbsp;</div>
+                }
+                @if (item.Address.IsNotNull())
+                {
+                    <div class="i">
+                        <strong>Adress:</strong>
+                        <span>@item.Address</span>
+                    </div>
+                }
+                @if (item.FirstLineContact.IsNotNull())
+                {
+                    <div class="i">
+                        <strong>Ansvarig kontaktperson:</strong>
+                        <span>@item.FirstLineContact</span>
+                    </div>
+                }
+                @if (item.Overseeing.IsNotNull())
+                {
+                    <div class="i">
+                        <strong>Ansvarig sjuksköterska:</strong>
+                        <span>@item.Overseeing</span>
+                    </div>
+                }
+                @if (item.Superior.IsNotNull())
+                {
+                    <div class="i">
+                        <strong>Enhetschef:</strong>
+                        <span>@item.Superior</span>
+                    </div>
+                }
+
+            </li>
+        }
+    </ul>
+        @Html.Pager(Model.Search.PageSize, Model.Search.PageNumber, Model.Search.TotalItemCount).Options(o => o
+            .DisplayTemplate("Pagination")
+            .MaxNrOfPages(15)
+            .AlwaysAddFirstPageNumber()
+            .AddRouteValue("IsActive", Model.IsActive)
+            .AddRouteValue("IsDeceased", Model.IsDeceased))
+    
+    }
+</div>

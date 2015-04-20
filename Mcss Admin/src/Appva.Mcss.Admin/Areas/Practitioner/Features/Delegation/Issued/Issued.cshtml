@@ -1,0 +1,48 @@
+﻿@model Appva.Mcss.Web.ViewModels.IssuedDelegationsViewModel
+@{ ViewBag.Title = string.Format("Utställda delegeringar, {0}", Model.Account.FullName); }
+@Html.Partial("~/Views/Account/Partials/_AccountDetails.cshtml", Model.Account)
+@Html.Action("Menu", "Menu", new
+            {
+                Key = "admin_account_menu",
+                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
+                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
+                Id = Model.Account.Id.ToString(),
+                IgnoreAction = false
+            })
+
+<div id="subheader" class="cf">
+	<h1>Utställda delegeringar</h1>
+    <p class="filter">
+        <strong>Visa:</strong>
+        @Html.ActionLink("Aktuella", "Issued", new { ïd = Model.AccountId }, new { @class = !Model.History ? "sel div" : "div" })
+        @Html.ActionLink("Historik", "Issued", new { id = Model.AccountId, History = true }, new { @class = Model.History ? "sel div" : "div" })
+    </p>
+</div>
+<div id="content" class="delegate-view">
+	<div id="content-primary">
+		<div id="signed-events">
+			<table>
+				<thead>
+					<tr class="head">
+						<th scope="col">Datum</th>
+						<th scope="col">Delegering</th>
+						<th scope="col">Utfärdades till</th>
+						<th scope="col">Löper ut</th>
+					</tr>
+				</thead>
+                @if (Model.Delegations.IsNotNull()) { 
+				<tbody>
+                    @foreach (var delegation in Model.Delegations) { 
+                        <tr @(delegation.EndDate.Subtract(DateTime.Now).Days < 1 ? "class=alarm" : "") >
+                            <td>@String.Format("{0:yyyy-MM-dd}",delegation.Modified)</td>
+                            <td>@delegation.Name</td>
+                            <td>@Html.ActionLink(delegation.Account.FullName, "List", new { id=delegation.Account.Id})</td>
+                            <td>@(delegation.Pending ? "Ej aktiverad" : string.Format("Om {0} dagar", delegation.EndDate.Subtract(DateTime.Now).Days))</td>
+                        </tr>
+                    }
+				</tbody>
+                }                
+			</table>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+﻿@model Appva.Mcss.Web.ViewModels.PrepareAddSequenceViewModel
+
+<div class="std-panel std-form lb-panel-small lb-panel">
+	@using (Html.BeginForm())
+ {
+        <h3 class="section-title">Lägg till rad</h3>
+        <div class="text medium">    
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name, new { @placeholder = "T. ex. dosett" })
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+        @Html.AntiForgeryToken()
+        @Html.Submit("Lägg till")
+ }
+</div>

@@ -1,0 +1,42 @@
+﻿@model IList<Appva.Mcss.Admin.Features.Area51.Cache.ListSetting>
+@{
+    @*Title("Settings");*@
+}
+<h2>Settings</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Issuer</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in this.Request.GetOwinContext().Authentication.User.Claims)
+        {
+            <tr>
+                <td>@claim.Type</td>
+                <td>@claim.Value</td>
+                <td>@claim.Issuer</td>
+            </tr>
+        }
+    </tbody>
+</table>

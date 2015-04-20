@@ -1,0 +1,31 @@
+﻿@model Appva.Mcss.Admin.Features.Shared.Models.SignIn
+@{
+    Layout = "~/Features/Shared/_LoginLayout.cshtml";
+    Title("Logga in - " +  Model.Tenant);
+}
+<div class="header cf">
+    <div id="logo">
+        <img src="@Url.Content("~/Assets/i/logo.png")" alt="Appva MCSS" />
+    </div>
+    <div id="tenant">
+        @Model.Tenant
+    </div>
+</div>
+<div class="body">
+    <div class="std-form">
+        <p style="text-align:center;">
+            @Html.ActionLink("Klicka här", "login", new { method = "siths" }) för att logga in med ditt SITHS eID
+        </p>
+        @using (Html.Post())
+        {
+            @Html.Alert(new {  @class = "success-msg" })
+            @Html.ValidationAlert("Felaktigt användarnamn och/eller lösenord", "", new {  @class = "error-msg" })
+            @Html.FormGroup(x => x.UserName, "text").Label().TextBox().Build()
+            @Html.FormGroup(x => x.Password, "text").Label().Password().Build()
+            <div class="submit">
+                @Html.Submit("Logga in")
+                @Html.ActionLink("Glömt lösenord?", "Forgot")
+            </div>
+        }
+    </div>
+</div>

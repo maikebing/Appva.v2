@@ -93,9 +93,9 @@ namespace Appva.Mvc.Html.Extensions.Elements
             string value = null;
             if (modelState.ContainsKey(name))
             {
-                value = Convert.ToString(modelState[name].Value, CultureInfo.InvariantCulture);
+                value = Convert.ToString(modelState[name].Value.RawValue, CultureInfo.InvariantCulture);
             }
-            if (! modelMetadata.IsComplexType)
+            else if (! modelMetadata.IsComplexType)
             {
                 value = Convert.ToString(modelMetadata.Model, CultureInfo.InvariantCulture);
             }

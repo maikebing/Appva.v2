@@ -1,0 +1,117 @@
+﻿// <copyright file="PermissionRepository.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
+namespace Appva.Mcss.Admin.Domain.Repositories
+{
+    #region Imports.
+
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
+    using NHibernate.Transform;
+
+    #endregion
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public interface IPermissionRepository : IIdentityRepository<Permission>, IRepository
+    {
+        /// <summary>
+        /// Returns all permissions for the user account.
+        /// </summary>
+        /// <param name="account">The user account</param>
+        /// <returns>A collection of user account permissions</returns>
+        IList<Permission> Permissions(Account account);
+
+        /// <summary>
+        /// Returns whether or not the user account is a member of at least one of the 
+        /// specified permissions.
+        /// </summary>
+        /// <param name="account">The user account to check</param>
+        /// <param name="permissions">
+        /// At least one of the permissions that the member must be a member of
+        /// </param>
+        /// <returns>
+        /// True if the user is a member of any of the specified permissions
+        /// </returns>
+        bool HasPermissions(Account account, params string[] permissions);
+    }
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public sealed class PermissionRepository : IPermissionRepository
+    {
+        #region Variables.
+
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/> implementation.
+        /// </summary>
+        private readonly IPersistenceContext persistenceContext;
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PermissionRepository"/> class.
+        /// </summary>
+        /// <param name="persistenceContext">
+        /// The <see cref="IPersistenceContext"/> implementation
+        /// </param>
+        public PermissionRepository(IPersistenceContext persistenceContext)
+        {
+            this.persistenceContext = persistenceContext;
+        }
+
+        #endregion
+
+        #region IPermissionRepository Members.
+
+        /// <inheritdoc />
+        public IList<Permission> Permissions(Account account)
+        {
+            var roles = account.Roles.Select(x => x.Id).ToArray();
+            return this.persistenceContext.QueryOver<Permission>()
+                .JoinQueryOver<Role>(x => x.Roles)
+                .Where(x => x.IsActive)
+                .WhereRestrictionOn(x => x.Id)
+                .IsIn(roles)
+                .TransformUsing(Transformers.DistinctRootEntity)
+                .List();
+        }
+
+        /// <inheritdoc />
+        public bool HasPermissions(Account account, params string[] permissions)
+        {
+            var roles = account.Roles.Select(x => x.Id).ToArray();
+            return this.persistenceContext.QueryOver<Permission>()
+                .WhereRestrictionOn(x => x.Resource)
+                .IsIn(permissions)
+                .JoinQueryOver<Role>(x => x.Roles)
+                .Where(x => x.IsActive)
+                .WhereRestrictionOn(x => x.Id)
+                .IsIn(roles)
+                .TransformUsing(Transformers.DistinctRootEntity)
+                .RowCount() > 0;
+        }
+
+        #endregion
+
+        #region IIdentifierRepository<Permission> Members.
+
+        /// <inheritdoc />
+        public Permission Find(Guid id)
+        {
+            return this.persistenceContext.Get<Permission>(id);
+        }
+
+        #endregion
+    }
+}

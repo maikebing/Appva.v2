@@ -57,6 +57,29 @@ namespace Appva.Mvc.Filters
             base.OnActionExecuting(filterContext);
         }
 
+        /// <inheritdoc />
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            var isValid = filterContext.Controller.ViewData.ModelState.IsValid;
+            filterContext.HttpContext.Items[ModelStateContextToken] = isValid;
+            if (filterContext.HttpContext.Request.HttpMethod.Equals(this.HttpPost))
+            {
+                if (!isValid)
+                {
+                    if (filterContext.HttpContext.Request.IsAjaxRequest())
+                    {
+                        filterContext.Result = new HttpStatusCodeResult((int)HttpStatusCode.BadRequest);
+                    }
+                    else
+                    {
+                        this.Add(filterContext);
+                        filterContext.Result = new RedirectToRouteResult(filterContext.RouteData.Values);
+                    }
+                }
+            }
+            base.OnActionExecuted(filterContext);
+        }
+
         #endregion
     }
 }

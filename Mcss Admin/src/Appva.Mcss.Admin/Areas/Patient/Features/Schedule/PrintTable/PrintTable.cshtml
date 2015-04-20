@@ -1,0 +1,124 @@
+﻿@model Appva.Mcss.Web.ViewModels.ScheduleTablePrintViewModel
+@{ 
+	ViewBag.Title = string.Format("Signerade händelser {0:yyyy-MM-dd} — {1:yyyy-MM-dd}", Model.StartDate, Model.EndDate);
+	Layout = "~/Views/Shared/_PrintLayout.cshtml";
+	var today = DateTime.Today;
+	var yesterday = DateTime.Today.AddDays(-1);
+}
+<div id="header" class="cf">
+	<h1>Signerade händelser @String.Format("{0:yyyy-MM-dd} — {1:yyyy-MM-dd}", Model.StartDate, Model.EndDate)</h1>
+</div>
+<div id="signprint">
+	<table>
+		<tbody>
+			<tr>
+				<td>Boende<h2>@Model.Patient.FullName</h2></td>
+				<td>Personnummer<h2>@Model.Patient.UniqueIdentifier</h2></td>
+			</tr>
+		</tbody>
+	</table>
+	<table>
+		<thead>
+			<tr class="head">
+				<th scope="col">Preparat</th>
+				<th scope="col">Dag</th>
+				<th scope="col">Tid</th>
+				<th scope="col">Skulle ges</th>
+				<th scope="col">Signerat av</th>
+				<th scope="col">Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var task in Model.Tasks)
+			{
+				<tr class="@((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
+					<td>@task.Name</td>
+					<td>
+						@if (task.OnNeedBasis)
+						{
+							@TimeSpanDifference.ToShortDateTime(task.Modified, "Idag", "Igår")
+						}
+						else
+						{
+							if (!task.IsCompleted)
+							{
+								@:-
+							}
+							else
+							{
+								@TimeSpanDifference.ToShortDateTime(task.CompletedDate.GetValueOrDefault(), "Idag", "Igår")
+							}
+						}
+					</td>
+					<td>
+						@if (task.Delayed && task.CompletedBy.IsNull()) {
+							@:Ej given
+						}
+						else
+						{
+							@:kl @string.Format("{0:HH:mm}", task.OnNeedBasis ? task.Modified : task.CompletedDate.GetValueOrDefault())
+						}
+					</td>
+					<td>
+						@TimeSpanDifference.ToShortDateTime(task.Scheduled, "Idag", "Igår") kl @String.Format("{0:HH:mm}", task.Scheduled)
+						@if (task.RangeInMinutesBefore.Equals(task.RangeInMinutesAfter)) {
+							@:±@task.RangeInMinutesBefore min
+						} else {
+							@:+@task.RangeInMinutesAfter -@task.RangeInMinutesBefore min
+						}
+					</td>
+					<td>
+						@if ( task.CompletedBy.IsNotNull() ) {
+							@task.CompletedBy.FullName
+						} else {
+							@:--
+						}
+					</td>
+					<td>
+						@if (!task.Delayed)
+						{
+							if (task.StatusTaxon != null)
+							{
+								if (task.StatusTaxon.Weight < 2)
+								{
+									@task.StatusTaxon.Name
+								}
+								else
+								{
+									<strong>Avvikelse:</strong> @task.StatusTaxon.Name
+								}
+							}
+							else
+							{
+								if (task.Status.Equals(1))
+								{
+									@:OK
+								}
+								else if (task.Status.Equals(2))
+								{
+									<strong>Avvikelse:</strong> @:Delvis given
+								}
+								else if (task.Status.Equals(3))
+								{
+									<strong>Avvikelse:</strong> @:Ej given
+								}
+								else if (task.Status.Equals(4))
+								{
+									<strong>Avvikelse:</strong> @:Kan ej ta
+								}
+								else if (task.Status.Equals(5))
+								{
+									@:Medskickad
+								}
+							}
+						}
+						else
+						{
+							<strong>Avvikelse</strong>
+						}
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

@@ -9,6 +9,8 @@ namespace Appva.Core.Extensions
     #region Imports.
 
     using System;
+    using System.Globalization;
+    using Appva.Core.Utilities;
 
     #endregion
 
@@ -58,5 +60,82 @@ namespace Appva.Core.Extensions
         {
             return (dateTime.Kind == DateTimeKind.Unspecified) ? new DateTime(dateTime.Ticks, DateTimeKind.Utc) : dateTime.ToUniversalTime();
         }
+
+
+        //////////// FROM UTILS
+
+        /// <summary>
+        /// Returns the a DateTime representing tomorrow.
+        /// </summary>
+        public static DateTime Tomorrow(this DateTime date)
+        {
+            return date.Date.AddDays(1);
+        }
+
+        /// <summary>
+        /// Returns the a DateTime representing yesterday.
+        /// </summary>
+        public static DateTime Yesterday(this DateTime date)
+        {
+            return date.Date.AddDays(-1);
+        }
+
+        /// <summary>
+        /// Checks if a DateTime is within two intervals
+        /// </summary>
+        public static bool Within(this DateTime date, DateTime intervalBefore, DateTime intervalAfter)
+        {
+            return (date >= intervalBefore && date <= intervalAfter);
+        }
+
+        public static DateTime NextMonth(this DateTime date)
+        {
+            return date.AddMonths(1);
+        }
+
+        public static DateTime PreviousMonth(this DateTime date)
+        {
+            return date.AddMonths(-1);
+        }
+
+        /// <summary>
+        /// Returns the days in the current month.
+        /// </summary>
+        /// <param name="date"></param>
+        public static int DaysInMonth(this DateTime date)
+        {
+            return DateTime.DaysInMonth(date.Year, date.Month);
+        }
+
+        public static DateTime FirstOfMonth(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, 1, 0, 0, 0, 0);
+        }
+
+        public static DateTime LastOfMonth(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 0, 0, 0, 0);
+        }
+
+        public static DateTime FirstDateOfWeek(this DateTime date)
+        {
+            var firstDayOfWeek = DateTimeUtilities.FirstDayOfWeek();
+            while (date.DayOfWeek != firstDayOfWeek)
+            {
+                date = date.AddDays(-1);
+            }
+            return date;
+        }
+
+        public static int GetWeekNumber(this DateTime date)
+        {
+            if (date.DayOfWeek.Equals(DayOfWeek.Monday) || date.DayOfWeek.Equals(DayOfWeek.Tuesday) || date.DayOfWeek.Equals(DayOfWeek.Wednesday))
+            {
+                date = date.AddDays(3);
+            }
+            var cal = new GregorianCalendar(GregorianCalendarTypes.Localized);
+            return cal.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        }
+
     }
 }

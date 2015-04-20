@@ -12,6 +12,8 @@ namespace Appva.Apis.TenantServer
     using System.Collections.Generic;
     using System.Configuration;
     using System.Threading.Tasks;
+    using Appva.Apis.TenantServer.Configuration;
+    using Appva.Tenant.Interoperability.Client;
     using Contracts;
     using Logging;
     using Resources;
@@ -91,42 +93,58 @@ namespace Appva.Apis.TenantServer
 
         #endregion
 
-        #region ITenantService Members.
+        #region ITenantClient Members.
 
         /// <inheritdoc />
-        public Tenant Get(object id)
+        public ITenantDto Find(Guid id)
         {
-            return this.GetRequest<Tenant>(Operation.Tenant, id);
+            return this.CreateNewGetRequest<Tenant>(Operation.Tenant, id);
         }
 
         /// <inheritdoc />
-        public IList<Tenant> ListAll()
+        public ITenantDto FindByIdentifier(string id)
         {
-            return this.GetRequest<IList<Tenant>>(Operation.TenantList);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Client GetClientByTenantId(object id)
+        public IList<ITenantDto> List()
         {
-            return this.GetRequest<Client>(Operation.Client, id);
+            return this.CreateNewGetRequest<IList<ITenantDto>>(Operation.TenantList);
         }
 
         /// <inheritdoc />
-        public async Task<Tenant> GetAsync(object id)
+        public IClientDto FindClientByTenantId(Guid id)
         {
-            return await this.GetRequestAsync<Tenant>(Operation.Tenant, id);
+            return this.CreateNewGetRequest<Client>(Operation.Client, id);
+        }
+
+        #endregion
+
+        #region ITenantClientAsync Members.
+
+        /// <inheritdoc />
+        public async Task<ITenantDto> FindAsync(Guid id)
+        {
+            return await this.CreateNewGetRequestAsync<Tenant>(Operation.Tenant, id);
         }
 
         /// <inheritdoc />
-        public async Task<IList<Tenant>> ListAllAsync()
+        public Task<ITenantDto> FindByIdentifierAsync(string id)
         {
-            return await this.GetRequestAsync<IList<Tenant>>(Operation.TenantList);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<Client> GetClientByTenantIdAsync(object id)
+        public async Task<IList<ITenantDto>> ListAsync()
         {
-            return await this.GetRequestAsync<Client>(Operation.Client, id);
+            return await this.CreateNewGetRequestAsync<IList<ITenantDto>>(Operation.TenantList);
+        }
+
+        /// <inheritdoc />
+        public async Task<IClientDto> FindClientByTenantIdAsync(Guid id)
+        {
+            return await this.CreateNewGetRequestAsync<Client>(Operation.Client, id);
         }
 
         #endregion
@@ -150,9 +168,9 @@ namespace Appva.Apis.TenantServer
         /// <param name="format">The operation uri or uri format</param>
         /// <param name="parameters">Optional format parameters</param>
         /// <returns>Null</returns>
-        private T GetRequest<T>(string format, params object[] parameters)
+        private T CreateNewGetRequest<T>(string format, params object[] parameters)
         {
-            return this.GetRequestAsync<T>(format, parameters).Result;
+            return this.CreateNewGetRequestAsync<T>(format, parameters).Result;
         }
 
         /// <summary>
@@ -162,7 +180,7 @@ namespace Appva.Apis.TenantServer
         /// <param name="format">The operation uri or uri format</param>
         /// <param name="parameters">Optional format parameters</param>
         /// <returns>An instance of Task{null}</returns>
-        private async Task<T> GetRequestAsync<T>(string format, params object[] parameters)
+        private async Task<T> CreateNewGetRequestAsync<T>(string format, params object[] parameters)
         {
             var uri = string.Format(format, parameters);
             if (Log.IsDebugEnabled())

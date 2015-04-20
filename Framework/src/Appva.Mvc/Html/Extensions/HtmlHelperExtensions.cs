@@ -29,10 +29,11 @@ namespace Appva.Mvc.Html.Extensions
         /// <typeparam name="TProperty">The property type</typeparam>
         /// <param name="htmlHelper">The <see cref="HtmlHelper{TModel}"/></param>
         /// <param name="expression">The expression</param>
+        /// <param name="group">The outer element css class; defaults to 'form-group'</param>
         /// <returns>A <see cref="FormGroupFor{TModel, TProperty}"/></returns>
-        public static FormGroupFor<TModel, TProperty> FormGroup<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
+        public static FormGroupFor<TModel, TProperty> FormGroup<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string group = null)
         {
-            return new FormGroupFor<TModel, TProperty>(htmlHelper, expression);
+            return new FormGroupFor<TModel, TProperty>(htmlHelper, expression, group);
         }
 
         /// <summary>

@@ -1,0 +1,11 @@
+﻿<div id="nav-main">
+    <ul class="cf">
+        @Html.Action("Menu", "Menus", new
+            {
+                Area = string.Empty,
+                Key = "Admin.Header.Menu",
+                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
+                Controller = Html.ViewContext.RouteData.GetRequiredString("controller")
+            })
+    </ul>
+</div>

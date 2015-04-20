@@ -13,8 +13,10 @@ namespace Appva.Apis.TenantServer.Legacy
     using System.Linq;
     using System.Threading.Tasks;
     using Appva.Apis.TenantServer.Contracts;
+    using Appva.Apis.TenantServer.Legacy.Transformers;
     using Appva.Apis.TenantServer.Legacy.Wcf;
     using Appva.Logging;
+    using Appva.Tenant.Interoperability.Client;
     using Newtonsoft.Json;
 
     #endregion
@@ -95,51 +97,62 @@ namespace Appva.Apis.TenantServer.Legacy
         #region ITenantClient Members.
 
         /// <inheritdoc />
-        public Tenant Get(object id)
+        public ITenantDto Find(Guid id)
         {
-            var context = id as string;
-            var response = this.service.FindByContext(new FindByContextRequest(context));
-            var result = response.FindByContextResult;
-            this.DebugResult(result);
-            return this.FromDtoToTenant(result);
+            var result = this.service.Find(new FindRequest(id)).FindResult;
+            return Transformer.Transform(result);
         }
 
         /// <inheritdoc />
-        public async Task<Tenant> GetAsync(object id)
+        public ITenantDto FindByIdentifier(string id)
         {
-            var context = id as string;
-            var response = await this.service.FindByContextAsync(new FindByContextRequest(context)).ConfigureAwait(false);
-            var result = response.FindByContextResult;
-            this.DebugResult(result);
-            return this.FromDtoToTenant(result);
+            var result = this.service.FindByContext(new FindByContextRequest(id)).FindByContextResult;
+            return Transformer.Transform(result);
         }
 
         /// <inheritdoc />
-        public IList<Tenant> ListAll()
+        public IList<ITenantDto> List()
         {
-            var response = this.service.Load(new LoadRequest());
-            var result = response.LoadResult;
-            this.DebugResult(result);
-            return this.FromDtoListToTenantList(result);
+            var result = this.service.Load(new LoadRequest()).LoadResult;
+            return Transformer.Transform(result);
         }
 
         /// <inheritdoc />
-        public async Task<IList<Tenant>> ListAllAsync()
-        {
-            var response = await this.service.LoadAsync(new LoadRequest()).ConfigureAwait(false);
-            var result = response.LoadResult;
-            this.DebugResult(result);
-            return this.FromDtoListToTenantList(result);
-        }
-
-        /// <inheritdoc />
-        public Client GetClientByTenantId(object id)
+        public IClientDto FindClientByTenantId(Guid id)
         {
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region ITenantClientAsync Members.
+
         /// <inheritdoc />
-        public Task<Client> GetClientByTenantIdAsync(object id)
+        public async Task<ITenantDto> FindAsync(Guid id)
+        {
+            var response = await this.service.FindAsync(new FindRequest(id)).ConfigureAwait(false);
+            var result = response.FindResult;
+            return Transformer.Transform(result);
+        }
+
+        /// <inheritdoc />
+        public async Task<ITenantDto> FindByIdentifierAsync(string id)
+        {
+            var response = await this.service.FindByContextAsync(new FindByContextRequest(id)).ConfigureAwait(false);
+            var result = response.FindByContextResult;
+            return Transformer.Transform(result);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<ITenantDto>> ListAsync()
+        {
+            var response = await this.service.LoadAsync(new LoadRequest()).ConfigureAwait(false);
+            var result = response.LoadResult;
+            return Transformer.Transform(result);
+        }
+
+        /// <inheritdoc />
+        public Task<IClientDto> FindClientByTenantIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -152,76 +165,6 @@ namespace Appva.Apis.TenantServer.Legacy
         public void Dispose()
         {
             //// No ops!
-        }
-
-        #endregion
-
-        #region Private Methods.
-
-        /// <summary>
-        /// TODO: move json serialization to Log.
-        /// </summary>
-        /// <param name="result">The result to be logged</param>
-        private void DebugResult(object result)
-        {
-            if (Log.IsDebugEnabled())
-            {
-                Log.Debug(JsonConvert.SerializeObject(result));
-            }
-        }
-
-        /// <summary>
-        /// Maps a collection of <see cref="TenantDto"/> to its equivalent part.
-        /// </summary>
-        /// <param name="dtos">The collection to be mapped</param>
-        /// <returns>A collection of <see cref="Tenant"/></returns>
-        private IList<Tenant> FromDtoListToTenantList(IList<TenantDto> dtos)
-        {
-            return dtos == null ? new List<Tenant>() : dtos.Select(x => this.FromDtoToTenant(x)).ToList();
-        }
-
-        /// <summary>
-        /// Maps a single <see cref="TenantDto"/> to its equivalent part.
-        /// </summary>
-        /// <param name="dto">The entry to be mapped</param>
-        /// <returns>A <see cref="Tenant"/> or null</returns>
-        private Tenant FromDtoToTenant(TenantDto dto)
-        {
-            return dto == null ? null : new Tenant
-                {
-                    Id = dto.Identifier,
-                    Identifier = dto.Identifier,
-                    ConnectionString = this.FromDtoConnectionToConnectionString(dto),
-                    Name = dto.Name,
-                    HostName = dto.Hostname
-                };
-        }
-
-        /// <summary>
-        /// Creates a connection string from the <see cref="TenantDto"/>.
-        /// </summary>
-        /// <param name="dto">The entry to extract the connection string from</param>
-        /// <returns>A connection string</returns>
-        private string FromDtoConnectionToConnectionString(TenantDto dto)
-        {
-            if (dto.Connection == null)
-            {
-                return string.Empty;
-            }
-            if (! string.IsNullOrEmpty(dto.Connection.FailOverPartner))
-            {
-                dto.Connection.FailOverPartner = string.Format(
-                    "Failover Partner={0};", 
-                    dto.Connection.FailOverPartner);
-            }
-            return string.Format(
-                    @"Server={0};{1}Database={2};Trusted_Connection={3};User ID={4};Password={5}",
-                    dto.Connection.Server,
-                    dto.Connection.FailOverPartner,
-                    dto.Connection.Database,
-                    dto.Connection.TrustedConnection,
-                    dto.Connection.User,
-                    dto.Connection.Password);
         }
 
         #endregion

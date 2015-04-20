@@ -14,7 +14,8 @@ namespace Appva.Apis.TenantServer
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
-    using Contracts;
+    using Appva.Apis.TenantServer.Configuration;
+    using Appva.Tenant.Interoperability.Client;
     using Logging;
     using Newtonsoft.Json;
     using Resources;
@@ -133,42 +134,60 @@ namespace Appva.Apis.TenantServer
 
         #endregion
 
-        #region ITenantService Members.
+        #region ITenantClient Members.
 
         /// <inheritdoc />
-        public Tenant Get(object id)
+        public ITenantDto Find(Guid id)
         {
-            return this.GetRequest<Tenant>(Operation.Tenant, id);
+            return this.CreateNewRequest<ITenantDto>(Operation.Tenant, id);
         }
 
         /// <inheritdoc />
-        public IList<Tenant> ListAll()
+        /// <remarks>Currently not supported</remarks>
+        public ITenantDto FindByIdentifier(string id)
         {
-            return this.GetRequest<IList<Tenant>>(Operation.TenantList);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Client GetClientByTenantId(object id)
+        public IList<ITenantDto> List()
         {
-            return this.GetRequest<Client>(Operation.Client, id);
+            return this.CreateNewRequest<IList<ITenantDto>>(Operation.TenantList);
         }
 
         /// <inheritdoc />
-        public async Task<Tenant> GetAsync(object id)
+        public IClientDto FindClientByTenantId(Guid id)
         {
-            return await this.GetRequestAsync<Tenant>(Operation.Tenant, id);
+            return this.CreateNewRequest<IClientDto>(Operation.Client, id);
+        }
+
+        #endregion
+
+        #region ITenantClientAsync Members.
+
+        /// <inheritdoc />
+        public async Task<ITenantDto> FindAsync(Guid id)
+        {
+            return await this.CreateNewRequestAsync<ITenantDto>(Operation.Tenant, id);
         }
 
         /// <inheritdoc />
-        public async Task<IList<Tenant>> ListAllAsync()
+        /// <remarks>Currently not supported</remarks>
+        public Task<ITenantDto> FindByIdentifierAsync(string id)
         {
-            return await this.GetRequestAsync<IList<Tenant>>(Operation.TenantList);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public async Task<Client> GetClientByTenantIdAsync(object id)
+        public async Task<IList<ITenantDto>> ListAsync()
         {
-            return await this.GetRequestAsync<Client>(Operation.Client, id);
+            return await this.CreateNewRequestAsync<IList<ITenantDto>>(Operation.TenantList);
+        }
+
+        /// <inheritdoc />
+        public async Task<IClientDto> FindClientByTenantIdAsync(Guid id)
+        {
+            return await this.CreateNewRequestAsync<IClientDto>(Operation.Client, id);
         }
 
         #endregion
@@ -195,9 +214,9 @@ namespace Appva.Apis.TenantServer
         /// <param name="format">The operation uri or uri format</param>
         /// <param name="parameters">Optional format parameters</param>
         /// <returns>An instance of {T}</returns>
-        private T GetRequest<T>(string format, params object[] parameters)
+        private T CreateNewRequest<T>(string format, params object[] parameters)
         {
-            return this.GetRequestAsync<T>(format, parameters).Result;
+            return this.CreateNewRequestAsync<T>(format, parameters).Result;
         }
 
         /// <summary>
@@ -208,7 +227,7 @@ namespace Appva.Apis.TenantServer
         /// <param name="format">The operation uri or uri format</param>
         /// <param name="parameters">Optional format parameters</param>
         /// <returns>An instance of Task{T}</returns>
-        private async Task<T> GetRequestAsync<T>(string format, params object[] parameters)
+        private async Task<T> CreateNewRequestAsync<T>(string format, params object[] parameters)
         {
             var uri = string.Format(format, parameters);
             if (Log.IsDebugEnabled())
@@ -216,12 +235,15 @@ namespace Appva.Apis.TenantServer
                 Log.DebugFormat(Debug.Messages.HttpRequestMessage, this.httpClient.BaseAddress + uri);
             }
             var response = await this.httpClient.GetAsync(uri).ConfigureAwait(false);
-            if (! response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 return default(T);
             }
             var data = await response.Content.ReadAsStringAsync();
-            Log.DebugFormat(Debug.Messages.HttpResponseMessage, data);
+            if (Log.IsDebugEnabled())
+            {
+                Log.DebugFormat(Debug.Messages.HttpResponseMessage, data);
+            }
             return JsonConvert.DeserializeObject<T>(data);
         }
 

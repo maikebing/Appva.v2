@@ -1,0 +1,223 @@
+﻿// <copyright file="IMenuItem.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
+namespace Appva.Mcss.Admin.Application.Models
+{
+    #region Imports.
+
+    using System;
+
+    #endregion
+
+    /// <summary>
+    /// Represents a menu item, a.k.a a menu link.
+    /// </summary>
+    public interface IMenuItem
+    {
+        /// <summary>
+        /// The menu item text, e.g. "The road to no where".
+        /// </summary>
+        string Label
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The menu item action route.
+        /// </summary>
+        string Action
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The menu item controller route.
+        /// </summary>
+        string Controller
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The menu item area route.
+        /// </summary>
+        string Area
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The menu item css class, set on the 'li' element.
+        /// </summary>
+        string ListItemCssClass
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The menu link css class, set on the 'a' element.
+        /// </summary>
+        string AnchorCssClass
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Whether or not the menu item is selected.
+        /// </summary>
+        bool IsSelected
+        {
+            get;
+        }
+    }
+
+    /// <summary>
+    /// A <see cref="IMenuItem"/> implementation.
+    /// </summary>
+    public sealed class MenuItem : IMenuItem
+    {
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MenuItem"/> struct.
+        /// </summary>
+        /// <param name="id">The link id</param>
+        /// <param name="text">The link text</param>
+        /// <param name="action">The action route</param>
+        /// <param name="controller">The controller route</param>
+        /// <param name="area">The area route</param>
+        /// <param name="isSelected">Whether or not the menu item is selected</param>
+        /// <param name="listItemCssClass">Optional <c>{LI}</c> css class</param>
+        /// <param name="anchorCssClass">Optional <c>{A}</c> css class</param>
+        /// <param name="sort">Optional link sorting</param>
+        /// <param name="parentId">Optional parent link id, if any</param>
+        /// <param name="permission">Option permission, if any</param>
+        public MenuItem(Guid id, string label, string action, string controller, string area, bool isSelected, string listItemCssClass = null, string anchorCssClass = null, int sort = 0, Guid? parentId = null, string permission = null)
+        {
+            this.Id = id;
+            this.Label = label;
+            this.Action = action;
+            this.Controller = controller;
+            this.Area = area;
+            this.IsSelected = isSelected;
+            this.ListItemCssClass = listItemCssClass;
+            this.AnchorCssClass = anchorCssClass;
+            this.Sort = sort;
+            this.ParentId = parentId;
+            this.Permission = permission;
+        }
+
+        #endregion
+
+        #region Public Static Functions.
+
+        /// <summary>
+        /// Returns whether or not a menu item is selected.
+        /// </summary>
+        /// <param name="item">The <see cref="MenuItem"/> to check</param>
+        /// <param name="action">The action route</param>
+        /// <param name="controller">The controller route</param>
+        /// <param name="area">The area route</param>
+        /// <returns>True if the item is selected</returns>
+        public static bool IsSelectedItem(MenuItem item, string action, string controller, string area)
+        {
+            return item.Area == area || (item.Action == action && item.Controller == controller);
+        }
+
+        #endregion
+
+        #region Public Properties.
+
+        /// <summary>
+        /// The menu item id.
+        /// </summary>
+        public Guid Id
+        {
+            get;
+            private set;
+        }
+
+        /// <inheritdoc />
+        public string Label
+        {
+            get;
+            private set;
+        }
+
+        /// <inheritdoc />
+        public string Action
+        {
+            get;
+            private set;
+        }
+
+        /// <inheritdoc />
+        public string Controller
+        {
+            get;
+            private set;
+        }
+
+        /// <inheritdoc />
+        public string Area
+        {
+            get;
+            private set;
+        }
+
+        /// <inheritdoc />
+        public string ListItemCssClass
+        {
+            get;
+            private set;
+        }
+
+        /// <inheritdoc />
+        public string AnchorCssClass
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Whether or not the menu item is selected.
+        /// </summary>
+        public bool IsSelected
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The menu item order, e.g. 1, 2, 3 ... 100.
+        /// </summary>
+        public int Sort
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The menu item parent link if any.
+        /// </summary>
+        public Guid? ParentId
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The menu item permission resource/key if any.
+        /// </summary>
+        public string Permission
+        {
+            get;
+            private set;
+        }
+
+        #endregion
+    }
+}

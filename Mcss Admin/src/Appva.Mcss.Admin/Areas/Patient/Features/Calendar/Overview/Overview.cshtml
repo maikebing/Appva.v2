@@ -1,0 +1,39 @@
+﻿@model Appva.Mcss.Web.ViewModels.EventOverviewViewModel
+<div>
+    <div class="heading cf">
+        <h2>Kalender de närmaste 7 dagarna</h2>
+    </div>
+    <div class="panel-c">
+        @if (Model.Activities.IsNotNull() && Model.Activities.Count > 0) {
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Boende</th>
+                        <th scope="col">Aktivitet</th>
+                        <th scope="col">Dagar kvar</th>
+                        <th scope="col" class="check">Kvittera</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var act in Model.Activities) { 
+                        <tr>
+                            <td>@Html.ActionLink(act.Patient.FullName, "List", "Event", new { id = act.Patient.Id }, new { })</td>
+                            <td><span class="act @String.Format("cal-cat{0}", (Model.Categories.FirstOrDefault(x => x.Value == act.Schedule.ScheduleSettings).Key % Model.CalendarColors)+1)">@act.Schedule.ScheduleSettings.Name</span></td>
+                            <td @((act.Scheduled.Date - DateTime.Now.Date).Days < 0 ? "class=urgent" : "")><span>@((act.Scheduled.Date - DateTime.Now.Date).Days) dagar</span></td>
+                            <td class="check"><input type="checkbox" name="@act.Scheduled" id="@act.Sequence.Id" class="cal-quittance" /></td>
+                        </tr>
+                    }        
+                </tbody>
+            </table>
+        }
+        else {
+            <div class="no-data">
+                <h3>Inga kommande händelser</h3>
+            </div>
+        }
+        
+    </div>
+    <script type="text/javascript">
+        mcss.Calendar.init();
+    </script>
+</div>

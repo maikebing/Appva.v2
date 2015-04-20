@@ -281,5 +281,22 @@ namespace Appva.Core.Extensions
         {
             return str.IsEmpty() ? null : Convert.FromBase64String(str);
         }
+
+
+        ////////////////////// FROM UTILS
+        public static string First(this string str, int number)
+        {
+            return str.IsNotEmpty() && str.Length >= number ? str.Substring(0, number) : string.Empty;
+        }
+
+        public static bool Is(this string str, Func<Char, bool> predicate)
+        {
+            return str.IsNotEmpty() && str.All(predicate);
+        }
+
+        public static string Strip(this string str, string replacement)
+        {
+            return str.Replace(replacement, "");
+        }
     }
 }

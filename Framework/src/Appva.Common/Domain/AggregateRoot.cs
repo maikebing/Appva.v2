@@ -28,14 +28,14 @@ namespace Appva.Common.Domain
         public virtual DateTime CreatedAt
         {
             get;
-            protected set;
+            set;
         }
 
         /// <inheritdoc />
         public virtual DateTime UpdatedAt
         {
             get;
-            protected set;
+            set;
         }
 
         /// <inheritdoc />

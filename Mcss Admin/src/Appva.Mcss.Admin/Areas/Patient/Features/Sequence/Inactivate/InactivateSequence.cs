@@ -10,13 +10,14 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
     using System;
     using System.Collections.Generic;
+    using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class InactivateSequence
+    public class InactivateSequence : INotification
     {
         public Guid SequenceId
         {

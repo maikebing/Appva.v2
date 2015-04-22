@@ -56,9 +56,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         #region RequestHandler<CreateSequence, SequenceViewModel> Overrides.
 
         /// <inheritdoc />
-        public override SequenceViewModel Handle(CreateSequence message)
+        public override SequenceViewModel Handle(UpdateSequence message)
         {
-            var roleService = new RoleService(Session);
+            /*var roleService = new RoleService(Session);
             var schedule = Session.Get<Schedule>(Sequence.Schedule.Id);
             var delegations = GetDelegations(schedule);
             DateTime? dummy = null;
@@ -106,7 +106,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             model.Patient = Sequence.Patient;
             model.Schedule = Sequence.Schedule;
             model.Nurse = Sequence.Role != null && Sequence.Role.MachineName.Equals("_TITLE_N");
-            Result = model;
+            Result = model;*/
+            return null;
         }
 
         #endregion

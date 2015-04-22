@@ -31,7 +31,8 @@ namespace Appva.Mcss.Admin.Controllers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class PatientController : IdentityController
+    [RouteArea("Patient")]
+    public sealed class PatientController : IdentityController
     {
         #region Private Variables.
 
@@ -71,6 +72,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="isDeceased">Optional is deceased query filter - defaults to false</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("List")]
         public ActionResult List(string q, int? page, bool isActive = true, bool isDeceased = false)
         {
             var account = Identity();
@@ -98,6 +100,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// </summary>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("Create")]
         public ActionResult Create()
         {
             var saItems = this.settingsService.HasSeniorAlert() ? this.context.QueryOver<Taxon>()
@@ -120,6 +123,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="collection">The form collection</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
+        [Route("Create")]
         public ActionResult Create(PatientFormViewModel model, FormCollection collection)
         {
             if (ModelState.IsValid)
@@ -170,6 +174,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="id">The patient id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("Edit/{id:guid}")]
         public ActionResult Edit(Guid id)
         {
             var patient = this.context.Get<Patient>(id);
@@ -203,6 +208,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="collection">The form collection</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
+        [Route("Edit/{id:guid}")]
         public ActionResult Edit(Guid id, PatientFormViewModel model, FormCollection collection)
         {
             var patient = this.context.Get<Patient>(id);
@@ -267,11 +273,12 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="id">The patient id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("Inactivate/{id:guid}")]
         public ActionResult Inactivate(Guid id)
         {
             var patient = this.context.Get<Patient>(id);
             var currentUser = Identity();
-            this.ExecuteCommand<Patient>(new InactivateOrActivateCommand<Patient>
+            this.ExecuteCommand(new InactivateOrActivateCommand<Patient>
             {
                 Id = id
             });
@@ -285,11 +292,12 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="id">The patient id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("Activate/{id:guid}")]
         public ActionResult Activate(Guid id)
         {
             var patient = this.context.Get<Patient>(id);
             var currentUser = Identity();
-            ExecuteCommand<Patient>(new InactivateOrActivateCommand<Patient>
+            ExecuteCommand(new InactivateOrActivateCommand<Patient>
             {
                 Id = id,
                 IsActive = true
@@ -310,6 +318,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="uniqueIdentifier">The personal identifier number</param>
         /// <returns><see cref="JsonResult"/></returns>
         [HttpPost, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        [Route("IsUnique")]
         public JsonResult IsUnique(Guid? id, string uniqueIdentifier)
         {
             return this.Json(this.ExecuteCommand<bool>(new IsUniqueIdentifierCommand<Patient>
@@ -331,6 +340,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="isDeceased">Optional is deceased query filter - defaults to false</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        [Route("QuickSearch")]
         public ActionResult QuickSearch(string term, bool isActive = true, bool isDeceased = false)
         {
             return this.Json(this.ExecuteCommand<IEnumerable<object>>(new PatientQuickSearch()

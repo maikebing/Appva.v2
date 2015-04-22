@@ -102,6 +102,7 @@
     <Compile Include="Html\Extensions\Elements\ValidateFor.cs" />
     <Compile Include="Html\Extensions\FormExtensions.cs" />
     <Compile Include="Html\Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Html\Extensions\RouteValueDictionaryExtensions.cs" />
     <Compile Include="Html\Models\Tickable.cs" />
     <Compile Include="Imaging\Detection\Detector.cs" />
     <Compile Include="Imaging\Detection\MediaType.cs" />

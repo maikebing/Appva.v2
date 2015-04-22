@@ -72,7 +72,7 @@ namespace Appva.Mvc.Html.Extensions.Elements
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute", Justification = "Reviewed.")]
         public override MvcHtmlString Build()
         {
-            var modelMetadata = ModelMetadata.FromLambdaExpression(this.expression, this.Root.HtmlHelper.ViewData);
+            /*var modelMetadata = ModelMetadata.FromLambdaExpression(this.expression, this.Root.HtmlHelper.ViewData);
             var modelState = this.Root.HtmlHelper.ViewData.ModelState;
             var id = this.Root.HtmlHelper.IdFor(this.expression).ToString();
             var name = this.Root.HtmlHelper.IdFor(this.expression).ToString();
@@ -103,7 +103,14 @@ namespace Appva.Mvc.Html.Extensions.Elements
             {
                 textbox.Attributes.Add("value", HttpUtility.HtmlEncode(value));
             }
-            return MvcHtmlString.Create(textbox.ToString(TagRenderMode.SelfClosing));
+            return MvcHtmlString.Create(textbox.ToString(TagRenderMode.SelfClosing));*/
+            var htmlDictionary = HtmlHelper.AnonymousObjectToHtmlAttributes(this.htmlAttributes);
+            htmlDictionary.AddClass("form-control");
+            if (this.placeholder.IsNotEmpty())
+            {
+                htmlDictionary.Add("placeholder", this.placeholder);
+            }
+            return this.Root.HtmlHelper.PasswordFor(this.expression, htmlDictionary);
         }
 
         #endregion

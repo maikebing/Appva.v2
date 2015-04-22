@@ -5,63 +5,132 @@ using Appva.Mcss.Web.ViewModels;
 using Appva.Mcss.Admin.Domain.Entities;
 using Appva.Core.Extensions;
 using NHibernate.Criterion;
-using Appva.Mcss.Infrastructure;
 using NHibernate.Transform;
 using NHibernate;
+using Appva.Cqrs;
+using Appva.Persistence;
+using Appva.Core.Utilities;
 
-namespace Appva.Mcss.Web.Controllers {
+namespace Appva.Mcss.Web.Controllers
+{
 
-    public class CreateReportCommand<T> : Command<ReportViewModel> where T : IReportFilter<Task, Task> {
-        
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-        public int? Page { get; set; }
-        public int? PageSize { get; set; }
-        public T Filter { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class CreateReportCommand<T> : IRequest<ReportViewModel> where T : IReportFilter<Task, Task>
+    {
+        public DateTime? StartDate
+        {
+            get;
+            set;
+        }
+        public DateTime? EndDate
+        {
+            get;
+            set;
+        }
+        public int? Page
+        {
+            get;
+            set;
+        }
+        public int? PageSize
+        {
+            get;
+            set;
+        }
+        public T Filter
+        {
+            get;
+            set;
+        }
 
-        public override void Execute() {
-            Page = Page ?? 1;
-            PageSize = PageSize ?? 30;
-            StartDate = (StartDate.HasValue) ? StartDate.Value : DateTimeExt.Now().AddDays(-DateTimeExt.Now().DaysInMonth());
-            EndDate = (EndDate.HasValue) ? EndDate.Value.Latest() : DateTimeExt.Now().Latest();
-            var span = EndDate.Value.Subtract(StartDate.Value).Days;
-            var tasks = QueryAndFilter();
-            var tasksWithinStartDateAndEndDate = tasks.Where(x => x.Scheduled >= StartDate.Value && x.Scheduled <= EndDate.Value).OrderBy(x => x.Scheduled).Desc;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public sealed class CreateReportHandler<T> : RequestHandler<CreateReportCommand<T>, ReportViewModel>
+         where T : IReportFilter<Task, Task>
+    {
+        #region Variables.
+
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/> dispatcher.
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateChartCommandHandler"/> class.
+        /// </summary>
+        public CreateReportHandler(IPersistenceContext persistence)
+        {
+            this.persistence = persistence;
+        }
+
+        #endregion
+
+        #region RequestHandler<AccountQuickSearch, IEnumerable<object>> Members.
+
+        /// <inheritdoc />
+        public override ReportViewModel Handle(CreateReportCommand<T> message)
+        {
+            message.PageSize = message.PageSize ?? 30;
+            message.StartDate = (message.StartDate.HasValue) ? message.StartDate.Value : DateTimeUtilities.Now().AddDays(-DateTime.Now.DaysInMonth());
+            message.EndDate = (message.EndDate.HasValue) ? message.EndDate.Value.LastInstantOfDay() : DateTime.Now.LastInstantOfDay();
+            var span = message.EndDate.Value.Subtract(message.StartDate.Value).Days;
+            var tasks = QueryAndFilter(message);
+            var tasksWithinStartDateAndEndDate = tasks.Where(x => x.Scheduled >= message.StartDate.Value && x.Scheduled <= message.EndDate.Value)
+                .OrderBy(x => x.Scheduled).Desc;
             var dateSpan = GenerateReportSegment(tasksWithinStartDateAndEndDate.ToRowCountQuery());
             var total = tasksWithinStartDateAndEndDate.ToRowCountQuery().RowCount();
-            var comparableDateSpan = GenerateReportSegment(tasks.ToRowCountQuery().Where(x => x.Scheduled >= StartDate.Value.AddDays(-span) && x.Scheduled <= EndDate.Value.AddDays(-span)));
-            var items = tasksWithinStartDateAndEndDate.Skip(((Page.Value - 1) * PageSize.Value)).Take(PageSize.Value).List().Where(task => task != null).ToList();
-            Result = new ReportViewModel() {
-                StartDate = StartDate.Value,
-                EndDate = EndDate.Value,
+            var comparableDateSpan = GenerateReportSegment(tasks.ToRowCountQuery()
+                .Where(x => x.Scheduled >= message.StartDate.Value.AddDays(-span) && x.Scheduled <= message.EndDate.Value.AddDays(-span)));
+            var items = tasksWithinStartDateAndEndDate
+                .Skip(((message.Page.Value - 1) * message.PageSize.Value)).Take(message.PageSize.Value).List().Where(task => task != null).ToList();
+            return new ReportViewModel
+            {
+                StartDate = message.StartDate.Value,
+                EndDate = message.EndDate.Value,
                 TasksOnTime = dateSpan.TasksOnTime,
                 TasksNotOnTime = dateSpan.TasksNotOnTime,
                 ComparedDateSpanTasksOnTime = comparableDateSpan.TasksOnTime,
                 ComparedDateSpanTasksNotOnTime = comparableDateSpan.TasksNotOnTime,
                 AverageDifferenceInTime = dateSpan.AverageDifferenceInTime,
                 ComparedAverageDifferenceInTime = comparableDateSpan.AverageDifferenceInTime,
-                Search = new SearchViewModel<Task>() {
+                Search = new SearchViewModel<Task>
+                {
                     Items = items,
-                    PageSize = PageSize.Value,
-                    PageNumber = Page.Value,
+                    PageSize = message.PageSize.Value,
+                    PageNumber = message.Page.Value,
                     TotalItemCount = total
                 }
             };
         }
 
-        private IQueryOver<Task, Task> QueryAndFilter() {
-            var query = Session.QueryOver<Task>()
+        #endregion
+
+        private IQueryOver<Task, Task> QueryAndFilter(CreateReportCommand<T> message)
+        {
+            var query = this.persistence.QueryOver<Task>()
                 .Where(x => x.OnNeedBasis == false)
-                .And(x => x.Scheduled >= StartDate.Value.AddDays(-EndDate.Value.Subtract(StartDate.Value).Days))
-                .And(x => x.Scheduled <= EndDate.Value)
+                .And(x => x.Scheduled >= message.StartDate.Value.AddDays(-message.EndDate.Value.Subtract(message.StartDate.Value).Days))
+                .And(x => x.Scheduled <= message.EndDate.Value)
                 .Fetch(x => x.Patient).Eager
                 .Fetch(x => x.StatusTaxon).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer());
-            Filter.Filter(query);
+            message.Filter.Filter(query);
             return query;
         }
 
-        private ReportSegment GenerateReportSegment(IQueryOver<Task, Task> tasks) {
+        private ReportSegment GenerateReportSegment(IQueryOver<Task, Task> tasks)
+        {
             var percent = 100.00;
             var tasksOnTime = 0.0;
             var tasksNotOnTime = 0.0;
@@ -71,9 +140,7 @@ namespace Appva.Mcss.Web.Controllers {
             var signedTasksNotOnTime = tasks.ToRowCountQuery().Where(task => task.Delayed && task.IsCompleted).RowCount();
             var count = tasksOnTime + tasksNotOnTime;
             minutes = tasks.ToRowCountQuery().Where(task => task.Delayed && task.IsCompleted).Select(Projections.Sum(Projections.SqlProjection("datediff(n, Scheduled , this_.CompletedDate) as Minutes", new[] { "Minutes" }, new[] { NHibernateUtil.Double }))).SingleOrDefault<double>();
-            //minutes = minutes - tasks.ToRowCountQuery().Where(task => task.Delayed && task.IsCompleted).Select(Projections.Sum(Projections.SqlProjection("RangeInMinutesAfter as Minutes", new[] { "Minutes" }, new[] { NHibernateUtil.Int32 }))).SingleOrDefault<int>();
-
-            return new ReportSegment()
+            return new ReportSegment
             {
                 TasksOnTime = count > 0 ? Math.Round((tasksOnTime / count) * percent) : 0,
                 TasksNotOnTime = count > 0 ? Math.Round((tasksNotOnTime / count) * percent) : 0,
@@ -81,12 +148,23 @@ namespace Appva.Mcss.Web.Controllers {
             };
         }
 
-        private class ReportSegment {
-            public double TasksOnTime { get; set; }
-            public double TasksNotOnTime { get; set; }
-            public double AverageDifferenceInTime { get; set; }
+        private class ReportSegment
+        {
+            public double TasksOnTime
+            {
+                get;
+                set;
+            }
+            public double TasksNotOnTime
+            {
+                get;
+                set;
+            }
+            public double AverageDifferenceInTime
+            {
+                get;
+                set;
+            }
         }
-
     }
-
 }

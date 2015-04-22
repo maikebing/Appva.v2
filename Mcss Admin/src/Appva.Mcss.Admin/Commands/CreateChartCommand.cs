@@ -5,42 +5,69 @@ using System.Web;
 using NHibernate.Transform;
 using NHibernate.Criterion;
 using Appva.Core.Extensions;
-using Appva.Mcss.Infrastructure;
-using Appva.Mcss.Infrastructure.Mvc;
 using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Business;
 using Appva.Cqrs;
+using Appva.Persistence;
 
 namespace Appva.Mcss.Web.Controllers
 {
 
     public class CreateChartCommand<T> : IRequest<List<object[]>> where T : IReportFilter<Task, Task>
     {
-
-        [AutoWired]
-        public TaxonomyService TaxonomyService { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public T Filter { get; set; }
+    }
 
-        public override void Execute()
+    public sealed class CreateChartCommandHandler<T> : RequestHandler<CreateChartCommand<T>, List<object[]>>
+        where T : IReportFilter<Task, Task>
+    {
+        #region Variables.
+
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/> dispatcher.
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateChartCommandHandler"/> class.
+        /// </summary>
+        public CreateChartCommandHandler(IPersistenceContext persistence)
         {
-            Result = GenerateChartData(QueryAndFilter());
+            this.persistence = persistence;
         }
 
-        private IList<Task> QueryAndFilter()
+        #endregion
+
+        #region RequestHandler<AccountQuickSearch, IEnumerable<object>> Members.
+
+        /// <inheritdoc /> 
+        public override List<object[]> Handle(CreateChartCommand<T> message)
         {
-            var query = Session.QueryOver<Task>()
-                .Where(x => x.Active == true)
+            var query = this.persistence.QueryOver<Task>()
+                .Where(x => x.IsActive == true)
                 .And(x => x.OnNeedBasis == false)
-                .And(x => x.Scheduled >= StartDate)
-                .And(x => x.Scheduled <= EndDate.Latest())
+                .And(x => x.Scheduled >= message.StartDate)
+                .And(x => x.Scheduled <= message.EndDate.LastInstantOfDay())
                 .OrderBy(x => x.Scheduled)
                 .Asc;
-            Filter.Filter(query);
-            return query.List();
+            message.Filter.Filter(query);
+            return this.GenerateChartData(query.List());
         }
 
+        #endregion
+
+        #region Private Methods.
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tasks"></param>
+        /// <returns></returns>
         private List<object[]> GenerateChartData(IList<Task> tasks)
         {
             var dataPoints = new Dictionary<DateTime, ChartData>();
@@ -67,6 +94,12 @@ namespace Appva.Mcss.Web.Controllers
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="onTime"></param>
+        /// <param name="date"></param>
+        /// <param name="data"></param>
         private void AddOnTimeOrNotOnTime(bool onTime, DateTime date, Dictionary<DateTime, ChartData> data)
         {
             if (data.ContainsKey(date))
@@ -92,7 +125,7 @@ namespace Appva.Mcss.Web.Controllers
                 }
             }
         }
-
+        #endregion
     }
 
     internal class ChartData

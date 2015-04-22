@@ -1,101 +1,288 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
-		Microsoft ResX Schema
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-		Version 1.3
-
-		The primary goals of this format is to allow a simple XML format 
-		that is mostly human readable. The generation and parsing of the 
-		various data types are done through the TypeConverter classes 
-		associated with the data types.
-
-		Example:
-
-		... ado.net/XML headers & schema ...
-		<resheader name="resmimetype">text/microsoft-resx</resheader>
-		<resheader name="version">1.3</resheader>
-		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-		<data name="Name1">this is my long string</data>
-		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-			[base64 mime encoded serialized .NET Framework object]
-		</data>
-		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-			[base64 mime encoded string representing a byte array form of the .NET Framework object]
-		</data>
-
-		There are any number of "resheader" rows that contain simple 
-		name/value pairs.
-
-		Each data row contains a name, and value. The row also contains a 
-		type or mimetype. Type corresponds to a .NET class that support 
-		text/value conversion through the TypeConverter architecture. 
-		Classes that don't support this are serialized and stored with the 
-		mimetype set.
-
-		The mimetype is used for serialized objects, and tells the 
-		ResXResourceReader how to depersist the object. This is currently not 
-		extensible. For a given mimetype the value must be set accordingly:
-
-		Note - application/x-microsoft.net.object.binary.base64 is the format 
-		that the ResXResourceWriter will generate, however the reader can 
-		read any of the formats listed below.
-
-		mimetype: application/x-microsoft.net.object.binary.base64
-		value   : The object must be serialized with 
-			: System.Serialization.Formatters.Binary.BinaryFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.soap.base64
-		value   : The object must be serialized with 
-			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.bytearray.base64
-		value   : The object must be serialized into a byte array 
-			: using a System.ComponentModel.TypeConverter
-			: and then encoded with base64 encoding.
-	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CreateCalendarEvent" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/calendar/event/create</value>
+    <comment>Permission to create a calendar event</comment>
+  </data>
+  <data name="CreateDelegation" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/delegation/create</value>
+    <comment>Permission to create a delegation</comment>
+  </data>
+  <data name="CreateInventory" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/inventory/create</value>
+    <comment>Permission to create an inventory</comment>
+  </data>
+  <data name="CreateNotification" xml:space="preserve">
+    <value>https://schema.appva.se/permission/notification/create</value>
+    <comment>Permission to create a notification</comment>
+  </data>
+  <data name="CreatePatient" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/create</value>
+    <comment>Permission to create a patient</comment>
+  </data>
+  <data name="CreatePractitioner" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/create</value>
+    <comment>Permission to create a practitioner</comment>
+  </data>
+  <data name="CreateRole" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/role/create</value>
+    <comment>Permission to create a role</comment>
+  </data>
+  <data name="CreateSchedule" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/schedule/create</value>
+    <comment>Permission to create a schedule</comment>
+  </data>
+  <data name="DeleteCalendarEvent" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/calendar/event/delete</value>
+    <comment>Permission to delete a calendar event</comment>
+  </data>
+  <data name="DeleteDelegation" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/delegation/delete</value>
+    <comment>Permission to delete a delegation</comment>
+  </data>
+  <data name="DeleteInventory" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/inventory/delete</value>
+    <comment>Permission to delete an inventory</comment>
+  </data>
+  <data name="DeleteNotification" xml:space="preserve">
+    <value>https://schema.appva.se/permission/notification/delete</value>
+    <comment>Permission to delete a notification</comment>
+  </data>
+  <data name="DeletePatient" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/delete</value>
+    <comment>Permission to delete a patient</comment>
+  </data>
+  <data name="DeletePractitioner" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/delete</value>
+    <comment>Permission to delete a practitioner</comment>
+  </data>
+  <data name="DeleteRole" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/role/delete</value>
+    <comment>Permission to delete a role</comment>
+  </data>
+  <data name="DeleteSchedule" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/schedule/delete</value>
+    <comment>Permission to delete a schedule</comment>
+  </data>
+  <data name="PrintSequence" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/sequence/print</value>
+    <comment>Permission to print sequences</comment>
+  </data>
+  <data name="ReadAlert" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/alerts/read</value>
+    <comment>Permission to read/view alert list</comment>
+  </data>
+  <data name="ReadArea51" xml:space="preserve">
+    <value>https://schema.appva.se/permission/area51/read</value>
+    <comment>Permission to read/view area51</comment>
+  </data>
+  <data name="ReadCalendarEvent" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/calendar/event/read</value>
+    <comment>Permission to read/view calendar events</comment>
+  </data>
+  <data name="ReadDashboard" xml:space="preserve">
+    <value>https://schema.appva.se/permission/dashboard/read</value>
+    <comment>Permission to read/view the dashboard</comment>
+  </data>
+  <data name="ReadDelegation" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/delegation/read</value>
+    <comment>Permission to read/view a delegation</comment>
+  </data>
+  <data name="ReadEventList" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/schedule/event/read</value>
+    <comment>Permission to read/view a signed event</comment>
+  </data>
+  <data name="ReadInventory" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/inventory/read</value>
+    <comment>Permission to read/view an inventory</comment>
+  </data>
+  <data name="ReadIssuedDelegation" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/delegation/issued/read</value>
+    <comment>Permission to read/view an issued delegation</comment>
+  </data>
+  <data name="ReadNotification" xml:space="preserve">
+    <value>https://schema.appva.se/permission/notification/read</value>
+    <comment>Permission to read/view notifications</comment>
+  </data>
+  <data name="ReadPatient" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/read</value>
+    <comment>Permission to read/view a patient</comment>
+  </data>
+  <data name="ReadPractitioner" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/read</value>
+    <comment>Permission to read/view a practitioner</comment>
+  </data>
+  <data name="ReadPractitionerReport" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/report/read</value>
+    <comment>Permission to read/view a practitioner report</comment>
+  </data>
+  <data name="ReadRevision" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/delegation/revision/read</value>
+    <comment>Permission to read/view a revision</comment>
+  </data>
+  <data name="ReadRole" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/role/read</value>
+    <comment>Permission to read/view roles</comment>
+  </data>
+  <data name="ReadSchedule" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/schedule/read</value>
+    <comment>Permission to read/view a schedule</comment>
+  </data>
+  <data name="ReadScheduleReport" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/schedule/report/read</value>
+    <comment>Permission to read/view the patient reports</comment>
+  </data>
+  <data name="UpdateAlert" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/alerts/update</value>
+    <comment>Permission to update/edit an alert</comment>
+  </data>
+  <data name="UpdateCalendarEvent" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/calendar/event/update</value>
+    <comment>Permission to uppdate/edit a calendar event</comment>
+  </data>
+  <data name="UpdateDelegation" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/delegation/update</value>
+    <comment>Permission to update/edit a delegation</comment>
+  </data>
+  <data name="UpdateInventory" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/inventory/update</value>
+    <comment>Permission to uppdate/edit an inventory</comment>
+  </data>
+  <data name="UpdateNotification" xml:space="preserve">
+    <value>https://schema.appva.se/permission/notification/update</value>
+    <comment>Permission to update/edit a notification</comment>
+  </data>
+  <data name="UpdatePatient" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/update</value>
+    <comment>Permission to update/edit a patient</comment>
+  </data>
+  <data name="UpdatePractitioner" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/update</value>
+    <comment>Permission to update/edit a practitioner</comment>
+  </data>
+  <data name="UpdateRole" xml:space="preserve">
+    <value>https://schema.appva.se/permission/practitioner/role/update</value>
+    <comment>Permission to update/edit a role</comment>
+  </data>
+  <data name="UpdateSchedule" xml:space="preserve">
+    <value>https://schema.appva.se/permission/patient/schedule/update</value>
+    <comment>Permission to uppdate/edit a schedule</comment>
+  </data>
 </root>

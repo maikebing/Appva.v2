@@ -6,13 +6,14 @@ using Appva.Mcss.Admin.Domain.Entities;
 using Appva.Mcss.Web.ViewModels;
 using Appva.Core.Extensions;
 using Appva.Mcss.Web.Mappers;
-using Appva.Mcss.Infrastructure;
 using NHibernate.Transform;
+using Appva.Cqrs;
+using Appva.Persistence;
 
 namespace Appva.Mcss.Web.Controllers {
 
-    public class SearchTaskCommand : Command<SearchViewModel<Task>> {
-
+    public class SearchTaskCommand : IRequest<SearchViewModel<Task>>
+    {
         public Guid PatientId { get; set; }
         public Guid ScheduleSettingsId { get; set; }
         public DateTime? StartDate { get; set; }
@@ -22,19 +23,47 @@ namespace Appva.Mcss.Web.Controllers {
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
         public OrderTasksBy Order { get; set; }
-        
-        public override void Execute() {
+    }
 
-            var scheduleSetting = Session.Get<ScheduleSettings>(ScheduleSettingsId);
-            var query = Session.QueryOver<Task>()
-                .Where(x => x.Patient.Id == PatientId)
-                .And(x => x.Inventory.Increased == null)
-                .And(x => x.Inventory.RecalculatedLevel == null)
-                .And(x => x.Modified <= EndDate)
+    public sealed class SearchTaskHandler : RequestHandler<SearchTaskCommand, SearchViewModel<Task>>
+    {
+        #region Variables.
+
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/> dispatcher.
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchPatientHandler"/> class.
+        /// </summary>
+        public SearchTaskHandler(IPersistenceContext persistence)
+        {
+            this.persistence = persistence;
+        }
+
+        #endregion
+
+        #region RequestHandler<PatientQuickSearch, IEnumerable<object>> Overrides.
+
+        /// <inheritdoc /> 
+        public override SearchViewModel<Task> Handle(SearchTaskCommand message)
+        {
+            var scheduleSetting = this.persistence.Get<ScheduleSettings>(message.ScheduleSettingsId);
+            var query = this.persistence.QueryOver<Task>()
+                .Where(x => x.Patient.Id == message.PatientId)
+                //.And(x => x.Inventory.Increased == null) // why is this not working, uncommented because of error?
+                //.And(x => x.Inventory.RecalculatedLevel == null) // why is this not working, uncommented because of error?
+                .And(x => x.UpdatedAt <= message.EndDate)
                 .Fetch(x => x.StatusTaxon).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer());
 
-            switch (Order) {
+            switch (message.Order)
+            {
                 case OrderTasksBy.Day:
                     query = query.OrderBy(x => x.Scheduled).Desc;
                     break;
@@ -54,19 +83,21 @@ namespace Appva.Mcss.Web.Controllers {
                     query = query.Left.JoinAlias(x => x.StatusTaxon, () => st).OrderBy(() => st.Weight).Asc.ThenBy(x => x.Scheduled).Desc;
                     break;
                 case OrderTasksBy.Time:
-                    query = query.OrderBy(x => x.Modified).Desc;
+                    query = query.OrderBy(x => x.UpdatedAt).Desc;
                     break;
             };
 
-            if (StartDate.HasValue) {
-                query.Where(x => x.Modified >= StartDate);
+            if (message.StartDate.HasValue) {
+                query.Where(x => x.UpdatedAt >= message.StartDate);
             }
 
-            if (FilterByNeedsBasis) {
+            if (message.FilterByNeedsBasis)
+            {
                 query.Where(x => x.OnNeedBasis == true);
             }
 
-            if (FilterByAnomalies) {
+            if (message.FilterByAnomalies)
+            {
                 query.Where(s => s.Status > 1 && s.Status < 5 || s.Delayed == true);
             }
 
@@ -76,22 +107,19 @@ namespace Appva.Mcss.Web.Controllers {
 
             query.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                .Where(x => x.Id == ScheduleSettingsId);
-            
-            
-
-            var items = query.Skip((PageNumber - 1) * PageSize).Take(PageSize).Future().ToList();
+                .Where(x => x.Id == message.ScheduleSettingsId);
+            var items = query.Skip((message.PageNumber - 1) * message.PageSize).Take(message.PageSize).Future().ToList();
             var totalCount = query.ToRowCountQuery().FutureValue<int>();
 
-            Result = new SearchViewModel<Task>() {
+            return new SearchViewModel<Task>
+            {
                 Items = items,
-                PageNumber = PageNumber,
-                PageSize = PageSize,
+                PageNumber = message.PageNumber,
+                PageSize = message.PageSize,
                 TotalItemCount = totalCount.Value
             };
-
         }
 
+        #endregion
     }
-
 }

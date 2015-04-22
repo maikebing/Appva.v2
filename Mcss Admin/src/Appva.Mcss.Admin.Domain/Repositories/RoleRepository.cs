@@ -113,7 +113,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .AndRestrictionOn(x => x.MachineName)
                 .IsIn(roles)
                 .JoinQueryOver<Account>(x => x.Accounts)
-                .Where(x => x.Id == account.Id)
+                    .Where(x => x.Id == account.Id)
                 .TransformUsing(Transformers.DistinctRootEntity)
                 .RowCount() > 0;
         }
@@ -124,7 +124,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             return this.persistenceContext.QueryOver<Role>()
                 .Where(x => x.IsActive)
                 .JoinQueryOver<Account>(x => x.Accounts)
-                .Where(x => x.Id == account.Id)
+                    .Where(x => x.Id == account.Id)
                 .TransformUsing(Transformers.DistinctRootEntity)
                 .List();
         }
@@ -146,6 +146,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             return this.persistenceContext.QueryOver<Role>()
                 .Where(x => x.IsActive)
+                .And(x => x.IsVisible)
+                .OrderBy(x => x.Weight).Asc
+                .ThenBy(x => x.Name).Asc
                 .List();
         }
 

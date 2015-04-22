@@ -1,18 +1,12 @@
-﻿@model Appva.Mcss.Web.ViewModels.ListInventoryViewModel
+﻿@using Appva.Core.Utilities;
+@model Appva.Mcss.Web.ViewModels.ListInventoryViewModel
 @{
     ViewBag.Title = "Saldo händelser";
-    var today = DateTimeExt.Now().Date;
-    var yesterday = DateTimeExt.Now().Date.AddDays(-1);
+    var today = DateTimeUtilities.Now().Date;
+    var yesterday = DateTimeUtilities.Now().Date.AddDays(-1);
 }
-@Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Action("Menu", "Menu", new
-            {
-                Key = "admin_patient_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Patient.Id.ToString(),
-                IgnoreAction = false
-            })
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
 <div id="subheader" class="cf">
     <h1>Saldo händelser</h1>
     @if (Model.Inventory != null) {
@@ -37,8 +31,7 @@
                     </li>
                 }
             </ul>
-        }
-   
+        }   
         <div id="content-primary">
             <div id="report" class="cf">
                 <div class="data cf">
@@ -124,7 +117,7 @@
                                                     <td>@(transaction.Description != null || transaction.Description == "" ? transaction.Description : "-")</td>
                                                 }
 
-                                                <td>@TimeSpanDifference.ToShortDateTime(transaction.Created, "Idag", "Igår")</td>
+                                                <td>@TimeSpanDifference.ToShortDateTime(transaction.CreatedAt, "Idag", "Igår")</td>
                                                 <td>@transaction.Account.FullName</td>
                                             </tr>
                                         }

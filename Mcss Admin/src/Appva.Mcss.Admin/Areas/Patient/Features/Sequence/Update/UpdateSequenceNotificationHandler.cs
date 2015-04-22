@@ -57,8 +57,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         #region UpdateSequenceNotificationHandler<CreateSequence, SequenceViewModel> Overrides.
 
         /// <inheritdoc />
-        public override SequenceViewModel Handle(CreateSequence message)
+        public override SequenceViewModel Handle(UpdateSequence message)
         {
+            return null;
+            /*
             Account recipient = null;
             Taxon delegation = null;
             if (Model.Delegation.HasValue && !Model.Nurse)
@@ -74,6 +76,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             
             Schedule.Modified = DateTime.Now;
             this.context.Update(Schedule);
+             * */
         }
 
         #endregion
@@ -84,7 +87,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// TODO: MOVE?
         private Sequence CreateOrUpdate(Taxon delegation, Account recipient)
         {
-            DateTime startDate = DateTimeUtilities.Now();
+            return null;
+            /*DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate = null;
             DateTime tempDate;
             Role requiredRole = null;
@@ -166,7 +170,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             Sequence.Taxon = delegation;
             Sequence.Role = requiredRole;
             return Sequence;
-            
+            */
 
         }
 

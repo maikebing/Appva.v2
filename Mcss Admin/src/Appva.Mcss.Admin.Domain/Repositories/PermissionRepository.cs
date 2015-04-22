@@ -20,7 +20,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IPermissionRepository : IIdentityRepository<Permission>, IRepository
+    public interface IPermissionRepository : IIdentityRepository<Permission>, IListRepository<Permission>, IRepository
     {
         /// <summary>
         /// Returns all permissions for the user account.
@@ -41,6 +41,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// True if the user is a member of any of the specified permissions
         /// </returns>
         bool HasPermissions(Account account, params string[] permissions);
+
+        /// <summary>
+        /// Returns a filtered collection of <see cref="Permission"/> by specified 
+        /// ID:s.
+        /// </summary>
+        /// <param name="ids">The ID:s to retrieve</param>
+        /// <returns>A filtered collection of <see cref="Permission"/></returns>
+        IList<Permission> ListAllIn(params Guid[] ids);
     }
 
     /// <summary>
@@ -80,9 +88,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             var roles = account.Roles.Select(x => x.Id).ToArray();
             return this.persistenceContext.QueryOver<Permission>()
                 .JoinQueryOver<Role>(x => x.Roles)
-                .Where(x => x.IsActive)
-                .WhereRestrictionOn(x => x.Id)
-                .IsIn(roles)
+                    .Where(x => x.IsActive)
+                    .WhereRestrictionOn(x => x.Id)
+                    .IsIn(roles)
                 .TransformUsing(Transformers.DistinctRootEntity)
                 .List();
         }
@@ -95,11 +103,20 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .WhereRestrictionOn(x => x.Resource)
                 .IsIn(permissions)
                 .JoinQueryOver<Role>(x => x.Roles)
-                .Where(x => x.IsActive)
-                .WhereRestrictionOn(x => x.Id)
-                .IsIn(roles)
+                    .Where(x => x.IsActive)
+                    .WhereRestrictionOn(x => x.Id)
+                    .IsIn(roles)
                 .TransformUsing(Transformers.DistinctRootEntity)
                 .RowCount() > 0;
+        }
+
+        /// <inheritdoc />
+        public IList<Permission> ListAllIn(params Guid[] ids)
+        {
+            return this.persistenceContext.QueryOver<Permission>()
+                .AndRestrictionOn(x => x.Id)
+                .IsIn(ids)
+                .List();
         }
 
         #endregion
@@ -110,6 +127,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public Permission Find(Guid id)
         {
             return this.persistenceContext.Get<Permission>(id);
+        }
+
+        #endregion
+
+        #region IListRepository<Permission> Members.
+
+        /// <inheritdoc />
+        public IList<Permission> List(ulong maximumItems = long.MaxValue)
+        {
+            return this.persistenceContext.QueryOver<Permission>()
+                .Where(x => x.IsVisible).OrderBy(x => x.Sort).Asc.List();
         }
 
         #endregion

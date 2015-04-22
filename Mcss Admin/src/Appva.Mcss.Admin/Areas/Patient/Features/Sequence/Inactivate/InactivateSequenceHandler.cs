@@ -15,7 +15,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Areas.Patient.Features.Sequence.Inactivate;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;

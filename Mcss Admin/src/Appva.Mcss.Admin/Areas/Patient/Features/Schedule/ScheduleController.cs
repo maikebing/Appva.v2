@@ -32,6 +32,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [RouteArea("Patient"), RoutePrefix("Schedule")]
     public sealed class ScheduleController : IdentityController
     {
         #region Private Variables.
@@ -70,6 +71,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="id">The patient id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [HttpGet]
+        [Route("List/{id:guid}")]
         public ActionResult List(Guid id)
         {
             var account = Identity();
@@ -115,6 +118,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="id">The patient id</param>
         /// <param name="scheduleId">The schedule id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Details/patient/{id:guid}/schedule/{scheduleId:guid}")]
         public ActionResult Details(Guid id, Guid scheduleId)
         {
             var patient = this.context.Get<Patient>(id);
@@ -144,6 +148,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="id">The patient id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Create/patient/{id:guid}")]
         public ActionResult Create(Guid id)
         {
             var account = Identity();
@@ -188,6 +193,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="model">The schedule model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
+        [Route("Create/patient/{id:guid}")]
         public ActionResult Create(Guid id, ScheduleViewModel model)
         {
             var patient = this.context.Get<Patient>(id);
@@ -217,10 +223,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="id">The schedule id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Inactivate/schedule/{id:guid}")]
         public ActionResult Inactivate(Guid id)
         {
             var schedule = this.context.Get<Schedule>(id);
-            this.ExecuteCommand<Schedule>(new InactivateOrActivateCommand<Schedule>()
+            this.ExecuteCommand(new InactivateOrActivateCommand<Schedule>()
             {
                 Id = id
             });
@@ -248,6 +255,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="filterByNeedsBasis">Optional on need based query filter - defaults to false</param>
         /// <param name="order"></param>
         /// <returns></returns>
+        [Route("Sign/{id:guid}")]
         public ActionResult Sign(
             Guid id,
             Guid? scheduleSettingsId,
@@ -363,6 +371,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="taskId">The task id</param>
         /// <returns><see cref="ActionResult"/></returns>
         //[Authorize(Roles = RoleUtils.AppvaAccount)]
+        [Route("DeleteTask/{id:guid}/task/{taskId:guid}")]
         public ActionResult DeleteTask(Guid id, Guid taskId)
         {
             var task = this.context.Get<Task>(taskId);
@@ -385,6 +394,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="startDate">Optional start date</param>
         /// <param name="endDate">Optional end date</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("PrintPopUp/{id:guid}/schedule/{scheduleSettingsId:guid}/{startDate?}/{endDate?}")]
         public ActionResult PrintPopUp(Guid id, Guid scheduleSettingsId, DateTime? startDate, DateTime? endDate)
         {
             var patient = this.context.Get<Patient>(id);
@@ -407,6 +417,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="model">The print model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
+        [Route("PrintPopUp/{id:guid}/schedule/{scheduleId:guid}")]
         public ActionResult PrintPopUp(Guid id, Guid scheduleId, SchedulePrintPopOverViewModel model)
         {
             if (ModelState.IsValid)
@@ -451,6 +462,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="OnNeedBasis">Whether or not need based</param>
         /// <param name="StandardSequences">Whether or not standard sequences</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("PrintSchema/{id:guid}")]
         public ActionResult PrintSchema(
             Guid id,
             Guid? scheduleSettingsId,
@@ -505,6 +517,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="OnNeedBasis">Whether or not need based</param>
         /// <param name="StandardSequences">Whether or not standard sequences</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("PrintTable/{id:guid}")]
         public ActionResult PrintTable(
             Guid id,
             Guid? scheduleSettingsId,
@@ -556,6 +569,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="endDate">Optional end date, defaults to last instant of today</param>
         /// <param name="page">Optional page number, defaults to 1</param>
         /// <returns>A schedule report view</returns>
+        [Route("ScheduleReport/{id:guid}")]
         public ActionResult ScheduleReport(Guid id, Guid? sId, DateTime? startDate, DateTime? endDate, int? page = 1)
         {
             var patient = this.context.Get<Patient>(id);
@@ -600,6 +614,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="model">The schedule model</param>
         /// <returns>A redirect to schedule report</returns>
         [HttpPost]
+        [Route("ScheduleReport/{id:guid}")]
         public ActionResult ScheduleReport(Guid id, ScheduleReportViewModel model)
         {
             return ScheduleReport(id, model.Schedule, model.StartDate, model.EndDate);
@@ -614,6 +629,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="endDate">The end date</param>
         /// <returns>JSON data for charts</returns>
         [HttpGet, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        [Route("Chart/{id:guid}")]
         public ActionResult Chart(Guid id, Guid? sId, DateTime startDate, DateTime endDate)
         {
             return Json(ExecuteCommand<List<object[]>>(new CreateChartCommand<ScheduleReportFilter>
@@ -748,6 +764,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="scheduleSetting">The schedule settings id</param>
         /// <returns>JSON representation of true or false</returns>
         [HttpPost, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        [Route("VerifyUnique/{id:guid}/schedule/{scheduleSetting:guid}")]
         public JsonResult VerifyUnique(Guid id, Guid scheduleSetting)
         {
             var schedules = this.context.QueryOver<Schedule>()

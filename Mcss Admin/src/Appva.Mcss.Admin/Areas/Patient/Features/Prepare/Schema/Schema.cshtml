@@ -1,11 +1,12 @@
-﻿@model Appva.Mcss.Web.ViewModels.PrepareSchemaViewModel
+﻿@using Appva.Core.Utilities;
+@model Appva.Mcss.Web.ViewModels.PrepareSchemaViewModel
 
 @{
     ViewBag.Title = "Iordningsställande";
 }
 
-@Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Partial("_ScheduleMenu", Model.Patient)
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
 
 <div id="subheader" class="cf">
 	<h1>Signeringslistor</h1>
@@ -19,13 +20,13 @@
         <div id="signlist">
 			
             <div class="h cf">
-				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.Modified)</h2>
+				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.UpdatedAt)</h2>
 				@Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
 			</div>
 			
             <ul class="nav cf">
-				@Html.MenuLink("Ordinationer", "Details", "Schedule", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
-                @Html.MenuLink("Iordningsställande", "Schema", "Prepare", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
+				@Html.ActionLink("Ordinationer", "Details", "Schedule", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, null)
+                @Html.ActionLink("Iordningsställande", "Schema", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, null)
 			</ul>
             <div id="prepare-weeks">
 			    <div class="week-h">
@@ -35,14 +36,14 @@
                             @Model.StartDate.Day.ToString() @(Model.StartDate.Month != Model.StartDate.AddDays(7).Month ? @Model.StartDate.ToString("MMMM") : "")
                             –@Model.StartDate.AddDays(6).Day.ToString() @Model.StartDate.AddDays(7).ToString("MMMM")</span></h2>
 				    @Html.ActionLink(
-                            String.Format("{0} Vecka {1}", WebUtility.HtmlDecode("&larr;"), Appva.Mcss.Utils.DateTimeExt.GetWeekNumber(Model.StartDate.AddDays(-7))), 
+                            String.Format("{0} Vecka {1}", WebUtility.HtmlDecode("&larr;"), Model.StartDate.AddDays(-7).GetWeekNumber()), 
                             "Schema",
                             "Prepare",
                             new { id = Model.Patient.Id, startDate = Model.StartDate.AddDays(-7), scheduleId = Model.Schedule.Id }, 
                             new { @class="prev" }
                     )
                     @Html.ActionLink(
-                            String.Format("Vecka {0} {1}",  Appva.Mcss.Utils.DateTimeExt.GetWeekNumber(Model.StartDate.AddDays(8)), WebUtility.HtmlDecode("&rarr;")), 
+                            String.Format("Vecka {0} {1}",  Model.StartDate.AddDays(8).GetWeekNumber(), WebUtility.HtmlDecode("&rarr;")), 
                             "Schema",
                             "Prepare",
                             new { id = Model.Patient.Id, startDate = Model.StartDate.AddDays(7), scheduleId = Model.Schedule.Id }, 
@@ -72,9 +73,9 @@
                                     {
                                         var hasTask = false;
                                         var name = "-";
-                                        if (Model.Tasks.Any(x => x.Date.Date == date.Date && x.PrepareSequence.Id == sequence.Id))
+                                        if (Model.Tasks.Any(x => x.Date.Date == date.Date && x.PreparedSequence.Id == sequence.Id))
                                         {
-                                            var task = Model.Tasks.Where(x => x.Date.Date == date.Date && x.PrepareSequence.Id == sequence.Id).First();
+                                            var task = Model.Tasks.Where(x => x.Date.Date == date.Date && x.PreparedSequence.Id == sequence.Id).First();
                                             name = task.PreparedBy.FullName;
                                             hasTask = true;
                                         }

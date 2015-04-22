@@ -1,0 +1,52 @@
+﻿@model PaginationModel
+@if (Model.PaginationLinks.Count() > 0)
+{
+    <div class="std-paging cf">
+        <h2 class="structural">Gå till sida:</h2>
+        @foreach (var link in Model.PaginationLinks)
+        {
+            @BuildLink(link)
+        }
+    </div>
+}
+@helper BuildLink(PaginationLink link)
+{
+    if (link.IsCurrent)
+    {
+        var aBuilder = new TagBuilder("em");
+        aBuilder.SetInnerText(link.DisplayText);
+        @Html.Raw(aBuilder.ToString())
+    }
+    else
+    {
+        var aBuilder = new TagBuilder("a");
+        if (link.Url == null)
+        {
+            aBuilder.MergeAttribute("href", "#");
+        }
+        else
+        {
+            aBuilder.MergeAttribute("href", link.Url);
+        }
+        if ((link.DisplayText == "«" || link.DisplayText == "»") && link.Url == null)
+        {
+
+        }
+        else
+        {
+            if (link.DisplayText == "«")
+            {
+                aBuilder.SetInnerText("Föregående");
+            }
+            else if (link.DisplayText == "»")
+            {
+                aBuilder.SetInnerText("Nästa");
+            }
+            else
+            {
+                aBuilder.SetInnerText(link.DisplayText);
+            }
+            @Html.Raw(aBuilder.ToString())
+        }
+    }
+}

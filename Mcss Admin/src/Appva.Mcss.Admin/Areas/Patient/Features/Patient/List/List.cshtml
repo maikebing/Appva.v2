@@ -1,32 +1,27 @@
-﻿@model Appva.Mcss.Web.ViewModels.PatientListViewModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Web.ViewModels.PatientListViewModel
 @{ ViewBag.Title = "Boende"; }
 <div id="main">
     <div id="subheader" class="cf">
 	    <h1>Boende</h1>
-        @if (Permissions.CanShow(Permissions.PatientCreate))
-        {
-            @Html.ActionLink("Ny boende", "Create", new { }, new { @class = "btn lb-link" })
-        }
+        @Html.PermissionLink(Permissions.PatientCreate, "Ny boende", "Create", "Patient", "Patient", null, new { @class = "btn lb-link" })
         <p class="filter">
             <strong>Visa:</strong>
             @Html.ActionLink("Alla", "List", new { }, new { @class = (Model.IsActive && !Model.IsDeceased) ? "sel div" : "div" })
             @Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = (!Model.IsActive) ? "sel div" : "div" })
             @Html.ActionLink("Avlidna", "List", new { isDeceased = true }, new { @class = (Model.IsDeceased) ? "sel div" : "div" })
         </p>
-        @Html.Partial("~/Views/Patient/Partials/_PatientSearch.cshtml")
+        @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientSearch.cshtml")
     </div>
-    @if (Model.Search.Items.Count > 0)
-{
+    @if (Model.Search != null && Model.Search.Items.Count > 0)
+    {
     <ul class="people">
         @foreach (var item in Model.Search.Items)
         {
             <li class="cf @(item.HasUnattendedTasks ? "alarm" : "")">
-                @if (Permissions.CanShow(Permissions.PatientCreate))
+                @if (!item.Active)
                 {
-                    if (!item.Active)
-                    {
-                        @Html.ActionLink("Aktivera", "Activate", "Patient", new { Id = item.Id }, new { @class = "btn" })
-                    }
+                    @Html.PermissionLink(Permissions.PatientCreate, "Aktivera", "Activate", "Patient", "Patient", new { Id = item.Id }, new { @class = "btn" })
                 }
                 <div class="h">
                     <h2>
@@ -35,7 +30,7 @@
                         {
                             foreach (var sa in item.SeniorAlerts)
                             {
-                                <img src="@String.Format("/Assets/i/{0}", sa.Type)" alt="Senior Alert" title="@sa.Name" />
+                                <img src="@string.Format("/Assets/i/{0}", sa.Type)" alt="Senior Alert" title="@sa.Name" />
                             }
                         }
                     </h2>
@@ -43,10 +38,7 @@
                 </div>
                 @if (item.HasUnattendedTasks)
                 {
-                    if (Permissions.CanShow(Permissions.PatientAlertsRead))
-                    {
-                        @Html.ActionLink("Larm!", "List", "Alert", new { id = item.Id }, new { @class = "alert" })
-                    }
+                    @Html.PermissionLink(Permissions.PatientAlertsRead, "Larm!", "List", "Alert", "Patient", new { id = item.Id }, new { @class = "alert" })
                 }
                 else
                 {

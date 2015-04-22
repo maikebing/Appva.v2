@@ -85,6 +85,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             */
             schedule.UpdatedAt = DateTime.Now;
             this.context.Update(schedule);
+            return null;
         }
 
         #endregion
@@ -148,7 +149,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
                     endDate = message.EndDate.Value;
                 }
             }
-            Inventory inventory = schedule.ScheduleSettings.HasInventory ? new Inventory()
+            Inventory inventory = message.Schedule.ScheduleSettings.HasInventory ? new Inventory()
             {
                 CurrentLevel = 0,
                 Description = message.Name,
@@ -156,7 +157,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             } : null;
             if (inventory != null)
             {
-                if (schedule.ScheduleSettings.CountInventory)
+                if (message.Schedule.ScheduleSettings.CountInventory)
                 {
                     inventory.LastRecount = DateTime.Now;
                 }
@@ -179,8 +180,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
                 Reminder = message.Reminder,
                 ReminderInMinutesBefore = message.ReminderInMinutesBefore,
                 ReminderRecipient = recipient,
-                Patient = patient,
-                Schedule = schedule,
+                Patient = message.Patient,
+                Schedule = message.Schedule,
                 Taxon = delegation,
                 Role = requiredRole,
                 Inventory = inventory

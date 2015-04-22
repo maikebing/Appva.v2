@@ -23,7 +23,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IEventService
+    public interface IEventService : IService
     {
         Sequence Get(Guid id);
         IList<Task> FindWithinMonth(Patient patient, DateTime date);

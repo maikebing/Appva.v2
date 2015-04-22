@@ -1,0 +1,6 @@
+﻿@model Tickable
+<li>
+    @Html.HiddenFor(x => x.Id)
+    @Html.CheckBoxWithLabelFor(Model.Label, x => x.IsSelected)
+    @Html.Help(Model.HelpText)
+</li>

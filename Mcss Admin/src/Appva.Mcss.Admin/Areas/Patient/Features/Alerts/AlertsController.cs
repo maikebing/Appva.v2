@@ -31,7 +31,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class AlertsController : IdentityController
+    [RouteArea("Patient"), RoutePrefix("Alert")]
+    public sealed class AlertsController : IdentityController
     {
         #region Private Variables.
 
@@ -80,6 +81,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <param name="endDate">Optional end date</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("List/{id:guid}")]
         public ActionResult List(Guid id, int? year, int? month, DateTime? startDate, DateTime? endDate)
         {
             var patient = this.patientService.Get(id);
@@ -141,6 +143,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <param name="endDate">Optional end date for redirect</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("HandleAlert/{id:guid}/{startDate?}/{endDate?}")]
         public ActionResult HandleAlert(Guid id, DateTime? startDate, DateTime? endDate)
         {
             var account = Identity();
@@ -179,6 +182,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <param name="endDate">Optional end date for redirect</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("HandleAlerts/{id:guid}/{startDate?}/{endDate?}")]
         public ActionResult HandleAllAlerts(Guid id, DateTime? startDate, DateTime? endDate)
         {
             var account = Identity();
@@ -201,6 +205,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// </summary>
         /// <param name="status">Either "notsigned" or empty</param>
         /// <returns><see cref="PartialViewResult"/></returns>
+        [Route("Overview/{status}")]
         public PartialViewResult Overview(string status = "notsigned")
         {
             var taxon = FilterCache.Get(this.context);

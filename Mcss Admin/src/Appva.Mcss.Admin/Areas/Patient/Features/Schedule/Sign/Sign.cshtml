@@ -1,23 +1,18 @@
-﻿@model Appva.Mcss.Web.ViewModels.TaskListViewModel
+﻿@using Appva.Core.Utilities;
+@model Appva.Mcss.Web.ViewModels.TaskListViewModel
 @{ 
 	ViewBag.Title = "Signerade händelser";
-	var today = DateTimeExt.Now().Date;
-	var yesterday = DateTimeExt.Now().Date.AddDays(-1);
+	var today = DateTimeUtilities.Now().Date;
+    var yesterday = DateTimeUtilities.Now().Date.AddDays(-1);
 	var isFilterByTodaySelected = (Model.StartDate.HasValue && Model.StartDate.Value.Equals(today))
-		&& (Model.EndDate.HasValue && Model.EndDate.Value.Equals(today.Latest()));
+		&& (Model.EndDate.HasValue && Model.EndDate.Value.Equals(today.LastInstantOfDay()));
 	var isFilterByYesterdaySelected = (Model.StartDate.HasValue && Model.StartDate.Value.Equals(yesterday))
-		&& (Model.EndDate.HasValue && Model.EndDate.Value.Equals(yesterday.Latest()));
+        && (Model.EndDate.HasValue && Model.EndDate.Value.Equals(yesterday.LastInstantOfDay()));
 	var isInventory = (Model.Schedule != null) ? (Model.Schedule.HasInventory || Model.Schedule.CountInventory) : false;
 }
-@Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Action("Menu", "Menu", new
-            {
-                Key = "admin_patient_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Patient.Id.ToString(),
-                IgnoreAction = false
-            })
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
+
 <div id="subheader" class="cf">
 	<h1>Signerade händelser</h1>
 	@if (Model.Schedule != null) {
@@ -162,7 +157,7 @@
 									},
 									new { @class = (int)Model.Order == 5 ? "sort" : "" })
 							</th>
-							@if (User.IsInRole(RoleUtils.AppvaAccount))
+							@if (User.IsInRole(Appva.Core.Resources.RoleTypes.Appva))
 							{
 								<th scope="col"></th>
 							}
@@ -173,17 +168,13 @@
 						{
 							foreach (var task in Model.Search.Items)
 							{
-								<tr class="@(!task.Active ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
+								<tr class="@(!task.IsActive ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
 									<td>@task.Name</td>
 									<td>
 										@if (!task.IsCompleted) {
 											@:-
 										} else {
-											if (task.OnNeedBasis) {
-												@TimeSpanDifference.ToShortDateTime(task.Modified, "Idag", "Igår")
-											} else {
-												@TimeSpanDifference.ToShortDateTime(task.CompletedDate.GetValueOrDefault(), "Idag", "Igår")
-											}
+                                            @Html.DateString(task.OnNeedBasis, task.UpdatedAt, task.CompletedDate)
 										}
 									</td>
 									<td>
@@ -191,7 +182,7 @@
 											@:Ej signerad
 										} else {
 											if (task.OnNeedBasis) {
-												@:kl @String.Format("{0:HH:mm}", task.Modified)
+												@:kl @String.Format("{0:HH:mm}", task.UpdatedAt)
 											} else {
 												@:kl @String.Format("{0:HH:mm}", task.CompletedDate.GetValueOrDefault())
 											}
@@ -286,7 +277,7 @@
 										}
 										
 									</td>
-									@if (User.IsInRole(RoleUtils.AppvaAccount))
+									@if (User.IsInRole(Appva.Core.Resources.RoleTypes.Appva))
 									{
 										<td>
 											@Html.ActionLink("Ta bort", "DeleteTask", new { id = Model.Patient.Id, taskId = task.Id }, new { @class = "btn" })

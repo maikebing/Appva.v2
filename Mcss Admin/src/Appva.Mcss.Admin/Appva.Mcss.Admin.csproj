@@ -213,8 +213,20 @@
     <Compile Include="Areas\Patient\Features\Alerts\AlertsController.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\CalendarController.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
-    <Compile Include="Areas\Practitioner\Features\Roles\RolesController.cs" />
-    <Compile Include="Areas\sdfsdfsdf\sdfsdfsdfAreaRegistration.cs" />
+    <Compile Include="Areas\Roles\Features\RolesSchedules\RolesSchedulesController.cs" />
+    <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedule.cs" />
+    <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleScheduleHandler.cs" />
+    <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedulePublisher.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\Create\CreateRole.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\Create\CreateRolesPublisher.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\Create\CreateRolesHandler.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\Delete\DeleteRoleHandler.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\Delete\DeleteRole.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\List\ListRolesHandler.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\RolesController.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\Update\UpdateRole.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\Update\UpdateRolesPublisher.cs" />
+    <Compile Include="Areas\Roles\Features\Roles\Update\UpdateRolesHandler.cs" />
     <Compile Include="Commands\AccountQuickSearch.cs" />
     <Compile Include="Commands\CreateChartCommand.cs" />
     <Compile Include="Commands\CreateOverviewCommand.cs" />
@@ -244,6 +256,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Attributes\PublishAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\DispatchAttribute.cs" />
     <Compile Include="Infrastructure\Controllers\AbstractMediatorController.cs" />
     <Compile Include="Infrastructure\Controllers\IdentityController.cs" />
@@ -279,6 +292,7 @@
     <Compile Include="Models\GlobalFilterCacheHelper.cs" />
     <Compile Include="Models\GlobalFilterViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\Id.cs" />
     <Compile Include="Models\InventoryOverviewViewModel.cs" />
     <Compile Include="Models\InventoryTransactionItemViewModel.cs" />
     <Compile Include="Models\IssuedDelegationsViewModel.cs" />
@@ -301,7 +315,6 @@
     <Compile Include="Models\RecalculateStockViewModel.cs" />
     <Compile Include="Models\RecountOverviewItemViewModel.cs" />
     <Compile Include="Models\ReportViewModel.cs" />
-    <Compile Include="Models\RoleFormViewModel.cs" />
     <Compile Include="Models\RoleScheduleFormViewModel.cs" />
     <Compile Include="Models\ScheduleDetailsViewModel.cs" />
     <Compile Include="Models\ScheduleListViewModel.cs" />
@@ -536,6 +549,10 @@
       <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
       <Name>Appva.Tenant</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Appva.Admin.Utils\Appva.Admin.Utils.csproj">
+      <Project>{2edab8ce-5318-400f-a1a8-7b604732cf5b}</Project>
+      <Name>Appva.Admin.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.Admin.Application\Appva.Mcss.Admin.Application.csproj">
       <Project>{0e34a41f-f641-45d2-91e4-ff4c3e9b7853}</Project>
       <Name>Appva.Mcss.Admin.Application</Name>
@@ -560,9 +577,7 @@
     <Folder Include="Areas\Area51\Features\Settings\Edit\" />
     <Folder Include="Areas\Patient\Features\Alerts\HandleAll\" />
     <Folder Include="Areas\Patient\Features\Alerts\Handle\" />
-    <Folder Include="Areas\sdfsdfsdf\Controllers\" />
-    <Folder Include="Areas\sdfsdfsdf\Models\" />
-    <Folder Include="Areas\sdfsdfsdf\Views\Shared\" />
+    <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Area51\Features\Cache\List\List.cshtml" />
@@ -623,7 +638,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\sdfsdfsdf\Views\web.config" />
+    <Content Include="Areas\Roles\Features\web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Features\Authentication\Forgot\Forgot.cshtml" />
@@ -712,6 +727,30 @@
   <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\_AccountDetails.cshtml" />
     <Content Include="Areas\Practitioner\Features\Accounts\_AccountSearch.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\DisplayTemplates\Pagination.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Shared\_PatientSubMenuPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Roles\Features\Roles\Create\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Roles\Features\Roles\List\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Roles\Features\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\EditorTemplates\Tickable.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Roles\Features\Roles\Update\Update.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Roles\Features\RolesSchedules\Update\Update.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

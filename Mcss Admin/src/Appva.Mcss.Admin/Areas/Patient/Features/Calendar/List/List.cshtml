@@ -1,14 +1,8 @@
-﻿@model Appva.Mcss.Web.ViewModels.EventListViewModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Web.ViewModels.EventListViewModel
 @{ ViewBag.Title = "List"; }
-@Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Action("Menu", "Menu", new
-            {
-                Key = "admin_patient_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Patient.Id.ToString(),
-                IgnoreAction = false
-            })
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
 @section JavaScript {
     <script type="text/javascript" src="../../Assets/js/mcss.calendar.lb.js"></script>
     <script type="text/javascript">
@@ -26,10 +20,7 @@
 }
 <div id="subheader" class="cf">
     <h1>Kalender</h1>
-    @if (Permissions.CanShow(Permissions.PatientCalendarRead))
-                    {
-        @Html.ActionLink("Ny aktivitet", "Create", new { id = Model.Patient.Id, date = Model.Current }, new { @class = "btn lb-link" })
-    }
+    @Html.PermissionLink(Permissions.PatientCalendarRead, "Ny aktivitet", "Create", "Calendar", "Patient", new { id = Model.Patient.Id, date = Model.Current }, new { @class = "btn lb-link" })
 </div>
 <div id="content" class="cf">
 	<div id="content-primary">

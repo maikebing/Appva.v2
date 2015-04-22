@@ -31,7 +31,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class CalendarController : IdentityController
+    [RouteArea("Patient"), RoutePrefix("Calendar")]
+    public sealed class CalendarController : IdentityController
     {
         #region Private Variables.
 
@@ -84,6 +85,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="filter">Optional filter list</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("List/{id:guid}")]
         public ActionResult List(Guid id, string prev, string next, DateTime? date, string[] filter = null)
         {
             if (filter.IsNull())
@@ -131,6 +133,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">Optional date</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("Create/{id:guid}")]
         public ActionResult Create(Guid id, DateTime? date)
         {
             var categories = this.eventService.GetCategories();
@@ -169,6 +172,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="model">The event model</param>
         /// <returns></returns>
         [HttpPost, ValidateAntiForgeryToken]
+        [Route("Create/{id:guid}")]
         public ActionResult Create(Guid id, DateTime? date, EventViewModel model)
         {
             var patient = this.patientService.Get(id);
@@ -211,6 +215,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">The event date</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("Edit/{id:guid}")]
         public ActionResult Edit(Guid id, DateTime date)
         {
             var evt = this.eventService.Get(id);
@@ -263,6 +268,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="model">The event model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, /*MultiButton,*/ ValidateAntiForgeryToken]
+        [Route("EditAll/{id:guid}")]
         public ActionResult EditAll(Guid id, Guid seqId, DateTime date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -302,6 +308,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="model">The event model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, /*MultiButton,*/ ValidateAntiForgeryToken]
+        [Route("EditThis/{id:guid}")]
         public ActionResult EditThis(Guid id, Guid seqId, DateTime date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -340,6 +347,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="id">The task id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("EditActivity/{id:guid}")]
         public ActionResult EditActivity(Guid id)
         {
             var evt = this.context.Get<Task>(id);
@@ -377,6 +385,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="model">THe event model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
+        [Route("EditActivity/{id:guid}")]
         public ActionResult EditActivity(Guid id, Guid taskId, DateTime? date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -406,6 +415,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">The redirect date</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("Remove/{id:guid}")]
         public ActionResult Remove(Guid id, DateTime date)
         {
             var evt = this.eventService.Get(id);
@@ -422,6 +432,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// </summary>
         /// <param name="id">The task id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Remove/{id:guid}")]
         public ActionResult RemoveActivity(Guid id)
         {
             var evt = this.context.Get<Task>(id);
@@ -437,6 +448,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// Returns the dashboard overview.
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
+        [Route("Overview")]
         public PartialViewResult Overview()
         {
             var taxon = FilterCache.Get(this.context);
@@ -508,6 +520,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="id">The sequence id</param>
         /// <param name="date">The date</param>
         /// <returns><see cref="JsonResult"/></returns>
+        [Route("Quittance/{id:guid}")]
         public JsonResult Quittance(Guid id, DateTime date)
         {
             var sequence = this.context.Get<Sequence>(id);

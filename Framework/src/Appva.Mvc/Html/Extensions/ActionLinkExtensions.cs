@@ -24,9 +24,6 @@ namespace Appva.Mvc.Html.Extensions
     /// </summary>
     public static class ActionLinkExtensions
     {
-        private const string AclIsEnabledClaimType = "https://schemas.appva.se/2015/04/acl/claims/enabled";
-        private const string AclIsPreviewClaimType = "https://schemas.appva.se/2015/04/acl/claims/preview";
-
         /// <summary>
         /// 
         /// </summary>
@@ -56,11 +53,11 @@ namespace Appva.Mvc.Html.Extensions
             }
             //// If Access control is enabled or in preview mode for appva administrative account role
             //// then verify that the user account has permission to view the link.
-            if (principal.HasClaim(AclIsEnabledClaimType, "Y") || (principal.HasClaim(AclIsPreviewClaimType, "Y") && principal.IsInRole("_AA")))
+            if (principal.HasClaim(Core.Resources.ClaimTypes.AclEnabled, "Y") || (principal.HasClaim(Core.Resources.ClaimTypes.AclPreview, "Y") && principal.IsInRole(Core.Resources.RoleTypes.Appva)))
             {
-                if (! principal.HasClaim(Appva.Core.Identity.Identity.Permission, permission))
+                if (! principal.HasClaim(Core.Resources.ClaimTypes.Permission, permission))
                 {
-                    return MvcHtmlString.Empty;
+                    //return MvcHtmlString.Empty;
                 }
             }
             //// The user account has access to the link due to either access control is not enabled 
@@ -70,7 +67,7 @@ namespace Appva.Mvc.Html.Extensions
             {
                 routes.Add("Area", areaName);
             }
-            return htmlHelper.ActionLink(linkText, actionName, controllerName, routes, htmlAttributes);
+            return htmlHelper.ActionLink(linkText, actionName, controllerName, routes, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
     }
 }

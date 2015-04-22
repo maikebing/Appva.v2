@@ -4,13 +4,14 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
+using Appva.Cqrs;
 using Appva.Mcss.Admin.Domain.Entities;
 using Appva.Mvc.Html.DataAnnotations;
 using DataAnnotationsExtensions;
 
 namespace Appva.Mcss.Web.ViewModels {
     
-    public class SequenceViewModel {
+    public class SequenceViewModel : IRequest<SequenceViewModel> {
 
         public SequenceViewModel() {
             Intervals = new List<SelectListItem>() {

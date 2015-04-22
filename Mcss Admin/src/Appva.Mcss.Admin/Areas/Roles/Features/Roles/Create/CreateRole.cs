@@ -1,10 +1,10 @@
-﻿// <copyright file="RoleFormViewModel.cs" company="Appva AB">
+﻿// <copyright file="CreateRole.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Web.ViewModels
+namespace Appva.Mcss.Admin.Areas.Roles.Roles.Create
 {
     #region Imports.
 
@@ -12,16 +12,17 @@ namespace Appva.Mcss.Web.ViewModels
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
+    using Appva.Cqrs;
+    using Appva.Mcss.Web.ViewModels;
+    using Appva.Mvc.Html.Models;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class RoleFormViewModel
+    public sealed class CreateRole : IRequest<bool>
     {
-        [DisplayName("Rollnamn")]
         [Required(ErrorMessage = "Rollnamn måste fyllas i.")]
         public string Name
         {
@@ -29,7 +30,6 @@ namespace Appva.Mcss.Web.ViewModels
             set;
         }
 
-        [DisplayName("Beskrivning")]
         [Required(ErrorMessage = "Beskrivning måste fyllas i.")]
         public string Description
         {
@@ -37,15 +37,8 @@ namespace Appva.Mcss.Web.ViewModels
             set;
         }
 
-        [DisplayName("Behörigheter")]
-        public IList<SelectListItem> Permissions
-        {
-            get;
-            set;
-        }
-
         [Required(ErrorMessage = "Behörigheter får ej vara tom.")]
-        public string[] SelectedPermissions
+        public IList<Tickable> Permissions
         {
             get;
             set;

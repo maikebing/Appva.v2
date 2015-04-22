@@ -17,7 +17,7 @@ using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
-    public interface IPatientService
+    public interface IPatientService : IService
     {
         /// <summary>
         /// Returns a single account by id.
@@ -39,7 +39,7 @@ using Appva.Mcss.Admin.Domain.Entities;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PatientService
+    public sealed class PatientService : IPatientService
     {
         #region Variables.
 

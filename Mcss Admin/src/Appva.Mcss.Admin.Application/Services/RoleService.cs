@@ -19,6 +19,13 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface IRoleService : IService
     {
         /// <summary>
+        /// Returns a <see cref="Role"/> by ID.
+        /// </summary>
+        /// <param name="id">The role ID</param>
+        /// <returns>A <see cref="Role"/> instance</returns>
+        Role Find(Guid id);
+
+        /// <summary>
         /// Returns a <see cref="Role"/> by unique identifier.
         /// </summary>
         /// <param name="identifier">The unique identifier</param>
@@ -68,6 +75,12 @@ namespace Appva.Mcss.Admin.Application.Services
         #endregion
 
         #region IRoleService Members.
+
+        /// <inheritdoc />
+        public Role Find(Guid id)
+        {
+            return this.repository.Find(id);
+        }
 
         /// <inheritdoc />
         public Role Find(string identifier)

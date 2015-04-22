@@ -1,10 +1,12 @@
-﻿@model Appva.Mcss.Web.ViewModels.ScheduleListViewModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Web.ViewModels.ScheduleListViewModel
 @{ ViewBag.Title = "Patients"; }
 <div id="main">
-    @Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-    @Html.Action("Menu", "Menu", new
+    @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+    @Html.Action("Menu", "Menus", new
             {
-                Key = "admin_patient_menu",
+                Area = string.Empty,
+                Key = "Admin.Patient.Menu",
                 Action = Html.ViewContext.RouteData.GetRequiredString("action"),
                 Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
                 Id = Model.Patient.Id.ToString(),
@@ -12,10 +14,8 @@
             })
     <div id="subheader" class="cf">
 	    <h1>Signeringslistor</h1>
-        @if (Permissions.CanShow(Permissions.PatientSchedulesCreate))
-        {
-            @Html.ActionLink("Ny Lista", "Create", new { Id = Model.Patient.Id }, new { @class = "btn lb-link" })
-        }
+        @Html.PermissionLink(Permissions.PatientSchedulesCreate, "Ny Lista", "Create", "Schedule", "Patient", new { Id = Model.Patient.Id }, new { @class = "btn lb-link" })
+        
     </div>
 	<div id="content" class="cf">
 		<div id="content-primary">
@@ -24,11 +24,8 @@
                     @foreach (var schedule in Model.Schedules) {
                         <li>
                             @Html.ActionLink(schedule.ScheduleSettings.Name, "Details", new { id = Model.Patient.Id, scheduleId = schedule.Id })
-                            @String.Format("{0:yyyy-MM-dd}", schedule.Created) Kl @String.Format("{0:H:mm}", schedule.Created)
-                            @if (Permissions.CanShow(Permissions.PatientSchedulesDelete))
-                            {
-                                @Html.ActionLink("Ta bort", "Inactivate", new { id = schedule.Id }, new { @class = "item-delete", @title = "Ta bort listan" })
-                            }
+                            @string.Format("{0:yyyy-MM-dd}", schedule.CreatedAt) Kl @String.Format("{0:H:mm}", schedule.CreatedAt)
+                            @Html.PermissionLink(Permissions.PatientSchedulesDelete, "Ta bort", "Inactivate", "Schedule", "Patient", new { id = schedule.Id }, new { @class = "item-delete", @title = "Ta bort listan" })
                         </li>
                     }
                 </ul>

@@ -56,6 +56,8 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         bool HasPatientTag();
         int GetCalendarColorQuantity();
         Dictionary<string, object> GetCalendarSettings();
+
+        bool HasCalendarOverview();
     }
 
     /// <summary>
@@ -244,6 +246,16 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 result.Add(setting.Name, JsonConvert.DeserializeObject(setting.Value, setting.Type));
             }
             return result;
+        }
+
+        public bool HasCalendarOverview()
+        {
+            var calendarSettings = GetCalendarSettings();
+            if (calendarSettings.ContainsKey("HasOverview"))
+            {
+                return (bool)calendarSettings["HasOverview"];
+            }
+            return true;
         }
 
         #endregion

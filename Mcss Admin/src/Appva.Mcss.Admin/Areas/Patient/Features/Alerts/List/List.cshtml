@@ -2,16 +2,8 @@
 @{
     ViewBag.Title = "Larm";
 }
-
-@Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Action("Menu", "Menu", new
-            {
-                Key = "admin_patient_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Patient.Id.ToString(),
-                IgnoreAction = false
-            })
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
 <div id="subheader" class="cf">
     <h1>Larm</h1>
     @using (Html.BeginForm("List", "Alert", new { id = Model.Patient.Id }, FormMethod.Get)) {
@@ -80,8 +72,8 @@
                                                 @:Har ej genomförts
                                     }
                                             else {
-                                                @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.Modified))
-                                                @:, kl @String.Format("{0:HH:mm}", Item.Modified))
+                                                @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.UpdatedAt))
+                                                @:, kl @String.Format("{0:HH:mm}", Item.UpdatedAt))
                                     }
                                         </td>
                                         <td>
@@ -188,8 +180,8 @@
                                                                 <td>
                                                                     @if (Item.IsCompleted) {
                                                                         @:Genomfördes för sent
-                                                                        Math.Round(Item.Modified.Subtract(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter)).TotalMinutes); @:minuter, kl
-                                                                        string.Format("{0:HH:mm}", Item.Modified);
+                                                                        Math.Round(Item.UpdatedAt.Subtract(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter)).TotalMinutes); @:minuter, kl
+                                                                        string.Format("{0:HH:mm}", Item.UpdatedAt);
                                                                     }
                                                                     else {
                                                                         @:Har ej genomförts

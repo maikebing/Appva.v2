@@ -83,6 +83,8 @@ namespace Appva.Mcss.Web.Controllers
 
         #endregion
 
+        #region RequestHandler<AccountQuickSearch, IEnumerable<object>> Members.
+
         /// <inheritDoc/>
         public override IEnumerable<object> Handle(AccountQuickSearch message)
         {
@@ -121,5 +123,7 @@ namespace Appva.Mcss.Web.Controllers
             }
             return new List<object>();
         }
+
+        #endregion
     }
 }

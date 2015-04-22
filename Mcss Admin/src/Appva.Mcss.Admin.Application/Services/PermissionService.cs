@@ -18,17 +18,32 @@ namespace Appva.Mcss.Admin.Application.Services
 
     #endregion
 
+    public interface IPermissionService : IService
+    {
+        /// <summary>
+        /// Returns a collection of <see cref="Permission"/>.
+        /// </summary>
+        /// <param name="maximumItems">
+        /// Optional maximum amount of items to be retrieved, defaults to <see cref="long.MaxValue"/>
+        /// </param>
+        /// <returns>A collection of <see cref="Permission"/></returns>
+        IList<Permission> List();
+
+        /// <summary>
+        /// Returns a filtered collection of <see cref="Permission"/> by specified 
+        /// ID:s.
+        /// </summary>
+        /// <param name="ids">The ID:s to retrieve</param>
+        /// <returns>A filtered collection of <see cref="Permission"/></returns>
+        IList<Permission> ListAllIn(params Guid[] ids);
+    }
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PermissionService : IService
+    public sealed class PermissionService : IPermissionService
     {
         #region Variables.
-
-        /// <summary>
-        /// The implemented <see cref="IRuntimeMemoryCache"/> instance.
-        /// </summary>
-        private readonly IRuntimeMemoryCache cache;
 
         /// <summary>
         /// The implemented <see cref="IPermissionRepository"/> instance.
@@ -42,21 +57,26 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionService"/> class.
         /// </summary>
-        /// <param name="cache">The <see cref="ICacheService"/> implementation</param>
         /// <param name="repository">The <see cref="IPermissionRepository"/> implementation</param>
-        public PermissionService(IRuntimeMemoryCache cache, IPermissionRepository repository)
+        public PermissionService(IPermissionRepository repository)
         {
-            this.cache = cache;
             this.repository = repository;
         }
 
         #endregion
 
-        #region Public Methods.
+        #region IPermissionService Members.
 
-        public void PermissionsForUser(Account account)
+        /// <inheritdoc />
+        public IList<Permission> List()
         {
-            
+            return this.repository.List();
+        }
+
+        /// <inheritdoc />
+        public IList<Permission> ListAllIn(params Guid[] ids)
+        {
+            return this.repository.ListAllIn(ids);
         }
 
         #endregion

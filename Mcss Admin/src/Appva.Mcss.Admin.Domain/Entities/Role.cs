@@ -39,7 +39,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual bool IsActive
         {
             get;
-            protected set;
+            set;
         }
 
         /// <summary>

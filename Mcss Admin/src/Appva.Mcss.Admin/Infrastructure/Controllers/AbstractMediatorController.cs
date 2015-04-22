@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Infrastructure.Controllers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal abstract class AbstractMediatorController : Controller
+    public abstract class AbstractMediatorController : Controller
     {
         #region Variables.
 
@@ -45,9 +45,10 @@ namespace Appva.Mcss.Admin.Infrastructure.Controllers
 
         #region Protected Methods.
 
-        protected T ExecuteCommand<T>(object any)
+        protected T ExecuteCommand<T>(IRequest<T> any)
         {
-            return default(T);
+            return this.mediator.Send(any);
+            //return default(T);
         }
 
         #endregion

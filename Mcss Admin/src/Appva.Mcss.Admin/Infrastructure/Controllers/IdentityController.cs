@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Infrastructure.Controllers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal abstract class IdentityController : AbstractMediatorController
+    public abstract class IdentityController : AbstractMediatorController
     {
         #region Variables.
 

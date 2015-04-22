@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Web.ViewModels.PatientViewModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Web.ViewModels.PatientViewModel
            
 <div class="people people-item cf">
 	<div class="h">
@@ -12,14 +13,9 @@
     	</h2>
     	<span class="pnr">@Model.UniqueIdentifier</span>
     </div>
-    @if (Permissions.CanShow(Permissions.PatientDelete))
-    {
-        @Html.ActionLink("Ta bort", "Inactivate", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
-    }
-    @if (Permissions.CanShow(Permissions.PatientUpdate))
-    {
-        @Html.ActionLink("Ändra boendeuppgifter", "Edit", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
-    }
+    @Html.PermissionLink(Permissions.PatientDelete, "Ta bort", "Inactivate", "Patient", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
+    @Html.PermissionLink(Permissions.PatientUpdate, "Ändra boendeuppgifter", "Edit", "Patient", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
+    
     @if (Model.Address.IsNotNull()) { 
         <div class="i">
     	    <strong>Adress:</strong>

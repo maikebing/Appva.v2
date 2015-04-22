@@ -14,7 +14,6 @@ namespace Appva.Mvc.Security
     using System.Security.Claims;
     using System.Web.Mvc;
     using System.Web.Mvc.Filters;
-    using Appva.Core.Identity;
 
     #endregion
 
@@ -26,9 +25,9 @@ namespace Appva.Mvc.Security
         #region Variables.
 
         /// <summary>
-        /// The role permissions which a user must a member of. 
+        /// The role permission which a user must a member of. 
         /// </summary>
-        private string[] permissions;
+        private string permission;
 
         #endregion
 
@@ -37,10 +36,10 @@ namespace Appva.Mvc.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionsAttribute"/> class.
         /// </summary>
-        /// <param name="permissions">The permissions which a user account must have</param>
-        public PermissionsAttribute(params string[] permissions)
+        /// <param name="permission">The permission which a user account must have</param>
+        public PermissionsAttribute(string permission)
         {
-            this.permissions = permissions;
+            this.permission = permission;
         }
 
         #endregion
@@ -61,10 +60,13 @@ namespace Appva.Mvc.Security
                 filterContext.Result = new HttpUnauthorizedResult();
                 return;
             }
-            if (! principal.Claims.Where(x => x.Type == Identity.Permission && this.permissions.Contains(x.Value)).Any())
+            if (principal.HasClaim(Core.Resources.ClaimTypes.AclEnabled, "Y") || (principal.HasClaim(Core.Resources.ClaimTypes.AclPreview, "Y") && principal.IsInRole(Core.Resources.RoleTypes.Appva)))
             {
-                filterContext.Result = new HttpUnauthorizedResult();
-                return;
+                if (! principal.HasClaim(Core.Resources.ClaimTypes.Permission, permission))
+                {
+                    filterContext.Result = new HttpUnauthorizedResult();
+                    return;
+                }
             }
         }
 

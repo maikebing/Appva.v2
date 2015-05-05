@@ -41,7 +41,7 @@ namespace Appva.Mcss.Admin
             ////         id = UrlParameter.Optional
             ////     }
             //// );
-            var route = routes.MapRoute(
+            /*var route = routes.MapRoute(
             name: "Default",
             url: "{controller}/{action}/{id}",
             defaults: new
@@ -53,7 +53,7 @@ namespace Appva.Mcss.Admin
             ).DataTokens = new RouteValueDictionary(new
             {
                 area = "MyArea"
-            });
+            });*/
         }
     }
 }

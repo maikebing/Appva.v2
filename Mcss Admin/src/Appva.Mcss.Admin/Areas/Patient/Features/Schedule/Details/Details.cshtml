@@ -1,4 +1,5 @@
-﻿﻿@model Appva.Mcss.Web.ViewModels.ScheduleDetailsViewModel
+﻿@using Appva.Mcss.Admin.Application.Common﻿
+@model Appva.Mcss.Web.ViewModels.ScheduleDetailsViewModel
 
 @{
     ViewBag.Title = "Ordinationer";
@@ -30,16 +31,13 @@
     times.Sort();
 }
 
-@Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Partial("_ScheduleMenu", Model.Patient)
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 
 <div id="subheader" class="cf">
 	<h1>Signeringslistor</h1>
     @Html.ActionLink("Skriv ut pappersversion", "PrintPopUp", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })
-    @if (Permissions.CanShow(Permissions.PatientSchedulesCreate))
-    {
-        @Html.ActionLink("Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
-    }
+    @Html.PermissionLink(Permissions.PatientSchedulesCreate, "Lägg till", "Create", "Sequence", "Patient", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 </div>
 
 <div id="content" class="cf">
@@ -49,15 +47,16 @@
         <div id="signlist">
 			
             <div class="h cf">
-				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.Modified)</h2>
+				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.UpdatedAt)</h2>
 				@Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
 			</div>
 			
             <ul class="nav cf">
+                @*
 				@Html.MenuLink("Insatser", "Details", "Schedule", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
                 @if (Model.Schedule.ScheduleSettings.HasSetupDrugsPanel) { 
                     @Html.MenuLink("Iordningsställande", "Schema", "Prepare", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
-                }
+                }*@
 			</ul>
 			<table>
 				<thead>
@@ -66,8 +65,8 @@
 						<th scope="col">Frekvens</th>
 						<th scope="col">Ges inom</th>
 						<th scope="col" colspan="@times.Count">Tider</th>
-						<th scope="col" colspan="@((Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead)) ? 3 : 2)">Instruktion</th>
-                        @if (Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead))
+						<th scope="col" colspan="@((Model.Schedule.ScheduleSettings.HasInventory /*&& Permissions.CanShow(Permissions.PatientInventoryRead)*/) ? 3 : 2)">Instruktion</th>
+                        @if (Model.Schedule.ScheduleSettings.HasInventory /*&& Permissions.CanShow(Permissions.PatientInventoryRead)*/)
                         {
                             <th scope="col">Saldo</th>
                         }
@@ -78,7 +77,7 @@
                         {
                             <th scope="col">@time</th>
                         }
-						<td colspan="@((Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead)) ? 4 : 2)"></td>
+						<td colspan="@((Model.Schedule.ScheduleSettings.HasInventory /*&& Permissions.CanShow(Permissions.PatientInventoryRead)*/) ? 4 : 2)"></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -148,15 +147,12 @@
                             }
                         }
                         
-<td class="info"><p>@item.Description</p></td> 
-                        @if (Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead))
+                        <td class="info"><p>@item.Description</p></td> 
+                        @if (Model.Schedule.ScheduleSettings.HasInventory /*&& Permissions.CanShow(Permissions.PatientInventoryRead)*/)
                         {
                             <td class="nedit">
-                            @if (Permissions.CanShow(Permissions.PatientInventoryRead))
-                            {
-                                @Html.ActionLink("Tillför mängd", "Add", "Inventory", new { id = item.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
-                            }
-                            @if (Permissions.CanShow(Permissions.PatientInventoryRead))
+                            @Html.PermissionLink(Permissions.PatientInventoryRead, "Tillför mängd", "Add", "Inventory", "Patient", new { id = item.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                            @if (true/*Permissions.CanShow(Permissions.PatientInventoryRead)*/)
                             {
                                 if (Model.Schedule.ScheduleSettings.CountInventory)
                                 {
@@ -165,16 +161,16 @@
                             }
                             </td>
                         }
-                        @if (Model.Schedule.ScheduleSettings.HasInventory && Permissions.CanShow(Permissions.PatientInventoryRead))
+                        @if (Model.Schedule.ScheduleSettings.HasInventory /*&& Permissions.CanShow(Permissions.PatientInventoryRead)*/)
                         {
                             <td>@item.Inventory.CurrentLevel</td>
                         }
 						<td class="edit">
-                            @if (Permissions.CanShow(Permissions.PatientSchedulesUpdate))
+                            @if (true/*Permissions.CanShow(Permissions.PatientSchedulesUpdate)*/)
                             {
                                 @Html.ActionLink("Ändra", "Edit", "Sequence", new { id = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
                             }
-                            @if (Permissions.CanShow(Permissions.PatientSchedulesDelete))
+                            @if (true/*Permissions.CanShow(Permissions.PatientSchedulesDelete)*/)
                             {
                                 @Html.ActionLink("Ta bort", "Inactivate", "Sequence", new { id = item.Id }, new { @class = "delete", @title = "Ta bort raden" })
 						    }
@@ -183,7 +179,7 @@
                 }
                 </tbody>
 			</table>
-            @if (Permissions.CanShow(Permissions.PatientSchedulesCreate))
+            @if (true/*Permissions.CanShow(Permissions.PatientSchedulesCreate)*/)
             {
             <div id="add-sign" class="cf">
 				@Html.ActionLink("Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })

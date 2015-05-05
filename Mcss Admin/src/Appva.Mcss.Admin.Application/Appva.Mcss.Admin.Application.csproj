@@ -79,6 +79,8 @@
     <Compile Include="Models\MenuList.cs" />
     <Compile Include="Models\PrintSchedule.cs" />
     <Compile Include="Models\PrintSequence.cs" />
+    <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportSearch.cs" />
     <Compile Include="Models\Taxa.cs" />
     <Compile Include="Models\Taxon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="Services\PatientService.cs" />
     <Compile Include="Services\PermissionService.cs" />
     <Compile Include="Common\ApplicationSettings.cs" />
+    <Compile Include="Services\ReportService.cs" />
     <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\ScheduleService.cs" />
     <Compile Include="Services\SequenceService.cs" />

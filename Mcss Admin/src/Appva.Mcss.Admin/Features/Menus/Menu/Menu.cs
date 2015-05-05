@@ -18,7 +18,7 @@ using Appva.Cqrs;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class Menu : IRequest<IMenuList<IMenuItem>>
+    public sealed class Menu : IRequest<IList<IMenuItem>>
     {
         /// <summary>
         /// The menu key.
@@ -32,7 +32,7 @@ using Appva.Cqrs;
         /// <summary>
         /// The current action route.
         /// </summary>
-        public string Action
+        public string ActionName
         {
             get;
             set;
@@ -41,7 +41,7 @@ using Appva.Cqrs;
         /// <summary>
         /// The current controller route.
         /// </summary>
-        public string Controller
+        public string ControllerName
         {
             get;
             set;
@@ -50,7 +50,16 @@ using Appva.Cqrs;
         /// <summary>
         /// The current area route.
         /// </summary>
-        public string Area
+        public string AreaName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The partial view to execute.
+        /// </summary>
+        public string PartialView
         {
             get;
             set;

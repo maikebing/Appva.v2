@@ -5,7 +5,7 @@
 <div id="main">
 	<div id="subheader" class="cf">
 		<h1>Roller och behörigheter</h1>
-	   @Html.PermissionLink(PermissionTypes.CreateRole, "Ny roll", "Create", "Roles", "Roles", null, new { @class = "btn lb-link" })
+	    @Html.PermissionLink(PermissionTypes.CreateRole, "Ny roll", "Create", "Roles", "Roles", null, new { @class = "btn lb-link" })
 	</div>
     @Html.Alert(new { @class = "success-msg" })
 	@if (Model != null && Model.Count > 0)

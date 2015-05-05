@@ -23,9 +23,16 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <summary>
         /// Returns a collection of <see cref="Taxon"/> by <see cref="Taxonomy.Key"/>
         /// </summary>
-        /// <param name="identifier">The taxonomy identifier</param>
+        /// <param name="taxonomy">The taxonomy identifier</param>
         /// <returns>A collection of <see cref="Taxon"/></returns>
-        IList<Taxon> List(string identifier);
+        IList<Taxon> List(string taxonomy);
+
+        /// <summary>
+        /// Returns a collection of <see cref="Taxon"/> by identifiers.
+        /// </summary>
+        /// <param name="ids">The taxon ID:s to fetch</param>
+        /// <returns>A collection of <see cref="Taxon"/></returns>
+        IList<Taxon> Pick(params Guid[] ids);
     }
 
     public sealed class TaxonRepository : ITaxonRepository
@@ -74,8 +81,19 @@ using Appva.Mcss.Admin.Domain.Entities;
                 .OrderBy(x => x.Parent.Id).Asc
                 .ThenBy(x => x.Weight).Asc
                 .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
+                    .Where(x => x.IsActive)
+                    .And(x => x.MachineName == identifier)
+                .List();
+        }
+
+        /// <inheritdoc />
+        public IList<Taxon> Pick(params Guid[] ids)
+        {
+            return this.persistenceContext.QueryOver<Taxon>()
                 .Where(x => x.IsActive)
-                .And(x => x.MachineName == identifier)
+                .AndRestrictionOn(x => x.Id)
+                .IsIn(ids)
+                .OrderBy(x => x.Weight).Asc
                 .List();
         }
 

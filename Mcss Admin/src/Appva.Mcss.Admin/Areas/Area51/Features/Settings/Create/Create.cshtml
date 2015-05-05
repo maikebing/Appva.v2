@@ -1,0 +1,24 @@
+﻿@using Appva.Mcss.Admin.Areas.Area51.Features.Settings.Create;
+@model CreateSetting
+@{
+    Title("Ny inställning");
+}
+<div class="std-panel std-form lb-panel-big lb-validate-form">
+    @using (Html.Post())
+    {
+        <div class="form-tab form-tab-1">
+            <h3 class="section-title">Ny inställning</h3>
+            @Html.ValidationAlert("Ett fel inträffade", "Var vänlig korrigera markerade fält i formuläret och försök igen")
+            @Html.FormGroup(x => x.Key, "text").Label("Key").TextBox("Appva.Mcss.Core.Example").Validate().Build()
+            @Html.FormGroup(x => x.Value, "text").Label("Value").TextBox("true").Validate().Build()
+            @Html.FormGroup(x => x.Namespace, "text").Label("Namespace").TextBox("Namespace").Validate().Build()
+            @Html.FormGroup(x => x.Type, "text").Label("Type").TextBox("Type").Validate().Build()
+            @Html.FormGroup(x => x.Name, "text large").Label("Namn").TextBox("Namn").Validate().Build()
+            @Html.FormGroup(x => x.Description, "text large").Label("Beskrivning").TextArea("Beskrivning").Validate().Build()
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara")
+            @*Html.Cancel("Avbryt")*@
+        </div>
+    }
+</div>

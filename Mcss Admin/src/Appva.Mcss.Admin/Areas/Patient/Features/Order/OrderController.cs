@@ -8,49 +8,20 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure.Controllers;
-    using Appva.Mcss.Web.Controllers;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Persistence;
-    using NHibernate.Criterion;
-    using NHibernate.Transform;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mvc.Filters;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class OrderController : IdentityController
+    [RouteArea("patient"), RoutePrefix("{id:guid}/order")]
+    public sealed class OrderController : Controller
     {
-        #region Private Variables.
-
-        private readonly IPersistenceContext context;
-        private readonly ILogService logService;
-
-        #endregion
-
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OrderController"/> class.
-        /// </summary>
-        public OrderController(IMediator mediator, IIdentityService identities, IAccountService accounts, IPersistenceContext context, ILogService logService)
-            : base(mediator, identities, accounts)
-        {
-            this.context = context;
-            this.logService = logService;
-        }
-
-        #endregion
-
         #region Routes.
 
         #region Overview Gadget
@@ -59,28 +30,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// Returns the dashboard widget.
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
+        [Route("overview")]
+        [HttpGet, Dispatch(typeof(OverviewOrder))]
         public PartialViewResult Overview()
         {
-            Taxon filterTaxon = FilterCache.Get(this.context);
-            if (!FilterCache.HasCache())
-            {
-                filterTaxon = FilterCache.GetOrSet(Identity(), this.context);
-            }
-            var orders = this.context.QueryOver<Sequence>()
-                .Where(x => x.IsActive)
-                .And(x => x.RefillInfo.Refill)
-                .Fetch(x => x.RefillInfo.RefillOrderedBy).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer());
-            orders.JoinQueryOver<Patient>(x => x.Patient)
-                .Where(x => x.IsActive)
-                .And(x => !x.Deceased)
-                .JoinQueryOver<Taxon>(x => x.Taxon)
-                    .Where(Restrictions.On<Taxon>(x => x.Path)
-                        .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));
-            return PartialView(new OrderOverviewViewModel
-            {
-                Orders = orders.OrderBy(x => x.RefillInfo.RefillOrderedDate).Asc.List()
-            });
+            return this.PartialView();
         }
 
         #endregion
@@ -92,13 +46,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// </summary>
         /// <param name="sequence">The sequence id</param>
         /// <returns><see cref="JsonResult"/></returns>
-        public JsonResult Refill(Guid sequence)
+        [Route("refill")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        public DispatchJsonResult Refill(RefillOrder request)
         {
-            var seq = this.context.Get<Sequence>(sequence);
-            seq.RefillInfo.Refill = false;
-            seq.RefillInfo.Ordered = false;
-            this.logService.Info(string.Format("{0} fyllde på {1} ({2})", Identity().FullName, seq.Name, seq.Id), Identity(), seq.Patient);
-            return Json(true, JsonRequestBehavior.DenyGet);
+            return this.JsonPost();
         }
 
         /// <summary>
@@ -106,16 +58,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// </summary>
         /// <param name="sequence">The sequence id</param>
         /// <returns><see cref="JsonResult"/></returns>
-        public JsonResult UndoRefill(Guid sequence)
+        [Route("refill/undo")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        public DispatchJsonResult UndoRefill(UndoRefillOrder request)
         {
-            var seq = this.context.Get<Sequence>(sequence);
-            seq.RefillInfo.Refill = true;
-            if (seq.RefillInfo.RefillOrderedDate.GetValueOrDefault() < seq.RefillInfo.OrderedDate.GetValueOrDefault())
-            {
-                seq.RefillInfo.Ordered = true;
-            }
-            this.logService.Info(string.Format("{0} ångrade påfyllning av {1} ({2})", Identity().FullName, seq.Name, seq.Id), Identity(), seq.Patient);
-            return Json(true, JsonRequestBehavior.DenyGet);
+            return this.JsonPost();
         }
 
         /// <summary>
@@ -124,17 +71,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// </summary>
         /// <param name="sequence">The sequence id</param>
         /// <returns><see cref="JsonResult"/></returns>
-        public JsonResult Order(Guid sequence)
+        [Route("create")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        public DispatchJsonResult Create(CreateOrder request)
         {
-            var seq = this.context.Get<Sequence>(sequence);
-            if (seq.RefillInfo.Refill)
-            {
-                seq.RefillInfo.Ordered = true;
-                seq.RefillInfo.OrderedBy = Identity();
-                seq.RefillInfo.OrderedDate = DateTime.Now;
-                this.logService.Info(string.Format("{0} beställde preparat till {1} ({2})", Identity().FullName, seq.Name, seq.Id), Identity(), seq.Patient);
-            }
-            return Json(true, JsonRequestBehavior.DenyGet);
+            return this.JsonPost();
         }
 
         /// <summary>
@@ -142,12 +83,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// </summary>
         /// <param name="sequence">The sequence id</param>
         /// <returns><see cref="JsonResult"/></returns>
-        public JsonResult UndoOrder(Guid sequence)
+        [Route("undo")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        public DispatchJsonResult Undo(UndoOrder request)
         {
-            var seq = this.context.Get<Sequence>(sequence);
-            seq.RefillInfo.Ordered = false;
-            this.logService.Info(string.Format("{0} ångrade beställning av preparat till {1} ({2})", Identity().FullName, seq.Name, seq.Id), Identity(), seq.Patient);
-            return Json(true, JsonRequestBehavior.DenyGet);
+            return this.JsonPost();
         }
 
         #endregion

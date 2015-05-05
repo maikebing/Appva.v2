@@ -3,7 +3,7 @@
     ViewBag.Title = "Larm";
 }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
     <h1>Larm</h1>
     @using (Html.BeginForm("List", "Alert", new { id = Model.Patient.Id }, FormMethod.Get)) {
@@ -14,7 +14,10 @@
             @Html.Submit("Visa")
         </p>
     }
-    @Html.ActionLink("Kvittera alla larm", "HandleAllAlerts", new { Id = Model.Patient.Id, startDate = Model.StartDate, endDate = Model.EndDate }, new { @class = "btn alarm-stop-all" })
+    @using(Html.Post("HandleAll", "Alerts", new { Id = Model.Patient.Id, Year = Model.Year, Month = Model.Month }, new { id = "handle-all" }, false))
+    {
+        <a class="btn alarm-stop-all" href="#" onclick="document.getElementById('handle-all').submit();">Kvittera alla larm</a>
+    }
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
@@ -55,7 +58,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var Item in Model.TaskCurrentMap[TimeOfDay.Key][schedule.Key]) {
+                                @foreach (var Item in schedule.Value) {
 
                                     var interval = string.Empty;
                                     if (Item.RangeInMinutesAfter == Item.RangeInMinutesBefore) {
@@ -82,8 +85,10 @@
                                             }
                                         </td>
                                         <td>
-                                            @Html.ActionLink("Kvittera larm", "HandleAlert",
-                                            new { Id = Item.Id, startDate = Model.StartDate, endDate = Model.EndDate }, new { @class = "btn alarm-stop" })
+                                            @using(Html.Post("Handle", "Alerts", new { Id = Model.Patient.Id, TaskId = Item.Id, Year = Model.Year, Month = Model.Month }, new { Id = "task-" + Item.Id }, false))
+                                            {
+                                                <a class="btn alarm-stop" href="#" onclick="document.getElementById('task-@Item.Id').submit();">Kvittera larm</a>
+                                            }
                                         </td>
                                     </tr>
                                 }
@@ -115,7 +120,8 @@
                             bool Processed = true;
                             foreach (var schedule in Model.TaskEarlierMap[TimeOfDay.Key]) {
                                 var quittencedBy = new List<string>();
-                                foreach (var Item in Model.TaskEarlierMap[TimeOfDay.Key][schedule.Key]) {
+                                foreach (var Item in schedule.Value)
+                                {
                                     if (!Item.DelayHandled) {
                                         Processed = false;
                                     }
@@ -165,7 +171,8 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach (var Item in Model.TaskEarlierMap[TimeOfDay.Key][schedule.Key]) {
+                                                        @foreach (var Item in schedule.Value)
+                                                        {
 
                                                             var interval = string.Empty;
                                                             if (Item.RangeInMinutesAfter == Item.RangeInMinutesBefore) {

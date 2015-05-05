@@ -12,9 +12,11 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Settings
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Areas.Area51.Features.Settings.Create;
     using Appva.Mcss.Admin.Features.Area51.Cache;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mvc.Filters;
 
     #endregion
 
@@ -26,15 +28,46 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Settings
     {
         #region Routes.
 
+        #region List Settings.
+
         /// <summary>
         /// Returns all settings for the current tenant.
         /// </summary>
-        /// <returns>The settings list view</returns>
-        [HttpGet, Route("list"), Dispatch(typeof(Parameterless<IEnumerable<ListSetting>>))]
+        /// <returns>A <see cref="IEnumerable{ListSetting}"/></returns>
+        [Route("list")]
+        [HttpGet, Dispatch(typeof(Parameterless<IEnumerable<ListSetting>>))]
         public ActionResult List()
         {
             return this.View();
         }
+
+        #endregion
+
+        #region Create Setting.
+
+        /// <summary>
+        /// Creates a new setting for the current tenant.
+        /// </summary>
+        /// <returns>The settings list view</returns>
+        [Route("create")]
+        [HttpGet, Hydrate, Dispatch(typeof(Parameterless<CreateSetting>))]
+        public ActionResult Create()
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Creates a new setting for the current tenant.
+        /// </summary>
+        /// <returns>The settings list view</returns>
+        [Route("create")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        public ActionResult Create(CreateSetting request)
+        {
+            return this.View();
+        }
+
+        #endregion
 
         #endregion
     }

@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Features.Menus
 {
     #region Imports.
 
+    using System.Collections.Generic;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services.Menus;
@@ -17,7 +18,7 @@ namespace Appva.Mcss.Admin.Features.Menus
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class MenuHandler : RequestHandler<Menu, IMenuList<IMenuItem>>
+    public sealed class MenuHandler : RequestHandler<Menu, IList<IMenuItem>>
     {
         #region Variables.
 
@@ -43,9 +44,9 @@ namespace Appva.Mcss.Admin.Features.Menus
         #region RequestHandler<Menu, IMenuList<IMenuItem>> Members.
 
         /// <inheritdoc />
-        public override IMenuList<IMenuItem> Handle(Menu message)
+        public override IList<IMenuItem> Handle(Menu message)
         {
-            return menus.Render(message.Key, message.Action, message.Controller, message.Area);
+            return menus.Render(message.Key, message.ActionName, message.ControllerName, message.AreaName);
         }
 
         #endregion

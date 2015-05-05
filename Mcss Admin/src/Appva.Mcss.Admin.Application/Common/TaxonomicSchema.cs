@@ -31,6 +31,11 @@ namespace Appva.Mcss.Admin.Application.Common
         /// </summary>
         public static readonly TaxonomicSchema Delegation = new TaxonomicSchema("DEL");
 
+        /// <summary>
+        /// The taxonomic scheme identifier for risk assessment (Senior Alert) taxa.
+        /// </summary>
+        public static readonly TaxonomicSchema RiskAssessment = new TaxonomicSchema("SAI");
+
         #endregion
 
         #region Constructor.

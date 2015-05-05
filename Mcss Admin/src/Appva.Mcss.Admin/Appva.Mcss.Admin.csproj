@@ -177,17 +177,107 @@
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Preview\PreviewAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Preview\PreviewAclHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Cache\CachesController.cs" />
-    <Compile Include="Areas\Area51\Features\Cache\Remove\RemoveCacheKey.cs" />
-    <Compile Include="Areas\Area51\Features\Cache\Remove\RemoveHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\CacheController.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCache.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCacheHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCache.cs" />
+    <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCacheHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Home\HomeController.cs" />
+    <Compile Include="Areas\Area51\Features\Settings\Create\CreateSetting.cs" />
+    <Compile Include="Areas\Area51\Features\Settings\Update\UpdateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlert.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlertHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\Handle\HandleAlert.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\Handle\HandleAlertHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\List\ListAlert.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\List\ListAlertHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidget.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidgetHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendar.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendarHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItem.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryItem.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryItemHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\InventoryController.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\List\ListInventory.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\List\ListInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Overview\OverviewInventory.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Overview\OverviewInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Recount\RecountInventoryItem.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Recount\RecountInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItem.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
+    <Compile Include="Areas\Patient\Features\Order\Create\CreateOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\OrderController.cs" />
+    <Compile Include="Areas\Patient\Features\Order\Overview\OverviewOrder.cs" />
+    <Compile Include="Areas\Patient\Features\Order\Overview\OverviewOrderHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Order\Refill\RefillOrder.cs" />
+    <Compile Include="Areas\Patient\Features\Order\Refill\RefillOrderHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Order\UndoRefill\UndoRefillOrder.cs" />
+    <Compile Include="Areas\Patient\Features\Order\Undo\UndoOrderHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Order\Undo\UndoOrder.cs" />
+    <Compile Include="Areas\Patient\Features\Order\UndoRefill\UndoRefillOrderHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Activate\ActivatePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Activate\ActivatePatientHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Create\CreatePatientHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Create\CreatePatientPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\QuickSearch\QuickSearchPatientHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\QuickSearch\QuickSearchPatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Update\Assessment.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatientPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatientHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Inactivate\InactivatePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Inactivate\InactivatePatientHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\List\ListPatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\List\ListPatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\PatientController.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\VerifyUniquePatient\VerifyUniquePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\VerifyUniquePatient\VerifyUniquePatientHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Create\CreatePreparation.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Create\CreatePreparationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Create\CreatePreparationPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Delete\DeletePreparation.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Delete\DeletePreparationPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Mark\MarkPreparationPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Mark\MarkPreparation.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\PrintPopUp\PrintModalPreparation.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\PrintPopUp\PrintModalPreparationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Print\PrintPreparation.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Print\PrintPreparationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Update\UpdatePreparationPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Update\UpdatePreparationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Update\UpdatePreparation.cs" />
     <Compile Include="Areas\Patient\Features\Prepare\PrepareController.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Schema\SchemaPreparation.cs" />
+    <Compile Include="Areas\Patient\Features\Prepare\Schema\SchemaPreparationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Create\CreateSchedule.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Create\CreateSchedulePublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Create\CreateScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Delete\DeleteTask.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Delete\DeleteTaskPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Details\DetailsSchedule.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Details\DetailsScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Inactivate\InactivateSchedule.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Inactivate\InactivateSchedulePublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\List\ListSchedule.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\List\ListScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\PrintPopUp\PrintModelSchedule.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\PrintPopUp\PrintModelScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\PrintSchema\PrintSchemaSchedule.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\PrintSchema\PrintSchemaScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\ScheduleReport\ReportSchedule.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\ScheduleReport\ReportScheduleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\ScheduleController.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Areas\Patient\Features\Schedule\Sign\SignSchedule.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Sign\SignScheduleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequencePostHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceViewHandler.cs" />
@@ -241,7 +331,6 @@
     <Compile Include="Commands\QuickSearchCommand.cs" />
     <Compile Include="Commands\ScheduleReportFilter.cs" />
     <Compile Include="Commands\SearchAccountCommand.cs" />
-    <Compile Include="Commands\SearchPatientCommand.cs" />
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Features\Authentication\AuthenticationController.cs" />
@@ -258,9 +347,12 @@
     </Compile>
     <Compile Include="Infrastructure\Attributes\PublishAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\DispatchAttribute.cs" />
+    <Compile Include="Infrastructure\ControllerExtensions.cs" />
     <Compile Include="Infrastructure\Controllers\AbstractMediatorController.cs" />
     <Compile Include="Infrastructure\Controllers\IdentityController.cs" />
+    <Compile Include="Infrastructure\DispatchJsonResult.cs" />
     <Compile Include="Infrastructure\Models\Parameterless.cs" />
+    <Compile Include="Infrastructure\PatientTransformer.cs" />
     <Compile Include="Models\AccountFormViewModel.cs" />
     <Compile Include="Models\AccountInfoViewModel.cs" />
     <Compile Include="Models\AccountListViewModel.cs" />
@@ -269,8 +361,8 @@
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AddToStockViewModel.cs" />
     <Compile Include="Models\AjaxPanelViewModel.cs" />
-    <Compile Include="Models\AlertListViewModel.cs" />
-    <Compile Include="Models\AlertOverviewViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\List\AlertListViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertOverviewViewModel.cs" />
     <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ChartDataPointViewModel.cs" />
     <Compile Include="Models\CheckBoxViewModel.cs" />
@@ -301,8 +393,8 @@
     <Compile Include="Models\ListInventoryViewModel.cs" />
     <Compile Include="Models\NotificationViewModel.cs" />
     <Compile Include="Models\OrderOverviewViewModel.cs" />
-    <Compile Include="Models\PatientFormViewModel.cs" />
-    <Compile Include="Models\PatientListViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Create\CreatePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\List\ListPatientModel.cs" />
     <Compile Include="Models\PatientMapper.cs" />
     <Compile Include="Models\PatientViewModel.cs" />
     <Compile Include="Models\PrepareAddSequenceViewModel.cs" />
@@ -572,11 +664,6 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Area51\Features\Cache\RemoveAll\" />
-    <Folder Include="Areas\Area51\Features\Settings\Create\" />
-    <Folder Include="Areas\Area51\Features\Settings\Edit\" />
-    <Folder Include="Areas\Patient\Features\Alerts\HandleAll\" />
-    <Folder Include="Areas\Patient\Features\Alerts\Handle\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -613,7 +700,7 @@
     <Content Include="Areas\Area51\Features\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Features\Shared\_MenuPartial.cshtml" />
+    <Content Include="Features\Shared\_SubMenuPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Area51\Features\Acl\Index\Index.cshtml" />
@@ -680,22 +767,22 @@
     <Content Include="Areas\Patient\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Inventory\Overview\Overview.cshtml" />
     <Content Include="Areas\Patient\Features\Inventory\Recount\Recount.cshtml" />
-    <Content Include="Areas\Patient\Features\Inventory\Withdrawal\withdrawal.cshtml" />
+    <Content Include="Areas\Patient\Features\Inventory\Withdraw\Withdraw.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Patient\Features\Order\Overview\Overview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Patient\Features\Patient\Create\Create.cshtml" />
-    <Content Include="Areas\Patient\Features\Patient\Edit\Edit.cshtml" />
+    <Content Include="Areas\Patient\Features\Patient\Update\Update.cshtml" />
     <Content Include="Areas\Patient\Features\Patient\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Patient\Partials\_PatientDetails.cshtml" />
     <Content Include="Areas\Patient\Features\Patient\Partials\_PatientSearch.cshtml" />
     <Content Include="Areas\Patient\Features\Patient\Partials\_PatientValidation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Patient\Features\Prepare\Add\Add.cshtml" />
-    <Content Include="Areas\Patient\Features\Prepare\Edit\Edit.cshtml" />
+    <Content Include="Areas\Patient\Features\Prepare\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Prepare\Update\Update.cshtml" />
     <Content Include="Areas\Patient\Features\Prepare\PrintPopUp\PrintPopUp.cshtml" />
     <Content Include="Areas\Patient\Features\Prepare\Print\Print.cshtml" />
     <Content Include="Areas\Patient\Features\Prepare\Schema\Schema.cshtml" />
@@ -751,6 +838,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Roles\Features\RolesSchedules\Update\Update.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Area51\Features\Settings\Create\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Area51\Features\Settings\Update\Update.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Area51\Features\Home\Index\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\_MenuPartialRender.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\_SubMenuPartialRender.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\_MenuPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Shared\EditorTemplates\Assessment.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

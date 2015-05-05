@@ -1,0 +1,17 @@
+﻿@model IList<IMenuItem>
+<div class="people-nav">
+    <ul class="nav cf">
+        @foreach (var item in Model)
+        {
+            if (item.IsSelected && item.Children.Count > 0)
+            {
+                foreach(var child in item.Children)
+                {
+                    <li class="@child.ListItemCssClass @(child.IsSelected ? "sel" : string.Empty)">
+                        @Html.ActionLink(child.Label, child.Action, child.Controller, new { Area = child.Area }, new { @class = @child.AnchorCssClass })
+                    </li>
+                }
+            }
+        }
+    </ul>
+</div>

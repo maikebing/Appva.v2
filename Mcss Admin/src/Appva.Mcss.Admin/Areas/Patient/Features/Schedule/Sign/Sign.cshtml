@@ -11,7 +11,7 @@
 	var isInventory = (Model.Schedule != null) ? (Model.Schedule.HasInventory || Model.Schedule.CountInventory) : false;
 }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 
 <div id="subheader" class="cf">
 	<h1>Signerade händelser</h1>

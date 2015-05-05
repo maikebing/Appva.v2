@@ -88,9 +88,9 @@ namespace Appva.Mcss.Web.Controllers
             var tasks = QueryAndFilter(message);
             var tasksWithinStartDateAndEndDate = tasks.Where(x => x.Scheduled >= message.StartDate.Value && x.Scheduled <= message.EndDate.Value)
                 .OrderBy(x => x.Scheduled).Desc;
-            var dateSpan = GenerateReportSegment(tasksWithinStartDateAndEndDate.ToRowCountQuery());
+            var dateSpan = this.GenerateReportSegment(tasksWithinStartDateAndEndDate.ToRowCountQuery());
             var total = tasksWithinStartDateAndEndDate.ToRowCountQuery().RowCount();
-            var comparableDateSpan = GenerateReportSegment(tasks.ToRowCountQuery()
+            var comparableDateSpan = this.GenerateReportSegment(tasks.ToRowCountQuery()
                 .Where(x => x.Scheduled >= message.StartDate.Value.AddDays(-span) && x.Scheduled <= message.EndDate.Value.AddDays(-span)));
             var items = tasksWithinStartDateAndEndDate
                 .Skip(((message.Page.Value - 1) * message.PageSize.Value)).Take(message.PageSize.Value).List().Where(task => task != null).ToList();

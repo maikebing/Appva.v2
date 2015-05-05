@@ -38,7 +38,7 @@ namespace Appva.Mvc.Html.Extensions.Elements
         /// <summary>
         /// The checkbox list expression.
         /// </summary>
-        private readonly Expression<Func<TModel, IList<Tickable>>> expression;
+        private readonly Expression<Func<TModel, TProperty>> expression;
 
         #endregion
 
@@ -53,7 +53,7 @@ namespace Appva.Mvc.Html.Extensions.Elements
         internal CheckBoxListFor(TRoot root, Expression<Func<TModel, TProperty>> expression, object htmlAttributes = null)
             : base(root)
         {
-            this.expression = expression as Expression<Func<TModel, IList<Tickable>>>;
+            this.expression = expression; /*as Expression<Func<TModel, IList<Tickable>>>*/;
             this.htmlAttributes = htmlAttributes;
         }
 
@@ -66,13 +66,20 @@ namespace Appva.Mvc.Html.Extensions.Elements
         {
             var builder = new StringBuilder();
             var modelMetadata = ModelMetadata.FromLambdaExpression(this.expression, this.Root.HtmlHelper.ViewData);
-            var list = modelMetadata.Model as IList<Tickable>;
-            if (list.IsNotEmpty())
+            var list = modelMetadata.Model;
+            if (list != null)
             {
-                builder.Append("<ul class=\"checkbox-grid\">");
-                builder.Append(this.Root.HtmlHelper.EditorFor(this.expression));
-                builder.Append("</ul>");
-                return MvcHtmlString.Create(builder.ToString());
+                var ul = new TagBuilder("ul");
+                if (this.htmlAttributes.IsNotNull())
+                {
+                    ul.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(this.htmlAttributes));
+                }
+                else
+                {
+                    ul.AddCssClass("checkbox-grid");
+                }
+                ul.InnerHtml = this.Root.HtmlHelper.EditorFor(this.expression).ToHtmlString();
+                return MvcHtmlString.Create(ul.ToString());
             }
             return MvcHtmlString.Empty;
         }

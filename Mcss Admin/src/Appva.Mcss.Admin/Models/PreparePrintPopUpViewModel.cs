@@ -6,10 +6,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Appva.Mvc.Html.DataAnnotations;
 using DataAnnotationsExtensions;
+using Appva.Cqrs;
 
 namespace Appva.Mcss.Web.ViewModels {
 
-    public class PreparePrintPopUpViewModel {
+    public class PreparePrintPopUpViewModel : IRequest<bool> {
 
         public Guid Id { get; set; }
 

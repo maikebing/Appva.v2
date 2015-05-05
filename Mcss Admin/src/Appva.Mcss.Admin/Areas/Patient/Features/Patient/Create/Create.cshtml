@@ -1,87 +1,58 @@
-﻿@model Appva.Mcss.Web.ViewModels.PatientFormViewModel
+﻿@model Appva.Mcss.Admin.Models.CreatePatient
 @{ ViewBag.Title = "Ny boende"; }
-<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PatientCreate" data-valparams="id=@((Model.PatientId.HasValue) ? Model.PatientId.Value.ToString() : "");uidUrl=@Url.Action("IsUnique");taxonUrl=@Url.Action("VerifyTaxon", "Taxonomy")">
-    @using (Html.BeginForm()) {
-        if (Model.SeniorAlerts.IsNotNull()) { 
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PatientCreate" data-valparams="id=@((Model.PatientId.HasValue) ? Model.PatientId.Value.ToString() : "");uidUrl=@Url.Action("VerifyUniquePatient");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
+    @using (Html.Post())
+    {
+        if (Model.SeniorAlerts.IsNotNull())
+        { 
             <div class="row form-tabgroup lb-nav cf">
 			    <ul class="nav cf">
                     <li class="sel">
                         <a class="rleft" href="#" data-formtab="form-tab-1">Personuppgifter</a>
                     </li>
-                
                     <li>
                         <a class="rright" href="#" data-formtab="form-tab-2">Profiluppgifter</a>
                     </li>
-               
                 </ul>
 		    </div>
         }
         <div class="form-tab form-tab-1">
             <h3 class="section-title">Ny boende</h3>
-	        <div class="text large">
-                @Html.LabelFor(m => m.FirstName)
-                @Html.EditorFor(m => m.FirstName)
-                @Html.ValidationMessageFor(m => m.FirstName)
-	        </div>
-            <div class="text large">
-                @Html.LabelFor(m => m.LastName)
-                @Html.EditorFor(m => m.LastName)
-                @Html.ValidationMessageFor(m => m.LastName)
-	        </div>
-	        <div class="text">
-                @Html.LabelFor(m => m.UniqueIdentifier)
-                @Html.EditorFor(m => m.UniqueIdentifier)
-                @Html.ValidationMessageFor(m => m.UniqueIdentifier)
-	        </div>
-            @if (Model.HasTagIdentifier) {
-            <div class="text small">
-                @Html.LabelFor(m => m.Tag)
-                @Html.EditorFor(m => m.Tag)
-                @Html.ValidationMessageFor(m => m.Tag)
-            </div>
+            @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
+            @if (Model.HasTagIdentifier)
+            {
+                @Html.FormGroup(x => x.Tag, "text small").Label().TextBox().Validate().Build()
             }
 	        <div class="select selectgroup cf">
 		        <strong>Adress:</strong>
-                @if (Model.Taxons.IsNotNull()) {
-                    foreach (var taxon in Model.Taxons) {
-                    <div class="select">
-                        <label class="structural">@taxon.Label</label>
-                        @Html.DropDownList(taxon.Id,
-                            new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
-                            string.Format("Välj {0}...", taxon.OptionLabel),
-                            new { @class = "dropdown" }
-                        )
-                    </div>
+                @if (Model.Taxons.IsNotNull())
+                {
+                    foreach (var taxon in Model.Taxons)
+                    {
+                        <div class="select">
+                            <label class="structural">@taxon.Label</label>
+                            @Html.DropDownList(taxon.Id,
+                                new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
+                                string.Format("Välj {0}...", taxon.OptionLabel),
+                                new { @class = "dropdown" }
+                            )
+                        </div>
                     }
                 }
                 @Html.HiddenFor(m => m.Taxon)
                 @Html.ValidationMessageFor(m => m.Taxon)
 	        </div>
-	        
         </div>
-        
-        if (Model.SeniorAlerts.IsNotNull()) { 
+        if (Model.SeniorAlerts.IsNotNull())
+        { 
             <div class="form-tab form-tab-2">
                 <h3 class="section-title">Profiluppgifter</h3>
-                <ul class="health-attr">
-                    @foreach (var item in Model.SeniorAlerts) { 
-                        <li class="cf">
-                            <img src="@String.Format("/Assets/i/{0}", item.Type)" />
-                            <div class="checkbox">
-						        <input type="checkbox" name="health-attr" id="@item.Id" />
-					        </div>
-                            <div class="desc">
-						        <label for="health-attr">@item.Name</label>
-						        <p>@item.Description</p>
-					        </div>
-                        </li>
-                    }
-                </ul>
-            
+                @Html.FormGroup(x => x.SeniorAlerts).CheckboxList(new { @class = "health-attr" }).Validate().Build()
             </div>
         }
         <div class="submit">
-            @Html.AntiForgeryToken()
             @Html.Submit("Spara")
             @Html.Cancel("Avbryt")
 	    </div>

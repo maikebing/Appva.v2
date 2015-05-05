@@ -26,7 +26,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [RoutePrefix("sequence")]
+    [RouteArea("patient"), RoutePrefix("sequence")]
     public sealed class SequenceController : Controller
     {
         #region Private Variables.
@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="scheduleId">The schedule id</param>
         /// <param name="model"></param>
         /// <returns>A redirect to schedule details if successful</returns>
-        [Route("patient/{patientId:guid}/schedule/{scheduleId:guid}/create")]
+        [Route("patient/{id:guid}/schedule/{scheduleId:guid}/create")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
         public ActionResult Create(Guid id, Guid scheduleId, SequenceViewModel model)
         {
@@ -95,8 +95,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="id">The sequence id</param>
         /// <returns>A sequence edit form</returns>
         [HttpGet, Hydrate]
-        [Route("{sequenceId:guid}/update")]
-        public ActionResult Update(Guid sequenceId)
+        [Route("{id:guid}/update")]
+        public ActionResult Update(Guid id)
         {
             return this.View(this.mediator.Send(new UpdateSequence
                 {
@@ -110,8 +110,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="model">The sequence model</param>
         /// <returns>A redirect to schedule details if successful</returns>
         [HttpPost, Validate, ValidateAntiForgeryToken]
-        [Route("{sequenceId:guid}/update")]
-        public ActionResult Update(Guid sequenceId, SequenceViewModel model)
+        [Route("{id:guid}/update")]
+        public ActionResult Update(Guid id, SequenceViewModel model)
         {
             //this.mediator.Send(model);
             //return this.RedirectToAction("Details", "Schedule", new { Id = patientId, ScheduleId = scheduleId });

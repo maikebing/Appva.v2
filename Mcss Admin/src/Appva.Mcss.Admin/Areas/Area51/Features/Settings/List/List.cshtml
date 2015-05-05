@@ -1,13 +1,18 @@
 ﻿@model IList<Appva.Mcss.Admin.Features.Area51.Cache.ListSetting>
 @{
-    @*Title("Settings");*@
+    Title("Inställningar");
 }
-<h2>Settings</h2>
-<table>
-    <thead>
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>Inställningar</h1>
+    @Html.ActionLink("Ny inställning", "Create", null, new { @class = "btn lb-link" })
+</div>
+<table id="signed-events" style="background:#fff;">
+    <thead class="head">
         <tr>
             <th>Key</th>
             <th>Value</th>
+            <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody>
@@ -15,14 +20,17 @@
         {
             <tr>
                 <td>@item.Id</td>
-                <td>@item.Value</td>
+                <td>@Html.Serialize(item.Value)</td>
+                <td>
+                    @Html.ActionLink("Redigera", "Update", new { Id = item.Id }, new { @class = "btn" })
+                </td>
             </tr>
         }
     </tbody>
 </table>
 
-<table>
-    <thead>
+<table id="signed-events" style="background:#fff;">
+    <thead class="head">
         <tr>
             <th>Type</th>
             <th>Value</th>

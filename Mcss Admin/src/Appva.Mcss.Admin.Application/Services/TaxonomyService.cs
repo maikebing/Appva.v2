@@ -58,14 +58,17 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="schema"></param>
         /// <returns></returns>
-        ITaxa ListChildren(TaxonomicSchema schema);
+        IList<ITaxon> ListChildren(TaxonomicSchema schema);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        ITaxa ListByParent(Guid id);
+        IList<ITaxon> ListByParent(Guid id);
+
+        Taxon Get(Guid id);
+        IList<Taxon> ListIn(params Guid[] ids);
     }
 
     /// <summary>
@@ -145,15 +148,29 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public ITaxa ListChildren(TaxonomicSchema schema)
+        public IList<ITaxon> ListChildren(TaxonomicSchema schema)
         {
-            throw new NotImplementedException();
+            return this.List(schema)
+                .Where(x => x.IsRoot == false).ToList();
         }
 
         /// <inheritdoc />
-        public ITaxa ListByParent(Guid id)
+        public IList<ITaxon> ListByParent(Guid id)
         {
-            throw new NotImplementedException();
+            return this.List(TaxonomicSchema.Organization)
+                .Where(x => x.ParentId == id).ToList();
+        }
+
+        /// <inheritdoc />
+        public Taxon Get(Guid id)
+        {
+            return this.repository.Find(id);
+        }
+
+        /// <inheritdoc />
+        public IList<Taxon> ListIn(params Guid[] ids)
+        {
+            return this.repository.Pick(ids);
         }
 
         #endregion

@@ -1,0 +1,18 @@
+﻿@{
+    var context = ViewContext.ParentActionViewContext ?? ViewContext;
+    var actionName = context.RouteData.GetRequiredString("action");
+    var controllerName = context.RouteData.GetRequiredString("controller");
+    var areaName = context.RouteData.DataTokens["area"] as string;
+}
+<p>@actionName</p>
+<p>@controllerName</p>
+<p>@areaName</p>
+@Html.Action("Menu", "Menus", new
+    {
+        Area = string.Empty,
+        Key = "Admin.Header.Menu",
+        ActionName = actionName,
+        ControllerName = controllerName,
+        AreaName = areaName,
+        PartialView = "_SubMenuPartialRender"
+    })

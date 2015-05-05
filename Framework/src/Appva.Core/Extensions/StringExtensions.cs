@@ -282,6 +282,15 @@ namespace Appva.Core.Extensions
             return str.IsEmpty() ? null : Convert.FromBase64String(str);
         }
 
+        /// <summary>
+        /// Returns a copy of this string converted to lowercase.
+        /// </summary>
+        /// <param name="str">The string to be converted</param>
+        /// <returns>A string in lowercase</returns>
+        public static string ToNullSafeLower(this string str)
+        {
+            return str.IsEmpty() ? str : str.ToLower();
+        }
 
         ////////////////////// FROM UTILS
         public static string First(this string str, int number)

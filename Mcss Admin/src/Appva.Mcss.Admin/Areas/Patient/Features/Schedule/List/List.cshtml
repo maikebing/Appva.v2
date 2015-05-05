@@ -3,15 +3,7 @@
 @{ ViewBag.Title = "Patients"; }
 <div id="main">
     @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-    @Html.Action("Menu", "Menus", new
-            {
-                Area = string.Empty,
-                Key = "Admin.Patient.Menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Patient.Id.ToString(),
-                IgnoreAction = false
-            })
+    @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
     <div id="subheader" class="cf">
 	    <h1>Signeringslistor</h1>
         @Html.PermissionLink(Permissions.PatientSchedulesCreate, "Ny Lista", "Create", "Schedule", "Patient", new { Id = Model.Patient.Id }, new { @class = "btn lb-link" })

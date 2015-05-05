@@ -1,0 +1,11 @@
+﻿@model IList<IMenuItem>
+<div id="nav-main">
+    <ul class="cf">
+        @foreach (var item in Model)
+        {
+            <li class="@item.ListItemCssClass @(item.IsSelected ? "sel" : string.Empty)">
+                @Html.ActionLink(item.Label, item.Action, item.Controller, new { Area = item.Area }, new { @class = @item.AnchorCssClass })
+            </li>
+        }
+    </ul>
+</div>

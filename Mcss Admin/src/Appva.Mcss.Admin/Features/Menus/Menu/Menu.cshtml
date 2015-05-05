@@ -1,10 +1,10 @@
-﻿@model Appva.Mcss.Admin.Application.Models.IMenuList<Appva.Mcss.Admin.Application.Models.IMenuItem>
+﻿@model IList<Appva.Mcss.Admin.Application.Models.IMenuItem>
 <div id="nav-main">
     <ul class="cf">
         @foreach (var item in Model)
         {
             <li class="@item.ListItemCssClass @(item.IsSelected ? "sel" : string.Empty)">
-                @Html.ActionLink(item.Label, item.Action, item.Controller, new { Area = item.Area }, new { @class = @item.AnchorCssClass })
+                @Html.ActionLink(item.Label + " " +item.Children.Count, item.Action, item.Controller, new { Area = item.Area }, new { @class = @item.AnchorCssClass })
             </li>
         }
     </ul>

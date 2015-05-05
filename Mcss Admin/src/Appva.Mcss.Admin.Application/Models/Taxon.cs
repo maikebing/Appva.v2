@@ -104,7 +104,7 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Path = path;
             this.Type = type;
             this.Sort = sort;
-            this.IsRoot = parentId.HasValue;
+            this.IsRoot = ! parentId.HasValue;
             this.ParentId = parentId;
         }
 

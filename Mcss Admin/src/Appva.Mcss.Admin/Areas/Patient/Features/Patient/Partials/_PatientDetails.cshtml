@@ -1,12 +1,13 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
-@model Appva.Mcss.Web.ViewModels.PatientViewModel
-           
+@model Appva.Mcss.Web.ViewModels.PatientViewModel       
 <div class="people people-item cf">
 	<div class="h">
     	<h2>
             @Model.FullName
-            @if (Model.SeniorAlerts.IsNotNull()) {
-                foreach (var sa in Model.SeniorAlerts) { 
+            @if (Model.SeniorAlerts.IsNotNull())
+            {
+                foreach (var sa in Model.SeniorAlerts)
+                { 
                     <img src="@String.Format("/Assets/i/{0}", sa.Type)" alt="Senior alert" title="@sa.Name"/>
                 }
             }
@@ -14,26 +15,26 @@
     	<span class="pnr">@Model.UniqueIdentifier</span>
     </div>
     @Html.PermissionLink(Permissions.PatientDelete, "Ta bort", "Inactivate", "Patient", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
-    @Html.PermissionLink(Permissions.PatientUpdate, "Ändra boendeuppgifter", "Edit", "Patient", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
-    
-    @if (Model.Address.IsNotNull()) { 
+    @Html.PermissionLink(Permissions.PatientUpdate, "Ändra boendeuppgifter", "Update", "Patient", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
+    @if (Model.Address.IsNotNull())
+    { 
         <div class="i">
     	    <strong>Adress:</strong>
     	    <span>@Model.Address</span>
         </div>
     }
-    @if (Model.FirstLineContact.IsNotNull()) { 
+    @if (Model.FirstLineContact.IsNotNull())
+    { 
         <div class="i">
     	    <strong>Ansvarig kontaktperson:</strong>
             @Model.FirstLineContact
         </div>
     }
-    @if (Model.Overseeing.IsNotNull()) { 
+    @if (Model.Overseeing.IsNotNull())
+    { 
         <div class="i">
     	    <strong>Ansvarig sjuksköterska:</strong>
             @Model.Overseeing
 	    </div>
     }
-    
-    
 </div>

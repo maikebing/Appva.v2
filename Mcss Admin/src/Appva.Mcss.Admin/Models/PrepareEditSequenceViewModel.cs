@@ -4,12 +4,20 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Appva.Mcss.Admin.Models;
 
 namespace Appva.Mcss.Web.ViewModels
 {
-    public class PrepareEditSequenceViewModel
+    public class PrepareEditSequenceViewModel : Identity<SchemaPreparation>
     {
-        public Guid Id { get; set; }
+        /// <summary>
+        /// The <c>PreparedSequence</c> ID.
+        /// </summary>
+        public Guid PreparedSequenceId
+        {
+            get;
+            set;
+        }
 
         [Required(ErrorMessage = "Namn på läkemedlet måste anges.")]
         [DisplayName("Ny rad")]

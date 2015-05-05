@@ -9,7 +9,8 @@ namespace Appva.Mcss.Admin.Features.Menus
     #region Imports.
 
     using System.Web.Mvc;
-    using Infrastructure.Attributes;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Infrastructure.Controllers;
 
     #endregion
 
@@ -17,19 +18,37 @@ namespace Appva.Mcss.Admin.Features.Menus
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [Authorize, RoutePrefix("menus")]
-    public sealed class MenusController : Controller
+    public sealed class MenusController : AbstractMediatorController
     {
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MenusController"/> class.
+        /// </summary>
+        /// <param name="tenants">The <see cref="IMediator"/> implementation</param>
+        public MenusController(IMediator mediator)
+            : base(mediator)
+        {
+        }
+
+        #endregion
+
         #region Routes.
+
+        #region Menu.
 
         /// <summary>
         /// Return the menu list partial view.
         /// </summary>
-        /// <returns><see cref="ActionResult"/></returns>
-        [ChildActionOnly, Route("render"), Dispatch]
+        /// <returns>A <see cref="IMenuList{IMenuItem}"/></returns>
+        [Route("render")]
+        [ChildActionOnly]
         public PartialViewResult Menu(Menu request)
         {
-            return this.PartialView();
+            return this.PartialView(request.PartialView, this.ExecuteCommand(request));
         }
+
+        #endregion
 
         #endregion
     }

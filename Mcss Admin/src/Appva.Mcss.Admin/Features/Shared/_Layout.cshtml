@@ -8,6 +8,372 @@
         <title>@Title()</title>
         @Html.Partial("_Meta")
         @Styles.Render("~/css")
+        @Scripts.Render("~/js", "~/js/mcss")
+        <script type="text/javascript">
+            // Stop any cache on GET html ajax
+            $.ajaxSetup({
+                'cache': false
+            });
+            $.validator.setDefaults({
+                'errorElement': 'p',
+                'errorClass': 'error-msg',
+                'highlight': function (element, errorClass) {
+                    $(element).parent().addClass("has-error");
+                },
+                'unhighlight': function (element) {
+                    $(element).parent().removeClass("has-error");
+                }
+            });
+
+            $.validator.addMethod("date", function (value, element) {
+                var check = false, re = /^\d{4}\-\d{2}\-\d{2}$/;
+                if (re.test(value)) {
+                    var adata = value.split('-');
+                    var yyyy = parseInt(adata[0], 10),
+                        mm = parseInt(adata[1], 10),
+                        dd = parseInt(adata[2], 10);
+                    var xdata = new Date(yyyy, mm - 1, dd);
+                    if ((xdata.getFullYear() == yyyy) && (xdata.getMonth() == mm - 1) && (xdata.getDate() == dd))
+                        check = true;
+                    else
+                        check = false;
+                } else
+                    check = false;
+                return this.optional(element) || check;
+            });
+
+            $.validator.addMethod("time", function (value, element) {
+                return this.optional(element) || (/^(\d{2}\:\d{2})$/.test(value));
+            });
+
+            $.validator.addMethod("socialsecuritynumber", function (value, element) {
+                if (this.optional(element)) {
+                    return true;
+                }
+                var isValid = false;
+                if (/^(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][0-9])|(3[0-1])|([6-8][0-9])|(9[0-1]))-?[0-9pPtTfF][0-9]{3}$/i.test(value) && value.indexOf("-") != -1) {
+                    var yyyy = parseInt(value.substring(0, 4)),
+                        mm = parseInt(value.substring(4, 6),10),
+                        dd = parseInt(value.substring(6, 8), 10);
+                    if (dd > 60)
+                    {
+                        dd -= 60;
+                    }
+                    var date = new Date(yyyy, mm - 1, dd);
+                    if ((date.getFullYear() == yyyy) && (date.getMonth() == mm - 1) && (date.getDate() == dd)) {
+                        if (value.indexOf('-') > -1) {
+                            value = value.replace('-', '');
+                        }
+                        value = value.substring(2);
+                        var fourLastDigits = value.substring(6);
+                        if (!/^[pPtTfF][0-9]{3}$/i.test(fourLastDigits)) {
+                            var nn = "", checksum = 0;
+                            for (var n = 0; n < value.length; n++) {
+                                nn += ((((n + 1) % 2) + 1) * value.substring(n, n + 1));
+                            }
+                            for (var n = 0; n < nn.length; n++) {
+                                checksum += nn.substring(n, n + 1) * 1;
+                            }
+                            isValid = (checksum % 10 == 0);
+                        } else {
+                            isValid = true;
+                        }
+                    }
+                }
+                return isValid;
+            });
+
+            $.validator.addMethod("dategreaterthan", function (value, element, params) {
+                if ((params && params[0] && params[0][0] && this.optional(params[0][0])) || this.optional(element)) {
+                    return true;
+                }
+                var dateParts = value.split('-');
+                var startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                dateParts = params[0].val().split('-');
+                var endDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                return startDate > endDate;
+            });
+
+            $.validator.addMethod("datelessthan", function (value, element, params) {
+                if ((params && params[0] && params[0][0] && this.optional(params[0][0])) || this.optional(element)) {
+                    return true;
+                }
+                var dateParts = value.split('-');
+                var startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                dateParts = params[0].val().split('-');
+                var endDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                return startDate < endDate;
+            });
+
+            $.validator.addMethod("dategreaterthanorequal", function (value, element, params) {
+                if ((params && params[0] && params[0][0] && this.optional(params[0][0])) || this.optional(element)) {
+                    return true;
+                }
+                var dateParts = value.split('-');
+                var startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                dateParts = params[0].val().split('-');
+                var endDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                return startDate >= endDate;
+            });
+
+            $.validator.addMethod("datelessthanorequal", function (value, element, params) {
+                if ((params && params[0] && params[0][0] && this.optional(params[0][0])) || this.optional(element)) {
+                    return true;
+                }
+                var dateParts = value.split('-');
+                var startDate = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+                dateParts = params[0].val().split('-');
+                var endDate = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+                return startDate <= endDate;
+            });
+
+        </script>
+        
+        <script type="text/javascript">
+            $(function () {
+                
+                $('.print').click(function() {
+                    window.print();
+                });
+
+                $(".global-dropdown").change(dropdown);
+                $(".dropdown").change(dropdown);
+
+                $('.lb-link').bind('lightboxopen', function () {
+                    disableDelegation($('.checkbox .nurse'));
+                    $('.cancel').click(function () {
+                        mcss.lightbox.closeAll();
+                        $(".dropdown").unbind("change");
+                    });
+                    $(".dropdown").change(dropdown);
+                    // NEW STUFF SEPT 2012
+                    // Radio toggles
+                    $('.std-form .toggle-group .radio .toggle').each(function () {
+                        var t = $(this);
+                        if (!t.attr('checked')) {
+                            $('.' + t.data('toggletarget')).hide();
+                        } else {
+                            t.parent().addClass('toggled');
+                        }
+                        t.click(function () {
+                            var t = $(this);
+                            t.parents('.std-form:first').find('.toggled').removeClass('toggled');
+                            t.parent().addClass('toggled');
+                            t.parents('.std-form').find('.toggle-target').hide();
+                            $('.' + t.data('toggletarget')).show();
+                        });
+                    });
+
+                    //Form-tabs toggle
+                    $('.lb-nav li a').each(function () {
+                        var t = $(this);
+                        if(!t.parent().hasClass("sel")) {
+                            $("." + t.data('formtab')).hide();
+                        }
+                        t.click(function (e) {
+                            e.preventDefault;
+                            var t = $(this);
+                            $('.form-tab').hide();
+                            $('.' + t.data('formtab')).show();
+                            t.parents('.nav').find('.sel').removeClass('sel');
+                            t.parent().addClass('sel');
+                            return false;
+                        });
+                    });
+
+                    // Checkbox toggles
+                    $('.std-form .checkbox .toggle').each(function () {
+                        var t = $(this);
+                        if (!t.attr('checked')) {
+                            $('.' + t.data('toggletarget')).hide();
+                        } else {
+                            t.parent().addClass('toggled');
+                        }
+                        t.click(function () {
+                            var t = $(this);
+                            $('.' + t.data('toggletarget')).slideToggle(100);
+                        });
+                    });
+
+                    
+                    if ($('#AllDay').is(':checked')) {
+                        $('.hour, #StartTime, #EndTime').hide();
+                    }
+
+                    $('#AllDay').change(function() {
+                        $('.hour, #StartTime, #EndTime').toggle();
+                    });
+
+                    //Textbox toggles
+                    if ($('#Category').val() != "new") {
+                        $('#NewCat').hide();
+                    }
+
+                    $('#Category').change(function() {
+                        if($(this).val() == "new") {
+                            $('#NewCat').show();
+                        }
+                        else {
+                            $('#NewCat').hide();
+                        }
+                    });
+
+                    //Autochange enddate for new activity
+                    var endDateChanged = false;
+                    
+                    $('.cal-settings.new #StartDate').change(function(){
+                        if(!endDateChanged){
+                            var val = $(this).val();
+                            $('.cal-settings #EndDate').val(val);
+                        }
+                    });
+
+                    $('.cal-settings.new #EndDate').change(function(){
+                        endDateChanged = true;
+                    });
+
+                    // Calendar-stuff
+                    $('#Category').change(function () {
+                        var t = $(this);
+                        if (CategorySettings[t.val()].Absent) {
+                            $('#Absent').val(true);
+                            $('#Absence').show();
+                        }
+                        else {
+                            $('#Absent').val(false);
+                            $('#Absence').hide();
+                        }
+
+                    });
+
+                    $('#Interval').change(function () {
+                        var t = $(this);
+                        if (t.val() == 7) {
+                            $('#intervalFactorText').html("vecka");
+                            $('.factors .date').hide();
+                            $('.factors').show();
+                        }
+                        else if (t.val() == 31) {
+                            $('#intervalFactorText').html("månad");
+                            $('.factors .date').show();
+                            $('.factors').show();
+                        }
+                        else {
+                            $('.factors').hide();
+                        }
+                        SetSummary(t.val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
+
+                    $('#IntervalFactor').change(function () {
+                        SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
+
+                    $('input[name=SpecificDate]:radio').change(function () {
+                        SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
+
+                    $('#StartDate').change(function () {
+                        SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
+
+                    $('#Interval').trigger('change');
+                    $('#Category').trigger('change');
+
+                    // Disable/enable delegation on update/create ordination
+                    $('.checkbox .nurse').change(function () {
+                        var t = $(this);
+                        if (t.is(':checked')) {
+                            $('.delegation').attr('disabled', 'disabled');
+                        } else {
+                            $('.delegation').removeAttr('disabled');
+                        }
+                    });
+
+
+                    $('.activity-edit .freq .btn-mdatepick').each(function () {
+                        if ($(this).prev().val() != '0') $(this).hide();
+                    });
+                    $('.activity-edit .freq-select').each(function () {
+                        var t = $(this);
+                        if (t.val() == '0') {
+                            t.parents('.std-form:first').find('.freq-hide').hide();
+                            t.parents('.std-form:first').find('.freq-show').show();
+                        } else {
+                            t.parents('.std-form:first').find('.freq-hide').show();
+                            t.parents('.std-form:first').find('.freq-show').hide();
+                        }
+                        t.change(function () {
+                            var t = $(this);
+                            if ($(this).val() == '0') {
+                                t.parents('.std-form:first').find('.freq-hide').hide();
+                                t.parents('.std-form:first').find('.freq-show').show();
+                            } else {
+                                t.parents('.std-form:first').find('.freq-hide').show();
+                                t.parents('.std-form:first').find('.freq-show').hide();
+                            }
+                        });
+                    });
+                });
+
+                function disableDelegation(t) {
+                    if (t.is(':checked')) {
+                         $('.delegation').attr('disabled', 'disabled');
+                     } else {
+                         $('.delegation').removeAttr('disabled');
+                     }
+                }
+
+                function dropdown() {
+                    var self = $(this), url = "@Url.Action("GetByParent", "Taxa", new { Area = string.Empty })";
+                    if (self.parent().hasClass('custom-select-wrap')) {
+                        self.parent().parent().nextAll('.select').unbind("change").unbind("onchange").remove();
+                    } else {
+                        self.parent().nextAll('.select').unbind("change").remove();
+                    }
+                    if (self.val()) {
+                        $('#Taxon').val(self.val());
+                        $.getJSON(url, { "id": self.val() }, function(data) {
+                            var items = [];
+                            if (data.length > 0) {
+                                items.push('<option value>Välj ...</option>');
+                            }
+                            $.each(data, function (i, obj) {
+                                items.push('<option value="' + obj.key + '">' + obj.value + '</option>');
+                            });
+                            if (items.length > 0) {
+                                var select = $('#'+self.val());
+                                if (select.length) {
+                                    select.find('option').remove().end().append(items.join(''));
+                                } else {
+                                    var selectbox = $('<select />', {
+                                        "class": self.cssClass,
+                                        "name": self.val(),
+                                        html: items.join('')
+                                    }).bind("change", dropdown);
+                                    if(self.parent().hasClass('custom-select-wrap')) {
+                                        $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent().parent());
+                                         mcss.customSelect($('.global-filter .select:last'));
+                                    } else {
+                                        $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent());
+                                    }
+                                    
+                                }
+                            }
+                        });
+                    } else {
+                        var value = null;
+                        self.parent().prevAll('.select').each(function(i, v) {
+                            var val = $(v).find('.dropdown').val();
+                            if (val != null || val != 'undefined') {
+                                value = val;
+                                return false;
+                            }
+                        });
+                        $('#Taxon').val(value);
+                    }
+                };
+            });
+        </script>
     </head>
     <body>
         <div class="environment">
@@ -25,7 +391,6 @@
             @RenderBody()
         </div>
         @Html.Partial("_Footer")
-        @Scripts.Render("~/js", "~/js/mcss")
         @RenderSection("JavaScript", required: false)
     </body>
 </html>

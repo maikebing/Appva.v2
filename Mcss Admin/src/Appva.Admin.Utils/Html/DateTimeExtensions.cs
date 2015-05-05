@@ -13,6 +13,7 @@ namespace Appva.Admin.Utils.Html
     using System.Linq;
     using System.Linq.Expressions;
     using System.Web.Mvc;
+    using System.Web.Mvc.Html;
 
     #endregion
 
@@ -69,5 +70,23 @@ namespace Appva.Admin.Utils.Html
             tag.SetInnerText(text);
             return MvcHtmlString.Create(tag.ToString(TagRenderMode.Normal));
         }
+
+        public static MvcHtmlString MenuLink(this HtmlHelper htmlHelper, 
+            string linkText, string actionName, string controllerName, string areaName, object routevalues)
+        {
+            var tag = new TagBuilder("li");
+            var routeData = htmlHelper.ViewContext.ParentActionViewContext.RouteData;
+            var action = routeData.GetRequiredString("action");
+            var controller = routeData.GetRequiredString("controller");
+            var area = routeData.DataTokens["area"] as string;
+            if (action.Equals(actionName) && controller.Equals(controllerName) && area.Equals(areaName))
+            {
+                tag.AddCssClass("sel");
+            }
+            tag.InnerHtml = htmlHelper.ActionLink(linkText, actionName, controllerName, routevalues, null).ToHtmlString();
+            return MvcHtmlString.Create(tag.ToString());
+        }
+
+
     }
 }

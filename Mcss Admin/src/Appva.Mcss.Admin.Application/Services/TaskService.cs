@@ -80,7 +80,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Task Get(Guid id)
         {
-            throw new NotImplementedException();
+            return this.context.Get<Task>(id);
         }
 
         /// <inheritdoc />

@@ -9,6 +9,8 @@ namespace Appva.Mcss.Admin.Application.Models
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
+    using Appva.Core.Extensions;
 
     #endregion
 
@@ -58,7 +60,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// The menu link css class, set on the 'a' element.
+        /// The menu item css class, set on the 'a' element.
         /// </summary>
         string AnchorCssClass
         {
@@ -69,6 +71,14 @@ namespace Appva.Mcss.Admin.Application.Models
         /// Whether or not the menu item is selected.
         /// </summary>
         bool IsSelected
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Menu item children.
+        /// </summary>
+        IList<IMenuItem> Children
         {
             get;
         }
@@ -110,9 +120,67 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Permission = permission;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MenuItem"/> struct.
+        /// </summary>
+        /// <param name="text">The link text</param>
+        /// <param name="action">The action route</param>
+        /// <param name="controller">The controller route</param>
+        /// <param name="area">The area route</param>
+        /// <param name="isSelected">Whether or not the menu item is selected</param>
+        /// <param name="listItemCssClass"><c>{LI}</c> css class</param>
+        /// <param name="anchorCssClass"><c>{A}</c> css class</param>
+        /// <param name="children">A collection of child items</param>
+        public MenuItem(string label, string action, string controller, string area, bool isSelected, string listItemCssClass, string anchorCssClass, IList<IMenuItem> children)
+        {
+            this.Label = label;
+            this.Action = action;
+            this.Controller = controller;
+            this.Area = area;
+            this.IsSelected = isSelected;
+            this.ListItemCssClass = listItemCssClass;
+            this.AnchorCssClass = anchorCssClass;
+            this.Children = children;
+        }
+
         #endregion
 
         #region Public Static Functions.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="MenuItem"/> struct.
+        /// </summary>
+        /// <param name="id">The link id</param>
+        /// <param name="text">The link text</param>
+        /// <param name="action">The action route</param>
+        /// <param name="controller">The controller route</param>
+        /// <param name="area">The area route</param>
+        /// <param name="isSelected">Whether or not the menu item is selected</param>
+        /// <param name="listItemCssClass">Optional <c>{LI}</c> css class</param>
+        /// <param name="anchorCssClass">Optional <c>{A}</c> css class</param>
+        /// <param name="sort">Optional link sorting</param>
+        /// <param name="parentId">Optional parent link id, if any</param>
+        /// <param name="permission">Option permission, if any</param>
+        public static MenuItem CreateNew(Guid id, string label, string action, string controller, string area, bool isSelected, string listItemCssClass = null, string anchorCssClass = null, int sort = 0, Guid? parentId = null, string permission = null)
+        {
+            return new MenuItem(id, label, action, controller, area, isSelected, listItemCssClass, anchorCssClass, sort, parentId, permission);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MenuItem"/> struct.
+        /// </summary>
+        /// <param name="text">The link text</param>
+        /// <param name="action">The action route</param>
+        /// <param name="controller">The controller route</param>
+        /// <param name="area">The area route</param>
+        /// <param name="isSelected">Whether or not the menu item is selected</param>
+        /// <param name="listItemCssClass"><c>{LI}</c> css class</param>
+        /// <param name="anchorCssClass"><c>{A}</c> css class</param>
+        /// <param name="children">A collection of child items</param>
+        public static MenuItem CreateNew(string label, string action, string controller, string area, bool isSelected, string listItemCssClass, string anchorCssClass, IList<IMenuItem> children)
+        {
+            return new MenuItem(label, action, controller, area, isSelected, listItemCssClass, anchorCssClass, children);
+        }
 
         /// <summary>
         /// Returns whether or not a menu item is selected.
@@ -124,7 +192,9 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <returns>True if the item is selected</returns>
         public static bool IsSelectedItem(MenuItem item, string action, string controller, string area)
         {
-            return item.Area == area || (item.Action == action && item.Controller == controller);
+            return item.Action.ToNullSafeLower() == action.ToNullSafeLower()
+                && item.Controller.ToNullSafeLower() == controller.ToNullSafeLower()
+                && item.Area.ToNullSafeLower() == area.ToNullSafeLower();
         }
 
         #endregion
@@ -216,6 +286,27 @@ namespace Appva.Mcss.Admin.Application.Models
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// The menu item child collection.
+        /// </summary>
+        public IList<IMenuItem> Children
+        {
+            get;
+            private set;
+        }
+
+        #endregion
+
+        #region Public Methods.
+
+        /// <summary>
+        /// Sets the current menu item as selected.
+        /// </summary>
+        public void MarkAsSelected()
+        {
+            this.IsSelected = true;
         }
 
         #endregion

@@ -18,7 +18,7 @@
                 <td>@item.Key</td>
                 <td>@Html.Serialize(item.Value)</td>
                 <td>
-                    @using (Html.Post("Remove", "Cache", new { CacheKey = item.Key }, null, false))
+                    @using (Html.Post("Delete", "Cache", new { CacheKey = item.Key }, null, false))
                     {
                         @Html.Submit("Ta bort", new { @class = "btn btn-del" })
                     }

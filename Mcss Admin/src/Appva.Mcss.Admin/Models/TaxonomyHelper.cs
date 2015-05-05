@@ -18,13 +18,12 @@ namespace Appva.Mcss.Web {
         public static List<TaxonViewModel> SelectList(Taxon taxon, IList<ITaxon> taxonomy)
         {
             var retval = new List<TaxonViewModel>();
-            if (taxon.IsNull())
-            {
-                //taxon = taxonomy.Where(x => x.IsRoot).SingleOrDefault();
-            }
-            if (taxon.IsNotNull()) {
-                var paths = taxon.Path.Split('.').Reverse().ToList();
-                var selected = taxon.Id.ToString();
+            var taxonId = taxon.IsNull() ? taxonomy.Where(x => x.IsRoot).SingleOrDefault().Id : taxon.Id;
+            var path = taxon.IsNull() ? taxonomy.Where(x => x.IsRoot).SingleOrDefault().Path : taxon.Path;
+            
+            //if (taxon.IsNotNull()) {
+                var paths = path.Split('.').Reverse().ToList();
+                var selected = taxonId.ToString();
                 foreach (var value in paths) {
                     var label = string.Empty;
                     var items = new List<SelectListItem>();
@@ -46,7 +45,7 @@ namespace Appva.Mcss.Web {
                     selected = value;
                 }
                 retval.Reverse();
-            }
+            //}
             return retval;
         }
 

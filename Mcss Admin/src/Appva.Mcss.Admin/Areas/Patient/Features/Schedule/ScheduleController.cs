@@ -26,13 +26,16 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Web.Controllers;
     using Appva.Mcss.Admin.Commands;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mvc.Filters;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [RouteArea("Patient"), RoutePrefix("Schedule")]
+    [RouteArea("patient"), RoutePrefix("schedule")]
     public sealed class ScheduleController : IdentityController
     {
         #region Private Variables.
@@ -71,41 +74,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="id">The patient id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
-        [Route("List/{id:guid}")]
-        public ActionResult List(Guid id)
+        [Route("list/{id:guid}")]
+        [HttpGet, Dispatch]
+        public ActionResult List(ListSchedule request)
         {
-            var account = Identity();
-            var roles = account.Roles;
-            var list = new List<ScheduleSettings>();
-            foreach (var role in roles)
-            {
-                var ss = role.ScheduleSettings;
-                foreach (var schedule in ss)
-                {
-                    if (schedule.ScheduleType == ScheduleType.Action)
-                    {
-                        list.Add(schedule);
-                    }
-                }
-            }
-            var patient = this.context.Get<Patient>(id);
-            var query = this.context.QueryOver<Schedule>()
-                .Where(s => s.Patient.Id == patient.Id && s.IsActive == true)
-                .JoinQueryOver<ScheduleSettings>(s => s.ScheduleSettings)
-                    .Where(s => s.ScheduleType == ScheduleType.Action);
-            
-            if (list.Count > 0)
-            {
-                query.WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
-            var schedules = query.List();
-            this.logService.Info("Användare {0} läste signeringslistor för boende {1} (REF: {2}).".FormatWith(account.UserName, patient.FullName, patient.Id), account, patient, LogType.Read);
-            return View(new ScheduleListViewModel
-            {
-                Patient = PatientMapper.ToPatientViewModel(this.context, patient),
-                Schedules = schedules
-            });
+            return this.View();
         }
 
         #endregion
@@ -118,25 +91,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="id">The patient id</param>
         /// <param name="scheduleId">The schedule id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("Details/patient/{id:guid}/schedule/{scheduleId:guid}")]
-        public ActionResult Details(Guid id, Guid scheduleId)
+        [Route("details/patient/{id:guid}/schedule/{scheduleId:guid}")]
+        [HttpGet, Dispatch]
+        public ActionResult Details(DetailsSchedule request)
         {
-            var patient = this.context.Get<Patient>(id);
-            var schedule = this.context.Get<Schedule>(scheduleId);
-            var items = this.context.QueryOver<Sequence>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.Schedule.Id == scheduleId)
-                .Fetch(x => x.Inventory).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer())
-                .List();
-            var account = Identity();
-            this.logService.Info(string.Format("Användare {0} läste signeringslista {1} (REF: {2}) för boende {3} (REF: {4}).", account.UserName, schedule.ScheduleSettings.Name, schedule.Id, patient.FullName, patient.Id), account, patient, LogType.Read);
-            return View(new ScheduleDetailsViewModel
-            {
-                Patient = PatientMapper.ToPatientViewModel(this.context, patient),
-                Schedule = schedule,
-                ScheduleItems = items
-            });
+            return this.View();
         }
 
         #endregion
@@ -148,42 +107,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="id">The patient id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("Create/patient/{id:guid}")]
-        public ActionResult Create(Guid id)
+        [Route("create/patient/{id:guid}")]
+        [HttpGet, Dispatch]
+        public ActionResult Create(CreateSchedule request)
         {
-            var account = Identity();
-            var roles = account.Roles;
-            var list = new List<ScheduleSettings>();
-            foreach (var role in roles)
-            {
-                var ss = role.ScheduleSettings;
-                foreach (var schedule in ss)
-                {
-                    if (schedule.ScheduleType == ScheduleType.Action)
-                    {
-                        list.Add(schedule);
-                    }
-                }
-            }
-            var query = this.context.QueryOver<ScheduleSettings>()
-                    .Where(s => s.ScheduleType == ScheduleType.Action)
-                    .OrderBy(x => x.Name).Asc;
-            if (list.Count > 0)
-            {
-                query.WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
-            var items = query.List()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-
-            return View(new ScheduleViewModel
-            {
-                Id = id,
-                Items = items
-            });
+            return this.View();
         }
 
         /// <summary>
@@ -192,26 +120,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="id">The patient id</param>
         /// <param name="model">The schedule model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, ValidateAntiForgeryToken]
-        [Route("Create/patient/{id:guid}")]
-        public ActionResult Create(Guid id, ScheduleViewModel model)
+        [Route("create/patient/{id:guid}")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        public ActionResult Create(ScheduleViewModel request)
         {
-            var patient = this.context.Get<Patient>(id);
-            ValidateNonDuplicates(model);
-            if (ModelState.IsValid)
-            {
-                var settings = this.context.Get<ScheduleSettings>(model.ScheduleSetting);
-                var schedule = new Schedule
-                {
-                    Patient = patient,
-                    ScheduleSettings = settings
-                };
-                this.context.Save(schedule);
-                var currentUser = Identity();
-                this.logService.Info(string.Format("Användare {0} skapade lista {1} (REF: {2}).", currentUser.UserName, settings.Name, schedule.Id), currentUser, patient, LogType.Write);
-                return this.RedirectToAction("List", new { Id = id });
-            }
-            return View(model);
+            //// TODO: Must fix this somehow --> ValidateNonDuplicates(model);
+            return this.View();
         }
 
         #endregion
@@ -223,17 +137,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="id">The schedule id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("Inactivate/schedule/{id:guid}")]
-        public ActionResult Inactivate(Guid id)
+        [Route("inactivate/schedule/{id:guid}")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Schedule")]
+        public ActionResult Inactivate(InactivateSchedule request)
         {
-            var schedule = this.context.Get<Schedule>(id);
-            this.ExecuteCommand(new InactivateOrActivateCommand<Schedule>()
-            {
-                Id = id
-            });
-            var currentUser = Identity();
-            this.logService.Info(string.Format("Användare {0} inaktiverade lista {1} (REF: {2}).", currentUser.UserName, schedule.ScheduleSettings.Name, schedule.Id), currentUser, schedule.Patient, LogType.Write);
-            return this.RedirectToAction("List", new { Id = schedule.Patient.Id });
+            return this.View();
         }
 
         #endregion
@@ -256,108 +164,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="order"></param>
         /// <returns></returns>
         [Route("Sign/{id:guid}")]
-        public ActionResult Sign(
-            Guid id,
-            Guid? scheduleSettingsId,
-            int? year,
-            int? month,
-            DateTime? startDate,
-            DateTime? endDate,
-            bool filterByAnomalies = false,
-            int page = 1,
-            bool filterByNeedsBasis = false,
-            OrderTasksBy order = OrderTasksBy.Day
-        )
+        [HttpGet, Dispatch]
+        public ActionResult Sign(SignSchedule request)
         {
-            var account = Identity();
-            var roles = account.Roles;
-            var list = new List<ScheduleSettings>();
-            foreach (var role in roles)
-            {
-                var ss = role.ScheduleSettings;
-                foreach (var schedule in ss)
-                {
-                    if (schedule.ScheduleType == ScheduleType.Action)
-                    {
-                        list.Add(schedule);
-                    }
-                }
-            }
-            var patient = this.context.Get<Patient>(id);
-            var StartDate = startDate.HasValue ? startDate.Value : DateTime.Now.FirstOfMonth();
-            var EndDate = endDate.HasValue ? endDate.Value : DateTime.Now.LastOfMonth().LastInstantOfDay();
-            if (year.HasValue)
-            {
-                StartDate = new DateTime(year.Value, 1, 1);
-                EndDate = new DateTime(year.Value, 12, 31);
-            }
-            if (month.HasValue)
-            {
-                if (!year.HasValue)
-                {
-                    year = DateTime.Now.Year;
-                }
-                StartDate = new DateTime(year.Value, month.Value, 1);
-                EndDate = new DateTime(year.Value, month.Value, DateTime.DaysInMonth(year.Value, month.Value)).LastInstantOfDay();
-            }
-            this.logService.Info(string.Format("Användare {0} läste signeringar mellan {1:yyyy-MM-dd} och {2:yyyy-MM-dd} för boende {3} (REF: {4}).", account.UserName, StartDate, EndDate, patient.FullName, patient.Id), account, patient, LogType.Read);
-            var scheduleSettings = new List<ScheduleSettings>();
-            var query = this.context.QueryOver<Schedule>().Where(x => x.Patient.Id == id);
-            if (list.Count > 0)
-            {
-                query.JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
-            var schedules = query.List();
-            foreach (var schedule in schedules)
-            {
-                if (!scheduleSettings.Contains(schedule.ScheduleSettings))
-                {
-                    scheduleSettings.Add(schedule.ScheduleSettings);
-                }
-            }
-            if (!scheduleSettingsId.HasValue)
-            {
-                if (schedules.Count > 0)
-                {
-                    scheduleSettingsId = schedules.First().ScheduleSettings.Id;
-                }
-                else
-                {
-                    return View(new TaskListViewModel
-                    {
-                        Patient = PatientMapper.ToPatientViewModel(this.context, patient),
-                        Schedules = new List<ScheduleSettings>()
-                    });
-                }
-            }
-            return View(new TaskListViewModel
-            {
-                Patient = PatientMapper.ToPatientViewModel(this.context, patient),
-                Schedules = scheduleSettings,
-                Schedule = this.context.Get<ScheduleSettings>(scheduleSettingsId),
-                Search = ExecuteCommand<SearchViewModel<Task>>(new SearchTaskCommand
-                {
-                    PatientId = patient.Id,
-                    ScheduleSettingsId = scheduleSettingsId.Value,
-                    StartDate = StartDate,
-                    EndDate = EndDate,
-                    FilterByAnomalies = filterByAnomalies,
-                    FilterByNeedsBasis = filterByNeedsBasis,
-                    PageNumber = page,
-                    PageSize = 30,
-                    Order = order
-                }),
-                FilterByAnomalies = filterByAnomalies,
-                FilterByNeedsBasis = filterByNeedsBasis,
-                StartDate = StartDate,
-                EndDate = EndDate,
-                Years = DateTimeUtils.GetYearSelectList(patient.CreatedAt.Year, StartDate.Year == EndDate.Year ? StartDate.Year : 0),
-                Months = StartDate.Month == EndDate.Month ? DateTimeUtils.GetMonthSelectList(StartDate.Month) : DateTimeUtils.GetMonthSelectList(),
-                Order = order,
-                Year = year,
-                Month = month
-            });
+            return this.View();
         }
 
         #endregion
@@ -372,14 +182,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         //[Authorize(Roles = RoleUtils.AppvaAccount)]
         [Route("DeleteTask/{id:guid}/task/{taskId:guid}")]
-        public ActionResult DeleteTask(Guid id, Guid taskId)
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Schedule")]
+        public ActionResult DeleteTask(DeleteTask request)
         {
-            var task = this.context.Get<Task>(taskId);
-            this.context.Delete(task);
-            return RedirectToAction("Sign", new
-            {
-                id = id
-            });
+            return this.View();
         }
 
         #endregion
@@ -395,18 +201,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="endDate">Optional end date</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("PrintPopUp/{id:guid}/schedule/{scheduleSettingsId:guid}/{startDate?}/{endDate?}")]
-        public ActionResult PrintPopUp(Guid id, Guid scheduleSettingsId, DateTime? startDate, DateTime? endDate)
+        [HttpGet, Dispatch]
+        public ActionResult PrintPopUp(PrintModelSchedule request)
         {
-            var patient = this.context.Get<Patient>(id);
-            var StartDate = startDate.HasValue && !startDate.Equals(patient.CreatedAt) ? startDate.Value.Date : DateTime.Now.FirstOfMonth();
-            var EndDate = endDate.HasValue && !startDate.Equals(patient.CreatedAt) ? endDate.Value.Date : DateTime.Now.FirstOfMonth().AddDays(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month) - 1);
-            return View(new SchedulePrintPopOverViewModel
-            {
-                Id = patient.Id,
-                ScheduleSettingsId = scheduleSettingsId,
-                PrintStartDate = StartDate,
-                PrintEndDate = EndDate
-            });
+            return this.View();
         }
 
         /// <summary>
@@ -416,38 +214,35 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="scheduleId">The schedule settings id</param>
         /// <param name="model">The print model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, ValidateAntiForgeryToken]
         [Route("PrintPopUp/{id:guid}/schedule/{scheduleId:guid}")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
         public ActionResult PrintPopUp(Guid id, Guid scheduleId, SchedulePrintPopOverViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model.Template == SchedulePrintTemplate.Table)
             {
-                if (model.Template == SchedulePrintTemplate.Table)
-                {
-                    return this.RedirectToAction("PrintTable",
-                        new
-                        {
-                            Id = id,
-                            ScheduleSettingsId = scheduleId,
-                            StartDate = model.PrintStartDate,
-                            EndDate = model.PrintEndDate,
-                            OnNeedBasis = model.OnNeedBasis,
-                            StandardSequences = model.StandardSequneces
-                        });
-                }
-                else if (model.Template == SchedulePrintTemplate.Schema)
-                {
-                    return this.RedirectToAction("PrintSchema",
-                        new
-                        {
-                            Id = id,
-                            ScheduleSettingsId = scheduleId,
-                            StartDate = model.PrintStartDate,
-                            EndDate = model.PrintEndDate,
-                            OnNeedBasis = model.OnNeedBasis,
-                            StandardSequences = model.StandardSequneces
-                        });
-                }
+                return this.RedirectToAction("PrintTable",
+                    new
+                    {
+                        Id = id,
+                        ScheduleSettingsId = scheduleId,
+                        StartDate = model.PrintStartDate,
+                        EndDate = model.PrintEndDate,
+                        OnNeedBasis = model.OnNeedBasis,
+                        StandardSequences = model.StandardSequneces
+                    });
+            }
+            if (model.Template == SchedulePrintTemplate.Schema)
+            {
+                return this.RedirectToAction("PrintSchema",
+                    new
+                    {
+                        Id = id,
+                        ScheduleSettingsId = scheduleId,
+                        StartDate = model.PrintStartDate,
+                        EndDate = model.PrintEndDate,
+                        OnNeedBasis = model.OnNeedBasis,
+                        StandardSequences = model.StandardSequneces
+                    });
             }
             return View(model);
         }
@@ -463,48 +258,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="StandardSequences">Whether or not standard sequences</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("PrintSchema/{id:guid}")]
-        public ActionResult PrintSchema(
-            Guid id,
-            Guid? scheduleSettingsId,
-            DateTime startDate,
-            DateTime endDate,
-            bool OnNeedBasis,
-            bool StandardSequences
-        )
+        [HttpGet, Dispatch]
+        public ActionResult PrintSchema(PrintSchemaSchedule request)
         {
-            var toDate = endDate.LastInstantOfDay();
-            var patient = this.context.Get<Patient>(id);
-            var query = this.context.QueryOver<Task>()
-                .Where(x => x.Patient.Id == patient.Id)
-                .And(x => x.Scheduled >= startDate && x.Scheduled <= toDate)
-                .And(x => x.IsActive)
-                .Fetch(x => x.StatusTaxon).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer());
-            if (scheduleSettingsId.HasValue)
-            {
-                query.JoinQueryOver<Schedule>(x => x.Schedule)
-                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                .Where(x => x.Id == scheduleSettingsId.Value);
-            }
-            if (!OnNeedBasis)
-                query.AndNot(x => x.OnNeedBasis);
-            if (!StandardSequences)
-                query.And(x => x.OnNeedBasis);
-            var printSchedule = this.scheduleService.PrintSchedule(query.List());
-            var schedule = this.context.Get<ScheduleSettings>(scheduleSettingsId);
-            var statusTaxons = schedule.StatusTaxons.Count == 0 ? this.context.QueryOver<Taxon>().Where(x => x.IsActive && x.IsRoot).JoinQueryOver<Taxonomy>(x => x.Taxonomy).Where(x => x.MachineName == "SST").List() : schedule.StatusTaxons.ToList();
-            var account = Identity();
-            this.logService.Info(string.Format("Användare {0} skapade utskrift av signeringslista {1} för boende {2} (REF: {3}).", account.UserName, schedule.Name, patient.FullName, patient.Id), account, patient, LogType.Read);
-            return View("PrintSchema", new PrintViewModel
-            {
-                Patient = patient,
-                PrintSchedule = printSchedule,
-                From = startDate,
-                To = toDate,
-                Schedule = schedule,
-                StatusTaxons = statusTaxons,
-                EmptySchema = false
-            });
+            return this.View();
         }
 
         /// <summary>
@@ -518,42 +275,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="StandardSequences">Whether or not standard sequences</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("PrintTable/{id:guid}")]
-        public ActionResult PrintTable(
-            Guid id,
-            Guid? scheduleSettingsId,
-            DateTime startDate,
-            DateTime endDate,
-            bool OnNeedBasis,
-            bool StandardSequences
-        )
+        [HttpGet, Dispatch]
+        public ActionResult PrintTable(/*PrintTableSchedule request*/)
         {
-            var toDate = endDate.LastInstantOfDay();
-            var accountsMap = this.context.QueryOver<Account>().List().ToDictionary(x => x.Id, x => x);
-            var patient = this.context.Get<Patient>(id);
-            var query = this.context.QueryOver<Task>().Where(x => x.Patient.Id == patient.Id)
-                .And(x => x.Scheduled >= startDate && x.Scheduled <= toDate)
-                .And(x => x.IsActive)
-                .Fetch(x => x.StatusTaxon).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer());
-            if (scheduleSettingsId.HasValue)
-            {
-                query.JoinQueryOver<Schedule>(x => x.Schedule)
-                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                .Where(x => x.Id == scheduleSettingsId.Value);
-            }
-            if (!OnNeedBasis)
-                query.AndNot(x => x.OnNeedBasis);
-            if (!StandardSequences)
-                query.And(x => x.OnNeedBasis);
-            var account = Identity();
-            this.logService.Info(string.Format("Användare {0} skapade utskrift av signeringslista för boende {1} (REF: {2}).", account.UserName, patient.FullName, patient.Id), account, patient, LogType.Read);
-            return View(new ScheduleTablePrintViewModel
-            {
-                Patient = patient,
-                StartDate = startDate,
-                EndDate = toDate,
-                Tasks = query.List<Task>()
-            });
+            return this.View();
         }
 
         #endregion

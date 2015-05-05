@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Models
     /// Identity request.
     /// </summary>
     /// <typeparam name="T">The output class</typeparam>
-    public sealed class Identity<T> : IRequest<T>
+    public class Identity<T> : IRequest<T>
     {
         /// <summary>
         /// The ID.

@@ -6,7 +6,7 @@
     var yesterday = DateTimeUtilities.Now().Date.AddDays(-1);
 }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
     <h1>Saldo händelser</h1>
     @if (Model.Inventory != null) {

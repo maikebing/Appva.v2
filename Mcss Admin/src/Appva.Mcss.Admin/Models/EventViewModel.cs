@@ -6,10 +6,13 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Appva.Mvc.Html.DataAnnotations;
 using DataAnnotationsExtensions;
+using Appva.Cqrs;
+using Appva.Mcss.Admin.Models;
 
 namespace Appva.Mcss.Web.ViewModels {
 
-    public class EventViewModel {
+    public class EventViewModel : IRequest<ListCalendar>
+    {
 
         public EventViewModel() {
             AbsentSelectListItems = new List<SelectListItem>() {

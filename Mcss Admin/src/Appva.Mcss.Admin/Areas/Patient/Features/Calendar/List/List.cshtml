@@ -2,7 +2,7 @@
 @model Appva.Mcss.Web.ViewModels.EventListViewModel
 @{ ViewBag.Title = "List"; }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 @section JavaScript {
     <script type="text/javascript" src="../../Assets/js/mcss.calendar.lb.js"></script>
     <script type="text/javascript">

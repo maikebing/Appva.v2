@@ -1,0 +1,12 @@
+﻿@model Assessment
+<li class="cf">
+    <img src="@String.Format("/Assets/i/{0}", Model.ImagePath)" />
+    <div class="checkbox">
+        @Html.HiddenFor(x => x.Id)
+        @Html.CheckBoxFor(x => x.IsSelected)
+	</div>
+    <div class="desc">
+		<label for="health-attr">@Model.Label</label>
+		<p>@Model.Description</p>
+	</div>
+</li>

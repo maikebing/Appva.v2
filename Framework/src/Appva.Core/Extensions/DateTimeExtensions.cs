@@ -64,6 +64,28 @@ namespace Appva.Core.Extensions
 
         //////////// FROM UTILS
 
+        public static DateTime SetYear(this DateTime date, int? year)
+        {
+            if (!year.HasValue)
+            {
+                return date;
+            }
+            return new DateTime(year.Value, date.Month, date.Day, date.Hour, date.Minute, date.Second, date.Millisecond);
+        }
+
+        public static DateTime SetMonth(this DateTime date, bool condition, int? month)
+        {
+            if (! condition)
+            {
+                return date;
+            }
+            if (! month.HasValue)
+            {
+                return date;
+            }
+            return new DateTime(date.Year, month.Value, date.Day, date.Hour, date.Minute, date.Second, date.Millisecond);
+        }
+
         /// <summary>
         /// Returns the a DateTime representing tomorrow.
         /// </summary>

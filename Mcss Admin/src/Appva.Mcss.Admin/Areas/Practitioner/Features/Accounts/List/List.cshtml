@@ -10,12 +10,6 @@
 	@*Html.Partial("~/Views/Account/Partials/_AccountSearch.cshtml")*@
 </div>
 
-@foreach(var x in Model.Tests)
-{
-    @x.Id
-    @x.EndDate
-    <br />
-}
 <div class="col-wrap cols-2-1 cf">
 	<div class="col col-1">
 		<div class="filter-ctrl">
@@ -48,13 +42,13 @@
 		 }
 		</div>
 	</div>
-	@if (Model.Accounts.Count > 0)
+	@if (Model.Accounts.Entities.Count > 0)
 	{
 		<div class="col col-2">
 		<ul class="people delegate">
-			@foreach (var item in Model.Accounts)
+			@foreach (var item in Model.Accounts.Entities)
 			{
-				<li class="cf" @*class="cf @((item.ShowAlertOnDaysLeft) ? "update" : "")"*@>
+				<li class="cf @((item.HasExpiringDelegation) ? "update" : "")">
 					@if (item.IsActive) {
 						@Html.ActionLink("Ta bort", "Inactivate", "Account", new { Id = item.Id }, new { @class = "btn btn-del" })
 					} 
@@ -93,14 +87,15 @@
 				</li>
 			}
 		</ul>
-		@*Html.Pager(Model.Search.PageSize, Model.Search.PageNumber, Model.Search.TotalItemCount).Options(o => o
+		@Html.Pager((int)Model.Accounts.PageSize, (int)Model.Accounts.CurrentPage, (int)Model.Accounts.TotalCount).Options(o => o
 			.DisplayTemplate("Pagination")
 			.MaxNrOfPages(15)
 			.AlwaysAddFirstPageNumber()
-			.AddRouteValue("IsActive", Model.IsActive)
-			.AddRouteValue("FilterByCreatedBy", Model.FilterByCreatedBy)
-			.AddRouteValue("FilterByDelegation", Model.FilterByDelegation)
-			.AddRouteValue("FilterByTitle", Model.FilterByTitle))*@
+			.AddRouteValue("IsActive", Model.IsFilterByIsActiveEnabled)
+            .AddRouteValue("IsPaused", Model.IsFilterByIsPausedEnabled)
+			.AddRouteValue("FilterByCreatedBy", Model.IsFilterByCreatedByEnabled)
+			.AddRouteValue("FilterByDelegation", Model.DelegationFilterId)
+			.AddRouteValue("FilterByTitle", Model.RoleFilterId))
 	</div>
 	}
 </div>

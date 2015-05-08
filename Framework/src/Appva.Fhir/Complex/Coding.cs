@@ -8,9 +8,9 @@ namespace Appva.Fhir.Complex
 {
     #region Imports.
 
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
     using Primitives;
+    using ProtoBuf;
 
     #endregion
 
@@ -20,13 +20,13 @@ namespace Appva.Fhir.Complex
     /// <externalLink>
     ///     <linkText>Using Codes in resources</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/terminologies.html
+    ///         http://hl7-fhir.github.io/terminologies.html
     ///     </linkUri>
     /// </externalLink>
     /// <externalLink>
     ///     <linkText>Coding</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#Coding
+    ///         http://hl7-fhir.github.io/datatypes.html#Coding
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
@@ -40,7 +40,6 @@ namespace Appva.Fhir.Complex
     ///     <code value="[code]"/><!-- 0..1 Symbol in syntax defined by the system -->
     ///     <display value="[string]"/><!-- 0..1 Representation defined by the system -->
     ///     <primary value="[boolean]"/><!-- 0..1 If this code was chosen directly by the user -->
-    ///     <valueSet><!-- 0..1 Reference(ValueSet) Set this coding was chosen from --></valueSet>
     /// </[name]>
     /// ]]>
     /// </code>
@@ -52,8 +51,8 @@ namespace Appva.Fhir.Complex
     /// </para>
     /// </alert>
     /// </remarks>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public class Coding : Element
     {
         #region Constructor.
@@ -71,7 +70,7 @@ namespace Appva.Fhir.Complex
         /// of the system.
         /// </param>
         public Coding(Uri system, Code code, string display)
-            : this(system, null, code, display, null, null)
+            : this(system, null, code, display)
         {
         }
 
@@ -94,25 +93,21 @@ namespace Appva.Fhir.Complex
         /// Indicates that this code was chosen by a user directly - i.e. off a pick list of 
         /// available items (codes or displays)
         /// </param>
-        /// <param name="valueSet">
-        /// The set of possible coded values this coding was chosen from or constrained by
-        /// </param>
-        public Coding(Uri system, string version, Code code, string display, bool? primary, string valueSet)
+        public Coding(Uri system, string version, Code code, string display, bool? primary = null)
         {
             this.System = system;
             this.Version = version;
             this.Code = code;
             this.Display = display;
             this.Primary = primary;
-            this.ValueSet = valueSet;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Coding"/> class.
+        /// Prevents a default instance of the <see cref="Coding" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        public Coding()
+        private Coding()
         {
         }
 
@@ -126,11 +121,11 @@ namespace Appva.Fhir.Complex
         /// <externalLink>
         ///     <linkText>Coding.System</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#Coding.system
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#Coding.system
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty]
+        [ProtoMember(1), JsonProperty]
         public Uri System
         {
             get;
@@ -145,10 +140,10 @@ namespace Appva.Fhir.Complex
         /// SHOULD be exchanged.
         /// <externalLink>
         ///     <linkText>Coding.Version</linkText>
-        ///     <linkUri>http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#Coding.version</linkUri>
+        ///     <linkUri>http://hl7-fhir.github.io/datatypes-definitions.html#Coding.version</linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty]
+        [ProtoMember(2), JsonProperty]
         public string Version
         {
             get;
@@ -161,11 +156,11 @@ namespace Appva.Fhir.Complex
         /// <externalLink>
         ///     <linkText>Coding.Code</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#Coding.code
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#Coding.code
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty]
+        [ProtoMember(3), JsonProperty]
         public Code Code
         {
             get;
@@ -178,11 +173,11 @@ namespace Appva.Fhir.Complex
         /// <externalLink>
         ///     <linkText>Coding.Display</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#Coding.display
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#Coding.display
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty]
+        [ProtoMember(4), JsonProperty]
         public string Display
         {
             get;
@@ -195,28 +190,12 @@ namespace Appva.Fhir.Complex
         /// <externalLink>
         ///     <linkText>Coding.Primary</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#Coding.primary
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#Coding.primary
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty]
+        [ProtoMember(5), JsonProperty]
         public bool? Primary
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// The set of possible coded values this coding was chosen from or constrained by.
-        /// <externalLink>
-        ///     <linkText>Coding.ValueSet</linkText>
-        ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#Coding.valueSet
-        ///     </linkUri>
-        /// </externalLink>
-        /// </summary>
-        [JsonProperty]
-        public string ValueSet
         {
             get;
             private set;

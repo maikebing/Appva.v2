@@ -8,9 +8,9 @@ namespace Appva.Fhir
 {
     #region Imports.
 
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
     using Primitives;
+    using ProtoBuf;
 
     #endregion
 
@@ -30,12 +30,12 @@ namespace Appva.Fhir
     /// <externalLink>
     ///     <linkText>Extension Element</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/extensibility.html#extension
+    ///         http://hl7-fhir.github.io/extensibility.html#extension
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class Extension : Element
     {
         #region Constructor.
@@ -65,11 +65,11 @@ namespace Appva.Fhir
         /// <externalLink>
         ///     <linkText>Url</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/extensibility-definitions.html#Extension.url
+        ///         http://hl7-fhir.github.io/extensibility-definitions.html#Extension.url
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlAttributeAttribute("url", DataType = "anyURI")]
+        [ProtoMember(1), JsonProperty]
         public Uri Url
         {
             get;
@@ -82,11 +82,11 @@ namespace Appva.Fhir
         /// <externalLink>
         ///     <linkText>Value</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/extensibility-definitions.html#Extension.value_x_
+        ///         http://hl7-fhir.github.io/extensibility-definitions.html#Extension.value_x_
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlAttributeAttribute("value")]
+        [ProtoMember(2), JsonProperty]
         public Element Value
         {
             get;

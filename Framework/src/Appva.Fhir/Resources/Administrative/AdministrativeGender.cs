@@ -8,10 +8,9 @@ namespace Appva.Fhir.Resources.Administrative
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Appva.Fhir.Primitives;
+    using Primitives;
+    using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -20,10 +19,12 @@ namespace Appva.Fhir.Resources.Administrative
     /// <externalLink>
     ///     <linkText>1.15.2.1.24.1 AdministrativeGender</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/administrative-gender.html
+    ///         http://hl7-fhir.github.io/administrative-gender.html
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class AdministrativeGender : Code
     {
         #region Variables.
@@ -58,6 +59,16 @@ namespace Appva.Fhir.Resources.Administrative
         /// <param name="value">The string code value</param>
         private AdministrativeGender(string value)
             : base(value)
+        {
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="AdministrativeGender" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private AdministrativeGender() 
+            : base(null)
         {
         }
 

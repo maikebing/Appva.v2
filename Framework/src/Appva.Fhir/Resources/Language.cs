@@ -8,13 +8,17 @@ namespace Appva.Fhir.Resources
 {
     #region Imports.
 
-    using Appva.Fhir.Primitives;
+    using Primitives;
+    using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class Language : Code
     {
         #region Variables.
@@ -22,13 +26,11 @@ namespace Appva.Fhir.Resources
         /// <summary>
         /// Swedish language.
         /// </summary>
-        /// <returns></returns>
         public static readonly Language Swedish = new Language("sv");
         
         /// <summary>
         /// English language.
         /// </summary>
-        /// <returns></returns>
         public static readonly Language English = new Language("en");
 
         #endregion
@@ -41,6 +43,16 @@ namespace Appva.Fhir.Resources
         /// <param name="value">The string code value</param>
         public Language(string value) 
             : base(value)
+        {
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Language" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private Language()
+            : base(null)
         {
         }
 

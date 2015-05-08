@@ -1,4 +1,4 @@
-﻿// <copyright file="SecurityEventParticipantNetwork.cs" company="Appva AB">
+﻿// <copyright file="AuditEventParticipantNetwork.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,10 +8,9 @@ namespace Appva.Fhir.Resources.Security
 {
     #region Imports.
 
-    using System.Xml.Serialization;
-    using Appva.Fhir.Resources.Security.ValueSets;
+    using ValueSets;
     using Newtonsoft.Json;
-    using Primitives;
+    using ProtoBuf;
 
     #endregion
 
@@ -21,18 +20,18 @@ namespace Appva.Fhir.Resources.Security
     /// <externalLink>
     ///     <linkText>Network</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant.network
+    ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant.network
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
-    public sealed class SecurityEventParticipantNetwork : Element
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    public sealed class AuditEventParticipantNetwork : Element
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventParticipantNetwork"/> class.
+        /// Initializes a new instance of the <see cref="AuditEventParticipantNetwork"/> class.
         /// </summary>
         /// <param name="identifier">
         /// An identifier for the network access point of the user device for the audit 
@@ -40,20 +39,20 @@ namespace Appva.Fhir.Resources.Security
         /// </param>
         /// <param name="type">
         /// An identifier for the type of network access point that originated the audit 
-        /// event, see <c>SecurityEventParticipantNetworkType</c>.
+        /// event, see <c>AuditEventParticipantNetworkType</c>.
         /// </param>
-        public SecurityEventParticipantNetwork(string identifier, SecurityEventParticipantNetworkType type)
+        public AuditEventParticipantNetwork(string identifier, AuditEventParticipantNetworkType type)
         {
             this.Identifier = identifier;
             this.Type = type;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventParticipantNetwork"/> class.
+        /// Prevents a default instance of the <see cref="AuditEventParticipantNetwork" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        protected SecurityEventParticipantNetwork()
+        private AuditEventParticipantNetwork()
         {
         }
 
@@ -68,11 +67,11 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Network.Identifier</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#SecurityEvent.participant.network.identifier
+        ///         http://hl7-fhir.github.io/resource-definitions.html#AuditEvent.participant.network.identifier
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("identifier")]
+        [ProtoMember(1), JsonProperty]
         public string Identifier
         {
             get;
@@ -81,16 +80,16 @@ namespace Appva.Fhir.Resources.Security
 
         /// <summary>
         /// An identifier for the type of network access point that originated the audit 
-        /// event, see <c>SecurityEventParticipantNetworkType</c>.
+        /// event, see <c>AuditEventParticipantNetworkType</c>.
         /// <externalLink>
         ///     <linkText>Network.Type</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#SecurityEvent.participant.network.type
+        ///         http://hl7-fhir.github.io/resource-definitions.html#AuditEvent.participant.network.type
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("type")]
-        public SecurityEventParticipantNetworkType Type
+        [ProtoMember(2), JsonProperty]
+        public AuditEventParticipantNetworkType Type
         {
             get;
             private set;

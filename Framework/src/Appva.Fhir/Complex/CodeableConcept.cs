@@ -9,9 +9,10 @@ namespace Appva.Fhir.Complex
     #region Imports.
 
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Xml.Serialization;
+    using Resources.Administrative;
     using Newtonsoft.Json;
+    using ProtoBuf;
+    using Resources.Security.ValueSets;
 
     #endregion
 
@@ -45,7 +46,7 @@ namespace Appva.Fhir.Complex
     /// <externalLink>
     ///     <linkText>1.13.0.5 CodeableConcept</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#CodeableConcept
+    ///         http://hl7-fhir.github.io/datatypes.html#CodeableConcept
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
@@ -63,8 +64,14 @@ namespace Appva.Fhir.Complex
     /// ]]>
     /// </code>
     /// </example>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    [ProtoInclude(1, typeof(AuditEventType))]
+    [ProtoInclude(2, typeof(AuditEventSubType))]
+    [ProtoInclude(3, typeof(AuditEventObjectSensitivity))]
+    [ProtoInclude(4, typeof(AuditEventSourceType))]
+    [ProtoInclude(5, typeof(IdentifierType))]
+    [ProtoInclude(6, typeof(MaritalStatus))]
     public class CodeableConcept : Element
     {
         #region Constructor.
@@ -75,7 +82,18 @@ namespace Appva.Fhir.Complex
         /// <param name="coding">
         /// A reference to a code defined by a terminology system
         /// </param>
-        public CodeableConcept(Collection<Coding> coding)
+        public CodeableConcept(params Coding[] coding)
+            : this(null, new List<Coding>(coding))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeableConcept"/> class.
+        /// </summary>
+        /// <param name="coding">
+        /// A reference to a code defined by a terminology system
+        /// </param>
+        public CodeableConcept(IList<Coding> coding)
             : this(null, coding)
         {
         }
@@ -91,18 +109,34 @@ namespace Appva.Fhir.Complex
         /// <param name="coding">
         /// A reference to a code defined by a terminology system
         /// </param>
-        public CodeableConcept(string text, Collection<Coding> coding)
+        public CodeableConcept(string text, params Coding[] coding)
+            : this(text, new List<Coding>(coding))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeableConcept"/> class.
+        /// </summary>
+        /// <param name="text">
+        /// A human language representation of the concept as seen/selected/uttered by the 
+        /// user who entered the data and/or which represents the intended meaning of the 
+        /// user
+        /// </param>
+        /// <param name="coding">
+        /// A reference to a code defined by a terminology system
+        /// </param>
+        public CodeableConcept(string text, IList<Coding> coding)
         {
             this.Text = text;
             this.Coding = coding;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CodeableConcept"/> class.
+        /// Prevents a default instance of the <see cref="CodeableConcept" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        public CodeableConcept()
+        private CodeableConcept()
         {
         }
 
@@ -115,13 +149,12 @@ namespace Appva.Fhir.Complex
         /// <externalLink>
         ///     <linkText>CodeableConcept.Coding</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#CodeableConcept.coding
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#CodeableConcept.coding
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty]
-        [XmlElementAttribute("coding")]
-        public Collection<Coding> Coding
+        [ProtoMember(1000), JsonProperty]
+        public IList<Coding> Coding
         {
             get;
             private set;
@@ -134,12 +167,11 @@ namespace Appva.Fhir.Complex
         /// <externalLink>
         ///     <linkText>CodeableConcept.Text</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#CodeableConcept.text
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#CodeableConcept.text
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty]
-        [XmlElementAttribute("text")]
+        [ProtoMember(1001), JsonProperty]
         public string Text
         {
             get;

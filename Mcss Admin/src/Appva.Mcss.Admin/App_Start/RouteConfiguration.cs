@@ -26,34 +26,11 @@ namespace Appva.Mcss.Admin
         {
             routes.MapMvcAttributeRoutes();
             routes.LowercaseUrls = true;
-            //// routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            //// routes.IgnoreRoute("{*favicon}", new
-            //// {
-            ////     favicon = @"(.*/)?favicon.ico(/.*)?"
-            //// });
-            //// routes.MapRoute(
-            ////     name: "Default",
-            ////     url: "{controller}/{action}/{id}",
-            ////     defaults: new
-            ////     {
-            ////         controller = "Home",
-            ////         action = "Index",
-            ////         id = UrlParameter.Optional
-            ////     }
-            //// );
-            /*var route = routes.MapRoute(
-            name: "Default",
-            url: "{controller}/{action}/{id}",
-            defaults: new
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("{*favicon}", new
             {
-                controller = "Home",
-                action = "Index",
-                id = UrlParameter.Optional
-            }
-            ).DataTokens = new RouteValueDictionary(new
-            {
-                area = "MyArea"
-            });*/
+                favicon = @"(.*/)?favicon.ico(/.*)?"
+            });
         }
     }
 }

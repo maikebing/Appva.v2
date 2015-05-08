@@ -70,7 +70,7 @@ namespace Appva.Apis.TenantServer.Legacy.Transformers
             {
                 return string.Empty;
             }
-            if (!string.IsNullOrEmpty(dto.Connection.FailOverPartner))
+            if (! string.IsNullOrEmpty(dto.Connection.FailOverPartner))
             {
                 dto.Connection.FailOverPartner = string.Format(
                     "Failover Partner={0};",

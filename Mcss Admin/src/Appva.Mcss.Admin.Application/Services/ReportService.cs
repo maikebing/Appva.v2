@@ -27,6 +27,16 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface IReportService
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="page"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        Report Create(IReportingFilter filter, DateTime? startDate, DateTime? endDate, int? page = 1, int? size = 30);
     }
 
     /// <summary>
@@ -56,26 +66,27 @@ namespace Appva.Mcss.Admin.Application.Services
         #endregion
 
         #region IReportService Members.
-        /*
-        public override Report Handle(CreateReportCommand<T> message)
+        
+        /// <inheritdoc /> 
+        public Report Create(IReportingFilter filter, DateTime? startDate, DateTime? endDate, int? page = 1, int? size = 30)
         {
-            message.PageSize = message.PageSize ?? 30;
-            message.StartDate = (message.StartDate.HasValue) ? message.StartDate.Value : DateTimeUtilities.Now().AddDays(-DateTime.Now.DaysInMonth());
-            message.EndDate = (message.EndDate.HasValue) ? message.EndDate.Value.LastInstantOfDay() : DateTime.Now.LastInstantOfDay();
-            var span = message.EndDate.Value.Subtract(message.StartDate.Value).Days;
-            var tasks = QueryAndFilter(message);
-            var tasksWithinStartDateAndEndDate = tasks.Where(x => x.Scheduled >= message.StartDate.Value && x.Scheduled <= message.EndDate.Value)
+            //// TODO: This should be firstInstantOfDay here
+            var start = startDate ?? DateTime.Now.FirstOfMonth();
+            var end = (endDate.HasValue) ? endDate.Value.LastInstantOfDay() : DateTime.Now.LastInstantOfDay();
+            var span = end.Subtract(start).Days;
+            var tasks = QueryAndFilter(filter, start, end);
+            var tasksWithinStartDateAndEndDate = tasks.Where(x => x.Scheduled >= start && x.Scheduled <= end)
                 .OrderBy(x => x.Scheduled).Desc;
             var dateSpan = GenerateReportSegment(tasksWithinStartDateAndEndDate.ToRowCountQuery());
             var total = tasksWithinStartDateAndEndDate.ToRowCountQuery().RowCount();
             var comparableDateSpan = GenerateReportSegment(tasks.ToRowCountQuery()
-                .Where(x => x.Scheduled >= message.StartDate.Value.AddDays(-span) && x.Scheduled <= message.EndDate.Value.AddDays(-span)));
+                .Where(x => x.Scheduled >= start.AddDays(-span) && x.Scheduled <= end.AddDays(-span)));
             var items = tasksWithinStartDateAndEndDate
-                .Skip(((message.Page.Value - 1) * message.PageSize.Value)).Take(message.PageSize.Value).List().Where(task => task != null).ToList();
+                .Skip(((page.Value - 1) * size.Value)).Take(size.Value).List().Where(task => task != null).ToList();
             return new Report
             {
-                StartDate = message.StartDate.Value,
-                EndDate = message.EndDate.Value,
+                StartDate = start,
+                EndDate = end,
                 TasksOnTime = dateSpan.TasksOnTime,
                 TasksNotOnTime = dateSpan.TasksNotOnTime,
                 ComparedDateSpanTasksOnTime = comparableDateSpan.TasksOnTime,
@@ -85,8 +96,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 Search = new ReportSearch<Task>
                 {
                     Items = items,
-                    PageSize = message.PageSize.Value,
-                    PageNumber = message.Page.Value,
+                    PageSize = page.Value,
+                    PageNumber = size.Value,
                     TotalItemCount = total
                 }
             };
@@ -96,16 +107,16 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #region Private Methods.
 
-        private IQueryOver<Task, Task> QueryAndFilter(CreateReportCommand<T> message)
+        private IQueryOver<Task, Task> QueryAndFilter(IReportingFilter filter, DateTime startDate, DateTime endDate)
         {
             var query = this.persistence.QueryOver<Task>()
                 .Where(x => x.OnNeedBasis == false)
-                .And(x => x.Scheduled >= message.StartDate.Value.AddDays(-message.EndDate.Value.Subtract(message.StartDate.Value).Days))
-                .And(x => x.Scheduled <= message.EndDate.Value)
+                .And(x => x.Scheduled >= startDate.AddDays(-endDate.Subtract(startDate).Days))
+                .And(x => x.Scheduled <= endDate)
                 .Fetch(x => x.Patient).Eager
                 .Fetch(x => x.StatusTaxon).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer());
-            message.Filter.Filter(query);
+            filter.Filter(query);
             return query;
         }
 
@@ -147,7 +158,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 set;
             }
         }
-        */
+        
         #endregion
     }
 }

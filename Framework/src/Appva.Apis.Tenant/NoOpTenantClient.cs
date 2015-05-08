@@ -64,7 +64,10 @@ namespace Appva.Apis.TenantServer
         private NoOpTenantClient(Uri baseAddress)
         {
             this.baseAddress = baseAddress;
-            Log.DebugFormat(Debug.Messages.ClassInitialization, this.baseAddress);
+            if (Log.IsDebugEnabled())
+            {
+                Log.DebugFormat(Debug.Messages.ClassInitialization, this.baseAddress);
+            }
         }
 
         #endregion

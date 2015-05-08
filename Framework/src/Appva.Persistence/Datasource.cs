@@ -17,6 +17,7 @@ namespace Appva.Persistence
     using Logging;
     using NHibernate;
     using NHibernate.Cfg;
+    using NHibernate.Dialect;
     using Validation;
 
     #endregion
@@ -141,6 +142,7 @@ namespace Appva.Persistence
             configuration.DataBaseIntegration(x =>
                 {
                     x.ConnectionString = unit.ConnectionString;
+                    x.Dialect<MsSql2012Dialect>();
                 });
             if (Log.IsDebugEnabled())
             {

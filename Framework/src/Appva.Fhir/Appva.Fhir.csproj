@@ -33,14 +33,11 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\Packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\..\Packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="Validation">
       <HintPath>..\..\..\Packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
     </Reference>
@@ -54,6 +51,8 @@
     <Compile Include="Fhir.cs" />
     <Compile Include="FhirVersion.cs" />
     <Compile Include="IExtendable.cs" />
+    <Compile Include="Primitives\Base64Binary.cs" />
+    <Compile Include="Primitives\Instant.cs" />
     <Compile Include="Primitives\IValidate.cs" />
     <Compile Include="Primitives\Code.cs" />
     <Compile Include="Primitives\Oid.cs" />
@@ -61,32 +60,50 @@
     <Compile Include="Primitives\Uri.cs" />
     <Compile Include="Primitives\Uuid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Administrative\Address.cs" />
+    <Compile Include="Resources\Administrative\AddressUse.cs" />
+    <Compile Include="Resources\Administrative\AdministrativeGender.cs" />
+    <Compile Include="Resources\Administrative\ContactPoint.cs" />
+    <Compile Include="Resources\Administrative\ContactPointSystem.cs" />
+    <Compile Include="Resources\Administrative\ContactPointUse.cs" />
+    <Compile Include="Resources\Administrative\HumanName.cs" />
+    <Compile Include="Resources\Administrative\Identifier.cs" />
+    <Compile Include="Resources\Administrative\IdentifierType.cs" />
+    <Compile Include="Resources\Administrative\IdentifierUse.cs" />
+    <Compile Include="Resources\Administrative\MaritalStatus.cs" />
+    <Compile Include="Resources\Administrative\NameUse.cs" />
+    <Compile Include="Resources\Administrative\Organization.cs" />
+    <Compile Include="Resources\Administrative\Patient.cs" />
+    <Compile Include="Resources\Administrative\Period.cs" />
     <Compile Include="Resources\DomainResource.cs" />
     <Compile Include="Resources\Language.cs" />
     <Compile Include="Resources\Meta.cs" />
     <Compile Include="Resources\Resource.cs" />
-    <Compile Include="Resources\Security\Extensions\SecurityEventPurpose.cs" />
+    <Compile Include="Resources\Security\Extensions\AuditEventPurpose.cs" />
     <Compile Include="Resources\Security\ValueSets\AuditActiveParticipantRoleIdCode.cs" />
-    <Compile Include="Resources\Security\SecurityEventEvent.cs" />
-    <Compile Include="Resources\Security\SecurityEventParticipantNetwork.cs" />
-    <Compile Include="Resources\Security\SecurityEventObject.cs" />
-    <Compile Include="Resources\Security\SecurityEventParticipant.cs" />
-    <Compile Include="Resources\Security\SecurityEvent.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventAction.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventObjectLifecycle.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventObjectRole.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventObjectSensitivity.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventObjectType.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventOutcome.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventParticipantNetworkType.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventSubType.cs" />
-    <Compile Include="Resources\Security\SecurityEventSource.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventSourceType.cs" />
-    <Compile Include="Resources\Security\ValueSets\SecurityEventType.cs" />
+    <Compile Include="Resources\Security\AuditEventEvent.cs" />
+    <Compile Include="Resources\Security\AuditEventParticipantNetwork.cs" />
+    <Compile Include="Resources\Security\AuditEventObject.cs" />
+    <Compile Include="Resources\Security\AuditEventParticipant.cs" />
+    <Compile Include="Resources\Security\AuditEvent.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventAction.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventObjectLifecycle.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventObjectRole.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventObjectSensitivity.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventObjectType.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventOutcome.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventParticipantNetworkType.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventSubType.cs" />
+    <Compile Include="Resources\Security\AuditEventSource.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventSourceType.cs" />
+    <Compile Include="Resources\Security\ValueSets\AuditEventType.cs" />
+    <Compile Include="ValueSets\ActCode.cs" />
+    <Compile Include="ValueSets\ISecurityLabel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

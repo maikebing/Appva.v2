@@ -276,7 +276,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("PrintTable/{id:guid}")]
         [HttpGet, Dispatch]
-        public ActionResult PrintTable(/*PrintTableSchedule request*/)
+        public ActionResult PrintTable(PrintTableSchedule request)
         {
             return this.View();
         }
@@ -295,41 +295,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="page">Optional page number, defaults to 1</param>
         /// <returns>A schedule report view</returns>
         [Route("ScheduleReport/{id:guid}")]
-        public ActionResult ScheduleReport(Guid id, Guid? sId, DateTime? startDate, DateTime? endDate, int? page = 1)
+        [HttpGet, Dispatch]
+        public ActionResult ScheduleReport(ReportSchedule request)
         {
-            var patient = this.context.Get<Patient>(id);
-            var scheduleSettings = new List<ScheduleSettings>();
-            var schedules = this.context.QueryOver<Schedule>().Where(x => x.Patient.Id == id).List();
-            foreach (var schedule in schedules)
-            {
-                if (!scheduleSettings.Contains(schedule.ScheduleSettings))
-                {
-                    scheduleSettings.Add(schedule.ScheduleSettings);
-                }
-            }
-            startDate = (startDate.HasValue) ? startDate.Value : DateTimeUtilities.Now().AddDays(-DateTimeUtilities.Now().DaysInMonth());
-            endDate = (endDate.HasValue) ? endDate.Value.LastInstantOfDay() : DateTimeUtilities.Now().LastInstantOfDay();
-            var account = Identity();
-            this.logService.Info(string.Format("Användare {0} läste rapport mellan {1:yyyy-MM-dd} och {2:yyyy-MM-dd} för boende {3} (REF: {4}).", account.UserName, startDate, endDate, patient.FullName, patient.Id), account, patient, LogType.Read);
-            return View(new ScheduleReportViewModel
-            {
-                Patient = PatientMapper.ToPatientViewModel(this.context, patient),
-                Schedule = sId,
-                Schedules = scheduleSettings,
-                StartDate = startDate.Value.Date,
-                EndDate = endDate.Value.Date,
-                Report = ExecuteCommand<ReportViewModel>(new CreateReportCommand<ScheduleReportFilter>
-                {
-                    Page = page,
-                    StartDate = startDate.Value,
-                    EndDate = endDate.Value,
-                    Filter = new ScheduleReportFilter
-                    {
-                        PatientId = patient.Id,
-                        ScheduleSettingsId = sId
-                    }
-                })
-            });
+            return this.View();
         }
 
         /// <summary>
@@ -338,11 +307,18 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="id">The patient id</param>
         /// <param name="model">The schedule model</param>
         /// <returns>A redirect to schedule report</returns>
-        [HttpPost]
+        
         [Route("ScheduleReport/{id:guid}")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
         public ActionResult ScheduleReport(Guid id, ScheduleReportViewModel model)
         {
-            return ScheduleReport(id, model.Schedule, model.StartDate, model.EndDate);
+            return this.RedirectToAction("ScheduleReport", new ReportSchedule
+            {
+                Id = id,
+                ScheduleSettingsId = model.Schedule,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate
+            });
         }
 
         /// <summary>

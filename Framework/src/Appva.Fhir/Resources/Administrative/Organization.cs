@@ -8,15 +8,16 @@ namespace Appva.Fhir.Resources.Administrative
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class Organization
     {
         #region Constructor.
@@ -24,7 +25,17 @@ namespace Appva.Fhir.Resources.Administrative
         /// <summary>
         /// Initializes a new instance of the <see cref="Organization"/> class.
         /// </summary>
-        public Organization()
+        /// <param name="name">Temp</param>
+        public Organization(string name)
+        {
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Organization" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private Organization()
         {
         }
 

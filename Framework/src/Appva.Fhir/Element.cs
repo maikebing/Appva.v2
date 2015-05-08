@@ -8,9 +8,14 @@ namespace Appva.Fhir
 {
     #region Imports.
 
-    using System.Collections.ObjectModel;
-    using System.Xml.Serialization;
+    using System.Collections.Generic;
+    using Complex;
+    using Primitives;
+    using Resources;
+    using Resources.Administrative;
+    using Resources.Security;
     using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -31,12 +36,27 @@ namespace Appva.Fhir
     /// <externalLink>
     ///     <linkText>FHIR Element</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/element.html
+    ///         http://hl7-fhir.github.io/element.html
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    [ProtoInclude(500, typeof(Primitive))]
+    [ProtoInclude(501, typeof(CodeableConcept))]
+    [ProtoInclude(502, typeof(Coding))]
+    [ProtoInclude(503, typeof(Extension))]
+    [ProtoInclude(504, typeof(Meta))]
+    [ProtoInclude(505, typeof(Address))]
+    [ProtoInclude(506, typeof(ContactPoint))]
+    [ProtoInclude(507, typeof(HumanName))]
+    [ProtoInclude(508, typeof(Identifier))]
+    [ProtoInclude(509, typeof(Period))]
+    [ProtoInclude(510, typeof(AuditEventEvent))]
+    [ProtoInclude(511, typeof(AuditEventObject))]
+    [ProtoInclude(512, typeof(AuditEventParticipant))]
+    [ProtoInclude(513, typeof(AuditEventParticipantNetwork))]
+    [ProtoInclude(514, typeof(AuditEventSource))]
     public abstract class Element : IExtendable
     {
         /// <summary>
@@ -44,11 +64,11 @@ namespace Appva.Fhir
         /// <externalLink>
         ///     <linkText>FHIR Element.Id</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/element-definitions.html#Element.id
+        ///         http://hl7-fhir.github.io/element-definitions.html#Element.id
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonIgnore, XmlAttributeAttribute("id")]
+        [JsonIgnore, ProtoIgnore]
         public string Id
         {
             get;
@@ -65,12 +85,12 @@ namespace Appva.Fhir
         /// <externalLink>
         ///     <linkText>FHIR Element.Extensions</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/element-definitions.html#Element.extension
+        ///         http://hl7-fhir.github.io/element-definitions.html#Element.extension
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("extension")]
-        public Collection<Extension> Extension
+        [ProtoMember(9000), JsonProperty]
+        public IList<Extension> Extension
         {
             get;
             set;

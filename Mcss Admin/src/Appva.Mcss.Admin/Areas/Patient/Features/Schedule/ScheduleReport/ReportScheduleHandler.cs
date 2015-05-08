@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using NHibernate.Transform;
     using Appva.Core.Extensions;
+    using Appva.Mcss.Web.Controllers;
 
     #endregion
 
@@ -45,6 +46,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IScheduleService scheduleService;
 
         /// <summary>
+        /// The <see cref="IReportService"/>.
+        /// </summary>
+        private readonly IReportService reportService;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
@@ -57,12 +63,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="ReportScheduleHandler"/> class.
         /// </summary>
         public ReportScheduleHandler(IPatientService patientService, IScheduleService scheduleService, 
+            IReportService reportService,
             IPatientTransformer transformer,
             IPersistenceContext persistence)
         {
             this.patientService = patientService;
             this.transformer = transformer;
             this.scheduleService = scheduleService;
+            this.reportService = reportService;
             this.persistence = persistence;
         }
 
@@ -95,17 +103,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Schedules = scheduleSettings,
                 StartDate = startDate.Date,
                 EndDate = endDate.Date,
-                /*Report = ExecuteCommand<ReportViewModel>(new CreateReportCommand<ScheduleReportFilter>
-                {
-                    Page = page,
-                    StartDate = startDate.Value,
-                    EndDate = endDate.Value,
-                    Filter = new ScheduleReportFilter
+                Report = this.reportService.Create(
+                    new ScheduleReportFilter
                     {
                         PatientId = patient.Id,
-                        ScheduleSettingsId = sId
-                    }
-                })*/
+                        ScheduleSettingsId = message.ScheduleSettingsId
+                    },
+                    startDate,
+                    endDate)
             };
         }
 

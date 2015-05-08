@@ -23,6 +23,11 @@ namespace Appva.Fhir
         public const string V040 = "v0.4.0-3886";
 
         /// <summary>
+        /// The FHIR version v0.5.0-5239.
+        /// </summary>
+        public const string V050 = "v0.5.0-5239";
+
+        /// <summary>
         /// The FHIR namespace.
         /// </summary>
         public const string Namespace = "http://hl7.org/fhir";

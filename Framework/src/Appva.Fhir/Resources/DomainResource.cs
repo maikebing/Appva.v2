@@ -8,8 +8,10 @@ namespace Appva.Fhir.Resources
 {
     #region Imports.
 
-    using System.Xml.Serialization;
+    using Administrative;
+    using Security;
     using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -20,7 +22,7 @@ namespace Appva.Fhir.Resources
     /// <externalLink>
     ///     <linkText>DomainResource</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/domainresource.html
+    ///         http://hl7-fhir.github.io/domainresource.html
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
@@ -45,8 +47,10 @@ namespace Appva.Fhir.Resources
     /// ]]>
     /// </code>
     /// </example>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    [ProtoInclude(1, typeof(Patient))]
+    [ProtoInclude(2, typeof(AuditEvent))]
     public abstract class DomainResource : Resource
     {
         /// <summary>
@@ -59,11 +63,11 @@ namespace Appva.Fhir.Resources
         /// <externalLink>
         ///     <linkText>DomainResource.Text</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/domainresource-definitions.html#DomainResource.text
+        ///         http://hl7-fhir.github.io/domainresource-definitions.html#DomainResource.text
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("text")]
+        [ProtoMember(300), JsonProperty]
         public string Text
         {
             get;

@@ -271,6 +271,8 @@
     <Compile Include="Areas\Patient\Features\Schedule\PrintPopUp\PrintModelScheduleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\PrintSchema\PrintSchemaSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\PrintSchema\PrintSchemaScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\PrintTable\PrintTableScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\PrintTable\PrintTableSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\ScheduleReport\ReportSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\ScheduleReport\ReportScheduleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\ScheduleController.cs">
@@ -664,6 +666,7 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Patient\Features\Schedule\Chart\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
   <ItemGroup>

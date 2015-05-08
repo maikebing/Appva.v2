@@ -1,4 +1,4 @@
-﻿// <copyright file="SecurityEventEvent.cs" company="Appva AB">
+﻿// <copyright file="AuditEventEvent.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,12 +9,11 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Xml.Serialization;
-    using Appva.Fhir.Resources.Security.ValueSets;
-    using Complex;
+    using ValueSets;
     using Newtonsoft.Json;
-    using Primitives;
+    using ProtoBuf;
     using Validation;
 
     #endregion
@@ -24,18 +23,18 @@ namespace Appva.Fhir.Resources.Security
     /// <externalLink>
     ///     <linkText>Event</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.event
+    ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.event
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
-    public sealed class SecurityEventEvent : Element
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    public sealed class AuditEventEvent : Element
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventEvent"/> class.
+        /// Initializes a new instance of the <see cref="AuditEventEvent"/> class.
         /// </summary>
         /// <param name="type">
         /// Identifier for a family of the event, see <c>SecurityEventType</c>
@@ -48,13 +47,13 @@ namespace Appva.Fhir.Resources.Security
         /// Indicates whether the event succeeded or failed, see 
         /// <c>SecurityEventOutcome</c>
         /// </param>
-        public SecurityEventEvent(SecurityEventType type, SecurityEventAction action, SecurityEventOutcome outcome)
+        public AuditEventEvent(AuditEventType type, AuditEventAction action, AuditEventOutcome outcome)
             : this(type, null, action, DateTime.Now, outcome, null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventEvent"/> class.
+        /// Initializes a new instance of the <see cref="AuditEventEvent"/> class.
         /// </summary>
         /// <param name="type">
         /// Identifier for a family of the event, see <c>SecurityEventType</c>
@@ -76,7 +75,7 @@ namespace Appva.Fhir.Resources.Security
         /// <param name="outcomeDescription">
         /// A free text description of the outcome of the event
         /// </param>
-        public SecurityEventEvent(SecurityEventType type, Collection<SecurityEventSubType> subtypes, SecurityEventAction action, DateTime dateTime, SecurityEventOutcome outcome, string outcomeDescription)
+        public AuditEventEvent(AuditEventType type, Collection<AuditEventSubType> subtypes, AuditEventAction action, DateTime dateTime, AuditEventOutcome outcome, string outcomeDescription)
         {
             Requires.NotNull(type, "type");
             Requires.NotNull(action, "action");
@@ -90,11 +89,11 @@ namespace Appva.Fhir.Resources.Security
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventEvent"/> class.
+        /// Prevents a default instance of the <see cref="AuditEventEvent" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        protected SecurityEventEvent()
+        private AuditEventEvent()
         {
         }
 
@@ -107,13 +106,13 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Type</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.event.type
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.event.type
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
         /// <remarks>Required</remarks>
-        [JsonProperty, XmlElementAttribute("type")]
-        public SecurityEventType Type
+        [ProtoMember(1), JsonProperty]
+        public AuditEventType Type
         {
             get;
             private set;
@@ -124,12 +123,12 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Subtype</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.event.subtype
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.event.subtype
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("subtype")]
-        public Collection<SecurityEventSubType> Subtypes
+        [ProtoMember(2), JsonProperty]
+        public IList<AuditEventSubType> Subtypes
         {
             get;
             private set;
@@ -141,13 +140,13 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Subtype</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.event.action
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.event.action
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
         /// <remarks>Required</remarks>
-        [JsonProperty, XmlElementAttribute("action")]
-        public SecurityEventAction Action
+        [ProtoMember(3), JsonProperty]
+        public AuditEventAction Action
         {
             get;
             private set;
@@ -158,12 +157,12 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>DateTime</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.event.dateTime
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.event.dateTime
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
         /// <remarks>Required</remarks>
-        [JsonProperty, XmlElementAttribute("dateTime")]
+        [ProtoMember(4), JsonProperty]
         public DateTime DateTime
         {
             get;
@@ -175,7 +174,7 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Outcome</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.event.outcome
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.event.outcome
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -185,8 +184,8 @@ namespace Appva.Fhir.Resources.Security
         /// interrupted transfer of a radiological study. For the purpose of establishing 
         /// accountability, these distinctions are not relevant.
         /// </remarks>
-        [JsonProperty, XmlElementAttribute("outcome")]
-        public SecurityEventOutcome Outcome
+        [ProtoMember(5), JsonProperty]
+        public AuditEventOutcome Outcome
         {
             get;
             private set;
@@ -197,12 +196,34 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>OutcomeDesc</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.event.outcomeDesc
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.event.outcomeDesc
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("outcomeDesc")]
+        [ProtoMember(6), JsonProperty("outcomeDesc")]
         public string OutcomeDescription
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The purposeOfUse (reason) that was used during the event being recorded.
+        /// <externalLink>
+        ///     <linkText>PurposeOfEvent</linkText>
+        ///     <linkUri>
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.event.purposeOfEvent
+        ///     </linkUri>
+        /// </externalLink>
+        /// </summary>
+        /// <remarks>
+        /// Use participant.purposeOfUse when you know that is specific to the participant, 
+        /// otherwise use event.purposeOfEvent. (e.g. during a machine-to-machine transfer 
+        /// it might not be obvious to the audit system who caused the event, but it does 
+        /// know why)
+        /// </remarks>
+        [ProtoMember(7), JsonProperty]
+        public string PurposeOfEvent
         {
             get;
             private set;

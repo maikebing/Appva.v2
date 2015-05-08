@@ -1,4 +1,4 @@
-﻿// <copyright file="SecurityEventObject.cs" company="Appva AB">
+﻿// <copyright file="AuditEventObject.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,11 +8,10 @@ namespace Appva.Fhir.Resources.Security
 {
     #region Imports.
 
-    using System.Xml.Serialization;
-    using Appva.Fhir.Resources.Security.ValueSets;
-    using Complex;
-    using Newtonsoft.Json;
     using Primitives;
+    using ValueSets;
+    using Newtonsoft.Json;
+    using ProtoBuf;
     using Validation;
 
     #endregion
@@ -24,20 +23,20 @@ namespace Appva.Fhir.Resources.Security
     /// entire auditable event. Because events may have more than one participant 
     /// object, this group can be a repeating set of values.
     /// <externalLink>
-    ///     <linkText>Object</linkText>
+    ///     <linkText>AuditEventObject</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.object
+    ///         http://hl7-fhir.github.io/auditevent-definitions.html#AuditEvent.object
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
-    public sealed class SecurityEventObject : Element
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    public sealed class AuditEventObject : Element
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventObject"/> class.
+        /// Initializes a new instance of the <see cref="AuditEventObject"/> class.
         /// </summary>
         /// <param name="identifier">
         /// Identifies a specific instance of the participant object
@@ -68,15 +67,15 @@ namespace Appva.Fhir.Resources.Security
         /// <param name="query">
         /// The actual query for a query-type participant object
         /// </param>
-        public SecurityEventObject(
+        public AuditEventObject(
             string identifier,
-            SecurityEventObjectType type,
-            SecurityEventObjectRole role,
-            SecurityEventObjectLifecycle lifeCycle,
-            SecurityEventObjectSensitivity sensitivity, 
+            AuditEventObjectType type,
+            AuditEventObjectRole role,
+            AuditEventObjectLifecycle lifeCycle,
+            AuditEventObjectSensitivity sensitivity, 
             string name,
             string description,
-            string query)
+            Base64Binary query)
         {
             Requires.NotNull(identifier, "identifier");
             this.Identifier = identifier;
@@ -90,11 +89,11 @@ namespace Appva.Fhir.Resources.Security
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventObject"/> class.
+        /// Prevents a default instance of the <see cref="AuditEventObject" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        public SecurityEventObject()
+        private AuditEventObject()
         {
         }
 
@@ -108,11 +107,11 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Identifier</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.object.identifier
+        ///         http://hl7-fhir.github.io/auditevent-definitions.html#AuditEvent.object.identifier
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("identifier")]
+        [ProtoMember(1), JsonProperty]
         public string Identifier
         {
             get;
@@ -129,12 +128,12 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Type</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.object.type
+        ///         http://hl7-fhir.github.io/auditevent-definitions.html#AuditEvent.object.type
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("type")]
-        public SecurityEventObjectType Type
+        [ProtoMember(2), JsonProperty]
+        public AuditEventObjectType Type
         {
             get;
             set;
@@ -142,19 +141,19 @@ namespace Appva.Fhir.Resources.Security
 
         /// <summary>
         /// Code representing the functional application role of Participant Object being 
-        /// audited, see <c>SecurityEventObjectRole</c>.
+        /// audited, see <c>AuditEventObjectRole</c>.
         /// For some detailed audit analysis it may be necessary to indicate a more granular 
         /// type of participant, based on the application role it serves.
         /// See RFC 3881 for rules concerning matches between role and type.
         /// <externalLink>
         ///     <linkText>Role</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.object.role
+        ///         http://hl7-fhir.github.io/auditevent-definitions.html#AuditEvent.object.role
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("role")]
-        public SecurityEventObjectRole Role
+        [ProtoMember(3), JsonProperty]
+        public AuditEventObjectRole Role
         {
             get;
             set;
@@ -162,7 +161,7 @@ namespace Appva.Fhir.Resources.Security
 
         /// <summary>
         /// Identifier for the data life-cycle stage for the participant object, see
-        /// <c>SecurityEventObjectLifecycle</c>.
+        /// <c>AuditEventObjectLifecycle</c>.
         /// Institutional policies for privacy and security may optionally fall under 
         /// different accountability rules based on data life cycle. This provides a 
         /// differentiating value for those cases.
@@ -171,12 +170,12 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Lifecycle</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.object.lifecycle
+        ///         http://hl7-fhir.github.io/auditevent-definitions.html#AuditEvent.object.lifecycle
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("lifecycle")]
-        public SecurityEventObjectLifecycle Lifecycle
+        [ProtoMember(4), JsonProperty]
+        public AuditEventObjectLifecycle Lifecycle
         {
             get;
             set;
@@ -185,7 +184,7 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// Denotes policy-defined sensitivity for the Participant Object ID such as VIP, 
         /// HIV status, mental health status or similar topics, see 
-        /// <c>SecurityEventObjectSensitivity</c>.
+        /// <c>AuditEventObjectSensitivity</c>.
         /// This field identifies a specific instance of an object, such as a patient, to 
         /// detect/track privacy and security issues.
         /// Values from ATNA are institution- and implementation-defined text strings (in 
@@ -194,12 +193,12 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Sensitivity</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.object.sensitivity
+        ///         http://hl7-fhir.github.io/auditevent-definitions.html#AuditEvent.object.sensitivity
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("sensitivity")]
-        public SecurityEventObjectSensitivity Sensitivity
+        [ProtoMember(5), JsonProperty]
+        public AuditEventObjectSensitivity Sensitivity
         {
             get;
             set;
@@ -216,11 +215,11 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Name</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.object.name
+        ///         http://hl7-fhir.github.io/auditevent-definitions.html#AuditEvent.object.name
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("name")]
+        [ProtoMember(6), JsonProperty]
         public string Name
         {
             get;
@@ -232,11 +231,11 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Description</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.object.description
+        ///         http://hl7-fhir.github.io/auditevent-definitions.html#AuditEvent.object.description
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("description")]
+        [ProtoMember(7), JsonProperty]
         public string Description
         {
             get;
@@ -253,12 +252,12 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Query</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.object.query
+        ///         http://hl7-fhir.github.io/auditevent-definitions.html#AuditEvent.object.query
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("query")]
-        public string Query
+        [ProtoMember(8), JsonProperty]
+        public Base64Binary Query
         {
             get;
             set;

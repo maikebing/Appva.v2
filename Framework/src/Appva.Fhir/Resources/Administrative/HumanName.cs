@@ -8,7 +8,8 @@ namespace Appva.Fhir.Resources.Administrative
 {
     #region Imports.
 
-    using Appva.Fhir.Primitives;
+    using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -100,10 +101,12 @@ namespace Appva.Fhir.Resources.Administrative
     /// <externalLink>
     ///     <linkText>1.14.0.12 HumanName</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#HumanName
+    ///         http://hl7-fhir.github.io/datatypes.html#HumanName
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class HumanName : Element
     {
         #region Constructor.
@@ -153,6 +156,15 @@ namespace Appva.Fhir.Resources.Administrative
             this.Text = this.ConcatenateHumanName();
         }
 
+        /// <summary>
+        /// Prevents a default instance of the <see cref="HumanName" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private HumanName()
+        {
+        }
+
         #endregion
 
         #region Properties.
@@ -162,7 +174,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Use</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#HumanName.use
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#HumanName.use
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -171,6 +183,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// temporary or old name etc for a current/permanent one. Applications can assume 
         /// that a name is current unless it explicitly says that it is temporary or old.
         /// </remarks>
+        [ProtoMember(1), JsonProperty]
         public NameUse Use
         {
             get;
@@ -182,13 +195,14 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Text</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#HumanName.text
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#HumanName.text
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
         /// <remarks>
         /// Can provide both a text representation and structured parts.
         /// </remarks>
+        [ProtoMember(2), JsonProperty]
         public string Text
         {
             get;
@@ -201,7 +215,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Family</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#HumanName.family
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#HumanName.family
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -209,6 +223,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// For family name, hyphenated names such as "Smith-Jones" are a single name, but 
         /// names with spaces such as "Smith Jones" are broken into multiple parts.
         /// </remarks>
+        [ProtoMember(3), JsonProperty]
         public string Family
         {
             get;
@@ -220,7 +235,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Given</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#HumanName.given
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#HumanName.given
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -228,6 +243,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// If only initials are recorded, they may be used in place of the full name. Not 
         /// called "first name" since given names do not always come first.
         /// </remarks>
+        [ProtoMember(4), JsonProperty]
         public string Given
         {
             get;
@@ -240,10 +256,11 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Prefix</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#HumanName.prefix
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#HumanName.prefix
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [ProtoMember(5), JsonProperty]
         public string Prefix
         {
             get;
@@ -256,10 +273,11 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Suffix</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#HumanName.suffix
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#HumanName.suffix
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [ProtoMember(6), JsonProperty]
         public string Suffix
         {
             get;
@@ -271,13 +289,14 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Period</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#HumanName.period
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#HumanName.period
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
         /// <remarks>
         /// Allows names to be placed in historical context.
         /// </remarks>
+        [ProtoMember(7), JsonProperty]
         public Period Period
         {
             get;

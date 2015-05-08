@@ -9,8 +9,12 @@ namespace Appva.Fhir.Primitives
     #region Imports.
 
     using System.Text.RegularExpressions;
-    using System.Xml.Serialization;
+    using Resources;
+    using Resources.Administrative;
+    using Resources.Security.Extensions;
+    using Resources.Security.ValueSets;
     using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -23,13 +27,28 @@ namespace Appva.Fhir.Primitives
     /// <externalLink>
     ///     <linkText>FHIR Code</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#code
+    ///         http://hl7-fhir.github.io/datatypes.html#code
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
-    public class Code : Primitive<string>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    [ProtoInclude(2000, typeof(AddressUse))]
+    [ProtoInclude(2001, typeof(AdministrativeGender))]
+    [ProtoInclude(2002, typeof(ContactPointSystem))]
+    [ProtoInclude(2003, typeof(ContactPointUse))]
+    [ProtoInclude(2004, typeof(IdentifierUse))]
+    [ProtoInclude(2005, typeof(NameUse))]
+    [ProtoInclude(2006, typeof(Language))]
+    [ProtoInclude(2007, typeof(AuditEventAction))]
+    [ProtoInclude(2008, typeof(AuditEventObjectLifecycle))]
+    [ProtoInclude(2009, typeof(AuditEventObjectRole))]
+    [ProtoInclude(2010, typeof(AuditEventObjectType))]
+    [ProtoInclude(2011, typeof(AuditEventOutcome))]
+    [ProtoInclude(2012, typeof(AuditEventParticipantNetworkType))]
+    [ProtoInclude(2013, typeof(AuditEventSourceType))]
+    [ProtoInclude(2014, typeof(AuditEventPurpose))]
+    public class Code : Primitive
     {
         #region Constructor.
 
@@ -43,18 +62,18 @@ namespace Appva.Fhir.Primitives
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Code"/> class.
+        /// Prevents a default instance of the <see cref="Code" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        public Code() 
+        private Code() 
             : base(null)
         {
         }
 
         #endregion
 
-        #region Primitive<string> Overrides.
+        #region Primitive Overrides.
 
         /// <inheritdoc />
         public override bool IsValid()

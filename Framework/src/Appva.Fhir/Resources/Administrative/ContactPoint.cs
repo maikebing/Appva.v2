@@ -8,7 +8,8 @@ namespace Appva.Fhir.Resources.Administrative
 {
     #region Imports.
 
-    using Appva.Fhir.Primitives;
+    using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -23,10 +24,12 @@ namespace Appva.Fhir.Resources.Administrative
     /// <externalLink>
     ///     <linkText>1.14.0.14 ContactPoint</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#ContactPoint
+    ///         http://hl7-fhir.github.io/datatypes.html#ContactPoint
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class ContactPoint : Element
     {
         #region Constructor.
@@ -34,7 +37,35 @@ namespace Appva.Fhir.Resources.Administrative
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactPoint"/> class.
         /// </summary>
-        public ContactPoint()
+        /// <param name="system">
+        /// Telecommunications form for contact point - what communications system is 
+        /// required to make use of the contact.
+        /// </param>
+        /// <param name="value">
+        /// The actual contact point details, in a form that is meaningful to the designated 
+        /// communication system (i.e. phone number or email address)
+        /// </param>
+        /// <param name="use">
+        /// Identifies the purpose for the contact point
+        /// </param>
+        /// <param name="period">
+        /// Identifies the purpose for the contact point.Time period when the contact point 
+        /// was/is in use
+        /// </param>
+        public ContactPoint(ContactPointSystem system, string value, ContactPointUse use, Period period)
+        {
+            this.System = system;
+            this.Value = value;
+            this.Use = use;
+            this.Period = period;
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="ContactPoint" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private ContactPoint()
         {
         }
 
@@ -48,10 +79,11 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>System</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#ContactPoint.system
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#ContactPoint.system
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [ProtoMember(1), JsonProperty]
         public ContactPointSystem System
         {
             get;
@@ -64,7 +96,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Value</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#ContactPoint.value
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#ContactPoint.value
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -72,6 +104,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// Additional out of band data such as extensions, or notes about use of the 
         /// contact are sometimes included in the value.
         /// </remarks>
+        [ProtoMember(2), JsonProperty]
         public string Value
         {
             get;
@@ -84,7 +117,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Use</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#ContactPoint.use
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#ContactPoint.use
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -92,6 +125,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// Need to track the way a person uses this contact, so a user can choose which is 
         /// appropriate for their purpose.
         /// </remarks>
+        [ProtoMember(3), JsonProperty]
         public ContactPointUse Use
         {
             get;
@@ -104,10 +138,11 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Period</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#ContactPoint.period
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#ContactPoint.period
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [ProtoMember(4), JsonProperty]
         public Period Period
         {
             get;

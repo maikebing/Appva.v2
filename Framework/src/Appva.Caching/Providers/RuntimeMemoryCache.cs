@@ -12,10 +12,10 @@ namespace Appva.Caching.Providers
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-using System.Runtime.Caching;
+    using System.Runtime.Caching;
     using System.Threading.Tasks;
-    using Appva.Caching.Policies;
-    using Appva.Logging;
+    using Logging;
+    using Policies;
 
     #endregion
 
@@ -202,7 +202,7 @@ using System.Runtime.Caching;
         /// "default" cannot be assigned to a new MemoryCache instance, because the value is 
         /// reserved for use by the Default property
         /// </exception>
-        /// <exception cref="ConfigurationException">
+        /// <exception cref="System.Configuration.ConfigurationException">
         /// A value in the configuration collection is invalid
         /// </exception>
         /// <exception cref="ArgumentException">
@@ -232,7 +232,7 @@ using System.Runtime.Caching;
         /// "default" cannot be assigned to a new MemoryCache instance, because the value is 
         /// reserved for use by the Default property
         /// </exception>
-        /// <exception cref="ConfigurationException">
+        /// <exception cref="System.Configuration.ConfigurationException">
         /// A value in the configuration collection is invalid
         /// </exception>
         /// <exception cref="ArgumentException">

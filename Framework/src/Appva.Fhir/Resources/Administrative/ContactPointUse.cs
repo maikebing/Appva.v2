@@ -8,7 +8,9 @@ namespace Appva.Fhir.Resources.Administrative
 {
     #region Imports.
 
-    using Appva.Fhir.Primitives;
+    using Primitives;
+    using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -17,10 +19,12 @@ namespace Appva.Fhir.Resources.Administrative
     /// <externalLink>
     ///     <linkText>1.15.2.1.426.1 ContactPointUse</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/contact-point-use.html
+    ///         http://hl7-fhir.github.io/contact-point-use.html
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class ContactPointUse : Code
     {
         #region Variables.
@@ -67,6 +71,16 @@ namespace Appva.Fhir.Resources.Administrative
         /// <param name="value">The string code value</param>
         private ContactPointUse(string value) 
             : base(value)
+        {
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="ContactPointUse" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private ContactPointUse()
+            : base(null)
         {
         }
 

@@ -8,7 +8,7 @@ namespace Appva.Fhir
 {
     #region Imports.
 
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -19,7 +19,7 @@ namespace Appva.Fhir
     /// <externalLink>
     ///     <linkText>Extensibility</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/extensibility.html
+    ///         http://hl7-fhir.github.io/extensibility.html
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
@@ -38,7 +38,7 @@ namespace Appva.Fhir
         /// <summary>
         /// The collection of extensions.
         /// </summary>
-        Collection<Extension> Extension
+        IList<Extension> Extension
         {
             get;
             set;

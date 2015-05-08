@@ -9,6 +9,8 @@ namespace Appva.Fhir.Resources.Administrative
     #region Imports.
 
     using System;
+    using Newtonsoft.Json;
+    using ProtoBuf;
     using Validation;
 
     #endregion
@@ -33,10 +35,12 @@ namespace Appva.Fhir.Resources.Administrative
     /// <externalLink>
     ///     <linkText>1.14.0.9 Period</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#period
+    ///         http://hl7-fhir.github.io/datatypes.html#period
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class Period : Element
     {
         #region Constructor.
@@ -56,6 +60,15 @@ namespace Appva.Fhir.Resources.Administrative
             this.End = end;
         }
 
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Period" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private Period()
+        {
+        }
+
         #endregion
 
         #region Properties.
@@ -65,10 +78,11 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Start</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#Period.start
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#Period.start
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [ProtoMember(1), JsonProperty]
         public DateTime? Start
         {
             get;
@@ -81,10 +95,11 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>End</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#Period.end
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#Period.end
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [ProtoMember(2), JsonProperty]
         public DateTime? End
         {
             get;

@@ -4,6 +4,9 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
+
+using System.Linq;
+
 namespace Appva.Azure
 {
     #region Imports.
@@ -12,7 +15,7 @@ namespace Appva.Azure
     using System.Collections.Generic;
     using System.Configuration;
     using System.Threading.Tasks;
-    using Appva.Logging;
+    using Logging;
     using Microsoft.ServiceBus.Notifications;
 
     #endregion
@@ -41,7 +44,7 @@ namespace Appva.Azure
         private const string ConnectionStringKey = "Azure.Notifications.Hub";
 
         /// <summary>
-        /// The <see cref="ILog"/> for <see cref="PushNotification"/>.
+        /// The <see cref="ILog"/> for <see cref="PushNotificationManager"/>.
         /// </summary>
         private static readonly ILog Log = LogProvider.For<PushNotificationManager>();
 
@@ -146,9 +149,9 @@ namespace Appva.Azure
         /// <inheritdoc />
         public async Task<string> UpdateDeviceAsync(string regId, string pushId, IList<string> tags = null)
         {
-            AppleRegistrationDescription device = await this.hub.GetRegistrationAsync<AppleRegistrationDescription>(regId);
+            var device = await this.hub.GetRegistrationAsync<AppleRegistrationDescription>(regId);
 
-            if (pushId != null && pushId != string.Empty)
+            if (!string.IsNullOrEmpty(pushId))
             {
                 device.DeviceToken = pushId;
             }
@@ -174,12 +177,8 @@ namespace Appva.Azure
         /// <inheritdoc />
         public async Task<string> SendPushAsync(IList<string> devices, string payload)
         {
-            List<string> tags = new List<string>();
-            foreach (var d in devices)
-            {
-                tags.Add(string.Format("deviceId:{0}", d));
-            }
-            NotificationOutcome result = null;
+            var tags = devices.Select(d => string.Format("deviceId:{0}", d)).ToList();
+            NotificationOutcome result;
             try
             {
                 result = await this.hub.SendAppleNativeNotificationAsync(payload, tags);

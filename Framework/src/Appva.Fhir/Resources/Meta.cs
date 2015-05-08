@@ -8,11 +8,11 @@ namespace Appva.Fhir.Resources
 {
     #region Imports.
 
-    using System.Collections.ObjectModel;
-    using System.Xml.Serialization;
+    using System.Collections.Generic;
     using Complex;
     using Newtonsoft.Json;
     using Primitives;
+    using ProtoBuf;
 
     #endregion
 
@@ -33,11 +33,11 @@ namespace Appva.Fhir.Resources
     /// </code>
     /// <externalLink>
     ///     <linkText>Meta</linkText>
-    ///     <linkUri>http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#Resource.meta</linkUri>
+    ///     <linkUri>http://hl7-fhir.github.io/resource-definitions.html#Resource.meta</linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class Meta : Element
     {
         /// <summary>
@@ -46,11 +46,11 @@ namespace Appva.Fhir.Resources
         /// <externalLink>
         ///     <linkText>VersionId</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#Resource.meta.versionId
+        ///         http://hl7-fhir.github.io/resource-definitions.html#Resource.meta.versionId
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElement("versionId")]
+        [ProtoMember(1), JsonProperty]
         public string VersionId
         {
             get;
@@ -62,12 +62,12 @@ namespace Appva.Fhir.Resources
         /// <externalLink>
         ///     <linkText>LastUpdated</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#Resource.meta.lastUpdated
+        ///         http://hl7-fhir.github.io/resource-definitions.html#Resource.meta.lastUpdated
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElement("lastUpdated")]
-        public System.DateTime LastUpdated
+        [ProtoMember(2), JsonProperty]
+        public Instant LastUpdated
         {
             get;
             set;
@@ -79,12 +79,12 @@ namespace Appva.Fhir.Resources
         /// <externalLink>
         ///     <linkText>Profile</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#Resource.meta.profile
+        ///         http://hl7-fhir.github.io/resource-definitions.html#Resource.meta.profile
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElement("profile")]
-        public Collection<Uri> Profile
+        [ProtoMember(3), JsonProperty]
+        public IList<Uri> Profile
         {
             get;
             set;
@@ -96,12 +96,12 @@ namespace Appva.Fhir.Resources
         /// <externalLink>
         ///     <linkText>Security</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#Resource.meta.security
+        ///         http://hl7-fhir.github.io/resource-definitions.html#Resource.meta.security
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElement("security")]
-        public Collection<Coding> Security
+        [ProtoMember(4), JsonProperty]
+        public IList<Coding> Security
         {
             get;
             set;
@@ -114,12 +114,12 @@ namespace Appva.Fhir.Resources
         /// <externalLink>
         ///     <linkText>Tag</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#Resource.meta.tag
+        ///         http://hl7-fhir.github.io/resource-definitions.html#Resource.meta.tag
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElement("tag")]
-        public Collection<Coding> Tag
+        [ProtoMember(5), JsonProperty]
+        public IList<Coding> Tag
         {
             get;
             set;

@@ -1,4 +1,4 @@
-﻿// <copyright file="SecurityEventParticipant.cs" company="Appva AB">
+﻿// <copyright file="AuditEventParticipant.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,9 +9,9 @@ namespace Appva.Fhir.Resources.Security
     #region Imports.
 
     using System.Collections.Generic;
-    using System.Xml.Serialization;
     using Complex;
     using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -20,18 +20,18 @@ namespace Appva.Fhir.Resources.Security
     /// <externalLink>
     ///     <linkText>Participant</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant
+    ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
-    public sealed class SecurityEventParticipant : Element
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    public sealed class AuditEventParticipant : Element
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventParticipant"/> class.
+        /// Initializes a new instance of the <see cref="AuditEventParticipant"/> class.
         /// </summary>
         /// <param name="roles">
         /// Specification of the role(s) the user plays when performing the event
@@ -57,7 +57,7 @@ namespace Appva.Fhir.Resources.Security
         /// Logical network location for application activity, if the activity has a network 
         /// location
         /// </param>
-        public SecurityEventParticipant(IEnumerable<CodeableConcept> roles, string userId, string alternativeId, string name, bool isRequestor, Coding media, SecurityEventParticipantNetwork network)
+        public AuditEventParticipant(IEnumerable<CodeableConcept> roles, string userId, string alternativeId, string name, bool isRequestor, Coding media, AuditEventParticipantNetwork network)
         {
             this.Roles = roles;
             this.UserId = userId;
@@ -69,11 +69,11 @@ namespace Appva.Fhir.Resources.Security
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventParticipant"/> class.
+        /// Prevents a default instance of the <see cref="AuditEventParticipant" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        protected SecurityEventParticipant()
+        private AuditEventParticipant()
         {
         }
 
@@ -88,7 +88,7 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Role</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant.role
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant.role
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -96,7 +96,7 @@ namespace Appva.Fhir.Resources.Security
         /// optional value that might be used to group events for analysis by user 
         /// functional role categories.
         /// </remarks>
-        [JsonProperty, XmlElementAttribute("role")]
+        [ProtoMember(1), JsonProperty]
         public IEnumerable<CodeableConcept> Roles
         {
             get;
@@ -108,7 +108,7 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Reference</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant.reference
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant.reference
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -128,11 +128,11 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>UserId</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant.userId
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant.userId
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("userId")]
+        [ProtoMember(2), JsonProperty]
         public string UserId
         {
             get;
@@ -146,7 +146,7 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>AlternativeId</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant.altId
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant.altId
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -157,7 +157,7 @@ namespace Appva.Fhir.Resources.Security
         /// then be the original identify used for authentication, and the User ID is the one 
         /// known to and used by the application.
         /// </remarks>
-        [JsonProperty, XmlElementAttribute("altId")]
+        [ProtoMember(3), JsonProperty("altId")]
         public string AlternativeId
         {
             get;
@@ -169,7 +169,7 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Name</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant.name
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant.name
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -177,7 +177,7 @@ namespace Appva.Fhir.Resources.Security
         /// The User ID and Authorization User ID may be internal or otherwise obscure 
         /// values. This field assists the auditor in identifying the actual user.
         /// </remarks>
-        [JsonProperty, XmlElementAttribute("name")]
+        [ProtoMember(4), JsonProperty]
         public string Name
         {
             get;
@@ -190,7 +190,7 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Requestor</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant.requestor
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant.requestor
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -198,8 +198,7 @@ namespace Appva.Fhir.Resources.Security
         /// There can only be one initiator. If the initiator is not clear, then do not 
         /// choose any one participant as the initiator.
         /// </remarks>
-        [JsonProperty, XmlElementAttribute("requestor")]
-
+        [ProtoMember(5), JsonProperty("requestor")]
         public bool IsRequestor
         {
             get;
@@ -212,11 +211,11 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Media</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant.media
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant.media
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("media")]
+        [ProtoMember(6), JsonProperty]
         public Coding Media
         {
             get;
@@ -229,12 +228,12 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Network</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.participant.network
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.participant.network
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("network")]
-        public SecurityEventParticipantNetwork Network
+        [ProtoMember(7), JsonProperty]
+        public AuditEventParticipantNetwork Network
         {
             get;
             private set;

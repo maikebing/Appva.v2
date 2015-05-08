@@ -8,7 +8,9 @@ namespace Appva.Fhir.Resources.Administrative
 {
     #region Imports.
 
-    using Appva.Fhir.Primitives;
+    using Primitives;
+    using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -17,10 +19,12 @@ namespace Appva.Fhir.Resources.Administrative
     /// <externalLink>
     ///     <linkText>1.15.2.1.425.1 ContactPointSystem</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/contact-point-system.html
+    ///         http://hl7-fhir.github.io/contact-point-system.html
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class ContactPointSystem : Code
     {
         #region Variables.
@@ -60,6 +64,16 @@ namespace Appva.Fhir.Resources.Administrative
         /// <param name="value">The string code value</param>
         private ContactPointSystem(string value) 
             : base(value)
+        {
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="ContactPointSystem" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private ContactPointSystem()
+            : base(null)
         {
         }
 

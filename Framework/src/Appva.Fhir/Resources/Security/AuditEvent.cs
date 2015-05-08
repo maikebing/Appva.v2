@@ -1,4 +1,4 @@
-﻿// <copyright file="SecurityEvent.cs" company="Appva AB">
+﻿// <copyright file="AuditEvent.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,8 +8,9 @@ namespace Appva.Fhir.Resources.Security
 {
     #region Imports.
 
-    using System.Xml.Serialization;
+    using System.Collections.Generic;
     using Newtonsoft.Json;
+    using ProtoBuf;
     using Validation;
 
     #endregion
@@ -20,48 +21,47 @@ namespace Appva.Fhir.Resources.Security
     /// attempts and monitoring for inappropriate usage.
     /// <externalLink>
     ///     <linkText>SecurityEvent</linkText>
-    ///     <linkUri>http://hl7.org/implement/standards/FHIR-Develop/securityevent.html</linkUri>
+    ///     <linkUri>http://hl7-fhir.github.io/securityevent.html</linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlRoot(Namespace = Fhir.Namespace)]
-    public sealed class SecurityEvent : DomainResource
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    public sealed class AuditEvent : DomainResource
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEvent"/> class.
+        /// Initializes a new instance of the <see cref="AuditEvent"/> class.
         /// </summary>
-        /// <param name="event">
+        /// <param name="evt">
         /// Identifies the name, action type, time, and disposition of the audited event
         /// </param>
-        /// <param name="participant">
+        /// <param name="participants">
         /// A person, a hardware device or software process
         /// </param>
         /// <param name="source">
         /// Application systems and processes
         /// </param>
-        /// <param name="object">
+        /// <param name="objects">
         /// Specific instances of data or objects that have been accessed
         /// </param>
-        public SecurityEvent(SecurityEventEvent @event, SecurityEventParticipant participant, SecurityEventSource source, SecurityEventObject @object)
+        public AuditEvent(AuditEventEvent evt, IList<AuditEventParticipant> participants, AuditEventSource source, IList<AuditEventObject> objects)
         {
-            Requires.NotNull(@event, "event");
-            Requires.NotNull(participant, "participant");
+            Requires.NotNull(evt, "evt");
+            Requires.NotNull(participants, "participants");
             Requires.NotNull(source, "source");
-            Requires.NotNull(@object, "object");
-            this.Event = @event;
-            this.Participant = participant;
+            this.Event = evt;
+            this.Participant = participants;
             this.Source = source;
-            this.Object = @object;
+            this.Object = objects;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEvent"/> class.
+        /// Prevents a default instance of the <see cref="AuditEvent" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        public SecurityEvent()
+        private AuditEvent()
         {
         }
 
@@ -72,8 +72,8 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// Identifies the name, action type, time, and disposition of the audited event.
         /// </summary>
-        [JsonProperty, XmlElementAttribute("event")]
-        public SecurityEventEvent Event
+        [ProtoMember(1), JsonProperty]
+        public AuditEventEvent Event
         {
             get;
             private set;
@@ -82,8 +82,8 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// A person, a hardware device or software process.
         /// </summary>
-        [JsonProperty, XmlElementAttribute("participant")]
-        public SecurityEventParticipant Participant
+        [ProtoMember(2), JsonProperty]
+        public IList<AuditEventParticipant> Participant
         {
             get;
             private set;
@@ -92,8 +92,8 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// Application systems and processes.
         /// </summary>
-        [JsonProperty, XmlElementAttribute("source")]
-        public SecurityEventSource Source
+        [ProtoMember(3), JsonProperty]
+        public AuditEventSource Source
         {
             get;
             private set;
@@ -102,8 +102,8 @@ namespace Appva.Fhir.Resources.Security
         /// <summary>
         /// Specific instances of data or objects that have been accessed.
         /// </summary>
-        [JsonProperty, XmlElementAttribute("object")]
-        public SecurityEventObject Object
+        [ProtoMember(4), JsonProperty]
+        public IList<AuditEventObject> Object
         {
             get;
             private set;

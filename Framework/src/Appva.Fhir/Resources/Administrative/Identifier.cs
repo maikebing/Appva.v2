@@ -8,7 +8,9 @@ namespace Appva.Fhir.Resources.Administrative
 {
     #region Imports.
 
-    using Appva.Fhir.Primitives;
+    using Primitives;
+    using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -23,10 +25,12 @@ namespace Appva.Fhir.Resources.Administrative
     /// <externalLink>
     ///     <linkText>1.14.2.3 Identifier</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#identifier
+    ///         http://hl7-fhir.github.io/datatypes-definitions.html#identifier
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class Identifier : Element
     {
         #region Constructor.
@@ -35,9 +39,9 @@ namespace Appva.Fhir.Resources.Administrative
         /// Initializes a new instance of the <see cref="Identifier"/> class.
         /// </summary>
         /// <param name="use">The purpose of this identifier</param>
-        /// <param name="label">
-        /// A text string for the identifier that can be displayed to a human so they can 
-        /// recognize the identifier
+        /// <param name="type">
+        /// A coded type for the identifier that can be used to determine which identifier 
+        /// to use for a specific purpose
         /// </param>
         /// <param name="system">
         /// Establishes the namespace in which set of possible id values is unique
@@ -53,19 +57,28 @@ namespace Appva.Fhir.Resources.Administrative
         /// Organization that issued/manages the identifier
         /// </param>
         public Identifier(
-            Code use, 
-            string label, 
+            IdentifierUse use,
+            IdentifierType type, 
             Uri system, 
             string value, 
             Period period,
             Organization assigner)
         {
             this.Use = use;
-            this.Label = label;
+            this.Type = type;
             this.System = system;
             this.Value = value;
             this.Period = period;
             this.Assigner = assigner;
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Identifier" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private Identifier()
+        {
         }
 
         #endregion
@@ -77,27 +90,35 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Use</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#identifier.use
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#identifier.use
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        public Code Use
+        [ProtoMember(1), JsonProperty]
+        public IdentifierUse Use
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// A text string for the identifier that can be displayed to a human so they can 
-        /// recognize the identifier.
+        /// A coded type for the identifier that can be used to determine which identifier 
+        /// to use for a specific purpose.
         /// <externalLink>
-        ///     <linkText>Label</linkText>
+        ///     <linkText>Type</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#identifier.label
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#Identifier.type
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        public string Label
+        /// <remarks>
+        /// Where the system is known, a type is unnecessary because the type is always part 
+        /// of the system definition. However systems often need to handle identifiers where 
+        /// the system is not known. There is not a 1:1 relationship between type and 
+        /// system, since many different systems have the same type
+        /// </remarks>
+        [ProtoMember(2), JsonProperty]
+        public IdentifierType Type
         {
             get;
             private set;
@@ -108,7 +129,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>System</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#identifier.system
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#identifier.system
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -117,6 +138,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// what sequence we're dealing with. The system identifies a particular sequence or 
         /// set of unique identifiers
         /// </remarks>
+        [ProtoMember(3), JsonProperty]
         public Uri System
         {
             get;
@@ -129,13 +151,14 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Value</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#identifier.value
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#identifier.value
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
         /// <remarks>
         /// If the value is a full URI, then the system SHALL be urn:ietf:rfc:3986.
         /// </remarks>
+        [ProtoMember(4), JsonProperty]
         public string Value
         {
             get;
@@ -147,10 +170,11 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Period</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#identifier.period
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#identifier.period
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [ProtoMember(5), JsonProperty]
         public Period Period
         {
             get;
@@ -162,10 +186,11 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Assigner</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes-definitions.html#identifier.assigner
+        ///         http://hl7-fhir.github.io/datatypes-definitions.html#identifier.assigner
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [ProtoMember(6), JsonProperty]
         public Organization Assigner
         {
             get;

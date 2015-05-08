@@ -35,12 +35,12 @@ namespace Appva.Apis.Audit
 
         #region Public Methods.
 
-        public bool Create(SecurityEvent securityEvent)
+        public bool Create(AuditEvent securityEvent)
         {
             return this.CreateNewPostAsync<bool>("/v1/logs/", securityEvent).Result;
         }
 
-        public async void CreateAsync(SecurityEvent securityEvent)
+        public async void CreateAsync(AuditEvent securityEvent)
         {
             await this.CreateNewPostAsync<bool>("/v1/logs/", securityEvent);
         }

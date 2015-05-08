@@ -8,9 +8,9 @@ namespace Appva.Fhir.Resources
 {
     #region Imports.
 
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
     using Primitives;
+    using ProtoBuf;
 
     #endregion
 
@@ -61,11 +61,12 @@ namespace Appva.Fhir.Resources
     /// </para>
     /// <externalLink>
     ///     <linkText>Resource</linkText>
-    ///     <linkUri>http://hl7.org/implement/standards/FHIR-Develop/resource.html</linkUri>
+    ///     <linkUri>http://hl7-fhir.github.io/resource.html</linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    [ProtoInclude(1, typeof(DomainResource))]
     public class Resource
     {
         /// <summary>
@@ -75,11 +76,11 @@ namespace Appva.Fhir.Resources
         /// <externalLink>
         ///     <linkText>Meta</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#Resource.meta
+        ///         http://hl7-fhir.github.io/resource-definitions.html#Resource.meta
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElement("meta")]
+        [ProtoMember(100), JsonProperty]
         public Meta Meta
         {
             get;
@@ -97,11 +98,11 @@ namespace Appva.Fhir.Resources
         /// <externalLink>
         ///     <linkText>Language</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#Resource.language
+        ///         http://hl7-fhir.github.io/resource-definitions.html#Resource.language
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElement("language")]
+        [ProtoMember(101), JsonProperty]
         public Language Language
         {
             get;
@@ -114,11 +115,11 @@ namespace Appva.Fhir.Resources
         /// <externalLink>
         ///     <linkText>implicitRules</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/resource-definitions.html#Resource.implicitRules
+        ///         http://hl7-fhir.github.io/resource-definitions.html#Resource.implicitRules
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElement("implicitRules")]
+        [ProtoMember(102), JsonProperty]
         public Uri ImplicitRules
         {
             get;

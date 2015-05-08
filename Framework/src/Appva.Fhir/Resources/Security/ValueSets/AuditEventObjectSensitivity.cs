@@ -1,4 +1,4 @@
-﻿// <copyright file="SecurityEventObjectSensitivity.cs" company="Appva AB">
+﻿// <copyright file="AuditEventObjectSensitivity.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,9 +8,11 @@ namespace Appva.Fhir.Resources.Security.ValueSets
 {
     #region Imports.
 
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
     using Complex;
+    using Newtonsoft.Json;
     using Primitives;
+    using ProtoBuf;
 
     #endregion
 
@@ -18,13 +20,15 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     /// The sensitivity of an object in a secuity event resource. May also encompass 
     /// confidentiality and rudimentary access control.
     /// <externalLink>
-    ///     <linkText>1.15.2.1.222.1 SecurityEventObjectSensitivity</linkText>
+    ///     <linkText>1.15.2.1.222.1 AuditEventObjectSensitivity</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/valueset-security-event-sensitivity.html
+    ///         http://hl7-fhir.github.io/valueset-audit-event-sensitivity.html
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    public sealed class SecurityEventObjectSensitivity : CodeableConcept
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    public sealed class AuditEventObjectSensitivity : CodeableConcept
     {
         #region Variables.
 
@@ -39,10 +43,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// value the Act.Confidentiality and Role.Confidentiality attribute in accordance 
         /// with the definition for concept domain "Confidentiality".
         /// </summary>
-        public static readonly SecurityEventObjectSensitivity Confidentiality = new SecurityEventObjectSensitivity(new Collection<Coding>
-            {
-                new Coding(System, new Code("_Confidentiality"), "Confidentiality")
-            });
+        public static readonly AuditEventObjectSensitivity Confidentiality = new AuditEventObjectSensitivity(new Coding(System, new Code("_Confidentiality"), "Confidentiality"));
 
         /// <summary>
         /// Definition: Privacy metadata indicating that the information has been 
@@ -61,10 +62,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// with a data use agreement.
         /// </para>
         /// </summary>
-        public static readonly SecurityEventObjectSensitivity Low = new SecurityEventObjectSensitivity(new Collection<Coding>
-            {
-                new Coding(System, new Code("L"), "low")
-            });
+        public static readonly AuditEventObjectSensitivity Low = new AuditEventObjectSensitivity(new Coding(System, new Code("L"), "low"));
 
         /// <summary>
         /// Definition: Privacy metadata indicating moderately sensitive information, which 
@@ -84,10 +82,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// with the receiver's terms of use or privacy policies.
         /// </para>
         /// </summary>
-        public static readonly SecurityEventObjectSensitivity Moderate = new SecurityEventObjectSensitivity(new Collection<Coding>
-            {
-                new Coding(System, new Code("M"), "moderate")
-            });
+        public static readonly AuditEventObjectSensitivity Moderate = new AuditEventObjectSensitivity(new Coding(System, new Code("M"), "moderate"));
 
         /// <summary>
         /// Definition: Privacy metadata indicating that the information is typical, 
@@ -112,10 +107,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// with applicable jurisdictional privacy law or disclosure authorization.
         /// </para>
         /// </summary>
-        public static readonly SecurityEventObjectSensitivity Normal = new SecurityEventObjectSensitivity(new Collection<Coding>
-            {
-                new Coding(System, new Code("N"), "normal")
-            });
+        public static readonly AuditEventObjectSensitivity Normal = new AuditEventObjectSensitivity(new Coding(System, new Code("N"), "normal"));
 
         /// <summary>
         /// Privacy metadata indicating highly sensitive, potentially stigmatizing 
@@ -142,10 +134,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// authorization.
         /// </para>
         /// </summary>
-        public static readonly SecurityEventObjectSensitivity Restricted = new SecurityEventObjectSensitivity(new Collection<Coding>
-            {
-                new Coding(System, new Code("R"), "restricted")
-            });
+        public static readonly AuditEventObjectSensitivity Restricted = new AuditEventObjectSensitivity(new Coding(System, new Code("R"), "restricted"));
 
         /// <summary>
         /// Definition: Privacy metadata indicating that the information is not classified 
@@ -162,10 +151,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// "unrestricted" to that information even if it is publicly available.
         /// </para>
         /// </summary>
-        public static readonly SecurityEventObjectSensitivity Unrestricted = new SecurityEventObjectSensitivity(new Collection<Coding>
-            {
-                new Coding(System, new Code("U"), "unrestricted")
-            });
+        public static readonly AuditEventObjectSensitivity Unrestricted = new AuditEventObjectSensitivity(new Coding(System, new Code("U"), "unrestricted"));
 
         /// <summary>
         /// Privacy metadata indicating that the information is extremely sensitive and 
@@ -189,23 +175,41 @@ namespace Appva.Fhir.Resources.Security.ValueSets
         /// information subject.
         /// </para>
         /// </summary>
-        public static readonly SecurityEventObjectSensitivity VeryRestricted = new SecurityEventObjectSensitivity(new Collection<Coding>
-            {
-                new Coding(System, new Code("V"), "very restricted")
-            });
+        public static readonly AuditEventObjectSensitivity VeryRestricted = new AuditEventObjectSensitivity(new Coding(System, new Code("V"), "very restricted"));
 
         #endregion
 
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventObjectSensitivity"/> class.
+        /// Initializes a new instance of the <see cref="AuditEventObjectSensitivity"/> class.
         /// </summary>
         /// <param name="coding">
         /// A reference to a code defined by a terminology system
         /// </param>
-        private SecurityEventObjectSensitivity(Collection<Coding> coding)
+        public AuditEventObjectSensitivity(IList<Coding> coding)
             : base(null, coding)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuditEventObjectSensitivity"/> class.
+        /// </summary>
+        /// <param name="coding">
+        /// A reference to a code defined by a terminology system
+        /// </param>
+        public AuditEventObjectSensitivity(params Coding[] coding)
+            : base(null, coding)
+        {
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="AuditEventObjectSensitivity" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private AuditEventObjectSensitivity()
+            : base()
         {
         }
 

@@ -19,7 +19,7 @@ namespace Appva.Fhir.Resources.Security.ValueSets
     /// <externalLink>
     ///     <linkText>FHIR Role Id Code</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/valueset-dicm-402-roleid.html
+    ///         http://hl7-fhir.github.io/valueset-dicm-402-roleid.html
     ///     </linkUri>
     /// </externalLink>
     /// </summary>

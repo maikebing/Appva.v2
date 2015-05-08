@@ -10,6 +10,8 @@ namespace Appva.Fhir.Resources.Administrative
 
     using System;
     using System.Collections.Generic;
+    using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -40,10 +42,12 @@ namespace Appva.Fhir.Resources.Administrative
     /// <externalLink>
     ///     <linkText>5.1 Patient</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/patient.html
+    ///         http://hl7-fhir.github.io/patient.html
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
     public sealed class Patient : DomainResource
     {
         #region Constructor.
@@ -51,7 +55,17 @@ namespace Appva.Fhir.Resources.Administrative
         /// <summary>
         /// Initializes a new instance of the <see cref="Patient"/> class.
         /// </summary>
-        public Patient()
+        /// <param name="name">Temp</param>
+        public Patient(string name)
+        {
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Patient" /> class from being created.
+        /// </summary>
+        /// <remarks>For Json deserialization</remarks>
+        [JsonConstructor]
+        private Patient()
         {
         }
 
@@ -64,10 +78,11 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Identifier</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/patient-definitions.html#Patient.identifier
+        ///         http://hl7-fhir.github.io/patient-definitions.html#Patient.identifier
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
+        [ProtoMember(1), JsonProperty]
         public IList<Identifier> Identifier
         {
             get;
@@ -79,7 +94,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Name</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/patient-definitions.html#Patient.name
+        ///         http://hl7-fhir.github.io/patient-definitions.html#Patient.name
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -88,6 +103,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// animals, the name is a "HumanName" in the sense that is assigned and used by 
         /// humans and has the same patterns.
         /// </remarks>
+        [ProtoMember(2), JsonProperty]
         public HumanName Name
         {
             get;
@@ -100,7 +116,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Telecom</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/patient-definitions.html#Patient.telecom
+        ///         http://hl7-fhir.github.io/patient-definitions.html#Patient.telecom
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -111,6 +127,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// may reach another party that is able to proxy for the patient (i.e. home phone, 
         /// or pet owner's phone).
         /// </remarks>
+        [ProtoMember(3), JsonProperty]
         public ContactPoint Telecom
         {
             get;
@@ -123,7 +140,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>Gender</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/patient-definitions.html#Patient.gender
+        ///         http://hl7-fhir.github.io/patient-definitions.html#Patient.gender
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -133,6 +150,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// particularly animals, there are other legitimate possibilities than M and F, 
         /// though the vast majority of systems and contexts only support M and F.
         /// </remarks>
+        [ProtoMember(4), JsonProperty]
         public AdministrativeGender Gender
         {
             get;
@@ -144,7 +162,7 @@ namespace Appva.Fhir.Resources.Administrative
         /// <externalLink>
         ///     <linkText>BirthDate</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/patient-definitions.html#Patient.birthDate
+        ///         http://hl7-fhir.github.io/patient-definitions.html#Patient.birthDate
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
@@ -152,7 +170,43 @@ namespace Appva.Fhir.Resources.Administrative
         /// At least an estimated year should be provided as a guess if the real dob is 
         /// unknown.
         /// </remarks>
+        [ProtoMember(5), JsonProperty]
         public DateTime? BirthDate
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Addresses for the individual.
+        /// <externalLink>
+        ///     <linkText>Address</linkText>
+        ///     <linkUri>
+        ///         http://hl7-fhir.github.io/patient-definitions.html#Patient.address
+        ///     </linkUri>
+        /// </externalLink>
+        /// </summary>
+        /// <remarks>
+        /// Patient may have multiple addresses with different uses or applicable periods.
+        /// </remarks>
+        [ProtoMember(6), JsonProperty]
+        public IList<Address> Addresses
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// This field contains a patient's most recent marital (civil) status.
+        /// <externalLink>
+        ///     <linkText>MaritalStatus</linkText>
+        ///     <linkUri>
+        ///         http://hl7-fhir.github.io/patient-definitions.html#Patient.maritalStatus
+        ///     </linkUri>
+        /// </externalLink>
+        /// </summary>
+        [ProtoMember(7), JsonProperty]
+        public MaritalStatus MaritalStatus
         {
             get;
             private set;

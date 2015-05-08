@@ -8,8 +8,8 @@ namespace Appva.Mcss.Admin
 {
     #region Imports.
 
-    using System.Linq;
     using System.Data;
+    using System.Linq;
     using System.Reflection;
     using System.Web;
     using System.Web.Mvc;
@@ -20,25 +20,22 @@ namespace Appva.Mcss.Admin
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Persistence;
     using Appva.Persistence.Autofac;
     using Appva.Persistence.MultiTenant;
+    using Appva.Tenant.Identity;
+    using Appva.Tenant.Interoperability.Client;
     using Autofac;
     using Autofac.Integration.Mvc;
     using Microsoft.Owin;
-    using Appva.Mcss.Admin.Application.Services.Menus;
-    using Appva.Tenant.Identity;
-    using Appva.Apis.TenantServer;
-    using Appva.Tenant.Interoperability.Client;
 
     #endregion
 
     /// <summary>
     /// IoC configuration.
     /// </summary>
-    public static class IocConfiguration
+    internal static class IocConfiguration
     {
         /// <summary>
         /// Configures IoC container. 

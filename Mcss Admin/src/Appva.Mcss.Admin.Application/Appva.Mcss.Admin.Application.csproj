@@ -75,6 +75,7 @@
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
     <Compile Include="Models\Calendar.cs" />
+    <Compile Include="Models\IReportingFilter.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuList.cs" />
     <Compile Include="Models\PrintSchedule.cs" />

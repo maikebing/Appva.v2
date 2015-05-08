@@ -11,13 +11,14 @@ namespace Appva.Mcss.Admin.Application.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class Report
+    public sealed class Report
     {
         #region Constructor.
 
@@ -76,11 +77,11 @@ namespace Appva.Mcss.Admin.Application.Models
             set;
         }
 
-        /*public SearchViewModel<Task> Search
+        public ReportSearch<Task> Search
         {
             get;
             set;
-        }*/
+        }
 
         #endregion
 

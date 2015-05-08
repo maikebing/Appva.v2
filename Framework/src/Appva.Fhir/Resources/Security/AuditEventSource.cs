@@ -1,4 +1,4 @@
-﻿// <copyright file="SecurityEventSource.cs" company="Appva AB">
+﻿// <copyright file="AuditEventSource.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,10 +8,9 @@ namespace Appva.Fhir.Resources.Security
 {
     #region Imports.
 
-    using System.Xml.Serialization;
-    using Appva.Fhir.Resources.Security.ValueSets;
-    using Complex;
+    using ValueSets;
     using Newtonsoft.Json;
+    using ProtoBuf;
     using Validation;
 
     #endregion
@@ -27,18 +26,18 @@ namespace Appva.Fhir.Resources.Security
     /// <externalLink>
     ///     <linkText>Source</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.source
+    ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.source
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
-    public sealed class SecurityEventSource : Element
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    public sealed class AuditEventSource : Element
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventSource"/> class.
+        /// Initializes a new instance of the <see cref="AuditEventSource"/> class.
         /// </summary>
         /// <param name="site">
         /// Logical source location within the healthcare enterprise network
@@ -48,9 +47,9 @@ namespace Appva.Fhir.Resources.Security
         /// </param>
         /// <param name="type">
         /// Code specifying the type of source where event originated, see 
-        /// <c>SecurityEventSourceType</c>.
+        /// <c>AuditEventSourceType</c>.
         /// </param>
-        public SecurityEventSource(string site, string identifier, SecurityEventSourceType type)
+        public AuditEventSource(string site, string identifier, AuditEventSourceType type)
         {
             Requires.NotNull(identifier, "identifier");
             this.Site = site;
@@ -59,11 +58,11 @@ namespace Appva.Fhir.Resources.Security
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityEventSource"/> class.
+        /// Prevents a default instance of the <see cref="AuditEventSource" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        private SecurityEventSource()
+        private AuditEventSource()
         {
         }
 
@@ -77,11 +76,11 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Site</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.source.site
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.source.site
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("site")]
+        [ProtoMember(1), JsonProperty]
         public string Site
         {
             get;
@@ -95,11 +94,11 @@ namespace Appva.Fhir.Resources.Security
         /// <externalLink>
         ///     <linkText>Identifier</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.source.identifier
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.source.identifier
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("identifier")]
+        [ProtoMember(2), JsonProperty]
         public string Identifier
         {
             get;
@@ -108,16 +107,16 @@ namespace Appva.Fhir.Resources.Security
 
         /// <summary>
         /// Code specifying the type of source where event originated, see 
-        /// <c>SecurityEventSourceType</c>.
+        /// <c>AuditEventSourceType</c>.
         /// <externalLink>
         ///     <linkText>Type</linkText>
         ///     <linkUri>
-        ///         http://hl7.org/implement/standards/FHIR-Develop/securityevent-definitions.html#SecurityEvent.source.type
+        ///         http://hl7-fhir.github.io/securityevent-definitions.html#AuditEvent.source.type
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
-        [JsonProperty, XmlElementAttribute("type")]
-        public SecurityEventSourceType Type
+        [ProtoMember(3), JsonProperty]
+        public AuditEventSourceType Type
         {
             get;
             set;

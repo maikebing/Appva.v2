@@ -9,8 +9,8 @@ namespace Appva.Fhir.Primitives
     #region Imports.
 
     using System.Text.RegularExpressions;
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -22,13 +22,13 @@ namespace Appva.Fhir.Primitives
     /// <externalLink>
     ///     <linkText>FHIR Uuid</linkText>
     ///     <linkUri>
-    ///        http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#uuid
+    ///        http://hl7-fhir.github.io/datatypes.html#uuid
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
-    public sealed class Uuid : Primitive<string>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    public sealed class Uuid : Primitive
     {
         #region Constructor.
 
@@ -41,11 +41,11 @@ namespace Appva.Fhir.Primitives
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Uuid"/> class.
+        /// Prevents a default instance of the <see cref="Uuid" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        public Uuid()
+        private Uuid()
             : base(null)
         {
         }
@@ -69,7 +69,7 @@ namespace Appva.Fhir.Primitives
 
         #endregion
 
-        #region Primitive<string> Overrides.
+        #region Primitive Overrides.
 
         /// <inheritdoc />
         public override bool IsValid()

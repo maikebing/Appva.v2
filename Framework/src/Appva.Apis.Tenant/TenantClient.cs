@@ -90,7 +90,10 @@ namespace Appva.Apis.TenantServer
         /// <param name="baseAddress">The tenant server base uri address</param>
         private TenantClient(Uri baseAddress)
         {
-            Log.DebugFormat(Debug.Messages.ClassInitialization, baseAddress);
+            if (Log.IsDebugEnabled())
+            {
+                Log.DebugFormat(Debug.Messages.ClassInitialization, baseAddress);
+            }
             this.httpClient = new HttpClient
             {
                 BaseAddress = baseAddress
@@ -235,7 +238,7 @@ namespace Appva.Apis.TenantServer
                 Log.DebugFormat(Debug.Messages.HttpRequestMessage, this.httpClient.BaseAddress + uri);
             }
             var response = await this.httpClient.GetAsync(uri).ConfigureAwait(false);
-            if (!response.IsSuccessStatusCode)
+            if (! response.IsSuccessStatusCode)
             {
                 return default(T);
             }

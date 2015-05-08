@@ -8,8 +8,8 @@ namespace Appva.Fhir.Primitives
 {
     #region Imports.
 
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using ProtoBuf;
 
     #endregion
 
@@ -19,13 +19,13 @@ namespace Appva.Fhir.Primitives
     /// <externalLink>
     ///     <linkText>FHIR Uri</linkText>
     ///     <linkUri>
-    ///         http://hl7.org/implement/standards/FHIR-Develop/datatypes.html#uri
+    ///         http://hl7-fhir.github.io/datatypes.html#uri
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    [FhirVersion(Fhir.V040)]
-    [XmlTypeAttribute(Namespace = Fhir.Namespace)]
-    public sealed class Uri : Primitive<string>
+    [FhirVersion(Fhir.V050)]
+    [ProtoContract]
+    public sealed class Uri : Primitive
     {
         #region Constructor.
 
@@ -39,11 +39,11 @@ namespace Appva.Fhir.Primitives
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Uri"/> class.
+        /// Prevents a default instance of the <see cref="Uri" /> class from being created.
         /// </summary>
         /// <remarks>For Json deserialization</remarks>
         [JsonConstructor]
-        public Uri()
+        private Uri()
             : base(null)
         {
         }
@@ -80,7 +80,7 @@ namespace Appva.Fhir.Primitives
 
         #endregion
 
-        #region Primitive<string> Overrides.
+        #region Primitive Overrides.
 
         /// <inheritdoc />
         public override bool IsValid()

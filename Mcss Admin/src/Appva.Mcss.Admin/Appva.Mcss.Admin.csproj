@@ -52,6 +52,9 @@
     <Reference Include="DataAnnotationsExtensions">
       <HintPath>..\..\..\Packages\DataAnnotationsExtensions.1.1.0.0\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
     </Reference>
+    <Reference Include="HibernatingRhinos.Profiler.Appender">
+      <HintPath>..\..\..\Packages\NHibernateProfiler.3.0.3052.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
@@ -152,6 +155,9 @@
     </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\..\..\Packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\..\..\Packages\WebActivatorEx.2.0.5\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -295,7 +301,9 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\Handlers\CreateAccountViewHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountCommand.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountHandler.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\TestBoll.cs" />
     <Compile Include="Areas\Area51\Features\Cache\List\ListCache.cs" />
@@ -639,6 +647,10 @@
       <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
       <Name>Appva.Persistence</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
+      <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
+      <Name>Appva.Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
       <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
       <Name>Appva.Tenant</Name>
@@ -881,7 +893,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8082/</IISUrl>
+          <IISUrl>http://localhost:1080/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

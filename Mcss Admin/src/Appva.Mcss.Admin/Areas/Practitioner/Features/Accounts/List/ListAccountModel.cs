@@ -12,6 +12,8 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
     using System.Collections.Generic;
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Repository;
 
     #endregion
 
@@ -38,7 +40,10 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             set;
         }
 
-        public IList<Account> Accounts
+        /// <summary>
+        /// The Accounts
+        /// </summary>
+        public PageableSet<AccountModel> Accounts
         {
             get;
             set;
@@ -89,12 +94,6 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// Optional <c>Account.IsPaused</c> to filter by.
         /// </summary>
         public bool IsFilterByIsPausedEnabled
-        {
-            get;
-            set;
-        }
-
-        public IEnumerable<TestBoll> Tests
         {
             get;
             set;

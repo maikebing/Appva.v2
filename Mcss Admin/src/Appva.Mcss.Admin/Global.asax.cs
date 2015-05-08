@@ -27,6 +27,8 @@ namespace Appva.Mcss.Admin
         /// <inheritdoc />
         protected void Application_Start()
         {
+            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
+
             XmlConfigurator.Configure();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             IocConfiguration.Configure();

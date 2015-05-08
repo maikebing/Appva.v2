@@ -24,7 +24,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize, RouteArea("admin"), RoutePrefix("account")]
+    [Authorize, RouteArea("Practitioner", AreaPrefix="admin"), RoutePrefix("account")]
     public class AccountsController : Controller
     {
         #region Variables.

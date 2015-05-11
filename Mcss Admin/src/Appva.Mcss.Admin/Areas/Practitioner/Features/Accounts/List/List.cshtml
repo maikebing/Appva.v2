@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Admin.Features.Accounts.List.ListAccountModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Features.Accounts.List.ListAccountModel
 @{
 	Title("Medarbetare"); 
 	AddMeta("asd", "asd");
@@ -6,23 +7,23 @@
 
 <div id="subheader" class="cf">
 	<h1>Medarbetare</h1>
-	@Html.ActionLink("Ny medarbetare", "Create", null, new { @class = "btn lb-link" })
-	@*Html.Partial("~/Views/Account/Partials/_AccountSearch.cshtml")*@
+	@Html.PermissionLink(Permissions.AccountCreate, "Ny medarbetare", "Create", "Accounts", "Practitioner", null, new { @class = "btn lb-link" })
+	@Html.Partial("_AccountSearch")
 </div>
 
 <div class="col-wrap cols-2-1 cf">
 	<div class="col col-1">
 		<div class="filter-ctrl">
 			
-			@using (Html.BeginForm("List", "Account", FormMethod.Get, new { @class = "filter-form" }))
+			@using (Html.BeginForm("List", "Accounts", FormMethod.Get, new { @class = "filter-form" }))
 			{
 				<div class="filter-row">
 					<strong>Visa:</strong>
 					<ul>
-						<li>@Html.ActionLink("Alla", "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled && Model.IsFilterByIsActiveEnabled) ? "div sel" : "div" })</li>
-						<li>@Html.ActionLink("Mina", "List", new { IsFilterByCreatedByEnabled = true }, new { @class = (Model.IsFilterByCreatedByEnabled) ? "div sel" : "div" })</li>
-						<li>@Html.ActionLink("Borttagna", "List", new { IsFilterByIsActiveEnabled = false, IsFilterByIsPausedEnabled = false }, new { @class = ((!Model.IsFilterByIsActiveEnabled) && (!Model.IsFilterByIsPausedEnabled)) ? "div sel" : "div" })</li>
-						<li>@Html.ActionLink("Inaktiverade", "List", new { IsFilterByIsActiveEnabled = false, IsFilterByIsPausedEnabled = true }, new { @class = (Model.IsFilterByIsPausedEnabled) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Alla", "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled && Model.IsFilterByIsActiveEnabled && !Model.IsFilterByIsPausedEnabled) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Mina delegeringar", "List", new { FilterByCreatedBy = true }, new { @class = (Model.IsFilterByCreatedByEnabled) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = !Model.IsFilterByIsActiveEnabled ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Inaktiverade", "List", new { isPaused = true }, new { @class = (Model.IsFilterByIsPausedEnabled) ? "div sel" : "div" })</li>
 					</ul>
 				</div>
 				if (Model.Delegations.Count > 0)
@@ -78,7 +79,7 @@
 					</div>
 					<div class="i">
 						<strong>Titel:</strong>
-						<span>@*item.Title*@</span>
+						<span>@item.Title</span>
 					</div>
 					<div class="i">
 						<strong>Chef:</strong>
@@ -94,8 +95,8 @@
 			.AddRouteValue("IsActive", Model.IsFilterByIsActiveEnabled)
             .AddRouteValue("IsPaused", Model.IsFilterByIsPausedEnabled)
 			.AddRouteValue("FilterByCreatedBy", Model.IsFilterByCreatedByEnabled)
-			.AddRouteValue("FilterByDelegation", Model.DelegationFilterId)
-			.AddRouteValue("FilterByTitle", Model.RoleFilterId))
+            .AddRouteValue("DelegationFilterId", Model.DelegationFilterId)
+            .AddRouteValue("RoleFilterId", Model.RoleFilterId))
 	</div>
 	}
 </div>

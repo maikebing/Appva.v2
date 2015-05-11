@@ -303,13 +303,14 @@
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountModel.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\List\TestBoll.cs" />
     <Compile Include="Areas\Area51\Features\Cache\List\ListCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\List\ListCacheHandler.cs" />
     <Compile Include="Areas\Area51\Features\Settings\List\ListSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\List\ListSettingsHandler.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\AlertsController.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\CalendarController.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\QuickSearch\QuickSearchAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\QuickSearch\QuickSearchAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\RolesSchedulesController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedule.cs" />

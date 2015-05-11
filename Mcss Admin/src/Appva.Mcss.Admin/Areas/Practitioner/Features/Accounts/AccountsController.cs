@@ -18,6 +18,10 @@ namespace Appva.Mcss.Admin.Features.Accounts
     using Appva.Mcss.Admin.Features.Accounts.List;
     using Appva.Mvc.Filters;
     using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mcss.Admin.Features.Accounts.QuickSearch;
+    using Appva.Mcss.Admin.Infrastructure;
+using Appva.Mcss.Admin.Infrastructure.Attributes;
 
     #endregion
 
@@ -64,50 +68,18 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <param name="isPaused">Optional filtering by <c>Account.IsPaused</c></param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet, Permissions("ad0b7efb-589b-4762-acd6-a46d009a21ad"), Route("List")]
-        public ActionResult List(string q, int? page, Guid? filterByDelegation, Guid? filterByTitle, bool filterByCreatedBy = false, bool isActive = true, bool isPaused = false)
+        public ActionResult List(string q, int? page, Guid? DelegationFilterId, Guid? RoleFilterId, bool filterByCreatedBy = false, bool isActive = true, bool isPaused = false)
         {
             return this.View(this.mediator.Send<ListAccountModel>(new ListAccountCommand
                 {
                     SearchQuery = q,
                     CurrentPageNumber = page,
-                    DelegationFilterId = filterByDelegation,
-                    RoleFilterId = filterByTitle,
+                    DelegationFilterId = DelegationFilterId,
+                    RoleFilterId = RoleFilterId,
                     IsFilterByCreatedByEnabled = filterByCreatedBy,
                     IsFilterByIsActiveEnabled = isActive,
                     IsFilterByIsPausedEnabled = isPaused
                 }));
-            /*var user = Identity();
-            var viewModel = new AccountListViewModel
-            {
-                FilterByCreatedBy = filterByCreatedBy,
-                FilterByDelegation = filterByDelegation,
-                FilterByTitle = filterByTitle,
-                Delegations = TaxonomyService.FindChildNodes(HierarchyUtils.Delegation).Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList(),
-                Titles = RoleService.Match(RoleUtils.TitlePrefix).Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList(),
-                Search = ExecuteCommand<SearchViewModel<AccountViewModel>>(new SearchAccountCommand
-                {
-                    Identity = user,
-                    SearchQuery = q,
-                    Page = page,
-                    FilterByDelegation = filterByDelegation,
-                    FilterByTitle = filterByTitle,
-                    FilterByCreatedByIdentity = filterByCreatedBy,
-                    IsActive = isActive,
-                    IsPaused = isPaused
-                }),
-                IsActive = isActive,
-                IsPaused = isPaused
-            };
-            this.LogService.Info("Användare {0} läste medarbetarlista sida {1}".FormatWith(user.FullName, viewModel.Search.PageNumber), user, null, LogType.Read);
-            return View(viewModel);*/
         }
 
         #endregion
@@ -118,7 +90,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// Return the create account view.
         /// </summary>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, Hydrate]
+        [HttpGet, Hydrate, Route("Create")]
         public ActionResult Create()
         {
             return this.View(this.mediator.Send<CreateAccountModel>(new CreateAccountModel()));
@@ -137,7 +109,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <param name="model">The account model</param>
         /// <param name="collection">The form collection</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Route("Create")]
         public ActionResult Create(CreateAccountModel model, FormCollection collection)
         {
             return this.View(this.mediator.Send<CreateAccountModel>(new CreateAccountModel()));
@@ -177,6 +149,23 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
+
+
+        #region QuickSearch Json.
+
+        /// <summary>
+        /// Returns a list of accounts by search results.
+        /// </summary>
+        /// <param name="request">The <see cref="QuickSearchAccount"/>.</param>
+        /// <returns><see cref="JsonResult"/></returns>
+        [Route("quicksearch")]
+        [HttpGet, Dispatch, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        public DispatchJsonResult QuickSearch(QuickSearchAccount request)
+        {
+            return this.JsonGet();
+        }
+
+        #endregion
         /*
         
         
@@ -362,28 +351,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
-        #region QuickSearch Json.
-
-        /// <summary>
-        /// Returns a list of accounts by search results.
-        /// </summary>
-        /// <param name="term">The term to search for</param>
-        /// <param name="isActive">Filter accounts on is active accounts</param>
-        /// <param name="isPaused">Filter accounts on is paused accounts</param>
-        /// <returns><see cref="JsonResult"/></returns>
-        [HttpGet, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        public ActionResult QuickSearch(string term, bool isActive = true, bool isPaused = false)
-        {
-            return Json(ExecuteCommand<IEnumerable<object>>(new AccountQuickSearch
-            {
-                Term = term,
-                IsActive = isActive,
-                IsPaused = isPaused,
-                Identity = Identity()
-            }), JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion
+        
         */
         #endregion
     }

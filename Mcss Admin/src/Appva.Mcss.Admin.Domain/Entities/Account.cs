@@ -95,7 +95,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		}
 
 		/// <summary>
-		///<summary>
 		/// Primary telephone number.
 		/// </summary>
 		public virtual string TelephoneNumber
@@ -103,6 +102,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
 			get;
 			protected set;
 		}
+
+        /// <summary>
+        /// The Account Title.
+        /// </summary>
+        public virtual string Title
+        {
+            get;
+            protected set;
+        }
 
 		///<summary>
 		/// The device password.

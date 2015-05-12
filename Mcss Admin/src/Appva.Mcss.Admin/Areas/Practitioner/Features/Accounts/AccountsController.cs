@@ -18,6 +18,12 @@ namespace Appva.Mcss.Admin.Features.Accounts
     using Appva.Mcss.Admin.Features.Accounts.List;
     using Appva.Mvc.Filters;
     using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mcss.Admin.Features.Accounts.QuickSearch;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mcss.Admin.Models;
 
     #endregion
 
@@ -64,50 +70,18 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <param name="isPaused">Optional filtering by <c>Account.IsPaused</c></param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet, Permissions("ad0b7efb-589b-4762-acd6-a46d009a21ad"), Route("List")]
-        public ActionResult List(string q, int? page, Guid? filterByDelegation, Guid? filterByTitle, bool filterByCreatedBy = false, bool isActive = true, bool isPaused = false)
+        public ActionResult List(string q, int? page, Guid? DelegationFilterId, Guid? RoleFilterId, bool filterByCreatedBy = false, bool isActive = true, bool isPaused = false)
         {
             return this.View(this.mediator.Send<ListAccountModel>(new ListAccountCommand
                 {
                     SearchQuery = q,
                     CurrentPageNumber = page,
-                    DelegationFilterId = filterByDelegation,
-                    RoleFilterId = filterByTitle,
+                    DelegationFilterId = DelegationFilterId,
+                    RoleFilterId = RoleFilterId,
                     IsFilterByCreatedByEnabled = filterByCreatedBy,
                     IsFilterByIsActiveEnabled = isActive,
                     IsFilterByIsPausedEnabled = isPaused
                 }));
-            /*var user = Identity();
-            var viewModel = new AccountListViewModel
-            {
-                FilterByCreatedBy = filterByCreatedBy,
-                FilterByDelegation = filterByDelegation,
-                FilterByTitle = filterByTitle,
-                Delegations = TaxonomyService.FindChildNodes(HierarchyUtils.Delegation).Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList(),
-                Titles = RoleService.Match(RoleUtils.TitlePrefix).Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList(),
-                Search = ExecuteCommand<SearchViewModel<AccountViewModel>>(new SearchAccountCommand
-                {
-                    Identity = user,
-                    SearchQuery = q,
-                    Page = page,
-                    FilterByDelegation = filterByDelegation,
-                    FilterByTitle = filterByTitle,
-                    FilterByCreatedByIdentity = filterByCreatedBy,
-                    IsActive = isActive,
-                    IsPaused = isPaused
-                }),
-                IsActive = isActive,
-                IsPaused = isPaused
-            };
-            this.LogService.Info("Användare {0} läste medarbetarlista sida {1}".FormatWith(user.FullName, viewModel.Search.PageNumber), user, null, LogType.Read);
-            return View(viewModel);*/
         }
 
         #endregion
@@ -118,17 +92,11 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// Return the create account view.
         /// </summary>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, Hydrate]
+        [Route("Create")]
+        [HttpGet, Hydrate, Dispatch(typeof(Parameterless<CreateAccountModel>))]
         public ActionResult Create()
         {
-            return this.View(this.mediator.Send<CreateAccountModel>(new CreateAccountModel()));
-            /*var GenerateClientPassword = SettingService.GetAccountSettings().ContainsKey("GenerateClientPassword") ? SettingService.GetAccountSettings()["GenerateClientPassword"] : false;
-            return View(new AccountFormViewModel
-            {
-                Taxons = TaxonomyHelper.SelectList(TaxonomyService.Find(HierarchyUtils.Organization)),
-                Titles = TitleHelper.SelectList(RoleService.Match(RoleUtils.TitlePrefix)),
-                PasswordFieldIsVisible = (bool)GenerateClientPassword == false
-            });*/
+            return this.View();
         }
 
         /// <summary>
@@ -137,10 +105,11 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <param name="model">The account model</param>
         /// <param name="collection">The form collection</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [Route("Create")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
         public ActionResult Create(CreateAccountModel model, FormCollection collection)
         {
-            return this.View(this.mediator.Send<CreateAccountModel>(new CreateAccountModel()));
+            return this.View();
             /*if (ModelState.IsValid)
             {
                 Taxon taxon = null;
@@ -177,6 +146,95 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
+        #region Inactivate And Activate View.
+
+        /// <summary>
+        /// Inactivates an account.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/inactivate")]
+        [HttpGet, Dispatch("List", "Accounts")]
+        public ActionResult InActivate(Guid id)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Activates an account.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/activate")]
+        [HttpGet, Dispatch("List", "Accounts")]
+        public ActionResult Activate(Guid id)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Pause And Unpause View.
+
+        /// <summary>
+        /// Pauses an account.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/pause")]
+        [HttpGet, Dispatch("List", "Accounts")]
+        public ActionResult Pause(Guid id)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Unpauses an account.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/unpause")]
+        [HttpGet, Dispatch("List", "Accounts")]
+        public ActionResult UnPause(Guid id)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region IsUnique Json.
+
+        /// <summary>
+        /// Checks whether or not the personal identification number is unique
+        /// across the system.
+        /// </summary>
+        /// <param name="id">Optional account id</param>
+        /// <param name="uniqueIdentifier">The national/personal identification number</param>
+        /// <returns><see cref="JsonResult"/></returns>
+        [Route("is-unique")]
+        [HttpPost, Dispatch, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        public DispatchJsonResult VerifyUniqueAccount(VerifyUniquePatient request)
+        {
+            return this.JsonPost();
+        }
+
+        #endregion
+
+        #region QuickSearch Json.
+
+        /// <summary>
+        /// Returns a list of accounts by search results.
+        /// </summary>
+        /// <param name="request">The <see cref="QuickSearchAccount"/>.</param>
+        /// <returns><see cref="JsonResult"/></returns>
+        [Route("quicksearch")]
+        [HttpGet, Dispatch, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        public DispatchJsonResult QuickSearch(QuickSearchAccount request)
+        {
+            return this.JsonGet();
+        }
+
+        #endregion
         /*
         
         
@@ -285,33 +343,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
-        #region Inactivate And Activate View.
-
-        /// <summary>
-        /// Inactivates an account.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
-        public ActionResult Inactivate(Guid id)
-        {
-            AccountService.Inactivate(id);
-            return this.RedirectToAction(c => c.List(null, null, null, null, false, true, false));
-        }
-
-        /// <summary>
-        /// Activates an account.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
-        public ActionResult Activate(Guid id)
-        {
-            AccountService.Activate(id);
-            return this.RedirectToAction(c => c.List(null, null, null, null, false, true, false));
-        }
-
-        #endregion
+        
 
         #region Pause And Unpause View.
 
@@ -341,49 +373,9 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
-        #region IsUnique Json.
+        
 
-        /// <summary>
-        /// Checks whether or not the personal identification number is unique
-        /// across the system.
-        /// </summary>
-        /// <param name="id">Optional account id</param>
-        /// <param name="uniqueIdentifier">The national/personal identification number</param>
-        /// <returns><see cref="JsonResult"/></returns>
-        [HttpPost, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        public JsonResult IsUnique(Guid? id, string uniqueIdentifier)
-        {
-            return Json(ExecuteCommand<bool>(new IsUniqueIdentifierCommand<Account>
-            {
-                Id = id,
-                UniqueIdentifier = uniqueIdentifier
-            }), JsonRequestBehavior.DenyGet);
-        }
-
-        #endregion
-
-        #region QuickSearch Json.
-
-        /// <summary>
-        /// Returns a list of accounts by search results.
-        /// </summary>
-        /// <param name="term">The term to search for</param>
-        /// <param name="isActive">Filter accounts on is active accounts</param>
-        /// <param name="isPaused">Filter accounts on is paused accounts</param>
-        /// <returns><see cref="JsonResult"/></returns>
-        [HttpGet, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        public ActionResult QuickSearch(string term, bool isActive = true, bool isPaused = false)
-        {
-            return Json(ExecuteCommand<IEnumerable<object>>(new AccountQuickSearch
-            {
-                Term = term,
-                IsActive = isActive,
-                IsPaused = isPaused,
-                Identity = Identity()
-            }), JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion
+        
         */
         #endregion
     }

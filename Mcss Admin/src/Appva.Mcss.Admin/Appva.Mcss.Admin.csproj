@@ -311,22 +311,34 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Activate\ActivateAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Activate\ActivateAccountModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePasswordHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\Create\Handlers\CreateAccountViewHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountPublisher.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InActivateAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InActivateAccountModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountCommand.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountHandler.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountModel.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\List\TestBoll.cs" />
     <Compile Include="Areas\Area51\Features\Cache\List\ListCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\List\ListCacheHandler.cs" />
     <Compile Include="Areas\Area51\Features\Settings\List\ListSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\List\ListSettingsHandler.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\AlertsController.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\CalendarController.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Pause\PauseAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Pause\PauseAccountModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\QuickSearch\QuickSearchAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\QuickSearch\QuickSearchAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\UnPause\UnPauseAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\UnPause\UnPauseAccountModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\RolesSchedulesController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedule.cs" />

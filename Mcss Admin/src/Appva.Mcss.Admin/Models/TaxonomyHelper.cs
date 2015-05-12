@@ -11,11 +11,11 @@ namespace Appva.Mcss.Web {
     
     public class TaxonomyHelper {
 
-        public static List<TaxonViewModel> SelectList(IList<ITaxon> taxonomy) {
+        public static IList<TaxonViewModel> SelectList(IList<ITaxon> taxonomy) {
             return SelectList(null, taxonomy);
         }
 
-        public static List<TaxonViewModel> SelectList(Taxon taxon, IList<ITaxon> taxonomy)
+        public static IList<TaxonViewModel> SelectList(Taxon taxon, IList<ITaxon> taxonomy)
         {
             var retval = new List<TaxonViewModel>();
             var taxonId = taxon.IsNull() ? taxonomy.Where(x => x.IsRoot).SingleOrDefault().Id : taxon.Id;

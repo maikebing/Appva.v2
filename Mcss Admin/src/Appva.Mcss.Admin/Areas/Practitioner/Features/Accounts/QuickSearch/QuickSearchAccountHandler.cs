@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Features.Accounts.List
+namespace Appva.Mcss.Admin.Features.Accounts.QuickSearch
 {
     #region Imports.
 
@@ -25,13 +25,14 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
     using NHibernate.Criterion;
     using NHibernate.Transform;
     using NHibernate.Type;
+using Appva.Mcss.Admin.Infrastructure;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ListAccountHandler : RequestHandler<ListAccountCommand, ListAccountModel>
+    public class QuickSearchAccountHandler : RequestHandler<QuickSearchAccount, IEnumerable<object>>
     {
         #region Variables.
 
@@ -51,16 +52,6 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         private readonly IIdentityService identities;
 
         /// <summary>
-        /// The <see cref="ITaxonomyService"/>.
-        /// </summary>
-        private readonly ITaxonomyService taxonomies;
-
-        /// <summary>
-        /// The <see cref="IRoleService"/>.
-        /// </summary>
-        private readonly IRoleService roles;
-
-        /// <summary>
         /// The <see cref="IAccountRepository"/>.
         /// </summary>
         private readonly IAccountService accounts;
@@ -75,22 +66,16 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
         /// <param name="settings">The <see cref="ISettingsService"/></param>
         /// <param name="identities">The <see cref="IIdentityService"/></param>
-        /// <param name="taxonomies">The <see cref="ITaxonomyService"/></param>
-        /// <param name="roles">The <see cref="IRoleService"/></param>
         /// <param name="accounts">The <see cref="IAccountService"/></param>
-        public ListAccountHandler(
+        public QuickSearchAccountHandler(
             IRuntimeMemoryCache cache,
             ISettingsService settings,
             IIdentityService identities,
-            ITaxonomyService taxonomies,
-            IRoleService roles,
             IAccountService accounts)
         {
             this.cache = cache;
             this.settings = settings;
             this.identities = identities;
-            this.taxonomies = taxonomies;
-            this.roles = roles;
             this.accounts = accounts;
         }
 
@@ -99,7 +84,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         #region IRequestHandler overrides.
 
         /// <inheritdoc />
-        public override ListAccountModel Handle(ListAccountCommand message)
+        public override IEnumerable<object> Handle(QuickSearchAccount message)
         {
             ////this.settings.Find<bool>(SettingKey.AutogeneratePasswordForMobileDevice, false);
             this.settings.Find<bool>(ApplicationSettings.IsAccessControlInPreviewMode, false);
@@ -113,39 +98,13 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
                     IsFilterByCreatedByEnabled = message.IsFilterByCreatedByEnabled,
                     DelegationFilterId = message.DelegationFilterId,
                     RoleFilterId = message.RoleFilterId,
-                    OrganisationFilterId = this.cache.Find<Guid>("Taxon.Default.Cache"),
+                    OrganisationFilterId = this.cache.Find<Guid>("Taxon.Default.Cache"), // FIXME: Global filter
                     CurrentUserId = this.identities.PrincipalId,
-                    SearchQuery = message.SearchQuery
+                    SearchQuery = message.Term
                 },
-                page: message.CurrentPageNumber.GetValueOrDefault(1));
+                pageSize: 30);
 
-            return new ListAccountModel
-            {
-                Accounts = accounts,
-                Roles = this.roles.List()
-                    .Select(
-                        x => new SelectListItem()
-                        {
-                            Value = x.Id.ToString(),
-                            Text = x.Name
-                        })
-                    .ToList()
-                    ,
-                Delegations = this.taxonomies.List(TaxonomicSchema.Delegation)
-                    .Where(x => !x.IsRoot)
-                    .Select(
-                        x => new SelectListItem()
-                        {
-                            Value = x.Id.ToString(),
-                            Text = x.Name
-                        })
-                    .ToList<SelectListItem>(),
-                RoleFilterId = message.RoleFilterId,
-                DelegationFilterId = message.DelegationFilterId,
-                IsFilterByCreatedByEnabled = message.IsFilterByCreatedByEnabled,
-                IsFilterByIsActiveEnabled = message.IsFilterByIsActiveEnabled,
-                IsFilterByIsPausedEnabled = message.IsFilterByIsPausedEnabled
-            };
+            return accounts.Entities.Select(x => x.FullName).ToList();
         }
 
         #endregion

@@ -37,6 +37,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
+        #region Person overrides.
+
+        /// <summary>
+        /// FIXME: Move to person! 
+        /// </summary>
+        public virtual string PersonalIdentityNumber
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
         #region Properties.
 
         /// <summary>

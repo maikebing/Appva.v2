@@ -23,6 +23,35 @@ namespace Appva.Common.Domain
         /// <inheritdoc />
         public abstract bool Equals(T other);
 
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        /// <inheritdoc />
+        public static bool operator ==(ValueObject<T> left, ValueObject<T> right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <inheritdoc />
+        public static bool operator !=(ValueObject<T> left, ValueObject<T> right)
+        {
+            return !left.Equals(right);
+        }
         #endregion
     }
 }

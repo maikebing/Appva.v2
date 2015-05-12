@@ -156,6 +156,10 @@
       <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
       <Name>Appva.Persistence</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
+      <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
+      <Name>Appva.Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
       <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
       <Name>Appva.Tenant</Name>

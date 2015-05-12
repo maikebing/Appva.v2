@@ -44,7 +44,7 @@ namespace Appva.Mcss.Admin.Features.Taxa.Filter
         }
     }
 
-    public class TaxonViewModel
+    public class  TaxonViewModel
     {
         public TaxonViewModel()
         {

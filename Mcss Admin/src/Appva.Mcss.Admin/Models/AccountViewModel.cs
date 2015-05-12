@@ -13,7 +13,7 @@ namespace Appva.Mcss.Web.ViewModels {
 
         public string FullName { get; set; }
 
-        public string UniqueIdentifier { get; set; }
+        public PersonalIdentityNumber UniqueIdentifier { get; set; }
 
         public string Title { get; set; }
 

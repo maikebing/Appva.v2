@@ -38,7 +38,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// </summary>
         /// <param name="personalIdentityNumber">The unique Personal Identity Number</param>
         /// <returns>An <see cref="Account"/> if found, else null</returns>
-        Account FindByPersonalIdentityNumber(string personalIdentityNumber);
+        Account FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber);
 
         /// <summary>
         /// Returns a user account by its unique user name. 
@@ -99,7 +99,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IAccountRepository Members.
 
         /// <inheritdoc />
-        public Account FindByPersonalIdentityNumber(string personalIdentityNumber)
+        public Account FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber)
         {
             var accounts = this.persistenceContext.QueryOver<Account>()
                 .Where(x => x.IsActive)
@@ -131,7 +131,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
-            //// Main query - filter according to search-criteria
+            //// Main query - As a view
             Account account = null;
             var query = this.persistenceContext.QueryOver<Account>(() => account)
                 .Where(x => x.IsActive == model.IsFilterByIsActiveEnabled)
@@ -202,23 +202,28 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                         Projections.Constant(true), 
                         Projections.Constant(false))).Take(1);
 
-            //// Merges queries and selects needed columns and order rows
+            //// Merges queries and selects needed columns and order rows for main query
             AccountModel accountModel = null;
-            query.SelectList(list => list
-                    .SelectSubQuery(daysLeftSubquery).WithAlias(() => accountModel.DelegationDaysLeft)
-                    .Select(Projections.SqlFunction("COALESCE", NHibernateUtil.Boolean, Projections.SubQuery<Delegation>(showAlertOnDaysLeftSubquery), Projections.Constant(false))).WithAlias(() => accountModel.HasExpiringDelegation)
-                    .Select(x => x.IsActive).WithAlias(() => accountModel.IsActive)
-                    .Select(x => x.FirstName).WithAlias(() => accountModel.FirstName)
-                    .Select(x => x.LastName).WithAlias(() => accountModel.LastName)
-                    .Select(x => x.FullName).WithAlias(() => accountModel.FullName)
-                    .Select(x => x.Id).WithAlias(() => accountModel.Id)
-                    .Select(x => x.IsPaused).WithAlias(() => accountModel.IsPaused)
-                    .Select(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber))
-                .OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
+            var mainQuery = query.Clone().Select(
+                Projections.Distinct(
+                    Projections.ProjectionList()
+                    .Add(Projections.Property<Account>(x => x.Id).WithAlias(() => accountModel.Id))
+                    .Add(Projections.SqlFunction("COALESCE", NHibernateUtil.Boolean, Projections.SubQuery<Delegation>(showAlertOnDaysLeftSubquery), Projections.Constant(false)).WithAlias(() => accountModel.HasExpiringDelegation))
+                    .Add(Projections.SubQuery<Delegation>(daysLeftSubquery).WithAlias(() => accountModel.DelegationDaysLeft))
+                    .Add(Projections.Property<Account>(x => x.IsActive).WithAlias(() => accountModel.IsActive))
+                    .Add(Projections.Property<Account>(x => x.FirstName).WithAlias(() => accountModel.FirstName))
+                    .Add(Projections.Property<Account>(x => x.LastName).WithAlias(() => accountModel.LastName))
+                    .Add(Projections.Property<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
+                    .Add(Projections.Property<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
+                    .Add(Projections.Property<Account>(x => x.Title).WithAlias(() => accountModel.Title))
+                    .Add(Projections.Property<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber))));                
+
+            //// Ordering and transforming
+            mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
                 .ThenByAlias(() => accountModel.LastName).Asc
                 .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
 
-            //// Checks that page is bigger then 0
+            //// Checks that page is greater then 0
             if (page < 1)
             {
                 page = 1;
@@ -232,8 +237,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 CurrentPage = page,
                 NextPage = page++,
                 PageSize = pageSize,
-                TotalCount = query.RowCount(),
-                Entities = query.Skip(skip).Take(pageSize).List<AccountModel>()
+                TotalCount = query.Clone().Select(Projections.CountDistinct("Id")).SingleOrDefault<int>(),
+                Entities = mainQuery.Skip(skip).Take(pageSize).List<AccountModel>()               
             };
         }
 

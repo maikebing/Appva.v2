@@ -342,39 +342,6 @@ namespace Appva.Mcss.Admin.Features.Accounts
         }
 
         #endregion
-
-        
-
-        #region Pause And Unpause View.
-
-        /// <summary>
-        /// Pauses an account.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
-        public ActionResult Pause(Guid id)
-        {
-            AccountService.Pause(id);
-            return this.RedirectToAction(c => c.List(null, null, null, null, false, true, false));
-        }
-
-        /// <summary>
-        /// Unpauses an account.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
-        public ActionResult UnPause(Guid id)
-        {
-            AccountService.UnPause(id);
-            return this.RedirectToAction(c => c.List(null, null, null, null, false, true, false));
-        }
-
-        #endregion
-
-        
-
         
         */
         #endregion

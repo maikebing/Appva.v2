@@ -97,6 +97,30 @@ namespace Appva.Mcss.Admin.Application.Services
         void ChangePassword(Account account, string newPassword);
 
         /// <summary>
+        /// InActivates the <see cref="Account"/>
+        /// </summary>
+        /// <param name="account">The <see cref="Account"/></param>
+        void InActivate(Account account);
+
+        /// <summary>
+        /// Activates the inactivated <see cref="Account"/>
+        /// </summary>
+        /// <param name="account">The <see cref="Account"/></param>
+        void Activate(Account account);
+
+        /// <summary>
+        /// Pause the <see cref="Account"/>
+        /// </summary>
+        /// <param name="account">The <see cref="Account"/></param>
+        void Pause(Account account);
+
+        /// <summary>
+        /// Unpause the <see cref="Account"/>
+        /// </summary>
+        /// <param name="account">The <see cref="Account"/></param>
+        void UnPause(Account account);
+
+        /// <summary>
         /// Search for accounts to given search-criteria
         /// </summary>
         /// <param name="model">The search criteria</param>
@@ -104,6 +128,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="pageSize">The page size</param>
         /// <returns>A <see cref="PageableSet"/> of <see cref="AccountModel"/></returns>
         PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10);
+
+
 
         /// <summary>
         /// Creates a new account
@@ -253,6 +279,42 @@ namespace Appva.Mcss.Admin.Application.Services
             };
             return (Guid)this.persitence.Save<Account>(account);
             
+        }
+
+        /// <inheritdoc />
+        public void InActivate(Account account)
+        {
+            account.IsActive = false;
+            account.UpdatedAt = DateTime.Now;
+
+            this.repository.Update(account);
+        }
+
+        /// <inheritdoc />
+        public void Activate(Account account)
+        {
+            account.IsActive = true;
+            account.UpdatedAt = DateTime.Now;
+
+            this.repository.Update(account);
+        }
+
+        /// <inheritdoc />
+        public void Pause(Account account)
+        {
+            account.IsPaused = true;
+            account.UpdatedAt = DateTime.Now;
+
+            this.repository.Update(account);
+        }
+
+        /// <inheritdoc />
+        public void UnPause(Account account)
+        {
+            account.IsPaused = false;
+            account.UpdatedAt = DateTime.Now;
+
+            this.repository.Update(account);
         }
 
         #endregion

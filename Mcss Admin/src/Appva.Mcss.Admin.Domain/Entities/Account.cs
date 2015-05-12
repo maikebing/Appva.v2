@@ -78,7 +78,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual bool IsActive
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -87,7 +87,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual bool IsPaused
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>

@@ -146,6 +146,62 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
+        #region Inactivate And Activate View.
+
+        /// <summary>
+        /// Inactivates an account.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/inactivate")]
+        [HttpGet, Dispatch("List", "Accounts")]
+        public ActionResult InActivate(Guid id)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Activates an account.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/activate")]
+        [HttpGet, Dispatch("List", "Accounts")]
+        public ActionResult Activate(Guid id)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Pause And Unpause View.
+
+        /// <summary>
+        /// Pauses an account.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/pause")]
+        [HttpGet, Dispatch("List", "Accounts")]
+        public ActionResult Pause(Guid id)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Unpauses an account.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/unpause")]
+        [HttpGet, Dispatch("List", "Accounts")]
+        public ActionResult UnPause(Guid id)
+        {
+            return this.View();
+        }
+
+        #endregion
+
         #region IsUnique Json.
 
         /// <summary>
@@ -160,11 +216,6 @@ namespace Appva.Mcss.Admin.Features.Accounts
         public DispatchJsonResult VerifyUniqueAccount(VerifyUniquePatient request)
         {
             return this.JsonPost();
-            /*return Json(ExecuteCommand<bool>(new IsUniqueIdentifierCommand<Account>
-            {
-                Id = id,
-                UniqueIdentifier = uniqueIdentifier
-            }), JsonRequestBehavior.DenyGet);*/
         }
 
         #endregion
@@ -292,33 +343,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
-        #region Inactivate And Activate View.
-
-        /// <summary>
-        /// Inactivates an account.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
-        public ActionResult Inactivate(Guid id)
-        {
-            AccountService.Inactivate(id);
-            return this.RedirectToAction(c => c.List(null, null, null, null, false, true, false));
-        }
-
-        /// <summary>
-        /// Activates an account.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
-        public ActionResult Activate(Guid id)
-        {
-            AccountService.Activate(id);
-            return this.RedirectToAction(c => c.List(null, null, null, null, false, true, false));
-        }
-
-        #endregion
+        
 
         #region Pause And Unpause View.
 

@@ -47,9 +47,32 @@ namespace Appva.Mcss.Admin.Domain.Entities
 				FullName = "Johan Sall Larsson"
 			};
 		}
-		#region Properties.
 
-		/// <summary>
+        #region Private fields.
+
+        /// <summary>
+        /// The title field
+        /// </summary>
+        private readonly string _title;
+        
+        #endregion
+
+        #region Person overrides.
+
+        /// <summary>
+        /// TODO: Change in Person and remove me!
+        /// </summary>
+        public virtual PersonalIdentityNumber PersonalIdentityNumber
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
+        #region Properties.
+
+        /// <summary>
 		/// Whether or not the <see cref="Account"/> ia active.
 		/// </summary>
 		public virtual bool IsActive
@@ -91,7 +114,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual string EmailAddress
 		{
 			get;
-			protected set;
+		    set;
 		}
 
 		/// <summary>
@@ -100,16 +123,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual string TelephoneNumber
 		{
 			get;
-			protected set;
+            protected set;
 		}
 
         /// <summary>
-        /// The Account Title.
+        /// The Account Title. 
+        /// Note Title is readonly and can only be set by changin account roles
         /// </summary>
         public virtual string Title
         {
-            get;
-            protected set;
+            get { return _title; }
         }
 
 		///<summary>
@@ -199,7 +222,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual Taxon Taxon
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>

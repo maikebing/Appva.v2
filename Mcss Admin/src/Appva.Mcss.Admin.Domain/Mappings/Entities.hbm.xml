@@ -76,7 +76,9 @@
     <property name="FullName" />
     <property name="EmailAddress" column="Email" />
     <property name="TelephoneNumber" column="TelephoneNo" />
-    <property name="PersonalIdentityNumber" column="UniqueIdentifier" />
+    <component name="PersonalIdentityNumber">
+      <property name="Value" access="nosetter.camelcase-underscore" column="UniqueIdentifier" />  
+    </component> 
     <property name="DevicePassword" column="Password" />
     <property name="AdminPassword" column="HashedPassword" />
     <property name="Salt" />
@@ -86,7 +88,7 @@
     <property name="LastPasswordChangedDate" />
     <property name="FailedPasswordAttemptsCount" />
     <property name="PasswordResetDate" />
-    <property name="Title" formula="substring((SELECT ', ' + r.Name FROM Role r Inner Join AccountRole a1 On r.Id = a1.RoleId Inner Join Account a On a1.AccountId = a.Id Where r.Active = 'true' And r.IsVisible = 'true' And a.Id = Id Order by r.Name FOR XML PATH('')), 3, 1000)" />
+    <property name="Title" access="nosetter.camelcase-underscore" formula="substring((SELECT ', ' + r.Name FROM Role r Inner Join AccountRole a1 On r.Id = a1.RoleId Inner Join Account a On a1.AccountId = a.Id Where r.Active = 'true' And r.IsVisible = 'true' And a.Id = Id Order by r.Name FOR XML PATH('')), 3, 1000)" />
     <property name="ShowAdminNewsNotice" not-null="true">
       <column name="ShowAdminNewsNotice" default="1" />
     </property>

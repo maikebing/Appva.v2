@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Domain.Models
 {
     #region Imports.
 
+    using Appva.Mcss.Admin.Domain.Entities;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -71,7 +72,7 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// Users perosnal identity number (e.g. Social security number)
         /// </summary>
-        public string PersonalIdentityNumber 
+        public PersonalIdentityNumber PersonalIdentityNumber 
         { 
             get; 
             set; 

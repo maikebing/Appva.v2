@@ -14,8 +14,13 @@ namespace Appva.Mcss.Admin.Application.Services
     using System.Web;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Core.Extensions;
+    using Appva.Repository;
     using Validation;
+    using Appva.Persistence;
+
 
     #endregion
 
@@ -36,7 +41,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="personalIdentityNumber">The unique Personal Identity Number</param>
         /// <returns>An <see cref="Account"/> instance if found, else null</returns>
-        Account FindByPersonalIdentityNumber(string personalIdentityNumber);
+        Account FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber);
 
         /// <summary>
         /// Locates a user account by its unique user name. 
@@ -90,6 +95,27 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="newPassword">The new password in clear text</param>
         /// <returns>True if successfully changes password</returns>
         void ChangePassword(Account account, string newPassword);
+
+        /// <summary>
+        /// Search for accounts to given search-criteria
+        /// </summary>
+        /// <param name="model">The search criteria</param>
+        /// <param name="page">The page</param>
+        /// <param name="pageSize">The page size</param>
+        /// <returns>A <see cref="PageableSet"/> of <see cref="AccountModel"/></returns>
+        PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10);
+
+        /// <summary>
+        /// Creates a new account
+        /// </summary>
+        /// <param name="firstName">The account firstname</param>
+        /// <param name="lastName">The account lastname</param>
+        /// <param name="mail">The mail</param>
+        /// <param name="mobileDevicePassword">The mobile device password</param>
+        /// <param name="personalIdentityNumber">The <see cref="PersonalIdentityNumber"/></param>
+        /// <param name="adress">The organisational <see cref="Taxon"/></param>
+        /// <returns>The account id</returns>
+        Guid Create(string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress);
     }
 
     /// <summary>
@@ -114,6 +140,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IPermissionRepository permissions;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/> implementation.
+        /// </summary>
+        private readonly IPersistenceContext persitence;
+
         #endregion
 
         #region Constructor.
@@ -122,13 +153,15 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="AccountService"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="IAccountRepository"/> implementation</param>
-        /// <param name="permissions">The <see cref="IRoleRepository"/> implementation</param>
+        /// <param name="roles">The <see cref="IRoleRepository"/> implementation</param>
         /// <param name="permissions">The <see cref="IPermissionRepository"/> implementation</param>
-        public AccountService(IAccountRepository repository, IRoleRepository roles, IPermissionRepository permissions)
+        /// <param name="persitence">The <see cref="IPersistenceContext"/> implementation</param>
+        public AccountService(IAccountRepository repository, IRoleRepository roles, IPermissionRepository permissions, IPersistenceContext persitence)
         {
             this.repository = repository;
             this.roles = roles;
             this.permissions = permissions;
+            this.persitence = persitence;
         }
 
         #endregion
@@ -142,7 +175,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public Account FindByPersonalIdentityNumber(string personalIdentityNumber)
+        public Account FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber)
         {
             return this.repository.FindByPersonalIdentityNumber(personalIdentityNumber);
         }
@@ -185,6 +218,41 @@ namespace Appva.Mcss.Admin.Application.Services
             account.ChangePassword(password, salt);
             this.repository.Update(account);
             //// TODO: Should send a mail here with a confirmation that the password has changed.
+        }
+
+        /// <inheritdoc />
+        public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
+        {
+            return this.repository.Search(model, page, pageSize);
+        }
+
+        /// <inheritdoc />
+        public Guid Create(string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress)
+        {
+            if (mail.IsNull())
+            {
+                throw new ArgumentNullException("Account must have mail");
+            }
+            if (personalIdentityNumber.IsNull())
+            {
+                throw new ArgumentNullException("Account must have PersonalIdentiyNumber");
+            }
+            if (adress.IsNull())
+            {
+                throw new ArgumentNullException("Account must have organisational adress");
+            }
+
+            var account = new Account
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                FullName = string.Format("{0} {1}", firstName.Trim(), lastName.Trim()),
+                DevicePassword = mobileDevicePassword,
+                EmailAddress = mail,
+                Taxon = adress
+            };
+            return (Guid)this.persitence.Save<Account>(account);
+            
         }
 
         #endregion

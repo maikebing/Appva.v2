@@ -38,7 +38,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// </summary>
         /// <param name="personalIdentityNumber">The unique Personal Identity Number</param>
         /// <returns>An <see cref="Account"/> if found, else null</returns>
-        Account FindByPersonalIdentityNumber(string personalIdentityNumber);
+        Account FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber);
 
         /// <summary>
         /// Returns a user account by its unique user name. 
@@ -99,7 +99,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IAccountRepository Members.
 
         /// <inheritdoc />
-        public Account FindByPersonalIdentityNumber(string personalIdentityNumber)
+        public Account FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber)
         {
             var accounts = this.persistenceContext.QueryOver<Account>()
                 .Where(x => x.IsActive)

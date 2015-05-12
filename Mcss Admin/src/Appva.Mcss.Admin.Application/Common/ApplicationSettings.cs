@@ -23,6 +23,26 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "System.Core.Users",
             "Auto-generates mobile device password for user accounts automatically during creation");
 
+        /// <summary>
+        /// Makes the field for Mobile Device password editable.
+        /// </summary>
+        /// <remarks>The setting returns a <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity IsMobileDevicePasswordEditable = ApplicationSettingIdentity.CreateNew(
+            "MCSS.Core.Account.EditableClientPassword",
+            "Password for Mobile Device is editable",
+            "System.Core.Account",
+            "Makes the field for Mobile Device password editable in administration");
+
+        #endregion
+
+        #region Admin.
+
+        public static ApplicationSettingIdentity IsUsernameVisible = ApplicationSettingIdentity.CreateNew(
+            "MCSS.Core.Account.DisplayUsername",
+            "Show account username",
+            "System.Core.Account",
+            "Makes the usernames for accounts visible in administration");
+
         #endregion
 
         #region Access Control List.

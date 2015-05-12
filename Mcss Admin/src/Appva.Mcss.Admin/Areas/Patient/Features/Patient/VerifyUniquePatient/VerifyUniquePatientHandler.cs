@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -53,7 +54,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 return ! this.patientService.PatientWithPersonalIdentityNumberExist(message.UniqueIdentifier);
             }
             var patient = this.patientService.Get(message.Id.Value);
-            return patient != null && patient.PersonalIdentityNumber.Equals(message.UniqueIdentifier);
+            return patient != null && patient.PersonalIdentityNumber.Equals(message.UniqueIdentifier); //FIXME: Should check both whit and whitout "-"
         }
 
         #endregion

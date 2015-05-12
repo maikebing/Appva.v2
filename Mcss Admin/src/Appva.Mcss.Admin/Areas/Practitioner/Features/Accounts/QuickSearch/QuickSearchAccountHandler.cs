@@ -54,7 +54,7 @@ using Appva.Mcss.Admin.Infrastructure;
         /// <summary>
         /// The <see cref="IAccountRepository"/>.
         /// </summary>
-        private readonly IAccountRepository accountRepository;
+        private readonly IAccountService accounts;
 
         #endregion
 
@@ -66,17 +66,17 @@ using Appva.Mcss.Admin.Infrastructure;
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
         /// <param name="settings">The <see cref="ISettingsService"/></param>
         /// <param name="identities">The <see cref="IIdentityService"/></param>
-        /// <param name="accountRepository">The <see cref="IAccountRepository"/></param>
+        /// <param name="accounts">The <see cref="IAccountService"/></param>
         public QuickSearchAccountHandler(
             IRuntimeMemoryCache cache,
             ISettingsService settings,
             IIdentityService identities,
-            IAccountRepository accountRepository)
+            IAccountService accounts)
         {
             this.cache = cache;
             this.settings = settings;
             this.identities = identities;
-            this.accountRepository = accountRepository;
+            this.accounts = accounts;
         }
 
         #endregion
@@ -90,7 +90,7 @@ using Appva.Mcss.Admin.Infrastructure;
             this.settings.Find<bool>(ApplicationSettings.IsAccessControlInPreviewMode, false);
             this.settings.Find<bool>(ApplicationSettings.IsAccessControlInstalled, false);
 
-            var accounts = this.accountRepository.Search(
+            var accounts = this.accounts.Search(
                 new SearchAccountModel
                 {
                     IsFilterByIsActiveEnabled = message.IsFilterByIsActiveEnabled,
@@ -98,7 +98,7 @@ using Appva.Mcss.Admin.Infrastructure;
                     IsFilterByCreatedByEnabled = message.IsFilterByCreatedByEnabled,
                     DelegationFilterId = message.DelegationFilterId,
                     RoleFilterId = message.RoleFilterId,
-                    OrganisationFilterId = this.cache.Find<Guid>("Taxon.Default.Cache"),
+                    OrganisationFilterId = this.cache.Find<Guid>("Taxon.Default.Cache"), // FIXME: Global filter
                     CurrentUserId = this.identities.PrincipalId,
                     SearchQuery = message.Term
                 },

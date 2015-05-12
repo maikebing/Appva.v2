@@ -36,7 +36,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <param name="password">The password in clear text</param>
         /// <param name="result">The authentication result</param>
         /// <returns>True, if the authentication was successful</returns>
-        bool AuthenticateWithPersonalIdentityNumberAndPassword(string personalIdentityNumber, string password, out IAuthenticationResult result);
+        bool AuthenticateWithPersonalIdentityNumberAndPassword(PersonalIdentityNumber personalIdentityNumber, string password, out IAuthenticationResult result);
 
         /// <summary>
         /// Authenticates the user account by its unique Personal Identity Number.
@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Application.Security
         #region IFormsAuthentication Members.
 
         /// <inheritdoc />
-        public bool AuthenticateWithPersonalIdentityNumberAndPassword(string personalIdentityNumber, string password, out IAuthenticationResult result)
+        public bool AuthenticateWithPersonalIdentityNumberAndPassword(PersonalIdentityNumber personalIdentityNumber, string password, out IAuthenticationResult result)
         {
             var account = this.accountService.FindByPersonalIdentityNumber(personalIdentityNumber);
             result = this.Authenticate(account, password);

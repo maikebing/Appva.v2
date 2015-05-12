@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <summary>
         /// The <see cref="IAccountRepository"/>.
         /// </summary>
-        private readonly IAccountRepository accountRepository;
+        private readonly IAccountService accounts;
 
         #endregion
 
@@ -77,21 +77,21 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <param name="identities">The <see cref="IIdentityService"/></param>
         /// <param name="taxonomies">The <see cref="ITaxonomyService"/></param>
         /// <param name="roles">The <see cref="IRoleService"/></param>
-        /// <param name="accountRepository">The <see cref="IAccountRepository"/></param>
+        /// <param name="accounts">The <see cref="IAccountService"/></param>
         public ListAccountHandler(
             IRuntimeMemoryCache cache,
             ISettingsService settings,
             IIdentityService identities,
             ITaxonomyService taxonomies,
             IRoleService roles,
-            IAccountRepository accountRepository)
+            IAccountService accounts)
         {
             this.cache = cache;
             this.settings = settings;
             this.identities = identities;
             this.taxonomies = taxonomies;
             this.roles = roles;
-            this.accountRepository = accountRepository;
+            this.accounts = accounts;
         }
 
         #endregion
@@ -105,7 +105,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             this.settings.Find<bool>(ApplicationSettings.IsAccessControlInPreviewMode, false);
             this.settings.Find<bool>(ApplicationSettings.IsAccessControlInstalled, false);
 
-            var accounts = this.accountRepository.Search(
+            var accounts = this.accounts.Search(
                 new SearchAccountModel
                 {
                     IsFilterByIsActiveEnabled = message.IsFilterByIsActiveEnabled,

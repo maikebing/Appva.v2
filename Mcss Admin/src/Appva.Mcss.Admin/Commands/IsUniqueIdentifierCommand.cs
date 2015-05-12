@@ -52,11 +52,11 @@ namespace Appva.Mcss.Web.Controllers
         {
             if (message.Id.HasValue)
             {
-                var person = this.persistence.Get<T>(message.Id);
+                /*var person = this.persistence.Get<T>(message.Id);
                 if (person.IsNotNull() && person.PersonalIdentityNumber.Equals(message.UniqueIdentifier))
                 {
                     return true;
-                }
+                }*/
             }
             return this.IsAlreadyInUse(message.UniqueIdentifier);
         }
@@ -68,7 +68,7 @@ namespace Appva.Mcss.Web.Controllers
         /// <returns></returns>
         private bool IsAlreadyInUse(string uid) {
             var persons = this.persistence.QueryOver<T>()
-                    .Where(x => x.PersonalIdentityNumber == uid)
+                    //.Where(x => x.PersonalIdentityNumber == uid)
                     .List().Count;
             return persons.Equals(0);
         }

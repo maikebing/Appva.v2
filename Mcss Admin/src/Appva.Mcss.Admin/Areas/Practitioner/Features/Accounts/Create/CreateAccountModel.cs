@@ -4,25 +4,26 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Features.Accounts.Create
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
-    using Appva.Cqrs;
-    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel;
-    using Appva.Mcss.Admin.Features.Taxa.Filter;
-    using DataAnnotationsExtensions;
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+    using Appva.Cqrs;
+    using Appva.Mcss.Web.ViewModels;
     using Appva.Mvc.Html.DataAnnotations;
+    using DataAnnotationsExtensions;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class CreateAccountModel : IRequest<CreateAccountModel>
+    public sealed class CreateAccountModel : IRequest<bool>
     {
         /// <summary>
         /// The account ID.
@@ -87,7 +88,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.Create
         [DataType(DataType.Password)]
         [Numeric(ErrorMessage = "Koden får högst innehålla 7 siffror.")]
         [DisplayName("Kod för signering")]
-        public string Password
+        public string DevicePassword
         {
             get;
             set;
@@ -124,7 +125,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.Create
         /// <summary>
         /// Whether or not the device password field is visible.
         /// </summary>
-        public bool PasswordFieldIsVisible
+        public bool IsMobileDevicePasswordFieldVisible
         {
             get;
             set;
@@ -133,7 +134,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.Create
         /// <summary>
         /// Whether or not the device password field is editable.
         /// </summary>
-        public bool EditableClientPassword
+        public bool IsMobileDevicePasswordEditable
         {
             get;
             set;
@@ -142,7 +143,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.Create
         /// <summary>
         /// Whether or not to display the user name.
         /// </summary>
-        public bool DisplayUsername
+        public bool IsUsernameVisible
         {
             get;
             set;

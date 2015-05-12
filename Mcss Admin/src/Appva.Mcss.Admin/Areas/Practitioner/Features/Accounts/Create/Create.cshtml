@@ -1,1 +1,42 @@
-﻿
+﻿@model Appva.Mcss.Admin.Models.CreateAccountModel
+@{ ViewBag.Title = "Ny medarbetare"; }
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AccountCreate" data-valparams="id=@((Model.AccountId.HasValue) ? Model.AccountId.Value.ToString() : "");uidUrl=@Url.Action("VerifyUniqueAccount");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
+    @using (Html.Post())
+    {
+        <div>
+            <h3 class="section-title">Ny boende</h3>
+            @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()
+            @if (Model.IsMobileDevicePasswordFieldVisible)
+            {
+                @Html.FormGroup(x => x.DevicePassword, "text").Label().TextBox().Validate().Build()
+            }
+           
+            <div class="select selectgroup cf">
+                <strong>Adress:</strong>
+                @if (Model.Taxons.IsNotNull())
+                {
+                    foreach (var taxon in Model.Taxons)
+                    {
+                        <div class="select">
+                            <label class="structural">@taxon.Label</label>
+                            @Html.DropDownList(taxon.Id,
+                                new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
+                                string.Format("Välj {0}...", taxon.OptionLabel),
+                                new { @class = "dropdown" }
+                            )
+                        </div>
+                    }
+                }
+                @Html.HiddenFor(m => m.Taxon)
+                @Html.ValidationMessageFor(m => m.Taxon)
+            </div>
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

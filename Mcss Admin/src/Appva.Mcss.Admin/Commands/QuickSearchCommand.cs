@@ -51,7 +51,7 @@ namespace Appva.Mcss.Web.Controllers {
                 Expression<Func<T, object>> expression = x => x.FullName;
                 if (message.Term.First(2).Is(Char.IsNumber))
                 {
-                    expression = x => x.PersonalIdentityNumber;
+                    //expression = x => x.PersonalIdentityNumber;
                 }
                 var result = query.Where(Restrictions.On<T>(expression)
                     .IsLike(message.Term, MatchMode.Anywhere))

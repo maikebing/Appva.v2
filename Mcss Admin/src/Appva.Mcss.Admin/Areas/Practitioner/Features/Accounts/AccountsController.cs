@@ -21,7 +21,9 @@ namespace Appva.Mcss.Admin.Features.Accounts
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Features.Accounts.QuickSearch;
     using Appva.Mcss.Admin.Infrastructure;
-using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mcss.Admin.Models;
 
     #endregion
 
@@ -90,17 +92,11 @@ using Appva.Mcss.Admin.Infrastructure.Attributes;
         /// Return the create account view.
         /// </summary>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, Hydrate, Route("Create")]
+        [Route("Create")]
+        [HttpGet, Hydrate, Dispatch(typeof(Parameterless<CreateAccountModel>))]
         public ActionResult Create()
         {
-            return this.View(this.mediator.Send<CreateAccountModel>(new CreateAccountModel()));
-            /*var GenerateClientPassword = SettingService.GetAccountSettings().ContainsKey("GenerateClientPassword") ? SettingService.GetAccountSettings()["GenerateClientPassword"] : false;
-            return View(new AccountFormViewModel
-            {
-                Taxons = TaxonomyHelper.SelectList(TaxonomyService.Find(HierarchyUtils.Organization)),
-                Titles = TitleHelper.SelectList(RoleService.Match(RoleUtils.TitlePrefix)),
-                PasswordFieldIsVisible = (bool)GenerateClientPassword == false
-            });*/
+            return this.View();
         }
 
         /// <summary>
@@ -109,10 +105,11 @@ using Appva.Mcss.Admin.Infrastructure.Attributes;
         /// <param name="model">The account model</param>
         /// <param name="collection">The form collection</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, Validate, ValidateAntiForgeryToken, Route("Create")]
+        [Route("Create")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
         public ActionResult Create(CreateAccountModel model, FormCollection collection)
         {
-            return this.View(this.mediator.Send<CreateAccountModel>(new CreateAccountModel()));
+            return this.View();
             /*if (ModelState.IsValid)
             {
                 Taxon taxon = null;
@@ -149,7 +146,28 @@ using Appva.Mcss.Admin.Infrastructure.Attributes;
 
         #endregion
 
+        #region IsUnique Json.
 
+        /// <summary>
+        /// Checks whether or not the personal identification number is unique
+        /// across the system.
+        /// </summary>
+        /// <param name="id">Optional account id</param>
+        /// <param name="uniqueIdentifier">The national/personal identification number</param>
+        /// <returns><see cref="JsonResult"/></returns>
+        [Route("is-unique")]
+        [HttpPost, Dispatch, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        public DispatchJsonResult VerifyUniqueAccount(VerifyUniquePatient request)
+        {
+            return this.JsonPost();
+            /*return Json(ExecuteCommand<bool>(new IsUniqueIdentifierCommand<Account>
+            {
+                Id = id,
+                UniqueIdentifier = uniqueIdentifier
+            }), JsonRequestBehavior.DenyGet);*/
+        }
+
+        #endregion
 
         #region QuickSearch Json.
 
@@ -330,26 +348,7 @@ using Appva.Mcss.Admin.Infrastructure.Attributes;
 
         #endregion
 
-        #region IsUnique Json.
-
-        /// <summary>
-        /// Checks whether or not the personal identification number is unique
-        /// across the system.
-        /// </summary>
-        /// <param name="id">Optional account id</param>
-        /// <param name="uniqueIdentifier">The national/personal identification number</param>
-        /// <returns><see cref="JsonResult"/></returns>
-        [HttpPost, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        public JsonResult IsUnique(Guid? id, string uniqueIdentifier)
-        {
-            return Json(ExecuteCommand<bool>(new IsUniqueIdentifierCommand<Account>
-            {
-                Id = id,
-                UniqueIdentifier = uniqueIdentifier
-            }), JsonRequestBehavior.DenyGet);
-        }
-
-        #endregion
+        
 
         
         */

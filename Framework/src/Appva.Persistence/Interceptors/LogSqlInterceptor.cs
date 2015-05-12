@@ -9,7 +9,7 @@ namespace Appva.Persistence.Interceptors
     #region Imports.
 
     using System;
-    using Appva.Logging;
+    using Core.Logging;
     using NHibernate;
     using NHibernate.SqlCommand;
 
@@ -46,10 +46,7 @@ namespace Appva.Persistence.Interceptors
         /// <inheritdoc />
         public override SqlString OnPrepareStatement(SqlString sql)
         {
-            if (Log.IsDebugEnabled())
-            {
-                Log.DebugFormat("SQL: {0}", sql);
-            }
+            Log.Debug("SQL: {0}", sql);
             return base.OnPrepareStatement(sql);
         }
 

@@ -56,7 +56,7 @@ namespace Appva.Core.Extensions
         /// <returns>True if the <see cref="Guid"/> has a non default value</returns>
         public static bool IsNotEmpty(this Guid guid)
         {
-            return Guid.Empty != guid;
+            return ! guid.IsEmpty();
         }
     }
 }

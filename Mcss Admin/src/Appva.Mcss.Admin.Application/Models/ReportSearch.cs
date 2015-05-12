@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Application.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ReportSearch<T>
+    public sealed class ReportSearch<T>
     {
         #region Constructor.
 

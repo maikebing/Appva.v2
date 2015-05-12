@@ -8,24 +8,18 @@ namespace Appva.Mcss.Admin
 {
     #region Imports.
 
-    using System.Data;
     using System.Linq;
     using System.Reflection;
     using System.Web;
     using System.Web.Mvc;
-    using Appva.Apis.TenantServer.Legacy;
     using Appva.Caching.Providers;
+    using Appva.Core.Exceptions;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Persistence;
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Configuration;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Persistence;
-    using Appva.Persistence.Autofac;
-    using Appva.Persistence.MultiTenant;
-    using Appva.Tenant.Identity;
-    using Appva.Tenant.Interoperability.Client;
     using Autofac;
     using Autofac.Integration.Mvc;
     using Microsoft.Owin;
@@ -76,19 +70,13 @@ namespace Appva.Mcss.Admin
             builder.RegisterType<Mediator>().As<IMediator>().InstancePerLifetimeScope();
             builder.RegisterType<MediatorDependencyResolver>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
-            var client = TenantWcfClient.CreateNew();
-            builder.Register(x => client).As<ITenantClient>().InstancePerRequest();
-
             //// Persistence registration
-            builder.RegisterType<TenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
-            var datasource = new MultiTenantDatasource(client, cache, new MultiTenantDatasourceConfiguration
-            {
-                Assembly = "Appva.Mcss.Admin.Domain"
-            }, new DefaultDatasourceExceptionHandler());
-            builder.Register(x => new MultiTenantPersistenceContextAwareResolver(x.Resolve<ITenantIdentificationStrategy>(), datasource)).As<IPersistenceContextAwareResolver>().SingleInstance();
-            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerLifetimeScope().OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
-            builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<DefaultExceptionHandler>().As<IExceptionHandler>();
 
+            builder.RegisterModule(PersistenceModule.CreateNew());
+            //// Cache per tenant?
+            //// http://docs.autofac.org/en/latest/advanced/multitenant.html#resolve-tenant-specific-dependencies
+            builder.RegisterModule(new AutofacWebTypesModule());
             DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));
         }
     }

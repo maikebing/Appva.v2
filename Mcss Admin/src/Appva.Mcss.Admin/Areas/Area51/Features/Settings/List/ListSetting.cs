@@ -28,9 +28,45 @@ namespace Appva.Mcss.Admin.Features.Area51.Cache
         }
 
         /// <summary>
+        /// The setting name.
+        /// </summary>
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The setting description.
+        /// </summary>
+        public string Description
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The setting key.
+        /// </summary>
+        public string Key
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The setting value.
         /// </summary>
         public string Value
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The setting namespace.
+        /// </summary>
+        public string Namespace
         {
             get;
             set;

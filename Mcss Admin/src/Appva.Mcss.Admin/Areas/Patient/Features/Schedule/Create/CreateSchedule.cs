@@ -18,7 +18,7 @@ using Appva.Mcss.Admin.Models;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateSchedule : Identity<ScheduleViewModel>
+    public sealed class CreateSchedule : Identity<CreateScheduleForm>
     {
     }
 }

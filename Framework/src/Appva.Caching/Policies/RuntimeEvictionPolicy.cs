@@ -45,5 +45,20 @@ namespace Appva.Caching.Policies
     /// </summary>
     public sealed class RuntimeEvictionPolicy : CacheItemPolicy, IRuntimeEvictionPolicy
     {
+        /// <summary>
+        /// Non removable policy.
+        /// </summary>
+        public static readonly RuntimeEvictionPolicy NonRemovable = new RuntimeEvictionPolicy
+            {
+                Priority = CacheItemPriority.NotRemovable
+            };
+
+        /// <summary>
+        /// Default policy.
+        /// </summary>
+        public static readonly RuntimeEvictionPolicy Default = new RuntimeEvictionPolicy
+            {
+                Priority = CacheItemPriority.Default
+            };
     }
 }

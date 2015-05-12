@@ -18,7 +18,7 @@ using Appva.Cqrs;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListAlert : IRequest<AlertListViewModel>
+    public sealed class ListAlert : IRequest<ListAlertModel>
     {
         /// <summary>
         /// The patient ID.

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Appva.Mcss.Admin.Configuration;
+<!DOCTYPE html>
 <!--[if IE 8]><html class="ie8"> <![endif]-->
 <!--[if IE 9]><html class="ie9 gt-ie8"> <![endif]-->
 <!--[if gt IE 9]><!-->
@@ -376,9 +377,12 @@
         </script>
     </head>
     <body>
-        <div class="environment">
-            <p>LOCALHOST</p>
-        </div>
+        @if (Application.IsInDevelopment || Application.IsInStaging)
+        {
+            <div class="environment">
+                <p>@*Application.FullName*@ENVIRONMENT @Application.Environment | VERSION @Application.Version | SERVER @Application.MachineName</p>
+            </div>
+        }
         <div class="global-filter">
             @Html.Action("TaxonFilter", "Taxa", new { Area = string.Empty })
         </div>

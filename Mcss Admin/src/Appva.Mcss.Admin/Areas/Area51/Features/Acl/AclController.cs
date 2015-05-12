@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl
+namespace Appva.Mcss.Admin.Controllers
 {
     #region Imports.
 
@@ -90,7 +90,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl
         [AlertSuccess("Roller och behörigheter är nu aktiverade!")]
         public ActionResult Activate()
         {
-            this.mediator.Publish(new Activate());
+            this.mediator.Publish(new AclActivate());
             return this.RedirectToAction("Index");
         }
 

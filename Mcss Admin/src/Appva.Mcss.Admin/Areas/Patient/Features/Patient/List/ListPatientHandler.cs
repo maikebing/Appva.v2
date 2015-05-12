@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Models.handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mcss.Web.Mappers;
+    using Appva.Mcss.Admin.Infrastructure;
 
     #endregion
 
@@ -29,6 +30,11 @@ namespace Appva.Mcss.Admin.Models.handlers
     internal sealed class ListPatientHandler : RequestHandler<ListPatient, ListPatientModel>
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="IPatientTransformer"/> dispatcher.
+        /// </summary>
+        private readonly IPatientTransformer transformer;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/> dispatcher.
@@ -42,8 +48,9 @@ namespace Appva.Mcss.Admin.Models.handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListPatientHandler"/> class.
         /// </summary>
-        public ListPatientHandler(IPersistenceContext persistence)
+        public ListPatientHandler(IPatientTransformer transformer, IPersistenceContext persistence)
         {
+            this.transformer = transformer;
             this.persistence = persistence;
         }
 
@@ -85,7 +92,7 @@ namespace Appva.Mcss.Admin.Models.handlers
             {
                 Search = new SearchViewModel<PatientViewModel>()
                     {
-                        Items = PatientMapper.ToListOfPatientViewModel(this.persistence, items),
+                        Items = this.transformer.ToPatientList(items),
                         PageNumber = pageIndex,
                         PageSize = pageSize,
                         TotalItemCount = totalCount.Value

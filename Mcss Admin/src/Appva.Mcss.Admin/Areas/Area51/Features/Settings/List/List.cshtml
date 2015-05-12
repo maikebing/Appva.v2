@@ -7,44 +7,53 @@
     <h1>Inställningar</h1>
     @Html.ActionLink("Ny inställning", "Create", null, new { @class = "btn lb-link" })
 </div>
-<table id="signed-events" style="background:#fff;">
-    <thead class="head">
-        <tr>
-            <th>Key</th>
-            <th>Value</th>
-            <th>&nbsp;</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div id="content-primary">
+    <table id="signed-events">
+        <thead class="head">
             <tr>
-                <td>@item.Id</td>
-                <td>@Html.Serialize(item.Value)</td>
-                <td>
-                    @Html.ActionLink("Redigera", "Update", new { Id = item.Id }, new { @class = "btn" })
-                </td>
+                <th>ID</th>
+                <th>Key</th>
+                <th>Value</th>
+                <th>Name</th>
+                <th>Namespace</th>
+                <th>Description</th>
+                <th>&nbsp;</th>
             </tr>
-        }
-    </tbody>
-</table>
-
-<table id="signed-events" style="background:#fff;">
-    <thead class="head">
-        <tr>
-            <th>Type</th>
-            <th>Value</th>
-            <th>Issuer</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var claim in this.Request.GetOwinContext().Authentication.User.Claims)
-        {
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Key</td>
+                    <td>@Html.Serialize(item.Value)</td>
+                    <td>@item.Name</td>
+                    <td>@item.Namespace</td>
+                    <td>@item.Description</td>
+                    <td>
+                        @Html.ActionLink("Redigera", "Update", new { Id = item.Id }, new { @class = "btn" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table id="signed-events">
+        <thead class="head">
             <tr>
-                <td>@claim.Type</td>
-                <td>@claim.Value</td>
-                <td>@claim.Issuer</td>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Issuer</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var claim in this.Request.GetOwinContext().Authentication.User.Claims)
+            {
+                <tr>
+                    <td>@claim.Type</td>
+                    <td>@claim.Value</td>
+                    <td>@claim.Issuer</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

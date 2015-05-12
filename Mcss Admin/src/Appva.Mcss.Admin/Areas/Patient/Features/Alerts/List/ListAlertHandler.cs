@@ -20,13 +20,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web.Mappers;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Infrastructure;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ListAlertHandler : RequestHandler<ListAlert, AlertListViewModel>
+    internal sealed class ListAlertHandler : RequestHandler<ListAlert, ListAlertModel>
     {
         #region Variables.
 
@@ -46,6 +47,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ILogService logService;
 
         /// <summary>
+        /// The <see cref="IPatientTransformer"/>.
+        /// </summary>
+        private readonly IPatientTransformer transformer;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
@@ -60,9 +66,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="IPatientService"/> implementation</param>
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="ILogService"/> implementation</param>
-        public ListAlertHandler(IPatientService patientService, ITaskService taskService, ILogService logService, IPersistenceContext persistence)
+        public ListAlertHandler(IPatientService patientService, 
+            ITaskService taskService, ILogService logService, IPatientTransformer transformer, IPersistenceContext persistence)
 		{
             this.patientService = patientService;
+            this.transformer = transformer;
             this.taskService = taskService;
             this.logService = logService;
             this.persistence = persistence;
@@ -73,7 +81,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override AlertListViewModel Handle(ListAlert message)
+        public override ListAlertModel Handle(ListAlert message)
         {
             var patient = this.patientService.Get(message.Id);
             var changeMonth = message.Year.HasValue && !message.Month.HasValue;
@@ -101,9 +109,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 .Where(x => x.Scheduled >= startDate && x.Scheduled <= endDate)
                 .ToList();
             //this.logService.Info("Användare {0} läste larm mellan datum {1:yyyy-MM-dd} och {2:yyyy-MM-dd}".FormatWith(user.FullName, startDate, endDate), user, patient, LogType.Read);
-            return new AlertListViewModel
+            return new ListAlertModel
             {
-                Patient = PatientMapper.ToPatientViewModel(this.persistence, patient),
+                Patient = this.transformer.ToPatient(patient),
                 TaskCurrentMap = TaskUtils.MapTimeOfDayAndSchedule(notHandledDelays),
                 TaskEarlierMap = TaskUtils.MapTimeOfDayAndSchedule(handledDelays),
                 Years = DateTimeUtils.GetYearSelectList(patient.CreatedAt.Year, startDate.Year == endDate.Year ? startDate.Year : 0),

@@ -44,12 +44,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
         public void Setup()
         {
-            var theEvent = new SecurityEventEvent(SecurityEventType.UserAuthentication, SecurityEventAction.Create, SecurityEventOutcome.Success);
-            var securityEvent = new SecurityEvent(
-                    new SecurityEventEvent(SecurityEventType.UserAuthentication, SecurityEventAction.Create, SecurityEventOutcome.Success),
-                    new SecurityEventParticipant(null, "", "", "", true, null, new SecurityEventParticipantNetwork("", SecurityEventParticipantNetworkType.IpAddress)),
-                    new SecurityEventSource("", "", SecurityEventSourceType.WebServer),
-                    new SecurityEventObject("", SecurityEventObjectType.Person, SecurityEventObjectRole.Patient, SecurityEventObjectLifecycle.Access, SecurityEventObjectSensitivity.Normal, "", "", ""));
+            
         }
 
         #endregion

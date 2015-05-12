@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Patient.Features
+namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
@@ -24,19 +25,19 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class UpdateSequenceHandler : RequestHandler<UpdateSequence, SequenceViewModel>
+    internal sealed class UpdateSequenceHandler : RequestHandler<UpdateSequence, UpdateSequenceForm>
     {
         #region Private Variables.
+
+        /// <summary>
+        /// The <see cref="ISequenceService"/>.
+        /// </summary>
+        private readonly ISequenceService sequenceService;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext context;
-
-        /// <summary>
-        /// The <see cref="ILogService"/>.
-        /// </summary>
-        private readonly ILogService logService;
 
         #endregion
 
@@ -45,10 +46,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceHandler"/> class.
         /// </summary>
-        public UpdateSequenceHandler(IPersistenceContext context, ILogService logService)
+        public UpdateSequenceHandler(ISequenceService sequenceService, IPersistenceContext context)
         {
+            this.sequenceService = sequenceService;
             this.context = context;
-            this.logService = logService;
         }
 
         #endregion
@@ -56,58 +57,36 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         #region RequestHandler<CreateSequence, SequenceViewModel> Overrides.
 
         /// <inheritdoc />
-        public override SequenceViewModel Handle(UpdateSequence message)
+        public override UpdateSequenceForm Handle(UpdateSequence message)
         {
-            /*var roleService = new RoleService(Session);
-            var schedule = Session.Get<Schedule>(Sequence.Schedule.Id);
-            var delegations = GetDelegations(schedule);
-            DateTime? dummy = null;
-            var model = new SequenceViewModel();
-            model.Name = Sequence.Name;
-            model.Description = Sequence.Description;
-            model.StartDate = (Sequence.OnNeedBasis) ? dummy : (Sequence.Dates.IsEmpty()) ? Sequence.StartDate : dummy;
-            model.EndDate = (Sequence.OnNeedBasis) ? dummy : (Sequence.Dates.IsEmpty()) ? Sequence.EndDate : dummy;
-            model.RangeInMinutesBefore = Sequence.RangeInMinutesBefore;
-            model.RangeInMinutesAfter = Sequence.RangeInMinutesAfter;
-            model.Delegation = (Sequence.Taxon.IsNotNull()) ? Sequence.Taxon.Id : Guid.Empty;
-            model.Delegations = delegations;
-            model.Dates = Sequence.Dates;
-            model.Hour = Sequence.Hour;
-            model.Minute = Sequence.Minute;
-            model.Interval = Sequence.Interval;
-            model.Times = CreateTimes().Select(x => new CheckBoxViewModel
+            //// FIXME: Log here!
+            var sequence = this.sequenceService.Find(message.SequenceId);
+            var schedule = this.context.Get<Schedule>(message.ScheduleId);
+            return new UpdateSequenceForm
             {
-                Id = x,
-                Checked = false
-            }).ToList();
-            if (Sequence.Times.IsNotEmpty())
-            {
-                var times = Sequence.Times.Split(',');
-                foreach (var time in times)
-                {
-                    var value = 0;
-                    if (int.TryParse(time, out value))
-                    {
-                        foreach (var checkbox in model.Times)
-                        {
-                            if (checkbox.Id == value)
-                            {
-                                checkbox.Checked = true;
-                            }
-                        }
-                    }
-                }
-            }
-            model.OnNeedBasis = Sequence.OnNeedBasis;
-            model.OnNeedBasisStartDate = (Sequence.OnNeedBasis) ? Sequence.StartDate : dummy;
-            model.OnNeedBasisEndDate = (Sequence.OnNeedBasis) ? Sequence.EndDate : dummy;
-            model.Reminder = Sequence.Reminder;
-            model.ReminderInMinutesBefore = Sequence.ReminderInMinutesBefore;
-            model.Patient = Sequence.Patient;
-            model.Schedule = Sequence.Schedule;
-            model.Nurse = Sequence.Role != null && Sequence.Role.MachineName.Equals("_TITLE_N");
-            Result = model;*/
-            return null;
+                Id = message.Id,
+                Name = sequence.Name,
+                Description = sequence.Description,
+                StartDate = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.StartDate : (DateTime?) null,
+                EndDate = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.EndDate : (DateTime?) null,
+                RangeInMinutesBefore = sequence.RangeInMinutesBefore,
+                RangeInMinutesAfter = sequence.RangeInMinutesAfter,
+                Delegation = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
+                Delegations = this.GetDelegations(schedule),
+                Dates = sequence.Dates,
+                Hour = sequence.Hour,
+                Minute = sequence.Minute,
+                Interval = sequence.Interval,
+                Times = this.CreateTimes(sequence),
+                OnNeedBasis = sequence.OnNeedBasis,
+                OnNeedBasisStartDate = sequence.OnNeedBasis ? sequence.StartDate : (DateTime?) null,
+                OnNeedBasisEndDate = sequence.OnNeedBasis ? sequence.EndDate : (DateTime?) null,
+                Reminder = sequence.Reminder,
+                ReminderInMinutesBefore = sequence.ReminderInMinutesBefore,
+                Patient = sequence.Patient,
+                Schedule = sequence.Schedule,
+                Nurse = sequence.Role != null && sequence.Role.MachineName.Equals("_TITLE_N")
+            };
         }
 
         #endregion
@@ -124,10 +103,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             var delegations = this.context.QueryOver<Taxon>()
                 .Where(x => x.IsActive == true)
                 .And(x => x.IsRoot == false)
+                .And(x => x.Parent == schedule.ScheduleSettings.DelegationTaxon)
                 .OrderBy(x => x.Weight).Asc
                 .ThenBy(x => x.Name).Asc
                 .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
-                .Where(x => x.MachineName == TaxonomicSchema.Delegation.Id).List();
+                    .Where(x => x.MachineName == TaxonomicSchema.Delegation.Id)
+                .List();
             return delegations.Select(x => new SelectListItem
             {
                 Text = x.Name,
@@ -139,12 +120,55 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// TODO: REFACTOR?
         /// </summary>
         /// <returns></returns>
-        private IList<int> CreateTimes()
+        private IList<CheckBoxViewModel> CreateTimes(Sequence sequence)
         {
-            return new List<int>
+            var checkBoxList = new List<CheckBoxViewModel>
             {
-                6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5
+                new CheckBoxViewModel(6),
+                new CheckBoxViewModel(7),
+                new CheckBoxViewModel(8),
+                new CheckBoxViewModel(9),
+                new CheckBoxViewModel(10),
+                new CheckBoxViewModel(11),
+                new CheckBoxViewModel(12),
+                new CheckBoxViewModel(13),
+                new CheckBoxViewModel(14),
+                new CheckBoxViewModel(15),
+                new CheckBoxViewModel(16),
+                new CheckBoxViewModel(17),
+                new CheckBoxViewModel(18),
+                new CheckBoxViewModel(19),
+                new CheckBoxViewModel(20),
+                new CheckBoxViewModel(21),
+                new CheckBoxViewModel(22),
+                new CheckBoxViewModel(23),
+                new CheckBoxViewModel(24),
+                new CheckBoxViewModel(1),
+                new CheckBoxViewModel(2),
+                new CheckBoxViewModel(3),
+                new CheckBoxViewModel(4),
+                new CheckBoxViewModel(5),
             };
+
+            if (sequence.Times.IsNotEmpty())
+            {
+                var times = sequence.Times.Split(',');
+                foreach (var time in times)
+                {
+                    var value = 0;
+                    if (int.TryParse(time, out value))
+                    {
+                        foreach (var checkbox in checkBoxList)
+                        {
+                            if (checkbox.Id == value)
+                            {
+                                checkbox.Checked = true;
+                            }
+                        }
+                    }
+                }
+            }
+            return checkBoxList;
         }
 
         #endregion

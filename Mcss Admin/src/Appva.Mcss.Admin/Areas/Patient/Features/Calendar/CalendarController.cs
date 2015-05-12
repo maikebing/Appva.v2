@@ -133,49 +133,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="id">The event id</param>
         /// <param name="date">The event date</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
         [Route("edit")]
-        public ActionResult Edit(Guid id, DateTime date)
+        [HttpGet, Dispatch]
+        public ActionResult Edit(EditEventSequence request)
         {
-            var evt = this.eventService.Get(id);
-            var categories = this.eventService.GetCategories();
-            var categorySelectlist = categories.IsNotNull() ? categories.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.Id.ToString()
-            }).ToList() : new List<SelectListItem>();
-            //// Shall check which role needed to have premissions to create categories.
-            /*if (PermissionUtils.UserHasPermission(Identity(), "CreateCalendarCategory"))
-            {
-                categorySelectlist.Add(new SelectListItem
-                {
-                    Value = "new",
-                    Text = "Skapa ny...",
-                    Selected = false
-                });
-            }*/
-            return View(new EventViewModel
-            {
-                PatientId = evt.Patient.Id,
-                SequenceId = evt.Id,
-                ChoosedDate = date,
-                Description = evt.Description,
-                StartDate = evt.StartDate,
-                EndDate = (DateTime)evt.EndDate,
-                AllDay = evt.AllDay,
-                StartTime = string.Format("{0:HH:mm}", evt.StartDate),
-                EndTime = string.Format("{0:HH:mm}", evt.EndDate),
-                Absent = evt.Absent,
-                PauseAnyAlerts = evt.PauseAnyAlerts,
-                Interval = evt.Interval,
-                IntervalFactor = evt.IntervalFactor,
-                SpecificDate = evt.IntervalIsDate,
-                Signable = evt.CanRaiseAlert,
-                VisibleOnOverview = evt.Overview,
-                Category = evt.Schedule.ScheduleSettings.Id.ToString(),
-                Categories = categorySelectlist,
-                CalendarSettings = this.settingsService.GetCalendarSettings()
-            });
+            return this.View();
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class CreateScheduleHandler : RequestHandler<CreateSchedule, ScheduleViewModel>
+    internal sealed class CreateScheduleHandler : RequestHandler<CreateSchedule, CreateScheduleForm>
     {
         #region Variables.
 
@@ -62,7 +62,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler Overrides.
 
-        public override ScheduleViewModel Handle(CreateSchedule message)
+        public override CreateScheduleForm Handle(CreateSchedule message)
         {
             //var account = Identity();
             //var roles = account.Roles;
@@ -91,7 +91,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         Text = x.Name,
                         Value = x.Id.ToString()
                     }).ToList();
-            return new ScheduleViewModel
+            return new CreateScheduleForm
             {
                 Id = message.Id,
                 Items = items

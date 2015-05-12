@@ -22,24 +22,24 @@ namespace Appva.Mcss.Admin
     internal static class AuthenticationConfiguration
     {
         /// <summary>
-        /// Registers the OWIN authentication pipelines.
+        /// Registers the Owin authentication pipelines.
         /// <externalLink>
-        ///     <linkText>OWIN Authentication</linkText>
+        ///     <linkText>Owin Authentication</linkText>
         ///     <linkUri>
         ///         http://go.microsoft.com/fwlink/?LinkId=301864
         ///     </linkUri>
         /// </externalLink>
         /// </summary>
         /// <param name="app">The <see cref="IAppBuilder"/></param>
-        public static void Register(IAppBuilder app)
+        public static void Configure(IAppBuilder app)
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationMode = AuthenticationMode.Active,
-                AuthenticationType = AuthenticationType.Administrative.Value,
-                CookieSecure = CookieSecureOption.SameAsRequest,
-                LoginPath = new PathString("/auth/sign-in")
-            });
+                {
+                    AuthenticationMode = AuthenticationMode.Active,
+                    AuthenticationType = AuthenticationType.Administrative.Value,
+                    CookieSecure = CookieSecureOption.SameAsRequest,
+                    LoginPath = new PathString("/auth/sign-in")
+                });
         }
     }
 }

@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Patient.Features
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
@@ -18,15 +18,21 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class UpdateSequence : IRequest<SequenceViewModel>
+    public sealed class UpdateSequence : CreateOrUpdateSequence, IRequest<UpdateSequenceForm>
     {
-        public Guid PatientId
+        /// <summary>
+        /// The patient ID.
+        /// </summary>
+        public Guid Id
         {
             get;
             set;
         }
 
-        public Guid ScheduleId
+        /// <summary>
+        /// The sequence ID.
+        /// </summary>
+        public Guid SequenceId
         {
             get;
             set;

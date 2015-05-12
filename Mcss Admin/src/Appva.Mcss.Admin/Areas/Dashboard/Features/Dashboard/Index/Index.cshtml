@@ -1,0 +1,84 @@
+﻿@model HomeViewModel
+@{ ViewBag.Title = "Översikt"; }
+<div id="main" class="status-view">
+    <div id="content" class="cf">
+        <div id="status-filter" class="cf">
+            @Html.ActionLink("Fullständig rapport", "Index", "Report", new { }, new { @class = "btn" })
+        </div>
+        @if (TempData["Message"] != null) {
+            <div class="success-msg" style="margin: 0 20px 20px;">
+                <p>@(TempData["Message"] as string)</p>
+            </div>
+        }
+        <div id="content-primary">
+            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Alert", header = "Pågående insatser" }); }
+            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Inventory", header = "Kontrollräkning narkotika" }); }
+            <div class="panel">
+                <div class="heading cf">
+                    @Html.ActionLink("Fullständig rapport ...", "Index", "Report", new { }, new { })
+                    <h2>Totalt resultat senaste veckan</h2>
+                </div>
+                <div id="report" class="cf">
+                    <div id="chart" class="chart" style="height: 200px;"></div>
+                    <div class="data cf">
+                        <dl>
+                            <dt>I tid</dt>
+                            <dd id="onTime">
+                                <img src="@Url.Image("ajax-load.gif")" alt="Laddar" />
+                            </dd>
+                            <dt>Ej i tid</dt>
+                            <dd id="notOnTime">
+                                <img src="@Url.Image("ajax-load.gif")" alt="Laddar" />
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="content-secondary">
+            @if (Model.HasOrderOverview)
+            {
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Order", header = "Påfyllning av läkemedel" });
+            }
+            @if (Model.HasCalendarOverview)
+            {
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Event", header = "Kalender de närmaste 7 dagarna" });
+            }
+            @*
+                Add correct area here
+            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Delegation", header = "Utlöpande delegeringar" }); }
+                *@
+        </div>
+    </div>
+    @* FIXME: This should be implemented
+    @{ Html.RenderAction("News", "Notification"); }
+        *@
+</div>
+<script type="text/javascript">
+    mcss.chart.Load({
+        'selector': '#chart',
+        'url': '@Url.Action("Chart")',
+        'min': new Date(@Model.SevenDayStartDate.Year, @(Model.SevenDayStartDate.Month - 1), @Model.SevenDayStartDate.Day),
+        'max': new Date(@Model.SevenDayEndDate.Year, @(Model.SevenDayEndDate.Month - 1), @Model.SevenDayEndDate.Day),
+        'parameters': {
+            'startDate': '@Model.SevenDayStartDate.ToShortDateString()',
+            'endDate': '@Model.SevenDayEndDate.ToShortDateString()'
+        }
+    });
+    $.getJSON('@Url.Action("GetSevenDayReport")')
+            .success(function (data) {
+                $('#notOnTime').html(data.TasksNotOnTime + "%");
+                $('#onTime').html(data.TasksOnTime + "%");
+                if (data.TasksOnTime > data.ComparedDateSpanTasksOnTime) {
+                    $('#onTime').append('<img src="@Url.Image("trendup.png")" alt="Uppåtgående" />');
+                }
+                else {
+                    $('#onTime').append('<img src="@Url.Image("trenddn.png")" alt="Nedåtgående" />');
+                }
+            })
+            .error(function () { 
+                $("#report").addClass('error'); 
+                $("#report").empty(); 
+                $("#report").append('<div class="loader">Ett fel inträffade!</div>') 
+            });
+</script>

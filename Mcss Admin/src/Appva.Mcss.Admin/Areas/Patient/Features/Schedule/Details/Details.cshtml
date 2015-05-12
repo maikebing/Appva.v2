@@ -168,11 +168,11 @@
 						<td class="edit">
                             @if (true/*Permissions.CanShow(Permissions.PatientSchedulesUpdate)*/)
                             {
-                                @Html.ActionLink("Ändra", "Edit", "Sequence", new { id = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                                @Html.ActionLink("Ändra", "Update", "Sequence", new { id = Model.Patient.Id, sequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
                             }
                             @if (true/*Permissions.CanShow(Permissions.PatientSchedulesDelete)*/)
                             {
-                                @Html.ActionLink("Ta bort", "Inactivate", "Sequence", new { id = item.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                                @Html.ActionLink("Ta bort", "Inactivate", "Sequence", new { id = Model.Patient.Id, sequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })
 						    }
                         </td>
 					</tr>

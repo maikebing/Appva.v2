@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Admin.Utils", "Appva.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Tenant", "..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj", "{443693E3-D712-40FB-837B-A1DA866695FD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{5E7FD2C0-16CE-467A-9F88-9DDC486D886F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

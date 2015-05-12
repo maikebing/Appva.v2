@@ -8,7 +8,7 @@ namespace Appva.Persistence
 {
     #region Imports.
 
-    using Logging;
+    using Core.Logging;
     using NHibernate;
     using Validation;
 
@@ -19,14 +19,6 @@ namespace Appva.Persistence
     /// </summary>
     public interface IPersistenceContextAwareResolver
     {
-        /// <summary>
-        /// Returns the <see cref="IDatasource"/>.
-        /// </summary>
-        IDatasource Datasource
-        {
-            get;
-        }
-
         /// <summary>
         /// Returns the current <see cref="ISessionFactory"/>.
         /// </summary>
@@ -43,19 +35,16 @@ namespace Appva.Persistence
     /// <summary>
     /// Abstract base <see cref="IPersistenceContextAwareResolver"/> implementation.
     /// </summary>
-    public abstract class PersistenceContextAwareResolver : IPersistenceContextAwareResolver
+    /// <typeparam name="T">The data source type</typeparam>
+    public abstract class PersistenceContextAwareResolver<T> : IPersistenceContextAwareResolver
+        where T : IDatasource
     {
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ILog"/> for <see cref="Datasource"/>.
-        /// </summary>
-        private static readonly ILog Log = LogProvider.For<PersistenceContextAwareResolver>();
-
-        /// <summary>
         /// The <see cref="IDatasource"/> instance.
         /// </summary>
-        private readonly IDatasource datasource;
+        private readonly T datasource;
 
         #endregion
 
@@ -65,9 +54,8 @@ namespace Appva.Persistence
         /// Initializes a new instance of the <see cref="PersistenceContextAwareResolver"/> class.
         /// </summary>
         /// <param name="datasource">The <see cref="IDatasource"/></param>
-        protected PersistenceContextAwareResolver(IDatasource datasource)
+        protected PersistenceContextAwareResolver(T datasource)
         {
-            Requires.NotNull(datasource, "datasource");
             this.datasource = datasource;
             this.datasource.Connect();
         }
@@ -76,8 +64,10 @@ namespace Appva.Persistence
 
         #region IPersistenceContextProvider Members.
 
-        /// <inheritdoc />
-        public IDatasource Datasource
+        /// <summary>
+        /// Returns the <see cref="T"/>.
+        /// </summary>
+        public T Datasource
         {
             get
             {
@@ -91,7 +81,6 @@ namespace Appva.Persistence
         /// <inheritdoc />
         public virtual IPersistenceContext CreateNew()
         {
-            Log.Debug("Created new <IPersistenceContext> from abstract base <PersistenceContextAwareResolver>");
             return new PersistenceContext(this);
         }
 

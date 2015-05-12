@@ -28,7 +28,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     public interface IPatientTransformer
     {
         PatientViewModel ToPatient(Patient patient);
-        IList<PatientViewModel> ToPatientList(params Patient[] patients);
+        IList<PatientViewModel> ToPatientList(IList<Patient> patients);
     }
 
     /// <summary>
@@ -83,10 +83,10 @@ namespace Appva.Mcss.Admin.Infrastructure
 
         public PatientViewModel ToPatient(Patient patient)
         {
-            return this.ToPatientList(patient).FirstOrDefault();
+            return this.ToPatientList(new List<Patient> { patient }).FirstOrDefault();
         }
 
-        public IList<PatientViewModel> ToPatientList(params Patient[] patients)
+        public IList<PatientViewModel> ToPatientList(IList<Patient> patients)
         {
             var taxons = this.taxonService.List(TaxonomicSchema.Organization);
             var superiors = this.roleService.MembersOfRole("_superioraccount");

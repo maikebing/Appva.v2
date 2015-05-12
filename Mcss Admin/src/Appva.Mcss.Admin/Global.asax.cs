@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin
     using System.Web.Optimization;
     using System.Web.Routing;
     using Appva.Mvc.Engines;
+    using HibernatingRhinos.Profiler.Appender.NHibernate;
     using log4net.Config;
 
     #endregion
@@ -27,11 +28,9 @@ namespace Appva.Mcss.Admin
         /// <inheritdoc />
         protected void Application_Start()
         {
-            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
-
+            NHibernateProfiler.Initialize();
             XmlConfigurator.Configure();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-            IocConfiguration.Configure();
             AreaRegistration.RegisterAllAreas();
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfiguration.RegisterRoutes(RouteTable.Routes);

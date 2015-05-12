@@ -92,7 +92,7 @@ namespace Appva.Caching.Providers
         /// </returns>
         /// <exception cref="System.ArgumentNullException">If cacheKey is null</exception>
         /// <exception cref="System.ArgumentNullException">If value is null</exception>
-        bool Add<T>(object cacheKey, T value, RuntimeEvictionPolicy policy);
+        bool Add<T>(object cacheKey, T value, RuntimeEvictionPolicy policy = null);
 
         /// <summary>
         /// Adds a cache value in the cache, regardless whether a matching entry already 
@@ -110,7 +110,7 @@ namespace Appva.Caching.Providers
         /// </param>
         /// <exception cref="System.ArgumentNullException">If cacheKey is null</exception>
         /// <exception cref="System.ArgumentNullException">If value is null</exception>
-        void Upsert<T>(object cacheKey, T value, RuntimeEvictionPolicy policy);
+        void Upsert<T>(object cacheKey, T value, RuntimeEvictionPolicy policy = null);
 
         /// <summary>
         /// Removes a cache entry from the cache.
@@ -275,7 +275,7 @@ namespace Appva.Caching.Providers
         }
 
         /// <inheritdoc />
-        public bool Add<T>(object cacheKey, T value, RuntimeEvictionPolicy policy)
+        public bool Add<T>(object cacheKey, T value, RuntimeEvictionPolicy policy = null)
         {
             var key = cacheKey as string;
             if (key == null)
@@ -286,7 +286,7 @@ namespace Appva.Caching.Providers
         }
 
         /// <inheritdoc />
-        public void Upsert<T>(object cacheKey, T value, RuntimeEvictionPolicy policy)
+        public void Upsert<T>(object cacheKey, T value, RuntimeEvictionPolicy policy = null)
         {
             var key = cacheKey as string;
             if (key == null)

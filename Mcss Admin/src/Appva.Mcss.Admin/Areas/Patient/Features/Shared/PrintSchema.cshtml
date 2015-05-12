@@ -1,0 +1,202 @@
+﻿@model Appva.Mcss.Web.ViewModels.PrintViewModel
+@{
+    ViewBag.Title = "Print";
+    Layout = "~/Areas/Patient/Features/Shared/_PrintLayout.cshtml";
+}
+@foreach (var schedule in Model.PrintSchedule.Sequences)
+{
+    var usesOldStatus = false;
+    var usesNewStatus = false;
+    <div id="header" class="cf">
+        <div id="logo"><img src="@Url.Image("logo.png")" alt="Prototyp" width="60" /></div>
+        <h1>@Model.Schedule.Name @String.Format("{0:yyyy-MM-dd}", schedule.Key) - @String.Format("{0:yyyy-MM-dd}", schedule.Key.FirstOfMonth().AddDays(DateTime.DaysInMonth(schedule.Key.Year, schedule.Key.Month) - 1))</h1>
+    </div>
+    <div id="signprint">
+        <table>
+            <tbody>
+                <tr>
+                    <td>Boende<h2>@Model.Patient.FirstName @Model.Patient.LastName</h2></td>
+                    <td>Personnummer<h2>@Model.Patient.PersonalIdentityNumber</h2></td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Insats</th>
+                    <th>Tid</th>
+                    <th colspan="@DateTime.DaysInMonth(schedule.Key.Year, schedule.Key.Month)">Dag</th>
+                </tr>
+                <tr>
+                    <th colspan="2"></th>
+                    @for (var day = 0; day < DateTime.DaysInMonth(schedule.Key.Year, schedule.Key.Month); day++)
+                    {
+                        <th>@(day + 1)</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sequence in schedule.Value.Where(x => !x.Value.OnNeedBasis).OrderBy(x => x.Value.Time))
+                {
+                    <tr>
+                        <td>
+                            @sequence.Value.Name
+                            @if (Model.EmptySchema)
+                            {
+                                <span>@sequence.Value.Instruction</span>
+                            }
+                        </td>
+                        <td>@sequence.Value.Time</td>
+                        @for (var day = 0; day < DateTime.DaysInMonth(schedule.Key.Year, schedule.Key.Month); day++)
+                        {
+                            var initials = string.Empty;
+                            if (sequence.Value.Days.ContainsKey(day + 1) && sequence.Value.Days[day + 1].IsCompleted)
+                            {
+                                var completedBy = sequence.Value.Days[day + 1].CompletedBy;
+                                initials = Model.PrintSchedule.Signatures[schedule.Key][string.Format("{0};{1}", completedBy.FullName, completedBy.Id)];
+
+                                if (sequence.Value.Days[day + 1].StatusTaxon != null)
+                                {
+                                    if (sequence.Value.Days[day + 1].StatusTaxon.Weight > 1)
+                                    {
+                                        usesNewStatus = true;
+                                        initials = string.Format("{0}/{1}", initials, sequence.Value.Days[day + 1].StatusTaxon.Name.Substring(0, 1));
+                                    }
+                                }
+                                else
+                                {
+                                    usesOldStatus = true;
+                                    switch (sequence.Value.Days[day + 1].Status)
+                                    {
+                                        case 2:
+                                            initials = string.Format("{0}/De", initials);
+                                            break;
+                                        case 3:
+                                            initials = string.Format("{0}/Ej", initials);
+                                            break;
+                                        case 4:
+                                            initials = string.Format("{0}/Ka", initials);
+                                            break;
+                                        case 5:
+                                            initials = string.Format("{0}/Ma", initials);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+
+                            }
+                            <td class="@(sequence.Value.Days.ContainsKey(day + 1) && sequence.Value.Days[day + 1].IsNotNull() ? "ok" : "none")">
+                                @(sequence.Value.Days.ContainsKey(day + 1) && sequence.Value.Days[day + 1].IsNotNull() ? initials : "—")
+                            </td>
+                        }
+                    </tr>
+                }
+                @if (schedule.Value.Any(x => x.Value.OnNeedBasis))
+                {
+                    <tr>
+                        <th colspan="33">Vid behov</th>
+                    </tr>
+                    foreach (var sequence in schedule.Value.Where(x => x.Value.OnNeedBasis).OrderBy(x => x.Value.Name))
+                    {
+                        <tr>
+                            <td>@sequence.Value.Name</td>
+                            <td>Vid behov</td>
+                            @for (var day = 0; day < DateTime.DaysInMonth(schedule.Key.Year, schedule.Key.Month); day++)
+                            {
+                                var initials = string.Empty;
+                                if (sequence.Value.Days.ContainsKey(day + 1) && sequence.Value.Days[day + 1].IsCompleted)
+                                {
+                                    var completedBy = sequence.Value.Days[day + 1].CompletedBy;
+                                    initials = Model.PrintSchedule.Signatures[schedule.Key][string.Format("{0};{1}", completedBy.FullName, completedBy.Id)];
+
+                                    if (sequence.Value.Days[day + 1].StatusTaxon != null)
+                                    {
+                                        if (sequence.Value.Days[day + 1].StatusTaxon.Weight > 1)
+                                        {
+                                            usesNewStatus = true;
+                                            initials = string.Format("{1}/{0}", initials, sequence.Value.Days[day + 1].StatusTaxon.Name.Substring(0, 1));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        usesOldStatus = true;
+                                        switch (sequence.Value.Days[day + 1].Status)
+                                        {
+                                            case 2:
+                                                initials = string.Format("De/{0}", initials);
+                                                break;
+                                            case 3:
+                                                initials = string.Format("Ej/{0}", initials);
+                                                break;
+                                            case 4:
+                                                initials = string.Format("Ka/{0}", initials);
+                                                break;
+                                            case 5:
+                                                initials = string.Format("Me/{0}", initials);
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+
+                                }
+                                <td class="@(sequence.Value.Days.ContainsKey(day + 1) && sequence.Value.Days[day + 1].IsNotNull() ? "ok" : "none")">
+                                    @(sequence.Value.Days.ContainsKey(day + 1) && sequence.Value.Days[day + 1].IsNotNull() ? initials : "—")
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <p>
+            <strong>Symboler:</strong>
+            @if (usesOldStatus)
+            {
+                @:Ej/sign = Ej given; De/sign = Delvis given; Ka/sign = Kunde inte ta läkemedel; Me/sign = Läkemedel medskickat;
+            }
+            @if (usesNewStatus || !usesOldStatus)
+            {
+                foreach (var status in Model.StatusTaxons)
+                {
+                    if (status.Weight > 1)
+                    {
+                        @(string.Format("{0}/sign = {1}; ", status.Name.Substring(0, 1), status.Name))
+                    }
+
+                }
+            }
+        </p>
+
+        <h3>Signaturförtydligande</h3>
+        <table class="clarify">
+            <thead>
+                <tr>
+                    <th>Namn</th>
+                    <th class="signature">Sign</th>
+                    <th>Namn</th>
+                    <th class="signature">Sign</th>
+                    <th>Namn</th>
+                    <th class="signature">Sign</th>
+                    <th>Namn</th>
+                    <th class="signature">Sign</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{var signList = Model.PrintSchedule.Signatures[schedule.Key].ToList();}
+                @for (var i = 0; i < 4 || signList.Count > i * 4; i++)
+                {
+                    <tr>
+                        @for (var j = 0; j < 4; j++)
+                        {
+                            <td>@(signList.Count > i * 4 + j ? signList[i * 4 + j].Key.Split(';')[0] : "")</td>
+                            <td>@(signList.Count > i * 4 + j ? signList[i * 4 + j].Value : "")</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+

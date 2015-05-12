@@ -13,19 +13,19 @@ using Appva.Mcss.Admin.Application.Services;
 
 namespace Appva.Mcss.Web.Mappers {
 
-    public class SequencePageViewModelBuilder {
+    /*public class SequencePageViewModelBuilder {
 
-        public static SequenceViewModel Create(IPersistenceContext session, Guid scheduleId)
+        public static CreateSequenceModel Create(IPersistenceContext session, Guid scheduleId)
         {
             return CreateOrUpdate(session, scheduleId, null);
         }
 
-        public static SequenceViewModel Update(IPersistenceContext session, Guid scheduleId, SequenceViewModel model)
+        public static CreateSequenceModel Update(IPersistenceContext session, Guid scheduleId, CreateSequenceModel model)
         {
             return CreateOrUpdate(session, scheduleId, model);
         }
 
-        public static SequenceViewModel Edit(IPersistenceContext session, Sequence sequence)
+        public static CreateSequenceModel Edit(IPersistenceContext session, Sequence sequence)
         {
             var roleService = new RoleService(new RoleRepository(session));
             var reminderRecipients = roleService.MembersOfRole("reminderrecipients");
@@ -38,7 +38,7 @@ namespace Appva.Mcss.Web.Mappers {
                 .And(x => x.Parent.Id == schedule.ScheduleSettings.DelegationTaxon.Id)
                 .List();
             DateTime? dummy = null;
-            var model = new SequenceViewModel();
+            var model = new CreateSequenceModel();
             model.Name = sequence.Name;
             model.Description = sequence.Description;
             model.StartDate = (sequence.OnNeedBasis) ? dummy : (sequence.Dates.IsEmpty()) ? sequence.StartDate : dummy;
@@ -81,7 +81,7 @@ namespace Appva.Mcss.Web.Mappers {
             return model;
         }
 
-        private static SequenceViewModel CreateOrUpdate(IPersistenceContext session, Guid scheduleId, SequenceViewModel model)
+        private static CreateSequenceModel CreateOrUpdate(IPersistenceContext session, Guid scheduleId, CreateSequenceModel model)
         {
             var roleService = new RoleService(new RoleRepository(session));
             var reminderRecipients = roleService.MembersOfRole("reminderrecipients");
@@ -92,7 +92,7 @@ namespace Appva.Mcss.Web.Mappers {
                 .JoinQueryOver<Delegation>(x => x.Delegations)
                 .Where(x => x.IsActive == true && x.Pending == false)
                 .List();
-            model = model.IsNull() ? new SequenceViewModel() : model;
+            model = model.IsNull() ? new CreateSequenceModel() : model;
             model.Delegations = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.DelegationTaxon.ToString() }).ToList();
             model.Intervals = new List<SelectListItem>() {
                 new SelectListItem() { Text = "Varje dag", Value = "1" },
@@ -106,6 +106,6 @@ namespace Appva.Mcss.Web.Mappers {
         }
 
 
-    }
+    }*/
 
 }

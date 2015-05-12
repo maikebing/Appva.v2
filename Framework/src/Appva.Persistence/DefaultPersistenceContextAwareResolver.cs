@@ -8,8 +8,6 @@ namespace Appva.Persistence
 {
     #region Imports.
 
-    using System.Diagnostics;
-    using Logging;
     using NHibernate;
 
     #endregion
@@ -17,17 +15,8 @@ namespace Appva.Persistence
     /// <summary>
     /// Default single database source persistence context resolver implementation.
     /// </summary>
-    public sealed class DefaultPersistenceContextAwareResolver : PersistenceContextAwareResolver
+    public sealed class DefaultPersistenceContextAwareResolver : PersistenceContextAwareResolver<IDefaultDatasource>
     {
-        #region Variables.
-
-        /// <summary>
-        /// The <see cref="ILog"/> for <see cref="Datasource"/>.
-        /// </summary>
-        private static readonly ILog Log = LogProvider.For<DefaultPersistenceContextAwareResolver>();
-
-        #endregion
-
         #region Constructor.
 
         /// <summary>
@@ -46,10 +35,7 @@ namespace Appva.Persistence
         /// <inheritdoc />
         public override ISessionFactory Resolve()
         {
-            Log.Debug("Resolving <ISessionFactory> from <DefaultPersistenceContextAwareResolver>");
-            var datasource = this.Datasource as IDefaultDatasource;
-            Debug.Assert(datasource != null, "datasource != null");
-            return datasource.SessionFactory;
+            return this.Datasource.SessionFactory;
         }
 
         #endregion

@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using NHibernate.Transform;
     using NHibernate.Criterion;
     using Appva.Mcss.Web.Controllers;
+    using Appva.Mcss.Admin.Infrastructure;
 
     #endregion
 
@@ -49,6 +50,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IPatientTransformer"/>.
+        /// </summary>
+        private readonly IPatientTransformer transformer;
+
 		#endregion
 
 		#region Constructor.
@@ -59,8 +65,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="IIdentityService"/> implementation</param>
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="IAccountService"/> implementation</param>
-        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, IPersistenceContext persistence)
+        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, IPatientTransformer transformer, IPersistenceContext persistence)
 		{
+            this.transformer = transformer;
             this.identityService = identityService;
             this.accountService = accountService;
             this.persistence = persistence;
@@ -109,7 +116,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 .Value;
             return new AlertOverviewViewModel
             {
-                Patients = PatientMapper.ToListOfPatientViewModel(this.persistence, patients),
+                Patients = this.transformer.ToPatientList(patients),
                 CountAll = countAll,
                 CountNotSigned = countNotSigned
             };

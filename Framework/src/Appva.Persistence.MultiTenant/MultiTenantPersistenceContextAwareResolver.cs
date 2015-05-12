@@ -4,23 +4,25 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Application.Persistence
+namespace Appva.Persistence.MultiTenant
 {
     #region Imports.
 
     using System;
-    using Appva.Logging;
-    using Appva.Persistence;
-    using Appva.Persistence.MultiTenant;
-    using Appva.Tenant.Identity;
+    using Core.Resources;
+    using Core.Extensions;
+    using Core.Logging;
+    using Messages;
     using NHibernate;
+    using Persistence;
+    using Tenant.Identity;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class MultiTenantPersistenceContextAwareResolver : PersistenceContextAwareResolver
+    public sealed class MultiTenantPersistenceContextAwareResolver : PersistenceContextAwareResolver<IMultiTenantDatasource>
     {
         #region Variables.
 
@@ -59,15 +61,10 @@ namespace Appva.Mcss.Admin.Application.Persistence
             ITenantIdentifier identifier = null;
             if (this.strategy.TryIdentifyTenant(out identifier))
             {
-                if (Log.IsDebugEnabled())
-                {
-                    Log.DebugFormat("Attemping to resolve <ISessionFactory> for <ITenantIdentifier> {0}", identifier.Value);
-                }
-                var datasource = this.Datasource as IMultiTenantDatasource;
-                return datasource.Lookup(identifier.Value);
+                Log.Debug(Debug.ResolveTenantIdentity, identifier.Value);
+                return this.Datasource.Locate(CacheTypes.Persistence.FormatWith(identifier.Value));
             }
-            Log.Error("Unable to resolve <ITenantIdentifier>");
-            throw new Exception("Unable to resolve tenant identifer");
+            throw new PersistenceContextAwareResolverException(Exceptions.FailedToResolveTenantIdentifier);
         }
 
         #endregion

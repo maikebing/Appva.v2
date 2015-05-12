@@ -1,10 +1,10 @@
-﻿@model Appva.Mcss.Web.ViewModels.PrintPopUpViewModel
+﻿@model Appva.Mcss.Admin.Models.PrintSequenceSettingsForm
 @{
     ViewBag.Title = "Skriv ut pappersverion";
 }
 
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="SchedulePrint" data-valparams="startdate=@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddYears(-10))">
-    @using (Html.BeginForm(new { id = Model.Id, scheduleId = Model.ScheduleSettingsId })) {
+    @using (Html.BeginForm(new { id = Model.Id, scheduleId = Model.ScheduleId })) {
         <h3 class="section-title">Skriv ut pappersverion</h3>
         <div class="text medium">
             @Html.LabelFor(m => m.StartDate)

@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Patient.Features
+namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
@@ -24,7 +24,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class InactivateSequenceHandler : NotificationHandler<InactivateSequence>
+    internal sealed class InactivateSequenceHandler : RequestHandler<InactivateSequence, DetailsSchedule>
     {
         #region Private Variables.
 
@@ -53,15 +53,20 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
         #endregion
 
-        #region NotificationHandler<InactivateSequence> Overrides.
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override void Handle(InactivateSequence message)
+        public override DetailsSchedule Handle(InactivateSequence message)
         {
             var entity = this.context.Get<Sequence>(message.SequenceId);
             entity.IsActive = false;
             entity.UpdatedAt = DateTime.Now;
             this.context.Update(entity);
+            return new DetailsSchedule
+            {
+                Id = message.Id,
+                ScheduleId = message.ScheduleId
+            };
         }
 
         #endregion

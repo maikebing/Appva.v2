@@ -25,7 +25,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IReportService
+    public interface IReportService : IService
     {
         /// <summary>
         /// 
@@ -42,7 +42,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ReportService
+    public sealed class ReportService : IReportService
     {
         #region Variables.
 

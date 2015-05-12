@@ -9,6 +9,7 @@ using NHibernate.Transform;
 using Appva.Cqrs;
 using Appva.Persistence;
 using Appva.Mcss.Admin.Application.Services.Settings;
+using Appva.Mcss.Admin.Models;
 
 namespace Appva.Mcss.Web.Controllers
 {

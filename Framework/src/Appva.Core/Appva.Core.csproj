@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\Packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -42,7 +43,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Debug\Messages.Designer.cs" />
+    <Compile Include="Exceptions\DefaultExceptionHandler.cs" />
+    <Compile Include="Exceptions\IExceptionHandler.cs" />
+    <Compile Include="Exceptions\NoOpExceptionHandler.cs" />
     <Compile Include="Extensions\ByteArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
@@ -51,10 +54,16 @@
     <Compile Include="Extensions\OperatorExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Http\RestfulClient.cs" />
+    <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\ILogProvider.cs" />
+    <Compile Include="Logging\Log4NetLogProvider.cs" />
+    <Compile Include="Logging\LogExtensions.cs" />
+    <Compile Include="Logging\LoggerExecutionWrapper.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\LogProvider.cs" />
+    <Compile Include="Logging\NoOpLogger.cs" />
     <Compile Include="Messaging\EmailMessage.cs" />
     <Compile Include="Messaging\IMessage.cs" />
-    <Compile Include="Messaging\IMessageService.cs" />
     <Compile Include="Messaging\EmailService.cs" />
     <Compile Include="Messaging\SmsMessage.cs" />
     <Compile Include="Messaging\SmsService.cs" />
@@ -68,6 +77,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ClaimTypes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ExceptionWhen.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionWhen.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\PermissionTypes.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -87,13 +101,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Appva.Logging\Appva.Logging.csproj">
-      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
-      <Name>Appva.Logging</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Debug\Messages.resx" />
     <EmbeddedResource Include="Resources\CacheTypes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CacheTypes.Designer.cs</LastGenOutput>
@@ -101,6 +108,10 @@
     <EmbeddedResource Include="Resources\ClaimTypes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ClaimTypes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ExceptionWhen.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionWhen.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\PermissionTypes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

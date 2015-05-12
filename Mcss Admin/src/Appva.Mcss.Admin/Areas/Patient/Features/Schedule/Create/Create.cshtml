@@ -1,19 +1,21 @@
-﻿@model Appva.Mcss.Web.ViewModels.ScheduleViewModel
-@{ ViewBag.Title = "Ny signeringslista"; }
-<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="ScheduleCreate" data-valparams="id=@Model.Id;url=@Url.Action("VerifyUnique", "Schedule")">
-	@using (Html.BeginForm()) {
+﻿@model CreateScheduleForm
+@{ 
+    Title("Ny signeringslista"); 
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="ScheduleCreate" data-valparams="id=@Model.Id;url=@Url.Action("VerifyUnique", "Schedule", new { Id = Model.Id })">
+	@using (Html.Post())
+    {
 		<h3 class="section-title">Ny signeringslista</h3>
 		<div class="select">
-			@Html.LabelFor(m => m.ScheduleSetting)
+			@Html.LabelFor(x => x.ScheduleSetting)
 			@Html.DropDownListFor(
-				m => m.ScheduleSetting,
+				x => x.ScheduleSetting,
 				new SelectList(Model.Items, "Value", "Text", Model.ScheduleSetting),
 				"Välj typ ..."
 			)
-			@Html.ValidationMessageFor(m => m.ScheduleSetting)
+			@Html.ValidationMessageFor(x => x.ScheduleSetting)
 		</div>
 		<div class="submit">
-			@Html.AntiForgeryToken()
 			@Html.Submit("Spara")
 			@Html.Cancel("Avbryt")
 		</div>

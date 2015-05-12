@@ -1,17 +1,10 @@
 ﻿@model Appva.Mcss.Web.ViewModels.ScheduleReportViewModel
 @{ ViewBag.Title = "Rapport"; ViewBag.MainClass = "report-view"; }
-@Html.Partial("~/Views/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Action("Menu", "Menu", new
-            {
-                Key = "admin_patient_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Patient.Id.ToString(),
-                IgnoreAction = false
-            })
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+    @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
 	<h1>Rapport</h1>
-	    @using(Html.BeginForm()) {
+	    @using(Html.Post()) {
         <p class="filter">
             @Html.LabelFor(m => m.StartDate)
             @Html.EditorFor(m => m.StartDate)
@@ -99,11 +92,11 @@
 				    </thead>
 				    <tbody>
                         @foreach (var task in Model.Report.Search.Items) {
-    <tr class="@(!task.Active ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
+    <tr class="@(!task.IsActive ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
 						    <td>@task.Name</td>
 						    <td>
                                 @if (task.OnNeedBasis) {
-                                    @TimeSpanDifference.ToShortDateTime(task.Modified, "Idag", "Igår")
+                                    @TimeSpanDifference.ToShortDateTime(task.UpdatedAt, "Idag", "Igår")
                                 } else {
                                     if (!task.IsCompleted) {
                                         @:-
@@ -118,7 +111,7 @@
                                     @:Ej signerad
                                 } else {
                                     if (task.OnNeedBasis) {
-										@:kl @String.Format("{0:HH:mm}", task.Modified)
+										@:kl @String.Format("{0:HH:mm}", task.UpdatedAt)
 									} else {
                                         @:kl @String.Format("{0:HH:mm}", task.CompletedDate.GetValueOrDefault())
 									}

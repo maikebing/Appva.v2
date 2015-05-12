@@ -13,15 +13,33 @@ namespace Appva.Core.Messaging
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
+    using Appva.Core.Resources;
     using Extensions;
     using Logging;
+    using Validation;
 
     #endregion
+
+    public interface ISmsService
+    {
+        /// <summary>
+        /// Sends an SMS message.
+        /// </summary>
+        /// <param name="message">The SMS message</param>
+        void Send(SmsMessage message);
+
+        /// <summary>
+        /// Sends an SMS message asyncronous.
+        /// </summary>
+        /// <param name="message">The SMS message</param>
+        /// <returns>The <see cref="Task"/></returns>
+        Task SendAsync(SmsMessage message);
+    }
 
     /// <summary>
     /// TODO Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class SmsService : IMessageService
+    public sealed class SmsService : ISmsService
     {
         #region Variables.
 
@@ -72,30 +90,37 @@ namespace Appva.Core.Messaging
         #region IMessageService Members.
 
         /// <inheritdoc />
-        public void Send(IMessage message)
+        public void Send(SmsMessage message)
         {
-            using (var memoryStream = new MemoryStream())
+            try
             {
-                var messageBytes = this.BuildMessage(message);
-                var request = (HttpWebRequest) WebRequest.Create(this.uri);
-                request.ContentType = "application/x-www-form-urlencoded";
-                request.Method = "POST";
-                using (var requestStream = request.GetRequestStream())
+                using (var memoryStream = new MemoryStream())
                 {
-                    requestStream.Write(messageBytes, 0, messageBytes.Length);
+                    var messageBytes = this.BuildMessage(message);
+                    var request = (HttpWebRequest)WebRequest.Create(this.uri);
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.Method = "POST";
+                    using (var requestStream = request.GetRequestStream())
+                    {
+                        requestStream.Write(messageBytes, 0, messageBytes.Length);
+                    }
+                    //// TODO: Verify headers.
+                    using (var response = request.GetResponse())
+                    using (var responseStream = response.GetResponseStream())
+                    {
+                        Debug.Assert(responseStream != null, "responseStream != null");
+                        responseStream.CopyTo(memoryStream);
+                    }
                 }
-                //// TODO: Verify headers.
-                using (var response = request.GetResponse())
-                using (var responseStream = response.GetResponseStream())
-                {
-                    Debug.Assert(responseStream != null, "responseStream != null");
-                    responseStream.CopyTo(memoryStream);
-                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, ExceptionWhen.SendingSms, message.To, message.Body);
             }
         }
 
         /// <inheritdoc />
-        public async Task SendAsync(IMessage message)
+        public async Task SendAsync(SmsMessage message)
         {
             var memoryStream = new MemoryStream();
             try
@@ -119,7 +144,7 @@ namespace Appva.Core.Messaging
             }
             catch (Exception ex)
             {
-                Logger.ErrorException("An exception occured in <SmsService>", ex);
+                Logger.Error(ex, ExceptionWhen.SendingSms, message.To, message.Body);
             }
             finally
             {
@@ -136,12 +161,15 @@ namespace Appva.Core.Messaging
         /// </summary>
         /// <param name="message">The message</param>
         /// <returns>UTF-8 byte array</returns>
-        private byte[] BuildMessage(IMessage message)
+        private byte[] BuildMessage(SmsMessage message)
         {
-            var smsMessage = message as SmsMessage;
-            Debug.Assert(smsMessage != null, "smsMessage != null");
-            var xmlMessage = XmlFormat.FormatWith(smsMessage.Body, this.sender, "<recipient><orgaddress>{0}</orgaddress></recipient>".FormatWith(smsMessage.To));
-            return xmlMessage.ToUtf8Bytes();
+            Requires.NotNull(message, "message");
+            return XmlFormat.FormatWith(
+                message.Body, 
+                this.sender, 
+                "<recipient><orgaddress>{0}</orgaddress></recipient>".FormatWith(message.To))
+                .ToUtf8Bytes();
+
         }
 
         #endregion

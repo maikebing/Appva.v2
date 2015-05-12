@@ -11,6 +11,7 @@ namespace Appva.Core.Messaging
     using System;
     using System.Net.Mail;
     using System.Threading.Tasks;
+    using Appva.Core.Resources;
     using Logging;
     using Validation;
 
@@ -19,8 +20,20 @@ namespace Appva.Core.Messaging
     /// <summary>
     /// Marker interface for E-mail messaging service.
     /// </summary>
-    public interface IEmailService : IMessageService
+    public interface IEmailService
     {
+        /// <summary>
+        /// Sends an E-mail message.
+        /// </summary>
+        /// <param name="message">The E-mail message</param>
+        void Send(EmailMessage message);
+
+        /// <summary>
+        /// Sends an E-mail message asyncronous.
+        /// </summary>
+        /// <param name="message">The E-mail message</param>
+        /// <returns>The <see cref="Task"/></returns>
+        Task SendAsync(EmailMessage message);
     }
 
     /// <summary>
@@ -40,36 +53,36 @@ namespace Appva.Core.Messaging
         #region IMessageService Members.
 
         /// <inheritdoc />
-        public void Send(IMessage message)
+        public void Send(EmailMessage message)
         {
             Requires.NotNull(message, "message");
             try
             {
                 using (var client = new SmtpClient())
                 {
-                    client.Send((EmailMessage) message);
+                    client.Send(message);
                 }
             } 
             catch (Exception ex)
             {
-                Logger.ErrorException("An exception occured in <EmailService>", ex);
+                Logger.Error(ex, ExceptionWhen.SendingEmail, message.To.ToString(), message.Subject, message.Body);
             }
         }
 
         /// <inheritdoc />
-        public async Task SendAsync(IMessage message)
+        public async Task SendAsync(EmailMessage message)
         {
             Requires.NotNull(message, "message");
             try
             {
                 using (var client = new SmtpClient())
                 {
-                    await client.SendMailAsync((EmailMessage) message);
+                    await client.SendMailAsync(message).ConfigureAwait(false);
                 }
             } 
             catch (Exception ex)
             {
-                Logger.ErrorException("An exception occured in <EmailService>", ex);
+                Logger.Error(ex, ExceptionWhen.SendingEmail, message.To.ToString(), message.Subject, message.Body);
             }
         }
 

@@ -9,6 +9,7 @@ namespace Appva.Persistence
     #region Imports.
 
     using System;
+    using Appva.Core.Exceptions;
     using NHibernate;
     using Validation;
 
@@ -41,9 +42,9 @@ namespace Appva.Persistence
         private readonly IDefaultDatasourceConfiguration configuration;
 
         /// <summary>
-        /// The <see cref="IDatasourceExceptionHandler"/> instance.
+        /// The <see cref="IExceptionHandler"/> instance.
         /// </summary>
-        private readonly IDatasourceExceptionHandler exceptionHandler;
+        private readonly IExceptionHandler exceptionHandler;
 
         #endregion
 
@@ -56,7 +57,7 @@ namespace Appva.Persistence
         /// <param name="exceptionHandler">The <see cref="IDatasourceExceptionHandler"/></param>
         public DefaultDatasource(
             IDefaultDatasourceConfiguration configuration,
-            IDatasourceExceptionHandler exceptionHandler)
+            IExceptionHandler exceptionHandler)
         {
             Requires.NotNull(configuration, "configuration");
             Requires.NotNull(exceptionHandler, "exceptionHandler");
@@ -84,7 +85,7 @@ namespace Appva.Persistence
         {
             try
             {
-                this.SessionFactory = this.Build(new PersistenceUnit(
+                this.SessionFactory = this.Build(PersistenceUnit.CreateNew(
                     this.configuration.ConnectionString,
                     this.configuration.Assembly,
                     this.configuration.Properties));

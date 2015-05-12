@@ -54,6 +54,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var patient = this.patientService.Get(message.Id.Value);
             return patient != null && patient.PersonalIdentityNumber.Equals(message.UniqueIdentifier);
+            /*var account = this.accounts.FindByPersonalIdentityNumber(new PersonalIdentityNumber(message.UniqueIdentifier));
+            if (!message.Id.HasValue || account == null)
+            {
+                return account == null;
+            }
+            return account.Id.Equals(message.Id.Value);*/
         }
 
         #endregion

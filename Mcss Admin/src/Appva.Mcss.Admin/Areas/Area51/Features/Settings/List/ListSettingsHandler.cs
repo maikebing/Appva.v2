@@ -57,7 +57,11 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
 				retval.Add(new ListSetting
 					{
 						Id = setting.Id,
-						Value = setting.Value
+                        Name = setting.Name,
+                        Description = setting.Description,
+                        Key = setting.MachineName,
+                        Value = setting.Value,
+                        Namespace = setting.Namespace
 					});
 			}
 			return retval;

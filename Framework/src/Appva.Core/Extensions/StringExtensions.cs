@@ -58,11 +58,29 @@ namespace Appva.Core.Extensions
         /// </returns>
         public static string FormatWith(this string str, params object[] args)
         {
-            if (str.IsEmpty())
-            {
-                return str;
-            }
-            return string.Format(str, args);
+            return (str.IsEmpty()) ? str : string.Format(str, args);
+        }
+
+        /// <summary>
+        /// Replaces the format item in a specified string with the string representation
+        /// of a corresponding object in a specified array.
+        /// </summary>
+        /// <param name="str">
+        /// A composite format string
+        /// </param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information
+        /// </param>
+        /// <param name="args">
+        /// An object array that contains zero or more objects to format
+        /// </param>
+        /// <returns>
+        /// A copy of format in which the format items have been replaced by the string
+        /// representation of the corresponding objects in args
+        /// </returns>
+        public static string FormatWith(this string str, IFormatProvider provider, params object[] args)
+        {
+            return (str.IsEmpty()) ? str : string.Format(provider, str, args);
         }
 
         /// <summary>
@@ -148,11 +166,7 @@ namespace Appva.Core.Extensions
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1407:ArithmeticExpressionsMustDeclarePrecedence", Justification = "Reviewed.")]
         public static string ToHex(this string str)
         {
-            if (str.IsEmpty())
-            {
-                return str;
-            }
-            return str.ToUtf8Bytes().ToHex(); 
+            return str.IsEmpty() ? str : str.ToUtf8Bytes().ToHex();
         }
 
         /// <summary>
@@ -305,7 +319,7 @@ namespace Appva.Core.Extensions
 
         public static string Strip(this string str, string replacement)
         {
-            return str.Replace(replacement, "");
+            return str.IsEmpty() ? str : str.Replace(replacement, string.Empty);
         }
     }
 }

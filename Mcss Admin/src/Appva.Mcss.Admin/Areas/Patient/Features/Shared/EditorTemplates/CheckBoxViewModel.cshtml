@@ -1,0 +1,7 @@
+﻿@model Appva.Mcss.Web.ViewModels.CheckBoxViewModel
+
+<div class="checkbox">
+    @Html.CheckBoxFor(x => x.Checked)
+    @Html.LabelFor(x => x.Checked, string.Format("kl {0}", Model.Id))
+    @Html.HiddenFor(x => x.Id)
+</div>

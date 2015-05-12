@@ -11,10 +11,11 @@ namespace Appva.Persistence
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using Appva.Persistence.Interceptors;
-    using Logging;
+    using Core.Logging;
     using NHibernate;
     using NHibernate.Cfg;
     using NHibernate.Dialect;
@@ -34,11 +35,30 @@ namespace Appva.Persistence
     }
 
     /// <summary>
+    /// The data source result after the database connection attempt.
+    /// </summary>
+    public interface IDatasourceResult
+    {
+        /// <summary>
+        /// Returns the exceptions.
+        /// </summary>
+        ConcurrentQueue<Exception> Exceptions
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the exceptions.
+        /// </summary>
+        Dictionary<string, ISessionFactory> SessionFactories
+        {
+            get;
+        }
+    }
+
+    /// <summary>
     /// Abstract base implementation of <see cref="IDatasource"/>.
     /// </summary>
-    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration", Justification = "Reviewed.")]
-    [SuppressMessage("ReSharper", "PossibleNullReferenceException", Justification = "Reviewed.")]
-    [SuppressMessage("ReSharper", "NotAccessedField.Local", Justification = "Reviewed.")]
     public abstract class Datasource : IDatasource
     {
         #region Variables.
@@ -80,14 +100,14 @@ namespace Appva.Persistence
         /// </exception>
         protected ISessionFactory Build(IPersistenceUnit unit)
         {
+            Requires.NotNull(unit, "unit");
             try
             {
-                Requires.NotNull(unit, "unit");
                 return this.CreateConnection(unit);
             }
             catch (Exception ex)
             {
-                Log.ErrorException("Unable to create database connection!", ex);
+                Log.Error(ex);
                 throw;
             }
         }
@@ -100,28 +120,34 @@ namespace Appva.Persistence
         /// <exception cref="System.AggregateException">
         /// If one or several database connections failed
         /// </exception>
-        protected IDictionary<string, ISessionFactory> Build(IEnumerable<IPersistenceUnit> units)
+        protected IDatasourceResult Build(IEnumerable<IPersistenceUnit> units)
         {
             Requires.NotNull(units, "units");
-            var exceptions = new ConcurrentQueue<Exception>();
-            var retval = new Dictionary<string, ISessionFactory>();
+            Stopwatch watch = null;
+            var result = DatasourceResult.CreateNew();
+            if (Log.IsDebugEnabled())
+            {
+                watch = new Stopwatch();
+                watch.Start();
+            }
             Parallel.ForEach(units, x =>
                 {
                     try
                     {
-                        retval.Add(x.Id, this.CreateConnection(x));
+                        result.SessionFactories.Add(x.Id, this.CreateConnection(x));
                     }
                     catch (Exception ex)
                     {
-                        Log.ErrorException("Unable to create database connection!", ex);
-                        exceptions.Enqueue(ex);
+                        Log.Error(ex);
+                        result.Exceptions.Enqueue(ex);
                     }
                 });
-            if (exceptions.Count > 0)
+            if (Log.IsDebugEnabled())
             {
-                //throw new AggregateException(exceptions);
+                watch.Stop();
+                Log.Debug("Startup time was " + watch.ElapsedMilliseconds + "ms");
             }
-            return retval;
+            return result;
         }
 
         #endregion
@@ -136,6 +162,7 @@ namespace Appva.Persistence
         /// <exception cref="System.Data.SqlClient.SqlException">An exception if a connection cannot be established</exception>
         private ISessionFactory CreateConnection(IPersistenceUnit unit)
         {
+            Log.DebugJson(unit);
             var configuration = new Configuration();
             configuration.SetProperties(unit.Properties);
             configuration.AddAssembly(unit.Assembly);
@@ -149,6 +176,60 @@ namespace Appva.Persistence
                 configuration.SetInterceptor(new LogSqlInterceptor());
             }
             return configuration.BuildSessionFactory();
+        }
+
+        #endregion
+
+        #region Private Class.
+
+        /// <summary>
+        /// Represents a create databases results.
+        /// </summary>
+        private class DatasourceResult : IDatasourceResult
+        {
+            #region Constructor.
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DatasourceResult"/> class.
+            /// </summary>
+            private DatasourceResult()
+            {
+                this.Exceptions = new ConcurrentQueue<Exception>();
+                this.SessionFactories = new Dictionary<string, ISessionFactory>();
+            }
+
+            #endregion
+
+            #region Public Static Functions.
+
+            /// <summary>
+            /// Creates a new instance of the <see cref="DatasourceResult"/> class.
+            /// </summary>
+            /// <returns>A new <see cref="DatasourceResult"/> instance</returns>
+            public static DatasourceResult CreateNew()
+            {
+                return new DatasourceResult();
+            }
+
+            #endregion
+
+            #region IDatasourceResult Members.
+
+            /// <inheritdoc />
+            public ConcurrentQueue<Exception> Exceptions
+            {
+                get;
+                private set;
+            }
+
+            /// <inheritdoc />
+            public Dictionary<string, ISessionFactory> SessionFactories
+            {
+                get;
+                private set;
+            }
+
+            #endregion
         }
 
         #endregion

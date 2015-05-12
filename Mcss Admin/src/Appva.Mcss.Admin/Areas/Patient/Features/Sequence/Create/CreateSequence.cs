@@ -4,28 +4,32 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Patient.Features
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
     using Appva.Cqrs;
-    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateSequence : IRequest<SequenceViewModel>
+    public sealed class CreateSequence : IRequest<CreateSequenceForm>
     {
-        public Guid PatientId
+        /// <summary>
+        /// The patient ID.
+        /// </summary>
+        public Guid Id
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The schedule ID.
+        /// </summary>
         public Guid ScheduleId
         {
             get;

@@ -173,14 +173,14 @@
     <Compile Include="App_Start\BundleConfiguration.cs" />
     <Compile Include="App_Start\FilterConfiguration.cs" />
     <Compile Include="App_Start\IocConfiguration.cs" />
-    <Compile Include="App_Start\PersistenceConfiguration.cs" />
+    <Compile Include="App_Start\OwinConfiguration.cs" />
     <Compile Include="App_Start\RouteConfiguration.cs" />
     <Compile Include="App_Start\AuthenticationConfiguration.cs" />
     <Compile Include="Areas\Area51\Features\Acl\AclController.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\Activate\Activate.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\Install\Install.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\Install\InstallHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAcl.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAclHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Preview\PreviewAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Preview\PreviewAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Cache\CacheController.cs" />
@@ -192,6 +192,7 @@
     <Compile Include="Areas\Area51\Features\Settings\Create\CreateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Update\UpdateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
+    <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlert.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlertHandler.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\Handle\HandleAlert.cs" />
@@ -202,6 +203,9 @@
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidgetHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\EditAll\EditAllEventSequence.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequenceHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequence.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendar.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendarHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItem.cs" />
@@ -262,8 +266,10 @@
     <Compile Include="Areas\Patient\Features\Prepare\PrepareController.cs" />
     <Compile Include="Areas\Patient\Features\Prepare\Schema\SchemaPreparation.cs" />
     <Compile Include="Areas\Patient\Features\Prepare\Schema\SchemaPreparationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Chart\RenderChart.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Chart\RenderChartHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Create\CreateSchedule.cs" />
-    <Compile Include="Areas\Patient\Features\Schedule\Create\CreateSchedulePublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Create\CreateScheduleFormHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Create\CreateScheduleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Delete\DeleteTask.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Delete\DeleteTaskPublisher.cs" />
@@ -286,12 +292,21 @@
     </Compile>
     <Compile Include="Areas\Patient\Features\Schedule\Sign\SignSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Sign\SignScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\VerifyIsUnique\VerifyIsUniqueScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\VerifyIsUnique\VerifyIsUniqueSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequence.cs" />
-    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequencePostHandler.cs" />
-    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceViewHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceForm.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceFormHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Inactivate\InactivateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Inactivate\InactivateSequenceHandler.cs" />
-    <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceNotificationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\PrintPopUp\PrintSequenceSettingsFormHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\PrintPopUp\PrintSequenceConfigurationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\PrintPopUp\PrintSequenceSettings.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\PrintSchema\PrintSequence.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\PrintSchema\PrintSequenceHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceForm.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceFormHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
@@ -343,6 +358,10 @@
     <Compile Include="Commands\SearchAccountCommand.cs" />
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
+    <Compile Include="Configuration\Application.cs" />
+    <Compile Include="Configuration\ApplicationConfiguration.cs" />
+    <Compile Include="Configuration\ExceptionHandlerModule.cs" />
+    <Compile Include="Configuration\PersistenceModule.cs" />
     <Compile Include="Features\Authentication\AuthenticationController.cs" />
     <Compile Include="Features\Authentication\Forgot\ForgotPassword.cs" />
     <Compile Include="Features\Authentication\SignIn\SignIn.cs" />
@@ -370,8 +389,8 @@
     <Compile Include="Models\AccountRolesViewModel.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AddToStockViewModel.cs" />
-    <Compile Include="Models\AjaxPanelViewModel.cs" />
-    <Compile Include="Areas\Patient\Features\Alerts\List\AlertListViewModel.cs" />
+    <Compile Include="Areas\Dashboard\Features\Dashboard\Load\LoadWidget.cs" />
+    <Compile Include="Areas\Patient\Features\Alerts\List\ListAlertModel.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertOverviewViewModel.cs" />
     <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ChartDataPointViewModel.cs" />
@@ -393,7 +412,7 @@
     <Compile Include="Models\FullReportViewModel.cs" />
     <Compile Include="Models\GlobalFilterCacheHelper.cs" />
     <Compile Include="Models\GlobalFilterViewModel.cs" />
-    <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Areas\Dashboard\Features\Dashboard\Index\HomeViewModel.cs" />
     <Compile Include="Models\Id.cs" />
     <Compile Include="Models\InventoryOverviewViewModel.cs" />
     <Compile Include="Models\InventoryTransactionItemViewModel.cs" />
@@ -412,7 +431,7 @@
     <Compile Include="Models\PreparePrintPopUpViewModel.cs" />
     <Compile Include="Models\PreparePrintViewModel.cs" />
     <Compile Include="Models\PrepareSchemaViewModel.cs" />
-    <Compile Include="Models\PrintPopUpViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\PrintPopUp\PrintSequenceSettingsForm.cs" />
     <Compile Include="Models\PrintViewModel.cs" />
     <Compile Include="Models\RecalculateStockViewModel.cs" />
     <Compile Include="Models\RecountOverviewItemViewModel.cs" />
@@ -423,15 +442,14 @@
     <Compile Include="Models\SchedulePrintPopOverViewModel.cs" />
     <Compile Include="Models\ScheduleReportViewModel.cs" />
     <Compile Include="Models\ScheduleTabelPrintViewModel.cs" />
-    <Compile Include="Models\ScheduleViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Create\CreateScheduleForm.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
-    <Compile Include="Models\SequenceViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Sequence\Shared\CreateOrUpdateSequence.cs" />
     <Compile Include="Models\TaskListViewModel.cs" />
     <Compile Include="Models\TaxonomyHelper.cs" />
     <Compile Include="Models\TaxonViewModel.cs" />
     <Compile Include="Models\TitleHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\css\datePicker.css" />
@@ -627,6 +645,10 @@
       <Project>{0c3cc633-42b5-413f-b1a6-57da6f65a61a}</Project>
       <Name>Appva.Cqrs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Cryptography\Appva.Cryptography.csproj">
+      <Project>{d3b336cc-9a4a-4cad-8ab5-32a92e028726}</Project>
+      <Name>Appva.Cryptography</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
       <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
       <Name>Appva.Logging</Name>
@@ -669,16 +691,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Persistence.WIN-OLL39JT07TP.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\List\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Patient\Features\Schedule\Chart\" />
+    <Folder Include="Areas\Dashboard\Features\Shared\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -818,7 +837,7 @@
     <Content Include="Areas\Patient\Features\Sequence\PrintPopUp\PrintPopUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Patient\Features\Sequence\Update\Edit.cshtml" />
+    <Content Include="Areas\Patient\Features\Sequence\Update\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\Edit\Edit.cshtml" />
@@ -874,6 +893,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Patient\Features\Shared\EditorTemplates\Assessment.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Dashboard\Features\web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Shared\EditorTemplates\CheckBoxViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Shared\_PrintLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Shared\PrintSchema.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Dashboard\Features\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Dashboard\Features\Dashboard\Load\Load.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Dashboard\Features\Dashboard\Index\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

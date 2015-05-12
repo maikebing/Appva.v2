@@ -21,7 +21,7 @@ namespace Appva.Persistence
     public interface IPersistenceUnit
     {
         /// <summary>
-        /// The identifier for multi tenancy.
+        /// The multi tenant ID.
         /// </summary>
         string Id
         {
@@ -37,7 +37,7 @@ namespace Appva.Persistence
         }
 
         /// <summary>
-        /// Assembly of which the NHibernate entities resides.
+        /// The assembly of which the NHibernate entities resides.
         /// </summary>
         string Assembly
         {
@@ -61,24 +61,9 @@ namespace Appva.Persistence
         #region Variables.
 
         /// <summary>
-        /// The multi tenancy identifier.
+        /// Default persistence unit properties.
         /// </summary>
-        private readonly string id;
-
-        /// <summary>
-        /// The database connection string.
-        /// </summary>
-        private readonly string connectionString;
-
-        /// <summary>
-        /// Assembly of which the NHibernate entities resides.
-        /// </summary>
-        private readonly string assembly;
-
-        /// <summary>
-        /// Persistence unit properties, i.e. NHibernate properties.
-        /// </summary>
-        private readonly IDictionary<string, string> properties = new Dictionary<string, string>
+        private readonly IDictionary<string, string> defaultProperties = new Dictionary<string, string>
             {
                 { "hbm2ddl.auto", "update" },
                 { "adonet.batch_size", "30" },
@@ -98,33 +83,45 @@ namespace Appva.Persistence
         /// <summary>
         /// Initializes a new instance of the <see cref="PersistenceUnit"/> class.
         /// </summary>
-        /// <param name="connectionString">The database connection string></param>
+        /// <param name="id">The tenant identifier</param>
+        /// <param name="connectionString">The tenant database connection string</param>
         /// <param name="assembly">The assembly of which the entities resides</param>
         /// <param name="properties">Optional NHibernate properties</param>
-        /// <param name="id">Optional multi tenancy identifier</param>
-        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration", Justification = "Reviewed.")]
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException", Justification = "Reviewed.")]
-        public PersistenceUnit(string connectionString, string assembly, IEnumerable<KeyValuePair<string, string>> properties = null, string id = null)
+        public PersistenceUnit(string id, string connectionString, string assembly, IEnumerable<KeyValuePair<string, string>> properties = null)
         {
-            Requires.NotNull(connectionString, "connectionString");
-            Requires.NotNull(assembly, "assembly");
-            this.connectionString = connectionString;
-            this.assembly = assembly;
-            this.id = id;
-            if (properties.IsNotNull())
-            {
-                foreach (var property in properties)
-                {
-                    if (this.properties.ContainsKey(property.Key))
-                    {
-                        this.properties[property.Key] = property.Value;
-                    }
-                    else
-                    {
-                        this.properties.Add(property.Key, property.Value);
-                    }
-                }
-            }
+            this.Id = id;
+            this.ConnectionString = connectionString;
+            this.Assembly = assembly;
+            this.Properties = this.MergeProperties(properties);
+        }
+
+        #endregion
+
+        #region Public Static Functions.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="PersistenceUnit"/> class.
+        /// </summary>
+        /// <param name="id">The tenant identifier</param>
+        /// <param name="connectionString">The tenant database connection string</param>
+        /// <param name="assembly">The assembly of which the entities resides</param>
+        /// <param name="properties">Optional NHibernate properties</param>
+        /// <returns>A <see cref="IPersistenceUnit"/> instance</returns>
+        public static IPersistenceUnit CreateNew(string id, string connectionString, string assembly, IEnumerable<KeyValuePair<string, string>> properties = null)
+        {
+            return new PersistenceUnit(id, connectionString, assembly, properties);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="PersistenceUnit"/> class.
+        /// </summary>
+        /// <param name="connectionString">The tenant database connection string</param>
+        /// <param name="assembly">The assembly of which the entities resides</param>
+        /// <param name="properties">Optional NHibernate properties</param>
+        /// <returns>A <see cref="IPersistenceUnit"/> instance</returns>
+        public static IPersistenceUnit CreateNew(string connectionString, string assembly, IEnumerable<KeyValuePair<string, string>> properties = null)
+        {
+            return CreateNew(null, connectionString, assembly, properties);
         }
 
         #endregion
@@ -134,37 +131,58 @@ namespace Appva.Persistence
         /// <inheritdoc />
         public string Id
         {
-            get
-            {
-                return this.id;
-            }
+            get;
+            private set;
         }
 
         /// <inheritdoc />
         public string ConnectionString
         {
-            get
-            {
-                return this.connectionString;
-            }
+            get;
+            private set;
         }
 
         /// <inheritdoc />
         public string Assembly
         {
-            get
-            {
-                return this.assembly;
-            }
+            get;
+            private set;
         }
 
         /// <inheritdoc />
         public IDictionary<string, string> Properties
         {
-            get
+            get;
+            private set;
+        }
+
+        #endregion
+
+        #region Private Functions.
+
+        /// <summary>
+        /// Merge default properties with custom.
+        /// </summary>
+        /// <param name="properties">The properties which will be merged with default</param>
+        /// <returns>A new properties dictionary</returns>
+        private IDictionary<string, string> MergeProperties(IEnumerable<KeyValuePair<string, string>> properties)
+        {
+            if (properties.IsNull())
             {
-                return this.properties;
+                return this.defaultProperties;
             }
+            foreach (var property in properties)
+            {
+                if (this.defaultProperties.ContainsKey(property.Key))
+                {
+                    this.defaultProperties[property.Key] = property.Value;
+                }
+                else
+                {
+                    this.defaultProperties.Add(property.Key, property.Value);
+                }
+            }
+            return this.defaultProperties;
         }
 
         #endregion

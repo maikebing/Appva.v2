@@ -16,10 +16,12 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Apis.TenantServer.Contracts;
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
+    using Appva.Core.Resources;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Tenant.Identity;
     using Appva.Tenant.Interoperability.Client;
     using Validation;
+    using Appva.Core.Extensions;
 
     #endregion
 
@@ -104,7 +106,7 @@ namespace Appva.Mcss.Admin.Application.Services
         public ITenantIdentity Find(ITenantIdentifier id)
         {
             Requires.NotNull(id, "id");
-            var cacheKey = CacheKey + id.Value;
+            var cacheKey = CacheTypes.Tenant.FormatWith(id.Value);
             if (this.cache.Find<ITenantIdentity>(cacheKey) == null)
             {
                 var tenant = this.client.FindByIdentifier(id.Value);

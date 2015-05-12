@@ -21,6 +21,8 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface ISequenceService : IService
     {
+        Sequence Find(Guid id);
+
         void Create(
             Patient patient,
             DateTime startDate,
@@ -76,7 +78,12 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #endregion
 
-        #region ;
+        #region ISequenceService Members.
+
+        public Sequence Find(Guid id)
+        {
+            return this.context.Get<Sequence>(id);
+        }
 
         public void Create(
             Patient patient,

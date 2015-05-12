@@ -9,25 +9,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Web.Mappers;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Persistence;
-    using Appva.Core.Extensions;
-    using NHibernate.Transform;
-    using Appva.Core.Utilities;
     using System.Web.UI;
-    using Appva.Mcss.Admin.Infrastructure.Controllers;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Mcss.Web.Controllers;
-    using Appva.Mcss.Admin.Commands;
-    using Appva.Mcss.Admin.Models;
+    using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mcss.Web.ViewModels;
     using Appva.Mvc.Filters;
 
     #endregion
@@ -36,38 +23,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [RouteArea("patient"), RoutePrefix("schedule")]
-    public sealed class ScheduleController : IdentityController
+    public sealed class ScheduleController : Controller
     {
-        #region Private Variables.
-
-        private readonly IPersistenceContext context;
-        private readonly ILogService logService;
-        private readonly IScheduleService scheduleService;
-
-        #endregion
-
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScheduleController"/> class.
-        /// </summary>
-        public ScheduleController(
-            IMediator mediator, 
-            IIdentityService identities,
-            IAccountService accounts, 
-            IScheduleService scheduleService, IPersistenceContext context, ILogService logService)
-            : base(mediator, identities, accounts)
-        {
-            this.context = context;
-            this.logService = logService;
-            this.scheduleService = scheduleService;
-        }
-
-        #endregion
-
         #region Routes.
 
-        #region List View.
+        #region List Schedules.
 
         /// <summary>
         /// Returns all schedules (lists) for a patient.
@@ -83,7 +43,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
         #endregion
 
-        #region Details View.
+        #region Details.
 
         /// <summary>
         /// Returns the schedule details for a specific schedule.
@@ -100,7 +60,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
         #endregion
 
-        #region Create View.
+        #region Create.
 
         /// <summary>
         /// Returns the create schedule view.
@@ -121,8 +81,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="model">The schedule model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("create/patient/{id:guid}")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
-        public ActionResult Create(ScheduleViewModel request)
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Schedule")]
+        public ActionResult Create(CreateScheduleForm request)
         {
             //// TODO: Must fix this somehow --> ValidateNonDuplicates(model);
             return this.View();
@@ -130,7 +90,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
         #endregion
 
-        #region Inactivate View.
+        #region Inactivate.
 
         /// <summary>
         /// Inactivates a schedule.
@@ -200,7 +160,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="startDate">Optional start date</param>
         /// <param name="endDate">Optional end date</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("PrintPopUp/{id:guid}/schedule/{scheduleSettingsId:guid}/{startDate?}/{endDate?}")]
+        [Route("PrintPopUp/{id:guid}/schedule/{scheduleSettingsId:guid}")]
         [HttpGet, Dispatch]
         public ActionResult PrintPopUp(PrintModelSchedule request)
         {
@@ -329,20 +289,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="startDate">The start date</param>
         /// <param name="endDate">The end date</param>
         /// <returns>JSON data for charts</returns>
-        [HttpGet, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        [Route("Chart/{id:guid}")]
-        public ActionResult Chart(Guid id, Guid? sId, DateTime startDate, DateTime endDate)
+        [Route("chart/{id:guid}")]
+        [HttpGet, Dispatch, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        public DispatchJsonResult Chart(RenderChart request)
         {
-            return Json(ExecuteCommand<List<object[]>>(new CreateChartCommand<ScheduleReportFilter>
-            {
-                StartDate = startDate,
-                EndDate = endDate,
-                Filter = new ScheduleReportFilter
-                {
-                    PatientId = id,
-                    ScheduleSettingsId = sId
-                }
-            }), JsonRequestBehavior.AllowGet);
+            return this.JsonGet();
         }
 
         /// <summary>
@@ -402,7 +353,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// </summary>
         /// <param name="task">The task</param>
         /// <returns>A string representation of the task status</returns>
-        private string Status(Task task)
+        /*private string Status(Task task)
         {
             if (task.StatusTaxon != null)
             {
@@ -452,7 +403,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
                 return "Ej given";
             }
             return string.Empty;
-        }
+        }*/
 
         #endregion
 
@@ -464,16 +415,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="id">The patient id</param>
         /// <param name="scheduleSetting">The schedule settings id</param>
         /// <returns>JSON representation of true or false</returns>
-        [HttpPost, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        [Route("VerifyUnique/{id:guid}/schedule/{scheduleSetting:guid}")]
-        public JsonResult VerifyUnique(Guid id, Guid scheduleSetting)
+        [Route("VerifyUnique/{id:guid}/schedule")]
+        [HttpPost, Dispatch, /*Validate, ValidateAntiForgeryToken,*/ OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
+        public DispatchJsonResult VerifyUnique(VerifyIsUniqueSchedule request)
         {
-            var schedules = this.context.QueryOver<Schedule>()
-                    .Where(x => x.Patient.Id == id)
-                    .And(x => x.ScheduleSettings.Id == scheduleSetting)
-                    .And(x => x.IsActive == true)
-                    .List().Count;
-            return Json(schedules.Equals(0), JsonRequestBehavior.DenyGet);
+            //// FIXME: This should have an anti forgery token, however its hidden so it must be added somehow to the javascript
+            return this.JsonPost();
         }
 
         #endregion
@@ -484,7 +431,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// Schedule validator for checking duplicates.
         /// </summary>
         /// <param name="model">The schedule model</param>
-        private void ValidateNonDuplicates(ScheduleViewModel model)
+        /*private void ValidateNonDuplicates(ScheduleViewModel model)
         {
             var schedules = this.context.QueryOver<Schedule>()
                     .Where(x => x.Patient.Id == model.Id)
@@ -495,7 +442,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             {
                 ModelState.AddModelError("ScheduleSetting", "Denna lista finns sedan tidigare inlagd.");
             }
-        }
+        }*/
 
         #endregion
     }

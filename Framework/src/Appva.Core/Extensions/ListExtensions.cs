@@ -72,12 +72,13 @@ namespace Appva.Core.Extensions
         /// <param name="action">The action to be executed for each iteration</param>
         public static void ForEach<T>(this IList<T> list, Action<T> action)
         {
-            if (list.IsNotNull())
+            if (list.IsNull())
             {
-                foreach (var item in list)
-                {
-                    action(item);
-                }
+                return;
+            }
+            foreach (var item in list)
+            {
+                action(item);
             }
         }
     }

@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\TenantAwareMemoryCache.cs" />
     <Compile Include="Common\CacheUtils.cs" />
     <Compile Include="Common\EncryptionUtils.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -75,6 +76,7 @@
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
     <Compile Include="Models\Calendar.cs" />
+    <Compile Include="Models\ChartData.cs" />
     <Compile Include="Models\IReportingFilter.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuList.cs" />
@@ -92,7 +94,11 @@
     <Compile Include="Security\Extensions\OwinExtensions.cs" />
     <Compile Include="Security\FormsAuthentication.cs" />
     <Compile Include="Security\AuthenticationType.cs" />
-    <Compile Include="Security\Identity\TenantIdentificationStrategy.cs" />
+    <Compile Include="Security\Identity\DemoTenantIdentificationStrategy.cs" />
+    <Compile Include="Security\Identity\DevelopmentTenantIdentificationStrategy.cs" />
+    <Compile Include="Security\Identity\StagingTenantIdentificationStrategy.cs" />
+    <Compile Include="Security\Identity\ProductionTenantIdentificationStrategy.cs" />
+    <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Security\SithsAuthentication.cs" />

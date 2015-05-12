@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Controllers
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
     using Appva.Mvc.Filters;
 
     #endregion
@@ -73,7 +74,7 @@ namespace Appva.Mcss.Admin.Controllers
         [AlertSuccess("Roller och behörigheter är nu installerat!")]
         public ActionResult Install()
         {
-            this.mediator.Publish(new Install());
+            this.mediator.Publish(new InstallAcl());
             return this.RedirectToAction("Index");
         }
 
@@ -90,7 +91,7 @@ namespace Appva.Mcss.Admin.Controllers
         [AlertSuccess("Roller och behörigheter är nu aktiverade!")]
         public ActionResult Activate()
         {
-            this.mediator.Publish(new AclActivate());
+            this.mediator.Publish(new ActivateAcl());
             return this.RedirectToAction("Index");
         }
 

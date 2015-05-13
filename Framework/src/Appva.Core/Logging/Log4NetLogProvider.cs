@@ -165,7 +165,15 @@ namespace Appva.Core.Logging
                     case LogLevel.Error:
                         if (this.IsErrorEnabled())
                         {
-                            this.logger.Error(messageFunc());
+                            if (messageFunc == null)
+                            {
+                                this.logger.Error("message is null");
+                            }
+                            else
+                            {
+                                this.logger.Error(messageFunc());
+                            }
+                            
                             return true;
                         }
                         break;

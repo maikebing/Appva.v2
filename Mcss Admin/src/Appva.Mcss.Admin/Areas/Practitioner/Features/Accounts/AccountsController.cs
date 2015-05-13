@@ -69,7 +69,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <param name="isActive">Optional filtering by <c>Account.IsActive</c></param>
         /// <param name="isPaused">Optional filtering by <c>Account.IsPaused</c></param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, Permissions("ad0b7efb-589b-4762-acd6-a46d009a21ad"), Route("List")]
+        [HttpGet, /*Permissions("ad0b7efb-589b-4762-acd6-a46d009a21ad"),*/ Route("List")]
         public ActionResult List(string q, int? page, Guid? DelegationFilterId, Guid? RoleFilterId, bool filterByCreatedBy = false, bool isActive = true, bool isPaused = false)
         {
             return this.View(this.mediator.Send<ListAccountModel>(new ListAccountCommand

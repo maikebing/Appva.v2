@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Models
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
 
     #endregion
@@ -61,7 +62,7 @@ namespace Appva.Mcss.Admin.Models
         [Required(ErrorMessage = "Personnummer måste fyllas i.")]
         [RegularExpression(@"^(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][0-9])|(3[0-1])|([6-8][0-9])|(9[0-1]))-?[0-9pPtTfF][0-9]{3}$", ErrorMessage = "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001.")]
         [DisplayName("Personnummer")]
-        public string PersonalIdentityNumber
+        public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
             set;

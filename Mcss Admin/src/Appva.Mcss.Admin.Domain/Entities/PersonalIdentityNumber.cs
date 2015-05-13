@@ -75,7 +75,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <inheritdoc />
         public override string ToString()
         {
-            return this.value;
+            return this.Value;
         }
 
         /// <inheritdoc />

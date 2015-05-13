@@ -316,7 +316,9 @@
     <property name="FirstName" />
     <property name="LastName" />
     <property name="FullName" />
-    <property name="PersonalIdentityNumber" column="UniqueIdentifier" />
+    <component name="PersonalIdentityNumber">
+      <property name="Value" column="UniqueIdentifier" access="nosetter.camelcase" />
+    </component>
     <property name="Deceased" />
     <property name="HasUnattendedTasks" />
     <many-to-one name="Taxon" class="Taxon" />

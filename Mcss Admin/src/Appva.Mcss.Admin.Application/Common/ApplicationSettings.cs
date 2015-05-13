@@ -13,15 +13,13 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     {
         #region Device.
 
-        /// <summary>
-        /// Auto-generates the mobile device password.
-        /// </summary>
-        /// <remarks>The setting returns a <c>bool</c></remarks>
-        public static readonly ApplicationSettingIdentity AutogeneratePasswordForMobileDevice = ApplicationSettingIdentity.CreateNew(
-            "System.Core.Users.AutogeneratePasswordForClient", 
-            "Auto-generate password for mobile device",
-            "System.Core.Users",
-            "Auto-generates mobile device password for user accounts automatically during creation");
+        
+
+        
+
+        #endregion
+
+        #region Admin.
 
         /// <summary>
         /// Makes the field for Mobile Device password editable.
@@ -35,12 +33,26 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #endregion
 
-        #region Admin.
+        #region Account
 
+        /// <summary>
+        /// Auto-generates the mobile device password.
+        /// </summary>
+        /// <remarks>The setting returns a <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity AutogeneratePasswordForMobileDevice = ApplicationSettingIdentity.CreateNew(
+            "System.Core.Users.AutogeneratePasswordForClient",
+            "Auto-generate password for mobile device",
+            "System.Core.Users",
+            "Auto-generates mobile device password for user accounts automatically during creation");
+
+        /// <summary>
+        /// Makes the usernames for accounts visible in administration
+        /// </summary>
+        /// <remarks>The setting returns a <c>bool</c></remarks>
         public static ApplicationSettingIdentity IsUsernameVisible = ApplicationSettingIdentity.CreateNew(
             "MCSS.Core.Account.DisplayUsername",
             "Show account username",
-            "System.Core.Account",
+            "MCSS.Core.Account",
             "Makes the usernames for accounts visible in administration");
 
         #endregion

@@ -11,7 +11,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using System;
     using System.Collections.Generic;
     using System.Linq;
-using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using NHibernate.Criterion;
     using Appva.Core.Extensions;
@@ -45,7 +45,7 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// </summary>
         /// <param name="personalIdentityNumber">The unique personal identity number</param>
         /// <returns></returns>
-        bool PatientWithPersonalIdentityNumberExist(string personalIdentityNumber);
+        bool PatientWithPersonalIdentityNumberExist(PersonalIdentityNumber personalIdentityNumber);
 
         /// <summary>
         /// Updates the property HasUnatendedTasks.
@@ -65,7 +65,7 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <param name="assessments">Optional collection of risk assessments</param>
         /// <param name="patient">The created patient</param>
         /// <returns>True if the patient is created successfully</returns>
-        bool Create(string firstName, string lastName, string personalIdentityNumber, string alternativeIdentity, Taxon address, IList<Taxon> assessments, out Patient patient);
+        bool Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, Taxon address, IList<Taxon> assessments, out Patient patient);
 
         /// <summary>
         /// Updates a patient.
@@ -80,7 +80,7 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <param name="assessments">The assessments to be updated</param>
         /// <param name="patient">The updated patient</param>
         /// <returns>True if successfully updated</returns>
-        bool Update(Guid id, string firstName, string lastName, string personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, out Patient patient);
+        bool Update(Guid id, string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, out Patient patient);
     }
 
     /// <summary>
@@ -146,7 +146,7 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         /// <inheritdoc />
-        public bool PatientWithPersonalIdentityNumberExist(string personalIdentityNumber)
+        public bool PatientWithPersonalIdentityNumberExist(PersonalIdentityNumber personalIdentityNumber)
         {
             return this.persistence.QueryOver<Patient>()
                     .Where(x => x.PersonalIdentityNumber == personalIdentityNumber)
@@ -165,7 +165,7 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         /// <inheritdoc />
-        public bool Create(string firstName, string lastName, string personalIdentityNumber, string alternativeIdentity, Taxon address, IList<Taxon> assessments, out Patient patient)
+        public bool Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, Taxon address, IList<Taxon> assessments, out Patient patient)
         {
             patient = new Patient
                 {
@@ -185,7 +185,7 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         /// <inheritdoc />
-        public bool Update(Guid id, string firstName, string lastName, string personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, out Patient patient)
+        public bool Update(Guid id, string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, out Patient patient)
         {
             patient = this.Get(id);
             var oldSA = patient.SeniorAlerts;

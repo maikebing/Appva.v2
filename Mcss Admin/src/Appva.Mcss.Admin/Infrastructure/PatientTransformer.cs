@@ -118,7 +118,7 @@ namespace Appva.Mcss.Admin.Infrastructure
                     Id = patient.Id,
                     Active = patient.IsActive,
                     FullName = patient.FullName,
-                    UniqueIdentifier = patient.PersonalIdentityNumber,
+                    UniqueIdentifier = patient.PersonalIdentityNumber.ToString(),
                     Address = address,
                     Superior = (superior.IsNotNull()) ? superior.FullName : null,
                     Overseeing = (overseer.IsNotNull()) ? overseer.FullName : null,

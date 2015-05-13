@@ -87,7 +87,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
             if (this.authentication.AuthenticateWithUserNameAndPassword(model.UserName, model.Password, out result))
             {
                 this.authentication.SignIn(result.Identity);
-                return this.RedirectToAction("List", "Accounts");
+                return this.RedirectToAction("Index", "Home");
             }
             if (result.IsFailureDueToIdentityLockout)
             {

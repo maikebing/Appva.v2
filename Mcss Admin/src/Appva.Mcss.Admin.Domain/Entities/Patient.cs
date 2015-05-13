@@ -42,7 +42,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// FIXME: Move to person! 
         /// </summary>
-        public virtual string PersonalIdentityNumber
+        public virtual PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
             set;

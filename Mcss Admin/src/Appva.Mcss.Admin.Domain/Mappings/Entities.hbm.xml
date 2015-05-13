@@ -77,7 +77,7 @@
     <property name="EmailAddress" column="Email" />
     <property name="TelephoneNumber" column="TelephoneNo" />
     <component name="PersonalIdentityNumber">
-      <property name="Value" access="nosetter.camelcase-underscore" column="UniqueIdentifier" />  
+      <property name="Value" column="UniqueIdentifier" access="nosetter.camelcase" />  
     </component> 
     <property name="DevicePassword" column="Password" />
     <property name="AdminPassword" column="HashedPassword" />

@@ -51,16 +51,16 @@
 			{
 				<li class="cf @((item.HasExpiringDelegation) ? "update" : "")">
 					@if (item.IsActive) {
-						@Html.ActionLink("Ta bort", "Inactivate", "Account", new { Id = item.Id }, new { @class = "btn btn-del" })
+                        @Html.PermissionLink(Permissions.AccountDelete, "Ta bort", "InActivate", "Accounts", "Practitioner", null, new { @class = "btn btn-del" })
 					} 
 					@if (!item.IsActive && !item.IsPaused) {
-						@Html.ActionLink("Aktivera", "Activate", "Account", new { Id = item.Id }, new { @class = "btn" })
+                        @Html.PermissionLink(Permissions.AccountDelete, "Aktivera", "Activate", "Accounts", "Practitioner", null, new { @class = "btn" })
 					}
 					@if (item.IsActive) {
-						@Html.ActionLink("Inaktivera", "Pause", "Account", new { Id = item.Id }, new { @class = "btn" })
+                        @Html.PermissionLink(Permissions.AccountPause, "Inaktivera", "Pause", "Accounts", "Practitioner", null, new { @class = "btn" })
 					}
 					@if (item.IsPaused) {
-						@Html.ActionLink("Aktivera", "UnPause", "Account", new { Id = item.Id }, new { @class = "btn" })
+                        @Html.PermissionLink(Permissions.AccountPause, "Aktivera", "UnPause", "Accounts", "Practitioner", null, new { @class = "btn" })
 					}
 					<div class="h">
 						<h2>

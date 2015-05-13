@@ -43,6 +43,7 @@ namespace Appva.Mcss.Admin.Application.Common
         public const string AccountRead = "15.R";
         public const string AccountUpdate = "16.U";
         public const string AccountDelete = "17.D";
+        public const string AccountPause = "17.P";
 
         public const string AccountDelegationCreate = "18.C";
         public const string AccountDelegationRead = "19.R";

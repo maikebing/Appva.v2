@@ -9,21 +9,14 @@ namespace Appva.Mcss.Admin.Features.Accounts
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
     using System.Web.UI;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Features.Accounts.Create;
-    using Appva.Mcss.Admin.Features.Accounts.List;
-    using Appva.Mvc.Filters;
-    using Appva.Mvc.Security;
-    using Appva.Mcss.Admin.Domain.Models;
-    using Appva.Mcss.Admin.Features.Accounts.QuickSearch;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
+    using Appva.Mvc.Filters;
 
     #endregion
 
@@ -61,27 +54,12 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <summary>
         /// Returns a list of <c>Account</c> by filters.
         /// </summary>
-        /// <param name="q">The query</param>
-        /// <param name="page">The current page</param>
-        /// <param name="filterByDelegation">A <c>Delegation</c> id to filter by</param>
-        /// <param name="filterByTitle">Optional <c>Taxon</c> id to filter <c>Role</c> by</param>
-        /// <param name="filterByCreatedBy">Optional filtering by accounts created by the current user</param>
-        /// <param name="isActive">Optional filtering by <c>Account.IsActive</c></param>
-        /// <param name="isPaused">Optional filtering by <c>Account.IsPaused</c></param>
+        /// <param name="request">The query and filtering</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet, /*Permissions("ad0b7efb-589b-4762-acd6-a46d009a21ad"),*/ Route("List")]
-        public ActionResult List(string q, int? page, Guid? DelegationFilterId, Guid? RoleFilterId, bool filterByCreatedBy = false, bool isActive = true, bool isPaused = false)
+        public ActionResult List(ListAccount request)
         {
-            return this.View(this.mediator.Send<ListAccountModel>(new ListAccountCommand
-                {
-                    SearchQuery = q,
-                    CurrentPageNumber = page,
-                    DelegationFilterId = DelegationFilterId,
-                    RoleFilterId = RoleFilterId,
-                    IsFilterByCreatedByEnabled = filterByCreatedBy,
-                    IsFilterByIsActiveEnabled = isActive,
-                    IsFilterByIsPausedEnabled = isPaused
-                }));
+            return this.View();
         }
 
         #endregion
@@ -110,38 +88,6 @@ namespace Appva.Mcss.Admin.Features.Accounts
         public ActionResult Create(CreateAccountModel model, FormCollection collection)
         {
             return this.View();
-            /*if (ModelState.IsValid)
-            {
-                Taxon taxon = null;
-                if (model.Taxon.IsEmpty())
-                {
-                    taxon = HierarchyUtils.FindRootNode(TaxonomyService.FindRootNodes(HierarchyUtils.Organization));
-                }
-                else
-                {
-                    taxon = this.TaxonomyService.Get(HierarchyUtils.ParseToGuid(collection));
-                }
-                var role = this.RoleService.Get(RoleUtils.ParseToGuid(model.TitleRole));
-                if (taxon.IsNotNull() && role.IsNotNull())
-                {
-                    var roles = new List<Role> { 
-                        RoleService.Get(RoleUtils.DeviceAccount),
-                        role
-                    };
-                    var password = (bool)SettingService.GetAccountSettings().GetOrDefault("GenerateClientPassword", false) ? AccountUtils.GenerateClientPassword() : model.Password;
-                    if (role.MachineName.StartsWith(RoleUtils.TitleNurse))
-                    {
-                        AccountService.CreateBackendAccount(model.FirstName, model.LastName, model.UniqueIdentifier, model.Email, "abc123ABC", taxon, roles, password);
-                    }
-                    else
-                    {
-                        AccountService.Create(model.FirstName, model.LastName, model.UniqueIdentifier, model.Email, password, taxon, roles);
-                    }
-                    return this.RedirectToAction(c => c.List(null, null, null, null, false, true, false));
-                }
-            }
-            TaxonomyHelper.SelectList(TaxonomyService.Find(HierarchyUtils.Organization));
-            return View(model);*/
         }
 
         #endregion

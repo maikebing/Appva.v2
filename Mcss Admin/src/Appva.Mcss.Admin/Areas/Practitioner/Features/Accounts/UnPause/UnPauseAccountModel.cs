@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.UnPause
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 

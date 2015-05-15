@@ -4,12 +4,11 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Features.Accounts.List
+namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using Appva.Caching.Providers;
@@ -18,20 +17,15 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Persistence;
-    using NHibernate.Criterion;
-    using NHibernate.Transform;
-    using NHibernate.Type;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ListAccountHandler : RequestHandler<ListAccountCommand, ListAccountModel>
+    public class ListAccountHandler : RequestHandler<ListAccount, ListAccountModel>
     {
         #region Variables.
 
@@ -99,25 +93,26 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         #region IRequestHandler overrides.
 
         /// <inheritdoc />
-        public override ListAccountModel Handle(ListAccountCommand message)
+        public override ListAccountModel Handle(ListAccount message)
         {
             ////this.settings.Find<bool>(SettingKey.AutogeneratePasswordForMobileDevice, false);
             this.settings.Find<bool>(ApplicationSettings.IsAccessControlInPreviewMode, false);
             this.settings.Find<bool>(ApplicationSettings.IsAccessControlInstalled, false);
 
+
             var accounts = this.accounts.Search(
                 new SearchAccountModel
                 {
-                    IsFilterByIsActiveEnabled = message.IsFilterByIsActiveEnabled,
-                    IsFilterByIsPausedEnabled = message.IsFilterByIsPausedEnabled,
-                    IsFilterByCreatedByEnabled = message.IsFilterByCreatedByEnabled,
+                    IsFilterByIsActiveEnabled = message.isActive != null ? message.isActive : true,
+                    IsFilterByIsPausedEnabled = message.isPaused != null ? message.isPaused : false,
+                    IsFilterByCreatedByEnabled = message.filterByCreatedBy,
                     DelegationFilterId = message.DelegationFilterId,
                     RoleFilterId = message.RoleFilterId,
                     OrganisationFilterId = this.cache.Find<Guid>("Taxon.Default.Cache"),
                     CurrentUserId = this.identities.PrincipalId,
-                    SearchQuery = message.SearchQuery
+                    SearchQuery = message.q
                 },
-                page: message.CurrentPageNumber.GetValueOrDefault(1));
+                page: message.page.GetValueOrDefault(1));
 
             return new ListAccountModel
             {
@@ -142,9 +137,9 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
                     .ToList<SelectListItem>(),
                 RoleFilterId = message.RoleFilterId,
                 DelegationFilterId = message.DelegationFilterId,
-                IsFilterByCreatedByEnabled = message.IsFilterByCreatedByEnabled,
-                IsFilterByIsActiveEnabled = message.IsFilterByIsActiveEnabled,
-                IsFilterByIsPausedEnabled = message.IsFilterByIsPausedEnabled
+                IsFilterByCreatedByEnabled = message.filterByCreatedBy,
+                IsFilterByIsActiveEnabled = message.isActive,
+                IsFilterByIsPausedEnabled = message.isPaused
             };
         }
 

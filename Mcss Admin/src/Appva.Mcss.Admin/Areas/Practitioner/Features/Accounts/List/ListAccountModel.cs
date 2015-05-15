@@ -4,14 +4,13 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Features.Accounts.List
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Repository;
 

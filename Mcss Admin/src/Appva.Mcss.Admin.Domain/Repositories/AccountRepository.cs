@@ -133,9 +133,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             //// Main query - As a view
             Account account = null;
-            var query = this.persistenceContext.QueryOver<Account>(() => account)
-                .Where(x => x.IsActive == model.IsFilterByIsActiveEnabled)
-                .And(x => x.IsPaused == model.IsFilterByIsPausedEnabled);
+            var query = this.persistenceContext.QueryOver<Account>(() => account);
+            if(model.IsFilterByIsActiveEnabled != null)
+            {
+                query.Where(x => x.IsActive == model.IsFilterByIsActiveEnabled);
+            }
+            if(model.IsFilterByIsPausedEnabled != null)
+            {
+                query.Where(x => x.IsPaused == model.IsFilterByIsPausedEnabled);
+            }
+                
+                
 
             //// Filter by search criterias
             if (model.SearchQuery.IsNotEmpty())

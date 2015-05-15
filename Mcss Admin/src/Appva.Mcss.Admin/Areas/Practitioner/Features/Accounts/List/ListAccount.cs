@@ -4,12 +4,11 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Features.Accounts.List
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
     using Appva.Cqrs;
 
     #endregion
@@ -17,12 +16,12 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ListAccountCommand : IRequest<ListAccountModel>
+    public class ListAccount : IRequest<ListAccountModel>
     {
         /// <summary>
         /// The search query.
         /// </summary>
-        public string SearchQuery
+        public string q
         {
             get;
             set;
@@ -31,7 +30,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <summary>
         /// The current paging number.
         /// </summary>
-        public int? CurrentPageNumber
+        public int? page
         {
             get;
             set;
@@ -58,25 +57,25 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <summary>
         /// Optional <c>Account.CreatedBy</c> to filter by.
         /// </summary>
-        public bool IsFilterByCreatedByEnabled
+        public bool filterByCreatedBy
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional <c>Account.IsActive</c> to filter by.
+        /// <c>Account.IsActive</c> to filter by. Defaults True
         /// </summary>
-        public bool IsFilterByIsActiveEnabled
+        public bool isActive
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional <c>Account.IsPaused</c> to filter by.
+        /// <c>Account.IsPaused</c> to filter by. Defaults False
         /// </summary>
-        public bool IsFilterByIsPausedEnabled
+        public bool isPaused
         {
             get;
             set;

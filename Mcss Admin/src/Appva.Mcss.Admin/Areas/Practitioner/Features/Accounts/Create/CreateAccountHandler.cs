@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Features.Accounts.Create.Handlers
+namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 

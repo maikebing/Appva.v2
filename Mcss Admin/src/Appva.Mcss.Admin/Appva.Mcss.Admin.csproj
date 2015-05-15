@@ -320,7 +320,7 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InActivateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InActivateAccountModel.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountCommand.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountHandler.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>

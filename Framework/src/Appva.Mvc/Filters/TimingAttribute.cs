@@ -4,7 +4,8 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mvc.Filters
+// ReSharper disable CheckNamespace
+namespace Appva.Mvc
 {
     #region Imports.
 
@@ -30,17 +31,6 @@ namespace Appva.Mvc.Filters
         /// The page rendering timing key.
         /// </summary>
         private const string Result = "https://schemas.appva.se/diagnostics/timing/result";
-
-        #endregion
-
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimingAttribute"/> class.
-        /// </summary>
-        public TimingAttribute()
-        {
-        }
 
         #endregion
 

@@ -61,7 +61,7 @@
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Person.cs" />
-    <Compile Include="Entities\PersonalIdentityNumber.cs" />
+    <Compile Include="VO\PersonalIdentityNumber.cs" />
     <Compile Include="Entities\PreparedSequence.cs" />
     <Compile Include="Entities\PreparedTask.cs" />
     <Compile Include="Entities\RefillModel.cs" />

@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Azure
+namespace Appva.Azure.Messaging
 {
     #region Imports.
 

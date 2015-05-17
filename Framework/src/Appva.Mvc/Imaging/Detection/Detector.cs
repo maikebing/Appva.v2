@@ -12,6 +12,7 @@ namespace Appva.Mvc.Imaging.Detection
     using System.Collections.Generic;
     using System.IO;
     using Core.Extensions;
+    using Resources;
     using Validation;
 
     #endregion
@@ -35,7 +36,7 @@ namespace Appva.Mvc.Imaging.Detection
     /// Auto detects file format by reading the first bytes from the 
     /// file header.
     /// </summary>
-    public class AutoDetector : IDetector
+    public sealed class AutoDetector : IDetector
     {
         #region Constants.
 
@@ -51,16 +52,16 @@ namespace Appva.Mvc.Imaging.Detection
         /// <summary>
         /// Known media types which are detectable.
         /// </summary>
-        private readonly List<MediaType> knownMediaTypes = new List<MediaType>
+        private readonly IReadOnlyList<MediaType> knownMediaTypes = new List<MediaType>
         {
-            new MediaType(new byte?[] { 0xFF, 0xD8, 0xFF }, 0, "jpg", "image/jpeg"),
-            new MediaType(new byte?[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }, 0, "png", "image/png"),
-            new MediaType(new byte?[] { 0x47, 0x49, 0x46, 0x38, null, 0x61 }, 0, "gif", "image/gif")
+            new MediaType(new byte?[] { 0xFF, 0xD8, 0xFF }, 0, "jpg", MediaTypes.Jpeg),
+            new MediaType(new byte?[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }, 0, "png", MediaTypes.Png),
+            new MediaType(new byte?[] { 0x47, 0x49, 0x46, 0x38, null, 0x61 }, 0, "gif", MediaTypes.Gif)
         };
 
         #endregion
 
-        #region IDetector Members
+        #region IDetector Members.
 
         /// <inheritdoc />
         public MediaType Detect(Stream input)

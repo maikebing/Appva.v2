@@ -13,7 +13,7 @@ namespace Appva.Core.Messaging
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
-    using Appva.Core.Resources;
+    using Resources;
     using Extensions;
     using Logging;
     using Validation;

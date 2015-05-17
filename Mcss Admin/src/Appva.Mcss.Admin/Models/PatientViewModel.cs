@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mvc.Html.DataAnnotations;
+using Appva.Mvc;
 
 namespace Appva.Mcss.Web.ViewModels {
     

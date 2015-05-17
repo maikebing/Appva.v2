@@ -26,7 +26,9 @@ namespace Appva.Mvc.Security
         /// Initializes a new instance of the <see cref="FrameOptionsAttribute"/> class.
         /// </summary>
         /// <param name="value">Optional value, defaults to SAMEORIGIN</param>
-        /// <remarks>Must be one of DENY, SAMEORIGIN or ALLOW-FROM http://www.example.com</remarks>
+        /// <remarks>
+        /// Must be one of DENY, SAMEORIGIN or ALLOW-FROM http://www.example.com
+        /// </remarks>
         public FrameOptionsAttribute(string value = null)
             : base("X-Frame-Options", value)
         {

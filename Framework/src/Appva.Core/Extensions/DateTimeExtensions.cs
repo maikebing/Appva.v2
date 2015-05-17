@@ -10,7 +10,7 @@ namespace Appva.Core.Extensions
 
     using System;
     using System.Globalization;
-    using Appva.Core.Utilities;
+    using Utilities;
 
     #endregion
 

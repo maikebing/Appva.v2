@@ -123,7 +123,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Caching\InMemoryCacheProviderTests.cs" />
+    <Compile Include="Common\ValueObjectTests.cs" />
     <Compile Include="Configuration\ConfigurableApplicationContextTests.cs" />
+    <Compile Include="Core\Validators\SwedishPersonalIdentityNumberTests.cs" />
     <Compile Include="Cryptography\CertificateTests.cs" />
     <Compile Include="Cryptography\ChecksumTests.cs" />
     <Compile Include="Cryptography\SecureEmailTests.cs" />
@@ -156,6 +158,10 @@
     <ProjectReference Include="..\Appva.Caching\Appva.Caching.csproj">
       <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
       <Name>Appva.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Common\Appva.Common.csproj">
+      <Project>{4b12b272-329e-42da-b8c9-bc49d9544766}</Project>
+      <Name>Appva.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
       <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>

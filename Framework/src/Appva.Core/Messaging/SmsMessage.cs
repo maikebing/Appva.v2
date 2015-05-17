@@ -9,7 +9,7 @@ namespace Appva.Core.Messaging
     /// <summary>
     /// Represents an SMS message.
     /// </summary>
-    public sealed class SmsMessage : IMessage
+    public sealed class SmsMessage
     {
         #region Variables.
 

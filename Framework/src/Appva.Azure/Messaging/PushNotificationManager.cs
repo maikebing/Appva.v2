@@ -4,18 +4,16 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-
-using System.Linq;
-
-namespace Appva.Azure
+namespace Appva.Azure.Messaging
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Linq;
     using System.Threading.Tasks;
-    using Logging;
+    using Appva.Logging;
     using Microsoft.ServiceBus.Notifications;
 
     #endregion

@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Web.ViewModels;
-    using Appva.Mvc.Filters;
+    using Appva.Mvc;
     using Appva.Persistence;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Models;

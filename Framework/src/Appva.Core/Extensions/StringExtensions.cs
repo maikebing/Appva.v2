@@ -306,6 +306,17 @@ namespace Appva.Core.Extensions
             return str.IsEmpty() ? str : str.ToLower();
         }
 
+        /// <summary>
+        /// Replaces all characters with string.Empty.
+        /// </summary>
+        /// <param name="str">The string to be replaced</param>
+        /// <param name="values">The values to be removed</param>
+        /// <returns>A string without the values specified</returns>
+        public static string ReplaceAll(this string str, params string[] values)
+        {
+            return str.IsEmpty() ? str : values.Aggregate(str, (x, y) => x.Replace(y, string.Empty));
+        }
+
         ////////////////////// FROM UTILS
         public static string First(this string str, int number)
         {

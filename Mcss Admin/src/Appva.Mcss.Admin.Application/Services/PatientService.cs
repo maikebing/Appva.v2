@@ -17,6 +17,9 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Core.Extensions;
     #endregion
 
+    /// <summary>
+    /// The <see cref="Patient"/> service.
+    /// </summary>
     public interface IPatientService : IService
     {
         /// <summary>
@@ -26,6 +29,13 @@ namespace Appva.Mcss.Admin.Application.Services
         Patient Get(Guid id);
 
         IList<Patient> FindByTaxon(Taxon taxon, bool deceased = true);
+
+        /// <summary>
+        /// Locates a patient by its unique Personal Identity Number. 
+        /// </summary>
+        /// <param name="personalIdentityNumber">The unique Personal Identity Number</param>
+        /// <returns>An <see cref="Patient"/> instance if found, else null</returns>
+        Patient FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber);
 
         /// <summary>
         /// Activates a patient.
@@ -113,6 +123,21 @@ namespace Appva.Mcss.Admin.Application.Services
         public Patient Get(Guid id)
         {
             return this.persistence.Get<Patient>(id);
+        }
+
+        /// <inheritdoc />
+        public Patient FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber)
+        {
+            var accounts = this.persistence.QueryOver<Patient>()
+                //// .Where(x => x.IsActive) This should be ignored, e.g. using it with authentication or is unique methods.
+                .And(x => x.PersonalIdentityNumber == personalIdentityNumber)
+                .List();
+            if (accounts.Count == 1)
+            {
+                return accounts[0];
+            }
+            //// If above we need to throw exception
+            return null;
         }
 
         /// <inheritdoc />

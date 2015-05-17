@@ -4,11 +4,11 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mvc.Imaging
+namespace Appva.Mvc.Imaging.Configuration
 {
     #region Imports.
 
-    using Core.Configuration;
+    using Core;
 
     #endregion
 

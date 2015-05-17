@@ -9,7 +9,7 @@ namespace Appva.Core.Exceptions
     #region Imports.
 
     using System;
-    using Logging;
+    using JetBrains.Annotations;
 
     #endregion
 
@@ -18,25 +18,16 @@ namespace Appva.Core.Exceptions
     /// </summary>
     public sealed class NoOpExceptionHandler : IExceptionHandler
     {
-        #region Variables.
-
-        /// <summary>
-        /// Logging for <see cref="DefaultExceptionHandler"/>.
-        /// </summary>
-        private static readonly ILog Logger = LogProvider.For<NoOpExceptionHandler>();
-
-        #endregion
-
         #region IExceptionHandler Members
 
         /// <inheritdoc />
-        public void Handle(Exception exception)
+        public void Handle([NotNull] Exception exception)
         {
             //// No op!
         }
 
         /// <inheritdoc />
-        public void Handle(AggregateException exception)
+        public void Handle([NotNull] AggregateException exception)
         {
             //// No op!
         }

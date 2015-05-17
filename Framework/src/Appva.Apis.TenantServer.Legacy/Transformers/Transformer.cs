@@ -4,16 +4,18 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
+
+using Appva.Apis.TenantServer.Legacy.Service_References.Wcf;
+
 namespace Appva.Apis.TenantServer.Legacy.Transformers
 {
     #region Imports.
 
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Apis.TenantServer.Contracts;
-    using Appva.Apis.TenantServer.Legacy.Wcf;
-    using Appva.Logging;
-    using Appva.Tenant.Interoperability.Client;
+    using Contracts;
+    using Logging;
+    using Tenant.Interoperability.Client;
     using Newtonsoft.Json;
 
     #endregion
@@ -24,7 +26,7 @@ namespace Appva.Apis.TenantServer.Legacy.Transformers
     internal static class Transformer
     {
         /// <summary>
-        /// The <see cref="ILog"/> for <see cref="TenantClient"/>.
+        /// The <see cref="ILog"/>.
         /// </summary>
         private static readonly ILog Log = LogProvider.For<TenantWcfClient>();
 
@@ -35,7 +37,7 @@ namespace Appva.Apis.TenantServer.Legacy.Transformers
         /// <returns>A collection of <see cref="Tenant"/></returns>
         public static IList<ITenantDto> Transform(IList<TenantDto> dtos)
         {
-            return dtos == null ? new List<ITenantDto>() : dtos.Select(x => Transform(x)).ToList();
+            return dtos == null ? new List<ITenantDto>() : dtos.Select(Transform).ToList();
         }
 
         /// <summary>

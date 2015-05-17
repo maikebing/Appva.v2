@@ -8,39 +8,38 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Appva.Apis.TenantServer.Legacy.Wcf {
-    using System.Runtime.Serialization;
-    using System;
-    
-    
+using System;
+using System.Runtime.Serialization;
+
+namespace Appva.Apis.TenantServer.Legacy.Service_References.Wcf {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TenantDto", Namespace="http://schemas.datacontract.org/2004/07/Appva.Mcss.Wcf.Data")]
-    [System.SerializableAttribute()]
+    [DataContract(Name="TenantDto", Namespace="http://schemas.datacontract.org/2004/07/Appva.Mcss.Wcf.Data")]
+    [Serializable()]
     internal partial class TenantDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
+        [NonSerialized()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Appva.Apis.TenantServer.Legacy.Wcf.ConnectionDto ConnectionField;
+        [OptionalField()]
+        private ConnectionDto ConnectionField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string HostnameField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private System.Guid IdField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string IdentifierField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string NameField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string SchedulerStatusField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private System.Collections.Generic.List<string> TagsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -53,8 +52,8 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        internal Appva.Apis.TenantServer.Legacy.Wcf.ConnectionDto Connection {
+        [DataMember()]
+        internal ConnectionDto Connection {
             get {
                 return this.ConnectionField;
             }
@@ -66,7 +65,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string Hostname {
             get {
                 return this.HostnameField;
@@ -79,7 +78,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal System.Guid Id {
             get {
                 return this.IdField;
@@ -92,7 +91,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string Identifier {
             get {
                 return this.IdentifierField;
@@ -105,7 +104,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string Name {
             get {
                 return this.NameField;
@@ -118,7 +117,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string SchedulerStatus {
             get {
                 return this.SchedulerStatusField;
@@ -131,7 +130,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal System.Collections.Generic.List<string> Tags {
             get {
                 return this.TagsField;
@@ -156,29 +155,29 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ConnectionDto", Namespace="http://schemas.datacontract.org/2004/07/Appva.Mcss.Wcf.Data")]
-    [System.SerializableAttribute()]
+    [DataContract(Name="ConnectionDto", Namespace="http://schemas.datacontract.org/2004/07/Appva.Mcss.Wcf.Data")]
+    [Serializable()]
     internal partial class ConnectionDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
+        [NonSerialized()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string DatabaseField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string FailOverPartnerField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string PasswordField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string ServerField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string TrustedConnectionField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string UserField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -191,7 +190,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string Database {
             get {
                 return this.DatabaseField;
@@ -204,7 +203,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string FailOverPartner {
             get {
                 return this.FailOverPartnerField;
@@ -217,7 +216,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string Password {
             get {
                 return this.PasswordField;
@@ -230,7 +229,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string Server {
             get {
                 return this.ServerField;
@@ -243,7 +242,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string TrustedConnection {
             get {
                 return this.TrustedConnectionField;
@@ -256,7 +255,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string User {
             get {
                 return this.UserField;
@@ -281,26 +280,26 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="LogDto", Namespace="http://schemas.datacontract.org/2004/07/Appva.Mcss.Wcf.Data")]
-    [System.SerializableAttribute()]
+    [DataContract(Name="LogDto", Namespace="http://schemas.datacontract.org/2004/07/Appva.Mcss.Wcf.Data")]
+    [Serializable()]
     internal partial class LogDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
+        [NonSerialized()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private System.DateTime CreatedField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private System.Guid IdField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private int LevelField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string MessageField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string TenantField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -313,7 +312,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal System.DateTime Created {
             get {
                 return this.CreatedField;
@@ -326,7 +325,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal System.Guid Id {
             get {
                 return this.IdField;
@@ -339,7 +338,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal int Level {
             get {
                 return this.LevelField;
@@ -352,7 +351,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string Message {
             get {
                 return this.MessageField;
@@ -365,7 +364,7 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         internal string Tenant {
             get {
                 return this.TenantField;
@@ -393,58 +392,58 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal interface ITenantService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Find", ReplyAction="http://tempuri.org/ITenantService/FindResponse")]
-        Appva.Apis.TenantServer.Legacy.Wcf.FindResponse Find(Appva.Apis.TenantServer.Legacy.Wcf.FindRequest request);
+        FindResponse Find(FindRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Find", ReplyAction="http://tempuri.org/ITenantService/FindResponse")]
-        System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.FindResponse> FindAsync(Appva.Apis.TenantServer.Legacy.Wcf.FindRequest request);
+        System.Threading.Tasks.Task<FindResponse> FindAsync(FindRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/FindByContext", ReplyAction="http://tempuri.org/ITenantService/FindByContextResponse")]
-        Appva.Apis.TenantServer.Legacy.Wcf.FindByContextResponse FindByContext(Appva.Apis.TenantServer.Legacy.Wcf.FindByContextRequest request);
+        FindByContextResponse FindByContext(FindByContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/FindByContext", ReplyAction="http://tempuri.org/ITenantService/FindByContextResponse")]
-        System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.FindByContextResponse> FindByContextAsync(Appva.Apis.TenantServer.Legacy.Wcf.FindByContextRequest request);
+        System.Threading.Tasks.Task<FindByContextResponse> FindByContextAsync(FindByContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Load", ReplyAction="http://tempuri.org/ITenantService/LoadResponse")]
-        Appva.Apis.TenantServer.Legacy.Wcf.LoadResponse Load(Appva.Apis.TenantServer.Legacy.Wcf.LoadRequest request);
+        LoadResponse Load(LoadRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Load", ReplyAction="http://tempuri.org/ITenantService/LoadResponse")]
-        System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.LoadResponse> LoadAsync(Appva.Apis.TenantServer.Legacy.Wcf.LoadRequest request);
+        System.Threading.Tasks.Task<LoadResponse> LoadAsync(LoadRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Persist", ReplyAction="http://tempuri.org/ITenantService/PersistResponse")]
-        Appva.Apis.TenantServer.Legacy.Wcf.PersistResponse Persist(Appva.Apis.TenantServer.Legacy.Wcf.PersistRequest request);
+        PersistResponse Persist(PersistRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Persist", ReplyAction="http://tempuri.org/ITenantService/PersistResponse")]
-        System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.PersistResponse> PersistAsync(Appva.Apis.TenantServer.Legacy.Wcf.PersistRequest request);
+        System.Threading.Tasks.Task<PersistResponse> PersistAsync(PersistRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Merge", ReplyAction="http://tempuri.org/ITenantService/MergeResponse")]
-        Appva.Apis.TenantServer.Legacy.Wcf.MergeResponse Merge(Appva.Apis.TenantServer.Legacy.Wcf.MergeRequest request);
+        MergeResponse Merge(MergeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Merge", ReplyAction="http://tempuri.org/ITenantService/MergeResponse")]
-        System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.MergeResponse> MergeAsync(Appva.Apis.TenantServer.Legacy.Wcf.MergeRequest request);
+        System.Threading.Tasks.Task<MergeResponse> MergeAsync(MergeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Remove", ReplyAction="http://tempuri.org/ITenantService/RemoveResponse")]
-        Appva.Apis.TenantServer.Legacy.Wcf.RemoveResponse Remove(Appva.Apis.TenantServer.Legacy.Wcf.RemoveRequest request);
+        RemoveResponse Remove(RemoveRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Remove", ReplyAction="http://tempuri.org/ITenantService/RemoveResponse")]
-        System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.RemoveResponse> RemoveAsync(Appva.Apis.TenantServer.Legacy.Wcf.RemoveRequest request);
+        System.Threading.Tasks.Task<RemoveResponse> RemoveAsync(RemoveRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Inactivate", ReplyAction="http://tempuri.org/ITenantService/InactivateResponse")]
-        Appva.Apis.TenantServer.Legacy.Wcf.InactivateResponse Inactivate(Appva.Apis.TenantServer.Legacy.Wcf.InactivateRequest request);
+        InactivateResponse Inactivate(InactivateRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/Inactivate", ReplyAction="http://tempuri.org/ITenantService/InactivateResponse")]
-        System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.InactivateResponse> InactivateAsync(Appva.Apis.TenantServer.Legacy.Wcf.InactivateRequest request);
+        System.Threading.Tasks.Task<InactivateResponse> InactivateAsync(InactivateRequest request);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ITenantService/Log")]
-        void Log(Appva.Apis.TenantServer.Legacy.Wcf.Log request);
+        void Log(Log request);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ITenantService/Log")]
-        System.Threading.Tasks.Task LogAsync(Appva.Apis.TenantServer.Legacy.Wcf.Log request);
+        System.Threading.Tasks.Task LogAsync(Log request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/LoadLogs", ReplyAction="http://tempuri.org/ITenantService/LoadLogsResponse")]
-        Appva.Apis.TenantServer.Legacy.Wcf.LoadLogsResponse LoadLogs(Appva.Apis.TenantServer.Legacy.Wcf.LoadLogsRequest request);
+        LoadLogsResponse LoadLogs(LoadLogsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITenantService/LoadLogs", ReplyAction="http://tempuri.org/ITenantService/LoadLogsResponse")]
-        System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.LoadLogsResponse> LoadLogsAsync(Appva.Apis.TenantServer.Legacy.Wcf.LoadLogsRequest request);
+        System.Threading.Tasks.Task<LoadLogsResponse> LoadLogsAsync(LoadLogsRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -469,12 +468,12 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class FindResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public Appva.Apis.TenantServer.Legacy.Wcf.TenantDto FindResult;
+        public TenantDto FindResult;
         
         public FindResponse() {
         }
         
-        public FindResponse(Appva.Apis.TenantServer.Legacy.Wcf.TenantDto FindResult) {
+        public FindResponse(TenantDto FindResult) {
             this.FindResult = FindResult;
         }
     }
@@ -501,12 +500,12 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class FindByContextResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public Appva.Apis.TenantServer.Legacy.Wcf.TenantDto FindByContextResult;
+        public TenantDto FindByContextResult;
         
         public FindByContextResponse() {
         }
         
-        public FindByContextResponse(Appva.Apis.TenantServer.Legacy.Wcf.TenantDto FindByContextResult) {
+        public FindByContextResponse(TenantDto FindByContextResult) {
             this.FindByContextResult = FindByContextResult;
         }
     }
@@ -526,12 +525,12 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class LoadResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public System.Collections.Generic.List<Appva.Apis.TenantServer.Legacy.Wcf.TenantDto> LoadResult;
+        public System.Collections.Generic.List<TenantDto> LoadResult;
         
         public LoadResponse() {
         }
         
-        public LoadResponse(System.Collections.Generic.List<Appva.Apis.TenantServer.Legacy.Wcf.TenantDto> LoadResult) {
+        public LoadResponse(System.Collections.Generic.List<TenantDto> LoadResult) {
             this.LoadResult = LoadResult;
         }
     }
@@ -542,12 +541,12 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class PersistRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public Appva.Apis.TenantServer.Legacy.Wcf.TenantDto tenant;
+        public TenantDto tenant;
         
         public PersistRequest() {
         }
         
-        public PersistRequest(Appva.Apis.TenantServer.Legacy.Wcf.TenantDto tenant) {
+        public PersistRequest(TenantDto tenant) {
             this.tenant = tenant;
         }
     }
@@ -558,12 +557,12 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class PersistResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public Appva.Apis.TenantServer.Legacy.Wcf.TenantDto PersistResult;
+        public TenantDto PersistResult;
         
         public PersistResponse() {
         }
         
-        public PersistResponse(Appva.Apis.TenantServer.Legacy.Wcf.TenantDto PersistResult) {
+        public PersistResponse(TenantDto PersistResult) {
             this.PersistResult = PersistResult;
         }
     }
@@ -574,12 +573,12 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class MergeRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public Appva.Apis.TenantServer.Legacy.Wcf.TenantDto tenant;
+        public TenantDto tenant;
         
         public MergeRequest() {
         }
         
-        public MergeRequest(Appva.Apis.TenantServer.Legacy.Wcf.TenantDto tenant) {
+        public MergeRequest(TenantDto tenant) {
             this.tenant = tenant;
         }
     }
@@ -599,12 +598,12 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class RemoveRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public Appva.Apis.TenantServer.Legacy.Wcf.TenantDto tenant;
+        public TenantDto tenant;
         
         public RemoveRequest() {
         }
         
-        public RemoveRequest(Appva.Apis.TenantServer.Legacy.Wcf.TenantDto tenant) {
+        public RemoveRequest(TenantDto tenant) {
             this.tenant = tenant;
         }
     }
@@ -624,12 +623,12 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class InactivateRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public Appva.Apis.TenantServer.Legacy.Wcf.TenantDto tenant;
+        public TenantDto tenant;
         
         public InactivateRequest() {
         }
         
-        public InactivateRequest(Appva.Apis.TenantServer.Legacy.Wcf.TenantDto tenant) {
+        public InactivateRequest(TenantDto tenant) {
             this.tenant = tenant;
         }
     }
@@ -649,12 +648,12 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class Log {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public Appva.Apis.TenantServer.Legacy.Wcf.LogDto logDto;
+        public LogDto logDto;
         
         public Log() {
         }
         
-        public Log(Appva.Apis.TenantServer.Legacy.Wcf.LogDto logDto) {
+        public Log(LogDto logDto) {
             this.logDto = logDto;
         }
     }
@@ -674,23 +673,23 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
     internal partial class LoadLogsResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public System.Collections.Generic.List<Appva.Apis.TenantServer.Legacy.Wcf.LogDto> LoadLogsResult;
+        public System.Collections.Generic.List<LogDto> LoadLogsResult;
         
         public LoadLogsResponse() {
         }
         
-        public LoadLogsResponse(System.Collections.Generic.List<Appva.Apis.TenantServer.Legacy.Wcf.LogDto> LoadLogsResult) {
+        public LoadLogsResponse(System.Collections.Generic.List<LogDto> LoadLogsResult) {
             this.LoadLogsResult = LoadLogsResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    internal interface ITenantServiceChannel : Appva.Apis.TenantServer.Legacy.Wcf.ITenantService, System.ServiceModel.IClientChannel {
+    internal interface ITenantServiceChannel : ITenantService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    internal partial class TenantServiceClient : System.ServiceModel.ClientBase<Appva.Apis.TenantServer.Legacy.Wcf.ITenantService>, Appva.Apis.TenantServer.Legacy.Wcf.ITenantService {
+    internal partial class TenantServiceClient : System.ServiceModel.ClientBase<ITenantService>, ITenantService {
         
         public TenantServiceClient() {
         }
@@ -711,75 +710,75 @@ namespace Appva.Apis.TenantServer.Legacy.Wcf {
                 base(binding, remoteAddress) {
         }
         
-        public Appva.Apis.TenantServer.Legacy.Wcf.FindResponse Find(Appva.Apis.TenantServer.Legacy.Wcf.FindRequest request) {
+        public FindResponse Find(FindRequest request) {
             return base.Channel.Find(request);
         }
         
-        public System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.FindResponse> FindAsync(Appva.Apis.TenantServer.Legacy.Wcf.FindRequest request) {
+        public System.Threading.Tasks.Task<FindResponse> FindAsync(FindRequest request) {
             return base.Channel.FindAsync(request);
         }
         
-        public Appva.Apis.TenantServer.Legacy.Wcf.FindByContextResponse FindByContext(Appva.Apis.TenantServer.Legacy.Wcf.FindByContextRequest request) {
+        public FindByContextResponse FindByContext(FindByContextRequest request) {
             return base.Channel.FindByContext(request);
         }
         
-        public System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.FindByContextResponse> FindByContextAsync(Appva.Apis.TenantServer.Legacy.Wcf.FindByContextRequest request) {
+        public System.Threading.Tasks.Task<FindByContextResponse> FindByContextAsync(FindByContextRequest request) {
             return base.Channel.FindByContextAsync(request);
         }
         
-        public Appva.Apis.TenantServer.Legacy.Wcf.LoadResponse Load(Appva.Apis.TenantServer.Legacy.Wcf.LoadRequest request) {
+        public LoadResponse Load(LoadRequest request) {
             return base.Channel.Load(request);
         }
         
-        public System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.LoadResponse> LoadAsync(Appva.Apis.TenantServer.Legacy.Wcf.LoadRequest request) {
+        public System.Threading.Tasks.Task<LoadResponse> LoadAsync(LoadRequest request) {
             return base.Channel.LoadAsync(request);
         }
         
-        public Appva.Apis.TenantServer.Legacy.Wcf.PersistResponse Persist(Appva.Apis.TenantServer.Legacy.Wcf.PersistRequest request) {
+        public PersistResponse Persist(PersistRequest request) {
             return base.Channel.Persist(request);
         }
         
-        public System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.PersistResponse> PersistAsync(Appva.Apis.TenantServer.Legacy.Wcf.PersistRequest request) {
+        public System.Threading.Tasks.Task<PersistResponse> PersistAsync(PersistRequest request) {
             return base.Channel.PersistAsync(request);
         }
         
-        public Appva.Apis.TenantServer.Legacy.Wcf.MergeResponse Merge(Appva.Apis.TenantServer.Legacy.Wcf.MergeRequest request) {
+        public MergeResponse Merge(MergeRequest request) {
             return base.Channel.Merge(request);
         }
         
-        public System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.MergeResponse> MergeAsync(Appva.Apis.TenantServer.Legacy.Wcf.MergeRequest request) {
+        public System.Threading.Tasks.Task<MergeResponse> MergeAsync(MergeRequest request) {
             return base.Channel.MergeAsync(request);
         }
         
-        public Appva.Apis.TenantServer.Legacy.Wcf.RemoveResponse Remove(Appva.Apis.TenantServer.Legacy.Wcf.RemoveRequest request) {
+        public RemoveResponse Remove(RemoveRequest request) {
             return base.Channel.Remove(request);
         }
         
-        public System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.RemoveResponse> RemoveAsync(Appva.Apis.TenantServer.Legacy.Wcf.RemoveRequest request) {
+        public System.Threading.Tasks.Task<RemoveResponse> RemoveAsync(RemoveRequest request) {
             return base.Channel.RemoveAsync(request);
         }
         
-        public Appva.Apis.TenantServer.Legacy.Wcf.InactivateResponse Inactivate(Appva.Apis.TenantServer.Legacy.Wcf.InactivateRequest request) {
+        public InactivateResponse Inactivate(InactivateRequest request) {
             return base.Channel.Inactivate(request);
         }
         
-        public System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.InactivateResponse> InactivateAsync(Appva.Apis.TenantServer.Legacy.Wcf.InactivateRequest request) {
+        public System.Threading.Tasks.Task<InactivateResponse> InactivateAsync(InactivateRequest request) {
             return base.Channel.InactivateAsync(request);
         }
         
-        public void Log(Appva.Apis.TenantServer.Legacy.Wcf.Log request) {
+        public void Log(Log request) {
             base.Channel.Log(request);
         }
         
-        public System.Threading.Tasks.Task LogAsync(Appva.Apis.TenantServer.Legacy.Wcf.Log request) {
+        public System.Threading.Tasks.Task LogAsync(Log request) {
             return base.Channel.LogAsync(request);
         }
         
-        public Appva.Apis.TenantServer.Legacy.Wcf.LoadLogsResponse LoadLogs(Appva.Apis.TenantServer.Legacy.Wcf.LoadLogsRequest request) {
+        public LoadLogsResponse LoadLogs(LoadLogsRequest request) {
             return base.Channel.LoadLogs(request);
         }
         
-        public System.Threading.Tasks.Task<Appva.Apis.TenantServer.Legacy.Wcf.LoadLogsResponse> LoadLogsAsync(Appva.Apis.TenantServer.Legacy.Wcf.LoadLogsRequest request) {
+        public System.Threading.Tasks.Task<LoadLogsResponse> LoadLogsAsync(LoadLogsRequest request) {
             return base.Channel.LoadLogsAsync(request);
         }
     }

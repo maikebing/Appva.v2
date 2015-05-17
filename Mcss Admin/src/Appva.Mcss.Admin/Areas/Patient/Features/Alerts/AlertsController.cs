@@ -11,7 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mvc.Filters;
+    using Appva.Mvc;
 
     #endregion
 

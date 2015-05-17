@@ -13,6 +13,7 @@ namespace Appva.Mvc.Imaging
     using System.IO;
     using System.Security.Cryptography;
     using System.Web;
+    using Configuration;
     using Core.Extensions;
     using Cryptography;
     using Validation;

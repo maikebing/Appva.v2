@@ -9,10 +9,8 @@ namespace Appva.Core.Extensions
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
-    using Appva.Core.Utilities;
+    using Utilities;
 
     #endregion
 

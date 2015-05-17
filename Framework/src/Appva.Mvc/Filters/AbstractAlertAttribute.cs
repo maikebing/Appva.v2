@@ -4,7 +4,8 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mvc.Filters
+// ReSharper disable CheckNamespace
+namespace Appva.Mvc
 {
     #region Imports.
 

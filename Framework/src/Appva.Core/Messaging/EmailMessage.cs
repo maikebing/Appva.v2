@@ -15,7 +15,7 @@ namespace Appva.Core.Messaging
     /// <summary>
     /// Represents an E-mail message.
     /// </summary>
-    public sealed class EmailMessage : MailMessage, IMessage
+    public sealed class EmailMessage : MailMessage
     {
         #region Constructor.
 

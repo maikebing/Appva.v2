@@ -232,13 +232,14 @@
     <Compile Include="Areas\Patient\Features\Order\Undo\UndoOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\Undo\UndoOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\UndoRefill\UndoRefillOrderHandler.cs" />
-    <Compile Include="Areas\Patient\Features\Patient\Activate\ActivatePatient.cs" />
-    <Compile Include="Areas\Patient\Features\Patient\Activate\ActivatePatientHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Reactivate\ReactivatePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Reactivate\ReactivatePatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Create\CreatePatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Create\CreatePatientPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Patient\QuickSearch\QuickSearchPatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\QuickSearch\QuickSearchPatient.cs" />
-    <Compile Include="Areas\Patient\Features\Patient\Update\Assessment.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Shared\Assessment.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Shared\CreateOrUpdatePatient.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatientPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatient.cs" />
@@ -386,7 +387,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Attributes\PublishAttribute.cs" />
+    <Compile Include="Infrastructure\AdminModelBinder.cs" />
     <Compile Include="Infrastructure\Attributes\DispatchAttribute.cs" />
     <Compile Include="Infrastructure\ControllerExtensions.cs" />
     <Compile Include="Infrastructure\Controllers\AbstractMediatorController.cs" />

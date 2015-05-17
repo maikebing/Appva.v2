@@ -4,20 +4,19 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
+
+using Appva.Apis.TenantServer.Legacy.Service_References.Wcf;
+
 namespace Appva.Apis.TenantServer.Legacy
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
-    using Appva.Apis.TenantServer.Contracts;
-    using Appva.Apis.TenantServer.Legacy.Transformers;
-    using Appva.Apis.TenantServer.Legacy.Wcf;
-    using Appva.Logging;
-    using Appva.Tenant.Interoperability.Client;
-    using Newtonsoft.Json;
+    using Transformers;
+    using Logging;
+    using Tenant.Interoperability.Client;
 
     #endregion
 
@@ -54,7 +53,7 @@ namespace Appva.Apis.TenantServer.Legacy
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ILog"/> for <see cref="TenantClient"/>.
+        /// The <see cref="ILog"/>.
         /// </summary>
         private static readonly ILog Log = LogProvider.For<TenantWcfClient>();
 

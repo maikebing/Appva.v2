@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\..\..\Packages\JetBrains.Annotations.9.1.1\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\Packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -43,6 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IConfigurableResource.cs" />
+    <Compile Include="Contracts\IPersonalIdentityNumber.cs" />
+    <Compile Include="Contracts\Permissions\IPermision.cs" />
+    <Compile Include="Contracts\Validation\IValidator.cs" />
     <Compile Include="Exceptions\DefaultExceptionHandler.cs" />
     <Compile Include="Exceptions\IExceptionHandler.cs" />
     <Compile Include="Exceptions\NoOpExceptionHandler.cs" />
@@ -63,7 +70,6 @@
     <Compile Include="Logging\LogProvider.cs" />
     <Compile Include="Logging\NoOpLogger.cs" />
     <Compile Include="Messaging\EmailMessage.cs" />
-    <Compile Include="Messaging\IMessage.cs" />
     <Compile Include="Messaging\EmailService.cs" />
     <Compile Include="Messaging\SmsMessage.cs" />
     <Compile Include="Messaging\SmsService.cs" />
@@ -96,6 +102,7 @@
     <Compile Include="Utilities\DateTimeUtilities.cs" />
     <Compile Include="Utilities\ExpressionUtil.cs" />
     <Compile Include="Utilities\StringUtilities.cs" />
+    <Compile Include="Validators\SwedishPersonalIdentityNumberValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -121,6 +128,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RoleTypes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contracts\Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,9 +8,6 @@ namespace Appva.Mvc.Security
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Security.Claims;
     using System.Web.Mvc;
     using System.Web.Mvc.Filters;
@@ -62,7 +59,7 @@ namespace Appva.Mvc.Security
             }
             if (principal.HasClaim(Core.Resources.ClaimTypes.AclEnabled, "Y") || (principal.HasClaim(Core.Resources.ClaimTypes.AclPreview, "Y") && principal.IsInRole(Core.Resources.RoleTypes.Appva)))
             {
-                if (! principal.HasClaim(Core.Resources.ClaimTypes.Permission, permission))
+                if (! principal.HasClaim(Core.Resources.ClaimTypes.Permission, this.permission))
                 {
                     filterContext.Result = new HttpUnauthorizedResult();
                     return;

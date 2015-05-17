@@ -14,11 +14,11 @@ namespace Appva.Apis.TenantServer
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
-    using Appva.Apis.TenantServer.Configuration;
-    using Appva.Tenant.Interoperability.Client;
+    using Configuration;
     using Logging;
     using Newtonsoft.Json;
     using Resources;
+    using Tenant.Interoperability.Client;
 
     #endregion
 

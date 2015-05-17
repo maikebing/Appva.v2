@@ -2,14 +2,14 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-namespace Appva.Test.Http
+
+namespace Appva.Test.WebApi.Resources
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    #region Imports.
+
     using Appva.WebApi;
+
+    #endregion
 
     /// <summary>
     /// TODO: Add a summary for readability.

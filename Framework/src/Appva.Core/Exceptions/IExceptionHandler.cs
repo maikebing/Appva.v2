@@ -26,7 +26,7 @@ namespace Appva.Core.Exceptions
         /// <summary>
         /// Handles an aggregated exception, <see cref="AggregateException"/>.
         /// </summary>
-        /// <param name="exceptions">An aggregate exception</param>
+        /// <param name="exception">An aggregate exception</param>
         void Handle(AggregateException exception);
     }
 }

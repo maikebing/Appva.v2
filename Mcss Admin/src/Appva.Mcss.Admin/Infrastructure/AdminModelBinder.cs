@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     #endregion
 
     /// <summary>
+    /// http://stackoverflow.com/questions/2186969/custom-model-binder-for-a-property?lq=1
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public sealed class AdminModelBinder : DefaultModelBinder

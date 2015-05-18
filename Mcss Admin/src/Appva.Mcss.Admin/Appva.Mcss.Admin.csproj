@@ -928,6 +928,9 @@
   <ItemGroup>
     <Content Include="Areas\Dashboard\Features\Dashboard\Index\Index.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\EmailTemplates\AuthenticationEmail.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

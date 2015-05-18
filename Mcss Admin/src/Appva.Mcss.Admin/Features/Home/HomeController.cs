@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Features.Home
 
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mvc.Messaging;
     using Appva.Persistence;
 
     #endregion
@@ -51,8 +52,10 @@ namespace Appva.Mcss.Admin.Features.Home
         [HttpGet, Route]
         public ActionResult Index()
         {
-            var count = this.persistenceContext.QueryOver<Patient>().List().Count;
-            ViewData.Add("count", count);
+            ViewData.Add("razor", RazorEmailMessage.CreateNew().Path("Features/Shared/EmailTemplates/AuthenticationEmail.cshtml").Model(new
+            {
+                Test = "johansalllarsson@appva.se"
+            }).To("johansalllarsson@appva.se").Subject("Something").Build().Body);
             return View();
         }
 

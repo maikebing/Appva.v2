@@ -16,6 +16,8 @@ namespace Appva.Mcss.Admin.Configuration
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
+    /// FIXME: Rename to ApplicationEnvironment and add IApplicationEnvironment, ApplicationHostContext.
+    /// http://www.codeproject.com/Tips/355467/Getting-publishing-information-for-a-ClickOnce-dep
     /// </summary>
     public static class Application
     {

@@ -22,6 +22,8 @@ namespace Appva.Cryptography.Messaging
     #endregion
 
     /// <summary>
+    /// FIXME: Create class and new service
+    /// https://support.google.com/mail/answer/180707?hl=en
     /// S/MIME (Secure/Multipurpose Internet Mail Extensions) is a standard for public 
     /// key encryption and signing of MIME data. S/MIME is on an IETF standards track 
     /// and defined in a number of documents, most importantly RFCs 3369, 3370, 3850 and 

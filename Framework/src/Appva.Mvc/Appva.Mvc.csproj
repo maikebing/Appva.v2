@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionResults\EmptyJsonResult.cs" />
+    <Compile Include="Messaging\RazorEmailMessage.cs" />
     <Compile Include="Rendering\HtmlHelperInputExtensions.cs" />
     <Compile Include="Rendering\ViewEngine\FeatureViewLocationRazorViewEngine.cs" />
     <Compile Include="Filters\AlertDangerAttribute.cs" />

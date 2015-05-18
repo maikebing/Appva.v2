@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mvc.Filters;
+    using Appva.Mvc;
 
     #endregion
 
@@ -88,7 +88,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         public ActionResult Create(CreateAccountModel model, FormCollection collection)
         {
             return this.View();
-        }
+                }
 
         #endregion
 
@@ -180,8 +180,8 @@ namespace Appva.Mcss.Admin.Features.Accounts
             return this.JsonGet();
         }
 
-        #endregion      
-        
+        #endregion
+
         #region Update View.
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         [Route("{id:guid}/update")]
         [HttpGet, Hydrate, Dispatch]
         public ActionResult Update(Identity<UpdateAccount> request)
-        {
+            {
             return this.View();
         }
 
@@ -206,7 +206,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         [Route("{id:guid}/update")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List","Accounts")]
         public ActionResult Update(UpdateAccount request)
-        {
+                {
             return this.View();
         }
 

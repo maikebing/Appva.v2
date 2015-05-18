@@ -14,7 +14,8 @@ namespace Appva.Mcss.Admin
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
-    using Appva.Mvc.Engines;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mvc;
     using HibernatingRhinos.Profiler.Appender.NHibernate;
     using log4net.Config;
 
@@ -30,6 +31,8 @@ namespace Appva.Mcss.Admin
         {
             NHibernateProfiler.Initialize();
             XmlConfigurator.Configure();
+            ModelBinders.Binders.DefaultBinder = new AdminModelBinder();
+            //ValueProviderFactories.Factories.Add();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);

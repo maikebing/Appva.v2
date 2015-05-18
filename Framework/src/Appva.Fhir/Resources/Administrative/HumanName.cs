@@ -4,6 +4,9 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
+
+using System;
+
 namespace Appva.Fhir.Resources.Administrative
 {
     #region Imports.
@@ -154,6 +157,7 @@ namespace Appva.Fhir.Resources.Administrative
             this.Family = family;
             this.Suffix = suffix;
             this.Text = this.ConcatenateHumanName();
+            this.Period = new Period(DateTime.Now, null);
         }
 
         /// <summary>

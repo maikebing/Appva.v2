@@ -15,7 +15,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
-    using Appva.Mvc.Filters;
+    using Appva.Mvc;
 
     #endregion
 

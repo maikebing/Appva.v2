@@ -75,7 +75,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 throw new ArgumentNullException("Taxon is null");
             }
-            var selectedIds = message.SeniorAlerts.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
+            var selectedIds = message.Assessments.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
             IList<Taxon> assessments = null;
             if (selectedIds.Length > 0)
             {

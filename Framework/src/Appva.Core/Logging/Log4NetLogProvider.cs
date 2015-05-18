@@ -146,6 +146,7 @@ namespace Appva.Core.Logging
                 {
                     return this.LogException(logLevel, messageFunc, exception);
                 }
+                //// FIXME: Null checker here!
                 switch (logLevel)
                 {
                     case LogLevel.Info:

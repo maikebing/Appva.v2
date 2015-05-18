@@ -28,7 +28,6 @@ namespace Appva.Core.Logging
 
     using System;
     using System.Globalization;
-    using System.Linq;
     using Newtonsoft.Json;
     using Validation;
     using Extensions;
@@ -107,7 +106,7 @@ namespace Appva.Core.Logging
         /// <param name="logger">The current <see cref="ILog"/></param>
         /// <param name="exception">The exception</param>
         /// <param name="message">The log message or message format</param>
-        /// <param name="exception">The log message object parameters</param>
+        /// <param name="args">The log message object parameters</param>
         public static void Trace(this ILog logger, Exception exception, string message, params object[] args)
         {
             Requires.NotNull(logger, "logger");
@@ -274,7 +273,6 @@ namespace Appva.Core.Logging
         /// Logs an information exception.
         /// </summary>
         /// <param name="logger">The current <see cref="ILog"/></param>
-        /// <param name="message">The log message</param>
         /// <param name="exception">The exception</param>
         public static void Info(this ILog logger, Exception exception)
         {
@@ -615,6 +613,10 @@ namespace Appva.Core.Logging
         /// <param name="args">The log message object parameters</param>
         private static void LogFormat(this ILog logger, LogLevel logLevel, Exception exception, string message, params object[] args)
         {
+            if (logLevel == LogLevel.Trace || logLevel == LogLevel.Debug)
+            {
+
+            }
             logger.Log(logLevel, string.Format(CultureInfo.InvariantCulture, message, args).AsFunc(), exception);
         }
 
@@ -642,7 +644,7 @@ namespace Appva.Core.Logging
                     message = obj.GetType().AssemblyQualifiedName.AsFunc();
                 }
             }
-            logger.Log(logLevel, message, null);
+            logger.Log(logLevel, message);
         }
 
         /// <summary>

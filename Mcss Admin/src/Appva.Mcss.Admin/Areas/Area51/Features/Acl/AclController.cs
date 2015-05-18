@@ -15,7 +15,7 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mvc.Filters;
+    using Appva.Mvc;
 
     #endregion
 

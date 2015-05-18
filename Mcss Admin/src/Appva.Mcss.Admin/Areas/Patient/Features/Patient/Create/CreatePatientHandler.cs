@@ -70,8 +70,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new CreatePatient
             {
                 Taxons = TaxonomyHelper.SelectList(organizationalUnits),
-                SeniorAlerts = assessments,
-                HasTagIdentifier = this.settingsService.HasPatientTag()
+                Assessments = assessments,
+                HasAlternativeIdentifier = this.settingsService.HasPatientTag()
             };
         }
 

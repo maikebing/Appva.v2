@@ -10,7 +10,7 @@ namespace Appva.Mcss.Web.ViewModels
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
-    using Appva.Mvc.Html.DataAnnotations;
+    using Appva.Mvc;
     using DataAnnotationsExtensions;
 
     #endregion

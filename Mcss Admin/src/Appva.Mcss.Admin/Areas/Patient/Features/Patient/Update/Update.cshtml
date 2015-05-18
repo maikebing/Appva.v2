@@ -5,7 +5,7 @@
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PatientCreate" data-valparams="id=@Model.Id;uidUrl=@Url.Action("IsUnique");taxonUrl=@Url.Action("VerifyTaxon", "Taxonomy")">    
     @using (Html.Post(null, new { Id = Model.Id }))
     {
-        if (Model.SeniorAlerts.IsNotNull())
+        if (Model.Assessments.IsNotNull())
         { 
             <div class="row form-tabgroup lb-nav cf">
 			    <ul class="nav cf">
@@ -48,11 +48,11 @@
 	        </div>
             @Html.FormGroup(x => x.IsDeceased, "checkbox").Checkbox("Avliden").Validate().Build()
         </div>
-        if (Model.SeniorAlerts.IsNotNull())
+        if (Model.Assessments.IsNotNull())
         { 
             <div class="form-tab form-tab-2">
                 <h3 class="section-title">Profiluppgifter</h3>
-                @Html.FormGroup(x => x.SeniorAlerts).CheckboxList(new { @class = "health-attr" }).Validate().Build()
+                @Html.FormGroup(x => x.Assessments).CheckboxList(new { @class = "health-attr" }).Validate().Build()
             </div>
         }
         <div class="submit">

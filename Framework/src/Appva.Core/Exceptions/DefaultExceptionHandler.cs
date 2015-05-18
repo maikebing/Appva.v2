@@ -10,7 +10,7 @@ namespace Appva.Core.Exceptions
 
     using System;
     using Resources;
-    using Logging;
+    using JetBrains.Annotations;
 
     #endregion
 
@@ -22,27 +22,18 @@ namespace Appva.Core.Exceptions
     /// </remarks>
     public sealed class DefaultExceptionHandler : IExceptionHandler
     {
-        #region Variables.
-
-        /// <summary>
-        /// Logging for <see cref="DefaultExceptionHandler"/>.
-        /// </summary>
-        private static readonly ILog Logger = LogProvider.For<DefaultExceptionHandler>();
-
-        #endregion
-
         #region IExceptionHandler Members
 
         /// <inheritdoc />
         /// <exception cref="ApplicationException">Throws a new exception</exception>
-        public void Handle(Exception exception)
+        public void Handle([NotNull] Exception exception)
         {
             throw new ApplicationException(ExceptionWhen.HandlingExceptions, exception);
         }
 
         /// <inheritdoc />
         /// <exception cref="ApplicationException">Throws a new exception</exception>
-        public void Handle(AggregateException exception)
+        public void Handle([NotNull] AggregateException exception)
         {
             throw new ApplicationException(ExceptionWhen.HandlingExceptions, exception);
         }

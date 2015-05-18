@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using DataAnnotationsExtensions;
-using Appva.Mvc.Html.DataAnnotations;
+using Appva.Mvc;
 
 namespace Appva.Mcss.Web.ViewModels {
 

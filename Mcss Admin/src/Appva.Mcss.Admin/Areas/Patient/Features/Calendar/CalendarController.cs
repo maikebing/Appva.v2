@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mvc.Filters;
+    using Appva.Mvc;
 
     #endregion
 

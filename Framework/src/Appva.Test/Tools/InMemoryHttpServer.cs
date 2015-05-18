@@ -4,13 +4,13 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Test
+namespace Appva.Test.Tools
 {
     #region Imports.
 
     using System;
     using System.Web.Http;
-    
+
     #endregion
 
     /// <summary>

@@ -9,8 +9,6 @@ namespace Appva.Core.Utilities
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
 
     #endregion
@@ -91,11 +89,11 @@ namespace Appva.Core.Utilities
                             typeof(TArg2) == typeof(TResult)))
                     { // already "TValue, TValue, TValue"...
                         // convert both lhs and rhs to TResult (as appropriate)
-                        Expression castLhs = typeof(TArg1) == typeof(TResult) ?
-                                (Expression)lhs :
+                        var castLhs = typeof(TArg1) == typeof(TResult) ?
+                                lhs :
                                 (Expression)Expression.Convert(lhs, typeof(TResult));
-                        Expression castRhs = typeof(TArg2) == typeof(TResult) ?
-                                (Expression)rhs :
+                        var castRhs = typeof(TArg2) == typeof(TResult) ?
+                                rhs :
                                 (Expression)Expression.Convert(rhs, typeof(TResult));
 
                         return Expression.Lambda<Func<TArg1, TArg2, TResult>>(

@@ -8,7 +8,7 @@ namespace Appva.Mcss.Admin
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Application.Security;
+    using Application.Security;
     using Microsoft.Owin;
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.Cookies;

@@ -12,7 +12,7 @@ namespace Appva.Mcss.Admin.Models
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using Appva.Cqrs;
-    using Appva.Mvc.Html.DataAnnotations;
+    using Appva.Mvc;
     using DataAnnotationsExtensions;
 
     #endregion

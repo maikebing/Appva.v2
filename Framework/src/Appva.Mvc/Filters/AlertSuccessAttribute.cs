@@ -4,7 +4,8 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mvc.Filters
+// ReSharper disable CheckNamespace
+namespace Appva.Mvc
 {
     /// <summary>
     /// Adds a success alert message to the temp data.
@@ -24,7 +25,7 @@ namespace Appva.Mvc.Filters
 
         #endregion
 
-        #region Inherits.
+        #region AbstractAlertAttribute Overrides.
 
         /// <inheritdoc />
         protected override string GetContext()

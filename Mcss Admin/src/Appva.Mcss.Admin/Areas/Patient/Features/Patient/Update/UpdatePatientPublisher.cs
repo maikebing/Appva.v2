@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using Appva.Core.Extensions;
     using System.Linq;
-    using Appva.Mvc.Html.Models;
+    using Appva.Mvc;
 
     #endregion
 
@@ -73,7 +73,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override Identity<Guid> Handle(UpdatePatient message)
         {
             var address = this.taxonomyService.Get(message.Taxon.ToGuid());
-            var selectedIds = message.SeniorAlerts.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
+            var selectedIds = message.Assessments.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
             IList<Taxon> assessments = null;
             if (selectedIds.Length > 0)
             {

@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using Appva.Core.Extensions;
     using System.Linq;
-    using Appva.Mvc.Html.Models;
+    using Appva.Mvc;
 
     #endregion
 
@@ -93,7 +93,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Taxons = TaxonomyHelper.SelectList(patient.Taxon, taxons),
                 PersonalIdentityNumber = patient.PersonalIdentityNumber,
                 IsDeceased = patient.Deceased,
-                SeniorAlerts = assessments,
+                Assessments = assessments,
                 HasAlternativeIdentifier = this.settingsService.HasPatientTag(),
                 Tag = patient.Identifier
             };

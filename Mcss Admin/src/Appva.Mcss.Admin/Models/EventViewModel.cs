@@ -4,7 +4,7 @@ using Appva.Mcss.Admin.Domain.Entities;
 using System.Web.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Appva.Mvc.Html.DataAnnotations;
+using Appva.Mvc;
 using DataAnnotationsExtensions;
 using Appva.Cqrs;
 using Appva.Mcss.Admin.Models;

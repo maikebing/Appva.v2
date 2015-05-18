@@ -45,7 +45,7 @@ namespace Appva.Test.Tools
             var persistenceResolver = new DefaultPersistenceContextAwareResolver(
                 new DefaultDatasource(
                     configuration, 
-                    new DefaultDatasourceExceptionHandler()));
+                    null));
             this.persistenceContext = persistenceResolver.CreateNew().Open();
         }
 

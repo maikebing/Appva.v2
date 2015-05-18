@@ -2,20 +2,15 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author><a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a></author>
-namespace Appva.Test.Http
+namespace Appva.Test.WebApi
 {
     #region Imports.
 
     using System;
-    using System.Net;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Threading;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using Appva.WebApi;
+    using Resources;
     using Appva.WebApi.Extensions;
-    using Xunit;
 
     #endregion
 

@@ -10,7 +10,7 @@ namespace Appva.Test.Cryptography
 
     using Appva.Cryptography;
     using Appva.Cryptography.HashAlgorithms;
-    using Core.Extensions;
+    using Appva.Core.Extensions;
     using Xunit;
 
     #endregion

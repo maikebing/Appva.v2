@@ -14,9 +14,12 @@ namespace Appva.Mvc.Security
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StrictTransportSecurityAttribute"/> class.
+        /// Initializes a new instance of the <see cref="StrictTransportSecurityAttribute"/> 
+        /// class.
         /// </summary>
-        /// <param name="value">Optional value, defaults to max-age=31536000; includeSubDomains</param>
+        /// <param name="value">
+        /// Optional value, defaults to max-age=31536000; includeSubDomains
+        /// </param>
         public StrictTransportSecurityAttribute(string value = null)
             : base("Strict-Transport-Security", value)
         {

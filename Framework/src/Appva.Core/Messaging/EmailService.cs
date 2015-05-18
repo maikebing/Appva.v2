@@ -11,7 +11,7 @@ namespace Appva.Core.Messaging
     using System;
     using System.Net.Mail;
     using System.Threading.Tasks;
-    using Appva.Core.Resources;
+    using Resources;
     using Logging;
     using Validation;
 

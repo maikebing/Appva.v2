@@ -30,12 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\..\..\Packages\JetBrains.Annotations.9.1.1\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\Packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\..\..\Packages\RazorEngine.3.7.0\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -74,7 +81,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engines\FeatureViewLocationRazorViewEngine.cs" />
+    <Compile Include="ActionResults\EmptyJsonResult.cs" />
+    <Compile Include="Messaging\RazorEmailMessage.cs" />
+    <Compile Include="Rendering\HtmlHelperInputExtensions.cs" />
+    <Compile Include="Rendering\ViewEngine\FeatureViewLocationRazorViewEngine.cs" />
     <Compile Include="Filters\AlertDangerAttribute.cs" />
     <Compile Include="Filters\AlertInformationAttribute.cs" />
     <Compile Include="Filters\AlertWarningAttribute.cs" />
@@ -85,33 +95,50 @@
     <Compile Include="Filters\AlertSuccessAttribute.cs" />
     <Compile Include="Filters\TimingAttribute.cs" />
     <Compile Include="Filters\ValidateAttribute.cs" />
-    <Compile Include="Html\ApplicationWebView.cs" />
-    <Compile Include="Html\Extensions\ActionLinkExtensions.cs" />
-    <Compile Include="Html\Extensions\CheckBoxExtensions.cs" />
-    <Compile Include="Html\Extensions\Elements\CheckboxFor.cs" />
-    <Compile Include="Html\Extensions\Elements\CheckBoxListFor.cs" />
-    <Compile Include="Html\Extensions\Elements\Element.cs" />
-    <Compile Include="Html\Extensions\Elements\ElementBuilder.cs" />
-    <Compile Include="Html\Extensions\Elements\FormGroupFor.cs" />
-    <Compile Include="Html\Extensions\Elements\Help.cs" />
-    <Compile Include="Html\Extensions\Elements\LabelAndAsteriskFor.cs" />
-    <Compile Include="Html\Extensions\Elements\LabelFor.cs" />
-    <Compile Include="Html\Extensions\Elements\PasswordFor.cs" />
-    <Compile Include="Html\Extensions\Elements\TextAreaFor.cs" />
-    <Compile Include="Html\Extensions\Elements\TextBoxFor.cs" />
-    <Compile Include="Html\Extensions\Elements\ValidateFor.cs" />
-    <Compile Include="Html\Extensions\FormExtensions.cs" />
-    <Compile Include="Html\Extensions\HtmlHelperExtensions.cs" />
-    <Compile Include="Html\Extensions\RouteValueDictionaryExtensions.cs" />
-    <Compile Include="Html\Models\Tickable.cs" />
-    <Compile Include="Imaging\Detection\Detector.cs" />
+    <Compile Include="Rendering\ApplicationWebView.cs" />
+    <Compile Include="Rendering\HtmlHelperLinkExtensions.cs" />
+    <Compile Include="Rendering\HtmlHelperCheckBoxExtensions.cs" />
+    <Compile Include="Rendering\Html\CheckboxFor.cs" />
+    <Compile Include="Rendering\Html\CheckBoxListFor.cs" />
+    <Compile Include="Rendering\Html\Element.cs" />
+    <Compile Include="Rendering\Html\ElementBuilder.cs" />
+    <Compile Include="Rendering\Html\FormGroupFor.cs" />
+    <Compile Include="Rendering\Html\Help.cs" />
+    <Compile Include="Rendering\Html\LabelAndAsteriskFor.cs" />
+    <Compile Include="Rendering\Html\LabelFor.cs" />
+    <Compile Include="Rendering\Html\PasswordFor.cs" />
+    <Compile Include="Rendering\Html\TextAreaFor.cs" />
+    <Compile Include="Rendering\Html\TextBoxFor.cs" />
+    <Compile Include="Rendering\Html\ValidateFor.cs" />
+    <Compile Include="Rendering\HtmlHelperFormExtensions.cs" />
+    <Compile Include="Rendering\HtmlHelperNotificationExtensions.cs" />
+    <Compile Include="Internal\RouteValueDictionaryExtensions.cs" />
+    <Compile Include="Rendering\Tickable.cs" />
+    <Compile Include="Imaging\Detection\Detector.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Imaging\Detection\MediaType.cs" />
-    <Compile Include="Imaging\ImageAttribute.cs" />
+    <Compile Include="ModelBinding\Validation\ImageAttribute.cs" />
     <Compile Include="Imaging\Configuration\ImageConfiguration.cs" />
-    <Compile Include="Imaging\ImageContentResult.cs" />
+    <Compile Include="ActionResults\ImageContentResult.cs" />
     <Compile Include="Imaging\ImageProcessor.cs" />
     <Compile Include="Imaging\ImageResizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\MediaTypes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MediaTypes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\TagAttributes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TagAttributes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Tags.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tags.resx</DependentUpon>
+    </Compile>
     <Compile Include="Security\ContentSecurityPolicyAttribute.cs" />
     <Compile Include="Security\ContentTypeOptionsAttribute.cs" />
     <Compile Include="Security\FrameOptionsAttribute.cs" />
@@ -119,13 +146,13 @@
     <Compile Include="Security\SecurityHeader.cs" />
     <Compile Include="Security\StrictTransportSecurityAttribute.cs" />
     <Compile Include="Security\XssProtectionAttribute.cs" />
-    <Compile Include="Html\DataAnnotations\DateGreaterThanAttribute.cs" />
-    <Compile Include="Html\DataAnnotations\DateGreaterThanOrEqualsAttribute.cs" />
-    <Compile Include="Html\DataAnnotations\DateLessThanAttribute.cs" />
-    <Compile Include="Html\DataAnnotations\DateLessThanOrEqualsAttribute.cs" />
-    <Compile Include="Html\DataAnnotations\PlaceHolderAttribute.cs" />
-    <Compile Include="Html\DataAnnotations\RequiredIfAttribute.cs" />
-    <Compile Include="Html\DataAnnotations\UniqueIdentifierAttribute.cs" />
+    <Compile Include="ModelBinding\Validation\DateGreaterThanAttribute.cs" />
+    <Compile Include="ModelBinding\Validation\DateGreaterThanOrEqualsAttribute.cs" />
+    <Compile Include="ModelBinding\Validation\DateLessThanAttribute.cs" />
+    <Compile Include="ModelBinding\Validation\DateLessThanOrEqualsAttribute.cs" />
+    <Compile Include="ModelBinding\Validation\PlaceHolderAttribute.cs" />
+    <Compile Include="ModelBinding\Validation\RequiredIfAttribute.cs" />
+    <Compile Include="ModelBinding\Validation\PersonalIdentityNumberAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -133,10 +160,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
-      <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
-      <Name>Appva.Core.Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Appva.Core\Appva.Core.csproj">
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>
@@ -146,7 +169,20 @@
       <Name>Appva.Cryptography</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MediaTypes.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MediaTypes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TagAttributes.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TagAttributes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Tags.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tags.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

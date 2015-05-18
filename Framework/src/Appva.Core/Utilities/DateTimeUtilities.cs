@@ -9,9 +9,7 @@ namespace Appva.Core.Utilities
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
 
     #endregion
 
@@ -23,10 +21,9 @@ namespace Appva.Core.Utilities
         /// <summary>
         /// A DateTime without seconds or milliseconds
         /// </summary>
-        /// <param name="date"></param>
         public static DateTime Now()
         {
-            DateTime date = DateTime.Now;
+            var date = DateTime.Now;
             return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0, 0);
         }
 

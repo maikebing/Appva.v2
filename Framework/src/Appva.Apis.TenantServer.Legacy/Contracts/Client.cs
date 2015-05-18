@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Apis.TenantServer.Contracts
+namespace Appva.Apis.TenantServer.Legacy.Contracts
 {
     #region Imports.
 

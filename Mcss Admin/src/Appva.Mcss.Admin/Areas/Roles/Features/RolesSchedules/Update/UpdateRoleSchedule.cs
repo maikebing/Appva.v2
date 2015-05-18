@@ -12,7 +12,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Features.RolesSchedules.Update
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Appva.Cqrs;
-    using Appva.Mvc.Html.Models;
+    using Appva.Mvc;
 
     #endregion
 

@@ -12,11 +12,11 @@ namespace Appva.Apis.TenantServer
     using System.Collections.Generic;
     using System.Configuration;
     using System.Threading.Tasks;
-    using Appva.Apis.TenantServer.Configuration;
-    using Appva.Tenant.Interoperability.Client;
+    using Configuration;
     using Contracts;
     using Logging;
     using Resources;
+    using Tenant.Interoperability.Client;
 
     #endregion
 

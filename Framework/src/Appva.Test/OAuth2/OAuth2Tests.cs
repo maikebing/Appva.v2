@@ -15,7 +15,7 @@ namespace Appva.Test.OAuth2
     using System.Linq;
     using System.Net;
     using System.Security.Cryptography;
-    using Core.Extensions;
+    using Appva.Core.Extensions;
     using DotNetOpenAuth.Messaging.Bindings;
     using DotNetOpenAuth.OAuth2;
     using DotNetOpenAuth.OAuth2.ChannelElements;

@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Mcss.Admin.Infrastructure.Controllers;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mvc.Filters;
+    using Appva.Mvc;
 
     #endregion
 
@@ -66,7 +66,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns>A redirect to <see cref="PatientController.List"/> if valid</returns>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Patient")]
-        public ActionResult Create(CreatePatient request)
+        public ActionResult Create([CustomValueProvider]CreatePatient request)
         {
             return View();
         }

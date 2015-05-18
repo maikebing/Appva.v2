@@ -1,9 +1,9 @@
 ﻿@model Appva.Mcss.Admin.Models.CreatePatient
 @{ ViewBag.Title = "Ny boende"; }
-<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PatientCreate" data-valparams="id=@((Model.PatientId.HasValue) ? Model.PatientId.Value.ToString() : "");uidUrl=@Url.Action("VerifyUniquePatient");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PatientCreate" data-valparams="uidUrl=@Url.Action("VerifyUniquePatient");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
     @using (Html.Post())
     {
-        if (Model.SeniorAlerts.IsNotNull())
+        if (Model.Assessments.IsNotNull())
         { 
             <div class="row form-tabgroup lb-nav cf">
 			    <ul class="nav cf">
@@ -21,7 +21,7 @@
             @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
-            @if (Model.HasTagIdentifier)
+            @if (Model.HasAlternativeIdentifier)
             {
                 @Html.FormGroup(x => x.Tag, "text small").Label().TextBox().Validate().Build()
             }
@@ -45,11 +45,11 @@
                 @Html.ValidationMessageFor(m => m.Taxon)
 	        </div>
         </div>
-        if (Model.SeniorAlerts.IsNotNull())
+        if (Model.Assessments.IsNotNull())
         { 
             <div class="form-tab form-tab-2">
                 <h3 class="section-title">Profiluppgifter</h3>
-                @Html.FormGroup(x => x.SeniorAlerts).CheckboxList(new { @class = "health-attr" }).Validate().Build()
+                @Html.FormGroup(x => x.Assessments).CheckboxList(new { @class = "health-attr" }).Validate().Build()
             </div>
         }
         <div class="submit">

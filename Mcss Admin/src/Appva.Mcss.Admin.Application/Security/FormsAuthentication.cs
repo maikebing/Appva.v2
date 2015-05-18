@@ -194,6 +194,14 @@ namespace Appva.Mcss.Admin.Application.Security
             {
                 return AuthenticationResult.NotFound;
             }
+            if (! account.IsActive)
+            {
+                return AuthenticationResult.Failure;
+            }
+            if (account.IsPaused)
+            {
+                return AuthenticationResult.Failure;
+            }
             if (account.IsLockout())
             {
                 return AuthenticationResult.Lockout;

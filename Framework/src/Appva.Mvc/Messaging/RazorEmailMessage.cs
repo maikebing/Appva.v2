@@ -214,6 +214,10 @@ namespace Appva.Mvc.Messaging
         /// <inheritdoc />
         public RazorEmailMessage Build()
         {
+            if (Engine.Razor.IsTemplateCached(this.TemplatePath, this.TemplateModel.GetType()))
+            {
+                //new LoadedTemplateSource(templateSource)
+            }
             //// https://antaris.github.io/RazorEngine/Upgrading.html
             //// Engine.Razor.IsTemplateCached()
             //// Inspiration (old): http://mehdi.me/generating-html-emails-with-razorengine-basics-generating-your-first-email/

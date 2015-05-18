@@ -102,14 +102,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public Account FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber)
         {
             var accounts = this.persistenceContext.QueryOver<Account>()
-                .Where(x => x.IsActive)
-                .And(x => x.IsPaused == false)
-                .And(x => x.PersonalIdentityNumber == personalIdentityNumber)
+                .Where(x => x.PersonalIdentityNumber == personalIdentityNumber)
                 .List();
             if (accounts.Count == 1)
             {
                 return accounts[0];
             }
+            //// FIXME: should throw exception if we have several!
             return null;
         }
 

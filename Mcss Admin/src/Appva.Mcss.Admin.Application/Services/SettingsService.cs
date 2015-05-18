@@ -34,7 +34,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="key">The unique key</param>
         /// <param name="defaultValue">The default value if value does not exist</param>
         /// <returns>Returns the <c>Setting</c> or null if not found</returns>
-        T Find<T>(ApplicationSettingIdentity key, object defaultValue = null);
+        T Find<T>(ApplicationSettingIdentity<T> key, object defaultValue = null) where T : struct;
 
         /// <summary>
         /// Returns a collection of tenant <see cref="Setting"/>.
@@ -47,7 +47,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         /// <param name="key">The unique key</param>
         /// <param name="value">The value to be added</param>
-        void Upsert(ApplicationSettingIdentity key, object value);
+        void Upsert<T>(ApplicationSettingIdentity<T> key, T value) where T : struct;
 
         ///////// OLD !!!
 
@@ -107,7 +107,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         #region ISettingsService Members.
 
         /// <inheritdoc />
-        public T Find<T>(ApplicationSettingIdentity key, object defaultValue = null)
+        public T Find<T>(ApplicationSettingIdentity<T> key, object defaultValue = null) where T : struct
         {
             return this.ReturnCached<T>(key, defaultValue);
         }
@@ -119,7 +119,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         }
 
         /// <inheritdoc />
-        public void Upsert(ApplicationSettingIdentity key, object value)
+        public void Upsert<T>(ApplicationSettingIdentity<T> key, T value) where T : struct
         {
             var item = this.repository.Find(key.Key);
             if (item == null)
@@ -284,7 +284,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="key"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        private T ReturnCached<T>(ApplicationSettingIdentity key, object defaultValue = null)
+        private T ReturnCached<T>(ApplicationSettingIdentity<T> key, object defaultValue = null) where T : struct
         {
             try
             {

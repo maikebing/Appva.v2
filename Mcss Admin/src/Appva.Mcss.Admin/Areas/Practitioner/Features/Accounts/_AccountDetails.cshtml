@@ -1,8 +1,9 @@
-﻿@model Appva.Mcss.Web.ViewModels.AccountViewModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Web.ViewModels.AccountViewModel
            
 <div class="people people-item cf">
     @Html.ActionLink("Ta bort", "Inactivate", "Account", new { id = Model.Id }, new { @class = "btn btn-del" })
-    @Html.ActionLink("Ändra", "Edit", "Account", new { id = Model.Id }, new { @class = "btn lb-link" })
+    @Html.PermissionLink(Permissions.AccountUpdate, "Ändra", "Update", "Accounts", "Practitioner", new { id = Model.Id }, new { @class = "btn lb-link" })
     @Html.ActionLink("Ändra roller och behörigheter", "EditRoles", "Account", new { id = Model.Id }, new { @class = "btn lb-link" })
 	<div class="h">
     	<h2>@Model.FullName</h2>

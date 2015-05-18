@@ -2,14 +2,15 @@
 @{ ViewBag.Title = string.Format("Aktuella delegeringar, {0}", Model.Account.FullName); }
 
 <div id="main" class="delegate-view">    
-    @Html.Partial("~/Views/Account/Partials/_AccountDetails.cshtml", Model.Account)
-    @Html.Action("Menu", "Menu", new
+    @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
+    @Html.Action("Menu", "Menus", new
             {
                 Key = "admin_account_menu",
                 Action = Html.ViewContext.RouteData.GetRequiredString("action"),
                 Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
                 Id = Model.Account.Id.ToString(),
-                IgnoreAction = false
+                IgnoreAction = false,
+                Area = string.Empty
             })
     <div id="subheader" class="cf">
 		<h1>Aktuell delegering</h1>

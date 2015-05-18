@@ -142,6 +142,19 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="adress">The organisational <see cref="Taxon"/></param>
         /// <returns>The account id</returns>
         Guid Create(string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress);
+
+        /// <summary>
+        /// Updates an account
+        /// </summary>
+        /// <param name="account">The <see cref="Account"/></param>
+        /// <param name="firstName">The account firstname</param>
+        /// <param name="lastName">The account lastname</param>
+        /// <param name="mail">The mail</param>
+        /// <param name="mobileDevicePassword">The mobile device password</param>
+        /// <param name="personalIdentityNumber">The <see cref="PersonalIdentityNumber"/></param>
+        /// <param name="adress">The organisational <see cref="Taxon"/></param>
+        /// <returns>The account id</returns>
+        void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress);
     }
 
     /// <summary>
@@ -277,8 +290,32 @@ namespace Appva.Mcss.Admin.Application.Services
                 EmailAddress = mail,
                 Taxon = adress
             };
-            return (Guid)this.persitence.Save<Account>(account);
-            
+            return (Guid)this.persitence.Save<Account>(account);   
+        }
+
+        public void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress)
+        {
+            account.FirstName = firstName;
+            account.LastName = lastName;
+            account.FullName = string.Format("{0} {1}", firstName.Trim(), lastName.Trim());
+
+            // TODO: Should be set by a function which sends nofitcations etc to user
+            account.DevicePassword = mobileDevicePassword;
+
+            if (!mail.IsNull())
+            {
+                account.EmailAddress = mail;
+            }
+            if (!personalIdentityNumber.IsNull())
+            {
+                account.PersonalIdentityNumber = personalIdentityNumber;
+            }
+            if (!adress.IsNull())
+            {
+                account.Taxon = adress;
+            }
+
+            this.repository.Update(account);
         }
 
         /// <inheritdoc />

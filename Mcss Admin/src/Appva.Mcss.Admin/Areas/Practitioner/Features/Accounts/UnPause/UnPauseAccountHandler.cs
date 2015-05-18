@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class UnPauseAccountHandler : RequestHandler<UnPauseAccountModel, bool>
+    internal sealed class UnPauseAccountHandler : RequestHandler<UnPauseAccount, bool>
     {
         #region Private fields.
 
@@ -45,7 +45,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override bool Handle(UnPauseAccountModel message)
+        public override bool Handle(UnPauseAccount message)
         {
             this.accounts.UnPause(this.accounts.Find(message.AccountId));
 

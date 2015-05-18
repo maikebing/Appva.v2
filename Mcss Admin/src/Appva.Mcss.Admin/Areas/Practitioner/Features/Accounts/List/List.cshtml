@@ -20,10 +20,10 @@
 				<div class="filter-row">
 					<strong>Visa:</strong>
 					<ul>
-						<li>@Html.ActionLink("Alla", "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled && Model.IsFilterByIsActiveEnabled && !Model.IsFilterByIsPausedEnabled) ? "div sel" : "div" })</li>
-						<li>@Html.ActionLink("Mina delegeringar", "List", new { FilterByCreatedBy = true }, new { @class = (Model.IsFilterByCreatedByEnabled) ? "div sel" : "div" })</li>
-						<li>@Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = !Model.IsFilterByIsActiveEnabled ? "div sel" : "div" })</li>
-						<li>@Html.ActionLink("Inaktiverade", "List", new { isPaused = true }, new { @class = (Model.IsFilterByIsPausedEnabled) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Alla", "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false) && Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) && !Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Mina delegeringar", "List", new { FilterByCreatedBy = true }, new { @class = (Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = !Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) ? "div sel" : "div" })</li>
+						<li>@Html.ActionLink("Inaktiverade", "List", new { isPaused = true }, new { @class = (Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
 					</ul>
 				</div>
 				if (Model.Delegations.Count > 0)
@@ -51,16 +51,17 @@
 			{
 				<li class="cf @((item.HasExpiringDelegation) ? "update" : "")">
 					@if (item.IsActive) {
-                        @Html.PermissionLink(Permissions.AccountDelete, "Ta bort", "InActivate", "Accounts", "Practitioner", null, new { @class = "btn btn-del" })
+                        @Html.PermissionLink(Permissions.AccountDelete, "Ta bort", "Inactivate", "Accounts", "Practitioner", new { Id = item.Id }, new { @class = "btn btn-del" })
 					} 
 					@if (!item.IsActive && !item.IsPaused) {
-                        @Html.PermissionLink(Permissions.AccountDelete, "Aktivera", "Activate", "Accounts", "Practitioner", null, new { @class = "btn" })
+                        @Html.PermissionLink(Permissions.AccountDelete, "Aktivera", "Reactivate", "Accounts", "Practitioner", new { Id = item.Id }, new { @class = "btn" })
 					}
-					@if (item.IsActive) {
-                        @Html.PermissionLink(Permissions.AccountPause, "Inaktivera", "Pause", "Accounts", "Practitioner", null, new { @class = "btn" })
+					@if (!item.IsPaused && item.IsActive)
+                    {
+                        @Html.PermissionLink(Permissions.AccountPause, "Inaktivera", "Pause", "Accounts", "Practitioner", new { Id = item.Id }, new { @class = "btn" })
 					}
-					@if (item.IsPaused) {
-                        @Html.PermissionLink(Permissions.AccountPause, "Aktivera", "UnPause", "Accounts", "Practitioner", null, new { @class = "btn" })
+					@if (item.IsPaused ) {
+                        @Html.PermissionLink(Permissions.AccountPause, "Aktivera", "UnPause", "Accounts", "Practitioner", new { Id = item.Id }, new { @class = "btn" })
 					}
 					<div class="h">
 						<h2>

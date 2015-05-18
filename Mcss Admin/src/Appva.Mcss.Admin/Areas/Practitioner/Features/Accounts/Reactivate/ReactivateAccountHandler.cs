@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ActivateAccountHandler : RequestHandler<ActivateAccountModel, bool>
+    internal sealed class ReactivateAccountHandler : RequestHandler<ReactivateAccount, bool>
     {
         #region Private fields.
 
@@ -33,9 +33,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ActivateAccountHandler"/> class.
+        /// Initializes a new instance of the <see cref="ReactivateAccountHandler"/> class.
         /// </summary>
-        public ActivateAccountHandler(IAccountService accounts)
+        public ReactivateAccountHandler(IAccountService accounts)
         {
             this.accounts = accounts;
         }
@@ -45,7 +45,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides
 
         /// <inheritdoc />
-        public override bool Handle(ActivateAccountModel message)
+        public override bool Handle(ReactivateAccount message)
         {
             this.accounts.Activate(this.accounts.Find(message.AccountId));
             return true;

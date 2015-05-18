@@ -1,4 +1,4 @@
-﻿// <copyright file="InActivateAccountModel.cs" company="Appva AB">
+﻿// <copyright file="UnPauseAccountModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class InActivateAccountModel : IRequest<bool>
+    public sealed class UnPauseAccount : IRequest<bool>
     {
         /// <summary>
         /// The account ID.

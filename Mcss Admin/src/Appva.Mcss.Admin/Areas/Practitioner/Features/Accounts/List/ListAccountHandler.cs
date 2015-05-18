@@ -103,9 +103,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var accounts = this.accounts.Search(
                 new SearchAccountModel
                 {
-                    IsFilterByIsActiveEnabled = message.isActive != null ? message.isActive : true,
-                    IsFilterByIsPausedEnabled = message.isPaused != null ? message.isPaused : false,
-                    IsFilterByCreatedByEnabled = message.filterByCreatedBy,
+                    IsFilterByIsActiveEnabled = message.isActive.GetValueOrDefault(true),
+                    IsFilterByIsPausedEnabled = message.isPaused.GetValueOrDefault(false),
+                    IsFilterByCreatedByEnabled = message.filterByCreatedBy.GetValueOrDefault(false),
                     DelegationFilterId = message.DelegationFilterId,
                     RoleFilterId = message.RoleFilterId,
                     OrganisationFilterId = this.cache.Find<Guid>("Taxon.Default.Cache"),

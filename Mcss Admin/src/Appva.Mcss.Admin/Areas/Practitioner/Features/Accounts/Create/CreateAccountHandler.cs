@@ -69,8 +69,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             return new CreateAccountModel 
             {
-                IsMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable, false),
-                IsMobileDevicePasswordFieldVisible = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable, false),
+                IsMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice, false),
+                IsMobileDevicePasswordFieldVisible = this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice, false),
                 IsUsernameVisible = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible, false),
                 Taxons = TaxonomyHelper.SelectList(this.taxonomies.List(TaxonomicSchema.Organization))
             };

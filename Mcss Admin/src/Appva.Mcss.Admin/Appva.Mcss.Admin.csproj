@@ -311,15 +311,15 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\Activate\ActivateAccountHandler.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\Activate\ActivateAccountModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Reactivate\ReactivateAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Reactivate\ReactivateAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePasswordHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountPublisher.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InActivateAccountHandler.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InActivateAccountModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Inactivate\InactivateAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Inactivate\InactivateAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountHandler.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -332,11 +332,14 @@
     <Compile Include="Areas\Patient\Features\Alerts\AlertsController.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\CalendarController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Pause\PauseAccountHandler.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\Pause\PauseAccountModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Pause\PauseAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\QuickSearch\QuickSearchAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\QuickSearch\QuickSearchAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UnPause\UnPauseAccountHandler.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\UnPause\UnPauseAccountModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\UnPause\UnPauseAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccountPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
@@ -354,20 +357,15 @@
     <Compile Include="Areas\Roles\Features\Roles\Update\UpdateRole.cs" />
     <Compile Include="Areas\Roles\Features\Roles\Update\UpdateRolesPublisher.cs" />
     <Compile Include="Areas\Roles\Features\Roles\Update\UpdateRolesHandler.cs" />
-    <Compile Include="Commands\AccountQuickSearch.cs" />
     <Compile Include="Commands\CreateChartCommand.cs" />
     <Compile Include="Commands\CreateOverviewCommand.cs" />
     <Compile Include="Commands\CreateReportCommand.cs" />
     <Compile Include="Commands\DateTimeUtils.cs" />
     <Compile Include="Commands\DelegationReportFilter.cs" />
     <Compile Include="Commands\FullReportFilter.cs" />
-    <Compile Include="Commands\InactivateOrActivateCommand.cs" />
     <Compile Include="Commands\IReportFilter.cs" />
-    <Compile Include="Commands\IsUniqueIdentifierCommand.cs" />
     <Compile Include="Commands\PatientQuickSearch.cs" />
-    <Compile Include="Commands\QuickSearchCommand.cs" />
     <Compile Include="Commands\ScheduleReportFilter.cs" />
-    <Compile Include="Commands\SearchAccountCommand.cs" />
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Configuration\Application.cs" />
@@ -852,7 +850,7 @@
     <Content Include="Areas\Patient\Features\Sequence\Update\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Practitioner\Features\Accounts\Edit\Edit.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Accounts\Update\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\EditRoles\EditRoles.cshtml" />

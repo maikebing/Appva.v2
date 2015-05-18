@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// </summary>
         /// <param name="request">The query and filtering</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, /*Permissions("ad0b7efb-589b-4762-acd6-a46d009a21ad"),*/ Route("List")]
+        [HttpGet, Dispatch,/*Permissions("ad0b7efb-589b-4762-acd6-a46d009a21ad"),*/ Route("List")]
         public ActionResult List(ListAccount request)
         {
             return this.View();
@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/inactivate")]
         [HttpGet, Dispatch("List", "Accounts")]
-        public ActionResult InActivate(Guid id)
+        public ActionResult Inactivate(InactivateAccount request)
         {
             return this.View();
         }
@@ -111,9 +111,9 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// </summary>
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("{id:guid}/activate")]
+        [Route("{id:guid}/reactivate")]
         [HttpGet, Dispatch("List", "Accounts")]
-        public ActionResult Activate(Guid id)
+        public ActionResult Reactivate(ReactivateAccount request)
         {
             return this.View();
         }
@@ -129,7 +129,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/pause")]
         [HttpGet, Dispatch("List", "Accounts")]
-        public ActionResult Pause(Guid id)
+        public ActionResult Pause(PauseAccount request)
         {
             return this.View();
         }
@@ -141,7 +141,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/unpause")]
         [HttpGet, Dispatch("List", "Accounts")]
-        public ActionResult UnPause(Guid id)
+        public ActionResult Unpause(UnPauseAccount request)
         {
             return this.View();
         }
@@ -180,41 +180,20 @@ namespace Appva.Mcss.Admin.Features.Accounts
             return this.JsonGet();
         }
 
-        #endregion
-        /*
+        #endregion      
         
-        
-        
-
-        #region Edit View.
+        #region Update View.
 
         /// <summary>
         /// The account edit view.
         /// </summary>
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, Hydrate]
-        public ActionResult Edit(Guid id)
+        [Route("{id:guid}/update")]
+        [HttpGet, Hydrate, Dispatch]
+        public ActionResult Update(Identity<UpdateAccount> request)
         {
-            var account = Session.Get<Account>(id);
-            var isAdminStaff = account.Roles.Any(x => x.MachineName.StartsWith(RoleUtils.AdminPersonnel));
-            return View(new AccountFormViewModel
-            {
-                AccountId = id,
-                FirstName = account.FirstName,
-                LastName = account.LastName,
-                UniqueIdentifier = account.UniqueIdentifier,
-                Email = account.Email,
-                Password = account.Password,
-                Username = account.UserName,
-                TitleRole = TitleHelper.GetTitleID(account.Roles, RoleService.Get(RoleUtils.TitleAssistentNurse)),
-                Titles = isAdminStaff ? TitleHelper.SelectList(RoleService.Match(RoleUtils.AdminPersonnel)) : TitleHelper.SelectList(RoleService.Match(RoleUtils.TitlePrefix)),
-                IsAdminStaff = isAdminStaff,
-                Taxon = account.Taxon.Id.ToString(),
-                Taxons = TaxonomyHelper.SelectList(account.Taxon, TaxonomyService.Find(HierarchyUtils.Organization)),
-                EditableClientPassword = (bool)SettingService.GetAccountSettings().ContainsKey("EditableClientPassword") ? (bool)SettingService.GetAccountSettings()["EditableClientPassword"] : true,
-                DisplayUsername = SettingService.DisplayAccountUsername()
-            });
+            return this.View();
         }
 
         /// <summary>
@@ -224,35 +203,16 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <param name="model">The account model</param>
         /// <param name="collection">The form collection</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, Validate, ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid id, AccountFormViewModel model, FormCollection collection)
+        [Route("{id:guid}/update")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List","Accounts")]
+        public ActionResult Update(UpdateAccount request)
         {
-            if (ModelState.IsValid)
-            {
-                Taxon taxon = null;
-                if (model.Taxon.IsEmpty())
-                {
-                    taxon = HierarchyUtils.FindRootNode(TaxonomyService.FindRootNodes(HierarchyUtils.Organization));
-                }
-                else
-                {
-                    taxon = TaxonomyService.Get(HierarchyUtils.ParseToGuid(collection));
-                }
-                var account = AccountService.Get(id);
-                var role = RoleService.Get(RoleUtils.ParseToGuid(model.TitleRole));
-                if (account.IsNotNull() && taxon.IsNotNull() && role.IsNotNull())
-                {
-                    var roles = new List<Role>() { role };
-                    AccountService.Update(account, model.FirstName, model.LastName, model.UniqueIdentifier, model.Email, model.Password, taxon, roles);
-                    return this.RedirectToAction(c => c.List(null, null, null, null, false, true, false));
-                }
-            }
-            model.Taxons = TaxonomyHelper.SelectList(TaxonomyService.Find(HierarchyUtils.Organization));
-            return View(model);
+            return this.View();
         }
 
         #endregion
 
+        /*
         #region Change Password.
 
         /// <summary>

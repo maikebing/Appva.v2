@@ -4,6 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
+using System;
 namespace Appva.Mcss.Admin.Application.Services.Settings
 {
     /// <summary>
@@ -25,11 +26,12 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// Makes the field for Mobile Device password editable.
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>
-        public static readonly ApplicationSettingIdentity IsMobileDevicePasswordEditable = ApplicationSettingIdentity.CreateNew(
+        public static readonly ApplicationSettingIdentity<bool> IsMobileDevicePasswordEditable = ApplicationSettingIdentity<bool>.CreateNew(
             "MCSS.Core.Account.EditableClientPassword",
             "Password for Mobile Device is editable",
             "System.Core.Account",
-            "Makes the field for Mobile Device password editable in administration");
+            "Makes the field for Mobile Device password editable in administration",
+            true);
 
         #endregion
 
@@ -39,21 +41,23 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// Auto-generates the mobile device password.
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>
-        public static readonly ApplicationSettingIdentity AutogeneratePasswordForMobileDevice = ApplicationSettingIdentity.CreateNew(
+        public static readonly ApplicationSettingIdentity<bool> AutogeneratePasswordForMobileDevice = ApplicationSettingIdentity<bool>.CreateNew(
             "System.Core.Users.AutogeneratePasswordForClient",
             "Auto-generate password for mobile device",
             "System.Core.Users",
-            "Auto-generates mobile device password for user accounts automatically during creation");
+            "Auto-generates mobile device password for user accounts automatically during creation",
+            true);
 
         /// <summary>
         /// Makes the usernames for accounts visible in administration
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>
-        public static ApplicationSettingIdentity IsUsernameVisible = ApplicationSettingIdentity.CreateNew(
+        public static ApplicationSettingIdentity<bool> IsUsernameVisible = ApplicationSettingIdentity<bool>.CreateNew(
             "MCSS.Core.Account.DisplayUsername",
             "Show account username",
             "MCSS.Core.Account",
-            "Makes the usernames for accounts visible in administration");
+            "Makes the usernames for accounts visible in administration",
+            false);
 
         #endregion
 
@@ -63,31 +67,34 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// Auto generates the mobile device password.
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>
-        public static readonly ApplicationSettingIdentity IsAccessControlInstalled = ApplicationSettingIdentity.CreateNew(
+        public static readonly ApplicationSettingIdentity<bool> IsAccessControlInstalled = ApplicationSettingIdentity<bool>.CreateNew(
             "Mcss.Core.Security.Acl.IsInstalled",
             "Access Control List is installed",
             "Mcss.Core.Security.Acl",
-            "If true the Access Control List (ACL) is installed for the tenant");
+            "If true the Access Control List (ACL) is installed for the tenant",
+            false);
 
         /// <summary>
         /// Access control is enabled for the current tenant.
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>
-        public static readonly ApplicationSettingIdentity IsAccessControlActivated = ApplicationSettingIdentity.CreateNew(
+        public static readonly ApplicationSettingIdentity<bool> IsAccessControlActivated = ApplicationSettingIdentity<bool>.CreateNew(
             "Mcss.Core.Security.Acl.IsActive",
             "Access Control List is enabled",
             "Mcss.Core.Security.Acl",
-            "If true the Access Control List (ACL) is enabled and active for the tenant");
+            "If true the Access Control List (ACL) is enabled and active for the tenant",
+            false);
 
         /// <summary>
         /// Access control is in preview mode for selected roles (Mcss Administrative role only). 
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>
-        public static readonly ApplicationSettingIdentity IsAccessControlInPreviewMode = ApplicationSettingIdentity.CreateNew(
+        public static readonly ApplicationSettingIdentity<bool> IsAccessControlInPreviewMode = ApplicationSettingIdentity<bool>.CreateNew(
             "Mcss.Core.Security.Acl.IsInPreviewMode",
             "Access Control List is in preview mode",
             "Mcss.Core.Security.Acl",
-            "If true the Access Control List (ACL) is enabled only for Appva Mcss Administrative roles");
+            "If true the Access Control List (ACL) is enabled only for Appva Mcss Administrative roles",
+            false);
 
         #endregion
 
@@ -97,11 +104,12 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// Audit logging analytics collection is enabled for the current tenant.
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>
-        public static readonly ApplicationSettingIdentity IsAuditCollectionActivated = ApplicationSettingIdentity.CreateNew(
+        public static readonly ApplicationSettingIdentity<bool> IsAuditCollectionActivated = ApplicationSettingIdentity<bool>.CreateNew(
             "Mcss.Core.Security.Analytics.Audit.IsActive",
             "Audit logging collection is enabled",
             "Mcss.Core.Security.Analytics.Audit",
-            "If true the audit logging analytics is enabled and active for the tenant");
+            "If true the audit logging analytics is enabled and active for the tenant",
+            false);
 
         #endregion
     }
@@ -109,7 +117,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ApplicationSettingIdentity
+    public sealed class ApplicationSettingIdentity<T> where T : struct
     {
         #region Constructor.
 
@@ -120,12 +128,13 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="name">The friendly name</param>
         /// <param name="context">The namespace or context</param>
         /// <param name="description">The description of usage</param>
-        private ApplicationSettingIdentity(string key, string name, string @namespace, string description)
+        private ApplicationSettingIdentity(string key, string name, string @namespace, string description, T defaultValue)
         {
             this.Key = key;
             this.Name = name;
             this.Namespace = @namespace;
             this.Description = description;
+            this.Default = defaultValue;
         }
 
         #endregion
@@ -139,9 +148,9 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="name">The friendly name</param>
         /// <param name="context">The namespace or context</param>
         /// <param name="description">The description of usage</param>
-        internal static ApplicationSettingIdentity CreateNew(string key, string name, string @namespace, string description)
+        internal static ApplicationSettingIdentity<T> CreateNew(string key, string name, string @namespace, string description, T defaultValue ) 
         {
-            return new ApplicationSettingIdentity(key, name, @namespace, description);
+            return new ApplicationSettingIdentity<T>(key, name, @namespace, description, defaultValue);
         }
         
         #endregion
@@ -179,6 +188,15 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// The description of the setting usage.
         /// </summary>
         public string Description
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The default value of the setting.
+        /// </summary>
+        public T Default
         {
             get;
             private set;

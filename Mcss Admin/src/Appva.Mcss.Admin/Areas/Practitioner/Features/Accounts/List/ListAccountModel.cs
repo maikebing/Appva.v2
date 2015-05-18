@@ -74,7 +74,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Optional <c>Account.CreatedBy</c> to filter by.
         /// </summary>
-        public bool IsFilterByCreatedByEnabled
+        public bool? IsFilterByCreatedByEnabled
         {
             get;
             set;
@@ -83,7 +83,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Optional <c>Account.IsActive</c> to filter by.
         /// </summary>
-        public bool IsFilterByIsActiveEnabled
+        public bool? IsFilterByIsActiveEnabled
         {
             get;
             set;
@@ -92,7 +92,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Optional <c>Account.IsPaused</c> to filter by.
         /// </summary>
-        public bool IsFilterByIsPausedEnabled
+        public bool? IsFilterByIsPausedEnabled
         {
             get;
             set;

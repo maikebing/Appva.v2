@@ -10,7 +10,7 @@ namespace Appva.Mcss.Admin.Models
 
     using Appva.Cqrs;
     using Appva.Mcss.Web.ViewModels;
-    using Appva.Mvc.Html.DataAnnotations;
+    using Appva.Mvc;
     using DataAnnotationsExtensions;
     using System;
     using System.Collections.Generic;

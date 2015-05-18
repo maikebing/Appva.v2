@@ -121,6 +121,9 @@ namespace Appva.Core
                 {
                     return false;
                 }
+                //// Could check (20000101-1111) 000101 with today 2015, 00 < 15 = born either way so check for plus sign.
+                //// if (int.parse(substring(2, 2)) <= 15) { if (!str.contains(Plus)) { } }
+                //// Return an error message e.g. new SwedishPersonalIdentityNumberValidationResult("The PIN is ambigious")
             }
             if (! IsValidDate(test))
             {

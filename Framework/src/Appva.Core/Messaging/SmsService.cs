@@ -13,13 +13,16 @@ namespace Appva.Core.Messaging
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
-    using Resources;
     using Extensions;
     using Logging;
+    using Resources;
     using Validation;
 
     #endregion
 
+    /// <summary>
+    /// TODO Add a descriptive summary to increase readability.
+    /// </summary>
     public interface ISmsService
     {
         /// <summary>
@@ -169,7 +172,6 @@ namespace Appva.Core.Messaging
                 this.sender, 
                 "<recipient><orgaddress>{0}</orgaddress></recipient>".FormatWith(message.To))
                 .ToUtf8Bytes();
-
         }
 
         #endregion

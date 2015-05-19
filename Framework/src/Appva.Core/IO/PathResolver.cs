@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Core.Configuration.IO
+namespace Appva.Core.IO
 {
     #region Imports.
 
@@ -16,7 +16,7 @@ namespace Appva.Core.Configuration.IO
     /// <summary>
     /// Helper class to resolve paths depending on platform specifics.
     /// </summary>
-    internal static class PathResolver
+    public static class PathResolver
     {
         /// <summary>
         /// Resolves application base directory depending on platform.

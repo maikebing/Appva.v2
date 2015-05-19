@@ -62,6 +62,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B635B5B6-040E-4A8B-B74C-162AD40C5BA8}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
+		TODO.txt = TODO.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.Admin.UnitTests", "Appva.Mcss.Admin.UnitTests\Appva.Mcss.Admin.UnitTests.csproj", "{5620E65E-C741-4022-9628-D449BA353262}"

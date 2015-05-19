@@ -11,6 +11,7 @@ namespace Appva.Persistence.MultiTenant
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Core;
     using Appva.Core.Configuration;
 
     #endregion

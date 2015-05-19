@@ -20,9 +20,11 @@ namespace Appva.Mcss.Admin
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Configuration;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mvc.Messaging;
     using Autofac;
     using Autofac.Integration.Mvc;
     using Microsoft.Owin;
+    using RazorEngine.Configuration;
 
     #endregion
 
@@ -74,6 +76,13 @@ namespace Appva.Mcss.Admin
             builder.RegisterType<DefaultExceptionHandler>().As<IExceptionHandler>();
 
             builder.RegisterModule(PersistenceModule.CreateNew());
+
+            //// Email
+            builder.Register(x => new TemplateServiceConfiguration
+            {
+                TemplateManager = new CshtmlTemplateManager("Features/Shared/EmailTemplates")
+            }).As<ITemplateServiceConfiguration>().SingleInstance();
+            builder.RegisterType<MailService>().As<IRazorMailService>().SingleInstance();
             //// Cache per tenant?
             //// http://docs.autofac.org/en/latest/advanced/multitenant.html#resolve-tenant-specific-dependencies
             builder.RegisterModule(new AutofacWebTypesModule());

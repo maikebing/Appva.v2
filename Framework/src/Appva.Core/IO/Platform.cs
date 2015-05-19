@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Core.Configuration.IO
+namespace Appva.Core.IO
 {
     #region Imports.
 

@@ -14,9 +14,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     {
         #region Device.
 
-        
-
-        
+        //// TODO: Add more here.
 
         #endregion
 
@@ -115,7 +113,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     }
 
     /// <summary>
-    /// 
+    /// TODO: Give a proper name, make internal.
     /// </summary>
     public sealed class ApplicationSettingIdentity<T> where T : struct
     {

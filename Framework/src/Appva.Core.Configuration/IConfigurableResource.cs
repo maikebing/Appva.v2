@@ -6,10 +6,12 @@
 // </author>
 namespace Appva.Core.Configuration
 {
+    /*
     /// <summary>
     /// Marker interface for configurable resources.
     /// </summary>
     public interface IConfigurableResource
     {
     }
+    */
 }

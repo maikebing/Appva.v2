@@ -102,6 +102,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="RazorEngine, Version=3.7.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\RazorEngine.3.7.0\lib\net45\RazorEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -312,15 +316,13 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\Reactivate\ReactivateAccountHandler.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\Reactivate\ReactivateAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePasswordHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountPublisher.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\Inactivate\InactivateAccountHandler.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\Inactivate\InactivateAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InactivateAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InActivateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccountHandler.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -332,12 +334,14 @@
     <Compile Include="Areas\Area51\Features\Settings\List\ListSettingsHandler.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\AlertsController.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\CalendarController.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\Pause\PauseAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Pause\PauseAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Pause\PauseAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\QuickSearch\QuickSearchAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\QuickSearch\QuickSearchAccountHandler.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\UnPause\UnPauseAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Reactivate\ReactivateAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Reactivate\ReactivateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UnPause\UnPauseAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\UnPause\UnPauseAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccountPublisher.cs" />
@@ -851,7 +855,7 @@
     <Content Include="Areas\Patient\Features\Sequence\Update\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Practitioner\Features\Accounts\Update\Update.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Accounts\Edit\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\EditRoles\EditRoles.cshtml" />

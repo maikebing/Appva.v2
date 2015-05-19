@@ -11,6 +11,7 @@ namespace Appva.Core.Configuration.IO
     using System;
     using System.IO;
     using System.Threading.Tasks;
+    using Appva.Core.IO;
     using Validation;
 
     #endregion

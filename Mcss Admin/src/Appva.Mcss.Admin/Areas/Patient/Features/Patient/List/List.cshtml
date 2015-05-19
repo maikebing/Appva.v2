@@ -1,10 +1,12 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
 @model Appva.Mcss.Web.ViewModels.ListPatientModel
-@{ ViewBag.Title = "Boende"; }
+@{ 
+    Title("Boende"); 
+}
 <div id="main">
     <div id="subheader" class="cf">
 	    <h1>Boende</h1>
-        @Html.PermissionLink(Permissions.PatientCreate, "Ny boende", "Create", "Patient", "Patient", null, new { @class = "btn lb-link" })
+        @Html.ActionLink(Permissions.Create.Patient, "Ny boende", "Create", null, new { @class = "btn lb-link" })
         <p class="filter">
             <strong>Visa:</strong>
             @Html.ActionLink("Alla", "List", new { }, new { @class = (Model.IsActive && !Model.IsDeceased) ? "sel div" : "div" })
@@ -21,7 +23,7 @@
             <li class="cf @(item.HasUnattendedTasks ? "alarm" : "")">
                 @if (!item.Active)
                 {
-                    @Html.PermissionLink(Permissions.PatientCreate, "Aktivera", "Activate", "Patient", "Patient", new { Id = item.Id }, new { @class = "btn" })
+                    @Html.ActionLink(Permissions.Create.Patient, "Aktivera", "Activate", new { Id = item.Id }, new { @class = "btn" })
                 }
                 <div class="h">
                     <h2>
@@ -38,7 +40,7 @@
                 </div>
                 @if (item.HasUnattendedTasks)
                 {
-                    @Html.PermissionLink(Permissions.PatientAlertsRead, "Larm!", "List", "Alert", "Patient", new { id = item.Id }, new { @class = "alert" })
+                    @Html.ActionLink(Permissions.Read.Alert, "Larm!", "List", "Alert", new { id = item.Id }, new { @class = "alert" })
                 }
                 else
                 {

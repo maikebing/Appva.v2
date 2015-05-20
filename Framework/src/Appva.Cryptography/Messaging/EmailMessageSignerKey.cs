@@ -41,7 +41,7 @@ namespace Appva.Cryptography.Messaging
         /// Signs and encrypts the E-mail message.
         /// </summary>
         /// <param name="message">The message to be signed</param>
-        void SignAndEncrypt(EmailMessage message);
+        void SignAndEncrypt(MailMessage message);
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ namespace Appva.Cryptography.Messaging
         /// TODO: Summary.
         /// </summary>
         /// <param name="message">TODO: message</param>
-        public void SignAndEncrypt(EmailMessage message)
+        public void SignAndEncrypt(MailMessage message)
         {
             var signerKey = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, this.x509Certificate);
             var signedCms = new SignedCms(new ContentInfo(message.Body.ToUtf8Bytes()));
@@ -113,7 +113,7 @@ namespace Appva.Cryptography.Messaging
         /// TODO: Summary.
         /// </summary>
         /// <param name="message">TODO: message</param>
-        public void Encrypt(EmailMessage message)
+        public void Encrypt(MailMessage message)
         {
             //// No ops.
         }
@@ -130,13 +130,13 @@ namespace Appva.Cryptography.Messaging
         #region IEmailMessageSignerKey Members
 
         /// <inheritdoc />
-        public void Sign(EmailMessage message)
+        public void Sign(MailMessage message)
         {
             //// No ops.
         }
 
         /// <inheritdoc />
-        public void Encrypt(EmailMessage message)
+        public void Encrypt(MailMessage message)
         {
             //// No ops.
         }
@@ -149,7 +149,7 @@ namespace Appva.Cryptography.Messaging
         /// TODO: Summary.
         /// </summary>
         /// <param name="message">TODO: message</param>
-        public void SignAndEncrypt(EmailMessage message)
+        public void SignAndEncrypt(MailMessage message)
         {
             throw new NotImplementedException();
         }

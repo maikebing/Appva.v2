@@ -11,6 +11,7 @@ namespace Appva.Test.Configuration
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
+    using Appva.Core;
     using Appva.Core.Configuration;
     using Xunit;
     using Xunit.Extensions;

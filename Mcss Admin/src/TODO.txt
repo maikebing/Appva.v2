@@ -1,0 +1,29 @@
+FRAMEWORK
+1. [X] Appva.Mvc create RazorEmailService, use cache
+2. [X] Appva.Mvc ActionLink via IPermission
+3. [ ] SITHS authentication service, Appva.Siths
+    Replace with configuration:
+	<add key="Authify_ApiKey" value="bb64942bf0538cce274c032e4728a8e4"/>
+	<add key="Authify_SecretKey" value="3065e848c12a95083ffd86b7c7df946f"/>
+	<add key="Authify_authserver" value="https://loginserver1.authify.com/"/>
+	<add key="Authify_callbackurl" value="http://localhost:8080/authenticate/siths"/>
+4. [ ] ILog null references
+5. [ ] ILog DiagnosticsTraceLogger for JSON debug
+6. [X] Move interfaces (IConfigurableResource) either to Core or Common
+7. [X] Remove IConfigurableResource in Appva.Core.Configuration
+8. [ ] Create SignedEmailService and EncryptEmailService and SignedAndEncryptService
+
+ADMIN
+1. [ ] Cache lists as dictionaries (taxon, settings)
+2. [ ] Add all permissions to area patient in cshtml
+3. [ ] Add all permissions to area patient controllers
+4. [ ] Excel, add Appva.Mcss.Admin.Excel
+5. [ ] Create Authentication Result, NotActive and IsPaused
+6. [X] Add <globalization enableClientBasedCulture="true" uiCulture="sv-SE" culture="sv-SE"/>
+
+TESTS
+1. [ ] ITenantIdentityStrategy
+2. 
+
+APPLICATIONS
+1. [ ] Check all System.Core settings so it's correct.

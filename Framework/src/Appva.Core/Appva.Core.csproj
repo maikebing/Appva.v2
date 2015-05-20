@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Contracts\IConfigurableResource.cs" />
     <Compile Include="Contracts\IPersonalIdentityNumber.cs" />
-    <Compile Include="Contracts\Permissions\IPermision.cs" />
+    <Compile Include="Contracts\Permissions\IPermission.cs" />
     <Compile Include="Contracts\Validation\IValidator.cs" />
     <Compile Include="Exceptions\DefaultExceptionHandler.cs" />
     <Compile Include="Exceptions\IExceptionHandler.cs" />
@@ -61,6 +61,8 @@
     <Compile Include="Extensions\OperatorExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="IO\PathResolver.cs" />
+    <Compile Include="IO\Platform.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\ILogProvider.cs" />
     <Compile Include="Logging\Log4NetLogProvider.cs" />
@@ -69,8 +71,10 @@
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogProvider.cs" />
     <Compile Include="Logging\NoOpLogger.cs" />
-    <Compile Include="Messaging\EmailMessage.cs" />
-    <Compile Include="Messaging\EmailService.cs" />
+    <Compile Include="Messaging\AbstractMailSender.cs" />
+    <Compile Include="Messaging\Mail.cs" />
+    <Compile Include="Messaging\MailService.cs" />
+    <Compile Include="Messaging\IMailSender.cs" />
     <Compile Include="Messaging\SmsMessage.cs" />
     <Compile Include="Messaging\SmsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

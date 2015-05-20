@@ -50,8 +50,6 @@
     <Compile Include="IO\IConfigurableSource.cs" />
     <Compile Include="IO\JsonConfigurableSource.cs" />
     <Compile Include="IO\ConfigurableSource.cs" />
-    <Compile Include="IO\PathResolver.cs" />
-    <Compile Include="IO\Platform.cs" />
     <Compile Include="IO\ProtectedJsonConfigurableSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿// <copyright file="RazorEmailMessage.cs" company="Appva AB">
+﻿// <copyright file="MailMessage.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -10,10 +10,7 @@ namespace Appva.Mvc.Messaging
 
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Net.Mail;
-    using RazorEngine;
-    using RazorEngine.Templating;
+    using Mail = System.Net.Mail;
 
     #endregion
 
@@ -25,72 +22,73 @@ namespace Appva.Mvc.Messaging
     /// <summary>
     /// Constraint which allows the Path() method.
     /// </summary>
-    public interface IRazorEmailMessagePath
+    public interface IRazorMailMessagePath
     {
         /// <summary>
-        /// Sets the template (cshtml) path.
+        /// Sets the template (cshtml) name.
         /// </summary>
-        /// <param name="templatePath">The template path</param>
-        /// <returns><see cref="IRazorEmailMessageModel"/></returns>
-        IRazorEmailMessageModel Path(string templatePath);
+        /// <param name="templateName">The template name</param>
+        /// <returns><see cref="IRazorMailMessageModel"/></returns>
+        IRazorMailMessageModel Template(string templateName);
     }
 
     /// <summary>
     /// Constraint which allows the Model() method.
     /// </summary>
-    public interface IRazorEmailMessageModel
+    public interface IRazorMailMessageModel
     {
         /// <summary>
         /// Sets the template model to be parsed.
         /// </summary>
+        /// <typeparam name="T">The template model type</typeparam>
         /// <param name="templateModel">The template model</param>
-        /// <returns><see cref="IRazorEmailMessageTo"/></returns>
-        IRazorEmailMessageTo Model(object templateModel);
+        /// <returns><see cref="IRazorMailMessageTo"/></returns>
+        IRazorMailMessageTo Model<T>(T templateModel);
     }
 
     /// <summary>
     /// Constraint which allows the To() method.
     /// </summary>
-    public interface IRazorEmailMessageTo
+    public interface IRazorMailMessageTo
     {
         /// <summary>
         /// Sets the recipients.
         /// </summary>
         /// <param name="recipients">The collection of recipients</param>
-        /// <returns><see cref="IRazorEmailMessageSubject"/></returns>
-        IRazorEmailMessageSubject To(IList<string> recipients);
+        /// <returns><see cref="IRazorMailMessageSubject"/></returns>
+        IRazorMailMessageSubject To(IList<string> recipients);
 
         /// <summary>
         /// Sets the recipients.
         /// </summary>
         /// <param name="recipients">The one or more recipients</param>
-        /// <returns><see cref="IRazorEmailMessageSubject"/></returns>
-        IRazorEmailMessageSubject To(params string[] recipients);
+        /// <returns><see cref="IRazorMailMessageSubject"/></returns>
+        IRazorMailMessageSubject To(params string[] recipients);
     }
 
     /// <summary>
     /// Constraint which allows the Subject() method.
     /// </summary>
-    public interface IRazorEmailMessageSubject
+    public interface IRazorMailMessageSubject
     {
         /// <summary>
         /// Sets the E-mail subject.
         /// </summary>
         /// <param name="subject">The subject</param>
-        /// <returns><see cref="IRazorEmailMessageBuild"/></returns>
-        IRazorEmailMessageBuild Subject(string subject);
+        /// <returns><see cref="IRazorMailMessageBuild"/></returns>
+        IRazorMailMessageBuild Subject(string subject);
     }
 
     /// <summary>
     /// Constraint which allows the Build() method.
     /// </summary>
-    public interface IRazorEmailMessageBuild
+    public interface IRazorMailMessageBuild
     {
         /// <summary>
         /// Builds the E-mail message.
         /// </summary>
         /// <returns><see cref="RazorEmailMessage"/></returns>
-        RazorEmailMessage Build();
+        MailMessage Build();
     }
 
     #endregion
@@ -98,20 +96,21 @@ namespace Appva.Mvc.Messaging
     /// <summary>
     /// A razor engine E-mail message.
     /// </summary>
-    public sealed class RazorEmailMessage : MailMessage,
-        IRazorEmailMessagePath,
-        IRazorEmailMessageModel,
-        IRazorEmailMessageTo,
-        IRazorEmailMessageSubject,
-        IRazorEmailMessageBuild
+    public sealed class MailMessage : 
+        Mail.MailMessage,
+        IRazorMailMessagePath,
+        IRazorMailMessageModel,
+        IRazorMailMessageTo,
+        IRazorMailMessageSubject,
+        IRazorMailMessageBuild
     {
         #region Constructor.
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="RazorEmailMessage" /> class from 
+        /// Prevents a default instance of the <see cref="MailMessage" /> class from 
         /// being created.
         /// </summary>
-        private RazorEmailMessage()
+        private MailMessage()
         {
         }
 
@@ -120,9 +119,9 @@ namespace Appva.Mvc.Messaging
         #region Properties.
 
         /// <summary>
-        /// The template path.
+        /// The template name.
         /// </summary>
-        public string TemplatePath
+        public string TemplateName
         {
             get;
             private set;
@@ -137,6 +136,15 @@ namespace Appva.Mvc.Messaging
             private set;
         }
 
+        /// <summary>
+        /// The template model type.
+        /// </summary>
+        public Type TemplateModelType
+        {
+            get;
+            private set;
+        }
+
         #endregion
 
         #region Public Static Functions.
@@ -145,81 +153,76 @@ namespace Appva.Mvc.Messaging
         /// Creates a new instance of the <see cref="RazorEmailMessage"/> class.
         /// </summary>
         /// <returns>A razor E-mail constraint</returns>
-        public static IRazorEmailMessagePath CreateNew()
+        public static IRazorMailMessagePath CreateNew()
         {
-            return new RazorEmailMessage();
+            return new MailMessage();
         }
 
         #endregion
 
-        #region IRazorEmailMessagePath Members.
+        #region IRazorMailMessagePath Members.
 
         /// <inheritdoc />
-        public IRazorEmailMessageModel Path(string templatePath)
+        IRazorMailMessageModel IRazorMailMessagePath.Template(string templateName)
         {
-            this.TemplatePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, templatePath);
+            this.TemplateName = templateName;
             return this;
         }
 
         #endregion
 
-        #region IRazorEmailMessageModel Members.
+        #region IRazorMailMessageModel Members.
 
         /// <inheritdoc />
-        public IRazorEmailMessageTo Model(object templateModel)
+        IRazorMailMessageTo IRazorMailMessageModel.Model<T>(T templateModel)
         {
             this.TemplateModel = templateModel;
+            this.TemplateModelType = typeof(T);
             return this;
         }
 
         #endregion
 
-        #region IRazorEmailMessageTo Members.
+        #region IRazorMailMessageTo Members.
 
         /// <inheritdoc />
-        public new IRazorEmailMessageSubject To(IList<string> recipients)
+        IRazorMailMessageSubject IRazorMailMessageTo.To(IList<string> recipients)
         {
             foreach (var recipient in recipients)
             {
-                base.To.Add(recipient);
+                this.To.Add(recipient);
             }
             return this;
         }
 
         /// <inheritdoc />
-        IRazorEmailMessageSubject IRazorEmailMessageTo.To(params string[] recipients)
+        IRazorMailMessageSubject IRazorMailMessageTo.To(params string[] recipients)
         {
             foreach (var recipient in recipients)
             {
-                base.To.Add(recipient);
+                this.To.Add(recipient);
             }
             return this;
         }
 
         #endregion
 
-        #region IRazorEmailMessageSubject Members.
+        #region IRazorMailMessageSubject Members.
 
         /// <inheritdoc />
-        public new IRazorEmailMessageBuild Subject(string subject)
+        IRazorMailMessageBuild IRazorMailMessageSubject.Subject(string subject)
         {
-            base.Subject = subject;
+            this.Subject = subject;
             return this;
         }
 
         #endregion
 
-        #region IRazorEmailMessageBuild Members.
+        #region IRazorMailMessageBuild Members.
 
         /// <inheritdoc />
-        public RazorEmailMessage Build()
+        MailMessage IRazorMailMessageBuild.Build()
         {
-            //// https://antaris.github.io/RazorEngine/Upgrading.html
-            //// Engine.Razor.IsTemplateCached()
-            //// Inspiration (old): http://mehdi.me/generating-html-emails-with-razorengine-basics-generating-your-first-email/
-            //// TODO: Create RazorEmailService and cache!
-            this.Body = Engine.Razor.RunCompile(File.ReadAllText(this.TemplatePath), "test", null, this.TemplateModel);
-            this.IsBodyHtml = true;
             return this;
         }
 

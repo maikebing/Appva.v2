@@ -410,6 +410,7 @@ namespace Appva.Mcss.Admin.Application.Common
 
     /// <summary>
     /// The <see cref="IPermission"/> implementation.
+    /// TODO: Change name to e.g. ClaimPermission, SecurityPermission or InternalPermission
     /// </summary>
     internal sealed class PermissionType : IPermission
     {

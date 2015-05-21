@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         public static readonly ApplicationSettingIdentity<bool> IsMobileDevicePasswordEditable = ApplicationSettingIdentity<bool>.CreateNew(
             "MCSS.Core.Account.EditableClientPassword",
             "Password for Mobile Device is editable",
-            "System.Core.Account",
+            "MCSS.Core.Account",
             "Makes the field for Mobile Device password editable in administration",
             true);
 
@@ -40,9 +40,9 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>
         public static readonly ApplicationSettingIdentity<bool> AutogeneratePasswordForMobileDevice = ApplicationSettingIdentity<bool>.CreateNew(
-            "System.Core.Users.AutogeneratePasswordForClient",
+            "MCSS.Core.Account.AutogeneratePasswordForClient",
             "Auto-generate password for mobile device",
-            "System.Core.Users",
+            "MCSS.Core.Account",
             "Auto-generates mobile device password for user accounts automatically during creation",
             true);
 

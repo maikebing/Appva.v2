@@ -26,12 +26,13 @@ namespace Appva.Mcss.Admin.Models
         /// <param name="header">The header</param>
         /// <param name="action">the action route</param>
         /// <param name="controller">the controller route</param>
-        private LoadWidget(string header, string action, string controller)
+        private LoadWidget(string header, string action, string controller, string area)
         {
             this.Id = Hash.Random().ToUrlSafeBase64();
             this.Header = header;
             this.Action = action;
             this.Controller = controller;
+            this.Area = area;
         }
 
         #endregion
@@ -44,9 +45,9 @@ namespace Appva.Mcss.Admin.Models
         /// <param name="header">The header</param>
         /// <param name="action">the action route</param>
         /// <param name="controller">the controller route</param>
-        public static LoadWidget CreateNew(string header, string action, string controller)
+        public static LoadWidget CreateNew(string header, string action, string controller, string area)
         {
-            return new LoadWidget(header, action, controller);
+            return new LoadWidget(header, action, controller, area);
         }
 
         #endregion
@@ -82,6 +83,15 @@ namespace Appva.Mcss.Admin.Models
         /// The route controller.
         /// </summary>
         public string Controller
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The route area.
+        /// </summary>
+        public string Area
         {
             get;
             private set;

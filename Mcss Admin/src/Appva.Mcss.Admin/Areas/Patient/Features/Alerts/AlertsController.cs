@@ -88,7 +88,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// </summary>
         /// <param name="status">Either "notsigned" or empty</param>
         /// <returns><see cref="PartialViewResult"/></returns>
-        [Route("overview/{status=notsigned}")]
+        [Route("~/patient/alert/overview/{status=notsigned}")]
         [HttpGet, Dispatch]
         public PartialViewResult Overview(AlertWidget request)
         {

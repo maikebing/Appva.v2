@@ -348,6 +348,9 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
+    <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChart.cs" />
+    <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChartModel.cs" />
+    <Compile Include="Areas\Report\Features\ReportData\ReportDataController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\RolesSchedulesController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedule.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleScheduleHandler.cs" />

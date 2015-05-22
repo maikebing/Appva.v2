@@ -71,9 +71,9 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns><see cref="LoadWidget"/></returns>
         [HttpGet]
         [Route("load")]
-        public PartialViewResult Load(string header, string action, string controller)
+        public PartialViewResult Load(string header, string action, string controller, string widgetArea)
         {
-            return PartialView(LoadWidget.CreateNew(header, action, controller));
+            return PartialView(LoadWidget.CreateNew(header, action, controller, widgetArea));
         }
 
         #endregion

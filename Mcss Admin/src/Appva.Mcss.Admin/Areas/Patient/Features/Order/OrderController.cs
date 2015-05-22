@@ -30,7 +30,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// Returns the dashboard widget.
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
-        [Route("overview")]
+        [Route("~/patient/order/overview")]
         [HttpGet, Dispatch(typeof(OverviewOrder))]
         public PartialViewResult Overview()
         {

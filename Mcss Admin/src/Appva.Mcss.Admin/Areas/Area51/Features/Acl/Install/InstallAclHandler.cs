@@ -87,52 +87,52 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var permissions = new Dictionary<IPermission, Permission>
                 {
-                    { Permissions.Create.Patient, new Permission("Skapa ny boende", "Med denna behörighet kan användaren skapa en ny boende", Permissions.Create.Patient.Value, PermissionAction.Create, PermissionContext.Admin, 0) },
-                    { Permissions.Read.Patient, new Permission("Läsa boendeuppgifter", "Med denna behörighet kan användaren läsa boendeuppgifter", Permissions.Read.Patient.Value, PermissionAction.Read, PermissionContext.Admin, 1) },
-                    { Permissions.Update.Patient, new Permission("Updatera boendeuppgifter", "Med denna behörighet kan användaren uppdatera boendeuppgifter", Permissions.Update.Patient.Value, PermissionAction.Update, PermissionContext.Admin, 2) },
-                    { Permissions.Delete.Patient, new Permission("Ta bort boende", "Med denna behörighet kan användaren ta bort en boende", Permissions.Delete.Patient.Value, PermissionAction.Delete, PermissionContext.Admin, 3) },
+                    { Permissions.Create.Patient,  Permissions.Create.Patient.Convert() },
+                    { Permissions.Read.Patient,    Permissions.Read.Patient.Convert()   },
+                    { Permissions.Update.Patient,  Permissions.Update.Patient.Convert() },
+                    { Permissions.Delete.Patient,  Permissions.Delete.Patient.Convert() },
                     
-                    { Permissions.Create.Schedule, new Permission("Skapa patientschema", "Med denna behörighet kan användaren skapa patient scheman", Permissions.Create.Schedule.Value, PermissionAction.Create, PermissionContext.Admin, 4) },
-                    { Permissions.Read.Schedule, new Permission("Läsa patientschema", "Med denna behörighet kan användaren läsa patientscheman", Permissions.Read.Schedule.Value, PermissionAction.Read, PermissionContext.Admin, 5) },
-                    { Permissions.Update.Schedule, new Permission("Uppdatera patientschema", "Med denna behörighet kan användaren uppdatera patientscheman", Permissions.Update.Schedule.Value, PermissionAction.Update, PermissionContext.Admin, 6) },
-                    { Permissions.Delete.Schedule, new Permission("Ta bort patientschema", "Med denna behörighet kan användaren ta bort patientscheman", Permissions.Delete.Schedule.Value, PermissionAction.Delete, PermissionContext.Admin, 7) },
+                    { Permissions.Create.Schedule, Permissions.Create.Schedule.Convert() },
+                    { Permissions.Read.Schedule,   Permissions.Read.Schedule.Convert()   },
+                    { Permissions.Update.Schedule, Permissions.Update.Schedule.Convert() },
+                    { Permissions.Delete.Schedule, Permissions.Delete.Schedule.Convert() },
                     
-                    { Permissions.Read.EventList, new Permission("Läsa patient händelser", "Med denna behörighet kan användaren läsa patient händelser", Permissions.Read.EventList.Value, PermissionAction.Read, PermissionContext.Admin, 8) },
-                    { Permissions.Read.Alert, new Permission("Läsa patient larm", "Med denna behörighet kan användaren läsa patient larm", Permissions.Read.Alert.Value, PermissionAction.Read, PermissionContext.Admin, 9) },
-                    //// TODO: { Permissions.Read.PatientReport, new Permission("Läsa patient rapport", "Med denna behörighet kan användaren läsa patient rapport", Permissions.PatientReportsRead, PermissionAction.Read, PermissionContext.Admin, 10) },
-                    { Permissions.Read.CalendarEvent, new Permission("Läsa patient kalender", "Med denna behörighet kan användaren läsa patient kalender", Permissions.Read.CalendarEvent.Value, PermissionAction.Read, PermissionContext.Admin, 11) },
-                    { Permissions.Read.Inventory, new Permission("Läsa patients narkotikasaldo", "Med denna behörighet kan användaren läsa en patients narkotikasaldo", Permissions.Read.Inventory.Value, PermissionAction.Read, PermissionContext.Admin, 12) },
+                    { Permissions.Read.EventList, Permissions.Read.EventList.Convert() },
+                    { Permissions.Read.Alert,     Permissions.Read.Alert.Convert() },
+                    //// TODO: { Permissions.Read.PatientReport, Permissions.Read.PatientReport.Convert() },
+                    { Permissions.Read.CalendarEvent, Permissions.Read.CalendarEvent.Convert() },
+                    { Permissions.Read.Inventory, Permissions.Read.Inventory.Convert() },
                     
-                    { Permissions.Create.Practitioner, new Permission("Skapa ny medarbetare", "Med denna behörighet kan användaren skapa en ny medarbetare", Permissions.Create.Practitioner.Value, PermissionAction.Create, PermissionContext.Admin, 13) },
-                    { Permissions.Read.Practitioner, new Permission("Läsa medarbetaruppgifter", "Med denna behörighet kan användaren läsa medarbetaruppgifter", Permissions.Read.Practitioner.Value, PermissionAction.Read, PermissionContext.Admin, 14) },
-                    { Permissions.Update.Practitioner, new Permission("Uppdatera medarbetaruppgifter", "Med denna behörighet kan användaren uppdatera medarbetaruppgifter", Permissions.Update.Practitioner.Value, PermissionAction.Update, PermissionContext.Admin, 15) },
-                    { Permissions.Delete.Practitioner, new Permission("Ta bort medarbetare", "Med denna behörighet kan användaren ta bort medarbetare", Permissions.Delete.Practitioner.Value, PermissionAction.Delete, PermissionContext.Admin, 16) },
+                    { Permissions.Create.Practitioner, Permissions.Create.Practitioner.Convert() },
+                    { Permissions.Read.Practitioner,   Permissions.Read.Practitioner.Convert()   },
+                    { Permissions.Update.Practitioner, Permissions.Update.Practitioner.Convert() },
+                    { Permissions.Delete.Practitioner, Permissions.Delete.Practitioner.Convert() },
                     
-                    { Permissions.Create.Delegation, new Permission("Skapa ny delegering", "Med denna behörighet kan användaren skapa en ny delegering", Permissions.Create.Delegation.Value, PermissionAction.Create, PermissionContext.Admin, 17) },
-                    { Permissions.Read.Delegation, new Permission("Läsa delegeringar", "Med denna behörighet kan användaren läsa delegeringar", Permissions.Read.Delegation.Value, PermissionAction.Read, PermissionContext.Admin, 18) },
-                    { Permissions.Update.Delegation, new Permission("Uppdatera delegeringar", "Med denna behörighet kan användaren uppdatera delegeringar", Permissions.Update.Delegation.Value, PermissionAction.Update, PermissionContext.Admin, 19) },
-                    { Permissions.Delete.Delegation, new Permission("Ta bort delegeringar", "Med denna behörighet kan användaren ta bort delegeringar", Permissions.Delete.Delegation.Value, PermissionAction.Delete, PermissionContext.Admin, 20) },
+                    { Permissions.Create.Delegation, Permissions.Create.Delegation.Convert() },
+                    { Permissions.Read.Delegation,   Permissions.Read.Delegation.Convert()   },
+                    { Permissions.Update.Delegation, Permissions.Update.Delegation.Convert() },
+                    { Permissions.Delete.Delegation, Permissions.Delete.Delegation.Convert() },
                     
-                    { Permissions.Read.Revision, new Permission("Läsa delegeringar", "Med denna behörighet kan användaren läsa mottagna delegeringar", Permissions.Read.Revision.Value, PermissionAction.Read, PermissionContext.Admin, 21) },
-                    { Permissions.Read.IssuedDelegation, new Permission("Läsa delegeringar", "Med denna behörighet kan användaren läsa utställda delegeringar", Permissions.Read.IssuedDelegation.Value, PermissionAction.Read, PermissionContext.Admin, 22) },
-                    { Permissions.Read.PractitionerReport, new Permission("Läsa medarbetarrapport", "Med denna behörighet kan användaren läsa medarbetarrapport", Permissions.Read.PractitionerReport.Value, PermissionAction.Read, PermissionContext.Admin, 23) },
+                    { Permissions.Read.Revision, Permissions.Read.Revision.Convert() },
+                    { Permissions.Read.IssuedDelegation, Permissions.Read.IssuedDelegation.Convert() },
+                    { Permissions.Read.PractitionerReport, Permissions.Read.PractitionerReport.Convert() },
                     
-                    { Permissions.Create.Role, new Permission("Skapa ny roll", "Med denna behörighet kan användaren skapa en ny roll", Permissions.Create.Role.Value, PermissionAction.Create, PermissionContext.Admin, 24) },
-                    { Permissions.Read.Role, new Permission("Läsa roller", "Med denna behörighet kan användaren läsa roller", Permissions.Read.Role.Value, PermissionAction.Read, PermissionContext.Admin, 25) },
-                    { Permissions.Update.Role, new Permission("Uppdatera roller", "Med denna behörighet kan användaren uppdatera roller", Permissions.Update.Role.Value, PermissionAction.Update, PermissionContext.Admin, 26) },
-                    { Permissions.Delete.Role, new Permission("Ta bort roller", "Med denna behörighet kan användaren ta bort roller", Permissions.Delete.Role.Value, PermissionAction.Delete, PermissionContext.Admin, 27) },
+                    { Permissions.Create.Role, Permissions.Create.Role.Convert() },
+                    { Permissions.Read.Role,   Permissions.Read.Role.Convert()   },
+                    { Permissions.Update.Role, Permissions.Update.Role.Convert() },
+                    { Permissions.Delete.Role, Permissions.Delete.Role.Convert() },
                     
-                    { Permissions.Create.Notification, new Permission("Skapa ny notifiering", "Med denna behörighet kan användaren skapa en ny notifiering", Permissions.Create.Notification.Value, PermissionAction.Create, PermissionContext.Admin, 28) },
-                    { Permissions.Read.Notification, new Permission("Läsa notifiering", "Med denna behörighet kan användaren läsa notifiering", Permissions.Read.Notification.Value, PermissionAction.Read, PermissionContext.Admin, 29) },
-                    { Permissions.Update.Notification, new Permission("Uppdatera notifiering", "Med denna behörighet kan användaren uppdatera notifiering", Permissions.Update.Notification.Value, PermissionAction.Update, PermissionContext.Admin, 30) },
-                    { Permissions.Delete.Notification, new Permission("Ta notifiering", "Med denna behörighet kan användaren ta bort notifiering", Permissions.Delete.Notification.Value, PermissionAction.Delete, PermissionContext.Admin, 31) },
+                    { Permissions.Create.Notification, Permissions.Create.Notification.Convert() },
+                    { Permissions.Read.Notification, Permissions.Read.Notification.Convert() },
+                    { Permissions.Update.Notification, Permissions.Update.Notification.Convert() },
+                    { Permissions.Delete.Notification, Permissions.Delete.Notification.Convert() },
                     
-                    { Permissions.Read.Dashboard, new Permission("Läsa översikt", "Med denna behörighet kan användaren läsa översikt", Permissions.Read.Dashboard.Value, PermissionAction.Read, PermissionContext.Admin, 32) },
+                    { Permissions.Read.Dashboard, Permissions.Read.Dashboard.Convert() },
                     //// TODO:{ Permissions.Read.DashboardControl, new Permission("Läsa kontrollräkning narkotika", "Med denna behörighet kan användaren läsa kontrollräkning narkotika", Permissions.DashboardControl, PermissionAction.Read, PermissionContext.Admin, 33) },
                     //// TODO:{ Permissions.Read.DashboardReport, new Permission("Läsa fullständig rapport", "Med denna behörighet kan användaren läsa fullständig rapport", Permissions.DashboardReport, PermissionAction.Read, PermissionContext.Admin, 34) },
                     //// TODO:{ Permissions.Read.DashboardTotalResult, new Permission("Läsa översikt totalt resultat", "Med denna behörighet kan användaren läsa totalt resultat på översikt", Permissions.DashboardTotalResult, PermissionAction.Read, PermissionContext.Admin, 35) },
                   
-                    { Permissions.Read.Area51, new Permission("Area51", "Med denna behörighet kan se Area51", Permissions.Read.Area51.Value, PermissionAction.Read, PermissionContext.Admin, 36, false) },
+                    { Permissions.Read.Area51, Permissions.Read.Area51.Convert() }, /// remember visibility
                     
                 };
             foreach (var permission in permissions)
@@ -143,7 +143,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         }
 
         /// <summary>
-        /// 
+        /// Add all permissions to all roles - this MUST be edited manually later.
         /// </summary>
         /// <param name="permissions"></param>
         private void CreateRolePermissions(IDictionary<IPermission, Permission> permissions)
@@ -208,5 +208,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.settings.Upsert(ApplicationSettings.IsAccessControlInstalled, true);
         }
         #endregion
+    }
+
+    internal static class IPermissionExtensions
+    {
+        private static int sort = 0;
+
+        public static Permission Convert(this IPermission permission)
+        {
+            return new Permission(permission.Name, permission.Description, permission.Value, PermissionAction.Create, PermissionContext.Admin, sort++);
+        }
     }
 }

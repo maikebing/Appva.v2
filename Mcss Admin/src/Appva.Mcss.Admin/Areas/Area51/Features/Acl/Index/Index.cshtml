@@ -1,5 +1,5 @@
 ﻿@{
-	ViewBag.Title = "Area 51 - Roller och behörigheter";
+	Title("Area 51 - Roller och behörigheter");
 }
 @Html.Partial("_Area51MenuPartial")
 <div id="subheader" class="cf">
@@ -12,10 +12,6 @@
 	@using (Html.Post("Activate", "Acl", null))
 	{
 		@Html.Submit("Aktivera roller och behörigheter", new { @class = "btn" })
-	}
-	@using (Html.Post("Preview", "Acl", null))
-	{
-		@Html.Submit("Förhandsgranska roller och behörigheter", new { @class = "btn" })
 	}
 </div>
 <div id="content" class="cf">

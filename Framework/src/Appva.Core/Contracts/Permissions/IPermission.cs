@@ -33,21 +33,5 @@ namespace Appva.Core.Contracts.Permissions
         {
             get;
         }
-
-        /// <summary>
-        /// User friendly name.
-        /// </summary>
-        string Name
-        {
-            get;
-        }
-
-        /// <summary>
-        /// User friendly description.
-        /// </summary>
-        string Description
-        {
-            get;
-        }
     }
 }

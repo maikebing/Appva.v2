@@ -146,49 +146,40 @@ namespace Appva.Core.Logging
                 {
                     return this.LogException(logLevel, messageFunc, exception);
                 }
-                //// FIXME: Null checker here!
                 switch (logLevel)
                 {
                     case LogLevel.Info:
                         if (this.IsInfoEnabled())
                         {
-                            this.logger.Info(messageFunc());
+                            this.logger.Info(this.UnwrapMessage(messageFunc));
                             return true;
                         }
                         break;
                     case LogLevel.Warn:
                         if (this.IsWarnEnabled())
                         {
-                            this.logger.Warn(messageFunc());
+                            this.logger.Warn(this.UnwrapMessage(messageFunc));
                             return true;
                         }
                         break;
                     case LogLevel.Error:
                         if (this.IsErrorEnabled())
                         {
-                            if (messageFunc == null)
-                            {
-                                this.logger.Error("message is null");
-                            }
-                            else
-                            {
-                                this.logger.Error(messageFunc());
-                            }
-                            
+                            this.logger.Error(this.UnwrapMessage(messageFunc));
                             return true;
                         }
                         break;
                     case LogLevel.Fatal:
                         if (this.IsFatalEnabled())
                         {
-                            this.logger.Fatal(messageFunc());
+                            this.logger.Fatal(this.UnwrapMessage(messageFunc));
                             return true;
                         }
                         break;
                     default:
                         if (this.IsDebugEnabled())
                         {
-                            this.logger.Debug(messageFunc()); 
+                            this.logger.Debug(this.UnwrapMessage(messageFunc)); 
                             //// Log4Net doesn't have a 'Trace' level, so all Trace 
                             //// messages are written as 'Debug'
                             return true;
@@ -239,6 +230,16 @@ namespace Appva.Core.Logging
             #region Private Methods.
 
             /// <summary>
+            /// Unwraps the underlying message.
+            /// </summary>
+            /// <param name="messageFunc">The message function</param>
+            /// <returns>The message or null</returns>
+            private object UnwrapMessage(Func<string> messageFunc)
+            {
+                return messageFunc == null ? null : messageFunc();
+            }
+
+            /// <summary>
             /// Logs an exception.
             /// </summary>
             /// <param name="logLevel">The <see cref="LogLevel"/></param>
@@ -252,35 +253,35 @@ namespace Appva.Core.Logging
                     case LogLevel.Info:
                         if (this.logger.IsDebugEnabled)
                         {
-                            this.logger.Info(messageFunc(), exception);
+                            this.logger.Info(this.UnwrapMessage(messageFunc), exception);
                             return true;
                         }
                         break;
                     case LogLevel.Warn:
                         if (this.logger.IsWarnEnabled)
                         {
-                            this.logger.Warn(messageFunc(), exception);
+                            this.logger.Warn(this.UnwrapMessage(messageFunc), exception);
                             return true;
                         }
                         break;
                     case LogLevel.Error:
                         if (this.logger.IsErrorEnabled)
                         {
-                            this.logger.Error(messageFunc(), exception);
+                            this.logger.Error(this.UnwrapMessage(messageFunc), exception);
                             return true;
                         }
                         break;
                     case LogLevel.Fatal:
                         if (this.logger.IsFatalEnabled)
                         {
-                            this.logger.Fatal(messageFunc(), exception);
+                            this.logger.Fatal(this.UnwrapMessage(messageFunc), exception);
                             return true;
                         }
                         break;
                     default:
                         if (this.logger.IsDebugEnabled)
                         {
-                            this.logger.Debug(messageFunc(), exception);
+                            this.logger.Debug(this.UnwrapMessage(messageFunc), exception);
                             return true;
                         }
                         break;

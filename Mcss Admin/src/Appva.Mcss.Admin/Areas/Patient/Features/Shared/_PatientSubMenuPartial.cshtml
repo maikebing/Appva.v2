@@ -2,7 +2,7 @@
     <ul class="cf">
         @Html.Action("SubMenu", "Menus", new
             {
-                Key = "Admin.Patient.Menu",
+                Key = "https://schema.appva.se/ui/menu",
                 Action = Html.ViewContext.RouteData.GetRequiredString("action"),
                 Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
                 Area = string.Empty

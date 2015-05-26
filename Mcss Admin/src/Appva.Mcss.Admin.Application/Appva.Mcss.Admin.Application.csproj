@@ -72,6 +72,7 @@
     <Compile Include="Common\EncryptionUtils.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Common\PermissionMeta.cs" />
     <Compile Include="Common\Permissions.cs" />
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />

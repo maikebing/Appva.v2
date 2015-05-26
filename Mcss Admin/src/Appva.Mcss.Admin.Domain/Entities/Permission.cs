@@ -30,13 +30,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="resource">The resource</param>
         /// <param name="action">The action</param>
         /// <param name="permissionContext">The context</param>
-        public Permission(string name, string description, string resource, PermissionAction action, PermissionContext permissionContext, int sort = 0, bool isVisible = true)
+        public Permission(string name, string description, string resource, int sort = 0, bool isVisible = true)
         {
             this.Name = name;
             this.Description = description;
             this.Resource = resource;
-            this.Action = action;
-            this.Context = permissionContext;
             this.Sort = sort;
             this.IsVisible = isVisible;
         }
@@ -84,24 +82,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// The action for the resource, e.g. view.
-        /// </summary>
-        public virtual PermissionAction Action
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// The permission policy context.
-        /// </summary>
-        public virtual PermissionContext Context
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// The sort.
         /// </summary>
         public virtual int Sort
@@ -129,40 +109,5 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
-    }
-
-    /// <summary>
-    /// Action rights for a permission.
-    /// </summary>
-    public enum PermissionAction
-    {
-        /// <summary>
-        /// Create rights.
-        /// </summary>
-        Create = 0,
-
-        /// <summary>
-        /// Read rights.
-        /// </summary>
-        Read = 1,
-
-        /// <summary>
-        /// Update rights.
-        /// </summary>
-        Update = 2,
-
-        /// <summary>
-        /// Delete rights.
-        /// </summary>
-        Delete = 3
-    }
-
-    /// <summary>
-    /// Permission context.
-    /// </summary>
-    public enum PermissionContext : int
-    {
-        Admin = 0,
-        Device = 1
     }
 }

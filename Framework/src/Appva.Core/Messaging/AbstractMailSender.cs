@@ -38,8 +38,7 @@ namespace Appva.Core.Messaging
         {
             try
             {
-                throw new Exception(this.Handle(message).Body);
-                //Mail.Send(this.Handle(message));
+                Mail.Send(this.Handle(message));
             }
             catch (Exception ex)
             {

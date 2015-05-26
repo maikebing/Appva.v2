@@ -57,7 +57,7 @@ namespace Appva.Mvc.Security
                 filterContext.Result = new HttpUnauthorizedResult();
                 return;
             }
-            if (principal.HasClaim(Core.Resources.ClaimTypes.AclEnabled, "Y") || (principal.HasClaim(Core.Resources.ClaimTypes.AclPreview, "Y") && principal.IsInRole(Core.Resources.RoleTypes.Appva)))
+            if (principal.HasClaim(Core.Resources.ClaimTypes.AclEnabled, "Y"))
             {
                 if (! principal.HasClaim(Core.Resources.ClaimTypes.Permission, this.permission))
                 {

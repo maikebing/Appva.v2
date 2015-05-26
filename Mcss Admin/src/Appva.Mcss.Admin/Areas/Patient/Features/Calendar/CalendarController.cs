@@ -28,6 +28,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -85,6 +87,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("list")]
         [HttpGet, Dispatch]
+        ////[PermissionsAttribute(Permissions.Calendar.Read.Value)]
         public ActionResult List(ListCalendar request)
         {
             return View();
@@ -104,6 +107,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         
         [Route("create")]
         [HttpGet, Hydrate, Dispatch]
+        ////[PermissionsAttribute(Permissions.Calendar.Create.Value)]
         public ActionResult Create(Identity<EventViewModel> request)
         {
             return View();
@@ -118,6 +122,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns></returns>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        ////[PermissionsAttribute(Permissions.Calendar.Create.Value)]
         public ActionResult Create(EventViewModel request)
         {
             return View();
@@ -135,6 +140,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("edit")]
         [HttpGet, Dispatch]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
         public ActionResult Edit(EditEventSequence request)
         {
             return this.View();
@@ -148,8 +154,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">The date (for redirect)</param>
         /// <param name="model">The event model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, /*MultiButton,*/ ValidateAntiForgeryToken]
         [Route("EditAll")]
+        [HttpPost, /*MultiButton,*/ ValidateAntiForgeryToken]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
         public ActionResult EditAll(Guid id, Guid seqId, DateTime date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -188,8 +195,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">The event date</param>
         /// <param name="model">The event model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, /*MultiButton,*/ ValidateAntiForgeryToken]
         [Route("EditThis")]
+        [HttpPost, /*MultiButton,*/ ValidateAntiForgeryToken]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
         public ActionResult EditThis(Guid id, Guid seqId, DateTime date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -229,6 +237,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
         [Route("EditActivity")]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
         public ActionResult EditActivity(Guid id)
         {
             var evt = this.context.Get<Task>(id);
@@ -265,8 +274,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">Optional activity date</param>
         /// <param name="model">THe event model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, ValidateAntiForgeryToken]
         [Route("EditActivity")]
+        [HttpPost, ValidateAntiForgeryToken]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
         public ActionResult EditActivity(Guid id, Guid taskId, DateTime? date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -295,8 +305,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="id">The event id</param>
         /// <param name="date">The redirect date</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
         [Route("Remove")]
+        [HttpGet]
+        ////[PermissionsAttribute(Permissions.Calendar.Delete.Value)]
         public ActionResult Remove(Guid id, DateTime date)
         {
             var evt = this.eventService.Get(id);
@@ -314,6 +325,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="id">The task id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("RemoveActivity")]
+        ////[PermissionsAttribute(Permissions.Calendar.Delete.Value)]
         public ActionResult RemoveActivity(Guid id)
         {
             var evt = this.context.Get<Task>(id);
@@ -332,6 +344,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [Route("Overview")]
         public PartialViewResult Overview()
         {
+            //// FIXME: Update to 1.5.1 version here!
             var taxon = FilterCache.Get(this.context);
             if (!FilterCache.HasCache())
             {

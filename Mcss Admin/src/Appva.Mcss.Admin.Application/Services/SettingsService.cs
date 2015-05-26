@@ -23,9 +23,31 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     #endregion
 
     /// <summary>
+    /// Access Control List tenant settings.
+    /// </summary>
+    public interface IAccessControlListTenantSettings
+    {
+        /// <summary>
+        /// Returns whether or not access control list (ACL) is installed for the
+        /// current tenant.
+        /// </summary>
+        /// <returns>True, if ACL is installed; defaults to false</returns>
+        bool IsAccessControlListInstalled();
+
+        /// <summary>
+        /// Returns whether or not access control list (ACL) is activated for the
+        /// current tenant.
+        /// </summary>
+        /// <returns>True, if ACL is activated; defaults to false</returns>
+        bool IsAccessControlListActivated();
+    }
+
+    /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface ISettingsService : IService
+    public interface ISettingsService :
+        IAccessControlListTenantSettings,
+        IService
     {
         /// <summary>
         /// Returns the <c>Setting</c> by key.
@@ -48,6 +70,8 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="key">The unique key</param>
         /// <param name="value">The value to be added</param>
         void Upsert<T>(ApplicationSettingIdentity<T> key, T value) where T : struct;
+
+        
 
         ///////// OLD !!!
 
@@ -332,6 +356,22 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 Log.ErrorException("<SettingService> cache problem with id " + item.Id, ex);
                 return false;
             }
+        }
+
+        #endregion
+
+        #region IAccessControlListTenantSettings Members.
+
+        /// <inheritdoc />
+        public bool IsAccessControlListInstalled()
+        {
+            return this.Find(ApplicationSettings.IsAccessControlInstalled, false);
+        }
+
+        /// <inheritdoc />
+        public bool IsAccessControlListActivated()
+        {
+            return this.Find(ApplicationSettings.IsAccessControlActivated, false);
         }
 
         #endregion

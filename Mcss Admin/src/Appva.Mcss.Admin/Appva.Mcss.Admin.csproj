@@ -185,8 +185,6 @@
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\Preview\PreviewAcl.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\Preview\PreviewAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Cache\CacheController.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCacheHandler.cs" />

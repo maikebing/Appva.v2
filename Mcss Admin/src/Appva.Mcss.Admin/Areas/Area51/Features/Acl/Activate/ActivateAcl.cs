@@ -15,7 +15,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ActivateAcl : INotification
+    public sealed class ActivateAcl : IRequest<bool>
     {
     }
 }

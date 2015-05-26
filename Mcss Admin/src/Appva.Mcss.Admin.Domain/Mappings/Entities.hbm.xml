@@ -174,8 +174,6 @@
     <property name="Name" />
     <property name="Description" />
     <property name="Resource" />
-    <property name="Action" />
-    <property name="Context" />
     <property name="Sort" />
     <property name="IsVisible" />
     <bag name="Roles" table="RolesPermissions" inverse="true">

@@ -158,15 +158,9 @@ namespace Appva.Mcss.Admin.Application.Security
                 new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(1).ToString("s")),
                 new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString())
             };
-            if (this.settings.Find<bool>(ApplicationSettings.IsAccessControlInstalled, false))
+            if (this.settings.IsAccessControlListInstalled() && this.settings.IsAccessControlListActivated())
             {
-                var isEnabled = this.settings.Find<bool>(ApplicationSettings.IsAccessControlActivated, false);
-                var inPreview = this.settings.Find<bool>(ApplicationSettings.IsAccessControlInPreviewMode, false);
-                retval.AddRange(new List<Claim>
-                    {
-                        new Claim(Core.Resources.ClaimTypes.AclEnabled, isEnabled ? "Y" : "N"),
-                        new Claim(Core.Resources.ClaimTypes.AclPreview, inPreview ? "Y" : "N")
-                    });
+                retval.Add(new Claim(Core.Resources.ClaimTypes.AclEnabled, "Y"));
             }
             ITenantIdentity identity = null;
             if (this.tenants.TryIdentifyTenant(out identity))
@@ -210,9 +204,9 @@ namespace Appva.Mcss.Admin.Application.Security
             {
                 return AuthenticationResult.InvalidCredentials;
             }
-            if (this.settings.Find<bool>(ApplicationSettings.IsAccessControlActivated, false))
+            if (this.settings.IsAccessControlListActivated())
             {
-                if (! this.accountService.HasPermissions(account, "1.C"))
+                if (! this.accountService.HasPermissions(account, Permissions.Admin.Login.Value))
                 {
                     return AuthenticationResult.Failure;
                 }

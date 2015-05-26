@@ -1,14 +1,14 @@
 FRAMEWORK
 1. [X] Appva.Mvc create RazorEmailService, use cache
 2. [X] Appva.Mvc ActionLink via IPermission
-3. [ ] SITHS authentication service, Appva.Siths
+3. [X] SITHS authentication service, Appva.Siths
     Replace with configuration:
 	<add key="Authify_ApiKey" value="bb64942bf0538cce274c032e4728a8e4"/>
 	<add key="Authify_SecretKey" value="3065e848c12a95083ffd86b7c7df946f"/>
 	<add key="Authify_authserver" value="https://loginserver1.authify.com/"/>
 	<add key="Authify_callbackurl" value="http://localhost:8080/authenticate/siths"/>
-4. [ ] ILog null references
-5. [ ] ILog DiagnosticsTraceLogger for JSON debug
+4. [X] ILog null references
+5. [X] ILog DiagnosticsTraceLogger for JSON debug
 6. [X] Move interfaces (IConfigurableResource) either to Core or Common
 7. [X] Remove IConfigurableResource in Appva.Core.Configuration
 8. [ ] Create SignedEmailService and EncryptEmailService and SignedAndEncryptService
@@ -20,10 +20,24 @@ ADMIN
 4. [ ] Excel, add Appva.Mcss.Admin.Excel
 5. [ ] Create Authentication Result, NotActive and IsPaused
 6. [X] Add <globalization enableClientBasedCulture="true" uiCulture="sv-SE" culture="sv-SE"/>
+7. [ ] Add Siths to service
+8. [ ] Add AD to services adn implement
+9. [ ] Add Code for Logging in services!
+10.[ ] Add Antiforgerytoken to js
+11.[ ] Add Email to account, authentication etc.
+12.[ ] Use tenant cache
+13.[ ] Use NoOpMailService for debug!
+14.[ ] Filter i Patient - Last stop is inactive so everything should be seen there if only inactive
 
+15.[ ] [2015-05-26 17:52:59] Richard  Sachade Henriksson: man behöver kunna bestämma bara om mail skall skickas eller inte
+		[2015-05-26 17:53:12] Richard  Sachade Henriksson: och vilka koder om skall skickas med
+		[2015-05-26 17:53:26] Richard  Sachade Henriksson: ex viser-kunder skall inte få mail med pin-kod i
+		[2015-05-26 17:53:33] Richard  Sachade Henriksson: eftersom de har las
+		[2015-05-26 17:54:00] Richard  Sachade Henriksson: likaså behöver inte omsorgspersonal hos viser få mail alls
+		[2015-05-26 17:54:11] Richard  Sachade Henriksson: eftersom den bara innehåller pin-kod
 TESTS
 1. [ ] ITenantIdentityStrategy
-2. 
+2. [ ] 
 
 APPLICATIONS
 1. [ ] Check all System.Core settings so it's correct.

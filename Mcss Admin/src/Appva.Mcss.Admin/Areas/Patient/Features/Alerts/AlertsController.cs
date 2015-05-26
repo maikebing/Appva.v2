@@ -12,6 +12,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -38,6 +40,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <returns><see cref="ActionResult"/></returns>
         [Route("list")]
         [HttpGet, Dispatch]
+        ////[PermissionsAttribute(Permissions.Alert.Read.Value)]
         public ActionResult List(ListAlert request)
         {
             return this.View();
@@ -56,6 +59,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <returns><see cref="ActionResult"/></returns>
         [Route("handle-alert/{taskId:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Alerts")]
+        ////[PermissionsAttribute(Permissions.Alert.Handle.Value)]
         public ActionResult Handle(HandleAlert request)
         {
             return this.View();
@@ -74,6 +78,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <returns><see cref="ActionResult"/></returns>
         [Route("handle-all-alerts")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Alerts")]
+        ////[PermissionsAttribute(Permissions.Alert.HandleAll.Value)]
         public ActionResult HandleAll(HandleAllAlert request)
         {
             return this.View();

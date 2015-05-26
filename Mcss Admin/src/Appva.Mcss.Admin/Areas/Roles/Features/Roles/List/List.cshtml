@@ -1,11 +1,12 @@
 ﻿@using Appva.Core.Resources;
+@using Appva.Mcss.Admin.Application.Common;
 @model IList<Appva.Mcss.Admin.Domain.Entities.Role>
 @{ ViewBag.Title = "Roller"; }
 
 <div id="main">
 	<div id="subheader" class="cf">
 		<h1>Roller och behörigheter</h1>
-	    @Html.PermissionLink(PermissionTypes.CreateRole, "Ny roll", "Create", "Roles", "Roles", null, new { @class = "btn lb-link" })
+	    @Html.ActionLink(Permissions.Role.Create, "Ny roll", "Create", "Roles", null, new { @class = "btn lb-link" })
 	</div>
     @Html.Alert(new { @class = "success-msg" })
 	@if (Model != null && Model.Count > 0)
@@ -16,10 +17,10 @@
 				<li class="cf">
 					@if (role.IsDeletable)
 					{
-						@Html.PermissionLink(PermissionTypes.DeleteRole, "Ta bort", "Delete", "Roles", "Roles", new { Id = role.Id }, new { @class = "btn btn-del" })
+						@Html.ActionLink(Permissions.Role.Delete, "Ta bort", "Delete", "Roles", new { Id = role.Id }, new { @class = "btn btn-del" })
 					}
-					@Html.PermissionLink(PermissionTypes.UpdateRole, "Redigera", "Update", "Roles", "Roles", new { Id = role.Id }, new { @class = "btn lb-link" })
-					@Html.PermissionLink(PermissionTypes.UpdateRole, "Koppla till signeringslista", "Update", "RolesSchedules", "Roles", new { Id = role.Id }, new { @class = "btn lb-link" })
+					@Html.ActionLink(Permissions.Role.Update, "Redigera", "Update", "Roles", new { Id = role.Id }, new { @class = "btn lb-link" })
+					@Html.ActionLink(Permissions.Role.Update, "Koppla till signeringslista", "Update", "RolesSchedules", new { Id = role.Id }, new { @class = "btn lb-link" })
 					<div class="h">
 						<h2>@role.Name</h2>
 						<span class="pnr">@role.Description</span>

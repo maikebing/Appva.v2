@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CC908096-EB14-44DA-8996-FE2C700406AB}</ProjectGuid>
+    <ProjectGuid>{443693E3-D712-40FB-837B-A1DA866695FD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Appva.Tenant</RootNamespace>

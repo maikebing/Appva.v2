@@ -341,7 +341,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// Returns the dashboard overview.
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
-        [Route("Overview")]
+        [Route("~/patient/calendar/overview")]
         public PartialViewResult Overview()
         {
             //// FIXME: Update to 1.5.1 version here!
@@ -368,19 +368,28 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
                 .List();
             var tasks = this.context.QueryOver<Task>()
                 .Where(x => x.IsActive)
-                .And(x => x.Scheduled < DateTime.Now.AddDays(7))
-                .And(x => !x.Quittanced && x.Overview)
+                .And(Restrictions.Disjunction().Add<Task>( /// Alla kvitteringar inom veckan
+                    x => x.Scheduled < DateTime.Now.AddDays(7) &&
+                         x.Scheduled > DateTime.Now.Date &&
+                         x.Quittanced
+                ).Add<Task>( /// Samtliga tasks som ej kvitterats 
+                    x => x.Scheduled < DateTime.Now.Date &&
+                         x.Quittanced == false
+                ))
+                .And(x => x.Overview)
+                .OrderBy(x => x.Scheduled).Asc
                 .JoinAlias(x => x.Patient, () => patientAlias)
                     .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
                     .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
                         .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
                 .Fetch(x => x.Patient).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer())
+                .JoinQueryOver<Sequence>(x => x.Sequence)
+                    .Where(x => x.IsActive)
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .Where(x => x.ScheduleType == ScheduleType.Calendar)
-                .List()
-                .OrderBy(x => x.Scheduled).ToList();
+                .List();
             var schedules = this.context.QueryOver<Schedule>()
                 .Where(x => x.IsActive)
                 .JoinAlias(x => x.Patient, () => patientAlias)
@@ -391,6 +400,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
                     .Where(x => x.ScheduleType == ScheduleType.Calendar)
                 .List();
             var startTime = tasks.Count > 0 ? tasks.FirstOrDefault().Scheduled : DateTime.Now;
+            if (startTime > DateTime.Now)
+            {
+                startTime = DateTime.Now;
+            }
+            /// Måste gå igenom så att alla sequencer finns. 
+            /// Vi kan ha en sekvens som inte ska vara på overview men har en task som är ett undantag och skall vara med på overview
             foreach (var task in tasks)
             {
                 if (!sequences.Contains(task.Sequence))

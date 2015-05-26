@@ -11,8 +11,8 @@
             </div>
         }
         <div id="content-primary">
-            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Alert", header = "Pågående insatser" }); }
-            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Inventory", header = "Kontrollräkning narkotika" }); }
+            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Alerts", widgetArea = "Patient", header = "Pågående insatser" }); }
+            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Inventory", widgetArea = "Patient", header = "Kontrollräkning narkotika" }); }
             <div class="panel">
                 <div class="heading cf">
                     @Html.ActionLink("Fullständig rapport ...", "Index", "Report", new { }, new { })
@@ -38,11 +38,11 @@
         <div id="content-secondary">
             @if (Model.HasOrderOverview)
             {
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Order", header = "Påfyllning av läkemedel" });
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Order", widgetArea = "Patient", header = "Påfyllning av läkemedel" });
             }
             @if (Model.HasCalendarOverview)
             {
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Event", header = "Kalender de närmaste 7 dagarna" });
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Event", widgetArea = "Patient", header = "Kalender de närmaste 7 dagarna" });
             }
             @*
                 Add correct area here

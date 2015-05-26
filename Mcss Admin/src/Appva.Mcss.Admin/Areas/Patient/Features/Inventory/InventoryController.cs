@@ -103,7 +103,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// Returns the dashboard widget.
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
-        [Route("overview")]
+        [Route("~/patient/inventory/overview")]
         [HttpGet, Dispatch(typeof(OverviewInventory))]
         public PartialViewResult Overview()
         {

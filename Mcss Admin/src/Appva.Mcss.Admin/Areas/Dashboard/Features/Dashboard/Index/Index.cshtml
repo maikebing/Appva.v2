@@ -57,28 +57,28 @@
 <script type="text/javascript">
     mcss.chart.Load({
         'selector': '#chart',
-        'url': '@Url.Action("Chart")',
+        'url': '@Url.Action("GetChartData", "Statistics", new { area = "" })',
         'min': new Date(@Model.SevenDayStartDate.Year, @(Model.SevenDayStartDate.Month - 1), @Model.SevenDayStartDate.Day),
         'max': new Date(@Model.SevenDayEndDate.Year, @(Model.SevenDayEndDate.Month - 1), @Model.SevenDayEndDate.Day),
         'parameters': {
-            'startDate': '@Model.SevenDayStartDate.ToShortDateString()',
-            'endDate': '@Model.SevenDayEndDate.ToShortDateString()'
+            'start': '@Model.SevenDayStartDate.ToShortDateString()',
+            'end': '@Model.SevenDayEndDate.ToShortDateString()'
         }
     });
-    $.getJSON('@Url.Action("GetSevenDayReport")')
+    $.getJSON('@Url.Action("GetStatisicsData", "Statistics", new { area = "" })', { start : '@Model.SevenDayStartDate.ToShortDateString()', end : '@Model.SevenDayEndDate.ToShortDateString()'})
             .success(function (data) {
-                $('#notOnTime').html(data.TasksNotOnTime + "%");
-                $('#onTime').html(data.TasksOnTime + "%");
-                if (data.TasksOnTime > data.ComparedDateSpanTasksOnTime) {
+                $('#notOnTime').html(data.NotOnTimePercentage + "%");
+                $('#onTime').html(data.OnTimePercentage + "%");
+                if (data.OnTimePercentage > 0) {
                     $('#onTime').append('<img src="@Url.Image("trendup.png")" alt="Uppåtgående" />');
                 }
                 else {
                     $('#onTime').append('<img src="@Url.Image("trenddn.png")" alt="Nedåtgående" />');
                 }
             })
-            .error(function () { 
-                $("#report").addClass('error'); 
-                $("#report").empty(); 
-                $("#report").append('<div class="loader">Ett fel inträffade!</div>') 
-            });
+    .error(function () {
+        $("#report").addClass('error');
+        $("#report").empty();
+        $("#report").append('<div class="loader">Ett fel inträffade!</div>')
+    });
 </script>

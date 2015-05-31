@@ -54,7 +54,8 @@ namespace Appva.Mcss.Admin.Controllers
             view.SevenDayEndDate = DateTimeExt.Now();*/
             return View(new HomeViewModel
                 {
-                   
+                    SevenDayStartDate = DateTime.Now.AddDays(-7),
+                    SevenDayEndDate = DateTime.Now   
                 });
         }
 

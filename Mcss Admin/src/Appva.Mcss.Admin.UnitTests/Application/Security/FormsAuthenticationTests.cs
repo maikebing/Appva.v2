@@ -60,11 +60,12 @@ namespace Appva.Mcss.Admin.UnitTests.Application.Security
 
         public IFormsAuthentication CreateNew()
         {
-            return new FormsAuthentication(
+            /*return new FormsAuthentication(
                 new IdentityService(new Dictionary<string, object>()),
                 new TenantService(new TestTenantClient(), new DevelopmentTenantIdentificationStrategy(), new RuntimeMemoryCache("test")),
                 new AccountService(new AccountRepository(this.PersistenceContext), new RoleRepository(this.PersistenceContext), new PermissionRepository(this.PersistenceContext), this.PersistenceContext),
-                new SettingsService(new RuntimeMemoryCache("test"), new SettingsRepository(this.PersistenceContext)));
+                new SettingsService(new RuntimeMemoryCache("test"), new SettingsRepository(this.PersistenceContext)));*/
+            return null;
         }
 
         #endregion

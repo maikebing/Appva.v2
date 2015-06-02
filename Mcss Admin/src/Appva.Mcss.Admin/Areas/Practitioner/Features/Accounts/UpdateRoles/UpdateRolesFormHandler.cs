@@ -9,9 +9,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
 
     #endregion
 
@@ -27,6 +30,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IAccountService service;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/> implementation
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
         #endregion
 
         #region Constructor.
@@ -35,9 +43,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="UpdateRolesFormHandler"/> class.
         /// </summary>
         /// <param name="service"></param>
-        public UpdateRolesFormHandler(IAccountService service)
+        public UpdateRolesFormHandler(IPersistenceContext persistence, IAccountService service)
         {
             this.service = service;
+            this.persistence = persistence;
         }
 
         #endregion
@@ -47,16 +56,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListAccount Handle(UpdateRolesForm message)
         {
-            /*
-            var account = this.Session.Get<Account>(id);
-            var roles = this.Session.QueryOver<Role>()
+
+            var account = this.persistence.Get<Account>(message.Id);
+            var roles = this.persistence.QueryOver<Role>()
                     .AndRestrictionOn(x => x.Id)
-                    .IsIn(model.SelectedRoles.Select(x => new Guid(x)).ToArray())
+                    .IsIn(message.SelectedRoles.Select(x => new Guid(x)).ToArray())
                     .List();
             account.Roles = roles;
-            this.Session.Update(account);
-             */
-            throw new NotImplementedException();
+            this.persistence.Update(account);
+            return new ListAccount();
         }
 
         #endregion

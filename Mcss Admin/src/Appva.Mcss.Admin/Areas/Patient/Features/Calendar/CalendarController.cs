@@ -456,7 +456,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="id">The sequence id</param>
         /// <param name="date">The date</param>
         /// <returns><see cref="JsonResult"/></returns>
-        [Route("Quittance")]
+        [Route("~/patient/calendar/quittance")]
         public JsonResult Quittance(Guid id, DateTime date)
         {
             var sequence = this.context.Get<Sequence>(id);
@@ -474,7 +474,14 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
             {
                 task.Quittanced = true;
                 task.QuittancedBy = Identity();
-                this.context.Update(task);
+                if (task.IsTransient)
+                {
+                    this.context.Save(task);
+                }
+                else
+                {
+                    this.context.Update(task);
+                }
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
             return Json(false, JsonRequestBehavior.AllowGet);

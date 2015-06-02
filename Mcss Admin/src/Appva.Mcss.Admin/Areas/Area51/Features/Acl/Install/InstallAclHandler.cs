@@ -143,7 +143,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 { "Dashboard",    new MenuLink(menu, "Översikt", "Index", "Dashboard", "Dashboard", 0, null, null, null, permissions[Permissions.Dashboard.Read]) }, 
                 { "Patient",      new MenuLink(menu, "Boende", "List", "Patient", "Patient", 1, null, null, null, permissions[Permissions.Patient.Read]) },
-                { "Practitioner", new MenuLink(menu, "Medarbetare", "List", "Account", "Practitioner", 2, null, null, null, permissions[Permissions.Practitioner.Read]) },
+                { "Practitioner", new MenuLink(menu, "Medarbetare", "List", "Accounts", "Practitioner", 2, null, null, null, permissions[Permissions.Practitioner.Read]) },
                 { "Roles",        new MenuLink(menu, "Roller och behörigheter", "List", "Roles", "Roles", 3, null, null, null, permissions[Permissions.Role.Read]) },
                 { "Notification", new MenuLink(menu, "Notiser", "List", "Notification", "Notification", 4, null, null, null, permissions[Permissions.Notification.Read]) },
                 { "Area51",       new MenuLink(menu, "Area51", "Index", "Home", "Area51", 5, null, null, null, permissions[Permissions.Area51.Read]) },

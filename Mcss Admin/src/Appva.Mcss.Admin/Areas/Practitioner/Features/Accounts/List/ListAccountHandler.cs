@@ -59,6 +59,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IAccountService accounts;
 
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>.
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filtering;
+
         #endregion
 
         #region Constructor.
@@ -78,7 +83,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IIdentityService identities,
             ITaxonomyService taxonomies,
             IRoleService roles,
-            IAccountService accounts)
+            IAccountService accounts,
+            ITaxonFilterSessionHandler filtering)
         {
             this.cache = cache;
             this.settings = settings;
@@ -86,6 +92,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.taxonomies = taxonomies;
             this.roles = roles;
             this.accounts = accounts;
+            this.filtering = filtering;
         }
 
         #endregion
@@ -108,7 +115,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     IsFilterByCreatedByEnabled = message.filterByCreatedBy.GetValueOrDefault(false),
                     DelegationFilterId = message.DelegationFilterId,
                     RoleFilterId = message.RoleFilterId,
-                    OrganisationFilterId = this.cache.Find<Guid>("Taxon.Default.Cache"),
+                    OrganisationFilterId = this.filtering.GetCurrentFilter().Id,
                     CurrentUserId = this.identities.PrincipalId,
                     SearchQuery = message.q
                 },

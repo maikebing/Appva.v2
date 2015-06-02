@@ -387,7 +387,7 @@
             @Html.Action("TaxonFilter", "Taxa", new { Area = string.Empty })
         </div>
         <div id="header" class="cf">
-            <div id="logo"><img src="logo.png" alt="" /></div>
+            <div id="logo"><img src="@Url.Image("logo.png")" alt="" /></div>
             @Html.Partial("_LoginPartial")
             @Html.Partial("_MenuPartial")
         </div>

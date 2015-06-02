@@ -9,9 +9,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
+    using System.Linq;
     using System.Collections.Generic;
+    using Appva.Core.Resources;
     using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
+    using System.Web.Mvc;
 
     #endregion
 
@@ -27,6 +33,16 @@ using Appva.Mcss.Admin.Application.Services;
         /// </summary>
         private readonly IAccountService service;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/> implementation
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/> implementation
+        /// </summary>
+        private readonly IIdentityService identities;
+
         #endregion
 
         #region Constructor.
@@ -35,9 +51,11 @@ using Appva.Mcss.Admin.Application.Services;
         /// Initializes a new instance of the <see cref="UpdateRolesHandler"/> class.
         /// </summary>
         /// <param name="service"></param>
-        public UpdateRolesHandler(IAccountService service)
+        public UpdateRolesHandler(IPersistenceContext persistence, IAccountService service, IIdentityService identities)
         {
             this.service = service;
+            this.persistence = persistence;
+            this.identities = identities;
         }
 
         #endregion
@@ -47,16 +65,16 @@ using Appva.Mcss.Admin.Application.Services;
         /// <inheritdoc />
         public override UpdateRolesForm Handle(UpdateRoles message)
         {
-            /*
-             var account = this.Session.Get<Account>(id);
-            var query = this.Session.QueryOver<Role>().Where(x => x.Active)
+
+            var account = this.persistence.Get<Account>(message.Id);
+            var query = this.persistence.QueryOver<Role>().Where(x => x.IsActive)
                 .OrderBy(x => x.Weight).Asc.ThenBy(x => x.Name).Asc;
-            if (!User.IsInRole(RoleUtils.AppvaAccount))
+            if (! this.identities.IsInRole(RoleTypes.Appva))
             {
                 query.Where(x => x.IsVisible == true);
             }
             var roles = query.List();
-            return this.View(new AccountRolesViewModel
+            return new UpdateRolesForm
             {
                 Roles = roles.Select(x => new SelectListItem
                 {
@@ -65,10 +83,7 @@ using Appva.Mcss.Admin.Application.Services;
                     Selected = true
                 }).ToList(),
                 SelectedRoles = account.Roles.Select(x => x.Id.ToString()).ToArray()
-            });
-             */
-            //this.service.InActivate(this.accounts.Find(message.AccountId));
-            return null;
+            };
         }
 
         #endregion

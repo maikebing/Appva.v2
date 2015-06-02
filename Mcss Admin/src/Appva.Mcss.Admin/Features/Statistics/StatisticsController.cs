@@ -61,30 +61,6 @@ namespace Appva.Mcss.Admin.Features.Statistics
         public ActionResult GetStatisicsData(StatisticsData request)
         {
             return this.JsonGet();
-            /*
-            var taxon = FilterCache.Get(Session);
-            Guid? taxonId = null;
-            if (taxon != null)
-            {
-                taxonId = taxon.Id;
-            }
-            var result = ExecuteCommand<ReportViewModel>(new CreateReportCommand<FullReportFilter>
-            {
-                StartDate = DateTimeExt.Now().AddDays(-7),
-                EndDate = DateTimeExt.Now(),
-                Filter = new FullReportFilter
-                {
-                    TaxonId = taxonId
-                }
-            });
-            return Json(new
-            {
-                TasksNotOnTime = result.TasksNotOnTime,
-                TasksOnTime = result.TasksOnTime,
-                ComparedDateSpanTasksOnTime = result.ComparedDateSpanTasksOnTime
-            },
-                JsonRequestBehavior.AllowGet
-            );*/
         }
 
         #endregion

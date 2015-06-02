@@ -59,6 +59,11 @@ using NHibernate.Transform;
         /// </summary>
         private readonly IPatientTransformer transformer;
 
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>.
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filtering;
+
         #endregion
 
         #region Constructor.
@@ -71,13 +76,14 @@ using NHibernate.Transform;
         /// <param name="settings">The <see cref="ILogService"/> implementation</param>
         public OverviewOrderHandler(
             IPatientService patientService, ITaskService taskService, ILogService logService, IPersistenceContext persistence,
-            IPatientTransformer transformer)
+            IPatientTransformer transformer, ITaxonFilterSessionHandler filtering)
         {
             this.patientService = patientService;
             this.taskService = taskService;
             this.logService = logService;
             this.persistence = persistence;
             this.transformer = transformer;
+            this.filtering = filtering;
         }
 
         #endregion
@@ -87,11 +93,7 @@ using NHibernate.Transform;
         /// <inheritdoc />
         public override OrderOverviewViewModel Handle(OverviewOrder message)
         {
-            Taxon filterTaxon = FilterCache.Get(this.persistence);
-            /*if (!FilterCache.HasCache())
-            {
-                filterTaxon = FilterCache.GetOrSet(Identity(), this.context);
-            }*/
+            var filterTaxon = this.filtering.GetCurrentFilter();
             var orders = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
                 .And(x => x.RefillInfo.Refill)

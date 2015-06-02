@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System.Linq.Expressions;
     using Appva.Common.Domain;
     using Appva.Core.Extensions;
+    using Appva.Core.Resources;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories.Contracts;
@@ -179,7 +180,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 Role role = null;
                 query.Left.JoinAlias(x => x.Roles, () => role)
-                    .Where(() => role.Id == model.RoleFilterId);
+                    .Where(() => role.Id == model.RoleFilterId)
+                    .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
+            }
+            else
+            {
+                Role role = null;
+                query.Left.JoinAlias(x => x.Roles, () => role)
+                    .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
             }
 
             if (model.OrganisationFilterId.HasValue && model.OrganisationFilterId.Value.IsNotEmpty())

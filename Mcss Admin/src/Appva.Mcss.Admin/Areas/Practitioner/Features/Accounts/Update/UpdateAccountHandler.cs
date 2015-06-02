@@ -58,7 +58,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region RequestHandler overrides
+        #region RequestHandler overrides.
+
         public override UpdateAccount Handle(Identity<UpdateAccount> message)
         {
             Account account = this.accounts.Find(message.Id);

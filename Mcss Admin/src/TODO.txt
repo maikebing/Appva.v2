@@ -36,6 +36,15 @@ ADMIN
 		[2015-05-26 17:53:33] Richard  Sachade Henriksson: eftersom de har las
 		[2015-05-26 17:54:00] Richard  Sachade Henriksson: likaså behöver inte omsorgspersonal hos viser få mail alls
 		[2015-05-26 17:54:11] Richard  Sachade Henriksson: eftersom den bara innehåller pin-kod
+
+1. Utlöpande delegeringar pa oversikt visar med gomda roller
+2. Nya roller blir fel da inga machine name satts, if (account.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.Developer)).Count() != 0 && user.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.AdminPrefix)).Count() == 0)
+3. lankar i oversikt.
+4. Mer permissions - knowledge test, etc.
+5. date time i delegation ar konstig
+6. full report / behovs for andra reports
+7. ta bort patient has alert / rakna ut istallet for att titta pa det som schedulern satter
+
 TESTS
 1. [ ] ITenantIdentityStrategy
 2. [ ] 

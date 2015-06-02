@@ -9,23 +9,31 @@ namespace Appva.Mcss.Admin.Controllers
     #region Imports.
 
     using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Appva.Mcss.Admin.Application.Services.Settings;
-using Appva.Mcss.Admin.Models;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services.Menus;
+    using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Models;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [Authorize]
     [RouteArea("dashboard")]
     public sealed class DashboardController : Controller
     {
         #region Variables.
 
         private readonly ISettingsService service;
+
+        private readonly IIdentityService identites;
+
+        private readonly IMenuService menuService;
 
         #endregion
 
@@ -34,9 +42,11 @@ using Appva.Mcss.Admin.Models;
         /// <summary>
         /// Initializes a new instance of the <see cref="DashboardController"/> class.
         /// </summary>
-        public DashboardController(ISettingsService service)
+        public DashboardController(ISettingsService service, IIdentityService identites, IMenuService menuService)
         {
             this.service = service;
+            this.identites = identites;
+            this.menuService = menuService;
         }
 
         #endregion
@@ -53,6 +63,25 @@ using Appva.Mcss.Admin.Models;
         [Route]
         public ActionResult Index()
         {
+            if (! this.identites.HasPermission(Permissions.Dashboard.Read.Value))
+            {
+                var menuLinks = this.menuService.Render("https://schema.appva.se/ui/menu", "Index", "Dashboard", "Dashboard");
+                if (menuLinks.Count > 0)
+                {
+                    var menuLink = menuLinks.First();
+                    return this.RedirectToAction(menuLink.Action, menuLink.Controller, new
+                    {
+                        Area = menuLink.Area
+                    });
+                }
+                else
+                {
+                    return this.RedirectToAction("SignIn", "Authentication", new
+                    {
+                        Area = string.Empty
+                    });
+                }
+            }
             return View(new HomeViewModel
                 {
                     HasCalendarOverview = this.service.HasCalendarOverview(),

@@ -3,7 +3,7 @@
 <div id="main" class="status-view">
     <div id="content" class="cf">
         <div id="status-filter" class="cf">
-            @Html.ActionLink("Fullständig rapport", "Index", "Report", new { }, new { @class = "btn" })
+            @Html.ActionLink("Fullständig rapport ...", "FullReport", "Report", new { Area = "Report" }, new { @class = "btn" })
         </div>
         @if (TempData["Message"] != null) {
             <div class="success-msg" style="margin: 0 20px 20px;">
@@ -15,7 +15,7 @@
             @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Inventory", widgetArea = "Patient", header = "Kontrollräkning narkotika" }); }
             <div class="panel">
                 <div class="heading cf">
-                    @Html.ActionLink("Fullständig rapport ...", "Index", "Report", new { }, new { })
+                    @Html.ActionLink("Fullständig rapport ...", "FullReport", "Report", new { Area = "Report" }, new { })
                     <h2>Totalt resultat senaste veckan</h2>
                 </div>
                 <div id="report" class="cf">

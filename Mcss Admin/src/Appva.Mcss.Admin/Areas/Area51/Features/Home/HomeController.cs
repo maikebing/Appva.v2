@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Home
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [Authorize]
     [RouteArea("area51"), RoutePrefix("")]
     public sealed class HomeController : Controller
     {

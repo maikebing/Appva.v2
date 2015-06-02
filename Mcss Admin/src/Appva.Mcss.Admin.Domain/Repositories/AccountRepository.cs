@@ -171,7 +171,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 Expression<Func<Account, object>> expression = x => x.FullName;
                 if (model.SearchQuery.First(2).Is(char.IsNumber))
                 {
-                    expression = x => x.PersonalIdentityNumber;
+                    expression = x => x.PersonalIdentityNumber.Value;
                 }
                 query.Where(Restrictions.On<Account>(expression).IsLike(model.SearchQuery, MatchMode.Anywhere))
                     .OrderBy(x => x.LastName);

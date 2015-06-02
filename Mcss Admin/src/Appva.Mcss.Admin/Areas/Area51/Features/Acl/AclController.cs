@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Controllers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [Authorize]
     [RouteArea("area51"), RoutePrefix("acl")]
     public sealed class AclController : Controller
     {

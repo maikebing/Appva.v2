@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [Authorize]
     [RouteArea("patient"), RoutePrefix("{id:guid}/order")]
     public sealed class OrderController : Controller
     {

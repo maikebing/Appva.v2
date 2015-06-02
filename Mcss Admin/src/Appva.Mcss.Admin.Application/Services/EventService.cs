@@ -340,11 +340,13 @@ namespace Appva.Mcss.Admin.Application.Services
 
             if (schedule.IsNull())
             {
-                schedule = new Schedule()
+                var scheduleID = this.context.Save<Schedule>(new Schedule()
                 {
                     Patient = patient,
                     ScheduleSettings = this.context.Get<ScheduleSettings>(scheduleSettingsId)
-                };
+                });
+
+                schedule = this.context.Get<Schedule>(scheduleID);
             }
             if (isAllDay)
             {

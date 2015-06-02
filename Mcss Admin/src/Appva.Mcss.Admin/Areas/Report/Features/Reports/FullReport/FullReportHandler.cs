@@ -63,6 +63,8 @@ namespace Appva.Mcss.Admin.Areas.Models
             }
             return new FullReportModel
             {
+                StartDate = message.Start.GetValueOrDefault(),
+                EndDate = message.End.GetValueOrDefault(),
                 Tasks = tasks.List(),
                 Report = reports.GetReportData(new ChartDataFilter { StartDate = message.Start.GetValueOrDefault(), EndDate = message.End.GetValueOrDefault() })
             };

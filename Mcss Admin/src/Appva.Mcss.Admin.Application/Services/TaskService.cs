@@ -139,6 +139,14 @@ namespace Appva.Mcss.Admin.Application.Services
             //LogService.Info(string.Format("Användare {0} kvitterade alla försenade insatser för {1} ({2}).", account.UserName, patient.FullName, patient.Id), account, patient, LogType.Write);
         }
 
+        public PageableSet<Task> List()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
+
+
+        
     }
 }

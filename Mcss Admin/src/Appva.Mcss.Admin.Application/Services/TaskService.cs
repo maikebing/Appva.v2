@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using Appva.Repository;
 
     #endregion
 
@@ -33,6 +34,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="patient"></param>
         /// <param name="isDelayedHandled"></param>
         IList<Task> FindDelaysByPatient(Patient patient, bool isDelayHandled, List<ScheduleSettings> list);
+
+        /// <summary>
+        /// Lists tasks by given criterias
+        /// </summary>
+        /// <returns>A <see cref="PageableSet"/> of Tasks</returns>
+        PageableSet<Task> List();
 
         /// <summary>
         /// Updates the task status.
@@ -132,6 +139,14 @@ namespace Appva.Mcss.Admin.Application.Services
             //LogService.Info(string.Format("Användare {0} kvitterade alla försenade insatser för {1} ({2}).", account.UserName, patient.FullName, patient.Id), account, patient, LogType.Write);
         }
 
+        public PageableSet<Task> List()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
+
+
+        
     }
 }

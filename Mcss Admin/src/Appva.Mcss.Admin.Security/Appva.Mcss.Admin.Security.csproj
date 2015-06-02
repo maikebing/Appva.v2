@@ -53,6 +53,10 @@
       <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
       <Name>Appva.Caching</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Common\Appva.Common.csproj">
+      <Project>{4b12b272-329e-42da-b8c9-bc49d9544766}</Project>
+      <Name>Appva.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Core\Appva.Core.csproj">
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>

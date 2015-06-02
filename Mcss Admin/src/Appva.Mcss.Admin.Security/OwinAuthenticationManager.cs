@@ -36,7 +36,7 @@ namespace Appva.Mcss.Admin.Security
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public abstract class OwinAuthenticationManager : IOwinAuthentication
+    public abstract class OwinAuthenticationManager
     {
         #region Constructor.
 

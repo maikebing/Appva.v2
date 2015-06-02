@@ -38,6 +38,7 @@ using Appva.Tenant.Identity;
     /// <summary>
     /// The delegation controller.
     /// </summary>
+    [Authorize]
     [RouteArea("Practitioner"), RoutePrefix("Delegation")]
     public sealed class DelegationController : Controller
     {

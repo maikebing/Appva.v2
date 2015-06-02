@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Settings
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [Authorize]
     [RouteArea("area51"), RoutePrefix("settings")]
     public sealed class SettingsController : Controller
     {

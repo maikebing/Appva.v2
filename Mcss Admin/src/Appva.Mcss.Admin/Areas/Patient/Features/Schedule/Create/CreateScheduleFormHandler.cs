@@ -9,7 +9,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
@@ -39,6 +41,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identities;
+
         #endregion
 
         #region Constructor.
@@ -46,8 +53,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateScheduleFormHandler"/> class.
         /// </summary>
-        public CreateScheduleFormHandler(IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public CreateScheduleFormHandler(IPatientService patientService, IPatientTransformer transformer,
+            IPersistenceContext persistence, IIdentityService identities)
         {
+            this.identities = identities;
             this.patientService = patientService;
             this.transformer = transformer;
             this.persistence = persistence;

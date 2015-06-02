@@ -3,10 +3,6 @@
     <p>
         Inloggad som <strong>@User.Identity.Name</strong>
         @Html.ActionLink("Byt lösenord", "ChangePassword", "Accounts", new { Area = "Practitioner" }, null)
-        @using (Html.Post("SignOut", "Authentication", new { Area = string.Empty }, null, false))
-        {
-            <button class="btn" type="submit">Logga ut</button>
-        }
-        @*Html.ActionLink("Logga ut", "SignOut", "Authentication", new { }, new { @class = "btn" })*@
+        @Html.ActionLink("Logga ut", "SignOut", "Authentication", new { Area = string.Empty }, new { @class = "btn" })
     </p>
 </div>

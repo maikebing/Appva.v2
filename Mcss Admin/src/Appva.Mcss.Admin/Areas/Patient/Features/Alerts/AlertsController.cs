@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
     /// TODO: Add a descriptive summary to increase readability.
     /// <c>/patient/b9018260-c432-4aea-914c-a45300a72c71/alert/...</c>
     /// </summary>
+    [Authorize]
     [RouteArea("patient"), RoutePrefix("{id:guid}/alert")]
     public sealed class AlertsController : Controller
     {

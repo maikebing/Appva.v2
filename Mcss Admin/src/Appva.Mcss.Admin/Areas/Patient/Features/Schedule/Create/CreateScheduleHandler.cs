@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Linq;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
@@ -44,6 +45,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identities;
+
         #endregion
 
         #region Constructor.
@@ -51,11 +57,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateScheduleHandler"/> class.
         /// </summary>
-        public CreateScheduleHandler(IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public CreateScheduleHandler(IPatientService patientService, IPatientTransformer transformer,
+            IPersistenceContext persistence, IIdentityService identities)
         {
             this.patientService = patientService;
             this.transformer = transformer;
             this.persistence = persistence;
+            this.identities = identities;
         }
 
         #endregion
@@ -64,10 +72,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public override CreateScheduleForm Handle(CreateSchedule message)
         {
-            //var account = Identity();
-            //var roles = account.Roles;
+            var account = this.persistence.Get<Account>(this.identities.PrincipalId);
+            var roles = account.Roles;
             var list = new List<ScheduleSettings>();
-            /*foreach (var role in roles)
+            foreach (var role in roles)
             {
                 var ss = role.ScheduleSettings;
                 foreach (var schedule in ss)
@@ -77,7 +85,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         list.Add(schedule);
                     }
                 }
-            }*/
+            }
             var query = this.persistence.QueryOver<ScheduleSettings>()
                     .Where(s => s.ScheduleType == ScheduleType.Action)
                     .OrderBy(x => x.Name).Asc;

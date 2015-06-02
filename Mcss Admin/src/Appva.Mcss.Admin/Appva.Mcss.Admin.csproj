@@ -348,6 +348,10 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
+    <Compile Include="Areas\Report\Features\FullReport\FullReport.cs" />
+    <Compile Include="Areas\Report\Features\FullReport\FullReportHandler.cs" />
+    <Compile Include="Areas\Report\Features\FullReport\FullReportModel.cs" />
+    <Compile Include="Areas\Report\Features\ReportController.cs" />
     <Compile Include="Features\Statistics\Chart\StatisticsChartData.cs" />
     <Compile Include="Features\Statistics\Chart\StatisticsChartDataHandler.cs" />
     <Compile Include="Features\Statistics\StatisticsController.cs" />
@@ -718,7 +722,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Dashboard\Features\Shared\" />
-    <Folder Include="Areas\Report\Features\FullReport\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
   <ItemGroup>

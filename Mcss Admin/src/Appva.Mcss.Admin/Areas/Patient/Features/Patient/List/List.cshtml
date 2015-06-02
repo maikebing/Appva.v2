@@ -29,7 +29,14 @@
                     <h2>
                         @if (item.HasUnattendedTasks)
                         {
-                            @Html.ActionLink(Permissions.Alert.Read, item.FullName, "List", "Alerts", new { id = item.Id }, null)
+                            if (Html.HasPermissionFor(Permissions.Alert.Read))
+                            {
+                                @Html.ActionLink(Permissions.Alert.Read, item.FullName, "List", "Alerts", new { id = item.Id }, null)
+                            }
+                            else
+                            {
+                                @item.FullName
+                            }
                         }
                         else
                         {

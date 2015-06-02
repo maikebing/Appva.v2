@@ -140,7 +140,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// Returns the sign in form view.
         /// </summary>
         /// <returns>The sign in form</returns>
-        [HttpPost, Validate, Route("sign-out")]
+        [HttpGet, Route("sign-out")]
         public ActionResult SignOut()
         {
             this.authentication.SignOut();

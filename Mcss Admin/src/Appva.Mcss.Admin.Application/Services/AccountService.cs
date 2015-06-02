@@ -311,10 +311,9 @@ namespace Appva.Mcss.Admin.Application.Services
         public void ChangePassword(Account account, string newPassword)
         {
             var salt = EncryptionUtils.GenerateSalt(DateTime.Now);
-            var password = EncryptionUtils.Hash(newPassword, account.Salt);
+            var password = EncryptionUtils.Hash(newPassword, salt);
             account.ChangePassword(password, salt);
             this.repository.Update(account);
-            //// TODO: Should send a mail here with a confirmation that the password has changed.
         }
 
         public bool ForgotPassword(string emailAddress, PersonalIdentityNumber personalIdentityNumber)
@@ -328,7 +327,27 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 return false;
             }
-            return true;
+            if (AccountUtils.IsBackendAccount(account) || this.HasPermissions(account, Common.Permissions.Admin.Login.Value))
+            {
+                var salt = EncryptionUtils.GenerateSalt(DateTime.Now);
+                var password = EncryptionUtils.GeneratePassword();
+                account.Salt = salt;
+                account.AdminPassword = EncryptionUtils.Hash(password, salt);
+                account.LastPasswordChangedDate = null;
+                account.LockoutUntilDate = null;
+                account.FailedPasswordAttemptsCount = 0;
+                account.PasswordResetDate = DateTime.Now;
+                this.persitence.Session.SaveOrUpdate(account);
+                var mail = new MailMessage("noreply@appva.se", account.EmailAddress)
+                {
+                    Subject = "Nytt lösenord till Appva MCSS",
+                    Body = string.Format("<h3>Hej {0}!</h3><p>Ditt nya lösenord är {1}</p> <p>Har du ej begärt att få ett nytt lösenord var vänlig kontakta support@appva.se.</p>", account.UserName, password),
+                    IsBodyHtml = true
+                };
+                this.mailService.Send(mail);
+                return true;
+            }
+            return false;
         }
 
         /// <inheritdoc />

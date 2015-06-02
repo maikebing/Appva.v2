@@ -9,14 +9,17 @@ namespace Appva.Mcss.Admin.Features.Accounts
     #region Imports.
 
     using System;
-    using System.Web.Mvc;
-    using System.Web.UI;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Infrastructure.Models;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mvc;
+using System.Web.Mvc;
+using System.Web.UI;
+using Appva.Cqrs;
+using Appva.Mcss.Admin.Application.Common;
+using Appva.Mcss.Admin.Application.Security.Identity;
+using Appva.Mcss.Admin.Application.Services;
+using Appva.Mcss.Admin.Infrastructure;
+using Appva.Mcss.Admin.Infrastructure.Attributes;
+using Appva.Mcss.Admin.Infrastructure.Models;
+using Appva.Mcss.Admin.Models;
+using Appva.Mvc;
 
     #endregion
 
@@ -29,9 +32,19 @@ namespace Appva.Mcss.Admin.Features.Accounts
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IMediator"/> dispatcher.
+        /// The <see cref="IMediator"/>.
         /// </summary>
         private readonly IMediator mediator;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
 
         #endregion
 
@@ -40,9 +53,12 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountsController"/> class.
         /// </summary>
-        public AccountsController(IMediator mediator)
+        public AccountsController(IMediator mediator, IAccountService accountService,
+            IIdentityService identityService)
         {
             this.mediator = mediator;
+            this.accountService = accountService;
+            this.identityService = identityService;
         }
 
         #endregion
@@ -250,15 +266,13 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
-        
-
-        /*
         #region Change Password.
 
         /// <summary>
         /// Returns the change password view.
         /// </summary>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("change-password")]
         [HttpGet, Hydrate]
         public ActionResult ChangePassword()
         {
@@ -270,26 +284,26 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// </summary>
         /// <param name="model">The password model</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("change-password")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        public ActionResult ChangePassword(ChangePassword model)
         {
-            var account = Identity();
-            if (!account.HashedPassword.Equals(EncryptionUtils.Hash(model.CurrentPassword, account.Salt)))
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            if (! account.AdminPassword.Equals(EncryptionUtils.Hash(model.CurrentPassword, account.Salt)))
             {
                 ModelState.AddModelError("CurrentPassword", "Nuvarande lösenord stämmer ej.");
             }
             else
             {
-                AccountService.ChangePassword(account, model.NewPassword);
+                this.accountService.ChangePassword(account, model.NewPassword);
                 TempData["Message"] = "Ditt lösenord har ändrats.";
-                return this.RedirectToAction("Index", "Home");
+                return this.RedirectToAction("ChangePassword", "Accounts");
             }
-            return View(new ChangePasswordViewModel());
+            return View(model);
         }
 
         #endregion
         
-        */
         #endregion
     }
 }

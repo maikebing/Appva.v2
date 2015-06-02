@@ -58,6 +58,11 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         private readonly IMenuService menus;
 
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
         #endregion
 
         #region Constructor.
@@ -68,12 +73,14 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// <param name="tenants">The <see cref="ITenantService"/></param>
         /// <param name="siths">The <see cref="ISithsAuthentication"/></param>
         /// <param name="authentication">The <see cref="IFormsAuthentication"/></param>
-        public AuthenticationController(ITenantService tenants, ISithsAuthentication siths, IFormsAuthentication authentication, IMenuService menus)
+        public AuthenticationController(ITenantService tenants, ISithsAuthentication siths, IFormsAuthentication authentication, IMenuService menus,
+            IAccountService accountService)
         {
             this.tenants = tenants;
             this.siths = siths;
             this.authentication = authentication;
             this.menus = menus;
+            this.accountService = accountService;
         }
 
         #endregion
@@ -225,7 +232,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
         [AllowAnonymous, HttpPost, Validate, ValidateAntiForgeryToken, Route("forgot-password"), AlertSuccess("Ett nytt lösenord har skickats")]
         public ActionResult Forgot(ForgotPassword model)
         {
-            if (false)
+            if (this.accountService.ForgotPassword(model.Email, model.PersonalIdentityNumber))
             {
                 return this.RedirectToAction("SignIn", "Authentication");
             }

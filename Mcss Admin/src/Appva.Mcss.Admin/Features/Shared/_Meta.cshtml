@@ -5,12 +5,7 @@
 <meta http-equiv="Content-Language" content="@UICulture" />
 @if (@User.Identity.IsAuthenticated)
 {
-    <meta name="csrf-param" content="authenticity_token" />
-    <meta name="csrf-token" content="CkHDwkgH7rB0V/HlWjBu0iNeWggWiyw0uv3utTlSPqEWS2RSHFZfPbGeWo+bCskmoXDyVbucH6+lQW+pDyD0WQ==" />
-    <meta name="appvalytics-app-id" content="f7d412f9-6dfd-45d4-8db8-39f6ecfaaa04" />
     <meta name="appvalytics-user-id" content="@User.Identity.GetUserId()" />
     <meta name="appvalytics-username" content="@User.Identity.GetUserName()" />
-    <meta name="appvalytics-tracking-segment" content="user-agent, b:referrer, language, u:copy, cut, printscr, print, avg_time_on_page " />
-    <meta name="appvalytics-tracking-id" content="id" />
 }
 @RenderMeta()

@@ -16,10 +16,9 @@
         @using (Html.Post())
         {
             @Html.Alert(new {  @class = "success-msg" })
-            @Html.ValidationSummary(string.Empty, new { @class = "error-msg" })
             <h2>Glömt lösenord</h2>
             @Html.FormGroup(x => x.Email, "text").Label().TextBox().Build()
-            @Html.FormGroup(x => x.UniqueIdentifier, "text").Label().Password().Build()
+            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().Password().Build()
             <div class="submit">
                 @Html.Submit("Skicka")
                 @Html.ActionLink("Avbryt", "SignIn", "Authentication", null, new { @class = "cancel" })

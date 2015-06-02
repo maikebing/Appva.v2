@@ -11,7 +11,7 @@ namespace Appva.Mcss.Admin.Features.Authentication.Forgot
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using Appva.Mvc;
+    using Appva.Mcss.Admin.Domain.Entities;
     using DataAnnotationsExtensions;
 
     #endregion
@@ -37,10 +37,10 @@ namespace Appva.Mcss.Admin.Features.Authentication.Forgot
         /// The personal identity number.
         /// </summary>
         [Required(ErrorMessage = "Personnummer måste anges")]
-        [PersonalIdentityNumber(ErrorMessage = "Personnummer måste anges")]
+        [Appva.Mvc.PersonalIdentityNumber(ErrorMessage = "Personnummer måste anges")]
         [Display(Name = "Personnummer")]
-        [PlaceHolder("T.ex. 19010101-0001")]
-        public string PersonalIdentityNumber
+        [Appva.Mvc.PlaceHolder("T.ex. 19010101-0001")]
+        public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
             set;

@@ -11,6 +11,8 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
     using System.Web;
     using Appva.Core.Logging;
     using Appva.Tenant.Identity;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -33,7 +35,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// <inheritdoc />
         public bool TryIdentifyTenant(out ITenantIdentifier identifier)
         {
-            identifier = null;
+            /*identifier = null;
             var context = HttpContext.Current;
             try
             {
@@ -52,6 +54,35 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
             {
                 Log.Error(ex);
             }
+            return identifier != null;*/
+
+            identifier = null;
+            var context = HttpContext.Current;
+
+            try
+            {
+                if (context == null || context.Request == null)
+                {
+                    return false;
+                }
+                var certStr = HttpContext.Current.Request.Headers["Client-SerialNumber"];
+                byte[] bytes = new byte[certStr.Length * sizeof(char)];
+                System.Buffer.BlockCopy(certStr.ToCharArray(), 0, bytes, 0, bytes.Length);
+                var cert = new X509Certificate2(bytes);
+                var id = cert.SerialNumber.ToLower() ?? "";
+                List<string> key = new List<string>();
+                for (var i = 2; i <= id.Length; i = i + 2)
+                {
+                    key.Add(id.Substring(i - 2, 2));
+                }
+
+                identifier = new TenantIdentifier(string.Join("-", key.ToArray()));
+            }
+            catch (HttpException ex)
+            {
+                Log.Error(ex);
+            }
+
             return identifier != null;
         }
 

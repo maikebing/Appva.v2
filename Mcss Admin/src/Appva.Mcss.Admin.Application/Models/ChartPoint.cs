@@ -79,12 +79,12 @@ namespace Appva.Mcss.Admin.Application.Models
 
         public double OnTimePercentage
         {
-            get { return this.Total == 0 ? 0 : (this.OnTime/this.Total)*100; }
+            get { return this.Total == 0 ? 0 : Math.Round((this.OnTime/this.Total)*100,0); }
         }
 
         public double NotOnTimePercentage
         {
-            get { return this.Total == 0 ? 0 : (this.NotOnTime / this.Total) * 100; }
+            get { return this.Total == 0 ? 0 : Math.Round((this.NotOnTime / this.Total) * 100,0); }
         }
 
         #endregion

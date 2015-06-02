@@ -81,7 +81,8 @@
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
     <Compile Include="Models\Calendar.cs" />
-    <Compile Include="Models\ChartData.cs" />
+    <Compile Include="Models\ChartPoint.cs" />
+    <Compile Include="Models\ChartDataFilter.cs" />
     <Compile Include="Models\IReportingFilter.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuList.cs" />

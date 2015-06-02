@@ -37,6 +37,20 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="size"></param>
         /// <returns></returns>
         Report Create(IReportingFilter filter, DateTime? startDate, DateTime? endDate, int? page = 1, int? size = 30);
+
+        /// <summary>
+        /// Returns a list of <see cref="ChartPoint>"/> for a chart
+        /// </summary>
+        /// <param name="filter">The filter for the chart</param>
+        /// <returns>List of <see cref="ReportData"/></returns>
+        IList<ReportData> GetChartData(ChartDataFilter filter);
+
+        /// <summary>
+        /// Returns a list of <see cref="ChartPoint>"/> for a chart
+        /// </summary>
+        /// <param name="filter">The filter for the chart</param>
+        /// <returns>List of <see cref="ReportData"/></returns>
+        ReportData GetReportData(ChartDataFilter filter);
     }
 
     /// <summary>
@@ -103,6 +117,82 @@ namespace Appva.Mcss.Admin.Application.Services
             };
         }
 
+        /// <inheritdoc />
+        public IList<ReportData> GetChartData(ChartDataFilter filter)
+        {
+            var query = NewQueryAndFilter(filter);
+
+            ReportData point = null;
+
+            /// Select the points
+            query.Select(
+                Projections.ProjectionList()
+                    .Add(
+                        Projections.GroupProperty(
+                            Projections.SqlFunction(
+                                "date", 
+                                NHibernateUtil.DateTime, 
+                                Projections.Property<Task>(x => x.Scheduled)))
+                        .WithAlias(() => point.Date))
+                    .Add(
+                        Projections.Count<Task>(x => x.Id)
+                            .WithAlias(() => point.Total))
+                    .Add(
+                        Projections.Sum(
+                            Projections.Conditional(
+                                Restrictions.Eq(Projections.Property<Task>(x => x.Delayed), true), 
+                                Projections.Constant(1), 
+                                Projections.Constant(0)))
+                            .WithAlias(() => point.NotOnTime))
+                    .Add(
+                        Projections.Sum(
+                            Projections.Conditional(
+                                Restrictions.Eq(Projections.Property<Task>(x => x.Delayed), false), 
+                                Projections.Constant(1), 
+                                Projections.Constant(0)))
+                            .WithAlias(() => point.OnTime)));
+
+            /// Ordering and transforming
+            query.OrderByAlias(() => point.Date).Asc
+                .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<ReportData>());
+
+            return query.List<ReportData>();
+        }
+
+        /// <inheritdoc />
+        public ReportData GetReportData(ChartDataFilter filter)
+        {
+            var query = NewQueryAndFilter(filter);
+
+            ReportData point = null;
+
+            /// Select the points
+            query.Select(
+                Projections.ProjectionList()
+                    .Add(
+                        Projections.Count<Task>(x => x.Id)
+                            .WithAlias(() => point.Total))
+                    .Add(
+                        Projections.Sum(
+                            Projections.Conditional(
+                                Restrictions.Eq(Projections.Property<Task>(x => x.Delayed), true),
+                                Projections.Constant(1),
+                                Projections.Constant(0)))
+                            .WithAlias(() => point.NotOnTime))
+                    .Add(
+                        Projections.Sum(
+                            Projections.Conditional(
+                                Restrictions.Eq(Projections.Property<Task>(x => x.Delayed), false),
+                                Projections.Constant(1),
+                                Projections.Constant(0)))
+                            .WithAlias(() => point.OnTime)));
+
+            /// Transforming
+            query.TransformUsing(NHibernate.Transform.Transformers.AliasToBean<ReportData>());
+
+            return query.SingleOrDefault<ReportData>();
+        }
+
         #endregion
 
         #region Private Methods.
@@ -117,6 +207,40 @@ namespace Appva.Mcss.Admin.Application.Services
                 .Fetch(x => x.StatusTaxon).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer());
             filter.Filter(query);
+            return query;
+        }
+
+        private IQueryOver<Task, Task> NewQueryAndFilter(ChartDataFilter filter)
+        {
+            var query = this.persistence.QueryOver<Task>()
+                .Where(x => x.OnNeedBasis == false)
+                .And(x => x.IsActive == true)
+                .And(x => x.Scheduled >= filter.StartDate.Date)
+                .And(x => x.Scheduled <= filter.EndDate.LastInstantOfDay());
+
+            //// Optional filters
+            if (!filter.Organisation.GetValueOrDefault().IsEmpty())
+            {
+                query.JoinQueryOver<Taxon>(x => x.Taxon)
+                    .Where(Restrictions.Like(Projections.Property<Taxon>(x => x.Path), filter.Organisation.GetValueOrDefault().ToString(), MatchMode.Anywhere));
+            }
+            if (!filter.Patient.GetValueOrDefault().IsEmpty())
+            {
+                query.JoinQueryOver<Patient>(x => x.Patient)
+                    .Where(x => x.Id == filter.Patient.GetValueOrDefault());
+            }
+            if (!filter.Account.GetValueOrDefault().IsEmpty())
+            {
+                query.JoinQueryOver<Account>(x => x.CompletedBy)
+                    .Where(x => x.Id == filter.Account.GetValueOrDefault());
+            }
+            if (!filter.ScheduleSetting.GetValueOrDefault().IsEmpty())
+            {
+                query.JoinQueryOver<Schedule>(x => x.Schedule)
+                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                        .Where(x => x.Id == filter.ScheduleSetting.GetValueOrDefault());
+            }
+
             return query;
         }
 

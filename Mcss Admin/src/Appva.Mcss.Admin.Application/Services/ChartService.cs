@@ -38,7 +38,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public sealed class ChartService : IChartService
     {
-        #region Variables.
+        /*#region Variables.
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -141,7 +141,11 @@ namespace Appva.Mcss.Admin.Application.Services
                 }
             }
         }
-
-        #endregion
+        
+        #endregion*/
+        public IList<object[]> Create(IReportingFilter filter, DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

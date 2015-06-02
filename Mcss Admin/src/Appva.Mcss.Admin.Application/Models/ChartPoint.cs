@@ -17,22 +17,41 @@ namespace Appva.Mcss.Admin.Application.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ChartData
+    public class ReportData
     {
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartData"/> class.
         /// </summary>
-        public ChartData(double onTime, double notOnTime)
+        public ReportData()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChartData"/> class.
+        /// </summary>
+        public ReportData(DateTime date, double onTime, double notOnTime)
         {
             this.OnTime = onTime;
             this.NotOnTime = notOnTime;
+            this.Date = date;
         }
 
         #endregion
 
         #region Properties.
+
+        /*public DateTime FromDate
+        {
+            get;
+            set;
+        }*/
+
+        public DateTime Date
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// 
@@ -50,6 +69,22 @@ namespace Appva.Mcss.Admin.Application.Models
         {
             get;
             set;
+        }
+
+        public double Total
+        {
+            get;
+            set;
+        }
+
+        public double OnTimePercentage
+        {
+            get { return this.Total == 0 ? 0 : (this.OnTime/this.Total)*100; }
+        }
+
+        public double NotOnTimePercentage
+        {
+            get { return this.Total == 0 ? 0 : (this.NotOnTime / this.Total) * 100; }
         }
 
         #endregion

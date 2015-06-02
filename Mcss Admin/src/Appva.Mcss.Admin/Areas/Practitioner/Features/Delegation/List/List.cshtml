@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Web.ViewModels.DelegationListViewModel
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model Appva.Mcss.Web.ViewModels.DelegationListViewModel
 @{ ViewBag.Title = string.Format("Aktuella delegeringar, {0}", Model.Account.FullName); }
 
 <div id="main" class="delegate-view">    
@@ -6,17 +7,17 @@
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
     <div id="subheader" class="cf">
 		<h1>Aktuell delegering</h1>
-        @Html.ActionLink("Skriv ut delegeringsbeslut", "DelegationPrint", new { id = Model.Account.Id }, new { @class = "btn printp" })
-		@Html.ActionLink("Lägg till delegering", "Create", new { id = Model.Account.Id }, new { @class = "btn lb-link" })
+        @Html.ActionLink(Permissions.Delegation.Read, "Skriv ut delegeringsbeslut", "DelegationPrint", new { id = Model.Account.Id }, new { @class = "btn printp" })
+		@Html.ActionLink(Permissions.Delegation.Create, "Lägg till delegering", "Create", new { id = Model.Account.Id }, new { @class = "btn lb-link" })
 	</div>
     <div id="content">
 		<div id="content-primary">
             @foreach (var keyValue in Model.DelegationMap) {
 			    <div class="h cf">
                     <h2>@keyValue.Key</h2>
-                    @Html.ActionLink("Förnya samtliga delegeringar", "Update", 
+                    @Html.ActionLink(Permissions.Delegation.Update, "Förnya samtliga delegeringar", "Update", 
                         new { id = Model.Account.Id, taxonId = keyValue.Value[0].Taxon.Id }, new { @class = "btn lb-link" })
-                    @Html.ActionLink("Aktivera samtliga delegeringar", "ActivateAll",
+                    @Html.ActionLink(Permissions.Delegation.Update, "Aktivera samtliga delegeringar", "ActivateAll",
                         new { accountId = Model.Account.Id }, new { @class = "btn" })
                 </div>
 	            <div id="signed-events">
@@ -47,8 +48,14 @@
 						            <ul>
                                         @foreach (var patient in delegation.Patients) {
 							                <li>
-                                                @Html.ActionLink(patient.FullName,
-                                                     "List", "Schedule", new { id = patient.Id }, new { @class = "link" })
+                                                @if (Html.HasPermissionFor(Permissions.Schedule.Read))
+                                                {
+                                                    @Html.ActionLink(patient.FullName, "List", "Schedule", new { id = patient.Id, Area = "Patient" }, new { @class = "link" })
+                                                }
+                                                else
+                                                {
+                                                    @patient.FullName
+                                                }
                                             </li>
                                         }
 						            </ul>
@@ -61,16 +68,16 @@
                                     @String.Format("{0:yyyy-MM-dd}", delegation.StartDate) till @String.Format("{0:yyyy-MM-dd}", delegation.EndDate) <em>(@delegation.EndDate.Subtract(DateTime.Now).Days dagar kvar)</em>
                                 </td>
 					            <td class="btns">
-                                    @Html.ActionLink("Ändra", "Edit", new { Id = delegation.Id }, new { @class = "btn lb-link" })
+                                    @Html.ActionLink(Permissions.Delegation.Update, "Ändra", "Edit", new { Id = delegation.Id }, new { @class = "btn lb-link" })
                                     <!--<a class="btn btn-print" href="#">Skriv ut</a>-->
-                                    @Html.ActionLink("Ta bort", "Inactivate", new { Id = delegation.Id }, new { @class = "btn btn-del lb-link" })
+                                    @Html.ActionLink(Permissions.Delegation.Delete, "Ta bort", "Inactivate", new { Id = delegation.Id }, new { @class = "btn btn-del lb-link" })
                                 </td>
 				            </tr>
                             }
                         </tbody>
                     </table>
                     <div class="tests">
-                        @Html.ActionLink("Lägg till", "AddKnowledgeTest", new { id = Model.AccountId, taxonId = keyValue.Value.First().Taxon.Parent.Id }, new { @class = "btn lb-link" })
+                        @Html.ActionLink(Permissions.Delegation.Create, "Lägg till", "AddKnowledgeTest", new { id = Model.AccountId, taxonId = keyValue.Value.First().Taxon.Parent.Id }, new { @class = "btn lb-link" })
                         @if (Model.KnowledgeTestMap.ContainsKey(keyValue.Key)) {
                             var knowledgeTests = Model.KnowledgeTestMap[keyValue.Key];
                             <h3>Genomgångna kunskapstester</h3>
@@ -80,7 +87,7 @@
                                         <div class="test">
                                             @knowledgetest.Name <span class="date">@String.Format("{0:yyyy-MM-dd}", knowledgetest.CompletedDate)</span>
                                         </div>
-                                        @Html.ActionLink("Ta bort", "DeleteKnowledgeTest", new { id = Model.AccountId, knowledgeTestId = knowledgetest.Id }, new { @class = "btn btn-del" })
+                                        @Html.ActionLink(Permissions.Delegation.Delete, "Ta bort", "DeleteKnowledgeTest", new { id = Model.AccountId, knowledgeTestId = knowledgetest.Id }, new { @class = "btn btn-del" })
                                     </li>
                                 }
 					        </ul>

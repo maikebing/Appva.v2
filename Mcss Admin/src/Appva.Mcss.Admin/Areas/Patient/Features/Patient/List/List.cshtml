@@ -20,7 +20,7 @@
     <ul class="people">
         @foreach (var item in Model.Search.Items)
         {
-            <li class="cf @(item.HasUnattendedTasks ? "alarm" : "")">
+            <li class="cf @(item.HasUnattendedTasks ? Html.HasPermissionFor(Permissions.Alert.Read) ? "alarm" : "" : "")">
                 @if (! item.Active)
                 {
                     @Html.ActionLink(Permissions.Patient.Reactivate, "Aktivera", "Reactivate", new { Id = item.Id }, new { @class = "btn" })
@@ -31,7 +31,27 @@
                         {
                             if (Html.HasPermissionFor(Permissions.Alert.Read))
                             {
-                                @Html.ActionLink(Permissions.Alert.Read, item.FullName, "List", "Alerts", new { id = item.Id }, null)
+                                @Html.ActionLink(item.FullName, "List", "Alerts", new { id = item.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Schedule.Read))
+                            {
+                                @Html.ActionLink(item.FullName, "List", "Schedule", new { id = item.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Schedule.EventList))
+                            {
+                                @Html.ActionLink(item.FullName, "Sign", "Schedule", new { id = item.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Schedule.Report))
+                            {
+                                @Html.ActionLink(item.FullName, "ScheduleReport", "Schedule", new { id = item.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Calendar.Read))
+                            {
+                                @Html.ActionLink(item.FullName, "List", "Calendar", new { id = item.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Inventory.Read))
+                            {
+                                @Html.ActionLink(item.FullName, "List", "Inventory", new { id = item.Id }, null)
                             }
                             else
                             {

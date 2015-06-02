@@ -1,7 +1,7 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationPrintViewModel
 @{
     ViewBag.Title = "Delegeringsbeslut";
-    Layout = "~/Views/Shared/_PrintLayout.cshtml";
+    Layout = "~/Areas/Patient/Features/Shared/_PrintLayout.cshtml";
 }
 <div id="header" class="cf">
 	<h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
@@ -13,7 +13,7 @@
 		<tbody>
 			<tr>
 				<td>Namn<h2>@Model.Account.FullName</h2></td>
-				<td>Personnummer<h2>@Model.Account.UniqueIdentifier</h2></td>
+				<td>Personnummer<h2>@Model.Account.PersonalIdentityNumber</h2></td>
 				<td>Titel<h2>@Appva.Mcss.Web.TitleHelper.GetTitle(Model.Account.Roles)</h2></td>
 			</tr>
 		</tbody>

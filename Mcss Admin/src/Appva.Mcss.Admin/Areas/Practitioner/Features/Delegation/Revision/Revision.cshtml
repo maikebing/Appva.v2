@@ -34,7 +34,7 @@
 				<tbody>
                     @foreach (var changeset in Model.ChangeSets) {
 					    <tr>
-						    <td>@Html.ActionLink(string.Format("{0:yyyy-MM-dd}", changeset.Created), "Changeset", new { id = changeset.Id, accountId = Model.AccountId })</td>
+						    <td>@Html.ActionLink(string.Format("{0:yyyy-MM-dd}", changeset.CreatedAt), "Changeset", new { id = changeset.Id, accountId = Model.AccountId })</td>
 						    <td>@changeset.ModifiedBy.FullName</td>
 					    </tr>
                     }

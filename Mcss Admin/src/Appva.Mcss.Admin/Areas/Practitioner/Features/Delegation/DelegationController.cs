@@ -117,7 +117,7 @@ using Appva.Tenant.Identity;
         /// </summary>
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("list")]
+        [Route("list/{id:guid}")]
         public ActionResult List(Guid id)
         {
             var user = this.Identity();

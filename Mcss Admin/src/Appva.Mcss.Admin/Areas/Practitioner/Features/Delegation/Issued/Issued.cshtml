@@ -34,7 +34,7 @@
 				<tbody>
                     @foreach (var delegation in Model.Delegations) { 
                         <tr @(delegation.EndDate.Subtract(DateTime.Now).Days < 1 ? "class=alarm" : "") >
-                            <td>@String.Format("{0:yyyy-MM-dd}",delegation.Modified)</td>
+                            <td>@String.Format("{0:yyyy-MM-dd}",delegation.UpdatedAt)</td>
                             <td>@delegation.Name</td>
                             <td>@Html.ActionLink(delegation.Account.FullName, "List", new { id=delegation.Account.Id})</td>
                             <td>@(delegation.Pending ? "Ej aktiverad" : string.Format("Om {0} dagar", delegation.EndDate.Subtract(DateTime.Now).Days))</td>

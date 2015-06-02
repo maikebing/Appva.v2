@@ -16,30 +16,12 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class InactivateSequence : IRequest<DetailsSchedule>
+    public class InactivateSequence : Identity<DetailsSchedule>
     {
-        /// <summary>
-        /// The patient ID.
-        /// </summary>
-        public Guid Id
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// The sequence ID.
         /// </summary>
         public Guid SequenceId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The schedule ID.
-        /// </summary>
-        public Guid ScheduleId
         {
             get;
             set;

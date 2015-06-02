@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Models
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mvc;
     using DataAnnotationsExtensions;
@@ -60,9 +61,9 @@ namespace Appva.Mcss.Admin.Models
         /// The account personal identity number.
         /// </summary>
         [Required(ErrorMessage = "Personnummer måste fyllas i.")]
-        [RegularExpression(@"^(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][0-9])|(3[0-1])|([6-8][0-9])|(9[0-1]))-?[0-9pPtTfF][0-9]{3}$", ErrorMessage = "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001.")]
+        [Appva.Mvc.PersonalIdentityNumber(ErrorMessage = "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001.")]
         [DisplayName("Personnummer")]
-        public string PersonalIdentityNumber
+        public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
             set;
@@ -83,12 +84,23 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The device password.
         /// </summary>
-        [RequiredIf(Target = "PasswordFieldIsVisible", Value = true, ErrorMessage = "En kod måste fyllas i.")]
+        [RequiredIf(Target = "IsMobileDevicePasswordFieldVisible", Value = true, ErrorMessage = "En kod måste fyllas i.")]
         [StringLength(7, ErrorMessage = "Koden får högst innehålla 7 siffror.")]
         [DataType(DataType.Password)]
         [Numeric(ErrorMessage = "Koden får högst innehålla 7 siffror.")]
         [DisplayName("Kod för signering")]
         public string DevicePassword
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The role name, e.g. admin, nurse, etc.
+        /// </summary>
+        [Required(ErrorMessage = "En titel måste väljas.")]
+        [DisplayName("Titel")]
+        public String TitleRole
         {
             get;
             set;
@@ -117,6 +129,15 @@ namespace Appva.Mcss.Admin.Models
         /// The address taxons.
         /// </summary>
         public IEnumerable<TaxonViewModel> Taxons
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A set of roles/titles to choose from.
+        /// </summary>
+        public IEnumerable<SelectListItem> Titles
         {
             get;
             set;

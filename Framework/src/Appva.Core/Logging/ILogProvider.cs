@@ -32,7 +32,7 @@ namespace Appva.Core.Logging
         /// <summary>
         /// Returns the logger by name.
         /// </summary>
-        /// <param name="name">The <see cref="ILog"/> name</param>
+        /// <param name="name">Name of the logger</param>
         /// <returns>Returns the <see cref="ILog"/></returns>
         ILog GetLogger(string name);
     }

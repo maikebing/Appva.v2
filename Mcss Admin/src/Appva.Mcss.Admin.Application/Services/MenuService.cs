@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Core.Extensions;
+    using Appva.Core.Resources;
 
     #endregion
 
@@ -85,7 +86,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
         {
             if (! this.identity.IsAccessControlActiveForUser())
             {
-                return this.CreateDefault(key, action, controller);
+                return this.CreateMenuList(action, controller, area, this.CreateDefaultMenu());
             }
             if (this.cache.Find<IList<MenuItem>>(key) == null)
             {
@@ -214,85 +215,47 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
                 .ToList();
         }
 
-        private IMenuList<IMenuItem> CreateDefault(string key, string action, string controller)
+        /// <summary>
+        /// Creates default menu if access control is not enabled.
+        /// </summary>
+        /// <returns></returns>
+        private IList<MenuItem> CreateDefaultMenu()
         {
-            switch (key)
+            var items = new List<MenuItem>();
+            //// 1st menu items.
+            items.Add(new MenuItem(new Guid("7D2FD5DC-F3B1-4C23-80D8-A4A301313DA3"), "Översikt", "Index", "Dashboard", "Dashboard", false));
+            items.Add(new MenuItem(new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4"), "Boende", "List", "Patient", "Patient", false));
+            items.Add(new MenuItem(new Guid("593928BE-930F-4D5D-8981-A4A301313DA4"), "Medarbetare", "List", "Accounts", "Practitioner", false));
+            if (this.identity.IsInRole(RoleTypes.Appva))
             {
-                case "Admin.Header.Menu":
-                    return this.CreateDefaultHeaderMenu(action, controller);
-                case "Admin.Patient.Menu":
-                    return this.CreateDefaultPatientMenu(action, controller);
-                case "Admin.Account.Menu":
-                    return this.CreateDefaultAccountMenu(action, controller);
+                items.Add(new MenuItem(new Guid("7B302508-C610-4898-9594-A4A301313DA4"), "Roller och behörigheter", "List", "Roles", "Roles", false));
+                items.Add(new MenuItem(new Guid("EA9849DE-B18D-46C6-8CD9-A4A301313DA4"), "Notiser", "List", "Notification", "Notification", false));
+                items.Add(new MenuItem(new Guid("AD5B2F7C-071B-4590-8CBE-A4A301313DA4"), "Area51", "Index", "Home", "Area51", false));
             }
-            return new MenuList();
+            items.Add(new MenuItem(new Guid("BEA905BC-CEAE-4DA7-B0AD-A4A301313DA4"), "Skriv ut sidan", null, null, null, false, "supp", "print"));
+            //// 2nd menu items.
+            items.Add(new MenuItem(new Guid("B9DD1CC0-F34E-4833-9728-A4A301313DA4"), "Aktuella delegeringar", "List", "Delegation", "Practitioner", false, null, null, 0, new Guid("593928BE-930F-4D5D-8981-A4A301313DA4")));
+            items.Add(new MenuItem(new Guid("9EC649B2-55AB-47B2-8F16-A4A301313DA4"), "Alla mottagna delegeringar", "Revision", "Delegation", "Practitioner", false, null, null, 1, new Guid("593928BE-930F-4D5D-8981-A4A301313DA4")));
+
+            if (this.identity.IsInRole(RoleTypes.Nurse))
+            {
+                items.Add(new MenuItem(new Guid("D92CCDFC-83AD-4572-A8BC-A4A301313DA4"), "Utställda delegeringar", "Issued", "Delegation", "Practitioner", false, null, null, 2, new Guid("593928BE-930F-4D5D-8981-A4A301313DA4")));
+            }
+            items.Add(new MenuItem(new Guid("62233CBE-0287-4838-9C16-A4A301313DA4"), "Rapporter", "DelegationReport", "Delegation", "Practitioner", false, null, null, 3, new Guid("593928BE-930F-4D5D-8981-A4A301313DA4")));
+            //// 2nd menu items.
+            items.Add(new MenuItem(new Guid("20C161E1-0A4E-4BA0-AA2F-A4A301313DA4"), "Signeringslistor", "List", "Schedule", "Patient", false, null, null, 0, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
+            //// Dummy
+            items.Add(new MenuItem(new Guid("4695B0B9-485B-4044-8ECA-59603889456D"), "Dummy endast till för att kunna visa meny för signeringslist objekt", "Details", "Schedule", "Patient", false, null, null, 0, new Guid("20C161E1-0A4E-4BA0-AA2F-A4A301313DA4")));
+            //// Dummy
+            items.Add(new MenuItem(new Guid("6b7738da-a70d-4d7b-9f8c-a48301459200"), "Dummy endast till för att kunna visa meny för iordningstallande objekt", "Schema", "Prepare", "Patient", false, null, null, 0, new Guid("4695B0B9-485B-4044-8ECA-59603889456D")));
+            items.Add(new MenuItem(new Guid("4F4CBAFA-C618-415D-9375-A4A301313DA4"), "Signerade händelser", "Sign", "Schedule", "Patient", false, null, null, 1, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
+            items.Add(new MenuItem(new Guid("CC718004-8AE6-49AB-9342-A4A301313DA4"), "Larm", "List", "Alerts", "Patient", false, null, null, 2, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
+            items.Add(new MenuItem(new Guid("9285856A-3278-4D4C-B155-A4A301313DA4"), "Rapport", "ScheduleReport", "Schedule", "Patient", false, null, null, 3, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
+            items.Add(new MenuItem(new Guid("D78F3803-837B-4A56-8109-A4A301313DA4"), "Kalender", "List", "Calendar", "Patient", false, null, null, 4, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
+            items.Add(new MenuItem(new Guid("FB4CDF53-8C07-4F1F-9D6E-A4A301313DA4"), "Saldon", "List", "Inventory", "Patient", false, null, null, 5, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
+            return items;
         }
 
-        /// <summary>
-        /// Creates default menu for top header if access controll is not enabled.
-        /// TODO: This should be set in menu e.g. role on menu, then we can use the 
-        /// same implementation without adding defaults.
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="controller"></param>
-        /// <returns></returns>
-        private IMenuList<IMenuItem> CreateDefaultHeaderMenu(string action, string controller)
-        {
-            var retval = new MenuList
-                {
-                    new MenuItem(Guid.Empty, "Översikt", "Index", "Home", string.Empty, "Index" == action && "Home" == controller),
-                    new MenuItem(Guid.Empty, "Boende", "List", "Patient", string.Empty, "List" == action && "Patient" == controller),
-                    new MenuItem(Guid.Empty, "Medarbetare", "List", "Account", string.Empty, "List" == action && "Account" == controller)
-                };
-            if (this.identity.IsInRole("_AA"))
-            {
-                retval.Add(new MenuItem(Guid.Empty, "Notiser", "List", "Notification", string.Empty, "List" == action && "Notification" == controller));
-                retval.Add(new MenuItem(Guid.Empty, "Area51", "Index", "Area51", string.Empty, "Index" == action && "Area51" == controller));
-            }
-            retval.Add(new MenuItem(Guid.Empty, "Skriv ut sidan", "", "", string.Empty, "Index" == action && "Area51" == controller, "supp", "print"));
-            return retval;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="controller"></param>
-        /// <returns></returns>
-        private IMenuList<IMenuItem> CreateDefaultPatientMenu(string action, string controller)
-        {
-            return new MenuList
-                {
-                    new MenuItem(Guid.Empty, "Signeringslistor", "List", "Schedule", string.Empty, "List" == action && "Schedule" == controller),
-                    new MenuItem(Guid.Empty, "Signerade händelser", "Sign", "Schedule", string.Empty, "Sign" == action && "Schedule" == controller),
-                    new MenuItem(Guid.Empty, "Larm", "List", "Alert", string.Empty, "List" == action && "Alert" == controller),
-                    new MenuItem(Guid.Empty, "Rapport", "ScheduleReport", "Schedule", string.Empty, "ScheduleReport" == action && "Schedule" == controller),
-                    new MenuItem(Guid.Empty, "Kalender", "List", "Event", string.Empty, "List" == action && "Event" == controller),
-                    new MenuItem(Guid.Empty, "Saldon", "List", "Inventory", string.Empty, "List" == action && "Inventory" == controller),
-                };
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="controller"></param>
-        /// <returns></returns>
-        private IMenuList<IMenuItem> CreateDefaultAccountMenu(string action, string controller)
-        {
-            var retval = new MenuList
-            {
-                new MenuItem(Guid.Empty, "Aktuella delegeringar", "List", "Delegation", string.Empty, "List" == action && "Delegation" == controller),
-                new MenuItem(Guid.Empty, "Alla mottagna delegeringar", "Revision", "Delegation", string.Empty, "Revision" == action && "Delegation" == controller)
-            };
-            if (this.identity.IsInRole("_TITLE_N"))
-            {
-                retval.Add(new MenuItem(Guid.Empty, "Utställda delegeringar", "Issued", "Delegation", string.Empty, "Issued" == action && "Delegation" == controller));
-            }
-            retval.Add(new MenuItem(Guid.Empty, "Rapporter", "DelegationReport", "Delegation", string.Empty, "DelegationReport" == action && "Delegation" == controller));
-            return retval;
-        }
-        
         #endregion
     }
 }

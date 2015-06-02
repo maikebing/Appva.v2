@@ -2,9 +2,9 @@
 @using (Html.BeginForm("List", "Patient", FormMethod.Get, new { @id = "search" })) {
     <div>
         <label for="searchq">Sök boende:</label> 
-        <input type="text" id="searchq" name="q" data-autocomplete-url="@Url.Action("QuickSearch", "Patient", new { isActive = Model.IsActive, isDeceased = Model.IsDeceased })" placeholder="Namn eller personnummer ..." />
-        <input type="hidden" name="isActive" value="@Model.IsActive" />
-        <input type="hidden" name="isDeceased" value="@Model.IsDeceased" />
+        <input type="text" id="searchq" name="SearchQuery" data-autocomplete-url="@Url.Action("QuickSearch", "Patient", new { isActive = Model.IsActive, isDeceased = Model.IsDeceased })" placeholder="Namn eller personnummer ..." />
+        <input type="hidden" name="IsActive" value="@Model.IsActive" />
+        <input type="hidden" name="IsDeceased" value="@Model.IsDeceased" />
     </div>
 }
 <script type="text/javascript">

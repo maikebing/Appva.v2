@@ -629,7 +629,7 @@ namespace Appva.Core.Logging
         private static void LogJsonObject(this ILog logger, LogLevel logLevel, object obj)
         {
             Func<string> message;
-            if (obj.IsNull())
+            if (obj == null)
             {
                 message = string.Empty.AsFunc();
             }

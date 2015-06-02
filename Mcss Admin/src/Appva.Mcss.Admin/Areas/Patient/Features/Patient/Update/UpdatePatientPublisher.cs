@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IList<Taxon> assessments = null;
             if (selectedIds.Length > 0)
             {
-                this.taxonomyService.ListIn(selectedIds);
+                assessments = this.taxonomyService.ListIn(selectedIds);
             }
             Patient patient = null;
             if (! this.patientService.Update(message.Id, message.FirstName, message.LastName, message.PersonalIdentityNumber, message.Tag, message.IsDeceased, address, assessments, out patient))

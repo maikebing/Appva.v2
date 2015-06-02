@@ -34,15 +34,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="KnowledgeTest"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The knowledge test completed date.
         /// </summary>
         public virtual DateTime? CompletedDate

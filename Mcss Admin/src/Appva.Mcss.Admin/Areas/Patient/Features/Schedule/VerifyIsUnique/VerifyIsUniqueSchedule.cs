@@ -31,7 +31,7 @@ using Appva.Cqrs;
         /// <summary>
         /// The schedule setting ID.
         /// </summary>
-        public Guid ScheduleSettingId
+        public Guid ScheduleSetting
         {
             get;
             set;

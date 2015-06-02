@@ -74,15 +74,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="Setting"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// The Name.
         /// </summary>
         public virtual string Name

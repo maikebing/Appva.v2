@@ -88,8 +88,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var filterByNeedsBasis = message.FilterByNeedsBasis ?? false;
             var startDate = message.StartDate ?? DateTime.Now.FirstOfMonth();
             var endDate = message.EndDate ?? DateTime.Now.LastOfMonth().LastInstantOfDay();
-            
-
             if (message.Year.HasValue)
             {
                 startDate = new DateTime(message.Year.Value, 1, 1);
@@ -166,14 +164,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             };
         }
 
-        public
-            SearchViewModel<Task> Search(SearchTaskCommand message)
+        public SearchViewModel<Task> Search(SearchTaskCommand message)
         {
             var scheduleSetting = this.persistence.Get<ScheduleSettings>(message.ScheduleSettingsId);
             var query = this.persistence.QueryOver<Task>()
                 .Where(x => x.Patient.Id == message.PatientId)
-                //.And(x => x.Inventory.Increased == null) // why is this not working, uncommented because of error?
-                //.And(x => x.Inventory.RecalculatedLevel == null) // why is this not working, uncommented because of error?
+                .And(x => x.Inventory.Increased == null) //// FIXME: 1.6 won't need old inventory!
+                .And(x => x.Inventory.RecalculatedLevel == null) //// FIXME: 1.6 won't need old inventory!
                 .And(x => x.UpdatedAt <= message.EndDate)
                 .Fetch(x => x.StatusTaxon).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer());
@@ -195,7 +192,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     break;
                 case OrderTasksBy.Status:
                     Taxon st = null;
-                    query = query.OrderBy(x => x.Status).Asc.ThenBy(x => x.Scheduled).Desc;
                     query = query.Left.JoinAlias(x => x.StatusTaxon, () => st).OrderBy(() => st.Weight).Asc.ThenBy(x => x.Scheduled).Desc;
                     break;
                 case OrderTasksBy.Time:
@@ -207,17 +203,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 query.Where(x => x.UpdatedAt >= message.StartDate);
             }
-
             if (message.FilterByNeedsBasis)
             {
                 query.Where(x => x.OnNeedBasis == true);
             }
-
             if (message.FilterByAnomalies)
             {
                 query.Where(s => s.Status > 1 && s.Status < 5 || s.Delayed == true);
             }
-
             if (scheduleSetting.ScheduleType == ScheduleType.Calendar)
             {
                 query.Where(x => x.CanRaiseAlert);
@@ -226,6 +219,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             query.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                 .Where(x => x.Id == message.ScheduleSettingsId);
+
             var items = query.Skip((message.PageNumber - 1) * message.PageSize).Take(message.PageSize).Future().ToList();
             var totalCount = query.ToRowCountQuery().FutureValue<int>();
 

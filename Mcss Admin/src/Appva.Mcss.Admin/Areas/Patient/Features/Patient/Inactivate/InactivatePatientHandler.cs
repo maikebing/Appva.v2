@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class InactivatePatientHandler : RequestHandler<ReactivatePatient, bool>
+    internal sealed class InactivatePatientHandler : RequestHandler<InactivatePatient, bool>
     {
         #region Variables.
 
@@ -46,7 +46,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc /> 
-        public override bool Handle(ReactivatePatient message)
+        public override bool Handle(InactivatePatient message)
         {
             var patient = this.patientService.Get(message.Id);
             this.patientService.Inactivate(patient);
@@ -54,6 +54,5 @@ namespace Appva.Mcss.Admin.Models.Handlers
         }
 
         #endregion
-    
     }
 }

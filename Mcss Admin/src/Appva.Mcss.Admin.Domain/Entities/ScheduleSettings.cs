@@ -33,15 +33,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #region Properties.
 
-        /// <summary>
-        /// Whether or not the <see cref="ScheduleSettings"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
         public virtual string Name
         {
             get;

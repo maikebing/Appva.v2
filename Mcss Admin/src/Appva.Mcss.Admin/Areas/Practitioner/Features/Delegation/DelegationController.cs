@@ -1099,6 +1099,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// Returns the partial dashboard overview. 
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
+        [Route("overview")]
         public PartialViewResult Overview()
         {
             var taxon = FilterCache.Get(this.persistence);

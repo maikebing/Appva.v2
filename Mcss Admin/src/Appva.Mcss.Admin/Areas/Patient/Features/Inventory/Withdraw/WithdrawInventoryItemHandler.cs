@@ -90,7 +90,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Operation = "withdrawal",
                 InventoryId = inventory.Id,
                 InventoryName = inventory.Description,
-                ReturnUrl = message.returnUrl
+                ReturnUrl = message.ReturnUrl
             };
         }
 

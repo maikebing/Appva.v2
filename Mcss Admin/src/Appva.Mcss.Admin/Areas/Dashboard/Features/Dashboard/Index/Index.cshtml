@@ -42,12 +42,10 @@
             }
             @if (Model.HasCalendarOverview)
             {
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Event", widgetArea = "Patient", header = "Kalender de närmaste 7 dagarna" });
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Calendar", widgetArea = "Patient", header = "Kalender de närmaste 7 dagarna" });
             }
-            @*
-                Add correct area here
-            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Delegation", header = "Utlöpande delegeringar" }); }
-                *@
+            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Delegation", widgetArea = "Practitioner", header = "Utlöpande delegeringar" }); }
+                
         </div>
     </div>
     @* FIXME: This should be implemented

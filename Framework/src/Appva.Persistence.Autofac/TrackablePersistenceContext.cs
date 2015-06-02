@@ -69,7 +69,7 @@ namespace Appva.Persistence.Autofac
             try
             {
                 var request = HttpRequest.Current();
-                var isCommitable = request.IsNotGet() && request.IsWithoutExceptions() && request.IsValidModelState();
+                var isCommitable = /*request.IsNotGet() &&*/ request.IsWithoutExceptions() /*&& request.IsValidModelState()*/;
                 this.persistenceContext.Commit(isCommitable);
             } 
             finally

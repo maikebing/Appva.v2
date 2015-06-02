@@ -1,4 +1,5 @@
-﻿@model ListAlertModel
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model ListAlertModel
 @{
     Title("Larm");
 }
@@ -6,7 +7,7 @@
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
     <h1>Larm</h1>
-    @using (Html.BeginForm("List", "Alert", new { id = Model.Patient.Id }, FormMethod.Get)) {
+    @using (Html.Get("List", "Alert", new { id = Model.Patient.Id }, null)) {
         <p class="filter">
             <strong>Tid:</strong>
             @Html.DropDownList("year", Model.Years, "År")
@@ -14,10 +15,7 @@
             @Html.Submit("Visa")
         </p>
     }
-    @using(Html.Post("HandleAll", "Alerts", new { Id = Model.Patient.Id, Year = Model.Year, Month = Model.Month }, new { id = "handle-all" }, false))
-    {
-        <a class="btn alarm-stop-all" href="#" onclick="document.getElementById('handle-all').submit();">Kvittera alla larm</a>
-    }
+    @Html.ActionLink(Permissions.Alert.HandleAll, "Kvittera alla larm", "HandleAll", "Alerts", new { Id = Model.Patient.Id, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "btn alarm-stop-all" })
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
@@ -58,7 +56,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var Item in schedule.Value) {
+                                @foreach (var Item in Model.TaskCurrentMap[TimeOfDay.Key][schedule.Key]) {
 
                                     var interval = string.Empty;
                                     if (Item.RangeInMinutesAfter == Item.RangeInMinutesBefore) {
@@ -73,22 +71,27 @@
                                         <td>
                                             @if (!Item.IsCompleted) {
                                                 @:Har ej genomförts
-                                    }
+                                            }
                                             else {
                                                 @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.UpdatedAt))
                                                 @:, kl @String.Format("{0:HH:mm}", Item.UpdatedAt))
-                                    }
-                                        </td>
-                                        <td>
-                                            @if (Item.CompletedBy.IsNotNull()) {
-                                                @Html.ActionLink(Item.CompletedBy.FullName, "List", "Delegation", new { id = Item.CompletedBy.Id }, new { })
                                             }
                                         </td>
                                         <td>
-                                            @using(Html.Post("Handle", "Alerts", new { Id = Model.Patient.Id, TaskId = Item.Id, Year = Model.Year, Month = Model.Month }, new { Id = "task-" + Item.Id }, false))
+                                            @if (Item.CompletedBy.IsNotNull())
                                             {
-                                                <a class="btn alarm-stop" href="#" onclick="document.getElementById('task-@Item.Id').submit();">Kvittera larm</a>
+                                                if (Html.HasPermissionFor(Permissions.Delegation.Read))
+                                                {
+                                                    @Html.ActionLink(Permissions.Delegation.Read, Item.CompletedBy.FullName, "List", "Delegation", new { Id = Item.CompletedBy.Id, Area = "Practitioner" }, null)
+                                                }
+                                                else
+                                                {
+                                                    @Item.CompletedBy.FullName
+                                                }
                                             }
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink(Permissions.Alert.Handle, "Kvittera larm", "Handle", "Alerts", new { Id = Model.Patient.Id, TaskId = Item.Id, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "btn alarm-stop" })
                                         </td>
                                     </tr>
                                 }
@@ -120,8 +123,7 @@
                             bool Processed = true;
                             foreach (var schedule in Model.TaskEarlierMap[TimeOfDay.Key]) {
                                 var quittencedBy = new List<string>();
-                                foreach (var Item in schedule.Value)
-                                {
+                                foreach (var Item in Model.TaskEarlierMap[TimeOfDay.Key][schedule.Key]) {
                                     if (!Item.DelayHandled) {
                                         Processed = false;
                                     }
@@ -171,8 +173,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach (var Item in schedule.Value)
-                                                        {
+                                                        @foreach (var Item in Model.TaskEarlierMap[TimeOfDay.Key][schedule.Key]) {
 
                                                             var interval = string.Empty;
                                                             if (Item.RangeInMinutesAfter == Item.RangeInMinutesBefore) {
@@ -196,12 +197,26 @@
                                                                 </td>
                                                                 <td>
                                                                     @if (Item.CompletedBy.IsNotNull()) {
-                                                                        Html.ActionLink(Item.CompletedBy.FullName, "List", "Delegation", new { id = Item.CompletedBy.Id }, new { });
+                                                                        if (Html.HasPermissionFor(Permissions.Delegation.Read))
+                                                                        {
+                                                                            @Html.ActionLink(Permissions.Delegation.Read, Item.CompletedBy.FullName, "List", "Delegation", new { Id = Item.CompletedBy.Id, Area = "Practitioner" }, null)
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @Item.CompletedBy.FullName
+                                                                        }
                                                                     }
                                                                 </td>
                                                                 <td>
                                                                     @if (Item.DelayHandledBy.IsNotNull()) {
-                                                                        Html.ActionLink(Item.DelayHandledBy.FullName, "List", "Delegation", new { id = Item.DelayHandledBy.Id }, new { });
+                                                                        if (Html.HasPermissionFor(Permissions.Delegation.Read))
+                                                                        {
+                                                                            @Html.ActionLink(Permissions.Delegation.Read, Item.DelayHandledBy.FullName, "List", "Delegation", new { Id = Item.DelayHandledBy.Id, Area = "Practitioner" }, null)
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @Item.DelayHandledBy.FullName
+                                                                        }
                                                                     }
                                                                 </td>
                                                             </tr>

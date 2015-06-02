@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System.Linq.Expressions;
     using Appva.Common.Domain;
     using Appva.Core.Extensions;
+    using Appva.Core.Resources;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories.Contracts;
@@ -46,6 +47,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="username">The unique username</param>
         /// <returns>An <see cref="Account"/> if found, else null</returns>
         Account FindByUserName(string username);
+
+        /// <summary>
+        /// Locates a user account by its HSA ID. 
+        /// </summary>
+        /// <param name="hsaId">The unique HSA id</param>
+        /// <returns>An <see cref="Account"/> if found, else null</returns>
+        Account FindByHsaId(string hsaId);
 
         /// <summary>
         /// Search for accounts to given search-criteria
@@ -128,22 +136,35 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
+        public Account FindByHsaId(string hsaId)
+        {
+            var accounts = this.persistenceContext.QueryOver<Account>()
+                .Where(x => x.IsActive)
+                .And(x => x.IsPaused == false)
+                .And(x => x.HsaId == hsaId)
+                .List();
+            if (accounts.Count == 1)
+            {
+                return accounts[0];
+            }
+            //// FIXME: should throw exception if we have several!
+            return null;
+        }
+
+        /// <inheritdoc />
         public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
             //// Main query - As a view
             Account account = null;
             var query = this.persistenceContext.QueryOver<Account>(() => account);
-            if(model.IsFilterByIsActiveEnabled != null)
+            if (model.IsFilterByIsActiveEnabled != null)
             {
                 query.Where(x => x.IsActive == model.IsFilterByIsActiveEnabled);
             }
-            if(model.IsFilterByIsPausedEnabled != null)
+            if (model.IsFilterByIsPausedEnabled != null)
             {
                 query.Where(x => x.IsPaused == model.IsFilterByIsPausedEnabled);
-            }
-                
-                
-
+            } 
             //// Filter by search criterias
             if (model.SearchQuery.IsNotEmpty())
             {
@@ -159,7 +180,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 Role role = null;
                 query.Left.JoinAlias(x => x.Roles, () => role)
-                    .Where(() => role.Id == model.RoleFilterId);
+                    .Where(() => role.Id == model.RoleFilterId)
+                    .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
+            }
+            else
+            {
+                Role role = null;
+                query.Left.JoinAlias(x => x.Roles, () => role)
+                    .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
             }
 
             if (model.OrganisationFilterId.HasValue && model.OrganisationFilterId.Value.IsNotEmpty())

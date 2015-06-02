@@ -14,14 +14,14 @@
         </p>
         }
 	<a class="btn print" href="#">Skriv ut</a>
-   @Html.ActionLink("Exportera till Excel", "Excel", new { id = Model.Patient.Id, sId = Model.Schedule, startDate = Model.StartDate.ToShortDateString(), endDate = Model.EndDate.ToShortDateString() }, new { @class = "export" })
+   @Html.ActionLink("Exportera till Excel", "Excel", "Schedule", new { Id = Model.Patient.Id, ScheduleSettingsId = Model.Schedule, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "export" })
 
 </div>
 <div id="content" class="has-nav cf">
     <ul id="nav-sub">
         @if (Model.Schedules.IsNotNull()) {
             <li class="@(!Model.Schedule.HasValue ? "sel" : "")">
-                @Html.ActionLink("Alla", "ScheduleReport", new { id = Model.Patient.Id, startDate = Model.StartDate.ToShortDateString(), endDate = Model.EndDate.ToShortDateString() })
+                @Html.ActionLink("Alla", "ScheduleReport", new { Id = Model.Patient.Id, StartDate = Model.StartDate.ToShortDateString(), EndDate = Model.EndDate.ToShortDateString() })
             </li>
             foreach (var schedule in Model.Schedules) {
                 <li class="@(Model.Schedule.HasValue && Model.Schedule.Value.Equals(schedule.Id) ? "sel" : "")">

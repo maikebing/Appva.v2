@@ -18,17 +18,8 @@ using Appva.Cqrs;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class WithdrawInventoryItem : IRequest<InventoryTransactionItemViewModel>
+    public sealed class WithdrawInventoryItem : Identity<InventoryTransactionItemViewModel>
     {
-        /// <summary>
-        /// The patient ID.
-        /// </summary>
-        public Guid Id
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// The inventory ID.
         /// </summary>
@@ -41,7 +32,7 @@ using Appva.Cqrs;
         /// <summary>
         /// The return URL.
         /// </summary>
-        public string returnUrl
+        public string ReturnUrl
         {
             get;
             set;

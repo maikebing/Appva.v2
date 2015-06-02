@@ -18,15 +18,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PauseAccount : IRequest<bool>
+    public sealed class PauseAccount : Identity<bool>
     {
-        /// <summary>
-        /// The account ID.
-        /// </summary>
-        public Guid AccountId
-        {
-            get;
-            set;
-        }
     }
 }

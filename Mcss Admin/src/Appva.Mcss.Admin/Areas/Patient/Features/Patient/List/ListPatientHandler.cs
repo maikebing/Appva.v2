@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.handlers
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mcss.Web.Mappers;
     using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Application.Services;
 
     #endregion
 
@@ -32,12 +33,17 @@ namespace Appva.Mcss.Admin.Models.handlers
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPatientTransformer"/> dispatcher.
+        /// The <see cref="IPatientTransformer"/>.
         /// </summary>
         private readonly IPatientTransformer transformer;
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/> dispatcher.
+        /// The <see cref="ITaxonFilterSessionHandler"/>.
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filtering;
+
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
 
@@ -48,9 +54,10 @@ namespace Appva.Mcss.Admin.Models.handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListPatientHandler"/> class.
         /// </summary>
-        public ListPatientHandler(IPatientTransformer transformer, IPersistenceContext persistence)
+        public ListPatientHandler(IPatientTransformer transformer, ITaxonFilterSessionHandler filtering, IPersistenceContext persistence)
         {
             this.transformer = transformer;
+            this.filtering = filtering;
             this.persistence = persistence;
         }
 
@@ -67,9 +74,11 @@ namespace Appva.Mcss.Admin.Models.handlers
             var pageSize = 10;
             var pageIndex = message.Page ?? 1;
             var firstResult = (pageIndex - 1) * pageSize;
-            var query = this.persistence.QueryOver<Patient>()
-                .Where(x => x.IsActive == isActive)
-                .And(x => x.Deceased == isDeceased);
+            var query = this.persistence.QueryOver<Patient>().Where(x => x.IsActive == isActive);
+            if (isActive)
+            {
+                query.Where(x => x.Deceased == isDeceased);
+            }
             if (message.SearchQuery.IsNotEmpty()) {
                 Expression<Func<Patient, object>> expression = x => x.FullName;
                 if (message.SearchQuery.First(2).Is(Char.IsNumber)) {
@@ -78,8 +87,9 @@ namespace Appva.Mcss.Admin.Models.handlers
                 query.Where(Restrictions.On<Patient>(expression).IsLike(message.SearchQuery, MatchMode.Anywhere))
                     .OrderBy(x => x.LastName);
             }
-            if (FilterCache.HasCache()) {
-                var taxon = FilterCache.Get(this.persistence);
+            if (this.filtering.HasActiveFilter())
+            {
+                var taxon = this.filtering.GetCurrentFilter();
                 query.JoinQueryOver<Taxon>(x => x.Taxon)
                     .Where(Restrictions.On<Taxon>(x => x.Path)
                         .IsLike(taxon.Id.ToString(), MatchMode.Anywhere));
@@ -90,6 +100,8 @@ namespace Appva.Mcss.Admin.Models.handlers
             var totalCount = query.ToRowCountQuery().FutureValue<int>();
             return new ListPatientModel
             {
+                IsActive = isActive,
+                IsDeceased = isDeceased,
                 Search = new SearchViewModel<PatientViewModel>()
                     {
                         Items = this.transformer.ToPatientList(items),

@@ -84,10 +84,22 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListAlertModel Handle(ListAlert message)
         {
             var patient = this.patientService.Get(message.Id);
-            var changeMonth = message.Year.HasValue && !message.Month.HasValue;
-            var startDate = DateTime.Now.SetYear(message.Year).SetMonth(changeMonth, message.Month ?? 1).FirstOfMonth();
-            var endDate = DateTime.Now.SetYear(message.Year).SetMonth(changeMonth, message.Month ?? 12).LastOfMonth().LastInstantOfDay();
-
+            var startDate = message.StartDate ?? DateTime.Now.FirstOfMonth();
+            var endDate = message.EndDate ?? DateTime.Now.LastOfMonth();
+            if (message.Year.HasValue)
+            {
+                startDate = new DateTime(message.Year.Value, 1, 1);
+                endDate   = new DateTime(message.Year.Value, 12, 31);
+            }
+            if (message.Month.HasValue)
+            {
+                if (! message.Year.HasValue)
+                {
+                    message.Year = DateTime.Now.Year;
+                }
+                startDate = new DateTime(message.Year.Value, message.Month.Value, 1);
+                endDate = new DateTime(message.Year.Value, message.Month.Value, DateTime.DaysInMonth(message.Year.Value, message.Month.Value));
+            }
             var list = new List<ScheduleSettings>();
             /*
             var account = Identity();

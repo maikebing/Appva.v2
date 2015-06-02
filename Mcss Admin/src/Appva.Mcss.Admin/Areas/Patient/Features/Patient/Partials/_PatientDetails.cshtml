@@ -14,8 +14,8 @@
     	</h2>
     	<span class="pnr">@Model.UniqueIdentifier</span>
     </div>
-    @Html.PermissionLink(Permissions.PatientDelete, "Ta bort", "Inactivate", "Patient", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
-    @Html.PermissionLink(Permissions.PatientUpdate, "Ändra boendeuppgifter", "Update", "Patient", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Patient.Inactivate, "Ta bort", "Inactivate", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
+    @Html.ActionLink(Permissions.Patient.Update, "Ändra boendeuppgifter", "Update", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
     @if (Model.Address.IsNotNull())
     { 
         <div class="i">

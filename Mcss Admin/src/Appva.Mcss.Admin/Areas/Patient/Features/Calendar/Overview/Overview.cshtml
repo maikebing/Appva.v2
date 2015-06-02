@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Web.ViewModels.EventOverviewViewModel
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model Appva.Mcss.Web.ViewModels.EventOverviewViewModel
 <div>
     <div class="heading cf">
         <h2>Kalender de närmaste 7 dagarna</h2>
@@ -17,7 +18,16 @@
                 <tbody>
                     @foreach (var act in Model.Activities) { 
                         <tr>
-                            <td>@Html.ActionLink(act.Patient.FullName, "List", "Event", new { id = act.Patient.Id }, new { })</td>
+                            <td>
+                                @if (Html.HasPermissionFor(Permissions.Calendar.Read))
+                                {
+                                    @Html.ActionLink(Permissions.Calendar.Read, act.Patient.FullName, "List", "Calendar", new { Id = act.Patient.Id, Area = "Patient" }, new { })
+                                }
+                                else
+                                {
+                                    @act.Patient.FullName
+                                }
+                            </td>
                             <td><span class="act @String.Format("cal-cat{0}", (Model.Categories.FirstOrDefault(x => x.Value == act.Schedule.ScheduleSettings).Key % Model.CalendarColors)+1)">@act.Schedule.ScheduleSettings.Name</span></td>
                             <td @((act.Scheduled.Date - DateTime.Now.Date).Days < 0 ? "class=urgent" : "")><span>@((act.Scheduled.Date - DateTime.Now.Date).Days) dagar</span></td>
                             <td class="check"><input type="checkbox" name="@act.Scheduled" id="@act.Sequence.Id" class="cal-quittance" /></td>

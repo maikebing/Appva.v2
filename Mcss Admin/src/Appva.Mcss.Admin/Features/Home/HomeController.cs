@@ -55,17 +55,14 @@ namespace Appva.Mcss.Admin.Features.Home
         [HttpGet, Route]
         public ActionResult Index()
         {
-            this.mail.Send(MailMessage.CreateNew().Template("AuthenticationEmail").Model(new EmailAuthentication
+            /*this.mail.Send(MailMessage.CreateNew().Template("AuthenticationEmail").Model(new EmailAuthentication
             {
                 FullName = "johan sall larsson",
                 Password = "123"
             }).To("johansalllarsson@appva.se").Subject("Something").Build());
+            
+            */
             ViewData.Add("razor", "ok");
-            /*ViewData.Add("razor", MailMessage.CreateNew().Path("Features/Shared/EmailTemplates/AuthenticationEmail.cshtml").Model(new
-            {
-                Test = "johansalllarsson@appva.se"
-            }).To("johansalllarsson@appva.se").Subject("Something").Build().Body);*/
-
             return View();
         }
 

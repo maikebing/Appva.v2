@@ -4,7 +4,7 @@
     @using (Html.Post())
     {
         <div>
-            <h3 class="section-title">Ny boende</h3>
+            <h3 class="section-title">Ändra medarbetaruppgifter</h3>
             @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
@@ -13,7 +13,6 @@
             {
                 @Html.FormGroup(x => x.DevicePassword, "text").Label().TextBox().Validate().Build()
             }
-
             <div class="select selectgroup cf">
                 <strong>Adress:</strong>
                 @if (Model.Taxons.IsNotNull())

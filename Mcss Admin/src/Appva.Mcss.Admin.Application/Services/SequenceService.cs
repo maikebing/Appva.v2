@@ -118,6 +118,9 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             var sequence = new Sequence
             {
+                IsActive = true,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
                 Patient = patient,
                 StartDate = startDate,
                 EndDate = endDate,

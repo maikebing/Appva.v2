@@ -9,8 +9,10 @@
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
     <h1>Saldo händelser</h1>
-    @if (Model.Inventory != null) {
-        using (Html.BeginForm("List", "Inventory", FormMethod.Get)) {
+    @if (Model.Inventory != null) 
+    {
+        using (Html.BeginForm("List", "Inventory", FormMethod.Get)) 
+        {
             <p class="filter">
                 <strong>Tid:</strong>
                 @Html.Hidden("inventoryId", Model.Inventory.Id)
@@ -22,12 +24,15 @@
     }
 </div>
 <div id="content" class="@(Model.Inventory != null ? "has-nav report-view cf" : "")">
-    @if (Model.Inventory != null) {
-        if (Model.Inventories.Count > 0) {
+    @if (Model.Inventory != null) 
+    {
+        if (Model.Inventories.Count > 0) 
+        {
             <ul id="nav-sub">
-                @foreach (var inventory in Model.Inventories) {
+                @foreach (var inventory in Model.Inventories) 
+                {
                     <li class="@(inventory.Id.Equals(Model.Inventory.Id) ? "sel" : "")">
-                        @Html.ActionLink(inventory.Description, "List", new { id = Model.Patient.Id, inventoryId = inventory.Id })
+                        @Html.ActionLink(inventory.Description, "List", new { Id = Model.Patient.Id, InventoryId = inventory.Id })
                     </li>
                 }
             </ul>
@@ -38,9 +43,9 @@
                     <h2 class="heading">
                         Status för @Model.Inventory.Description
                         <span class="inventory-tools">
-                            @Html.ActionLink("Uttag", "Withdrawal", new { id = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
-                            @Html.ActionLink("Tillför mängd", "Add", new { id = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
-                            @Html.ActionLink("Kontrollräkna", "Recount", new { id = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
+                            @Html.ActionLink("Uttag", "Withdraw", new { Id = Model.Patient.Id, InventoryId = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
+                            @Html.ActionLink("Tillför mängd", "Add", new { Id = Model.Patient.Id, InventoryId = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
+                            @Html.ActionLink("Kontrollräkna", "Recount", new { Id = Model.Patient.Id, InventoryId = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
                         </span>
                     </h2>
 
@@ -87,36 +92,39 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.Transactions.IsNotNull()) {
-                                        foreach (var transaction in Model.Transactions) {
+                                    @if (Model.Transactions.IsNotNull()) 
+                                    {
+                                        foreach (var transaction in Model.Transactions) 
+                                        {
                                             var recountAlarm = false;
-                                            if (transaction.Operation == "recount") {
+                                            if (transaction.Operation == "recount") 
+                                            {
                                                 recountAlarm = transaction.Value != transaction.PreviousInventoryValue;
                                             }
                                             <tr @( recountAlarm ? "class=alarm" : "")>
                                                 <td>
-                                                    @if (Model.OperationTranslation.ContainsKey(transaction.Operation)) {
+                                                    @if (Model.OperationTranslation.ContainsKey(transaction.Operation)) 
+                                                    {
                                                         @Model.OperationTranslation[transaction.Operation]
                                                     }
-                                                    else {
+                                                    else 
+                                                    {
                                                         string.Format("Couldn't translate \"{0}\"", transaction.Operation);
                                                     }
                                                 </td>
-
-
-
                                                 <td>@transaction.Value</td>
                                                 <td>@transaction.CurrentInventoryValue</td>
-                                                @if (recountAlarm) {
+                                                @if (recountAlarm) 
+                                                {
                                                     <td>
                                                         <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
                                                         <strong>Avvikelse:</strong> Kontollräknat saldo stämmer ej
                                                     </td>
                                                 }
-                                                else {
+                                                else 
+                                                {
                                                     <td>@(transaction.Description != null || transaction.Description == "" ? transaction.Description : "-")</td>
                                                 }
-
                                                 <td>@TimeSpanDifference.ToShortDateTime(transaction.CreatedAt, "Idag", "Igår")</td>
                                                 <td>@transaction.Account.FullName</td>
                                             </tr>
@@ -124,15 +132,15 @@
                                     }
                                 </tbody>
                             </table>
-                            @if (Model.Transactions.IsNotNull()) {
+                            @if (Model.Transactions.IsNotNull()) 
+                            {
                                 @Html.Pager(Model.PageSize, Model.Page, Model.TotalTransactionCount).Options(o => o
                                         .DisplayTemplate("Pagination")
                                         .MaxNrOfPages(15)
                                         .AlwaysAddFirstPageNumber()
                                         .AddRouteValue("scheduleSettingsId", Model.Inventory.Id)
                                         .AddRouteValue("startDate", Model.StartDate)
-                                        .AddRouteValue("endDate", Model.EndDate)
-                                    )
+                                        .AddRouteValue("endDate", Model.EndDate))
                             }
                         </div>
                     }
@@ -140,12 +148,12 @@
             </div>
         </div>
     }
-    else {
+    else 
+    {
         <div id="content-primary">
             <div id="alarm-status">
                 <h2 class="ok">Den boende har inga saldon.</h2>
             </div>
         </div>
-            
     }
 </div>

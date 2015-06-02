@@ -21,6 +21,8 @@ namespace Appva.Mcss.Admin
     using Appva.Mcss.Admin.Configuration;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mvc.Messaging;
+    using Appva.Siths;
+    using Appva.Siths.Security;
     using Autofac;
     using Autofac.Integration.Mvc;
     using Microsoft.Owin;
@@ -72,17 +74,16 @@ namespace Appva.Mcss.Admin
             builder.RegisterType<Mediator>().As<IMediator>().InstancePerLifetimeScope();
             builder.RegisterType<MediatorDependencyResolver>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
+            //// SITHS
+            builder.Register<SithsClient>(x => new SithsClient(new AuthifyWtfTokenizer())).As<ISithsClient>().SingleInstance();
+
             //// Persistence registration
+            //// FIXME: This should be registered as IPersistenceExceptionHandler
             builder.RegisterType<DefaultExceptionHandler>().As<IExceptionHandler>();
 
             builder.RegisterModule(PersistenceModule.CreateNew());
-
-            //// Email
-            builder.Register(x => new TemplateServiceConfiguration
-            {
-                TemplateManager = new CshtmlTemplateManager("Features/Shared/EmailTemplates")
-            }).As<ITemplateServiceConfiguration>().SingleInstance();
-            builder.RegisterType<MailService>().As<IRazorMailService>().SingleInstance();
+            builder.RegisterModule(MessagingModule.CreateNew());
+            
             //// Cache per tenant?
             //// http://docs.autofac.org/en/latest/advanced/multitenant.html#resolve-tenant-specific-dependencies
             builder.RegisterModule(new AutofacWebTypesModule());

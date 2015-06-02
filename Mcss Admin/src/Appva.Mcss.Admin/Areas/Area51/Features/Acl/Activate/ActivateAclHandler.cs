@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ActivateAclHandler : NotificationHandler<ActivateAcl>
+    public sealed class ActivateAclHandler : RequestHandler<ActivateAcl, bool>
     {
         #region Variables.
 
@@ -40,16 +40,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region NotificationHandler<Activate> Overrides.
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override void Handle(ActivateAcl notification)
+        public override bool Handle(ActivateAcl message)
         {
-            if (settings.Find<bool>(ApplicationSettings.IsAccessControlInstalled, false))
+            if (! this.settings.IsAccessControlListInstalled())
             {
-                return;
+                return false;
             }
             this.settings.Upsert(ApplicationSettings.IsAccessControlActivated, true);
+            return true;
         }
 
         #endregion

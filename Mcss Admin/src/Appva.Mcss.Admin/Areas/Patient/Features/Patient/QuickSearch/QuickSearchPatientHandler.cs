@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using Appva.Mcss.Web.Controllers;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services;
 
     #endregion
 
@@ -36,6 +37,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IIdentityService identity;
 
         /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>.
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filtering;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
@@ -49,9 +55,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="identity">The <see cref="IIdentityService"/></param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
-        public QuickSearchPatientHandler(IIdentityService identity, IPersistenceContext persistence)
+        public QuickSearchPatientHandler(IIdentityService identity, ITaxonFilterSessionHandler filtering, IPersistenceContext persistence)
         {
             this.identity = identity;
+            this.filtering = filtering;
             this.persistence = persistence;
         }
 
@@ -69,17 +76,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var isActive = message.IsActive ?? true;
             var isDeceased = message.IsDeceased ?? false;
             var query = this.persistence.QueryOver<Patient>()
-                .Where(x => x.IsActive == isActive)
-                .And(x => x.Deceased == isDeceased);
+                .Where(x => x.IsActive == isActive);
+            if (isActive)
+            {
+                query.Where(x => x.Deceased == isDeceased);
+            }
             Expression<Func<Patient, object>> expression = x => x.FullName;
             if (message.Term.First(2).Is(Char.IsNumber))
             {
                 expression = x => x.PersonalIdentityNumber;
             }
-            if (FilterCache.HasCache())
+            if (this.filtering.HasActiveFilter())
             {
-                var user = this.persistence.Get<Account>(this.identity.PrincipalId);
-                var taxon = FilterCache.GetOrSet(user, this.persistence);
+                var taxon = this.filtering.GetCurrentFilter();
                 query.JoinQueryOver<Taxon>(x => x.Taxon)
                     .Where(Restrictions.On<Taxon>(x => x.Path)
                         .IsLike(taxon.Id.ToString(), MatchMode.Anywhere));

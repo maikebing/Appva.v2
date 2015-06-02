@@ -53,15 +53,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="Patient"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Second unique identifier for a patient - e.g. NFC-tag.
         /// </summary>
         public virtual string Identifier

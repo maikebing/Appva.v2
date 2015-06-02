@@ -110,7 +110,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public ITaxon Find(Guid id)
         {
-            throw new NotImplementedException();
+            return this.List(TaxonomicSchema.Organization)
+                .Where(x => x.Id == id).FirstOrDefault();
         }
 
         /// <inheritdoc />

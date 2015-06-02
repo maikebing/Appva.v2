@@ -34,15 +34,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="InventoryTransactionItem"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// The inventory
         /// </summary>
         public virtual Inventory Inventory

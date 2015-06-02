@@ -1,10 +1,12 @@
-﻿@model Appva.Mcss.Admin.Models.CreateAccountModel
-@{ ViewBag.Title = "Ny medarbetare"; }
+﻿@model CreateAccountModel
+@{ 
+    Title("Ny medarbetare"); 
+}
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AccountCreate" data-valparams="id=@((Model.AccountId.HasValue) ? Model.AccountId.Value.ToString() : "");uidUrl=@Url.Action("VerifyUniqueAccount");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
     @using (Html.Post())
     {
         <div>
-            <h3 class="section-title">Ny boende</h3>
+            <h3 class="section-title">Ny medarbetare</h3>
             @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
@@ -13,7 +15,11 @@
             {
                 @Html.FormGroup(x => x.DevicePassword, "text").Label().TextBox().Validate().Build()
             }
-           
+            <div class="select">
+                @Html.LabelFor(m => m.TitleRole)
+                @Html.DropDownListFor(m => m.TitleRole, new SelectList(Model.Titles, "Value", "Text", Model.TitleRole), "Välj titel ...")
+                @Html.ValidationMessageFor(m => m.TitleRole)
+	        </div>
             <div class="select selectgroup cf">
                 <strong>Adress:</strong>
                 @if (Model.Taxons.IsNotNull())

@@ -18,6 +18,20 @@ namespace Appva.Common.Domain
     /// <typeparam name="T">The entity type</typeparam>
     public abstract class Entity<T> : IEquatable<Entity<T>>, IEntity where T : class
     {
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventService"/> class.
+        /// </summary>
+        protected Entity()
+        {
+            this.CreatedAt = DateTime.Now;
+            this.UpdatedAt = DateTime.Now;
+            this.IsActive = true;
+        }
+
+        #endregion
+
         #region Properties.
 
         /// <summary>
@@ -35,7 +49,28 @@ namespace Appva.Common.Domain
         public virtual int Version
         {
             get;
-            protected set;
+            set;
+        }
+
+        /// <inheritdoc />
+        public virtual DateTime CreatedAt
+        {
+            get;
+            set;
+        }
+
+        /// <inheritdoc />
+        public virtual DateTime UpdatedAt
+        {
+            get;
+            set;
+        }
+
+        /// <inheritdoc />
+        public virtual bool IsActive
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -58,7 +93,7 @@ namespace Appva.Common.Domain
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (obj == null || this.GetType() != obj.GetType())
+            if (obj == null)
             {
                 return false;
             }

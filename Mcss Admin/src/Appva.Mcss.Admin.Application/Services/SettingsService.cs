@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Runtime.Caching;
     using Appva.Caching.Policies;
@@ -19,13 +20,37 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Persistence;
     using Newtonsoft.Json;
+    using Appva.Core.Extensions;
+    using System.Configuration;
 
     #endregion
 
     /// <summary>
+    /// Access Control List tenant settings.
+    /// </summary>
+    public interface IAccessControlListTenantSettings
+    {
+        /// <summary>
+        /// Returns whether or not access control list (ACL) is installed for the
+        /// current tenant.
+        /// </summary>
+        /// <returns>True, if ACL is installed; defaults to false</returns>
+        bool IsAccessControlListInstalled();
+
+        /// <summary>
+        /// Returns whether or not access control list (ACL) is activated for the
+        /// current tenant.
+        /// </summary>
+        /// <returns>True, if ACL is activated; defaults to false</returns>
+        bool IsAccessControlListActivated();
+    }
+
+    /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface ISettingsService : IService
+    public interface ISettingsService :
+        IAccessControlListTenantSettings,
+        IService
     {
         /// <summary>
         /// Returns the <c>Setting</c> by key.
@@ -49,15 +74,25 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="value">The value to be added</param>
         void Upsert<T>(ApplicationSettingIdentity<T> key, T value) where T : struct;
 
+        
+
         ///////// OLD !!!
 
         bool HasSeniorAlert();
         bool HasOrderRefill();
         bool HasPatientTag();
+        string GetSessionTimeout();
+        bool SignOutWhenReady();
+        string GetClientLoginMethod();
         int GetCalendarColorQuantity();
         Dictionary<string, object> GetCalendarSettings();
-
+        Dictionary<string, object> GetAccountSettings();
         bool HasCalendarOverview();
+        string CreateBackendAccountMailBody();
+        string CreateAccountMailBody();
+        bool DisplayAccountUsername();
+        string GetNotificationAdmin();
+        string GetAdminLogin();
     }
 
     /// <summary>
@@ -87,6 +122,11 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         private readonly ISettingsRepository repository;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>.
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
         #endregion
 
         #region Constructor.
@@ -96,9 +136,10 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/> instance to use</param>
         /// <param name="repository">The <see cref="ISettingsRepository"/> instance</param>
-        public SettingsService(IRuntimeMemoryCache cache, ISettingsRepository repository)
+        public SettingsService(IRuntimeMemoryCache cache, ISettingsRepository repository, IPersistenceContext persistence)
         {
             this.cache = cache;
+            this.persistence = persistence;
             this.repository = repository;
         }
 
@@ -143,107 +184,116 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         public bool HasSeniorAlert()
         {
-            try
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "IsActive" && x.Namespace == "MCSS.SeniorAlert").SingleOrDefault();
+            if (result != null)
             {
-                var setting = this.repository.Find("MCSS.SeniorAlert.IsActive");
-                if (setting != null)
-                {
-                    return JsonConvert.DeserializeObject<bool>(setting.Value);
-                }
-                //// Fallback in case there are other that uses this type.
-                //// var settings = Filter(x => x.Active && x.Name == "IsActive" && x.Namespace == "MCSS.SeniorAlert").List();
-                // if (settings.Count == 1)
-                // {
-                //    return JsonConvert.DeserializeObject<bool>(settings[0].Value);
-                // }
-            }
-            catch (Exception)
-            {
-                //// No op.
+                TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
+                return (bool)tc.ConvertFromString(result.Value);
             }
             return false;
         }
 
         public bool HasOrderRefill()
         {
-            try
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "IsActive" && x.Namespace == "MCSS.Features.OrderRefill").SingleOrDefault();
+            if (result != null)
             {
-                var setting = this.repository.Find("MCSS.Features.OrderRefill.IsActive");
-                if (setting != null)
-                {
-                    return JsonConvert.DeserializeObject<bool>(setting.Value);
-                }
-                //// Fallback in case there are other that uses this type.
-                // var settings = Filter(x => x.Active && x.Name == "IsActive" && x.Namespace == "MCSS.Features.OrderRefill").List();
-                // if (settings.Count == 1)
-                // {
-                //     return JsonConvert.DeserializeObject<bool>(settings[0].Value);
-                // }
-            }
-            catch (Exception)
-            {
-                //// No op.
+                TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
+                return (bool)tc.ConvertFromString(result.Value);
             }
             return false;
         }
 
         public bool HasPatientTag()
         {
-            try
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "PatientTag" && x.Namespace == "MCSS.Device.NFC").SingleOrDefault();
+            if (result != null)
             {
-                var setting = this.repository.Find("MCSS.Device.NFC.PatientTag");
-                if (setting != null)
-                {
-                    return JsonConvert.DeserializeObject<bool>(setting.Value);
-                }
-                //// Fallback in case there are other that uses this type.
-                // var settings = Filter(x => x.Active && x.Name == "PatientTag" && x.Namespace == "MCSS.Device.NFC").List();
-                // if (settings.Count == 1)
-                // {
-                //     return JsonConvert.DeserializeObject<bool>(settings[0].Value);
-                // }
+                TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
+                return (bool)tc.ConvertFromString(result.Value);
             }
-            catch (Exception)
-            {
-                //// No op.
-            }
+
             return false;
+        }
+
+        public string GetSessionTimeout()
+        {
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "SessionTimeout" && x.Namespace == "MCSS.Device.Authorization").SingleOrDefault();
+            if (result != null)
+            {
+                return result.Value;
+            }
+            return "30";
+        }
+
+        public bool SignOutWhenReady()
+        {
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "SignOutWhenReady" && x.Namespace == "MCSS.Device.Authorization").SingleOrDefault();
+            if (result != null)
+            {
+                TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
+                return (bool)tc.ConvertFromString(result.Value);
+            }
+            return true;
+        }
+
+        public string GetClientLoginMethod()
+        {
+            return this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "Tenant.Client.LoginMethod").SingleOrDefault().Value;
         }
 
         public int GetCalendarColorQuantity()
         {
-            try
-            {
-                var setting = this.repository.Find("Web.Calendar.NumberOfCategoryColors");
-                if (setting != null)
-                {
-                    return JsonConvert.DeserializeObject<int>(setting.Value);
-                }
-                //// Fallback in case there are other that uses this type.
-                // var settings = Filter(x => x.Active && x.Name == "Web.Calendar.NumberOfCategoryColors").List();
-                // if (settings.Count == 1)
-                // {
-                //    return JsonConvert.DeserializeObject<int>(settings[0].Value);
-                // }
-            }
-            catch (Exception)
-            {
-                //// No op.
-            }
-            return 9;
+            var colors = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "Web.Calendar.NumberOfCategoryColors").SingleOrDefault();
+            return colors.IsNull() ? 9 : Int32.Parse(colors.Value);
         }
 
         /// <summary>
-        /// A dictionary with all settings for calendar
+        /// A dictyonary with all settings for calendar
         /// </summary>
         /// <returns></returns>
         public Dictionary<string, object> GetCalendarSettings()
         {
             var result = new Dictionary<string, object>();
-            var settings = this.repository.FindByNamespace("MCSS.Calendar");
+            var settings = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Namespace == "MCSS.Calendar").List();
             foreach (var setting in settings)
             {
-                result.Add(setting.Name, JsonConvert.DeserializeObject(setting.Value, setting.Type));
+                TypeConverter tc = TypeDescriptor.GetConverter(setting.Type);
+                result.Add(setting.Name, tc.ConvertFromString(setting.Value));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// A dictyonary with all settings for Accounts
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, object> GetAccountSettings()
+        {
+            var result = new Dictionary<string, object>();
+            var settings = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Namespace == "MCSS.Core.Account").List();
+            foreach (var setting in settings)
+            {
+                TypeConverter tc = TypeDescriptor.GetConverter(setting.Type);
+                result.Add(setting.Name, tc.ConvertFromString(setting.Value));
             }
             return result;
         }
@@ -256,6 +306,72 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 return (bool)calendarSettings["HasOverview"];
             }
             return true;
+        }
+
+        public string CreateBackendAccountMailBody()
+        {
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "CreateBackendAccountMailBody" && x.Namespace == "MCSS.Core.Account").SingleOrDefault();
+            if (result.IsNotNull())
+            {
+                return result.Value;
+            }
+            return ConfigurationManager.AppSettings.Get("EmailCreateBackEndAccountBody");
+        }
+
+        public string CreateAccountMailBody()
+        {
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "CreateAccountMailBody" && x.Namespace == "MCSS.Core.Account").SingleOrDefault();
+            if (result.IsNotNull())
+            {
+                return result.Value;
+            }
+            return ConfigurationManager.AppSettings.Get("EmailCreateAccountBody");
+        }
+
+        public bool DisplayAccountUsername()
+        {
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "DisplayUsername" && x.Namespace == "MCSS.Core.Account").SingleOrDefault();
+
+            if (result.IsNotNull())
+            {
+                TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
+                return (bool)tc.ConvertFromString(result.Value);
+            }
+            return false;
+        }
+
+        public string GetNotificationAdmin()
+        {
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "AdministrationRole" && x.Namespace == "MCSS.Notifications").SingleOrDefault();
+
+            if (result.IsNotNull())
+            {
+                TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
+                return (string)tc.ConvertFromString(result.Value);
+            }
+            return "_AA";
+        }
+
+        public string GetAdminLogin()
+        {
+            var result = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Name == "AdminAuthorizationMethod" && x.Namespace == "MCSS.Secuity.Authorization").SingleOrDefault();
+
+            if (result.IsNotNull())
+            {
+                TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
+                return (string)tc.ConvertFromString(result.Value);
+            }
+            return "form";
         }
 
         #endregion
@@ -332,6 +448,22 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 Log.ErrorException("<SettingService> cache problem with id " + item.Id, ex);
                 return false;
             }
+        }
+
+        #endregion
+
+        #region IAccessControlListTenantSettings Members.
+
+        /// <inheritdoc />
+        public bool IsAccessControlListInstalled()
+        {
+            return this.Find(ApplicationSettings.IsAccessControlInstalled, false);
+        }
+
+        /// <inheritdoc />
+        public bool IsAccessControlListActivated()
+        {
+            return this.Find(ApplicationSettings.IsAccessControlActivated, false);
         }
 
         #endregion

@@ -85,7 +85,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>A redirect to schedule details if successful</returns>
         [Route("{id:guid}/update")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Schedule")]
-        public ActionResult Update(UpdateSequenceForm model)
+        public ActionResult Update(UpdateSequenceForm request)
         {
             return this.View();
         }
@@ -100,7 +100,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="id">The sequence id</param>
         /// <returns>A redirect to schedule details if successful</returns>
         [Route("{id:guid}/inactivate")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Schedule")]
+        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("Details", "Schedule")]
         public ActionResult Inactivate(InactivateSequence request)
         {
             return this.View();

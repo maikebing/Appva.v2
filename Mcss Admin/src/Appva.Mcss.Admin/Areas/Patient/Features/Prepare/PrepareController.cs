@@ -115,7 +115,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <param name="startDate">The start date</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("delete")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Schema", "Prepare")]
+        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("Schema", "Prepare")]
         public ActionResult Delete(DeletePreparation request)
         {
             return this.View();
@@ -133,10 +133,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <param name="unMark">True if delete</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("mark")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch]
         public DispatchJsonResult Mark(MarkPreparation request)
         {
-            return this.JsonPost();
+            return this.JsonGet();
         }
 
         #endregion

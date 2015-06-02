@@ -56,6 +56,11 @@ using Appva.Mcss.Admin.Infrastructure;
         /// </summary>
         private readonly IAccountService accounts;
 
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>.
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filtering;
+
         #endregion
 
         #region Constructor.
@@ -71,12 +76,14 @@ using Appva.Mcss.Admin.Infrastructure;
             IRuntimeMemoryCache cache,
             ISettingsService settings,
             IIdentityService identities,
-            IAccountService accounts)
+            IAccountService accounts,
+            ITaxonFilterSessionHandler filtering)
         {
             this.cache = cache;
             this.settings = settings;
             this.identities = identities;
             this.accounts = accounts;
+            this.filtering = filtering;
         }
 
         #endregion
@@ -98,7 +105,7 @@ using Appva.Mcss.Admin.Infrastructure;
                     IsFilterByCreatedByEnabled = message.IsFilterByCreatedByEnabled,
                     DelegationFilterId = message.DelegationFilterId,
                     RoleFilterId = message.RoleFilterId,
-                    OrganisationFilterId = this.cache.Find<Guid>("Taxon.Default.Cache"), // FIXME: Global filter
+                    OrganisationFilterId = filtering.GetCurrentFilter().Id, // FIXME: Global filter
                     CurrentUserId = this.identities.PrincipalId,
                     SearchQuery = message.Term
                 },

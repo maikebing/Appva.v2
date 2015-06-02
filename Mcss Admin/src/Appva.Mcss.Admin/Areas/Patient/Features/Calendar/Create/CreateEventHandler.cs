@@ -74,6 +74,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }*/
             return new EventViewModel
             {
+                Id = message.Id,
                 PatientId = message.Id,
                 StartDate = DateTime.Now,
                 StartTime = string.Format("{0:HH}:00", DateTime.Now.AddHours(1)),

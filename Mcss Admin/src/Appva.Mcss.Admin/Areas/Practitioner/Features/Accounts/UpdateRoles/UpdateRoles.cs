@@ -1,21 +1,23 @@
-﻿// <copyright file="PreviewAcl.cs" company="Appva AB">
+﻿// <copyright file="UpdateRoles.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
+    using System;
+    using System.Collections.Generic;
+using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PreviewAcl : INotification
+    public class UpdateRoles : Identity<UpdateRolesForm>
     {
     }
 }

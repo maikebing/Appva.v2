@@ -76,7 +76,7 @@ using NHibernate.Transform;
                 throw new NullReferenceException("Patient ID " + message.Id + " is not found");
             }
             var schedule = this.persistence.Get<Schedule>(message.ScheduleId);
-            if (schedule.ScheduleSettings.HasSetupDrugsPanel)
+            if (! schedule.ScheduleSettings.HasSetupDrugsPanel)
             {
                 throw new Exception("No schema preparation for this schedule ID " + schedule.ScheduleSettings.Id);
             }

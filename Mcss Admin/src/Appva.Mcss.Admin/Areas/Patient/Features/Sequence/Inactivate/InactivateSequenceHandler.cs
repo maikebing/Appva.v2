@@ -65,7 +65,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new DetailsSchedule
             {
                 Id = message.Id,
-                ScheduleId = message.ScheduleId
+                ScheduleId = entity.Schedule.Id
             };
         }
 

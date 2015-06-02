@@ -39,6 +39,12 @@ namespace Appva.Mcss.Admin.Application.Services
         IList<Role> List();
 
         /// <summary>
+        /// Returns all <see cref="Role"/>.
+        /// </summary>
+        /// <returns>A collection of <see cref="Role"/></returns>
+        IList<Role> ListVisible();
+
+        /// <summary>
         /// Returns a collection <see cref="Account"/> whom are member of the specific
         /// role identifier.
         /// </summary>
@@ -92,6 +98,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<Role> List()
         {
             return this.repository.List();
+        }
+
+        /// <inheritdoc />
+        public IList<Role> ListVisible()
+        {
+            return this.repository.ListOnlyVisible();
         }
 
         /// <inheritdoc />

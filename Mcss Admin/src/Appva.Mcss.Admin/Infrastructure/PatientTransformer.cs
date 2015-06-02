@@ -124,7 +124,7 @@ namespace Appva.Mcss.Admin.Infrastructure
                     Overseeing = (overseer.IsNotNull()) ? overseer.FullName : null,
                     FirstLineContact = (firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
                     HasUnattendedTasks = patient.HasUnattendedTasks,
-                    SeniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.ToList() : null
+                    SeniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.ToList().Select(x => x).ToList() : null
                 });
             }
             return retval;

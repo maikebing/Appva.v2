@@ -157,4 +157,8 @@
     <value>type</value>
     <comment>HTML type attribute, e.g. &lt;input type="x"&gt;</comment>
   </data>
+  <data name="Value" xml:space="preserve">
+    <value>value</value>
+    <comment>HTML value attribute, e.g. &lt;input value="x"&gt;</comment>
+  </data>
 </root>

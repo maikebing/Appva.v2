@@ -55,6 +55,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPatientTransformer transformer;
 
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>.
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filtering;
+
 		#endregion
 
 		#region Constructor.
@@ -65,12 +70,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="IIdentityService"/> implementation</param>
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="IAccountService"/> implementation</param>
-        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, ITaxonFilterSessionHandler filtering, IPatientTransformer transformer, IPersistenceContext persistence)
 		{
             this.transformer = transformer;
             this.identityService = identityService;
             this.accountService = accountService;
             this.persistence = persistence;
+            this.filtering = filtering;
 		}
 
 		#endregion
@@ -81,11 +87,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override AlertOverviewViewModel Handle(AlertWidget message)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
-            var taxon = FilterCache.Get(this.persistence);
-            if (!FilterCache.HasCache())
-            {
-                taxon = FilterCache.GetOrSet(account, this.persistence);
-            }
+            var taxon = this.filtering.GetCurrentFilter();
             Taxon taxonAlias = null;
             var query = this.persistence.QueryOver<Patient>()
                 .Where(x => x.IsActive)

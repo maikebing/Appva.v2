@@ -47,7 +47,7 @@ using System.Linq;
         /// <inheritdoc />
         public override bool Handle(InactivateAccount message)
         {
-            this.accounts.InActivate(this.accounts.Find(message.AccountId));
+            this.accounts.InActivate(this.accounts.Find(message.Id));
             return true;
         }
 

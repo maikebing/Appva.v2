@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Appva.Mcss.Admin.Configuration;
+<!DOCTYPE html>
 <!--[if IE 8]><html class="ie8"> <![endif]-->
 <!--[if IE 9]><html class="ie9 gt-ie8"> <![endif]-->
 <!--[if gt IE 9]><!-->
@@ -13,7 +14,7 @@
         <div id="login" class="std-panel">
             @RenderBody()
             <div class="footer">
-                <p>Appva MCSS version X.X.X</p>
+                <p>Appva MCSS version @Application.Version</p>
             </div>
         </div>
     </body>

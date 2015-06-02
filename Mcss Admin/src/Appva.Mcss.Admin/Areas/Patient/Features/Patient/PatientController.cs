@@ -66,7 +66,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns>A redirect to <see cref="PatientController.List"/> if valid</returns>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Patient")]
-        public ActionResult Create([CustomValueProvider]CreatePatient request)
+        public ActionResult Create(CreatePatient request)
         {
             return View();
         }
@@ -105,6 +105,7 @@ namespace Appva.Mcss.Admin.Controllers
 
         /// <summary>
         /// Reactivates a patient.
+        /// FIXME: Should be HttpPost, Validate and ValidateAntiForgeryToken.
         /// </summary>
         /// <param name="request">The reactivation request</param>
         /// <returns>If successful; a redirect to <see cref="PatientController.List"/></returns>
@@ -138,6 +139,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <summary>
         /// Returns whether or not the personal/national identifier number is unique
         /// across the patients.
+        /// FIXME: Should be HttpPost, Validate and ValidateAntiForgeryToken.
         /// </summary>
         /// <param name="request">The verify unique request</param>
         /// <returns>True if the patient is unique</returns>

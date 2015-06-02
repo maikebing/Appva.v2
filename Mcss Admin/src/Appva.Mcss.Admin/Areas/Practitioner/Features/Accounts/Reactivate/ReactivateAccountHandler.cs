@@ -47,7 +47,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(ReactivateAccount message)
         {
-            this.accounts.Activate(this.accounts.Find(message.AccountId));
+            this.accounts.Activate(this.accounts.Find(message.Id));
             return true;
         }
 

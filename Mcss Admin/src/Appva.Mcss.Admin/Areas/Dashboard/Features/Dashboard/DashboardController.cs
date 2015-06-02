@@ -9,10 +9,11 @@ namespace Appva.Mcss.Admin.Controllers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using Appva.Mcss.Admin.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Appva.Mcss.Admin.Application.Services.Settings;
+using Appva.Mcss.Admin.Models;
 
     #endregion
 
@@ -22,13 +23,20 @@ namespace Appva.Mcss.Admin.Controllers
     [RouteArea("dashboard")]
     public sealed class DashboardController : Controller
     {
+        #region Variables.
+
+        private readonly ISettingsService service;
+
+        #endregion
+
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DashboardController"/> class.
         /// </summary>
-        public DashboardController()
+        public DashboardController(ISettingsService service)
         {
+            this.service = service;
         }
 
         #endregion
@@ -45,15 +53,10 @@ namespace Appva.Mcss.Admin.Controllers
         [Route]
         public ActionResult Index()
         {
-            /*var identity = Identity();
-            var view = ExecuteCommand<HomeViewModel>(new CreateOverviewCommand
-            {
-                Identity = identity
-            });
-            view.SevenDayStartDate = DateTimeExt.Now().AddDays(-7);
-            view.SevenDayEndDate = DateTimeExt.Now();*/
             return View(new HomeViewModel
                 {
+                    HasCalendarOverview = this.service.HasCalendarOverview(),
+                    HasOrderOverview = this.service.HasOrderRefill(),
                     SevenDayStartDate = DateTime.Now.AddDays(-7),
                     SevenDayEndDate = DateTime.Now   
                 });

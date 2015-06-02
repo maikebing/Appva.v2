@@ -62,7 +62,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListCalendar Handle(EventViewModel message)
         {
-            var patient = this.patientService.Get(message.PatientId);
+            var patient = this.patientService.Get(message.Id);
             if (message.Category.Equals("new"))
             {
                 message.Category = this.eventService.CreateCategory(message.NewCategory).ToString();
@@ -86,7 +86,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             );
             return new ListCalendar
             {
-                Id = message.PatientId,
+                Id = patient.Id,
                 Date = message.StartDate
             };
         }

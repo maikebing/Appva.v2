@@ -31,7 +31,6 @@ namespace Appva.Siths.Configuration
 
         /// <inheritdoc />
         [ConfigurationProperty("serverAddress", IsRequired = true)]
-        [RegexStringValidator(@"\w+:\/\/[\w.]+\S*")]
         public Uri ServerAddress
         {
             get
@@ -74,7 +73,6 @@ namespace Appva.Siths.Configuration
 
         /// <inheritdoc />
         [ConfigurationProperty("redirectUrl", IsRequired = true)]
-        [RegexStringValidator(@"\w+:\/\/[\w.]+\S*")]
         public Uri RedirectUrl
         {
             get

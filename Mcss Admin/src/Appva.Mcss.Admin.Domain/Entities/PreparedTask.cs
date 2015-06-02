@@ -34,15 +34,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="PreparedTask"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// The account that prepared this task
         /// </summary>
         public virtual Account PreparedBy

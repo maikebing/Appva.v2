@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -32,7 +33,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The personal identity number.
         /// </summary>
-        public string UniqueIdentifier
+        public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
             set;

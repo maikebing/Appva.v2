@@ -174,8 +174,6 @@
     <property name="Name" />
     <property name="Description" />
     <property name="Resource" />
-    <property name="Action" />
-    <property name="Context" />
     <property name="Sort" />
     <property name="IsVisible" />
     <bag name="Roles" table="RolesPermissions" inverse="true">
@@ -517,12 +515,12 @@
     <property name="OnNeedBasis" />
     <property name="Delayed" />
     <property name="DelayHandled" />
-    <!--<component name="Inventory" class="InventoryOld">
+    <component name="Inventory" class="InventoryOld">
       <property name="Increased" />
       <property name="Reduced" />
       <property name="Level" />
       <property name ="RecalculatedLevel" />
-    </component>-->
+    </component>
     <property name="CurrentEscalationLevel" />
     <property name="Quittanced" />
     <many-to-one name="QuittancedBy" class="Account" lazy="false" />
@@ -588,7 +586,7 @@
     <property name="UpdatedAt" column="Modified" />
     <property name="Date" />
     <many-to-one name="PreparedBy" class="Account" lazy="false" />
-    <many-to-one name="PreparedSequence" class="PreparedSequence" />
+    <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
 

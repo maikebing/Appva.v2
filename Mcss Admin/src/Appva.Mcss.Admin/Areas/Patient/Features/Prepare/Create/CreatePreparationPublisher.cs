@@ -73,6 +73,9 @@ using NHibernate.Transform;
             var schedule = this.persistence.Get<Schedule>(message.ScheduleId);
             var prepareSequence = new PreparedSequence
             {
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                IsActive = true,
                 Name = message.Name,
                 Schedule = schedule
             };

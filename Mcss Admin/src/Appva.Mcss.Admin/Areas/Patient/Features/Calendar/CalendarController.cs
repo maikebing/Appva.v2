@@ -28,6 +28,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -45,6 +47,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         private readonly ISettingsService settingsService;
         private readonly IScheduleService scheduleService;
         private readonly IEventService eventService;
+        private readonly ITaxonFilterSessionHandler filtering;
 
         #endregion
 
@@ -61,7 +64,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
             ISettingsService settingsService,
             IScheduleService scheduleService,
             IEventService eventService,
-            IPersistenceContext context, ILogService logService)
+            IPersistenceContext context, ILogService logService,
+            ITaxonFilterSessionHandler filtering
+            )
             : base(mediator, identities, accounts)
         {
             this.patientService = patientService;
@@ -70,6 +75,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
             this.eventService = eventService;
             this.context = context;
             this.logService = logService;
+            this.filtering = filtering;
         }
 
         #endregion
@@ -85,6 +91,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("list")]
         [HttpGet, Dispatch]
+        ////[PermissionsAttribute(Permissions.Calendar.Read.Value)]
         public ActionResult List(ListCalendar request)
         {
             return View();
@@ -104,6 +111,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         
         [Route("create")]
         [HttpGet, Hydrate, Dispatch]
+        ////[PermissionsAttribute(Permissions.Calendar.Create.Value)]
         public ActionResult Create(Identity<EventViewModel> request)
         {
             return View();
@@ -117,7 +125,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="model">The event model</param>
         /// <returns></returns>
         [Route("create")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Calendar")]
+        ////[PermissionsAttribute(Permissions.Calendar.Create.Value)]
         public ActionResult Create(EventViewModel request)
         {
             return View();
@@ -135,9 +144,36 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("edit")]
         [HttpGet, Dispatch]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
         public ActionResult Edit(EditEventSequence request)
         {
             return this.View();
+        }
+
+        /// <summary>
+        /// The Multi button does not work well with routes, so this is the ugly way
+        /// of fixing the issue sadly.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="editAction"></param>
+        /// <param name="seqId"></param>
+        /// <param name="date"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Route("edit")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
+        public ActionResult Edit(Guid id, string editAction, Guid seqId, DateTime date, EventViewModel model)
+        {
+            if (editAction == "EditAll")
+            {
+                return this.EditAll(id, seqId, date, model);
+            }
+            if (editAction == "EditThis")
+            {
+                return this.EditThis(id, seqId, date, model);
+            }
+            return this.RedirectToAction("List", new { Id = id, StartDate = date });
         }
 
         /// <summary>
@@ -148,8 +184,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">The date (for redirect)</param>
         /// <param name="model">The event model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, /*MultiButton,*/ ValidateAntiForgeryToken]
         [Route("EditAll")]
+        [HttpPost, MultiButton, ValidateAntiForgeryToken]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
         public ActionResult EditAll(Guid id, Guid seqId, DateTime date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -188,8 +225,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">The event date</param>
         /// <param name="model">The event model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, /*MultiButton,*/ ValidateAntiForgeryToken]
         [Route("EditThis")]
+        [HttpPost, MultiButton, ValidateAntiForgeryToken]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
         public ActionResult EditThis(Guid id, Guid seqId, DateTime date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -229,9 +267,10 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
         [Route("EditActivity")]
-        public ActionResult EditActivity(Guid id)
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
+        public ActionResult EditActivity(Guid id, Guid taskId)
         {
-            var evt = this.context.Get<Task>(id);
+            var evt = this.context.Get<Task>(taskId);
             var categories = this.eventService.GetCategories();
             return View(new EventViewModel
             {
@@ -265,8 +304,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">Optional activity date</param>
         /// <param name="model">THe event model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpPost, ValidateAntiForgeryToken]
         [Route("EditActivity")]
+        [HttpPost, ValidateAntiForgeryToken]
+        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
         public ActionResult EditActivity(Guid id, Guid taskId, DateTime? date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -292,14 +332,16 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <summary>
         /// Deletes an event by id.
         /// </summary>
-        /// <param name="id">The event id</param>
+        /// <param name="id">The patient id</param>
+        /// <param name="sequenceId">The event id</param>
         /// <param name="date">The redirect date</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
         [Route("Remove")]
-        public ActionResult Remove(Guid id, DateTime date)
+        [HttpGet]
+        ////[PermissionsAttribute(Permissions.Calendar.Delete.Value)]
+        public ActionResult Remove(Guid id, Guid sequenceId, DateTime date)
         {
-            var evt = this.eventService.Get(id);
+            var evt = this.eventService.Get(sequenceId);
             this.eventService.DeleteSequence(evt);
             return this.RedirectToAction("List", new { Id = evt.Patient.Id, StartDate = date });
         }
@@ -314,9 +356,10 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="id">The task id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("RemoveActivity")]
-        public ActionResult RemoveActivity(Guid id)
+        ////[PermissionsAttribute(Permissions.Calendar.Delete.Value)]
+        public ActionResult RemoveActivity(Guid id, Guid taskId)
         {
-            var evt = this.context.Get<Task>(id);
+            var evt = this.context.Get<Task>(taskId);
             this.eventService.DeleteActivity(evt);
             return this.RedirectToAction("List", new { Id = evt.Patient.Id, StartDate = evt.StartDate });
         }
@@ -332,11 +375,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [Route("~/patient/calendar/overview")]
         public PartialViewResult Overview()
         {
-            var taxon = FilterCache.Get(this.context);
-            if (!FilterCache.HasCache())
-            {
-                taxon = FilterCache.GetOrSet(Identity(), this.context);
-            }
+            //// FIXME: Update to 1.5.1 version here!
+            var taxon = this.filtering.GetCurrentFilter();
             var categories = this.eventService.GetCategories();
             Patient patientAlias = null;
             Taxon taxonAlias = null;
@@ -416,7 +456,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="id">The sequence id</param>
         /// <param name="date">The date</param>
         /// <returns><see cref="JsonResult"/></returns>
-        [Route("Quittance")]
+        [Route("~/patient/calendar/quittance")]
         public JsonResult Quittance(Guid id, DateTime date)
         {
             var sequence = this.context.Get<Sequence>(id);
@@ -434,7 +474,14 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
             {
                 task.Quittanced = true;
                 task.QuittancedBy = Identity();
-                this.context.Update(task);
+                if (task.IsTransient)
+                {
+                    this.context.Save(task);
+                }
+                else
+                {
+                    this.context.Update(task);
+                }
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
             return Json(false, JsonRequestBehavior.AllowGet);

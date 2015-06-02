@@ -1,0 +1,12 @@
+﻿@model System.DateTime?
+@{
+    var placeholder = string.Empty;
+    if (ViewData.ModelMetadata.AdditionalValues.ContainsKey("placeholder")) {
+        placeholder = ViewData.ModelMetadata.AdditionalValues["placeholder"] as string;
+    }
+}
+@Html.TextBox(
+    string.Empty,
+        (Model.HasValue) ? Model.Value.Date.ToString("d") : string.Empty,
+    new {  @class = "datepick date", @autocomplete = "off", @placeholder = placeholder }
+)

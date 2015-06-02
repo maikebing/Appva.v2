@@ -34,15 +34,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="Device"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// The Device UDID.
         /// </summary>
         public virtual string UDID

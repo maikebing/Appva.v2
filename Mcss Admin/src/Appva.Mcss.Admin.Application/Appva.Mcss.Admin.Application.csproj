@@ -52,6 +52,7 @@
       <HintPath>..\..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Caching" />
@@ -67,11 +68,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auditing\AuditService.cs" />
+    <Compile Include="Auditing\HttpContextBaseExtensions.cs" />
     <Compile Include="Caching\TenantAwareMemoryCache.cs" />
+    <Compile Include="Common\AccountUtils.cs" />
     <Compile Include="Common\CacheUtils.cs" />
     <Compile Include="Common\EncryptionUtils.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Common\PermissionMeta.cs" />
     <Compile Include="Common\Permissions.cs" />
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
@@ -91,6 +96,7 @@
     <Compile Include="Security\AuthenticationMethods.cs" />
     <Compile Include="Security\Authentication.cs" />
     <Compile Include="Security\AuthenticationResult.cs" />
+    <Compile Include="Security\ClaimsPrincipalExtensions.cs" />
     <Compile Include="Security\Extensions\AccountExtensions.cs" />
     <Compile Include="Security\Extensions\OwinExtensions.cs" />
     <Compile Include="Security\FormsAuthentication.cs" />
@@ -117,6 +123,7 @@
     <Compile Include="Services\SequenceService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\TaskService.cs" />
+    <Compile Include="Services\TaxonFilterSessionHandler.cs" />
     <Compile Include="Services\TaxonomyService.cs" />
     <Compile Include="Services\TenantService.cs" />
   </ItemGroup>
@@ -160,6 +167,10 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
       <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
       <Name>Appva.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Siths\Appva.Siths.csproj">
+      <Project>{00fa489c-6f1d-42fb-8caf-426b90f1f223}</Project>
+      <Name>Appva.Siths</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
       <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>

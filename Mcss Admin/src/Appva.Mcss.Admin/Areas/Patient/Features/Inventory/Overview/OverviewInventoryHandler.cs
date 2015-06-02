@@ -59,6 +59,11 @@ using NHibernate.Transform;
         /// </summary>
         private readonly IPatientTransformer transformer;
 
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>.
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filtering;
+
         #endregion
 
         #region Constructor.
@@ -71,13 +76,14 @@ using NHibernate.Transform;
         /// <param name="settings">The <see cref="ILogService"/> implementation</param>
         public OverviewInventoryHandler(
             IPatientService patientService, ITaskService taskService, ILogService logService, IPersistenceContext persistence,
-            IPatientTransformer transformer)
+            IPatientTransformer transformer, ITaxonFilterSessionHandler filtering)
         {
             this.patientService = patientService;
             this.taskService = taskService;
             this.logService = logService;
             this.persistence = persistence;
             this.transformer = transformer;
+            this.filtering = filtering;
         }
 
         #endregion
@@ -87,11 +93,7 @@ using NHibernate.Transform;
         /// <inheritdoc />
         public override InventoryOverviewViewModel Handle(OverviewInventory message)
         {
-            var taxon = FilterCache.Get(this.persistence);
-            /*if (!FilterCache.HasCache())
-            {
-                taxon = FilterCache.GetOrSet(Identity(), this.context);
-            }*/
+            var taxon = this.filtering.GetCurrentFilter();
             var now = DateTime.Now;
             var lastStockCalculationDate = now.AddDays(-30).AddDays(7);
             RecountOverviewItemViewModel dto = null;

@@ -14,13 +14,11 @@
             </text>
             }
         };
-
     </script>
-    
 }
 <div id="subheader" class="cf">
     <h1>Kalender</h1>
-    @Html.PermissionLink(Permissions.PatientCalendarRead, "Ny aktivitet", "Create", "Calendar", "Patient", new { id = Model.Patient.Id, date = Model.Current }, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Calendar.Create, "Ny aktivitet", "Create", "Calendar", new { Id = Model.Patient.Id, Date = Model.Current }, new { @class = "btn lb-link" })
 </div>
 <div id="content" class="cf">
 	<div id="content-primary">
@@ -34,7 +32,7 @@
                 <input type="submit" name="next" value="@String.Format("{0:MMMM} {1}", Model.Next, WebUtility.HtmlDecode("&rarr;")).FirstToUpper()" class="next" />
 		    </div>
             <div class="cal-filter">
-                @Html.ActionLink("+ Skapa ny aktivitet", "Create", new { id = Model.Patient.Id, date = Model.Current }, new { @class = "btn btn-new lb-link" })
+                @Html.ActionLink(Permissions.Calendar.Create, "+ Skapa ny aktivitet", "Create", "Calendar", new { Id = Model.Patient.Id, Date = Model.Current }, new { @class = "btn btn-new lb-link" })
                 <h3>Filtrera på kategori:</h3>
                     <ul>
                         <li class="all">
@@ -93,9 +91,9 @@
 							    <span class="slot">
 								    <span class="day">@calendar.Date.Day</span>
 								    @if (calendar.IsWithinMonth)
-            {
-                foreach (var evt in calendar.Events)
-                {
+                                    {
+                                        foreach (var evt in calendar.Events)
+                                        {
                                             <span class="@String.Format("act cal-cat{0}", (Model.Categories.FirstOrDefault(x => x.Value == evt.Schedule.ScheduleSettings).Key % (int)Model.CalendarSettings["ColorQuantity"]) + 1)" @((Model.FilterList.Count == 0 || Model.FilterList.Contains(evt.Schedule.ScheduleSettings.Id.ToString())) ? "" : "style=Display:none;")>
 										        <span class="time">
                                                     @if (evt.AllDay)
@@ -116,28 +114,25 @@
                                                 </span>
                                                 <span class="actions">
                                                     @if (evt.Id.NotEqual(Guid.Empty)) {
-                                                        @Html.ActionLink("Ändra", "EditActivity", new { id = evt.Id }, new { @class = "edit lb-link", @title = "Ändra aktiviteten" })
-                                                        @Html.ActionLink("Ta bort", "RemoveActivity", new { id = evt.Id }, new { @class = "del", @title = "Ta bort aktiviteten" })
+                                                        @Html.ActionLink(Permissions.Calendar.Update, "Ändra", "EditActivity", "Calendar", new { Id = Model.Patient.Id, TaskId = evt.Id }, new { @class = "edit lb-link", @title = "Ändra aktiviteten" })
+                                                        @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "RemoveActivity", "Calendar", new { Id = Model.Patient.Id, TaskId = evt.Id }, new { @class = "del", @title = "Ta bort aktiviteten" })
                                                     }
                                                     else { 
-                                                        @Html.ActionLink("Ändra", "Edit", new { id = evt.Sequence.Id, date = calendar.Date }, new { @class = "edit lb-link", @title = "Ändra aktiviteten" })
-                                                        @Html.ActionLink("Ta bort", "Remove", new { id = evt.Sequence.Id, date = calendar.Date }, new { @class = "del", @title = "Ta bort aktiviteten" })
+                                                        @Html.ActionLink(Permissions.Calendar.Update, "Ändra", "Edit", "Calendar", new { Id = Model.Patient.Id, SequenceId = evt.Sequence.Id, Date = calendar.Date }, new { @class = "edit lb-link", @title = "Ändra aktiviteten" })
+                                                        @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "Remove", "Calendar", new { Id = Model.Patient.Id, SequenceId = evt.Sequence.Id, Date = calendar.Date }, new { @class = "del", @title = "Ta bort aktiviteten" })
                                                     }
-                                                    
-											        
 										        </span>
-                                            
 									        </span>
-                }
-            }
+                                        }
+                                    }
 							    </span>
 						    </td>
-            if (Model.IsEndOfWeek())
-            {
-                Model.WeekIterator = 0;
+                            if (Model.IsEndOfWeek())
+                            {
+                                Model.WeekIterator = 0;
                                 @:</tr>
                             }
-            Model.WeekIterator = Model.WeekIterator + 1;
+                            Model.WeekIterator = Model.WeekIterator + 1;
                         }
                     </tbody>
                 </table>

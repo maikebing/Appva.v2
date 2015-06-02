@@ -72,15 +72,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #region Properties.
 
-        /// <summary>
-		/// Whether or not the <see cref="Account"/> ia active.
-		/// </summary>
-		public virtual bool IsActive
-		{
-			get;
-			set;
-		}
-
 		/// <summary>
 		/// If the account is "paused".
 		/// </summary>
@@ -96,7 +87,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual string HsaId
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -105,7 +96,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual string UserName
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -123,7 +114,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual string TelephoneNumber
 		{
 			get;
-            protected set;
+            set;
 		}
 
         /// <summary>
@@ -150,7 +141,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual string AdminPassword
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		///<summary>
@@ -159,7 +150,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual string Salt
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -168,7 +159,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual DateTime? LastPasswordChangedDate
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -177,7 +168,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual DateTime? LastLoginDate
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -186,7 +177,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual DateTime? LastActivityDate
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -195,7 +186,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual int FailedPasswordAttemptsCount
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -204,7 +195,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual DateTime? LockoutUntilDate
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -213,7 +204,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual DateTime? PasswordResetDate
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -231,7 +222,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual IList<Role> Roles
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -240,7 +231,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual IList<Delegation> Delegations
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		/// <summary>
@@ -249,7 +240,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		public virtual bool ShowAdminNewsNotice
 		{
 			get;
-			protected set;
+			set;
 		}
 
 		#endregion

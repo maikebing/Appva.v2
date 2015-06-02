@@ -22,6 +22,15 @@ namespace Appva.Mcss.Admin.Application.Security.Extensions
     internal static class AccountExtensions
     {
         /// <summary>
+        /// Returns whether or not the account is inactive.
+        /// </summary>
+        /// <returns>True if the account is inactive</returns>
+        public static bool IsInactive(this Account account)
+        {
+            return ! account.IsActive;
+        }
+
+        /// <summary>
         /// Returns whether or not the account is in lock out mode.
         /// </summary>
         /// <returns>True if the account is locked out</returns>

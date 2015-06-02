@@ -4,40 +4,23 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Features.Shared.Models
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class SignIn
+    public sealed class SignIn : IRequest<SignInForm>
     {
-        [Required]
-        [StringLength(50)]
-        [Display(Name = "Användarnamn")]
-        public string UserName
-        {
-            get;
-            set;
-        }
-
-        [Required]
-        [StringLength(50)]
-        [Display(Name = "Lösenord")]
-        public string Password
-        {
-            get;
-            set;
-        }
-
-        public string Tenant
+        /// <summary>
+        /// The return URL.
+        /// </summary>
+        public string ReturnUrl
         {
             get;
             set;

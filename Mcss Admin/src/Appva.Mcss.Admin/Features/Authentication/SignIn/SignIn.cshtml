@@ -1,4 +1,4 @@
-﻿@model Appva.Mcss.Admin.Features.Shared.Models.SignIn
+﻿@model Appva.Mcss.Admin.Models.SignInForm
 @{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
     Title("Logga in - " +  Model.Tenant);
@@ -14,9 +14,9 @@
 <div class="body">
     <div class="std-form">
         <p style="text-align:center;">
-            @Html.ActionLink("Klicka här", "login", new { method = "siths" }) för att logga in med ditt SITHS eID
+            @Html.ActionLink("Klicka här", "SignInSiths") för att logga in med ditt SITHS eID
         </p>
-        @using (Html.Post())
+        @using (Html.Post(null, new { ReturnUrl = Model.ReturnUrl }))
         {
             @Html.Alert(new {  @class = "success-msg" })
             @Html.ValidationAlert("Felaktigt användarnamn och/eller lösenord", "", new {  @class = "error-msg" })

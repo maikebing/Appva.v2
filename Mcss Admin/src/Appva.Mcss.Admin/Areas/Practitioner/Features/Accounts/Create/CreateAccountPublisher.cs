@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Core.Resources;
 
     #endregion
 
@@ -38,6 +39,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ISettingsService settings;
 
         /// <summary>
+        /// The <see cref="IRoleService"/>.
+        /// </summary>
+        private readonly IRoleService roleService;
+
+        /// <summary>
         /// The <see cref="ITaxonomyService"/>.
         /// </summary>
         private readonly ITaxonomyService taxonomies;
@@ -49,10 +55,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateAccountPublisher"/> class.
         /// </summary>
-        public CreateAccountPublisher(IAccountService accounts, ISettingsService settings, ITaxonomyService taxonomies)
+        public CreateAccountPublisher(IAccountService accounts, ISettingsService settings, IRoleService roleService, ITaxonomyService taxonomies)
         {
             this.accounts = accounts;
             this.settings = settings;
+            this.roleService = roleService;
             this.taxonomies = taxonomies;
         }
 
@@ -62,25 +69,66 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public override bool Handle(CreateAccountModel message)
         {
-            if(this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice, true))
+            var role = this.roleService.Find(new Guid(message.TitleRole));
+            var roles = new List<Role> 
+            { 
+                this.roleService.Find(RoleTypes.Device),
+                role
+            };
+            if (this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice, true))
             {
-                var r = new Random();
-                message.DevicePassword = string.Format("{0}{1}{2}{3}",r.Next(9),r.Next(9),r.Next(9),r.Next(9));
+                message.DevicePassword = AccountUtils.GenerateClientPassword();
             }
             if (message.Taxon.IsEmpty())
             {
                 message.Taxon = taxonomies.Roots(TaxonomicSchema.Organization).SingleOrDefault().Id.ToString();
             }
-
-            return this.accounts.Create(
-                message.FirstName,
-                message.LastName,
-                message.Email,
-                message.DevicePassword,
-                new PersonalIdentityNumber(message.PersonalIdentityNumber),
-                this.taxonomies.Get(message.Taxon.ToGuid())).IsNotEmpty();
+            if ((role.MachineName.IsNotEmpty() && role.MachineName.StartsWith(RoleTypes.Nurse)) || this.HasAccessToAdmin(role))
+            {
+                this.accounts.CreateBackendAccount(
+                    message.FirstName, 
+                    message.LastName,
+                    message.PersonalIdentityNumber, 
+                    message.Email, 
+                    "abc123ABC",
+                    this.taxonomies.Get(message.Taxon.ToGuid()), 
+                    roles,
+                    message.DevicePassword);
+            }
+            else
+            {
+                this.accounts.Create(
+                    message.FirstName,
+                    message.LastName,
+                    message.PersonalIdentityNumber,
+                    message.Email,
+                    message.DevicePassword,
+                    this.taxonomies.Get(message.Taxon.ToGuid()), 
+                    roles);
+            }
+            return true;
         }
 
+        #endregion
+
+        #region Private Methods.
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        private bool HasAccessToAdmin(Role role)
+        {
+            foreach (var permission in role.Permissions)
+            {
+                if (permission.Resource == Permissions.Admin.Login.Value)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         #endregion
     }
 }

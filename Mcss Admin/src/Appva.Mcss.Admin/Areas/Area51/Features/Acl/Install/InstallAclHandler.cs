@@ -10,7 +10,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Appva.Core.Contracts.Permissions;
+    using Appva.Core.Resources;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
@@ -66,7 +68,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override void Handle(InstallAcl notification)
         {
-            if (settings.Find<bool>(ApplicationSettings.IsAccessControlInstalled, false))
+            if (this.settings.IsAccessControlListInstalled())
             {
                 return;
             }
@@ -85,56 +87,23 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <returns></returns>
         private IDictionary<IPermission, Permission> CreatePermissions()
         {
-            var permissions = new Dictionary<IPermission, Permission>
+            var permissions = new Dictionary<IPermission, Permission>();
+            foreach (var type in typeof(Permissions).GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
+            {
+                foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
                 {
-                    { Permissions.Create.Patient,  Permissions.Create.Patient.Convert() },
-                    { Permissions.Read.Patient,    Permissions.Read.Patient.Convert()   },
-                    { Permissions.Update.Patient,  Permissions.Update.Patient.Convert() },
-                    { Permissions.Delete.Patient,  Permissions.Delete.Patient.Convert() },
-                    
-                    { Permissions.Create.Schedule, Permissions.Create.Schedule.Convert() },
-                    { Permissions.Read.Schedule,   Permissions.Read.Schedule.Convert()   },
-                    { Permissions.Update.Schedule, Permissions.Update.Schedule.Convert() },
-                    { Permissions.Delete.Schedule, Permissions.Delete.Schedule.Convert() },
-                    
-                    { Permissions.Read.EventList, Permissions.Read.EventList.Convert() },
-                    { Permissions.Read.Alert,     Permissions.Read.Alert.Convert() },
-                    //// TODO: { Permissions.Read.PatientReport, Permissions.Read.PatientReport.Convert() },
-                    { Permissions.Read.CalendarEvent, Permissions.Read.CalendarEvent.Convert() },
-                    { Permissions.Read.Inventory, Permissions.Read.Inventory.Convert() },
-                    
-                    { Permissions.Create.Practitioner, Permissions.Create.Practitioner.Convert() },
-                    { Permissions.Read.Practitioner,   Permissions.Read.Practitioner.Convert()   },
-                    { Permissions.Update.Practitioner, Permissions.Update.Practitioner.Convert() },
-                    { Permissions.Delete.Practitioner, Permissions.Delete.Practitioner.Convert() },
-                    
-                    { Permissions.Create.Delegation, Permissions.Create.Delegation.Convert() },
-                    { Permissions.Read.Delegation,   Permissions.Read.Delegation.Convert()   },
-                    { Permissions.Update.Delegation, Permissions.Update.Delegation.Convert() },
-                    { Permissions.Delete.Delegation, Permissions.Delete.Delegation.Convert() },
-                    
-                    { Permissions.Read.Revision, Permissions.Read.Revision.Convert() },
-                    { Permissions.Read.IssuedDelegation, Permissions.Read.IssuedDelegation.Convert() },
-                    { Permissions.Read.PractitionerReport, Permissions.Read.PractitionerReport.Convert() },
-                    
-                    { Permissions.Create.Role, Permissions.Create.Role.Convert() },
-                    { Permissions.Read.Role,   Permissions.Read.Role.Convert()   },
-                    { Permissions.Update.Role, Permissions.Update.Role.Convert() },
-                    { Permissions.Delete.Role, Permissions.Delete.Role.Convert() },
-                    
-                    { Permissions.Create.Notification, Permissions.Create.Notification.Convert() },
-                    { Permissions.Read.Notification, Permissions.Read.Notification.Convert() },
-                    { Permissions.Update.Notification, Permissions.Update.Notification.Convert() },
-                    { Permissions.Delete.Notification, Permissions.Delete.Notification.Convert() },
-                    
-                    { Permissions.Read.Dashboard, Permissions.Read.Dashboard.Convert() },
-                    //// TODO:{ Permissions.Read.DashboardControl, new Permission("Läsa kontrollräkning narkotika", "Med denna behörighet kan användaren läsa kontrollräkning narkotika", Permissions.DashboardControl, PermissionAction.Read, PermissionContext.Admin, 33) },
-                    //// TODO:{ Permissions.Read.DashboardReport, new Permission("Läsa fullständig rapport", "Med denna behörighet kan användaren läsa fullständig rapport", Permissions.DashboardReport, PermissionAction.Read, PermissionContext.Admin, 34) },
-                    //// TODO:{ Permissions.Read.DashboardTotalResult, new Permission("Läsa översikt totalt resultat", "Med denna behörighet kan användaren läsa totalt resultat på översikt", Permissions.DashboardTotalResult, PermissionAction.Read, PermissionContext.Admin, 35) },
-                  
-                    { Permissions.Read.Area51, Permissions.Read.Area51.Convert() }, /// remember visibility
-                    
-                };
+                    var nameAttr = field.GetCustomAttributes(typeof(NameAttribute), false).SingleOrDefault() as NameAttribute;
+                    var descAttr = field.GetCustomAttributes(typeof(DescriptionAttribute), false).SingleOrDefault() as DescriptionAttribute;
+                    var sortAttr = field.GetCustomAttributes(typeof(SortAttribute), false).SingleOrDefault() as SortAttribute;
+                    var visiAttr = field.GetCustomAttributes(typeof(VisibilityAttribute), false).SingleOrDefault() as VisibilityAttribute;
+                    var name = nameAttr.Value;
+                    var description = descAttr.Value;
+                    var sort = sortAttr != null ? sortAttr.Value : 0;
+                    var isVisible = visiAttr != null ? visiAttr.Value == Visibility.Visible : true;
+                    var permission = (IPermission) field.GetValue(null);
+                    permissions.Add(permission, new Permission(name, description, permission.Value, sort, isVisible));
+                }
+            }
             foreach (var permission in permissions)
             {
                 this.persistence.Save(permission.Value);
@@ -151,10 +120,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var roles = this.roleService.List();
             foreach (var role in roles)
             {
-                role.Permissions = permissions.Where(x => x.Key != Permissions.Read.Area51).Select(x => x.Value).ToList();
-                if (role.MachineName == "_AA")
+                role.Permissions = permissions.Where(x => x.Key != Permissions.Area51.Read).Select(x => x.Value).ToList();
+                if (role.MachineName == RoleTypes.Appva)
                 {
-                    role.Permissions.Add(permissions[Permissions.Read.Area51]);
+                    role.Permissions.Add(permissions[Permissions.Area51.Read]);
                 }
             }
         }
@@ -165,58 +134,57 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="permissions"></param>
         private void CreateMenu(IDictionary<IPermission, Permission> permissions)
         {
-            const string HeaderMenu = "Admin.Header.Menu";
-            const string PatientMenu = "Admin.Patient.Menu";
-            const string AccountMenu = "Admin.Account.Menu";
-            var menus = new Dictionary<string, Menu>
+            //// The menu.
+            var menu = new Menu("https://schema.appva.se/ui/menu", "Menu", "The menu");
+            this.persistence.Save(menu);
+            
+            //// 1st menu links.
+            var menuLinks1 = new Dictionary<string, MenuLink>()
             {
-                { HeaderMenu,  new Menu(HeaderMenu, "Header menu", "The header menu") },
-                { PatientMenu, new Menu(PatientMenu, "Patient menu", "The patient menu") },
-                { AccountMenu, new Menu(AccountMenu, "Account menu", "Account menu") }
+                { "Dashboard",    new MenuLink(menu, "Översikt", "Index", "Dashboard", "Dashboard", 0, null, null, null, permissions[Permissions.Dashboard.Read]) }, 
+                { "Patient",      new MenuLink(menu, "Boende", "List", "Patient", "Patient", 1, null, null, null, permissions[Permissions.Patient.Read]) },
+                { "Practitioner", new MenuLink(menu, "Medarbetare", "List", "Accounts", "Practitioner", 2, null, null, null, permissions[Permissions.Practitioner.Read]) },
+                { "Roles",        new MenuLink(menu, "Roller och behörigheter", "List", "Roles", "Roles", 3, null, null, null, permissions[Permissions.Role.Read]) },
+                { "Notification", new MenuLink(menu, "Notiser", "List", "Notification", "Notification", 4, null, null, null, permissions[Permissions.Notification.Read]) },
+                { "Area51",       new MenuLink(menu, "Area51", "Index", "Home", "Area51", 5, null, null, null, permissions[Permissions.Area51.Read]) },
+                { "Print",        new MenuLink(menu, "Skriv ut sidan", string.Empty, string.Empty, string.Empty, 6, "supp", "print", null, null)}
             };
-            foreach (var menu in menus)
+            foreach (var menuLink in menuLinks1)
             {
-                this.persistence.Save(menu.Value);
+                this.persistence.Save(menuLink.Value);
             }
-            var menuLinks = new List<MenuLink>
+            //// 2nd menu links.
+            var menuLinks2 = new Dictionary<string, MenuLink>()
                 {
-                    /////////////////////////  The admin header menu links  /////////////////////////////
-                    new MenuLink(menus[HeaderMenu], "Översikt", "Index", "Dashboard", "Dashboard", 0),
-                    new MenuLink(menus[HeaderMenu], "Boende", "List", "Patient", "Patient", 1, null, null, null, permissions[Permissions.Read.Patient]),
-                    new MenuLink(menus[HeaderMenu], "Medarbetare", "List", "Account", "Practitioner", 2, null, null, null, permissions[Permissions.Read.Practitioner]),
-                    new MenuLink(menus[HeaderMenu], "Roller och behörigheter", "List", "Roles", "Roles", 3, null, null, null, permissions[Permissions.Read.Role]),
-                    new MenuLink(menus[HeaderMenu], "Notiser", "List", "Notification", "Notification", 4, null, null, null, permissions[Permissions.Read.Notification]),
-                    new MenuLink(menus[HeaderMenu], "Area51", "Index", "Home", "Area51", 5, null, null, null, permissions[Permissions.Read.Area51]),
-                    new MenuLink(menus[HeaderMenu], "Skriv ut sidan", string.Empty, string.Empty, string.Empty, 6, "supp", "print", null, null),
-                    ///////////////////////////  The patient menu links  ////////////////////////////////
-                    new MenuLink(menus[PatientMenu], "Signeringslistor", "List", "Schedule", "Patient", 0, null, null, null, permissions[Permissions.Read.Schedule]),
-                    new MenuLink(menus[PatientMenu], "Signerade händelser", "Sign", "Schedule", "Patient", 1, null, null, null, permissions[Permissions.Read.EventList]),
-                    new MenuLink(menus[PatientMenu], "Larm", "List", "Alert", "Patient", 2, null, null, null, permissions[Permissions.Read.Alert]),
-                    new MenuLink(menus[PatientMenu], "Rapport", "ScheduleReport", "Schedule", "Patient", 3, null, null, null, null/*permissions[Permissions.Read.PatientReport]*/),
-                    new MenuLink(menus[PatientMenu], "Kalender", "List", "Calendar", "Patient", 4, null, null, null, permissions[Permissions.Read.CalendarEvent]),
-                    new MenuLink(menus[PatientMenu], "Saldon", "List", "Inventory", "Patient", 5, null, null, null, permissions[Permissions.Read.Inventory]),
-                    ///////////////////////////  The account menu links  ////////////////////////////////
-                    new MenuLink(menus[AccountMenu], "Aktuella delegeringar", "List", "Delegation", string.Empty, 0, null, null, null, permissions[Permissions.Read.Delegation]),
-                    new MenuLink(menus[AccountMenu], "Alla mottagna delegeringar", "Revision", "Delegation", string.Empty, 1, null, null, null, permissions[Permissions.Read.Revision]),
-                    new MenuLink(menus[AccountMenu], "Utställda delegeringar", "Issued", "Delegation", string.Empty, 2, null, null, null, permissions[Permissions.Read.IssuedDelegation]),
-                    new MenuLink(menus[AccountMenu], "Rapporter", "DelegationReport", "Delegation", string.Empty, 3, null, null, null, permissions[Permissions.Read.PractitionerReport])
+                    //// The patient menu links
+                    { "0", new MenuLink(menu, "Signeringslistor", "List", "Schedule", "Patient", 0, null, null, menuLinks1["Patient"], permissions[Permissions.Schedule.Read]) },
+                    { "1", new MenuLink(menu, "Signerade händelser", "Sign", "Schedule", "Patient", 1, null, null, menuLinks1["Patient"], permissions[Permissions.Schedule.EventList]) },
+                    { "2", new MenuLink(menu, "Larm", "List", "Alerts", "Patient", 2, null, null, menuLinks1["Patient"], permissions[Permissions.Alert.Read]) },
+                    { "3", new MenuLink(menu, "Rapport", "ScheduleReport", "Schedule", "Patient", 3, null, null, menuLinks1["Patient"], permissions[Permissions.Schedule.Report]) },
+                    { "4", new MenuLink(menu, "Kalender", "List", "Calendar", "Patient", 4, null, null, menuLinks1["Patient"], permissions[Permissions.Calendar.Read]) },
+                    { "5", new MenuLink(menu, "Saldon", "List", "Inventory", "Patient", 5, null, null, menuLinks1["Patient"], permissions[Permissions.Inventory.Read]) },
+                    //// The account menu links
+                    { "6", new MenuLink(menu, "Aktuella delegeringar", "List", "Delegation", "Practitioner", 0, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Read]) },
+                    { "7", new MenuLink(menu, "Alla mottagna delegeringar", "Revision", "Delegation", "Practitioner", 1, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Revision]) },
+                    { "8", new MenuLink(menu, "Utställda delegeringar", "Issued", "Delegation", "Practitioner", 2, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Issued]) },
+                    { "9", new MenuLink(menu, "Rapporter", "DelegationReport", "Delegation", "Practitioner", 3, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Report]) }
                 };
-            foreach (var menuLink in menuLinks)
+            foreach (var menuLink in menuLinks2)
+            {
+                this.persistence.Save(menuLink.Value);
+            }
+            //// 2nd menu links.
+            var menuLinks3 = new List<MenuLink>
+                {
+                    new MenuLink(menu, "Signeringslista objekt (Dummy)", "Details", "Schedule", "Patient", 0, null, null, menuLinks2["0"], permissions[Permissions.Schedule.Read]),
+                    new MenuLink(menu, "Iordningsställande (Dummy)", "Schema", "Prepare", "Patient", 1, null, null, menuLinks2["0"], permissions[Permissions.Prepare.Read])
+                };
+            foreach (var menuLink in menuLinks3)
             {
                 this.persistence.Save(menuLink);
             }
             this.settings.Upsert(ApplicationSettings.IsAccessControlInstalled, true);
         }
         #endregion
-    }
-
-    internal static class IPermissionExtensions
-    {
-        private static int sort = 0;
-
-        public static Permission Convert(this IPermission permission)
-        {
-            return new Permission(permission.Name, permission.Description, permission.Value, PermissionAction.Create, PermissionContext.Admin, sort++);
-        }
     }
 }

@@ -18,7 +18,7 @@
     },
     quittance: function (task) {
         $.ajax({
-            url: '/Event/Quittance',
+            url: 'patient/calendar/quittance',
             dataType: 'JSON',
             method: 'get',
             data: { id: task.attr('id'), date: task.attr('name') },

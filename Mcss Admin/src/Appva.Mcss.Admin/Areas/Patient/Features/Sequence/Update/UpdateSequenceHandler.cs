@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Linq;
     using System.Web.Mvc;
     using Appva.Core.Extensions;
+    using Appva.Core.Resources;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
@@ -61,7 +62,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             //// FIXME: Log here!
             var sequence = this.sequenceService.Find(message.SequenceId);
-            var schedule = this.context.Get<Schedule>(message.ScheduleId);
+            var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
             return new UpdateSequenceForm
             {
                 Id = message.Id,
@@ -85,7 +86,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 ReminderInMinutesBefore = sequence.ReminderInMinutesBefore,
                 Patient = sequence.Patient,
                 Schedule = sequence.Schedule,
-                Nurse = sequence.Role != null && sequence.Role.MachineName.Equals("_TITLE_N")
+                Nurse = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse)
             };
         }
 

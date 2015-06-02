@@ -4,15 +4,14 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Features.Accounts.ChangePassword
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-using Appva.Cqrs;
+    using Appva.Cqrs;
+    using DataAnnotationsExtensions;
 
     #endregion
 
@@ -21,6 +20,9 @@ using Appva.Cqrs;
     /// </summary>
     public class ChangePassword : IRequest<ChangePassword>
     {
+        /// <summary>
+        /// The current password.
+        /// </summary>
         [DisplayName("Nuvarande lösenord")]
         [Required(ErrorMessage = "Nuvarande lösenord måste fyllas i.")]
         [DataType(DataType.Password)]
@@ -30,6 +32,9 @@ using Appva.Cqrs;
             set;
         }
 
+        /// <summary>
+        /// The new password.
+        /// </summary>
         [DisplayName("Nytt lösenord")]
         [Required(ErrorMessage = "Nytt lösenord måste fyllas i.")]
         [MinLength(8, ErrorMessage = "Nytt lösenord måste vara minst 8 tecken långt.")]
@@ -40,9 +45,12 @@ using Appva.Cqrs;
             set;
         }
 
+        /// <summary>
+        /// The new password confirmation.
+        /// </summary>
         [DisplayName("Upprepa nytt lösenord")]
         [Required(ErrorMessage = "Upprepa lösenord måste fyllas i.")]
-        //[EqualTo("NewPassword", ErrorMessage = "Lösenord måste stämma överens.")]
+        [EqualTo("NewPassword", ErrorMessage = "Lösenord måste stämma överens.")]
         [DataType(DataType.Password)]
         public string ConfirmPassword
         {

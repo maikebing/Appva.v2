@@ -1,20 +1,16 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
-@model Appva.Mcss.Admin.Models.ListAccountModel
+@model ListAccountModel
 @{
 	Title("Medarbetare"); 
-	AddMeta("asd", "asd");
 }
-
 <div id="subheader" class="cf">
 	<h1>Medarbetare</h1>
-	@Html.PermissionLink(Permissions.AccountCreate, "Ny medarbetare", "Create", "Accounts", "Practitioner", null, new { @class = "btn lb-link" })
+	@Html.ActionLink(Permissions.Practitioner.Create, "Ny medarbetare", "Create", "Accounts", null, new { @class = "btn lb-link" })
 	@Html.Partial("_AccountSearch")
 </div>
-
 <div class="col-wrap cols-2-1 cf">
 	<div class="col col-1">
 		<div class="filter-ctrl">
-			
 			@using (Html.BeginForm("List", "Accounts", FormMethod.Get, new { @class = "filter-form" }))
 			{
 				<div class="filter-row">
@@ -50,18 +46,21 @@
 			@foreach (var item in Model.Accounts.Entities)
 			{
 				<li class="cf @((item.HasExpiringDelegation) ? "update" : "")">
-					@if (item.IsActive) {
-                        @Html.PermissionLink(Permissions.AccountDelete, "Ta bort", "Inactivate", "Accounts", "Practitioner", new { Id = item.Id }, new { @class = "btn btn-del" })
-					} 
-					@if (!item.IsActive && !item.IsPaused) {
-                        @Html.PermissionLink(Permissions.AccountDelete, "Aktivera", "Reactivate", "Accounts", "Practitioner", new { Id = item.Id }, new { @class = "btn" })
-					}
-					@if (!item.IsPaused && item.IsActive)
+					@if (item.IsActive) 
                     {
-                        @Html.PermissionLink(Permissions.AccountPause, "Inaktivera", "Pause", "Accounts", "Practitioner", new { Id = item.Id }, new { @class = "btn" })
+                        @Html.ActionLink(Permissions.Practitioner.Inactivate, "Ta bort", "Inactivate", "Accounts", new { Id = item.Id }, new { @class = "btn btn-del" })
+					} 
+					@if (! item.IsActive && ! item.IsPaused) 
+                    {
+                        @Html.ActionLink(Permissions.Practitioner.Reactivate, "Aktivera", "Reactivate", "Accounts", new { Id = item.Id }, new { @class = "btn" })
 					}
-					@if (item.IsPaused ) {
-                        @Html.PermissionLink(Permissions.AccountPause, "Aktivera", "UnPause", "Accounts", "Practitioner", new { Id = item.Id }, new { @class = "btn" })
+					@if (! item.IsPaused && item.IsActive)
+                    {
+                        @Html.ActionLink(Permissions.Practitioner.Pause, "Inaktivera", "Pause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
+					}
+					@if (item.IsPaused ) 
+                    {
+                        @Html.ActionLink(Permissions.Practitioner.Resume, "Aktivera", "UnPause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
 					}
 					<div class="h">
 						<h2>

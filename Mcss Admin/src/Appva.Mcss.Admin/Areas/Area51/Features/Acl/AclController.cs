@@ -13,9 +13,11 @@ namespace Appva.Mcss.Admin.Controllers
     using System.Linq;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -55,7 +57,8 @@ namespace Appva.Mcss.Admin.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet, Route("index")]
+        [Route("index")]
+        [HttpGet]
         public ActionResult Index()
         {
             return this.View();
@@ -91,7 +94,7 @@ namespace Appva.Mcss.Admin.Controllers
         [AlertSuccess("Roller och behörigheter är nu aktiverade!")]
         public ActionResult Activate()
         {
-            this.mediator.Publish(new ActivateAcl());
+            this.mediator.Send(new ActivateAcl());
             return this.RedirectToAction("Index");
         }
 

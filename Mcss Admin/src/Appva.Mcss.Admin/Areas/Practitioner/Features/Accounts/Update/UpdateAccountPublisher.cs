@@ -63,8 +63,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
 
         public override bool Handle(UpdateAccount message)
         {
-            var account = this.accounts.Find(message.AccountId.GetValueOrDefault());
-
+            var account = this.accounts.Find(message.Id);
             if (message.Taxon.IsEmpty())
             {
                 message.Taxon = taxonomies.Roots(TaxonomicSchema.Organization).SingleOrDefault().Id.ToString();
@@ -76,7 +75,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                 message.LastName,
                 message.Email,
                 message.DevicePassword,
-                new PersonalIdentityNumber(message.PersonalIdentityNumber),
+                message.PersonalIdentityNumber,
                 this.taxonomies.Get(message.Taxon.ToGuid()));
 
             return true;

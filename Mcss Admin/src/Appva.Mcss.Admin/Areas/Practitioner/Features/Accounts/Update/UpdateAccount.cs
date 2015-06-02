@@ -24,17 +24,8 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class UpdateAccount : IRequest<bool>
+    public sealed class UpdateAccount : Identity<bool>
     {
-        /// <summary>
-        /// The account ID.
-        /// </summary>
-        public Guid? AccountId
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// The account first name.
         /// </summary>

@@ -1,0 +1,269 @@
+﻿@model Appva.Mcss.Admin.Areas.Models.FullReportModel
+@{ ViewBag.Title = "Översikt"; ViewBag.MainClass = "report-view"; }
+<div id="subheader" class="cf">
+	<h1>Fullständig resultatrapport</h1>
+    @Html.ActionLink("Exportera till Excel", "Excel", new { sId = Model.Schedule, startDate = Model.StartDate.ToShortDateString(), endDate = Model.EndDate.ToShortDateString() }, new { @class = "export", download = string.Format("MCSS-rapport-{0}.xls", DateTime.Now.ToFileTimeUtc()) })
+</div>
+<div id="content" class="has-nav cf">
+    <ul id="nav-sub">
+        @if (Model.Schedules.IsNotNull()) {
+            <li class="@(!Model.Schedule.HasValue ? "sel" : "")">
+                @Html.ActionLink("Alla", "Index")
+            </li>
+            foreach (var schedule in Model.Schedules) {
+                <li class="@(Model.Schedule.HasValue && Model.Schedule.Value.Equals(schedule.Id) ? "sel" : "")">
+                    @Html.ActionLink(schedule.Name, "Index", new { sId = schedule.Id })
+                </li>
+            }
+        }
+	</ul>
+	<div id="content-primary">
+        <div id="status-filter" class="cf">
+            <h2>Visa rapport för:</h2>
+            @using (Html.BeginForm("Index", "Report")) {
+                <div class="dates cf">
+			        <div class="select">
+                        @Html.LabelFor(m => m.StartDate)
+                        @Html.EditorFor(m => m.StartDate)
+			        </div>
+			        <div class="select">
+                        @Html.LabelFor(m => m.EndDate)
+                        @Html.EditorFor(m => m.EndDate)
+			        </div>
+		        </div>
+                <div class="dates submit">
+                    @Html.HiddenFor(m => m.Schedule)
+                    @Html.Submit("Visa")
+                </div>    
+            }
+        </div>
+		<div id="report" class="cf">
+            <div id="chart" class="chart" style="height: 250px; margin-bottom:20px;"></div>
+			<div class="data cf">
+				<dl>
+					<dt>I tid</dt>
+					<dd>
+                        @Model.Report.OnTimePercentage % 
+                        @if (Model.Report.OnTimePercentage > 0)
+                        {
+                            <img src="@Url.Image("trendup.png")" alt="Uppåtgående" />
+                        } else {
+                            <img src="@Url.Image("trenddn.png")" alt="Nedåtgående" />
+                        }
+                    </dd>
+				</dl>
+				<dl>
+					<dt>Ej i tid</dt>
+					<dd>
+                        @Model.Report.NotOnTimePercentage % 
+                    </dd>
+				</dl>
+				<dl>
+					<dt>Förändring från föregående period</dt>
+					@{
+                         
+                        var amount = string.Empty;
+                        var change = Model.Report.OnTimePercentage - Model.Report.OnTimePercentage;
+                        if (change < 0) {
+                            amount = string.Format("{0} i tid", "färre");
+                        } else {
+                            amount = string.Format("{0} i tid", "fler");
+                        }
+                    }
+					<dd class="small">@change % @amount</dd>
+				</dl>
+				<dl>
+					<dt>Genomsnittlig avvikelse i tid</dt>
+					<dd class="small">@*TimeSpanDifference.ToReadableText(TimeSpan.FromMinutes(Model.Report.AverageDifferenceInTime))*@</dd>
+				</dl>
+                <dl>
+                    <dt>Totalt antal insatser</dt>
+					<dd class="small">@Model.Report.Total</dd>
+                </dl>
+			</div>
+
+            @if (Model.Tasks != null && Model.Tasks.Entities.Count() > 0) {
+            <div id="signed-events" class="listing">
+			    <h2 class="heading">Insatser under perioden</h2>
+                <table>
+				    <thead>
+					    <tr class="head">
+						    <th scope="col">Gavs</th>
+						    <th scope="col">Dag</th>
+						    <th scope="col">Tid</th>
+						    <th scope="col">Skulle ges</th>
+                            <th scope="col">Boende</th>
+                            <th scope="col">Signerat av</th>
+						    <th scope="col">Status</th>
+					    </tr>
+				    </thead>
+				    <tbody>
+                        @foreach (var task in Model.Report.Search.Items) {
+
+    <tr class="@(!task.Active ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5)) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false) ? "alarm" : "")">
+        <td>@task.Name</td>
+        <td>
+            @if (!task.IsCompleted) {
+                @:-
+            }
+            else {
+                if (task.OnNeedBasis) {
+                    @TimeSpanDifference.ToShortDateTime(task.Modified, "Idag", "Igår")
+                }
+                else {
+                    @TimeSpanDifference.ToShortDateTime(task.CompletedDate.GetValueOrDefault(), "Idag", "Igår")
+                }
+            }
+           
+        </td>
+
+		<td>
+            @if (task.Delayed && task.CompletedBy.IsNull()) {
+                @:Ej signerad
+            } else {
+                if (task.OnNeedBasis) {
+					@:kl @String.Format("{0:HH:mm}", task.Modified)
+				} else {
+                    @:kl @String.Format("{0:HH:mm}", task.CompletedDate.GetValueOrDefault())
+				}
+
+            }            
+        </td>
+        <td>
+            @TimeSpanDifference.ToShortDateTime(task.Scheduled, "Idag", "Igår") kl @String.Format("{0:HH:mm}", task.Scheduled)
+            @if (task.RangeInMinutesBefore.Equals(task.RangeInMinutesAfter)) {
+                @:±@task.RangeInMinutesBefore min
+                                }
+            else {
+                @:+@task.RangeInMinutesAfter -@task.RangeInMinutesBefore min
+                                }
+        </td>
+        <td>
+            @task.Patient.FullName
+        </td>
+        <td>
+            @if (task.CompletedBy.IsNotNull()) {
+                @task.CompletedBy.FullName
+            }
+            else {
+                @:--
+                                }
+        </td>
+        <td>
+            @if (task.StatusTaxon != null) {
+                <img src="@Url.Image(task.StatusTaxon.Path)" alt="@task.StatusTaxon.Name" />
+                if (task.Delayed && task.StatusTaxon.Weight < 2) {
+                    <strong>Avvikelse:</strong> @(string.Format("{0} för sent", task.StatusTaxon.Name))
+                }
+                else if (task.StatusTaxon.Weight > 1) {
+                    <strong>Avvikelse:</strong> @task.StatusTaxon.Name
+                }
+                else {
+                    @task.StatusTaxon.Name
+                }
+            }
+            else {
+                if (task.Status.Equals(1)) {
+                    <img src="@Url.Image("icn-ok.png")" alt="OK" />
+                    if (task.Delayed) {
+                        <strong>Avvikelse:</strong> @:Given för sent
+									    }
+                    else {
+                        @:OK
+									    }
+                }
+                else if (task.Status.Equals(2)) {
+                    <img src="@Url.Image("icn-part.png")" alt="Delvis given" />
+                    <strong>Avvikelse:</strong> @:Delvis given
+                                    }
+                else if (task.Status.Equals(3)) {
+                    <img src="@Url.Image("icn-none.png")" alt="Ej given" />
+                    <strong>Avvikelse:</strong> @:Ej given
+                                    }
+                else if (task.Status.Equals(4)) {
+                    <img src="@Url.Image("icn-nothx.png")" alt="Kan ej ta" />
+                    <strong>Avvikelse:</strong> @: Kan ej ta
+                                    }
+                else if (task.Status.Equals(5)) {
+                    <img src="@Url.Image("icn-sent.png")" alt="Medskickad" /> @:Medskickad
+                                    }
+                else if (task.Status.Equals(6)) {
+                    <img src="@Url.Image("icn-none.png")" alt="Larm" />
+                    <strong>Avvikelse:</strong> @:Räknad mängd stämmer ej med saldo
+                                    }
+                else {
+                    if (task.Delayed) {
+                        <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
+                        <strong>Avvikelse:</strong>
+                        if (task.DelayHandled) {
+                            @Html.ActionLink("Larm åtgärdat", "List", "Alert", new { id = task.Patient.Id }, new { })
+                        }
+                        else {
+                            @:Ej given
+                                            }
+                    }
+                }
+            }
+        </td>
+
+    </tr>
+}
+				    </tbody>
+			    </table>
+		    </div>
+            @Html.Pager(Model.Report.Search.PageSize, Model.Report.Search.PageNumber, Model.Report.Search.TotalItemCount).Options(o => o
+                .DisplayTemplate("Pagination")
+                .MaxNrOfPages(15)
+                .AlwaysAddFirstPageNumber()
+                .AddRouteValue("sId", Model.Schedule)
+                .AddRouteValue("startDate", Model.Report.StartDate.ToShortDateString())
+                .AddRouteValue("endDate", Model.Report.EndDate.ToShortDateString())
+                )
+            }
+        </div>
+	</div>
+
+</div>
+<script type="text/javascript">
+    $(function () {
+        Date.format = 'yyyy-mm-dd';
+        $('.datepick').datePicker({
+            'startDate': '1970-01-01',
+            'clickInput': true 
+        });
+        $('#status-filter form').validate({
+            'rules': {
+                'StartDate': {
+                    'date': true,
+                    'datelessthan': [$('#EndDate')]
+                },
+                'EndDate': {
+                    'date': true,
+                    'dategreaterthan': [$('#StartDate')]
+                }
+            },
+            'messages': {
+                'StartDate': {
+                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
+                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                },
+                'EndDate': {
+                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
+                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                }
+            }
+        });
+        mcss.chart.Load({ 
+            'selector': '#chart',
+            'url': '@Url.Action("Chart")',
+            'min': new Date(@Model.Report.StartDate.Year, @(Model.Report.StartDate.Month - 1), @Model.Report.StartDate.Day),
+            'max': new Date(@Model.Report.EndDate.Year, @(Model.Report.EndDate.Month - 1), @Model.Report.EndDate.Day),
+            'parameters': {
+                'sId': '@Model.Schedule', 
+                'startDate': '@Model.Report.StartDate.ToShortDateString()',
+                'endDate': '@Model.Report.EndDate.ToShortDateString()'
+            }
+        });
+
+    });
+</script>

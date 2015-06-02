@@ -8,6 +8,9 @@ namespace Appva.Mcss.Admin.Areas.Models
 {
     #region Imports.
 
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Repository;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -30,8 +33,16 @@ namespace Appva.Mcss.Admin.Areas.Models
 
         #endregion
 
-        public Repository.PageableSet<Domain.Entities.Task> Tasks { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public Application.Models.ReportData Report { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public PageableSet<Task> Tasks { get; set; }
+
+        public ReportData Report { get; set; }
+
+        public ScheduleSettings Scehdules { get; set; }
+
+        public Guid Schedule { get; set; }
     }
 }

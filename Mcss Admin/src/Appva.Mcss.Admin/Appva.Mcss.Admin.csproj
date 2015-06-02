@@ -355,10 +355,10 @@
     <!--<Compile Include="Areas\Report\Features\ReportData\Chart\ReportChart.cs" />
     <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChartModel.cs" />
     <Compile Include="Areas\Report\Features\ReportData\ReportDataController.cs" />-->
-    <Compile Include="Areas\Report\Features\FullReport\FullReport.cs" />
-    <Compile Include="Areas\Report\Features\FullReport\FullReportHandler.cs" />
-    <Compile Include="Areas\Report\Features\FullReport\FullReportModel.cs" />
-    <Compile Include="Areas\Report\Features\ReportController.cs" />
+    <Compile Include="Areas\Report\Features\Reports\FullReport\FullReport.cs" />
+    <Compile Include="Areas\Report\Features\Reports\FullReport\FullReportHandler.cs" />
+    <Compile Include="Areas\Report\Features\Reports\FullReport\FullReportModel.cs" />
+    <Compile Include="Areas\Report\Features\Reports\ReportController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\RolesSchedulesController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedule.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleScheduleHandler.cs" />
@@ -743,7 +743,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Dashboard\Features\Shared\" />
-    <Folder Include="Areas\Report\Features\ReportData\Chart\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -974,6 +973,15 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Update\Update.cshtml">
       <SubType>Code</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Report\Features\Reports\FullReport\FullReport.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Report\Features\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Report\Features\Web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

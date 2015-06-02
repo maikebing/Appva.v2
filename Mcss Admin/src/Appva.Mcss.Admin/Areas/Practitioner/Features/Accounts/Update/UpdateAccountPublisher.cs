@@ -68,7 +68,6 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             {
                 message.Taxon = taxonomies.Roots(TaxonomicSchema.Organization).SingleOrDefault().Id.ToString();
             }
-
             this.accounts.Update(
                 account,
                 message.FirstName,
@@ -77,7 +76,6 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                 message.DevicePassword,
                 message.PersonalIdentityNumber,
                 this.taxonomies.Get(message.Taxon.ToGuid()));
-
             return true;
         }
 

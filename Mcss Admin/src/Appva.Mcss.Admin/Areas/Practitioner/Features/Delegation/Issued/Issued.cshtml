@@ -1,15 +1,7 @@
 ﻿@model Appva.Mcss.Web.ViewModels.IssuedDelegationsViewModel
 @{ ViewBag.Title = string.Format("Utställda delegeringar, {0}", Model.Account.FullName); }
-@Html.Partial("~/Views/Account/Partials/_AccountDetails.cshtml", Model.Account)
-@Html.Action("Menu", "Menu", new
-            {
-                Key = "admin_account_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Account.Id.ToString(),
-                IgnoreAction = false
-            })
-
+@Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
 <div id="subheader" class="cf">
 	<h1>Utställda delegeringar</h1>
     <p class="filter">

@@ -181,13 +181,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 Role role = null;
                 query.Left.JoinAlias(x => x.Roles, () => role)
                     .Where(() => role.Id == model.RoleFilterId)
-                    .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
+                    .And(() => role.IsVisible);
+                    /// TODO: Old shit remove when visible is done
+                    /// .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
             }
             else
             {
                 Role role = null;
                 query.Left.JoinAlias(x => x.Roles, () => role)
-                    .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
+                    .Where(() => role.IsVisible);
+                    /// TODO: Old shit remove when visible is done
+                    /// .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
             }
 
             if (model.OrganisationFilterId.HasValue && model.OrganisationFilterId.Value.IsNotEmpty())

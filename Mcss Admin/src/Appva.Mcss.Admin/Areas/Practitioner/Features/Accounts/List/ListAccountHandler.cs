@@ -145,8 +145,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 RoleFilterId = message.RoleFilterId,
                 DelegationFilterId = message.DelegationFilterId,
                 IsFilterByCreatedByEnabled = message.filterByCreatedBy,
-                IsFilterByIsActiveEnabled = message.isActive,
-                IsFilterByIsPausedEnabled = message.isPaused
+                IsFilterByIsActiveEnabled = message.isActive.GetValueOrDefault(true),
+                IsFilterByIsPausedEnabled = message.isPaused.GetValueOrDefault(false)
             };
         }
 

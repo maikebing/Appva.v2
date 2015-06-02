@@ -43,6 +43,7 @@ namespace Appva.Mcss.Admin.Models
 
         [Required(ErrorMessage = "En lista måste väljas.")]
         [DisplayName("Typ av lista")]
+        [Remote("VerifyUnique", "Schedule", HttpMethod = "POST", ErrorMessage = "Denna lista finns sedan tidigare inlagd")]
         public virtual Guid ScheduleSetting
         {
             get;

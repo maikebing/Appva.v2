@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using System;
     using System.Web.Mvc;
     using System.Web.UI;
+    using Appva.Cqrs;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
@@ -25,6 +26,28 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     [RouteArea("patient"), RoutePrefix("schedule")]
     public sealed class ScheduleController : Controller
     {
+        #region Variables.
+
+        /// <summary>
+        /// The <see cref="IMediator"/>.
+        /// </summary>
+        private readonly IMediator mediator;
+
+        #endregion
+
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScheduleController"/> class.
+        /// </summary>
+        /// <param name="mediator">The <see cref="IMediator"/></param>
+        public ScheduleController(IMediator mediator)
+        {
+            this.mediator = mediator;
+        }
+
+        #endregion
+
         #region Routes.
 
         #region List Schedules.
@@ -98,7 +121,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="id">The schedule id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("inactivate/schedule/{id:guid}")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Schedule")]
+        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("List", "Schedule")]
         public ActionResult Inactivate(InactivateSchedule request)
         {
             return this.View();
@@ -142,7 +165,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         //[Authorize(Roles = RoleUtils.AppvaAccount)]
         [Route("DeleteTask/{id:guid}/task/{taskId:guid}")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Schedule")]
+        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("List", "Schedule")]
         public ActionResult DeleteTask(DeleteTask request)
         {
             return this.View();
@@ -272,13 +295,20 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         [HttpPost, Validate, ValidateAntiForgeryToken]
         public ActionResult ScheduleReport(Guid id, ScheduleReportViewModel model)
         {
-            return this.RedirectToAction("ScheduleReport", new ReportSchedule
+            return View(this.mediator.Send<ScheduleReportViewModel>(new ReportSchedule
             {
                 Id = id,
                 ScheduleSettingsId = model.Schedule,
                 StartDate = model.StartDate,
                 EndDate = model.EndDate
-            });
+            }));
+            /*return this.RedirectToAction("ScheduleReport", new ReportSchedule
+            {
+                Id = id,
+                ScheduleSettingsId = model.Schedule,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate
+            });*/
         }
 
         /// <summary>
@@ -304,106 +334,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="startDate">The start date</param>
         /// <param name="endDate">The end date</param>
         /// <returns>A <see cref="FileContentResult"/></returns>
-        /*[HttpGet]
-        public FileContentResult Excel(Guid id, Guid? sId, DateTime startDate, DateTime endDate)
+        [Route("Excel/{id:guid}")]
+        [HttpGet, Dispatch]
+        public DispatchExcelFileContentResult Excel(GenerateExcel request)
         {
-            var query = this.context.QueryOver<Task>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.OnNeedBasis == false)
-                .And(x => x.Scheduled >= startDate)
-                .And(x => x.Scheduled <= endDate.LastInstantOfDay())
-                .Fetch(x => x.Patient).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer())
-                .OrderBy(x => x.UpdatedAt).Desc;
-            var patient = this.context.Get<Patient>(id);
-            var account = Identity();
-            this.logService.Info(string.Format("Användare {0} skapade excellista för boende {1} (REF: {2}).", account.UserName, patient.FullName, patient.Id), account, patient, LogType.Read);
-            new ScheduleReportFilter
-            {
-                PatientId = id,
-                ScheduleSettingsId = sId
-            }.Filter(query);
-            var tasks = query.List();
-            var excel = new ExcelWriter<Task, ExcelTaskModel>
-            {
-                Mapping = x => new ExcelTaskModel
-                {
-                    Task = x.Name,
-                    TaskCompletedOnDate = x.IsCompleted ? x.CompletedDate.Value.Date : x.Modified, //// FIXME: Its either completed or null.
-                    TaskCompletedOnTime = (x.Delayed && x.CompletedBy.IsNull()) ? "Ej given" : string.Format("{0} {1:HH:mm}", "kl", x.CompletedDate),
-                    TaskScheduledOnDate = x.Scheduled.Date,
-                    TaskScheduledOnTime = string.Format("{0} {1:HH:mm}", "kl", x.Scheduled),
-                    MinutesBefore = x.RangeInMinutesBefore,
-                    MinutesAfter = x.RangeInMinutesAfter,
-                    PatientFullName = x.Patient.FullName,
-                    CompletedBy = x.CompletedBy.IsNotNull() ? x.CompletedBy.FullName : "",
-                    TaskCompletionStatus = Status(x)
-                },
-                TemplatePath = Server.MapPath(@"\Templates\Template.xls")
-            };
-            var bytes = excel.Generate(tasks);
-            return File(bytes, "application/vnd.ms-excel",
-                string.Format("Rapport-{0}-{1}.xls", TenantIdentity().Name.Replace(" ", "-"),
-                DateTime.Now.ToFileTimeUtc()));
-        }*/
-
-        /// <summary>
-        /// Returns the task status as string.
-        /// TODO: Refactor!
-        /// </summary>
-        /// <param name="task">The task</param>
-        /// <returns>A string representation of the task status</returns>
-        /*private string Status(Task task)
-        {
-            if (task.StatusTaxon != null)
-            {
-                if (task.Delayed && task.StatusTaxon.Weight < 2)
-                {
-                    return string.Format("{0} för sent", task.StatusTaxon.Name);
-                }
-                else
-                {
-                    return task.StatusTaxon.Name;
-                }
-            }
-            if (task.Status.Equals(1))
-            {
-                if (task.Delayed)
-                {
-                    return "Given för sent";
-                }
-                return "OK";
-            }
-            else if (task.Status.Equals(2))
-            {
-                return "Delvis given";
-            }
-            else if (task.Status.Equals(3))
-            {
-                return "Ej given";
-            }
-            else if (task.Status.Equals(4))
-            {
-                return "Kan ej ta";
-            }
-            else if (task.Status.Equals(5))
-            {
-                return "Medskickad";
-            }
-            else if (task.Status.Equals(6))
-            {
-                return "Räknad mängd stämmer ej med saldo";
-            }
-            if (task.Status.Equals(0) || task.Delayed)
-            {
-                if (task.DelayHandled)
-                {
-                    return "Larm åtgärdat";
-                }
-                return "Ej given";
-            }
-            return string.Empty;
-        }*/
+            return this.ExcelFile();
+        }
 
         #endregion
 
@@ -425,27 +361,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
         #endregion
 
-        #region Private Helper Functions.
-
-        /// <summary>
-        /// Schedule validator for checking duplicates.
-        /// </summary>
-        /// <param name="model">The schedule model</param>
-        /*private void ValidateNonDuplicates(ScheduleViewModel model)
-        {
-            var schedules = this.context.QueryOver<Schedule>()
-                    .Where(x => x.Patient.Id == model.Id)
-                    .And(x => x.ScheduleSettings.Id == model.ScheduleSetting)
-                    .And(x => x.IsActive == true)
-                    .List().Count;
-            if (schedules > 0)
-            {
-                ModelState.AddModelError("ScheduleSetting", "Denna lista finns sedan tidigare inlagd.");
-            }
-        }*/
-
         #endregion
-    }
-
-        #endregion
+    }    
 }

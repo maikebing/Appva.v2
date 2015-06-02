@@ -54,6 +54,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="identifier">The unique identifier</param>
         /// <returns>A collection of <see cref="Account"/></returns>
         IList<Account> MembersOfRole(string identifier);
+
+        /// <summary>
+        /// Returns the collection of <see cref="Role"/> which are visible.
+        /// </summary>
+        /// <returns>A collection os <see cref="Role"/></returns>
+        IList<Role> ListOnlyVisible();
     }
 
     /// <summary>
@@ -137,6 +143,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .Where(x => x.MachineName == identifier).List();
         }
 
+        /// <inheritdoc />
+        public IList<Role> ListOnlyVisible()
+        {
+            return this.persistenceContext.QueryOver<Role>()
+                .Where(x => x.IsActive)
+                .And(x => x.IsVisible)
+                .List();
+        }
+
         #endregion
 
         #region IListRepository<Role> Members.
@@ -146,7 +161,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             return this.persistenceContext.QueryOver<Role>()
                 .Where(x => x.IsActive)
-                .And(x => x.IsVisible)
                 .OrderBy(x => x.Weight).Asc
                 .ThenBy(x => x.Name).Asc
                 .List();

@@ -8,7 +8,6 @@ namespace Appva.Common.Domain
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
 
     #endregion
@@ -21,22 +20,6 @@ namespace Appva.Common.Domain
     /// </summary>
     public interface IAggregateRoot
     {
-        /// <summary>
-        /// Entity created at date time.
-        /// </summary>
-        DateTime CreatedAt
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Entity updated at date time.
-        /// </summary>
-        DateTime UpdatedAt
-        {
-            get;
-        }
-
         /// <summary>
         /// A list of domain events.
         /// </summary>

@@ -1,5 +1,5 @@
-﻿@model Appva.Mcss.Admin.Models.CreateSequenceForm
-@{ ViewBag.Title = "Skapa"; }
+﻿@model CreateSequenceForm
+@{ Title("Skapa"); }
 <div class="lb-panel lb-validate-form" data-valclass="SequenceCreate">
 	<div class="std-panel activity-edit std-form">
     @using (Html.BeginForm()) {
@@ -100,15 +100,6 @@
 								minuter innan klockslag.
                                 @Html.ValidationMessageFor(m => m.ReminderInMinutesBefore)
 							</div>
-							@*<div class="select col">
-								@Html.LabelFor(m => m.ReminderRecipient)
-                                @Html.DropDownListFor(
-                                    m => m.ReminderRecipient,
-                                    new SelectList(Model.ReminderRecipients, "Value", "Text", Model.ReminderRecipient),
-                                    "Välj mottagare ..."
-                                )
-                                @Html.ValidationMessageFor(m => m.ReminderRecipient)
-							</div>*@
 						</div>
 					</div>
 				</div>

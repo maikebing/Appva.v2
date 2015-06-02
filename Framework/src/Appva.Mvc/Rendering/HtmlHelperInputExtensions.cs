@@ -38,13 +38,32 @@ namespace Appva.Mvc
         }
 
         /// <summary>
-        /// Creates a submit button element (not an submit input element).
+        /// Creates a submit input element.
         /// </summary>
         /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
         /// <param name="text">The submit text</param>
         /// <param name="htmlAttributes">Optional HTML attributes</param>
         /// <returns>An <see cref="MvcHtmlString"/></returns>
         public static MvcHtmlString Submit([NotNull] this HtmlHelper htmlHelper, string text, object htmlAttributes = null)
+        {
+            var button = new TagBuilder(Tags.Input);
+            button.Attributes.Add(TagAttributes.Type, "submit");
+            button.Attributes.Add(TagAttributes.Value, text);
+            if (htmlAttributes != null)
+            {
+                button.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+            }
+            return MvcHtmlString.Create(button.ToString(TagRenderMode.SelfClosing));
+        }
+
+        /// <summary>
+        /// Creates a submit button element (not an submit input element).
+        /// </summary>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="text">The submit text</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns>An <see cref="MvcHtmlString"/></returns>
+        public static MvcHtmlString Button([NotNull] this HtmlHelper htmlHelper, string text, object htmlAttributes = null)
         {
             var button = new TagBuilder(Tags.Button);
             button.Attributes.Add(TagAttributes.Type, "submit");

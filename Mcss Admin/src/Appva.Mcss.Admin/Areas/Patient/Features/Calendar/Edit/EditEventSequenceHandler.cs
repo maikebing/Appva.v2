@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override EventViewModel Handle(EditEventSequence message)
         {
-            var evt = this.eventService.Get(message.Id);
+            var evt = this.eventService.Get(message.SequenceId);
             var categories = this.eventService.GetCategories();
             var categorySelectlist = categories.IsNotNull() ? categories.Select(x => new SelectListItem
             {
@@ -77,6 +77,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }*/
             return new EventViewModel
             {
+                Id = evt.Patient.Id,
                 PatientId = evt.Patient.Id,
                 SequenceId = evt.Id,
                 ChoosedDate = message.Date,

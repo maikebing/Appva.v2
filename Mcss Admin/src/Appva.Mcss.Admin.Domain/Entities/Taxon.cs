@@ -34,15 +34,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="Taxon"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// The taxonomy.
         /// </summary>
         public virtual Taxonomy Taxonomy

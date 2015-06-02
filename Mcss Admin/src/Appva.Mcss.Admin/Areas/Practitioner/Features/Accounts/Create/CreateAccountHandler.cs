@@ -45,6 +45,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ITaxonomyService taxonomies;
 
+        /// <summary>
+        /// The <see cref="IRoleService"/>.
+        /// </summary>
+        private readonly IRoleService roleService;
+
         #endregion
 
         #region Constructor.
@@ -54,11 +59,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
         /// <param name="settings">The <see cref="ISettingsService"/></param>
-        public CreateAccountHandler(IRuntimeMemoryCache cache, ISettingsService settings, ITaxonomyService taxonomies)
+        public CreateAccountHandler(IRuntimeMemoryCache cache, ISettingsService settings, ITaxonomyService taxonomies, IRoleService roleService)
         {
             this.cache = cache;
             this.settings = settings;
             this.taxonomies = taxonomies;
+            this.roleService = roleService;
         }
 
         #endregion
@@ -72,7 +78,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 IsMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice, false),
                 IsMobileDevicePasswordFieldVisible = this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice, false),
                 IsUsernameVisible = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible, false),
-                Taxons = TaxonomyHelper.SelectList(this.taxonomies.List(TaxonomicSchema.Organization))
+                Taxons = TaxonomyHelper.SelectList(this.taxonomies.List(TaxonomicSchema.Organization)),
+                Titles = TitleHelper.SelectList(roleService.ListVisible())
             };
         }
 

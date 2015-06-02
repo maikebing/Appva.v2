@@ -53,6 +53,7 @@
     <Compile Include="Entities\EscalationAlert.cs" />
     <Compile Include="Entities\EscalationLevel.cs" />
     <Compile Include="Entities\Inventory.cs" />
+    <Compile Include="Entities\InventoryOld.cs" />
     <Compile Include="Entities\InventoryTransactionItem.cs" />
     <Compile Include="Entities\KnowledgeTest.cs" />
     <Compile Include="Entities\Log.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Person.cs" />
+    <Compile Include="Repositories\AuthenticationRepository.cs" />
+    <Compile Include="VO\HsaId.cs" />
     <Compile Include="VO\PersonalIdentityNumber.cs" />
     <Compile Include="Entities\PreparedSequence.cs" />
     <Compile Include="Entities\PreparedTask.cs" />

@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Features.Taxa
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Features.Taxa.Filter;
+    using Appva.Mcss.Web;
 
     #endregion
 
@@ -28,6 +29,8 @@ namespace Appva.Mcss.Admin.Features.Taxa
     public sealed class TaxaController : Controller
     {
         #region Variables.
+
+        private readonly ITaxonFilterSessionHandler handler;
 
         private readonly IIdentityService identity;
 
@@ -40,9 +43,10 @@ namespace Appva.Mcss.Admin.Features.Taxa
         /// <summary>
         /// Initializes a new instance of the <see cref="TaxaController"/> class.
         /// </summary>
-        public TaxaController(IIdentityService identity, ITaxonomyService taxonService)
+        public TaxaController(IIdentityService identity, ITaxonFilterSessionHandler handler, ITaxonomyService taxonService)
         {
             this.identity = identity;
+            this.handler = handler;
             this.taxonService = taxonService;
         }
 
@@ -54,47 +58,37 @@ namespace Appva.Mcss.Admin.Features.Taxa
         /// Returns a taxon select list for view filtering.
         /// </summary>
         /// <returns>A select list of available taxons for the specific user</returns>
-        [ ChildActionOnly, Route("TaxonFilter")]
+        [ChildActionOnly, Route("TaxonFilter")]
         public PartialViewResult TaxonFilter()
         {
             if (! identity.Principal.Identity.IsAuthenticated)
             {
                 return null;
             }
-            var root = this.taxonService.Roots(TaxonomicSchema.Organization).FirstOrDefault();
-            var taxons = this.taxonService.List(TaxonomicSchema.Organization);
 
+            var selected = this.handler.GetCurrentFilter();
+            var root = this.taxonService.Roots(TaxonomicSchema.Organization).First();
+            var taxons = this.taxonService.List(TaxonomicSchema.Organization);
             return PartialView(new TaxonFilter
             {
                 RootId = root.Id,
                 RootName = root.Name,
-                Items = SelectList(root, taxons)
+                Items = SelectList(selected, taxons)
             });
-
-            if (identity.Principal.Identity.IsAuthenticated)
-            {
-                /*
-                var taxon = FilterCache.Get(Session);
-                if (!FilterCache.HasCache())
-                {
-                    taxon = FilterCache.GetOrSet(account, Session);
-                }
-                var taxons = this.taxonService.Roots(TaxonomicSchema.Organization).SingleOrDefault;
-                //var taxons = new TaxonomyService(Session).Find(HierarchyUtils.Organization);
-                var rootTaxon = taxons.Where(x => x.IsRoot).SingleOrDefault();
-                return PartialView(new GlobalFilterViewModel
-                {
-                    RootName = rootTaxon.Name,
-                    RootId = rootTaxon.Id,
-                    Items = TaxonomyHelper.SelectList(taxon, taxons)
-                });
-                */
-            }
         }
 
         [HttpPost, Route("TaxonFilter")]
-        public ActionResult TaxonFilter(FormCollection coll)
+        public ActionResult TaxonFilter(FormCollection collection)
         {
+            var guids = TaxonomyHelper.GetGuid(collection);
+            if (guids.Count > 0)
+            {
+                this.handler.SetCurrentFilter(guids.First());
+            }
+            if (collection.Get("global-filter") != null)
+            {
+                return this.Redirect(Request.UrlReferrer.PathAndQuery);
+            }
             return this.TaxonFilter();
         }
 
@@ -218,6 +212,4 @@ namespace Appva.Mcss.Admin.Features.Taxa
 
         #endregion
     }
-
-
 }

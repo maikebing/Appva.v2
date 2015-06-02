@@ -3,15 +3,7 @@
 
 <div id="main" class="delegate-view">    
     @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
-    @Html.Action("Menu", "Menus", new
-            {
-                Key = "admin_account_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Account.Id.ToString(),
-                IgnoreAction = false,
-                Area = string.Empty
-            })
+    @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
     <div id="subheader" class="cf">
 		<h1>Aktuell delegering</h1>
         @Html.ActionLink("Skriv ut delegeringsbeslut", "DelegationPrint", new { id = Model.Account.Id }, new { @class = "btn printp" })

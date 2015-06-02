@@ -11,7 +11,7 @@ using Appva.Mcss.Admin.Models;
 
 namespace Appva.Mcss.Web.ViewModels {
 
-    public class EventViewModel : IRequest<ListCalendar>
+    public class EventViewModel : Identity<ListCalendar>
     {
 
         public EventViewModel() {

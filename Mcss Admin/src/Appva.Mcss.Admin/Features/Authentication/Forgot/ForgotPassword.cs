@@ -11,6 +11,8 @@ namespace Appva.Mcss.Admin.Features.Authentication.Forgot
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Appva.Mvc;
+    using DataAnnotationsExtensions;
 
     #endregion
 
@@ -19,30 +21,38 @@ namespace Appva.Mcss.Admin.Features.Authentication.Forgot
     /// </summary>
     public class ForgotPassword
     {
+        /// <summary>
+        /// The E-mail address.
+        /// </summary>
         [Required(ErrorMessage = "E-post måste anges")]
         [Display(Name = "E-post")]
-        //[Email(ErrorMessage = "E-postadress måste anges i korrekt format, t. ex. namn.efternamn@foretag.se.")]
+        [Email(ErrorMessage = "E-postadress måste anges i korrekt format, t. ex. namn.efternamn@foretag.se.")]
         public string Email
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The personal identity number.
+        /// </summary>
         [Required(ErrorMessage = "Personnummer måste anges")]
-        //[UniqueIdentifier(ErrorMessage = "Personnummer måste anges")]
+        [PersonalIdentityNumber(ErrorMessage = "Personnummer måste anges")]
         [Display(Name = "Personnummer")]
-        //[PlaceHolder("T.ex. 19010101-0001")]
-        public string UniqueIdentifier
+        [PlaceHolder("T.ex. 19010101-0001")]
+        public string PersonalIdentityNumber
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The current tenant.
+        /// </summary>
         public string Tenant
         {
             get;
             set;
         }
     }
-
 }

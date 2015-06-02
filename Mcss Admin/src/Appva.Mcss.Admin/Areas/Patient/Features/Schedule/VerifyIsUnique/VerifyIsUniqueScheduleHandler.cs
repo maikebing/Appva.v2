@@ -69,7 +69,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var count = this.persistence.QueryOver<Schedule>()
                     .Where(x => x.Patient.Id == message.Id)
-                    .And(x => x.ScheduleSettings.Id == message.ScheduleSettingId)
+                    .And(x => x.ScheduleSettings.Id == message.ScheduleSetting)
                     .And(x => x.IsActive == true)
                     .RowCount();
             return count == 0;

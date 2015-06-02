@@ -47,7 +47,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(UnPauseAccount message)
         {
-            this.accounts.UnPause(this.accounts.Find(message.AccountId));
+            this.accounts.UnPause(this.accounts.Find(message.Id));
 
             return true;
         }

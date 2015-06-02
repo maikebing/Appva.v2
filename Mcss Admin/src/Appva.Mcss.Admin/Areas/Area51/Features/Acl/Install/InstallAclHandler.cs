@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     var sort = sortAttr != null ? sortAttr.Value : 0;
                     var isVisible = visiAttr != null ? visiAttr.Value == Visibility.Visible : true;
                     var permission = (IPermission) field.GetValue(null);
-                    permissions.Add(permission, new Permission(name, description, permission.Value, 0, isVisible));
+                    permissions.Add(permission, new Permission(name, description, permission.Value, sort, isVisible));
                 }
             }
             foreach (var permission in permissions)
@@ -154,22 +154,32 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 this.persistence.Save(menuLink.Value);
             }
             //// 2nd menu links.
-            var menuLinks2 = new List<MenuLink>
+            var menuLinks2 = new Dictionary<string, MenuLink>()
                 {
                     //// The patient menu links
-                    new MenuLink(menu, "Signeringslistor", "List", "Schedule", "Patient", 0, null, null, menuLinks1["Patient"], permissions[Permissions.Schedule.Read]),
-                    new MenuLink(menu, "Signerade händelser", "Sign", "Schedule", "Patient", 1, null, null, menuLinks1["Patient"], permissions[Permissions.Schedule.EventList]),
-                    new MenuLink(menu, "Larm", "List", "Alert", "Patient", 2, null, null, menuLinks1["Patient"], permissions[Permissions.Alert.Read]),
-                    new MenuLink(menu, "Rapport", "ScheduleReport", "Schedule", "Patient", 3, null, null, menuLinks1["Patient"], permissions[Permissions.Schedule.Report]),
-                    new MenuLink(menu, "Kalender", "List", "Calendar", "Patient", 4, null, null, menuLinks1["Patient"], permissions[Permissions.Calendar.Read]),
-                    new MenuLink(menu, "Saldon", "List", "Inventory", "Patient", 5, null, null, menuLinks1["Patient"], permissions[Permissions.Inventory.Read]),
+                    { "0", new MenuLink(menu, "Signeringslistor", "List", "Schedule", "Patient", 0, null, null, menuLinks1["Patient"], permissions[Permissions.Schedule.Read]) },
+                    { "1", new MenuLink(menu, "Signerade händelser", "Sign", "Schedule", "Patient", 1, null, null, menuLinks1["Patient"], permissions[Permissions.Schedule.EventList]) },
+                    { "2", new MenuLink(menu, "Larm", "List", "Alerts", "Patient", 2, null, null, menuLinks1["Patient"], permissions[Permissions.Alert.Read]) },
+                    { "3", new MenuLink(menu, "Rapport", "ScheduleReport", "Schedule", "Patient", 3, null, null, menuLinks1["Patient"], permissions[Permissions.Schedule.Report]) },
+                    { "4", new MenuLink(menu, "Kalender", "List", "Calendar", "Patient", 4, null, null, menuLinks1["Patient"], permissions[Permissions.Calendar.Read]) },
+                    { "5", new MenuLink(menu, "Saldon", "List", "Inventory", "Patient", 5, null, null, menuLinks1["Patient"], permissions[Permissions.Inventory.Read]) },
                     //// The account menu links
-                    new MenuLink(menu, "Aktuella delegeringar", "List", "Delegation", "Practitioner", 0, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Read]),
-                    new MenuLink(menu, "Alla mottagna delegeringar", "Revision", "Delegation", "Practitioner", 1, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Revision]),
-                    new MenuLink(menu, "Utställda delegeringar", "Issued", "Delegation", "Practitioner", 2, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Issued]),
-                    new MenuLink(menu, "Rapporter", "DelegationReport", "Delegation", "Practitioner", 3, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Report])
+                    { "6", new MenuLink(menu, "Aktuella delegeringar", "List", "Delegation", "Practitioner", 0, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Read]) },
+                    { "7", new MenuLink(menu, "Alla mottagna delegeringar", "Revision", "Delegation", "Practitioner", 1, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Revision]) },
+                    { "8", new MenuLink(menu, "Utställda delegeringar", "Issued", "Delegation", "Practitioner", 2, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Issued]) },
+                    { "9", new MenuLink(menu, "Rapporter", "DelegationReport", "Delegation", "Practitioner", 3, null, null, menuLinks1["Practitioner"], permissions[Permissions.Delegation.Report]) }
                 };
             foreach (var menuLink in menuLinks2)
+            {
+                this.persistence.Save(menuLink.Value);
+            }
+            //// 2nd menu links.
+            var menuLinks3 = new List<MenuLink>
+                {
+                    new MenuLink(menu, "Signeringslista objekt (Dummy)", "Details", "Schedule", "Patient", 0, null, null, menuLinks2["0"], permissions[Permissions.Schedule.Read]),
+                    new MenuLink(menu, "Iordningsställande (Dummy)", "Schema", "Prepare", "Patient", 1, null, null, menuLinks2["0"], permissions[Permissions.Prepare.Read])
+                };
+            foreach (var menuLink in menuLinks3)
             {
                 this.persistence.Save(menuLink);
             }

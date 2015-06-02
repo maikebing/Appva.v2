@@ -37,6 +37,20 @@ namespace Appva.Mcss.Admin.Application.Common
             public static readonly IPermission Login = PermissionType.CreateNew("mcss/admin/login");
         }
 
+        /// <summary>
+        /// The area 51 permissions.
+        /// </summary>
+        public static class Device
+        {
+            /// <summary>
+            /// Permission to login.
+            /// </summary>
+            [Sort(57)]
+            [Name("Login MCSS")]
+            [Description("Permission to login to MCSS device")]
+            public static readonly IPermission Login = PermissionType.CreateNew("mcss/device/login");
+        }
+
         #endregion
 
         #region Dashboard.

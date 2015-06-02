@@ -83,6 +83,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         Description = x.Description, 
                         ImagePath = x.Type 
                     }).ToList() : null;
+            this.SetSelectedAssessments(assessable, patient, assessments);
             var taxons = this.taxonomyService.List(TaxonomicSchema.Organization);
             return new UpdatePatient
             {
@@ -97,6 +98,37 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 HasAlternativeIdentifier = this.settingsService.HasPatientTag(),
                 Tag = patient.Identifier
             };
+        }
+
+        #endregion
+
+        #region Private Methods.
+
+        /// <summary>
+        /// Selects previous assessments if any.
+        /// </summary>
+        /// <param name="assessable"></param>
+        /// <param name="patient"></param>
+        /// <param name="assessments"></param>
+        private void SetSelectedAssessments(bool assessable, Patient patient, IList<Assessment> assessments)
+        {
+            if (! assessable)
+            {
+                return;
+            }
+            if (assessments == null)
+            {
+                return;
+            }
+            var previousAssessments = patient.SeniorAlerts;
+            var ids = previousAssessments.Select(x => x.Id).ToList();
+            foreach (var assessment in assessments)
+            {
+                if (ids.Contains(assessment.Id))
+                {
+                    assessment.IsSelected = true;
+                }
+            }
         }
 
         #endregion

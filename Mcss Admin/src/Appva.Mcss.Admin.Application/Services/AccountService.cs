@@ -20,6 +20,13 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Repository;
     using Validation;
     using Appva.Persistence;
+    using Appva.Core.Resources;
+    using NHibernate.Criterion;
+    using Appva.Core.Messaging;
+    using Appva.Mcss.Admin.Application.Services.Settings;
+    using System.Net.Mail;
+    using System.Configuration;
+    using Appva.Mcss.Admin.Application.Auditing;
 
 
     #endregion
@@ -49,6 +56,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="userName">The unique user name</param>
         /// <returns>An <see cref="Account"/> instance if found, else null</returns>
         Account FindByUserName(string userName);
+
+        /// <summary>
+        /// Locates a user account by its HSA ID. 
+        /// </summary>
+        /// <param name="hsaId">The unique HSA id</param>
+        /// <returns>An <see cref="Account"/> instance if found, else null</returns>
+        Account FindByHsaId(string hsaId);
 
         /// <summary>
         /// Returns whether or not the user account is a member of at least one of the 
@@ -129,20 +143,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>A <see cref="PageableSet"/> of <see cref="AccountModel"/></returns>
         PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10);
 
-
-
-        /// <summary>
-        /// Creates a new account
-        /// </summary>
-        /// <param name="firstName">The account firstname</param>
-        /// <param name="lastName">The account lastname</param>
-        /// <param name="mail">The mail</param>
-        /// <param name="mobileDevicePassword">The mobile device password</param>
-        /// <param name="personalIdentityNumber">The <see cref="PersonalIdentityNumber"/></param>
-        /// <param name="adress">The organisational <see cref="Taxon"/></param>
-        /// <returns>The account id</returns>
-        Guid Create(string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress);
-
         /// <summary>
         /// Updates an account
         /// </summary>
@@ -155,6 +155,38 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="adress">The organisational <see cref="Taxon"/></param>
         /// <returns>The account id</returns>
         void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        /// <param name="personalIdentityNumber"></param>
+        bool ForgotPassword(string emailAddress, PersonalIdentityNumber personalIdentityNumber);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="personalIdentityNumber"></param>
+        /// <param name="emailAddress"></param>
+        /// <param name="password"></param>
+        /// <param name="adress"></param>
+        /// <param name="roles"></param>
+        void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon adress, IList<Role> roles);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="personalIdentityNumber"></param>
+        /// <param name="emailAddress"></param>
+        /// <param name="webPassword"></param>
+        /// <param name="adress"></param>
+        /// <param name="roles"></param>
+        /// <param name="devicePassword"></param>
+        void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon adress, IList<Role> roles, string devicePassword = null);
     }
 
     /// <summary>
@@ -184,6 +216,21 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IPersistenceContext persitence;
 
+        /// <summary>
+        /// The <see cref="ISimpleMailService"/>.
+        /// </summary>
+        private readonly ISimpleMailService mailService;
+
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -195,12 +242,17 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="roles">The <see cref="IRoleRepository"/> implementation</param>
         /// <param name="permissions">The <see cref="IPermissionRepository"/> implementation</param>
         /// <param name="persitence">The <see cref="IPersistenceContext"/> implementation</param>
-        public AccountService(IAccountRepository repository, IRoleRepository roles, IPermissionRepository permissions, IPersistenceContext persitence)
+        public AccountService(IAccountRepository repository, IRoleRepository roles, 
+            IPermissionRepository permissions, IPersistenceContext persitence,
+            ISimpleMailService mailService, ISettingsService settingsService, IAuditService auditing)
         {
             this.repository = repository;
             this.roles = roles;
             this.permissions = permissions;
             this.persitence = persitence;
+            this.mailService = mailService;
+            this.settingsService = settingsService;
+            this.auditing = auditing;
         }
 
         #endregion
@@ -223,6 +275,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public Account FindByUserName(string userName)
         {
             return this.repository.FindByUserName(userName);
+        }
+
+        /// <inheritdoc />
+        public Account FindByHsaId(string hsaId)
+        {
+            return this.repository.FindByHsaId(hsaId);
         }
 
         /// <inheritdoc />
@@ -259,38 +317,24 @@ namespace Appva.Mcss.Admin.Application.Services
             //// TODO: Should send a mail here with a confirmation that the password has changed.
         }
 
+        public bool ForgotPassword(string emailAddress, PersonalIdentityNumber personalIdentityNumber)
+        {
+            var account = this.repository.FindByPersonalIdentityNumber(personalIdentityNumber);
+            if (account == null)
+            {
+                return false;
+            }
+            if (account.EmailAddress != emailAddress)
+            {
+                return false;
+            }
+            return true;
+        }
+
         /// <inheritdoc />
         public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
             return this.repository.Search(model, page, pageSize);
-        }
-
-        /// <inheritdoc />
-        public Guid Create(string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress)
-        {
-            if (mail.IsNull())
-            {
-                throw new ArgumentNullException("Account must have mail");
-            }
-            if (personalIdentityNumber.IsNull())
-            {
-                throw new ArgumentNullException("Account must have PersonalIdentiyNumber");
-            }
-            if (adress.IsNull())
-            {
-                throw new ArgumentNullException("Account must have organisational adress");
-            }
-
-            var account = new Account
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                FullName = string.Format("{0} {1}", firstName.Trim(), lastName.Trim()),
-                DevicePassword = mobileDevicePassword,
-                EmailAddress = mail,
-                Taxon = adress
-            };
-            return (Guid)this.persitence.Save<Account>(account);   
         }
 
         public void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress)
@@ -352,6 +396,88 @@ namespace Appva.Mcss.Admin.Application.Services
             account.UpdatedAt = DateTime.Now;
 
             this.repository.Update(account);
+        }
+
+        #endregion
+
+        #region IAccountService Members
+
+        /// <inheritdoc />
+        public void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon address, IList<Role> roles)
+        {
+            var roleList = roles.IsNull() ? new List<Role>() : roles;
+            var account = new Account();
+            account.FirstName = firstName.FirstToUpper();
+            account.LastName = lastName.FirstToUpper();
+            account.FullName = string.Format("{0} {1}", account.FirstName, account.LastName);
+            account.PersonalIdentityNumber = personalIdentityNumber;
+            account.EmailAddress = emailAddress;
+            account.DevicePassword = password;
+            account.Taxon = address;
+            account.Roles = roleList;
+            account.IsPaused = false;
+            this.persitence.Save<Account>(account);
+            this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
+            var mailBody = this.settingsService.CreateAccountMailBody();
+            if (mailBody.IsNotEmpty())
+            {
+                var mail = new MailMessage("noreply@appva.se", account.EmailAddress)
+                {
+                    Subject = ConfigurationManager.AppSettings.Get("EmailCreateAccountSubject"),
+                    Body = string.Format(mailBody, account.FullName, account.DevicePassword),
+                    IsBodyHtml = true
+                };
+                this.mailService.Send(mail);
+            }
+        }
+
+        /// <inheritdoc />
+        public void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon address, IList<Role> roles, string devicePassword = null)
+        {
+            var roleList = roles.IsNull() ? new List<Role>() : roles;
+            roleList.Add(this.roles.Find(RoleTypes.Backend));
+            var account = new Account();
+            account.UserName = AccountUtils.CreateUserName(
+                firstName,
+                lastName,
+                this.GetUserNames()
+            );
+            account.FirstName = firstName.FirstToUpper();
+            account.LastName = lastName.FirstToUpper();
+            account.FullName = string.Format("{0} {1}", account.FirstName, account.LastName);
+            account.PersonalIdentityNumber = personalIdentityNumber;
+            account.EmailAddress = emailAddress;
+            account.Salt = EncryptionUtils.GenerateSalt(DateTime.Now);
+            account.AdminPassword = EncryptionUtils.Hash(webPassword, account.Salt);
+            account.DevicePassword = devicePassword;
+            account.Taxon = address;
+            account.Roles = roleList;
+            account.IsPaused = false;
+            this.persitence.Save<Account>(account);
+            this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
+            var mailBody = this.settingsService.CreateAccountMailBody();
+            if (mailBody.IsNotEmpty())
+            {
+                var mail = new MailMessage("noreply@appva.se", account.EmailAddress)
+                {
+                    Subject = ConfigurationManager.AppSettings.Get("EmailCreateAccountSubject"),
+                    Body = string.Format(mailBody, account.FullName, account.DevicePassword, account.UserName, webPassword),
+                    IsBodyHtml = true
+                };
+                this.mailService.Send(mail);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods.
+
+        private IList<string> GetUserNames()
+        {
+            return this.persitence.Session.CreateCriteria<Account>()
+                .SetProjection(Projections.ProjectionList()
+                .Add(Projections.Property("UserName")))
+                .List<string>();
         }
 
         #endregion

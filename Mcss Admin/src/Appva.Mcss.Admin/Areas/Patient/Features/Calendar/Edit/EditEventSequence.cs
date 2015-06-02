@@ -18,12 +18,12 @@ using Appva.Cqrs;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class EditEventSequence : IRequest<EventViewModel>
+    public sealed class EditEventSequence : Identity<EventViewModel>
     {
         /// <summary>
         /// The sequence ID.
         /// </summary>
-        public Guid Id
+        public Guid SequenceId
         {
             get;
             set;

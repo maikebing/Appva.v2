@@ -44,7 +44,7 @@ namespace Appva.Siths
     ///     </linkUri>
     /// </externalLink>
     /// </summary>
-    internal abstract class AuthifyClient : IDisposable
+    public abstract class AuthifyClient : IDisposable
     {
         #region Variables.
 
@@ -130,7 +130,7 @@ namespace Appva.Siths
                     new KeyValuePair<string, string>("reseller_id", this.configuration.ResellerId),
                     new KeyValuePair<string, string>("v", Version)
                 };
-            await this.httpClient.PostAsFormUrlEncodedAsync<string>("request", request);
+            await this.httpClient.PostAsFormUrlEncodedAsync<string>("request/", request);
             return new Uri(string.Format("{0}/tokenidx.php?authify_request_token={1}", this.httpClient.BaseAddress, token));
         }
 
@@ -151,7 +151,7 @@ namespace Appva.Siths
                     new KeyValuePair<string, string>("protocol", "json"),
                     new KeyValuePair<string, string>("v", Version)
                 };
-            return await this.httpClient.PostAsFormUrlEncodedAsync<IdentityCollection<T>>("json", request);
+            return await this.httpClient.PostAsFormUrlEncodedAsync<IdentityCollection<T>>("json/", request);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Appva.Siths
                     new KeyValuePair<string, string>("authify_checksum", token),
                     new KeyValuePair<string, string>("v", Version)
                 };
-            return await this.httpClient.PostAsFormUrlEncodedAsync<bool>("out", request);
+            return await this.httpClient.PostAsFormUrlEncodedAsync<bool>("out/", request);
         }
 
         #endregion

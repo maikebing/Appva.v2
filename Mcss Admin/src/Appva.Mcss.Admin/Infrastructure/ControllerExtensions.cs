@@ -38,5 +38,15 @@ namespace Appva.Mcss.Admin.Infrastructure
         {
             return new DispatchJsonResult(JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <returns></returns>
+        public static DispatchExcelFileContentResult ExcelFile(this Controller controller)
+        {
+            return new DispatchExcelFileContentResult();
+        }
     }
 }

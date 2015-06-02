@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <param name="endDate">Optional end date for redirect</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("handle-alert/{taskId:guid}")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Alerts")]
+        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("List", "Alerts")]
         ////[PermissionsAttribute(Permissions.Alert.Handle.Value)]
         public ActionResult Handle(HandleAlert request)
         {
@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <param name="endDate">Optional end date for redirect</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("handle-all-alerts")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Alerts")]
+        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("List", "Alerts")]
         ////[PermissionsAttribute(Permissions.Alert.HandleAll.Value)]
         public ActionResult HandleAll(HandleAllAlert request)
         {

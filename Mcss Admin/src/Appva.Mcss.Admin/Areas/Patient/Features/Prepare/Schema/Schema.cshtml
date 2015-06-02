@@ -6,11 +6,11 @@
 }
 
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Partial("~/Areas/Patient/Features/Shared/_PatientSubMenuPartial.cshtml")
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 
 <div id="subheader" class="cf">
 	<h1>Signeringslistor</h1>
-    @Html.ActionLink("Skriv ut pappersversion", "PrintPopUp", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id, time = Model.StartDate }, new { @class = "btn printp lb-link" })
+    @Html.ActionLink("Skriv ut pappersversion", "PrintPopUp", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id, Date = Model.StartDate }, new { @class = "btn printp lb-link" })
     @Html.ActionLink("Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 </div>
 
@@ -25,8 +25,8 @@
 			</div>
 			
             <ul class="nav cf">
-				@Html.ActionLink("Ordinationer", "Details", "Schedule", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, null)
-                @Html.ActionLink("Iordningsställande", "Schema", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, null)
+				@Html.MenuLink("Ordinationer", "Details", "Schedule", true, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
+                @Html.MenuLink("Iordningsställande", "Schema", "Prepare", true, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
 			</ul>
             <div id="prepare-weeks">
 			    <div class="week-h">
@@ -87,7 +87,7 @@
                                                     hasTask ? "Avmarkera" : "Markera",
                                                     "Mark",
                                                     "Prepare",
-                                                    new { prepareSequenceId = sequence.Id, date = date, unMark = hasTask },
+                                                    new { Id = Model.Patient.Id, PreparedSequenceId = sequence.Id, Date = date, unMark = hasTask },
                                                     new { @class = "mark" }
                                                 )
                                             }    
@@ -99,16 +99,16 @@
                                         
                                         <td class="edit">
                                             @Html.ActionLink(
-                                                "Ändra", 
-                                                "Edit", 
+                                                "Ändra",
+                                                "Update", 
                                                 "Prepare", 
-                                                new { id = sequence.Id }, 
+                                                new { Id = Model.Patient.Id, PreparedSequenceId = sequence.Id }, 
                                                 new { @class = "edit lb-link", @title = "Ändra raden" })
                                             @Html.ActionLink(
                                                 "Ta bort",
                                                 "Delete",
                                                 "Prepare",
-                                                new { id = Model.Patient.Id, startDate = Model.StartDate, scheduleId = Model.Schedule.Id, sequenceId = sequence.Id },
+                                                new { Id = Model.Patient.Id, StartDate = Model.StartDate, ScheduleId = Model.Schedule.Id, PreparedSequenceId = sequence.Id },
                                                 new { title = "Ta bort läkemedlet", @class = "delete" }
                                             )
 							            </td>
@@ -121,7 +121,7 @@
 				    </table>
 			    </div>
 			    <div class="week-a">
-                    @Html.ActionLink("Lägg till", "Add", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+                    @Html.ActionLink("Lägg till", "Create", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 				    en rad. Markera sedan de dagar som iordningsställts.
 			    </div>
             </div>

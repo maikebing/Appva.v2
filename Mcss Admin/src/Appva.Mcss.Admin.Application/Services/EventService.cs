@@ -495,6 +495,9 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var sequence = Get(eventId);
             var task = new Task();
+            task.IsActive = true;
+            task.CreatedAt = DateTime.Now;
+            task.UpdatedAt = DateTime.Now;
             task.Sequence = sequence;
             task.Patient = sequence.Patient;
             task.Schedule = sequence.Schedule;

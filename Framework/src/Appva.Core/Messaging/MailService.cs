@@ -19,11 +19,15 @@ namespace Appva.Core.Messaging
     {
     }
 
+    public interface ISimpleMailService : IMailSender<MailMessage>
+    {
+    }
+
     /// <summary>
     /// Allows applications to send e-mail by using the Simple Mail Transfer Protocol 
     /// (SMTP).
     /// </summary>
-    public sealed class MailService : AbstractMailSender<MailMessage>, IMailService
+    public sealed class MailService : AbstractMailSender<MailMessage>, IMailService, ISimpleMailService
     {
         #region AbstractMailSender<MailMessage> Overrides.
 

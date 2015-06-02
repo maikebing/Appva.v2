@@ -46,5 +46,23 @@ using Appva.Cqrs;
             get;
             set;
         }
+
+        /// <summary>
+        /// Optional start date filtering parameter.
+        /// </summary>
+        public DateTime? StartDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Optional end date filtering parameter.
+        /// </summary>
+        public DateTime? EndDate
+        {
+            get;
+            set;
+        }
     }
 }

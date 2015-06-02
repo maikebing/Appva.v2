@@ -77,6 +77,7 @@
     <Compile Include="Messaging\Mail.cs" />
     <Compile Include="Messaging\MailService.cs" />
     <Compile Include="Messaging\IMailSender.cs" />
+    <Compile Include="Messaging\NoOpMailService.cs" />
     <Compile Include="Messaging\SmsMessage.cs" />
     <Compile Include="Messaging\SmsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -225,7 +225,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
             //// 1st menu items.
             items.Add(new MenuItem(new Guid("7D2FD5DC-F3B1-4C23-80D8-A4A301313DA3"), "Översikt", "Index", "Dashboard", "Dashboard", false));
             items.Add(new MenuItem(new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4"), "Boende", "List", "Patient", "Patient", false));
-            items.Add(new MenuItem(new Guid("593928BE-930F-4D5D-8981-A4A301313DA4"), "Medarbetare", "List", "Account", "Practitioner", false));
+            items.Add(new MenuItem(new Guid("593928BE-930F-4D5D-8981-A4A301313DA4"), "Medarbetare", "List", "Accounts", "Practitioner", false));
             if (this.identity.IsInRole(RoleTypes.Appva))
             {
                 items.Add(new MenuItem(new Guid("7B302508-C610-4898-9594-A4A301313DA4"), "Roller och behörigheter", "List", "Roles", "Roles", false));
@@ -244,8 +244,12 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
             items.Add(new MenuItem(new Guid("62233CBE-0287-4838-9C16-A4A301313DA4"), "Rapporter", "DelegationReport", "Delegation", "Practitioner", false, null, null, 3, new Guid("593928BE-930F-4D5D-8981-A4A301313DA4")));
             //// 2nd menu items.
             items.Add(new MenuItem(new Guid("20C161E1-0A4E-4BA0-AA2F-A4A301313DA4"), "Signeringslistor", "List", "Schedule", "Patient", false, null, null, 0, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
+            //// Dummy
+            items.Add(new MenuItem(new Guid("4695B0B9-485B-4044-8ECA-59603889456D"), "Dummy endast till för att kunna visa meny för signeringslist objekt", "Details", "Schedule", "Patient", false, null, null, 0, new Guid("20C161E1-0A4E-4BA0-AA2F-A4A301313DA4")));
+            //// Dummy
+            items.Add(new MenuItem(new Guid("6b7738da-a70d-4d7b-9f8c-a48301459200"), "Dummy endast till för att kunna visa meny för iordningstallande objekt", "Schema", "Prepare", "Patient", false, null, null, 0, new Guid("4695B0B9-485B-4044-8ECA-59603889456D")));
             items.Add(new MenuItem(new Guid("4F4CBAFA-C618-415D-9375-A4A301313DA4"), "Signerade händelser", "Sign", "Schedule", "Patient", false, null, null, 1, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
-            items.Add(new MenuItem(new Guid("CC718004-8AE6-49AB-9342-A4A301313DA4"), "Larm", "List", "Alert", "Patient", false, null, null, 2, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
+            items.Add(new MenuItem(new Guid("CC718004-8AE6-49AB-9342-A4A301313DA4"), "Larm", "List", "Alerts", "Patient", false, null, null, 2, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
             items.Add(new MenuItem(new Guid("9285856A-3278-4D4C-B155-A4A301313DA4"), "Rapport", "ScheduleReport", "Schedule", "Patient", false, null, null, 3, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
             items.Add(new MenuItem(new Guid("D78F3803-837B-4A56-8109-A4A301313DA4"), "Kalender", "List", "Calendar", "Patient", false, null, null, 4, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
             items.Add(new MenuItem(new Guid("FB4CDF53-8C07-4F1F-9D6E-A4A301313DA4"), "Saldon", "List", "Inventory", "Patient", false, null, null, 5, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));

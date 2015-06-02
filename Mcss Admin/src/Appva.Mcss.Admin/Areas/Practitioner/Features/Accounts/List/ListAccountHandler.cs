@@ -117,7 +117,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new ListAccountModel
             {
                 Accounts = accounts,
-                Roles = this.roles.List()
+                Roles = this.roles.ListVisible()
                     .Select(
                         x => new SelectListItem()
                         {

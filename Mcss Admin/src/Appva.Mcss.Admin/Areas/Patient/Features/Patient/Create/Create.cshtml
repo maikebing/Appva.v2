@@ -1,5 +1,7 @@
-﻿@model Appva.Mcss.Admin.Models.CreatePatient
-@{ ViewBag.Title = "Ny boende"; }
+﻿@model CreatePatient
+@{ 
+    Title("Ny boende");
+}
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PatientCreate" data-valparams="uidUrl=@Url.Action("VerifyUniquePatient");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
     @using (Html.Post())
     {

@@ -1,10 +1,27 @@
 ﻿@model IList<IMenuItem>
+@{
+    var context = ViewContext.ParentActionViewContext ?? ViewContext;
+    var actionName = context.RouteData.GetRequiredString("action");
+    var controllerName = context.RouteData.GetRequiredString("controller");
+    var areaName = context.RouteData.DataTokens["area"] as string;
+}
 <div id="nav-main">
     <ul class="cf">
         @foreach (var item in Model)
         {
             <li class="@item.ListItemCssClass @(item.IsSelected ? "sel" : string.Empty)">
-                @Html.ActionLink(item.Label, item.Action, item.Controller, new { Area = item.Area }, new { @class = @item.AnchorCssClass })
+                @if (string.IsNullOrWhiteSpace(item.Action) || string.IsNullOrWhiteSpace(item.Controller))
+                {
+                    @* 
+                    If we have null actions or controller it might indicate print, althoug when canceling a print it 
+                    will return to the previous page will will be wrong unless we set it to the current page
+                    *@
+                    @Html.ActionLink(item.Label, actionName, controllerName, new { Area = areaName }, new { @class = @item.AnchorCssClass })
+                }
+                else
+                {
+                    @Html.ActionLink(item.Label, item.Action, item.Controller, new { Area = item.Area }, new { @class = @item.AnchorCssClass })
+                }
             </li>
         }
     </ul>

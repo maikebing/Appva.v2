@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Tenant", "Appva.Tenan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Siths", "Appva.Siths\Appva.Siths.csproj", "{00FA489C-6F1D-42FB-8CAF-426B90F1F223}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Office", "Appva.Office\Appva.Office.csproj", "{7536E156-EAB5-4812-87FB-8EC58EB00F99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,10 @@ Global
 		{00FA489C-6F1D-42FB-8CAF-426B90F1F223}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00FA489C-6F1D-42FB-8CAF-426B90F1F223}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00FA489C-6F1D-42FB-8CAF-426B90F1F223}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7536E156-EAB5-4812-87FB-8EC58EB00F99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7536E156-EAB5-4812-87FB-8EC58EB00F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7536E156-EAB5-4812-87FB-8EC58EB00F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7536E156-EAB5-4812-87FB-8EC58EB00F99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

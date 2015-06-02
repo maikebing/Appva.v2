@@ -42,15 +42,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="Task"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// A copy of the sequence name.
         /// </summary>
         public virtual string Name
@@ -234,6 +225,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// A copy of the Patient taxonomical node for easy search access.
         /// </summary>
         public virtual Taxon Taxon
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The inventory levels, if a task includes inventory management.
+        /// </summary>
+        public virtual InventoryOld Inventory
         {
             get;
             set;

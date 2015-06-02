@@ -133,8 +133,16 @@
     <value>https://schemas.appva.se/2015/04/organization/taxon</value>
     <comment>The organizational taxon claim type</comment>
   </data>
-  <data name="Tenant" xml:space="preserve">
-    <value>https://schemas.appva.se/2015/04/acl/claims/tenant</value>
-    <comment>The tenant claim type</comment>
+  <data name="TenantHostName" xml:space="preserve">
+    <value>https://schemas.appva.se/2015/04/security/claims/tenant/hostname</value>
+    <comment>The tenant host name claim type</comment>
+  </data>
+  <data name="TenantId" xml:space="preserve">
+    <value>https://schemas.appva.se/2015/04/security/claims/tenant/id</value>
+    <comment>The tenant id claim type</comment>
+  </data>
+  <data name="TenantName" xml:space="preserve">
+    <value>https://schemas.appva.se/2015/04/security/claims/tenant/name</value>
+    <comment>The tenant name claim type</comment>
   </data>
 </root>

@@ -1,7 +1,7 @@
 ﻿@model Appva.Mcss.Web.ViewModels.EventViewModel
 @{ ViewBag.Title = "Ny aktivitet"; }
 <div class="std-panel std-form lb-panel-small lb-validate-form calendar-edit" data-valclass="EventCreate">
-    @using (Html.BeginForm(new { id = Model.PatientId, seqId = Model.SequenceId, date = Model.ChoosedDate }))
+    @using (Html.BeginForm(new { Id = Model.PatientId, seqId = Model.SequenceId, date = Model.ChoosedDate }))
     {
         <h3 class="section-title">Redigera</h3>
         <ul class="cal-settings">
@@ -112,12 +112,12 @@
         <div class="input">
             @if (Model.Interval == 0)
             {
-                <button type="submit" value="EditAll" name="EditAll">Spara</button>
+                <button type="submit" value="EditAll" name="EditAction">Spara</button>
             }
             else
             {
-                <button type="submit" value="EditAll" name="EditAll">Spara sekvens</button>
-                <button type="submit" value="EditThis" name="EditThis">Spara denna aktivitet</button>
+                <button type="submit" value="EditAll" name="EditAction">Spara sekvens</button>
+                <button type="submit" value="EditThis" name="EditAction">Spara denna aktivitet</button>
             }
             @Html.AntiForgeryToken()
             @Html.Cancel("Avbryt")

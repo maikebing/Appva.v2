@@ -34,15 +34,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="Schedule"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Name of the schedule, e.g. "Medication schedule"
         /// </summary>
         public virtual string Name

@@ -4,9 +4,6 @@
     var controllerName = context.RouteData.GetRequiredString("controller");
     var areaName = context.RouteData.DataTokens["area"] as string;
 }
-<p>@actionName</p>
-<p>@controllerName</p>
-<p>@areaName</p>
 @Html.Action("Menu", "Menus", new
     {
         Area = string.Empty,

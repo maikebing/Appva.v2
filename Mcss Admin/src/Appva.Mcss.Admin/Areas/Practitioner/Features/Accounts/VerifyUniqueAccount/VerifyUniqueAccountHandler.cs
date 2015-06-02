@@ -43,8 +43,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public override bool Handle(VerifyUniqueAccount message)
         {
-            var account = this.accounts.FindByPersonalIdentityNumber(new PersonalIdentityNumber(message.UniqueIdentifier));
-            if (!message.Id.HasValue || account == null )
+            var account = this.accounts.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
+            if (! message.Id.HasValue || account == null )
             {
                 return account == null;
             }

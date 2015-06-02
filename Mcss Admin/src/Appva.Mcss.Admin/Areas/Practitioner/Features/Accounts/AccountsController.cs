@@ -23,7 +23,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize, RouteArea("Practitioner", AreaPrefix="admin"), RoutePrefix("account")]
+    [Authorize, RouteArea("Practitioner"), RoutePrefix("Accounts")]
     public class AccountsController : Controller
     {
         #region Variables.
@@ -49,7 +49,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #region Routes.
 
-        #region List View.
+        #region List.
 
         /// <summary>
         /// Returns a list of <c>Account</c> by filters.
@@ -64,7 +64,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
-        #region Create View.
+        #region Create.
 
         /// <summary>
         /// Return the create account view.
@@ -85,14 +85,74 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
-        public ActionResult Create(CreateAccountModel model, FormCollection collection)
+        public ActionResult Create(CreateAccountModel request)
         {
             return this.View();
-                }
+        }
 
         #endregion
 
-        #region Inactivate And Activate View.
+        #region Update.
+
+        /// <summary>
+        /// The account edit view.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/update")]
+        [HttpGet, Hydrate, Dispatch]
+        public ActionResult Update(Identity<UpdateAccount> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Updates the account if valid.
+        /// </summary>
+        /// <param name="id">The account id</param>
+        /// <param name="model">The account model</param>
+        /// <param name="collection">The form collection</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/update")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
+        public ActionResult Update(UpdateAccount request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Update Roles.
+
+        /// <summary>
+        /// Returns the view to update roles.
+        /// </summary>
+        /// <param name="request">The update roles request</param>
+        /// <returns>An <see cref="UpdateRolesForm"/></returns>
+        [Route("{id:guid}/roles/update")]
+        [HttpGet, Hydrate, Dispatch]
+        public ActionResult UpdateRoles(UpdateRoles request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Updates the roles for the selected account.
+        /// </summary>
+        /// <param name="request">The form model</param>
+        /// <returns>
+        /// Redirects to <see cref="AccountsController.List"/>
+        /// </returns>
+        [Route("{id:guid}/roles/update")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
+        public ActionResult UpdateRoles(UpdateRolesForm request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Inactivate.
 
         /// <summary>
         /// Inactivates an account.
@@ -105,6 +165,10 @@ namespace Appva.Mcss.Admin.Features.Accounts
         {
             return this.View();
         }
+
+        #endregion
+
+        #region Reactivate.
 
         /// <summary>
         /// Activates an account.
@@ -120,7 +184,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
-        #region Pause And Unpause View.
+        #region Pause.
 
         /// <summary>
         /// Pauses an account.
@@ -133,6 +197,10 @@ namespace Appva.Mcss.Admin.Features.Accounts
         {
             return this.View();
         }
+
+        #endregion
+
+        #region Resume.
 
         /// <summary>
         /// Unpauses an account.
@@ -159,7 +227,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <returns><see cref="JsonResult"/></returns>
         [Route("is-unique")]
         [HttpPost, Dispatch, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        public DispatchJsonResult VerifyUniqueAccount(VerifyUniquePatient request)
+        public DispatchJsonResult VerifyUniqueAccount(VerifyUniqueAccount request)
         {
             return this.JsonPost();
         }
@@ -182,35 +250,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
 
         #endregion
 
-        #region Update View.
-
-        /// <summary>
-        /// The account edit view.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [Route("{id:guid}/update")]
-        [HttpGet, Hydrate, Dispatch]
-        public ActionResult Update(Identity<UpdateAccount> request)
-            {
-            return this.View();
-        }
-
-        /// <summary>
-        /// Updates the account if valid.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <param name="model">The account model</param>
-        /// <param name="collection">The form collection</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [Route("{id:guid}/update")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List","Accounts")]
-        public ActionResult Update(UpdateAccount request)
-                {
-            return this.View();
-        }
-
-        #endregion
+        
 
         /*
         #region Change Password.

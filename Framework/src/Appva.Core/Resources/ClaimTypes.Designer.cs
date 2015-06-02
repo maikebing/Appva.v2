@@ -97,11 +97,29 @@ namespace Appva.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://schemas.appva.se/2015/04/acl/claims/tenant.
+        ///   Looks up a localized string similar to https://schemas.appva.se/2015/04/security/claims/tenant/hostname.
         /// </summary>
-        public static string Tenant {
+        public static string TenantHostName {
             get {
-                return ResourceManager.GetString("Tenant", resourceCulture);
+                return ResourceManager.GetString("TenantHostName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://schemas.appva.se/2015/04/security/claims/tenant/id.
+        /// </summary>
+        public static string TenantId {
+            get {
+                return ResourceManager.GetString("TenantId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://schemas.appva.se/2015/04/security/claims/tenant/name.
+        /// </summary>
+        public static string TenantName {
+            get {
+                return ResourceManager.GetString("TenantName", resourceCulture);
             }
         }
     }

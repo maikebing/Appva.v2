@@ -15,21 +15,22 @@ FRAMEWORK
 
 ADMIN
 1. [ ] Cache lists as dictionaries (taxon, settings)
-2. [ ] Add all permissions to area patient in cshtml
+2. [X] Add all permissions to area patient in cshtml
 3. [ ] Add all permissions to area patient controllers
-4. [ ] Excel, add Appva.Mcss.Admin.Excel
+4. [X] Excel, add Appva.Mcss.Admin.Excel
 5. [ ] Create Authentication Result, NotActive and IsPaused
 6. [X] Add <globalization enableClientBasedCulture="true" uiCulture="sv-SE" culture="sv-SE"/>
-7. [ ] Add Siths to service
+7. [X] Add Siths to service
 8. [ ] Add AD to services adn implement
 9. [ ] Add Code for Logging in services!
 10.[ ] Add Antiforgerytoken to js
 11.[ ] Add Email to account, authentication etc.
 12.[ ] Use tenant cache
-13.[ ] Use NoOpMailService for debug!
-14.[ ] Filter i Patient - Last stop is inactive so everything should be seen there if only inactive
+13.[X] Use NoOpMailService for debug!
+14.[X] Filter i Patient - Last stop is inactive so everything should be seen there if only inactive
+15.[X] Global filter
 
-15.[ ] [2015-05-26 17:52:59] Richard  Sachade Henriksson: man behöver kunna bestämma bara om mail skall skickas eller inte
+16.[ ] [2015-05-26 17:52:59] Richard  Sachade Henriksson: man behöver kunna bestämma bara om mail skall skickas eller inte
 		[2015-05-26 17:53:12] Richard  Sachade Henriksson: och vilka koder om skall skickas med
 		[2015-05-26 17:53:26] Richard  Sachade Henriksson: ex viser-kunder skall inte få mail med pin-kod i
 		[2015-05-26 17:53:33] Richard  Sachade Henriksson: eftersom de har las

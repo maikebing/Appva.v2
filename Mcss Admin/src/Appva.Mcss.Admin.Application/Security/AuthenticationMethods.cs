@@ -28,6 +28,11 @@ namespace Appva.Mcss.Admin.Application.Security
         public static readonly AuthenticationMethod Password = new AuthenticationMethod(AuthenticationMethods.Password);
 
         /// <summary>
+        /// Authentication by SITHS.
+        /// </summary>
+        public static readonly AuthenticationMethod Siths = new AuthenticationMethod(AuthenticationMethods.Smartcard);
+
+        /// <summary>
         /// The internal authentication method.
         /// </summary>
         private readonly string method;

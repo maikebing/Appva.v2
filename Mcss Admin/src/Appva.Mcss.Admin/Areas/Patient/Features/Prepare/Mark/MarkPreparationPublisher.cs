@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 using Appva.Mcss.Web.Controllers;
 using NHibernate.Criterion;
 using NHibernate.Transform;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -49,6 +50,11 @@ using NHibernate.Transform;
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identity;
+
         #endregion
 
         #region Constructor.
@@ -56,10 +62,11 @@ using NHibernate.Transform;
         /// <summary>
         /// Initializes a new instance of the <see cref="MarkPreparationPublisher"/> class.
         /// </summary>
-        public MarkPreparationPublisher(IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public MarkPreparationPublisher(IPatientService patientService, IPatientTransformer transformer, IIdentityService identity, IPersistenceContext persistence)
         {
             this.patientService = patientService;
             this.transformer = transformer;
+            this.identity = identity;
             this.persistence = persistence;
         }
 
@@ -82,17 +89,18 @@ using NHibernate.Transform;
                 }
                 return string.Empty;
             }
+            var user = this.persistence.Get<Account>(this.identity.PrincipalId);
             if (tasks.Count == 0)
             {
                 var prepareSequence = this.persistence.Get<PreparedSequence>(message.PreparedSequenceId);
                 this.persistence.Save(new PreparedTask
                 {
                     Date = message.Date,
-                    PreparedBy = null/*Identity()*/,
+                    PreparedBy = user,
                     PreparedSequence = prepareSequence,
                     Schedule = prepareSequence.Schedule
                 });
-                return "Identity().FullName"/*Identity().FullName*/;
+                return user.FullName;
             }
             return tasks.First().PreparedBy.FullName;
         }

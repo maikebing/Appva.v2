@@ -34,15 +34,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// Whether or not the <see cref="PreparedSequence"/> is active.
-        /// </summary>
-        public virtual bool IsActive
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The name of the sequence
         /// </summary>
         public virtual string Name

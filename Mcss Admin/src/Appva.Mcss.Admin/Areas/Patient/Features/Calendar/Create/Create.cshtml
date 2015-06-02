@@ -3,7 +3,7 @@
     ViewBag.Title = "Ny aktivitet";
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form calendar-edit" data-valclass="EventCreate">
-    @using (Html.BeginForm(new { id = Model.PatientId })) {         
+    @using (Html.BeginForm(new { Id = Model.Id })) {         
         <h3 class="section-title">Skapa ny</h3>        
         <ul class="cal-settings new">
             <li class="cf">

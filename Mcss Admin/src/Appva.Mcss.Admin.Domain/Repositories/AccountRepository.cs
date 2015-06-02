@@ -48,6 +48,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         Account FindByUserName(string username);
 
         /// <summary>
+        /// Locates a user account by its HSA ID. 
+        /// </summary>
+        /// <param name="hsaId">The unique HSA id</param>
+        /// <returns>An <see cref="Account"/> if found, else null</returns>
+        Account FindByHsaId(string hsaId);
+
+        /// <summary>
         /// Search for accounts to given search-criteria
         /// </summary>
         /// <param name="model">The <see cref="SearchAccountModel"/></param>
@@ -128,22 +135,35 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
+        public Account FindByHsaId(string hsaId)
+        {
+            var accounts = this.persistenceContext.QueryOver<Account>()
+                .Where(x => x.IsActive)
+                .And(x => x.IsPaused == false)
+                .And(x => x.HsaId == hsaId)
+                .List();
+            if (accounts.Count == 1)
+            {
+                return accounts[0];
+            }
+            //// FIXME: should throw exception if we have several!
+            return null;
+        }
+
+        /// <inheritdoc />
         public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
             //// Main query - As a view
             Account account = null;
             var query = this.persistenceContext.QueryOver<Account>(() => account);
-            if(model.IsFilterByIsActiveEnabled != null)
+            if (model.IsFilterByIsActiveEnabled != null)
             {
                 query.Where(x => x.IsActive == model.IsFilterByIsActiveEnabled);
             }
-            if(model.IsFilterByIsPausedEnabled != null)
+            if (model.IsFilterByIsPausedEnabled != null)
             {
                 query.Where(x => x.IsPaused == model.IsFilterByIsPausedEnabled);
-            }
-                
-                
-
+            } 
             //// Filter by search criterias
             if (model.SearchQuery.IsNotEmpty())
             {

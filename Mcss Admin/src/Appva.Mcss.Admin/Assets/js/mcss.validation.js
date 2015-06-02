@@ -7,7 +7,7 @@ mcss.validation = {
             'rules': {
                 'FirstName': 'required',
                 'LastName': 'required',
-                'UniqueIdentifier': {
+                'PersonalIdentityNumber': {
                     'required': true,
                     'socialsecuritynumber': 'socialsecuritynumber',
                     'remote': {
@@ -15,7 +15,7 @@ mcss.validation = {
                         'type': "post",
                         'data': {
                             'id': id, 
-                            'uniqueIdentifier': $('#UniqueIdentifier').val()
+                            'uniqueIdentifier': $('#PersonalIdentityNumber').val()
                         }
                     }
                 },
@@ -33,7 +33,7 @@ mcss.validation = {
             'messages': {
                 'FirstName': "Förnamn måste fyllas i.",
                 'LastName': "Efternamn måste fyllas i.",
-                'UniqueIdentifier': {
+                'PersonalIdentityNumber': {
                     'required': "Personnummer måste fyllas i.",
                     'remote': "Personnumret finns redan tidigare redan i MCSS.",
                     'socialsecuritynumber': "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001."
@@ -57,8 +57,8 @@ mcss.validation = {
                         'url': url,
                         'type': "post",
                         'data': {
-                            'id': id,
-                            'scheduleSetting': $('#ScheduleSetting').val()
+                            'Id': id,
+                            'ScheduleSettingId': $('#ScheduleSetting').val()
                         }
                     }
                 }
@@ -69,7 +69,7 @@ mcss.validation = {
                     'remote': "Denna lista finns sedan tidigare redan inlagd."
                 }
             },
-            'submitHandler': function(form) {
+            'submitHandler': function (form) {
 	            $(form).find('input[type=submit]').attr('disabled','disabled');
 	            form.submit();
             }
@@ -510,7 +510,7 @@ mcss.validation = {
             'rules': {
                 'FirstName': 'required',
                 'LastName': 'required',
-                'UniqueIdentifier': {
+                'PersonalIdentityNumber': {
                     'required': true,
                     'socialsecuritynumber': 'socialsecuritynumber',
                     'remote': {
@@ -554,7 +554,7 @@ mcss.validation = {
             'messages': {
                 'FirstName': "Förnamn måste fyllas i.",
                 'LastName': "Efternamn måste fyllas i.",
-                'UniqueIdentifier': {
+                'PersonalIdentityNumber': {
                     'required': "Personnummer måste fyllas i.",
                     'remote': "Personnumret finns sedan tidigare redan i MCSS.",
                     'socialsecuritynumber': "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001."

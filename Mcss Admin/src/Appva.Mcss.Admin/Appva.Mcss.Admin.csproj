@@ -278,6 +278,8 @@
     <Compile Include="Areas\Patient\Features\Schedule\Delete\DeleteTaskPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Details\DetailsSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Details\DetailsScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Excel\GenerateExcel.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Excel\GenerateExcelHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Inactivate\InactivateSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Inactivate\InactivateSchedulePublisher.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\List\ListSchedule.cs" />
@@ -319,6 +321,10 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountPublisher.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRoles.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesForm.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesFormHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InactivateAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\InActivate\InActivateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\List\ListAccount.cs" />
@@ -346,9 +352,9 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
-    <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChart.cs" />
+    <!--<Compile Include="Areas\Report\Features\ReportData\Chart\ReportChart.cs" />
     <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChartModel.cs" />
-    <Compile Include="Areas\Report\Features\ReportData\ReportDataController.cs" />
+    <Compile Include="Areas\Report\Features\ReportData\ReportDataController.cs" />-->
     <Compile Include="Areas\Roles\Features\RolesSchedules\RolesSchedulesController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedule.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleScheduleHandler.cs" />
@@ -377,10 +383,13 @@
     <Compile Include="Configuration\Application.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\ExceptionHandlerModule.cs" />
+    <Compile Include="Configuration\MessagingModule.cs" />
     <Compile Include="Configuration\PersistenceModule.cs" />
     <Compile Include="Features\Authentication\AuthenticationController.cs" />
     <Compile Include="Features\Authentication\Forgot\ForgotPassword.cs" />
     <Compile Include="Features\Authentication\SignIn\SignIn.cs" />
+    <Compile Include="Features\Authentication\SignIn\SignInForm.cs" />
+    <Compile Include="Features\Authentication\SignIn\SignInHandler.cs" />
     <Compile Include="Features\Home\HomeController.cs" />
     <Compile Include="Features\Menus\Menu\Menu.cs" />
     <Compile Include="Features\Menus\Menu\MenuHandler.cs" />
@@ -395,6 +404,7 @@
     <Compile Include="Infrastructure\ControllerExtensions.cs" />
     <Compile Include="Infrastructure\Controllers\AbstractMediatorController.cs" />
     <Compile Include="Infrastructure\Controllers\IdentityController.cs" />
+    <Compile Include="Infrastructure\DispatchExcelFileContentResult.cs" />
     <Compile Include="Infrastructure\DispatchJsonResult.cs" />
     <Compile Include="Infrastructure\Models\Parameterless.cs" />
     <Compile Include="Infrastructure\PatientTransformer.cs" />
@@ -402,7 +412,6 @@
     <Compile Include="Models\AccountInfoViewModel.cs" />
     <Compile Include="Models\AccountListViewModel.cs" />
     <Compile Include="Models\AccountMapper.cs" />
-    <Compile Include="Models\AccountRolesViewModel.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AddToStockViewModel.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\Load\LoadWidget.cs" />
@@ -608,6 +617,9 @@
     <Content Include="Assets\js\placeholder.v3.0.2.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="media\jul.png" />
+    <Content Include="media\logo-appva.png" />
+    <Content Include="media\pagaende_insatser.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -673,6 +685,10 @@
       <Project>{53a7fe5b-f451-4b7a-8932-9ad424f09165}</Project>
       <Name>Appva.Mvc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Office\Appva.Office.csproj">
+      <Project>{7536e156-eab5-4812-87fb-8ec58eb00f99}</Project>
+      <Name>Appva.Office</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.Autofac\Appva.Persistence.Autofac.csproj">
       <Project>{9041f4f2-26b2-44de-ad32-3edaeaed35d2}</Project>
       <Name>Appva.Persistence.Autofac</Name>
@@ -688,6 +704,10 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
       <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
       <Name>Appva.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Siths\Appva.Siths.csproj">
+      <Project>{00fa489c-6f1d-42fb-8caf-426b90f1f223}</Project>
+      <Name>Appva.Siths</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
       <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
@@ -859,7 +879,7 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Edit\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Practitioner\Features\Accounts\EditRoles\EditRoles.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRoles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\_AccountDetails.cshtml" />
@@ -934,6 +954,12 @@
   <ItemGroup>
     <Content Include="Features\Shared\EmailTemplates\AuthenticationEmail.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\EditorTemplates\Date.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\Template.xls" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -948,7 +974,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

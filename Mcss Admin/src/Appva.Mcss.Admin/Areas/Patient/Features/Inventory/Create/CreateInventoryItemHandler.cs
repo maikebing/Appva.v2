@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -56,6 +57,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPatientTransformer transformer;
 
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identity;
+
         #endregion
 
         #region Constructor.
@@ -68,13 +74,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="ILogService"/> implementation</param>
         public CreateInventoryItemHandler(
             IPatientService patientService, ITaskService taskService, ILogService logService, IPersistenceContext persistence,
-            IPatientTransformer transformer)
+            IPatientTransformer transformer, IIdentityService identity)
         {
             this.patientService = patientService;
             this.taskService = taskService;
             this.logService = logService;
             this.persistence = persistence;
             this.transformer = transformer;
+            this.identity = identity;
         }
 
         #endregion
@@ -101,9 +108,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 default:
                     break;
             }
+            var user = this.persistence.Get<Account>(this.identity.PrincipalId);
             var transaction = new InventoryTransactionItem
             {
-                Account = null/*Identity()*/,
+                Account = user,
                 Description = message.Description,
                 Operation = message.Operation,
                 Value = message.Value,

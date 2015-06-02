@@ -16,17 +16,8 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateSequence : IRequest<CreateSequenceForm>
+    public sealed class CreateSequence : Identity<CreateSequenceForm>
     {
-        /// <summary>
-        /// The patient ID.
-        /// </summary>
-        public Guid Id
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// The schedule ID.
         /// </summary>

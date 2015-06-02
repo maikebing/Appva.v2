@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Html\DateTimeExtensions.cs" />
+    <Compile Include="Html\HtmlHelperExtensions.cs" />
     <Compile Include="Html\TimeSpanDifference.cs" />
     <Compile Include="Html\UrlExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

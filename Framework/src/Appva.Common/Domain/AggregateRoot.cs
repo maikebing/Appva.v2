@@ -25,20 +25,6 @@ namespace Appva.Common.Domain
         #region IAggregateRoot<T> Members.
 
         /// <inheritdoc />
-        public virtual DateTime CreatedAt
-        {
-            get;
-            set;
-        }
-
-        /// <inheritdoc />
-        public virtual DateTime UpdatedAt
-        {
-            get;
-            set;
-        }
-
-        /// <inheritdoc />
         public virtual IList<IDomainEvent> Events
         {
             get;

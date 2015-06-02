@@ -20,7 +20,7 @@ using RazorEngine.Configuration;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class NoOpMailService : AbstractNoOpMailSender<MailMessage>, IRazorMailService, IMailService
+    public sealed class NoOpMailService : AbstractNoOpMailSender<MailMessage>, IRazorMailService, IMailService
     {
         #region Variables.
 

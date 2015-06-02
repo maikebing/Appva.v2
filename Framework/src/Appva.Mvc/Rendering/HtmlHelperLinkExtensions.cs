@@ -35,7 +35,7 @@ namespace Appva.Mvc
         /// <returns>An action link if permitted; otherwise nothing</returns>
         public static MvcHtmlString ActionLink([NotNull] this HtmlHelper htmlHelper, IPermission permission, string linkText, object routeValues = null, object htmlAttributes = null)
         {
-            return htmlHelper.ActionLink(permission, linkText, routeValues, htmlAttributes);
+            return htmlHelper.ActionLink(permission, linkText, null, null, routeValues, htmlAttributes);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Appva.Mvc
         /// <returns>An action link if permitted; otherwise nothing</returns>
         public static MvcHtmlString ActionLink([NotNull] this HtmlHelper htmlHelper, IPermission permission, string linkText, string actionName, object routeValues = null, object htmlAttributes = null)
         {
-            return htmlHelper.ActionLink(permission, linkText, actionName, routeValues, htmlAttributes);
+            return htmlHelper.ActionLink(permission, linkText, actionName, null, routeValues, htmlAttributes);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Appva.Mvc
         /// <param name="routeValues">The route values</param>
         /// <param name="htmlAttributes">The HTML attributes</param>
         /// <returns>An action link if permitted; otherwise nothing</returns>
-        public static MvcHtmlString ActionLink([NotNull] this HtmlHelper htmlHelper, IPermission permission, string linkText, string actionName, string controllerName, object routeValues = null, object htmlAttributes = null)
+        public static MvcHtmlString ActionLink([NotNull] this HtmlHelper htmlHelper, IPermission permission, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
         {
             var principal = htmlHelper.ViewContext.HttpContext.User as ClaimsPrincipal;
             if (principal == null || principal.Identity == null || ! principal.Identity.IsAuthenticated)
@@ -84,6 +84,25 @@ namespace Appva.Mvc
             //// or the permission requirement is fulfilled.
             var routes = HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues);
             return htmlHelper.ActionLink(linkText, actionName, controllerName, routes, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
+        }
+
+        public static bool HasPermissionFor([NotNull] this HtmlHelper htmlHelper, IPermission permission)
+        {
+            var principal = htmlHelper.ViewContext.HttpContext.User as ClaimsPrincipal;
+            if (principal == null || principal.Identity == null || !principal.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+            //// If Access control is enabled or in preview mode for appva administrative account role
+            //// then verify that the user account has permission to view the link.
+            if (principal.HasClaim(Core.Resources.ClaimTypes.AclEnabled, "Y") || (principal.HasClaim(Core.Resources.ClaimTypes.AclPreview, "Y") && principal.IsInRole(Core.Resources.RoleTypes.Appva)))
+            {
+                if (! principal.HasClaim(permission.Key, permission.Value))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

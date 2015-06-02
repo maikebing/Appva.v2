@@ -68,7 +68,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override DetailsSchedule Handle(UpdateSequenceForm message)
         {
             var sequence = this.sequenceService.Find(message.SequenceId);
-            var schedule = this.context.Get<Schedule>(message.ScheduleId);
+            var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
             Account recipient = null;
             Taxon delegation = null;
             if (message.Delegation.HasValue && !message.Nurse)

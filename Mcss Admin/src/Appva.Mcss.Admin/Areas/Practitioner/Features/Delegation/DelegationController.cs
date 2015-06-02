@@ -29,6 +29,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Core.Resources;
+    using Appva.Office;
+using Appva.Core.IO;
+using Appva.Tenant.Identity;
 
     #endregion
 
@@ -66,6 +69,16 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>.
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filtering;
+
+        /// <summary>
+        /// The <see cref="ITenantService"/>.
+        /// </summary>
+        private readonly ITenantService tenantService;
+
         #endregion
 
         #region Constructor.
@@ -73,13 +86,16 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegationController"/> class.
         /// </summary>
-        public DelegationController(IMediator mediator, IIdentityService identityService, ITaxonomyService taxonomyService, ILogService logService, IPersistenceContext persistence)
+        public DelegationController(IMediator mediator, IIdentityService identityService, 
+            ITaxonomyService taxonomyService, ILogService logService, IPersistenceContext persistence,
+            ITaxonFilterSessionHandler filtering, ITenantService tenantService)
         {
             this.mediator = mediator;
             this.identityService = identityService;
             this.taxonomyService = taxonomyService;
             this.logService = logService;
             this.persistence = persistence;
+            this.filtering = filtering;
         }
 
         #endregion
@@ -199,11 +215,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [Route("Create/{id:guid}")]
         public ActionResult Create(Guid id)
         {
-            var filterT = FilterCache.Get(this.persistence);
-            if (! FilterCache.HasCache())
-            {
-                filterT = FilterCache.GetOrSet(Identity(), this.persistence);
-            }
+            var filterT = this.filtering.GetCurrentFilter();
             var account = this.persistence.Get<Account>(id);
             var patients = this.persistence.QueryOver<Patient>()
                 .Where(p => p.IsActive == true)
@@ -276,6 +288,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="model">The delegation model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost]
+        [Route("Create/{id:guid}")]
         public ActionResult Create(Guid id, DelegationViewModel model)
         {
             var user = Identity();
@@ -422,6 +435,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="page">Optional page - defaults to 1</param>
         /// <returns><see cref="ActionResult"/></returns>
         /*[HttpGet]
+        [Route("DelegationReport/{id:guid}")]
         public ActionResult DelegationReport(Guid id, Guid? tId, Guid? sId, DateTime? startDate, DateTime? endDate, int? page = 1)
         {
             var account = this.persistence.Get<Account>(id);
@@ -505,7 +519,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="startDate">Optional start date - defaults to now</param>
         /// <param name="endDate">Optional end date - defaults to last instant of today</param>
         /// <returns><see cref="FileContentResult"/></returns>
-        /*[HttpGet]
+        [HttpGet]
+        [Route("Excel/{account:guid}")]
         public FileContentResult Excel(Guid account, Guid? taxon, Guid? sId, DateTime startDate, DateTime endDate)
         {
             var query = this.persistence.QueryOver<Task>()
@@ -523,13 +538,13 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                 ScheduleSettingsId = sId
             }.Filter(query);
             var tasks = query.List();
-            var excel = new ExcelWriter<Task, ExcelTaskModel>
-            {
-                Mapping = x => new ExcelTaskModel
+            var bytes = ExcelWriter.CreateNew<Task, ExcelTaskModel>(
+                PathResolver.ResolveAppRelativePath("\\Templates\\Template.xls"),
+                x => new ExcelTaskModel
                 {
                     Task = x.Name,
-                    TaskCompletedOnDate = x.Modified.Date,
-                    TaskCompletedOnTime = (x.Delayed && x.CompletedBy.IsNull()) ? "Ej signerad" : string.Format("{0} {1:HH:mm}", "kl", x.Modified),
+                    TaskCompletedOnDate = x.UpdatedAt.Date,
+                    TaskCompletedOnTime = (x.Delayed && x.CompletedBy.IsNull()) ? "Ej signerad" : string.Format("{0} {1:HH:mm}", "kl", x.UpdatedAt),
                     TaskScheduledOnDate = x.Scheduled.Date,
                     TaskScheduledOnTime = string.Format("{0} {1:HH:mm}", "kl", x.Scheduled),
                     MinutesBefore = x.RangeInMinutesBefore,
@@ -538,13 +553,13 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                     CompletedBy = x.CompletedBy.IsNotNull() ? x.CompletedBy.FullName : "",
                     TaskCompletionStatus = Status(x)
                 },
-                TemplatePath = Server.MapPath(@"\Templates\Template.xls")
-            };
-            var bytes = excel.Generate(tasks);
+                tasks);
+            ITenantIdentity identity;
+            this.tenantService.TryIdentifyTenant(out identity);
             return File(bytes, "application/vnd.ms-excel",
-                string.Format("Rapport-{0}-{1}.xls", TenantIdentity().Name.Replace(" ", "-"),
+                string.Format("Rapport-{0}-{1}.xls", identity.Name.Replace(" ", "-"),
                 DateTime.Now.ToFileTimeUtc()));
-        }*/
+        }
 
         /// <summary>
         /// Returns status by <c>Task</c>.
@@ -613,13 +628,10 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// </summary>
         /// <param name="id">The delegation id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Edit/{id:guid}")]
         public ActionResult Edit(Guid id)
         {
-            var filterT = FilterCache.Get(this.persistence);
-            if (!FilterCache.HasCache())
-            {
-                filterT = FilterCache.GetOrSet(Identity(), this.persistence);
-            }
+            var filterT = this.filtering.GetCurrentFilter();
             var delegation = this.persistence.Get<Delegation>(id);
             var patients = this.persistence.QueryOver<Patient>()
                 .Where(p => p.IsActive == true)
@@ -653,6 +665,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="model">The delegation model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost]
+        [Route("Edit/{id:guid}")]
         public ActionResult Edit(Guid id, DelegationEditViewModel model)
         {
             var delegation = this.persistence.Get<Delegation>(id);
@@ -751,6 +764,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// </summary>
         /// <param name="id">The delegation id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Activate/{id:guid}")]
         public ActionResult Activate(Guid id)
         {
             var delegation = this.persistence.Get<Delegation>(id);
@@ -777,6 +791,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// </summary>
         /// <param name="accountId">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("ActivateAll/{accountId:guid}")]
         public ActionResult ActivateAll(Guid accountId)
         {
             var currentUser = Identity();
@@ -812,6 +827,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The delegation id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("Inactivate/{id:guid}")]
         public ActionResult Inactivate(Guid id)
         {
             var delegation = this.persistence.Get<Delegation>(id);
@@ -829,6 +845,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="post">Not used</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost]
+        [Route("Inactivate/{id:guid}")]
         public ActionResult Inactivate(Guid id, bool post)
         {
             var delegation = this.persistence.Get<Delegation>(id);
@@ -855,6 +872,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// </summary>
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("DelegationPrint/{id:guid}")]
         public ActionResult DelegationPrint(Guid id)
         {
             var account = this.persistence.QueryOver<Account>()
@@ -898,6 +916,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The account id</param>
         /// <param name="taxonId">The taxon id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Update/{id:guid}/{taxonId:guid}")]
         public ActionResult Update(Guid id, Guid taxonId)
         {
             return View(new DelegationDateSpanViewModel
@@ -915,6 +934,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="model">The delegation date span model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
+        [Route("Update/{id:guid}/{taxonId:guid}")]
         public ActionResult Update(Guid id, Guid taxonId, DelegationDateSpanViewModel model)
         {
             if (ModelState.IsValid)
@@ -938,6 +958,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="startDate">The start date</param>
         /// <param name="endDate">The end date</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("UpdateAllActiveDelegationsWithStartEndDate/{id:guid}/{taxonId:guid}")]
         public ActionResult UpdateAllActiveDelegationsWithStartEndDate(Guid id, Guid taxonId, DateTime startDate, DateTime endDate)
         {
             var currentUser = Identity();
@@ -1003,6 +1024,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="taxonId">The taxon id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
+        [Route("AddKnowledgeTest/{id:guid}/{taxonId:guid}")]
         public ActionResult AddKnowledgeTest(Guid id, Guid taxonId)
         {
             return View(new KnowledgeTestFormModel
@@ -1020,6 +1042,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="model">The knowledge test model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
+        [Route("AddKnowledgeTest/{id:guid}/{taxonId:guid}")]
         public ActionResult AddKnowledgeTest(Guid id, Guid taxonId, KnowledgeTestFormModel model)
         {
             if (ModelState.IsValid)
@@ -1047,6 +1070,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The account id</param>
         /// <param name="knowledgeTestId">The knowledge test id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("DeleteKnowledgeTest/{id:guid}/{knowledgeTestId:guid}")]
         public ActionResult DeleteKnowledgeTest(Guid id, Guid knowledgeTestId)
         {
             var knowledgeTest = this.persistence.Get<KnowledgeTest>(knowledgeTestId);
@@ -1066,6 +1090,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The account id</param>
         /// <param name="History">Optional is history or not</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Issued/{id:guid}")]
         public ActionResult Issued(Guid id, bool History = false)
         {
             var account = this.persistence.Get<Account>(id);
@@ -1102,11 +1127,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [Route("overview")]
         public PartialViewResult Overview()
         {
-            var taxon = FilterCache.Get(this.persistence);
-            if (!FilterCache.HasCache())
-            {
-                taxon = FilterCache.GetOrSet(Identity(), this.persistence);
-            }
+            var taxon = this.filtering.GetCurrentFilter();
             var fiftyDaysFromNow = DateTime.Today.AddDays(50);
             var delegations = this.persistence.QueryOver<Delegation>()
                 .Where(x => x.IsActive == true && x.Pending == false)
@@ -1150,6 +1171,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The account id</param>
         /// <param name="date">Optional date</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Revision/{id:guid}")]
         public ActionResult Revision(Guid id, DateTime? date)
         {
             var account = this.persistence.Get<Account>(id);
@@ -1175,6 +1197,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The change set id</param>
         /// <param name="accountId">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
+        [Route("Changeset/{id:guid}/{accountId:guid}")]
         public ActionResult Changeset(Guid id, Guid accountId)
         {
             var change = this.persistence.Get<ChangeSet>(id);
@@ -1212,7 +1235,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                 Active = account.IsActive,
                 FullName = account.FullName,
                 UniqueIdentifier = account.PersonalIdentityNumber,
-                Title = TitleHelper.GetTitle(account.Roles),
+                Title = account.Title,
                 Superior = (superior.IsNotNull()) ? superior.FullName : "Saknas",
                 Account = account
             };

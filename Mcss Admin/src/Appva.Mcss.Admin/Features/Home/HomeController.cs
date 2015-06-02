@@ -10,9 +10,11 @@ namespace Appva.Mcss.Admin.Features.Home
 
     using System.Web.Mvc;
     using Appva.Core.Messaging;
+    using Appva.Mcss.Admin.Application.Services.Menus;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mvc.Messaging;
     using Appva.Persistence;
+    using System.Linq;
 
     #endregion
 
@@ -25,11 +27,10 @@ namespace Appva.Mcss.Admin.Features.Home
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
+        /// The <see cref="IMenuService"/>.
         /// </summary>
-        private readonly IPersistenceContext persistenceContext;
+        private readonly IMenuService menuService;
 
-        private readonly IRazorMailService mail;
         #endregion
 
         #region Constructor.
@@ -38,10 +39,9 @@ namespace Appva.Mcss.Admin.Features.Home
         /// Initializes a new instance of the <see cref="HomeController"/> class.
         /// </summary>
         /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
-        public HomeController(IRazorMailService mail, IPersistenceContext persistenceContext)
+        public HomeController(IMenuService menuService)
         {
-            this.mail = mail;
-            this.persistenceContext = persistenceContext;
+            this.menuService = menuService;
         }
 
         #endregion
@@ -55,31 +55,21 @@ namespace Appva.Mcss.Admin.Features.Home
         [HttpGet, Route]
         public ActionResult Index()
         {
-            /*this.mail.Send(MailMessage.CreateNew().Template("AuthenticationEmail").Model(new EmailAuthentication
+            var menuLinks = this.menuService.Render("https://schema.appva.se/ui/menu", "Index", "Dashboard", "Dashboard");
+            if (menuLinks.Count > 0)
             {
-                FullName = "johan sall larsson",
-                Password = "123"
-            }).To("johansalllarsson@appva.se").Subject("Something").Build());
-            
-            */
-            ViewData.Add("razor", "ok");
-            return View();
+                var menuLink = menuLinks.First();
+                return this.RedirectToAction(menuLink.Action, menuLink.Controller, new
+                {
+                    Area = menuLink.Area
+                });
+            }
+            return this.RedirectToAction("SignIn", "Authentication", new
+            {
+                Area = string.Empty
+            });
         }
 
         #endregion
-    }
-
-    public class EmailAuthentication
-    {
-        public string FullName
-        {
-            get;
-            set;
-        }
-        public string Password
-        {
-            get;
-            set;
-        }
     }
 }

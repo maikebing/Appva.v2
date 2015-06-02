@@ -76,7 +76,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                 message.LastName,
                 message.Email,
                 message.DevicePassword,
-                new PersonalIdentityNumber(message.PersonalIdentityNumber),
+                message.PersonalIdentityNumber,
                 this.taxonomies.Get(message.Taxon.ToGuid()));
 
             return true;

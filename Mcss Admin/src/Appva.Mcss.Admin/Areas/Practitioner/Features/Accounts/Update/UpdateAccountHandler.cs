@@ -74,7 +74,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Email = account.EmailAddress,
                 FirstName = account.FirstName,
                 LastName = account.LastName,
-                PersonalIdentityNumber = account.PersonalIdentityNumber.ToString(),
+                PersonalIdentityNumber = account.PersonalIdentityNumber,
                 Taxon = account.Taxon.ToString(),
                 Username = account.UserName
             };

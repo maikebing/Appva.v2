@@ -62,20 +62,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public override UpdateAccount Handle(Identity<UpdateAccount> message)
         {
-            Account account = this.accounts.Find(message.Id);
+            var account = this.accounts.Find(message.Id);
             return new UpdateAccount
             {
                 IsMobileDevicePasswordEditable = !this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable, false),
                 IsMobileDevicePasswordFieldVisible = !this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable, false),
                 IsUsernameVisible = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible, false),
                 Taxons = TaxonomyHelper.SelectList(this.taxonomies.List(TaxonomicSchema.Organization)),
-                AccountId = account.Id,
+                Id = account.Id,
                 DevicePassword = account.DevicePassword,
                 Email = account.EmailAddress,
                 FirstName = account.FirstName,
                 LastName = account.LastName,
                 PersonalIdentityNumber = account.PersonalIdentityNumber,
-                Taxon = account.Taxon.ToString(),
+                Taxon = account.Taxon.Id.ToString(),
                 Username = account.UserName
             };
         }

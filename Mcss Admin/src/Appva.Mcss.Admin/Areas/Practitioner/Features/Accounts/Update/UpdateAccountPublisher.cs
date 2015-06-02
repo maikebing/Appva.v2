@@ -63,8 +63,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
 
         public override bool Handle(UpdateAccount message)
         {
-            var account = this.accounts.Find(message.AccountId.GetValueOrDefault());
-
+            var account = this.accounts.Find(message.Id);
             if (message.Taxon.IsEmpty())
             {
                 message.Taxon = taxonomies.Roots(TaxonomicSchema.Organization).SingleOrDefault().Id.ToString();

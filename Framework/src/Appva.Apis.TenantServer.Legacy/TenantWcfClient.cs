@@ -4,9 +4,6 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-
-using Appva.Apis.TenantServer.Legacy.Service_References.Wcf;
-
 namespace Appva.Apis.TenantServer.Legacy
 {
     #region Imports.
@@ -14,9 +11,9 @@ namespace Appva.Apis.TenantServer.Legacy
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Transformers;
-    using Logging;
     using Tenant.Interoperability.Client;
+    using TenantServer.Legacy.Service_References.Wcf;
+    using Transformers;
 
     #endregion
 
@@ -53,11 +50,6 @@ namespace Appva.Apis.TenantServer.Legacy
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ILog"/>.
-        /// </summary>
-        private static readonly ILog Log = LogProvider.For<TenantWcfClient>();
-
-        /// <summary>
         /// The tenant wcf service client.
         /// </summary>
         private readonly ITenantService service;
@@ -71,10 +63,6 @@ namespace Appva.Apis.TenantServer.Legacy
         /// </summary>
         public TenantWcfClient()
         {
-            if (Log.IsDebugEnabled())
-            {
-                Log.Debug(Debug.Messages.ClassInitialization);
-            }
             this.service = new TenantServiceClient();
         }
 

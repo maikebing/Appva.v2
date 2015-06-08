@@ -10,8 +10,8 @@ namespace Appva.Fhir.ValueSets
 
     using System.Collections.Generic;
     using Complex;
-    using Primitives;
     using Newtonsoft.Json;
+    using Primitives;
     using ProtoBuf;
 
     #endregion

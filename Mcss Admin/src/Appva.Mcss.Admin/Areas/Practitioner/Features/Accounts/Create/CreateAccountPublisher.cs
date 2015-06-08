@@ -75,7 +75,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 this.roleService.Find(RoleTypes.Device),
                 role
             };
-            if (this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice, true))
+            if (this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice))
             {
                 message.DevicePassword = AccountUtils.GenerateClientPassword();
             }

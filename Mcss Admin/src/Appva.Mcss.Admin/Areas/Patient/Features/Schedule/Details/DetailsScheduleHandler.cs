@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
@@ -43,6 +44,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -50,8 +56,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="DetailsScheduleHandler"/> class.
         /// </summary>
-        public DetailsScheduleHandler(IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public DetailsScheduleHandler(IAuditService auditing, IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.patientService = patientService;
             this.transformer = transformer;
             this.persistence = persistence;
@@ -71,8 +78,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 .Fetch(x => x.Inventory).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer())
                 .List();
-            //var account = Identity();
-            //this.logService.Info(string.Format("Användare {0} läste signeringslista {1} (REF: {2}) för boende {3} (REF: {4}).", account.UserName, schedule.ScheduleSettings.Name, schedule.Id, patient.FullName, patient.Id), account, patient, LogType.Read);
+            this.auditing.Read(
+                patient,
+                "läste signeringslista {0} (REF: {1}) för boende {2} (REF: {3}).",
+                schedule.ScheduleSettings.Name, 
+                schedule.Id, 
+                patient.FullName, 
+                patient.Id);
             return new ScheduleDetailsViewModel
             {
                 Patient = this.transformer.ToPatient(patient),

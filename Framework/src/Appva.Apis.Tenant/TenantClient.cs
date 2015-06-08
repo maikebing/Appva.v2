@@ -15,7 +15,7 @@ namespace Appva.Apis.TenantServer
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using Configuration;
-    using Logging;
+    using Core.Logging;
     using Newtonsoft.Json;
     using Resources;
     using Tenant.Interoperability.Client;
@@ -90,10 +90,7 @@ namespace Appva.Apis.TenantServer
         /// <param name="baseAddress">The tenant server base uri address</param>
         private TenantClient(Uri baseAddress)
         {
-            if (Log.IsDebugEnabled())
-            {
-                Log.DebugFormat(Debug.Messages.ClassInitialization, baseAddress);
-            }
+            Log.Debug(Debug.Messages.ClassInitialization, baseAddress);
             this.httpClient = new HttpClient
             {
                 BaseAddress = baseAddress
@@ -233,20 +230,14 @@ namespace Appva.Apis.TenantServer
         private async Task<T> CreateNewRequestAsync<T>(string format, params object[] parameters)
         {
             var uri = string.Format(format, parameters);
-            if (Log.IsDebugEnabled())
-            {
-                Log.DebugFormat(Debug.Messages.HttpRequestMessage, this.httpClient.BaseAddress + uri);
-            }
+            Log.Debug(Debug.Messages.HttpRequestMessage, this.httpClient.BaseAddress + uri);
             var response = await this.httpClient.GetAsync(uri).ConfigureAwait(false);
             if (! response.IsSuccessStatusCode)
             {
                 return default(T);
             }
             var data = await response.Content.ReadAsStringAsync();
-            if (Log.IsDebugEnabled())
-            {
-                Log.DebugFormat(Debug.Messages.HttpResponseMessage, data);
-            }
+            Log.Debug(Debug.Messages.HttpResponseMessage, data);
             return JsonConvert.DeserializeObject<T>(data);
         }
 

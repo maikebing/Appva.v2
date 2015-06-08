@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Linq;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
@@ -44,6 +45,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -51,8 +57,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="InactivateSchedulePublisher"/> class.
         /// </summary>
-        public InactivateSchedulePublisher(IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public InactivateSchedulePublisher(IAuditService auditing, IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.patientService = patientService;
             this.transformer = transformer;
             this.persistence = persistence;
@@ -70,8 +77,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             schedule.IsActive = false;
             schedule.UpdatedAt = DateTime.Now;
             this.persistence.Update(schedule);
-            //var currentUser = Identity();
-            //this.logService.Info(string.Format("Användare {0} inaktiverade lista {1} (REF: {2}).", currentUser.UserName, schedule.ScheduleSettings.Name, schedule.Id), currentUser, schedule.Patient, LogType.Write);
+            this.auditing.Update(
+                schedule.Patient,
+                "inaktiverade lista {0} (REF: {1}).", 
+                schedule.ScheduleSettings.Name, 
+                schedule.Id);
             return new ListSchedule
             {
                 Id = patient.Id

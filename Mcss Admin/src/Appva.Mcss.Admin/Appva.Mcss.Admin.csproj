@@ -374,13 +374,11 @@
     <Compile Include="Areas\Roles\Features\Roles\Update\UpdateRolesPublisher.cs" />
     <Compile Include="Areas\Roles\Features\Roles\Update\UpdateRolesHandler.cs" />
     <Compile Include="Commands\CreateChartCommand.cs" />
-    <Compile Include="Commands\CreateOverviewCommand.cs" />
     <Compile Include="Commands\CreateReportCommand.cs" />
     <Compile Include="Commands\DateTimeUtils.cs" />
     <Compile Include="Commands\DelegationReportFilter.cs" />
     <Compile Include="Commands\FullReportFilter.cs" />
     <Compile Include="Commands\IReportFilter.cs" />
-    <Compile Include="Commands\PatientQuickSearch.cs" />
     <Compile Include="Commands\ScheduleReportFilter.cs" />
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
@@ -408,6 +406,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\AbstractExceptionHandler.cs" />
     <Compile Include="Infrastructure\AdminModelBinder.cs" />
     <Compile Include="Infrastructure\Attributes\DispatchAttribute.cs" />
     <Compile Include="Infrastructure\ControllerExtensions.cs" />
@@ -415,21 +414,18 @@
     <Compile Include="Infrastructure\Controllers\IdentityController.cs" />
     <Compile Include="Infrastructure\DispatchExcelFileContentResult.cs" />
     <Compile Include="Infrastructure\DispatchJsonResult.cs" />
+    <Compile Include="Infrastructure\MvcExceptionHandler.cs" />
     <Compile Include="Infrastructure\Models\Parameterless.cs" />
     <Compile Include="Infrastructure\PatientTransformer.cs" />
-    <Compile Include="Models\AccountFormViewModel.cs" />
-    <Compile Include="Models\AccountInfoViewModel.cs" />
-    <Compile Include="Models\AccountListViewModel.cs" />
-    <Compile Include="Models\AccountMapper.cs" />
+    <Compile Include="Infrastructure\PersistenceExceptionHandler.cs" />
+    <Compile Include="Infrastructure\PractitionerTransformer.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AddToStockViewModel.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\Load\LoadWidget.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\List\ListAlertModel.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertOverviewViewModel.cs" />
-    <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ChartDataPointViewModel.cs" />
     <Compile Include="Models\CheckBoxViewModel.cs" />
-    <Compile Include="Models\CreateSequencePageViewModelBuilder.cs" />
     <Compile Include="Models\DateSpanViewModel.cs" />
     <Compile Include="Models\DelegationDateSpanViewModel.cs" />
     <Compile Include="Models\DelegationInactivateViewModel.cs" />
@@ -444,8 +440,6 @@
     <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\ExcelTaskModel.cs" />
     <Compile Include="Models\FullReportViewModel.cs" />
-    <Compile Include="Models\GlobalFilterCacheHelper.cs" />
-    <Compile Include="Models\GlobalFilterViewModel.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\Index\HomeViewModel.cs" />
     <Compile Include="Models\Id.cs" />
     <Compile Include="Models\InventoryOverviewViewModel.cs" />
@@ -458,7 +452,6 @@
     <Compile Include="Models\OrderOverviewViewModel.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Create\CreatePatient.cs" />
     <Compile Include="Areas\Patient\Features\Patient\List\ListPatientModel.cs" />
-    <Compile Include="Models\PatientMapper.cs" />
     <Compile Include="Models\PatientViewModel.cs" />
     <Compile Include="Models\PrepareAddSequenceViewModel.cs" />
     <Compile Include="Models\PrepareEditSequenceViewModel.cs" />
@@ -982,6 +975,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Report\Features\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\EmailTemplates\ExceptionEmail.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

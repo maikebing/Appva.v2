@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using Appva.Repository;
@@ -63,6 +64,11 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext context;
@@ -75,8 +81,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="TaskService"/> class.
         /// </summary>
         /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
-        public TaskService(IPersistenceContext context)
+        public TaskService(IAuditService auditing, IPersistenceContext context)
         {
+            this.auditing = auditing;
             this.context = context;
         }
 
@@ -120,8 +127,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 this.context.Update(patient);
             }
             this.context.Update(task);
-            //var currentUser = Current();
-            //LogService.Info(string.Format("Användare {0} kvitterade {1} ({2:yyyy-MM-dd HH:mm} REF: {3}).", currentUser.UserName, task.Name, task.Scheduled, task.Id), currentUser, task.Patient, LogType.Write);
+            this.auditing.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
         }
 
         /// <inheritdoc />
@@ -132,11 +138,11 @@ namespace Appva.Mcss.Admin.Application.Services
                 task.DelayHandled = true;
                 task.DelayHandledBy = account;
                 this.context.Update(task);
-                //LogService.Info(string.Format("Användare {0} kvitterade {1} ({2:yyyy-MM-dd HH:mm} REF: {3}).", account.UserName, task.Name, task.Scheduled, task.Id), account, task.Patient, LogType.Write);
+                this.auditing.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
             }
             patient.HasUnattendedTasks = false;
             this.context.Update(patient);
-            //LogService.Info(string.Format("Användare {0} kvitterade alla försenade insatser för {1} ({2}).", account.UserName, patient.FullName, patient.Id), account, patient, LogType.Write);
+            this.auditing.Update(patient, "kvitterade alla försenade insatser för {0} ({1}).", patient.FullName, patient.Id);
         }
 
         public PageableSet<Task> List()
@@ -145,8 +151,5 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         #endregion
-
-
-        
     }
 }

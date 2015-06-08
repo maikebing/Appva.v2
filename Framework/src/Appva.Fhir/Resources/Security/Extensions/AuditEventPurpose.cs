@@ -8,8 +8,8 @@ namespace Appva.Fhir.Resources.Security.Extensions
 {
     #region Imports.
 
-    using Primitives;
     using Newtonsoft.Json;
+    using Primitives;
 
     #endregion
 

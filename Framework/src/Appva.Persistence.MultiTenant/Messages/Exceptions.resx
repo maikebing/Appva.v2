@@ -118,9 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FailedToResolveTenantIdentifier" xml:space="preserve">
-    <value>Unable to resolve tenant identifer</value>
+    <value>Failed to resolve tenant identifer.</value>
+    <comment>Failed to resolve tenant message</comment>
+  </data>
+  <data name="TenantNotFound" xml:space="preserve">
+    <value>Tenant is not found using key [{0}].</value>
+    <comment>Tenant not found message</comment>
   </data>
   <data name="ZeroTenantsFound" xml:space="preserve">
-    <value>No tenants found</value>
+    <value>Zero tenants was received from client.</value>
+    <comment>Zero tenants found</comment>
   </data>
 </root>

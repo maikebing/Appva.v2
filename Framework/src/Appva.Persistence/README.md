@@ -38,6 +38,6 @@ public override void OnActionExecuted(ActionExecutedContext filterContext)
     //// Only commit in non-child actions, model state is valid and no exception was raised.
     var state = ((filterContext.Exception.IsNull() && ! filterContext.ExceptionHandled)
                 && ! filterContext.IsChildAction && filterContext.Controller.ViewData.ModelState.IsValid);
-    this.persistenceContext..Commit(state);
+    this.persistenceContext.Commit(state);
 }
 ```

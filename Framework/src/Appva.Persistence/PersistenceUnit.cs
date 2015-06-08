@@ -72,7 +72,7 @@ namespace Appva.Persistence
                 { "cache.use_second_level_cache", "false" },
                 { "cache.show_sql", "false" },
                 { "current_session_context_class", "web" },
-                { "dialect", "NHibernate.Dialect.MsSql2008Dialect" },
+                { "dialect", "NHibernate.Dialect.MsSql2012Dialect" },
                 { "connection.provider", "NHibernate.Connection.DriverConnectionProvider" }
             };
 
@@ -93,35 +93,6 @@ namespace Appva.Persistence
             this.ConnectionString = connectionString;
             this.Assembly = assembly;
             this.Properties = this.MergeProperties(properties);
-        }
-
-        #endregion
-
-        #region Public Static Functions.
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="PersistenceUnit"/> class.
-        /// </summary>
-        /// <param name="id">The tenant identifier</param>
-        /// <param name="connectionString">The tenant database connection string</param>
-        /// <param name="assembly">The assembly of which the entities resides</param>
-        /// <param name="properties">Optional NHibernate properties</param>
-        /// <returns>A <see cref="IPersistenceUnit"/> instance</returns>
-        public static IPersistenceUnit CreateNew(string id, string connectionString, string assembly, IEnumerable<KeyValuePair<string, string>> properties = null)
-        {
-            return new PersistenceUnit(id, connectionString, assembly, properties);
-        }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="PersistenceUnit"/> class.
-        /// </summary>
-        /// <param name="connectionString">The tenant database connection string</param>
-        /// <param name="assembly">The assembly of which the entities resides</param>
-        /// <param name="properties">Optional NHibernate properties</param>
-        /// <returns>A <see cref="IPersistenceUnit"/> instance</returns>
-        public static IPersistenceUnit CreateNew(string connectionString, string assembly, IEnumerable<KeyValuePair<string, string>> properties = null)
-        {
-            return CreateNew(null, connectionString, assembly, properties);
         }
 
         #endregion
@@ -158,6 +129,35 @@ namespace Appva.Persistence
 
         #endregion
 
+        #region Public Static Functions.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="PersistenceUnit"/> class.
+        /// </summary>
+        /// <param name="id">The tenant identifier</param>
+        /// <param name="connectionString">The tenant database connection string</param>
+        /// <param name="assembly">The assembly of which the entities resides</param>
+        /// <param name="properties">Optional NHibernate properties</param>
+        /// <returns>A <see cref="IPersistenceUnit"/> instance</returns>
+        public static IPersistenceUnit CreateNew(string id, string connectionString, string assembly, IEnumerable<KeyValuePair<string, string>> properties = null)
+        {
+            return new PersistenceUnit(id, connectionString, assembly, properties);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="PersistenceUnit"/> class.
+        /// </summary>
+        /// <param name="connectionString">The tenant database connection string</param>
+        /// <param name="assembly">The assembly of which the entities resides</param>
+        /// <param name="properties">Optional NHibernate properties</param>
+        /// <returns>A <see cref="IPersistenceUnit"/> instance</returns>
+        public static IPersistenceUnit CreateNew(string connectionString, string assembly, IEnumerable<KeyValuePair<string, string>> properties = null)
+        {
+            return CreateNew(null, connectionString, assembly, properties);
+        }
+
+        #endregion
+
         #region Private Functions.
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Appva.Persistence
         /// <returns>A new properties dictionary</returns>
         private IDictionary<string, string> MergeProperties(IEnumerable<KeyValuePair<string, string>> properties)
         {
-            if (properties.IsNull())
+            if (properties == null)
             {
                 return this.defaultProperties;
             }

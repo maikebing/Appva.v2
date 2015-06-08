@@ -24,14 +24,15 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using System.Web.UI;
     using Appva.Mcss.Web.Controllers;
     using Appva.Mcss.Web;
-    using Appva.Mcss.Web.Mappers;
     using Appva.Core.Utilities;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Core.Resources;
     using Appva.Office;
-using Appva.Core.IO;
-using Appva.Tenant.Identity;
+    using Appva.Core.IO;
+    using Appva.Tenant.Identity;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -63,7 +64,7 @@ using Appva.Tenant.Identity;
         /// <summary>
         /// The <see cref="ILogService"/> dispatcher.
         /// </summary>
-        private readonly ILogService logService;
+        private readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/> dispatcher.
@@ -80,6 +81,11 @@ using Appva.Tenant.Identity;
         /// </summary>
         private readonly ITenantService tenantService;
 
+        /// <summary>
+        /// The <see cref="IAccountTransformer"/>.
+        /// </summary>
+        private readonly IAccountTransformer transformer;
+
         #endregion
 
         #region Constructor.
@@ -87,16 +93,18 @@ using Appva.Tenant.Identity;
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegationController"/> class.
         /// </summary>
-        public DelegationController(IMediator mediator, IIdentityService identityService, 
-            ITaxonomyService taxonomyService, ILogService logService, IPersistenceContext persistence,
-            ITaxonFilterSessionHandler filtering, ITenantService tenantService)
+        public DelegationController(IMediator mediator, IIdentityService identityService,
+            ITaxonomyService taxonomyService, IAuditService auditing, IPersistenceContext persistence,
+            ITaxonFilterSessionHandler filtering, ITenantService tenantService,
+            IAccountTransformer transformer)
         {
             this.mediator = mediator;
             this.identityService = identityService;
             this.taxonomyService = taxonomyService;
-            this.logService = logService;
+            this.auditing = auditing;
             this.persistence = persistence;
             this.filtering = filtering;
+            this.transformer = transformer;
         }
 
         #endregion
@@ -192,7 +200,7 @@ using Appva.Tenant.Identity;
                 }
             }
             var taxonomy = this.taxonomyService.List(TaxonomicSchema.Organization);
-            this.logService.Info("Användare {0} läste delegeringar för användare {1}".FormatWith(user.FullName, account.FullName), user, null, LogType.Read);
+            this.auditing.Read("läste delegeringar för användare {0}", account.FullName);
             return View(new DelegationListViewModel
             {
                 AccountId = account.Id,
@@ -330,14 +338,15 @@ using Appva.Tenant.Identity;
                             IsGlobal = (model.Patients.IsNotNull() && model.Patients.Count() > 0) ? false : true
                         };
                         this.persistence.Save(del);
-                        this.logService.Info(string.Format("Användare {0} lade till delegering {1} ({2:yyyy-MM-dd} - {3:yyyy-MM-dd} REF: {4}) för patient/patienter {5} för användare {6} (REF: {7}).",
-                            del.CreatedBy.UserName, del.Name,
-                            del.StartDate, del.EndDate,
+                        this.auditing.Create(
+                            "lade till delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för patient/patienter {4} för användare {5} (REF: {6}).",
+                            del.Name,
+                            del.StartDate, 
+                            del.EndDate,
                             del.Id,
                             del.IsGlobal ? "alla" : string.Join(",", del.Patients.ToArray().Select(x => x.FullName)),
                             del.Account.FullName,
-                            del.Account.Id
-                        ), del.CreatedBy, LogType.Write);
+                            del.Account.Id);
                     }
                 }
                 else
@@ -744,14 +753,15 @@ using Appva.Tenant.Identity;
             delegation.CreatedBy = Identity();
             this.persistence.Update(delegation);
             var currentUser = Identity();
-            this.logService.Info(string.Format("Användare {0} ändrade delegering {1} ({2:yyyy-MM-dd} - {3:yyyy-MM-dd} REF: {4}) för patient/patienter {5} för användare {6} (REF: {7}).",
-                currentUser.UserName, delegation.Name,
-                delegation.StartDate, delegation.EndDate,
+            this.auditing.Update(
+                "ändrade delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för patient/patienter {4} för användare {5} (REF: {6}).",
+                delegation.Name,
+                delegation.StartDate, 
+                delegation.EndDate,
                 delegation.Id,
                 delegation.IsGlobal ? "alla" : string.Join(",", delegation.Patients.ToArray().Select(x => x.FullName)),
                 delegation.Account.FullName,
-                delegation.Account.Id
-            ), currentUser, LogType.Write);
+                delegation.Account.Id);
             return this.RedirectToAction("List", new { Id = delegation.Account.Id });
 
         }
@@ -773,13 +783,14 @@ using Appva.Tenant.Identity;
             delegation.UpdatedAt = DateTime.Now;
             this.persistence.Update(delegation);
             var currentUser = Identity();
-            this.logService.Info(string.Format("Användare {0} aktiverade delegering {1} ({2:yyyy-MM-dd} - {3:yyyy-MM-dd} REF: {4}) för användare {5} (REF: {6}).",
-                currentUser.UserName, delegation.Name,
-                delegation.StartDate, delegation.EndDate,
+            this.auditing.Update(
+                "aktiverade delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för användare {4} (REF: {5}).",
+                delegation.Name,
+                delegation.StartDate, 
+                delegation.EndDate,
                 delegation.Id,
                 delegation.Account.FullName,
-                delegation.Account.Id
-            ), currentUser, LogType.Write);
+                delegation.Account.Id);
             return this.RedirectToAction("List", new { Id = delegation.Account.Id });
         }
 
@@ -807,13 +818,14 @@ using Appva.Tenant.Identity;
                 delegation.Pending = false;
                 delegation.UpdatedAt = DateTime.Now;
                 this.persistence.Update(delegation);
-                this.logService.Info(string.Format("Användare {0} aktiverade delegering {1} ({2:yyyy-MM-dd} - {3:yyyy-MM-dd} REF: {4}) för användare {5} (REF: {6}).",
-                    currentUser.UserName, delegation.Name,
-                    delegation.StartDate, delegation.EndDate,
+                this.auditing.Update(
+                    "aktiverade delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för användare {4} (REF: {5}).",
+                    delegation.Name,
+                    delegation.StartDate, 
+                    delegation.EndDate,
                     delegation.Id,
                     delegation.Account.FullName,
-                    delegation.Account.Id
-                ), currentUser, LogType.Write);
+                    delegation.Account.Id);
             }
             return this.RedirectToAction("List", new { Id = accountId });
         }
@@ -854,13 +866,14 @@ using Appva.Tenant.Identity;
             delegation.UpdatedAt = DateTime.Now;
             this.persistence.Update(delegation);
             var currentUser = Identity();
-            this.logService.Info(string.Format("Användare {0} inaktiverade delegering {1} ({2:yyyy-MM-dd} - {3:yyyy-MM-dd} REF: {4}) för användare {5} (REF: {6}).",
-                currentUser.UserName, delegation.Name,
-                delegation.StartDate, delegation.EndDate,
+            this.auditing.Update(
+                "inaktiverade delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för användare {4} (REF: {5}).",
+                delegation.Name,
+                delegation.StartDate, 
+                delegation.EndDate,
                 delegation.Id,
                 delegation.Account.FullName,
-                delegation.Account.Id
-            ), currentUser, LogType.Write);
+                delegation.Account.Id);
             return this.RedirectToAction("List", new { Id = delegation.Account.Id });
         }
 
@@ -892,11 +905,10 @@ using Appva.Tenant.Identity;
                 .And(x => x.Account == account)
                 .List();
             var user = Identity();
-            this.logService.Info(string.Format("Användare {0} skapade utskrift för delegeringar för användare {1} (REF: {2}).",
-                    user.UserName,
+            this.auditing.Read(
+                "skapade utskrift för delegeringar för användare {0} (REF: {1}).",
                     account.FullName,
-                    account.Id
-                ), user, LogType.Read);
+                    account.Id);
             return View(new DelegationPrintViewModel
             {
                 Account = account,
@@ -1003,13 +1015,14 @@ using Appva.Tenant.Identity;
                 delegation.UpdatedAt = DateTime.Now;
                 delegation.CreatedBy = Identity();
                 this.persistence.Update(delegation);
-                this.logService.Info(string.Format("Användare {0} förnyade start och slutdatum för delegering {1} ({2:yyyy-MM-dd} - {3:yyyy-MM-dd} REF: {4}) för användare {5} (REF: {6}).",
-                    currentUser.UserName, delegation.Name,
-                    delegation.StartDate, delegation.EndDate,
+                this.auditing.Update(
+                    "förnyade start och slutdatum för delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för användare {4} (REF: {5}).",
+                    delegation.Name,
+                    delegation.StartDate, 
+                    delegation.EndDate,
                     delegation.Id,
                     delegation.Account.FullName,
-                    delegation.Account.Id
-                ), currentUser, LogType.Write);
+                    delegation.Account.Id);
             }
             return this.RedirectToAction("List", new { Id = id });
         }
@@ -1109,7 +1122,7 @@ using Appva.Tenant.Identity;
             return View(new IssuedDelegationsViewModel
             {
                 AccountId = id,
-                Account = AccountMapper.ToAccountViewModel(this.persistence, account),
+                Account = this.transformer.ToAccount(account),
                 Delegations = delegations.Fetch(x => x.CreatedBy).Eager
                     .TransformUsing(new DistinctRootEntityResultTransformer())
                     .List(),
@@ -1186,7 +1199,7 @@ using Appva.Tenant.Identity;
             return View(new DelegationRevisionViewModel
             {
                 AccountId = id,
-                Account = AccountMapper.ToAccountViewModel(this.persistence, account),
+                Account = this.transformer.ToAccount(account),
                 ChangeSets = query.List(),
                 Date = date
             });
@@ -1210,7 +1223,7 @@ using Appva.Tenant.Identity;
             return View(new DelegationRevisionViewModel
             {
                 AccountId = accountId,
-                Account = AccountMapper.ToAccountViewModel(this.persistence, account),
+                Account = this.transformer.ToAccount(account),
                 ChangeSet = change,
                 Delegation = delegation
             });

@@ -218,6 +218,10 @@
       <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
       <Name>Appva.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
+      <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
+      <Name>Appva.Tenant</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.WebApi\Appva.WebApi.csproj">
       <Project>{5603a0f9-3666-4fc9-9af9-b21c7432ba02}</Project>
       <Name>Appva.WebApi</Name>

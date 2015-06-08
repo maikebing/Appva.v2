@@ -19,9 +19,9 @@ namespace Appva.Mcss.Admin.Models.handlers
     using Appva.Mcss.Web.Controllers;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
-    using Appva.Mcss.Web.Mappers;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -47,6 +47,11 @@ namespace Appva.Mcss.Admin.Models.handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -54,8 +59,9 @@ namespace Appva.Mcss.Admin.Models.handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListPatientHandler"/> class.
         /// </summary>
-        public ListPatientHandler(IPatientTransformer transformer, ITaxonFilterSessionHandler filtering, IPersistenceContext persistence)
+        public ListPatientHandler(IAuditService auditing, IPatientTransformer transformer, ITaxonFilterSessionHandler filtering, IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.transformer = transformer;
             this.filtering = filtering;
             this.persistence = persistence;
@@ -68,7 +74,7 @@ namespace Appva.Mcss.Admin.Models.handlers
         /// <inheritdoc /> 
         public override ListPatientModel Handle(ListPatient message)
         {
-            //this.logService.Info(string.Format("Användare {0} genomförde en sökning i patientlistan på {1}.", account.UserName, q), account, LogType.Read);
+            this.auditing.Read("genomförde en sökning i patientlistan på {0}.", message.SearchQuery);
             var isActive = message.IsActive ?? true;
             var isDeceased = message.IsDeceased ?? false;
             var pageSize = 10;

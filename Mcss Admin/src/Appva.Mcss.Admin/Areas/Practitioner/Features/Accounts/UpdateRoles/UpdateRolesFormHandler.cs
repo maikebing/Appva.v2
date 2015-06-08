@@ -15,6 +15,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using Appva.Core.Resources;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -56,16 +58,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListAccount Handle(UpdateRolesForm message)
         {
-
             var account = this.persistence.Get<Account>(message.Id);
             var roles = this.persistence.QueryOver<Role>()
                     .AndRestrictionOn(x => x.Id)
                     .IsIn(message.SelectedRoles.Select(x => new Guid(x)).ToArray())
                     .List();
-            account.Roles = roles;
-            this.persistence.Update(account);
+            this.service.UpdateRoles(account, roles);
             return new ListAccount();
         }
+
 
         #endregion
     }

@@ -82,8 +82,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionResults\EmptyJsonResult.cs" />
+    <Compile Include="Filters\ExceptionFilter.cs" />
     <Compile Include="Filters\MultiButtonAttribute.cs" />
     <Compile Include="Messaging\CshtmlTemplateManager.cs" />
+    <Compile Include="Messaging\Exception\ExceptionMail.cs" />
+    <Compile Include="Messaging\Exception\ExceptionRequest.cs" />
+    <Compile Include="Messaging\Exception\ExceptionUser.cs" />
     <Compile Include="Messaging\MailService.cs" />
     <Compile Include="Messaging\MailMessage.cs" />
     <Compile Include="Messaging\NoOpMailService.cs" />

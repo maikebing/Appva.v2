@@ -9,8 +9,8 @@ namespace Appva.Fhir.Resources.Administrative
     #region Imports.
 
     using Complex;
-    using Primitives;
     using Newtonsoft.Json;
+    using Primitives;
     using ProtoBuf;
 
     #endregion

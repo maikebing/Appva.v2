@@ -8,18 +8,15 @@ namespace Appva.Persistence.MultiTenant
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Caching;
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
-    using Appva.Core.Exceptions;
     using Appva.Core.Extensions;
     using Appva.Core.Logging;
     using Appva.Core.Resources;
     using Appva.Persistence.MultiTenant.Messages;
     using Appva.Tenant.Interoperability.Client;
+    using JetBrains.Annotations;
     using NHibernate;
     using Validation;
 
@@ -66,11 +63,6 @@ namespace Appva.Persistence.MultiTenant
         /// </summary>
         private readonly IMultiTenantDatasourceConfiguration configuration;
 
-        /// <summary>
-        /// The <see cref="IExceptionHandler"/>.
-        /// </summary>
-        private readonly IExceptionHandler exceptionHandler;
-
         #endregion
 
         #region Constructor.
@@ -81,21 +73,14 @@ namespace Appva.Persistence.MultiTenant
         /// <param name="client">The <see cref="ITenantClient"/></param>
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
         /// <param name="configuration">The <see cref="IMultiTenantDatasourceConfiguration"/></param>
-        /// <param name="exceptionHandler">The <see cref="IExceptionHandler"/></param>
-        public MultiTenantDatasource(
-            ITenantClient client,
-            IRuntimeMemoryCache cache,
-            IMultiTenantDatasourceConfiguration configuration,
-            IExceptionHandler exceptionHandler)
+        public MultiTenantDatasource([NotNull] ITenantClient client, [NotNull] IRuntimeMemoryCache cache, [NotNull] IMultiTenantDatasourceConfiguration configuration)
         {
             Requires.NotNull(client, "client");
             Requires.NotNull(cache, "cache");
             Requires.NotNull(configuration, "configuration");
-            Requires.NotNull(exceptionHandler, "exceptionHandler");
             this.client = client;
             this.cache = cache;
             this.configuration = configuration;
-            this.exceptionHandler = exceptionHandler;
         }
 
         #endregion
@@ -109,25 +94,15 @@ namespace Appva.Persistence.MultiTenant
             Log.Debug(Debug.LocateISessionFactoryForTenant, key);
             if (! this.cache.Contains(key))
             {
-                try
+                var tenant = this.client.FindByIdentifier(key);
+                if (tenant == null)
                 {
-                    var tenant = this.client.FindByIdentifier(key);
-                    if (tenant.IsNotNull())
-                    {
-                        this.cache.Upsert<ISessionFactory>(
-                            key,
-                            this.Build(PersistenceUnit.CreateNew(
-                                tenant.Identifier, 
-                                tenant.ConnectionString, 
-                                this.configuration.Assembly, 
-                                this.configuration.Properties)), 
-                            RuntimeEvictionPolicy.NonRemovable);
-                    }
+                    throw new TenantNotFoundException(Exceptions.TenantNotFound.FormatWith(key));
                 }
-                catch (Exception ex)
-                {
-                    this.exceptionHandler.Handle(ex);
-                }
+                this.cache.Upsert<ISessionFactory>(
+                    key,
+                    this.Build(PersistenceUnit.CreateNew(tenant.Identifier, tenant.ConnectionString, this.configuration.Assembly, this.configuration.Properties)),
+                    RuntimeEvictionPolicy.NonRemovable);
             }
             return this.cache.Find<ISessionFactory>(key);
         }
@@ -137,31 +112,21 @@ namespace Appva.Persistence.MultiTenant
         #region Datasource Implementation.
 
         /// <inheritdoc />
-        public override void Connect()
+        public override IDatasourceResult Connect()
         {
             Log.Debug(Debug.DatasourceConnecting);
             var tenants = this.client.List();
             if (tenants.Count == 0)
             {
-                this.exceptionHandler.Handle(new ZeroTenantsException(Exceptions.ZeroTenantsFound));
+                throw new TenantsResultException(Exceptions.ZeroTenantsFound);
             }
-            try
+            var units = tenants.Select(x => PersistenceUnit.CreateNew(x.Identifier, x.ConnectionString, this.configuration.Assembly, this.configuration.Properties)).ToList();
+            var result = this.Build(units);
+            foreach (var factory in result.SessionFactories)
             {
-                var units = tenants.Select(x => PersistenceUnit.CreateNew(x.Identifier, x.ConnectionString, this.configuration.Assembly, this.configuration.Properties)).ToList();
-                var result = this.Build(units);
-                foreach (var factory in result.SessionFactories)
-                {
-                    this.cache.Upsert<ISessionFactory>(CacheTypes.Persistence.FormatWith(factory.Key), factory.Value, RuntimeEvictionPolicy.NonRemovable);
-                }
-                if (result.Exceptions.Count > 0)
-                {
-                    this.exceptionHandler.Handle(new AggregateException(result.Exceptions));
-                }
+                this.cache.Upsert<ISessionFactory>(CacheTypes.Persistence.FormatWith(factory.Key), factory.Value, RuntimeEvictionPolicy.NonRemovable);
             }
-            catch (Exception ex)
-            {
-                this.exceptionHandler.Handle(ex);
-            }
+            return result;
         }
 
         #endregion

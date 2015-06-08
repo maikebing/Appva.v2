@@ -20,7 +20,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [Authorize]
-    [RouteArea("patient"), RoutePrefix("{id:guid}/order")]
+    [RouteArea("patient"), RoutePrefix("order")]
     public sealed class OrderController : Controller
     {
         #region Routes.
@@ -31,7 +31,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// Returns the dashboard widget.
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
-        [Route("~/patient/order/overview")]
+        [Route("overview")]
         [HttpGet, Dispatch(typeof(OverviewOrder))]
         public PartialViewResult Overview()
         {
@@ -48,7 +48,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <param name="sequence">The sequence id</param>
         /// <returns><see cref="JsonResult"/></returns>
         [Route("refill")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        [HttpPost, /*Validate, ValidateAntiForgeryToken,*/ Dispatch]
         public DispatchJsonResult Refill(RefillOrder request)
         {
             return this.JsonPost();
@@ -60,7 +60,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <param name="sequence">The sequence id</param>
         /// <returns><see cref="JsonResult"/></returns>
         [Route("refill/undo")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        [HttpPost, /*Validate, ValidateAntiForgeryToken,*/ Dispatch]
         public DispatchJsonResult UndoRefill(UndoRefillOrder request)
         {
             return this.JsonPost();
@@ -73,7 +73,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <param name="sequence">The sequence id</param>
         /// <returns><see cref="JsonResult"/></returns>
         [Route("create")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        [HttpPost, /*Validate, ValidateAntiForgeryToken,*/ Dispatch]
         public DispatchJsonResult Create(CreateOrder request)
         {
             return this.JsonPost();
@@ -85,7 +85,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <param name="sequence">The sequence id</param>
         /// <returns><see cref="JsonResult"/></returns>
         [Route("undo")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        [HttpPost, /*Validate, ValidateAntiForgeryToken,*/ Dispatch]
         public DispatchJsonResult Undo(UndoOrder request)
         {
             return this.JsonPost();

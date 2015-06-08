@@ -8,11 +8,8 @@ namespace Appva.Persistence.MultiTenant
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appva.Core;
-    using Appva.Core.Configuration;
 
     #endregion
 
@@ -44,17 +41,6 @@ namespace Appva.Persistence.MultiTenant
     /// </summary>
     public sealed class MultiTenantDatasourceConfiguration : IMultiTenantDatasourceConfiguration
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MultiTenantDatasourceConfiguration"/> class.
-        /// </summary>
-        public MultiTenantDatasourceConfiguration()
-        {
-        }
-
-        #endregion
-
         #region IMultiTenantDatasourceConfiguration Members.
 
         /// <inheritdoc />

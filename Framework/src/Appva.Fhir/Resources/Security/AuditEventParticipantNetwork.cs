@@ -8,9 +8,9 @@ namespace Appva.Fhir.Resources.Security
 {
     #region Imports.
 
-    using ValueSets;
     using Newtonsoft.Json;
     using ProtoBuf;
+    using ValueSets;
 
     #endregion
 

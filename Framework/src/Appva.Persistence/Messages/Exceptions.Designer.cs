@@ -61,7 +61,7 @@ namespace Appva.Persistence.Messages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to create database connection!.
+        ///   Looks up a localized string similar to Failed to create database connection..
         /// </summary>
         internal static string FailedToCreateADatabaseConnection {
             get {

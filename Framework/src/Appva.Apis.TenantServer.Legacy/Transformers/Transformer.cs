@@ -4,9 +4,6 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-
-using Appva.Apis.TenantServer.Legacy.Service_References.Wcf;
-
 namespace Appva.Apis.TenantServer.Legacy.Transformers
 {
     #region Imports.
@@ -14,9 +11,9 @@ namespace Appva.Apis.TenantServer.Legacy.Transformers
     using System.Collections.Generic;
     using System.Linq;
     using Contracts;
-    using Logging;
+    using Core.Logging;
     using Tenant.Interoperability.Client;
-    using Newtonsoft.Json;
+    using TenantServer.Legacy.Service_References.Wcf;
 
     #endregion
 
@@ -47,10 +44,7 @@ namespace Appva.Apis.TenantServer.Legacy.Transformers
         /// <returns>A <see cref="Tenant"/> or null</returns>
         public static ITenantDto Transform(TenantDto dto)
         {
-            if (Log.IsDebugEnabled())
-            {
-                Log.Debug(JsonConvert.SerializeObject(dto));
-            }
+            Log.DebugJson(dto);
             return dto == null ? null : new Tenant
             {
                 Id = dto.Id,

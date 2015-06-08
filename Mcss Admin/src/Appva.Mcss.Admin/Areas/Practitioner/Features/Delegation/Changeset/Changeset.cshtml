@@ -21,15 +21,8 @@
         }
     }
 }
-@Html.Partial("~/Views/Account/Partials/_AccountDetails.cshtml", Model.Account)
-@Html.Action("Menu", "Menu", new
-            {
-                Key = "admin_account_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Account.Id.ToString(),
-                IgnoreAction = false
-            })
+@Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
 <div id="subheader" class="cf">
 		<h1>Delegering - @String.Format("{0:yyyy-MM-dd} {1:yyyy-MM-dd}", startDate, endDate)</h1>
 		@Html.ActionLink("Tillbaka", "Revision", new { id = Model.AccountId }, new { @class = "btn" })

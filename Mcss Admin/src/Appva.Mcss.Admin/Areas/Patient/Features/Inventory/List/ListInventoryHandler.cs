@@ -17,10 +17,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using Appva.Core.Utilities;
     using Appva.Mcss.Admin.Commands;
-    using Appva.Mcss.Web.Mappers;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -42,9 +42,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ITaskService taskService;
 
         /// <summary>
-        /// The <see cref="ILogService"/>.
+        /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly ILogService logService;
+        private readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -67,12 +67,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="ILogService"/> implementation</param>
         public ListInventoryHandler(
-            IPatientService patientService, ITaskService taskService, ILogService logService, IPersistenceContext persistence,
+            IPatientService patientService, ITaskService taskService, IAuditService auditing, IPersistenceContext persistence,
             IPatientTransformer transformer)
         {
             this.patientService = patientService;
             this.taskService = taskService;
-            this.logService = logService;
+            this.auditing = auditing;
             this.persistence = persistence;
             this.transformer = transformer;
         }
@@ -126,17 +126,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 .And(x => x.CreatedAt >= startDate)
                 .And(x => x.CreatedAt <= endDate)
                 .OrderBy(x => x.CreatedAt).Desc;
-            /*var user = this.Identity();
-            this.logService.Info(
-                    "Användare {0} läste saldolista sida {1} för boende {2} (REF: {3})."
-                    .FormatWith(
-                        user.UserName,
-                        page,
-                        patient.FullName,
-                        patient.Id),
-                    user,
+            this.auditing.Read(
                     patient,
-                    LogType.Read);*/
+                    "läste saldolista sida {0} för boende {1} (REF: {2}).",
+                    page,
+                    patient.FullName,
+                    patient.Id);
             return new ListInventoryViewModel
             {
                 Patient = this.transformer.ToPatient(patient),

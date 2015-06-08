@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Linq;
     using Appva.Core.Extensions;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Infrastructure;
@@ -46,6 +47,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPatientTransformer transformer;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -57,12 +63,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IEventService eventService, 
             IPatientService patientService, 
             ISettingsService settingsService,
-            IPatientTransformer transformer)
+            IPatientTransformer transformer,
+            IAuditService auditing)
         {
             this.eventService = eventService;
             this.patientService = patientService;
             this.settingsService = settingsService;
             this.transformer = transformer;
+            this.auditing = auditing;
         }
 
         #endregion
@@ -85,8 +93,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var categories = this.eventService.GetCategories();
             var patient = this.patientService.Get(message.Id);
             var events = this.eventService.FindWithinMonth(patient, date);
-            //var user = this.Identity();
-            //this.logService.Info("Användare {0} läste kalenderaktiviteter för användare {1}(REF:{2})".FormatWith(user.FullName, patient.FullName, patient.Id), user, patient, LogType.Read);
+            this.auditing.Read(patient, "läste kalenderaktiviteter för användare {0}(REF:{1})", patient.FullName, patient.Id);
             return new EventListViewModel
             {
                 Current = date,

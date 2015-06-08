@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using NHibernate.Transform;
     using Appva.Core.Extensions;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -44,6 +45,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -51,8 +57,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintSchemaScheduleHandler"/> class.
         /// </summary>
-        public PrintSchemaScheduleHandler(IPatientService patientService, IScheduleService scheduleService, IPersistenceContext persistence)
+        public PrintSchemaScheduleHandler(IAuditService auditing, IPatientService patientService, IScheduleService scheduleService, IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.patientService = patientService;
             this.scheduleService = scheduleService;
             this.persistence = persistence;
@@ -93,8 +100,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
                 .Where(x => x.MachineName == "SST").List() : 
                 schedule.StatusTaxons.ToList();
-            //var account = Identity();
-            //this.logService.Info(string.Format("Användare {0} skapade utskrift av signeringslista {1} för boende {2} (REF: {3}).", account.UserName, schedule.Name, patient.FullName, patient.Id), account, patient, LogType.Read);
+            this.auditing.Read(
+                patient,
+                "skapade utskrift av signeringslista {0} för boende {1} (REF: {2}).", 
+                schedule.Name, 
+                patient.FullName, 
+                patient.Id);
             return new PrintViewModel
             {
                 Patient = patient,

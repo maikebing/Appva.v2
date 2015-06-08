@@ -156,6 +156,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>The account id</returns>
         void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress);
 
+        void UpdateRoles(Account account, IList<Role> roles);
+
         /// <summary>
         /// 
         /// </summary>
@@ -353,32 +355,102 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
+            this.auditing.Read("läste medarbetarlista sida {0}", page);
             return this.repository.Search(model, page, pageSize);
         }
 
-        public void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress)
+        public void UpdateRoles(Account account, IList<Role> roles)
         {
+            if (roles != null)
+            {
+                var backendRole = this.persitence.QueryOver<Role>()
+                    .Where(x => x.MachineName == RoleTypes.Backend)
+                    .SingleOrDefault();
+
+                account.Roles = this.UpdateRole(RoleTypes.TitlePrefix, account.Roles, roles, backendRole);
+                if (account.UserName == null)
+                {
+                    account.UserName = AccountUtils.CreateUserName(
+                        account.FirstName,
+                        account.LastName,
+                        GetUserNames()
+                    );
+                    account.Salt = EncryptionUtils.GenerateSalt(DateTime.Now);
+                    account.AdminPassword = EncryptionUtils.Hash("abc123ABC", account.Salt);
+                }
+                this.repository.Update(account);
+                this.auditing.Update("uppdaterade kontot för {0} (REF: {1}).", account.FullName, account.Id);
+            }
+        }
+
+        /// <summary>
+        /// Updates previous roles with a new role.
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="previousRoles"></param>
+        /// <param name="roleToUpdate"></param>
+        /// <returns></returns>
+        public IList<Role> UpdateRole(string role, IList<Role> previousRoles, IList<Role> rolesToUpdate, Role backEndRole)
+        {
+            if (rolesToUpdate.Equals(previousRoles))
+            {
+                return previousRoles;
+            }
+            if (rolesToUpdate.Any(r => r.MachineName.StartsWith(RoleTypes.TitlePrefix)))
+            {
+                previousRoles = previousRoles.Where(r => !r.MachineName.StartsWith(RoleTypes.TitlePrefix)).ToList();
+            }
+            foreach (var roleToUpdate in rolesToUpdate)
+            {
+                if (!previousRoles.Contains(roleToUpdate))
+                {
+                    previousRoles.Add(roleToUpdate);
+                    if (roleToUpdate.MachineName.StartsWith(RoleTypes.Nurse) && !previousRoles.Any(r => r.MachineName.StartsWith(RoleTypes.Backend)))
+                    {
+                        previousRoles.Add(backEndRole);
+                    }
+                    if (roleToUpdate.MachineName.StartsWith(RoleTypes.Assistant) && !rolesToUpdate.Any(r => r.MachineName.StartsWith(RoleTypes.Backend)))
+                    {
+                        previousRoles = previousRoles.Where(r => !r.MachineName.StartsWith(RoleTypes.Backend)).ToList();
+                    }
+                }
+            }
+            return previousRoles;
+        }
+
+        public void Update(Account account, string firstName, string lastName, string emailAddress, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress)
+        {
+            var previousPassword = account.DevicePassword;
+            account.UpdatedAt = DateTime.Now;
             account.FirstName = firstName;
             account.LastName = lastName;
             account.FullName = string.Format("{0} {1}", firstName.Trim(), lastName.Trim());
-
-            // TODO: Should be set by a function which sends nofitcations etc to user
             account.DevicePassword = mobileDevicePassword;
-
-            if (!mail.IsNull())
+            if (! emailAddress.IsNull())
             {
-                account.EmailAddress = mail;
+                account.EmailAddress = emailAddress;
             }
-            if (!personalIdentityNumber.IsNull())
+            if (! personalIdentityNumber.IsNull())
             {
                 account.PersonalIdentityNumber = personalIdentityNumber;
             }
-            if (!adress.IsNull())
+            if (! adress.IsNull())
             {
                 account.Taxon = adress;
             }
-
             this.repository.Update(account);
+            this.auditing.Update("uppdaterade kontot för {0} (REF: {1}).", account.FullName, account.Id);
+            if (previousPassword.IsNotEmpty() && previousPassword.NotEqual(mobileDevicePassword))
+            {
+                var mail = new MailMessage()
+                {
+                    Subject = ConfigurationManager.AppSettings.Get("EmailEditAccountSubject"),
+                    Body = string.Format(ConfigurationManager.AppSettings.Get("EmailEditAccountBody"), account.FullName, account.DevicePassword, account.UserName),
+                    IsBodyHtml = true
+                };
+                mail.To.Add(account.EmailAddress);
+                this.mailService.Send(mail);
+            }
         }
 
         /// <inheritdoc />
@@ -386,8 +458,8 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             account.IsActive = false;
             account.UpdatedAt = DateTime.Now;
-
             this.repository.Update(account);
+            this.auditing.Update("inaktiverade kontot för {0} (REF: {1}).", account.FullName, account.Id);
         }
 
         /// <inheritdoc />
@@ -395,8 +467,8 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             account.IsActive = true;
             account.UpdatedAt = DateTime.Now;
-
             this.repository.Update(account);
+            this.auditing.Update("aktiverade kontot för {0} (REF: {1}).", account.FullName, account.Id);
         }
 
         /// <inheritdoc />
@@ -404,8 +476,8 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             account.IsPaused = true;
             account.UpdatedAt = DateTime.Now;
-
             this.repository.Update(account);
+            this.auditing.Update("pausade kontot för {0} (REF: {1}).", account.FullName, account.Id);
         }
 
         /// <inheritdoc />
@@ -413,8 +485,8 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             account.IsPaused = false;
             account.UpdatedAt = DateTime.Now;
-
             this.repository.Update(account);
+            this.auditing.Update("avpausade kontot för {0} (REF: {1}).", account.FullName, account.Id);
         }
 
         #endregion
@@ -440,12 +512,13 @@ namespace Appva.Mcss.Admin.Application.Services
             var mailBody = this.settingsService.CreateAccountMailBody();
             if (mailBody.IsNotEmpty())
             {
-                var mail = new MailMessage("noreply@appva.se", account.EmailAddress)
+                var mail = new MailMessage()
                 {
                     Subject = ConfigurationManager.AppSettings.Get("EmailCreateAccountSubject"),
                     Body = string.Format(mailBody, account.FullName, account.DevicePassword),
                     IsBodyHtml = true
                 };
+                mail.To.Add(account.EmailAddress);
                 this.mailService.Send(mail);
             }
         }

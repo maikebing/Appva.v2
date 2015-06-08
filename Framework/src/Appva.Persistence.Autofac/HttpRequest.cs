@@ -8,8 +8,6 @@ namespace Appva.Persistence.Autofac
 
     using System;
     using System.Web;
-    using Core.Extensions;
-    using Validation;
 
     #endregion
 
@@ -75,7 +73,7 @@ namespace Appva.Persistence.Autofac
         /// <returns>True if any exceptions occured</returns>
         public bool IsContainingExceptions()
         {
-            return this.context.IsNull() ? true : (this.context.AllErrors.IsNotNull() && this.context.AllErrors.Length > 0);
+            return this.context == null ? true : (this.context.AllErrors != null && this.context.AllErrors.Length > 0);
         }
 
         /// <summary>
@@ -121,7 +119,7 @@ namespace Appva.Persistence.Autofac
         /// <returns>True if the model state is valid</returns>
         public bool IsValidModelState()
         {
-            if (this.context.Items[ModelStateContextToken].IsNull())
+            if (this.context.Items[ModelStateContextToken] == null)
             {
                 return false;
             }
@@ -134,7 +132,7 @@ namespace Appva.Persistence.Autofac
         /// <returns>True if the HTTP request is a child request</returns>
         public bool IsChildAction()
         {
-            return this.context.IsNull() || this.context.Request.RequestContext.RouteData.DataTokens.ContainsKey(ParentActionViewContextToken);
+            return this.context == null || this.context.Request.RequestContext.RouteData.DataTokens.ContainsKey(ParentActionViewContextToken);
         }
         #endregion
     }

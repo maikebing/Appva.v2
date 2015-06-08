@@ -9,9 +9,9 @@ namespace Appva.Fhir.Resources
     #region Imports.
 
     using Administrative;
-    using Security;
     using Newtonsoft.Json;
     using ProtoBuf;
+    using Security;
 
     #endregion
 

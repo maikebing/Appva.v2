@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web.Controllers;
     using Appva.Core.IO;
     using Appva.Tenant.Identity;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -30,6 +31,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
     internal sealed class GenerateExcelHandler : RequestHandler<GenerateExcel, FileContentResult>
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="ITenantService"/>.
@@ -48,8 +54,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="GenerateExcelHandler"/> class.
         /// </summary>
-        public GenerateExcelHandler(ITenantService tenantService, IPersistenceContext persistence)
+        public GenerateExcelHandler(IAuditService auditing, ITenantService tenantService, IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.tenantService = tenantService;
             this.persistence = persistence;
         }
@@ -76,10 +83,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 query.Inner.JoinAlias(x => x.Schedule, () => scheduleAlias)
                     .Where(() => scheduleAlias.ScheduleSettings.Id == message.ScheduleSettingsId);
             }
-            /*var account = Identity();
-             * var patient = this.persistence.Get<Patient>(message.Id);
-            this.logService.Info(string.Format("Användare {0} skapade excellista för boende {1} (REF: {2}).", account.UserName, patient.FullName, patient.Id), account, patient, LogType.Read);
-            */
+            var patient = this.persistence.Get<Patient>(message.Id);
+            this.auditing.Read(
+                patient,
+                "skapade excellista för boende {0} (REF: {1}).", 
+                patient.FullName, 
+                patient.Id);
             var tasks = query.List();
             var path = PathResolver.ResolveAppRelativePath("Templates\\Template.xls");
             var bytes = ExcelWriter.CreateNew<Task, ExcelTaskModel>(

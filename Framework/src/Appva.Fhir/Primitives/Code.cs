@@ -9,12 +9,12 @@ namespace Appva.Fhir.Primitives
     #region Imports.
 
     using System.Text.RegularExpressions;
+    using Newtonsoft.Json;
+    using ProtoBuf;
     using Resources;
     using Resources.Administrative;
     using Resources.Security.Extensions;
     using Resources.Security.ValueSets;
-    using Newtonsoft.Json;
-    using ProtoBuf;
 
     #endregion
 

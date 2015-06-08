@@ -1,4 +1,5 @@
 ﻿@model Appva.Mcss.Web.ViewModels.AlertOverviewViewModel
+@using Appva.Mcss.Admin.Application.Common;
 <div>
 	<div class="heading cf">
         <h2>Pågående insatser</h2>
@@ -6,7 +7,6 @@
             @Html.ActionLink("Ej signerade (" + Model.CountNotSigned + ")", "Overview", new { status = "notsigned" }, new { @class = "div" + (Request["status"] == "notsigned" || Request["status"] == null ? " sel":"") })
             @Html.ActionLink("Försenade (" + Model.CountAll + ")", "Overview", new { status = "all" }, new { @class = "div" + (Request["status"] == "all" ? " sel" : "") })
         </p>
-        @*Html.ActionLink("Alla boende ...", "List", "Patient")*@
     </div>
 	<div class="panel-c">
 		@if (Model.Patients.Count == 0) {
@@ -27,11 +27,38 @@
                     @foreach (var patient in Model.Patients) {
 		    		<tr class="alarm">
 		    			<td>
-                            @Html.ActionLink(patient.FullName, "List", "Schedule", new { id = patient.Id }, new { })
+                            @if (Html.HasPermissionFor(Permissions.Schedule.Read))
+                            {
+                                @Html.ActionLink(patient.FullName, "List", "Schedule", new { id = patient.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Schedule.EventList))
+                            {
+                                @Html.ActionLink(patient.FullName, "Sign", "Schedule", new { id = patient.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Alert.Read))
+                            {
+                                @Html.ActionLink(patient.FullName, "List", "Alerts", new { id = patient.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Schedule.Report))
+                            {
+                                @Html.ActionLink(patient.FullName, "ScheduleReport", "Schedule", new { id = patient.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Calendar.Read))
+                            {
+                                @Html.ActionLink(patient.FullName, "List", "Calendar", new { id = patient.Id }, null)
+                            }
+                            else if (Html.HasPermissionFor(Permissions.Inventory.Read))
+                            {
+                                @Html.ActionLink(patient.FullName, "List", "Inventory", new { id = patient.Id }, null)
+                            }
+                            else
+                            {
+                                @patient.FullName
+                            }
                         </td>
 		    			<td>@patient.Address</td>
 		    			<td>@patient.Overseeing</td>
-		    			<td>@Html.ActionLink("Larm", "List", "Alerts", new { id = patient.Id }, new { @class = "larm" })</td>
+		    			<td>@Html.ActionLink(Permissions.Alert.Read, "Larm", "List", "Alerts", new { id = patient.Id }, new { @class = "larm" })</td>
 		    		</tr>
                     }
 		    	</tbody>
@@ -47,7 +74,6 @@
             elem.addClass("sel");
             elem.parent().parent().parent().find('.panel-c').append('<div class="loading"><img src="@Url.Image("ajax-load.gif")" alt="Laddar" /></div>');
             elem.parent().parent().parent().find('.panel-c').load(elem.attr('href') + " .panel-c table");
-
         });
     </script>
 </div>

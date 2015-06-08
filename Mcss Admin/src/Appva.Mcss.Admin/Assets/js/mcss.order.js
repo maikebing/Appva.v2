@@ -1,21 +1,21 @@
 ﻿mcss.Order = {
     refill: function (seqId, callback) {
-        $.post("/Order/Refill", { sequence: seqId }, function (data) {
+        $.post("patient/order/refill", { id: seqId }, function (data) {
             callback();
         });
     },
     undoRefill: function (seqId, callback) {
-        $.post("/Order/UndoRefill", { sequence: seqId }, function (data) {
+        $.post("patient/order/refill/undo", { id: seqId }, function (data) {
             callback();
         });
     },
     order: function (seqId, callback) {
-        $.post("/Order/Order", { sequence: seqId }, function (data) {
+        $.post("patient/order/create", { id: seqId }, function (data) {
             callback();
         });
     },
     undoOrder: function (seqId, callback) {
-        $.post("/Order/UndoOrder", { sequence: seqId }, function (data) {
+        $.post("patient/order/undo", { id: seqId }, function (data) {
             callback();
         });
     },
@@ -51,7 +51,6 @@
             }
             else {
                 mcss.Order.undoOrder(elem.val(), function () {
-                    console.log(elem.parent().parent().parent());
                     elem.parent().parent().parent().find('span').removeClass('ordered');
                     if (!elem.parent().parent().parent().find('span').hasClass('done')) {
                         elem.parent().parent().parent().find('span').html("");

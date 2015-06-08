@@ -53,8 +53,8 @@ namespace Appva.Mcss.Admin.UnitTests.Tools
         /// </summary>
         public InMemoryDatabase()
         {
-            var persistenceResolver = new DefaultPersistenceContextAwareResolver(new DefaultDatasource(Configuration, new DefaultExceptionHandler()));
-            this.persistenceContext = persistenceResolver.CreateNew().Open();
+            //// var persistenceResolver = new DefaultPersistenceContextAwareResolver(new DefaultDatasource(Configuration), new DefaultExceptionHandler());
+            //// this.persistenceContext = persistenceResolver.CreateNew().Open();
         }
 
         #endregion

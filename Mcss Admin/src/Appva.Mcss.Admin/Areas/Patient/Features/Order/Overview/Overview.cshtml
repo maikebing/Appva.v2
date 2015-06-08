@@ -1,5 +1,5 @@
 ﻿@model Appva.Mcss.Web.ViewModels.OrderOverviewViewModel
-
+@using Appva.Mcss.Admin.Application.Common;
 <div>
     <div class="heading cf"><h2>Påfyllning av läkemedel</h2></div>
     <div class="panel-c">
@@ -22,35 +22,74 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var order in Model.Orders) {
-    <tr>
-        <td>@Html.ActionLink(order.Patient.FullName, "List", "Schedule", new { id = order.Patient.Id }, new { })</td>
-        <td>@order.Name</td>
-        <td>@Html.ActionLink(order.RefillInfo.RefillOrderedBy.FullName, "List", "Delegation", new { id = order.RefillInfo.RefillOrderedBy.Id }, new { })<p class="orderTime">@TimeSpanDifference.ToReadableFromToday(order.RefillInfo.RefillOrderedDate.GetValueOrDefault())</p></td>
-        <td class="check">
-            <p class="order-check">
-                <input type="checkbox" name="pre-order" class="pre-order-checkbox" value="@order.Id.ToString()" @(order.RefillInfo.Ordered ? "checked" : "") />
-            </p>
-        </td>
-        <td class="check">
-            <p class="order-check">
-                <input type="checkbox" name="order-checkbox" class="order-checkbox" value="@order.Id.ToString()" />
-                @if (order.RefillInfo.Ordered) {
-                    <span class="order-status ordered">Beställd</span>
-                }
-                else {
-                    <span id="orderStatus"></span>
-                }
-            </p>
-        </td>
-
-    </tr>
-}
+                    @foreach (var order in Model.Orders) 
+                    {
+                        <tr>
+                            <td>
+                                @if (Html.HasPermissionFor(Permissions.Schedule.Read))
+                                {
+                                    @Html.ActionLink(order.Patient.FullName, "List", "Schedule", new { id = order.Patient.Id, Area = "Patient" }, null)
+                                }
+                                else if (Html.HasPermissionFor(Permissions.Schedule.EventList))
+                                {
+                                    @Html.ActionLink(order.Patient.FullName, "Sign", "Schedule", new { id = order.Patient.Id, Area = "Patient" }, null)
+                                }
+                                else if (Html.HasPermissionFor(Permissions.Alert.Read))
+                                {
+                                    @Html.ActionLink(order.Patient.FullName, "List", "Alerts", new { id = order.Patient.Id, Area = "Patient" }, null)
+                                }
+                                else if (Html.HasPermissionFor(Permissions.Schedule.Report))
+                                {
+                                    @Html.ActionLink(order.Patient.FullName, "ScheduleReport", "Schedule", new { id = order.Patient.Id, Area = "Patient" }, null)
+                                }
+                                else if (Html.HasPermissionFor(Permissions.Calendar.Read))
+                                {
+                                    @Html.ActionLink(order.Patient.FullName, "List", "Calendar", new { id = order.Patient.Id, Area = "Patient" }, null)
+                                }
+                                else if (Html.HasPermissionFor(Permissions.Inventory.Read))
+                                {
+                                    @Html.ActionLink(order.Patient.FullName, "List", "Inventory", new { id = order.Patient.Id, Area = "Patient" }, null)
+                                }
+                                else
+                                {
+                                    @order.Patient.FullName
+                                }
+                            </td>
+                            <td>@order.Name</td>
+                            <td>
+                                @if (Html.HasPermissionFor(Permissions.Practitioner.Read))
+                                {
+                                    @Html.ActionLink(order.RefillInfo.RefillOrderedBy.FullName, "List", "Delegation", new { id = order.RefillInfo.RefillOrderedBy.Id }, new { }) 
+                                } 
+                                else
+                                {
+                                    @order.RefillInfo.RefillOrderedBy.FullName 
+                                }
+                                <p class="orderTime">@TimeSpanDifference.ToReadableFromToday(order.RefillInfo.RefillOrderedDate.GetValueOrDefault())</p>
+                            </td>
+                            <td class="check">
+                                <p class="order-check">
+                                    <input type="checkbox" name="pre-order" class="pre-order-checkbox" value="@order.Id.ToString()" @(order.RefillInfo.Ordered ? "checked" : "") />
+                                </p>
+                            </td>
+                            <td class="check">
+                                <p class="order-check">
+                                    <input type="checkbox" name="order-checkbox" class="order-checkbox" value="@order.Id.ToString()" />
+                                    @if (order.RefillInfo.Ordered) 
+                                    {
+                                        <span class="order-status ordered">Beställd</span>
+                                    }
+                                    else 
+                                    {
+                                        <span id="orderStatus"></span>
+                                    }
+                                </p>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
-
             </table>
         }
-        
     </div>
     <script type="text/javascript">
         mcss.Order.init();

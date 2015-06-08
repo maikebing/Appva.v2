@@ -46,7 +46,6 @@
     <Compile Include="ConfigurableApplicationContextProtectedWriter.cs" />
     <Compile Include="ConfigurableApplicationContextReader.cs" />
     <Compile Include="ConfigurableApplicationContextWriter.cs" />
-    <Compile Include="IConfigurableResource.cs" />
     <Compile Include="IO\IConfigurableSource.cs" />
     <Compile Include="IO\JsonConfigurableSource.cs" />
     <Compile Include="IO\ConfigurableSource.cs" />

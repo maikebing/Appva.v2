@@ -17,10 +17,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using Appva.Core.Utilities;
     using Appva.Mcss.Admin.Commands;
-    using Appva.Mcss.Web.Mappers;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -42,9 +43,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ITaskService taskService;
 
         /// <summary>
-        /// The <see cref="ILogService"/>.
+        /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly ILogService logService;
+        private readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="IPatientTransformer"/>.
@@ -56,6 +57,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identitfyService;
+
 		#endregion
 
 		#region Constructor.
@@ -66,13 +72,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="IPatientService"/> implementation</param>
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="ILogService"/> implementation</param>
-        public ListAlertHandler(IPatientService patientService, 
-            ITaskService taskService, ILogService logService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public ListAlertHandler(IPatientService patientService, IIdentityService identitfyService,
+            ITaskService taskService, IAuditService auditing, IPatientTransformer transformer, IPersistenceContext persistence)
 		{
+            this.identitfyService = identitfyService;
             this.patientService = patientService;
             this.transformer = transformer;
             this.taskService = taskService;
-            this.logService = logService;
+            this.auditing = auditing;
             this.persistence = persistence;
 		}
 
@@ -101,10 +108,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 endDate = new DateTime(message.Year.Value, message.Month.Value, DateTime.DaysInMonth(message.Year.Value, message.Month.Value));
             }
             var list = new List<ScheduleSettings>();
-            /*
-            var account = Identity();
-            var roles = account.Roles;
             
+            var account = this.persistence.Get<Account>(this.identitfyService.PrincipalId);
+            var roles = account.Roles;
             foreach (var role in roles)
             {
                 var ss = role.ScheduleSettings;
@@ -115,12 +121,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         list.Add(schedule);
                     }
                 }
-            }*/
+            }
             var notHandledDelays = this.taskService.FindDelaysByPatient(patient, false, list);
             var handledDelays = this.taskService.FindDelaysByPatient(patient, true, list)
                 .Where(x => x.Scheduled >= startDate && x.Scheduled <= endDate)
                 .ToList();
-            //this.logService.Info("Användare {0} läste larm mellan datum {1:yyyy-MM-dd} och {2:yyyy-MM-dd}".FormatWith(user.FullName, startDate, endDate), user, patient, LogType.Read);
+            this.auditing.Read(patient, "läste larm mellan datum {0:yyyy-MM-dd} och {1:yyyy-MM-dd}", startDate, endDate);
             return new ListAlertModel
             {
                 Patient = this.transformer.ToPatient(patient),

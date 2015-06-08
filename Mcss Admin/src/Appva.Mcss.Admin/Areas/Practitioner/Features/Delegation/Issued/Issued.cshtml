@@ -6,8 +6,8 @@
 	<h1>Utställda delegeringar</h1>
     <p class="filter">
         <strong>Visa:</strong>
-        @Html.ActionLink("Aktuella", "Issued", new { ïd = Model.AccountId }, new { @class = !Model.History ? "sel div" : "div" })
-        @Html.ActionLink("Historik", "Issued", new { id = Model.AccountId, History = true }, new { @class = Model.History ? "sel div" : "div" })
+        @Html.ActionLink("Aktuella", "Issued", new { Id = Model.AccountId }, new { @class = !Model.History ? "sel div" : "div" })
+        @Html.ActionLink("Historik", "Issued", new { Id = Model.AccountId, History = true }, new { @class = Model.History ? "sel div" : "div" })
     </p>
 </div>
 <div id="content" class="delegate-view">

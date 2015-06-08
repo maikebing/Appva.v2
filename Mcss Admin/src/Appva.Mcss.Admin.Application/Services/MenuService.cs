@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Core.Extensions;
     using Appva.Core.Resources;
+    using Appva.Mcss.Admin.Application.Caching;
 
     #endregion
 
@@ -48,7 +49,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
         /// <summary>
         /// The implemented <see cref="IRuntimeMemoryCache"/> instance.
         /// </summary>
-        private readonly IRuntimeMemoryCache cache;
+        private readonly ITenantAwareMemoryCache cache;
 
         /// <summary>
         /// The implemented <see cref="IIdentityService"/> instance.
@@ -70,7 +71,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
         /// <param name="identity">The <see cref="IIdentityService"/></param>
         /// <param name="repository">The <see cref="IMenuRepository"/></param>
-        public MenuService(IRuntimeMemoryCache cache, IIdentityService identity, IMenuRepository repository)
+        public MenuService(ITenantAwareMemoryCache cache, IIdentityService identity, IMenuRepository repository)
         {
             this.cache = cache;
             this.identity = identity;
@@ -88,9 +89,10 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
             {
                 return this.CreateMenuList(action, controller, area, this.CreateDefaultMenu());
             }
-            if (this.cache.Find<IList<MenuItem>>(key) == null)
+            var cacheKey = this.CreateCacheKey(key);
+            if (this.cache.Find<IList<MenuItem>>(cacheKey) == null)
             {
-                CacheUtils.CopyAndCacheList<MenuLink, MenuItem>(this.cache, key, this.repository.ListByMenu(key), x =>
+                CacheUtils.CopyAndCacheList<MenuLink, MenuItem>(this.cache, cacheKey, this.repository.ListByMenu(key), x =>
                      new MenuItem(
                         x.Id,
                         x.Label,
@@ -105,7 +107,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
                         x.Permission == null ? null : x.Permission.Resource
                      ));
             }
-            var items = this.cache.Find<IList<MenuItem>>(key);
+            var items = this.cache.Find<IList<MenuItem>>(cacheKey);
             return this.CreateMenuList(action, controller, area, items);
         }
 
@@ -254,6 +256,16 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
             items.Add(new MenuItem(new Guid("D78F3803-837B-4A56-8109-A4A301313DA4"), "Kalender", "List", "Calendar", "Patient", false, null, null, 4, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
             items.Add(new MenuItem(new Guid("FB4CDF53-8C07-4F1F-9D6E-A4A301313DA4"), "Saldon", "List", "Inventory", "Patient", false, null, null, 5, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
             return items;
+        }
+
+        /// <summary>
+        /// Returns the new cached key.
+        /// </summary>
+        /// <param name="key">The key to be cached or retrieved from cache</param>
+        /// <returns>A new menu cache key</returns>
+        private string CreateCacheKey(string key)
+        {
+            return CacheTypes.Menu.FormatWith(key);
         }
 
         #endregion

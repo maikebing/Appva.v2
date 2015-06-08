@@ -8,6 +8,7 @@ namespace Appva.Persistence
 {
     #region Imports.
 
+    using JetBrains.Annotations;
     using NHibernate;
 
     #endregion
@@ -23,19 +24,20 @@ namespace Appva.Persistence
         /// Initializes a new instance of the <see cref="DefaultPersistenceContextAwareResolver"/> class.
         /// </summary>
         /// <param name="datasource">The <see cref="IDefaultDatasource"/></param>
-        public DefaultPersistenceContextAwareResolver(IDefaultDatasource datasource)
-            : base(datasource)
+        /// <param name="handler">The <see cref="IPersistenceExceptionHandler"/></param>
+        public DefaultPersistenceContextAwareResolver([NotNull] IDefaultDatasource datasource, [NotNull] IPersistenceExceptionHandler handler)
+            : base(datasource, handler)
         {
         }
 
         #endregion
 
-        #region PersistenceContextAwareResolver Overrides.
+        #region PersistenceContextAwareResolver Members.
 
         /// <inheritdoc />
-        public override ISessionFactory Resolve()
+        protected override ISessionFactory Resolve([NotNull] IDefaultDatasource datasource)
         {
-            return this.Datasource.SessionFactory;
+            return datasource.SessionFactory;
         }
 
         #endregion

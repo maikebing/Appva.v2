@@ -65,9 +65,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var account = this.accounts.Find(message.Id);
             return new UpdateAccount
             {
-                IsMobileDevicePasswordEditable = !this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable, false),
-                IsMobileDevicePasswordFieldVisible = !this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable, false),
-                IsUsernameVisible = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible, false),
+                IsMobileDevicePasswordEditable = ! this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
+                IsMobileDevicePasswordFieldVisible = ! this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
+                IsUsernameVisible = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible),
                 Taxons = TaxonomyHelper.SelectList(account.Taxon, this.taxonomies.List(TaxonomicSchema.Organization)),
                 Id = account.Id,
                 DevicePassword = account.DevicePassword,

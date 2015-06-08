@@ -93,10 +93,6 @@ using Appva.Mcss.Admin.Infrastructure;
         /// <inheritdoc />
         public override IEnumerable<object> Handle(QuickSearchAccount message)
         {
-            ////this.settings.Find<bool>(SettingKey.AutogeneratePasswordForMobileDevice, false);
-            this.settings.Find<bool>(ApplicationSettings.IsAccessControlInPreviewMode, false);
-            this.settings.Find<bool>(ApplicationSettings.IsAccessControlInstalled, false);
-
             var accounts = this.accounts.Search(
                 new SearchAccountModel
                 {
@@ -105,7 +101,7 @@ using Appva.Mcss.Admin.Infrastructure;
                     IsFilterByCreatedByEnabled = message.IsFilterByCreatedByEnabled,
                     DelegationFilterId = message.DelegationFilterId,
                     RoleFilterId = message.RoleFilterId,
-                    OrganisationFilterId = filtering.GetCurrentFilter().Id, // FIXME: Global filter
+                    OrganisationFilterId = filtering.GetCurrentFilter().Id,
                     CurrentUserId = this.identities.PrincipalId,
                     SearchQuery = message.Term
                 },

@@ -8,8 +8,8 @@ namespace Appva.Fhir.Resources
 {
     #region Imports.
 
-    using Primitives;
     using Newtonsoft.Json;
+    using Primitives;
     using ProtoBuf;
 
     #endregion

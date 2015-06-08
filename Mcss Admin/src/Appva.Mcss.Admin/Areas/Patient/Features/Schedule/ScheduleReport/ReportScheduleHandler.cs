@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using NHibernate.Transform;
     using Appva.Core.Extensions;
     using Appva.Mcss.Web.Controllers;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -55,6 +56,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -62,11 +68,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportScheduleHandler"/> class.
         /// </summary>
-        public ReportScheduleHandler(IPatientService patientService, IScheduleService scheduleService, 
+        public ReportScheduleHandler(IAuditService auditing, IPatientService patientService, IScheduleService scheduleService, 
             IReportService reportService,
             IPatientTransformer transformer,
             IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.patientService = patientService;
             this.transformer = transformer;
             this.scheduleService = scheduleService;
@@ -94,8 +101,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var startDate = message.StartDate ?? DateTime.Now.FirstOfMonth();
             var endDate = message.EndDate ?? DateTime.Now.LastInstantOfDay();
-            //var account = Identity();
-            //this.logService.Info(string.Format("Användare {0} läste rapport mellan {1:yyyy-MM-dd} och {2:yyyy-MM-dd} för boende {3} (REF: {4}).", account.UserName, startDate, endDate, patient.FullName, patient.Id), account, patient, LogType.Read);
+            this.auditing.Read(
+                patient, 
+                "läste rapport mellan {0:yyyy-MM-dd} och {1:yyyy-MM-dd} för boende {2} (REF: {3}).", 
+                startDate, 
+                endDate, 
+                patient.FullName, 
+                patient.Id);
             return new ScheduleReportViewModel
             {
                 Patient = this.transformer.ToPatient(patient),

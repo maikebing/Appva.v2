@@ -38,7 +38,7 @@ namespace Appva.Siths.Http
             var content = await response.Content.ReadAsStringAsync();
             if (typeof(T) == typeof(string))
             {
-                return (T) (object) content;
+                return (T)(object)content;
             }
             return JsonConvert.DeserializeObject<T>(content);
         }

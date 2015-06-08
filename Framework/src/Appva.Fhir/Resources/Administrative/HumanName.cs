@@ -4,13 +4,11 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-
-using System;
-
 namespace Appva.Fhir.Resources.Administrative
 {
     #region Imports.
 
+    using System;
     using Newtonsoft.Json;
     using ProtoBuf;
 

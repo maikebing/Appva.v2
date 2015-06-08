@@ -9,12 +9,10 @@ namespace Appva.Mvc
 {
     #region Imports.
 
-    //using System.Security;
     using System.Security.Claims;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
     using Appva.Core.Contracts.Permissions;
-    using Core.Extensions;
     using JetBrains.Annotations;
 
     #endregion
@@ -86,6 +84,12 @@ namespace Appva.Mvc
             return htmlHelper.ActionLink(linkText, actionName, controllerName, routes, HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
+        /// <summary>
+        /// Returns whether or not the user account ahs the proper permissions.
+        /// </summary>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/></param>
+        /// <param name="permission">The permission to check</param>
+        /// <returns>True if the user has the proper permissions; otherwise false</returns>
         public static bool HasPermissionFor([NotNull] this HtmlHelper htmlHelper, IPermission permission)
         {
             var principal = htmlHelper.ViewContext.HttpContext.User as ClaimsPrincipal;

@@ -28,7 +28,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface ITenantService : IService
+    public interface ITenantService
     {
         /// <summary>
         /// Attempts to identify the tenant from the current execution context.

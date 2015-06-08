@@ -9,9 +9,9 @@ namespace Appva.Fhir.Complex
     #region Imports.
 
     using System.Collections.Generic;
-    using Resources.Administrative;
     using Newtonsoft.Json;
     using ProtoBuf;
+    using Resources.Administrative;
     using Resources.Security.ValueSets;
 
     #endregion

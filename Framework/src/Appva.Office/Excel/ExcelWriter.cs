@@ -4,6 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
+// ReSharper disable CheckNamespace
 namespace Appva.Office
 {
     #region Imports.
@@ -11,7 +12,6 @@ namespace Appva.Office
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Linq.Expressions;
     using JetBrains.Annotations;
     using NPOI.HSSF.UserModel;
@@ -25,17 +25,17 @@ namespace Appva.Office
     public static class ExcelWriter
     {
         /// <summary>
-        /// 
+        /// Creates a new excel .xsl byte array.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="path"></param>
-        /// <param name="mapping"></param>
-        /// <param name="items"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">The input type</typeparam>
+        /// <typeparam name="TResult">The result type</typeparam>
+        /// <param name="path">The template path</param>
+        /// <param name="mapping">The expression mapping</param>
+        /// <param name="items">The items to be mapped</param>
+        /// <returns>An excel byte array</returns>
         public static byte[] CreateNew<T, TResult>([NotNull] string path, [NotNull] Expression<Func<T, object>> mapping, [NotNull] IList<T> items)
         {
-            AutoMap<T>.Map(mapping);
+            AutoMapper<T>.Map(mapping);
             using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
             using (var memory = new MemoryStream())
             {
@@ -48,7 +48,7 @@ namespace Appva.Office
                     {
                         var cellIndex = 0;
                         var row = sheet.CreateRow(rowIndex);
-                        var result = AutoMap<T>.To<TResult>(item);
+                        var result = AutoMapper<T>.To<TResult>(item);
                         var props = result.GetType().GetProperties();
                         foreach (var prop in props)
                         {
@@ -64,11 +64,11 @@ namespace Appva.Office
         }
 
         /// <summary>
-        /// 
+        /// Sets a cell value.
         /// </summary>
-        /// <param name="cell"></param>
-        /// <param name="type"></param>
-        /// <param name="value"></param>
+        /// <param name="cell">The <see cref="ICell"/></param>
+        /// <param name="type">The value type</param>
+        /// <param name="value">The value</param>
         private static void SetValue([NotNull] ICell cell, [NotNull] Type type, object value)
         {
             if (value == null)
@@ -97,40 +97,5 @@ namespace Appva.Office
                     break;
             }
         }
-    }
-
-    /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
-    /// </summary>
-    internal static class AutoMap<T>
-    {
-        /// <summary>
-        /// The compiled cached expressions.
-        /// </summary>
-        private readonly static IDictionary<Type, Func<T, object>> Expressions = new Dictionary<Type, Func<T, object>>();
-
-        /// <summary>
-        /// Add mappings to the cache by type.
-        /// </summary>
-        /// <param name="expression"></param>
-        public static void Map(Expression<Func<T, object>> expression)
-        {
-            if (! Expressions.ContainsKey(typeof(T)))
-            {
-                Expressions.Add(typeof(T), expression.Compile());
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static TResult To<TResult>(T obj)
-        {
-            return (Expressions.ContainsKey(typeof(T))) ? (TResult) Expressions[typeof(T)](obj) : default(TResult);
-        }
-
     }
 }

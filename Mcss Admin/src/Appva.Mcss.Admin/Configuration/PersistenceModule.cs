@@ -34,6 +34,11 @@ namespace Appva.Mcss.Admin.Configuration
         /// </summary>
         private const string Assembly = "Appva.Mcss.Admin.Domain";
 
+        /// <summary>
+        /// The cache bucket key.
+        /// </summary>
+        private const string BucketKey = "https://schemas.appva.se/2015/04/cache/db/admin";
+
         #endregion
 
         #region Constructor.
@@ -67,41 +72,26 @@ namespace Appva.Mcss.Admin.Configuration
         {
             switch (Configuration.Application.OperationalEnvironment)
             {
-                case OperationalEnvironment.Production : this.Production(builder); break;
-                case OperationalEnvironment.Demo : this.Demo(builder); break;
-                case OperationalEnvironment.Staging : this.Staging(builder); break;
-                case OperationalEnvironment.Development : this.Development(builder); break;
+                case OperationalEnvironment.Production:
+                    builder.RegisterType<ProductionTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+                    break;
+                case OperationalEnvironment.Demo:
+                    builder.RegisterType<DemoTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+                    break;
+                case OperationalEnvironment.Staging:
+                    builder.RegisterType<StagingTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+                    break;
+                case OperationalEnvironment.Development:
+                    builder.RegisterType<DevelopmentTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+                    break;
             }
+            builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache(BucketKey)).As<IRuntimeMemoryCache>().SingleInstance();
             builder.Register(x => TenantWcfClient.CreateNew()).As<ITenantClient>().SingleInstance();
             builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration { Assembly = Assembly }).As<IMultiTenantDatasourceConfiguration>().SingleInstance();
-            builder.Register<MultiTenantDatasource>(x => new MultiTenantDatasource(x.Resolve<ITenantClient>(), x.Resolve<IRuntimeMemoryCache>(), x.Resolve<IMultiTenantDatasourceConfiguration>(), x.Resolve<IExceptionHandler>())).As<IMultiTenantDatasource>().SingleInstance().AutoActivate();
-            builder.Register<MultiTenantPersistenceContextAwareResolver>(x => new MultiTenantPersistenceContextAwareResolver(x.Resolve<ITenantIdentificationStrategy>(), x.Resolve<IMultiTenantDatasource>())).As<IPersistenceContextAwareResolver>().SingleInstance();
+            builder.Register<MultiTenantDatasource>(x => new MultiTenantDatasource(x.Resolve<ITenantClient>(), x.Resolve<IRuntimeMemoryCache>(), x.Resolve<IMultiTenantDatasourceConfiguration>())).As<IMultiTenantDatasource>().SingleInstance().AutoActivate();
+            builder.Register<MultiTenantPersistenceContextAwareResolver>(x => new MultiTenantPersistenceContextAwareResolver(x.Resolve<ITenantIdentificationStrategy>(), x.Resolve<IMultiTenantDatasource>(), x.Resolve<IPersistenceExceptionHandler>())).As<IPersistenceContextAwareResolver>().SingleInstance();
             builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerLifetimeScope();
             builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerLifetimeScope().OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
-        }
-
-        private void Production(ContainerBuilder builder)
-        {
-            builder.RegisterType<ProductionTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
-            //builder.RegisterType<DefaultDatasourceExceptionHandler>().As<IDatasourceExceptionHandler>().SingleInstance();
-        }
-
-        private void Demo(ContainerBuilder builder)
-        {
-            builder.RegisterType<DemoTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
-            //builder.RegisterType<DefaultDatasourceExceptionHandler>().As<IDatasourceExceptionHandler>().SingleInstance();
-        }
-
-        private void Staging(ContainerBuilder builder)
-        {
-            builder.RegisterType<StagingTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
-            //builder.RegisterType<DefaultDatasourceExceptionHandler>().As<IDatasourceExceptionHandler>().SingleInstance();
-        }
-
-        private void Development(ContainerBuilder builder)
-        {
-            builder.RegisterType<DevelopmentTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
-            //builder.RegisterType<DefaultDatasourceExceptionHandler>().As<IDatasourceExceptionHandler>().SingleInstance();
         }
 
         #endregion

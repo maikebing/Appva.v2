@@ -14,7 +14,7 @@ namespace Appva.Apis.TenantServer
     using System.Threading.Tasks;
     using Configuration;
     using Contracts;
-    using Logging;
+    using Core.Logging;
     using Resources;
     using Tenant.Interoperability.Client;
 
@@ -64,10 +64,7 @@ namespace Appva.Apis.TenantServer
         private NoOpTenantClient(Uri baseAddress)
         {
             this.baseAddress = baseAddress;
-            if (Log.IsDebugEnabled())
-            {
-                Log.DebugFormat(Debug.Messages.ClassInitialization, this.baseAddress);
-            }
+            Log.Debug(Debug.Messages.ClassInitialization, this.baseAddress);
         }
 
         #endregion
@@ -186,11 +183,8 @@ namespace Appva.Apis.TenantServer
         private async Task<T> CreateNewGetRequestAsync<T>(string format, params object[] parameters)
         {
             var uri = string.Format(format, parameters);
-            if (Log.IsDebugEnabled())
-            {
-                Log.DebugFormat(Debug.Messages.HttpRequestMessage, this.baseAddress + uri);
-            }
-            Log.DebugFormat(Debug.Messages.HttpResponseMessage, string.Empty);
+            Log.Debug(Debug.Messages.HttpRequestMessage, this.baseAddress + uri);
+            Log.Debug(Debug.Messages.HttpResponseMessage, string.Empty);
             return await Task.FromResult(default(T));
         }
 

@@ -21,7 +21,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     using NHibernate.Criterion;
     using NHibernate.Transform;
     using Appva.Core.Extensions;
-    using Appva.Mcss.Web.Mappers;
     using Appva.Mcss.Admin.Infrastructure.Controllers;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services.Settings;

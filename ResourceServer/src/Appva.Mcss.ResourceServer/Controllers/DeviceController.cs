@@ -18,6 +18,8 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Apis.TenantServer;
     using Application;
     using Application.Authorization;
+    using Appva.Azure.Messaging;
+    using Appva.Tenant.Interoperability.Client;
     using Azure;
     using Core.Extensions;
     using Domain.Repositories;
@@ -161,7 +163,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
             {
                 return this.InternalServerError(new Exception("No taxon found, attempting to rollback!"));
             }
-            var client = this.tenantClient.GetClientByTenantId(this.User.Identity.Tenant());
+            var client = await this.tenantClient.FindClientByTenantIdAsync(this.User.Identity.Tenant());
             if (client.IsNull())
             {
                 return this.InternalServerError(new Exception("No client found, attempting to rollback!"));

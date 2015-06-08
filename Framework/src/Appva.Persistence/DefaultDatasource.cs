@@ -8,8 +8,7 @@ namespace Appva.Persistence
 {
     #region Imports.
 
-    using System;
-    using Appva.Core.Exceptions;
+    using JetBrains.Annotations;
     using NHibernate;
     using Validation;
 
@@ -41,11 +40,6 @@ namespace Appva.Persistence
         /// </summary>
         private readonly IDefaultDatasourceConfiguration configuration;
 
-        /// <summary>
-        /// The <see cref="IExceptionHandler"/> instance.
-        /// </summary>
-        private readonly IExceptionHandler exceptionHandler;
-
         #endregion
 
         #region Constructor.
@@ -54,15 +48,10 @@ namespace Appva.Persistence
         /// Initializes a new instance of the <see cref="DefaultDatasource"/> class.
         /// </summary>
         /// <param name="configuration">The <see cref="IDefaultDatasourceConfiguration"/></param>
-        /// <param name="exceptionHandler">The <see cref="IDatasourceExceptionHandler"/></param>
-        public DefaultDatasource(
-            IDefaultDatasourceConfiguration configuration,
-            IExceptionHandler exceptionHandler)
+        public DefaultDatasource([NotNull] IDefaultDatasourceConfiguration configuration)
         {
             Requires.NotNull(configuration, "configuration");
-            Requires.NotNull(exceptionHandler, "exceptionHandler");
             this.configuration = configuration;
-            this.exceptionHandler = exceptionHandler;
         }
 
         #endregion
@@ -78,22 +67,16 @@ namespace Appva.Persistence
 
         #endregion
 
-        #region Datasource Implementation.
+        #region Datasource Overrides.
 
         /// <inheritdoc />
-        public override void Connect()
+        public override IDatasourceResult Connect()
         {
-            try
-            {
-                this.SessionFactory = this.Build(PersistenceUnit.CreateNew(
+            this.SessionFactory = this.Build(PersistenceUnit.CreateNew(
                     this.configuration.ConnectionString,
                     this.configuration.Assembly,
                     this.configuration.Properties));
-            }
-            catch (Exception ex)
-            {
-                this.exceptionHandler.Handle(ex);
-            }
+            return null;
         }
 
         #endregion

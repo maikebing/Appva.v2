@@ -23,6 +23,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web.Controllers;
     using Appva.Core.Utilities;
     using Appva.Mcss.Admin.Commands;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -32,6 +33,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
     internal sealed class SignScheduleHandler : RequestHandler<SignSchedule, TaskListViewModel>
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="IPatientService"/>.
@@ -55,8 +61,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="SignScheduleHandler"/> class.
         /// </summary>
-        public SignScheduleHandler(IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public SignScheduleHandler(IAuditService auditing, IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.patientService = patientService;
             this.transformer = transformer;
             this.persistence = persistence;
@@ -103,7 +110,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 endDate = new DateTime(message.Year.Value, message.Month.Value, 
                     DateTime.DaysInMonth(message.Year.Value, message.Month.Value)).LastInstantOfDay();
             }
-            //this.logService.Info(string.Format("Användare {0} läste signeringar mellan {1:yyyy-MM-dd} och {2:yyyy-MM-dd} för boende {3} (REF: {4}).", account.UserName, StartDate, EndDate, patient.FullName, patient.Id), account, patient, LogType.Read);
+            this.auditing.Read(
+                patient,
+                "läste signeringar mellan {0:yyyy-MM-dd} och {1:yyyy-MM-dd} för boende {2} (REF: {3}).", 
+                startDate, 
+                endDate, 
+                patient.FullName, 
+                patient.Id);
             var scheduleSettings = new List<ScheduleSettings>();
             var query = this.persistence.QueryOver<Schedule>().Where(x => x.Patient.Id == message.Id);
             if (list.Count > 0)

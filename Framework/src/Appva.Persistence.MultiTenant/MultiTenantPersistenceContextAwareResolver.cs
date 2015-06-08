@@ -8,10 +8,10 @@ namespace Appva.Persistence.MultiTenant
 {
     #region Imports.
 
-    using System;
-    using Core.Resources;
     using Core.Extensions;
     using Core.Logging;
+    using Core.Resources;
+    using JetBrains.Annotations;
     using Messages;
     using NHibernate;
     using Persistence;
@@ -43,26 +43,27 @@ namespace Appva.Persistence.MultiTenant
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiTenantPersistenceContextAwareResolver"/> class.
         /// </summary>
-        /// <param name="datasource">The <see cref="ITenantIdentificationStrategy"/></param>
+        /// <param name="strategy">The <see cref="ITenantIdentificationStrategy"/></param>
         /// <param name="datasource">The <see cref="IMultiTenantDatasource"/></param>
-        public MultiTenantPersistenceContextAwareResolver(ITenantIdentificationStrategy strategy, IMultiTenantDatasource datasource)
-            : base(datasource)
+        /// <param name="handler">The <see cref="IPersistenceExceptionHandler"/></param>
+        public MultiTenantPersistenceContextAwareResolver([NotNull] ITenantIdentificationStrategy strategy, [NotNull] IMultiTenantDatasource datasource, IPersistenceExceptionHandler handler)
+            : base(datasource, handler)
         {
             this.strategy = strategy;
         }
 
         #endregion
 
-        #region PersistenceContextAwareResolver Overrides.
+        #region PersistenceContextAwareResolver Members.
 
         /// <inheritdoc />
-        public override ISessionFactory Resolve()
+        protected override ISessionFactory Resolve([NotNull] IMultiTenantDatasource datasource)
         {
             ITenantIdentifier identifier = null;
             if (this.strategy.TryIdentifyTenant(out identifier))
             {
                 Log.Debug(Debug.ResolveTenantIdentity, identifier.Value);
-                return this.Datasource.Locate(CacheTypes.Persistence.FormatWith(identifier.Value));
+                return datasource.Locate(CacheTypes.Persistence.FormatWith(identifier.Value));
             }
             throw new PersistenceContextAwareResolverException(Exceptions.FailedToResolveTenantIdentifier);
         }

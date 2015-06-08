@@ -1,4 +1,5 @@
 ﻿@model Appva.Mcss.Web.ViewModels.InventoryOverviewViewModel
+@using Appva.Mcss.Admin.Application.Common;
 <div>
 	<div class="heading cf"><h2>Kontrollräkning narkotika</h2></div>
 	<div class="panel-c">
@@ -17,8 +18,15 @@
                     var daysLeft = item.LastRecount.Value.Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
                     <tr class="urgent">
                         <td>
-                            @Html.ActionLink(item.Patient,
+                            @if (Html.HasPermissionFor(Permissions.Inventory.Read))
+                            {
+                                @Html.ActionLink(Permissions.Inventory.Read, item.Patient,
                                 "List", "Inventory", new { id = item.PatientId, inventoryId = item.InventoryId }, new { })
+                            }
+                            else
+                            {
+                                @item.Patient
+                            }
                         </td>
 		    			<td>@item.SequenceName</td>
 		    			<td>
@@ -44,8 +52,15 @@
                         var daysLeft = item.LastRecount.Value.Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
                         <tr class="@((daysLeft <= 7) ? "urgent" : "")">
 		    				<td>
-                                @Html.ActionLink(item.Patient,
+                                @if (Html.HasPermissionFor(Permissions.Inventory.Read))
+                                {
+                                    @Html.ActionLink(Permissions.Inventory.Read, item.Patient,
                                  "List", "Inventory", new { id = item.PatientId, inventoryId = item.InventoryId }, new { })
+                                }
+                                else
+                                {
+                                    @item.Patient
+                                }
                             </td>
 		    				<td>@item.SequenceName</td>
                                     

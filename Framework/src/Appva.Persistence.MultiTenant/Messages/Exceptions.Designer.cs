@@ -61,7 +61,7 @@ namespace Appva.Persistence.MultiTenant.Messages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to resolve tenant identifer.
+        ///   Looks up a localized string similar to Failed to resolve tenant identifer..
         /// </summary>
         internal static string FailedToResolveTenantIdentifier {
             get {
@@ -70,7 +70,16 @@ namespace Appva.Persistence.MultiTenant.Messages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No tenants found.
+        ///   Looks up a localized string similar to Tenant is not found using key [{0}]..
+        /// </summary>
+        internal static string TenantNotFound {
+            get {
+                return ResourceManager.GetString("TenantNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zero tenants was received from client..
         /// </summary>
         internal static string ZeroTenantsFound {
             get {

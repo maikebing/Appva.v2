@@ -102,11 +102,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListAccountModel Handle(ListAccount message)
         {
-            ////this.settings.Find<bool>(SettingKey.AutogeneratePasswordForMobileDevice, false);
-            this.settings.Find<bool>(ApplicationSettings.IsAccessControlInPreviewMode, false);
-            this.settings.Find<bool>(ApplicationSettings.IsAccessControlInstalled, false);
-
-
             var accounts = this.accounts.Search(
                 new SearchAccountModel
                 {

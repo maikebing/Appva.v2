@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Persistence;
     using NHibernate.Criterion;
     using Appva.Core.Extensions;
+    using Appva.Mcss.Admin.Application.Auditing;
     #endregion
 
     /// <summary>
@@ -101,7 +102,7 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         private readonly IPersistenceContext persistence;
-        private readonly ILogService logService;
+        private readonly IAuditService auditing;
 
         #endregion
 
@@ -110,8 +111,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="PatientService"/> class.
         /// </summary>
-        public PatientService(IPersistenceContext persistence)
+        public PatientService(IAuditService auditing, IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.persistence = persistence;
         }
 
@@ -158,7 +160,11 @@ namespace Appva.Mcss.Admin.Application.Services
             patient.IsActive = true;
             patient.UpdatedAt = DateTime.Now;
             this.persistence.Update(patient);
-            //this.logService.Info(string.Format("Användare {0} aktiverade boende {1} (REF: {2}).", currentUser.UserName, patient.FullName, patient.Id), currentUser, patient, LogType.Write);
+            this.auditing.Update(
+                patient,
+                "aktiverade boende {0} (REF: {1}).", 
+                patient.FullName, 
+                patient.Id);
         }
 
         /// <inheritdoc />
@@ -167,7 +173,11 @@ namespace Appva.Mcss.Admin.Application.Services
             patient.IsActive = false;
             patient.UpdatedAt = DateTime.Now;
             this.persistence.Update(patient);
-            //this.logService.Info(string.Format("Användare {0} inaktiverade boende {1} (REF: {2}).", currentUser.UserName, patient.FullName, patient.Id), currentUser, patient, LogType.Write);
+            this.auditing.Update(
+                patient,
+                "inaktiverade boende {0} (REF: {1}).", 
+                patient.FullName, 
+                patient.Id);
         }
 
         /// <inheritdoc />
@@ -205,7 +215,11 @@ namespace Appva.Mcss.Admin.Application.Services
                     Identifier = alternativeIdentity
                 };
             this.persistence.Save(patient);
-            //this.logService.Info(string.Format("Användare {0} lade till boende {1} (REF: {2}).", currentUser.UserName, patient.FullName, patient.Id), currentUser, patient, LogType.Write);
+            this.auditing.Create(
+                patient,
+                "lade till boende {0} (REF: {1}).", 
+                patient.FullName, 
+                patient.Id);
             return true;  
         }
 
@@ -224,22 +238,36 @@ namespace Appva.Mcss.Admin.Application.Services
             patient.SeniorAlerts = assessments;
             patient.Identifier = alternativeIdentity;
             this.persistence.Update(patient);
-            /*var currentUser = Identity();
-            this.logService.Info(string.Format("Användare {0} ändrade boendes {1} uppgifter (REF: {2}).", currentUser.UserName, patient.FullName, patient.Id), currentUser, patient, LogType.Write);
-            foreach (var sa in seniorAlerts)
+            
+            this.auditing.Update(
+                patient,
+                "ändrade boendes {0} uppgifter (REF: {1}).", 
+                patient.FullName, 
+                patient.Id);
+            foreach (var sa in assessments)
             {
                 if (!oldSA.Contains(sa))
                 {
-                    this.logService.Info(string.Format("Användare {0} lade till skattning {1} (ref:{2}) till {3}.", currentUser.UserName, sa.Name, sa.Id, patient.FullName), currentUser, patient);
+                    this.auditing.Update(
+                        patient,
+                        "lade till skattning {0} (ref:{1}) till {2}.", 
+                        sa.Name, 
+                        sa.Id, 
+                        patient.FullName);
                 }
             }
             foreach (var sa in oldSA)
             {
-                if (!seniorAlerts.Contains(sa))
+                if (! assessments.Contains(sa))
                 {
-                    this.logService.Info(string.Format("Användare {0} tog bort skattning {1} (ref:{2}) till {3}.", currentUser.UserName, sa.Name, sa.Id, patient.FullName), currentUser, patient);
+                    this.auditing.Update(
+                        patient,
+                        "tog bort skattning {0} (ref:{1}) till {2}.", 
+                        sa.Name, 
+                        sa.Id, 
+                        patient.FullName);
                 }
-            }*/
+            }
             return true;
         }
 

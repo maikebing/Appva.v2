@@ -8,9 +8,8 @@ namespace Appva.Mcss.Admin.Application.Common
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Appva.Core.Extensions;
+    using Appva.Core.Resources;
 
     #endregion
 
@@ -24,17 +23,17 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// The taxonomic scheme identifier for organizational taxa.
         /// </summary>
-        public static readonly TaxonomicSchema Organization = new TaxonomicSchema("ORG");
+        public static readonly TaxonomicSchema Organization = new TaxonomicSchema("ORG", "organization");
 
         /// <summary>
         /// The taxonomic scheme identifier for delegation taxa.
         /// </summary>
-        public static readonly TaxonomicSchema Delegation = new TaxonomicSchema("DEL");
+        public static readonly TaxonomicSchema Delegation   = new TaxonomicSchema("DEL", "delegation");
 
         /// <summary>
         /// The taxonomic scheme identifier for risk assessment (Senior Alert) taxa.
         /// </summary>
-        public static readonly TaxonomicSchema RiskAssessment = new TaxonomicSchema("SAI");
+        public static readonly TaxonomicSchema RiskAssessment = new TaxonomicSchema("SAI", "assessment");
 
         #endregion
 
@@ -44,9 +43,11 @@ namespace Appva.Mcss.Admin.Application.Common
         /// Initializes a new instance of the <see cref="TaxonomicSchema"/> class.
         /// </summary>
         /// <param name="id">The unique identifier for the taxonomy scheme</param>
-        private TaxonomicSchema(string id)
+        /// <param name="cacheKey">The unique cacheKey</param>
+        private TaxonomicSchema(string id, string cacheKey)
         {
             this.Id = id;
+            this.CacheKey = CacheTypes.Taxonomy.FormatWith(cacheKey);
         }
 
         #endregion
@@ -57,6 +58,15 @@ namespace Appva.Mcss.Admin.Application.Common
         /// The unique taxonomy schema identifier.
         /// </summary>
         public string Id
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The unique taxonomy cache key.
+        /// </summary>
+        public string CacheKey
         {
             get;
             private set;

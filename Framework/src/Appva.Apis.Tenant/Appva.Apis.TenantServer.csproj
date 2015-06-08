@@ -60,9 +60,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Appva.Logging\Appva.Logging.csproj">
-      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
-      <Name>Appva.Logging</Name>
+    <ProjectReference Include="..\Appva.Core\Appva.Core.csproj">
+      <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
+      <Name>Appva.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appva.Tenant\Appva.Tenant.csproj">
       <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>

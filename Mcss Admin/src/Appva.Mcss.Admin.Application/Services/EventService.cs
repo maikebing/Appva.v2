@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Core.Utilities;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -118,6 +119,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IPersistenceContext context;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -135,12 +141,14 @@ namespace Appva.Mcss.Admin.Application.Services
             ISequenceService sequenceService,
             IIdentityService identityService,
             IAccountService accountService,
-            IPersistenceContext context)
+            IPersistenceContext context,
+            IAuditService auditing)
         {
             this.scheduleService = scheduleService;
             this.sequenceService = sequenceService;
             this.identityService = identityService;
             this.accountService = accountService;
+            this.auditing = auditing;
             this.context = context;
         }
 
@@ -452,14 +460,13 @@ namespace Appva.Mcss.Admin.Application.Services
             evt.PauseAnyAlerts = pauseAlerts;
             evt.Absent = absent;
             this.context.Update(evt);
-            /*var currentUser = this.accountService.Find(this.identityService.PrincipalId);;
-            LogService.Info(string.Format("Användare {0} ändrade aktiviteten {1} till {2:yyyy-MM-dd HH:mm} - {3:yyyy-MM-dd HH:mm} (REF: {4}).",
-                currentUser.UserName,
+            this.auditing.Update(
+                evt.Patient, 
+                "ändrade aktiviteten {0} till {1:yyyy-MM-dd HH:mm} - {2:yyyy-MM-dd HH:mm} (REF: {3}).",
                 evt.Description,
                 evt.StartDate,
                 evt.EndDate,
-                evt.Id),
-                currentUser, evt.Patient, LogType.Write);*/
+                evt.Id);
         }
 
         /// <summary>

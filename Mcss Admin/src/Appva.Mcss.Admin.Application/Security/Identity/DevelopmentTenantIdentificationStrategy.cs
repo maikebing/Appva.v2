@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// <summary>
         /// The development fixed tenant identifier.
         /// </summary>
-        private readonly TenantIdentifier identifier = new TenantIdentifier("TreStiftelser");
+        private readonly TenantIdentifier identifier = new TenantIdentifier("development");
 
         #endregion
 

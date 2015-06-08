@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using NHibernate.Transform;
     using Appva.Core.Extensions;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -44,6 +45,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -51,8 +57,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintTableScheduleHandler"/> class.
         /// </summary>
-        public PrintTableScheduleHandler(IPatientService patientService, IScheduleService scheduleService, IPersistenceContext persistence)
+        public PrintTableScheduleHandler(IAuditService auditing, IPatientService patientService, IScheduleService scheduleService, IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.patientService = patientService;
             this.scheduleService = scheduleService;
             this.persistence = persistence;
@@ -85,8 +92,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 query.And(x => x.OnNeedBasis);
             }
-            //var account = Identity();
-            //LogService.Info(string.Format("Användare {0} skapade utskrift av signeringslista för boende {1} (REF: {2}).", account.UserName, patient.FullName, patient.Id), account, patient, LogType.Read);
+            this.auditing.Read(
+                patient,
+                "skapade utskrift av signeringslista för boende {0} (REF: {1}).", 
+                patient.FullName, 
+                patient.Id);
             return new ScheduleTablePrintViewModel
             {
                 Patient = patient,

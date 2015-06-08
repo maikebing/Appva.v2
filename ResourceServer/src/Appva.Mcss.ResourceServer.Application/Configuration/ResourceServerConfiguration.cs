@@ -9,6 +9,7 @@ namespace Appva.Mcss.ResourceServer.Application.Configuration
     #region Imports.
 
     using System;
+    using Appva.Core;
     using Appva.Core.Configuration;
 
     #endregion

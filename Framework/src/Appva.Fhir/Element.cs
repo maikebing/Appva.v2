@@ -10,12 +10,12 @@ namespace Appva.Fhir
 
     using System.Collections.Generic;
     using Complex;
+    using Newtonsoft.Json;
     using Primitives;
+    using ProtoBuf;
     using Resources;
     using Resources.Administrative;
     using Resources.Security;
-    using Newtonsoft.Json;
-    using ProtoBuf;
 
     #endregion
 

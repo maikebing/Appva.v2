@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin
     using Appva.Caching.Providers;
     using Appva.Core.Exceptions;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Caching;
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
@@ -45,6 +46,7 @@ namespace Appva.Mcss.Admin
             
             builder.RegisterControllers(assembly);
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces();
+            builder.RegisterFilterProvider();
 
             //// Register repositories.
             builder.RegisterAssemblyTypes(typeof(IRepository).Assembly).Where(x => x.GetInterfaces()
@@ -54,11 +56,10 @@ namespace Appva.Mcss.Admin
             builder.RegisterAssemblyTypes(typeof(IService).Assembly).Where(x => x.GetInterfaces()
                 .Any(y => y.IsAssignableFrom(typeof(IService)))).AsImplementedInterfaces().InstancePerRequest();
 
-            
+            builder.RegisterType<TenantService>().As<ITenantService>().SingleInstance();
 
-            //// Global cache registration
-            var cache = new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/admin");
-            builder.Register<RuntimeMemoryCache>(x => cache).As<IRuntimeMemoryCache>().SingleInstance();
+            //// Global tenant cache registration
+            builder.RegisterType<TenantAwareMemoryCache>().As<ITenantAwareMemoryCache>().SingleInstance();
 
             //// Owin registration
             builder.Register(x => HttpContext.Current.GetOwinContext()).As<IOwinContext>();
@@ -77,12 +78,9 @@ namespace Appva.Mcss.Admin
             //// SITHS
             builder.Register<SithsClient>(x => new SithsClient(new AuthifyWtfTokenizer())).As<ISithsClient>().SingleInstance();
 
-            //// Persistence registration
-            //// FIXME: This should be registered as IPersistenceExceptionHandler
-            builder.RegisterType<DefaultExceptionHandler>().As<IExceptionHandler>();
-
             builder.RegisterModule(PersistenceModule.CreateNew());
             builder.RegisterModule(MessagingModule.CreateNew());
+            builder.RegisterModule(ExceptionHandlerModule.CreateNew());
             
             //// Cache per tenant?
             //// http://docs.autofac.org/en/latest/advanced/multitenant.html#resolve-tenant-specific-dependencies

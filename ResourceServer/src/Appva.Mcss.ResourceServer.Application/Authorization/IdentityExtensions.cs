@@ -53,7 +53,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
         /// </summary>
         /// <param name="identity">The <see cref="IIdentity"/></param>
         /// <returns>The tenant id</returns>
-        public static object Tenant(this IIdentity identity)
+        public static Guid Tenant(this IIdentity identity)
         {
             var claimsIdentity = identity as ClaimsIdentity;
             var tenant = claimsIdentity.Claims.Where(x => x.Type == AppvaClaimTypes.Tenant).SingleOrDefault();

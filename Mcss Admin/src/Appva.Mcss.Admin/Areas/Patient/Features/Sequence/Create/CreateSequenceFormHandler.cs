@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using Appva.Core.Extensions;
     using Appva.Core.Resources;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -42,9 +43,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IRoleService roleService;
 
         /// <summary>
-        /// The <see cref="ILogService"/>.
+        /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly ILogService logService;
+        private readonly IAuditService auditing;
 
         #endregion
 
@@ -53,11 +54,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceFormHandler"/> class.
         /// </summary>
-        public CreateSequenceFormHandler(IPersistenceContext context, IRoleService roleService, ILogService logService)
+        public CreateSequenceFormHandler(IPersistenceContext context, IRoleService roleService, IAuditService auditing)
         {
             this.context = context;
             this.roleService = roleService;
-            this.logService = logService;
+            this.auditing = auditing;
         }
 
         #endregion
@@ -75,12 +76,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var sequence = this.CreateOrUpdate(message, schedule, delegation);
             this.context.Save(sequence);
-            /*
-            var currentUser = CurrentUser;
-            LogService.Info(string.Format("Användare {0} skapade {1} (REF: {2}) i {3} (REF: {4}).",
-                    CurrentUser.UserName, sequence.Name, sequence.Id, schedule.ScheduleSettings.Name, sequence.Schedule.Id),
-                    CurrentUser, sequence.Patient, LogType.Write);
-            */
+
+            this.auditing.Create(
+                sequence.Patient,
+                "skapade {0} (REF: {1}) i {2} (REF: {3}).",
+                sequence.Name, 
+                sequence.Id, 
+                schedule.ScheduleSettings.Name, 
+                sequence.Schedule.Id);
             schedule.UpdatedAt = DateTime.Now;
             this.context.Update(schedule);
             return new DetailsSchedule

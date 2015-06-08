@@ -22,6 +22,8 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Newtonsoft.Json;
     using Appva.Core.Extensions;
     using System.Configuration;
+    using Appva.Mcss.Admin.Application.Caching;
+    using Appva.Core.Resources;
 
     #endregion
 
@@ -46,38 +48,10 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     }
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Old settings which needs to be merged.
     /// </summary>
-    public interface ISettingsService :
-        IAccessControlListTenantSettings,
-        IService
+    public interface IOldSettings
     {
-        /// <summary>
-        /// Returns the <c>Setting</c> by key.
-        /// </summary>
-        /// <typeparam name="T">The type to convert to</typeparam>
-        /// <param name="key">The unique key</param>
-        /// <param name="defaultValue">The default value if value does not exist</param>
-        /// <returns>Returns the <c>Setting</c> or null if not found</returns>
-        T Find<T>(ApplicationSettingIdentity<T> key, object defaultValue = null) where T : struct;
-
-        /// <summary>
-        /// Returns a collection of tenant <see cref="Setting"/>.
-        /// </summary>
-        /// <returns>A collection of tenant <see cref="Setting"/></returns>
-        IEnumerable<Setting> List();
-
-        /// <summary>
-        /// Saves a new setting or updates it if a reference is found.
-        /// </summary>
-        /// <param name="key">The unique key</param>
-        /// <param name="value">The value to be added</param>
-        void Upsert<T>(ApplicationSettingIdentity<T> key, T value) where T : struct;
-
-        
-
-        ///////// OLD !!!
-
         bool HasSeniorAlert();
         bool HasOrderRefill();
         bool HasPatientTag();
@@ -98,6 +72,37 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    public interface ISettingsService :
+        IAccessControlListTenantSettings,
+        IOldSettings,
+        IService
+    {
+        /// <summary>
+        /// Returns the <c>Setting</c> by key.
+        /// FIXME: Internalize this to ensure that proper methods are executed.
+        /// </summary>
+        /// <typeparam name="T">The type to convert to</typeparam>
+        /// <param name="key">The unique key</param>
+        /// <returns>Returns the <c>Setting</c> or null if not found</returns>
+        T Find<T>(ApplicationSettingIdentity<T> key) where T : struct;
+
+        /// <summary>
+        /// Returns a collection of tenant <see cref="Setting"/>.
+        /// </summary>
+        /// <returns>A collection of tenant <see cref="Setting"/></returns>
+        IEnumerable<Setting> List();
+
+        /// <summary>
+        /// Saves a new setting or updates it if a reference is found.
+        /// </summary>
+        /// <param name="key">The unique key</param>
+        /// <param name="value">The value to be added</param>
+        void Upsert<T>(ApplicationSettingIdentity<T> key, T value) where T : struct;
+    }
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public sealed class SettingsService : ISettingsService
     {
         #region Variables.
@@ -113,9 +118,9 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         private static readonly object Lock = new object();
 
         /// <summary>
-        /// The implemented <see cref="IRuntimeMemoryCache"/> instance.
+        /// The implemented <see cref="ITenantAwareMemoryCache"/> instance.
         /// </summary>
-        private readonly IRuntimeMemoryCache cache;
+        private readonly ITenantAwareMemoryCache cache;
 
         /// <summary>
         /// The implemented <see cref="ISettingsRepository"/> instance.
@@ -136,7 +141,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/> instance to use</param>
         /// <param name="repository">The <see cref="ISettingsRepository"/> instance</param>
-        public SettingsService(IRuntimeMemoryCache cache, ISettingsRepository repository, IPersistenceContext persistence)
+        public SettingsService(ITenantAwareMemoryCache cache, ISettingsRepository repository, IPersistenceContext persistence)
         {
             this.cache = cache;
             this.persistence = persistence;
@@ -148,9 +153,9 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         #region ISettingsService Members.
 
         /// <inheritdoc />
-        public T Find<T>(ApplicationSettingIdentity<T> key, object defaultValue = null) where T : struct
+        public T Find<T>(ApplicationSettingIdentity<T> key) where T : struct
         {
-            return this.ReturnCached<T>(key, defaultValue);
+            return this.ReturnCached<T>(key);
         }
 
         /// <inheritdoc />
@@ -180,8 +185,32 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             }
         }
 
-        //////////////////////////////////////// FROM OLD
+        #endregion
 
+        #region IAccessControlListTenantSettings Members.
+
+        /// <inheritdoc />
+        public bool IsAccessControlListInstalled()
+        {
+            return this.Find(ApplicationSettings.IsAccessControlInstalled);
+        }
+
+        /// <inheritdoc />
+        public bool IsAccessControlListActivated()
+        {
+            return this.Find(ApplicationSettings.IsAccessControlActivated);
+        }
+
+        #endregion
+
+        #region IOldSettings Members.
+
+        ////
+        //// FIXME: Old settings.
+        //// Old Settings which needs to be handles properly.
+        ////
+
+        /// <inheritdoc />
         public bool HasSeniorAlert()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -195,6 +224,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return false;
         }
 
+        /// <inheritdoc />
         public bool HasOrderRefill()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -208,6 +238,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return false;
         }
 
+        /// <inheritdoc />
         public bool HasPatientTag()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -218,10 +249,10 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
                 return (bool)tc.ConvertFromString(result.Value);
             }
-
             return false;
         }
 
+        /// <inheritdoc />
         public string GetSessionTimeout()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -234,6 +265,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return "30";
         }
 
+        /// <inheritdoc />
         public bool SignOutWhenReady()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -242,11 +274,12 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             if (result != null)
             {
                 TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
-                return (bool)tc.ConvertFromString(result.Value);
+                return (bool) tc.ConvertFromString(result.Value);
             }
             return true;
         }
 
+        /// <inheritdoc />
         public string GetClientLoginMethod()
         {
             return this.persistence.QueryOver<Setting>()
@@ -254,6 +287,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 .And(x => x.Name == "Tenant.Client.LoginMethod").SingleOrDefault().Value;
         }
 
+        /// <inheritdoc />
         public int GetCalendarColorQuantity()
         {
             var colors = this.persistence.QueryOver<Setting>()
@@ -262,10 +296,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return colors.IsNull() ? 9 : Int32.Parse(colors.Value);
         }
 
-        /// <summary>
-        /// A dictyonary with all settings for calendar
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Dictionary<string, object> GetCalendarSettings()
         {
             var result = new Dictionary<string, object>();
@@ -280,10 +311,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return result;
         }
 
-        /// <summary>
-        /// A dictyonary with all settings for Accounts
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public Dictionary<string, object> GetAccountSettings()
         {
             var result = new Dictionary<string, object>();
@@ -298,16 +326,18 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return result;
         }
 
+        /// <inheritdoc />
         public bool HasCalendarOverview()
         {
             var calendarSettings = GetCalendarSettings();
             if (calendarSettings.ContainsKey("HasOverview"))
             {
-                return (bool)calendarSettings["HasOverview"];
+                return (bool) calendarSettings["HasOverview"];
             }
             return true;
         }
 
+        /// <inheritdoc />
         public string CreateBackendAccountMailBody()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -320,6 +350,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return ConfigurationManager.AppSettings.Get("EmailCreateBackEndAccountBody");
         }
 
+        /// <inheritdoc />
         public string CreateAccountMailBody()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -332,6 +363,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return ConfigurationManager.AppSettings.Get("EmailCreateAccountBody");
         }
 
+        /// <inheritdoc />
         public bool DisplayAccountUsername()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -346,6 +378,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return false;
         }
 
+        /// <inheritdoc />
         public string GetNotificationAdmin()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -360,6 +393,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return "_AA";
         }
 
+        /// <inheritdoc />
         public string GetAdminLogin()
         {
             var result = this.persistence.QueryOver<Setting>()
@@ -382,47 +416,33 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <param name="setting"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        private T ReturnDefault<T>(object defaultValue = null)
-        {
-            if (defaultValue != null)
-            {
-                return (T) defaultValue;
-            }
-            return default(T);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        private T ReturnCached<T>(ApplicationSettingIdentity<T> key, object defaultValue = null) where T : struct
+        private T ReturnCached<T>(ApplicationSettingIdentity<T> setting) where T : struct
         {
             try
             {
-                if (key == null)
+                if (setting == null)
                 {
-                    return this.ReturnDefault<T>(defaultValue);
+                    return setting.Default;
                 }
-                if (this.cache.Find(key.Key) == null)
+                var cacheKey = this.CreateCacheKey(setting.Key);
+                if (this.cache.Find(cacheKey) == null)
                 {
-                    var item = this.repository.Find(key.Key);
+                    var item = this.repository.Find(setting.Key);
                     if (item == null)
                     {
-                        return this.ReturnDefault<T>(defaultValue);
+                        return setting.Default;
                     }
                     this.Add(item);
                 }
-                return (T) this.cache.Find<T>(key.Key);
+                return (T) this.cache.Find<T>(cacheKey);
             }
             catch (Exception ex)
             {
-                Log.ErrorException("<SettingService> cache problem with key " + key.Key, ex);
-                return this.ReturnDefault<T>(defaultValue);
+                Log.ErrorException("<SettingService> cache problem with key " + setting.Key, ex);
+                return setting.Default;
             }
         }
 
@@ -436,7 +456,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             try
             {
                 var cachedItem = JsonConvert.DeserializeObject(item.Value, item.Type);
-                this.cache.Upsert(item.MachineName, cachedItem, new RuntimeEvictionPolicy
+                this.cache.Upsert(this.CreateCacheKey(item.MachineName), cachedItem, new RuntimeEvictionPolicy
                 {
                     Priority = CacheItemPriority.Default,
                     SlidingExpiration = TimeSpan.FromMinutes(30)
@@ -450,20 +470,14 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             }
         }
 
-        #endregion
-
-        #region IAccessControlListTenantSettings Members.
-
-        /// <inheritdoc />
-        public bool IsAccessControlListInstalled()
+        /// <summary>
+        /// Returns the cache key for settings.
+        /// </summary>
+        /// <param name="key">The original key</param>
+        /// <returns>A new cache key</returns>
+        private string CreateCacheKey(string key)
         {
-            return this.Find(ApplicationSettings.IsAccessControlInstalled, false);
-        }
-
-        /// <inheritdoc />
-        public bool IsAccessControlListActivated()
-        {
-            return this.Find(ApplicationSettings.IsAccessControlActivated, false);
+            return CacheTypes.Setting.FormatWith(key);
         }
 
         #endregion

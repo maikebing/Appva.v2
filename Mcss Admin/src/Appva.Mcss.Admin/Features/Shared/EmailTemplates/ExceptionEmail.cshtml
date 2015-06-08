@@ -1,0 +1,160 @@
+﻿@using Appva.Mcss.Admin.Configuration
+@model Appva.Mvc.Messaging.ExceptionMail
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="sv-se">
+	<head>
+		<title>Exception</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="format-detection" content="telephone=no">
+		<style type="text/css">
+			.ExternalClass {
+				width: 100%;
+			}
+			.ExternalClass,
+			.ExternalClass p,
+			.ExternalClass span,
+			.ExternalClass font,
+			.ExternalClass td,
+			.ExternalClass div {
+				line-height: 100%;
+			}
+			.ReadMsgBody {
+				width: 100%;
+				background-color: #ebebeb;
+			}
+			img {
+				-ms-interpolation-mode: bicubic;
+			}
+			.yshortcuts a {
+				border-bottom: none !important;
+			}
+			@@media screen and (max-width: 599px) {
+				table[class="force-row"],
+				table[class="container"] {
+					width: 100% !important;
+					max-width: 100% !important;
+				}
+			}
+			@@media screen and (max-width: 400px) {
+				td[class*="container-padding"] {
+					padding-left: 12px !important;
+					padding-right: 12px !important;
+				}
+			}
+			.ios-footer a {
+				color: #ff9999 !important;
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body style="margin: 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" bgcolor="#df3f3f" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+		<table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#df3f3f" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;">
+			<tr>
+				<td align="center" valign="top" bgcolor="#df3f3f" style="background-color: #df3f3f;border-collapse: collapse;">
+					<br>
+					<table border="0" width="600" cellpadding="0" cellspacing="0" class="container" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;width: 600px;max-width: 600px;">
+						<tr>
+							<td class="container-padding header" align="left" style="border-collapse: collapse;font-family: Helvetica, Arial, sans-serif;font-size: 24px;font-weight: bold;padding-bottom: 12px;color: #ffffff;padding-left: 24px;padding-right: 24px;">
+								@if (Model.ExtraData != null)
+                                {
+                                    @Model.ExtraData.Name @:-
+                                }
+                                @Application.Environment - @Application.Version - @Application.MachineName
+							</td>
+						</tr>
+						<tr>
+							<td class="container-padding content" align="left" style="border-collapse: collapse;padding-left: 24px;padding-right: 24px;padding-top: 12px;padding-bottom: 12px;background-color: #ffffff;box-shadow: 0px 1px 2px #b12a2a;border-radius: 4px;">
+								<br>
+								<div class="title" style="font-family: Helvetica, Arial, sans-serif;font-size: 18px;font-weight: 600;color: #df3f3f;">
+                                    @Model.Exception.GetType().Name
+                                </div>
+								<br>
+								<div class="body-text" style="font-family: Helvetica, Arial, sans-serif;font-size: 14px;line-height: 20px;text-align: left;color: #333333;">
+									@Model.Exception.Message
+									<br><br>
+									<div class="code-wrap" style="background-color: #f8f7e7;padding: 5px;">
+										<code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
+										    @Model.Exception.StackTrace
+										</code>
+									</div>
+									<br>
+									<hr style="border: 0;border-bottom: 1px solid #f4f4f4;">
+									<br>
+                                    @if (Model.User != null || Model.Request != null)
+                                    {
+									    <table border="0" width="100%" cellpadding="0" cellspacing="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;">
+										    @if (Model.User != null)
+                                            {
+                                            <tr class="odd" style="background: #ecf4f6;">
+											    <td width="150px" style="border-collapse: collapse;padding: 7px 10px;">
+                                                    <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
+                                                    USER NAME
+                                                    </code>
+                                                </td>
+											    <td style="border-collapse: collapse;padding: 7px 10px;">
+                                                    <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
+                                                    @Model.User.Name
+                                                    </code>
+                                                </td>
+										    </tr>
+										    <tr class="even" style="background: #e2edf0;">
+											    <td style="border-collapse: collapse;padding: 7px 10px;">
+                                                    <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
+                                                    USER ID
+                                                    </code>
+                                                </td>
+											    <td style="border-collapse: collapse;padding: 7px 10px;">
+                                                    <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
+                                                    @Model.User.Id
+                                                    </code>
+                                                </td>
+										    </tr>
+                                            }
+                                            @if (Model.Request != null)
+                                            {
+                                                var i = 0;
+                                                foreach (var kv in Model.Request.Data)
+                                                {
+                                                    <tr class="@(i % 2 == 0 ? "odd" : "even")" style="background: @(i % 2 == 0 ? "#ecf4f6" : "#e2edf0");">
+                                                        <td width="150px" style="border-collapse: collapse;padding: 7px 10px;">
+                                                            <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
+                                                                @kv.Key
+                                                            </code>
+                                                        </td>
+                                                        <td style="border-collapse: collapse;padding: 7px 10px;">
+                                                            <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
+                                                                @kv.Value
+                                                            </code>
+                                                        </td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+									    </table>
+                                    }
+									<br>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="container-padding footer-text" align="left" style="border-collapse: collapse;font-family: Helvetica, Arial, sans-serif;font-size: 12px;line-height: 16px;color: #ff9999;padding-left: 24px;padding-right: 24px;">
+								<br><br>
+								Medication and Care Support System &copy; 2015 Appva AB
+								<br><br>
+								<strong>Appva AB</strong><br>
+								<span class="ios-footer">
+									Box 88<br>
+									421 21 V&auml;stra Fr&ouml;lunda<br>
+								</span>
+								<a href="http://appva.se/" style="color: #ff9999;">Appva AB</a><br>
+								<br><br>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

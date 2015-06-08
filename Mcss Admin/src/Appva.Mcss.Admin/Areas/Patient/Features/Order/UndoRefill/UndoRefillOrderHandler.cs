@@ -17,13 +17,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using Appva.Core.Utilities;
     using Appva.Mcss.Admin.Commands;
-    using Appva.Mcss.Web.Mappers;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
-using Appva.Mcss.Web.Controllers;
-using NHibernate.Criterion;
-using NHibernate.Transform;
+    using Appva.Mcss.Web.Controllers;
+    using NHibernate.Criterion;
+    using NHibernate.Transform;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -33,6 +33,11 @@ using NHibernate.Transform;
     internal sealed class UndoRefillOrderHandler : RequestHandler<UndoRefillOrder, bool>
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -46,8 +51,9 @@ using NHibernate.Transform;
         /// <summary>
         /// Initializes a new instance of the <see cref="RefillOrderHandler"/> class.
         /// </summary>
-        public UndoRefillOrderHandler(IPersistenceContext persistence)
+        public UndoRefillOrderHandler(IAuditService auditing, IPersistenceContext persistence)
         {
+            this.auditing = auditing;
             this.persistence = persistence;
         }
 
@@ -64,7 +70,11 @@ using NHibernate.Transform;
             {
                 sequence.RefillInfo.Ordered = true;
             }
-            //this.logService.Info(string.Format("{0} ångrade påfyllning av {1} ({2})", Identity().FullName, seq.Name, seq.Id), Identity(), seq.Patient);
+            this.auditing.Update(
+                sequence.Patient,
+                "ångrade påfyllning av {0} ({1})",
+                sequence.Name, 
+                sequence.Id);
             return true;
         }
 

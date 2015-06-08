@@ -8,11 +8,8 @@ namespace Appva.Mvc.Messaging
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Appva.Core.Messaging;
-using RazorEngine.Configuration;
+    using RazorEngine.Configuration;
     using RazorEngine.Templating;
 
     #endregion

@@ -8,6 +8,7 @@ namespace Appva.Mcss.ResourceServer
 {
     #region Imports.
 
+    using System;
     using System.Linq;
     using System.Reflection;
     using System.Web.Http;
@@ -15,7 +16,10 @@ namespace Appva.Mcss.ResourceServer
     using Application.Configuration;
     using Application.ExceptionHandling;
     using Application.Persistence;
+    using Appva.Azure.Messaging;
     using Appva.Caching.Providers;
+    using Appva.Mcss.Domain.Entities;
+    using Appva.Tenant.Interoperability.Client;
     using Autofac;
     using Autofac.Integration.WebApi;
     using Azure;
@@ -84,13 +88,17 @@ namespace Appva.Mcss.ResourceServer
             var messaging = new EmailService();
             var tenantServerUri = ConfigurableApplicationContext.Get<ResourceServerConfiguration>().TenantServerUri;
             var configuration = ConfigurableApplicationContext.Read<MultiTenantDatasourceConfiguration>().From(PersistenceConfig).AsMachineNameSpecific().ToObject();
-            var cache = new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/admin");
-            builder.Register<RuntimeMemoryCache>(x => cache).As<IRuntimeMemoryCache>().SingleInstance();
-            var client = TenantClient.CreateNew(tenantServerUri);
-            var datasource = new MultiTenantDatasource(client, cache, configuration, new DatasourceEmailExceptionHandler(messaging));
-            var persistence = new TenantIdentityPersistenceContextAwareResolver(datasource);
-            builder.Register(x => client).As<ITenantClient>().SingleInstance();
-            builder.Register(x => persistence).As<IPersistenceContextAwareResolver>().SingleInstance();
+            
+            //// Setup cache for multi tenant.
+            builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/admin")).As<IRuntimeMemoryCache>().SingleInstance();
+            builder.Register(x => TenantClient.CreateNew(tenantServerUri)).As<ITenantClient>().SingleInstance();
+            builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
+            {
+                Properties = configuration.Properties,
+                Assembly = Assembly.GetAssembly(typeof(Entity<Guid>)).FullName
+            }).As<IMultiTenantDatasourceConfiguration>().SingleInstance();
+            builder.RegisterType<MultiTenantDatasource>().As<IMultiTenantDatasource>().SingleInstance().AutoActivate();
+            builder.RegisterType<MultiTenantPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance();
             builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerRequest();
             builder.Register(x => new PersistenceAttribute(x.Resolve<IPersistenceContext>())).AsWebApiActionFilterFor<ApiController>().InstancePerRequest();
         }

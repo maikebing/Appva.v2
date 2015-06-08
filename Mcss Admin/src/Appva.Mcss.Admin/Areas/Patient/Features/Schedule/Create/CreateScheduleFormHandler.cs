@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System;
     using System.Collections.Generic;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
@@ -46,6 +47,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IIdentityService identities;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -54,12 +60,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="CreateScheduleFormHandler"/> class.
         /// </summary>
         public CreateScheduleFormHandler(IPatientService patientService, IPatientTransformer transformer,
-            IPersistenceContext persistence, IIdentityService identities)
+            IPersistenceContext persistence, IIdentityService identities, IAuditService auditing)
         {
             this.identities = identities;
             this.patientService = patientService;
             this.transformer = transformer;
             this.persistence = persistence;
+            this.auditing = auditing;
         }
 
         #endregion
@@ -79,8 +86,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 ScheduleSettings = settings
             };
             this.persistence.Save(schedule);
-            //var currentUser = Identity();
-            //this.logService.Info(string.Format("Användare {0} skapade lista {1} (REF: {2}).", currentUser.UserName, settings.Name, schedule.Id), currentUser, patient, LogType.Write);
+            this.auditing.Create(
+                patient,
+                "skapade lista {0} (REF: {1}).", 
+                settings.Name, 
+                schedule.Id);
             return new ListSchedule
             {
                 Id = patient.Id

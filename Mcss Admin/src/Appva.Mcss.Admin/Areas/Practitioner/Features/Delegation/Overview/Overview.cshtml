@@ -1,7 +1,8 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationOverviewViewModel
+@using Appva.Mcss.Admin.Application.Common;
 <div>
 	<div class="heading cf"><h2>Utlöpande delegeringar</h2>
-        @Html.ActionLink("Alla delegeringar ...", "List", "Account")
+        @Html.ActionLink(Permissions.Delegation.Read, "Alla delegeringar ...", "List", "Accounts", new { Area = "Practitioner" }, null)
     </div>
         @if (Model.DelegationsExpired.Count() > 0) {
         <div class="panel-c"> 
@@ -16,7 +17,16 @@
 		    	<tbody>
                     @foreach (var delegation in Model.DelegationsExpired) {
                         <tr class="urgent">
-		    				<td>@Html.ActionLink(delegation.FullName, "List", "Delegation", new { id = delegation.Id }, new { })</td>
+		    				<td>
+                                @if (Html.HasPermissionFor(Permissions.Delegation.Read))
+                                { 
+                                    @Html.ActionLink(delegation.FullName, "List", "Delegation", new { id = delegation.Id }, new { })
+                                }
+                                else
+                                {
+                                    @delegation.FullName
+                                }
+                            </td>
 		    				<td><span>@delegation.DaysLeft dagar</span></td>
 		    			</tr>
                     }
@@ -37,7 +47,16 @@
 		    	<tbody>
                     @foreach (var delegation in Model.DelegationsExpiresWithin50Days) {
                         <tr class="@( delegation.DaysLeft < 30 ? "urgent" : "")">
-		    				<td>@Html.ActionLink(delegation.FullName, "List", "Delegation", new { id = delegation.Id }, new { })</td>
+		    				<td>
+                                @if (Html.HasPermissionFor(Permissions.Delegation.Read))
+                                { 
+                                    @Html.ActionLink(delegation.FullName, "List", "Delegation", new { id = delegation.Id }, new { })
+                                }
+                                else
+                                {
+                                    @delegation.FullName
+                                }
+                            </td>
 		    				<td><span>@delegation.DaysLeft dagar</span></td>
 		    			</tr>
                     }

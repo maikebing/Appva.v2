@@ -11,10 +11,10 @@ namespace Appva.Fhir.Resources.Security
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using ValueSets;
     using Newtonsoft.Json;
     using ProtoBuf;
     using Validation;
+    using ValueSets;
 
     #endregion
 

@@ -112,7 +112,6 @@ using Appva.Tenant.Identity;
             this.mediator = mediator;
             this.identityService = identityService;
             this.taxonomyService = taxonomyService;
-            this.logService = logService;
             this.reports = reports;
             this.tasks = tasks;
             this.auditing = auditing;

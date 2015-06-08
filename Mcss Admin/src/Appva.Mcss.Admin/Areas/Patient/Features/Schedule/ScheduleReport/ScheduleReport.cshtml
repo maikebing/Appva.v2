@@ -242,14 +242,14 @@
         });
         mcss.chart.Load({ 
             'selector': '#chart',
-            'url': '@Url.Action("Chart")',
+            'url': '@Url.Action("GetChartData", "Statistics", new { area = "" })',
             'min': new Date(@Model.Report.StartDate.Year, @(Model.Report.StartDate.Month - 1), @Model.Report.StartDate.Day),
             'max': new Date(@Model.Report.EndDate.Year, @(Model.Report.EndDate.Month - 1), @Model.Report.EndDate.Day),
             'parameters': {
-                'id': '@Model.Patient.Id',
-                'sId': '@Model.Schedule', 
-                'startDate': '@Model.Report.StartDate.ToShortDateString()',
-                'endDate': '@Model.Report.EndDate.ToShortDateString()'
+                'Patient': '@Model.Patient.Id',
+                'ScheduleSettings': '@Model.Schedule', 
+                'Start': '@Model.Report.StartDate.ToShortDateString()',
+                'End': '@Model.Report.EndDate.ToShortDateString()'
             }
         });
 

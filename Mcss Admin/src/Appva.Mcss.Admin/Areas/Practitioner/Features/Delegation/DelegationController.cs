@@ -32,6 +32,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using Appva.Office;
 using Appva.Core.IO;
 using Appva.Tenant.Identity;
+    using Appva.Mcss.Admin.Domain.Models;
 
     #endregion
 
@@ -66,6 +67,16 @@ using Appva.Tenant.Identity;
         private readonly ILogService logService;
 
         /// <summary>
+        /// The <see cref="IReportService"/> dispatcher.
+        /// </summary>
+        private readonly IReportService reports;
+
+        /// <summary>
+        /// The <see cref="ITaskService"/> dispatcher.
+        /// </summary>
+        private readonly ITaskService tasks;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/> dispatcher.
         /// </summary>
         private readonly IPersistenceContext persistence;
@@ -88,13 +99,15 @@ using Appva.Tenant.Identity;
         /// Initializes a new instance of the <see cref="DelegationController"/> class.
         /// </summary>
         public DelegationController(IMediator mediator, IIdentityService identityService, 
-            ITaxonomyService taxonomyService, ILogService logService, IPersistenceContext persistence,
+            ITaxonomyService taxonomyService, ILogService logService, IReportService reports, ITaskService tasks, IPersistenceContext persistence,
             ITaxonFilterSessionHandler filtering, ITenantService tenantService)
         {
             this.mediator = mediator;
             this.identityService = identityService;
             this.taxonomyService = taxonomyService;
             this.logService = logService;
+            this.reports = reports;
+            this.tasks = tasks;
             this.persistence = persistence;
             this.filtering = filtering;
         }
@@ -435,7 +448,7 @@ using Appva.Tenant.Identity;
         /// <param name="endDate">Optional end date - defaults to last instant of today</param>
         /// <param name="page">Optional page - defaults to 1</param>
         /// <returns><see cref="ActionResult"/></returns>
-        /*[HttpGet]
+        [HttpGet]
         [Route("DelegationReport/{id:guid}")]
         public ActionResult DelegationReport(Guid id, Guid? tId, Guid? sId, DateTime? startDate, DateTime? endDate, int? page = 1)
         {
@@ -443,13 +456,35 @@ using Appva.Tenant.Identity;
             var taxons = this.taxonomyService.List(TaxonomicSchema.Organization);
             startDate = (startDate.HasValue) ? startDate.Value : DateTimeUtilities.Now().AddDays(-DateTimeUtilities.Now().DaysInMonth());
             endDate = (endDate.HasValue) ? endDate.Value.LastInstantOfDay() : DateTimeUtilities.Now().LastInstantOfDay();
+            var previousPeriodStart = startDate.GetValueOrDefault().AddDays(-endDate.Value.Subtract(startDate.Value).Days);
+            var previousPeriodEnd = startDate.GetValueOrDefault().AddDays(-1);
             return View(new DelegationReportViewModel
             {
                 StartDate = startDate.Value.Date,
                 EndDate = endDate.Value.Date,
                 AccountId = account.Id,
                 Account = MapToPatientViewModel(taxons, account),
-                Report = ExecuteCommand<ReportViewModel>(new CreateReportCommand<DelegationReportFilter>
+                Report = this.reports.GetReportData(new ChartDataFilter
+                {
+                    Account = account.Id,
+                    StartDate = startDate.GetValueOrDefault(),
+                    EndDate = endDate.GetValueOrDefault(),
+                    ScheduleSetting = sId
+                }),
+                PreviousPeriodReport = this.reports.GetReportData(new ChartDataFilter
+                {
+                    Account = account.Id,
+                    StartDate = previousPeriodStart,
+                    EndDate = previousPeriodEnd,
+                    ScheduleSetting = sId
+                }),
+                Tasks = this.tasks.List(new ListTaskModel 
+                {
+                    StartDate = startDate.GetValueOrDefault(),
+                    EndDate = endDate.GetValueOrDefault(),
+                    Account = account.Id
+                }, page.GetValueOrDefault(1), 30),
+                /*ExecuteCommand<ReportViewModel>(new CreateReportCommand<DelegationReportFilter>
                 {
                     StartDate = startDate.Value,
                     EndDate = endDate.Value,
@@ -460,7 +495,7 @@ using Appva.Tenant.Identity;
                         ScheduleSettingsId = sId
                     },
                     Page = page
-                }),
+                })*/
                 DelegationId = tId,
                 Delegations = this.taxonomyService.ListChildren(TaxonomicSchema.Delegation).Select(x => new SelectListItem
                 {
@@ -471,7 +506,7 @@ using Appva.Tenant.Identity;
                 Schedules = this.persistence.QueryOver<ScheduleSettings>().Where(x => x.IsActive == true).List(),
             });
 
-        }*/
+        }
 
         /// <summary>
         /// Posted delegation report.
@@ -479,11 +514,12 @@ using Appva.Tenant.Identity;
         /// <param name="id">The account id</param>
         /// <param name="model">The delegation report model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        /*[HttpPost]
+        [HttpPost]
+        [Route("DelegationReport/{id:guid}")]
         public ActionResult DelegationReport(Guid id, DelegationReportViewModel model)
         {
             return DelegationReport(id, model.DelegationId, model.Schedule, model.StartDate, model.EndDate);
-        }*/
+        }
 
         /// <summary>
         /// Generates JSON chart code for delegations.
@@ -1254,5 +1290,7 @@ using Appva.Tenant.Identity;
                 .Where(x => x.MachineName == "_superioraccount")
                 .List();
         }
+
+        
     }
 }

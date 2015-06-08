@@ -31,9 +31,9 @@ namespace Appva.Mcss.Admin.Features.Statistics.Chart
         private readonly IReportService reports;
 
         /// <summary>
-        /// The <see cref="IRuntimeMemoryCache"/>.
+        /// The <see cref="ITaxonFilterSessionHandler"/>
         /// </summary>
-        private readonly IRuntimeMemoryCache cache;
+        private readonly ITaxonFilterSessionHandler filter;
 
         #endregion
 
@@ -42,10 +42,10 @@ namespace Appva.Mcss.Admin.Features.Statistics.Chart
         /// <summary>
         /// Initializes a new instance of the <see cref="StatisticsChartData"/> class.
         /// </summary>
-        public StatisticsChartDataHandler(IReportService reports, IRuntimeMemoryCache cache)
+        public StatisticsChartDataHandler(IReportService reports, ITaxonFilterSessionHandler filter)
         {
             this.reports = reports;
-            this.cache = cache;
+            this.filter = filter;
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace Appva.Mcss.Admin.Features.Statistics.Chart
             {
                 StartDate = message.Start,
                 EndDate = message.End,
-                Organisation = this.cache.Find<Guid>("Taxon.Default.Cache"),
+                Organisation = this.filter.GetCurrentFilter().Id,
                 ScheduleSetting = message.ScheduleSetting,
                 Account = message.Account,
                 Patient = message.Patient

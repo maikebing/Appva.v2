@@ -355,10 +355,10 @@
     <!--<Compile Include="Areas\Report\Features\ReportData\Chart\ReportChart.cs" />
     <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChartModel.cs" />
     <Compile Include="Areas\Report\Features\ReportData\ReportDataController.cs" />-->
-    <Compile Include="Areas\Report\Features\Reports\FullReport\FullReport.cs" />
-    <Compile Include="Areas\Report\Features\Reports\FullReport\FullReportHandler.cs" />
-    <Compile Include="Areas\Report\Features\Reports\FullReport\FullReportModel.cs" />
-    <Compile Include="Areas\Report\Features\Reports\ReportController.cs" />
+    <Compile Include="Areas\Report\Features\Report\FullReport\FullReport.cs" />
+    <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
+    <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
+    <Compile Include="Areas\Report\Features\Report\ReportController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\RolesSchedulesController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedule.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleScheduleHandler.cs" />
@@ -975,7 +975,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Report\Features\Reports\FullReport\FullReport.cshtml" />
+    <Content Include="Areas\Report\Features\Report\FullReport\FullReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Report\Features\_ViewStart.cshtml" />

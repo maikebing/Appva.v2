@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Core.Utilities;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Extensions;
+    using Appva.Persistence;
 
     #endregion
 
@@ -47,6 +48,14 @@ namespace Appva.Mcss.Admin.Application.Services
             DateTime endDate,
             IList<Sequence> sequences
         );
+
+        /// <summary>
+        /// Gets all schedulesettings in  the system or for a given patient/account
+        /// </summary>
+        /// <param name="Account"></param>
+        /// <param name="Patient"></param>
+        /// <returns></returns>
+        IList<ScheduleSettings> GetSchedules(Guid? Account = null, Guid? Patient = null);
     }
 
     /// <summary>
@@ -58,6 +67,8 @@ namespace Appva.Mcss.Admin.Application.Services
 
         private readonly ILogService logService;
 
+        private readonly IPersistenceContext persistence;
+
         #endregion
 
         #region Constructor.
@@ -65,9 +76,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="ScheduleService"/> class.
         /// </summary>
-        public ScheduleService(ILogService logService)
+        public ScheduleService(ILogService logService, IPersistenceContext persistence)
         {
             this.logService = logService;
+            this.persistence = persistence;
         }
 
         #endregion
@@ -310,6 +322,13 @@ namespace Appva.Mcss.Admin.Application.Services
             return printSchedule;
         }
 
+        /// <inheritdoc />
+        public IList<ScheduleSettings> GetSchedules(Guid? Account = null, Guid? Patient = null)
+        {
+            var query = this.persistence.QueryOver<ScheduleSettings>().Where(x => x.IsActive == true);
+
+            return query.List();
+        }
 
         /// <summary>
         /// Checks if the <see cref="Patient"/> connected to a <see cref="Sequence"/> has any events

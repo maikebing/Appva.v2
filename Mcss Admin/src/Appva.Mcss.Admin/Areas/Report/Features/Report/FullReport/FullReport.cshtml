@@ -2,17 +2,17 @@
 @{ ViewBag.Title = "Översikt"; ViewBag.MainClass = "report-view"; }
 <div id="subheader" class="cf">
 	<h1>Fullständig resultatrapport</h1>
-    @Html.ActionLink("Exportera till Excel", "Excel", new { sId = Model.Schedule, startDate = Model.StartDate.ToShortDateString(), endDate = Model.EndDate.ToShortDateString() }, new { @class = "export", download = string.Format("MCSS-rapport-{0}.xls", DateTime.Now.ToFileTimeUtc()) })
+    @Html.ActionLink("Exportera till Excel", "Excel", new { sId = Model.ScheduleSetting, startDate = Model.Start.ToShortDateString(), endDate = Model.End.ToShortDateString() }, new { @class = "export", download = string.Format("MCSS-rapport-{0}.xls", DateTime.Now.ToFileTimeUtc()) })
 </div>
 <div id="content" class="has-nav cf">
     <ul id="nav-sub">
         @if (Model.Schedules.IsNotNull()) {
-            <li class="@(!Model.Schedule.HasValue ? "sel" : "")">
+            <li class="@(!Model.ScheduleSetting.HasValue ? "sel" : "")">
                 @Html.ActionLink("Alla", "Index")
             </li>
             foreach (var schedule in Model.Schedules) {
-                <li class="@(Model.Schedule.HasValue && Model.Schedule.Value.Equals(schedule.Id) ? "sel" : "")">
-                    @Html.ActionLink(schedule.Name, "Index", new { sId = schedule.Id })
+                <li class="@(Model.ScheduleSetting.HasValue && Model.ScheduleSetting.Value.Equals(schedule.Id) ? "sel" : "")">
+                    @Html.ActionLink(schedule.Name, "FullReport", new { ScheduleSetting = schedule.Id })
                 </li>
             }
         }
@@ -20,19 +20,19 @@
 	<div id="content-primary">
         <div id="status-filter" class="cf">
             <h2>Visa rapport för:</h2>
-            @using (Html.BeginForm("Index", "Report")) {
+            @using (Html.BeginForm("Index", "Report", FormMethod.Get)) {
                 <div class="dates cf">
 			        <div class="select">
-                        @Html.LabelFor(m => m.StartDate)
-                        @Html.EditorFor(m => m.StartDate)
+                        @Html.LabelFor(m => m.Start)
+                        @Html.EditorFor(m => m.Start)
 			        </div>
 			        <div class="select">
-                        @Html.LabelFor(m => m.EndDate)
-                        @Html.EditorFor(m => m.EndDate)
+                        @Html.LabelFor(m => m.End)
+                        @Html.EditorFor(m => m.End)
 			        </div>
 		        </div>
                 <div class="dates submit">
-                    @Html.HiddenFor(m => m.Schedule)
+                    @Html.HiddenFor(m => m.ScheduleSetting)
                     @Html.Submit("Visa")
                 </div>    
             }
@@ -98,9 +98,9 @@
 					    </tr>
 				    </thead>
 				    <tbody>
-                        @foreach (var task in Model.Report.Search.Items) {
+                        @foreach (var task in Model.Tasks.Entities) {
 
-    <tr class="@(!task.Active ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5)) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false) ? "alarm" : "")">
+    <tr class="@(!task.IsActive ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5)) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false) ? "alarm" : "")">
         <td>@task.Name</td>
         <td>
             @if (!task.IsCompleted) {
@@ -108,7 +108,7 @@
             }
             else {
                 if (task.OnNeedBasis) {
-                    @TimeSpanDifference.ToShortDateTime(task.Modified, "Idag", "Igår")
+                    @TimeSpanDifference.ToShortDateTime(task.UpdatedAt, "Idag", "Igår")
                 }
                 else {
                     @TimeSpanDifference.ToShortDateTime(task.CompletedDate.GetValueOrDefault(), "Idag", "Igår")
@@ -122,7 +122,7 @@
                 @:Ej signerad
             } else {
                 if (task.OnNeedBasis) {
-					@:kl @String.Format("{0:HH:mm}", task.Modified)
+					@:kl @String.Format("{0:HH:mm}", task.UpdatedAt)
 				} else {
                     @:kl @String.Format("{0:HH:mm}", task.CompletedDate.GetValueOrDefault())
 				}
@@ -211,13 +211,13 @@
 				    </tbody>
 			    </table>
 		    </div>
-            @Html.Pager(Model.Report.Search.PageSize, Model.Report.Search.PageNumber, Model.Report.Search.TotalItemCount).Options(o => o
+            @Html.Pager((int)Model.Tasks.PageSize, (int)Model.Tasks.CurrentPage, (int)Model.Tasks.TotalCount).Options(o => o
                 .DisplayTemplate("Pagination")
                 .MaxNrOfPages(15)
                 .AlwaysAddFirstPageNumber()
-                .AddRouteValue("sId", Model.Schedule)
-                .AddRouteValue("startDate", Model.Report.StartDate.ToShortDateString())
-                .AddRouteValue("endDate", Model.Report.EndDate.ToShortDateString())
+                .AddRouteValue("ScheduleSetting", Model.ScheduleSetting)
+                .AddRouteValue("Start", Model.Start.ToShortDateString())
+                .AddRouteValue("End", Model.End.ToShortDateString())
                 )
             }
         </div>
@@ -255,13 +255,13 @@
         });
         mcss.chart.Load({ 
             'selector': '#chart',
-            'url': '@Url.Action("Chart")',
-            'min': new Date(@Model.Report.StartDate.Year, @(Model.Report.StartDate.Month - 1), @Model.Report.StartDate.Day),
-            'max': new Date(@Model.Report.EndDate.Year, @(Model.Report.EndDate.Month - 1), @Model.Report.EndDate.Day),
+            'url': '@Url.Action("GetChartData", "Statistics", new { area = "" })',
+            'min': new Date(@Model.Start.Year, @(Model.Start.Month - 1), @Model.Start.Day),
+            'max': new Date(@Model.End.Year, @(Model.End.Month - 1), @Model.End.Day),
             'parameters': {
-                'sId': '@Model.Schedule', 
-                'startDate': '@Model.Report.StartDate.ToShortDateString()',
-                'endDate': '@Model.Report.EndDate.ToShortDateString()'
+                'ScheduleSetting': '@Model.ScheduleSetting', 
+                'Start': '@Model.Start.ToShortDateString()',
+                'End': '@Model.End.ToShortDateString()'
             }
         });
 

@@ -14,6 +14,8 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using Appva.Repository;
+    using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Domain.Models;
 
     #endregion
 
@@ -39,7 +41,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Lists tasks by given criterias
         /// </summary>
         /// <returns>A <see cref="PageableSet"/> of Tasks</returns>
-        PageableSet<Task> List();
+        PageableSet<Task> List(ListTaskModel model, int page = 1, int pageSize = 10);
 
         /// <summary>
         /// Updates the task status.
@@ -67,6 +69,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IPersistenceContext context;
 
+        /// <summary>
+        /// The <see cref="ITaskRepository"/>.
+        /// </summary>
+        private readonly ITaskRepository tasks;
+
         #endregion
 
         #region Constructor.
@@ -75,9 +82,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="TaskService"/> class.
         /// </summary>
         /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
-        public TaskService(IPersistenceContext context)
+        public TaskService(IPersistenceContext context, ITaskRepository tasks)
         {
             this.context = context;
+            this.tasks = tasks;
         }
 
         #endregion
@@ -139,9 +147,10 @@ namespace Appva.Mcss.Admin.Application.Services
             //LogService.Info(string.Format("Användare {0} kvitterade alla försenade insatser för {1} ({2}).", account.UserName, patient.FullName, patient.Id), account, patient, LogType.Write);
         }
 
-        public PageableSet<Task> List()
+        /// <inheritdoc />
+        public PageableSet<Task> List(ListTaskModel model, int page = 1, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            return this.tasks.List(model, page, pageSize);
         }
 
         #endregion

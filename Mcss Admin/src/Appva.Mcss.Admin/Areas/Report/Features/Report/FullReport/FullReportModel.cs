@@ -10,9 +10,11 @@ namespace Appva.Mcss.Admin.Areas.Models
 
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mvc;
     using Appva.Repository;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
     #endregion
@@ -20,7 +22,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class FullReportModel
+    public class FullReportModel
     {
         #region Constructor.
 
@@ -33,16 +35,20 @@ namespace Appva.Mcss.Admin.Areas.Models
 
         #endregion
 
-        public DateTime StartDate { get; set; }
+        [PlaceHolder("T.ex. 2012-12-21")]
+        [DataType(DataType.Date)]
+        public DateTime Start { get; set; }
 
-        public DateTime EndDate { get; set; }
+        [PlaceHolder("T.ex. 2012-12-21")]
+        [DataType(DataType.Date)]
+        public DateTime End { get; set; }
 
         public PageableSet<Task> Tasks { get; set; }
 
         public ReportData Report { get; set; }
 
-        public ScheduleSettings Scehdules { get; set; }
+        public IList<ScheduleSettings> Schedules { get; set; }
 
-        public Guid Schedule { get; set; }
+        public Guid? ScheduleSetting { get; set; }
     }
 }

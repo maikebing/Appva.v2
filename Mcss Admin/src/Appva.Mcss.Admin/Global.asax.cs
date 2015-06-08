@@ -29,7 +29,7 @@ namespace Appva.Mcss.Admin
         /// <inheritdoc />
         protected void Application_Start()
         {
-            //NHibernateProfiler.Initialize();
+            NHibernateProfiler.Initialize();
             XmlConfigurator.Configure();
             ModelBinders.Binders.DefaultBinder = new AdminModelBinder();
             //ValueProviderFactories.Factories.Add();

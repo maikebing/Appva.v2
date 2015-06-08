@@ -29,10 +29,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Core.Resources;
     using Appva.Office;
-    using Appva.Core.IO;
-    using Appva.Tenant.Identity;
+using Appva.Core.IO;
+using Appva.Tenant.Identity;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Domain.Models;
 
     #endregion
 
@@ -67,6 +68,16 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         private readonly IAuditService auditing;
 
         /// <summary>
+        /// The <see cref="IReportService"/> dispatcher.
+        /// </summary>
+        private readonly IReportService reports;
+
+        /// <summary>
+        /// The <see cref="ITaskService"/> dispatcher.
+        /// </summary>
+        private readonly ITaskService tasks;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/> dispatcher.
         /// </summary>
         private readonly IPersistenceContext persistence;
@@ -93,14 +104,17 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegationController"/> class.
         /// </summary>
-        public DelegationController(IMediator mediator, IIdentityService identityService,
+        public DelegationController(IMediator mediator, IIdentityService identityService, 
             ITaxonomyService taxonomyService, IAuditService auditing, IPersistenceContext persistence,
             ITaxonFilterSessionHandler filtering, ITenantService tenantService,
-            IAccountTransformer transformer)
+            IAccountTransformer transformer,  IReportService reports, ITaskService tasks)
         {
             this.mediator = mediator;
             this.identityService = identityService;
             this.taxonomyService = taxonomyService;
+            this.logService = logService;
+            this.reports = reports;
+            this.tasks = tasks;
             this.auditing = auditing;
             this.persistence = persistence;
             this.filtering = filtering;
@@ -444,7 +458,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="endDate">Optional end date - defaults to last instant of today</param>
         /// <param name="page">Optional page - defaults to 1</param>
         /// <returns><see cref="ActionResult"/></returns>
-        /*[HttpGet]
+        [HttpGet]
         [Route("DelegationReport/{id:guid}")]
         public ActionResult DelegationReport(Guid id, Guid? tId, Guid? sId, DateTime? startDate, DateTime? endDate, int? page = 1)
         {
@@ -452,13 +466,35 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
             var taxons = this.taxonomyService.List(TaxonomicSchema.Organization);
             startDate = (startDate.HasValue) ? startDate.Value : DateTimeUtilities.Now().AddDays(-DateTimeUtilities.Now().DaysInMonth());
             endDate = (endDate.HasValue) ? endDate.Value.LastInstantOfDay() : DateTimeUtilities.Now().LastInstantOfDay();
+            var previousPeriodStart = startDate.GetValueOrDefault().AddDays(-endDate.Value.Subtract(startDate.Value).Days);
+            var previousPeriodEnd = startDate.GetValueOrDefault().AddDays(-1);
             return View(new DelegationReportViewModel
             {
                 StartDate = startDate.Value.Date,
                 EndDate = endDate.Value.Date,
                 AccountId = account.Id,
                 Account = MapToPatientViewModel(taxons, account),
-                Report = ExecuteCommand<ReportViewModel>(new CreateReportCommand<DelegationReportFilter>
+                Report = this.reports.GetReportData(new ChartDataFilter
+                {
+                    Account = account.Id,
+                    StartDate = startDate.GetValueOrDefault(),
+                    EndDate = endDate.GetValueOrDefault(),
+                    ScheduleSetting = sId
+                }),
+                PreviousPeriodReport = this.reports.GetReportData(new ChartDataFilter
+                {
+                    Account = account.Id,
+                    StartDate = previousPeriodStart,
+                    EndDate = previousPeriodEnd,
+                    ScheduleSetting = sId
+                }),
+                Tasks = this.tasks.List(new ListTaskModel 
+                {
+                    StartDate = startDate.GetValueOrDefault(),
+                    EndDate = endDate.GetValueOrDefault(),
+                    Account = account.Id
+                }, page.GetValueOrDefault(1), 30),
+                /*ExecuteCommand<ReportViewModel>(new CreateReportCommand<DelegationReportFilter>
                 {
                     StartDate = startDate.Value,
                     EndDate = endDate.Value,
@@ -469,7 +505,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                         ScheduleSettingsId = sId
                     },
                     Page = page
-                }),
+                })*/
                 DelegationId = tId,
                 Delegations = this.taxonomyService.ListChildren(TaxonomicSchema.Delegation).Select(x => new SelectListItem
                 {
@@ -480,7 +516,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                 Schedules = this.persistence.QueryOver<ScheduleSettings>().Where(x => x.IsActive == true).List(),
             });
 
-        }*/
+        }
 
         /// <summary>
         /// Posted delegation report.
@@ -488,11 +524,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The account id</param>
         /// <param name="model">The delegation report model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        /*[HttpPost]
+        [HttpPost]
+        [Route("DelegationReport/{id:guid}")]
         public ActionResult DelegationReport(Guid id, DelegationReportViewModel model)
         {
             return DelegationReport(id, model.DelegationId, model.Schedule, model.StartDate, model.EndDate);
-        }*/
+        }
 
         /// <summary>
         /// Generates JSON chart code for delegations.
@@ -1267,5 +1304,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                 .Where(x => x.MachineName == "_superioraccount")
                 .List();
         }
+
+        
     }
 }

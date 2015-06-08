@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -34,6 +35,16 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// </summary>
         private readonly ITaskService tasks;
 
+        /// <summary>
+        /// The <see cref="IScheduleService"/>
+        /// </summary>
+        private readonly IScheduleService schedules;
+
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filter;
+
         #endregion
 
         #region Constructor.
@@ -41,10 +52,12 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="FullReportHandler"/> class.
         /// </summary>
-        public FullReportHandler(IReportService reports, ITaskService tasks)
+        public FullReportHandler(IReportService reports, ITaskService tasks, IScheduleService schedules, ITaxonFilterSessionHandler filter)
         {
             this.reports = reports;
             this.tasks = tasks;
+            this.schedules = schedules;
+            this.filter = filter;
         }
 
         #endregion
@@ -63,10 +76,27 @@ namespace Appva.Mcss.Admin.Areas.Models
             }
             return new FullReportModel
             {
-                StartDate = message.Start.GetValueOrDefault(),
-                EndDate = message.End.GetValueOrDefault(),
-                Tasks = tasks.List(),
-                Report = reports.GetReportData(new ChartDataFilter { StartDate = message.Start.GetValueOrDefault(), EndDate = message.End.GetValueOrDefault() })
+                Start = message.Start.GetValueOrDefault(),
+                End = message.End.GetValueOrDefault(),
+                Schedules = this.schedules.GetSchedules(),
+                Tasks = tasks.List(
+                    new ListTaskModel 
+                    { 
+                        StartDate = message.Start.GetValueOrDefault(), 
+                        EndDate = message.End.GetValueOrDefault(),
+                        ScheduleSetting = message.ScheduleSetting,
+                        Taxon = this.filter.GetCurrentFilter().Id
+                    }, 
+                    message.Page,
+                    30),
+                Report = reports.GetReportData(new ChartDataFilter 
+                { 
+                    StartDate = message.Start.GetValueOrDefault(), 
+                    EndDate = message.End.GetValueOrDefault(),
+                    ScheduleSetting = message.ScheduleSetting,
+                    Organisation = this.filter.GetCurrentFilter().Id
+                }),
+                ScheduleSetting = message.ScheduleSetting
             };
         }
 

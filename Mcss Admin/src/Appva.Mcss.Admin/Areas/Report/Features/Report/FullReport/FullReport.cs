@@ -46,5 +46,14 @@ namespace Appva.Mcss.Admin.Areas.Models
             get;
             set;
         }
+
+        /// <summary>
+        /// The current page
+        /// </summary>
+        public int Page 
+        { 
+            get;
+            set;
+        }
     }
 }

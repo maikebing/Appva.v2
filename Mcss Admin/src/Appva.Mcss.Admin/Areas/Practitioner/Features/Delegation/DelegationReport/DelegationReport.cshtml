@@ -1,14 +1,15 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationReportViewModel
 @{ ViewBag.Title = "Rapporter"; ViewBag.MainClass = "report-view"; }
-@Html.Partial("~/Views/Account/Partials/_AccountDetails.cshtml", Model.Account)
-@Html.Action("Menu", "Menu", new
+@Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
+@*Html.Action("Menu", "Menus", new
             {
                 Key = "admin_account_menu",
                 Action = Html.ViewContext.RouteData.GetRequiredString("action"),
                 Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
                 Id = Model.Account.Id.ToString(),
                 IgnoreAction = false
-            })
+            })*@
 <div id="subheader" class="cf">
 	<h1>Rapporter</h1>
     @using (Html.BeginForm(new { id = Model.AccountId })) {            
@@ -47,8 +48,9 @@
 				<dl>
 					<dt>I tid</dt>
 					<dd>
-                        @Model.Report.TasksOnTime % 
-                        @if (Model.Report.TasksOnTime > Model.Report.ComparedDateSpanTasksOnTime) {
+                        @Model.Report.OnTimePercentage % 
+                        @if (Model.Report.OnTimePercentage > Model.PreviousPeriodReport.OnTimePercentage)
+                        {
                             <img src="@Url.Image("trendup.png")" alt="Uppåtgående" />
                         } else {
                             <img src="@Url.Image("trenddn.png")" alt="Nedåtgående" />
@@ -58,7 +60,7 @@
 				<dl>
 					<dt>Ej i tid</dt>
 					<dd>
-                        @Model.Report.TasksNotOnTime % 
+                        @Model.Report.NotOnTimePercentage % 
                     </dd>
 				</dl>
 				<dl>
@@ -66,7 +68,7 @@
                     @{
                          
                         var amount = string.Empty;
-                        var change = Model.Report.TasksOnTime - Model.Report.ComparedDateSpanTasksOnTime;
+                        var change = Model.Report.OnTimePercentage - Model.PreviousPeriodReport.OnTimePercentage;
                         if (change < 0) {
                             amount = string.Format("{0} i tid", "färre");
                         } else {
@@ -77,15 +79,16 @@
 				</dl>
 				<dl>
 					<dt>Genomsnittlig försening i tid</dt>
-					<dd class="small">@TimeSpanDifference.ToReadableText(TimeSpan.FromMinutes(Model.Report.AverageDifferenceInTime))</dd>
+					<dd class="small">@TimeSpanDifference.ToReadableText(TimeSpan.FromMinutes(0))</dd>
 				</dl>
                 <dl>
                     <dt>Totalt antal insatser</dt>
-					<dd class="small">@Model.Report.Search.TotalItemCount</dd>
+					<dd class="small">@Model.Report.Total</dd>
                 </dl>
 			</div>
 
-            @if (Model.Report.Search.Items.Count > 0) {
+            @if (Model.Tasks.IsNotNull() && Model.Tasks.Entities.Count > 0)
+            {
             <div id="signed-events" class="listing">
 			    <h2 class="heading">Insatser under perioden</h2>
                 <table>
@@ -101,8 +104,8 @@
 					    </tr>
 				    </thead>
 				    <tbody>
-                        @foreach (var task in Model.Report.Search.Items) {
-    <tr class="@(!task.Active ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
+                        @foreach (var task in Model.Tasks.Entities) {
+    <tr class="@(!task.IsActive ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
         <td>@task.Name</td>
         <td>
             @if (!task.IsCompleted) {
@@ -202,14 +205,14 @@ else {
 				    </tbody>
 			    </table>
 		    </div>
-            @Html.Pager(Model.Report.Search.PageSize, Model.Report.Search.PageNumber, Model.Report.Search.TotalItemCount).Options(o => o
+            @Html.Pager((int)Model.Tasks.PageSize, (int)Model.Tasks.CurrentPage, (int)Model.Tasks.TotalCount).Options(o => o
                 .DisplayTemplate("Pagination")
                 .MaxNrOfPages(15)
                 .AlwaysAddFirstPageNumber()
                 .AddRouteValue("tId", Model.DelegationId)
                 .AddRouteValue("sId", Model.Schedule)
-                .AddRouteValue("startDate", Model.Report.StartDate.ToShortDateString())
-                .AddRouteValue("endDate", Model.Report.EndDate.ToShortDateString())
+                .AddRouteValue("startDate", Model.StartDate.ToShortDateString())
+                .AddRouteValue("endDate", Model.EndDate.ToShortDateString())
                 )
             }
         </div>
@@ -247,15 +250,15 @@ else {
         });
         mcss.chart.Load({ 
             'selector': '#chart',
-            'url': '@Url.Action("Chart")',
-            'min': new Date(@Model.Report.StartDate.Year, @(Model.Report.StartDate.Month - 1), @Model.Report.StartDate.Day),
-            'max': new Date(@Model.Report.EndDate.Year, @(Model.Report.EndDate.Month - 1), @Model.Report.EndDate.Day),
+            'url': '@Url.Action("GetChartData", "Statistics", new { area = "" })',
+            'min': new Date(@Model.StartDate.Year, @(Model.StartDate.Month - 1), @Model.StartDate.Day),
+            'max': new Date(@Model.EndDate.Year, @(Model.EndDate.Month - 1), @Model.EndDate.Day),
             'parameters': {
-                'id': '@Model.AccountId',
+                'Account': '@Model.AccountId',
                 'tId': '@Model.DelegationId',
-                'sId': '@Model.Schedule', 
-                'startDate': '@Model.Report.StartDate.ToShortDateString()',
-                'endDate': '@Model.Report.EndDate.ToShortDateString()'
+                'ScheduleSetting': '@Model.Schedule', 
+                'Start': '@Model.StartDate.ToShortDateString()',
+                'End': '@Model.EndDate.ToShortDateString()'
             }
         });
 

@@ -1,0 +1,71 @@
+﻿@using Appva.Mcss.Admin.Application.Common﻿
+@model Appva.Mcss.Admin.Areas.Models.ListMedicationModel
+
+@{
+    ViewBag.Title = "Läkemedelsförtekning";
+}
+
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+<div id="subheader" class="cf">
+    <h1>Läkemedelsförteckning</h1>
+</div>
+
+<div id="content" class="cf">
+
+    <div id="content-primary" class="signlist-collection">
+
+        <div id="signlist">
+
+            <div class="h cf">
+                <h2></h2>
+                @*Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })*@
+            </div>
+
+
+            <table>
+                <thead>
+                    <tr class="head">
+                        <th scope="col">Att ge</th>
+                        <th scope="col">Frekvens</th>
+                        <th scope="col">Ges inom</th>
+                        <th scope="col">Tider</th>
+                        <th scope="col">Instruktion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr class="active">
+                            <td>
+                                Läkemedelsnamn
+                            <span class="date">
+                                2015-06-01
+                                —
+                                2015-06-30
+                            </span>
+                        </td>
+                        <td class="freq"> 
+                           Vid behov
+                        </td>
+                        <td class="frame">
+                            
+                        </td>
+                        <td class="time">
+                            <img src="@Url.Image("icn-check.png")" alt="ja" />
+                        </td>
+                        <td class="info"><p>Beskrivning</p></td>
+                        
+                        <td class="edit">
+                            @Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130"  }, new { @class = "lb-link", @title = "Lägg till" })
+                            @*Html.ActionLink(Permissions.Sequence.Update, "Ändra", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                            @Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })*@
+                        </td>
+                    </tr>
+                 
+                </tbody>
+            </table>
+            <div id="add-sign" class="cf">
+                @*Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })*@
+            </div>
+        </div>
+    </div>
+</div>

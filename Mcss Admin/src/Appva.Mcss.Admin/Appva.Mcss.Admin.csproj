@@ -223,6 +223,10 @@
     <Compile Include="Areas\Patient\Features\Inventory\Recount\RecountInventoryItemHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedication.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\MedicationController.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\OrderController.cs" />
@@ -978,6 +982,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Features\Shared\EmailTemplates\ExceptionEmail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Patient\Features\Medication\List\List.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

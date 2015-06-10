@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Application.Security
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Security.Extensions;
     using Appva.Mcss.Admin.Application.Security.Identity;
@@ -69,8 +70,13 @@ namespace Appva.Mcss.Admin.Application.Security
         /// </summary>
         /// <param name="identity">The <see cref="IIdentityService"/> implementation</param>
         /// <param name="accountService">The <see cref="IAccountService"/> implementation</param>
-        public FormsAuthentication(IIdentityService identity, ITenantService tenants, IAccountService accountService, ISettingsService settings)
-            : base(identity, tenants, accountService, settings, AuthenticationMethod.Password, AuthenticationType.Administrative)
+        public FormsAuthentication(
+            IIdentityService identity, 
+            ITenantService tenants, 
+            IAccountService accountService, 
+            ISettingsService settings,
+            IAuditService auditing)
+            : base(identity, tenants, accountService, settings, auditing, AuthenticationMethod.Password, AuthenticationType.Administrative)
         {
             this.accountService = accountService;
         }
@@ -83,7 +89,7 @@ namespace Appva.Mcss.Admin.Application.Security
         public bool AuthenticateWithPersonalIdentityNumberAndPassword(PersonalIdentityNumber personalIdentityNumber, string password, out IAuthenticationResult result)
         {
             var account = this.accountService.FindByPersonalIdentityNumber(personalIdentityNumber);
-            result = this.Authenticate(account, password);
+            result = this.Authenticate(personalIdentityNumber, account, password);
             this.VerifyAuthenticationResult(account, result);
             return result.IsAuthorized;
         }
@@ -92,7 +98,7 @@ namespace Appva.Mcss.Admin.Application.Security
         public bool AuthenticateWithUserNameAndPassword(string username, string password, out IAuthenticationResult result)
         {
             var account = this.accountService.FindByUserName(username);
-            result = this.Authenticate(account, password);
+            result = this.Authenticate(username, account, password);
             this.VerifyAuthenticationResult(account, result);
             return result.IsAuthorized;
         }

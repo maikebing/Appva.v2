@@ -16,9 +16,9 @@ FRAMEWORK
 ADMIN
 1. [ ] Cache lists as dictionaries (taxon, settings)
 2. [X] Add all permissions to area patient in cshtml
-3. [ ] Add all permissions to area patient controllers
+3. [X] Add all permissions to area patient controllers
 4. [X] Excel, add Appva.Mcss.Admin.Excel
-5. [ ] Create Authentication Result, NotActive and IsPaused
+5. [X] Create Authentication Result, NotActive and IsPaused
 6. [X] Add <globalization enableClientBasedCulture="true" uiCulture="sv-SE" culture="sv-SE"/>
 7. [X] Add Siths to service
 8. [ ] Add AD to services adn implement

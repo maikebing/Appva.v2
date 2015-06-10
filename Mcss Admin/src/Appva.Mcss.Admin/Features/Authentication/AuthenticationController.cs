@@ -112,9 +112,12 @@ namespace Appva.Mcss.Admin.Features.Authentication
             if (this.authentication.AuthenticateWithUserNameAndPassword(request.UserName, request.Password, out result))
             {
                 this.authentication.SignIn(result.Identity);
-                if (result.Identity.LastPasswordChangedDate.HasValue)
+                if (! result.Identity.LastPasswordChangedDate.HasValue)
                 {
-                    this.RedirectToAction("ChangePassword", "Authenticate");
+                    return this.RedirectToAction("ChangePassword", "Accounts", new 
+                    {
+                        Area = "Practitioner"
+                    });
                 }
                 if (request.ReturnUrl.IsNotEmpty() && Url.IsLocalUrl(request.ReturnUrl))
                 {
@@ -125,10 +128,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
                         Area = item.Area
                     });
                 }
-                var defaultUrl = Url.Action("Index", "Dashboard", new
-                {
-                    Area = "Dashboard"
-                });
+                var defaultUrl = Url.Action("Index", "Home");
                 return this.Redirect(defaultUrl);
             }
             if (result.IsFailureDueToIdentityLockout)

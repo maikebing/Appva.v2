@@ -8,11 +8,7 @@ namespace Appva.Core.Messaging
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Mail;
-    using Appva.Core.Logging;
 
     #endregion
 
@@ -21,15 +17,6 @@ namespace Appva.Core.Messaging
     /// </summary>
     public sealed class NoOpMailService : AbstractNoOpMailSender<MailMessage>, ISimpleMailService, IMailService
     {
-        #region Variables.
-
-        /// <summary>
-        /// Logging for <see cref="EmailMessage"/>.
-        /// </summary>
-        private static readonly ILog Logger = LogProvider.For<NoOpMailService>();
-
-        #endregion
-
         #region Constructor.
 
         /// <summary>
@@ -59,7 +46,6 @@ namespace Appva.Core.Messaging
         /// <inheritdoc />
         protected override MailMessage Handle(MailMessage message)
         {
-            Logger.DebugJson(message);
             return message;
         }
 

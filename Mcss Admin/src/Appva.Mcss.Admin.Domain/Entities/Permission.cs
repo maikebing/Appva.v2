@@ -109,5 +109,27 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
+
+        #region Public Methods.
+
+        /// <summary>
+        /// Updates the resource key.
+        /// </summary>
+        /// <param name="sort"></param>
+        public virtual void UpdateResource(string resource)
+        {
+            this.Resource = resource;
+        }
+
+        /// <summary>
+        /// Updates the sort order.
+        /// </summary>
+        /// <param name="sort"></param>
+        public virtual void UpdateSort(int sort)
+        {
+            this.Sort = sort;
+        }
+
+        #endregion
     }
 }

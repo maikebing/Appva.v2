@@ -11,12 +11,15 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using System;
     using System.Web.Mvc;
     using System.Web.UI;
+    using Appva.Core.Resources;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -60,6 +63,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("list/{id:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Schedule.ReadValue)]
         public ActionResult List(ListSchedule request)
         {
             return this.View();
@@ -77,6 +81,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("details/patient/{id:guid}/schedule/{scheduleId:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Sequence.ReadValue)]
         public ActionResult Details(DetailsSchedule request)
         {
             return this.View();
@@ -93,6 +98,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("create/patient/{id:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Schedule.CreateValue)]
         public ActionResult Create(CreateSchedule request)
         {
             return this.View();
@@ -106,6 +112,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("create/patient/{id:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Schedule")]
+        [PermissionsAttribute(Permissions.Schedule.CreateValue)]
         public ActionResult Create(CreateScheduleForm request)
         {
             //// TODO: Must fix this somehow --> ValidateNonDuplicates(model);
@@ -123,6 +130,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("inactivate/schedule/{id:guid}")]
         [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("List", "Schedule")]
+        [PermissionsAttribute(Permissions.Schedule.InactivateValue)]
         public ActionResult Inactivate(InactivateSchedule request)
         {
             return this.View();
@@ -149,6 +157,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns></returns>
         [Route("Sign/{id:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Schedule.EventListValue)]
         public ActionResult Sign(SignSchedule request)
         {
             return this.View();
@@ -164,7 +173,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="id">The patient id</param>
         /// <param name="taskId">The task id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        //[Authorize(Roles = RoleUtils.AppvaAccount)]
+        [Authorize(Roles = "_AA")]
         [Route("DeleteTask/{id:guid}/task/{taskId:guid}")]
         [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("List", "Schedule")]
         public ActionResult DeleteTask(DeleteTask request)
@@ -186,6 +195,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("PrintPopUp/{id:guid}/schedule/{scheduleSettingsId:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Schedule.PrintValue)]
         public ActionResult PrintPopUp(PrintModelSchedule request)
         {
             return this.View();
@@ -200,6 +210,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("PrintPopUp/{id:guid}/schedule/{scheduleId:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
+        [PermissionsAttribute(Permissions.Schedule.PrintValue)]
         public ActionResult PrintPopUp(Guid id, Guid scheduleId, SchedulePrintPopOverViewModel model)
         {
             if (model.Template == SchedulePrintTemplate.Table)
@@ -243,6 +254,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("PrintSchema/{id:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Schedule.PrintValue)]
         public ActionResult PrintSchema(PrintSchemaSchedule request)
         {
             return this.View();
@@ -260,6 +272,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("PrintTable/{id:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Schedule.PrintValue)]
         public ActionResult PrintTable(PrintTableSchedule request)
         {
             return this.View();
@@ -280,6 +293,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>A schedule report view</returns>
         [Route("ScheduleReport/{id:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Schedule.ReportValue)]
         public ActionResult ScheduleReport(ReportSchedule request)
         {
             return this.View();
@@ -294,6 +308,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         
         [Route("ScheduleReport/{id:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
+        [PermissionsAttribute(Permissions.Schedule.ReportValue)]
         public ActionResult ScheduleReport(Guid id, ScheduleReportViewModel model)
         {
             return View(this.mediator.Send<ScheduleReportViewModel>(new ReportSchedule
@@ -303,13 +318,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
                 StartDate = model.StartDate,
                 EndDate = model.EndDate
             }));
-            /*return this.RedirectToAction("ScheduleReport", new ReportSchedule
-            {
-                Id = id,
-                ScheduleSettingsId = model.Schedule,
-                StartDate = model.StartDate,
-                EndDate = model.EndDate
-            });*/
         }
 
         /// <summary>
@@ -337,6 +345,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>A <see cref="FileContentResult"/></returns>
         [Route("Excel/{id:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Schedule.ReportValue)]
         public DispatchExcelFileContentResult Excel(GenerateExcel request)
         {
             return this.ExcelFile();

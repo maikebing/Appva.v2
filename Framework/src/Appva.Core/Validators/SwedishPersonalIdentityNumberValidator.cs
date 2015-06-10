@@ -65,12 +65,12 @@ namespace Appva.Core
         /// <summary>
         /// A '+' separator the year the a person is 100 years old.
         /// </summary>
-        private static readonly string Plus = "+";
+        private const string Plus = "+";
 
         /// <summary>
         /// A '-' separator.
         /// </summary>
-        private static readonly string Minus = "-";
+        private const string Minus = "-";
 
         /// <summary>
         /// Valid centuries.
@@ -225,10 +225,10 @@ namespace Appva.Core
         private static bool IsValidChecksum(string personalIdentityNumber)
         {
             personalIdentityNumber = personalIdentityNumber.Substring(2);
-            int checksum = 0;
-            for (int i = 0; i < personalIdentityNumber.Length; i++)
+            var checksum = 0;
+            for (var i = 0; i < personalIdentityNumber.Length; i++)
             {
-                int current = int.Parse(personalIdentityNumber[i].ToString()) * ((i % 2 == 0) ? 2 : 1);
+                var current = int.Parse(personalIdentityNumber[i].ToString()) * ((i % 2 == 0) ? 2 : 1);
                 checksum += (current > 9) ? current - 9 : current;
             }
             return checksum % 10 == 0;

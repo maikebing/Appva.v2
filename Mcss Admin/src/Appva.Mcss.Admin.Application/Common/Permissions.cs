@@ -21,6 +21,15 @@ namespace Appva.Mcss.Admin.Application.Common
     /// </summary>
     public static class Permissions
     {
+        #region Constants.
+
+        /// <summary>
+        /// The permission schema.
+        /// </summary>
+        private const string Schema = "https://schemas.appva.se/2015/04/permission/";
+
+        #endregion
+
         #region Admin (Application).
 
         /// <summary>
@@ -29,12 +38,18 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Admin
         {
             /// <summary>
+            /// The login value.
+            /// </summary>
+            public const string LoginValue = Schema + "web/admin";
+
+            /// <summary>
             /// Permission to login.
             /// </summary>
             [Sort(56)]
             [Name("Login MCSS")]
             [Description("Permission to login to MCSS administration")]
-            public static readonly IPermission Login = PermissionType.CreateNew("mcss/admin/login");
+            [Key("https://schema.appva.se/permission/mcss/admin/login")]
+            public static readonly IPermission Login = PermissionType.CreateNew(LoginValue);
         }
 
         /// <summary>
@@ -43,12 +58,18 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Device
         {
             /// <summary>
+            /// The login value.
+            /// </summary>
+            public const string LoginValue = Schema + "web/device";
+
+            /// <summary>
             /// Permission to login.
             /// </summary>
             [Sort(57)]
             [Name("Login MCSS")]
             [Description("Permission to login to MCSS device")]
-            public static readonly IPermission Login = PermissionType.CreateNew("mcss/device/login");
+            [Key("https://schema.appva.se/permission/mcss/device/login")]
+            public static readonly IPermission Login = PermissionType.CreateNew(LoginValue);
         }
 
         #endregion
@@ -61,12 +82,18 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Dashboard
         {
             /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "dashboard/read";
+
+            /// <summary>
             /// Permission to read/view the dashboard.
             /// </summary>
             [Sort(0)]
             [Name("Read dashboard")]
             [Description("Permission to read/view the dashboard")]
-            public static readonly IPermission Read = PermissionType.CreateNew("dashboard/read");
+            [Key("https://schema.appva.se/permission/dashboard/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
         }
 
         #endregion
@@ -79,12 +106,53 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Practitioner
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "practitioner/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "practitioner/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "practitioner/update";
+
+            /// <summary>
+            /// The update role value.
+            /// </summary>
+            public const string UpdateRolesValue = Schema + "practitioner/update/role";
+
+            /// <summary>
+            /// The inactivate value.
+            /// </summary>
+            public const string InactivateValue = Schema + "practitioner/inactivate";
+
+            /// <summary>
+            /// The reactivate value.
+            /// </summary>
+            public const string ReactivateValue = Schema + "practitioner/reactivate";
+
+            /// <summary>
+            /// The pause value.
+            /// </summary>
+            public const string PauseValue = Schema + "practitioner/pause";
+
+            /// <summary>
+            /// The resume value.
+            /// </summary>
+            public const string ResumeValue = Schema + "practitioner/resume";
+
+            /// <summary>
             /// Permission to create a practitioner.
             /// </summary>
             [Sort(1)]
             [Name("Create practitioner")]
             [Description("Permission to create a practitioner")]
-            public static readonly IPermission Create = PermissionType.CreateNew("practitioner/create");
+            [Key("https://schema.appva.se/permission/practitioner/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view a practitioner.
@@ -92,7 +160,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(2)]
             [Name("Read practitioner")]
             [Description("Permission to read/view a practitioner")]
-            public static readonly IPermission Read = PermissionType.CreateNew("practitioner/read");
+            [Key("https://schema.appva.se/permission/practitioner/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to update/edit a practitioner.
@@ -100,7 +169,17 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(3)]
             [Name("Update practitioner")]
             [Description("Permission to update/edit a practitioner")]
-            public static readonly IPermission Update = PermissionType.CreateNew("practitioner/update");
+            [Key("https://schema.appva.se/permission/practitioner/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
+
+            /// <summary>
+            /// Permission to update/edit a practitioner.
+            /// </summary>
+            [New]
+            [Sort(3)]
+            [Name("Update practitioner roles")]
+            [Description("Permission to update/edit practitioner roles")]
+            public static readonly IPermission UpdateRoles = PermissionType.CreateNew(UpdateRolesValue);
 
             /// <summary>
             /// Permission to inactivate a practitioner.
@@ -108,7 +187,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(4)]
             [Name("Inactivate practitioner")]
             [Description("Permission to inactivate a practitioner")]
-            public static readonly IPermission Inactivate = PermissionType.CreateNew("practitioner/inactivate");
+            [Key("https://schema.appva.se/permission/practitioner/inactivate")]
+            public static readonly IPermission Inactivate = PermissionType.CreateNew(InactivateValue);
 
             /// <summary>
             /// Permission to reactivate a practitioner.
@@ -116,7 +196,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(5)]
             [Name("Reactivate practitioner")]
             [Description("Permission to reactivate a practitioner")]
-            public static readonly IPermission Reactivate = PermissionType.CreateNew("practitioner/reactivate");
+            [Key("https://schema.appva.se/permission/practitioner/reactivate")]
+            public static readonly IPermission Reactivate = PermissionType.CreateNew(ReactivateValue);
 
             /// <summary>
             /// Permission to pause a practitioner.
@@ -124,7 +205,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(6)]
             [Name("Pause practitioner")]
             [Description("Permission to pause a practitioner")]
-            public static readonly IPermission Pause = PermissionType.CreateNew("practitioner/pause");
+            [Key("https://schema.appva.se/permission/practitioner/pause")]
+            public static readonly IPermission Pause = PermissionType.CreateNew(PauseValue);
 
             /// <summary>
             /// Permission to resume a paused practitioner.
@@ -132,7 +214,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(7)]
             [Name("Resume paused practitioner")]
             [Description("Permission to resume paused practitioner")]
-            public static readonly IPermission Resume = PermissionType.CreateNew("practitioner/resume");
+            [Key("https://schema.appva.se/permission/practitioner/resume")]
+            public static readonly IPermission Resume = PermissionType.CreateNew(ResumeValue);
         }
 
         #endregion
@@ -145,12 +228,48 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Delegation
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "practitioner/delegation/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "practitioner/delegation/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "practitioner/delegation/update";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "practitioner/delegation/delete";
+
+            /// <summary>
+            /// The revision read value.
+            /// </summary>
+            public const string RevisionValue = Schema + "practitioner/delegation/revision/read";
+
+            /// <summary>
+            /// The issued read value.
+            /// </summary>
+            public const string IssuedValue = Schema + "practitioner/delegation/issued/read";
+
+            /// <summary>
+            /// The report read value.
+            /// </summary>
+            public const string ReportValue = Schema + "practitioner/delegation/report/read";
+
+            /// <summary>
             /// Permission to create a delegation.
             /// </summary>
             [Sort(8)]
             [Name("Create delegation")]
             [Description("Permission to create a delegation")]
-            public static readonly IPermission Create = PermissionType.CreateNew("practitioner/delegation/create");
+            [Key("https://schema.appva.se/permission/practitioner/delegation/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view a delegation.
@@ -158,7 +277,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(9)]
             [Name("Read delegation")]
             [Description("Permission to read/view a delegation")]
-            public static readonly IPermission Read = PermissionType.CreateNew("practitioner/delegation/read");
+            [Key("https://schema.appva.se/permission/practitioner/delegation/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to update/edit a delegation.
@@ -166,7 +286,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(10)]
             [Name("Update delegation")]
             [Description("Permission to update/edit a delegation")]
-            public static readonly IPermission Update = PermissionType.CreateNew("practitioner/delegation/update");
+            [Key("https://schema.appva.se/permission/practitioner/delegation/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
             /// Permission to delete a delegation.
@@ -174,7 +295,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(11)]
             [Name("Delete delegation")]
             [Description("Permission to delete a delegation")]
-            public static readonly IPermission Delete = PermissionType.CreateNew("practitioner/delegation/delete");
+            [Key("https://schema.appva.se/permission/practitioner/delegation/delete")]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
 
             /// <summary>
             /// Permission to read/view a revision.
@@ -182,7 +304,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(12)]
             [Name("Read delegation revision")]
             [Description("Permission to read/view a delegation revision")]
-            public static readonly IPermission Revision = PermissionType.CreateNew("practitioner/delegation/revision/read");
+            [Key("https://schema.appva.se/permission/practitioner/delegation/revision/read")]
+            public static readonly IPermission Revision = PermissionType.CreateNew(RevisionValue);
 
             /// <summary>
             /// Permission to read/view an issued delegation.
@@ -190,7 +313,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(13)]
             [Name("Read issued delegation")]
             [Description("Permission to read/view an issued delegation")]
-            public static readonly IPermission Issued = PermissionType.CreateNew("practitioner/delegation/issued/read");
+            [Key("https://schema.appva.se/permission/practitioner/delegation/issued/read")]
+            public static readonly IPermission Issued = PermissionType.CreateNew(IssuedValue);
 
             /// <summary>
             /// Permission to read/view a delegation report.
@@ -198,7 +322,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(14)]
             [Name("Read delegation report")]
             [Description("Permission to read/view a delegation report")]
-            public static readonly IPermission Report = PermissionType.CreateNew("practitioner/delegation/report/read");
+            [Key("https://schema.appva.se/permission/practitioner/delegation/report/read")]
+            public static readonly IPermission Report = PermissionType.CreateNew(ReportValue);
         }
 
         #endregion
@@ -211,12 +336,38 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Patient
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "patient/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "patient/update";
+
+            /// <summary>
+            /// The inactivate value.
+            /// </summary>
+            public const string InactivateValue = Schema + "patient/inactivate";
+
+            /// <summary>
+            /// The reactivate value.
+            /// </summary>
+            public const string ReactivateValue = Schema + "patient/reactivate";
+
+            /// <summary>
             /// Permission to create a patient.
             /// </summary>
             [Sort(15)]
             [Name("Create patient")]
             [Description("Permission to create a patient")]
-            public static readonly IPermission Create = PermissionType.CreateNew("patient/create");
+            [Key("https://schema.appva.se/permission/patient/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view a patient.
@@ -224,7 +375,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(16)]
             [Name("Read patient")]
             [Description("Permission to read/view a patient")]
-            public static readonly IPermission Read = PermissionType.CreateNew("patient/read");
+            [Key("https://schema.appva.se/permission/patient/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to update/edit a patient.
@@ -232,7 +384,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(17)]
             [Name("Update patient")]
             [Description("Permission to update/edit a patient")]
-            public static readonly IPermission Update = PermissionType.CreateNew("patient/update");
+            [Key("https://schema.appva.se/permission/patient/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
             /// Permission to inactivate a patient.
@@ -240,7 +393,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(18)]
             [Name("Inactivate patient")]
             [Description("Permission to inactivate a patient")]
-            public static readonly IPermission Inactivate = PermissionType.CreateNew("patient/inactivate");
+            [Key("https://schema.appva.se/permission/patient/inactivate")]
+            public static readonly IPermission Inactivate = PermissionType.CreateNew(InactivateValue);
 
             /// <summary>
             /// Permission to reactivate a patient.
@@ -248,7 +402,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(19)]
             [Name("Reactivate patient")]
             [Description("Permission to reactivate a patient")]
-            public static readonly IPermission Reactivate = PermissionType.CreateNew("patient/reactivate");
+            [Key("https://schema.appva.se/permission/patient/reactivate")]
+            public static readonly IPermission Reactivate = PermissionType.CreateNew(ReactivateValue);
         }
 
         #endregion
@@ -261,12 +416,48 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Schedule
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "patient/schedule/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/schedule/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "patient/schedule/update";
+
+            /// <summary>
+            /// The inactivate value.
+            /// </summary>
+            public const string InactivateValue = Schema + "patient/schedule/inactivate";
+
+            /// <summary>
+            /// The print value.
+            /// </summary>
+            public const string PrintValue = Schema + "patient/schedule/print";
+
+            /// <summary>
+            /// The report read value.
+            /// </summary>
+            public const string ReportValue = Schema + "patient/schedule/report/read";
+
+            /// <summary>
+            /// The event read value.
+            /// </summary>
+            public const string EventListValue = Schema + "patient/schedule/event/read";
+
+            /// <summary>
             /// Permission to create a schedule.
             /// </summary>
             [Sort(20)]
             [Name("Create schedule")]
             [Description("Permission to create a schedule")]
-            public static readonly IPermission Create = PermissionType.CreateNew("patient/schedule/create");
+            [Key("https://schema.appva.se/permission/patient/schedule/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view a schedule.
@@ -274,7 +465,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(21)]
             [Name("Read schedule")]
             [Description("Permission to read/view a schedule")]
-            public static readonly IPermission Read = PermissionType.CreateNew("patient/schedule/read");
+            [Key("https://schema.appva.se/permission/patient/schedule/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to uppdate/edit a schedule.
@@ -282,7 +474,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(22)]
             [Name("Update schedule")]
             [Description("Permission to uppdate/edit a schedule")]
-            public static readonly IPermission Update = PermissionType.CreateNew("patient/schedule/update");
+            [Key("https://schema.appva.se/permission/patient/schedule/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
             /// Permission to inactivate a schedule.
@@ -290,7 +483,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(23)]
             [Name("Inactivate schedule")]
             [Description("Permission to inactivate a schedule")]
-            public static readonly IPermission Inactivate = PermissionType.CreateNew("patient/schedule/inactivate");
+            [Key("https://schema.appva.se/permission/patient/schedule/inactivate")]
+            public static readonly IPermission Inactivate = PermissionType.CreateNew(InactivateValue);
 
             /// <summary>
             /// Permission to print a schedule.
@@ -298,7 +492,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(24)]
             [Name("Print schedule")]
             [Description("Permission to print a schedule")]
-            public static readonly IPermission Print = PermissionType.CreateNew("patient/schedule/print");
+            [Key("https://schema.appva.se/permission/patient/schedule/print")]
+            public static readonly IPermission Print = PermissionType.CreateNew(PrintValue);
 
             /// <summary>
             /// Permission to read/view the patient reports.
@@ -306,7 +501,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(25)]
             [Name("Read schedule report")]
             [Description("Permission to read/view the schedule report")]
-            public static readonly IPermission Report = PermissionType.CreateNew("patient/schedule/report/read");
+            [Key("https://schema.appva.se/permission/patient/schedule/report/read")]
+            public static readonly IPermission Report = PermissionType.CreateNew(ReportValue);
 
             /// <summary>
             /// Permission to read/view a signed event.
@@ -314,7 +510,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(26)]
             [Name("Read signed event")]
             [Description("Permission to read/view a signed event")]
-            public static readonly IPermission EventList = PermissionType.CreateNew("patient/schedule/event/read");
+            [Key("https://schema.appva.se/permission/patient/schedule/event/read")]
+            public static readonly IPermission EventList = PermissionType.CreateNew(EventListValue);
         }
 
         #endregion
@@ -327,12 +524,38 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Sequence
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "patient/schedule/sequence/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/schedule/sequence/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "patient/schedule/sequence/update";
+
+            /// <summary>
+            /// The inactivate value.
+            /// </summary>
+            public const string InactivateValue = Schema + "patient/schedule/sequence/inactivate";
+
+            /// <summary>
+            /// The print value.
+            /// </summary>
+            public const string PrintValue = Schema + "patient/schedule/sequence/print";
+
+            /// <summary>
             /// Permission to create a schedule.
             /// </summary>
             [Sort(27)]
             [Name("Create sequence")]
             [Description("Permission to create a sequence")]
-            public static readonly IPermission Create = PermissionType.CreateNew("patient/schedule/sequence/create");
+            [Key("https://schema.appva.se/permission/patient/schedule/sequence/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view a schedule.
@@ -340,7 +563,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(28)]
             [Name("Read sequence")]
             [Description("Permission to read/view a sequence")]
-            public static readonly IPermission Read = PermissionType.CreateNew("patient/schedule/sequence/read");
+            [Key("https://schema.appva.se/permission/patient/schedule/sequence/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to uppdate/edit a schedule.
@@ -348,7 +572,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(29)]
             [Name("Update sequence")]
             [Description("Permission to uppdate/edit a sequence")]
-            public static readonly IPermission Update = PermissionType.CreateNew("patient/schedule/sequence/update");
+            [Key("https://schema.appva.se/permission/patient/schedule/sequence/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
             /// Permission to inactivate a schedule.
@@ -356,7 +581,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(30)]
             [Name("Inactivate sequence")]
             [Description("Permission to inactivate a sequence")]
-            public static readonly IPermission Inactivate = PermissionType.CreateNew("patient/schedule/sequence/inactivate");
+            [Key("https://schema.appva.se/permission/patient/schedule/sequence/inactivate")]
+            public static readonly IPermission Inactivate = PermissionType.CreateNew(InactivateValue);
 
             /// <summary>
             /// Permission to delete a schedule.
@@ -364,7 +590,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(31)]
             [Name("Print sequence")]
             [Description("Permission to print a sequence")]
-            public static readonly IPermission Print = PermissionType.CreateNew("patient/schedule/sequence/print");
+            [Key("https://schema.appva.se/permission/patient/schedule/sequence/print")]
+            public static readonly IPermission Print = PermissionType.CreateNew(PrintValue);
         }
 
         #endregion
@@ -377,12 +604,33 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Prepare
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "patient/schedule/sequence/prepare/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/schedule/sequence/prepare/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "patient/schedule/sequence/prepare/update";
+
+            /// <summary>
+            /// The inactivate value.
+            /// </summary>
+            public const string InactivateValue = Schema + "patient/schedule/sequence/prepare/inactivate";
+
+            /// <summary>
             /// Permission to create a prepared sequence.
             /// </summary>
             [Sort(32)]
             [Name("Create a prepared sequence")]
             [Description("Permission to create a prepared sequence")]
-            public static readonly IPermission Create = PermissionType.CreateNew("patient/schedule/sequence/prepare/create");
+            [Key("https://schema.appva.se/permission/patient/schedule/sequence/prepare/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view a prepared sequence.
@@ -390,7 +638,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(33)]
             [Name("Read prepared sequence")]
             [Description("Permission to read/view a prepared sequence")]
-            public static readonly IPermission Read = PermissionType.CreateNew("patient/schedule/sequence/prepare/read");
+            [Key("https://schema.appva.se/permission/patient/schedule/sequence/prepare/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to uppdate/edit a prepared sequence.
@@ -398,7 +647,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(34)]
             [Name("Update prepared sequence")]
             [Description("Permission to uppdate/edit a prepared sequence")]
-            public static readonly IPermission Update = PermissionType.CreateNew("patient/schedule/sequence/prepare/update");
+            [Key("https://schema.appva.se/permission/patient/schedule/sequence/prepare/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
             /// Permission to delete a prepared sequence.
@@ -406,7 +656,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(35)]
             [Name("Delete prepared sequence")]
             [Description("Permission to delete a prepared sequence")]
-            public static readonly IPermission Delete = PermissionType.CreateNew("patient/schedule/sequence/prepare/inactivate");
+            [Key("https://schema.appva.se/permission/patient/schedule/sequence/prepare/inactivate")]
+            public static readonly IPermission Delete = PermissionType.CreateNew(InactivateValue);
         }
 
         #endregion
@@ -419,12 +670,28 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Alert
         {
             /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/alerts/read";
+
+            /// <summary>
+            /// The handle value.
+            /// </summary>
+            public const string HandleValue = Schema + "patient/alerts/handle";
+
+            /// <summary>
+            /// The handle all value.
+            /// </summary>
+            public const string HandleAllValue = Schema + "patient/alerts/handle-all";
+
+            /// <summary>
             /// Permission to read/view alerts.
             /// </summary>
             [Sort(36)]
             [Name("Read alerts")]
             [Description("Permission to read/view alerts")]
-            public static readonly IPermission Read = PermissionType.CreateNew("patient/alerts/read");
+            [Key("https://schema.appva.se/permission/patient/alerts/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to handle alerts.
@@ -432,7 +699,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(37)]
             [Name("Handle alerts")]
             [Description("Permission to handle alerts")]
-            public static readonly IPermission Handle = PermissionType.CreateNew("patient/alerts/handle");
+            [Key("https://schema.appva.se/permission/patient/alerts/handle")]
+            public static readonly IPermission Handle = PermissionType.CreateNew(HandleValue);
 
             /// <summary>
             /// Permission to handle all alerts.
@@ -440,7 +708,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(38)]
             [Name("Handle all alerts")]
             [Description("Permission to handle all alerts")]
-            public static readonly IPermission HandleAll = PermissionType.CreateNew("patient/alerts/handle-all");
+            [Key("https://schema.appva.se/permission/patient/alerts/handle-all")]
+            public static readonly IPermission HandleAll = PermissionType.CreateNew(HandleAllValue);
         }
 
         #endregion
@@ -453,12 +722,33 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Calendar
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "patient/calendar/event/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/calendar/event/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "patient/calendar/event/update";
+            
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "patient/calendar/event/delete";
+
+            /// <summary>
             /// Permission to create a calendar event.
             /// </summary>
             [Sort(39)]
             [Name("Create calendar event")]
             [Description("Permission to create a calendar event")]
-            public static readonly IPermission Create = PermissionType.CreateNew("patient/calendar/event/create");
+            [Key("https://schema.appva.se/permission/patient/calendar/event/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view calendar events.
@@ -466,7 +756,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(40)]
             [Name("Read calendar events")]
             [Description("Permission to read/view calendar events")]
-            public static readonly IPermission Read = PermissionType.CreateNew("patient/calendar/event/read");
+            [Key("https://schema.appva.se/permission/patient/calendar/event/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to uppdate/edit a calendar event.
@@ -474,7 +765,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(41)]
             [Name("Update calendar event")]
             [Description("Permission to uppdate/edit a calendar event")]
-            public static readonly IPermission Update = PermissionType.CreateNew("patient/calendar/event/update");
+            [Key("https://schema.appva.se/permission/patient/calendar/event/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
             /// Permission to delete a calendar event.
@@ -482,7 +774,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(42)]
             [Name("Delete calendar event")]
             [Description("Permission to delete a calendar event")]
-            public static readonly IPermission Delete = PermissionType.CreateNew("patient/calendar/event/delete");
+            [Key("https://schema.appva.se/permission/patient/calendar/event/delete")]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
         }
 
         #endregion
@@ -495,12 +788,33 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Inventory
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "patient/inventory/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/inventory/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "patient/inventory/update";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "patient/inventory/delete";
+
+            /// <summary>
             /// Permission to create an inventory.
             /// </summary>
             [Sort(43)]
             [Name("Create inventory")]
             [Description("Permission to create an inventory")]
-            public static readonly IPermission Create = PermissionType.CreateNew("patient/inventory/create");
+            [Key("https://schema.appva.se/permission/patient/inventory/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view an inventory.
@@ -508,7 +822,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(44)]
             [Name("Read inventory")]
             [Description("Permission to read/view an inventory")]
-            public static readonly IPermission Read = PermissionType.CreateNew("patient/inventory/read");
+            [Key("https://schema.appva.se/permission/patient/inventory/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to uppdate/edit an inventory.
@@ -516,7 +831,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(45)]
             [Name("Update inventory")]
             [Description("Permission to uppdate/edit an inventory")]
-            public static readonly IPermission Update = PermissionType.CreateNew("patient/inventory/update");
+            [Key("https://schema.appva.se/permission/patient/inventory/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
             /// Permission to delete an inventory.
@@ -524,7 +840,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(46)]
             [Name("Delete inventory")]
             [Description("Permission to delete an inventory")]
-            public static readonly IPermission Delete = PermissionType.CreateNew("patient/inventory/delete");
+            [Key("https://schema.appva.se/permission/patient/inventory/delete")]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
         }
 
         #endregion
@@ -537,13 +854,34 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Notification
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "notification/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "notification/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "notification/update";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "notification/delete";
+
+            /// <summary>
             /// Permission to create a notification.
             /// </summary>
             [Sort(47)]
             [Name("Create notification")]
             [Description("Permission to create a notification")]
             [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Create = PermissionType.CreateNew("notification/create");
+            [Key("https://schema.appva.se/permission/notification/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
             
             /// <summary>
             /// Permission to read/view notifications.
@@ -552,7 +890,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Read notifications")]
             [Description("Permission to read/view notifications")]
             [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Read = PermissionType.CreateNew("notification/read");
+            [Key("https://schema.appva.se/permission/notification/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
             
             /// <summary>
             /// Permission to update/edit a notification.
@@ -561,7 +900,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Update notifications")]
             [Description("Permission to update/edit a notification")]
             [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Update = PermissionType.CreateNew("notification/update");
+            [Key("https://schema.appva.se/permission/notification/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
             /// Permission to delete a notification.
@@ -570,7 +910,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Delete notification")]
             [Description("Permission to delete a notification")]
             [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Delete = PermissionType.CreateNew("notification/delete");
+            [Key("https://schema.appva.se/permission/notification/delete")]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
         }
 
         #endregion
@@ -583,13 +924,34 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Role
         {
             /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "role/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "role/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "role/update";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "role/delete";
+
+            /// <summary>
             /// Permission to create a role.
             /// </summary>
             [Sort(51)]
             [Name("Create role")]
             [Description("Permission to create a role")]
             [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Create = PermissionType.CreateNew("practitioner/role/create");
+            [Key("https://schema.appva.se/permission/practitioner/role/create")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view roles.
@@ -598,7 +960,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Read roles")]
             [Description("Permission to read/view roles")]
             [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Read = PermissionType.CreateNew("practitioner/role/read");
+            [Key("https://schema.appva.se/permission/practitioner/role/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
             /// Permission to update/edit a role.
@@ -607,7 +970,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Update role")]
             [Description("Permission to update/edit a role")]
             [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Update = PermissionType.CreateNew("practitioner/role/update");
+            [Key("https://schema.appva.se/permission/practitioner/role/update")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
             /// Permission to delete a role.
@@ -616,7 +980,8 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Delete role")]
             [Description("Permission to delete a role")]
             [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Delete = PermissionType.CreateNew("practitioner/role/delete");
+            [Key("https://schema.appva.se/permission/practitioner/role/delete")]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
         }
 
         #endregion
@@ -629,13 +994,19 @@ namespace Appva.Mcss.Admin.Application.Common
         public static class Area51
         {
             /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "area51/read";
+
+            /// <summary>
             /// Permission to read/view area51.
             /// </summary>
             [Sort(55)]
             [Name("Read area51")]
             [Description("Permission to read/view area51")]
             [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Read = PermissionType.CreateNew("area51/read");
+            [Key("https://schema.appva.se/permission/area51/read")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
         }
 
         #endregion
@@ -647,15 +1018,6 @@ namespace Appva.Mcss.Admin.Application.Common
     /// </summary>
     internal sealed class PermissionType : IPermission
     {
-        #region Variables.
-
-        /// <summary>
-        /// The permission schema.
-        /// </summary>
-        private const string Schema = "https://schema.appva.se/permission/{0}";
-
-        #endregion
-
         #region Constructor.
 
         /// <summary>
@@ -664,8 +1026,8 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <param name="value">The value</param>
         private PermissionType(string value)
         {
-            this.Key = ClaimTypes.Permission; 
-            this.Value = string.Format(Schema, value);
+            this.Key = ClaimTypes.Permission;
+            this.Value = value;
         }
 
         #endregion

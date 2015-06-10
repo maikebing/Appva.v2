@@ -27,6 +27,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Caches
     /// </summary>
     [Authorize]
     [RouteArea("area51"), RoutePrefix("cache")]
+    [Permissions(Permissions.Area51.ReadValue)]
     public sealed class CacheController : Controller
     {
         #region Routes.

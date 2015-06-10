@@ -34,6 +34,7 @@ using Appva.Tenant.Identity;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -44,7 +45,6 @@ using Appva.Tenant.Identity;
     [RouteArea("Practitioner"), RoutePrefix("Delegation")]
     public sealed class DelegationController : Controller
     {
-
         #region Variables.
 
         /// <summary>
@@ -139,6 +139,7 @@ using Appva.Tenant.Identity;
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("list/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.ReadValue)]
         public ActionResult List(Guid id)
         {
             var user = this.Identity();
@@ -235,6 +236,7 @@ using Appva.Tenant.Identity;
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Create/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.CreateValue)]
         public ActionResult Create(Guid id)
         {
             var filterT = this.filtering.GetCurrentFilter();
@@ -311,6 +313,7 @@ using Appva.Tenant.Identity;
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost]
         [Route("Create/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.CreateValue)]
         public ActionResult Create(Guid id, DelegationViewModel model)
         {
             var user = Identity();
@@ -459,6 +462,7 @@ using Appva.Tenant.Identity;
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
         [Route("DelegationReport/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.ReportValue)]
         public ActionResult DelegationReport(Guid id, Guid? tId, Guid? sId, DateTime? startDate, DateTime? endDate, int? page = 1)
         {
             var account = this.persistence.Get<Account>(id);
@@ -493,18 +497,6 @@ using Appva.Tenant.Identity;
                     EndDate = endDate.GetValueOrDefault(),
                     Account = account.Id
                 }, page.GetValueOrDefault(1), 30),
-                /*ExecuteCommand<ReportViewModel>(new CreateReportCommand<DelegationReportFilter>
-                {
-                    StartDate = startDate.Value,
-                    EndDate = endDate.Value,
-                    Filter = new DelegationReportFilter
-                    {
-                        AccountId = account.Id,
-                        TaxonId = tId,
-                        ScheduleSettingsId = sId
-                    },
-                    Page = page
-                })*/
                 DelegationId = tId,
                 Delegations = this.taxonomyService.ListChildren(TaxonomicSchema.Delegation).Select(x => new SelectListItem
                 {
@@ -525,6 +517,7 @@ using Appva.Tenant.Identity;
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost]
         [Route("DelegationReport/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.ReportValue)]
         public ActionResult DelegationReport(Guid id, DelegationReportViewModel model)
         {
             return DelegationReport(id, model.DelegationId, model.Schedule, model.StartDate, model.EndDate);
@@ -567,6 +560,7 @@ using Appva.Tenant.Identity;
         /// <returns><see cref="FileContentResult"/></returns>
         [HttpGet]
         [Route("Excel/{account:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.ReportValue)]
         public FileContentResult Excel(Guid account, Guid? taxon, Guid? sId, DateTime startDate, DateTime endDate)
         {
             var query = this.persistence.QueryOver<Task>()
@@ -675,6 +669,7 @@ using Appva.Tenant.Identity;
         /// <param name="id">The delegation id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Edit/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult Edit(Guid id)
         {
             var filterT = this.filtering.GetCurrentFilter();
@@ -712,6 +707,7 @@ using Appva.Tenant.Identity;
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost]
         [Route("Edit/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult Edit(Guid id, DelegationEditViewModel model)
         {
             var delegation = this.persistence.Get<Delegation>(id);
@@ -812,6 +808,7 @@ using Appva.Tenant.Identity;
         /// <param name="id">The delegation id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Activate/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult Activate(Guid id)
         {
             var delegation = this.persistence.Get<Delegation>(id);
@@ -840,6 +837,7 @@ using Appva.Tenant.Identity;
         /// <param name="accountId">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("ActivateAll/{accountId:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult ActivateAll(Guid accountId)
         {
             var currentUser = Identity();
@@ -877,6 +875,7 @@ using Appva.Tenant.Identity;
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
         [Route("Inactivate/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult Inactivate(Guid id)
         {
             var delegation = this.persistence.Get<Delegation>(id);
@@ -923,6 +922,7 @@ using Appva.Tenant.Identity;
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("DelegationPrint/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.ReadValue)]
         public ActionResult DelegationPrint(Guid id)
         {
             var account = this.persistence.QueryOver<Account>()
@@ -966,6 +966,7 @@ using Appva.Tenant.Identity;
         /// <param name="taxonId">The taxon id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Update/{id:guid}/{taxonId:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult Update(Guid id, Guid taxonId)
         {
             return View(new DelegationDateSpanViewModel
@@ -984,6 +985,7 @@ using Appva.Tenant.Identity;
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
         [Route("Update/{id:guid}/{taxonId:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult Update(Guid id, Guid taxonId, DelegationDateSpanViewModel model)
         {
             if (ModelState.IsValid)
@@ -1008,6 +1010,7 @@ using Appva.Tenant.Identity;
         /// <param name="endDate">The end date</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("UpdateAllActiveDelegationsWithStartEndDate/{id:guid}/{taxonId:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult UpdateAllActiveDelegationsWithStartEndDate(Guid id, Guid taxonId, DateTime startDate, DateTime endDate)
         {
             var currentUser = Identity();
@@ -1075,6 +1078,7 @@ using Appva.Tenant.Identity;
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
         [Route("AddKnowledgeTest/{id:guid}/{taxonId:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.CreateValue)]
         public ActionResult AddKnowledgeTest(Guid id, Guid taxonId)
         {
             return View(new KnowledgeTestFormModel
@@ -1093,6 +1097,7 @@ using Appva.Tenant.Identity;
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
         [Route("AddKnowledgeTest/{id:guid}/{taxonId:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.CreateValue)]
         public ActionResult AddKnowledgeTest(Guid id, Guid taxonId, KnowledgeTestFormModel model)
         {
             if (ModelState.IsValid)
@@ -1121,6 +1126,7 @@ using Appva.Tenant.Identity;
         /// <param name="knowledgeTestId">The knowledge test id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("DeleteKnowledgeTest/{id:guid}/{knowledgeTestId:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.DeleteValue)]
         public ActionResult DeleteKnowledgeTest(Guid id, Guid knowledgeTestId)
         {
             var knowledgeTest = this.persistence.Get<KnowledgeTest>(knowledgeTestId);
@@ -1141,6 +1147,7 @@ using Appva.Tenant.Identity;
         /// <param name="History">Optional is history or not</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Issued/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.IssuedValue)]
         public ActionResult Issued(Guid id, bool History = false)
         {
             var account = this.persistence.Get<Account>(id);
@@ -1222,6 +1229,7 @@ using Appva.Tenant.Identity;
         /// <param name="date">Optional date</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Revision/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.RevisionValue)]
         public ActionResult Revision(Guid id, DateTime? date)
         {
             var account = this.persistence.Get<Account>(id);
@@ -1248,6 +1256,7 @@ using Appva.Tenant.Identity;
         /// <param name="accountId">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Changeset/{id:guid}/{accountId:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.RevisionValue)]
         public ActionResult Changeset(Guid id, Guid accountId)
         {
             var change = this.persistence.Get<ChangeSet>(id);

@@ -9,10 +9,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     #region Imports.
 
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Controllers;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -40,6 +42,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("list")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Inventory.ReadValue)]
         public ActionResult List(ListInventory request)
         {
             return this.View();
@@ -57,6 +60,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("add")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Inventory.CreateValue)]
         public ActionResult Add(AddInventoryItem request)
         {
             return this.View();
@@ -74,6 +78,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("withdraw")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
         public ActionResult Withdraw(WithdrawInventoryItem request)
         {
             return this.View();
@@ -91,6 +96,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("recount")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
         public ActionResult Recount(RecountInventoryItem request)
         {
             return this.View();
@@ -125,6 +131,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("create")]
         [HttpPost, Dispatch, Validate, ValidateAntiForgeryToken]
+        [PermissionsAttribute(Permissions.Inventory.CreateValue)]
         public ActionResult Create(CreateInventoryItem request)
         {
             return this.Redirect(request.ReturnUrl);

@@ -27,6 +27,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Settings
     /// </summary>
     [Authorize]
     [RouteArea("area51"), RoutePrefix("settings")]
+    [Permissions(Permissions.Area51.ReadValue)]
     public sealed class SettingsController : Controller
     {
         #region Routes.

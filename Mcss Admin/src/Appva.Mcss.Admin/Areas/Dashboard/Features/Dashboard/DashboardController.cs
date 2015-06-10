@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Mcss.Admin.Application.Services.Menus;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -25,6 +26,7 @@ namespace Appva.Mcss.Admin.Controllers
     /// </summary>
     [Authorize]
     [RouteArea("dashboard")]
+    [Permissions(Permissions.Dashboard.ReadValue)]
     public sealed class DashboardController : Controller
     {
         #region Variables.

@@ -20,6 +20,7 @@ using Appva.Mcss.Admin.Infrastructure.Attributes;
 using Appva.Mcss.Admin.Infrastructure.Models;
 using Appva.Mcss.Admin.Models;
 using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -72,7 +73,9 @@ using Appva.Mvc;
         /// </summary>
         /// <param name="request">The query and filtering</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, Dispatch,/*Permissions("ad0b7efb-589b-4762-acd6-a46d009a21ad"),*/ Route("List")]
+        [Route("List")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Practitioner.ReadValue)]
         public ActionResult List(ListAccount request)
         {
             return this.View();
@@ -88,6 +91,7 @@ using Appva.Mvc;
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Create")]
         [HttpGet, Hydrate, Dispatch(typeof(Parameterless<CreateAccountModel>))]
+        [PermissionsAttribute(Permissions.Practitioner.CreateValue)]
         public ActionResult Create()
         {
             return this.View();
@@ -101,6 +105,7 @@ using Appva.Mvc;
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
+        [PermissionsAttribute(Permissions.Practitioner.CreateValue)]
         public ActionResult Create(CreateAccountModel request)
         {
             return this.View();
@@ -117,6 +122,7 @@ using Appva.Mvc;
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/update")]
         [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Practitioner.UpdateValue)]
         public ActionResult Update(Identity<UpdateAccount> request)
         {
             return this.View();
@@ -131,6 +137,7 @@ using Appva.Mvc;
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/update")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
+        [PermissionsAttribute(Permissions.Practitioner.UpdateValue)]
         public ActionResult Update(UpdateAccount request)
         {
             return this.View();
@@ -147,6 +154,7 @@ using Appva.Mvc;
         /// <returns>An <see cref="UpdateRolesForm"/></returns>
         [Route("{id:guid}/roles/update")]
         [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Practitioner.UpdateRolesValue)]
         public ActionResult UpdateRoles(UpdateRoles request)
         {
             return this.View();
@@ -161,6 +169,7 @@ using Appva.Mvc;
         /// </returns>
         [Route("{id:guid}/roles/update")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
+        [PermissionsAttribute(Permissions.Practitioner.UpdateRolesValue)]
         public ActionResult UpdateRoles(UpdateRolesForm request)
         {
             return this.View();
@@ -177,6 +186,7 @@ using Appva.Mvc;
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/inactivate")]
         [HttpGet, Dispatch("List", "Accounts")]
+        [PermissionsAttribute(Permissions.Practitioner.InactivateValue)]
         public ActionResult Inactivate(InactivateAccount request)
         {
             return this.View();
@@ -193,6 +203,7 @@ using Appva.Mvc;
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/reactivate")]
         [HttpGet, Dispatch("List", "Accounts")]
+        [PermissionsAttribute(Permissions.Practitioner.ReactivateValue)]
         public ActionResult Reactivate(ReactivateAccount request)
         {
             return this.View();
@@ -209,6 +220,7 @@ using Appva.Mvc;
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/pause")]
         [HttpGet, Dispatch("List", "Accounts")]
+        [PermissionsAttribute(Permissions.Practitioner.PauseValue)]
         public ActionResult Pause(PauseAccount request)
         {
             return this.View();
@@ -225,6 +237,7 @@ using Appva.Mvc;
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/unpause")]
         [HttpGet, Dispatch("List", "Accounts")]
+        [PermissionsAttribute(Permissions.Practitioner.ResumeValue)]
         public ActionResult Unpause(UnPauseAccount request)
         {
             return this.View();

@@ -9,13 +9,10 @@ namespace Appva.Mcss.Admin.Infrastructure
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
     using Appva.Core.Exceptions;
-    using Appva.Mvc.Messaging;
-    using Appva.Mcss.Admin.Configuration;
     using Appva.Core.Logging;
+    using Appva.Mcss.Admin.Configuration;
+    using Appva.Mvc.Messaging;
 
     #endregion
 
@@ -77,7 +74,7 @@ namespace Appva.Mcss.Admin.Infrastructure
                 {
                     return;
                 }
-                this.HandleException(((AggregateException)exception).Flatten());
+                this.HandleException(((AggregateException) exception).Flatten());
             }
             catch (Exception ex)
             {

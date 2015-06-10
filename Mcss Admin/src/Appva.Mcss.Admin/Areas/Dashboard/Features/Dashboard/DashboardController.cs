@@ -9,12 +9,8 @@ namespace Appva.Mcss.Admin.Controllers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Mcss.Admin.Application.Services.Menus;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc.Security;
@@ -31,11 +27,10 @@ namespace Appva.Mcss.Admin.Controllers
     {
         #region Variables.
 
-        private readonly ISettingsService service;
-
-        private readonly IIdentityService identites;
-
-        private readonly IMenuService menuService;
+        /// <summary>
+        /// The <see cref="ISettingsService"/>
+        /// </summary>
+        private readonly ISettingsService settingsService;
 
         #endregion
 
@@ -44,11 +39,10 @@ namespace Appva.Mcss.Admin.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="DashboardController"/> class.
         /// </summary>
-        public DashboardController(ISettingsService service, IIdentityService identites, IMenuService menuService)
+        /// <param name="settingsService">The <see cref="ISettingsService"/></param>
+        public DashboardController(ISettingsService settingsService)
         {
-            this.service = service;
-            this.identites = identites;
-            this.menuService = menuService;
+            this.settingsService = settingsService;
         }
 
         #endregion
@@ -61,33 +55,14 @@ namespace Appva.Mcss.Admin.Controllers
         /// Returns the dashboard view.
         /// </summary>
         /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet]
         [Route]
+        [HttpGet]
         public ActionResult Index()
         {
-            if (! this.identites.HasPermission(Permissions.Dashboard.Read.Value))
-            {
-                var menuLinks = this.menuService.Render("https://schema.appva.se/ui/menu", "Index", "Dashboard", "Dashboard");
-                if (menuLinks.Count > 0)
-                {
-                    var menuLink = menuLinks.First();
-                    return this.RedirectToAction(menuLink.Action, menuLink.Controller, new
-                    {
-                        Area = menuLink.Area
-                    });
-                }
-                else
-                {
-                    return this.RedirectToAction("SignIn", "Authentication", new
-                    {
-                        Area = string.Empty
-                    });
-                }
-            }
             return View(new HomeViewModel
                 {
-                    HasCalendarOverview = this.service.HasCalendarOverview(),
-                    HasOrderOverview = this.service.HasOrderRefill(),
+                    HasCalendarOverview = this.settingsService.HasCalendarOverview(),
+                    HasOrderOverview = this.settingsService.HasOrderRefill(),
                     SevenDayStartDate = DateTime.Now.AddDays(-7),
                     SevenDayEndDate = DateTime.Now   
                 });
@@ -104,86 +79,12 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="action">The action route</param>
         /// <param name="action">The controller route</param>
         /// <returns><see cref="LoadWidget"/></returns>
-        [HttpGet]
         [Route("load")]
+        [HttpGet]
         public PartialViewResult Load(string header, string action, string controller, string widgetArea)
         {
             return PartialView(LoadWidget.CreateNew(header, action, controller, widgetArea));
         }
-
-        #endregion
-
-        #region Chart.
-
-        /*
-        /// <summary>
-        /// Returns the dashboard overview chart json data.
-        /// </summary>
-        /// <param name="sId">The schedule settings id</param>
-        /// <param name="startDate">The start date</param>
-        /// <param name="endDate">The end date</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        public ActionResult Chart(Guid? sId, DateTime startDate, DateTime endDate)
-        {
-            var taxon = FilterCache.Get(Session);
-            Guid? taxonId = null;
-            if (taxon != null)
-            {
-                taxonId = taxon.Id;
-            }
-            var scheduleSettings = sId.HasValue ? Session.Get<ScheduleSettings>(sId.Value) : null;
-            return Json(ExecuteCommand<List<object[]>>(new CreateChartCommand<FullReportFilter>
-            {
-                StartDate = startDate,
-                EndDate = endDate,
-                Filter = new FullReportFilter
-                {
-                    TaxonId = taxonId,
-                    ScheduleSettingsId = sId,
-                    ScheduleSettings = scheduleSettings
-                }
-            }),
-                JsonRequestBehavior.AllowGet
-            );
-        }*/
-
-        #endregion
-
-        #region Report.
-
-        /*
-        /// <summary>
-        /// Returns the dashboard seven day report chart json data.
-        /// </summary>
-        /// <returns><see cref="ActionResult"/></returns>
-        [HttpGet, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        public ActionResult GetSevenDayReport()
-        {
-            var taxon = FilterCache.Get(Session);
-            Guid? taxonId = null;
-            if (taxon != null)
-            {
-                taxonId = taxon.Id;
-            }
-            var result = ExecuteCommand<ReportViewModel>(new CreateReportCommand<FullReportFilter>
-            {
-                StartDate = DateTimeExt.Now().AddDays(-7),
-                EndDate = DateTimeExt.Now(),
-                Filter = new FullReportFilter
-                {
-                    TaxonId = taxonId
-                }
-            });
-            return Json(new
-            {
-                TasksNotOnTime = result.TasksNotOnTime,
-                TasksOnTime = result.TasksOnTime,
-                ComparedDateSpanTasksOnTime = result.ComparedDateSpanTasksOnTime
-            },
-                JsonRequestBehavior.AllowGet
-            );
-        }*/
 
         #endregion
 

@@ -161,6 +161,8 @@
     <Compile Include="ModelBinding\Validation\PlaceHolderAttribute.cs" />
     <Compile Include="ModelBinding\Validation\RequiredIfAttribute.cs" />
     <Compile Include="ModelBinding\Validation\PersonalIdentityNumberAttribute.cs" />
+    <Compile Include="Utils\UrlRedirectResult.cs" />
+    <Compile Include="Utils\UriUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

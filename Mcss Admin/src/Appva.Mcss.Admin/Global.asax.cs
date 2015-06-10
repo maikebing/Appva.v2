@@ -32,7 +32,6 @@ namespace Appva.Mcss.Admin
             NHibernateProfiler.Initialize();
             XmlConfigurator.Configure();
             ModelBinders.Binders.DefaultBinder = new AdminModelBinder();
-            //ValueProviderFactories.Factories.Add();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);

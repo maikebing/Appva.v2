@@ -119,23 +119,16 @@ namespace Appva.Mcss.Admin.Features.Authentication
                         Area = "Practitioner"
                     });
                 }
-                if (request.ReturnUrl.IsNotEmpty() && Url.IsLocalUrl(request.ReturnUrl))
+                return this.RedirectToAction("Index", "Home", new 
                 {
-                    var item = this.RedirectToFirstBest(request.ReturnUrl);
-                    //// If we find the selected then we can redirect otherwise
-                    return this.RedirectToAction(item.Action, item.Controller, new
-                    {
-                        Area = item.Area
-                    });
-                }
-                var defaultUrl = Url.Action("Index", "Home");
-                return this.Redirect(defaultUrl);
+                    ReturnUrl = request.ReturnUrl
+                });
             }
             if (result.IsFailureDueToIdentityLockout)
             {
                 return this.RedirectToAction("Lockout");
             }
-            ModelState.AddModelError("", "");
+            ModelState.AddModelError(string.Empty, string.Empty);
             return this.View();
         }
 
@@ -238,55 +231,6 @@ namespace Appva.Mcss.Admin.Features.Authentication
             }
             ModelState.AddModelError(string.Empty, "Personnummer eller e-post är felaktigt.");
             return this.View(model);
-        }
-
-        #endregion
-
-        #region Private Methods.
-
-        //// Rename and move this to appropriate place.
-        private IMenuItem RedirectToFirstBest(string redirectUrl)
-        {
-            
-            var query = string.Empty;
-            var uri = new Uri(new Uri(this.GetWebAppRoot()), redirectUrl);
-            var url = uri.ToString();
-            var index = url.IndexOf('?');
-            if (index != -1)
-            {
-                url = url.Substring(0, index);
-                query = url.Substring(index + 1);
-            }
-            var request = new HttpRequest(null, url, query);
-            var response = new HttpResponse(new StringWriter());
-            var httpContext = new HttpContext(request, new HttpResponse(new StringWriter()));
-
-            var routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
-            if (routeData != null)
-            {
-                if (routeData.Values.ContainsKey("MS_DirectRouteMatches"))
-                {
-                    routeData = ((IEnumerable<RouteData>)routeData.Values["MS_DirectRouteMatches"]).First();
-                }
-            }
-            var values = routeData.Values;
-            var controllerName = values["controller"] as string;
-            var actionName = values["action"] as string;
-            var areaName = routeData.DataTokens["area"] as string;
-            var list = this.menus.Render("https://schema.appva.se/ui/menu", actionName, controllerName, areaName);
-            return list.First();
-        }
-
-        private string GetWebAppRoot()
-        {
-            string host = (this.Request.Url.IsDefaultPort) ?
-                this.Request.Url.Host :
-                this.Request.Url.Authority;
-            host = String.Format("{0}://{1}", this.Request.Url.Scheme, host);
-            if (this.Request.ApplicationPath == "/")
-                return host;
-            else
-                return host + this.Request.ApplicationPath;
         }
 
         #endregion

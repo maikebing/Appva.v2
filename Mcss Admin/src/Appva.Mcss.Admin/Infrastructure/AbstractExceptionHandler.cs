@@ -29,7 +29,7 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// <summary>
         /// The <see cref="ILog"/>.
         /// </summary>
-        private static readonly ILog Log = LogProvider.For<PersistenceExceptionHandler>();
+        private static readonly ILog Log = LogProvider.For<AbstractExceptionHandler>();
 
         /// <summary>
         /// The <see cref="IRazorMailService"/>.

@@ -58,6 +58,12 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
                 object.Equals(this.Password, other.Password);
         }
 
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return this.Password.GetHashCode();
+        }
+
         #endregion
     }
 }

@@ -14,7 +14,7 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
     /// <summary>
     /// A database connection value object.
     /// </summary>
-    public class DatabaseConnection : ValueObject<Credentials>
+    public class DatabaseConnection : ValueObject<DatabaseConnection>
     {
         #region Constructor.
 
@@ -53,9 +53,15 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
         #region ValueObject Overrides.
 
         /// <inheritdoc />
-        public override bool Equals(Credentials other)
+        public override bool Equals(DatabaseConnection other)
         {
-            throw new NotImplementedException();
+            return this.ConnectionString.Equals(other.ConnectionString);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return this.ConnectionString.GetHashCode();
         }
 
         #endregion

@@ -10,8 +10,8 @@ namespace Appva.Mcss.AuthorizationServer.Models
 
     using System;
     using System.Collections.Generic;
-using Appva.Cqrs;
-    using Appva.Mvc.Html.Models;
+    using Appva.Cqrs;
+    using Appva.Mvc;
 
     #endregion
 

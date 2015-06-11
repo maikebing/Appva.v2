@@ -10,7 +10,7 @@ namespace Appva.Mcss.AuthorizationServer.Areas.Admin.Controllers
     using Appva.Cqrs;
     using Appva.Mcss.AuthorizationServer.Code;
     using Appva.Mcss.AuthorizationServer.Models;
-    using Appva.Mvc.Filters;
+    using Appva.Mvc;
     using Appva.Mcss.AuthorizationServer.Infrastructure;
     using Appva.Persistence;
 

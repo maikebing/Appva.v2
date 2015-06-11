@@ -69,6 +69,12 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
                 object.Equals(this.MobilePhoneNumber, other.MobilePhoneNumber);
         }
 
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return this.EmailAddress.GetHashCode() + this.MobilePhoneNumber.GetHashCode();
+        }
+
         #endregion
     }
 }

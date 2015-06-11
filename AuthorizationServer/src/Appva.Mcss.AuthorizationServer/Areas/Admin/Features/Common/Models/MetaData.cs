@@ -42,7 +42,7 @@ namespace Appva.Mcss.AuthorizationServer.Models
         /// Initializes a new instance of the <see cref="MetaData"/> class.
         /// </summary>
         /// <param name="entity"></param>
-        public MetaData(IAggregateRoot entity)
+        public MetaData(IEntity entity)
             : this(entity.CreatedAt, entity.UpdatedAt)
         {
         }

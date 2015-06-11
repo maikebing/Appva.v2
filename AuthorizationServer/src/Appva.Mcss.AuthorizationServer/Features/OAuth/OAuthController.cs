@@ -19,7 +19,7 @@ namespace Appva.Mcss.OAuthServer.Controllers
     using Appva.Core.Extensions;
     using Appva.Persistence;
     using Appva.Mcss.AuthorizationServer.Domain.Entities;
-    using Appva.Mvc.Filters;
+    using Appva.Mvc;
 
     #endregion
 

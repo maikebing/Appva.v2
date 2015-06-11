@@ -58,6 +58,12 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
             return other.IsNotNull() && this.Name.Equals(other.Name);
         }
 
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return this.Name.GetHashCode();
+        }
+
         #endregion
     }
 }

@@ -17,7 +17,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     using NHibernate.Criterion;
     using NHibernate.Transform;
     using Appva.Core.Extensions;
-    using Appva.Mvc.Html.Models;
+    using Appva.Mvc;
 
     #endregion
 

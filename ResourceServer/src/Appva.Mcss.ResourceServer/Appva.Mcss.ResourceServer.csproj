@@ -202,10 +202,6 @@
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
-      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
-      <Name>Appva.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.MultiTenant\Appva.Persistence.MultiTenant.csproj">
       <Project>{3d8f0261-b3b3-4202-adfd-ceb0ec3d93e3}</Project>
       <Name>Appva.Persistence.MultiTenant</Name>

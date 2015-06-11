@@ -99,9 +99,9 @@
     <Compile Include="Authorization\ResourceServerSigningKeyHandler.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ExceptionHandling\ExceptionFilterAttribute.cs" />
-    <Compile Include="Persistence\DatasourceEmailExceptionHandler.cs" />
+    <Compile Include="Persistence\TenantPersistenceExceptionHandler.cs" />
     <Compile Include="Persistence\PersistenceAttribute.cs" />
-    <Compile Include="Persistence\TenantIdentityPersistenceContextAwareResolver.cs" />
+    <Compile Include="Persistence\TenantIdentificationStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\ResourceServerConfiguration.cs" />
   </ItemGroup>
@@ -114,10 +114,6 @@
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
-      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
-      <Name>Appva.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.MultiTenant\Appva.Persistence.MultiTenant.csproj">
       <Project>{3d8f0261-b3b3-4202-adfd-ceb0ec3d93e3}</Project>
       <Name>Appva.Persistence.MultiTenant</Name>
@@ -125,6 +121,10 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
       <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
       <Name>Appva.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
+      <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
+      <Name>Appva.Tenant</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

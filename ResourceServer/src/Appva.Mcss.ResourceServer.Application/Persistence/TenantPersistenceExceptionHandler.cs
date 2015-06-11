@@ -1,4 +1,4 @@
-﻿// <copyright file="DatasourceEmailExceptionHandler.cs" company="Appva AB">
+﻿// <copyright file="TenantPersistenceExceptionHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -13,9 +13,10 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
     using System.Net.Mail;
     using System.Text;
     using Appva.Core.Configuration;
+    using Appva.Core.Exceptions;
     using Appva.Core.Extensions;
     using Appva.Core.Messaging;
-    using Appva.Logging;
+    using Appva.Core.Logging;
     using Appva.Mcss.ResourceServer.Application.Configuration;
     using Appva.Persistence;
 
@@ -24,19 +25,19 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class DatasourceEmailExceptionHandler : IDatasourceExceptionHandler
+    public sealed class TenantPersistenceExceptionHandler : IPersistenceExceptionHandler, IExceptionHandler
     {
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ILog"/> for <see cref="DatasourceEmailExceptionHandler"/>.
+        /// The <see cref="ILog"/> for <see cref="TenantPersistenceExceptionHandler"/>.
         /// </summary>
-        private static readonly ILog Log = LogProvider.For<DatasourceEmailExceptionHandler>();
+        private static readonly ILog Log = LogProvider.For<TenantPersistenceExceptionHandler>();
 
         /// <summary>
         /// The <see cref="IEmailService"/> instance.
         /// </summary>
-        private readonly IEmailService service;
+        private readonly ISimpleMailService service;
 
         /// <summary>
         /// Whether or not the system runs in production mode.
@@ -53,10 +54,10 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DatasourceEmailExceptionHandler"/> class.
+        /// Initializes a new instance of the <see cref="TenantPersistenceExceptionHandler"/> class.
         /// </summary>
         /// <param name="service">The <see cref="IEmailService"/></param>
-        public DatasourceEmailExceptionHandler(IEmailService service)
+        public TenantPersistenceExceptionHandler(ISimpleMailService service)
         {
             this.service = service;
             this.isProduction = ConfigurableApplicationContext.Get<ResourceServerConfiguration>().IsProduction;
@@ -72,7 +73,7 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
         {
             if (exception.IsNotNull())
             {
-                Log.ErrorException("An error occured during database initialization", exception);
+                Log.Error(exception);
             }
         }
 
@@ -84,7 +85,7 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
                 var sb = new StringBuilder();
                 foreach (var ex in exception.InnerExceptions)
                 {
-                    Log.ErrorException("An error occured during database initialization", ex);
+                    Log.Error(exception);
                     if (this.isProduction)
                     {
                         this.ExceptionAsHtml(sb, ex);
@@ -94,18 +95,16 @@ namespace Appva.Mcss.ResourceServer.Application.Persistence
                 {
                     try
                     {
-                        this.service.Send(new EmailMessage(
-                            "noreply@appva.se",
-                            "johansalllarsson@appva.se,richard.henriksson@appva.se")
-                            {
-                                Priority = MailPriority.High,
-                                Subject = "Database failed to establish a connection for ResourceServer in " + this.environment,
-                                Body = sb.ToString()
-                            });
+                        var mail = new MailMessage();
+                        mail.To.Add("johansalllarsson@appva.se,richard.henriksson@appva.se");
+                        mail.Priority = MailPriority.High;
+                        mail.Body = sb.ToString();
+                        mail.Subject = "Database failed to establish a connection for ResourceServer in " + this.environment;
+                        this.service.Send(mail);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        Log.Error("Failed to send e-mail");
+                        Log.Error(ex);
                     }
                 }
             }

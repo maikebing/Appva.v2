@@ -21,7 +21,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
     using System.Web.Http.Controllers;
     using Appva.Core.Configuration;
     using Appva.Core.Extensions;
-    using Appva.Logging;
+    using Appva.Core.Logging;
     using Appva.Mcss.ResourceServer.Application.Configuration;
     using DotNetOpenAuth.OAuth2;
     using Newtonsoft.Json;
@@ -152,7 +152,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
                 if (! accessToken.Scope.Overlaps(this.scopes))
                 {
                     actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-                    Log.ErrorFormat("Missing Scopes! Required: {0}, Granted: {1}", this.scopes, accessToken.Scope);
+                    Log.Error("Missing Scopes! Required: {0}, Granted: {1}", this.scopes, accessToken.Scope);
                     return;
                 }
                 var principal = resourceServer.GetPrincipal(request);
@@ -170,7 +170,7 @@ namespace Appva.Mcss.ResourceServer.Application.Authorization
             }
             catch (Exception ex)
             {
-                Log.InfoException("Bad request or unauthorized", ex);
+                Log.Warn(ex);
                 actionContext.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 return;
             }

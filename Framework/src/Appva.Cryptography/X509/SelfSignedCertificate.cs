@@ -116,7 +116,7 @@ namespace Appva.Cryptography.X509
         /// <summary>
         /// Gets the subject field.
         /// </summary>
-        protected string Subject
+        protected string SubjectName
         {
             get;
             private set;
@@ -125,7 +125,7 @@ namespace Appva.Cryptography.X509
         /// <summary>
         /// Gets the date on which the certificate validity period begins.
         /// </summary>
-        protected DateTime? NotBefore
+        protected DateTime? NotBeforeDate
         {
             get;
             private set;
@@ -134,7 +134,7 @@ namespace Appva.Cryptography.X509
         /// <summary>
         /// Gets the date on which the certificate validity period ends.
         /// </summary>
-        protected DateTime? NotAfter
+        protected DateTime? NotAfterDate
         {
             get;
             private set;
@@ -144,7 +144,7 @@ namespace Appva.Cryptography.X509
         /// Gets the algorithm identifier for the algorithm used by the CA to 
         /// sign the certificate.
         /// </summary>
-        protected Signature Signature
+        protected Signature SignatureAlgorithm
         {
             get;
             private set;
@@ -164,48 +164,48 @@ namespace Appva.Cryptography.X509
         #region ISelfSignedCertificate Members.
 
         /// <inheritdoc />
-        ISelfSignedCertificate ISelfSignedCertificate.Subject(string subject)
+        public ISelfSignedCertificate Subject(string subject)
         {
-            this.Subject = subject.Contains("=") ? subject : "CN=" + subject;
+            this.SubjectName = subject.Contains("=") ? subject : "CN=" + subject;
             return this;
         }
 
         /// <inheritdoc />
-        ISelfSignedCertificate ISelfSignedCertificate.NotBefore(DateTime date)
+        public ISelfSignedCertificate NotBefore(DateTime date)
         {
-            this.NotBefore = date;
+            this.NotBeforeDate = date;
             return this;
         }
 
         /// <inheritdoc />
-        ISelfSignedCertificate ISelfSignedCertificate.NotAfter(DateTime date)
+        public ISelfSignedCertificate NotAfter(DateTime date)
         {
-            this.NotAfter = date;
+            this.NotAfterDate = date;
             return this;
         }
 
         /// <inheritdoc />
-        ISelfSignedCertificate ISelfSignedCertificate.Signature(Signature signature)
+        public ISelfSignedCertificate Signature(Signature signature)
         {
-            this.Signature = signature;
+            this.SignatureAlgorithm = signature;
             return this;
         }
 
         /// <inheritdoc />
-        ISelfSignedCertificate ISelfSignedCertificate.Use(ICipher cipher)
+        public ISelfSignedCertificate Use(ICipher cipher)
         {
             this.Cipher = cipher;
             return this;
         }
 
         /// <inheritdoc />
-        X509Certificate2 ISelfSignedCertificate.CreateNew()
+        public X509Certificate2 CreateNew()
         {
             return this.CreateCertificate();
         }
 
         /// <inheritdoc />
-        void ISelfSignedCertificate.WriteToDisk(string outputFile, string password)
+        public void WriteToDisk(string outputFile, string password)
         {
             var certificate = this.CreateCertificate();
             certificate.WriteToDisk(outputFile, password);

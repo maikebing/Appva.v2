@@ -9,6 +9,7 @@ namespace Appva.Common.Domain
     #region Imports.
 
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     #endregion
 
@@ -23,6 +24,7 @@ namespace Appva.Common.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="EventService"/> class.
         /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Reviewed")]
         protected Entity()
         {
             this.CreatedAt = DateTime.Now;

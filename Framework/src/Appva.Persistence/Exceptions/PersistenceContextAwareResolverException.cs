@@ -16,6 +16,7 @@ namespace Appva.Persistence
     /// <summary>
     /// Represents errors that occur during persistence resolving execution.
     /// </summary>
+    [Serializable]
     public sealed class PersistenceContextAwareResolverException : Exception
     {
         #region Constructor.

@@ -77,11 +77,11 @@ namespace Appva.Cryptography.X509
         {
             return CertificateUtils.CreateCertificate(
                 Usage.Client,
-                new X509Name(this.Subject),
-                new Validity(this.NotBefore, this.NotAfter, 2),
+                new X509Name(this.SubjectName),
+                new Validity(this.NotBeforeDate, this.NotAfterDate, 2),
                 this.signer,
                 this.Cipher,
-                this.Signature);
+                this.SignatureAlgorithm);
         }
 
         #endregion

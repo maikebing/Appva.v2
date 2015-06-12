@@ -22,7 +22,7 @@ namespace Appva.Caching.Providers
     /// <summary>
     /// Marker interface for run time cache provider.
     /// </summary>
-    public interface IRuntimeMemoryCache
+    public interface IRuntimeMemoryCache : IDisposable
     {
         /// <summary>
         /// Returns a cached entry by its identifier.
@@ -329,6 +329,19 @@ namespace Appva.Caching.Providers
         public long Count()
         {
             return this.cache.GetCount();
+        }
+
+        #endregion
+
+        #region IDisposable Members.
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (this.cache != null)
+            {
+                this.cache.Dispose();
+            }
         }
 
         #endregion

@@ -16,6 +16,7 @@ namespace Appva.Persistence.MultiTenant
     /// <summary>
     /// Represents errors that occur when a tenant is not found.
     /// </summary>
+    [Serializable]
     public sealed class TenantNotFoundException : Exception
     {
         #region Constructor.

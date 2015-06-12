@@ -61,6 +61,7 @@ namespace Appva.Test.Persistence
         /// Initializes a new instance of the <see cref="Entity"/> class.
         /// </summary>
         /// <param name="name">The name</param>
+        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Reviewed.")]
         public Entity(string name)
         {
             this.Name = name;

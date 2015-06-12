@@ -34,7 +34,7 @@ namespace Appva.Core.Messaging
         #region IMailSender<T> Members.
 
         /// <inheritdoc />
-        void IMailSender<T>.Send(T message)
+        public void Send(T message)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Appva.Core.Messaging
         }
 
         /// <inheritdoc />
-        async Task IMailSender<T>.SendAsync(T message)
+        public async Task SendAsync(T message)
         {
             try
             {

@@ -67,7 +67,7 @@ namespace Appva.Mvc.Security
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
             var headerValue = this.value.IsNotEmpty() ? this.value : this.DefaultValue;
-            if (headerValue.IsNotEmpty())
+            if (headerValue.IsNotEmpty() && ! filterContext.IsChildAction)
             {
                 filterContext.HttpContext.Response.AppendHeader(this.field, headerValue);
             }

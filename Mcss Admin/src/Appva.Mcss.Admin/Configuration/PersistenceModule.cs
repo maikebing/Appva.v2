@@ -86,10 +86,13 @@ namespace Appva.Mcss.Admin.Configuration
                     break;
             }
             builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache(BucketKey)).As<IRuntimeMemoryCache>().SingleInstance();
-            builder.Register(x => TenantWcfClient.CreateNew()).As<ITenantClient>().SingleInstance();
-            builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration { Assembly = Assembly }).As<IMultiTenantDatasourceConfiguration>().SingleInstance();
-            builder.Register<MultiTenantDatasource>(x => new MultiTenantDatasource(x.Resolve<ITenantClient>(), x.Resolve<IRuntimeMemoryCache>(), x.Resolve<IMultiTenantDatasourceConfiguration>())).As<IMultiTenantDatasource>().SingleInstance().AutoActivate();
-            builder.Register<MultiTenantPersistenceContextAwareResolver>(x => new MultiTenantPersistenceContextAwareResolver(x.Resolve<ITenantIdentificationStrategy>(), x.Resolve<IMultiTenantDatasource>(), x.Resolve<IPersistenceExceptionHandler>())).As<IPersistenceContextAwareResolver>().SingleInstance();
+            builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
+            builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
+            {
+                Assembly = Assembly
+            }).As<IMultiTenantDatasourceConfiguration>().SingleInstance();
+            builder.RegisterType<MultiTenantDatasource>().As<IMultiTenantDatasource>().SingleInstance();
+            builder.RegisterType<MultiTenantPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
             builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerLifetimeScope();
             builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerLifetimeScope().OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
         }

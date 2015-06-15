@@ -13,7 +13,7 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
     using Appva.Cryptography;
     using Appva.Mcss.AuthorizationServer.Domain.Entities;
     using Appva.Mcss.AuthorizationServer.Models;
-    using Appva.Mvc.Html.Models;
+    using Appva.Mvc;
     using Appva.Mvc.Imaging;
     using Appva.Persistence;
     using NHibernate.Criterion;

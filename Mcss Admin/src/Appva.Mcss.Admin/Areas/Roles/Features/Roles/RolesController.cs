@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Appva.Core.Resources;
+using Appva.Mcss.Admin.Application.Common;
 using Appva.Mcss.Admin.Areas.Roles.Roles.Create;
 using Appva.Mcss.Admin.Areas.Roles.Roles.List;
 using Appva.Mcss.Admin.Areas.Roles.Roles.Update;
@@ -40,6 +41,7 @@ using Appva.Mvc.Security;
         //[Permissions(PermissionTypes.ReadRole)]
         [Route("list")]
         [HttpGet, Dispatch(typeof(Parameterless<IList<Role>>))]
+        [PermissionsAttribute(Permissions.Role.ReadValue)]
         public ActionResult List()
         {
             return this.View();
@@ -52,6 +54,7 @@ using Appva.Mvc.Security;
         //[Permissions(PermissionTypes.CreateRole)]
         [Route("create")]
         [HttpGet, Hydrate, Dispatch(typeof(Parameterless<CreateRole>))]
+        [PermissionsAttribute(Permissions.Role.CreateValue)]
         public ActionResult Create()
         {
             return this.View();
@@ -61,6 +64,7 @@ using Appva.Mvc.Security;
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Roles")]
         [AlertSuccess("Ny roll har skapats!")]
+        [PermissionsAttribute(Permissions.Role.CreateValue)]
         public ActionResult Create(CreateRole request)
         {
             return this.View();
@@ -73,6 +77,7 @@ using Appva.Mvc.Security;
         //[Permissions(PermissionTypes.UpdateRole)]
         [Route("update/{id:guid}")]
         [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Role.UpdateValue)]
         public ActionResult Update(Identity<UpdateRole> request)
         {
             return this.View();
@@ -82,6 +87,7 @@ using Appva.Mvc.Security;
         [Route("update/{id:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Roles")]
         [AlertSuccess("Roll har redigerats!")]
+        [PermissionsAttribute(Permissions.Role.UpdateValue)]
         public ActionResult Update(UpdateRole request)
         {
             return this.View();
@@ -95,6 +101,7 @@ using Appva.Mvc.Security;
         [Route("delete/{id:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Roles")]
         [AlertSuccess("Roll har tagits bort!")]
+        [PermissionsAttribute(Permissions.Role.DeleteValue)]
         public ActionResult Delete(DeleteRole request)
         {
             return this.View();

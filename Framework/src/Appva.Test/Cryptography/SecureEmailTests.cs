@@ -29,7 +29,7 @@ namespace Appva.Test.Cryptography
         [Fact]
         public void SecureEmail_SendMail_IsTrue()
         {
-            string x = "johansalllarsson@gmail.com";
+            /*string x = "johansalllarsson@gmail.com";
             var email = new EmailMessage(x, x, "Secure", "<h1>Test</h1><p>It worked</p>", true);
             var ca = Certificate.FindBySubjectDistinguishedName("CN=RandomCA");
             if (ca == null)
@@ -51,7 +51,7 @@ namespace Appva.Test.Cryptography
                     email.IsBodyHtml = true;
                     client.Send(email);
                 }
-            }
+            }*/
         }
     }
 }

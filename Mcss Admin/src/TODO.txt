@@ -16,15 +16,15 @@ FRAMEWORK
 ADMIN
 1. [ ] Cache lists as dictionaries (taxon, settings)
 2. [X] Add all permissions to area patient in cshtml
-3. [ ] Add all permissions to area patient controllers
+3. [X] Add all permissions to area patient controllers
 4. [X] Excel, add Appva.Mcss.Admin.Excel
-5. [ ] Create Authentication Result, NotActive and IsPaused
+5. [X] Create Authentication Result, NotActive and IsPaused
 6. [X] Add <globalization enableClientBasedCulture="true" uiCulture="sv-SE" culture="sv-SE"/>
 7. [X] Add Siths to service
 8. [ ] Add AD to services adn implement
-9. [ ] Add Code for Logging in services!
+9. [X] Add Code for Logging in services!
 10.[ ] Add Antiforgerytoken to js
-11.[ ] Add Email to account, authentication etc.
+11.[X] Add Email to account, authentication etc.
 12.[X] Use tenant cache
 13.[X] Use NoOpMailService for debug!
 14.[X] Filter i Patient - Last stop is inactive so everything should be seen there if only inactive
@@ -37,17 +37,18 @@ ADMIN
 		[2015-05-26 17:54:00] Richard  Sachade Henriksson: likaså behöver inte omsorgspersonal hos viser få mail alls
 		[2015-05-26 17:54:11] Richard  Sachade Henriksson: eftersom den bara innehåller pin-kod
 
-1. Utlöpande delegeringar pa oversikt visar med gomda roller
-2. Nya roller blir fel da inga machine name satts, if (account.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.Developer)).Count() != 0 && user.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.AdminPrefix)).Count() == 0)
-3. lankar i oversikt.
-4. Mer permissions - knowledge test, etc - lagg till for device delen med. Practitioner.ReadRoles, Practitioner.UpdateRoles
-5. date time i delegation ar konstig
-6. [X] full report / behovs for andra reports
-7. [X] ta bort patient has alert / rakna ut istallet for att titta pa det som schedulern satter
-8. sequence satt refill grejs och justera url
-9. edit roles check if any roles are set as login 
-10. add siths to authentication so its activated right away / no fallback / username and password then a code
-11. 
+1.  [ ] Utlöpande delegeringar pa oversikt visar med gomda roller
+2.  [ ] Nya roller blir fel da inga machine name satts, if (account.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.Developer)).Count() != 0 && user.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.AdminPrefix)).Count() == 0)
+3.  [ ] lankar i oversikt.
+4.  [ ] Mer permissions - knowledge test, etc - lagg till for device delen med. Practitioner.ReadRoles, Practitioner.UpdateRoles
+5.  [ ] date time i delegation ar konstig
+6.  [X] full report / behovs for andra reports
+7.  [X] ta bort patient has alert / rakna ut istallet for att titta pa det som schedulern satter
+8.  [X] sequence satt refill grejs och justera url
+9.  [ ] edit roles check if any roles are set as login 
+10. [ ] add siths to authentication so its activated right away / no fallback / username and password then a code
+11. [ ] andra boende uppgifter redirect... kan redirecatas till samma
+
 TESTS
 1. [ ] ITenantIdentityStrategy
 2. [ ] 

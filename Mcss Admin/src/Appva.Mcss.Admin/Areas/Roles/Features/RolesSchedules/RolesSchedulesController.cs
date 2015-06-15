@@ -9,10 +9,12 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles
     #region Imports.
 
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Roles.Features.RolesSchedules.Update;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -29,6 +31,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles
 
         [Route("update/{id:guid}")]
         [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Role.CreateValue)]
         public ActionResult Update(Identity<UpdateRoleSchedule> request)
         {
             return this.View();
@@ -37,6 +40,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles
         [Route("update/{id:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Roles")]
         [AlertSuccess("Roll-signeringslista har uppdaterats!")]
+        [PermissionsAttribute(Permissions.Role.CreateValue)]
         public ActionResult Update(UpdateRoleSchedule request)
         {
             return this.View();

@@ -16,9 +16,9 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System.Web.Http;
     using Application;
     using Application.Authorization;
+    using Core.Logging;
     using Domain.Repositories;
     using Domain.Services;
-    using Logging;
     using Mcss.Domain.Entities;
     using Transformers;
 

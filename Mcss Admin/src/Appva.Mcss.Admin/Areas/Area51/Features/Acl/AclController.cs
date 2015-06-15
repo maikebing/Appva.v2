@@ -9,15 +9,16 @@ namespace Appva.Mcss.Admin.Controllers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mvc;
-    using Appva.Mvc.Security;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Appva.Core.Resources;
+using Appva.Cqrs;
+using Appva.Mcss.Admin.Application.Common;
+using Appva.Mcss.Admin.Infrastructure.Attributes;
+using Appva.Mcss.Admin.Models;
+using Appva.Mvc;
+using Appva.Mvc.Security;
 
     #endregion
 
@@ -26,6 +27,7 @@ namespace Appva.Mcss.Admin.Controllers
     /// </summary>
     [Authorize]
     [RouteArea("area51"), RoutePrefix("acl")]
+    [Permissions(Permissions.Area51.ReadValue)]
     public sealed class AclController : Controller
     {
         #region Variables.
@@ -96,6 +98,23 @@ namespace Appva.Mcss.Admin.Controllers
         public ActionResult Activate()
         {
             this.mediator.Send(new ActivateAcl());
+            return this.RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Upgrade 1.6.0 Upgrade Access Control.
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Route("upgrade")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Uppgradering klar!")]
+        public ActionResult UpgradePermissionNamesAndAddNew()
+        {
+            this.mediator.Publish(new UpgradeAcl());
             return this.RedirectToAction("Index");
         }
 

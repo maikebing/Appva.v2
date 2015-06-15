@@ -71,6 +71,12 @@ namespace Appva.Mcss.AuthorizationServer.Domain.Entities
                 object.Equals(this.MimeType, other.MimeType);
         }
 
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return this.FileName.GetHashCode() + this.MimeType.GetHashCode();
+        }
+
         #endregion
     }
 }

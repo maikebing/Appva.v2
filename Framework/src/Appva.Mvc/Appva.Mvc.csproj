@@ -84,6 +84,7 @@
     <Compile Include="ActionResults\EmptyJsonResult.cs" />
     <Compile Include="Filters\ExceptionFilter.cs" />
     <Compile Include="Filters\MultiButtonAttribute.cs" />
+    <Compile Include="Filters\NoBrowserCacheAttribute.cs" />
     <Compile Include="Messaging\CshtmlTemplateManager.cs" />
     <Compile Include="Messaging\Exception\ExceptionMail.cs" />
     <Compile Include="Messaging\Exception\ExceptionRequest.cs" />
@@ -161,6 +162,8 @@
     <Compile Include="ModelBinding\Validation\PlaceHolderAttribute.cs" />
     <Compile Include="ModelBinding\Validation\RequiredIfAttribute.cs" />
     <Compile Include="ModelBinding\Validation\PersonalIdentityNumberAttribute.cs" />
+    <Compile Include="Utils\UrlRedirectResult.cs" />
+    <Compile Include="Utils\UriUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

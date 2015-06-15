@@ -18,6 +18,67 @@ namespace Appva.Mcss.Admin.Application.Common
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [AttributeUsage(AttributeTargets.All)]
+    public sealed class NewAttribute : Attribute
+    {
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NewAttribute"/> class.
+        /// </summary>
+        public NewAttribute()
+        {
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.All)]
+    public sealed class KeyAttribute : Attribute
+    {
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeyAttribute"/> class.
+        /// </summary>
+        /// <param name="value">The name value</param>
+        public KeyAttribute(string value)
+        {
+            this.Value = value;
+        }
+
+        #endregion
+
+        #region Properties.
+
+        /// <summary>
+        /// The key value.
+        /// </summary>
+        public string Value
+        {
+            get;
+            private set;
+        }
+
+        #endregion
+
+        #region Object Overrides.
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.Value;
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.All)]
     public sealed class NameAttribute : Attribute
     {
         #region Constructor.
@@ -36,7 +97,7 @@ namespace Appva.Mcss.Admin.Application.Common
         #region Properties.
 
         /// <summary>
-        /// The description value.
+        /// The name value.
         /// </summary>
         public string Value
         {

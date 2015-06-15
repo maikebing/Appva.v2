@@ -21,6 +21,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using Appva.Persistence;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Models;
+    using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -43,6 +45,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>A create form</returns>
         [Route("patient/{id:guid}/schedule/{scheduleId:guid}/create")]
         [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Sequence.CreateValue)]
         public ActionResult Create(CreateSequence request)
         {
             return View();
@@ -57,6 +60,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>A redirect to schedule details if successful</returns>
         [Route("patient/{id:guid}/schedule/{scheduleId:guid}/create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Schedule")]
+        [PermissionsAttribute(Permissions.Sequence.CreateValue)]
         public ActionResult Create(CreateSequenceForm request)
         {
             return this.View();
@@ -73,6 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>A sequence edit form</returns>
         [Route("{id:guid}/update")]
         [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Sequence.UpdateValue)]
         public ActionResult Update(UpdateSequence request)
         {
             return this.View();
@@ -86,6 +91,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>A redirect to schedule details if successful</returns>
         [Route("{id:guid}/update")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Schedule")]
+        [PermissionsAttribute(Permissions.Sequence.UpdateValue)]
         public ActionResult Update(UpdateSequenceForm request)
         {
             return this.View();
@@ -102,6 +108,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>A redirect to schedule details if successful</returns>
         [Route("{id:guid}/inactivate")]
         [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("Details", "Schedule")]
+        [PermissionsAttribute(Permissions.Sequence.InactivateValue)]
         public ActionResult Inactivate(InactivateSequence request)
         {
             return this.View();
@@ -123,6 +130,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns></returns>
         [HttpGet, Dispatch]
         [Route("{id:guid}/print/{scheduleId:guid}")]
+        [PermissionsAttribute(Permissions.Sequence.PrintValue)]
         public ActionResult PrintSchema(PrintSequence request)
         {
             return this.View();
@@ -141,6 +149,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>The print schedule pop up selection view</returns>
         [HttpGet, Hydrate, Dispatch]
         [Route("{id:guid}/setup/print/{scheduleId:guid}")]
+        [PermissionsAttribute(Permissions.Sequence.PrintValue)]
         public ActionResult PrintPopUp(PrintSequenceSettings request)
         {
             return this.View();
@@ -155,6 +164,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns>Redirects to print if successful</returns>
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("PrintSchema", "Sequence")]
         [Route("{id:guid}/setup/print/{scheduleId:guid}")]
+        [PermissionsAttribute(Permissions.Sequence.PrintValue)]
         public ActionResult PrintPopUp(PrintSequenceSettingsForm request)
         {
             return this.View();

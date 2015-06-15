@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Application.Security
     using Appva.Mcss.Admin.Application.Common;
     using Microsoft.Owin.Security;
     using Appva.Tenant.Identity;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -51,12 +52,12 @@ namespace Appva.Mcss.Admin.Application.Security
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IIdentityService"/> implementation.
+        /// The <see cref="IIdentityService"/>.
         /// </summary>
         private readonly IIdentityService identity;
 
         /// <summary>
-        /// The <see cref="ITenantService"/> implementation.
+        /// The <see cref="ITenantService"/>.
         /// </summary>
         private readonly ITenantService tenants;
 
@@ -66,12 +67,17 @@ namespace Appva.Mcss.Admin.Application.Security
         private readonly IAccountService accounts;
 
         /// <summary>
-        /// The <see cref="ISettingsService"/> implementation.
+        /// The <see cref="ISettingsService"/>.
         /// </summary>
         private readonly ISettingsService settings;
 
         /// <summary>
-        /// The <see cref="AuthenticationMethod"/> used.
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
+        /// <summary>
+        /// The <see cref="AuthenticationMethod"/>.
         /// </summary>
         private readonly AuthenticationMethod method;
 
@@ -87,12 +93,19 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="Authentication"/> class.
         /// </summary>
-        /// <param name="identity">The <see cref="IIdentityService"/> implementation</param>
-        /// <param name="tenants">The <see cref="ITenantService"/> implementation</param>
-        /// <param name="settings">The <see cref="ISettingsService"/> implementation</param>
+        /// <param name="identity">The <see cref="IIdentityService"/></param>
+        /// <param name="tenants">The <see cref="ITenantService"/></param>
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
         /// <param name="method">The authentication method used</param>
         /// <param name="type">The authentication type used</param>
-        protected Authentication(IIdentityService identity, ITenantService tenants, IAccountService accounts, ISettingsService settings, AuthenticationMethod method, AuthenticationType type)
+        protected Authentication(
+            IIdentityService identity, 
+            ITenantService tenants, 
+            IAccountService accounts, 
+            ISettingsService settings, 
+            IAuditService auditing,
+            AuthenticationMethod method, 
+            AuthenticationType type)
         {
             Requires.NotNull(identity, "identity");
             Requires.NotNull(tenants, "tenants");
@@ -104,6 +117,7 @@ namespace Appva.Mcss.Admin.Application.Security
             this.tenants = tenants;
             this.accounts = accounts;
             this.settings = settings;
+            this.auditing = auditing;
             this.method = method;
             this.type = type;
         }
@@ -119,6 +133,7 @@ namespace Appva.Mcss.Admin.Application.Security
             {
                 return;
             }
+            this.auditing.SignIn(account);
             this.IssueToken(
                 new ClaimsPrincipal(
                     new ClaimsIdentity(this.IssueClaims(account, this.method), this.method.Value)), 
@@ -131,6 +146,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <inheritdoc />
         public virtual void SignOut()
         {
+            this.auditing.SignOut();
             this.RevokeToken(this.method, this.type);
         }
 
@@ -147,7 +163,7 @@ namespace Appva.Mcss.Admin.Application.Security
         protected virtual void IssueToken(ClaimsPrincipal principal, AuthenticationMethod method, AuthenticationType type, TimeSpan? expiresUtc = null, bool isPersistent = false)
         {
             Requires.NotNull(principal, "principal");
-            this.SignOut();
+            this.RevokeToken(method, type);
             if (principal.Identity.IsAuthenticated)
             {
                 this.identity.SignIn(
@@ -205,26 +221,31 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <param name="account"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        protected IAuthenticationResult Authenticate(Account account, string password)
+        protected IAuthenticationResult Authenticate(object credentials, Account account, string password)
         {
             if (account == null)
             {
+                this.auditing.FailedAuthentication(null, "Användare {0} misslyckades att autentisera p g a att användarkontot ej existerar", credentials);
                 return AuthenticationResult.NotFound;
             }
             if (account.IsInactive())
             {
+                this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a att användarkontot är inaktiverad.");
                 return AuthenticationResult.Failure;
             }
             if (account.IsPaused)
             {
+                this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a att användarkontot är pausad.");
                 return AuthenticationResult.Failure;
             }
             if (account.IsLockout())
             {
+                this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a att användarkontot är spärrat.");
                 return AuthenticationResult.Lockout;
             }
             if (password != null && account.IsIncorrectPassword(password))
             {
+                this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a felaktigt lösenord.");
                 return AuthenticationResult.InvalidCredentials;
             }
             //// TODO: This is temporary - this should not have to be checked later on.
@@ -232,12 +253,14 @@ namespace Appva.Mcss.Admin.Application.Security
             {
                 if (! this.accounts.HasPermissions(account, Permissions.Admin.Login.Value))
                 {
+                    this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");
                     return AuthenticationResult.Failure;
                 }
             }
             //// TODO: This is temporary - this should be removed.
             else if (! this.accounts.IsInRoles(account, Core.Resources.RoleTypes.Backend))
             {
+                this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");
                 return AuthenticationResult.Failure;
             }
             return AuthenticationResult.CreateSuccessResult(account);

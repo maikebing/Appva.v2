@@ -91,7 +91,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("list")]
         [HttpGet, Dispatch]
-        ////[PermissionsAttribute(Permissions.Calendar.Read.Value)]
+        [PermissionsAttribute(Permissions.Calendar.ReadValue)]
         public ActionResult List(ListCalendar request)
         {
             return View();
@@ -111,7 +111,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         
         [Route("create")]
         [HttpGet, Hydrate, Dispatch]
-        ////[PermissionsAttribute(Permissions.Calendar.Create.Value)]
+        [PermissionsAttribute(Permissions.Calendar.CreateValue)]
         public ActionResult Create(Identity<EventViewModel> request)
         {
             return View();
@@ -126,7 +126,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns></returns>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Calendar")]
-        ////[PermissionsAttribute(Permissions.Calendar.Create.Value)]
+        [PermissionsAttribute(Permissions.Calendar.CreateValue)]
         public ActionResult Create(EventViewModel request)
         {
             return View();
@@ -144,7 +144,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("edit")]
         [HttpGet, Dispatch]
-        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
+        [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
         public ActionResult Edit(EditEventSequence request)
         {
             return this.View();
@@ -162,7 +162,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns></returns>
         [Route("edit")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
-        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
+        [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
         public ActionResult Edit(Guid id, string editAction, Guid seqId, DateTime date, EventViewModel model)
         {
             if (editAction == "EditAll")
@@ -186,7 +186,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("EditAll")]
         [HttpPost, MultiButton, ValidateAntiForgeryToken]
-        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
+        [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
         public ActionResult EditAll(Guid id, Guid seqId, DateTime date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -227,7 +227,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("EditThis")]
         [HttpPost, MultiButton, ValidateAntiForgeryToken]
-        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
+        [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
         public ActionResult EditThis(Guid id, Guid seqId, DateTime date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -267,7 +267,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
         [Route("EditActivity")]
-        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
+        [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
         public ActionResult EditActivity(Guid id, Guid taskId)
         {
             var evt = this.context.Get<Task>(taskId);
@@ -306,7 +306,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("EditActivity")]
         [HttpPost, ValidateAntiForgeryToken]
-        ////[PermissionsAttribute(Permissions.Calendar.Update.Value)]
+        [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
         public ActionResult EditActivity(Guid id, Guid taskId, DateTime? date, EventViewModel model)
         {
             if (ModelState.IsValid)
@@ -338,7 +338,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Remove")]
         [HttpGet]
-        ////[PermissionsAttribute(Permissions.Calendar.Delete.Value)]
+        [PermissionsAttribute(Permissions.Calendar.DeleteValue)]
         public ActionResult Remove(Guid id, Guid sequenceId, DateTime date)
         {
             var evt = this.eventService.Get(sequenceId);
@@ -356,7 +356,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="id">The task id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("RemoveActivity")]
-        ////[PermissionsAttribute(Permissions.Calendar.Delete.Value)]
+        [PermissionsAttribute(Permissions.Calendar.DeleteValue)]
         public ActionResult RemoveActivity(Guid id, Guid taskId)
         {
             var evt = this.context.Get<Task>(taskId);

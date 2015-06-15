@@ -99,6 +99,16 @@ namespace Appva.Siths
         /// <inheritdoc />
         public void Dispose()
         {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (! disposing)
+            {
+                return;
+            }
             if (this.httpClient != null)
             {
                 this.httpClient.Dispose();

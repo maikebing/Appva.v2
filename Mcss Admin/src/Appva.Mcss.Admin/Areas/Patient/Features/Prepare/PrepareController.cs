@@ -9,12 +9,14 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
     #region Imports.
 
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Controllers;
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -38,6 +40,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <returns></returns>
         [Route("schema")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Prepare.ReadValue)]
         public ActionResult Schema(SchemaPreparation request)
         {
             return this.View();
@@ -55,6 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <returns></returns>
         [Route("create")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Prepare.CreateValue)]
         public ActionResult Create(CreatePreparation request)
         {
             return View();
@@ -69,6 +73,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <returns></returns>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Schema", "Prepare")]
+        [PermissionsAttribute(Permissions.Prepare.CreateValue)]
         public ActionResult Create(PrepareAddSequenceViewModel request)
         {
             return View();
@@ -85,6 +90,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <returns><see cref="ActionResult"/></returns>
         [Route("update")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Prepare.UpdateValue)]
         public ActionResult Update(UpdatePreparation request)
         {
             return this.View();
@@ -98,6 +104,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <returns><see cref="ActionResult"/></returns>
         [Route("update")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Schema", "Prepare")]
+        [PermissionsAttribute(Permissions.Prepare.UpdateValue)]
         public ActionResult Update(PrepareEditSequenceViewModel request)
         {
             return View();
@@ -117,6 +124,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <returns><see cref="ActionResult"/></returns>
         [Route("delete")]
         [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("Schema", "Prepare")]
+        [PermissionsAttribute(Permissions.Prepare.InactivateValue)]
         public ActionResult Delete(DeletePreparation request)
         {
             return this.View();
@@ -135,6 +143,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <returns><see cref="ActionResult"/></returns>
         [Route("mark")]
         [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch]
+        [PermissionsAttribute(Permissions.Prepare.UpdateValue)]
         public DispatchJsonResult Mark(MarkPreparation request)
         {
             return this.JsonGet();

@@ -204,7 +204,7 @@ namespace Appva.Mvc.Imaging
 
         #endregion
 
-        #region IImageResizer Members
+        #region IImageResizer Members.
 
         /// <inheritdoc />
         [SuppressMessage("ReSharper", "PossibleLossOfFraction", Justification = "Reviewed.")]
@@ -240,14 +240,18 @@ namespace Appva.Mvc.Imaging
 
         #endregion
 
-        #region IDisposable Members
+        #region IDisposable Members.
 
         /// <inheritdoc />
         public void Dispose()
         {
-            if (this.Stream.IsNotNull())
+            if (this.stream != null)
             {
-                this.Stream.Dispose();
+                this.stream.Dispose();
+            }
+            if (this.original != null)
+            {
+                this.original.Dispose();
             }
         }
 

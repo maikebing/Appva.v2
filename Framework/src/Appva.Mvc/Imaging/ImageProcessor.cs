@@ -99,11 +99,24 @@ namespace Appva.Mvc.Imaging
             {
                 return null;
             }
-            using (var fileStream = File.OpenRead(filePath))
-            using (var reader = new BinaryReader(fileStream))
+            FileStream stream = null;
+            try
             {
-                var bytes = reader.ReadBytes(Convert.ToInt32(fileStream.Length));
-                return new ImageContentResult(bytes, mimeType.FromHex());
+                stream = File.OpenRead(filePath);
+                var count = stream.Length;
+                using (var reader = new BinaryReader(stream))
+                {
+                    stream = null;
+                    var bytes = reader.ReadBytes(Convert.ToInt32(count));
+                    return new ImageContentResult(bytes, mimeType.FromHex());
+                }
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Dispose();
+                }
             }
         }
 

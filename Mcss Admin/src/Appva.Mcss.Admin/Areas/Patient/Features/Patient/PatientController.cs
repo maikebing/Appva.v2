@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Controllers
     using System.Web.Mvc;
     using System.Web.UI;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Infrastructure;
@@ -19,6 +20,7 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -40,6 +42,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns><see cref="ListPatientModel"/></returns>
         [Route("list")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Patient.ReadValue)]
         public ActionResult List(ListPatient request)
         {
             return this.View();
@@ -55,6 +58,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns><see cref="CreatePatient"/></returns>
         [Route("create")]
         [HttpGet, Hydrate, Dispatch(typeof(Parameterless<CreatePatient>))]
+        [PermissionsAttribute(Permissions.Patient.CreateValue)]
         public ActionResult Create()
         {
             return View();
@@ -67,6 +71,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns>A redirect to <see cref="PatientController.List"/> if valid</returns>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Patient")]
+        [PermissionsAttribute(Permissions.Patient.CreateValue)]
         public ActionResult Create(CreatePatient request)
         {
             return View();
@@ -83,6 +88,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns><see cref="UpdatePatient"/></returns>
         [Route("{id:guid}/update")]
         [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Patient.UpdateValue)]
         public ActionResult Update(Identity<UpdatePatient> request)
         {
             return this.View();
@@ -95,6 +101,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns>If successful; a redirect to <see cref="ScheduleController.List"/></returns>
         [Route("{id:guid}/update")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Schedule")]
+        [PermissionsAttribute(Permissions.Patient.UpdateValue)]
         public ActionResult Update(UpdatePatient request)
         {
             return this.View();
@@ -112,6 +119,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns>If successful; a redirect to <see cref="PatientController.List"/></returns>
         [Route("{id:guid}/reactivate")]
         [HttpGet, Dispatch("List", "Patient")]
+        [PermissionsAttribute(Permissions.Patient.ReactivateValue)]
         public ActionResult Reactivate(ReactivatePatient request)
         {
             return this.View();
@@ -128,6 +136,7 @@ namespace Appva.Mcss.Admin.Controllers
         /// <returns>If successful; a redirect to <see cref="PatientController.List"/></returns>
         [Route("{id:guid}/inactivate")]
         [HttpGet, Dispatch("List", "Patient")]
+        [PermissionsAttribute(Permissions.Patient.InactivateValue)]
         public ActionResult Inactivate(InactivatePatient request)
         {
             return this.View();

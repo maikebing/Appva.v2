@@ -15,15 +15,13 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using Apis.TenantServer;
     using Application;
     using Application.Authorization;
     using Appva.Azure.Messaging;
     using Appva.Tenant.Interoperability.Client;
-    using Azure;
     using Core.Extensions;
+    using Core.Logging;
     using Domain.Repositories;
-    using Logging;
     using Mcss.Domain.Entities;
     using Models;
     using Repository;
@@ -194,7 +192,7 @@ namespace Appva.Mcss.ResourceServer.Controllers
         [HttpPost, Validate, Route("{id}/update")]
         public async Task<IHttpActionResult> Update(Guid id, UpdateDeviceModel model)
         {
-            Log.DebugFormat("Device id: {0} and remote messaging id: {1}", id, model.RemoteMessagingId);
+            Log.Debug("Device id: {0} and remote messaging id: {1}", id, model.RemoteMessagingId);
             var device = this.deviceRepository.Get(id);
             if (!model.RemoteMessagingId.IsNotNull() || device.PushUuid == model.RemoteMessagingId)
             {

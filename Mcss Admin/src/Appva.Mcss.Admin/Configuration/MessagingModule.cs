@@ -36,10 +36,6 @@ namespace Appva.Mcss.Admin.Configuration
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
-            /*builder.Register(x => new TemplateServiceConfiguration
-            {
-                TemplateManager = new CshtmlTemplateManager("Features/Shared/EmailTemplates")
-            }).As<ITemplateServiceConfiguration>().SingleInstance();*/
             switch (Configuration.Application.OperationalEnvironment)
             {
                 case OperationalEnvironment.Production:

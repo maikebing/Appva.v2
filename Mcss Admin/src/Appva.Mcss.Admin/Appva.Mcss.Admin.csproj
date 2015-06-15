@@ -185,6 +185,8 @@
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Upgrade\UpgradeAcl.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Upgrade\UpgradeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Cache\CacheController.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCacheHandler.cs" />
@@ -626,7 +628,9 @@
     <Content Include="media\jul.png" />
     <Content Include="media\logo-appva.png" />
     <Content Include="media\pagaende_insatser.png" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -682,10 +686,6 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Cryptography\Appva.Cryptography.csproj">
       <Project>{d3b336cc-9a4a-4cad-8ab5-32a92e028726}</Project>
       <Name>Appva.Cryptography</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
-      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
-      <Name>Appva.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Mvc\Appva.Mvc.csproj">
       <Project>{53a7fe5b-f451-4b7a-8932-9ad424f09165}</Project>

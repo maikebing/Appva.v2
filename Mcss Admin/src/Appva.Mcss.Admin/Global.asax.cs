@@ -29,10 +29,11 @@ namespace Appva.Mcss.Admin
         /// <inheritdoc />
         protected void Application_Start()
         {
+            //// Disable the Mvc version response header in order not to leak security information.
+            MvcHandler.DisableMvcResponseHeader = true;
             NHibernateProfiler.Initialize();
             XmlConfigurator.Configure();
             ModelBinders.Binders.DefaultBinder = new AdminModelBinder();
-            //ValueProviderFactories.Factories.Add();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);

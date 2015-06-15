@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Home
     /// </summary>
     [Authorize]
     [RouteArea("area51"), RoutePrefix("")]
+    [Permissions(Permissions.Area51.ReadValue)]
     public sealed class HomeController : Controller
     {
         #region Routes.

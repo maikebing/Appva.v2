@@ -34,6 +34,18 @@ namespace Appva.Persistence.MultiTenant
         {
             get;
         }
+
+        /// <summary>
+        /// Whether or not the ID should be used as identifier instead of Identifier.
+        /// </summary>
+        /// <remarks>
+        /// This is for client apis, e.g. tenant legacy uses identifier but tenant 
+        /// rest uses ID (or rather Oauth uses ID).
+        /// </remarks>
+        bool UseIdAsIdentifier
+        {
+            get;
+        }
     }
 
     /// <summary>
@@ -52,6 +64,13 @@ namespace Appva.Persistence.MultiTenant
 
         /// <inheritdoc />
         public IDictionary<string, string> Properties
+        {
+            get;
+            set;
+        }
+
+        /// <inheritdoc />
+        public bool UseIdAsIdentifier
         {
             get;
             set;

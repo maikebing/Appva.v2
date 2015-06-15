@@ -101,7 +101,11 @@ namespace Appva.Persistence.MultiTenant
                 }
                 this.cache.Upsert<ISessionFactory>(
                     key,
-                    this.Build(PersistenceUnit.CreateNew(tenant.Identifier, tenant.ConnectionString, this.configuration.Assembly, this.configuration.Properties)),
+                    this.Build(PersistenceUnit.CreateNew(
+                        this.configuration.UseIdAsIdentifier ? tenant.Id.ToString() : tenant.Identifier, 
+                        tenant.ConnectionString, 
+                        this.configuration.Assembly, 
+                        this.configuration.Properties)),
                     RuntimeEvictionPolicy.NonRemovable);
             }
             return this.cache.Find<ISessionFactory>(key);
@@ -120,7 +124,12 @@ namespace Appva.Persistence.MultiTenant
             {
                 throw new TenantsResultException(Exceptions.ZeroTenantsFound);
             }
-            var units = tenants.Select(x => PersistenceUnit.CreateNew(x.Identifier, x.ConnectionString, this.configuration.Assembly, this.configuration.Properties)).ToList();
+            var units = tenants.Select(x => PersistenceUnit.CreateNew(
+                    this.configuration.UseIdAsIdentifier ? x.Id.ToString() : x.Identifier, 
+                    x.ConnectionString, 
+                    this.configuration.Assembly, 
+                    this.configuration.Properties))
+                .ToList();
             var result = this.Build(units);
             foreach (var factory in result.SessionFactories)
             {

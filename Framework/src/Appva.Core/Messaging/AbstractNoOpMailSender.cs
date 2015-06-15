@@ -10,6 +10,7 @@ namespace Appva.Core.Messaging
 
     using System.Net.Mail;
     using System.Threading.Tasks;
+    using Logging;
 
     #endregion
 
@@ -19,17 +20,32 @@ namespace Appva.Core.Messaging
     /// <typeparam name="T">The message type</typeparam>
     public abstract class AbstractNoOpMailSender<T> : IMailSender<T> where T : MailMessage
     {
+        #region Variables.
+
+        /// <summary>
+        /// The <see cref="ILog"/>.
+        /// </summary>
+        private static readonly ILog Logger = LogProvider.For<AbstractNoOpMailSender<T>>();
+
+        #endregion
+
         #region IMailSender<T> Members.
 
         /// <inheritdoc />
-        void IMailSender<T>.Send(T message)
+        public void Send(T message)
         {
+            #if DEBUG
+            Logger.DebugJson(this.Handle(message));
+            #endif
             return;
         }
 
         /// <inheritdoc />
-        Task IMailSender<T>.SendAsync(T message)
+        public Task SendAsync(T message)
         {
+            #if DEBUG
+            Logger.DebugJson(this.Handle(message));
+            #endif
             return Task.FromResult(0);
         }
 

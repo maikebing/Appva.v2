@@ -14,9 +14,7 @@ namespace Appva.Mcss.AuthorizationServer
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
-    using Appva.Mcss.AuthorizationServer.Code;
-    using Appva.Mvc.Engines;
-    using HibernatingRhinos.Profiler.Appender.NHibernate;
+    using Appva.Mvc;
     using log4net.Config;
 
     #endregion

@@ -75,6 +75,10 @@ namespace Appva.Mvc.Rendering.Html
             {
                 htmlDictionary.Add("placeholder", this.placeholder);
             }
+            if (!htmlDictionary.ContainsKey("autocomplete"))
+            {
+                htmlDictionary.Add("autocomplete", "off");
+            }
             return this.Root.HtmlHelper.TextBoxFor(this.expression, htmlDictionary);
         }
 

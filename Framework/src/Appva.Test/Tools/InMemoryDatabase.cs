@@ -43,9 +43,8 @@ namespace Appva.Test.Tools
                 .From("App_Data\\Persistence.json")
                 .ToObject();
             var persistenceResolver = new DefaultPersistenceContextAwareResolver(
-                new DefaultDatasource(
-                    configuration, 
-                    null));
+                new DefaultDatasource(configuration),
+                new DefaultPersistenceExceptionHandler());
             this.persistenceContext = persistenceResolver.CreateNew().Open();
         }
 

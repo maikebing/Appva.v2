@@ -16,6 +16,7 @@ namespace Appva.Persistence.MultiTenant
     /// <summary>
     /// Represents errors that occur when client returns zero result.
     /// </summary>
+    [Serializable]
     public sealed class TenantsResultException : Exception
     {
         #region Constructor.

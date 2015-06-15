@@ -628,6 +628,7 @@ namespace Appva.Test.OAuth2
     /// Responsible for providing the key to verify the token is intended for this 
     /// resource.
     /// </summary>
+    [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Reviewed.")] 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     internal sealed class ResourceServerSigningKeyHandler
     {
@@ -674,6 +675,7 @@ namespace Appva.Test.OAuth2
     /// Responsible for providing the key to verify the token came from the 
     /// authorization server.
     /// </summary>
+    [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Reviewed.")]
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     internal sealed class AuthorizationServerSigningKeyHandler
     {

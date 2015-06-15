@@ -214,10 +214,6 @@ namespace Appva.Persistence
                 {
                     return;
                 }
-                if (! this.session.IsDirty())
-                {
-                    return;
-                }
                 if (commit)
                 {
                     transaction.Commit();

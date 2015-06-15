@@ -81,6 +81,25 @@ namespace Appva.Mcss.Admin.Application.Auditing
         /// <param name="format"></param>
         /// <param name="args"></param>
         void Delete(Patient patient, string format, params object[] args);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="account"></param>
+        void SignIn(Account account);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void SignOut();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="format"></param>
+        /// <param name="args"></param>
+        void FailedAuthentication(Account account, string format, params object[] args);
     }
 
     /// <summary>
@@ -120,49 +139,67 @@ namespace Appva.Mcss.Admin.Application.Auditing
         /// <inheritdoc />
         public void Create(string format, params object[] args)
         {
-            this.CreateEventLog(LogType.Write, null, format, args);
+            this.CreateEventLog(LogType.Write, null, null, format, args);
         }
 
         /// <inheritdoc />
         public void Create(Patient patient, string format, params object[] args)
         {
-            this.CreateEventLog(LogType.Write, patient, format, args);
+            this.CreateEventLog(LogType.Write, null, patient, format, args);
         }
 
         /// <inheritdoc />
         public void Read(string format, params object[] args)
         {
-            this.CreateEventLog(LogType.Read, null, format, args);
+            this.CreateEventLog(LogType.Read, null, null, format, args);
         }
 
         /// <inheritdoc />
         public void Read(Patient patient, string format, params object[] args)
         {
-            this.CreateEventLog(LogType.Read, patient, format, args);
+            this.CreateEventLog(LogType.Read, null, patient, format, args);
         }
 
         /// <inheritdoc />
         public void Update(string format, params object[] args)
         {
-            this.CreateEventLog(LogType.Write, null, format, args);
+            this.CreateEventLog(LogType.Write, null, null, format, args);
         }
 
         /// <inheritdoc />
         public void Update(Patient patient, string format, params object[] args)
         {
-            this.CreateEventLog(LogType.Write, patient, format, args);
+            this.CreateEventLog(LogType.Write, null, patient, format, args);
         }
 
         /// <inheritdoc />
         public void Delete(string format, params object[] args)
         {
-            this.CreateEventLog(LogType.Write, null, format, args);
+            this.CreateEventLog(LogType.Write, null, null, format, args);
         }
 
         /// <inheritdoc />
         public void Delete(Patient patient, string format, params object[] args)
         {
-            this.CreateEventLog(LogType.Write, patient, format, args);
+            this.CreateEventLog(LogType.Write, null, patient, format, args);
+        }
+
+        /// <inheritdoc />
+        public void SignIn(Account account)
+        {
+            this.CreateEventLog(LogType.SignedIn, account, null, "loggade in.");
+        }
+
+        /// <inheritdoc />
+        public void SignOut()
+        {
+            this.CreateEventLog(LogType.SignedOut, null, null, "loggade ut.");
+        }
+
+        /// <inheritdoc />
+        public void FailedAuthentication(Account account, string format, params object[] args)
+        {
+            this.CreateEventLog(LogType.Authentication, account, null, format, args);
         }
 
         #endregion
@@ -176,16 +213,20 @@ namespace Appva.Mcss.Admin.Application.Auditing
         /// <param name="patient"></param>
         /// <param name="format"></param>
         /// <param name="args"></param>
-        private void CreateEventLog(LogType type, Patient patient, string format, params object[] args)
+        private void CreateEventLog(LogType type, Account account, Patient patient, string format, params object[] args)
         {
-            Account account = null;
+            Account user = account;
             var prepend = string.Empty;
             var identity = this.context.User as ClaimsPrincipal;
             if (identity != null && identity.Identity != null && identity.Identity.IsAuthenticated)
             {
                 var id = new Guid(identity.FindFirst(ClaimTypes.NameIdentifier).Value);
-                account = persistence.Get<Account>(id);
-                prepend = string.Format("Användare {0} ", account.FullName);
+                user = persistence.Get<Account>(id);
+                prepend = string.Format("Användare {0} ", user.FullName);
+            }
+            else if (user != null)
+            {
+                prepend = string.Format("Användare {0} ", user.FullName);
             }
             var message = prepend + string.Format(format, args);
             persistence.Save<Log>(
@@ -198,7 +239,7 @@ namespace Appva.Mcss.Admin.Application.Auditing
                     Type = type,
                     Route = this.context.Url(),
                     IpAddress = this.context.RemoteIP(),
-                    Account = account,
+                    Account = user,
                     Patient = patient,
                     System = SystemType.Web
                 });

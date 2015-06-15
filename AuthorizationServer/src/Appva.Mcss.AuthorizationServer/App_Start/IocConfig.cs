@@ -14,6 +14,8 @@ namespace Appva.Mcss.AuthorizationServer
     using System.Web.Http;
     using System.Web.Mvc;
     using Application;
+    using Appva.Core.Exceptions;
+    using Appva.Mvc.Imaging.Configuration;
     using Appva.OAuth;
     using Appva.Persistence;
     using Appva.Persistence.Autofac;
@@ -83,13 +85,14 @@ namespace Appva.Mcss.AuthorizationServer
         {
             var configuration = ConfigurableApplicationContext.Read<DefaultDatasourceConfiguration>()
                 .From("App_Data\\Persistence.json").AsMachineNameSpecific().ToObject();
-            var datasource = new DefaultDatasource(configuration, new DefaultDatasourceExceptionHandler(), new DefaultDatasourceEventInterceptor());
-            builder.Register(x => datasource).As<IDefaultDatasource>().SingleInstance();
-            builder.RegisterType<DefaultPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance();
+            builder.Register(x => configuration).As<IDefaultDatasourceConfiguration>().SingleInstance();
+            builder.RegisterType<DefaultDatasource>().As<IDefaultDatasource>().SingleInstance();
+            builder.RegisterType<DefaultPersistenceExceptionHandler>().As<IPersistenceExceptionHandler>().SingleInstance();
+            builder.RegisterType<DefaultPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
+            builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerLifetimeScope();
             builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>()
                 .InstancePerLifetimeScope()
                 .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
-            builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerLifetimeScope();
         }
     }
 }

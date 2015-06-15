@@ -22,10 +22,10 @@ namespace Appva.Mcss.ResourceServer.Controllers
     using Application;
     using Application.Authorization;
     using Core.Extensions;
+    using Core.Logging;
     using Domain.Constants;
     using Domain.Repositories;
     using Domain.Services;
-    using Logging;
     using Mcss.Domain.Entities;
     using Models;
     using Transformers;
@@ -292,10 +292,10 @@ namespace Appva.Mcss.ResourceServer.Controllers
                     {
                         var transaction = this.inventoryService.RedoInventoryWithdrawal(task, account);
                         task.InventoryTransactions.Add(transaction);
-                        Log.InfoFormat("User: {0} ({1}) readded {2} units to inventory {3} by transaction {4}", account.FullName, account.Id, transaction.Value, transaction.Inventory.Id, transaction.Id);
+                        Log.Info("User: {0} ({1}) readded {2} units to inventory {3} by transaction {4}", account.FullName, account.Id, transaction.Value, transaction.Inventory.Id, transaction.Id);
                         this.logService.ApiGet(string.Format("Användare {0} återförde {1} enheter till saldo {2} genom transaktion {3})", account.FullName, transaction.Value, transaction.Inventory.Id, transaction.Id), account, task.Patient, this.Request.RequestUri.OriginalString);
                     }
-                    Log.InfoFormat("User: {0} ({1}) changed status of task {2} to incomplete", account.FullName, account.Id, id);
+                    Log.Info("User: {0} ({1}) changed status of task {2} to incomplete", account.FullName, account.Id, id);
                     this.logService.ApiPost(string.Format("Användare {0} ångrade insats {1} (id {2})", account.FullName, task.Name, task.Id), account, task.Patient, this.Request.RequestUri.OriginalString);
                     break;
             }

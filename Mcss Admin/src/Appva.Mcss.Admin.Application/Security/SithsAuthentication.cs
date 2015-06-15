@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Security
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
@@ -99,8 +100,14 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="SithsAuthentication"/> class.
         /// </summary>
-        public SithsAuthentication(ISithsClient client, IIdentityService identity, ITenantService tenants, IAccountService accounts, ISettingsService settings)
-            : base(identity, tenants, accounts, settings, AuthenticationMethod.Siths, AuthenticationType.Administrative)
+        public SithsAuthentication(
+            ISithsClient client, 
+            IIdentityService identity, 
+            ITenantService tenants, 
+            IAccountService accounts, 
+            ISettingsService settings,
+            IAuditService auditing)
+            : base(identity, tenants, accounts, settings, auditing, AuthenticationMethod.Siths, AuthenticationType.Administrative)
         {
             this.client = client;
             this.accounts = accounts;
@@ -148,7 +155,7 @@ namespace Appva.Mcss.Admin.Application.Security
                 return AuthenticationResult.Failure;
             }
             var account = this.accounts.FindByHsaId(identity.HsaId);
-            var result = this.Authenticate(account, null);
+            var result = this.Authenticate(identity.HsaId, account, null);
             this.VerifyAuthenticationResult(account, result);
             return result;
         }

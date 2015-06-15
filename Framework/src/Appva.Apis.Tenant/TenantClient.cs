@@ -11,6 +11,7 @@ namespace Appva.Apis.TenantServer
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
@@ -139,7 +140,7 @@ namespace Appva.Apis.TenantServer
         /// <inheritdoc />
         public ITenantDto Find(Guid id)
         {
-            return this.CreateNewRequest<ITenantDto>(Operation.Tenant, id);
+            return this.CreateNewRequest<Contracts.Tenant>(Operation.Tenant, id);
         }
 
         /// <inheritdoc />
@@ -152,7 +153,8 @@ namespace Appva.Apis.TenantServer
         /// <inheritdoc />
         public IList<ITenantDto> List()
         {
-            return this.CreateNewRequest<IList<ITenantDto>>(Operation.TenantList);
+            var tenants = this.CreateNewRequest<IList<Contracts.Tenant>>(Operation.TenantList);
+            return tenants.Cast<ITenantDto>().ToList();
         }
 
         /// <inheritdoc />
@@ -168,7 +170,7 @@ namespace Appva.Apis.TenantServer
         /// <inheritdoc />
         public async Task<ITenantDto> FindAsync(Guid id)
         {
-            return await this.CreateNewRequestAsync<ITenantDto>(Operation.Tenant, id);
+            return await this.CreateNewRequestAsync<Contracts.Tenant>(Operation.Tenant, id);
         }
 
         /// <inheritdoc />
@@ -181,13 +183,14 @@ namespace Appva.Apis.TenantServer
         /// <inheritdoc />
         public async Task<IList<ITenantDto>> ListAsync()
         {
-            return await this.CreateNewRequestAsync<IList<ITenantDto>>(Operation.TenantList);
+            var tenants = await this.CreateNewRequestAsync<IList<Contracts.Tenant>>(Operation.TenantList);
+            return tenants.Cast<ITenantDto>().ToList();
         }
 
         /// <inheritdoc />
         public async Task<IClientDto> FindClientByTenantIdAsync(Guid id)
         {
-            return await this.CreateNewRequestAsync<IClientDto>(Operation.Client, id);
+            return await this.CreateNewRequestAsync<Contracts.Client>(Operation.Client, id);
         }
 
         #endregion

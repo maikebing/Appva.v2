@@ -10,7 +10,7 @@ namespace Appva.Mcss.ResourceServer.Application.ExceptionHandling
 
     using System.Web.Http.Filters;
     using Appva.Core.Extensions;
-    using Appva.Logging;
+    using Appva.Core.Logging;
     using Autofac.Integration.WebApi;
 
     #endregion
@@ -37,7 +37,7 @@ namespace Appva.Mcss.ResourceServer.Application.ExceptionHandling
             var exception = actionExecutedContext.Exception;
             if (exception.IsNotNull())
             {
-                Log.ErrorException("An exception occured!", exception);
+                Log.Error(exception);
             }
         }
 

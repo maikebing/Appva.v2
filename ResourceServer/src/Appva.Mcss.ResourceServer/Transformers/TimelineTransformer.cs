@@ -11,7 +11,6 @@ namespace Appva.Mcss.ResourceServer.Transformers
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Logging;
     using Appva.Mcss.Domain.Entities;
     using Appva.Mcss.ResourceServer.Models;
 

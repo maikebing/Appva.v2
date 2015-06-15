@@ -148,5 +148,18 @@ namespace Appva.Mcss.Admin.Application.Caching
         }
 
         #endregion
+
+        #region IDisposable Members.
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (this.cache != null)
+            {
+                this.cache.Dispose();
+            }
+        }
+
+        #endregion
     }
 }

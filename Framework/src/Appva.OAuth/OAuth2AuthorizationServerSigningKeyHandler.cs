@@ -6,6 +6,7 @@ namespace Appva.OAuth
 {
     #region Imports.
 
+    using System;
     using System.Security.Cryptography;
     using Appva.Core.Extensions;
 
@@ -15,7 +16,7 @@ namespace Appva.OAuth
     /// Responsible for providing the authorization server key to 
     /// use in signing the token.
     /// </summary>
-    public interface IOAuth2AuthorizationServerSigningKeyHandler
+    public interface IOAuth2AuthorizationServerSigningKeyHandler : IDisposable
     {
         /// <summary>
         /// Returns the authorization server token signing key. 
@@ -70,6 +71,19 @@ namespace Appva.OAuth
             get
             {
                 return this.cspProvider;
+            }
+        }
+
+        #endregion
+
+        #region IDisposable Members.
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (this.cspProvider != null)
+            {
+                this.cspProvider.Dispose();
             }
         }
 

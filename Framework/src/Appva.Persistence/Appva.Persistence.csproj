@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultPersistenceContextAwareResolver.cs" />
+    <Compile Include="DefaultPersistenceExceptionHandler.cs" />
     <Compile Include="IPersistenceExceptionHandler.cs" />
     <Compile Include="Messages\Exceptions.Designer.cs">
       <AutoGen>True</AutoGen>

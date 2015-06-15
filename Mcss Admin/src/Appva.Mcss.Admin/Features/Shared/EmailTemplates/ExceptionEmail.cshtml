@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="sv-se">
 	<head>
-		<title>Exception</title>
+		<title>@Model.Exception.GetType().Name</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,9 +23,6 @@
 			.ReadMsgBody {
 				width: 100%;
 				background-color: #ebebeb;
-			}
-			img {
-				-ms-interpolation-mode: bicubic;
 			}
 			.yshortcuts a {
 				border-bottom: none !important;
@@ -52,16 +49,25 @@
 	<body style="margin: 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" bgcolor="#df3f3f" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#df3f3f" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;">
 			<tr>
-				<td align="center" valign="top" bgcolor="#df3f3f" style="background-color: #df3f3f;border-collapse: collapse;">
-					<br>
+				<td align="center" valign="top" bgcolor="#df3f3f" style="background-color: #df3f3f;padding-top: 20px;border-collapse: collapse;">
 					<table border="0" width="600" cellpadding="0" cellspacing="0" class="container" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;width: 600px;max-width: 600px;">
 						<tr>
-							<td class="container-padding header" align="left" style="border-collapse: collapse;font-family: Helvetica, Arial, sans-serif;font-size: 24px;font-weight: bold;padding-bottom: 12px;color: #ffffff;padding-left: 24px;padding-right: 24px;">
-								@if (Model.ExtraData != null)
-                                {
-                                    @Model.ExtraData.Name @:-
-                                }
-                                @Application.Environment - @Application.Version - @Application.MachineName
+							<td class="container-padding header" align="left" style="border-collapse: collapse;font-family: Helvetica, Arial, sans-serif;font-size: 24px;font-weight: bold;padding-bottom: 20px;color: #ffffff;vertical-align: middle;padding-left: 24px;padding-right: 24px;">
+								<table border="0" width="600" cellpadding="0" cellspacing="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;">
+									<tr>
+										<td style="width: 78px;border-collapse: collapse;">
+											<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAABLCAYAAAFWwqTaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3NzhGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo1OUQwM0Y0NTBBQ0UxMUU1QjRBQkY3MkE3QUJGQTUxRSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo1OUQwM0Y0NDBBQ0UxMUU1QjRBQkY3MkE3QUJGQTUxRSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M0IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3QThGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3NzhGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIvPiA8L3JkZjpEZXNjcmlwdGlv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" style="-ms-interpolation-mode: bicubic;vertical-align: middle;margin-right: 20px;">
+										</td>
+										<td style="border-collapse: collapse;">
+											<div>
+                                                @Model.Exception.GetType().Name
+                                            </div>
+											<span class="date" style="color: #ff9999;font-size: 13px;">
+                                                @string.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTime.Now)
+                                            </span>
+										</td>
+									</tr>
+								</table>
 							</td>
 						</tr>
 						<tr>
@@ -74,62 +80,38 @@
 								<div class="body-text" style="font-family: Helvetica, Arial, sans-serif;font-size: 14px;line-height: 20px;text-align: left;color: #333333;">
 									@Model.Exception.Message
 									<br><br>
-									<div class="code-wrap" style="background-color: #f8f7e7;padding: 5px;">
+									<div class="code-wrap" style="background-color: #f5f5f5;padding: 5px;">
 										<code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
 										    @Model.Exception.StackTrace
 										</code>
 									</div>
 									<br>
-									<hr style="border: 0;border-bottom: 1px solid #f4f4f4;">
-									<br>
                                     @if (Model.User != null || Model.Request != null)
                                     {
+									    <hr style="border: 0;border-bottom: 1px solid #f4f4f4;">
+									    <br>
 									    <table border="0" width="100%" cellpadding="0" cellspacing="0" style="border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;">
 										    @if (Model.User != null)
                                             {
-                                            <tr class="odd" style="background: #ecf4f6;">
-											    <td width="150px" style="border-collapse: collapse;padding: 7px 10px;">
-                                                    <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
-                                                    USER NAME
-                                                    </code>
-                                                </td>
-											    <td style="border-collapse: collapse;padding: 7px 10px;">
-                                                    <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
-                                                    @Model.User.Name
-                                                    </code>
-                                                </td>
-										    </tr>
-										    <tr class="even" style="background: #e2edf0;">
-											    <td style="border-collapse: collapse;padding: 7px 10px;">
-                                                    <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
-                                                    USER ID
-                                                    </code>
-                                                </td>
-											    <td style="border-collapse: collapse;padding: 7px 10px;">
-                                                    <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
-                                                    @Model.User.Id
-                                                    </code>
-                                                </td>
-										    </tr>
+                                                <tr class="odd" style="background: #f5f5f5;">
+											        <td width="150px" style="border-collapse: collapse;padding: 7px 10px;"><code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">USER NAME</code></td>
+											        <td style="border-collapse: collapse;padding: 7px 10px;"><code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">@Model.User.Name</code></td>
+										        </tr>
+										        <tr class="even" style="background: #fafafa;">
+											        <td style="border-collapse: collapse;padding: 7px 10px;"><code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">USER ID</code></td>
+											        <td style="border-collapse: collapse;padding: 7px 10px;"><code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">@Model.User.Id</code></td>
+										        </tr>
                                             }
                                             @if (Model.Request != null)
                                             {
                                                 var i = 0;
                                                 foreach (var kv in Model.Request.Data)
                                                 {
-                                                    <tr class="@(i % 2 == 0 ? "odd" : "even")" style="background: @(i % 2 == 0 ? "#ecf4f6" : "#e2edf0");">
-                                                        <td width="150px" style="border-collapse: collapse;padding: 7px 10px;">
-                                                            <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
-                                                                @kv.Key
-                                                            </code>
-                                                        </td>
-                                                        <td style="border-collapse: collapse;padding: 7px 10px;">
-                                                            <code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">
-                                                                @kv.Value
-                                                            </code>
-                                                        </td>
-                                                    </tr>
-                                                    i++;
+                                                    <tr class="@(i % 2 == 0 ? "odd" : "even")" style="background: @(i % 2 == 0 ? "#f5f5f5" : "#fafafa");">
+											            <td width="150px" style="border-collapse: collapse;padding: 7px 10px;"><code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">@kv.Key</code></td>
+											            <td style="border-collapse: collapse;padding: 7px 10px;"><code style="font-family: Menlo, Courier, monospace;font-size: 12px;word-break: break-word;">@kv.Value</code></td>
+										            </tr>
+                                                i++;
                                                 }
                                             }
 									    </table>

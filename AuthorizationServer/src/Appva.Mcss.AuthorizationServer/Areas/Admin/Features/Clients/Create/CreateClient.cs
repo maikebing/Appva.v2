@@ -11,7 +11,7 @@ namespace Appva.Mcss.AuthorizationServer.Models
     using System.Collections.Generic;
     using System.Web;
     using Appva.Cqrs;
-    using Appva.Mvc.Html.Models;
+    using Appva.Mvc;
 
     #endregion
 

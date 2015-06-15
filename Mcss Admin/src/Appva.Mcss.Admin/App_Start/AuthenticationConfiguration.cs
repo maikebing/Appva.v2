@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin
 {
     #region Imports.
 
+    using System;
     using Application.Security;
     using Microsoft.Owin;
     using Microsoft.Owin.Security;
@@ -38,7 +39,8 @@ namespace Appva.Mcss.Admin
                     AuthenticationMode = AuthenticationMode.Active,
                     AuthenticationType = AuthenticationType.Administrative.Value,
                     CookieSecure = CookieSecureOption.SameAsRequest,
-                    LoginPath = new PathString("/auth/sign-in")
+                    LoginPath = new PathString("/auth/sign-in"),
+                    ExpireTimeSpan = TimeSpan.FromMinutes(3)
                 });
         }
     }

@@ -32,7 +32,7 @@ namespace Appva.Core.Messaging
         #region IMailSender<T> Members.
 
         /// <inheritdoc />
-        void IMailSender<T>.Send(T message)
+        public void Send(T message)
         {
             #if DEBUG
             Logger.DebugJson(this.Handle(message));
@@ -41,7 +41,7 @@ namespace Appva.Core.Messaging
         }
 
         /// <inheritdoc />
-        Task IMailSender<T>.SendAsync(T message)
+        public Task SendAsync(T message)
         {
             #if DEBUG
             Logger.DebugJson(this.Handle(message));

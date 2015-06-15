@@ -11,7 +11,7 @@ namespace Appva.Apis.Audit
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Core.Http;
+    using Appva.Core;
     using Appva.Fhir.Resources.Security;
 
     #endregion
@@ -19,7 +19,7 @@ namespace Appva.Apis.Audit
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class LogClient : RestfulClient
+    /*public sealed class LogClient : RestfulClient
     {
         #region Constructor.
 
@@ -46,5 +46,5 @@ namespace Appva.Apis.Audit
         }
 
         #endregion
-    }
+    }*/
 }

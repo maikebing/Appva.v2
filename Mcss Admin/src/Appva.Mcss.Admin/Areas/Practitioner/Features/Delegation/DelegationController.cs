@@ -1182,6 +1182,7 @@ using Appva.Tenant.Identity;
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("overview")]
+        [PermissionsAttribute(Permissions.Dashboard.ReadDelegationValue)]
         public PartialViewResult Overview()
         {
             var taxon = this.filtering.GetCurrentFilter();

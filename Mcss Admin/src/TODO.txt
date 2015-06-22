@@ -40,7 +40,7 @@ ADMIN
 1.  [ ] Utlöpande delegeringar pa oversikt visar med gomda roller
 2.  [ ] Nya roller blir fel da inga machine name satts, if (account.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.Developer)).Count() != 0 && user.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.AdminPrefix)).Count() == 0)
 3.  [ ] lankar i oversikt.
-4.  [ ] Mer permissions - knowledge test, etc - lagg till for device delen med. Practitioner.ReadRoles, Practitioner.UpdateRoles
+4.  [X] Mer permissions - knowledge test, etc - lagg till for device delen med. Practitioner.ReadRoles, Practitioner.UpdateRoles
 5.  [ ] date time i delegation ar konstig
 6.  [X] full report / behovs for andra reports
 7.  [X] ta bort patient has alert / rakna ut istallet for att titta pa det som schedulern satter

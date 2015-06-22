@@ -9,10 +9,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
     #region Imports.
 
     using System.Web.Mvc;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mvc;
+using Appva.Mcss.Admin.Application.Common;
+using Appva.Mcss.Admin.Infrastructure;
+using Appva.Mcss.Admin.Infrastructure.Attributes;
+using Appva.Mcss.Admin.Models;
+using Appva.Mvc;
+using Appva.Mvc.Security;
 
     #endregion
 
@@ -33,6 +35,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("overview")]
         [HttpGet, Dispatch(typeof(OverviewOrder))]
+        [PermissionsAttribute(Permissions.Dashboard.ReadOrderRefillValue)]
         public PartialViewResult Overview()
         {
             return this.PartialView();

@@ -134,7 +134,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 patient.HasUnattendedTasks = false;
                 this.context.Update(patient);
             }
-            this.context.Update(task);
+            this.tasks.Update(task);
             this.auditing.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
         }
 
@@ -145,7 +145,7 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 task.DelayHandled = true;
                 task.DelayHandledBy = account;
-                this.context.Update(task);
+                this.tasks.Update(task);
                 this.auditing.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
             }
             patient.HasUnattendedTasks = false;

@@ -127,7 +127,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             task.DelayHandled = true;
             task.DelayHandledBy = account;
-            var tasks = FindDelaysByPatient(task.Patient, false, list);
+            var tasks = FindDelaysByPatient(task.Patient, false, null);
             if (tasks.Count.Equals(1) && tasks.First().Id.Equals(task.Id))
             {
                 var patient = task.Patient;

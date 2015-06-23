@@ -48,6 +48,8 @@ ADMIN
 9.  [ ] edit roles check if any roles are set as login 
 10. [ ] add siths to authentication so its activated right away / no fallback / username and password then a code
 11. [ ] andra boende uppgifter redirect... kan redirecatas till samma
+12. [ ] HasUnattendedTasks måste bero på vilka listor man har behörighet till
+13. [ ] Null listor på en role skall innebära inga listor, nu innebär det alla
 
 TESTS
 1. [ ] ITenantIdentityStrategy

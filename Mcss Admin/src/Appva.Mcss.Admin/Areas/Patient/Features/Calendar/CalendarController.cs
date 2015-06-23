@@ -373,6 +373,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("~/patient/calendar/overview")]
+        [PermissionsAttribute(Permissions.Dashboard.ReadCalendarValue)]
         public PartialViewResult Overview()
         {
             //// FIXME: Update to 1.5.1 version here!

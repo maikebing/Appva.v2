@@ -112,6 +112,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("~/patient/inventory/overview")]
         [HttpGet, Dispatch(typeof(OverviewInventory))]
+        [PermissionsAttribute(Permissions.Dashboard.ReadControlCountNarcoticsValue)]
         public PartialViewResult Overview()
         {
             return this.PartialView();

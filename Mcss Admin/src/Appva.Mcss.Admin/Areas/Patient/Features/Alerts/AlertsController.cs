@@ -96,6 +96,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("~/patient/alert/overview/{status=notsigned}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Dashboard.ReadDelayedTasksValue)]
         public PartialViewResult Overview(AlertWidget request)
         {
             return this.PartialView();

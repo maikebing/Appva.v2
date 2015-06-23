@@ -8,12 +8,11 @@ namespace Appva.Mcss.Admin.Areas.Report.Features
 {
     #region Imports.
 
+    using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -44,6 +43,7 @@ namespace Appva.Mcss.Admin.Areas.Report.Features
         /// <returns><see cref="ActionResult"/></returns>
         [Route("full")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Report.ReadValue)]
         public ActionResult FullReport(FullReport request)
         {
             return this.View();

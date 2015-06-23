@@ -1,9 +1,10 @@
-﻿@model HomeViewModel
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model HomeViewModel
 @{ ViewBag.Title = "Översikt"; }
 <div id="main" class="status-view">
     <div id="content" class="cf">
         <div id="status-filter" class="cf">
-            @Html.ActionLink("Fullständig rapport ...", "FullReport", "Report", new { Area = "Report" }, new { @class = "btn" })
+            @Html.ActionLink(Permissions.Report.Read, "Fullständig rapport ...", "FullReport", "Report", new { Area = "Report" }, new { @class = "btn" })
         </div>
         @if (TempData["Message"] != null) {
             <div class="success-msg" style="margin: 0 20px 20px;">
@@ -11,11 +12,19 @@
             </div>
         }
         <div id="content-primary">
-            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Alerts", widgetArea = "Patient", header = "Pågående insatser" }); }
-            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Inventory", widgetArea = "Patient", header = "Kontrollräkning narkotika" }); }
+            @if (Html.HasPermissionFor(Permissions.Dashboard.ReadDelayedTasks))
+            { 
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Alerts", widgetArea = "Patient", header = "Pågående insatser" }); 
+            }
+            @if (Html.HasPermissionFor(Permissions.Dashboard.ReadControlCountNarcotics))
+            { 
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Inventory", widgetArea = "Patient", header = "Kontrollräkning narkotika" }); 
+            }
+            @if (Html.HasPermissionFor(Permissions.Dashboard.ReadChart))
+            {
             <div class="panel">
                 <div class="heading cf">
-                    @Html.ActionLink("Fullständig rapport ...", "FullReport", "Report", new { Area = "Report" }, new { })
+                    @Html.ActionLink(Permissions.Report.Read, "Fullständig rapport ...", "FullReport", "Report", new { Area = "Report" }, new { })
                     <h2>Totalt resultat senaste veckan</h2>
                 </div>
                 <div id="report" class="cf">
@@ -34,17 +43,21 @@
                     </div>
                 </div>
             </div>
+            }
         </div>
         <div id="content-secondary">
-            @if (Model.HasOrderOverview)
+            @if (Model.HasOrderOverview && Html.HasPermissionFor(Permissions.Dashboard.ReadOrderRefill))
             {
                 Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Order", widgetArea = "Patient", header = "Påfyllning av läkemedel" });
             }
-            @if (Model.HasCalendarOverview)
+            @if (Model.HasCalendarOverview && Html.HasPermissionFor(Permissions.Dashboard.ReadCalendar))
             {
                 Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Calendar", widgetArea = "Patient", header = "Kalender de närmaste 7 dagarna" });
             }
-            @{ Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Delegation", widgetArea = "Practitioner", header = "Utlöpande delegeringar" }); }
+            @if (Html.HasPermissionFor(Permissions.Dashboard.ReadDelegation))
+            { 
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Delegation", widgetArea = "Practitioner", header = "Utlöpande delegeringar" }); 
+            }
                 
         </div>
     </div>
@@ -52,10 +65,12 @@
     @{ Html.RenderAction("News", "Notification"); }
         *@
 </div>
+@if (Html.HasPermissionFor(Permissions.Dashboard.ReadChart))
+{
 <script type="text/javascript">
     mcss.chart.Load({
         'selector': '#chart',
-        'url': '@Url.Action("GetChartData", "Statistics", new { area = "" })',
+        'url': '@Url.Action("GetChartData", "Statistics", new { Area = string.Empty })',
         'min': new Date(@Model.SevenDayStartDate.Year, @(Model.SevenDayStartDate.Month - 1), @Model.SevenDayStartDate.Day),
         'max': new Date(@Model.SevenDayEndDate.Year, @(Model.SevenDayEndDate.Month - 1), @Model.SevenDayEndDate.Day),
         'parameters': {
@@ -63,7 +78,7 @@
             'end': '@Model.SevenDayEndDate.ToShortDateString()'
         }
     });
-    $.getJSON('@Url.Action("GetStatisicsData", "Statistics", new { area = "" })', { start : '@Model.SevenDayStartDate.ToShortDateString()', end : '@Model.SevenDayEndDate.ToShortDateString()'})
+    $.getJSON('@Url.Action("GetStatisicsData", "Statistics", new { Area = string.Empty })', { start : '@Model.SevenDayStartDate.ToShortDateString()', end : '@Model.SevenDayEndDate.ToShortDateString()'})
             .success(function (data) {
                 $('#notOnTime').html(data.NotOnTimePercentage + "%");
                 $('#onTime').html(data.OnTimePercentage + "%");
@@ -80,3 +95,4 @@
         $("#report").append('<div class="loader">Ett fel inträffade!</div>')
     });
 </script>
+}

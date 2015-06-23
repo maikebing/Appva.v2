@@ -105,6 +105,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     var permission = (IPermission) field.GetValue(null);
                     if (newAttr == null)
                     {
+                        /*
                         var p = this.persistence.QueryOver<Permission>().Where(x => x.Resource == keyAttr.Value).SingleOrDefault();
                         if (p == null)
                         {
@@ -113,6 +114,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         p.UpdateResource(permission.Value);
                         p.UpdateSort(sort);
                         this.persistence.Update(p);
+                        */
                     }
                     else
                     {

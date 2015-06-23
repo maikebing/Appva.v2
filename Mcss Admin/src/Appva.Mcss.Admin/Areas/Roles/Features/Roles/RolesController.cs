@@ -38,7 +38,6 @@ using Appva.Mvc.Security;
 
         #region List Roles.
 
-        //[Permissions(PermissionTypes.ReadRole)]
         [Route("list")]
         [HttpGet, Dispatch(typeof(Parameterless<IList<Role>>))]
         [PermissionsAttribute(Permissions.Role.ReadValue)]
@@ -51,7 +50,6 @@ using Appva.Mvc.Security;
 
         #region Create Role.
 
-        //[Permissions(PermissionTypes.CreateRole)]
         [Route("create")]
         [HttpGet, Hydrate, Dispatch(typeof(Parameterless<CreateRole>))]
         [PermissionsAttribute(Permissions.Role.CreateValue)]
@@ -60,7 +58,6 @@ using Appva.Mvc.Security;
             return this.View();
         }
 
-        //[Permissions(PermissionTypes.CreateRole)]
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Roles")]
         [AlertSuccess("Ny roll har skapats!")]
@@ -74,7 +71,6 @@ using Appva.Mvc.Security;
 
         #region Update Role.
 
-        //[Permissions(PermissionTypes.UpdateRole)]
         [Route("update/{id:guid}")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Role.UpdateValue)]
@@ -83,7 +79,6 @@ using Appva.Mvc.Security;
             return this.View();
         }
 
-        //[Permissions(PermissionTypes.UpdateRole)]
         [Route("update/{id:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Roles")]
         [AlertSuccess("Roll har redigerats!")]
@@ -97,7 +92,6 @@ using Appva.Mvc.Security;
 
         #region Delete Role.
 
-        //[Permissions(PermissionTypes.UpdateRole)]
         [Route("delete/{id:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Roles")]
         [AlertSuccess("Roll har tagits bort!")]

@@ -246,7 +246,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
             items.Add(new MenuItem(new Guid("62233CBE-0287-4838-9C16-A4A301313DA4"), "Rapporter", "DelegationReport", "Delegation", "Practitioner", false, null, null, 3, new Guid("593928BE-930F-4D5D-8981-A4A301313DA4")));
             //// 2nd menu items.
             items.Add(new MenuItem(new Guid("20C161E1-0A4E-4BA0-AA2F-A4A301313DA4"), "Signeringslistor", "List", "Schedule", "Patient", false, null, null, 0, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
-            items.Add(new MenuItem(new Guid("20C161E1-0A4E-4BA0-AA2F-A4A301313DA4"), "Läkemedelslista", "List", "Medication", "Patient", false, null, null, 0, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
+            items.Add(new MenuItem(new Guid("02C9A041-2D69-4680-B676-AA51CD15BE5B"), "Läkemedelslista", "List", "Medication", "Patient", false, null, null, 0, new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4")));
             //// Dummy
             items.Add(new MenuItem(new Guid("4695B0B9-485B-4044-8ECA-59603889456D"), "Dummy endast till för att kunna visa meny för signeringslist objekt", "Details", "Schedule", "Patient", false, null, null, 0, new Guid("20C161E1-0A4E-4BA0-AA2F-A4A301313DA4")));
             //// Dummy

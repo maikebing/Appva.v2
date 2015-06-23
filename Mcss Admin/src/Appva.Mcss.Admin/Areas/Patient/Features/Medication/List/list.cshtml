@@ -16,56 +16,90 @@
     <div id="content-primary" class="signlist-collection">
 
         <div id="signlist">
+            <div id="signed-events">
+                <div class="h cf">
+                    <h2></h2>
+                    @*Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })*@
+                </div>
 
-            <div class="h cf">
-                <h2></h2>
-                @*Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })*@
-            </div>
-
-
-            <table>
-                <thead>
-                    <tr class="head">
-                        <th scope="col">Att ge</th>
-                        <th scope="col">Frekvens</th>
-                        <th scope="col">Ges inom</th>
-                        <th scope="col">Tider</th>
-                        <th scope="col">Instruktion</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <table>
+                    <thead>
+                        <tr class="head">
+                            <th scope="col">Läkemedel</th>
+                            <th scope="col">Doseringstext</th>
+                            <th scope="col">Styrka</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="">
+                            <td>
+                                Spironolakton Nykomed
+                                <span class="date">
+                                    2012-02-04 —
+                                </span>
+                            </td>
+                            <td class="">
+                                1 tablett dagligen. För blodtrycket.
+                            </td>
+                            <td class="">
+                                50 mg
+                            </td>
+                            <td class="">
+                                Ej på signeringslista
+                            </td>
+                            <td class="">
+                                @Html.ActionLink(Permissions.Sequence.Create, "Lägg till på signeringslista", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "btn lb-link", @title = "Lägg till" })
+                                @*Html.ActionLink(Permissions.Sequence.Update, "Ändra", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                            @Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })*@
+                            </td>
+                        </tr>
                         <tr class="active">
                             <td>
-                                Läkemedelsnamn
-                            <span class="date">
-                                2015-06-01
-                                —
-                                2015-06-30
-                            </span>
-                        </td>
-                        <td class="freq"> 
-                           Vid behov
-                        </td>
-                        <td class="frame">
-                            
-                        </td>
-                        <td class="time">
-                            <img src="@Url.Image("icn-check.png")" alt="ja" />
-                        </td>
-                        <td class="info"><p>Beskrivning</p></td>
-                        
-                        <td class="edit">
-                            @Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130"  }, new { @class = "lb-link", @title = "Lägg till" })
-                            @*Html.ActionLink(Permissions.Sequence.Update, "Ändra", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
-                            @Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })*@
-                        </td>
-                    </tr>
-                 
-                </tbody>
-            </table>
-            <div id="add-sign" class="cf">
-                @*Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })*@
+                                Trombyl
+                                <span class="date">
+                                    2004-04-04 —
+                                </span>
+                            </td>
+                            <td class="">
+                                En tabl dagligen enligt tidigare ord
+                            </td>
+                            <td class="">75 mg</td>
+                            <td class="">
+                                <img alt="" src="/Assets/i/icn-ok.png"> Finns på signeringslista
+                            </td>
+                            <td class="">
+                                @*Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "lb-link", @title = "Lägg till" })*@
+                                @Html.ActionLink(Permissions.Schedule.Read, "Visa signeringslista", "Details", "Schedule", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "btn", @title = "Ändra raden" })
+                                @*Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })*@
+                            </td>
+                        </tr>
+                        <tr class="inactive">
+                            <td>
+                                NovoMix 30 FlexPen
+                                <span class="date">
+                                    2012-01-07 — 2014-09-09
+                                </span>
+                            </td>
+                            <td class="">
+                                NovoMix 30 FlexPen
+                            </td>
+                            <td class="">100 E/ml</td>
+                            <td class="">
+                                <img alt="" src="~/Assets/i/icn-alarm.png">Ej updaterad på signeringslista
+                            </td>
+                            <td class="">
+                                @*Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "lb-link", @title = "Lägg till" })*@
+                                @Html.ActionLink(Permissions.Sequence.Update, "Updatera insats på signeringslista", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "btn lb-link", @title = "Ändra raden" })
+                                @*Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })*@
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
             </div>
+
         </div>
     </div>
 </div>

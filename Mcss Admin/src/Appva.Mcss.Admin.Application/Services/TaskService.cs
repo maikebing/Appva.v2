@@ -128,7 +128,7 @@ namespace Appva.Mcss.Admin.Application.Services
             task.DelayHandled = true;
             task.DelayHandledBy = account;
             var tasks = FindDelaysByPatient(task.Patient, false, null);
-            if (tasks.Count.Equals(1) && tasks.First().Id.Equals(task.Id))
+            if (tasks.Count == 0 || (tasks.Count.Equals(1) && tasks.First().Id.Equals(task.Id)))
             {
                 var patient = task.Patient;
                 patient.HasUnattendedTasks = false;

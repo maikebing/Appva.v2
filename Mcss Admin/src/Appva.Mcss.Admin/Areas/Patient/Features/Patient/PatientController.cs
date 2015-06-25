@@ -100,11 +100,11 @@ namespace Appva.Mcss.Admin.Controllers
         /// <param name="request">The update patient request</param>
         /// <returns>If successful; a redirect to <see cref="ScheduleController.List"/></returns>
         [Route("{id:guid}/update")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Schedule")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         [PermissionsAttribute(Permissions.Patient.UpdateValue)]
         public ActionResult Update(UpdatePatient request)
         {
-            return this.View();
+            return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         #endregion

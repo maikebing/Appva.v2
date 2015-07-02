@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin
     #region Imports.
 
     using System;
+    using System.Threading.Tasks;
     using Application.Security;
     using Microsoft.Owin;
     using Microsoft.Owin.Security;
@@ -40,7 +41,16 @@ namespace Appva.Mcss.Admin
                     AuthenticationType = AuthenticationType.Administrative.Value,
                     CookieSecure = CookieSecureOption.SameAsRequest,
                     LoginPath = new PathString("/auth/sign-in"),
-                    ExpireTimeSpan = TimeSpan.FromMinutes(15)
+                    SlidingExpiration = true,
+                    ExpireTimeSpan = TimeSpan.FromMinutes(15),
+                    Provider = new CookieAuthenticationProvider
+                    {
+                        OnValidateIdentity = context =>
+                        {
+                            context.OwinContext.Request.Set<DateTimeOffset>("ExpiresUtc", context.Properties.ExpiresUtc.Value);
+                            return Task.FromResult<object>(null);
+                        }
+                    }
                 });
         }
     }

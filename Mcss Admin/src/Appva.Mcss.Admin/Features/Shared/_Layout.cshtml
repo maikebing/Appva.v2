@@ -380,7 +380,7 @@
         @if (Application.IsInDevelopment || Application.IsInStaging)
         {
             <div class="environment">
-                <p>@*Application.FullName*@ENVIRONMENT @Application.Environment | VERSION @Application.Version | SERVER @Application.MachineName</p>
+                <p>ENVIRONMENT @Application.Environment | VERSION @Application.Version | SERVER @Application.MachineName</p>
             </div>
         }
         <div class="global-filter">

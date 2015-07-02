@@ -6,3 +6,17 @@
         @Html.ActionLink("Logga ut", "SignOut", "Authentication", new { Area = string.Empty }, new { @class = "btn" })
     </p>
 </div>
+@{
+    var milliseconds = Request.GetOwinContext().Request.Get<DateTimeOffset>("ExpiresUtc").LocalDateTime.ToUnixEpochMilliseconds();  
+}
+<script type="text/javascript">
+    var date = new Date(@milliseconds);
+    setInterval(function () 
+    {
+        var now = new Date();
+        if (now > date)
+        {
+            window.location = "auth/sign-in";
+        }
+    }, 1000);
+</script>

@@ -84,7 +84,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             Expression<Func<Patient, object>> expression = x => x.FullName;
             if (message.Term.First(2).Is(Char.IsNumber))
             {
-                expression = x => x.PersonalIdentityNumber;
+                expression = x => x.PersonalIdentityNumber.Value;
             }
             if (this.filtering.HasActiveFilter())
             {

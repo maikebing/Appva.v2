@@ -12,15 +12,15 @@
 #### Wiring it up with AutoFac
 ```c#
 var builder = new ContainerBuilder();
-var persistenceContextFactory = ConfigurableApplicationContext
-    .Read<SinglePersistenceConfiguration>()
+var configuration = ConfigurableApplicationContext.Read<DefaultDatasourceConfiguration>()
 	.From("App_Data\\Persistence.json")
-	.ToObject()
-	.Build();
-builder.Register(x => persistenceContextFactory).As<IPersistenceContextFactory>().SingleInstance();
-builder.Register(x => x.Resolve<IPersistenceContextFactory>().Build()).As<IPersistenceContext>().InstancePerRequest();
-var container = builder.Build();
-DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+	.AsMachineNameSpecific()
+	.ToObject();
+builder.Register(x => configuration).As<IDefaultDatasourceConfiguration>().SingleInstance();
+builder.RegisterType<DefaultDatasource>().As<IDefaultDatasource>().SingleInstance();
+builder.RegisterType<DefaultPersistenceExceptionHandler>().As<IPersistenceExceptionHandler>().SingleInstance();
+builder.RegisterType<DefaultPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
+builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerRequest();
 ```
 
 #### Usage In ActionFilterAttribute
@@ -35,9 +35,19 @@ public override void OnActionExecuting(ActionExecutingContext filterContext)
 /// <inheritdoc />
 public override void OnActionExecuted(ActionExecutedContext filterContext)
 {
-    //// Only commit in non-child actions, model state is valid and no exception was raised.
-    var state = ((filterContext.Exception.IsNull() && ! filterContext.ExceptionHandled)
-                && ! filterContext.IsChildAction && filterContext.Controller.ViewData.ModelState.IsValid);
-    this.persistenceContext.Commit(state);
+    //// Commit in non-child actions, model state is valid and no exception was raised.
+	if (filterContext.Exception.IsNotNull())
+	{
+		return;
+	}
+	if (filterContext.IsChildAction)
+	{
+		return;
+	}
+	if (filterContext.Controller.ViewData.ModelState.IsValid)
+	{
+		return;
+	}
+    this.persistenceContext.Commit(true);
 }
 ```

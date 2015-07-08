@@ -35,7 +35,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("patient"), RoutePrefix("{id:guid}/calendar")]
     public sealed class CalendarController : IdentityController
     {

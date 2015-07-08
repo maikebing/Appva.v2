@@ -27,7 +27,7 @@ using Appva.Mvc;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize, RouteArea("Practitioner"), RoutePrefix("Accounts")]
+    [AuthorizeUserAndTenantAttribute, RouteArea("Practitioner"), RoutePrefix("Accounts")]
     public class AccountsController : Controller
     {
         #region Variables.

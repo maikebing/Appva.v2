@@ -35,13 +35,14 @@ using Appva.Tenant.Identity;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
 
     #endregion
 
     /// <summary>
     /// The delegation controller.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("Practitioner"), RoutePrefix("Delegation")]
     public sealed class DelegationController : Controller
     {

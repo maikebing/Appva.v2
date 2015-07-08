@@ -110,10 +110,13 @@ namespace Appva.Mcss.Admin.Application.Services
             if (this.cache.Find<ITenantIdentity>(cacheKey) == null)
             {
                 var tenant = this.client.FindByIdentifier(id.Value);
-                this.cache.Upsert<ITenantIdentity>(cacheKey, new TenantIdentity(id, tenant.Name, tenant.HostName), new RuntimeEvictionPolicy
+                if (tenant != null)
                 {
-                    Priority = CacheItemPriority.Default
-                });
+                    this.cache.Upsert<ITenantIdentity>(cacheKey, new TenantIdentity(id, tenant.Name, tenant.HostName), new RuntimeEvictionPolicy
+                    {
+                        Priority = CacheItemPriority.Default
+                    });
+                }
             }
             return this.cache.Find<ITenantIdentity>(cacheKey);
         }

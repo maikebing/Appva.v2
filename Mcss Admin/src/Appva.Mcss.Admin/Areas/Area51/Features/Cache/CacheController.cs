@@ -25,7 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Caches
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("area51"), RoutePrefix("cache")]
     [Permissions(Permissions.Area51.ReadValue)]
     public sealed class CacheController : Controller

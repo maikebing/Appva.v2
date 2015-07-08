@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Controllers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("patient")]
     public sealed class PatientController : Controller
     {

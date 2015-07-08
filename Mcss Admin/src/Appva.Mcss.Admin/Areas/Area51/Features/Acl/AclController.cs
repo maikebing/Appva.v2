@@ -25,7 +25,7 @@ using Appva.Mvc.Security;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("area51"), RoutePrefix("acl")]
     [Permissions(Permissions.Area51.ReadValue)]
     public sealed class AclController : Controller

@@ -24,7 +24,7 @@ namespace Appva.Mcss.Admin.Features.Statistics
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RoutePrefix("statistics")]
     public class StatisticsController : Controller
     {

@@ -33,7 +33,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [RoutePrefix("auth")]
+    [AuthorizeUserAndTenantAttribute, RoutePrefix("auth")]
     public sealed class AuthenticationController : Controller
     {
         #region Variables.
@@ -231,6 +231,24 @@ namespace Appva.Mcss.Admin.Features.Authentication
             }
             ModelState.AddModelError(string.Empty, "Personnummer eller e-post är felaktigt.");
             return this.View(model);
+        }
+
+        #endregion
+
+        #region Redirect For Old Invalid URLs.
+
+        /// <summary>
+        /// Redirects to the new authentication URL if the deprecated URL is used.
+        /// </summary>
+        /// <returns>A redirect to correct sign in</returns>
+        [AllowAnonymous]
+        [HttpGet, Route("~/Authenticate/LogIn")]
+        public ActionResult RedirectForOldAuthenticationLoginUrl()
+        {
+            return this.RedirectToAction("SignIn", new SignIn
+            {
+                ReturnUrl = string.Empty
+            });
         }
 
         #endregion

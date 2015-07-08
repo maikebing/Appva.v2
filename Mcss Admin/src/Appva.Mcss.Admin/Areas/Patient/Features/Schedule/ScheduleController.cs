@@ -26,7 +26,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("patient"), RoutePrefix("schedule")]
     public sealed class ScheduleController : Controller
     {

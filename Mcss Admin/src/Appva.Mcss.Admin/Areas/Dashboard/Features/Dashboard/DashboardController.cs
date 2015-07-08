@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Controllers
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc.Security;
 
@@ -20,7 +21,7 @@ namespace Appva.Mcss.Admin.Controllers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("dashboard")]
     [Permissions(Permissions.Dashboard.ReadValue)]
     public sealed class DashboardController : Controller

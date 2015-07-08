@@ -21,7 +21,7 @@ using Appva.Mvc.Security;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("patient"), RoutePrefix("order")]
     public sealed class OrderController : Controller
     {

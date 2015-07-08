@@ -30,7 +30,7 @@ using Appva.Mvc.Security;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("roles"), RoutePrefix("")]
     public sealed class RolesController : Controller
     {

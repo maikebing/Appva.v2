@@ -9,10 +9,12 @@ namespace Appva.Mcss.Admin.Configuration
     #region Imports.
 
     using System.Data;
+    using System.Web;
     using Appva.Apis.TenantServer.Legacy;
     using Appva.Caching.Providers;
     using Appva.Core.Exceptions;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Infrastructure;
     using Appva.Persistence;
     using Appva.Persistence.Autofac;
     using Appva.Persistence.MultiTenant;
@@ -94,7 +96,18 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<MultiTenantDatasource>().As<IMultiTenantDatasource>().SingleInstance();
             builder.RegisterType<MultiTenantPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
             builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerLifetimeScope();
-            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerLifetimeScope().OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
+            builder.RegisterType<AuthorizeTenantIdentity>().As<IAuthorizeTenantIdentity>().SingleInstance();
+            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerLifetimeScope()
+                .OnActivated(x => 
+                    {
+                        var authorization = x.Context.Resolve<IAuthorizeTenantIdentity>();
+                        var request = x.Context.Resolve<HttpRequestBase>();
+                        if (authorization.Validate(request).IsAuthorized)
+                        {
+                            x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted);
+                        }
+                    });
+            
         }
 
         #endregion

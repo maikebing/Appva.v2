@@ -21,7 +21,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
+    [AuthorizeUserAndTenantAttribute]
     [RouteArea("patient"), RoutePrefix("{id:guid}/inventory")]
     public sealed class InventoryController : Controller
     {

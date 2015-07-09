@@ -35,7 +35,7 @@ namespace Appva.Mcss.Admin
             filters.Add(new NoBrowserCacheAttribute());
             if (Configuration.Application.IsInDevelopment)
             {
-                //// filters.Add(new TimingAttribute());
+                filters.Add(new TimingAttribute());
             }
         }
     }

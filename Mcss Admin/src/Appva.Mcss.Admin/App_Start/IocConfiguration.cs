@@ -12,8 +12,6 @@ namespace Appva.Mcss.Admin
     using System.Reflection;
     using System.Web;
     using System.Web.Mvc;
-    using Appva.Caching.Providers;
-    using Appva.Core.Exceptions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Caching;
     using Appva.Mcss.Admin.Application.Security;
@@ -21,13 +19,12 @@ namespace Appva.Mcss.Admin
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Configuration;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Mvc.Messaging;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Siths;
     using Appva.Siths.Security;
     using Autofac;
     using Autofac.Integration.Mvc;
     using Microsoft.Owin;
-    using RazorEngine.Configuration;
 
     #endregion
 
@@ -46,7 +43,7 @@ namespace Appva.Mcss.Admin
             
             builder.RegisterControllers(assembly);
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces();
-            builder.RegisterFilterProvider();
+            
 
             //// Register repositories.
             builder.RegisterAssemblyTypes(typeof(IRepository).Assembly).Where(x => x.GetInterfaces()
@@ -81,7 +78,11 @@ namespace Appva.Mcss.Admin
             builder.RegisterModule(PersistenceModule.CreateNew());
             builder.RegisterModule(MessagingModule.CreateNew());
             builder.RegisterModule(ExceptionHandlerModule.CreateNew());
+
             
+            builder.RegisterType<AuthorizeUserAndTenantAttribute>().AsAuthorizationFilterFor
+            <Controller>().InstancePerRequest().PropertiesAutowired();
+            builder.RegisterFilterProvider();
             //// Cache per tenant?
             //// http://docs.autofac.org/en/latest/advanced/multitenant.html#resolve-tenant-specific-dependencies
             builder.RegisterModule(new AutofacWebTypesModule());

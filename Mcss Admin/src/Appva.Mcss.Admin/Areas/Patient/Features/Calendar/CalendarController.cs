@@ -12,30 +12,28 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Web.Controllers;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Controllers;
+    using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
+    using Appva.Mvc;
+    using Appva.Mvc.Security;
     using Appva.Persistence;
     using NHibernate.Criterion;
     using NHibernate.Transform;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Admin.Infrastructure.Controllers;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mvc;
-    using Appva.Mvc.Security;
-    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute]
     [RouteArea("patient"), RoutePrefix("{id:guid}/calendar")]
     public sealed class CalendarController : IdentityController
     {

@@ -12,37 +12,34 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using Appva.Core.Extensions;
+    using Appva.Core.IO;
+    using Appva.Core.Resources;
+    using Appva.Core.Utilities;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Web;
+    using Appva.Mcss.Web.Controllers;
+    using Appva.Mcss.Web.ViewModels;
+    using Appva.Mvc.Security;
+    using Appva.Office;
+    using Appva.Persistence;
+    using Appva.Tenant.Identity;
     using NHibernate.Criterion;
     using NHibernate.Transform;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Web.ViewModels;
-    using System.Web.UI;
-    using Appva.Mcss.Web.Controllers;
-    using Appva.Mcss.Web;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Mcss.Admin.Application.Models;
-    using Appva.Core.Resources;
-    using Appva.Office;
-using Appva.Core.IO;
-using Appva.Tenant.Identity;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Appva.Mcss.Admin.Application.Auditing;
-    using Appva.Mcss.Admin.Domain.Models;
-    using Appva.Mvc.Security;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
 
     #endregion
 
     /// <summary>
     /// The delegation controller.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute]
     [RouteArea("Practitioner"), RoutePrefix("Delegation")]
     public sealed class DelegationController : Controller
     {

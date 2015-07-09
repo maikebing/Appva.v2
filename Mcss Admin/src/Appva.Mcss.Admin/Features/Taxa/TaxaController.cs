@@ -18,7 +18,6 @@ namespace Appva.Mcss.Admin.Features.Taxa
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Features.Taxa.Filter;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Web;
 
     #endregion
@@ -26,7 +25,6 @@ namespace Appva.Mcss.Admin.Features.Taxa
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute]
     [RoutePrefix("Taxa")]
     public sealed class TaxaController : Controller
     {

@@ -8,28 +8,18 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Mvc;
-    using Appva.Persistence;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mvc.Security;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute]
     [RouteArea("patient"), RoutePrefix("sequence")]
     public sealed class SequenceController : Controller
     {

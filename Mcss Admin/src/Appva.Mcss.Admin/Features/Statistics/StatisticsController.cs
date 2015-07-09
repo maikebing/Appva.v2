@@ -8,23 +8,18 @@ namespace Appva.Mcss.Admin.Features.Statistics
 {
     #region Imports.
 
+    using System.Web.Mvc;
+    using System.Web.UI;
     using Appva.Mcss.Admin.Features.Statistics.Chart;
     using Appva.Mcss.Admin.Features.Statistics.Data;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using System.Web.UI;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute]
     [RoutePrefix("statistics")]
     public class StatisticsController : Controller
     {

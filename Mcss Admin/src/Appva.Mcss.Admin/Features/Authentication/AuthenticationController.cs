@@ -8,32 +8,24 @@ namespace Appva.Mcss.Admin.Features.Authentication
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Application.Services.Menus;
     using Appva.Mcss.Admin.Features.Authentication.Forgot;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Tenant.Identity;
-    using Appva.Core.Extensions;
-    using System.Web;
-    using System.IO;
-    using System.Web.Routing;
-    using Appva.Mcss.Admin.Application.Services.Menus;
-    using Appva.Mcss.Admin.Application.Models;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute, RoutePrefix("auth")]
+    [RoutePrefix("auth")]
     public sealed class AuthenticationController : Controller
     {
         #region Variables.

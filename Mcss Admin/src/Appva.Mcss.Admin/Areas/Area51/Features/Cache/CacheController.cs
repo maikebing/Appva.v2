@@ -8,9 +8,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Caches
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Area51.Features.Cache.Remove;
@@ -25,7 +22,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Caches
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute]
     [RouteArea("area51"), RoutePrefix("cache")]
     [Permissions(Permissions.Area51.ReadValue)]
     public sealed class CacheController : Controller

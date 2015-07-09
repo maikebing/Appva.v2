@@ -10,7 +10,6 @@ namespace Appva.Mcss.Admin.Features.Menus
 
     using System.Web.Mvc;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Controllers;
 
     #endregion
@@ -18,7 +17,7 @@ namespace Appva.Mcss.Admin.Features.Menus
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute, RoutePrefix("menus")]
+    [RoutePrefix("menus")]
     public sealed class MenusController : AbstractMediatorController
     {
         #region Constructor.

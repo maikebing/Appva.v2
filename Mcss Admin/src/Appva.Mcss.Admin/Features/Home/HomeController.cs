@@ -14,7 +14,6 @@ namespace Appva.Mcss.Admin.Features.Home
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services.Menus;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mvc;
     using Appva.Persistence;
 
@@ -23,7 +22,7 @@ namespace Appva.Mcss.Admin.Features.Home
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute, RoutePrefix("")]
+    [RoutePrefix("")]
     public class HomeController : Controller
     {
         #region Variables.

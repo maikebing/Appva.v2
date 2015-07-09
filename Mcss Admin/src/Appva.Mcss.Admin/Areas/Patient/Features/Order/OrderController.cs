@@ -9,19 +9,17 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
     #region Imports.
 
     using System.Web.Mvc;
-using Appva.Mcss.Admin.Application.Common;
-using Appva.Mcss.Admin.Infrastructure;
-using Appva.Mcss.Admin.Infrastructure.Attributes;
-using Appva.Mcss.Admin.Models;
-using Appva.Mvc;
-using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mvc.Security;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [AuthorizeUserAndTenantAttribute]
     [RouteArea("patient"), RoutePrefix("order")]
     public sealed class OrderController : Controller
     {

@@ -24,19 +24,19 @@ namespace Appva.Mcss.Admin
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.UseCdn = true;
-            bundles.Add(new ScriptBundle("~/js").Include(
+            bundles.Add(new ScriptBundle("~/Assets/js/bundle").Include(
                 "~/Assets/js/jquery/jquery-1.6.3.js", "~/Assets/js/jquery/jquery-ui-{version}.custom.js",
                 "~/Assets/js/jquery/plugins/date.js", "~/Assets/js/jquery/plugins/jquery.datepicker.js",
                 "~/Assets/js/jquery/plugins/excanvas.js", "~/Assets/js/jquery/plugins/jquery.flot-{version}.js",
                 "~/Assets/js/jquery/plugins/jquery.validate-{version}.js"
             ));
-            bundles.Add(new ScriptBundle("~/js/mcss").Include(
+            bundles.Add(new ScriptBundle("~/Assets/js/mcss/bundle").Include(
                 "~/Assets/js/main.js", "~/Assets/js/mcss.js", "~/Assets/js/mcss.customselect.js", "~/Assets/js/mcss.chart.js",
                     "~/Assets/js/mcss.validation.js", "~/Assets/js/mcss.calendar.js", "~/Assets/js/mcss.calendar.lb.js", "~/Assets/js/mcss.lightbox.js", "~/Assets/js/mcss.prepareweeks.js", "~/Assets/js/mcss.order.js", "~/Assets/js/mcss.domready.js"
             ));
-            bundles.Add(new StyleBundle("~/css").Include(
+            bundles.Add(new StyleBundle("~/Assets/css/bundle").Include(
                 "~/Assets/css/datePicker.css", "~/Assets/css/ui-lightness/jquery-ui-{version}.custom.css",
-                "~/Assets/css/main.css"/*, "http://fonts.googleapis.com/css?family=Great+Vibes&subset=latin,latin-ext"*/
+                "~/Assets/css/main.css"
             ));
         }
     }

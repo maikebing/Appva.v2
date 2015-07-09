@@ -27,11 +27,11 @@ namespace Appva.Core.Extensions
         public static string Subdomain(this Uri uri)
         {
             var domains = uri.Host.Split('.');
-            if (domains.Length < 2)
+            if (domains.Length > 0)
             {
-                return null;
+                return domains[0];
             }
-            return domains[0];
+            return null;
         }
     }
 }

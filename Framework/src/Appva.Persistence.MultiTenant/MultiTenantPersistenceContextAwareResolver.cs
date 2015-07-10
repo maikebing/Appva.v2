@@ -63,7 +63,7 @@ namespace Appva.Persistence.MultiTenant
             if (this.strategy.TryIdentifyTenant(out identifier))
             {
                 Log.Debug(Debug.ResolveTenantIdentity, identifier.Value);
-                return datasource.Locate(CacheTypes.Persistence.FormatWith(identifier.Value));
+                return datasource.Locate(identifier.Value);
             }
             throw new PersistenceContextAwareResolverException(Exceptions.FailedToResolveTenantIdentifier);
         }

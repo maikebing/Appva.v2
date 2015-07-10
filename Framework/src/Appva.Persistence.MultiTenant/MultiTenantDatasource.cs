@@ -92,7 +92,8 @@ namespace Appva.Persistence.MultiTenant
         public ISessionFactory Locate(string key)
         {
             Log.Debug(Debug.LocateISessionFactoryForTenant, key);
-            if (! this.cache.Contains(key))
+            var cacheKey = CacheTypes.Persistence.FormatWith(key);
+            if (! this.cache.Contains(cacheKey))
             {
                 var tenant = this.client.FindByIdentifier(key);
                 if (tenant == null)
@@ -100,7 +101,7 @@ namespace Appva.Persistence.MultiTenant
                     throw new TenantNotFoundException(Exceptions.TenantNotFound.FormatWith(key));
                 }
                 this.cache.Upsert<ISessionFactory>(
-                    key,
+                    cacheKey,
                     this.Build(PersistenceUnit.CreateNew(
                         this.configuration.UseIdAsIdentifier ? tenant.Id.ToString() : tenant.Identifier, 
                         tenant.ConnectionString, 
@@ -108,7 +109,7 @@ namespace Appva.Persistence.MultiTenant
                         this.configuration.Properties)),
                     RuntimeEvictionPolicy.NonRemovable);
             }
-            return this.cache.Find<ISessionFactory>(key);
+            return this.cache.Find<ISessionFactory>(cacheKey);
         }
 
         #endregion

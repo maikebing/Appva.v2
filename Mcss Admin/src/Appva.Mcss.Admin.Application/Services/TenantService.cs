@@ -109,7 +109,7 @@ namespace Appva.Mcss.Admin.Application.Services
             var cacheKey = CacheTypes.Tenant.FormatWith(id.Value);
             if (this.cache.Find<ITenantIdentity>(cacheKey) == null)
             {
-                var tenant = this.client.FindByIdentifier(id.Value);
+                var tenant = this.client.FindByIdentifier(id);
                 if (tenant != null)
                 {
                     this.cache.Upsert<ITenantIdentity>(cacheKey, new TenantIdentity(id, tenant.Name, tenant.HostName), new RuntimeEvictionPolicy

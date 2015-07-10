@@ -88,7 +88,6 @@ namespace Appva.Persistence.MultiTenant
         #region IMultiTenantDatasource Members.
 
         /// <inheritdoc />
-        /// <remarks>The key is a cache key, e.g. {cache}.{tenantId}</remarks>
         public ISessionFactory Locate(string key)
         {
             Log.Debug(Debug.LocateISessionFactoryForTenant, key);

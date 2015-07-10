@@ -133,6 +133,7 @@
     <Compile Include="Fhir\JsonTests.cs" />
     <Compile Include="Fhir\ProtoBufTests.cs" />
     <Compile Include="OAuth2\OAuth2Tests.cs" />
+    <Compile Include="Persistence\Multitenant\MultiTenantPersistenceContextAwareResolverTest.cs" />
     <Compile Include="Tools\HttpRequest.cs" />
     <Compile Include="Tools\JsonUtils.cs" />
     <Compile Include="Tools\ProtoBufUtils.cs" />
@@ -155,6 +156,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Appva.Apis.TenantServer.Legacy\Appva.Apis.TenantServer.Legacy.csproj">
+      <Project>{d6cd965a-fa1e-429e-94e7-7efb4e66ce3f}</Project>
+      <Name>Appva.Apis.TenantServer.Legacy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Apis.Tenant\Appva.Apis.TenantServer.csproj">
+      <Project>{84a3404b-798f-43d7-85d9-d2a510895f9e}</Project>
+      <Name>Appva.Apis.TenantServer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Caching\Appva.Caching.csproj">
       <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
       <Name>Appva.Caching</Name>
@@ -183,9 +192,17 @@
       <Project>{112ad9da-0382-44ed-8f4c-93ad23674f44}</Project>
       <Name>Appva.OAuth</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Appva.Persistence.MultiTenant\Appva.Persistence.MultiTenant.csproj">
+      <Project>{3d8f0261-b3b3-4202-adfd-ceb0ec3d93e3}</Project>
+      <Name>Appva.Persistence.MultiTenant</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Persistence\Appva.Persistence.csproj">
       <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
       <Name>Appva.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Tenant\Appva.Tenant.csproj">
+      <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
+      <Name>Appva.Tenant</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appva.WebApi\Appva.WebApi.csproj">
       <Project>{5603a0f9-3666-4fc9-9af9-b21c7432ba02}</Project>

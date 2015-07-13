@@ -34,9 +34,11 @@ namespace Appva.Mcss.Admin
                 "~/Assets/js/main.js", "~/Assets/js/mcss.js", "~/Assets/js/mcss.customselect.js", "~/Assets/js/mcss.chart.js",
                     "~/Assets/js/mcss.validation.js", "~/Assets/js/mcss.calendar.js", "~/Assets/js/mcss.calendar.lb.js", "~/Assets/js/mcss.lightbox.js", "~/Assets/js/mcss.prepareweeks.js", "~/Assets/js/mcss.order.js", "~/Assets/js/mcss.domready.js"
             ));
+            bundles.Add(new StyleBundle("~/Assets/css/ui-lightness/bundle").Include(
+                "~/Assets/css/ui-lightness/jquery-ui-{version}.custom.css"
+            ));
             bundles.Add(new StyleBundle("~/Assets/css/bundle").Include(
-                "~/Assets/css/datePicker.css", "~/Assets/css/ui-lightness/jquery-ui-{version}.custom.css",
-                "~/Assets/css/main.css"
+                "~/Assets/css/datePicker.css", "~/Assets/css/main.css"
             ));
         }
     }

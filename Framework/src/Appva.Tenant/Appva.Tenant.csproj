@@ -37,6 +37,7 @@
     <Compile Include="Identity\ITenantIdentificationStrategy.cs" />
     <Compile Include="Identity\TenantIdentity.cs" />
     <Compile Include="Identity\TenantIdentifier.cs" />
+    <Compile Include="Identity\Validation\ValidateTenantIdentificationResult.cs" />
     <Compile Include="Interoperability\Client\IClientDto.cs" />
     <Compile Include="Interoperability\Client\ITenantClient.cs" />
     <Compile Include="Interoperability\Client\ITenantClientAsync.cs" />

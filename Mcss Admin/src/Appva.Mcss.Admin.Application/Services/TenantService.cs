@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Tenant.Interoperability.Client;
     using Validation;
     using Appva.Core.Extensions;
+    using Microsoft.Owin;
 
     #endregion
 
@@ -42,6 +43,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="id">The unique identifier</param>
         ITenantIdentity Find(ITenantIdentifier id);
+
+        /// <summary>
+        /// Validates the current request and and tenant identifier.
+        /// </summary>
+        /// <param name="context">An owin context</param>
+        /// <returns>A <see cref="IValidateTenantIdentificationResult"/></returns>
+        IValidateTenantIdentificationResult Validate(IOwinContext context);
     }
 
     /// <summary>
@@ -119,6 +127,14 @@ namespace Appva.Mcss.Admin.Application.Services
                 }
             }
             return this.cache.Find<ITenantIdentity>(cacheKey);
+        }
+
+        /// <inheritdoc />
+        public IValidateTenantIdentificationResult Validate(IOwinContext context)
+        {
+            ITenantIdentity identity;
+            this.TryIdentifyTenant(out identity);
+            return this.strategy.Validate(identity, context.Request.Uri);
         }
 
         #endregion

@@ -36,7 +36,6 @@ using Appva.Persistence;
 
         #endregion
 
-
         #region AbstractExceptionHandler Members.
 
         /// <inheritdoc />

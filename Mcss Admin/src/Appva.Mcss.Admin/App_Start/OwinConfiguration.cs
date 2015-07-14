@@ -33,8 +33,8 @@ namespace Appva.Mcss.Admin
         /// <param name="app">The <see cref="IAppBuilder"/></param>
         public void Configuration(IAppBuilder app)
         {
+            IocConfiguration.Configure(app);
             AuthenticationConfiguration.Configure(app);
-            IocConfiguration.Configure();
         }
     }
 }

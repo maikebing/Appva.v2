@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
 {
     #region Imports.
 
+    using System;
     using Appva.Tenant.Identity;
 
     #endregion
@@ -33,6 +34,12 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         {
             identifier = Identifier;
             return true;
+        }
+
+        /// <inheritdoc />
+        public IValidateTenantIdentificationResult Validate(ITenantIdentity identity, Uri uri)
+        {
+            return ValidateTenantIdentificationResult.Valid;
         }
 
         #endregion

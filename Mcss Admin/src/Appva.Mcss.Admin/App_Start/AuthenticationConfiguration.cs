@@ -35,13 +35,13 @@ namespace Appva.Mcss.Admin
         public static void Configure(IAppBuilder app)
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions
-                {
-                    AuthenticationMode = AuthenticationMode.Active,
-                    AuthenticationType = AuthenticationType.Administrative.Value,
-                    CookieSecure = CookieSecureOption.SameAsRequest,
-                    LoginPath = new PathString("/auth/sign-in"),
-                    ExpireTimeSpan = TimeSpan.FromMinutes(15)
-                });
+            {
+                AuthenticationMode = AuthenticationMode.Active,
+                AuthenticationType = AuthenticationType.Administrative.Value,
+                CookieSecure = CookieSecureOption.SameAsRequest,
+                LoginPath = new PathString("/auth/sign-in"),
+                ExpireTimeSpan = TimeSpan.FromMinutes(15)
+            });
         }
     }
 }

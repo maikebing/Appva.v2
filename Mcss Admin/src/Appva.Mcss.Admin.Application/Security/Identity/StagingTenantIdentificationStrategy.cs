@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
 {
     #region Imports.
 
+    using System;
     using System.Web;
     using Appva.Core.Logging;
     using Appva.Tenant.Identity;
@@ -29,7 +30,12 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// <summary>
         /// The HTTP header.
         /// </summary>
-        private const string Host = "HOST";
+        private const string HostHeader = "HOST";
+
+        /// <summary>
+        /// The host domain.
+        /// </summary>
+        private const string Host = "dev.appvamcss";
 
         #endregion
 
@@ -46,7 +52,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
                 {
                     return false;
                 }
-                var domains = context.Request.Headers.Get(Host).Split('.');
+                var domains = context.Request.Headers.Get(HostHeader).Split('.');
                 if (domains.Length < 3)
                 {
                     return false;
@@ -58,6 +64,24 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
                 Log.Error(ex);
             }
             return identifier != null;
+        }
+
+        /// <inheritdoc />
+        public IValidateTenantIdentificationResult Validate(ITenantIdentity identity, Uri uri)
+        {
+            if (identity == null)
+            {
+                return ValidateTenantIdentificationResult.NotFound;
+            }
+            if (! string.IsNullOrWhiteSpace(identity.HostName))
+            {
+                var expected = identity.HostName + "." + Host;
+                if (! expected.Equals(uri.Host))
+                {
+                    return ValidateTenantIdentificationResult.Invalid;
+                }
+            }
+            return ValidateTenantIdentificationResult.Valid;
         }
 
         #endregion

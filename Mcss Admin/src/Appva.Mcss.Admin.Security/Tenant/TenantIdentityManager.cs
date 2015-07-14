@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Security
             var cacheKey = string.Format(CacheTypes.Tenant, identifier.Value);
             if (this.cache.Find<ITenantIdentity>(cacheKey) == null)
             {
-                var tenant = this.client.FindByIdentifier(identifier.Value);
+                var tenant = this.client.FindByIdentifier(identifier);
                 this.cache.Upsert<ITenantIdentity>(
                     cacheKey, 
                     new TenantIdentity(identifier, tenant.Name, tenant.HostName), 

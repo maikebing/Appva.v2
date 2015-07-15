@@ -184,7 +184,6 @@
     <Compile Include="App_Start\BundleConfiguration.cs" />
     <Compile Include="App_Start\FilterConfiguration.cs" />
     <Compile Include="App_Start\IocConfiguration.cs" />
-    <Compile Include="App_Start\NHibernateProfilerBootstrapper.cs" />
     <Compile Include="App_Start\OwinConfiguration.cs" />
     <Compile Include="App_Start\RouteConfiguration.cs" />
     <Compile Include="App_Start\AuthenticationConfiguration.cs" />
@@ -489,7 +488,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Start\NHibernateProfilerBootstrapper.vb" />
     <Content Include="Assets\css\datePicker.css" />
     <Content Include="Assets\error-pages\400.html" />
     <Content Include="Assets\error-pages\403.html" />

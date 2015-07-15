@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// <summary>
         /// The production host domain.
         /// </summary>
-        private const string Host = "appvamcss";
+        private const string Host = "appvamcss.com";
 
         /// <summary>
         /// The certificate issuer.

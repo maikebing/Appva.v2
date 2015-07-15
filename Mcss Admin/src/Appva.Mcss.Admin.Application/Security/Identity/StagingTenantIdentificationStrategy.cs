@@ -23,11 +23,6 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ILog"/>.
-        /// </summary>
-        private static readonly ILog Log = LogProvider.For<StagingTenantIdentificationStrategy>();
-
-        /// <summary>
         /// The HTTP header.
         /// </summary>
         private const string HostHeader = "HOST";
@@ -36,6 +31,11 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// The host domain.
         /// </summary>
         private const string Host = "dev.appvamcss";
+
+        /// <summary>
+        /// The <see cref="ILog"/>.
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<StagingTenantIdentificationStrategy>();
 
         #endregion
 

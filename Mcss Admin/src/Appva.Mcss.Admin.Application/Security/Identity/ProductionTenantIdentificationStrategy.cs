@@ -67,6 +67,11 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
                 var certificate = new X509Certificate2(content.ToUtf8Bytes());
                 if (! this.IsValidCertificate(certificate))
                 {
+                    Log.Warn("The certificate is invalid! SerialNumber: [{0}], Issuer: [{1}], NotBefore: [{2}], NotAfter: [{3}]",
+                        certificate.SerialNumber,
+                        certificate.Issuer,
+                        certificate.NotBefore,
+                        certificate.NotAfter);
                     return false;
                 }
                 //// The serial number without dashes.
@@ -97,7 +102,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
             {
                 return ValidateTenantIdentificationResult.Valid;
             }
-            var expected = identity.HostName + "." + Host;
+            var expected = "{0}.{1}".FormatWith(identity.HostName, Host);
             return expected.Equals(uri.Host) ? ValidateTenantIdentificationResult.Valid : ValidateTenantIdentificationResult.Invalid;
         }
 

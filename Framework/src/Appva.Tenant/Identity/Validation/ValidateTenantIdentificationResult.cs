@@ -86,20 +86,6 @@ namespace Appva.Tenant.Identity
 
         #endregion
 
-        #region Public Static Functions.
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="ValidateTenantIdentificationResult"/> class.
-        /// </summary>
-        /// <param name="code">The result code</param>
-        /// <returns>A new <see cref="ValidateTenantIdentificationResult"/> instance</returns>
-        public static ValidateTenantIdentificationResult CreateNew(ValidateTenantIdentificationResultCode code)
-        {
-            return new ValidateTenantIdentificationResult(code);
-        }
-
-        #endregion
-
         #region Internal Enums.
 
         /// <summary>
@@ -153,6 +139,20 @@ namespace Appva.Tenant.Identity
             {
                 return this.code.Equals(ValidateTenantIdentificationResultCode.NotFound);
             }
+        }
+
+        #endregion
+
+        #region Internal Static Functions.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="ValidateTenantIdentificationResult"/> class.
+        /// </summary>
+        /// <param name="code">The result code</param>
+        /// <returns>A new <see cref="ValidateTenantIdentificationResult"/> instance</returns>
+        internal static ValidateTenantIdentificationResult CreateNew(ValidateTenantIdentificationResultCode code)
+        {
+            return new ValidateTenantIdentificationResult(code);
         }
 
         #endregion

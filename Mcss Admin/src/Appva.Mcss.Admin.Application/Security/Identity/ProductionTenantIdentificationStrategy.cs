@@ -84,7 +84,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
                 }
                 identifier = new TenantIdentifier(serialNumber);
             }
-            catch (HttpException ex)
+            catch (Exception ex)
             {
                 Log.Error(ex);
             }

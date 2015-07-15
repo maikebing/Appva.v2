@@ -40,6 +40,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,6 +52,7 @@
     <Compile Include="Configuration\IAuthifyConfiguration.cs" />
     <Compile Include="Configuration\SithsConfiguration.cs" />
     <Compile Include="Http\HttpClientExtensions.cs" />
+    <Compile Include="Http\HttpUtils.cs" />
     <Compile Include="Identity\SithsIdentity.cs" />
     <Compile Include="Identity\IdentityCollection.cs" />
     <Compile Include="SithsClient.cs" />

@@ -168,10 +168,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
             if (result.IsAuthorized)
             {
                 this.authentication.SignIn(result.Identity);
-                var defaultUrl = Url.Action("Index", "Dashboard", new
-                {
-                    Area = "Dashboard"
-                });
+                return this.RedirectToAction("Index", "Home");
             }
             //// If everything fails; start over!
             return this.RedirectToAction("SignInSiths");

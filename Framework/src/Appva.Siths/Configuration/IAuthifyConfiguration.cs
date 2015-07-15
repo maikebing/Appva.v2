@@ -42,9 +42,9 @@ namespace Appva.Siths.Configuration
         }
 
         /// <summary>
-        /// Returns the Authify redirect URL.
+        /// Returns the application redirect path.
         /// </summary>
-        Uri RedirectUrl
+        string RedirectPath
         {
             get;
         }

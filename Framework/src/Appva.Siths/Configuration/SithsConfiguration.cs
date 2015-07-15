@@ -37,6 +37,7 @@ namespace Appva.Siths.Configuration
             {
                 return (Uri) this["serverAddress"];
             }
+
             set
             {
                 this["serverAddress"] = value;
@@ -51,6 +52,7 @@ namespace Appva.Siths.Configuration
             {
                 return this["key"] as string;
             }
+
             set
             {
                 this["key"] = value;
@@ -65,6 +67,7 @@ namespace Appva.Siths.Configuration
             {
                 return this["secret"] as string;
             }
+
             set
             {
                 this["secret"] = value;
@@ -72,16 +75,17 @@ namespace Appva.Siths.Configuration
         }
 
         /// <inheritdoc />
-        [ConfigurationProperty("redirectUrl", IsRequired = true)]
-        public Uri RedirectUrl
+        [ConfigurationProperty("redirectPath", IsRequired = true)]
+        public string RedirectPath
         {
             get
             {
-                return (Uri) this["redirectUrl"];
+                return this["redirectPath"] as string;
             }
+
             set
             {
-                this["redirectUrl"] = value;
+                this["redirectPath"] = value;
             }
         }
 
@@ -102,6 +106,7 @@ namespace Appva.Siths.Configuration
             {
                 return this["resellerId"] as string;
             }
+
             set
             {
                 this["resellerId"] = value;

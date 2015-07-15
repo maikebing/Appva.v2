@@ -701,6 +701,10 @@
       <Project>{53a7fe5b-f451-4b7a-8932-9ad424f09165}</Project>
       <Name>Appva.Mvc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.NHibernateUtils\Appva.NHibernateUtils.csproj">
+      <Project>{68889619-9faa-4b0c-bfa7-98d2a60e5584}</Project>
+      <Name>Appva.NHibernateUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Office\Appva.Office.csproj">
       <Project>{7536e156-eab5-4812-87fb-8ec58eb00f99}</Project>
       <Name>Appva.Office</Name>

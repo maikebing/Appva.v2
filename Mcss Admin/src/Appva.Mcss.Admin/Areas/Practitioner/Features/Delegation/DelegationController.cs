@@ -493,7 +493,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                 {
                     StartDate = startDate.GetValueOrDefault(),
                     EndDate = endDate.GetValueOrDefault(),
-                    Account = account.Id
+                    Account = account.Id,
+                    ScheduleSetting = sId
                 }, page.GetValueOrDefault(1), 30),
                 DelegationId = tId,
                 Delegations = this.taxonomyService.ListChildren(TaxonomicSchema.Delegation).Select(x => new SelectListItem

@@ -25,7 +25,7 @@
             </li>
             foreach (var schedule in Model.Schedules) {
                 <li class="@(Model.Schedule.HasValue && Model.Schedule.Value.Equals(schedule.Id) ? "sel" : "")">
-                    @Html.ActionLink(schedule.Name, "ScheduleReport", new { id = Model.Patient.Id, sId = schedule.Id, startDate = Model.StartDate.ToShortDateString(), endDate = Model.EndDate.ToShortDateString() })
+                    @Html.ActionLink(schedule.Name, "ScheduleReport", new { id = Model.Patient.Id, scheduleSettingsId = schedule.Id, startDate = Model.StartDate.ToShortDateString(), endDate = Model.EndDate.ToShortDateString() })
                 </li>
             }
         }
@@ -33,49 +33,10 @@
 	<div id="content-primary">
         <div id="report" class="cf">
             <div id="chart" class="chart" style="height: 250px; margin-bottom:20px;"></div>
-			<div class="data cf">
-				<dl>
-					<dt>I tid</dt>
-					<dd>
-                        @Model.Report.TasksOnTime % 
-                        @if (Model.Report.TasksOnTime > Model.Report.ComparedDateSpanTasksOnTime) {
-                            <img src="@Url.Image("trendup.png")" alt="Uppåtgående" />
-                        } else {
-                            <img src="@Url.Image("trenddn.png")" alt="Nedåtgående" />
-                        }
-                    </dd>
-				</dl>
-				<dl>
-					<dt>Ej i tid</dt>
-					<dd>
-                        @Model.Report.TasksNotOnTime % 
-                    </dd>
-				</dl>
-				<dl>
-					<dt>Förändring från föregående period</dt>
-					@{
-                         
-                        var amount = string.Empty;
-                        var change = Model.Report.TasksOnTime - Model.Report.ComparedDateSpanTasksOnTime;
-                         if (change < 0 ) {
-                             amount = string.Format("{0} i tid", "färre");
-                         } else {
-                             amount = string.Format("{0} i tid", "fler");
-                         }
-                    }
-					<dd class="small">@change % @amount</dd>
-				</dl>
-				<dl>
-					<dt>Genomsnittlig försening i tid</dt>
-					<dd class="small">@TimeSpanDifference.ToReadableText(TimeSpan.FromMinutes(Model.Report.AverageDifferenceInTime))</dd>
-				</dl>
-                <dl>
-                    <dt>Totalt antal insatser</dt>
-					<dd class="small">@Model.Report.Search.TotalItemCount</dd>
-                </dl>
-			</div>
 
-            @if (Model.Report.Search.Items.Count > 0) {
+			@Html.Partial("/Features/Statistics/Data/StatisticsData.cshtml", Model.Report)
+
+            @if (Model.Tasks.Entities.Count > 0) {
             <div id="signed-events" class="listing">
 			    <h2 class="heading">Insatser under perioden</h2>
                 <table>
@@ -91,7 +52,7 @@
 					    </tr>
 				    </thead>
 				    <tbody>
-                        @foreach (var task in Model.Report.Search.Items) {
+                        @foreach (var task in Model.Tasks.Entities) {
     <tr class="@(!task.IsActive ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
 						    <td>@task.Name</td>
 						    <td>
@@ -199,13 +160,13 @@
 				    </tbody>
 			    </table>
 		    </div>
-            @Html.Pager(Model.Report.Search.PageSize, Model.Report.Search.PageNumber, Model.Report.Search.TotalItemCount).Options(o => o
+            @Html.Pager((int)Model.Tasks.PageSize, (int)Model.Tasks.CurrentPage, (int)Model.Tasks.TotalCount).Options(o => o
                 .DisplayTemplate("Pagination")
                 .MaxNrOfPages(15)
                 .AlwaysAddFirstPageNumber()
-                .AddRouteValue("sId", Model.Schedule)
-                .AddRouteValue("startDate", Model.Report.StartDate.ToShortDateString())
-                .AddRouteValue("endDate", Model.Report.EndDate.ToShortDateString())
+                .AddRouteValue("scheduleSettingsId", Model.Schedule)
+                .AddRouteValue("startDate", Model.StartDate.ToShortDateString())
+                .AddRouteValue("endDate", Model.EndDate.ToShortDateString())
                 )
             }
         </div>
@@ -243,13 +204,13 @@
         mcss.chart.Load({ 
             'selector': '#chart',
             'url': '@Url.Action("GetChartData", "Statistics", new { area = "" })',
-            'min': new Date(@Model.Report.StartDate.Year, @(Model.Report.StartDate.Month - 1), @Model.Report.StartDate.Day),
-            'max': new Date(@Model.Report.EndDate.Year, @(Model.Report.EndDate.Month - 1), @Model.Report.EndDate.Day),
+            'min': new Date(@Model.StartDate.Year, @(Model.StartDate.Month - 1), @Model.StartDate.Day),
+            'max': new Date(@Model.EndDate.Year, @(Model.EndDate.Month - 1), @Model.EndDate.Day),
             'parameters': {
                 'Patient': '@Model.Patient.Id',
-                'ScheduleSettings': '@Model.Schedule', 
-                'Start': '@Model.Report.StartDate.ToShortDateString()',
-                'End': '@Model.Report.EndDate.ToShortDateString()'
+                'ScheduleSetting': '@Model.Schedule', 
+                'Start': '@Model.StartDate.ToShortDateString()',
+                'End': '@Model.EndDate.ToShortDateString()'
             }
         });
 

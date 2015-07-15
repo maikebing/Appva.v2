@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Office", "Appva.Offic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Shared", "Appva.Shared\Appva.Shared.csproj", "{B1B03AAE-1C86-415A-A157-F50AB618670D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.NHibernateUtils", "Appva.NHibernateUtils\Appva.NHibernateUtils.csproj", "{68889619-9FAA-4B0C-BFA7-98D2A60E5584}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,10 @@ Global
 		{B1B03AAE-1C86-415A-A157-F50AB618670D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1B03AAE-1C86-415A-A157-F50AB618670D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1B03AAE-1C86-415A-A157-F50AB618670D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68889619-9FAA-4B0C-BFA7-98D2A60E5584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68889619-9FAA-4B0C-BFA7-98D2A60E5584}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68889619-9FAA-4B0C-BFA7-98D2A60E5584}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68889619-9FAA-4B0C-BFA7-98D2A60E5584}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

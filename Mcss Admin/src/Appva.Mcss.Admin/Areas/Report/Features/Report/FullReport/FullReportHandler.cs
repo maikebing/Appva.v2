@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Areas.Models
 {
     #region Imports.
 
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
@@ -66,33 +67,25 @@ namespace Appva.Mcss.Admin.Areas.Models
 
         public override FullReportModel Handle(FullReport message)
         {
-            if (!message.Start.HasValue)
-            {
-                message.Start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            }
-            if(!message.End.HasValue)
-            {
-                message.End = message.Start.GetValueOrDefault().AddMonths(1).AddDays(-1);
-            }
             return new FullReportModel
             {
-                Start = message.Start.GetValueOrDefault(),
-                End = message.End.GetValueOrDefault(),
+                Start = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
+                End = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
                 Schedules = this.schedules.GetSchedules(),
                 Tasks = tasks.List(
                     new ListTaskModel 
-                    { 
-                        StartDate = message.Start.GetValueOrDefault(), 
-                        EndDate = message.End.GetValueOrDefault(),
+                    {
+                        StartDate = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
+                        EndDate = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
                         ScheduleSetting = message.ScheduleSetting,
                         Taxon = this.filter.GetCurrentFilter().Id
                     }, 
                     message.Page,
                     30),
                 Report = reports.GetReportData(new ChartDataFilter 
-                { 
-                    StartDate = message.Start.GetValueOrDefault(), 
-                    EndDate = message.End.GetValueOrDefault(),
+                {
+                    StartDate = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
+                    EndDate = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
                     ScheduleSetting = message.ScheduleSetting,
                     Organisation = this.filter.GetCurrentFilter().Id
                 }),

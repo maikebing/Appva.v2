@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Features.Home
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize, RoutePrefix("")]
+    [RoutePrefix("")]
     public class HomeController : Controller
     {
         #region Variables.

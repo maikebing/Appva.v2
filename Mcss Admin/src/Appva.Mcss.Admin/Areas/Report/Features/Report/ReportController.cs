@@ -20,7 +20,6 @@ namespace Appva.Mcss.Admin.Areas.Report.Features
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     /// 
-    [Authorize]
     [RouteArea("report")]
     public class ReportController : Controller
     {

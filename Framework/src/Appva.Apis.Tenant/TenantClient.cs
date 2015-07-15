@@ -15,6 +15,7 @@ namespace Appva.Apis.TenantServer
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
+    using Appva.Tenant.Identity;
     using Configuration;
     using Core.Logging;
     using Newtonsoft.Json;
@@ -145,7 +146,7 @@ namespace Appva.Apis.TenantServer
 
         /// <inheritdoc />
         /// <remarks>Currently not supported</remarks>
-        public ITenantDto FindByIdentifier(string id)
+        public ITenantDto FindByIdentifier(ITenantIdentifier id)
         {
             throw new NotImplementedException();
         }
@@ -175,7 +176,7 @@ namespace Appva.Apis.TenantServer
 
         /// <inheritdoc />
         /// <remarks>Currently not supported</remarks>
-        public Task<ITenantDto> FindByIdentifierAsync(string id)
+        public Task<ITenantDto> FindByIdentifierAsync(ITenantIdentifier id)
         {
             throw new NotImplementedException();
         }

@@ -49,6 +49,12 @@
     <Reference Include="Autofac.Integration.Mvc">
       <HintPath>..\..\..\Packages\Autofac.Mvc5.3.3.3\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac.Integration.Mvc.Owin">
+      <HintPath>..\..\..\Packages\Autofac.Mvc5.Owin.3.1.0\lib\net45\Autofac.Integration.Mvc.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Owin">
+      <HintPath>..\..\..\Packages\Autofac.Owin.3.1.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="DataAnnotationsExtensions">
       <HintPath>..\..\..\Packages\DataAnnotationsExtensions.1.1.0.0\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
     </Reference>
@@ -485,6 +491,12 @@
   <ItemGroup>
     <Content Include="App_Start\NHibernateProfilerBootstrapper.vb" />
     <Content Include="Assets\css\datePicker.css" />
+    <Content Include="Assets\error-pages\400.html" />
+    <Content Include="Assets\error-pages\403.html" />
+    <Content Include="Assets\error-pages\404.html" />
+    <Content Include="Assets\error-pages\409.html" />
+    <Content Include="Assets\error-pages\412.html" />
+    <Content Include="Assets\error-pages\css\http-error-pages.css" />
     <Content Include="Assets\css\main.css" />
     <Content Include="Assets\css\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Assets\css\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
@@ -635,6 +647,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Features\Web.config">
       <SubType>Designer</SubType>
@@ -881,9 +894,6 @@
     <Content Include="Areas\Patient\Features\Sequence\Update\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Practitioner\Features\Accounts\Edit\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRoles.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -985,6 +995,12 @@
   <ItemGroup>
     <Content Include="Features\Statistics\Data\StatisticsData.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\_ErrorLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -1003,7 +1019,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1080/</IISUrl>
+          <IISUrl>http://localhost:1080</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

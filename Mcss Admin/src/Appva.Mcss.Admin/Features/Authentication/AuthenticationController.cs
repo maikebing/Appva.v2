@@ -8,25 +8,17 @@ namespace Appva.Mcss.Admin.Features.Authentication
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Application.Services.Menus;
     using Appva.Mcss.Admin.Features.Authentication.Forgot;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Tenant.Identity;
-    using Appva.Core.Extensions;
-    using System.Web;
-    using System.IO;
-    using System.Web.Routing;
-    using Appva.Mcss.Admin.Application.Services.Menus;
-    using Appva.Mcss.Admin.Application.Models;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
 
     #endregion
 
@@ -231,6 +223,24 @@ namespace Appva.Mcss.Admin.Features.Authentication
             }
             ModelState.AddModelError(string.Empty, "Personnummer eller e-post är felaktigt.");
             return this.View(model);
+        }
+
+        #endregion
+
+        #region Redirect For Old Invalid URLs.
+
+        /// <summary>
+        /// Redirects to the new authentication URL if the deprecated URL is used.
+        /// </summary>
+        /// <returns>A redirect to correct sign in</returns>
+        [AllowAnonymous]
+        [HttpGet, Route("~/Authenticate/LogIn")]
+        public ActionResult RedirectForOldAuthenticationLoginUrl()
+        {
+            return this.RedirectToAction("SignIn", new SignIn
+            {
+                ReturnUrl = string.Empty
+            });
         }
 
         #endregion

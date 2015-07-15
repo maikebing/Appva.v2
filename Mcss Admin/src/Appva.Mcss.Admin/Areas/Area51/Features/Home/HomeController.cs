@@ -8,9 +8,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Home
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mvc.Security;
@@ -20,7 +17,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Home
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RouteArea("area51"), RoutePrefix("")]
     [Permissions(Permissions.Area51.ReadValue)]
     public sealed class HomeController : Controller

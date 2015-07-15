@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Apis.Audit", "Appva.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Apis.TenantServer.Legacy", "Appva.Apis.TenantServer.Legacy\Appva.Apis.TenantServer.Legacy.csproj", "{D6CD965A-FA1E-429E-94E7-7EFB4E66CE3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Tenant", "Appva.Tenant\Appva.Tenant.csproj", "{CC908096-EB14-44DA-8996-FE2C700406AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Tenant", "Appva.Tenant\Appva.Tenant.csproj", "{443693E3-D712-40FB-837B-A1DA866695FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Siths", "Appva.Siths\Appva.Siths.csproj", "{00FA489C-6F1D-42FB-8CAF-426B90F1F223}"
 EndProject
@@ -139,10 +139,10 @@ Global
 		{D6CD965A-FA1E-429E-94E7-7EFB4E66CE3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6CD965A-FA1E-429E-94E7-7EFB4E66CE3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6CD965A-FA1E-429E-94E7-7EFB4E66CE3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC908096-EB14-44DA-8996-FE2C700406AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC908096-EB14-44DA-8996-FE2C700406AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC908096-EB14-44DA-8996-FE2C700406AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC908096-EB14-44DA-8996-FE2C700406AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{443693E3-D712-40FB-837B-A1DA866695FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{443693E3-D712-40FB-837B-A1DA866695FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{443693E3-D712-40FB-837B-A1DA866695FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{443693E3-D712-40FB-837B-A1DA866695FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00FA489C-6F1D-42FB-8CAF-426B90F1F223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00FA489C-6F1D-42FB-8CAF-426B90F1F223}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00FA489C-6F1D-42FB-8CAF-426B90F1F223}.Release|Any CPU.ActiveCfg = Release|Any CPU

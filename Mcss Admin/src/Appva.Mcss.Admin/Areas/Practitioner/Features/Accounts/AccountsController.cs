@@ -8,18 +8,17 @@ namespace Appva.Mcss.Admin.Features.Accounts
 {
     #region Imports.
 
-    using System;
-using System.Web.Mvc;
-using System.Web.UI;
-using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Common;
-using Appva.Mcss.Admin.Application.Security.Identity;
-using Appva.Mcss.Admin.Application.Services;
-using Appva.Mcss.Admin.Infrastructure;
-using Appva.Mcss.Admin.Infrastructure.Attributes;
-using Appva.Mcss.Admin.Infrastructure.Models;
-using Appva.Mcss.Admin.Models;
-using Appva.Mvc;
+    using System.Web.Mvc;
+    using System.Web.UI;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mvc;
     using Appva.Mvc.Security;
 
     #endregion
@@ -27,7 +26,7 @@ using Appva.Mvc;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize, RouteArea("Practitioner"), RoutePrefix("Accounts")]
+    [RouteArea("Practitioner"), RoutePrefix("Accounts")]
     public class AccountsController : Controller
     {
         #region Variables.

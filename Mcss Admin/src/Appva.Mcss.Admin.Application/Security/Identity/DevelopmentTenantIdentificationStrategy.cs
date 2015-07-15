@@ -8,6 +8,8 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
 {
     #region Imports.
 
+    using System;
+    using System.Web;
     using Appva.Tenant.Identity;
 
     #endregion
@@ -18,6 +20,11 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
     public sealed class DevelopmentTenantIdentificationStrategy : ITenantIdentificationStrategy
     {
         #region Variables.
+
+        /// <summary>
+        /// The host domain.
+        /// </summary>
+        private const string Host = "locahost";
 
         /// <summary>
         /// The development fixed tenant identifier.
@@ -33,6 +40,24 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         {
             identifier = this.identifier;
             return true;
+        }
+
+        /// <inheritdoc />
+        public IValidateTenantIdentificationResult Validate(ITenantIdentity identity, Uri uri)
+        {
+            if (identity == null)
+            {
+                return ValidateTenantIdentificationResult.NotFound;
+            }
+            if (! string.IsNullOrWhiteSpace(identity.HostName))
+            {
+                var expected = identity.HostName + "." + Host;
+                if (! expected.Equals(uri.Host))
+                {
+                    return ValidateTenantIdentificationResult.Invalid;
+                }
+            }
+            return ValidateTenantIdentificationResult.Valid;
         }
 
         #endregion

@@ -8,29 +8,23 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles
 {
     #region Imports.
 
-    using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Appva.Core.Resources;
-using Appva.Mcss.Admin.Application.Common;
-using Appva.Mcss.Admin.Areas.Roles.Roles.Create;
-using Appva.Mcss.Admin.Areas.Roles.Roles.List;
-using Appva.Mcss.Admin.Areas.Roles.Roles.Update;
-using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Admin.Infrastructure.Attributes;
-using Appva.Mcss.Admin.Infrastructure.Models;
-using Appva.Mcss.Admin.Models;
-using Appva.Mcss.Web.ViewModels;
-using Appva.Mvc;
-using Appva.Mvc.Security;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Areas.Roles.Roles.Create;
+    using Appva.Mcss.Admin.Areas.Roles.Roles.Update;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RouteArea("roles"), RoutePrefix("")]
     public sealed class RolesController : Controller
     {

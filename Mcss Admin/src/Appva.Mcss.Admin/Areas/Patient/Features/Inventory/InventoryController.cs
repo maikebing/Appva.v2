@@ -11,7 +11,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Infrastructure.Controllers;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
@@ -21,7 +20,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RouteArea("patient"), RoutePrefix("{id:guid}/inventory")]
     public sealed class InventoryController : Controller
     {

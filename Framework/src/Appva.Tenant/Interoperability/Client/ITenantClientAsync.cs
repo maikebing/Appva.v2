@@ -11,6 +11,7 @@ namespace Appva.Tenant.Interoperability.Client
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Appva.Tenant.Identity;
 
     #endregion
 
@@ -31,7 +32,7 @@ namespace Appva.Tenant.Interoperability.Client
         /// </summary>
         /// <param name="id">The tenant identifier</param>
         /// <returns>A <see cref="ITenantDto"/></returns>
-        Task<ITenantDto> FindByIdentifierAsync(string id);
+        Task<ITenantDto> FindByIdentifierAsync(ITenantIdentifier id);
 
         /// <summary>
         /// Returns a collection of <see cref="ITenantDto"/> asyncronous.

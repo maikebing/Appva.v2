@@ -77,6 +77,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.Admin.Security",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Office", "..\..\Framework\src\Appva.Office\Appva.Office.csproj", "{7536E156-EAB5-4812-87FB-8EC58EB00F99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.NHibernateUtils", "..\..\Framework\src\Appva.NHibernateUtils\Appva.NHibernateUtils.csproj", "{68889619-9FAA-4B0C-BFA7-98D2A60E5584}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,7 @@ Global
 		{2EDAB8CE-5318-400F-A1A8-7B604732CF5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EDAB8CE-5318-400F-A1A8-7B604732CF5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EDAB8CE-5318-400F-A1A8-7B604732CF5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EDAB8CE-5318-400F-A1A8-7B604732CF5B}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{443693E3-D712-40FB-837B-A1DA866695FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{443693E3-D712-40FB-837B-A1DA866695FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{443693E3-D712-40FB-837B-A1DA866695FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -183,6 +186,10 @@ Global
 		{7536E156-EAB5-4812-87FB-8EC58EB00F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7536E156-EAB5-4812-87FB-8EC58EB00F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7536E156-EAB5-4812-87FB-8EC58EB00F99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68889619-9FAA-4B0C-BFA7-98D2A60E5584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68889619-9FAA-4B0C-BFA7-98D2A60E5584}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68889619-9FAA-4B0C-BFA7-98D2A60E5584}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68889619-9FAA-4B0C-BFA7-98D2A60E5584}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -219,5 +226,6 @@ Global
 		{C9F977F7-1020-480C-9C69-1E8C0A38A47D} = {83F6C13F-E577-4C77-BAA5-F96FE9FF7822}
 		{C572509F-1455-421F-93C1-4662BE7BF765} = {C9F977F7-1020-480C-9C69-1E8C0A38A47D}
 		{7536E156-EAB5-4812-87FB-8EC58EB00F99} = {D0459FC5-E675-43C5-A0D9-391C92A1DA52}
+		{68889619-9FAA-4B0C-BFA7-98D2A60E5584} = {D0459FC5-E675-43C5-A0D9-391C92A1DA52}
 	EndGlobalSection
 EndGlobal

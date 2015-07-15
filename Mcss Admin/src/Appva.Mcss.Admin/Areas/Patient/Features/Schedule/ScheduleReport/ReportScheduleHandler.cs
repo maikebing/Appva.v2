@@ -10,17 +10,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
-    using NHibernate.Transform;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Web.Controllers;
-    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -45,6 +44,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// The <see cref="IScheduleService"/>.
         /// </summary>
         private readonly IScheduleService scheduleService;
+        
+        /// <summary>
+        /// The <see cref="ITaskService"/>.
+        /// </summary>
+        private readonly ITaskService tasks;
 
         /// <summary>
         /// The <see cref="IReportService"/>.
@@ -68,7 +72,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportScheduleHandler"/> class.
         /// </summary>
-        public ReportScheduleHandler(IAuditService auditing, IPatientService patientService, IScheduleService scheduleService, 
+        public ReportScheduleHandler(IAuditService auditing, IPatientService patientService, IScheduleService scheduleService,
+            ITaskService taskService,
             IReportService reportService,
             IPatientTransformer transformer,
             IPersistenceContext persistence)
@@ -77,6 +82,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.patientService = patientService;
             this.transformer = transformer;
             this.scheduleService = scheduleService;
+            this.tasks = taskService;
             this.reportService = reportService;
             this.persistence = persistence;
         }
@@ -99,8 +105,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     scheduleSettings.Add(schedule.ScheduleSettings);
                 }
             }
-            var startDate = message.StartDate ?? DateTime.Now.FirstOfMonth();
-            var endDate = message.EndDate ?? DateTime.Now.LastInstantOfDay();
+            var startDate = message.StartDate.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date;
+            var endDate = message.EndDate.GetValueOrDefault(DateTime.Now).LastInstantOfDay();
             this.auditing.Read(
                 patient, 
                 "läste rapport mellan {0:yyyy-MM-dd} och {1:yyyy-MM-dd} för boende {2} (REF: {3}).", 
@@ -115,14 +121,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Schedules = scheduleSettings,
                 StartDate = startDate.Date,
                 EndDate = endDate.Date,
-                Report = this.reportService.Create(
-                    new ScheduleReportFilter
-                    {
-                        PatientId = patient.Id,
-                        ScheduleSettingsId = message.ScheduleSettingsId
-                    },
-                    startDate,
-                    endDate)
+                Report = this.reportService.GetReportData( new ChartDataFilter
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    ScheduleSetting = message.ScheduleSettingsId,
+                    Patient = patient.Id
+                }),
+                Tasks = this.tasks.List(new ListTaskModel
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    Patient = patient.Id,
+                    ScheduleSetting = message.ScheduleSettingsId
+                }, page, 30)
             };
         }
 

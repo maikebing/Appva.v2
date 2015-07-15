@@ -8,6 +8,7 @@ using DataAnnotationsExtensions;
 using Appva.Mvc;
 using System.ComponentModel;
 using Appva.Mcss.Admin.Application.Models;
+using Appva.Repository;
 
 namespace Appva.Mcss.Web.ViewModels {
 
@@ -15,7 +16,8 @@ namespace Appva.Mcss.Web.ViewModels {
         public PatientViewModel Patient { get; set; }
         public Guid? Schedule { get; set; }
         public IList<ScheduleSettings> Schedules { get; set; }
-        public Report Report { get; set; }
+        public ReportData Report { get; set; }
+        public PageableSet<Task> Tasks { get; set; }
     }
 
 }

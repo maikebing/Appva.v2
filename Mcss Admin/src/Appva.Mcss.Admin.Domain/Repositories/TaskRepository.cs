@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using Appva.Mcss.Admin.Domain.Repositories.Contracts;
     using Appva.Persistence;
     using Appva.Repository;
+    using NHibernate.Criterion;
     using NHibernate.Transform;
     using System;
     using System.Collections.Generic;
@@ -81,25 +82,26 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .And(x => x.Scheduled >= model.StartDate)
                 .And(x => x.Scheduled <= model.EndDate);
 
-            if (model.Account.HasValue)
+            if (!model.Account.GetValueOrDefault().IsEmpty())
             {
                 query.JoinQueryOver<Account>(x => x.CompletedBy)
                     .Where(x => x.Id == model.Account.GetValueOrDefault());
             }
 
-            if (model.Patient.HasValue)
+            if (!model.Patient.GetValueOrDefault().IsEmpty())
             {
                 query.JoinQueryOver<Patient>(x => x.Patient)
                     .Where(x => x.Id == model.Patient.GetValueOrDefault());
             }
 
-            if (model.Taxon.GetValueOrDefault().IsEmpty())
+            if (!model.Taxon.GetValueOrDefault().IsEmpty())
             {
-                query.JoinQueryOver<Taxon>(x => x.Taxon)
-                    .Where(x => x.Id == model.Taxon.GetValueOrDefault());
+                query.JoinQueryOver<Patient>(x => x.Patient)
+                    .JoinQueryOver<Taxon>(x => x.Taxon)
+                        .Where(Restrictions.Like(Projections.Property<Taxon>(x => x.Path), model.Taxon.GetValueOrDefault().ToString(), MatchMode.Anywhere));
             }
 
-            if(model.ScheduleSetting.HasValue)
+            if (!model.ScheduleSetting.GetValueOrDefault().IsEmpty())
             {
                 query.JoinQueryOver<Schedule>(x => x.Schedule)
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
@@ -112,9 +114,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                         .Where(x => x.ScheduleType == ScheduleType.Action);
             }
 
-            //// Fetch and transform
+            //// Fetch, order and transform
             query.Fetch(x => x.Patient).Eager
                 .Fetch(x => x.StatusTaxon).Eager
+                .OrderBy(x => x.Scheduled).Desc
+                .ThenBy(x => x.CreatedAt).Desc
                 .TransformUsing(new DistinctRootEntityResultTransformer());
 
             //// Checks that page is greater then 0

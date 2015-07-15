@@ -71,6 +71,12 @@ namespace Appva.Mcss.Admin.Application.Models
             set;
         }
 
+        public double Signed
+        {
+            get;
+            set;
+        }
+
         public double Total
         {
             get;
@@ -87,6 +93,19 @@ namespace Appva.Mcss.Admin.Application.Models
             get { return this.Total == 0 ? 0 : Math.Round((this.NotOnTime / this.Total) * 100,0); }
         }
 
+        public double SignedTaskPercentage
+        {
+            get { return this.Total == 0 ? 0 : Math.Round((this.Signed / this.Total) * 100, 0); }
+        }
+
+        public ReportData PreviousPeriod
+        { 
+            get;
+            set; 
+        }
+
         #endregion
+
+        public double AverageMinutesDelayed { get; set; }
     }
 }

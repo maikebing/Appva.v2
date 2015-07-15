@@ -39,48 +39,7 @@
         </div>
 		<div id="report" class="cf">
             <div id="chart" class="chart" style="height: 250px; margin-bottom:20px;"></div>
-			<div class="data cf">
-				<dl>
-					<dt>I tid</dt>
-					<dd>
-                        @Model.Report.OnTimePercentage % 
-                        @if (Model.Report.OnTimePercentage > 0)
-                        {
-                            <img src="@Url.Image("trendup.png")" alt="Uppåtgående" />
-                        } else {
-                            <img src="@Url.Image("trenddn.png")" alt="Nedåtgående" />
-                        }
-                    </dd>
-				</dl>
-				<dl>
-					<dt>Ej i tid</dt>
-					<dd>
-                        @Model.Report.NotOnTimePercentage % 
-                    </dd>
-				</dl>
-				<dl>
-					<dt>Förändring från föregående period</dt>
-					@{
-                         
-                        var amount = string.Empty;
-                        var change = Model.Report.OnTimePercentage - Model.Report.OnTimePercentage;
-                        if (change < 0) {
-                            amount = string.Format("{0} i tid", "färre");
-                        } else {
-                            amount = string.Format("{0} i tid", "fler");
-                        }
-                    }
-					<dd class="small">@change % @amount</dd>
-				</dl>
-				<dl>
-					<dt>Genomsnittlig avvikelse i tid</dt>
-					<dd class="small">@*TimeSpanDifference.ToReadableText(TimeSpan.FromMinutes(Model.Report.AverageDifferenceInTime))*@</dd>
-				</dl>
-                <dl>
-                    <dt>Totalt antal insatser</dt>
-					<dd class="small">@Model.Report.Total</dd>
-                </dl>
-			</div>
+			@Html.Partial("/Features/Statistics/Data/StatisticsData.cshtml", Model.Report)
 
             @if (Model.Tasks != null && Model.Tasks.Entities.Count() > 0) {
             <div id="signed-events" class="listing">

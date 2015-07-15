@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Menus;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Features.Authentication.Forgot;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
@@ -55,6 +56,11 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         private readonly IAccountService accountService;
 
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
         #endregion
 
         #region Constructor.
@@ -66,13 +72,14 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// <param name="siths">The <see cref="ISithsAuthentication"/></param>
         /// <param name="authentication">The <see cref="IFormsAuthentication"/></param>
         public AuthenticationController(ITenantService tenants, ISithsAuthentication siths, IFormsAuthentication authentication, IMenuService menus,
-            IAccountService accountService)
+            IAccountService accountService, ISettingsService settingsService)
         {
             this.tenants = tenants;
             this.siths = siths;
             this.authentication = authentication;
             this.menus = menus;
             this.accountService = accountService;
+            this.settingsService = settingsService;
         }
 
         #endregion
@@ -86,10 +93,20 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         /// <returns>The sign in form</returns>
         [Route("sign-in")]
-        [AllowAnonymous, HttpGet, Hydrate, Dispatch]
+        [AllowAnonymous, HttpGet, Hydrate]
         public ActionResult SignIn(SignIn request)
         {
-            return this.View();
+            if (this.settingsService.GetAdminLogin() == "siths")
+            {
+                return this.RedirectToAction("SignInSiths");
+            }
+            ITenantIdentity identity = null;
+            this.tenants.TryIdentifyTenant(out identity);
+            return this.View(new SignInForm
+                {
+                    Tenant = identity.Name,
+                    ReturnUrl = request.ReturnUrl
+                });
         }
 
         /// <summary>

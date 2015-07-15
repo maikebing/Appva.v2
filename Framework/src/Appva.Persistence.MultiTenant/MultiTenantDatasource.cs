@@ -106,14 +106,12 @@ namespace Appva.Persistence.MultiTenant
                 {
                     throw new TenantNotFoundException(Exceptions.TenantNotFound.FormatWith(identifier));
                 }
-                this.cache.Upsert<ISessionFactory>(
-                    cacheKey,
-                    this.Build(PersistenceUnit.CreateNew(
-                        this.configuration.UseIdAsIdentifier ? tenant.Id.ToString() : tenant.Identifier, 
-                        tenant.ConnectionString, 
-                        this.configuration.Assembly, 
-                        this.configuration.Properties)),
-                    RuntimeEvictionPolicy.NonRemovable);
+                var sessionFactory = this.Build(PersistenceUnit.CreateNew(
+                    this.configuration.UseIdAsIdentifier ? tenant.Id.ToString() : tenant.Identifier, 
+                    tenant.ConnectionString, 
+                    this.configuration.Assembly, 
+                    this.configuration.Properties));
+                this.cache.Upsert<ISessionFactory>(cacheKey, sessionFactory, RuntimeEvictionPolicy.NonRemovable);
             }
             return this.cache.Find<ISessionFactory>(cacheKey);
         }

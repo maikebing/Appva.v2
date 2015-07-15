@@ -39,7 +39,7 @@ namespace Appva.Mvc
                 return null;
             }
             var request = HttpContext.Current.Request;
-            var host = (request.Url.IsDefaultPort) ? request.Url.Host : request.Url.Authority;
+            var host = request.Url.IsDefaultPort ? request.Url.Host : request.Url.Authority;
             host = string.Format("{0}://{1}", request.Url.Scheme, host);
             return (request.ApplicationPath == "/") ? new Uri(host) : new Uri(host + request.ApplicationPath);
         }

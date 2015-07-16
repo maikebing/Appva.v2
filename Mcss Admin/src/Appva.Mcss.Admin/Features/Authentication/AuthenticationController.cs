@@ -185,6 +185,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
             if (result.IsAuthorized)
             {
                 this.authentication.SignIn(result.Identity);
+                await this.siths.LogoutAsync(token);
                 return this.RedirectToAction("Index", "Home");
             }
             //// If everything fails; start over!

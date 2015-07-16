@@ -32,18 +32,28 @@ namespace Appva.Mcss.Admin
         /// <summary>
         /// The <see cref="ILog"/>.
         /// </summary>
-        private static readonly ILog Log = LogProvider.For<OwinConfiguration>();
+        private static readonly ILog Log = LogProvider.For<MvcApplication>();
 
         #endregion
 
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MvcApplication"/> class.
+        /// </summary>
+        public MvcApplication()
+        {
+            XmlConfigurator.Configure();
+        }
+
+        #endregion
+    
         #region HttpApplication Overrides.
 
         /// <inheritdoc />
         protected void Application_Start()
         {
-            XmlConfigurator.Configure();
-            Log.Info("Application Start");
-            //// Disable the Mvc version response header in order not to leak security information.
+            Log.Info("Application started ...");
             MvcHandler.DisableMvcResponseHeader = true;
             if (! Configuration.Application.IsInProduction)
             {
@@ -57,6 +67,12 @@ namespace Appva.Mcss.Admin
             BundleConfiguration.RegisterBundles(BundleTable.Bundles);
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new FeatureViewLocationRazorViewEngine());
+        }
+
+        /// <inheritdoc />
+        protected void Application_End()
+        {
+            Log.Info("Application ended ...");
         }
 
         #endregion

@@ -205,7 +205,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 .And(x => x.Scheduled <= filter.EndDate.LastInstantOfDay());
 
             //// Optional filters
-            if (!filter.Organisation.GetValueOrDefault().IsEmpty())
+            if (!filter.Organisation.GetValueOrDefault().IsEmpty() && filter.Patient.GetValueOrDefault().IsEmpty())
             {
                 query.JoinQueryOver<Patient>(x => x.Patient)
                     .JoinQueryOver<Taxon>(x => x.Taxon)

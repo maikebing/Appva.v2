@@ -480,21 +480,24 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                     Account = account.Id,
                     StartDate = startDate.GetValueOrDefault(),
                     EndDate = endDate.GetValueOrDefault(),
-                    ScheduleSetting = sId
+                    ScheduleSetting = sId,
+                    Organisation = this.filtering.GetCurrentFilter().Id
                 }),
-                PreviousPeriodReport = this.reports.GetReportData(new ChartDataFilter
+                /*PreviousPeriodReport = this.reports.GetReportData(new ChartDataFilter
                 {
                     Account = account.Id,
                     StartDate = previousPeriodStart,
                     EndDate = previousPeriodEnd,
-                    ScheduleSetting = sId
-                }),
+                    ScheduleSetting = sId,
+                    Organisation = this.filtering.GetCurrentFilter().Id
+                }),*/
                 Tasks = this.tasks.List(new ListTaskModel 
                 {
                     StartDate = startDate.GetValueOrDefault(),
                     EndDate = endDate.GetValueOrDefault(),
                     Account = account.Id,
-                    ScheduleSetting = sId
+                    ScheduleSetting = sId,
+                    Taxon = this.filtering.GetCurrentFilter().Id
                 }, page.GetValueOrDefault(1), 30),
                 DelegationId = tId,
                 Delegations = this.taxonomyService.ListChildren(TaxonomicSchema.Delegation).Select(x => new SelectListItem

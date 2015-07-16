@@ -33,7 +33,7 @@ namespace Appva.Repository
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="{T}" /> class.
+        /// Initializes a new instance of the <see cref="Repository{T}" /> class.
         /// </summary>
         /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
         public Repository(IPersistenceContext persistenceContext)

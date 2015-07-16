@@ -24,7 +24,7 @@ namespace Appva.Repository
         #region Constructor.
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="Pageable" /> class from being created.
+        /// Prevents a default instance of the <see cref="Pageable{TEntity}" /> class from being created.
         /// </summary>
         private Pageable()
         {

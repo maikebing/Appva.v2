@@ -139,7 +139,7 @@ namespace Appva.Core
         /// <summary>
         /// Validates a Swedish personal identity number or a Swedish co-ordination number.
         /// </summary>
-        /// <param name="str">
+        /// <param name="obj">
         /// The string representation of a Swedish personal identity number to check
         /// </param>
         /// <param name="omit">Whether or not century is allowed to be omitted</param>

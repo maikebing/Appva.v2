@@ -30,7 +30,6 @@ namespace Appva.Core.Logging
     using System.Globalization;
     using Newtonsoft.Json;
     using Validation;
-    using Extensions;
 
     #endregion
 
@@ -134,7 +133,6 @@ namespace Appva.Core.Logging
 
         #region Debug Logging.
 
-        
         /// <summary>
         /// Logs a debug message.
         /// </summary>
@@ -613,10 +611,6 @@ namespace Appva.Core.Logging
         /// <param name="args">The log message object parameters</param>
         private static void LogFormat(this ILog logger, LogLevel logLevel, Exception exception, string message, params object[] args)
         {
-            if (logLevel == LogLevel.Trace || logLevel == LogLevel.Debug)
-            {
-
-            }
             logger.Log(logLevel, string.Format(CultureInfo.InvariantCulture, message, args).AsFunc(), exception);
         }
 

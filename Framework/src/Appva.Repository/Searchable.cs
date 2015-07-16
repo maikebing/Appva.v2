@@ -31,7 +31,7 @@ namespace Appva.Repository
         #region Constructor.
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="Searchable" /> class from being created.
+        /// Prevents a default instance of the <see cref="Searchable{TEntity}" /> class from being created.
         /// </summary>
         private Searchable()
         {

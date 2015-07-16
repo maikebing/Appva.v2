@@ -24,7 +24,7 @@ namespace Appva.Repository
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="{TEntity}" /> class.
+        /// Initializes a new instance of the <see cref="PagingAndSortingRepository{TEntity}" /> class.
         /// </summary>
         /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
         public PagingAndSortingRepository(IPersistenceContext persistenceContext)

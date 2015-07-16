@@ -8,6 +8,7 @@ namespace Appva.Cqrs
 {
     #region Imports.
 
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
 
     #endregion
@@ -62,6 +63,7 @@ namespace Appva.Cqrs
     /// implementation.
     /// </summary>
     /// <typeparam name="TNotification">The request type</typeparam>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     public abstract class AsyncNotificationHandler<TNotification> : IAsyncNotificationHandler<TNotification>
          where TNotification : IAsyncNotification
     {

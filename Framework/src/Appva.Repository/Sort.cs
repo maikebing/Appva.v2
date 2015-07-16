@@ -22,7 +22,7 @@ namespace Appva.Repository
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="{TEntity}" /> class.
+        /// Initializes a new instance of the <see cref="Sort{TEntity}" /> class.
         /// </summary>
         /// <param name="order">The order</param>
         /// <param name="direction">The direction</param>

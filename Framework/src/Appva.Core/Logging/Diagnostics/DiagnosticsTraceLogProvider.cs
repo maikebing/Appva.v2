@@ -11,6 +11,7 @@ namespace Appva.Core.Logging
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     #endregion
@@ -48,6 +49,7 @@ namespace Appva.Core.Logging
     /// </configuration>
     /// </example>
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     public class DiagnosticsTraceLogger : ILog
     {
         #region Variables.
@@ -80,23 +82,22 @@ namespace Appva.Core.Logging
         /// <param name="logLevel">The log level.</param>
         /// <param name="messageFunc">The message function.</param>
         /// <param name="exception">The exception.</param>
-        /// <returns></returns>
+        /// <returns>True</returns>
         public bool Log(LogLevel logLevel, Func<string> messageFunc, Exception exception = null)
         {
             if (messageFunc != null)
             {
                 if (exception == null)
                 {
-                    var message = string.Format("{0}: {1} -- {2}", name, DateTimeOffset.UtcNow, messageFunc());
+                    var message = string.Format("{0}: {1} -- {2}", this.name, DateTimeOffset.UtcNow, messageFunc());
                     TraceMsg(logLevel, message);
                 }
                 else
                 {
-                    var message = string.Format("{0}: {1} -- {2}\n{3}", name, DateTimeOffset.UtcNow, messageFunc(), exception);
+                    var message = string.Format("{0}: {1} -- {2}\n{3}", this.name, DateTimeOffset.UtcNow, messageFunc(), exception);
                     TraceMsg(logLevel, message);
                 }
             }
-
             return true;
         }
 
@@ -115,7 +116,7 @@ namespace Appva.Core.Logging
         {
             if (messageFunc != null && exception != null)
             {
-                var message = string.Format("{0}: {1} -- {2}\n{3}", name, DateTimeOffset.UtcNow.ToString(), messageFunc(), exception);
+                var message = string.Format("{0}: {1} -- {2}\n{3}", this.name, DateTimeOffset.UtcNow.ToString(), messageFunc(), exception);
                 TraceMsg(logLevel, message);
             }
         }
@@ -160,6 +161,11 @@ namespace Appva.Core.Logging
 
         #region Provate Methods.
 
+        /// <summary>
+        /// Creates a trace log.
+        /// </summary>
+        /// <param name="logLevel">The log level to log</param>
+        /// <param name="message">The log message</param>
         private static void TraceMsg(LogLevel logLevel, string message)
         {
             switch (logLevel)

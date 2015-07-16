@@ -589,6 +589,7 @@
     <Content Include="Assets\i\ipad-now.png" />
     <Content Include="Assets\i\ipad-toggledarrow.png" />
     <Content Include="Assets\i\list-arrow.png" />
+    <Content Include="Assets\i\logo-about.png" />
     <Content Include="Assets\i\logo.png" />
     <Content Include="Assets\i\minichart.jpg" />
     <Content Include="Assets\i\no-connection.png" />

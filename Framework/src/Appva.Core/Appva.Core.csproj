@@ -55,7 +55,9 @@
     <Compile Include="Exceptions\DefaultExceptionHandler.cs" />
     <Compile Include="Exceptions\IExceptionHandler.cs" />
     <Compile Include="Exceptions\NoOpExceptionHandler.cs" />
-    <Compile Include="Extensions\ByteArrayExtensions.cs" />
+    <Compile Include="Extensions\ByteArrayExtensions.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
@@ -138,9 +140,7 @@
       <LastGenOutput>RoleTypes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

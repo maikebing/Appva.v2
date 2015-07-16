@@ -9,8 +9,8 @@ namespace Appva.Core.Exceptions
     #region Imports.
 
     using System;
-    using Resources;
     using JetBrains.Annotations;
+    using Resources;
 
     #endregion
 

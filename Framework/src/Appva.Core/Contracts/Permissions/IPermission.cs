@@ -6,13 +6,6 @@
 // </author>
 namespace Appva.Core.Contracts.Permissions
 {
-    #region Imports.
-
-    using System;
-    using System.Collections.Generic;
-
-    #endregion
-
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>

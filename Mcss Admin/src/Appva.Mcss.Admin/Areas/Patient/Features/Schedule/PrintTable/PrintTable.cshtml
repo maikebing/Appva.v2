@@ -1,7 +1,7 @@
 ﻿@model Appva.Mcss.Web.ViewModels.ScheduleTablePrintViewModel
 @{ 
 	ViewBag.Title = string.Format("Signerade händelser {0:yyyy-MM-dd} — {1:yyyy-MM-dd}", Model.StartDate, Model.EndDate);
-	Layout = "~/Views/Shared/_PrintLayout.cshtml";
+    Layout = "~//Areas/Patient/Features/Shared/_PrintLayout.cshtml";
 	var today = DateTime.Today;
 	var yesterday = DateTime.Today.AddDays(-1);
 }
@@ -13,7 +13,7 @@
 		<tbody>
 			<tr>
 				<td>Boende<h2>@Model.Patient.FullName</h2></td>
-				<td>Personnummer<h2>@Model.Patient.UniqueIdentifier</h2></td>
+				<td>Personnummer<h2>@Model.Patient.PersonalIdentityNumber</h2></td>
 			</tr>
 		</tbody>
 	</table>
@@ -36,7 +36,7 @@
 					<td>
 						@if (task.OnNeedBasis)
 						{
-							@TimeSpanDifference.ToShortDateTime(task.Modified, "Idag", "Igår")
+							@TimeSpanDifference.ToShortDateTime(task.UpdatedAt, "Idag", "Igår")
 						}
 						else
 						{
@@ -56,7 +56,7 @@
 						}
 						else
 						{
-							@:kl @string.Format("{0:HH:mm}", task.OnNeedBasis ? task.Modified : task.CompletedDate.GetValueOrDefault())
+							@:kl @string.Format("{0:HH:mm}", task.OnNeedBasis ? task.UpdatedAt : task.CompletedDate.GetValueOrDefault())
 						}
 					</td>
 					<td>

@@ -86,12 +86,12 @@ namespace Appva.Mcss.Admin.Models
 
         [Date]
         [PlaceHolder("T.ex. 2012-12-21")]
-        [DisplayName("Från")]
+        [DisplayName("Fr.o.m.")]
         public virtual DateTime? StartDate { get; set; }
 
         [Date]
         [PlaceHolder("T.ex. 2012-12-21")]
-        [DisplayName("Till")]
+        [DisplayName("T.o.m.")]
         public virtual DateTime? EndDate { get; set; }
 
         public virtual string Dates { get; set; }
@@ -123,14 +123,14 @@ namespace Appva.Mcss.Admin.Models
         [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
         [DateLessThan(Target = "OnNeedBasisEndDate", ErrorMessage = "Startdatum måste vara ett tidigare datum är slutdatum.")]
         [PlaceHolder("T.ex. 2012-12-21")]
-        [DisplayName("Från")]
+        [DisplayName("Fr.o.m.")]
         public virtual DateTime? OnNeedBasisStartDate { get; set; }
 
         [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessage = "Datum måste fyllas i.")]
         [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
         [DateGreaterThan(Target = "OnNeedBasisStartDate", ErrorMessage = "Slutdatum måste vara ett senare datum är startdatum.")]
         [PlaceHolder("T.ex. 2012-12-21")]
-        [DisplayName("Till")]
+        [DisplayName("T.o.m.")]
         public virtual DateTime? OnNeedBasisEndDate { get; set; }
 
         public virtual Patient Patient { get; set; }

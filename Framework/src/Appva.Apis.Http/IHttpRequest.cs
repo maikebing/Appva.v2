@@ -35,7 +35,7 @@ namespace Appva.Apis.Http
         /// </summary>
         /// <param name="body">The content</param>
         /// <param name="mediaType">The content media-type</param>
-        public HttpRequest Body(string body, string mediaType);
+        HttpRequest Body(string body, string mediaType);
 
         /// <summary>
         /// Sets the content of the request

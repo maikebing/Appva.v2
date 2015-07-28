@@ -13,6 +13,10 @@
             {
                 @Html.FormGroup(x => x.DevicePassword, "text").Label().TextBox().Validate().Build()
             }
+            @if (Model.IsUsernameVisible)
+            {
+                @Html.FormGroup(x => x.Username, "text").Label().TextBox(htmlAttributes: new { disabled = "disabled" }).Validate().Build()
+            }
             <div class="select selectgroup cf">
                 <strong>Adress:</strong>
                 @if (Model.Taxons.IsNotNull())

@@ -8,9 +8,12 @@ namespace Appva.Apis.Http
 {
     #region Imports.
 
+    using Appva.Apis.Http.Converters;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
@@ -52,7 +55,7 @@ namespace Appva.Apis.Http
         #region IHttpRequest members
 
         /// <inheritdoc />
-        public HttpRequest Headers(IDictionary<string, string> headers)
+        public IHttpRequest WithHeaders(IDictionary<string, string> headers)
         {
             foreach (var header in headers)
             {
@@ -69,30 +72,55 @@ namespace Appva.Apis.Http
         }
 
         /// <inheritdoc />
-        public HttpRequest Body(string body)
+        public IHttpRequest WithBody(string body)
         {
-            this.Body(body, "text/plain");
+            this.WithBody(body, MimeType.PlainText.Description());
             return this;
         }
 
         /// <inheritdoc />
-        public HttpRequest Body(string body, string mediaType)
+        public IHttpRequest WithBody(string body, string mediaType)
         {
             this.message.Content = new StringContent(body, Encoding.UTF8, mediaType);
             return this;
         }
 
         /// <inheritdoc />
-        public HttpRequest Body(IDictionary<string,string> body)
+        public IHttpRequest WithFormUrlEncodedBody(IDictionary<string, string> body)
         {
             this.message.Content = new FormUrlEncodedContent(body);
             return this;
         }
 
         /// <inheritdoc />
-        public string GetContentAsString()
+        public IHttpRequest WithFormUrlEncodedBody<T>(object body) where T : class
         {
-            return GetContent().Result;
+            this.message.Content = FormUrlEncodedSerializer.Serialize<T>(body);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IHttpRequest WithJsonEncodedBody(object body)
+        {
+            return this.WithBody(JsonConvert.SerializeObject(body), MimeType.Json.Description());
+        }
+
+        /// <inheritdoc />
+        public T ToResult<T>()
+        {
+            return JsonConvert.DeserializeObject<T>(this.ToResultAsString());
+        }
+
+        /// <inheritdoc />
+        public string ToResultAsString()
+        {
+            return this.GetContent().Result;
+        }
+
+        /// <inheritdoc />
+        public HttpStatusCode GetResponseStatusCode()
+        {
+            return this.httpClient.SendAsync(this.message).Result.StatusCode;
         }
 
         #endregion
@@ -111,5 +139,8 @@ namespace Appva.Apis.Http
         }
 
         #endregion
+
+
+        
     }
 }

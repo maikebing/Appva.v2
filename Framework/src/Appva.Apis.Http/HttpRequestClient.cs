@@ -8,6 +8,7 @@ namespace Appva.Apis.Http
 {
     #region Imports.
 
+    using Appva.Cryptography.X509;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -40,23 +41,38 @@ namespace Appva.Apis.Http
 
         }
 
+        public HttpRequestClient(string url)
+        {
+            this.httpClient = new HttpClient();
+            this.httpClient.BaseAddress = new Uri(url);
+        }
+
+        public HttpRequestClient(string url, string clientCertificatePath, string clientCertificatePassword)
+        {
+            var handler = new WebRequestHandler();
+            handler.ClientCertificates.Add(CertificateUtils.LoadCertificateFromDisk(clientCertificatePath, clientCertificatePassword));
+
+            this.httpClient = new HttpClient(handler);
+            this.httpClient.BaseAddress = new Uri(url);
+        }
+
         #endregion
 
         #region IHttpRequestClient Members
 
-        public IHttpRequest Get(HttpMethod method, string url)
+        public IHttpRequest Get(string url)
         {
-            return new HttpRequest(method, new Uri(url), this.httpClient);
+            return new HttpRequest(HttpMethod.Get, new Uri(url), this.httpClient);
         }
 
-        public IHttpRequest Put(HttpMethod method, string url)
+        public IHttpRequest Put(string url)
         {
-            return new HttpRequest(method, new Uri(url), this.httpClient);
+            return new HttpRequest(HttpMethod.Put, new Uri(url), this.httpClient);
         }
 
-        public IHttpRequest Post(HttpMethod method, string url)
+        public IHttpRequest Post(string url)
         {
-            return new HttpRequest(method, new Uri(url), this.httpClient);
+            return new HttpRequest(HttpMethod.Post, new Uri(url), this.httpClient);
         }
 
         #endregion

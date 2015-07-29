@@ -25,7 +25,7 @@ namespace Appva.Apis.Http
         /// <param name="method"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        IHttpRequest Get(HttpMethod method, string url);
+        IHttpRequest Get(string url);
 
         /// <summary>
         /// Creates a new <see cref="HttpRequest"/> by PUT
@@ -33,7 +33,7 @@ namespace Appva.Apis.Http
         /// <param name="method"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        IHttpRequest Put(HttpMethod method, string url);
+        IHttpRequest Put(string url);
 
         /// <summary>
         /// Creates a new <see cref="HttpRequest"/> by POST
@@ -41,6 +41,6 @@ namespace Appva.Apis.Http
         /// <param name="method"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        IHttpRequest Post(HttpMethod method, string url);
+        IHttpRequest Post(string url);
     }
 }

@@ -8,11 +8,14 @@ namespace Appva.Apis.Http
 {
     #region Imports.
 
+    using Appva.Core.Logging;
     using Appva.Cryptography.X509;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
 
     #endregion
 
@@ -27,6 +30,18 @@ namespace Appva.Apis.Http
         /// The <see cref="HttpClient"/>
         /// </summary>
         private HttpClient httpClient;
+
+        /// <summary>
+        /// The certificate
+        /// </summary>
+        private X509Certificate2 clientCertificate;
+
+        private static X509Certificate2 TrustCertificate;
+
+        /// <summary>
+        /// The <see cref="ILog"/> for <see cref="DemoHipClient"/>.
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<HttpRequest>();
 
         #endregion
 
@@ -49,8 +64,22 @@ namespace Appva.Apis.Http
 
         public HttpRequestClient(string url, string clientCertificatePath, string clientCertificatePassword)
         {
+            this.clientCertificate = CertificateUtils.LoadCertificateFromDisk(clientCertificatePath, clientCertificatePassword);
+
+            this.httpClient = new HttpClient();
+            this.httpClient.BaseAddress = new Uri(url);
+        }
+
+        public HttpRequestClient(string url, string clientCertificatePath, string clientCertificatePassword, string trustCertificatePath, string trustCertificatePassword)
+        {
+            this.clientCertificate = CertificateUtils.LoadCertificateFromDisk(clientCertificatePath, clientCertificatePassword);
+            TrustCertificate = CertificateUtils.LoadCertificateFromDisk(trustCertificatePath, trustCertificatePassword);
+
             var handler = new WebRequestHandler();
-            handler.ClientCertificates.Add(CertificateUtils.LoadCertificateFromDisk(clientCertificatePath, clientCertificatePassword));
+            handler.ServerCertificateValidationCallback = ValidateServerCertficate;
+            handler.ClientCertificates.Add(this.clientCertificate);
+            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            
 
             this.httpClient = new HttpClient(handler);
             this.httpClient.BaseAddress = new Uri(url);
@@ -62,17 +91,37 @@ namespace Appva.Apis.Http
 
         public IHttpRequest Get(string url)
         {
-            return new HttpRequest(HttpMethod.Get, new Uri(url), this.httpClient);
+            return new HttpRequest(HttpMethod.Get, new Uri(url, UriKind.RelativeOrAbsolute), this.httpClient, this.clientCertificate);
         }
 
         public IHttpRequest Put(string url)
         {
-            return new HttpRequest(HttpMethod.Put, new Uri(url), this.httpClient);
+            return new HttpRequest(HttpMethod.Put, new Uri(url, UriKind.RelativeOrAbsolute), this.httpClient, this.clientCertificate);
         }
 
         public IHttpRequest Post(string url)
         {
-            return new HttpRequest(HttpMethod.Post, new Uri(url), this.httpClient);
+            return new HttpRequest(HttpMethod.Post, new Uri(url, UriKind.RelativeOrAbsolute), this.httpClient, this.clientCertificate);
+        }
+
+        #endregion
+
+        #region Static helpers
+
+        private static bool ValidateServerCertficate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            if (sslPolicyErrors == SslPolicyErrors.None)
+            {
+                return true;
+            }
+            Log.Debug("Ssl certificate error: {0}", sslPolicyErrors);
+            Log.Debug("Ssl certificate remote SN: {0}", cert.GetSerialNumber());
+            Log.Debug("Ssl certificate trust SN: {0}", TrustCertificate.GetSerialNumber());
+            if(cert.GetSerialNumber() == TrustCertificate.GetSerialNumber())
+            {
+                return true;
+            }
+            return true;
         }
 
         #endregion

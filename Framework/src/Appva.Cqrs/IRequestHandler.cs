@@ -116,9 +116,9 @@ namespace Appva.Cqrs
         #region IAsyncRequestHandler Members
 
         /// <inheritdoc />
-        public Task<object> Handle(object message)
+        public async Task<object> Handle(object message)
         {
-            return this.Handle((TRequest) message) as Task<object>;
+            return await this.Handle((TRequest) message).ConfigureAwait(false) as Task<object>;
         }
 
         #endregion

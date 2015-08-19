@@ -11,6 +11,7 @@ namespace Appva.Apis.Http
     using System;
     using System.Collections.Generic;
     using System.Net;
+    using System.Threading.Tasks;
 
     #endregion
 
@@ -63,13 +64,13 @@ namespace Appva.Apis.Http
         /// Returns the content as object
         /// </summary>
         /// <returns></returns>
-        T ToResult<T>();
+        Task<T> ToResultAsync<T>();
 
         /// <summary>
         /// Returns the content of the response
         /// </summary>
         /// <returns></returns>
-        string ToResultAsString();
+        Task<string> ToResultAsString();
 
         /// <summary>
         /// Returns the statuscode of the response

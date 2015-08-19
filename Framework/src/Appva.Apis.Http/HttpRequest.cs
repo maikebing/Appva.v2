@@ -9,33 +9,36 @@ namespace Appva.Apis.Http
     #region Imports.
 
     using Appva.Apis.Http.Converters;
+    using Appva.Core.Logging;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Web.Http.Hosting;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class HttpRequest : IHttpRequest
+    public sealed class HttpRequest : HttpRequestMessage,IHttpRequest
     {
         #region Private fields
-
-        /// <summary>
-        /// The message
-        /// </summary>
-        private HttpRequestMessage message;
 
         /// <summary>
         /// The <see cref="HttpClient"/>
         /// </summary>
         private HttpClient httpClient;
+
+        /// <summary>
+        /// The <see cref="ILog"/> for <see cref="DemoHipClient"/>.
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<HttpRequest>();
 
         #endregion
 
@@ -44,10 +47,16 @@ namespace Appva.Apis.Http
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpRequest"/> class.
         /// </summary>
-        public HttpRequest(HttpMethod method, Uri uri, HttpClient httpClient)
+        public HttpRequest(HttpMethod method, Uri uri, HttpClient httpClient, X509Certificate2 certificate = null)
+            : base(method, new Uri(httpClient.BaseAddress, uri))
         {
-            this.message = new HttpRequestMessage(method, uri);
+            
             this.httpClient = httpClient;
+
+            if(certificate != null)
+            {
+                this.Properties.Add(HttpPropertyKeys.ClientCertificateKey, certificate);
+            }
         }
 
         #endregion
@@ -59,13 +68,9 @@ namespace Appva.Apis.Http
         {
             foreach (var header in headers)
             {
-                if (!this.message.Properties.ContainsKey(header.Key))
+                if (!this.Headers.Contains(header.Key))
                 {
-                    this.message.Properties.Add(header.Key, header.Value);
-                }
-                else
-                {
-                    this.message.Properties[header.Key] = header.Value;
+                    this.Headers.Add(header.Key, header.Value);
                 }
             }
             return this;
@@ -81,21 +86,21 @@ namespace Appva.Apis.Http
         /// <inheritdoc />
         public IHttpRequest WithBody(string body, string mediaType)
         {
-            this.message.Content = new StringContent(body, Encoding.UTF8, mediaType);
+            this.Content = new StringContent(body, Encoding.UTF8, mediaType);
             return this;
         }
 
         /// <inheritdoc />
         public IHttpRequest WithFormUrlEncodedBody(IDictionary<string, string> body)
         {
-            this.message.Content = new FormUrlEncodedContent(body);
+            this.Content = new FormUrlEncodedContent(body);
             return this;
         }
 
         /// <inheritdoc />
         public IHttpRequest WithFormUrlEncodedBody<T>(object body) where T : class
         {
-            this.message.Content = FormUrlEncodedSerializer.Serialize<T>(body);
+            this.Content = FormUrlEncodedSerializer.Serialize<T>(body);
             return this;
         }
 
@@ -106,21 +111,21 @@ namespace Appva.Apis.Http
         }
 
         /// <inheritdoc />
-        public T ToResult<T>()
+        public async Task<T> ToResultAsync<T>()
         {
-            return JsonConvert.DeserializeObject<T>(this.ToResultAsString());
+            return JsonConvert.DeserializeObject<T>(await this.ToResultAsString().ConfigureAwait(false));
         }
 
         /// <inheritdoc />
-        public string ToResultAsString()
+        public async Task<string> ToResultAsString()
         {
-            return this.GetContent().Result;
+            return await this.GetContent().ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public HttpStatusCode GetResponseStatusCode()
         {
-            return this.httpClient.SendAsync(this.message).Result.StatusCode;
+            return this.httpClient.SendAsync(this).Result.StatusCode;
         }
 
         #endregion
@@ -133,9 +138,22 @@ namespace Appva.Apis.Http
         /// <returns></returns>
         private async Task<String> GetContent()
         {
-            var response = await this.httpClient.SendAsync(this.message);
-
-            return await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
+            try
+            {
+                Log.Debug("Sending message to {0}", this.ToString());
+                var response = await this.httpClient.SendAsync(this).ConfigureAwait(false);
+                Log.Debug("Recived answer: {0}", response.StatusCode);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e.ToString());
+                return null;
+            }
         }
 
         #endregion

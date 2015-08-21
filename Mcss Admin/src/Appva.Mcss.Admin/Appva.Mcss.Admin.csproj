@@ -517,6 +517,7 @@
     <Content Include="Assets\i\ajax-load%402x.gif" />
     <Content Include="Assets\i\ajax-load.gif" />
     <Content Include="Assets\i\appva-footer-logo.png" />
+    <Content Include="Assets\i\appva-logo-icon.png" />
     <Content Include="Assets\i\bell.png" />
     <Content Include="Assets\i\bg-stdbtn-del.png" />
     <Content Include="Assets\i\bg-stdbtn.png" />

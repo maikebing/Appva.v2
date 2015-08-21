@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
@@ -28,6 +29,20 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="account">The user account</param>
         /// <returns>A collection of user account permissions</returns>
         IList<Permission> Permissions(Account account);
+
+        /// <summary>
+        /// Returns all permissions for the roles.
+        /// </summary>
+        /// <param name="roles">A collection of roles</param>
+        /// <returns>A collection of role permissions</returns>
+        IList<Permission> ByRoles(IList<Role> roles);
+
+        /// <summary>
+        /// Returns all permissions for the role collection.
+        /// </summary>
+        /// <param name="roleIds">A collection of role ID</param>
+        /// <returns>A collection of role permissions</returns>
+        IList<Permission> PermissionsByRoleIds(ICollection roleIds);
 
         /// <summary>
         /// Returns whether or not the user account is a member of at least one of the 
@@ -86,11 +101,23 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public IList<Permission> Permissions(Account account)
         {
             var roles = account.Roles.Select(x => x.Id).ToArray();
+            return this.PermissionsByRoleIds(roles);
+        }
+
+        /// <inheritdoc />
+        public IList<Permission> ByRoles(IList<Role> roles)
+        {
+            return this.PermissionsByRoleIds(roles.Select(x => x.Id).ToArray());
+        }
+
+        /// <inheritdoc />
+        public IList<Permission> PermissionsByRoleIds(ICollection roleIds)
+        {
             return this.persistenceContext.QueryOver<Permission>()
                 .JoinQueryOver<Role>(x => x.Roles)
                     .Where(x => x.IsActive)
                     .WhereRestrictionOn(x => x.Id)
-                    .IsIn(roles)
+                    .IsIn(roleIds)
                 .TransformUsing(Transformers.DistinctRootEntity)
                 .List();
         }

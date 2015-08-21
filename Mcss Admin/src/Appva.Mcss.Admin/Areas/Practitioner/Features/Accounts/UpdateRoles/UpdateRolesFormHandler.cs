@@ -10,13 +10,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using System;
     using System.Linq;
-    using System.Collections.Generic;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
-    using Appva.Core.Resources;
-    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -59,14 +56,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListAccount Handle(UpdateRolesForm message)
         {
             var account = this.persistence.Get<Account>(message.Id);
-            var roles = this.persistence.QueryOver<Role>()
+            var roles = (message.SelectedRoles != null && message.SelectedRoles.Length > 0) ? this.persistence.QueryOver<Role>()
                     .AndRestrictionOn(x => x.Id)
                     .IsIn(message.SelectedRoles.Select(x => new Guid(x)).ToArray())
-                    .List();
+                    .List() : null;
             this.service.UpdateRoles(account, roles);
             return new ListAccount();
         }
-
 
         #endregion
     }

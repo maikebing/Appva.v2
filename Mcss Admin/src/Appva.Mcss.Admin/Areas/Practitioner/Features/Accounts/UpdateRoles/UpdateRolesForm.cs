@@ -10,9 +10,7 @@ namespace Appva.Mcss.Admin.Models
 
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
-    using Appva.Cqrs;
 
     #endregion
 
@@ -21,6 +19,9 @@ namespace Appva.Mcss.Admin.Models
     /// </summary>
     public class UpdateRolesForm : Identity<ListAccount>
     {
+        /// <summary>
+        /// The roles available.
+        /// </summary>
         [DisplayName("Roller")]
         public IList<SelectListItem> Roles
         {
@@ -28,7 +29,9 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
-        [Required(ErrorMessage = "Roller får ej vara tom.")]
+        /// <summary>
+        /// The selected roles.
+        /// </summary>
         public string[] SelectedRoles
         {
             get;

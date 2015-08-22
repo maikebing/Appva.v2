@@ -30,7 +30,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// <summary>
         /// The host domain.
         /// </summary>
-        private const string Host = "dev.appvamcss";
+        private const string Host = "dev.appva.se";
 
         /// <summary>
         /// The <see cref="ILog"/>.

@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Configuration
 {
     #region Imports.
 
+    using System.Collections.Generic;
     using System.Data;
     using System.Web;
     using Appva.Apis.TenantServer.Legacy;
@@ -72,6 +73,7 @@ namespace Appva.Mcss.Admin.Configuration
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
+            Dictionary<string, string> properties = null; 
             switch (Configuration.Application.OperationalEnvironment)
             {
                 case OperationalEnvironment.Production:
@@ -82,6 +84,7 @@ namespace Appva.Mcss.Admin.Configuration
                     break;
                 case OperationalEnvironment.Staging:
                     builder.RegisterType<StagingTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+                    properties = new Dictionary<string, string> { { "dialect", "NHibernate.Dialect.MsSql2008Dialect" } };
                     break;
                 case OperationalEnvironment.Development:
                     builder.RegisterType<DevelopmentTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
@@ -89,10 +92,7 @@ namespace Appva.Mcss.Admin.Configuration
             }
             builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache(BucketKey)).As<IRuntimeMemoryCache>().SingleInstance();
             builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
-            builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
-            {
-                Assembly = Assembly
-            }).As<IMultiTenantDatasourceConfiguration>().SingleInstance();
+            builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration { Assembly = Assembly, Properties = properties }).As<IMultiTenantDatasourceConfiguration>().SingleInstance();
             builder.RegisterType<MultiTenantDatasource>().As<IMultiTenantDatasource>().SingleInstance();
             builder.RegisterType<MultiTenantPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
             builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerLifetimeScope();

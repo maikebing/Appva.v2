@@ -1,0 +1,24 @@
+﻿@model Appva.Mcss.Admin.Models.SignOut
+@{
+    Layout = "~/Features/Shared/_LoginLayout.cshtml";
+    Title("Utloggad - " +  Model.Tenant);
+}
+<div class="header cf">
+    <div id="logo">
+        <img src="@Url.Content("~/Assets/i/logo.png")" alt="Appva MCSS" />
+    </div>
+    <div id="tenant">
+        @Model.Tenant
+    </div>
+</div>
+<div class="body">
+    <div class="std-form">
+        <h2>Du har nu blivit utloggad</h2>
+        <p>
+            Av säkerhetsskäl rekommenderar vi att du även stänger din webbläsare.
+        </p>
+        <div class="submit">
+            @Html.ActionLink("Till inloggning", "SignIn")
+        </div>
+    </div>
+</div>

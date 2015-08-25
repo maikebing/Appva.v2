@@ -153,7 +153,12 @@ namespace Appva.Mcss.Admin.Features.Authentication
         public ActionResult SignOut()
         {
             this.authentication.SignOut();
-            return this.RedirectToAction("SignIn", "Authentication");
+            ITenantIdentity identity = null;
+            this.tenants.TryIdentifyTenant(out identity);
+            return this.View(new SignOut
+                {
+                    Tenant = identity.Name
+                });
         }
 
         #endregion
@@ -177,15 +182,15 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         /// <param name="token">The response token</param>
         /// <returns>A redirect to the external login</returns>
-        [Route("sign-in/external/siths/token/{token}")]
+        [Route("sign-in/external/siths/token")]
         [AllowAnonymous, HttpGet]
-        public async Task<ActionResult> SignInSithsViaToken(string token)
+        public async Task<ActionResult> SignInSithsViaToken(string authify_response_token)
         {
-            var result = await this.siths.AuthenticateTokenAsync(token);
+            var result = await this.siths.AuthenticateTokenAsync(authify_response_token);
             if (result.IsAuthorized)
             {
                 this.authentication.SignIn(result.Identity);
-                await this.siths.LogoutAsync(token);
+                await this.siths.LogoutAsync(authify_response_token);
                 return this.RedirectToAction("Index", "Home");
             }
             //// If everything fails; start over!

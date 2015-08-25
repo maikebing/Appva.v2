@@ -183,9 +183,7 @@ namespace Appva.Siths
                     new KeyValuePair<string, string>("authify_checksum", token),
                     new KeyValuePair<string, string>("v", Version)
                 };
-            var result = await this.httpClient.PostAsFormUrlEncodedAsync<string>("out/", request);
-            Log.Debug("Signing out from authify response: {0}", result);
-            return result;
+            return await this.httpClient.PostAsFormUrlEncodedAsync<string>("out/", request);
         }
 
         #endregion

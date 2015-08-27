@@ -11,7 +11,7 @@
             @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()
             @if (Model.IsMobileDevicePasswordFieldVisible)
             {
-                @Html.FormGroup(x => x.DevicePassword, "text").Label().TextBox().Validate().Build()
+                @Html.FormGroup(x => x.DevicePassword, "text").Label().Password().Validate().Build()
             }
             @if (Model.IsUsernameVisible)
             {

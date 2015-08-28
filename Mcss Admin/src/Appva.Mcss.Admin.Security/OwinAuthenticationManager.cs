@@ -12,6 +12,8 @@ namespace Appva.Mcss.Admin.Security
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
+    using JetBrains.Annotations;
+    using Microsoft.Owin;
 
     #endregion
 
@@ -43,7 +45,7 @@ namespace Appva.Mcss.Admin.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="OwinAuthenticationManager"/> class.
         /// </summary>
-        public OwinAuthenticationManager()
+        public OwinAuthenticationManager([NotNull] IOwinContext contect)
         {
         }
 

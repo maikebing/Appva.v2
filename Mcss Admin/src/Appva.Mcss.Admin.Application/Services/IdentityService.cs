@@ -124,6 +124,16 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// or if access control is activated.
         /// </returns>
         bool IsAccessControlActiveForUser();
+
+        /// <summary>
+        /// Whether or not the current user account is a member of the 
+        /// <see cref="RoleTypes.Appva"/> role.
+        /// </summary>
+        /// <returns>
+        /// True if the current user account is a member of the 
+        /// <see cref="RoleTypes.Appva"/> role; otherwise false.
+        /// </returns>
+        bool IsAppvaAccount();
     }
 
     /// <summary>
@@ -219,7 +229,13 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         public bool IsAccessControlActiveForUser()
         {
             return this.Principal.HasClaim(Core.Resources.ClaimTypes.AclEnabled, "Y") ||
-                (this.Principal.HasClaim(Core.Resources.ClaimTypes.AclPreview, "Y") && this.Principal.IsInRole(Core.Resources.RoleTypes.Appva));
+                (this.Principal.HasClaim(Core.Resources.ClaimTypes.AclPreview, "Y") && this.IsAppvaAccount());
+        }
+
+        /// <inheritdoc />
+        public bool IsAppvaAccount()
+        {
+            return this.Principal.IsInRole(Core.Resources.RoleTypes.Appva);
         }
 
         #endregion

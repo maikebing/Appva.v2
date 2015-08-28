@@ -4,13 +4,12 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Features.Authentication.Forgot
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Appva.Cqrs;
     using Appva.Mcss.Admin.Domain.Entities;
     using DataAnnotationsExtensions;
 
@@ -19,13 +18,12 @@ namespace Appva.Mcss.Admin.Features.Authentication.Forgot
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ForgotPassword
+    public class ForgotPassword : IRequest<bool>
     {
         /// <summary>
         /// The E-mail address.
         /// </summary>
-        [Required(ErrorMessage = "E-post måste anges")]
-        [Display(Name = "E-post")]
+        [Required(ErrorMessage = "E-postadress måste anges")]
         [Email(ErrorMessage = "E-postadress måste anges i korrekt format, t. ex. namn.efternamn@foretag.se.")]
         public string Email
         {
@@ -37,9 +35,7 @@ namespace Appva.Mcss.Admin.Features.Authentication.Forgot
         /// The personal identity number.
         /// </summary>
         [Required(ErrorMessage = "Personnummer måste anges")]
-        [Appva.Mvc.PersonalIdentityNumber(ErrorMessage = "Personnummer måste anges")]
-        [Display(Name = "Personnummer")]
-        [Appva.Mvc.PlaceHolder("T.ex. 19010101-0001")]
+        [Mvc.PersonalIdentityNumber(ErrorMessage = "Personnummer är ej korrekt")]
         public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
@@ -47,12 +43,39 @@ namespace Appva.Mcss.Admin.Features.Authentication.Forgot
         }
 
         /// <summary>
-        /// The current tenant.
+        /// Returns a hidden E-mail address, e.g. test****@example.com.
         /// </summary>
-        public string Tenant
+        public string HiddenEmailAddress
         {
-            get;
-            set;
+            get
+            {
+                if (string.IsNullOrWhiteSpace(this.Email))
+                {
+                    return string.Empty;
+                }
+                var localPart = this.Email.Substring(0, this.Email.IndexOf("@"));
+                if (localPart.Length == 0)
+                {
+                    return string.Empty;
+                }
+                var replacePart = localPart.Substring((int) (localPart.Length / 2));
+                return this.Email.Replace(replacePart, createAsterisks(replacePart.Length));
+            }
+        }
+
+        /// <summary>
+        /// Creates a number of asterisks.
+        /// </summary>
+        /// <param name="length">The length</param>
+        /// <returns>A string of asterisks</returns>
+        private string createAsterisks(int length)
+        {
+            var result = string.Empty;
+            for (var i = 0; i < length; i++)
+            {
+                result += "*";
+            }
+            return result;
         }
     }
 }

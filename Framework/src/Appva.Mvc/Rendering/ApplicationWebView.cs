@@ -17,9 +17,11 @@ namespace Appva.Mvc
     using System.Web.Mvc;
     using Core.Extensions;
     using Resources;
+    using Microsoft.Owin;
+    using System.Web;
 
     #endregion
-    
+
     /// <summary>
     /// Custom <see cref="WebViewPage{T}"/>.
     /// </summary>
@@ -36,37 +38,62 @@ namespace Appva.Mvc
         }
 
         /// <summary>
+        /// Returns the tenant name (from owin pipeline).
+        /// </summary>
+        public string Tenant
+        {
+            get
+            {
+                return this.Request.GetOwinContext().TenantName();
+            }
+        }
+        /// <summary>
         /// Returns the page title.
         /// </summary>
         /// <returns>The page title</returns>
-        public string Title()
+        public string Title
         {
-            return this.ViewBag.Title;
+            get
+            {
+                return this.ViewBag.Title;
+            }
         }
 
         /// <summary>
         /// Sets the page title.
         /// </summary>
         /// <param name="pageTitle">The page title</param>
-        public void Title(string pageTitle)
+        public void SetTitle(string pageTitle)
         {
             this.ViewBag.Title = pageTitle;
+        }
+
+        /// <summary>
+        /// Sets the page title.
+        /// </summary>
+        /// <param name="pageTitle">The page title</param>
+        public void SetTitle(string format, params string[] args)
+        {
+            this.ViewBag.Title = string.Format(format, args);
         }
 
         /// <summary>
         /// Returns the body class.
         /// </summary>
         /// <returns>The body class</returns>
-        public string BodyCssClass()
+        public string BodyCssClass
         {
-            return this.ViewBag.BodyCssClass == null ? string.Empty : this.ViewBag.BodyCssClass;
+            get
+            {
+                return this.ViewBag.BodyCssClass == null ? string.Empty : this.ViewBag.BodyCssClass;
+            }
         }
 
         /// <summary>
         /// Sets the body class.
         /// </summary>
         /// <param name="bodyCssClass">The body class</param>
-        public void BodyCssClass(string bodyCssClass)
+        public void SetBodyCssClass(string bodyCssClass)
         {
             this.ViewBag.BodyCssClass = bodyCssClass;
         }

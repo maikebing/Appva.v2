@@ -40,6 +40,13 @@ namespace Appva.Mcss.Admin
             bundles.Add(new StyleBundle("~/Assets/css/bundle").Include(
                 "~/Assets/css/datePicker.css", "~/Assets/css/main.css"
             ));
+            //// Authorization and external user management
+            bundles.Add(new StyleBundle("~/Assets/css/auth").Include(
+                "~/Assets/css/auth.css"
+            ));
+            bundles.Add(new ScriptBundle("~/Assets/js/auth").Include(
+                "~/Assets/js/jquery/jquery-1.6.3.js", "~/Assets/js/zxcvbn.js", "~/Assets/js/mcss.password-strength.js"
+            ));
         }
     }
 }

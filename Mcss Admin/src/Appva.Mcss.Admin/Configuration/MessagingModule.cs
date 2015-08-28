@@ -9,7 +9,9 @@ namespace Appva.Mcss.Admin.Configuration
     #region Imports.
 
     using Appva.Core.Messaging;
+    using Mvc = Appva.Mvc.Messaging;
     using Autofac;
+    using RazorEngine.Configuration;
 
     #endregion
 
@@ -36,15 +38,22 @@ namespace Appva.Mcss.Admin.Configuration
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
+            //// Razor template registration.
+            builder.Register(x => new TemplateServiceConfiguration
+            {
+                TemplateManager = new Mvc.CshtmlTemplateManager("Features/Shared/EmailTemplates")
+            }).As<ITemplateServiceConfiguration>().SingleInstance();
             switch (Configuration.Application.OperationalEnvironment)
             {
                 case OperationalEnvironment.Production:
                 case OperationalEnvironment.Demo:
-                    builder.RegisterType<MailService>().As<ISimpleMailService>();
+                    builder.RegisterType<MailService>().As<ISimpleMailService>().SingleInstance();
+                    builder.RegisterType<Mvc.MailService>().As<Mvc.IRazorMailService>().SingleInstance();
                     break;
                 case OperationalEnvironment.Staging:
                 case OperationalEnvironment.Development:
-                    builder.RegisterType<NoOpMailService>().As<ISimpleMailService>();
+                    builder.RegisterType<NoOpMailService>().As<ISimpleMailService>().SingleInstance();
+                    builder.RegisterType<Mvc.NoOpMailService>().As<Mvc.IRazorMailService>().SingleInstance();
                     break;
             }
         }

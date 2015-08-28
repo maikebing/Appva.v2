@@ -34,7 +34,6 @@ namespace Appva.Mcss.Admin
         public void Configuration(IAppBuilder app)
         {
             IocConfiguration.Configure(app);
-            AuthenticationConfiguration.Configure(app);
         }
     }
 }

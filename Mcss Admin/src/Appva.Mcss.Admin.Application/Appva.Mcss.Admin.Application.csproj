@@ -42,6 +42,12 @@
     <Reference Include="Microsoft.Owin.Security.Cookies">
       <HintPath>..\..\..\Packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Owin.Security.Jwt">
+      <HintPath>..\..\..\Packages\Microsoft.Owin.Security.Jwt.3.0.1\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\..\..\Packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -56,6 +62,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt">
+      <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -63,6 +72,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Thinktecture.IdentityModel.Core">
+      <HintPath>..\..\..\Packages\Thinktecture.IdentityModel.Core.1.4.0\lib\net45\Thinktecture.IdentityModel.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
@@ -107,7 +119,10 @@
     <Compile Include="Security\Identity\DevelopmentTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\StagingTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\ProductionTenantIdentificationStrategy.cs" />
+    <Compile Include="Security\Jwt\JwtSecureDataFormat.cs" />
+    <Compile Include="Security\Jwt\JwtToken.cs" />
     <Compile Include="Security\PreAuthorizeTenantIdentityProvider.cs" />
+    <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IdentityService.cs" />
@@ -151,6 +166,10 @@
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Cryptography\Appva.Cryptography.csproj">
+      <Project>{d3b336cc-9a4a-4cad-8ab5-32a92e028726}</Project>
+      <Name>Appva.Cryptography</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Fhir\Appva.Fhir.csproj">
       <Project>{3983ff1b-a557-4b58-a363-bcee62182f1e}</Project>
       <Name>Appva.Fhir</Name>
@@ -158,6 +177,10 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
       <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
       <Name>Appva.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Mvc\Appva.Mvc.csproj">
+      <Project>{53a7fe5b-f451-4b7a-8932-9ad424f09165}</Project>
+      <Name>Appva.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.NHibernateUtils\Appva.NHibernateUtils.csproj">
       <Project>{68889619-9faa-4b0c-bfa7-98d2a60e5584}</Project>
@@ -189,7 +212,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

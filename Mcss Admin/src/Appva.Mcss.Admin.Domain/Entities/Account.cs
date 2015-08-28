@@ -243,6 +243,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
 			set;
 		}
 
+        /// <summary>
+        /// The symmetric key used for signing JWT tokens.
+        /// </summary>
+        public virtual string SymmetricKey
+        {
+            get;
+            set;
+        }
+
 		#endregion
 
 		#region Public Methods.

@@ -116,7 +116,7 @@ namespace Appva.Core.Extensions
             }
             return str.ToUpper();
         }
-        
+
         /// <summary>
         /// Converts a <see cref="String"/> to a <see cref="Guid"/>.
         /// </summary>
@@ -284,6 +284,69 @@ namespace Appva.Core.Extensions
         public static string ToBase64(this string str)
         {
             return str.IsEmpty() ? str : Convert.ToBase64String(str.ToUtf8Bytes());
+        }
+
+        /// <summary>
+        /// Converts from a <c>url</c> safe base 64 string.
+        /// </summary>
+        /// <param name="str">A <c>url</c> safe base 64 string</param>
+        /// <returns>A base 64 string</returns>
+        public static string FromUrlSafeBase64(this string str)
+        {
+            if (str.IsEmpty())
+            {
+                return str;
+            }
+            return str.Replace('-', '+').Replace('_', '/');
+        }
+
+        /// <summary>
+        /// Returns a URL safe base 64 string.
+        /// <externalLink>
+        ///     <linkText>RFC 4648</linkText>
+        ///     <linkUri>
+        ///         http://tools.ietf.org/html/rfc4648#page-7
+        ///     </linkUri>
+        /// </externalLink>
+        /// </summary>
+        /// <param name="str">The string to be converted</param>
+        /// <returns>A <c>url</c> safe base 64 string representation</returns>
+        public static string ToUrlSafeBase64(this string str)
+        {
+            if (str.IsEmpty())
+            {
+                return str;
+            }
+            int endPos;
+            for (endPos = str.Length; endPos > 0; endPos--)
+            {
+                if (str[endPos - 1] != '=')
+                {
+                    break;
+                }
+            }
+            var base64Chars = new char[endPos + 1];
+            base64Chars[endPos] = (char)('0' + str.Length - endPos);
+            for (var i = 0; i < endPos; i++)
+            {
+                var character = str[i];
+                switch (character)
+                {
+                    case '+':
+                        base64Chars[i] = '-';
+                        break;
+                    case '/':
+                        base64Chars[i] = '_';
+                        break;
+                    case '=':
+                        base64Chars[i] = character;
+                        break;
+                    default:
+                        base64Chars[i] = character;
+                        break;
+                }
+            }
+            return new string(base64Chars);
         }
 
         /// <summary>

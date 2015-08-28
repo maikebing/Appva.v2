@@ -24,6 +24,8 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Configuration;
     using Appva.Mcss.Admin.Application.Caching;
     using Appva.Core.Resources;
+    using Appva.Mcss.Admin.Application.Security.Jwt;
+    using Appva.Mcss.Admin.Domain.VO;
 
     #endregion
 
@@ -69,11 +71,28 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         string GetAdminLogin();
     }
 
+    public interface ISecuritySettings
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        ResetPasswordToken ResetPasswordTokenConfiguration();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        bool IsTokenConfigurationInstalled();
+    }
+
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public interface ISettingsService :
         IAccessControlListTenantSettings,
+        ISecuritySettings,
         IOldSettings,
         IService
     {
@@ -84,7 +103,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <typeparam name="T">The type to convert to</typeparam>
         /// <param name="key">The unique key</param>
         /// <returns>Returns the <c>Setting</c> or null if not found</returns>
-        T Find<T>(ApplicationSettingIdentity<T> key) where T : struct;
+        T Find<T>(ApplicationSettingIdentity<T> key);
 
         /// <summary>
         /// Returns a collection of tenant <see cref="Setting"/>.
@@ -97,7 +116,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         /// <param name="key">The unique key</param>
         /// <param name="value">The value to be added</param>
-        void Upsert<T>(ApplicationSettingIdentity<T> key, T value) where T : struct;
+        void Upsert<T>(ApplicationSettingIdentity<T> key, T value);
     }
 
     /// <summary>
@@ -153,7 +172,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         #region ISettingsService Members.
 
         /// <inheritdoc />
-        public T Find<T>(ApplicationSettingIdentity<T> key) where T : struct
+        public T Find<T>(ApplicationSettingIdentity<T> key)
         {
             return this.ReturnCached<T>(key);
         }
@@ -165,17 +184,17 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         }
 
         /// <inheritdoc />
-        public void Upsert<T>(ApplicationSettingIdentity<T> key, T value) where T : struct
+        public void Upsert<T>(ApplicationSettingIdentity<T> key, T value)
         {
             var item = this.repository.Find(key.Key);
             if (item == null)
             {
                 this.repository.Save(Setting.CreateNew(
-                    key.Key, 
-                    key.Namespace, 
-                    key.Name, 
-                    key.Description, 
-                    JsonConvert.SerializeObject(value), 
+                    key.Key,
+                    key.Namespace,
+                    key.Name,
+                    key.Description,
+                    JsonConvert.SerializeObject(value),
                     value.GetType())
                     .Activate());
             }
@@ -199,6 +218,21 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         public bool IsAccessControlListActivated()
         {
             return this.Find(ApplicationSettings.IsAccessControlActivated);
+        }
+
+        #endregion
+
+        #region ISecuritySettings.
+
+        /// <inheritdoc />
+        public ResetPasswordToken ResetPasswordTokenConfiguration()
+        {
+            return this.Find<ResetPasswordToken>(ApplicationSettings.ResetPasswordTokenConfiguration);
+        }
+
+        public bool IsTokenConfigurationInstalled()
+        {
+            return this.Find<ResetPasswordToken>(ApplicationSettings.ResetPasswordTokenConfiguration) != null;
         }
 
         #endregion
@@ -419,7 +453,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="setting"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        private T ReturnCached<T>(ApplicationSettingIdentity<T> setting) where T : struct
+        private T ReturnCached<T>(ApplicationSettingIdentity<T> setting)
         {
             try
             {

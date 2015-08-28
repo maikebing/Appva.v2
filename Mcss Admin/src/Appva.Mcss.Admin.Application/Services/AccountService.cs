@@ -10,25 +10,24 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
-    using System.Web;
+    using System.Net.Mail;
+    using Appva.Core.Extensions;
+    using Appva.Core.Logging;
+    using Appva.Core.Messaging;
+    using Appva.Core.Resources;
+    using Appva.Cryptography;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Core.Extensions;
-    using Appva.Repository;
-    using Validation;
     using Appva.Persistence;
-    using Appva.Core.Resources;
+    using Appva.Repository;
     using NHibernate.Criterion;
-    using Appva.Core.Messaging;
-    using Appva.Mcss.Admin.Application.Services.Settings;
-    using System.Net.Mail;
-    using System.Configuration;
-    using Appva.Mcss.Admin.Application.Auditing;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Core.Logging;
 
     #endregion
 
@@ -163,13 +162,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="account">The user account to be updated</param>
         /// <param name="roles">The list of roles to be added</param>
         void UpdateRoles(Account account, IList<Role> roles);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="emailAddress"></param>
-        /// <param name="personalIdentityNumber"></param>
-        bool ForgotPassword(string emailAddress, PersonalIdentityNumber personalIdentityNumber);
 
         /// <summary>
         /// 
@@ -342,41 +334,8 @@ namespace Appva.Mcss.Admin.Application.Services
             var salt = EncryptionUtils.GenerateSalt(DateTime.Now);
             var password = EncryptionUtils.Hash(newPassword, salt);
             account.ChangePassword(password, salt);
+            account.SymmetricKey = Hash.Random().ToBase64();
             this.repository.Update(account);
-        }
-
-        public bool ForgotPassword(string emailAddress, PersonalIdentityNumber personalIdentityNumber)
-        {
-            var account = this.repository.FindByPersonalIdentityNumber(personalIdentityNumber);
-            if (account == null)
-            {
-                return false;
-            }
-            if (account.EmailAddress != emailAddress)
-            {
-                return false;
-            }
-            if (AccountUtils.IsBackendAccount(account) || this.HasPermissions(account, Common.Permissions.Admin.Login.Value))
-            {
-                var salt = EncryptionUtils.GenerateSalt(DateTime.Now);
-                var password = EncryptionUtils.GeneratePassword();
-                account.Salt = salt;
-                account.AdminPassword = EncryptionUtils.Hash(password, salt);
-                account.LastPasswordChangedDate = null;
-                account.LockoutUntilDate = null;
-                account.FailedPasswordAttemptsCount = 0;
-                account.PasswordResetDate = DateTime.Now;
-                this.repository.Update(account);
-                var mail = new MailMessage("noreply@appva.se", account.EmailAddress)
-                {
-                    Subject = "Nytt lösenord till Appva MCSS",
-                    Body = string.Format("<h3>Hej {0}!</h3><p>Ditt nya lösenord är {1}</p> <p>Har du ej begärt att få ett nytt lösenord var vänlig kontakta support@appva.se.</p>", account.UserName, password),
-                    IsBodyHtml = true
-                };
-                this.mailService.Send(mail);
-                return true;
-            }
-            return false;
         }
 
         /// <inheritdoc />

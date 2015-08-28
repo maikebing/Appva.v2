@@ -24,8 +24,7 @@ namespace Appva.Mcss.Admin.Models
         /// The user name.
         /// </summary>
         [Required]
-        [StringLength(50)]
-        [Display(Name = "Användarnamn")]
+        [StringLength(255)]
         public string UserName
         {
             get;
@@ -36,18 +35,8 @@ namespace Appva.Mcss.Admin.Models
         /// The password credentials.
         /// </summary>
         [Required]
-        [StringLength(50)]
-        [Display(Name = "Lösenord")]
+        [StringLength(255)]
         public string Password
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The current tenant.
-        /// </summary>
-        public string Tenant
         {
             get;
             set;

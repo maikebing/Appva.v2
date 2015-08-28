@@ -95,6 +95,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Owin.Security.Jwt, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.Owin.Security.Jwt.3.0.1\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
@@ -117,6 +121,11 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -188,7 +197,6 @@
     <Compile Include="App_Start\IocConfiguration.cs" />
     <Compile Include="App_Start\OwinConfiguration.cs" />
     <Compile Include="App_Start\RouteConfiguration.cs" />
-    <Compile Include="App_Start\AuthenticationConfiguration.cs" />
     <Compile Include="Areas\Area51\Features\Acl\AclController.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAclHandler.cs" />
@@ -205,6 +213,9 @@
     <Compile Include="Areas\Area51\Features\Settings\Create\CreateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Update\UpdateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
+    <Compile Include="Areas\Area51\Features\Token\Install\InstallToken .cs" />
+    <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlert.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlertHandler.cs" />
@@ -400,10 +411,12 @@
     <Compile Include="Configuration\PersistenceModule.cs" />
     <Compile Include="Features\Authentication\AuthenticationController.cs" />
     <Compile Include="Features\Authentication\Forgot\ForgotPassword.cs" />
+    <Compile Include="Features\Authentication\Forgot\ForgotPasswordEmail.cs" />
+    <Compile Include="Features\Authentication\Forgot\ForgotPasswordHandler.cs" />
+    <Compile Include="Features\Authentication\ResetPassword\ResetPasswordHandler.cs" />
+    <Compile Include="Features\Authentication\ResetPassword\ResetPassword.cs" />
     <Compile Include="Features\Authentication\SignIn\SignIn.cs" />
     <Compile Include="Features\Authentication\SignIn\SignInForm.cs" />
-    <Compile Include="Features\Authentication\SignIn\SignInHandler.cs" />
-    <Compile Include="Features\Authentication\SignOut\SignOut.cs" />
     <Compile Include="Features\Home\HomeController.cs" />
     <Compile Include="Features\Menus\Menu\Menu.cs" />
     <Compile Include="Features\Menus\Menu\MenuHandler.cs" />
@@ -491,6 +504,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\css\auth.css" />
     <Content Include="Assets\css\datePicker.css" />
     <Content Include="Assets\error-pages\400.html" />
     <Content Include="Assets\error-pages\403.html" />
@@ -598,6 +612,7 @@
     <Content Include="Assets\i\page_white_excel.png" />
     <Content Include="Assets\i\popover.png" />
     <Content Include="Assets\i\popover2.png" />
+    <Content Include="Assets\i\profile-icon.png" />
     <Content Include="Assets\i\reportchart.png" />
     <Content Include="Assets\i\select-arrow.png" />
     <Content Include="Assets\i\shade-blue.png" />
@@ -634,9 +649,11 @@
     <Content Include="Assets\js\mcss.js" />
     <Content Include="Assets\js\mcss.lightbox.js" />
     <Content Include="Assets\js\mcss.order.js" />
+    <Content Include="Assets\js\mcss.password-strength.js" />
     <Content Include="Assets\js\mcss.prepareweeks.js" />
     <Content Include="Assets\js\mcss.validation.js" />
     <Content Include="Assets\js\placeholder.v3.0.2.min.js" />
+    <Content Include="Assets\js\zxcvbn.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="media\jul.png" />
@@ -1007,6 +1024,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Features\Authentication\SignOut\SignOut.cshtml" />
+    <Content Include="Areas\Area51\Features\Token\Index\Index.cshtml" />
+    <Content Include="Features\Authentication\ResetPassword\ResetPassword.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\ResetPasswordEmail.cshtml" />
+    <Content Include="Features\Shared\ForgotPasswordSuccess.cshtml" />
+    <Content Include="Features\Shared\ResetPasswordTokenExpired.cshtml" />
+    <Content Include="Features\Shared\ResetPasswordSuccess.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

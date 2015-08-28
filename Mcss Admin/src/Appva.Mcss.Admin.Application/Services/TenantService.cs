@@ -8,21 +8,15 @@ namespace Appva.Mcss.Admin.Application.Services
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Runtime.Caching;
-    using Appva.Apis.TenantServer;
-    using Appva.Apis.TenantServer.Contracts;
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
+    using Appva.Core.Extensions;
     using Appva.Core.Resources;
-    using Appva.Mcss.Admin.Application.Common;
     using Appva.Tenant.Identity;
     using Appva.Tenant.Interoperability.Client;
-    using Validation;
-    using Appva.Core.Extensions;
     using Microsoft.Owin;
+    using Validation;
 
     #endregion
 
@@ -133,7 +127,13 @@ namespace Appva.Mcss.Admin.Application.Services
         public IValidateTenantIdentificationResult Validate(IOwinContext context)
         {
             ITenantIdentity identity;
-            this.TryIdentifyTenant(out identity);
+            if (this.TryIdentifyTenant(out identity))
+            {
+                context.Request.Headers.Add(ClaimTypes.TenantName, new[]
+                {
+                    identity.Name
+                });
+            }
             return this.strategy.Validate(identity, context.Request.Uri);
         }
 

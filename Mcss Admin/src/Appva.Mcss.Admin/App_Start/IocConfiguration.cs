@@ -8,8 +8,10 @@ namespace Appva.Mcss.Admin
 {
     #region Imports.
 
+    using System;
     using System.Linq;
     using System.Reflection;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using Appva.Cqrs;
@@ -24,7 +26,14 @@ namespace Appva.Mcss.Admin
     using Autofac;
     using Autofac.Integration.Mvc;
     using Microsoft.Owin;
+    using Microsoft.Owin.Security;
+    using Microsoft.Owin.Security.Cookies;
     using Owin;
+    using Core.Extensions;
+    using Microsoft.Owin.Security.OAuth;
+    using Microsoft.Owin.Security.Jwt;
+    using System.IdentityModel.Tokens;
+    using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -40,10 +49,10 @@ namespace Appva.Mcss.Admin
         {
             var builder = new ContainerBuilder();
             var assembly = Assembly.GetExecutingAssembly();
-            
+
             builder.RegisterControllers(assembly);
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces();
-            
+
             //// Register repositories.
             builder.RegisterAssemblyTypes(typeof(IRepository).Assembly).Where(x => x.GetInterfaces()
                 .Any(y => y.IsAssignableFrom(typeof(IRepository)))).AsImplementedInterfaces().InstancePerRequest();
@@ -83,8 +92,35 @@ namespace Appva.Mcss.Admin
             builder.RegisterFilterProvider();
             builder.RegisterModule(new AutofacWebTypesModule());
 
+            builder.Register(x => app).As<IAppBuilder>().InstancePerLifetimeScope();
             //// Register pre authorize tenant provider as the 1st middleware to execute.
             builder.RegisterType<PreAuthorizeTenantIdentityProvider>().SingleInstance();
+            //// Register Jwt
+            builder.RegisterType<JwtSecurityTokenHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<JwtSecureDataFormat>().AsSelf().InstancePerRequest();
+            //// Register authentication as 2nd middleware to execute.
+            builder.RegisterType<ResetPasswordMiddleware>().InstancePerRequest();
+            builder.Register<ResetPasswordOptions>(x => new ResetPasswordOptions
+            {
+                TokenQueryParam = "token",
+                ResetPasswordPath = new PathString("/auth/reset-password"),
+                TokenExpiredPath = new PathString("/auth/reset-password/expired"),
+                AuthenticationMode = AuthenticationMode.Active,
+                AuthenticationType = OAuthDefaults.AuthenticationType,
+                Provider = x.Resolve<JwtSecureDataFormat>()
+            }).InstancePerRequest();
+            //// Register authentication as 3rd middleware to execute.
+            builder.RegisterType<CookieAuthenticationMiddleware>().InstancePerRequest();
+            builder.Register<CookieAuthenticationOptions>(x => new CookieAuthenticationOptions
+            {
+                AuthenticationMode = AuthenticationMode.Active,
+                AuthenticationType = AuthenticationType.Administrative.Value,
+                CookieSecure = CookieSecureOption.SameAsRequest,
+                LoginPath = new PathString("/auth/sign-in"),
+                SlidingExpiration = true,
+                ExpireTimeSpan = TimeSpan.FromMinutes(15),
+                Provider = new CookieAuthenticationProvider()
+            }).InstancePerLifetimeScope();
 
             //// Create container and set resolvers and owin interceptors.
             var container = builder.Build();

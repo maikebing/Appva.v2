@@ -20,8 +20,7 @@ namespace Appva.Mcss.Admin.Application.Common
     /// </summary>
     public static class EncryptionUtils
     {
-
-        #region Private Fields.
+        #region Variables.
 
         /// <summary>
         /// Default iterations.
@@ -74,38 +73,6 @@ namespace Appva.Mcss.Admin.Application.Common
             return string.Format("{0}.{1}", iterations.Value, Convert.ToBase64String(bytes));
         }
 
-        /// <summary>
-        /// Creates a default password.
-        /// </summary>
-        public static string GeneratePassword()
-        {
-            var retval = string.Empty;
-            retval += GetNumberOfCharactersFrom("abcdefghijklmnopqrstuvwxyz", 3);
-            retval += GetNumberOfCharactersFrom("0123456789", 1);
-            retval += GetNumberOfCharactersFrom("!@#$%&()?", 1);
-            retval += GetNumberOfCharactersFrom("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 3);
-            Random random = new Random();
-            return new string(retval.ToCharArray().OrderBy(s => (random.Next(2) % 2) == 0).ToArray());
-        }
-
-        /// <summary>
-        /// Helper for generating password.
-        /// </summary>
-        /// <param name="characters"></param>
-        /// <param name="length"></param>
-        private static string GetNumberOfCharactersFrom(string characters, int length)
-        {
-            Random random = new Random();
-            StringBuilder buffer = new StringBuilder(length);
-            for (int i = 0; i < length; i++)
-            {
-                int randomNumber = random.Next(0, characters.Length);
-                buffer.Append(characters, randomNumber, 1);
-            }
-            return buffer.ToString();
-        }
-
         #endregion
-
     }
 }

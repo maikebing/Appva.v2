@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     #region Imports.
 
     using System;
+    using Appva.Core.Environment;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mvc;
     using Appva.Mvc.Messaging;
@@ -36,9 +37,10 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// Initializes a new instance of the <see cref="MvcExceptionHandler"/> class.
         /// </summary>
         /// <param name="tenants">The <see cref="ITenantService"/></param>
+        /// <param name="environment">The <see cref="IApplicationEnvironment"/></param>
         /// <param name="mail">The <see cref="IRazorMailService"/></param>
-        public MvcExceptionHandler(ITenantService tenants, IRazorMailService mail)
-            : base(mail)
+        public MvcExceptionHandler(ITenantService tenants, IApplicationEnvironment environment, IRazorMailService mail)
+            : base(environment, mail)
         {
             this.tenantService = tenants;
         }

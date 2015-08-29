@@ -397,7 +397,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 //// Create user name if none is set, this should be done during creation instead. 
                 if (account.UserName == null)
                 {
-                    account.UserName = AccountUtils.CreateUserName(account.FirstName, account.LastName, GetUserNames());
+                    account.UserName = this.CreateUserName(account.FirstName, account.LastName, GetUserNames());
                     account.Salt = EncryptionUtils.GenerateSalt(DateTime.Now);
                     account.AdminPassword = EncryptionUtils.Hash("abc123ABC", account.Salt);
                     Log.Debug("Generated new username {0}", account.UserName);
@@ -516,11 +516,7 @@ namespace Appva.Mcss.Admin.Application.Services
             var roleList = roles.IsNull() ? new List<Role>() : roles;
             roleList.Add(this.roles.Find(RoleTypes.Backend));
             var account = new Account();
-            account.UserName = AccountUtils.CreateUserName(
-                firstName,
-                lastName,
-                this.GetUserNames()
-            );
+            account.UserName = this.CreateUserName(firstName, lastName, this.GetUserNames());
             account.FirstName = firstName.FirstToUpper();
             account.LastName = lastName.FirstToUpper();
             account.FullName = string.Format("{0} {1}", account.FirstName, account.LastName);
@@ -557,6 +553,33 @@ namespace Appva.Mcss.Admin.Application.Services
                 .SetProjection(Projections.ProjectionList()
                 .Add(Projections.Property("UserName")))
                 .List<string>();
+        }
+
+        /// <summary>
+        /// Creates a unique username from firstname and lastname
+        /// </summary>
+        /// <param name="firstname"></param>
+        /// <param name="lastname"></param>
+        /// <param name="usernames"></param>
+        /// <returns></returns>
+        public string CreateUserName(string firstname, string lastname, IList<string> usernames)
+        {
+            var firstPart  = firstname.ToNullSafeLower().ToUrlFriendly();
+            var secondPart = lastname.ToNullSafeLower().ToUrlFriendly();
+            var username = string.Format(
+                "{0}{1}",
+                (firstPart.Length > 3)  ? firstPart.Substring(0, 3) : firstPart,
+                (secondPart.Length > 3) ? secondPart.Substring(0, 3) : secondPart);
+            if (! usernames.Contains(username))
+            {
+                return username;
+            }
+            var counter = 1;
+            while (usernames.Contains(username + counter))
+            {
+                counter++;
+            }
+            return username + counter;
         }
 
         #endregion

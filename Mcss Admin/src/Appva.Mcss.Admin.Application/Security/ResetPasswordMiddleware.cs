@@ -66,6 +66,15 @@ namespace Appva.Mcss.Admin.Application.Security
         }
 
         /// <summary>
+        /// The token invalid path.
+        /// </summary>
+        public PathString TokenInvalidPath
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The secure data format provider.
         /// </summary>
         public ISecureDataFormat<AuthenticationTicket> Provider
@@ -114,8 +123,17 @@ namespace Appva.Mcss.Admin.Application.Security
             {
                 await base.Invoke(context);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Debug(ex);
+                if (ex is SecurityTokenExpiredException)
+                {
+                    context.Response.Redirect(this.Options.TokenExpiredPath.Value);
+                }
+                else
+                {
+                    context.Response.Redirect(this.Options.TokenInvalidPath.Value);
+                }
                 return;
             }
         }
@@ -161,26 +179,13 @@ namespace Appva.Mcss.Admin.Application.Security
             {
                 return Task.FromResult<AuthenticationTicket>(null);
             }
-            try
+            var context = new AuthenticationTokenReceiveContext(Context, Options.Provider, token);
+            context.DeserializeTicket(context.Token);
+            if (context.Ticket == null)
             {
-                var context = new AuthenticationTokenReceiveContext(Context, Options.Provider, token);
-                context.DeserializeTicket(context.Token);
-                if (context.Ticket == null)
-                {
-                    return Task.FromResult<AuthenticationTicket>(null);
-                }
-                return Task.FromResult(context.Ticket);
-            }
-            catch (Exception ex)
-            {
-                Log.Debug(ex);
-                if (ex is SecurityTokenExpiredException)
-                {
-                    this.Response.Redirect(this.Options.TokenExpiredPath.Value);
-                    throw;
-                }
                 return Task.FromResult<AuthenticationTicket>(null);
             }
+            return Task.FromResult(context.Ticket);
         }
 
         #endregion

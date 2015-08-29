@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin
     using Appva.Core.Logging;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
+    using Appva.Mvc.Configuration;
     using HibernatingRhinos.Profiler.Appender.NHibernate;
     using log4net.Config;
 
@@ -55,10 +56,6 @@ namespace Appva.Mcss.Admin
         {
             Log.Info("Application started ...");
             MvcHandler.DisableMvcResponseHeader = true;
-            if (! Configuration.Application.IsInProduction)
-            {
-                NHibernateProfiler.Initialize();
-            }
             ModelBinders.Binders.DefaultBinder = new AdminModelBinder();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();

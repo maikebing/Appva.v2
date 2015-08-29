@@ -194,7 +194,6 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfiguration.cs" />
     <Compile Include="App_Start\FilterConfiguration.cs" />
-    <Compile Include="App_Start\IocConfiguration.cs" />
     <Compile Include="App_Start\OwinConfiguration.cs" />
     <Compile Include="App_Start\RouteConfiguration.cs" />
     <Compile Include="Areas\Area51\Features\Acl\AclController.cs" />
@@ -404,11 +403,7 @@
     <Compile Include="Commands\ScheduleReportFilter.cs" />
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
-    <Compile Include="Configuration\Application.cs" />
-    <Compile Include="Configuration\ApplicationConfiguration.cs" />
-    <Compile Include="Configuration\ExceptionHandlerModule.cs" />
-    <Compile Include="Configuration\MessagingModule.cs" />
-    <Compile Include="Configuration\PersistenceModule.cs" />
+    <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
     <Compile Include="Features\Authentication\AuthenticationController.cs" />
     <Compile Include="Features\Authentication\Forgot\ForgotPassword.cs" />
     <Compile Include="Features\Authentication\Forgot\ForgotPasswordEmail.cs" />

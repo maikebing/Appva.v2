@@ -84,7 +84,6 @@
     <Compile Include="Auditing\AuditService.cs" />
     <Compile Include="Auditing\HttpContextBaseExtensions.cs" />
     <Compile Include="Caching\TenantAwareMemoryCache.cs" />
-    <Compile Include="Common\AccountUtils.cs" />
     <Compile Include="Common\CacheUtils.cs" />
     <Compile Include="Common\EncryptionUtils.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -121,7 +120,7 @@
     <Compile Include="Security\Identity\ProductionTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Jwt\JwtSecureDataFormat.cs" />
     <Compile Include="Security\Jwt\JwtToken.cs" />
-    <Compile Include="Security\PreAuthorizeTenantIdentityProvider.cs" />
+    <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />
     <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\EventService.cs" />

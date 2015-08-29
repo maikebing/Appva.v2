@@ -147,6 +147,17 @@ namespace Appva.Core.Environment
             }
         }
 
+        /// <summary>
+        /// Returns the short hand environment information.
+        /// </summary>
+        public static string Environment
+        {
+            get
+            {
+                return instance.environment.AsUserFriendlyText();
+            }
+        }
+
         #endregion
 
         #region IApplicationEnvironment Members.

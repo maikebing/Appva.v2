@@ -377,10 +377,10 @@
         </script>
     </head>
     <body>
-        @if (Application.IsInDevelopment || Application.IsInStaging)
+        @if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
         {
             <div class="environment">
-                <p>@*Application.FullName*@ENVIRONMENT @Application.Environment | VERSION @Application.Version | SERVER @Application.MachineName</p>
+                <p>ENVIRONMENT @ApplicationEnvironment.Environment | VERSION @ApplicationEnvironment.Info.Version | SERVER @ApplicationEnvironment.OperatingSystem.MachineName</p>
             </div>
         }
         <div class="global-filter">

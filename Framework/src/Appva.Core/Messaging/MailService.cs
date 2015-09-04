@@ -19,6 +19,9 @@ namespace Appva.Core.Messaging
     {
     }
 
+    /// <summary>
+    /// Marker interface for simple E-mail messaging service.
+    /// </summary>
     public interface ISimpleMailService : IMailSender<MailMessage>
     {
     }

@@ -1,6 +1,6 @@
 ﻿@model CreateAccountModel
 @{ 
-    Title("Ny medarbetare"); 
+    SetTitle("Ny medarbetare"); 
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AccountCreate" data-valparams="id=@((Model.AccountId.HasValue) ? Model.AccountId.Value.ToString() : "");uidUrl=@Url.Action("VerifyUniqueAccount");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
     @using (Html.Post())
@@ -13,7 +13,7 @@
             @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()
             @if (Model.IsMobileDevicePasswordFieldVisible)
             {
-                @Html.FormGroup(x => x.DevicePassword, "text").Label().TextBox().Validate().Build()
+                @Html.FormGroup(x => x.DevicePassword, "text").Label().Password().Validate().Build()
             }
             <div class="select">
                 @Html.LabelFor(m => m.TitleRole)

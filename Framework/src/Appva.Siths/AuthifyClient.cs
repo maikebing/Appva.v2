@@ -176,14 +176,14 @@ namespace Appva.Siths
         /// <returns>
         /// True if the session was terminated successfully, false otherwise
         /// </returns>
-        protected virtual async Task<bool> RequireLogout([NotNull] string token)
+        protected virtual async Task<string> RequireLogout([NotNull] string token)
         {
             var request = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("authify_checksum", token),
                     new KeyValuePair<string, string>("v", Version)
                 };
-            return await this.httpClient.PostAsFormUrlEncodedAsync<bool>("out/", request);
+            return await this.httpClient.PostAsFormUrlEncodedAsync<string>("out/", request);
         }
 
         #endregion

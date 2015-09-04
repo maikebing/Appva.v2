@@ -42,7 +42,7 @@ namespace Appva.Siths
         /// </summary>
         /// <param name="token">The authentication token</param>
         /// <returns>A <see cref="Task{bool}"/>; true if successful</returns>
-        Task<bool> Logout(string token);
+        Task<string> Logout(string token);
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ namespace Appva.Siths
         }
 
         /// <inheritdoc />
-        async Task<bool> ISithsClient.Logout(string token)
+        async Task<string> ISithsClient.Logout(string token)
         {
             return await this.RequireLogout(token);
         }

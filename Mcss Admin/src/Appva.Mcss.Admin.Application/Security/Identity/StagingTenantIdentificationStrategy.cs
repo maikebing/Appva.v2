@@ -30,12 +30,17 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// <summary>
         /// The host domain.
         /// </summary>
-        private const string Host = "dev.appvamcss";
+        private const string Host = "dev.appva.se";
 
         /// <summary>
         /// The <see cref="ILog"/>.
         /// </summary>
         private static readonly ILog Log = LogProvider.For<StagingTenantIdentificationStrategy>();
+
+        /// <summary>
+        /// Staging/Dev server tenant identity.
+        /// </summary>
+        private static readonly TenantIdentifier Identifier = new TenantIdentifier("91-41-57-6d-f2-51-17-a2-42-d4-2f-5a-02-57-10-69");
 
         #endregion
 
@@ -44,7 +49,9 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// <inheritdoc />
         public bool TryIdentifyTenant(out ITenantIdentifier identifier)
         {
-            identifier = null;
+            identifier = Identifier;
+            return true;
+            /*identifier = null;
             var context = HttpContext.Current;
             try
             {
@@ -63,7 +70,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
             {
                 Log.Error(ex);
             }
-            return identifier != null;
+            return identifier != null;*/
         }
 
         /// <inheritdoc />

@@ -5,17 +5,19 @@
 <!--[if gt IE 9]><!-->
 <html class="gt-ie8 gt-ie9 not-ie">
 <!--<![endif]-->
-    <head>
-        <title>@Title() - Appva MCSS</title>
-        @Html.Partial("_Meta")
-        @Styles.Render("~/Assets/css/bundle")
-    </head>
-    <body>
-        <div id="login" class="std-panel">
-            @RenderBody()
-            <div class="footer">
-                <p>Appva MCSS version @Application.Version</p>
-            </div>
-        </div>
-    </body>
+<head>
+    <title>@Title - Appva MCSS</title>
+    @Html.Partial("_Meta")
+    @Styles.Render("~/Assets/css/auth")
+</head>
+<body class="page page-dark-theme @BodyCssClass">
+    @RenderSection("nav", false)
+    <div class="container">
+        @RenderBody()
+    </div>
+    <div class="version">
+        Appva MCSS version @ApplicationEnvironment.Info.Version
+    </div>
+</body>
+@RenderSection("javascript", false)
 </html>

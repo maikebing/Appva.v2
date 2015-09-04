@@ -46,7 +46,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// </summary>
         /// <param name="token">The authentication token</param>
         /// <returns>A <see cref="Task{bool}"/>; true if successful</returns>
-        Task<bool> LogoutAsync(string token);
+        Task<string> LogoutAsync(string token);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// </summary>
         /// <param name="token">The authentication token</param>
         /// <returns>True if successful</returns>
-        bool Logout(string token);
+        string Logout(string token);
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ namespace Appva.Mcss.Admin.Application.Security
         }
 
         /// <inheritdoc />
-        public bool Logout(string token)
+        public string Logout(string token)
         {
             return this.LogoutAsync(token).Result;
         }
@@ -161,7 +161,7 @@ namespace Appva.Mcss.Admin.Application.Security
         }
 
         /// <inheritdoc />
-        public async Task<bool> LogoutAsync(string token)
+        public async Task<string> LogoutAsync(string token)
         {
             return await this.client.Logout(token);
         }

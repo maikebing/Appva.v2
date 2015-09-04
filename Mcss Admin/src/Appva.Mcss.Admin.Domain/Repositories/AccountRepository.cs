@@ -9,12 +9,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
-    using Appva.Common.Domain;
     using Appva.Core.Extensions;
-    using Appva.Core.Resources;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories.Contracts;
@@ -182,18 +178,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 query.Left.JoinAlias(x => x.Roles, () => role)
                     .Where(() => role.Id == model.RoleFilterId)
                     .And(() => role.IsVisible);
-                    /// TODO: Old shit remove when visible is done
-                    /// .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
             }
             else
             {
                 Role role = null;
                 query.Left.JoinAlias(x => x.Roles, () => role)
                     .Where(Restrictions.Or(
-                    Restrictions.IsNull(Projections.Property<Account>(x => x.Roles)),
-                    Restrictions.Eq(Projections.Property<Role>(x => role.IsVisible), true)));
-                    /// TODO: Old shit remove when visible is done
-                    /// .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
+                        Restrictions.On(() => role.Accounts).IsNull,
+                        Restrictions.Where(() => role.IsVisible)
+                    ));
             }
 
             if (model.OrganisationFilterId.HasValue && model.OrganisationFilterId.Value.IsNotEmpty())

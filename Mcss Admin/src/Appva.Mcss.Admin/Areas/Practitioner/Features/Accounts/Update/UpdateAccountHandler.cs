@@ -66,7 +66,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new UpdateAccount
             {
                 IsMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
-                IsMobileDevicePasswordFieldVisible = ! this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
+                IsMobileDevicePasswordFieldVisible = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
                 IsUsernameVisible = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible),
                 Taxons = TaxonomyHelper.SelectList(account.Taxon, this.taxonomies.List(TaxonomicSchema.Organization)),
                 Id = account.Id,

@@ -176,5 +176,16 @@ namespace Appva.Cryptography
             return CertificateUtils.LoadCertificate(
                 X509FindType.FindBySerialNumber, serialNumber, store, location);
         }
+
+        /// <summary>
+        /// Loads an X.509 certificate from disk.
+        /// </summary>
+        /// <param name="inputFile">The input file, e.g. C:\cert.pfx</param>
+        /// <param name="password">The certificate password</param>
+        /// <returns>An instance of <c>X509Certificate2</c></returns>
+        public static X509Certificate2 LoadCertificateFromDisk(string inputFile, string password)
+        {
+            return CertificateUtils.LoadCertificateFromDisk(inputFile, password);
+        }
     }
 }

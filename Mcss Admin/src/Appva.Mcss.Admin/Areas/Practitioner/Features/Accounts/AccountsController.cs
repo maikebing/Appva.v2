@@ -135,11 +135,11 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <param name="collection">The form collection</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/update")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         [PermissionsAttribute(Permissions.Practitioner.UpdateValue)]
         public ActionResult Update(UpdateAccount request)
         {
-            return this.View();
+            return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         #endregion
@@ -167,11 +167,11 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// Redirects to <see cref="AccountsController.List"/>
         /// </returns>
         [Route("{id:guid}/roles/update")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         [PermissionsAttribute(Permissions.Practitioner.UpdateRolesValue)]
         public ActionResult UpdateRoles(UpdateRolesForm request)
         {
-            return this.View();
+            return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         #endregion

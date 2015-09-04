@@ -52,10 +52,18 @@
     <Compile Include="Contracts\IPersonalIdentityNumber.cs" />
     <Compile Include="Contracts\Permissions\IPermission.cs" />
     <Compile Include="Contracts\Validation\IValidator.cs" />
+    <Compile Include="Environment\ApplicationEnvironment.cs" />
+    <Compile Include="Environment\IApplicationEnvironment.cs" />
+    <Compile Include="Environment\IApplicationEnvironmentAssemblyInfo.cs" />
+    <Compile Include="Environment\IApplicationEnvironmentOs.cs" />
+    <Compile Include="Environment\IApplicationOperationalEnvironment.cs" />
+    <Compile Include="Environment\OperationalEnvironment.cs" />
     <Compile Include="Exceptions\DefaultExceptionHandler.cs" />
     <Compile Include="Exceptions\IExceptionHandler.cs" />
     <Compile Include="Exceptions\NoOpExceptionHandler.cs" />
-    <Compile Include="Extensions\ByteArrayExtensions.cs" />
+    <Compile Include="Extensions\ByteArrayExtensions.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
@@ -108,6 +116,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RoleTypes.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Attribute.cs" />
     <Compile Include="Utilities\DateTimeUtilities.cs" />
     <Compile Include="Utilities\ExpressionUtil.cs" />
     <Compile Include="Utilities\StringUtilities.cs" />
@@ -138,9 +147,7 @@
       <LastGenOutput>RoleTypes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

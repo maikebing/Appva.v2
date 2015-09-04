@@ -10,24 +10,24 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
-    using System.Web;
+    using System.Net.Mail;
+    using Appva.Core.Extensions;
+    using Appva.Core.Logging;
+    using Appva.Core.Messaging;
+    using Appva.Core.Resources;
+    using Appva.Cryptography;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Core.Extensions;
-    using Appva.Repository;
-    using Validation;
     using Appva.Persistence;
-    using Appva.Core.Resources;
+    using Appva.Repository;
     using NHibernate.Criterion;
-    using Appva.Core.Messaging;
-    using Appva.Mcss.Admin.Application.Services.Settings;
-    using System.Net.Mail;
-    using System.Configuration;
-    using Appva.Mcss.Admin.Application.Auditing;
-
 
     #endregion
 
@@ -156,14 +156,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>The account id</returns>
         void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress);
 
-        void UpdateRoles(Account account, IList<Role> roles);
-
         /// <summary>
-        /// 
+        /// Updates the roles for a user account.
         /// </summary>
-        /// <param name="emailAddress"></param>
-        /// <param name="personalIdentityNumber"></param>
-        bool ForgotPassword(string emailAddress, PersonalIdentityNumber personalIdentityNumber);
+        /// <param name="account">The user account to be updated</param>
+        /// <param name="roles">The list of roles to be added</param>
+        void UpdateRoles(Account account, IList<Role> roles);
 
         /// <summary>
         /// 
@@ -197,6 +195,11 @@ namespace Appva.Mcss.Admin.Application.Services
     public sealed class AccountService : IAccountService
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="ILog"/>.
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<AccountService>();
 
         /// <summary>
         /// The <see cref="IAccountRepository"/> implementation.
@@ -233,6 +236,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IAuditService auditing;
 
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
+
         #endregion
 
         #region Constructor.
@@ -240,13 +248,23 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountService"/> class.
         /// </summary>
-        /// <param name="repository">The <see cref="IAccountRepository"/> implementation</param>
-        /// <param name="roles">The <see cref="IRoleRepository"/> implementation</param>
-        /// <param name="permissions">The <see cref="IPermissionRepository"/> implementation</param>
-        /// <param name="persitence">The <see cref="IPersistenceContext"/> implementation</param>
-        public AccountService(IAccountRepository repository, IRoleRepository roles, 
-            IPermissionRepository permissions, IPersistenceContext persitence,
-            ISimpleMailService mailService, ISettingsService settingsService, IAuditService auditing)
+        /// <param name="repository">The <see cref="IAccountRepository"/></param>
+        /// <param name="roles">The <see cref="IRoleRepository"/></param>
+        /// <param name="permissions">The <see cref="IPermissionRepository"/></param>
+        /// <param name="persitence">The <see cref="IPersistenceContext"/></param>
+        /// <param name="mailService">The <see cref="ISimpleMailService"/></param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/></param>
+        /// <param name="auditing">The <see cref="IAuditService"/></param>
+        /// <param name="identityService">The <see cref="IIdentityService"/></param>
+        public AccountService(
+            IAccountRepository repository, 
+            IRoleRepository roles, 
+            IPermissionRepository permissions, 
+            IPersistenceContext persitence,
+            ISimpleMailService mailService, 
+            ISettingsService settingsService, 
+            IAuditService auditing,
+            IIdentityService identityService)
         {
             this.repository = repository;
             this.roles = roles;
@@ -255,6 +273,7 @@ namespace Appva.Mcss.Admin.Application.Services
             this.mailService = mailService;
             this.settingsService = settingsService;
             this.auditing = auditing;
+            this.identityService = identityService;
         }
 
         #endregion
@@ -315,41 +334,8 @@ namespace Appva.Mcss.Admin.Application.Services
             var salt = EncryptionUtils.GenerateSalt(DateTime.Now);
             var password = EncryptionUtils.Hash(newPassword, salt);
             account.ChangePassword(password, salt);
+            account.SymmetricKey = Hash.Random().ToBase64();
             this.repository.Update(account);
-        }
-
-        public bool ForgotPassword(string emailAddress, PersonalIdentityNumber personalIdentityNumber)
-        {
-            var account = this.repository.FindByPersonalIdentityNumber(personalIdentityNumber);
-            if (account == null)
-            {
-                return false;
-            }
-            if (account.EmailAddress != emailAddress)
-            {
-                return false;
-            }
-            if (AccountUtils.IsBackendAccount(account) || this.HasPermissions(account, Common.Permissions.Admin.Login.Value))
-            {
-                var salt = EncryptionUtils.GenerateSalt(DateTime.Now);
-                var password = EncryptionUtils.GeneratePassword();
-                account.Salt = salt;
-                account.AdminPassword = EncryptionUtils.Hash(password, salt);
-                account.LastPasswordChangedDate = null;
-                account.LockoutUntilDate = null;
-                account.FailedPasswordAttemptsCount = 0;
-                account.PasswordResetDate = DateTime.Now;
-                this.repository.Update(account);
-                var mail = new MailMessage("noreply@appva.se", account.EmailAddress)
-                {
-                    Subject = "Nytt lösenord till Appva MCSS",
-                    Body = string.Format("<h3>Hej {0}!</h3><p>Ditt nya lösenord är {1}</p> <p>Har du ej begärt att få ett nytt lösenord var vänlig kontakta support@appva.se.</p>", account.UserName, password),
-                    IsBodyHtml = true
-                };
-                this.mailService.Send(mail);
-                return true;
-            }
-            return false;
         }
 
         /// <inheritdoc />
@@ -359,63 +345,68 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.Search(model, page, pageSize);
         }
 
-        public void UpdateRoles(Account account, IList<Role> roles)
+        /// <inheritdoc />
+        public void UpdateRoles(Account account, IList<Role> newRoles)
         {
-            if (roles != null)
+            var roles = newRoles ?? new List<Role>();
+            if (! this.identityService.Principal.IsInRole(RoleTypes.Appva))
             {
-                var backendRole = this.persitence.QueryOver<Role>()
-                    .Where(x => x.MachineName == RoleTypes.Backend)
-                    .SingleOrDefault();
-
-                account.Roles = this.UpdateRole(RoleTypes.TitlePrefix, account.Roles, roles, backendRole);
+                Log.Debug("The user is not of type {0} role", RoleTypes.Appva);
+                //// If the current user is NOT an Appva role then make sure hidden roles are not removable 
+                //// by adding the hidden roles to the 'new selected roles'.
+                //// We do NOT add the static device or backend role simply because that is controlled by it's 
+                //// permissions; e.g. Appva admin role will never be removed even if a non admin updates the 
+                //// roles.
+                var hiddenRoles = account.Roles.Where(x => x.IsVisible == false
+                    && x.MachineName != RoleTypes.Device && x.MachineName != RoleTypes.Backend)
+                    .Select(x => x).ToList();
+                foreach (var hiddenRole in hiddenRoles)
+                {
+                    if (! roles.Contains(hiddenRole))
+                    {
+                        Log.Debug("Added hidden role {0}", hiddenRole.Name);
+                        roles.Add(hiddenRole);
+                    }
+                }
+            }
+            //// Extract the permissions for the new roles (or combined).
+            var permissions = this.permissions.ByRoles(roles);
+            if (permissions.Any(x => x.Resource.Equals(Common.Permissions.Device.Login.Value)))
+            {
+                //// For backwards compatibility:
+                //// If no device role has been added when the account has permission to access device -
+                //// just add the device role.
+                if (! roles.Any(x => x.MachineName.Equals(RoleTypes.Device)))
+                {
+                    var deviceRole = this.persitence.QueryOver<Role>().Where(x => x.MachineName == RoleTypes.Device).SingleOrDefault();
+                    roles.Add(deviceRole);
+                    Log.Debug("Added role {0}", deviceRole.Name);
+                }
+            }
+            if (permissions.Any(x => x.Resource.Equals(Common.Permissions.Admin.Login.Value)))
+            {
+                //// For backwards compatibility:
+                //// If no admin role has been added when the account has permission to access admin -
+                //// just add the device role.
+                if (! roles.Any(x => x.MachineName.Equals(RoleTypes.Backend)))
+                {
+                    var deviceRole = this.persitence.QueryOver<Role>().Where(x => x.MachineName == RoleTypes.Backend).SingleOrDefault();
+                    roles.Add(deviceRole);
+                    Log.Debug("Added role {0}", deviceRole.Name);
+                }
+                //// Create user name if none is set, this should be done during creation instead. 
                 if (account.UserName == null)
                 {
-                    account.UserName = AccountUtils.CreateUserName(
-                        account.FirstName,
-                        account.LastName,
-                        GetUserNames()
-                    );
+                    account.UserName = this.CreateUserName(account.FirstName, account.LastName, GetUserNames());
                     account.Salt = EncryptionUtils.GenerateSalt(DateTime.Now);
                     account.AdminPassword = EncryptionUtils.Hash("abc123ABC", account.Salt);
-                }
-                this.repository.Update(account);
-                this.auditing.Update("uppdaterade kontot för {0} (REF: {1}).", account.FullName, account.Id);
-            }
-        }
-
-        /// <summary>
-        /// Updates previous roles with a new role.
-        /// </summary>
-        /// <param name="role"></param>
-        /// <param name="previousRoles"></param>
-        /// <param name="roleToUpdate"></param>
-        /// <returns></returns>
-        public IList<Role> UpdateRole(string role, IList<Role> previousRoles, IList<Role> rolesToUpdate, Role backEndRole)
-        {
-            if (rolesToUpdate.Equals(previousRoles))
-            {
-                return previousRoles;
-            }
-            if (rolesToUpdate.Any(r => r.MachineName.StartsWith(RoleTypes.TitlePrefix)))
-            {
-                previousRoles = previousRoles.Where(r => !r.MachineName.StartsWith(RoleTypes.TitlePrefix)).ToList();
-            }
-            foreach (var roleToUpdate in rolesToUpdate)
-            {
-                if (!previousRoles.Contains(roleToUpdate))
-                {
-                    previousRoles.Add(roleToUpdate);
-                    if (roleToUpdate.MachineName.StartsWith(RoleTypes.Nurse) && !previousRoles.Any(r => r.MachineName.StartsWith(RoleTypes.Backend)))
-                    {
-                        previousRoles.Add(backEndRole);
-                    }
-                    if (roleToUpdate.MachineName.StartsWith(RoleTypes.Assistant) && !rolesToUpdate.Any(r => r.MachineName.StartsWith(RoleTypes.Backend)))
-                    {
-                        previousRoles = previousRoles.Where(r => !r.MachineName.StartsWith(RoleTypes.Backend)).ToList();
-                    }
+                    Log.Debug("Generated new username {0}", account.UserName);
                 }
             }
-            return previousRoles;
+            //// Overwrite the new roles - no need to remove any roles per definition (device/backend).
+            account.Roles = roles;
+            this.repository.Update(account);
+            this.auditing.Update("uppdaterade roller för {0} (REF: {1}).", account.FullName, account.Id);
         }
 
         public void Update(Account account, string firstName, string lastName, string emailAddress, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress)
@@ -489,10 +480,6 @@ namespace Appva.Mcss.Admin.Application.Services
             this.auditing.Update("avpausade kontot för {0} (REF: {1}).", account.FullName, account.Id);
         }
 
-        #endregion
-
-        #region IAccountService Members
-
         /// <inheritdoc />
         public void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon address, IList<Role> roles)
         {
@@ -529,11 +516,7 @@ namespace Appva.Mcss.Admin.Application.Services
             var roleList = roles.IsNull() ? new List<Role>() : roles;
             roleList.Add(this.roles.Find(RoleTypes.Backend));
             var account = new Account();
-            account.UserName = AccountUtils.CreateUserName(
-                firstName,
-                lastName,
-                this.GetUserNames()
-            );
+            account.UserName = this.CreateUserName(firstName, lastName, this.GetUserNames());
             account.FirstName = firstName.FirstToUpper();
             account.LastName = lastName.FirstToUpper();
             account.FullName = string.Format("{0} {1}", account.FirstName, account.LastName);
@@ -570,6 +553,33 @@ namespace Appva.Mcss.Admin.Application.Services
                 .SetProjection(Projections.ProjectionList()
                 .Add(Projections.Property("UserName")))
                 .List<string>();
+        }
+
+        /// <summary>
+        /// Creates a unique username from firstname and lastname
+        /// </summary>
+        /// <param name="firstname"></param>
+        /// <param name="lastname"></param>
+        /// <param name="usernames"></param>
+        /// <returns></returns>
+        public string CreateUserName(string firstname, string lastname, IList<string> usernames)
+        {
+            var firstPart  = firstname.ToNullSafeLower().ToUrlFriendly();
+            var secondPart = lastname.ToNullSafeLower().ToUrlFriendly();
+            var username = string.Format(
+                "{0}{1}",
+                (firstPart.Length > 3)  ? firstPart.Substring(0, 3) : firstPart,
+                (secondPart.Length > 3) ? secondPart.Substring(0, 3) : secondPart);
+            if (! usernames.Contains(username))
+            {
+                return username;
+            }
+            var counter = 1;
+            while (usernames.Contains(username + counter))
+            {
+                counter++;
+            }
+            return username + counter;
         }
 
         #endregion

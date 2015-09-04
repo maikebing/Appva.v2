@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "~/Features/Shared/_LoginLayout.cshtml";
+    SetTitle("Utloggad - " +  Tenant);
+}
+<div class="hd">
+	Du har nu blivit utloggad
+</div>
+<div class="hd org">
+    <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
+	<span>@Tenant</span>
+</div>
+<div class="bd">
+    Av säkerhetsskäl rekommenderar vi att du även stänger din webbläsare.
+    <div class="hr"></div>
+    @Html.ActionLink("Till inloggning", "SignIn", null, new { @class = "btn" })
+</div>

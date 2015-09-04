@@ -8,12 +8,11 @@ namespace Appva.NHibernateUtils.Projections
 {
     #region Imports.
 
+    using System;
+    using System.Linq;
     using NHibernate;
     using NHibernate.Criterion;
     using NHibernate.Dialect.Function;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -22,7 +21,7 @@ namespace Appva.NHibernateUtils.Projections
     /// </summary>
     public static class ArithmeticProjections
     {
-        #region Public members
+        #region Public Static Functions.
 
         /// <summary>
         /// Creates a <see cref="IProjection"/> which subtract given terms
@@ -65,7 +64,7 @@ namespace Appva.NHibernateUtils.Projections
             return ArithmeticOperation("/", terms);
         }
 
-        #region Private members
+        #region Private Static Functions.
 
         /// <summary>
         /// Creates a <see cref="IProjection"/> with given operator applied to terms
@@ -83,13 +82,10 @@ namespace Appva.NHibernateUtils.Projections
             {
                 return terms.First();
             }
-
             var function = new VarArgsSQLFunction("(", op, ")");
-
             return Projections.SqlFunction(function, NHibernateUtil.Int32, terms);
         }
 
         #endregion
-
     }
 }

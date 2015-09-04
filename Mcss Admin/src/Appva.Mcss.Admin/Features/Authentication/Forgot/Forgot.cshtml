@@ -1,28 +1,23 @@
-﻿@model Appva.Mcss.Admin.Features.Authentication.Forgot.ForgotPassword
+﻿@model ForgotPassword
 @{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
-    Title("Glömt lösenord - " + Model.Tenant);
+    SetTitle("Glömt lösenord - {0}", Tenant);
+    SetBodyCssClass("page-forgot-password");
 }
-<div class="header cf">
-    <div id="logo">
-        <img src="@Url.Content("~/Assets/i/logo.png")" alt="Appva MCSS" />
-    </div>
-    <div id="tenant">
-        @Model.Tenant
-    </div>
+<div class="hd">
+	Glömt lösenord
 </div>
-<div class="body">
-    <div class="std-form">
-        @using (Html.Post())
-        {
-            @Html.Alert(new {  @class = "success-msg" })
-            <h2>Glömt lösenord</h2>
-            @Html.FormGroup(x => x.Email, "text").Label().TextBox().Build()
-            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().Password().Build()
-            <div class="submit">
-                @Html.Submit("Skicka")
-                @Html.ActionLink("Avbryt", "SignIn", "Authentication", null, new { @class = "cancel" })
-            </div>
-        }
-    </div>
+<div class="hd org">
+    <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
+	<span>@Tenant</span>
+</div>
+<div class="bd">
+	@using (Html.Post())
+    {
+        @Html.FormGroup(x => x.Email).Label("E-postadress").TextBox("fornamn.efternamn@organisation.se").Validate().Build()
+        @Html.FormGroup(x => x.PersonalIdentityNumber).Label("Personnummer").Password("ÅÅÅÅMMDD-NNNN").Validate().Build()
+		<div class="hr"></div>
+        @Html.Submit("Skicka återställningslänk",  new { @class = "btn" })
+		@Html.ActionLink("Avbryt", "SignIn", null, new { @class = "btn btn-right cancel" })
+    }
 </div>

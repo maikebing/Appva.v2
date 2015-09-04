@@ -4,9 +4,16 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-using System;
 namespace Appva.Mcss.Admin.Application.Services.Settings
 {
+    #region Imports.
+
+    using System;
+    using Appva.Mcss.Admin.Application.Security.Jwt;
+    using Appva.Mcss.Admin.Domain.VO;
+
+    #endregion
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
@@ -96,6 +103,21 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #endregion
 
+        #region Security.
+
+        /// <summary>
+        /// Reset password token configuration, i.e. issuer, audience, key, lifetime.
+        /// </summary>
+        /// <remarks>The setting returns a <c>ResetPasswordToken</c></remarks>
+        public static readonly ApplicationSettingIdentity<ResetPasswordToken> ResetPasswordTokenConfiguration = ApplicationSettingIdentity<ResetPasswordToken>.CreateNew(
+            "Mcss.Core.Security.Jwt.Configuration.ResetPassword",
+            "Reset Password Token Configuration",
+            "Mcss.Core.Security.Jwt",
+            "The JWT token configuration for generating and resetting password links",
+            null);
+
+        #endregion
+
         #region External Auditing Logging.
 
         /// <summary>
@@ -115,7 +137,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     /// <summary>
     /// TODO: Give a proper name, make internal.
     /// </summary>
-    public sealed class ApplicationSettingIdentity<T> where T : struct
+    public sealed class ApplicationSettingIdentity<T>
     {
         #region Constructor.
 
@@ -146,11 +168,11 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="name">The friendly name</param>
         /// <param name="context">The namespace or context</param>
         /// <param name="description">The description of usage</param>
-        internal static ApplicationSettingIdentity<T> CreateNew(string key, string name, string @namespace, string description, T defaultValue ) 
+        internal static ApplicationSettingIdentity<T> CreateNew(string key, string name, string @namespace, string description, T defaultValue)
         {
             return new ApplicationSettingIdentity<T>(key, name, @namespace, description, defaultValue);
         }
-        
+
         #endregion
 
         #region Public Properties.

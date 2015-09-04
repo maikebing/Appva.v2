@@ -22,11 +22,6 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         #region Variables.
 
         /// <summary>
-        /// The host domain.
-        /// </summary>
-        private const string Host = "locahost";
-
-        /// <summary>
         /// The development fixed tenant identifier.
         /// </summary>
         private readonly TenantIdentifier identifier = new TenantIdentifier("development");
@@ -45,18 +40,6 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// <inheritdoc />
         public IValidateTenantIdentificationResult Validate(ITenantIdentity identity, Uri uri)
         {
-            if (identity == null)
-            {
-                return ValidateTenantIdentificationResult.NotFound;
-            }
-            if (! string.IsNullOrWhiteSpace(identity.HostName))
-            {
-                var expected = identity.HostName + "." + Host;
-                if (! expected.Equals(uri.Host))
-                {
-                    return ValidateTenantIdentificationResult.Invalid;
-                }
-            }
             return ValidateTenantIdentificationResult.Valid;
         }
 

@@ -152,7 +152,6 @@ namespace Appva.Persistence
             configuration.DataBaseIntegration(x =>
                 {
                     x.ConnectionString = unit.ConnectionString;
-                    x.Dialect<MsSql2012Dialect>();
                 });
             return configuration.BuildSessionFactory();
         }

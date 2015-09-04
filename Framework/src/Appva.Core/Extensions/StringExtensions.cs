@@ -58,7 +58,7 @@ namespace Appva.Core.Extensions
         /// </returns>
         public static string FormatWith(this string str, params object[] args)
         {
-            return (str.IsEmpty()) ? str : string.Format(str, args);
+            return str.IsEmpty() ? str : string.Format(str, args);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Appva.Core.Extensions
         /// </returns>
         public static string FormatWith(this string str, IFormatProvider provider, params object[] args)
         {
-            return (str.IsEmpty()) ? str : string.Format(provider, str, args);
+            return str.IsEmpty() ? str : string.Format(provider, str, args);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Appva.Core.Extensions
             }
             return str.ToUpper();
         }
-        
+
         /// <summary>
         /// Converts a <see cref="String"/> to a <see cref="Guid"/>.
         /// </summary>
@@ -287,6 +287,69 @@ namespace Appva.Core.Extensions
         }
 
         /// <summary>
+        /// Converts from a <c>url</c> safe base 64 string.
+        /// </summary>
+        /// <param name="str">A <c>url</c> safe base 64 string</param>
+        /// <returns>A base 64 string</returns>
+        public static string FromUrlSafeBase64(this string str)
+        {
+            if (str.IsEmpty())
+            {
+                return str;
+            }
+            return str.Replace('-', '+').Replace('_', '/');
+        }
+
+        /// <summary>
+        /// Returns a URL safe base 64 string.
+        /// <externalLink>
+        ///     <linkText>RFC 4648</linkText>
+        ///     <linkUri>
+        ///         http://tools.ietf.org/html/rfc4648#page-7
+        ///     </linkUri>
+        /// </externalLink>
+        /// </summary>
+        /// <param name="str">The string to be converted</param>
+        /// <returns>A <c>url</c> safe base 64 string representation</returns>
+        public static string ToUrlSafeBase64(this string str)
+        {
+            if (str.IsEmpty())
+            {
+                return str;
+            }
+            int endPos;
+            for (endPos = str.Length; endPos > 0; endPos--)
+            {
+                if (str[endPos - 1] != '=')
+                {
+                    break;
+                }
+            }
+            var base64Chars = new char[endPos + 1];
+            base64Chars[endPos] = (char)('0' + str.Length - endPos);
+            for (var i = 0; i < endPos; i++)
+            {
+                var character = str[i];
+                switch (character)
+                {
+                    case '+':
+                        base64Chars[i] = '-';
+                        break;
+                    case '/':
+                        base64Chars[i] = '_';
+                        break;
+                    case '=':
+                        base64Chars[i] = character;
+                        break;
+                    default:
+                        base64Chars[i] = character;
+                        break;
+                }
+            }
+            return new string(base64Chars);
+        }
+
+        /// <summary>
         /// Converts a base64 string to bytes.
         /// </summary>
         /// <param name="str">The string to be converted</param>
@@ -318,16 +381,35 @@ namespace Appva.Core.Extensions
         }
 
         ////////////////////// FROM UTILS
+
+        /// <summary>
+        /// Returns the first n characters.
+        /// </summary>
+        /// <param name="str">The string to return characters from</param>
+        /// <param name="number">The amount of characters to return</param>
+        /// <returns>The first n characters</returns>
         public static string First(this string str, int number)
         {
             return str.IsNotEmpty() && str.Length >= number ? str.Substring(0, number) : string.Empty;
         }
 
-        public static bool Is(this string str, Func<Char, bool> predicate)
+        /// <summary>
+        /// Returns whether or not the string is of x.
+        /// </summary>
+        /// <param name="str">The string to be chacked</param>
+        /// <param name="predicate">The predicate to check against</param>
+        /// <returns>True if the string is of predicate; otherwise false</returns>
+        public static bool Is(this string str, Func<char, bool> predicate)
         {
             return str.IsNotEmpty() && str.All(predicate);
         }
 
+        /// <summary>
+        /// Returns a new string replaced by string.Empty.
+        /// </summary>
+        /// <param name="str">The string to be replaced</param>
+        /// <param name="replacement">The string replacement</param>
+        /// <returns>A new string instance with removed characters</returns>
         public static string Strip(this string str, string replacement)
         {
             return str.IsEmpty() ? str : str.Replace(replacement, string.Empty);

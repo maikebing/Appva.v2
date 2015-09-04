@@ -9,7 +9,6 @@ namespace Appva.Core.Extensions
     #region Imports.
 
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
     #endregion
@@ -67,7 +66,6 @@ namespace Appva.Core.Extensions
         /// </summary>
         /// <param name="bytes">The bytes to be converted</param>
         /// <returns>A hex string representation</returns>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1407:ArithmeticExpressionsMustDeclarePrecedence", Justification = "Reviewed.")]
         public static string ToHex(this byte[] bytes)
         {
             var chars = new char[bytes.Length * 2];
@@ -76,7 +74,7 @@ namespace Appva.Core.Extensions
                 var b = bytes[i] >> 4;
                 chars[i * 2] = (char)(87 + b + (((b - 10) >> 31) & -39));
                 b = bytes[i] & 0xF;
-                chars[i * 2 + 1] = (char)(87 + b + (((b - 10) >> 31) & -39));
+                chars[(i * 2) + 1] = (char)(87 + b + (((b - 10) >> 31) & -39));
             }
             return new string(chars);
         }
@@ -93,7 +91,12 @@ namespace Appva.Core.Extensions
 
         /// <summary>
         /// Returns a URL safe base 64 string.
-        /// See <a href="http://tools.ietf.org/html/rfc4648#page-7">RFC 4648</a>
+        /// <externalLink>
+        ///     <linkText>RFC 4648</linkText>
+        ///     <linkUri>
+        ///         http://tools.ietf.org/html/rfc4648#page-7
+        ///     </linkUri>
+        /// </externalLink>
         /// </summary>
         /// <param name="bytes">The bytes to be converted</param>
         /// <returns>A URL safe base 64 string representation</returns>

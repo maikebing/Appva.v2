@@ -22,7 +22,7 @@ namespace Appva.Cryptography.X509
     /// <summary>
     /// Utility Helper for creating X.509 v3 certificates. 
     /// </summary>
-    public static class CertificateUtils
+    internal static class CertificateUtils
     {
         /// <summary>
         /// Loads an X.509 certificate from the certificate store.

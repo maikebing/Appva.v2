@@ -1,4 +1,4 @@
-﻿// <copyright file="PreAuthorizeTenantIdentityProvider.cs" company="Appva AB">
+﻿// <copyright file="PreAuthorizeTenantMiddleware.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -18,14 +18,14 @@ namespace Appva.Mcss.Admin.Application.Security
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PreAuthorizeTenantIdentityProvider : OwinMiddleware
+    public sealed class PreAuthorizeTenantMiddleware : OwinMiddleware
     {
         #region Variables.
 
         /// <summary>
         /// The <see cref="ILog"/>.
         /// </summary>
-        private static readonly ILog Log = LogProvider.For<PreAuthorizeTenantIdentityProvider>();
+        private static readonly ILog Log = LogProvider.For<PreAuthorizeTenantMiddleware>();
 
         /// <summary>
         /// The <see cref="ITenantService"/>.
@@ -37,9 +37,9 @@ namespace Appva.Mcss.Admin.Application.Security
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PreAuthorizeTenantIdentityProvider"/> class.
+        /// Initializes a new instance of the <see cref="PreAuthorizeTenantMiddleware"/> class.
         /// </summary>
-        public PreAuthorizeTenantIdentityProvider(ITenantService tenantService, OwinMiddleware next)
+        public PreAuthorizeTenantMiddleware(ITenantService tenantService, OwinMiddleware next)
             : base(next)
         {
             this.tenantService = tenantService;

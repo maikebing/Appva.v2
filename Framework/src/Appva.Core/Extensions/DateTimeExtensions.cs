@@ -45,7 +45,7 @@ namespace Appva.Core.Extensions
         /// Returns the last instant of the day.
         /// </summary>
         /// <param name="dateTime">The base date time</param>
-        /// <returns>The last instance of the day e.g. Y-m-dT23:59:59:999</returns>
+        /// <returns>The last instance of the day e.g. <c>Y-m-dT23:59:59:999</c></returns>
         public static DateTime LastInstantOfDay(this DateTime dateTime)
         {
             return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59, 999);
@@ -61,103 +61,132 @@ namespace Appva.Core.Extensions
             return (dateTime.Kind == DateTimeKind.Unspecified) ? new DateTime(dateTime.Ticks, DateTimeKind.Utc) : dateTime.ToUniversalTime();
         }
 
-
         //////////// FROM UTILS
 
-        public static DateTime SetYear(this DateTime date, int? year)
+        /// <summary>
+        /// Returns the a date time representing tomorrow.
+        /// FIXME: Should this be zero:ed out?
+        /// </summary>
+        /// <param name="dateTime">The date time to be altered</param>
+        /// <returns>A date time <c>+1</c> day</returns>
+        public static DateTime Tomorrow(this DateTime dateTime)
         {
-            if (!year.HasValue)
-            {
-                return date;
-            }
-            return new DateTime(year.Value, date.Month, date.Day, date.Hour, date.Minute, date.Second, date.Millisecond);
-        }
-
-        public static DateTime SetMonth(this DateTime date, bool condition, int? month)
-        {
-            if (! condition)
-            {
-                return date;
-            }
-            if (! month.HasValue)
-            {
-                return date;
-            }
-            return new DateTime(date.Year, month.Value, date.Day, date.Hour, date.Minute, date.Second, date.Millisecond);
+            return dateTime.Date.AddDays(1);
         }
 
         /// <summary>
-        /// Returns the a DateTime representing tomorrow.
+        /// Returns the a date time representing yesterday.
+        /// FIXME: Should this be zero:ed out?
         /// </summary>
-        public static DateTime Tomorrow(this DateTime date)
+        /// <param name="dateTime">The date time to be altered</param>
+        /// <returns>A date time <c>-1</c> day</returns>
+        public static DateTime Yesterday(this DateTime dateTime)
         {
-            return date.Date.AddDays(1);
-        }
-
-        /// <summary>
-        /// Returns the a DateTime representing yesterday.
-        /// </summary>
-        public static DateTime Yesterday(this DateTime date)
-        {
-            return date.Date.AddDays(-1);
+            return dateTime.Date.AddDays(-1);
         }
 
         /// <summary>
         /// Checks if a DateTime is within two intervals
         /// </summary>
-        public static bool Within(this DateTime date, DateTime intervalBefore, DateTime intervalAfter)
+        /// <param name="dateTime">The date time to be checked</param>
+        /// <param name="intervalBefore">The date time lower bound</param>
+        /// <param name="intervalAfter">The date time higher bound</param>
+        /// <returns>True if the date time is within the lower and higher bounds</returns>
+        public static bool Within(this DateTime dateTime, DateTime intervalBefore, DateTime intervalAfter)
         {
-            return (date >= intervalBefore && date <= intervalAfter);
-        }
-
-        public static DateTime NextMonth(this DateTime date)
-        {
-            return date.AddMonths(1);
-        }
-
-        public static DateTime PreviousMonth(this DateTime date)
-        {
-            return date.AddMonths(-1);
+            return dateTime >= intervalBefore && dateTime <= intervalAfter;
         }
 
         /// <summary>
-        /// Returns the days in the current month.
+        /// Returns the a date time representing next month.
         /// </summary>
-        /// <param name="date"></param>
-        public static int DaysInMonth(this DateTime date)
+        /// <param name="dateTime">The date time to be altered</param>
+        /// <returns>A date time <c>+1</c> month</returns>
+        public static DateTime NextMonth(this DateTime dateTime)
         {
-            return DateTime.DaysInMonth(date.Year, date.Month);
+            return dateTime.AddMonths(1);
         }
 
-        public static DateTime FirstOfMonth(this DateTime date)
+        /// <summary>
+        /// Returns the a date time representing previous month.
+        /// </summary>
+        /// <param name="dateTime">The date time to be altered</param>
+        /// <returns>A date time <c>-1</c> month</returns>
+        public static DateTime PreviousMonth(this DateTime dateTime)
         {
-            return new DateTime(date.Year, date.Month, 1, 0, 0, 0, 0);
+            return dateTime.AddMonths(-1);
         }
 
-        public static DateTime LastOfMonth(this DateTime date)
+        /// <summary>
+        /// Returns the days in the date time month.
+        /// </summary>
+        /// <param name="dateTime">The date time to be checked</param>
+        /// <returns>The amount of days in the date time month</returns>
+        public static int DaysInMonth(this DateTime dateTime)
         {
-            return new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month), 0, 0, 0, 0);
+            return DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
         }
 
-        public static DateTime FirstDateOfWeek(this DateTime date)
+        /// <summary>
+        /// Returns a date time representing the 1st of the month.
+        /// FIXME: Should this be zero:ed out?
+        /// </summary>
+        /// <param name="dateTime">The date time to be altered</param>
+        /// <returns>A date time for the first of the month</returns>
+        public static DateTime FirstOfMonth(this DateTime dateTime)
+        {
+            return new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0, 0);
+        }
+
+        /// <summary>
+        /// Returns a date time representing the last day of the month.
+        /// FIXME: Isn't last of month 23:59:59:999?
+        /// </summary>
+        /// <param name="dateTime">The date time to be altered</param>
+        /// <returns>A date time for the last day of the month</returns>
+        public static DateTime LastOfMonth(this DateTime dateTime)
+        {
+            return new DateTime(dateTime.Year, dateTime.Month, dateTime.DaysInMonth(), 0, 0, 0, 0);
+        }
+
+        /// <summary>
+        /// Returns the first date time of the week.
+        /// FIXME: FirstDateOfWeek probably quicker to do one .AddDays(...):
+        /// var fdow = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+        /// var diff = dateTime.DayOfWeek - fdow;
+        /// if (diff lower than 0)
+        /// {
+        ///     diff += 7;
+        /// }
+        /// return dateTime.AddDays(-1 * diff);
+        /// </summary>
+        /// <param name="dateTime">The date time to be altered</param>
+        /// <returns>The first date time of the week</returns>
+        public static DateTime FirstDateOfWeek(this DateTime dateTime)
         {
             var firstDayOfWeek = DateTimeUtilities.FirstDayOfWeek();
-            while (date.DayOfWeek != firstDayOfWeek)
+            while (dateTime.DayOfWeek != firstDayOfWeek)
             {
-                date = date.AddDays(-1);
+                dateTime = dateTime.AddDays(-1);
             }
-            return date;
+            return dateTime;
         }
 
-        public static int GetWeekNumber(this DateTime date)
+        /// <summary>
+        /// Returns the date time week number.
+        /// FIXME: GetWeekNumber: This calculation looks suspicious, e.g. DateOfWeek.Monday etc,
+        /// should probably be more like CultureInfo.CurrentCulture.DateTimeFormat.Calendar.GetDayOfWeek(dateTime).
+        /// </summary>
+        /// <param name="dateTime">The date time to calculate week number</param>
+        /// <returns>The date time week number</returns>
+        public static int GetWeekNumber(this DateTime dateTime)
         {
-            if (date.DayOfWeek.Equals(DayOfWeek.Monday) || date.DayOfWeek.Equals(DayOfWeek.Tuesday) || date.DayOfWeek.Equals(DayOfWeek.Wednesday))
+            if (dateTime.DayOfWeek.Equals(DayOfWeek.Monday) || dateTime.DayOfWeek.Equals(DayOfWeek.Tuesday) || dateTime.DayOfWeek.Equals(DayOfWeek.Wednesday))
             {
-                date = date.AddDays(3);
+                dateTime = dateTime.AddDays(3);
             }
             var cal = new GregorianCalendar(GregorianCalendarTypes.Localized);
-            return cal.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            return cal.GetWeekOfYear(dateTime, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
-
     }
 }

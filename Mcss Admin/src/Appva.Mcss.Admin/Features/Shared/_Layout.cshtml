@@ -6,7 +6,7 @@
 <html class="gt-ie8 gt-ie9 not-ie">
 <!--<![endif]-->
     <head>
-        <title>@Title() - Appva MCSS</title>
+        <title>@Title - Appva MCSS</title>
         @Html.Partial("_Meta")
         @Styles.Render("~/Assets/css/ui-lightness/bundle", "~/Assets/css/bundle")
         @Scripts.Render("~/Assets/js/bundle", "~/Assets/js/mcss/bundle")
@@ -377,10 +377,10 @@
         </script>
     </head>
     <body>
-        @if (Application.IsInDevelopment || Application.IsInStaging)
+        @if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
         {
             <div class="environment">
-                <p>@*Application.FullName*@ENVIRONMENT @Application.Environment | VERSION @Application.Version | SERVER @Application.MachineName</p>
+                <p>ENVIRONMENT @ApplicationEnvironment.Environment | VERSION @ApplicationEnvironment.Info.Version | SERVER @ApplicationEnvironment.OperatingSystem.MachineName</p>
             </div>
         }
         <div class="global-filter">

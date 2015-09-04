@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Core.Resources;
+    using Appva.Cryptography;
 
     #endregion
 
@@ -77,12 +78,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
             };
             if (this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice))
             {
-                message.DevicePassword = AccountUtils.GenerateClientPassword();
+                message.DevicePassword = Password.Random(4, new Dictionary<char[], int>
+                {
+                    { "0123456789".ToCharArray(), 4 }
+                });;
             }
             if (message.Taxon.IsEmpty())
             {
                 message.Taxon = taxonomies.Roots(TaxonomicSchema.Organization).SingleOrDefault().Id.ToString();
             }
+            //// FIXME: Remove all this unnessecary stuff and calculate all this in the service in ONE function.
             if ((role.MachineName.IsNotEmpty() && role.MachineName.StartsWith(RoleTypes.Nurse)) || this.HasAccessToAdmin(role))
             {
                 this.accounts.CreateBackendAccount(
@@ -90,7 +95,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     message.LastName,
                     message.PersonalIdentityNumber, 
                     message.Email, 
-                    "abc123ABC",
+                    "abc123ABC", //// FIXME: Generate password OR better yet send out a password reset token, valid for e.g. 1-5 days.
                     this.taxonomies.Get(message.Taxon.ToGuid()), 
                     roles,
                     message.DevicePassword);

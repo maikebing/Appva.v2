@@ -70,7 +70,7 @@ namespace Appva.Persistence
                 { "default_batch_fetch_size", "30" },
                 { "cache.use_query_cache", "false" },
                 { "cache.use_second_level_cache", "false" },
-                { "cache.show_sql", "false" },
+                { "show_sql", "false" },
                 { "current_session_context_class", "web" },
                 { "dialect", "NHibernate.Dialect.MsSql2012Dialect" },
                 { "connection.provider", "NHibernate.Connection.DriverConnectionProvider" }

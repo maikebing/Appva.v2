@@ -25,7 +25,6 @@ namespace Appva.Mcss.Admin.Features.Taxa
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RoutePrefix("Taxa")]
     public sealed class TaxaController : Controller
     {

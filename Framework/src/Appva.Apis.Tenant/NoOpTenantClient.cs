@@ -12,6 +12,7 @@ namespace Appva.Apis.TenantServer
     using System.Collections.Generic;
     using System.Configuration;
     using System.Threading.Tasks;
+    using Appva.Tenant.Identity;
     using Configuration;
     using Contracts;
     using Core.Logging;
@@ -102,7 +103,7 @@ namespace Appva.Apis.TenantServer
         }
 
         /// <inheritdoc />
-        public ITenantDto FindByIdentifier(string id)
+        public ITenantDto FindByIdentifier(ITenantIdentifier id)
         {
             throw new NotImplementedException();
         }
@@ -130,7 +131,7 @@ namespace Appva.Apis.TenantServer
         }
 
         /// <inheritdoc />
-        public Task<ITenantDto> FindByIdentifierAsync(string id)
+        public Task<ITenantDto> FindByIdentifierAsync(ITenantIdentifier id)
         {
             throw new NotImplementedException();
         }

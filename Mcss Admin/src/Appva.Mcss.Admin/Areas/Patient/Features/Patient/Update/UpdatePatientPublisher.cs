@@ -74,7 +74,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var address = this.taxonomyService.Get(message.Taxon.ToGuid());
             var selectedIds = message.Assessments.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
-            IList<Taxon> assessments = null;
+            IList<Taxon> assessments = new List<Taxon>();
             if (selectedIds.Length > 0)
             {
                 assessments = this.taxonomyService.ListIn(selectedIds);

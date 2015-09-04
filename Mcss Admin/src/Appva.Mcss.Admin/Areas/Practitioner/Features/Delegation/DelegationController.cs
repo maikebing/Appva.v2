@@ -12,36 +12,34 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using Appva.Core.Extensions;
+    using Appva.Core.IO;
+    using Appva.Core.Resources;
+    using Appva.Core.Utilities;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Web;
+    using Appva.Mcss.Web.Controllers;
+    using Appva.Mcss.Web.ViewModels;
+    using Appva.Mvc.Security;
+    using Appva.Office;
+    using Appva.Persistence;
+    using Appva.Tenant.Identity;
     using NHibernate.Criterion;
     using NHibernate.Transform;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Web.ViewModels;
-    using System.Web.UI;
-    using Appva.Mcss.Web.Controllers;
-    using Appva.Mcss.Web;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Mcss.Admin.Application.Models;
-    using Appva.Core.Resources;
-    using Appva.Office;
-using Appva.Core.IO;
-using Appva.Tenant.Identity;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Appva.Mcss.Admin.Application.Auditing;
-    using Appva.Mcss.Admin.Domain.Models;
-    using Appva.Mvc.Security;
 
     #endregion
 
     /// <summary>
     /// The delegation controller.
     /// </summary>
-    [Authorize]
     [RouteArea("Practitioner"), RoutePrefix("Delegation")]
     public sealed class DelegationController : Controller
     {
@@ -482,20 +480,24 @@ using Appva.Tenant.Identity;
                     Account = account.Id,
                     StartDate = startDate.GetValueOrDefault(),
                     EndDate = endDate.GetValueOrDefault(),
-                    ScheduleSetting = sId
+                    ScheduleSetting = sId,
+                    Organisation = this.filtering.GetCurrentFilter().Id
                 }),
-                PreviousPeriodReport = this.reports.GetReportData(new ChartDataFilter
+                /*PreviousPeriodReport = this.reports.GetReportData(new ChartDataFilter
                 {
                     Account = account.Id,
                     StartDate = previousPeriodStart,
                     EndDate = previousPeriodEnd,
-                    ScheduleSetting = sId
-                }),
+                    ScheduleSetting = sId,
+                    Organisation = this.filtering.GetCurrentFilter().Id
+                }),*/
                 Tasks = this.tasks.List(new ListTaskModel 
                 {
                     StartDate = startDate.GetValueOrDefault(),
                     EndDate = endDate.GetValueOrDefault(),
-                    Account = account.Id
+                    Account = account.Id,
+                    ScheduleSetting = sId,
+                    Taxon = this.filtering.GetCurrentFilter().Id
                 }, page.GetValueOrDefault(1), 30),
                 DelegationId = tId,
                 Delegations = this.taxonomyService.ListChildren(TaxonomicSchema.Delegation).Select(x => new SelectListItem
@@ -1182,6 +1184,7 @@ using Appva.Tenant.Identity;
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("overview")]
+        [PermissionsAttribute(Permissions.Dashboard.ReadDelegationValue)]
         public PartialViewResult Overview()
         {
             var taxon = this.filtering.GetCurrentFilter();

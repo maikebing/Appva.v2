@@ -60,7 +60,7 @@
   </class> -->
 
   <!-- Account -->
-  <class name="Account" table="Account" dynamic-update="true">
+  <class name="Account" table="Account">
     <id name="Id">
       <generator class="guid.comb" />
     </id>

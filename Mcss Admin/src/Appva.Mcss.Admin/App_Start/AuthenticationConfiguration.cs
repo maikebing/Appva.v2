@@ -40,7 +40,7 @@ namespace Appva.Mcss.Admin
                     AuthenticationType = AuthenticationType.Administrative.Value,
                     CookieSecure = CookieSecureOption.SameAsRequest,
                     LoginPath = new PathString("/auth/sign-in"),
-                    ExpireTimeSpan = TimeSpan.FromMinutes(15)
+                ExpireTimeSpan = TimeSpan.FromMinutes(15)
                 });
         }
     }

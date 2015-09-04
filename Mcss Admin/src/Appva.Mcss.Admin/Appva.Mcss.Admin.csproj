@@ -46,29 +46,37 @@
     <Reference Include="Autofac">
       <HintPath>..\..\..\Packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Integration.Mvc">
-      <HintPath>..\..\..\Packages\Autofac.Mvc5.3.3.3\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    <Reference Include="Autofac.Integration.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc.Owin">
+      <HintPath>..\..\..\Packages\Autofac.Mvc5.Owin.3.1.0\lib\net45\Autofac.Integration.Mvc.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Owin">
+      <HintPath>..\..\..\Packages\Autofac.Owin.3.1.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
     </Reference>
     <Reference Include="DataAnnotationsExtensions">
       <HintPath>..\..\..\Packages\DataAnnotationsExtensions.1.1.0.0\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="HibernatingRhinos.Profiler.Appender">
-      <HintPath>..\..\..\Packages\NHibernateProfiler.3.0.3052.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+    <Reference Include="HibernatingRhinos.Profiler.Appender, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0774796e73ebf640, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\NHibernateProfiler.3.0.3069.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <HintPath>..\..\..\Packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\..\Packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Microsoft.AspNet.Identity.Core.2.2.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Microsoft.AspNet.Identity.Owin.2.2.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -160,8 +168,9 @@
     <Reference Include="System.Web.Optimization">
       <HintPath>..\..\..\Packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
-    <Reference Include="WebActivatorEx">
-      <HintPath>..\..\..\Packages\WebActivatorEx.2.0.5\lib\net40\WebActivatorEx.dll</HintPath>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\WebActivatorEx.2.0.6\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -495,6 +504,12 @@
   <ItemGroup>
     <None Include="Areas\Patient\Features\Consents\Create\Create.cshtml" />
     <Content Include="Assets\css\datePicker.css" />
+    <Content Include="Assets\error-pages\400.html" />
+    <Content Include="Assets\error-pages\403.html" />
+    <Content Include="Assets\error-pages\404.html" />
+    <Content Include="Assets\error-pages\409.html" />
+    <Content Include="Assets\error-pages\412.html" />
+    <Content Include="Assets\error-pages\css\http-error-pages.css" />
     <Content Include="Assets\css\main.css" />
     <Content Include="Assets\css\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Assets\css\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
@@ -587,6 +602,7 @@
     <Content Include="Assets\i\ipad-now.png" />
     <Content Include="Assets\i\ipad-toggledarrow.png" />
     <Content Include="Assets\i\list-arrow.png" />
+    <Content Include="Assets\i\logo-about.png" />
     <Content Include="Assets\i\logo.png" />
     <Content Include="Assets\i\minichart.jpg" />
     <Content Include="Assets\i\no-connection.png" />
@@ -645,6 +661,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Features\Web.config">
       <SubType>Designer</SubType>
@@ -704,6 +721,10 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Mvc\Appva.Mvc.csproj">
       <Project>{53a7fe5b-f451-4b7a-8932-9ad424f09165}</Project>
       <Name>Appva.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.NHibernateUtils\Appva.NHibernateUtils.csproj">
+      <Project>{68889619-9faa-4b0c-bfa7-98d2a60e5584}</Project>
+      <Name>Appva.NHibernateUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Office\Appva.Office.csproj">
       <Project>{7536e156-eab5-4812-87fb-8ec58eb00f99}</Project>
@@ -896,9 +917,6 @@
     <Content Include="Areas\Patient\Features\Sequence\Update\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Practitioner\Features\Accounts\Edit\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRoles.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1006,6 +1024,16 @@
   <ItemGroup>
     <Content Include="App_Data\Certificates\appva.p12" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Statistics\Data\StatisticsData.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\Shared\_ErrorLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
+    <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -1024,7 +1052,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1080/</IISUrl>
+          <IISUrl>http://localhost:1080</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

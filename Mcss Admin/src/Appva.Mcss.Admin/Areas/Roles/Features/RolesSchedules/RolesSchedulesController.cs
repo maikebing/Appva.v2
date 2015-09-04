@@ -21,7 +21,6 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RouteArea("roles"), RoutePrefix("schedules")]
     public sealed class RolesSchedulesController : Controller
     {

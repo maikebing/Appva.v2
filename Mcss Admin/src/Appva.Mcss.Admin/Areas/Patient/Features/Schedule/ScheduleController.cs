@@ -11,7 +11,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using System;
     using System.Web.Mvc;
     using System.Web.UI;
-    using Appva.Core.Resources;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure;
@@ -26,7 +25,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RouteArea("patient"), RoutePrefix("schedule")]
     public sealed class ScheduleController : Controller
     {

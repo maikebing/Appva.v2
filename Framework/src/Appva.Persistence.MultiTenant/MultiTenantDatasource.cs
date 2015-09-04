@@ -8,6 +8,7 @@ namespace Appva.Persistence.MultiTenant
 {
     #region Imports.
 
+    using System;
     using System.Linq;
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
@@ -15,6 +16,7 @@ namespace Appva.Persistence.MultiTenant
     using Appva.Core.Logging;
     using Appva.Core.Resources;
     using Appva.Persistence.MultiTenant.Messages;
+    using Appva.Tenant.Identity;
     using Appva.Tenant.Interoperability.Client;
     using JetBrains.Annotations;
     using NHibernate;
@@ -28,12 +30,11 @@ namespace Appva.Persistence.MultiTenant
     public interface IMultiTenantDatasource : IDatasource
     {
         /// <summary>
-        /// Looks up the value for the key provided in the <see cref="ISessionFactory"/>
-        /// key value store.
+        /// Looks up the tenant <see cref="ISessionFactory"/> by <see cref="ITenantIdentifier"/>.
         /// </summary>
-        /// <param name="key">The key stored</param>
+        /// <param name="identifier">The tenant identifier</param>
         /// <returns>An <see cref="ISessionFactory"/> instance if found, else null</returns>
-        ISessionFactory Locate(string key);
+        ISessionFactory Locate(ITenantIdentifier identifier);
     }
 
     /// <summary>
@@ -88,27 +89,31 @@ namespace Appva.Persistence.MultiTenant
         #region IMultiTenantDatasource Members.
 
         /// <inheritdoc />
-        /// <remarks>The key is a cache key, e.g. {cache}.{tenantId}</remarks>
-        public ISessionFactory Locate(string key)
+        public ISessionFactory Locate(ITenantIdentifier identifier)
         {
-            Log.Debug(Debug.LocateISessionFactoryForTenant, key);
-            if (! this.cache.Contains(key))
+            Log.Debug(Debug.LocateISessionFactoryForTenant, identifier);
+            var cacheKey = CacheTypes.Persistence.FormatWith(identifier);
+            if (! this.cache.Contains(cacheKey))
             {
-                var tenant = this.client.FindByIdentifier(key);
+                //// FIXME: Resource server uses ID as identifier but Admin 1.6 uses identifier.
+                //// 1. If the client returns a tenant identity instead with a new call
+                //// 2. OAuth server returns a client identity instead (this will effect all tickets!)
+                //// In order for the multitenant to work on both web and resource then temporarily
+                //// just check the config.
+                var tenant = this.configuration.UseIdAsIdentifier ? 
+                    this.client.Find(new Guid(identifier.Value)) : this.client.FindByIdentifier(identifier);
                 if (tenant == null)
                 {
-                    throw new TenantNotFoundException(Exceptions.TenantNotFound.FormatWith(key));
+                    throw new TenantNotFoundException(Exceptions.TenantNotFound.FormatWith(identifier));
                 }
-                this.cache.Upsert<ISessionFactory>(
-                    key,
-                    this.Build(PersistenceUnit.CreateNew(
-                        this.configuration.UseIdAsIdentifier ? tenant.Id.ToString() : tenant.Identifier, 
-                        tenant.ConnectionString, 
-                        this.configuration.Assembly, 
-                        this.configuration.Properties)),
-                    RuntimeEvictionPolicy.NonRemovable);
+                var sessionFactory = this.Build(PersistenceUnit.CreateNew(
+                    this.configuration.UseIdAsIdentifier ? tenant.Id.ToString() : tenant.Identifier, 
+                    tenant.ConnectionString, 
+                    this.configuration.Assembly, 
+                    this.configuration.Properties));
+                this.cache.Upsert<ISessionFactory>(cacheKey, sessionFactory, RuntimeEvictionPolicy.NonRemovable);
             }
-            return this.cache.Find<ISessionFactory>(key);
+            return this.cache.Find<ISessionFactory>(cacheKey);
         }
 
         #endregion

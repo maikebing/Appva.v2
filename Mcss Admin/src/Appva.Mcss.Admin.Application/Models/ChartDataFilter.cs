@@ -86,6 +86,15 @@ namespace Appva.Mcss.Admin.Application.Models
             set;
         }
 
+        /// <summary>
+        /// If calendar events shall be included in report or not
+        /// </summary>
+        public bool IncludeCalendarTasks
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

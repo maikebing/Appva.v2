@@ -24,8 +24,8 @@ namespace Appva.Mcss.Web.ViewModels {
     }
 
     public enum OrderTasksBy { 
-        Medecin,
         Day,
+        Medecin,
         Time,
         Scheduled,
         SignedBy,

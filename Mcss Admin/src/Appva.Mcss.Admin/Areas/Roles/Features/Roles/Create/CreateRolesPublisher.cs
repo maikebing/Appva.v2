@@ -70,7 +70,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
                 Weight = 100,
                 Name = message.Name,
                 Description = message.Description,
-                MachineName = null,
+                MachineName = Guid.NewGuid().ToString(),
                 IsVisible = true,
                 IsDeletable = true,
                 Permissions = permissions

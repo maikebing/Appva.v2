@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Iesi.Collections">
-      <HintPath>..\..\..\Packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <HintPath>..\..\..\Packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin">
       <HintPath>..\..\..\Packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -42,8 +42,9 @@
     <Reference Include="Microsoft.Owin.Security.Cookies">
       <HintPath>..\..\..\Packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\Packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\..\..\Packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
@@ -81,7 +82,7 @@
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
     <Compile Include="Models\Calendar.cs" />
-    <Compile Include="Models\ChartPoint.cs" />
+    <Compile Include="Models\ReportData.cs" />
     <Compile Include="Models\ChartDataFilter.cs" />
     <Compile Include="Models\IReportingFilter.cs" />
     <Compile Include="Models\MenuItem.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Models\PrintSchedule.cs" />
     <Compile Include="Models\PrintSequence.cs" />
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportDataSegment.cs" />
     <Compile Include="Models\ReportSearch.cs" />
     <Compile Include="Models\Taxa.cs" />
     <Compile Include="Models\Taxon.cs" />
@@ -105,6 +107,7 @@
     <Compile Include="Security\Identity\DevelopmentTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\StagingTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\ProductionTenantIdentificationStrategy.cs" />
+    <Compile Include="Security\PreAuthorizeTenantIdentityProvider.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IdentityService.cs" />
@@ -155,6 +158,10 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
       <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
       <Name>Appva.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.NHibernateUtils\Appva.NHibernateUtils.csproj">
+      <Project>{68889619-9faa-4b0c-bfa7-98d2a60e5584}</Project>
+      <Name>Appva.NHibernateUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.MultiTenant\Appva.Persistence.MultiTenant.csproj">
       <Project>{3d8f0261-b3b3-4202-adfd-ceb0ec3d93e3}</Project>

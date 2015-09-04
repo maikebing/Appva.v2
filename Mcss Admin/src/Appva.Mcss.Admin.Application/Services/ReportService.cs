@@ -19,6 +19,8 @@ namespace Appva.Mcss.Admin.Application.Services
     using NHibernate;
     using NHibernate.Criterion;
     using NHibernate.Transform;
+    using Appva.NHibernateUtils.Projections;
+
 
     #endregion
 
@@ -27,17 +29,6 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface IReportService : IService
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filter"></param>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <param name="page"></param>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        Report Create(IReportingFilter filter, DateTime? startDate, DateTime? endDate, int? page = 1, int? size = 30);
-
         /// <summary>
         /// Returns a list of <see cref="ChartPoint>"/> for a chart
         /// </summary>
@@ -80,47 +71,11 @@ namespace Appva.Mcss.Admin.Application.Services
         #endregion
 
         #region IReportService Members.
-        
-        /// <inheritdoc /> 
-        public Report Create(IReportingFilter filter, DateTime? startDate, DateTime? endDate, int? page = 1, int? size = 30)
-        {
-            //// TODO: This should be firstInstantOfDay here
-            var start = startDate ?? DateTime.Now.FirstOfMonth();
-            var end = (endDate.HasValue) ? endDate.Value.LastInstantOfDay() : DateTime.Now.LastInstantOfDay();
-            var span = end.Subtract(start).Days;
-            var tasks = QueryAndFilter(filter, start, end);
-            var tasksWithinStartDateAndEndDate = tasks.Where(x => x.Scheduled >= start && x.Scheduled <= end)
-                .OrderBy(x => x.Scheduled).Desc;
-            var dateSpan = GenerateReportSegment(tasksWithinStartDateAndEndDate.ToRowCountQuery());
-            var total = tasksWithinStartDateAndEndDate.ToRowCountQuery().RowCount();
-            var comparableDateSpan = GenerateReportSegment(tasks.ToRowCountQuery()
-                .Where(x => x.Scheduled >= start.AddDays(-span) && x.Scheduled <= end.AddDays(-span)));
-            var items = tasksWithinStartDateAndEndDate
-                .Skip(((page.Value - 1) * size.Value)).Take(size.Value).List().Where(task => task != null).ToList();
-            return new Report
-            {
-                StartDate = start,
-                EndDate = end,
-                TasksOnTime = dateSpan.TasksOnTime,
-                TasksNotOnTime = dateSpan.TasksNotOnTime,
-                ComparedDateSpanTasksOnTime = comparableDateSpan.TasksOnTime,
-                ComparedDateSpanTasksNotOnTime = comparableDateSpan.TasksNotOnTime,
-                AverageDifferenceInTime = dateSpan.AverageDifferenceInTime,
-                ComparedAverageDifferenceInTime = comparableDateSpan.AverageDifferenceInTime,
-                Search = new ReportSearch<Task>
-                {
-                    Items = items,
-                    PageSize = page.Value,
-                    PageNumber = size.Value,
-                    TotalItemCount = total
-                }
-            };
-        }
 
         /// <inheritdoc />
         public IList<ReportData> GetChartData(ChartDataFilter filter)
         {
-            var query = NewQueryAndFilter(filter);
+            var query = QueryAndFilter(filter);
 
             ReportData point = null;
 
@@ -162,9 +117,43 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public ReportData GetReportData(ChartDataFilter filter)
         {
-            var query = NewQueryAndFilter(filter);
+            var currentSpanData = this.GetReportDataSegment(filter);
 
-            ReportData point = null;
+            var newEnd = filter.StartDate.AddDays(-1);
+            var newStart = filter.StartDate.AddDays((filter.StartDate - filter.EndDate).Days);
+            filter.EndDate = newEnd;
+            filter.StartDate = newStart;
+
+            var previousSpanData = this.GetReportDataSegment(filter);
+
+            return new ReportData
+            {
+                Date = currentSpanData.Date,
+                NotOnTime = currentSpanData.NotOnTime,
+                OnTime = currentSpanData.OnTime,
+                Total = currentSpanData.Total,
+                Signed = currentSpanData.Signed,
+                AverageMinutesDelayed = currentSpanData.AverageMinutesDelayed,
+                PreviousPeriod = new ReportData
+                {
+                    OnTime = previousSpanData.OnTime,
+                    NotOnTime = previousSpanData.NotOnTime,
+                    Total = previousSpanData.Total,
+                    Signed = previousSpanData.Signed,
+                    AverageMinutesDelayed = previousSpanData.AverageMinutesDelayed
+                }
+            };
+        }
+
+        #endregion
+
+        #region Private Methods.
+
+        private ReportDataSegment GetReportDataSegment(ChartDataFilter filter)
+        {
+            var query = QueryAndFilter(filter);
+
+            ReportDataSegment point = null;
 
             /// Select the points
             query.Select(
@@ -179,38 +168,35 @@ namespace Appva.Mcss.Admin.Application.Services
                                 Projections.Constant(1),
                                 Projections.Constant(0)))
                             .WithAlias(() => point.NotOnTime))
-                    .Add(
-                        Projections.Sum(
+                    .Add(Projections.Sum(
                             Projections.Conditional(
                                 Restrictions.Eq(Projections.Property<Task>(x => x.Delayed), false),
                                 Projections.Constant(1),
                                 Projections.Constant(0)))
-                            .WithAlias(() => point.OnTime)));
+                            .WithAlias(() => point.OnTime))
+                    .Add(Projections.Sum(
+                        Projections.Conditional(
+                            Restrictions.Conjunction()
+                                .Add(Restrictions.Eq(Projections.Property<Task>(x => x.Delayed), true))
+                                .Add(Restrictions.Eq(Projections.Property<Task>(x => x.IsCompleted), true)),
+                            ArithmeticProjections.Sub(
+                                DateProjections.DateDiff<Task>("mi", x => x.Scheduled, x => x.CompletedDate),
+                                Projections.Property<Task>(x => x.RangeInMinutesAfter)),
+                            Projections.Constant(0))).WithAlias(() => point.AverageMinutesDelayed))
+                    .Add(Projections.Sum(
+                        Projections.Conditional(
+                            Restrictions.Eq(Projections.Property<Task>(x => x.IsCompleted), true),
+                            Projections.Constant(1),
+                            Projections.Constant(0)))
+                        .WithAlias(() => point.Signed)));
 
             /// Transforming
-            query.TransformUsing(NHibernate.Transform.Transformers.AliasToBean<ReportData>());
+            query.TransformUsing(NHibernate.Transform.Transformers.AliasToBean<ReportDataSegment>());
 
-            return query.SingleOrDefault<ReportData>();
+            return query.SingleOrDefault<ReportDataSegment>();
         }
 
-        #endregion
-
-        #region Private Methods.
-
-        private IQueryOver<Task, Task> QueryAndFilter(IReportingFilter filter, DateTime startDate, DateTime endDate)
-        {
-            var query = this.persistence.QueryOver<Task>()
-                .Where(x => x.OnNeedBasis == false)
-                .And(x => x.Scheduled >= startDate.AddDays(-endDate.Subtract(startDate).Days))
-                .And(x => x.Scheduled <= endDate)
-                .Fetch(x => x.Patient).Eager
-                .Fetch(x => x.StatusTaxon).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer());
-            filter.Filter(query);
-            return query;
-        }
-
-        private IQueryOver<Task, Task> NewQueryAndFilter(ChartDataFilter filter)
+        private IQueryOver<Task, Task> QueryAndFilter(ChartDataFilter filter)
         {
             var query = this.persistence.QueryOver<Task>()
                 .Where(x => x.OnNeedBasis == false)
@@ -219,10 +205,11 @@ namespace Appva.Mcss.Admin.Application.Services
                 .And(x => x.Scheduled <= filter.EndDate.LastInstantOfDay());
 
             //// Optional filters
-            if (!filter.Organisation.GetValueOrDefault().IsEmpty())
+            if (!filter.Organisation.GetValueOrDefault().IsEmpty() && filter.Patient.GetValueOrDefault().IsEmpty())
             {
-                query.JoinQueryOver<Taxon>(x => x.Taxon)
-                    .Where(Restrictions.Like(Projections.Property<Taxon>(x => x.Path), filter.Organisation.GetValueOrDefault().ToString(), MatchMode.Anywhere));
+                query.JoinQueryOver<Patient>(x => x.Patient)
+                    .JoinQueryOver<Taxon>(x => x.Taxon)
+                        .Where(Restrictions.Like(Projections.Property<Taxon>(x => x.Path), filter.Organisation.GetValueOrDefault().ToString(), MatchMode.Anywhere));
             }
             if (!filter.Patient.GetValueOrDefault().IsEmpty())
             {
@@ -240,47 +227,14 @@ namespace Appva.Mcss.Admin.Application.Services
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                         .Where(x => x.Id == filter.ScheduleSetting.GetValueOrDefault());
             }
+            else if (!filter.IncludeCalendarTasks)
+            {
+                query.JoinQueryOver<Schedule>(x => x.Schedule)
+                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                        .Where(x => x.ScheduleType == ScheduleType.Action);
+            }
 
             return query;
-        }
-
-        private ReportSegment GenerateReportSegment(IQueryOver<Task, Task> tasks)
-        {
-            var percent = 100.00;
-            var tasksOnTime = 0.0;
-            var tasksNotOnTime = 0.0;
-            var minutes = 0.0;
-            tasksOnTime = tasks.ToRowCountQuery().Where(task => !task.Delayed).RowCount();
-            tasksNotOnTime = tasks.ToRowCountQuery().Where(task => task.Delayed).RowCount();
-            var signedTasksNotOnTime = tasks.ToRowCountQuery().Where(task => task.Delayed && task.IsCompleted).RowCount();
-            var count = tasksOnTime + tasksNotOnTime;
-            minutes = tasks.ToRowCountQuery().Where(task => task.Delayed && task.IsCompleted)
-                .Select(Projections.Sum(Projections.SqlProjection("datediff(n, Scheduled , this_.CompletedDate) as Minutes", new[] { "Minutes" }, new[] { NHibernateUtil.Double }))).SingleOrDefault<double>();
-            return new ReportSegment
-            {
-                TasksOnTime = count > 0 ? Math.Round((tasksOnTime / count) * percent) : 0,
-                TasksNotOnTime = count > 0 ? Math.Round((tasksNotOnTime / count) * percent) : 0,
-                AverageDifferenceInTime = count > 0 ? Math.Round(minutes / count) : 0
-            };
-        }
-
-        private class ReportSegment
-        {
-            public double TasksOnTime
-            {
-                get;
-                set;
-            }
-            public double TasksNotOnTime
-            {
-                get;
-                set;
-            }
-            public double AverageDifferenceInTime
-            {
-                get;
-                set;
-            }
         }
         
         #endregion

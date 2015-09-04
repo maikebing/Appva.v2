@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
+    using Appva.Core.Logging;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
     using HibernatingRhinos.Profiler.Appender.NHibernate;
@@ -26,13 +27,28 @@ namespace Appva.Mcss.Admin
     /// </summary>
     public class MvcApplication : HttpApplication
     {
+        #region Variables.
+
+        /// <summary>
+        /// The <see cref="ILog"/>.
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<OwinConfiguration>();
+
+        #endregion
+
+        #region HttpApplication Overrides.
+
         /// <inheritdoc />
         protected void Application_Start()
         {
+            XmlConfigurator.Configure();
+            Log.Info("Application Start");
             //// Disable the Mvc version response header in order not to leak security information.
             MvcHandler.DisableMvcResponseHeader = true;
-            NHibernateProfiler.Initialize();
-            XmlConfigurator.Configure();
+            if (! Configuration.Application.IsInProduction)
+            {
+                NHibernateProfiler.Initialize();
+            }
             ModelBinders.Binders.DefaultBinder = new AdminModelBinder();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
@@ -42,5 +58,7 @@ namespace Appva.Mcss.Admin
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new FeatureViewLocationRazorViewEngine());
         }
+
+        #endregion
     }
 }

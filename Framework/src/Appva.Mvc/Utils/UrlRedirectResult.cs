@@ -1,4 +1,4 @@
-﻿// <copyright file="RedirectResult.cs" company="Appva AB">
+﻿// <copyright file="UrlRedirectResult.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -50,33 +50,6 @@ namespace Appva.Mvc
 
         #endregion
 
-        #region Public static Functions.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UrlRedirectResult"/> class.
-        /// </summary>
-        /// <param name="values">The route value dictionary</param>
-        /// <returns>A new <see cref="UrlRedirectResult"/> instance</returns>
-        public static UrlRedirectResult CreateNew(RouteValueDictionary values)
-        {
-            return new UrlRedirectResult(values);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UrlRedirectResult"/> class.
-        /// </summary>
-        /// <param name="action">The action route name</param>
-        /// <param name="controller">The controller route name</param>
-        /// <param name="area">The area route name</param>
-        /// <param name="values">The route value dictionary</param>
-        /// <returns>A new <see cref="UrlRedirectResult"/> instance</returns>
-        public static UrlRedirectResult CreateNew(string action, string controller, string area, RouteValueDictionary values = null)
-        {
-            return new UrlRedirectResult(action, controller, area, values);
-        }
-
-        #endregion
-
         #region Properties.
 
         /// <summary>
@@ -117,12 +90,40 @@ namespace Appva.Mvc
 
         #endregion
 
+        #region Public static Functions.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UrlRedirectResult"/> class.
+        /// </summary>
+        /// <param name="values">The route value dictionary</param>
+        /// <returns>A new <see cref="UrlRedirectResult"/> instance</returns>
+        public static UrlRedirectResult CreateNew(RouteValueDictionary values)
+        {
+            return new UrlRedirectResult(values);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UrlRedirectResult"/> class.
+        /// </summary>
+        /// <param name="action">The action route name</param>
+        /// <param name="controller">The controller route name</param>
+        /// <param name="area">The area route name</param>
+        /// <param name="values">The route value dictionary</param>
+        /// <returns>A new <see cref="UrlRedirectResult"/> instance</returns>
+        public static UrlRedirectResult CreateNew(string action, string controller, string area, RouteValueDictionary values = null)
+        {
+            return new UrlRedirectResult(action, controller, area, values);
+        }
+
+        #endregion
+
         #region Private Methods.
 
         /// <summary>
         /// Removes any information containing action or controller.
         /// </summary>
-        /// <param name="values"></param>
+        /// <param name="values">The route values</param>
+        /// <returns>A new or altered <see cref="RouteValueDictionary"/></returns>
         private RouteValueDictionary RemoveRouteValues(RouteValueDictionary values)
         {
             if (values == null)

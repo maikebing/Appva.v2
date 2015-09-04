@@ -11,6 +11,7 @@ namespace Appva.Apis.TenantServer.Legacy
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Appva.Tenant.Identity;
     using Tenant.Interoperability.Client;
     using TenantServer.Legacy.Service_References.Wcf;
     using Transformers;
@@ -91,9 +92,9 @@ namespace Appva.Apis.TenantServer.Legacy
         }
 
         /// <inheritdoc />
-        public ITenantDto FindByIdentifier(string id)
+        public ITenantDto FindByIdentifier(ITenantIdentifier id)
         {
-            var result = this.service.FindByContext(new FindByContextRequest(id)).FindByContextResult;
+            var result = this.service.FindByContext(new FindByContextRequest(id.Value)).FindByContextResult;
             return Transformer.Transform(result);
         }
 
@@ -123,9 +124,9 @@ namespace Appva.Apis.TenantServer.Legacy
         }
 
         /// <inheritdoc />
-        public async Task<ITenantDto> FindByIdentifierAsync(string id)
+        public async Task<ITenantDto> FindByIdentifierAsync(ITenantIdentifier id)
         {
-            var response = await this.service.FindByContextAsync(new FindByContextRequest(id)).ConfigureAwait(false);
+            var response = await this.service.FindByContextAsync(new FindByContextRequest(id.Value)).ConfigureAwait(false);
             var result = response.FindByContextResult;
             return Transformer.Transform(result);
         }

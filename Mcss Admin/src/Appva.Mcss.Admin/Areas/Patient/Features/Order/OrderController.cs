@@ -9,17 +9,17 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
     #region Imports.
 
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RouteArea("patient"), RoutePrefix("order")]
     public sealed class OrderController : Controller
     {
@@ -33,6 +33,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("overview")]
         [HttpGet, Dispatch(typeof(OverviewOrder))]
+        [PermissionsAttribute(Permissions.Dashboard.ReadOrderRefillValue)]
         public PartialViewResult Overview()
         {
             return this.PartialView();

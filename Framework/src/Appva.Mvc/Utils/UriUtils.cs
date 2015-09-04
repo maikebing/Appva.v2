@@ -39,7 +39,7 @@ namespace Appva.Mvc
                 return null;
             }
             var request = HttpContext.Current.Request;
-            var host = (request.Url.IsDefaultPort) ? request.Url.Host : request.Url.Authority;
+            var host = request.Url.IsDefaultPort ? request.Url.Host : request.Url.Authority;
             host = string.Format("{0}://{1}", request.Url.Scheme, host);
             return (request.ApplicationPath == "/") ? new Uri(host) : new Uri(host + request.ApplicationPath);
         }
@@ -56,8 +56,8 @@ namespace Appva.Mvc
             var index = newUrl.IndexOf('?');
             if (index != -1)
             {
-                newUrl = newUrl.Substring(0, index);
                 query = newUrl.Substring(index + 1);
+                newUrl = newUrl.Substring(0, index);
             }
             var context = new HttpContext(new HttpRequest(null, newUrl, query), new HttpResponse(new StringWriter()));
             var routeData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(context));
@@ -69,6 +69,14 @@ namespace Appva.Mvc
             if (! values.ContainsKey("area"))
             {
                 values.Add("area", routeData.DataTokens["area"] as string);
+            }
+            //// Any route with ? is also added.
+            foreach (var key in context.Request.Params.AllKeys)
+            {
+                if (! values.ContainsKey(key))
+                {
+                    values.Add(key, context.Request.Params.Get(key));
+                }
             }
             return values;
         }

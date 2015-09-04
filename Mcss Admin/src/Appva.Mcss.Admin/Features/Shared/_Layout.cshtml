@@ -6,10 +6,10 @@
 <html class="gt-ie8 gt-ie9 not-ie">
 <!--<![endif]-->
     <head>
-        <title>@Title()</title>
+        <title>@Title() - Appva MCSS</title>
         @Html.Partial("_Meta")
-        @Styles.Render("~/css")
-        @Scripts.Render("~/js", "~/js/mcss")
+        @Styles.Render("~/Assets/css/ui-lightness/bundle", "~/Assets/css/bundle")
+        @Scripts.Render("~/Assets/js/bundle", "~/Assets/js/mcss/bundle")
         <script type="text/javascript">
             // Stop any cache on GET html ajax
             $.ajaxSetup({

@@ -6,6 +6,12 @@
 // </author>
 namespace Appva.Tenant.Identity
 {
+    #region Imports.
+
+    using System;
+
+    #endregion
+
     /// <summary>
     /// A tenant identification strategy is used to determine the ID for the current 
     /// tenant based on execution context.
@@ -25,5 +31,13 @@ namespace Appva.Tenant.Identity
         /// <param name="identifier">The current tenant identifier</param>
         /// <returns>True if the tenant could be identified; false if not</returns>
         bool TryIdentifyTenant(out ITenantIdentifier identifier);
+
+        /// <summary>
+        /// Validates the <see cref="ITenantIdentity"/>.
+        /// </summary>
+        /// <param name="identity">The <see cref="ITenantIdentity"/> to be validated</param>
+        /// <param name="uri">The current request <c>uri</c></param>
+        /// <returns>A <see cref="IValidateTenantIdentificationResult"/></returns>
+        IValidateTenantIdentificationResult Validate(ITenantIdentity identity, Uri uri);
     }
 }

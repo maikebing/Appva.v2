@@ -8,25 +8,18 @@ namespace Appva.Mcss.Admin.Features.Authentication
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Application.Services.Menus;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Features.Authentication.Forgot;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Tenant.Identity;
-    using Appva.Core.Extensions;
-    using System.Web;
-    using System.IO;
-    using System.Web.Routing;
-    using Appva.Mcss.Admin.Application.Services.Menus;
-    using Appva.Mcss.Admin.Application.Models;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
 
     #endregion
 
@@ -63,6 +56,11 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         private readonly IAccountService accountService;
 
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
         #endregion
 
         #region Constructor.
@@ -74,13 +72,14 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// <param name="siths">The <see cref="ISithsAuthentication"/></param>
         /// <param name="authentication">The <see cref="IFormsAuthentication"/></param>
         public AuthenticationController(ITenantService tenants, ISithsAuthentication siths, IFormsAuthentication authentication, IMenuService menus,
-            IAccountService accountService)
+            IAccountService accountService, ISettingsService settingsService)
         {
             this.tenants = tenants;
             this.siths = siths;
             this.authentication = authentication;
             this.menus = menus;
             this.accountService = accountService;
+            this.settingsService = settingsService;
         }
 
         #endregion
@@ -94,10 +93,20 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         /// <returns>The sign in form</returns>
         [Route("sign-in")]
-        [AllowAnonymous, HttpGet, Hydrate, Dispatch]
+        [AllowAnonymous, HttpGet, Hydrate]
         public ActionResult SignIn(SignIn request)
         {
-            return this.View();
+            if (this.settingsService.GetAdminLogin() == "siths")
+            {
+                return this.RedirectToAction("SignInSiths");
+            }
+            ITenantIdentity identity = null;
+            this.tenants.TryIdentifyTenant(out identity);
+            return this.View(new SignInForm
+                {
+                    Tenant = identity.Name,
+                    ReturnUrl = request.ReturnUrl
+                });
         }
 
         /// <summary>
@@ -176,10 +185,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
             if (result.IsAuthorized)
             {
                 this.authentication.SignIn(result.Identity);
-                var defaultUrl = Url.Action("Index", "Dashboard", new
-                {
-                    Area = "Dashboard"
-                });
+                return this.RedirectToAction("Index", "Home");
             }
             //// If everything fails; start over!
             return this.RedirectToAction("SignInSiths");
@@ -231,6 +237,24 @@ namespace Appva.Mcss.Admin.Features.Authentication
             }
             ModelState.AddModelError(string.Empty, "Personnummer eller e-post är felaktigt.");
             return this.View(model);
+        }
+
+        #endregion
+
+        #region Redirect For Old Invalid URLs.
+
+        /// <summary>
+        /// Redirects to the new authentication URL if the deprecated URL is used.
+        /// </summary>
+        /// <returns>A redirect to correct sign in</returns>
+        [AllowAnonymous]
+        [HttpGet, Route("~/Authenticate/LogIn")]
+        public ActionResult RedirectForOldAuthenticationLoginUrl()
+        {
+            return this.RedirectToAction("SignIn", new SignIn
+            {
+                ReturnUrl = string.Empty
+            });
         }
 
         #endregion

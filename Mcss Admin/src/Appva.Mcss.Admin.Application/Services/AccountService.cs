@@ -339,7 +339,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 account.LockoutUntilDate = null;
                 account.FailedPasswordAttemptsCount = 0;
                 account.PasswordResetDate = DateTime.Now;
-                this.persitence.Session.SaveOrUpdate(account);
+                this.repository.Update(account);
                 var mail = new MailMessage("noreply@appva.se", account.EmailAddress)
                 {
                     Subject = "Nytt lösenord till Appva MCSS",

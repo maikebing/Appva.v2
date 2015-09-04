@@ -59,5 +59,15 @@ namespace Appva.Tenant.Identity
         }
 
         #endregion
+
+        #region Object Overrides.
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.value ?? base.ToString();
+        }
+
+        #endregion
     }
 }

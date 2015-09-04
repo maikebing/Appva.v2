@@ -103,6 +103,10 @@ namespace Appva.Siths
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Disposes the class.
+        /// </summary>
+        /// <param name="disposing">Whether or not to dispose</param>
         protected virtual void Dispose(bool disposing)
         {
             if (! disposing)
@@ -130,7 +134,7 @@ namespace Appva.Siths
             var request = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("api_key", this.configuration.Key),
-                    new KeyValuePair<string, string>("uri", this.configuration.RedirectUrl.ToString()),
+                    new KeyValuePair<string, string>("uri", HttpUtils.RedirectPath(this.configuration.RedirectPath).ToString()),
                     new KeyValuePair<string, string>("secret_key", this.configuration.Secret),
                     new KeyValuePair<string, string>("authify_request_token", token),
                     new KeyValuePair<string, string>("idp", this.configuration.IdentityProvider),
@@ -141,7 +145,7 @@ namespace Appva.Siths
                     new KeyValuePair<string, string>("v", Version)
                 };
             await this.httpClient.PostAsFormUrlEncodedAsync<string>("request/", request);
-            return new Uri(string.Format("{0}/tokenidx.php?authify_request_token={1}", this.httpClient.BaseAddress, token));
+            return new Uri(this.httpClient.BaseAddress, string.Format("tokenidx.php?authify_request_token={0}", token));
         }
 
         /// <summary>
@@ -155,7 +159,7 @@ namespace Appva.Siths
             var request = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("api_key", this.configuration.Key),
-                    new KeyValuePair<string, string>("uri", this.configuration.RedirectUrl.ToString()),
+                    new KeyValuePair<string, string>("uri", HttpUtils.RedirectPath(this.configuration.RedirectPath).ToString()),
                     new KeyValuePair<string, string>("secret_key", this.configuration.Secret),
                     new KeyValuePair<string, string>("authify_checksum", token),
                     new KeyValuePair<string, string>("protocol", "json"),

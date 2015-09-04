@@ -12,7 +12,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Infrastructure.Controllers;
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mvc;
@@ -23,7 +22,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RouteArea("patient"), RoutePrefix("{id:guid}/prepare")]
     public sealed class PrepareController : Controller
     {

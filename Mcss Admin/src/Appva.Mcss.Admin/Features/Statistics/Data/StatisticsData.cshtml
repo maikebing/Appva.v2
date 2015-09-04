@@ -1,0 +1,54 @@
+﻿@model Appva.Mcss.Admin.Application.Models.ReportData
+
+<div class="data cf">
+    <dl>
+        <dt>I tid</dt>
+        <dd>
+            @Model.OnTimePercentage %
+            @if (Model.OnTimePercentage > Model.PreviousPeriod.OnTimePercentage)
+            {
+                <img src="@Url.Image("trendup.png")" alt="Uppåtgående" />
+            }
+            else
+            {
+                <img src="@Url.Image("trenddn.png")" alt="Nedåtgående" />
+            }
+        </dd>
+    </dl>
+    <dl>
+        <dt>Ej i tid</dt>
+        <dd>
+            @Model.NotOnTimePercentage %
+        </dd>
+    </dl>
+    <dl>
+        <dt>Förändring från föregående period</dt>
+        @{
+
+            var amount = string.Empty;
+            var change = Model.OnTimePercentage - Model.PreviousPeriod.OnTimePercentage;
+            if (change < 0)
+            {
+                amount = string.Format("{0} i tid", "färre");
+            }
+            else
+            {
+                amount = string.Format("{0} i tid", "fler");
+            }
+        }
+        <dd class="small">@change % @amount</dd>
+    </dl>
+    <dl>
+        <dt>Genomsnittlig avvikelse i tid</dt>
+        <dd class="small">@TimeSpanDifference.ToReadableText(TimeSpan.FromMinutes(Model.AverageMinutesDelayed))</dd>
+    </dl>
+    <dl>
+        <dt>Andel signerade insatser</dt>
+        <dd class="small">@Model.SignedTaskPercentage %</dd>
+    </dl>
+    <dl>
+        <dt>Totalt antal insatser</dt>
+        <dd class="small">@Model.Total</dd>
+    </dl>
+</div>
+

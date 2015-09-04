@@ -127,14 +127,14 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             task.DelayHandled = true;
             task.DelayHandledBy = account;
-            var tasks = FindDelaysByPatient(task.Patient, false, list);
-            if (tasks.Count.Equals(1) && tasks.First().Id.Equals(task.Id))
+            var tasks = FindDelaysByPatient(task.Patient, false, null);
+            if (tasks.Count == 0 || (tasks.Count.Equals(1) && tasks.First().Id.Equals(task.Id)))
             {
                 var patient = task.Patient;
                 patient.HasUnattendedTasks = false;
                 this.context.Update(patient);
             }
-            this.context.Update(task);
+            this.tasks.Update(task);
             this.auditing.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
         }
 
@@ -145,7 +145,7 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 task.DelayHandled = true;
                 task.DelayHandledBy = account;
-                this.context.Update(task);
+                this.tasks.Update(task);
                 this.auditing.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
             }
             patient.HasUnattendedTasks = false;

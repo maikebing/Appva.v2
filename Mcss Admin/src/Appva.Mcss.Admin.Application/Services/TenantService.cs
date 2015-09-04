@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Tenant.Interoperability.Client;
     using Validation;
     using Appva.Core.Extensions;
+    using Microsoft.Owin;
 
     #endregion
 
@@ -42,6 +43,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="id">The unique identifier</param>
         ITenantIdentity Find(ITenantIdentifier id);
+
+        /// <summary>
+        /// Validates the current request and and tenant identifier.
+        /// </summary>
+        /// <param name="context">An owin context</param>
+        /// <returns>A <see cref="IValidateTenantIdentificationResult"/></returns>
+        IValidateTenantIdentificationResult Validate(IOwinContext context);
     }
 
     /// <summary>
@@ -109,13 +117,24 @@ namespace Appva.Mcss.Admin.Application.Services
             var cacheKey = CacheTypes.Tenant.FormatWith(id.Value);
             if (this.cache.Find<ITenantIdentity>(cacheKey) == null)
             {
-                var tenant = this.client.FindByIdentifier(id.Value);
-                this.cache.Upsert<ITenantIdentity>(cacheKey, new TenantIdentity(id, tenant.Name, tenant.HostName), new RuntimeEvictionPolicy
+                var tenant = this.client.FindByIdentifier(id);
+                if (tenant != null)
                 {
-                    Priority = CacheItemPriority.Default
-                });
+                    this.cache.Upsert<ITenantIdentity>(cacheKey, new TenantIdentity(id, tenant.Name, tenant.HostName), new RuntimeEvictionPolicy
+                    {
+                        Priority = CacheItemPriority.Default
+                    });
+                }
             }
             return this.cache.Find<ITenantIdentity>(cacheKey);
+        }
+
+        /// <inheritdoc />
+        public IValidateTenantIdentificationResult Validate(IOwinContext context)
+        {
+            ITenantIdentity identity;
+            this.TryIdentifyTenant(out identity);
+            return this.strategy.Validate(identity, context.Request.Uri);
         }
 
         #endregion

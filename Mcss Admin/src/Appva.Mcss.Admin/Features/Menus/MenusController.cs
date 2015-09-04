@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Features.Menus
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize, RoutePrefix("menus")]
+    [RoutePrefix("menus")]
     public sealed class MenusController : AbstractMediatorController
     {
         #region Constructor.

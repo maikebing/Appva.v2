@@ -9,11 +9,10 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
     #region Imports.
 
     using System.Web.Mvc;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mvc;
-    using Appva.Mvc.Security;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -21,7 +20,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
     /// TODO: Add a descriptive summary to increase readability.
     /// <c>/patient/b9018260-c432-4aea-914c-a45300a72c71/alert/...</c>
     /// </summary>
-    [Authorize]
     [RouteArea("patient"), RoutePrefix("{id:guid}/alert")]
     public sealed class AlertsController : Controller
     {
@@ -96,6 +94,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Alerts
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("~/patient/alert/overview/{status=notsigned}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Dashboard.ReadDelayedTasksValue)]
         public PartialViewResult Overview(AlertWidget request)
         {
             return this.PartialView();

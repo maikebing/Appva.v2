@@ -20,7 +20,6 @@ namespace Appva.Mcss.Admin.Controllers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RouteArea("dashboard")]
     [Permissions(Permissions.Dashboard.ReadValue)]
     public sealed class DashboardController : Controller

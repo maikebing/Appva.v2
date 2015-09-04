@@ -137,7 +137,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public IList<Permission> List(ulong maximumItems = long.MaxValue)
         {
             return this.persistenceContext.QueryOver<Permission>()
-                .Where(x => x.IsVisible).OrderBy(x => x.Sort).Asc.List();
+                /*.Where(x => x.IsVisible)*/.OrderBy(x => x.Sort).Asc.List();
         }
 
         #endregion

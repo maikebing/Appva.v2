@@ -8,24 +8,18 @@ namespace Appva.Mcss.Admin.Controllers
 {
     #region Imports.
 
-    using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Appva.Core.Resources;
-using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Common;
-using Appva.Mcss.Admin.Infrastructure.Attributes;
-using Appva.Mcss.Admin.Models;
-using Appva.Mvc;
-using Appva.Mvc.Security;
+    using System.Web.Mvc;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [Authorize]
     [RouteArea("area51"), RoutePrefix("acl")]
     [Permissions(Permissions.Area51.ReadValue)]
     public sealed class AclController : Controller

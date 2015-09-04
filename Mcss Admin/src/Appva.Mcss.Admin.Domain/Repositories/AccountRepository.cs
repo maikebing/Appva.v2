@@ -290,6 +290,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc /> 
         public void Update(Account entity)
         {
+            entity.UpdatedAt = DateTime.Now;
+            entity.Version = entity.Version++;
             this.persistenceContext.Update<Account>(entity);
         }
 

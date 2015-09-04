@@ -2673,6 +2673,59 @@ a.std-btn:active {
 	box-shadow:none;
 }
 
+/* Consents */
+
+#consent {
+    margin: 40px auto;
+    min-width: 400px;
+    max-width:700px;
+    background: #fff;
+    border: 1px solid #d8dfe5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#consent .header {
+	padding:20px;
+	border-bottom:1px solid #d8dfe5;
+    text-align:center;
+}
+
+#consent .header.subheader {
+    background: rgba(241,242,249,1.0);
+}
+
+#consent .body {
+    padding:20px;    
+}
+
+#consent input[type=submit] {
+    padding:10px;
+    color:#fff;
+    background:#445068;
+    border:none;
+    border-radius:3px;
+    font-weight:bold;
+}
+
+#consent .footer {
+    padding:20px;
+    border-top:1px solid #d8dfe5;
+}
+
+#consent .form-group {
+    padding: 10px 20px;
+    background: #ebf0f8;
+    float:left;
+    margin-bottom: 20px;
+    min-width:50%;
+}
+
+#consent .form-group h5 {
+    margin-top: 0;
+}
+
 /* CUSTOM SELECT
 ============================================================================================================================ */
 

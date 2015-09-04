@@ -36,7 +36,7 @@ namespace Appva.Apis.Http
         private HttpClient httpClient;
 
         /// <summary>
-        /// The <see cref="ILog"/> for <see cref="DemoHipClient"/>.
+        /// The <see cref="ILog"/> for <see cref="HttpRequest"/>.
         /// </summary>
         private static readonly ILog Log = LogProvider.For<HttpRequest>();
 
@@ -111,54 +111,13 @@ namespace Appva.Apis.Http
         }
 
         /// <inheritdoc />
-        public async Task<T> ToResultAsync<T>()
+        public async Task<IHttpResponse> GetAsync()
         {
-            return JsonConvert.DeserializeObject<T>(await this.ToResultAsString().ConfigureAwait(false));
+            Log.Debug(string.Format("Sending {0}-request to {1}", this.Method, this.RequestUri.ToString()));
+            var response = await this.httpClient.SendAsync(this).ConfigureAwait(false);
+            return new HttpResponse(response);
         }
 
-        /// <inheritdoc />
-        public async Task<string> ToResultAsString()
-        {
-            return await this.GetContent().ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public HttpStatusCode GetResponseStatusCode()
-        {
-            return this.httpClient.SendAsync(this).Result.StatusCode;
-        }
-
-        #endregion
-
-        #region Private
-
-        /// <summary>
-        /// Reads the content of the response
-        /// </summary>
-        /// <returns></returns>
-        private async Task<String> GetContent()
-        {
-            try
-            {
-                Log.Debug("Sending message to {0}", this.ToString());
-                var response = await this.httpClient.SendAsync(this).ConfigureAwait(false);
-                Log.Debug("Recived answer: {0}", response.StatusCode);
-                if (response.IsSuccessStatusCode)
-                {
-                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-                return null;
-            }
-            catch (Exception e)
-            {
-                Log.Debug(e.ToString());
-                return null;
-            }
-        }
-
-        #endregion
-
-
-        
+        #endregion        
     }
 }

@@ -189,7 +189,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 Role role = null;
                 query.Left.JoinAlias(x => x.Roles, () => role)
-                    .Where(() => role.IsVisible);
+                    .Where(Restrictions.Or(
+                    Restrictions.IsNull(Projections.Property<Account>(x => x.Roles)),
+                    Restrictions.Eq(Projections.Property<Role>(x => role.IsVisible), true)));
                     /// TODO: Old shit remove when visible is done
                     /// .WhereRestrictionOn(() => role.MachineName).Not.IsLike(RoleTypes.AdminPrefix, MatchMode.Start);
             }

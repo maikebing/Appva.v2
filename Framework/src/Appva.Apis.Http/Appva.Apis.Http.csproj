@@ -52,7 +52,7 @@
     <Compile Include="HttpRequest.cs" />
     <Compile Include="HttpRequestClient.cs" />
     <Compile Include="HttpResponse.cs" />
-    <Compile Include="IHttpReponse.cs" />
+    <Compile Include="IHttpResponse.cs" />
     <Compile Include="IHttpRequest.cs" />
     <Compile Include="IHttpRequestClient.cs" />
     <Compile Include="MimeType.cs" />

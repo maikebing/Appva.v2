@@ -178,6 +178,12 @@ namespace Appva.Mvc.Rendering.Html
             return this;
         }
 
+        public IFormGroupFor<TModel, TProperty> RadioButton(string labelText, TProperty value, object htmlAttributes = null)
+        {
+            this.Add(new RadioButtonFor<FormGroupFor<TModel, TProperty>, TModel, TProperty>(this, this.expression, labelText, value, htmlAttributes));
+            return this;
+        }
+
         /// <inheritdoc />
         public IFormGroupFor<TModel, TProperty> CheckboxList(object htmlAttributes = null)
         {

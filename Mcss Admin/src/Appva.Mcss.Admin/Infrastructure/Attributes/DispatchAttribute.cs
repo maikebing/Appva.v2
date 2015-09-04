@@ -83,6 +83,7 @@ namespace Appva.Mcss.Admin.Infrastructure.Attributes
         {
         }
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DispatchAttribute"/> class.
         /// </summary>
@@ -168,6 +169,21 @@ namespace Appva.Mcss.Admin.Infrastructure.Attributes
         /// </summary>
         /// <param name="filterContext">The context</param>
         private void CreateRequestByParameterAndRedirect(ActionExecutingContext filterContext)
+        {
+            //Requires.ValidState(filterContext.ActionParameters.ContainsKey("request"), "Parameter 'request' does not exist");
+            var request = filterContext.ActionParameters["request"];
+            var routeValues = this.Handler(request).Handle(request);
+            var urlHelper = new UrlHelper(filterContext.RequestContext);
+            var url = urlHelper.Action(this.action, this.controller, routeValues);
+            filterContext.Result = new RedirectResult(url);
+        }
+
+        /// <summary>
+        /// Creates the request by the controller parameter
+        /// and redirects to action.
+        /// </summary>
+        /// <param name="filterContext">The context</param>
+        private void CreateRequestByParameterOrRedirect(ActionExecutingContext filterContext)
         {
             //Requires.ValidState(filterContext.ActionParameters.ContainsKey("request"), "Parameter 'request' does not exist");
             var request = filterContext.ActionParameters["request"];

@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionResults\EmptyJsonResult.cs" />
+    <Compile Include="ContextRequestHandler.cs" />
     <Compile Include="Filters\ExceptionFilter.cs" />
     <Compile Include="Filters\MultiButtonAttribute.cs" />
     <Compile Include="Filters\NoBrowserCacheAttribute.cs" />
@@ -93,6 +94,8 @@
     <Compile Include="Messaging\MailMessage.cs" />
     <Compile Include="Messaging\NoOpMailService.cs" />
     <Compile Include="Rendering\HtmlHelperInputExtensions.cs" />
+    <Compile Include="Rendering\HtmlHelperRadioButtonExtensions.cs" />
+    <Compile Include="Rendering\Html\RadioButtonFor.cs" />
     <Compile Include="Rendering\ViewEngine\FeatureViewLocationRazorViewEngine.cs" />
     <Compile Include="Filters\AlertDangerAttribute.cs" />
     <Compile Include="Filters\AlertInformationAttribute.cs" />
@@ -174,6 +177,10 @@
     <ProjectReference Include="..\Appva.Core\Appva.Core.csproj">
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Cqrs\Appva.Cqrs.csproj">
+      <Project>{0c3cc633-42b5-413f-b1a6-57da6f65a61a}</Project>
+      <Name>Appva.Cqrs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appva.Cryptography\Appva.Cryptography.csproj">
       <Project>{d3b336cc-9a4a-4cad-8ab5-32a92e028726}</Project>

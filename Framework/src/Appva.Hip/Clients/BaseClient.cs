@@ -29,14 +29,14 @@ namespace Appva.Hip.Clients
         /// <summary>
         /// The <see cref="ILog"/> for <see cref="IHipClient"/>.
         /// </summary>
-        private static readonly ILog Log = LogProvider.For<IHipClient>();
+        protected static readonly ILog Log = LogProvider.For<IHipClient>();
 
         /// <summary>
         /// The <see cref="IHttpRequestClient"/>
         /// </summary>
         private readonly IHttpRequestClient httpClient;
 
-        private readonly string UrlFormat;
+        protected readonly string UrlFormat;
 
         #endregion
 
@@ -53,24 +53,20 @@ namespace Appva.Hip.Clients
 
         #endregion
 
+        #region Properties
+
+        protected IHttpRequestClient HttpClient
+        {
+            get { return this.httpClient; }
+        }
+
+        #endregion
+
         #region Members
 
-        public async Task<TResult> GetAsync<TResult>(string patientId)
-        {
-            return await httpClient.Get(string.Format(UrlFormat, patientId)).WithHeaders(this.GetHeaders(patientId)).ToResultAsync<TResult>().ConfigureAwait(false);
-        }
+        //public abstract Task<object> GetAsync(string patientId);
 
-        public bool Create(string patientId, object model)
-        {
-            var status = httpClient.Post(string.Format(UrlFormat, patientId)).WithHeaders(this.GetHeaders(patientId)).WithJsonEncodedBody(model).GetResponseStatusCode();
-
-            if (!status.Equals(HttpStatusCode.OK))
-            {
-                Log.Error(string.Format("Could not set consent. Server returned {0}", status.ToString()));
-                return false;
-            }
-            return true;
-        }
+        //public abstract async Task<bool> Create(string patientId, object model) { return null; }
 
         #endregion
 

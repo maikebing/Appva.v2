@@ -61,21 +61,9 @@ namespace Appva.Apis.Http
         IHttpRequest WithJsonEncodedBody(object body);
 
         /// <summary>
-        /// Returns the content as object
+        /// Sends the request async and creates the response
         /// </summary>
         /// <returns></returns>
-        Task<T> ToResultAsync<T>();
-
-        /// <summary>
-        /// Returns the content of the response
-        /// </summary>
-        /// <returns></returns>
-        Task<string> ToResultAsString();
-
-        /// <summary>
-        /// Returns the statuscode of the response
-        /// </summary>
-        /// <returns></returns>
-        HttpStatusCode GetResponseStatusCode();
+        Task<IHttpResponse> GetAsync();
     }
 }

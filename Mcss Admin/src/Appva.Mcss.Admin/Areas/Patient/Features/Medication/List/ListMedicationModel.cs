@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
+using Appva.Hip.Model;
 
     #endregion
 
@@ -39,6 +40,30 @@ namespace Appva.Mcss.Admin.Areas.Models
         }
 
         public Schedule Schedule
+        {
+            get;
+            set;
+        }
+
+        public IList<ResponseItem<MedicationItem>> Medications 
+        { 
+            get;
+            set;
+        }
+
+        public int PageNumber
+        {
+            get;
+            set;
+        }
+
+        public int PageSize
+        {
+            get;
+            set;
+        }
+
+        public int TotalItemCount
         {
             get;
             set;

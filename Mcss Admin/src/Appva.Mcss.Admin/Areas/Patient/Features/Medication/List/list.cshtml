@@ -2,13 +2,13 @@
 @model Appva.Mcss.Admin.Areas.Models.ListMedicationModel
 
 @{
-    ViewBag.Title = "Läkemedelsförtekning";
+    ViewBag.Title = "Läkemedel";
 }
 
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
-    <h1>Läkemedelsförteckning</h1>
+    <h1>Läkemedel</h1>
 </div>
 
 <div id="content" class="cf">
@@ -16,22 +16,53 @@
     <div id="content-primary" class="signlist-collection">
 
         <div id="signlist">
+            <div><h2></h2></div>
             <div id="signed-events">
-                <div class="h cf">
-                    <h2></h2>
-                    @*Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })*@
-                </div>
-
                 <table>
                     <thead>
                         <tr class="head">
+                            <th scope="col">O/F</th>
                             <th scope="col">Läkemedel</th>
                             <th scope="col">Doseringstext</th>
-                            <th scope="col">Styrka</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Ansvarig</th>
+                            <th scope="col">Signeringslista</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach (var drug in Model.Medications)
+                        {
+                            <tr class="">
+                                <td>
+                                    @(drug.Content.Prescription.DispensationAuthorization.IsNull() ? "Ordination" : "Förskrivning")
+                                </td>
+                                <td>
+                                    @drug.Content.Prescription.Drug.Name
+                                    <span class="date">
+                                        Senast ändrad: @drug.TimeStamp
+                                    </span>
+                                </td>
+                                <td class="">
+                                    @foreach (var dos in drug.Content.Prescription.Drug.Dosages)
+                                    {
+                                        <p>@dos.DosageInstruction</p>
+                                    }
+                                </td>
+                                <td class="">
+                                    @drug.Content.AccountableProfessional.Name
+                                    <span class="date">
+                                        @drug.Content.AccountableProfessional.Role @(drug.Content.AccountableProfessional.OrgUnit.IsNotNull() ? ", " + drug.Content.AccountableProfessional.OrgUnit.Name : "")
+                                    </span>
+                                </td>
+                                <td class="">
+                                    Ej på signeringslista
+                                </td>
+                                <td class="">
+                                    @Html.ActionLink("Visa mer", "Details", "Medication", new { Id = Model.Patient.Id, MedicationId = drug.Content.Id }, new { @class = "btn", @title = "Visa mer" })
+                                </td>
+                            </tr>
+                        }
+                        <!--
                         <tr class="">
                             <td>
                                 Spironolakton Nykomed
@@ -93,7 +124,7 @@
                                 @Html.ActionLink(Permissions.Sequence.Update, "Updatera insats på signeringslista", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "btn lb-link", @title = "Ändra raden" })
                                 @*Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })*@
                             </td>
-                        </tr>
+                        </tr>-->
 
 
                     </tbody>
@@ -101,5 +132,10 @@
             </div>
 
         </div>
+        @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(x => x
+        .DisplayTemplate("Pagination")
+        .MaxNrOfPages(15)
+        .AlwaysAddFirstPageNumber())
+        }
     </div>
 </div>

@@ -1,0 +1,74 @@
+﻿@using Appva.Mcss.Admin.Application.Common﻿
+@model Appva.Mcss.Admin.Areas.Models.CreateConsent
+
+@{
+    ViewBag.Title = "Samtyckeskontroll";
+}
+<div id="consent">
+    <div class="header cf">
+        <h1>Registrera samtycke</h1>
+    </div>
+    <div class="header subheader">
+        <h3>@Model.Patient.FullName</h3>
+        <p>@Model.Patient.UniqueIdentifier</p>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="body">
+            <div class="cf">
+                <h3>Sammanhållen journalföring</h3>
+                @if (Model.Consents.Pdl.Allowed)
+                {
+                    if (Model.Consents.Pdl.Valid)
+                    {
+                        <p>Samtycke finns registrerat</p>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <h5>Samtycke gäller...</h5>
+                            @Html.FormGroup(x => x.PdlOnlyMe, "").RadioButton("Endast mig", true).Build()
+                            @Html.FormGroup(x => x.PdlOnlyMe, "").RadioButton("All behörig personal på vårdenheten", false).Build()
+                            <h5>Samtycke avser...</h5>
+                            @Html.FormGroup(x => x.PdlValidTo, "").RadioButton("Idag", DateTime.Now.Date).Build()
+                            @Html.FormGroup(x => x.PdlValidTo, "").RadioButton("En vecka framåt", DateTime.Now.Date.AddDays(7)).Build()
+                        </div>
+                    }
+                }
+            </div>
+            <div class="cf">
+                <h3>Läkemedelsförteckning</h3>
+                @if (Model.Consents.Druglist.Allowed)
+                {
+                    if (Model.Consents.Druglist.Valid)
+                    {
+                        <p>Samtycke finns redan registrerat</p>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <h5>Samtycke avser...</h5>
+                            @Html.FormGroup(x => x.DruglistSingelAccess, "checkbox").Checkbox("Endast denna gång").Build()
+                            @if (Model.Consents.Druglist.OngoingAllowed)
+                            {
+                                @Html.FormGroup(x => x.DruglistOngoingAccess, "checkbox").Checkbox("Tillsvidare").Build()
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Du har inte behörighet att begära samtycke för Läkemedelsförtekningen</p>
+                }
+            </div>
+        </div>
+        <div class="footer">
+            @Html.HiddenFor(x => x.ValidPdlExists)
+            @Html.Submit("Fortsätt")
+        </div>
+    }
+</div>
+
+
+
+

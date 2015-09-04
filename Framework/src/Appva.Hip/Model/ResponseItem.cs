@@ -1,15 +1,14 @@
-﻿// <copyright file="ListMedication.cs" company="Appva AB">
+﻿// <copyright file="ResponseItem.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Models
+namespace Appva.Hip.Model
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Cqrs;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -19,26 +18,24 @@ namespace Appva.Mcss.Admin.Areas.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListMedication : IRequest<ListMedicationModel>
+    [JsonObject]
+    public sealed class ResponseItem<TItem> where TItem : class
     {
-        #region Constructor.
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListMedication"/> class.
+        /// Timestamp when object was last changed? NEEDS TO BE CHECKED UP
         /// </summary>
-        public ListMedication()
-        {
-        }
-
-        #endregion
-
-        public Guid Id
+        [JsonProperty(PropertyName = "timestamp")]
+        public DateTime TimeStamp
         {
             get;
             set;
         }
 
-        public int Page
+        /// <summary>
+        /// The item
+        /// </summary>
+        [JsonProperty(PropertyName = "data")]
+        public TItem Content
         {
             get;
             set;

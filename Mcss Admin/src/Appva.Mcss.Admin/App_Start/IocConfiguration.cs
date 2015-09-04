@@ -28,6 +28,7 @@ namespace Appva.Mcss.Admin
     using Autofac.Integration.Mvc;
     using Microsoft.Owin;
     using RazorEngine.Configuration;
+    using Appva.Hip;
 
     #endregion
 
@@ -77,6 +78,9 @@ namespace Appva.Mcss.Admin
 
             //// SITHS
             builder.Register<SithsClient>(x => new SithsClient(new AuthifyWtfTokenizer())).As<ISithsClient>().SingleInstance();
+
+            //// HIP
+            builder.Register<DemoHipClient>(x => new DemoHipClient()).As<IHipClient>().SingleInstance(); 
 
             builder.RegisterModule(PersistenceModule.CreateNew());
             builder.RegisterModule(MessagingModule.CreateNew());

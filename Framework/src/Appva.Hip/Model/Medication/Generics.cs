@@ -1,15 +1,14 @@
-﻿// <copyright file="ListMedication.cs" company="Appva AB">
+﻿// <copyright file="Generics.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Models
+namespace Appva.Hip.Model
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Cqrs;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -19,29 +18,29 @@ namespace Appva.Mcss.Admin.Areas.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListMedication : IRequest<ListMedicationModel>
+    [JsonObject]
+    public sealed class Generics
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListMedication"/> class.
-        /// </summary>
-        public ListMedication()
-        {
-        }
-
-        #endregion
-
-        public Guid Id
+        [JsonProperty(PropertyName="substance")]
+        public string Substance
         {
             get;
             set;
         }
 
-        public int Page
+        [JsonProperty(PropertyName = "strength")]
+        public PQ Strength
         {
             get;
             set;
         }
+
+        [JsonProperty(PropertyName = "form")]
+        public string Form
+        {
+            get;
+            set;
+        }
+
     }
 }

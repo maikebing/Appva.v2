@@ -1,0 +1,23 @@
+﻿@model Appva.Mcss.Admin.Areas.Models.DetailsMedicationModel
+
+@{
+    ViewBag.Title = "Läkemedel";
+}
+
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+<div id="subheader" class="cf">
+    <h1>Läkemedel</h1>
+</div>
+
+<div id="content" class="cf">
+
+    <div id="content-primary" class="signlist-collection">
+
+        <div id="signlist">
+            <h2>@Model.Medication.Prescription.Drug.Name</h2>
+            <p>Senast uppdaterad: @Model.MedicationLastChanged</p>
+
+        </div>
+    </div>
+</div>

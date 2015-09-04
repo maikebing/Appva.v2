@@ -1,19 +1,19 @@
-﻿// <copyright file="MedicationController.cs" company="Appva AB">
+﻿// <copyright file="ConsentsController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
+namespace Appva.Mcss.Admin.Areas.Patient.Features.Consents
 {
     #region Imports.
 
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Web.Mvc;
 
     #endregion
@@ -22,15 +22,15 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [Authorize]
-    [RouteArea("patient"), RoutePrefix("{id:guid}/medication")]
-    public sealed class MedicationController : Controller
+    [RouteArea("patient"), RoutePrefix("{id:guid}/consents")]
+    public sealed class ConsentsController : Controller
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MedicationController"/> class.
+        /// Initializes a new instance of the <see cref="ConsentsController"/> class.
         /// </summary>
-        public MedicationController()
+        public ConsentsController()
         {
         }
 
@@ -39,22 +39,27 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
         #region Routes.
 
         /// <summary>
-        /// List all medications
+        /// Create consents
         /// </summary>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("list")]
+        [Route("create")]
         [HttpGet, Dispatch()]
-        public ActionResult List(ListMedication request)
+        public ActionResult Create(Identity<CreateConsent> request)
         {
             return this.View();
         }
 
-        [Route("details")]
-        [HttpGet, Dispatch()]
-        public ActionResult Details(DetailsMedication request)
+        /// <summary>
+        /// Create consents
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("create")]
+        [HttpPost, Dispatch()]
+        public ActionResult Create(CreateConsent request)
         {
             return this.View();
         }
+
         #endregion
     }
 }

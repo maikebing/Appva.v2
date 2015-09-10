@@ -11,21 +11,19 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
+    using System.Configuration;
     using System.Runtime.Caching;
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
+    using Appva.Core.Extensions;
+    using Appva.Core.Resources;
     using Appva.Logging;
+    using Appva.Mcss.Admin.Application.Caching;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Persistence;
     using Newtonsoft.Json;
-    using Appva.Core.Extensions;
-    using System.Configuration;
-    using Appva.Mcss.Admin.Application.Caching;
-    using Appva.Core.Resources;
-    using Appva.Mcss.Admin.Application.Security.Jwt;
-    using Appva.Mcss.Admin.Domain.VO;
 
     #endregion
 
@@ -86,6 +84,14 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         bool IsTokenConfigurationInstalled();
     }
 
+    public interface ILookAndFeel
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        PdfLookAndFeel PdfLookAndFeelConfiguration();
+    }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
@@ -93,6 +99,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     public interface ISettingsService :
         IAccessControlListTenantSettings,
         ISecuritySettings,
+        ILookAndFeel,
         IOldSettings,
         IService
     {
@@ -237,6 +244,16 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #endregion
 
+        #region ILookAndFeel Members.
+
+        /// <inheritdoc />
+        public PdfLookAndFeel PdfLookAndFeelConfiguration()
+        {
+            return this.Find(ApplicationSettings.PdfLookAndFeelConfiguration);
+        }
+
+        #endregion
+
         #region IOldSettings Members.
 
         ////
@@ -327,7 +344,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             var colors = this.persistence.QueryOver<Setting>()
                 .Where(x => x.IsActive)
                 .And(x => x.Name == "Web.Calendar.NumberOfCategoryColors").SingleOrDefault();
-            return colors.IsNull() ? 9 : Int32.Parse(colors.Value);
+            return colors.IsNull() ? 9 : int.Parse(colors.Value);
         }
 
         /// <inheritdoc />
@@ -339,7 +356,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 .And(x => x.Namespace == "MCSS.Calendar").List();
             foreach (var setting in settings)
             {
-                TypeConverter tc = TypeDescriptor.GetConverter(setting.Type);
+                var tc = TypeDescriptor.GetConverter(setting.Type);
                 result.Add(setting.Name, tc.ConvertFromString(setting.Value));
             }
             return result;
@@ -363,7 +380,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <inheritdoc />
         public bool HasCalendarOverview()
         {
-            var calendarSettings = GetCalendarSettings();
+            var calendarSettings = this.GetCalendarSettings();
             if (calendarSettings.ContainsKey("HasOverview"))
             {
                 return (bool) calendarSettings["HasOverview"];
@@ -490,11 +507,14 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             try
             {
                 var cachedItem = JsonConvert.DeserializeObject(item.Value, item.Type);
-                this.cache.Upsert(this.CreateCacheKey(item.MachineName), cachedItem, new RuntimeEvictionPolicy
-                {
-                    Priority = CacheItemPriority.Default,
-                    SlidingExpiration = TimeSpan.FromMinutes(30)
-                });
+                this.cache.Upsert(
+                    this.CreateCacheKey(item.MachineName), 
+                    cachedItem, 
+                    new RuntimeEvictionPolicy
+                        {
+                            Priority = CacheItemPriority.Default,
+                            SlidingExpiration = TimeSpan.FromMinutes(30)
+                        });
                 return true;
             }
             catch (Exception ex)

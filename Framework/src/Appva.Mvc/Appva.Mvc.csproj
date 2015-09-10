@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionResults\EmptyJsonResult.cs" />
+    <Compile Include="ActionResults\PdfFileResult.cs" />
     <Compile Include="Configuration\WebApplicationConfiguration.cs" />
     <Compile Include="Filters\ExceptionFilter.cs" />
     <Compile Include="Filters\MultiButtonAttribute.cs" />

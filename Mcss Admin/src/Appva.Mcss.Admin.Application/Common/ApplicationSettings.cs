@@ -1,4 +1,4 @@
-﻿// <copyright file="SettingKey.cs" company="Appva AB">
+﻿// <copyright file="ApplicationSettings.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     #region Imports.
 
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Appva.Mcss.Admin.Application.Security.Jwt;
     using Appva.Mcss.Admin.Domain.VO;
 
@@ -57,7 +58,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// Makes the usernames for accounts visible in administration
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>
-        public static ApplicationSettingIdentity<bool> IsUsernameVisible = ApplicationSettingIdentity<bool>.CreateNew(
+        public static readonly ApplicationSettingIdentity<bool> IsUsernameVisible = ApplicationSettingIdentity<bool>.CreateNew(
             "MCSS.Core.Account.DisplayUsername",
             "Show account username",
             "MCSS.Core.Account",
@@ -118,6 +119,21 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #endregion
 
+        #region PDF.
+
+        /// <summary>
+        /// PDF configuration for look and feel.
+        /// </summary>
+        /// <remarks>The setting returns a <c>PdfProcessing</c></remarks>
+        public static readonly ApplicationSettingIdentity<PdfLookAndFeel> PdfLookAndFeelConfiguration = ApplicationSettingIdentity<PdfLookAndFeel>.CreateNew(
+            "Mcss.Core.Pdf",
+            "Pdf Generation Configuration",
+            "Mcss.Core.Pdf",
+            "The PDF configuration for look and feel",
+            PdfLookAndFeel.CreateDefault(null, null));
+
+        #endregion
+
         #region External Auditing Logging.
 
         /// <summary>
@@ -137,17 +153,20 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     /// <summary>
     /// TODO: Give a proper name, make internal.
     /// </summary>
+    /// <typeparam name="T">The default value type</typeparam>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     public sealed class ApplicationSettingIdentity<T>
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationSettingIdentity"/> class.
+        /// Initializes a new instance of the <see cref="ApplicationSettingIdentity{T}"/> class.
         /// </summary>
         /// <param name="key">The unique key</param>
         /// <param name="name">The friendly name</param>
-        /// <param name="context">The namespace or context</param>
+        /// <param name="namespace">The namespace or context</param>
         /// <param name="description">The description of usage</param>
+        /// <param name="defaultValue">The default value</param>
         private ApplicationSettingIdentity(string key, string name, string @namespace, string description, T defaultValue)
         {
             this.Key = key;
@@ -155,22 +174,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             this.Namespace = @namespace;
             this.Description = description;
             this.Default = defaultValue;
-        }
-
-        #endregion
-
-        #region Internal Static Functions.
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="ApplicationSettingIdentity"/> class.
-        /// </summary>
-        /// <param name="key">The unique key</param>
-        /// <param name="name">The friendly name</param>
-        /// <param name="context">The namespace or context</param>
-        /// <param name="description">The description of usage</param>
-        internal static ApplicationSettingIdentity<T> CreateNew(string key, string name, string @namespace, string description, T defaultValue)
-        {
-            return new ApplicationSettingIdentity<T>(key, name, @namespace, description, defaultValue);
         }
 
         #endregion
@@ -220,6 +223,24 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         {
             get;
             private set;
+        }
+
+        #endregion
+
+        #region Internal Static Functions.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="ApplicationSettingIdentity{T}"/> class.
+        /// </summary>
+        /// <param name="key">The unique key</param>
+        /// <param name="name">The friendly name</param>
+        /// <param name="namespace">The namespace or context</param>
+        /// <param name="description">The description of usage</param>
+        /// <param name="defaultValue">The default value</param>
+        /// <returns>A new <see cref="ApplicationSettingIdentity{T}"/> instance</returns>
+        internal static ApplicationSettingIdentity<T> CreateNew(string key, string name, string @namespace, string description, T defaultValue)
+        {
+            return new ApplicationSettingIdentity<T>(key, name, @namespace, description, defaultValue);
         }
 
         #endregion

@@ -32,10 +32,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <summary>
         /// Returns the prepare schema.
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
-        /// <param name="startDate">The start date</param>
-        /// <returns></returns>
+        /// <param name="request">The schema preparation request</param>
+        /// <returns>A <see cref="PrepareSchemaViewModel"/></returns>
         [Route("schema")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Prepare.ReadValue)]
@@ -51,30 +49,27 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <summary>
         /// Returns the add preparation for a sequence view.
         /// </summary>
-        /// <param name="id">TODO: Remove id.</param>
-        /// <param name="scheduleId">TODO: Remove scheduleId.</param>
-        /// <returns></returns>
+        /// <param name="request">The create preparation request</param>
+        /// <returns>A <see cref="PrepareAddSequenceViewModel"/></returns>
         [Route("create")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Prepare.CreateValue)]
         public ActionResult Create(CreatePreparation request)
         {
-            return View();
+            return this.View();
         }
 
         /// <summary>
         /// Saves the preparation.
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
-        /// <param name="model">The model</param>
-        /// <returns></returns>
+        /// <param name="request">The add prepared sequence request</param>
+        /// <returns>A <see cref="SchemaPreparation"/></returns>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Schema", "Prepare")]
         [PermissionsAttribute(Permissions.Prepare.CreateValue)]
         public ActionResult Create(PrepareAddSequenceViewModel request)
         {
-            return View();
+            return this.View();
         }
 
         #endregion
@@ -84,8 +79,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <summary>
         /// Returns the prepare sequence edit view.
         /// </summary>
-        /// <param name="id">The prepare sequence id</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The update prepare sequence</param>
+        /// <returns>A <see cref="PrepareEditSequenceViewModel"/></returns>
         [Route("update")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Prepare.UpdateValue)]
@@ -97,15 +92,14 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <summary>
         /// Updates the prepare sequence if valid.
         /// </summary>
-        /// <param name="id">The prepare sequence id</param>
-        /// <param name="model">The model</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The update prepare sequence request</param>
+        /// <returns>A <see cref="SchemaPreparation"/></returns>
         [Route("update")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Schema", "Prepare")]
         [PermissionsAttribute(Permissions.Prepare.UpdateValue)]
         public ActionResult Update(PrepareEditSequenceViewModel request)
         {
-            return View();
+            return this.View();
         }
 
         #endregion
@@ -113,15 +107,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         #region Delete.
 
         /// <summary>
-        /// Inactivates a prepare sequence and physically deletes the prepared tasks. 
+        /// Inactivates a prepared sequence and physically deletes the prepared tasks. 
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
-        /// <param name="sequenceId">The sequence id</param>
-        /// <param name="startDate">The start date</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The delete prepared sequence request</param>
+        /// <returns>Redirects to <see cref="SchemaPreparation"/></returns>
         [Route("delete")]
-        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("Schema", "Prepare")]
+        [HttpGet, Dispatch("Schema", "Prepare")]
         [PermissionsAttribute(Permissions.Prepare.InactivateValue)]
         public ActionResult Delete(DeletePreparation request)
         {
@@ -135,12 +126,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <summary>
         /// Mark/unmark (create/delete) a prepared task for a prepared sequence.
         /// </summary>
-        /// <param name="prepareSequenceId">The prepared sequence id</param>
-        /// <param name="date">The date which is to be marked/unmarked</param>
-        /// <param name="unMark">True if delete</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The mark/unmark prepared sequence request</param>
+        /// <returns>A <see cref="string"/></returns>
         [Route("mark")]
-        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch]
+        [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Prepare.UpdateValue)]
         public DispatchJsonResult Mark(MarkPreparation request)
         {
@@ -154,36 +143,33 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <summary>
         /// Returns the print popup view.
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
-        /// <param name="time">The date</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The print popup request</param>
+        /// <returns>A <see cref="PreparePrintPopUpViewModel"/></returns>
         [Route("print/window")]
         [HttpGet, Dispatch]
         public ActionResult PrintPopUp(PrintModalPreparation request)
         {
-            return View();
+            return this.View();
         }
 
         /// <summary>
         /// Print popup button click redirect.
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
-        /// <param name="model">The print model</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The prepared popup request</param>
+        /// <returns>A redirect to <see cref="Print"/></returns>
         [Route("print/window")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
         public ActionResult PrintPopUp(PreparePrintPopUpViewModel request)
         {
-            return this.RedirectToAction("Print",
-                    new
-                    {
-                        Id = request.Id,
-                        ScheduleId = request.ScheduleId,
-                        StartDate = request.PrintStartDate,
-                        EndDate = request.PrintEndDate
-                    });
+            return this.RedirectToAction(
+                "Print",
+                new
+                {
+                    Id = request.Id,
+                    ScheduleId = request.ScheduleId,
+                    StartDate = request.PrintStartDate,
+                    EndDate = request.PrintEndDate
+                });
         }
 
         #endregion
@@ -193,16 +179,13 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Prepare
         /// <summary>
         /// Returns the print view.
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
-        /// <param name="startDate">The start date</param>
-        /// <param name="endDate">The end date</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The print preparation request</param>
+        /// <returns>A pdf file</returns>
         [Route("print")]
         [HttpGet, Dispatch]
-        public ActionResult Print(PrintPreparation request)
+        public PdfFileResult Print(PrintPreparation request)
         {
-            return View();
+            return this.PdfFile();
         }
 
         #endregion

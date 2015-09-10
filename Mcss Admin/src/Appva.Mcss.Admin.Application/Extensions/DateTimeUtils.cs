@@ -22,6 +22,53 @@ namespace Appva.Mcss.Admin.Application.Extensions
     internal sealed class DateTimeUtils
     {
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dates"></param>
+        /// <returns></returns>
+        public static IList<DateTime> FromStringToDateTime(string dates)
+        {
+            var result = new List<DateTime>();
+            if (string.IsNullOrWhiteSpace(dates))
+            {
+                return result;
+            }
+            foreach (var dateString in dates.Split(','))
+            {
+                DateTime date;
+                if (DateTime.TryParse(dateString, out date))
+                {
+                    result.Add(date);
+                }
+            }
+            return result;
+        }
+
+        public static bool IsDateOccurringWithinSpan(DateTime date, DateTime start, DateTime? end, int interval = 0, int factor = 0, IList<DateTime> alternativeRange = null)
+        {
+            if (date < start || date > end)
+            {
+                return false;
+            }
+            if (interval <= 1)
+            {
+                return true;
+            }
+            if (alternativeRange != null && alternativeRange.Count > 0)
+            {
+                return alternativeRange.Contains(date);
+            }
+            for (var current = start; current <= date; current = current.AddDays(IntervalInDays(interval, current, start, factor)))
+            {
+                if (current == date)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Checks if a date with an interval, e.g. is every other day, every third day, every fourth day,
         /// is occuring on another date.
         /// </summary>

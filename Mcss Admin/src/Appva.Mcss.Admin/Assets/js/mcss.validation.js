@@ -105,8 +105,6 @@ mcss.validation = {
                 }
             },
             'submitHandler': function(form) {
-	            $(form).attr('target','mcssprint');
-	            window.open('about:blank','mcssprint','width=925,height=700,toolbar=no');
 	            form.submit();
             }
         });
@@ -141,8 +139,6 @@ mcss.validation = {
                 }
             },
             'submitHandler': function(form) {
-	            $(form).attr('target','mcssprint');
-	            window.open('about:blank','mcssprint','width=925,height=700,toolbar=no');
 	            form.submit();
             }
         });

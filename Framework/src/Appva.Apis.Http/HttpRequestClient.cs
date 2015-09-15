@@ -9,10 +9,8 @@ namespace Appva.Apis.Http
     #region Imports.
 
     using Appva.Core.Logging;
-    using Appva.Cryptography.X509;
+    using Appva.Cryptography;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
@@ -64,7 +62,8 @@ namespace Appva.Apis.Http
 
         public HttpRequestClient(string url, string clientCertificatePath, string clientCertificatePassword)
         {
-            this.clientCertificate = CertificateUtils.LoadCertificateFromDisk(clientCertificatePath, clientCertificatePassword);
+            Log.Debug("Client certificate path is: {0}", clientCertificatePath);
+            this.clientCertificate = Certificate.LoadCertificateFromDisk(clientCertificatePath, clientCertificatePassword);
 
             this.httpClient = new HttpClient();
             this.httpClient.BaseAddress = new Uri(url);
@@ -72,8 +71,11 @@ namespace Appva.Apis.Http
 
         public HttpRequestClient(string url, string clientCertificatePath, string clientCertificatePassword, string trustCertificatePath, string trustCertificatePassword)
         {
-            this.clientCertificate = CertificateUtils.LoadCertificateFromDisk(clientCertificatePath, clientCertificatePassword);
-            TrustCertificate = CertificateUtils.LoadCertificateFromDisk(trustCertificatePath, trustCertificatePassword);
+            Log.Debug("Client certificate path is: {0}", clientCertificatePath);
+            Log.Debug("Trust certificate path is: {0}", trustCertificatePath);
+
+            this.clientCertificate = Certificate.LoadCertificateFromDisk(clientCertificatePath, clientCertificatePassword);
+            TrustCertificate = Certificate.LoadCertificateFromDisk(trustCertificatePath, trustCertificatePassword);
 
             var handler = new WebRequestHandler();
             handler.ServerCertificateValidationCallback = ValidateServerCertficate;

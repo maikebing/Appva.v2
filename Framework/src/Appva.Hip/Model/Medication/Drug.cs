@@ -62,5 +62,12 @@ namespace Appva.Hip.Model
             get;
             set;
         }
+
+        [JsonProperty(PropertyName = "activeSubstance")]
+        public string ActiveSubstance
+        {
+            get;
+            set;
+        }
     }
 }

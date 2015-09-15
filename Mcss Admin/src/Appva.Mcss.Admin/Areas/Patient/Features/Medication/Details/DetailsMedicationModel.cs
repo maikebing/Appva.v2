@@ -9,6 +9,8 @@ namespace Appva.Mcss.Admin.Areas.Models
     #region Imports.
 
     using Appva.Hip.Model;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
     using System;
     using System.Collections.Generic;
@@ -19,7 +21,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class DetailsMedicationModel
+    public sealed class DetailsMedicationModel 
     {
         public MedicationItem Medication
         {
@@ -34,6 +36,18 @@ namespace Appva.Mcss.Admin.Areas.Models
         }
 
         public DateTime MedicationLastChanged
+        {
+            get;
+            set;
+        }
+
+        public IList<Sequence> Sequences
+        {
+            get;
+            set;
+        }
+
+        public IEnumerable<Schedule> Schedules
         {
             get;
             set;

@@ -47,7 +47,9 @@ namespace Appva.Mcss.Admin.Application.Services
             bool overView = true,
             bool pauseAnyAlerts = false,
             bool absent = false,
-            bool allDay = false
+            bool allDay = false,
+            string externalId = null,
+            bool isActive = true
         );
     }
 
@@ -109,7 +111,9 @@ namespace Appva.Mcss.Admin.Application.Services
             bool overView = true,
             bool pauseAnyAlerts = false,
             bool absent = false,
-            bool allDay = false
+            bool allDay = false,
+            string externalId = null,
+            bool isActive = true
         )
         {
             if (schedule.ScheduleSettings.ScheduleType == ScheduleType.Action)
@@ -118,7 +122,7 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             var sequence = new Sequence
             {
-                IsActive = true,
+                IsActive = isActive,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 Patient = patient,
@@ -144,6 +148,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 Overview = overView,
                 PauseAnyAlerts = pauseAnyAlerts,
                 Absent = absent,
+                ExternalId = externalId,
                 AllDay = allDay
             };
             this.context.Save(sequence);

@@ -16,6 +16,7 @@ namespace Appva.Cryptography.X509
     using Org.BouncyCastle.Utilities;
     using Org.BouncyCastle.X509;
     using MSX509 = System.Security.Cryptography.X509Certificates;
+    using System.Security.Cryptography.X509Certificates;
 
     #endregion
 
@@ -63,7 +64,7 @@ namespace Appva.Cryptography.X509
         /// <returns>An instance of <c>X509Certificate2</c></returns>
         public static MSX509.X509Certificate2 LoadCertificateFromDisk(string inputFile, string password)
         {
-            return new MSX509.X509Certificate2(inputFile, password);
+            return new MSX509.X509Certificate2(inputFile, password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
         }
 
         #region Protected Members.

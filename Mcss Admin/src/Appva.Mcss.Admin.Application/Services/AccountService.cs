@@ -494,6 +494,7 @@ namespace Appva.Mcss.Admin.Application.Services
             account.Taxon = address;
             account.Roles = roleList;
             account.IsPaused = false;
+            account.SymmetricKey = Hash.Random().ToBase64();
             this.persitence.Save<Account>(account);
             this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
             var mailBody = this.settingsService.CreateAccountMailBody();
@@ -528,6 +529,7 @@ namespace Appva.Mcss.Admin.Application.Services
             account.Taxon = address;
             account.Roles = roleList;
             account.IsPaused = false;
+            account.SymmetricKey = Hash.Random().ToBase64();
             this.persitence.Save<Account>(account);
             this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
             var mailBody = this.settingsService.CreateAccountMailBody();

@@ -463,6 +463,7 @@
     <property name="PauseAnyAlerts" />
     <property name="AllDay" />
     <property name="Absent" />
+    <property name="ExternalId" />
     <many-to-one name="Patient" class="Patient" />
     <many-to-one name="Schedule" class="Schedule" />
     <many-to-one name="Taxon" class="Taxon" />

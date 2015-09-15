@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// <summary>
         /// The refferencing page
         /// </summary>
-        public string Refferer
+        public string Referer
         {
             get;
             set;

@@ -2700,13 +2700,20 @@ a.std-btn:active {
     padding:20px;    
 }
 
-#consent input[type=submit] {
-    padding:10px;
+#consent input[type=submit],
+.medication-update-box input[type=submit] {
+    padding:13px;
     color:#fff;
     background:#445068;
     border:none;
     border-radius:3px;
-    font-weight:bold;
+    font-weight:600;
+    cursor:pointer;
+    line-height:20px;
+}
+#consent input[type=submit]:hover,
+.medication-update-box input[type=submit]:hover {
+    background-color:#374154;
 }
 
 #consent .footer {
@@ -2716,15 +2723,83 @@ a.std-btn:active {
 
 #consent .form-group {
     padding: 10px 20px;
-    background: #ebf0f8;
+    background: #f2f4f9;
     float:left;
     margin-bottom: 20px;
     min-width:50%;
+    border-radius:4px;
 }
 
 #consent .form-group h5 {
     margin-top: 0;
 }
+
+/* Medication */
+
+.medication-update-box {
+    width:970px;
+}
+
+.sequence-inactive {
+    background: #fffec8;
+}
+
+/* General */
+.note {
+    background:#f2f4f9;
+    padding:10px;
+    margin-bottom:25px;
+    border-radius:4px;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+span.label {
+    font-weight:700;
+    float:left;
+    margin-right: 10px;
+}
+
+p.label {
+    font-weight: 700;
+
+}
+
+.details-left {
+    float: left;
+    margin:10px;
+}
+
+.details-left ul {
+    width:100%;
+}
+
+.details-right {
+    float: right;
+    margin:10px;
+}
+
+.details ul {
+    padding: 0;
+}
+
+.details ul li {
+    border-bottom: 1px solid #d8dfe5;
+    padding: 10px;
+    line-height: 20px; 
+    text-align: right;
+    max-width: 300px;
+}
+
+.details ul li p {
+    text-align: left;
+}
+
+td.actions {
+    min-width: 100px;
+    text-align:center;
+}
+
 
 /* CUSTOM SELECT
 ============================================================================================================================ */

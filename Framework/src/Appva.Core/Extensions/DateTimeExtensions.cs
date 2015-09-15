@@ -188,5 +188,12 @@ namespace Appva.Core.Extensions
             var cal = new GregorianCalendar(GregorianCalendarTypes.Localized);
             return cal.GetWeekOfYear(dateTime, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
+
+        public static DateTime FromJsonInt(long seconds)
+        {
+            var dateTime = new DateTime(1970,1,1);
+            var milliseconds = Convert.ToDouble(seconds); 
+            return dateTime.AddMilliseconds(milliseconds); 
+        }
     }
 }

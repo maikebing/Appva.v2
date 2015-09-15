@@ -1,5 +1,5 @@
-﻿@model Appva.Mcss.Admin.Areas.Models.DetailsMedicationModel
-
+﻿@using Appva.Mcss.Admin.Application.Common﻿
+@model Appva.Mcss.Admin.Areas.Models.DetailsMedicationModel
 @{
     ViewBag.Title = "Läkemedel";
 }
@@ -11,13 +11,125 @@
 </div>
 
 <div id="content" class="cf">
-
     <div id="content-primary" class="signlist-collection">
+        <div id="signlist" class="cf">
+            <div class="h cf">
+                <h2>@Model.Medication.Prescription.Drug.Drug.PharmaceuticalForm @Model.Medication.Prescription.Drug.Name @Model.Medication.Prescription.Drug.Drug.Strength @Model.Medication.Prescription.Drug.Drug.StrengthUnit</h2>
+                @Html.ActionLink("Stäng ordination", "List", "Medication", new { id = Model.Patient.Id }, new { @class = "close" })
+            </div>
+            <div class="row col-wrap">
+                <div class="col">
+                    <div class="cf">
 
-        <div id="signlist">
-            <h2>@Model.Medication.Prescription.Drug.Name</h2>
-            <p>Senast uppdaterad: @Model.MedicationLastChanged</p>
+                        @if (Model.Sequences.IsNull() || Model.Sequences.Count == 0)
+                        {
+                            <div class="note">
+                                <h3>Lägg till på lista</h3>
+                                <p>Ordinationen är ej upplagd på någon signeringslista ännu, välj lista nedan för att lägga till ordinationen</p>
+                                <div class="signlist-collection">
+                                    <ul class="cf">
+                                        @foreach (var schedule in Model.Schedules)
+                                        {
+                                            <li>
+                                                @Html.ActionLink(schedule.ScheduleSettings.Name, "CreateSequence", new { Id = Model.Patient.Id, ScheduleId = schedule.Id, MedicationId = Model.Medication.Id })
+                                                @string.Format("{0:yyyy-MM-dd}", schedule.CreatedAt) Kl @String.Format("{0:H:mm}", schedule.CreatedAt)
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
 
+                        }
+                        else
+                        {
+                            foreach (var sequence in Model.Sequences)
+                            {
+                                if (sequence.IsActive)
+                                {
+                                    
+                                    <div class="note col">
+                                        
+                                        @if (sequence.UpdatedAt > Model.MedicationLastChanged)
+                                        {
+                                            <div class="note y">
+                                                <h3>Insats på @sequence.Schedule.ScheduleSettings.Name – <b>Status ok</b></h3>
+                                                <span class="date">Signeringslista uppdaterad: <b>@sequence.UpdatedAt</b>, ordination uppdaterad: <b>@Model.MedicationLastChanged</b></span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="note alarm">
+                                                <h3>Insats på @sequence.Schedule.ScheduleSettings.Name – <b>Ordination uppdaterad</b></h3>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    Html.RenderAction("UpdateSequence", "Medication", new { id = Model.Patient.Id, SequenceId = sequence.Id });
+                                }
+                            }
+                        }
+                    </div>
+                    <div class="row col-wrap details">
+                        <div class="note col">
+                            <h3>Läkemedel</h3>
+                            <ul>
+                                <li><span class="label">ATC-kod </span>@Model.Medication.Prescription.Drug.Drug.AtcCode</li>
+                                <li><span class="label">Namn</span>@Model.Medication.Prescription.Drug.Drug.NplId</li>
+                                <li><span class="label">Aktiv substans </span>@Model.Medication.Prescription.Drug.Drug.ActiveSubstance</li>
+                                <li><span class="label">Form </span>@Model.Medication.Prescription.Drug.Drug.PharmaceuticalForm</li>
+                                <li><span class="label">Styrka </span>@Model.Medication.Prescription.Drug.Drug.Strength</li>
+                                <li><span class="label">Enhet </span>@Model.Medication.Prescription.Drug.Drug.StrengthUnit</li>
+                                <li><span class="label">Tänkt administreringssätt </span>@Model.Medication.Prescription.Drug.Drug.RouteOfAdministration</li>
+
+                                
+                            </ul>
+                        </div>
+                        <div class="note col">
+                            <h3>Ansvarig Läkare</h3>
+                            <ul>
+                                <li><span class="label">Namn </span>@(Model.Medication.AccountableProfessional.Name ?? "-")</li>
+                                <li><span class="label">Befattning </span>@(Model.Medication.AccountableProfessional.Role ?? "-")</li>
+                                <li><span class="label">Vårdenhet </span>@(Model.Medication.AccountableProfessional.OrgUnit.Name ?? "-")</li>
+                                <li><span class="label">Plats </span>@(Model.Medication.AccountableProfessional.OrgUnit.Location ?? "-")</li>
+                                <li><span class="label">Address </span>@(Model.Medication.AccountableProfessional.OrgUnit.Address ?? "-")</li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+                <div class="col">
+                    <div class="note details">
+                        <h3>Ordination</h3>
+                        <ul>
+                            <li><span class="label">Senast uppdaterad </span>@Model.MedicationLastChanged</li>
+                            <li><span class="label">Första insättning </span>@Appva.Core.Extensions.DateTimeExtensions.FromJsonInt(Model.Medication.Prescription.StartOfFirstTreatment.GetValueOrDefault())</li>
+                            <li><span class="label">Behandlingstid </span>@(string.Join(", ",Model.Medication.Prescription.Drug.Dosages.Select(x => x.LengthOfTreatment)))-</li>
+                            <li><span class="label">O/F </span>@(Model.Medication.Prescription.DispensationAuthorization.IsNull() ? "Ordination" : "Förskrivning")</li>
+                            <li><span class="label">Dosering </span>@string.Join(", ", Model.Medication.Prescription.Drug.Dosages.Select(x => x.ShortNotation).ToArray())-</li>
+                            <li>
+                                <p class="label">Ordinationorsak </p>
+                                <p>@(Model.Medication.Prescription.PrincipalReasons.Count() > 0 ? string.Join(", ", Model.Medication.Prescription.PrincipalReasons) : "-")</p>
+                            </li>
+                            <li>
+                                <p class="label">Ändamål </p>
+                                <p>@(Model.Medication.Prescription.TreatmentPurpose ?? "-")</p>
+                            </li>
+                            <li>
+                                <p class="label">Doseringsanvisningar</p>
+                                <p>@string.Join(", ", Model.Medication.Prescription.Drug.Dosages.Select(d => d.DosageInstruction))</p>
+                            </li>
+                            
+                            <li>
+                                <p class="label">Kommentar</p>
+                                <p>@(Model.Medication.Prescription.Drug.Comment ?? "-")</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+

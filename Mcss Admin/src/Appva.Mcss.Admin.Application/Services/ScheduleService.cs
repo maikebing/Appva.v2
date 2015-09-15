@@ -56,6 +56,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="Patient"></param>
         /// <returns></returns>
         IList<ScheduleSettings> GetSchedules(Guid? Account = null, Guid? Patient = null);
+
+        /// <summary>
+        /// Gets schedule by id
+        /// </summary>
+        /// <param name="id">The id</param>
+        /// <returns>The schedule</returns>
+        Schedule Get(Guid id);
     }
 
     /// <summary>
@@ -80,6 +87,15 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             this.logService = logService;
             this.persistence = persistence;
+        }
+
+        #endregion
+
+        #region IScheduleService members
+
+        public Schedule Get(Guid id)
+        {
+            return this.persistence.Get<Schedule>(id);
         }
 
         #endregion

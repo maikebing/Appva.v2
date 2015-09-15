@@ -32,7 +32,9 @@
                     <tbody>
                         @foreach (var drug in Model.Medications)
                         {
-                            <tr class="">
+                            var sequence = Model.Sequences.Where(x => x.ExternalId == drug.Content.Id).SingleOrDefault();
+                            var style = sequence != null ? (sequence.IsActive ? (sequence.UpdatedAt > drug.TimeStamp ? "y" : "alarm") : "sequence-inactive") : "";
+                            <tr class="@style">
                                 <td>
                                     @(drug.Content.Prescription.DispensationAuthorization.IsNull() ? "Ordination" : "Förskrivning")
                                 </td>
@@ -55,9 +57,26 @@
                                     </span>
                                 </td>
                                 <td class="">
-                                    Ej på signeringslista
+                                    @if (sequence != null)
+                                    {
+                                        if (sequence.IsActive)
+                                        {
+                                            @Html.ActionLink(Permissions.Schedule.Read, "På signeringslista", "Details", "Schedule", new { Id = Model.Patient.Id, ScheduleId = sequence.Schedule.Id })
+                                            <span class="date">
+                                                Senast ändrad: @sequence.UpdatedAt
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            @("Inaktiv på signeringslista")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @("Ej på signeringslista")
+                                    }
                                 </td>
-                                <td class="">
+                                <td class="actions">
                                     @Html.ActionLink("Visa mer", "Details", "Medication", new { Id = Model.Patient.Id, MedicationId = drug.Content.Id }, new { @class = "btn", @title = "Visa mer" })
                                 </td>
                             </tr>

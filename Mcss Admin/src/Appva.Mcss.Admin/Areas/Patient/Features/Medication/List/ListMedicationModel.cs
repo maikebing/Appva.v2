@@ -68,5 +68,11 @@ using Appva.Hip.Model;
             get;
             set;
         }
+
+        public IList<Sequence> Sequences
+        {
+            get;
+            set;
+        }
     }
 }

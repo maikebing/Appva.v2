@@ -319,7 +319,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get;
             set;
-        } 
+        }
+
+        /// <summary>
+        /// Id in external system
+        /// </summary>
+        public virtual string ExternalId
+        {
+            get;
+            set;
+        }
 
         #endregion
     }

@@ -248,6 +248,8 @@
     <Compile Include="Areas\Patient\Features\Inventory\Recount\RecountInventoryItemHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\CreateSequence\CreateSequenceMedication.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\CreateSequence\CreateSequneceMedicationHandler.cs" />
     <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedication.cs" />
     <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationHandler.cs" />
     <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationModel.cs" />
@@ -255,6 +257,10 @@
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationHandler.cs" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\MedicationController.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\UpdateSequence\UpdateSequenceMedication.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\UpdateSequence\UpdateSequenceMedicationForm.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\UpdateSequence\UpdateSequenceMedicationFormHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\UpdateSequence\UpdateSequenceMedicationHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\OrderController.cs" />
@@ -1052,6 +1058,7 @@
     <Content Include="Features\Shared\ForgotPasswordSuccess.cshtml" />
     <Content Include="Features\Shared\ResetPasswordTokenExpired.cshtml" />
     <Content Include="Features\Shared\ResetPasswordSuccess.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\UpdateSequence\UpdateSequence.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

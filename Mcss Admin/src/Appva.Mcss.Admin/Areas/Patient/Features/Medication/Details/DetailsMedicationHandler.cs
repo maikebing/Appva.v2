@@ -17,9 +17,14 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using Appva.Core.Extensions;
 using Appva.Hip.Model;
 using Appva.Mcss.Web.ViewModels;
     using System.Threading.Tasks;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Core.Resources;
+    using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -69,11 +74,24 @@ using Appva.Mcss.Web.ViewModels;
             var patient = this.transformer.ToPatient(this.persistence.Get<Patient>(message.Id));
             var medication = this.GetMedicationAsync(patient, message.MedicationId).Result;
 
+            var schedules = this.persistence.QueryOver<Schedule>()
+                .Where(s => s.Patient.Id == patient.Id && s.IsActive == true)
+                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                    .Where(x => x.ScheduleType == ScheduleType.Action)
+                .List();
+
+            var sequences = this.persistence.QueryOver<Sequence>()
+                .Where(x => x.Patient.Id == patient.Id)
+                .And(x => x.ExternalId == message.MedicationId)
+                .List();
+
             return new DetailsMedicationModel
             {
                 Patient = patient,
                 Medication = medication.Content,
-                MedicationLastChanged = medication.TimeStamp
+                MedicationLastChanged = medication.TimeStamp,
+                Schedules = schedules,
+                Sequences = sequences
             };
         }
 

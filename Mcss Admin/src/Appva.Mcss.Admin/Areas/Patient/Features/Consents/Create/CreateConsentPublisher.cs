@@ -43,6 +43,10 @@ namespace Appva.Mcss.Admin.Areas.Models
             this.hipClient = hipClient;
         }
 
+        #endregion
+
+        #region Overrides
+
         public override bool Handle(CreateConsent message)
         {
             var result = false;
@@ -50,7 +54,7 @@ namespace Appva.Mcss.Admin.Areas.Models
             {
                 if (message.DruglistOngoingAccess || message.DruglistSingelAccess)
                 {
-                    result = this.hipClient.Consents.SetConsentsAsync("191212121212",message.DruglistOngoingAccess, message.PdlOnlyMe, message.PdlValidTo).Result;
+                    result = this.hipClient.Consents.SetConsentsAsync("191212121212", message.DruglistOngoingAccess, message.PdlOnlyMe, message.PdlValidTo).Result;
                 }
                 else
                 {
@@ -62,9 +66,9 @@ namespace Appva.Mcss.Admin.Areas.Models
                 result = this.hipClient.Consents.SetDruglistConsentAsync("191212121212", message.DruglistOngoingAccess).Result;
             }
 
-            if (result && message.Refferer.IsNotEmpty())
+            if (result && message.Referer.IsNotEmpty())
             {
-                this.Redirect(message.Refferer);
+                this.Redirect(message.Referer);
             }
             return result;
         }

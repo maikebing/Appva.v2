@@ -74,6 +74,17 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             }
             var patient = this.transformer.ToPatient(this.persistence.Get<Patient>(message.Id));
             var medications = this.GetDruglist(patient, message.Page, 10).Result;
+            if (medications == null)
+            {
+                return null;
+            }
+
+            var medicationIds = medications.Content.Select(x => x.Content.Id).ToArray();
+            var sequences = this.persistence.QueryOver<Sequence>()
+                .WhereRestrictionOn(x => x.ExternalId).IsIn(medicationIds)
+                .And(x => x.Patient.Id == message.Id)
+                .List();
+            
             
             return new ListMedicationModel
             {
@@ -81,7 +92,8 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                 Patient = patient,
                 PageSize = 10,
                 PageNumber = message.Page,
-                TotalItemCount = medications.Status.FilterCount
+                TotalItemCount = medications.Status.FilterCount,
+                Sequences = sequences
             };
         }
 
@@ -97,7 +109,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             }
             catch (MissingConsentException e)
             {
-                this.Redirect("Create", "Consents", new { id = patient.Id, Refferer=this.CurrentUrl() });
+                this.Redirect("Create", "Consents", new { id = patient.Id, Referer=this.CurrentUrl() });
                 return null;
             }
         }

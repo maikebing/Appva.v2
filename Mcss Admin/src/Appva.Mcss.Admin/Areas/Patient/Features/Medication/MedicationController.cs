@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
 
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mvc;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -49,12 +50,55 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
             return this.View();
         }
 
-        [Route("details")]
+        /// <summary>
+        /// Detailed view of an medication
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("details/{MedicationId}")]
         [HttpGet, Dispatch()]
         public ActionResult Details(DetailsMedication request)
         {
             return this.View();
         }
+
+        /// <summary>
+        /// Creates an sequence for an ordination
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("create")]
+        [HttpGet, Dispatch("Details","Medication")]
+        public ActionResult CreateSequence(CreateSequenceMedication request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Detailed view of an medication
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("update/{SequenceId:guid}")]
+        [HttpGet, Dispatch()]
+        public PartialViewResult UpdateSequence(UpdateSequenceMedication request)
+        {
+            return this.PartialView();
+        }
+
+        /// <summary>
+        /// Detailed view of an medication
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("update/{SequenceId:guid}")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Medication")]
+        public PartialViewResult UpdateSequence(UpdateSequenceMedicationForm request)
+        {
+            return this.PartialView();
+        }
+
+
         #endregion
     }
 }

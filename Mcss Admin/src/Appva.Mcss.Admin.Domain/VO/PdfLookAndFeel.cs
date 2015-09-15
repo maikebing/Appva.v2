@@ -8,9 +8,6 @@ namespace Appva.Mcss.Admin.Domain.VO
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Appva.Common.Domain;
     using Newtonsoft.Json;
 
@@ -21,58 +18,6 @@ namespace Appva.Mcss.Admin.Domain.VO
     /// </summary>
     public sealed class PdfLookAndFeel : ValueObject<PdfLookAndFeel>
     {
-        #region Variables.
-
-        /// <summary>
-        /// A custom logotype path.
-        /// </summary>
-        [JsonProperty]
-        private readonly string logotypePath;
-
-        /// <summary>
-        /// Whether or not a custom logotype is enabled.
-        /// </summary>
-        [JsonProperty]
-        private readonly bool isCustomLogotypeEnabled;
-
-        /// <summary>
-        /// The custom footer text.
-        /// </summary>
-        [JsonProperty]
-        private readonly string footerText;
-
-        /// <summary>
-        /// Whether or not a custom footer text is enabled.
-        /// </summary>
-        [JsonProperty]
-        private readonly bool isCustomFooterTextEnabled;
-
-        /// <summary>
-        /// The background color.
-        /// </summary>
-        [JsonProperty]
-        private readonly PdfColor backgroundColor;
-
-        /// <summary>
-        /// The primary font color.
-        /// </summary>
-        [JsonProperty]
-        private readonly PdfColor fontColor;
-
-        /// <summary>
-        /// The table header color.
-        /// </summary>
-        [JsonProperty]
-        private readonly PdfColor tableHeaderColor;
-
-        /// <summary>
-        /// The table border color.
-        /// </summary>
-        [JsonProperty]
-        private readonly PdfColor tableBorderColor;
-
-        #endregion
-
         #region Constructor.
 
         /// <summary>
@@ -87,14 +32,98 @@ namespace Appva.Mcss.Admin.Domain.VO
         [JsonConstructor]
         public PdfLookAndFeel(string logotypePath, string footerText, PdfColor backgroundColor, PdfColor fontColor, PdfColor tableHeaderColor, PdfColor tableBorderColor)
         {
-            this.logotypePath              = logotypePath;
-            this.isCustomLogotypeEnabled   = ! string.IsNullOrWhiteSpace(this.logotypePath);
-            this.footerText                = footerText;
-            this.isCustomFooterTextEnabled = !string.IsNullOrWhiteSpace(this.footerText);
-            this.backgroundColor           = backgroundColor;
-            this.fontColor                 = fontColor;
-            this.tableHeaderColor          = tableHeaderColor;
-            this.tableBorderColor          = tableBorderColor;
+            this.LogotypePath              = logotypePath;
+            this.IsCustomLogotypeEnabled   = ! string.IsNullOrWhiteSpace(this.LogotypePath);
+            this.FooterText                = footerText;
+            this.IsCustomFooterTextEnabled = ! string.IsNullOrWhiteSpace(this.FooterText);
+            this.BackgroundColor           = backgroundColor;
+            this.FontColor                 = fontColor;
+            this.TableHeaderColor          = tableHeaderColor;
+            this.TableBorderColor          = tableBorderColor;
+        }
+
+        #endregion
+
+        #region Properties.
+
+        /// <summary>
+        /// A custom logotype path.
+        /// </summary>
+        [JsonProperty]
+        public string LogotypePath
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Whether or not a custom logotype is enabled.
+        /// </summary>
+        [JsonProperty]
+        public bool IsCustomLogotypeEnabled
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The custom footer text.
+        /// </summary>
+        [JsonProperty]
+        public string FooterText
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Whether or not a custom footer text is enabled.
+        /// </summary>
+        [JsonProperty]
+        public bool IsCustomFooterTextEnabled
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The background color.
+        /// </summary>
+        [JsonProperty]
+        public PdfColor BackgroundColor
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The primary font color.
+        /// </summary>
+        [JsonProperty]
+        public PdfColor FontColor
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The table header color.
+        /// </summary>
+        [JsonProperty]
+        public PdfColor TableHeaderColor
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The table border color.
+        /// </summary>
+        [JsonProperty]
+        public PdfColor TableBorderColor
+        {
+            get;
+            private set;
         }
 
         #endregion
@@ -122,121 +151,15 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// <param name="logotypePath">The custom logotype path, e.g. C://images//logo.png</param>
         /// <param name="footerText">The custom footer text</param>
         /// <returns>A new <see cref="PdfLookAndFeel"/> instance</returns>
-        public static PdfLookAndFeel CreateDefault(string logotypePath, string footerText)
+        public static PdfLookAndFeel CreateDefault(string logotypePath = null, string footerText = null)
         {
             //// Rgb value of hex #ffffff
             var white = PdfColor.CreateNew(255, 255, 255);
             //// Rgb value of hex #eaeff9
             var lightPurple = PdfColor.CreateNew(234, 239, 249);
             //// Rgb value of hex #445068
-            var darkPurple  = PdfColor.CreateNew(68, 80, 104);
-            return new PdfLookAndFeel(
-                logotypePath, 
-                footerText,
-                white,
-                darkPurple,
-                lightPurple,
-                darkPurple);
-        }
-
-        #endregion
-
-        #region Public Properties.
-
-        /// <summary>
-        /// Returns the logotype path.
-        /// </summary>
-        [JsonIgnore]
-        public string LogotypePath
-        {
-            get
-            {
-                return this.logotypePath;
-            }
-        }
-
-        /// <summary>
-        /// Returns whether or not a custom logotype is enabled.
-        /// </summary>
-        [JsonIgnore]
-        public bool IsCustomLogotypeEnabled
-        {
-            get
-            {
-                return this.isCustomLogotypeEnabled;
-            }
-        }
-
-        /// <summary>
-        /// Returns the footer text.
-        /// </summary>
-        [JsonIgnore]
-        public string FooterText
-        {
-            get
-            {
-                return this.footerText;
-            }
-        }
-
-        /// <summary>
-        /// Returns whether or not a custom footer text is enabled.
-        /// </summary>
-        [JsonIgnore]
-        public bool IsCustomFooterTextEnabled
-        {
-            get
-            {
-                return this.isCustomFooterTextEnabled;
-            }
-        }
-
-        /// <summary>
-        /// Returns the background color.
-        /// </summary>
-        [JsonIgnore]
-        public PdfColor BackgroundColor
-        {
-            get
-            {
-                return this.backgroundColor;
-            }
-        }
-
-        /// <summary>
-        /// Returns the primary font color.
-        /// </summary>
-        [JsonIgnore]
-        public PdfColor FontColor
-        {
-            get
-            {
-                return this.fontColor;
-            }
-        }
-
-        /// <summary>
-        /// Returns the table header color.
-        /// </summary>
-        [JsonIgnore]
-        public PdfColor TableHeaderColor
-        {
-            get
-            {
-                return this.tableHeaderColor;
-            }
-        }
-
-        /// <summary>
-        /// Returns the table border color.
-        /// </summary>
-        [JsonIgnore]
-        public PdfColor TableBorderColor
-        {
-            get
-            {
-                return this.tableBorderColor;
-            }
+            var darkPurple = PdfColor.CreateNew(68, 80, 104);
+            return new PdfLookAndFeel(logotypePath, footerText, white, darkPurple, lightPurple, darkPurple);
         }
 
         #endregion
@@ -247,12 +170,12 @@ namespace Appva.Mcss.Admin.Domain.VO
         public override int GetHashCode()
         {
             var hashCode = 0;
-            hashCode += (this.logotypePath == null)     ? 0 : this.logotypePath.GetHashCode();
-            hashCode += (this.footerText == null)       ? 0 : this.footerText.GetHashCode();
-            hashCode += (this.backgroundColor == null)  ? 0 : this.backgroundColor.GetHashCode();
-            hashCode += (this.fontColor == null)        ? 0 : this.fontColor.GetHashCode();
-            hashCode += (this.tableHeaderColor == null) ? 0 : this.tableHeaderColor.GetHashCode();
-            hashCode += (this.tableBorderColor == null) ? 0 : this.tableBorderColor.GetHashCode();
+            hashCode += (this.LogotypePath == null)     ? 0 : this.LogotypePath.GetHashCode();
+            hashCode += (this.FooterText == null)       ? 0 : this.FooterText.GetHashCode();
+            hashCode += (this.BackgroundColor == null)  ? 0 : this.BackgroundColor.GetHashCode();
+            hashCode += (this.FontColor == null)        ? 0 : this.FontColor.GetHashCode();
+            hashCode += (this.TableHeaderColor == null) ? 0 : this.TableHeaderColor.GetHashCode();
+            hashCode += (this.TableBorderColor == null) ? 0 : this.TableBorderColor.GetHashCode();
             return hashCode;
         }
 
@@ -260,41 +183,22 @@ namespace Appva.Mcss.Admin.Domain.VO
         public override bool Equals(PdfLookAndFeel other)
         {
             return other != null
-                && this.logotypePath.Equals(other.LogotypePath)
-                && this.footerText.Equals(other.FooterText)
-                && this.backgroundColor.Equals(other.BackgroundColor)
-                && this.fontColor.Equals(other.FontColor)
-                && this.tableHeaderColor.Equals(other.TableHeaderColor)
-                && this.tableBorderColor.Equals(other.TableBorderColor);
+                && this.LogotypePath.Equals(other.LogotypePath)
+                && this.FooterText.Equals(other.FooterText)
+                && this.BackgroundColor.Equals(other.BackgroundColor)
+                && this.FontColor.Equals(other.FontColor)
+                && this.TableHeaderColor.Equals(other.TableHeaderColor)
+                && this.TableBorderColor.Equals(other.TableBorderColor);
         }
 
         #endregion
     }
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public sealed class PdfColor : ValueObject<PdfColor>
     {
-        #region Variables.
-
-        /// <summary>
-        /// The value of red.
-        /// </summary>
-        [JsonProperty]
-        private readonly byte r;
-
-        /// <summary>
-        /// The value of green.
-        /// </summary>
-        [JsonProperty]
-        private readonly byte g;
-
-        /// <summary>
-        /// The value of blue.
-        /// </summary>
-        [JsonProperty]
-        private readonly byte b;
-
-        #endregion
-
         #region Constructor.
 
         /// <summary>
@@ -306,9 +210,43 @@ namespace Appva.Mcss.Admin.Domain.VO
         [JsonConstructor]
         public PdfColor(byte r, byte g, byte b)
         {
-            this.r = r;
-            this.g = g;
-            this.b = b;
+            this.R = r;
+            this.G = g;
+            this.B = b;
+        }
+
+        #endregion
+
+        #region Properties.
+
+        /// <summary>
+        /// The value of red.
+        /// </summary>
+        [JsonProperty]
+        public byte R
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The value of green.
+        /// </summary>
+        [JsonProperty]
+        public byte G
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The value of blue.
+        /// </summary>
+        [JsonProperty]
+        public byte B
+        {
+            get;
+            private set;
         }
 
         #endregion
@@ -329,64 +267,24 @@ namespace Appva.Mcss.Admin.Domain.VO
 
         #endregion
 
-        #region Public Properties.
-
-        /// <summary>
-        /// Returns the value of red.
-        /// </summary>
-        [JsonIgnore]
-        public byte R
-        {
-            get
-            {
-                return this.r;
-            }
-        }
-
-        /// <summary>
-        /// Returns the value of green.
-        /// </summary>
-        [JsonIgnore]
-        public byte G
-        {
-            get
-            {
-                return this.g;
-            }
-        }
-
-        /// <summary>
-        /// Returns the value of blue.
-        /// </summary>
-        [JsonIgnore]
-        public byte B
-        {
-            get
-            {
-                return this.b;
-            }
-        }
-
-        #endregion
-
         #region ValueObject Overrides.
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
             return 
-                this.r.GetHashCode() +
-                this.g.GetHashCode() + 
-                this.b.GetHashCode();
+                this.R.GetHashCode() +
+                this.G.GetHashCode() + 
+                this.B.GetHashCode();
         }
 
         /// <inheritdoc />
         public override bool Equals(PdfColor other)
         {
             return other != null
-                && this.r.Equals(other.R)
-                && this.g.Equals(other.G)
-                && this.b.Equals(other.B);
+                && this.R.Equals(other.R)
+                && this.G.Equals(other.G)
+                && this.B.Equals(other.B);
         }
 
         #endregion

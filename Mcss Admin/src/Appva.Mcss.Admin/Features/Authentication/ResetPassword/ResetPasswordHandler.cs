@@ -8,16 +8,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
     using System.Web;
-    using System.Web.Mvc;
-    using Appva.Core.Resources;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Security.Extensions;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mvc.Messaging;
 
     #endregion
@@ -47,9 +41,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="ResetPasswordHandler"/> class.
 		/// </summary>
         /// <param name="accountService">The <see cref="IAccountService"/></param>
-        /// <param name="settingsService">The <see cref="IIdentityService"/></param>
-        /// <param name="mailService">The <see cref="IRazorMailService"/></param>
-        /// <param name="context">The <see cref="HttpContextBase"/></param>
+        /// <param name="identityService">The <see cref="IIdentityService"/></param>
         public ResetPasswordHandler(IAccountService accountService, IIdentityService identityService)
 		{
             this.accountService = accountService;

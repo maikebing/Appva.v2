@@ -67,29 +67,55 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         bool DisplayAccountUsername();
         string GetNotificationAdmin();
         string GetAdminLogin();
+
+        /// <summary>
+        /// Returns whether or not to auto generate the password for the
+        /// mobile device.
+        /// </summary>
+        /// <returns>True if password auto generation is enables; otherwise false</returns>
+        bool AutogeneratePasswordForMobileDevice();
     }
 
+    /// <summary>
+    /// The security settings interface.
+    /// </summary>
     public interface ISecuritySettings
     {
         /// <summary>
-        /// 
+        /// Returns the security token configuration.
         /// </summary>
-        /// <returns></returns>
-        ResetPasswordToken ResetPasswordTokenConfiguration();
+        /// <returns>The <see cref="SecurityTokenConfiguration"/></returns>
+        SecurityTokenConfiguration SecurityTokenConfiguration();
 
         /// <summary>
-        /// 
+        /// Returns whether or not the security token configuration is
+        /// installed or not.
         /// </summary>
-        /// <returns></returns>
-        bool IsTokenConfigurationInstalled();
+        /// <returns>True if security token configuration is installed; otherwise false</returns>
+        bool IsSecurityTokenConfigurationInstalled();
+
+        /// <summary>
+        /// The E-mail messaging configuration.
+        /// </summary>
+        /// <returns>The <see cref="SecurityMailerConfiguration"/></returns>
+        SecurityMailerConfiguration MailMessagingConfiguration();
+
+        /// <summary>
+        /// Returns whether or not siths authorization is enabled or not.
+        /// </summary>
+        /// <returns>True if siths authorization is enabled; otherwise false</returns>
+        bool IsSithsAuthorizationEnabled();
     }
 
+    /// <summary>
+    /// The gui look and feel interface.
+    /// </summary>
     public interface ILookAndFeel
     {
         /// <summary>
-        /// 
+        /// Returns the pdf look and feel configuration.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The <see cref="PdfLookAndFeel"/></returns>
         PdfLookAndFeel PdfLookAndFeelConfiguration();
     }
 
@@ -232,14 +258,27 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         #region ISecuritySettings.
 
         /// <inheritdoc />
-        public ResetPasswordToken ResetPasswordTokenConfiguration()
+        public SecurityTokenConfiguration SecurityTokenConfiguration()
         {
-            return this.Find<ResetPasswordToken>(ApplicationSettings.ResetPasswordTokenConfiguration);
+            return this.Find<SecurityTokenConfiguration>(ApplicationSettings.TokenConfiguration);
         }
 
-        public bool IsTokenConfigurationInstalled()
+        /// <inheritdoc />
+        public bool IsSecurityTokenConfigurationInstalled()
         {
-            return this.Find<ResetPasswordToken>(ApplicationSettings.ResetPasswordTokenConfiguration) != null;
+            return this.Find<SecurityTokenConfiguration>(ApplicationSettings.TokenConfiguration) != null;
+        }
+
+        /// <inheritdoc />
+        public SecurityMailerConfiguration MailMessagingConfiguration()
+        {
+            return this.Find<SecurityMailerConfiguration>(ApplicationSettings.MailMessagingConfiguration);
+        }
+
+        /// <inheritdoc />
+        public bool IsSithsAuthorizationEnabled()
+        {
+            return this.GetAdminLogin() == "siths";
         }
 
         #endregion
@@ -256,9 +295,15 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #region IOldSettings Members.
 
+        /// <inheritdoc />
+        public bool AutogeneratePasswordForMobileDevice()
+        {
+            return this.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice);
+        }
+
         ////
         //// FIXME: Old settings.
-        //// Old Settings which needs to be handles properly.
+        //// Old Settings which needs to be handled properly.
         ////
 
         /// <inheritdoc />

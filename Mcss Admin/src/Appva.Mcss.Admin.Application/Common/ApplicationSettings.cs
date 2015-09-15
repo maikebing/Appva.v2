@@ -107,15 +107,26 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         #region Security.
 
         /// <summary>
-        /// Reset password token configuration, i.e. issuer, audience, key, lifetime.
+        /// Security token configuration, i.e. issuer, audience, key, lifetime.
         /// </summary>
-        /// <remarks>The setting returns a <c>ResetPasswordToken</c></remarks>
-        public static readonly ApplicationSettingIdentity<ResetPasswordToken> ResetPasswordTokenConfiguration = ApplicationSettingIdentity<ResetPasswordToken>.CreateNew(
-            "Mcss.Core.Security.Jwt.Configuration.ResetPassword",
-            "Reset Password Token Configuration",
+        /// <remarks>The setting returns a <c>SecurityTokenConfiguration</c></remarks>
+        public static readonly ApplicationSettingIdentity<SecurityTokenConfiguration> TokenConfiguration = ApplicationSettingIdentity<SecurityTokenConfiguration>.CreateNew(
+            "Mcss.Core.Security.Jwt.Configuration.SecurityToken",
+            "Security Token Configuration",
             "Mcss.Core.Security.Jwt",
-            "The JWT token configuration for generating and resetting password links",
+            "The JWT token configuration for issuing and authorizing security tokens",
             null);
+
+        /// <summary>
+        /// The E-mail configuration.
+        /// </summary>
+        /// <remarks>The setting returns a <c>SecurityMailerConfiguration</c></remarks>
+        public static readonly ApplicationSettingIdentity<SecurityMailerConfiguration> MailMessagingConfiguration = ApplicationSettingIdentity<SecurityMailerConfiguration>.CreateNew(
+            "Mcss.Core.Security.Messaging.Email",
+            "Mail Configuration",
+            "Mcss.Core.Security.Messaging",
+            "The E-mail configuration for sending and signing",
+            SecurityMailerConfiguration.CreateNew());
 
         #endregion
 
@@ -130,7 +141,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "Pdf Generation Configuration",
             "Mcss.Core.Pdf",
             "The PDF configuration for look and feel",
-            PdfLookAndFeel.CreateDefault(null, null));
+            PdfLookAndFeel.CreateDefault());
 
         #endregion
 

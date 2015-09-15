@@ -147,14 +147,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Updates an account
         /// </summary>
         /// <param name="account">The <see cref="Account"/></param>
-        /// <param name="firstName">The account firstname</param>
-        /// <param name="lastName">The account lastname</param>
-        /// <param name="mail">The mail</param>
-        /// <param name="mobileDevicePassword">The mobile device password</param>
-        /// <param name="personalIdentityNumber">The <see cref="PersonalIdentityNumber"/></param>
-        /// <param name="adress">The organisational <see cref="Taxon"/></param>
-        /// <returns>The account id</returns>
-        void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress);
+        void Update(Account account);
 
         /// <summary>
         /// Updates the roles for a user account.
@@ -162,31 +155,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="account">The user account to be updated</param>
         /// <param name="roles">The list of roles to be added</param>
         void UpdateRoles(Account account, IList<Role> roles);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <param name="personalIdentityNumber"></param>
-        /// <param name="emailAddress"></param>
-        /// <param name="password"></param>
-        /// <param name="adress"></param>
-        /// <param name="roles"></param>
-        void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon adress, IList<Role> roles);
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <param name="personalIdentityNumber"></param>
-        /// <param name="emailAddress"></param>
-        /// <param name="webPassword"></param>
-        /// <param name="adress"></param>
-        /// <param name="roles"></param>
-        /// <param name="devicePassword"></param>
-        void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon adress, IList<Role> roles, string devicePassword = null);
     }
 
     /// <summary>
@@ -334,7 +302,6 @@ namespace Appva.Mcss.Admin.Application.Services
             var salt = EncryptionUtils.GenerateSalt(DateTime.Now);
             var password = EncryptionUtils.Hash(newPassword, salt);
             account.ChangePassword(password, salt);
-            account.SymmetricKey = Hash.Random().ToBase64();
             this.repository.Update(account);
         }
 
@@ -394,14 +361,6 @@ namespace Appva.Mcss.Admin.Application.Services
                     roles.Add(deviceRole);
                     Log.Debug("Added role {0}", deviceRole.Name);
                 }
-                //// Create user name if none is set, this should be done during creation instead. 
-                if (account.UserName == null)
-                {
-                    account.UserName = this.CreateUserName(account.FirstName, account.LastName, GetUserNames());
-                    account.Salt = EncryptionUtils.GenerateSalt(DateTime.Now);
-                    account.AdminPassword = EncryptionUtils.Hash("abc123ABC", account.Salt);
-                    Log.Debug("Generated new username {0}", account.UserName);
-                }
             }
             //// Overwrite the new roles - no need to remove any roles per definition (device/backend).
             account.Roles = roles;
@@ -409,39 +368,11 @@ namespace Appva.Mcss.Admin.Application.Services
             this.auditing.Update("uppdaterade roller för {0} (REF: {1}).", account.FullName, account.Id);
         }
 
-        public void Update(Account account, string firstName, string lastName, string emailAddress, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress)
+        /// <inheritdoc />
+        public void Update(Account account)
         {
-            var previousPassword = account.DevicePassword;
-            account.UpdatedAt = DateTime.Now;
-            account.FirstName = firstName;
-            account.LastName = lastName;
-            account.FullName = string.Format("{0} {1}", firstName.Trim(), lastName.Trim());
-            account.DevicePassword = mobileDevicePassword;
-            if (! emailAddress.IsNull())
-            {
-                account.EmailAddress = emailAddress;
-            }
-            if (! personalIdentityNumber.IsNull())
-            {
-                account.PersonalIdentityNumber = personalIdentityNumber;
-            }
-            if (! adress.IsNull())
-            {
-                account.Taxon = adress;
-            }
             this.repository.Update(account);
             this.auditing.Update("uppdaterade kontot för {0} (REF: {1}).", account.FullName, account.Id);
-            if (previousPassword.IsNotEmpty() && previousPassword.NotEqual(mobileDevicePassword))
-            {
-                var mail = new MailMessage()
-                {
-                    Subject = ConfigurationManager.AppSettings.Get("EmailEditAccountSubject"),
-                    Body = string.Format(ConfigurationManager.AppSettings.Get("EmailEditAccountBody"), account.FullName, account.DevicePassword, account.UserName),
-                    IsBodyHtml = true
-                };
-                mail.To.Add(account.EmailAddress);
-                this.mailService.Send(mail);
-            }
         }
 
         /// <inheritdoc />
@@ -478,108 +409,6 @@ namespace Appva.Mcss.Admin.Application.Services
             account.UpdatedAt = DateTime.Now;
             this.repository.Update(account);
             this.auditing.Update("avpausade kontot för {0} (REF: {1}).", account.FullName, account.Id);
-        }
-
-        /// <inheritdoc />
-        public void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon address, IList<Role> roles)
-        {
-            var roleList = roles.IsNull() ? new List<Role>() : roles;
-            var account = new Account();
-            account.FirstName = firstName.FirstToUpper();
-            account.LastName = lastName.FirstToUpper();
-            account.FullName = string.Format("{0} {1}", account.FirstName, account.LastName);
-            account.PersonalIdentityNumber = personalIdentityNumber;
-            account.EmailAddress = emailAddress;
-            account.DevicePassword = password;
-            account.Taxon = address;
-            account.Roles = roleList;
-            account.IsPaused = false;
-            this.persitence.Save<Account>(account);
-            this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
-            var mailBody = this.settingsService.CreateAccountMailBody();
-            if (mailBody.IsNotEmpty())
-            {
-                var mail = new MailMessage()
-                {
-                    Subject = ConfigurationManager.AppSettings.Get("EmailCreateAccountSubject"),
-                    Body = string.Format(mailBody, account.FullName, account.DevicePassword),
-                    IsBodyHtml = true
-                };
-                mail.To.Add(account.EmailAddress);
-                this.mailService.Send(mail);
-            }
-        }
-
-        /// <inheritdoc />
-        public void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon address, IList<Role> roles, string devicePassword = null)
-        {
-            var roleList = roles.IsNull() ? new List<Role>() : roles;
-            roleList.Add(this.roles.Find(RoleTypes.Backend));
-            var account = new Account();
-            account.UserName = this.CreateUserName(firstName, lastName, this.GetUserNames());
-            account.FirstName = firstName.FirstToUpper();
-            account.LastName = lastName.FirstToUpper();
-            account.FullName = string.Format("{0} {1}", account.FirstName, account.LastName);
-            account.PersonalIdentityNumber = personalIdentityNumber;
-            account.EmailAddress = emailAddress;
-            account.Salt = EncryptionUtils.GenerateSalt(DateTime.Now);
-            account.AdminPassword = EncryptionUtils.Hash(webPassword, account.Salt);
-            account.DevicePassword = devicePassword;
-            account.Taxon = address;
-            account.Roles = roleList;
-            account.IsPaused = false;
-            this.persitence.Save<Account>(account);
-            this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
-            var mailBody = this.settingsService.CreateAccountMailBody();
-            if (mailBody.IsNotEmpty())
-            {
-                var mail = new MailMessage("noreply@appva.se", account.EmailAddress)
-                {
-                    Subject = ConfigurationManager.AppSettings.Get("EmailCreateAccountSubject"),
-                    Body = string.Format(mailBody, account.FullName, account.DevicePassword, account.UserName, webPassword),
-                    IsBodyHtml = true
-                };
-                this.mailService.Send(mail);
-            }
-        }
-
-        #endregion
-
-        #region Private Methods.
-
-        private IList<string> GetUserNames()
-        {
-            return this.persitence.Session.CreateCriteria<Account>()
-                .SetProjection(Projections.ProjectionList()
-                .Add(Projections.Property("UserName")))
-                .List<string>();
-        }
-
-        /// <summary>
-        /// Creates a unique username from firstname and lastname
-        /// </summary>
-        /// <param name="firstname"></param>
-        /// <param name="lastname"></param>
-        /// <param name="usernames"></param>
-        /// <returns></returns>
-        public string CreateUserName(string firstname, string lastname, IList<string> usernames)
-        {
-            var firstPart  = firstname.ToNullSafeLower().ToUrlFriendly();
-            var secondPart = lastname.ToNullSafeLower().ToUrlFriendly();
-            var username = string.Format(
-                "{0}{1}",
-                (firstPart.Length > 3)  ? firstPart.Substring(0, 3) : firstPart,
-                (secondPart.Length > 3) ? secondPart.Substring(0, 3) : secondPart);
-            if (! usernames.Contains(username))
-            {
-                return username;
-            }
-            var counter = 1;
-            while (usernames.Contains(username + counter))
-            {
-                counter++;
-            }
-            return username + counter;
         }
 
         #endregion

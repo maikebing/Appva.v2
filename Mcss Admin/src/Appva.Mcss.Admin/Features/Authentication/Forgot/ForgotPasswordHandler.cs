@@ -11,9 +11,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Appva.Core.Resources;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Security.Extensions;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
@@ -29,14 +31,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables.
 
         /// <summary>
+        /// The <see cref="JwtSecureDataFormat"/>.
+        /// </summary>
+        private readonly JwtSecureDataFormat jwtSecureDataFormat;
+
+        /// <summary>
         /// The <see cref="IAccountService"/>.
         /// </summary>
         private readonly IAccountService accountService;
-
-        /// <summary>
-        /// The <see cref="ISettingsService"/>.
-        /// </summary>
-        private readonly ISettingsService settingsService;
 
         /// <summary>
         /// The <see cref="IRazorMailService"/>.
@@ -55,14 +57,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
 		/// <summary>
         /// Initializes a new instance of the <see cref="ForgotPasswordHandler"/> class.
 		/// </summary>
+        /// <param name="jwtSecureDataFormat">The <see cref="JwtSecureDataFormat"/></param>
         /// <param name="accountService">The <see cref="IAccountService"/></param>
-        /// <param name="settingsService">The <see cref="ISettingsService"/></param>
         /// <param name="mailService">The <see cref="IRazorMailService"/></param>
         /// <param name="context">The <see cref="HttpContextBase"/></param>
-        public ForgotPasswordHandler(IAccountService accountService, ISettingsService settingsService, IRazorMailService mailService, HttpContextBase context)
+        public ForgotPasswordHandler(JwtSecureDataFormat jwtSecureDataFormat, IAccountService accountService, IRazorMailService mailService, HttpContextBase context)
 		{
+            this.jwtSecureDataFormat = jwtSecureDataFormat;
             this.accountService = accountService;
-            this.settingsService = settingsService;
             this.mailService = mailService;
             this.context = context;
 		}
@@ -75,7 +77,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override bool Handle(ForgotPassword message)
         {
             var account = this.accountService.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
-            if (account == null || account.IsPaused || account.IsInactive() || account.EmailAddress != message.Email)
+            if (account == null || account.IsPaused || ! account.IsActive || account.EmailAddress != message.Email)
             {
                 return false;
             }
@@ -84,13 +86,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 return false;
             }
-            var config = this.settingsService.ResetPasswordTokenConfiguration();
-            var token = account.CreateNewResetPasswordTicket(config.Key, config.Issuer, config.Audience, DateTime.Now.Add(config.Lifetime));
+            var token = this.jwtSecureDataFormat.CreateNewResetPasswordToken(account.Id, account.SymmetricKey);
             var helper = new UrlHelper(this.context.Request.RequestContext);
-            var link = helper.Action("ResetPassword", "Authentication", null, this.context.Request.Url.Scheme) + "?token=" + token;
+            var link = helper.Action("ResetPassword", "Authentication", new RouteValueDictionary
+            {
+                { "token", token }
+            }, this.context.Request.Url.Scheme);
             this.mailService.Send(MailMessage.CreateNew().Template("ResetPasswordEmail").Model(new ForgotPasswordEmail
             {
-                HumanName = account.FullName,
+                Name = account.FullName,
                 TokenLink = link
             }).To(account.EmailAddress).Subject("Återställningslänk till Appva MCSS").Build());
             return true;

@@ -1,4 +1,4 @@
-﻿// <copyright file="ForgotPasswordEmail.cs" company="Appva AB">
+﻿// <copyright file="RegistrationEmail.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,7 +9,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ForgotPasswordEmail
+    public sealed class RegistrationEmail
     {
         /// <summary>
         /// The full name.
@@ -21,9 +21,27 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// The user name.
+        /// </summary>
+        public string UserName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The full token link.
         /// </summary>
         public string TokenLink
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The full tenant link.
+        /// </summary>
+        public string TenantLink
         {
             get;
             set;

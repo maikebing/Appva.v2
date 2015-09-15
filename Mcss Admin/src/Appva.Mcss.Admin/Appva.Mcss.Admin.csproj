@@ -360,6 +360,8 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountPublisher.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationEmail.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationForDeviceEmail.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRoles.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesForm.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesFormHandler.cs" />
@@ -667,9 +669,6 @@
     <Content Include="Assets\js\zxcvbn.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="media\jul.png" />
-    <Content Include="media\logo-appva.png" />
-    <Content Include="media\pagaende_insatser.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1000,9 +999,6 @@
     <Content Include="Areas\Dashboard\Features\Dashboard\Index\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Features\Shared\EmailTemplates\AuthenticationEmail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Features\Shared\EditorTemplates\Date.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1039,6 +1035,8 @@
     <Content Include="Features\Shared\ForgotPasswordSuccess.cshtml" />
     <Content Include="Features\Shared\ResetPasswordTokenExpired.cshtml" />
     <Content Include="Features\Shared\ResetPasswordSuccess.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\RegisterUserEmail.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\RegisterUserMobileDeviceEmail.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

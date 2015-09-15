@@ -10,22 +10,19 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using Appva.Caching.Providers;
-    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public interface IPermissionService : IService
     {
         /// <summary>
         /// Returns a collection of <see cref="Permission"/>.
         /// </summary>
-        /// <param name="maximumItems">
-        /// Optional maximum amount of items to be retrieved, defaults to <see cref="long.MaxValue"/>
-        /// </param>
         /// <returns>A collection of <see cref="Permission"/></returns>
         IList<Permission> List();
 
@@ -36,6 +33,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="ids">The ID:s to retrieve</param>
         /// <returns>A filtered collection of <see cref="Permission"/></returns>
         IList<Permission> ListAllIn(params Guid[] ids);
+
+        /// <summary>
+        /// Returns all permissions for the roles.
+        /// </summary>
+        /// <param name="roles">A collection of roles</param>
+        /// <returns>A collection of role permissions</returns>
+        IList<Permission> ListByRoles(IList<Role> roles);
     }
 
     /// <summary>
@@ -77,6 +81,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<Permission> ListAllIn(params Guid[] ids)
         {
             return this.repository.ListAllIn(ids);
+        }
+
+        /// <inheritdoc />
+        public IList<Permission> ListByRoles(IList<Role> roles)
+        {
+            return this.repository.ByRoles(roles);
         }
 
         #endregion

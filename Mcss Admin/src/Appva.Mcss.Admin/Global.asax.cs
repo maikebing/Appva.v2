@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin
     using Appva.Mvc.Configuration;
     using HibernatingRhinos.Profiler.Appender.NHibernate;
     using log4net.Config;
+    using Appva.Mvc.ModelBinding;
 
     #endregion
 
@@ -57,6 +58,7 @@ namespace Appva.Mcss.Admin
             Log.Info("Application started ...");
             MvcHandler.DisableMvcResponseHeader = true;
             ModelBinders.Binders.DefaultBinder = new AdminModelBinder();
+            ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);

@@ -106,7 +106,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             this.accounts.Update(account);
             //// If the previous password is null or previous password is unaltered, then
             //// then no reason to re-send an e-mail.
-            if (previousPassword.IsNull() || previousPassword.Equals(message.DevicePassword))
+            if (previousPassword.IsEmpty() || previousPassword.Equals(account.DevicePassword))
             {
                 return true;
             }

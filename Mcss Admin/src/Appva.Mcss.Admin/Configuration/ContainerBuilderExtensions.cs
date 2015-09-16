@@ -122,21 +122,19 @@ namespace Appva.Mcss.Admin.Configuration
             {
                 TemplateManager = new Mvc.CshtmlTemplateManager("Features/Shared/EmailTemplates")
             }).As<ITemplateServiceConfiguration>().SingleInstance();
-            if (ApplicationEnvironment.Is.Production || ApplicationEnvironment.Is.Demo)
+            if (ApplicationEnvironment.Is.Production || ApplicationEnvironment.Is.Demo || ApplicationEnvironment.Is.Staging)
             {
-                builder.RegisterType<MailService>().As<ISimpleMailService>().SingleInstance();
                 builder.RegisterType<Mvc.MailService>().As<Mvc.IRazorMailService>().SingleInstance();
             }
             else
             {
-                builder.RegisterType<NoOpMailService>().As<ISimpleMailService>().SingleInstance();
                 builder.RegisterType<Mvc.NoOpMailService>().As<Mvc.IRazorMailService>().SingleInstance();
             }
         }
 
         public static void RegisterNhibernateProvider(this ContainerBuilder builder)
         {
-            if (! ApplicationEnvironment.Is.Production)
+            if (ApplicationEnvironment.Is.Development)
             {
                 NHibernateProfiler.Initialize();
             }

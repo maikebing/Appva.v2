@@ -33,7 +33,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Home
         [HttpGet]
         public ActionResult Index()
         {
-
             return this.View();
         }
 

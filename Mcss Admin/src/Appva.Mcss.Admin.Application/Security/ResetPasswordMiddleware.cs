@@ -170,7 +170,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <inheritdoc />
         protected override Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
-            if (!Request.Path.StartsWithSegments(this.Options.ResetPasswordPath))
+            if (! Request.Path.StartsWithSegments(this.Options.ResetPasswordPath))
             {
                 return Task.FromResult<AuthenticationTicket>(null);
             }

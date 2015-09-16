@@ -190,11 +190,6 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly IPersistenceContext persitence;
 
         /// <summary>
-        /// The <see cref="ISimpleMailService"/>.
-        /// </summary>
-        private readonly ISimpleMailService mailService;
-
-        /// <summary>
         /// The <see cref="ISettingsService"/>.
         /// </summary>
         private readonly ISettingsService settingsService;
@@ -220,7 +215,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="roles">The <see cref="IRoleRepository"/></param>
         /// <param name="permissions">The <see cref="IPermissionRepository"/></param>
         /// <param name="persitence">The <see cref="IPersistenceContext"/></param>
-        /// <param name="mailService">The <see cref="ISimpleMailService"/></param>
         /// <param name="settingsService">The <see cref="ISettingsService"/></param>
         /// <param name="auditing">The <see cref="IAuditService"/></param>
         /// <param name="identityService">The <see cref="IIdentityService"/></param>
@@ -228,8 +222,7 @@ namespace Appva.Mcss.Admin.Application.Services
             IAccountRepository repository, 
             IRoleRepository roles, 
             IPermissionRepository permissions, 
-            IPersistenceContext persitence,
-            ISimpleMailService mailService, 
+            IPersistenceContext persitence, 
             ISettingsService settingsService, 
             IAuditService auditing,
             IIdentityService identityService)
@@ -238,7 +231,6 @@ namespace Appva.Mcss.Admin.Application.Services
             this.roles = roles;
             this.permissions = permissions;
             this.persitence = persitence;
-            this.mailService = mailService;
             this.settingsService = settingsService;
             this.auditing = auditing;
             this.identityService = identityService;

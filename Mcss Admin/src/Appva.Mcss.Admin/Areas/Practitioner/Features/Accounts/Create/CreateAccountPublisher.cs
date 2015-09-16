@@ -93,6 +93,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     "abc123ABC",
                     this.taxonomies.Get(message.Taxon.ToGuid()), 
                     roles,
+                    message.HsaId,
                     message.DevicePassword);
             }
             else
@@ -104,7 +105,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     message.Email,
                     message.DevicePassword,
                     this.taxonomies.Get(message.Taxon.ToGuid()), 
-                    roles);
+                    roles,
+                    message.HsaId);
             }
             return true;
         }

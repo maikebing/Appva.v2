@@ -155,7 +155,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="personalIdentityNumber">The <see cref="PersonalIdentityNumber"/></param>
         /// <param name="adress">The organisational <see cref="Taxon"/></param>
         /// <returns>The account id</returns>
-        void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress);
+        void Update(Account account, string firstName, string lastName, string mail, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress, string hsaId);
 
         /// <summary>
         /// Updates the roles for a user account.
@@ -181,7 +181,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="password"></param>
         /// <param name="adress"></param>
         /// <param name="roles"></param>
-        void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon adress, IList<Role> roles);
+        void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon adress, IList<Role> roles, string hsaId);
         
         /// <summary>
         /// 
@@ -194,7 +194,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="adress"></param>
         /// <param name="roles"></param>
         /// <param name="devicePassword"></param>
-        void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon adress, IList<Role> roles, string devicePassword = null);
+        void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon adress, IList<Role> roles, string hsaId, string devicePassword = null);
     }
 
     /// <summary>
@@ -450,7 +450,7 @@ namespace Appva.Mcss.Admin.Application.Services
             this.auditing.Update("uppdaterade roller för {0} (REF: {1}).", account.FullName, account.Id);
         }
 
-        public void Update(Account account, string firstName, string lastName, string emailAddress, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress)
+        public void Update(Account account, string firstName, string lastName, string emailAddress, string mobileDevicePassword, PersonalIdentityNumber personalIdentityNumber, Taxon adress, string hsaId)
         {
             var previousPassword = account.DevicePassword;
             account.UpdatedAt = DateTime.Now;
@@ -469,6 +469,10 @@ namespace Appva.Mcss.Admin.Application.Services
             if (! adress.IsNull())
             {
                 account.Taxon = adress;
+            }
+            if (! hsaId.IsEmpty())
+            {
+                account.HsaId = hsaId;
             }
             this.repository.Update(account);
             this.auditing.Update("uppdaterade kontot för {0} (REF: {1}).", account.FullName, account.Id);
@@ -522,7 +526,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon address, IList<Role> roles)
+        public void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon address, IList<Role> roles, string hsaId)
         {
             var roleList = roles.IsNull() ? new List<Role>() : roles;
             var account = new Account();
@@ -535,6 +539,7 @@ namespace Appva.Mcss.Admin.Application.Services
             account.Taxon = address;
             account.Roles = roleList;
             account.IsPaused = false;
+            account.HsaId = hsaId;
             this.persitence.Save<Account>(account);
             this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
             var mailBody = this.settingsService.CreateAccountMailBody();
@@ -552,7 +557,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon address, IList<Role> roles, string devicePassword = null)
+        public void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon address, IList<Role> roles, string hsaId, string devicePassword = null)
         {
             var roleList = roles.IsNull() ? new List<Role>() : roles;
             roleList.Add(this.roles.Find(RoleTypes.Backend));
@@ -573,9 +578,10 @@ namespace Appva.Mcss.Admin.Application.Services
             account.Taxon = address;
             account.Roles = roleList;
             account.IsPaused = false;
+            account.HsaId = hsaId;
             this.persitence.Save<Account>(account);
             this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
-            var mailBody = this.settingsService.CreateAccountMailBody();
+            var mailBody = this.settingsService.CreateBackendAccountMailBody();
             if (mailBody.IsNotEmpty())
             {
                 var mail = new MailMessage("noreply@appva.se", account.EmailAddress)

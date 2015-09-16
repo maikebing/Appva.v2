@@ -11,11 +11,15 @@
             @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()
             @if (Model.IsMobileDevicePasswordFieldVisible)
             {
-                @Html.FormGroup(x => x.DevicePassword, "text").Label().Password().Validate().Build()
+                @Html.FormGroup(x => x.DevicePassword, "text").Label().Password(null, new { value = Model.DevicePassword }).Validate().Build()
             }
             @if (Model.IsUsernameVisible)
             {
                 @Html.FormGroup(x => x.Username, "text").Label().TextBox(htmlAttributes: new { disabled = "disabled" }).Validate().Build()
+            }
+            @if (Model.IsHsaIdFieldVisible)
+            {
+                @Html.FormGroup(x => x.HsaId, "text").Label("HSA ID").TextBox().Validate().Build()
             }
             <div class="select selectgroup cf">
                 <strong>Adress:</strong>

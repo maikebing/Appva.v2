@@ -75,6 +75,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             return new CreateAccountModel 
             {
+                IsHsaIdFieldVisible = this.settings.GetAdminLogin().Equals("siths"),
                 IsMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice) == false,
                 IsMobileDevicePasswordFieldVisible = this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice) == false,
                 IsUsernameVisible = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible),

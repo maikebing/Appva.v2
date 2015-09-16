@@ -65,6 +65,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var account = this.accounts.Find(message.Id);
             return new UpdateAccount
             {
+                IsHsaIdFieldVisible = this.settings.GetAdminLogin().Equals("siths"),
                 IsMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
                 IsMobileDevicePasswordFieldVisible = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
                 IsUsernameVisible = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible),
@@ -76,7 +77,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 LastName = account.LastName,
                 PersonalIdentityNumber = account.PersonalIdentityNumber,
                 Taxon = account.Taxon.Id.ToString(),
-                Username = account.UserName
+                Username = account.UserName,
+                HsaId = account.HsaId
             };
         }
 

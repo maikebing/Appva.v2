@@ -75,7 +75,8 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                 message.Email,
                 message.DevicePassword,
                 message.PersonalIdentityNumber,
-                this.taxonomies.Get(message.Taxon.ToGuid()));
+                this.taxonomies.Get(message.Taxon.ToGuid()),
+                message.HsaId);
             return true;
         }
 

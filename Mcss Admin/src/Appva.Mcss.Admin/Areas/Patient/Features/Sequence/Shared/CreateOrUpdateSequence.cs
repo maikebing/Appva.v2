@@ -29,14 +29,15 @@ namespace Appva.Mcss.Admin.Models
 
         private static readonly List<SelectListItem> AllIntervals = new List<SelectListItem>()
             {
-                new SelectListItem { Text = "Varje dag", Value = "1" },
-                new SelectListItem { Text = "Varannan dag", Value = "2" },
-                new SelectListItem { Text = "Var 3:e dag", Value = "3" },
-                new SelectListItem { Text = "Var 4:e dag", Value = "4" },
-                new SelectListItem { Text = "Var 5:e dag", Value = "5" },
-                new SelectListItem { Text = "Varje vecka", Value = "7" },
+                new SelectListItem { Text = "Varje dag",      Value = "1" },
+                new SelectListItem { Text = "Varannan dag",   Value = "2" },
+                new SelectListItem { Text = "Var 3:e dag",    Value = "3" },
+                new SelectListItem { Text = "Var 4:e dag",    Value = "4" },
+                new SelectListItem { Text = "Var 5:e dag",    Value = "5" },
+                new SelectListItem { Text = "Var 6:e dag",    Value = "6" },
+                new SelectListItem { Text = "Varje vecka",    Value = "7" },
                 new SelectListItem { Text = "Varannan vecka", Value = "14" },
-                new SelectListItem { Text = "Annan ...", Value = "0" }
+                new SelectListItem { Text = "Annan ...",      Value = "0" }
             };
 
         #endregion

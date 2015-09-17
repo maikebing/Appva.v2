@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Application.Security.Extensions
     #region Imports.
 
     using System;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Domain.Entities;
 
@@ -43,7 +44,11 @@ namespace Appva.Mcss.Admin.Application.Security.Extensions
         /// <returns>True if the password is correct</returns>
         public static bool IsIncorrectPassword(this Account account, string password)
         {
-            return !account.AdminPassword.Equals(EncryptionUtils.Hash(password, account.Salt));
+            if (account.AdminPassword.IsEmpty() || account.Salt.IsEmpty())
+            {
+                return false;
+            }
+            return ! account.AdminPassword.Equals(EncryptionUtils.Hash(password, account.Salt));
         }
     }
 }

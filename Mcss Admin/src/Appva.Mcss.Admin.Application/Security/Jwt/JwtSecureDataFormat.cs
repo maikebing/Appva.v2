@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Application.Security
     using System.Security.Claims;
     using System.ServiceModel.Security.Tokens;
     using Appva.Core.Extensions;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Security.Jwt;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
@@ -152,7 +153,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <returns>A JWT token as string</returns>
         public string CreateNewRegistrationToken(Guid id, string base64Key)
         {
-            return this.CreateNewJwtToken(id, base64Key, TokenType.ResetToken);
+            return this.CreateNewJwtToken(id, base64Key, TokenType.RegistrationToken);
         }
 
         #endregion
@@ -179,15 +180,25 @@ namespace Appva.Mcss.Admin.Application.Security
             Buffer.BlockCopy(systemKey, 0, bytes, 0, systemKey.Length);
             Buffer.BlockCopy(key, 0, bytes, systemKey.Length, key.Length);
             var expiresAt = tokenType.Equals(TokenType.RegistrationToken) ? DateTime.Now.Add(configuration.RegistrationTokenLifetime) : DateTime.Now.Add(configuration.ResetTokenLifetime);
+            var claims    = new List<Claim>
+            {
+                new Claim(Core.Resources.ClaimTypes.AclEnabled, "Y"),
+                new Claim(ClaimTypes.NameIdentifier, id.ToString())
+            };
+            if (tokenType.Equals(TokenType.RegistrationToken))
+            {
+                claims.Add(new Claim(Core.Resources.ClaimTypes.Permission, Permissions.Token.Register));
+            }
+            if (tokenType.Equals(TokenType.ResetToken))
+            {
+                claims.Add(new Claim(Core.Resources.ClaimTypes.Permission, Permissions.Token.Reset));
+            }
             return this.handler.WriteToken(JwtToken.CreateNew(
                 bytes.ToBase64(),
                 configuration.Issuer,
                 configuration.Audience,
                 expiresAt,
-                new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, id.ToString())
-                }));
+                claims));
         }
 
         /// <summary>

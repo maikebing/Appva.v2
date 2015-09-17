@@ -1,4 +1,4 @@
-﻿// <copyright file="ResetPassword.cs" company="Appva AB">
+﻿// <copyright file="AbstractPassword.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,21 +9,21 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System.ComponentModel.DataAnnotations;
-    using Appva.Cqrs;
     using DataAnnotationsExtensions;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Abstract base class for change password post requests.
     /// </summary>
-    public sealed class ResetPassword : IRequest<bool>
+    public abstract class AbstractPassword
     {
         /// <summary>
         /// The new password.
         /// </summary>
         [Required(ErrorMessage = "Nytt lösenord måste fyllas i.")]
-        [MinLength(10, ErrorMessage = "Nytt lösenord måste vara minst 10 tecken långt.")]
+        [MinLength(8, ErrorMessage = "Nytt lösenord måste vara minst 8 tecken långt.")]
+        [MaxLength(255, ErrorMessage = "Nytt lösenord måste vara maximalt 255 tecken långt.")]
         public string NewPassword
         {
             get;

@@ -1,4 +1,4 @@
-﻿// <copyright file="ForgotPasswordHandler.cs" company="Appva AB">
+﻿// <copyright file="ForgotHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -26,7 +26,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ForgotPasswordHandler : RequestHandler<ForgotPassword, bool>
+    internal sealed class ForgotHandler : RequestHandler<Forgot, bool>
     {
         #region Variables.
 
@@ -55,13 +55,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
 		#region Constructor.
 
 		/// <summary>
-        /// Initializes a new instance of the <see cref="ForgotPasswordHandler"/> class.
+        /// Initializes a new instance of the <see cref="ForgotHandler"/> class.
 		/// </summary>
         /// <param name="jwtSecureDataFormat">The <see cref="JwtSecureDataFormat"/></param>
         /// <param name="accountService">The <see cref="IAccountService"/></param>
         /// <param name="mailService">The <see cref="IRazorMailService"/></param>
         /// <param name="context">The <see cref="HttpContextBase"/></param>
-        public ForgotPasswordHandler(JwtSecureDataFormat jwtSecureDataFormat, IAccountService accountService, IRazorMailService mailService, HttpContextBase context)
+        public ForgotHandler(JwtSecureDataFormat jwtSecureDataFormat, IAccountService accountService, IRazorMailService mailService, HttpContextBase context)
 		{
             this.jwtSecureDataFormat = jwtSecureDataFormat;
             this.accountService = accountService;
@@ -74,10 +74,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override bool Handle(ForgotPassword message)
+        public override bool Handle(Forgot message)
         {
             var account = this.accountService.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
-            if (account == null || account.IsPaused || ! account.IsActive || account.EmailAddress != message.Email)
+            if (account == null || account.IsPaused || ! account.IsActive || account.EmailAddress != message.EmailAddress)
             {
                 return false;
             }
@@ -88,11 +88,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var token = this.jwtSecureDataFormat.CreateNewResetPasswordToken(account.Id, account.SymmetricKey);
             var helper = new UrlHelper(this.context.Request.RequestContext);
-            var link = helper.Action("ResetPassword", "Authentication", new RouteValueDictionary
+            var link = helper.Action("Reset", "Account", new RouteValueDictionary
             {
                 { "token", token }
             }, this.context.Request.Url.Scheme);
-            this.mailService.Send(MailMessage.CreateNew().Template("ResetPasswordEmail").Model(new ForgotPasswordEmail
+            this.mailService.Send(MailMessage.CreateNew().Template("ResetPasswordEmail").Model(new ForgotEmail
             {
                 Name = account.FullName,
                 TokenLink = link

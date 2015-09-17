@@ -45,7 +45,7 @@ namespace Appva.Mcss.Admin
             builder.RegisterModule(new AutofacWebTypesModule());
             builder.RegisterFilterProvider();
             builder.RegisterEnvironment();
-            builder.RegisterNhibernateProvider();
+            builder.RegisterNhibernateProfiler();
             builder.RegisterRepositories();
             builder.RegisterServices();
             builder.RegisterTenantServices();

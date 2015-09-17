@@ -128,6 +128,17 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "The E-mail configuration for sending and signing",
             SecurityMailerConfiguration.CreateNew());
 
+        /// <summary>
+        /// The password configuration.
+        /// </summary>
+        /// <remarks>The setting returns a <c>SecurityPasswordConfiguration</c></remarks>
+        public static readonly ApplicationSettingIdentity<SecurityPasswordConfiguration> PasswordConfiguration = ApplicationSettingIdentity<SecurityPasswordConfiguration>.CreateNew(
+            "Mcss.Core.Security.Configuration.Password",
+            "Password Configuration",
+            "Mcss.Core.Security.Password",
+            "The password configuration",
+            SecurityPasswordConfiguration.CreateNew());
+
         #endregion
 
         #region PDF.

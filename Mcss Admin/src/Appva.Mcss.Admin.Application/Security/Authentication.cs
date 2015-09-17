@@ -170,7 +170,7 @@ namespace Appva.Mcss.Admin.Application.Security
                     new AuthenticationProperties
                     {
                         IsPersistent = isPersistent,
-                        ExpiresUtc = expiresUtc.HasValue ? DateTime.UtcNow.Add(expiresUtc.Value) : (DateTimeOffset?) null
+                        ExpiresUtc   = expiresUtc.HasValue ? DateTime.UtcNow.Add(expiresUtc.Value) : (DateTimeOffset?) null
                     },
                     new ClaimsIdentity(principal.Claims, type.Value));
             }

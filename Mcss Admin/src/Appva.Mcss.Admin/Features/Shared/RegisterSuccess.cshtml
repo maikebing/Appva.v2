@@ -1,17 +1,17 @@
 ﻿@{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
-    SetTitle("Ditt lösenord är nu bytt - {0}", Tenant);
+    SetTitle("Ditt lösenord är sparat");
     SetBodyCssClass("page-forgot-password");
 }
 <div class="hd">
-	Ditt lösenord är nu bytt.
+	Ditt lösenord är sparat.
 </div>
 <div class="hd org">
     <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
 	<span>@Tenant</span>
 </div>
 <div class="bd">
-    Logga in på nytt för att använda MCSS.
+    Var vänlig använd ditt valda lösenord för att logga in i MCSS.
     <div class="hr"></div>
-	@Html.ActionLink("Logga in", "SignIn", null, new { @class = "btn" })
+	@Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn" })
 </div>

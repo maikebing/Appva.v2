@@ -9,7 +9,7 @@ namespace Appva.Caching.Providers
     #region Imports.
 
     using System.Collections.Generic;
-    using Logging;
+    using Core.Logging;
     using Policies;
     using Validation;
 
@@ -209,7 +209,7 @@ namespace Appva.Caching.Providers
                 }
                 if (this.store.Remove(key))
                 {
-                    Log.DebugFormat(Debug.Messages.InMemoryCacheProviderCacheItemRemoved, key);
+                    Log.Debug(Debug.Messages.InMemoryCacheProviderCacheItemRemoved, key);
                     return true;
                 }
                 return false;

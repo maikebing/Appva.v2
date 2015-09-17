@@ -16,8 +16,8 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
     using Appva.Core.Extensions;
+    using Appva.Core.Logging;
     using Appva.Core.Resources;
-    using Appva.Logging;
     using Appva.Mcss.Admin.Application.Caching;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
@@ -95,7 +95,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         bool IsSecurityTokenConfigurationInstalled();
 
         /// <summary>
-        /// The E-mail messaging configuration.
+        /// Returns the E-mail messaging configuration.
         /// </summary>
         /// <returns>The <see cref="SecurityMailerConfiguration"/></returns>
         SecurityMailerConfiguration MailMessagingConfiguration();
@@ -105,6 +105,12 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         /// <returns>True if siths authorization is enabled; otherwise false</returns>
         bool IsSithsAuthorizationEnabled();
+
+        /// <summary>
+        /// Returns the password configuration.
+        /// </summary>
+        /// <returns>The <see cref="SecurityPasswordConfiguration"/></returns>
+        SecurityPasswordConfiguration PasswordConfiguration(); 
     }
 
     /// <summary>
@@ -165,11 +171,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         private static readonly ILog Log = LogProvider.For<SettingsService>();
 
         /// <summary>
-        /// The lock.
-        /// </summary>
-        private static readonly object Lock = new object();
-
-        /// <summary>
         /// The implemented <see cref="ITenantAwareMemoryCache"/> instance.
         /// </summary>
         private readonly ITenantAwareMemoryCache cache;
@@ -228,7 +229,9 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                     key.Name,
                     key.Description,
                     JsonConvert.SerializeObject(value),
-                    value.GetType())
+                    //// Temporary fix for checking types which can be used with other implementation
+                    //// of settings.
+                    value.GetType().Namespace.StartsWith("System") ? value.GetType() : typeof(string))
                     .Activate());
             }
             else
@@ -273,6 +276,12 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         public SecurityMailerConfiguration MailMessagingConfiguration()
         {
             return this.Find<SecurityMailerConfiguration>(ApplicationSettings.MailMessagingConfiguration);
+        }
+
+        /// <inheritdoc />
+        public SecurityPasswordConfiguration PasswordConfiguration()
+        {
+            return this.Find<SecurityPasswordConfiguration>(ApplicationSettings.PasswordConfiguration);
         }
 
         /// <inheritdoc />
@@ -531,13 +540,13 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                     {
                         return setting.Default;
                     }
-                    this.Add(item);
+                    this.Add<T>(item);
                 }
                 return (T) this.cache.Find<T>(cacheKey);
             }
             catch (Exception ex)
             {
-                Log.ErrorException("<SettingService> cache problem with key " + setting.Key, ex);
+                Log.Error(ex, "<SettingService> cache problem with key {0}", setting.Key);
                 return setting.Default;
             }
         }
@@ -547,11 +556,11 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        private bool Add(Setting item)
+        private bool Add<T>(Setting item)
         {
             try
             {
-                var cachedItem = JsonConvert.DeserializeObject(item.Value, item.Type);
+                var cachedItem = JsonConvert.DeserializeObject<T>(item.Value);
                 this.cache.Upsert(
                     this.CreateCacheKey(item.MachineName), 
                     cachedItem, 
@@ -564,7 +573,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             }
             catch (Exception ex)
             {
-                Log.ErrorException("<SettingService> cache problem with id " + item.Id, ex);
+                Log.Error(ex, "<SettingService> cache problem with id {0}", item.Id);
                 return false;
             }
         }

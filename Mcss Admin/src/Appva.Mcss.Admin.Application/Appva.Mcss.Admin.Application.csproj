@@ -114,8 +114,6 @@
     <Compile Include="Models\IReportingFilter.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuList.cs" />
-    <Compile Include="Models\PrintSchedule.cs" />
-    <Compile Include="Models\PrintSequence.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDataSegment.cs" />
     <Compile Include="Models\ReportSearch.cs" />
@@ -199,10 +197,6 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Fhir\Appva.Fhir.csproj">
       <Project>{3983ff1b-a557-4b58-a363-bcee62182f1e}</Project>
       <Name>Appva.Fhir</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
-      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
-      <Name>Appva.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Mvc\Appva.Mvc.csproj">
       <Project>{53a7fe5b-f451-4b7a-8932-9ad424f09165}</Project>

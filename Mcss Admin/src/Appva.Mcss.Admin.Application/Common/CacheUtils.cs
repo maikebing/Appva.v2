@@ -22,6 +22,15 @@ namespace Appva.Mcss.Admin.Application.Common
     /// </summary>
     internal static class CacheUtils
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TCacheEntry"></typeparam>
+        /// <param name="cache"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="items"></param>
+        /// <param name="map"></param>
         public static void CopyAndCacheList<TEntity, TCacheEntry>(
             IRuntimeMemoryCache cache, string cacheKey, IList<TEntity> items, Func<TEntity, TCacheEntry> map)
         {

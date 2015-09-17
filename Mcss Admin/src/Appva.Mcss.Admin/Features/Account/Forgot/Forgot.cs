@@ -1,4 +1,4 @@
-﻿// <copyright file="ForgotPassword.cs" company="Appva AB">
+﻿// <copyright file="Forgot.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -18,14 +18,14 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ForgotPassword : IRequest<bool>
+    public class Forgot : IRequest<bool>
     {
         /// <summary>
         /// The E-mail address.
         /// </summary>
         [Required(ErrorMessage = "E-postadress måste anges")]
-        [Email(ErrorMessage = "E-postadress måste anges i korrekt format, t. ex. namn.efternamn@foretag.se.")]
-        public string Email
+        [Email(ErrorMessage = "E-postadress måste anges i korrekt format, t. ex. fornamn.efternamn@organisation.se.")]
+        public string EmailAddress
         {
             get;
             set;
@@ -49,17 +49,17 @@ namespace Appva.Mcss.Admin.Models
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.Email))
+                if (string.IsNullOrWhiteSpace(this.EmailAddress))
                 {
                     return string.Empty;
                 }
-                var localPart = this.Email.Substring(0, this.Email.IndexOf("@"));
+                var localPart = this.EmailAddress.Substring(0, this.EmailAddress.IndexOf("@"));
                 if (localPart.Length == 0)
                 {
                     return string.Empty;
                 }
                 var replacePart = localPart.Substring((int) (localPart.Length / 2));
-                return this.Email.Replace(replacePart, createAsterisks(replacePart.Length));
+                return this.EmailAddress.Replace(replacePart, createAsterisks(replacePart.Length));
             }
         }
 

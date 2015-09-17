@@ -163,7 +163,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var token      = this.jwtSecureDataFormat.CreateNewRegistrationToken(account.Id, account.SymmetricKey);
             var helper     = new UrlHelper(this.context.Request.RequestContext);
-            var tokenLink  = helper.Action("ResetPassword", "Authentication", new RouteValueDictionary { { "Area",  string.Empty }, { "token", token } }, this.context.Request.Url.Scheme);
+            var tokenLink  = helper.Action("Register", "Account", new RouteValueDictionary { { "Area",  string.Empty }, { "token", token } }, this.context.Request.Url.Scheme);
             var tenantLink = helper.Action("Index", "Home", new RouteValueDictionary { { "Area", string.Empty } }, this.context.Request.Url.Scheme);
             var configuration = this.settings.MailMessagingConfiguration();
             var permissions   = this.permissions.ListByRoles(roles);

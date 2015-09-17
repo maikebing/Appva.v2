@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin
     using System.Web.Optimization;
     using System.Web.Routing;
     using Appva.Core.Logging;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
     using Appva.Mvc.Configuration;
@@ -56,7 +57,7 @@ namespace Appva.Mcss.Admin
         {
             Log.Info("Application started ...");
             MvcHandler.DisableMvcResponseHeader = true;
-            ModelBinders.Binders.DefaultBinder = new AdminModelBinder();
+            ModelBinders.Binders.Add(typeof(PersonalIdentityNumber), new PersonalIdentityNumberModelBinder());
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);

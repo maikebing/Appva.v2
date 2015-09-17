@@ -30,6 +30,23 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
+        #region Token (Reset / Registration)
+
+        public static class Token
+        {
+            /// <summary>
+            /// The reset token value.
+            /// </summary>
+            public const string Reset = Schema + "reset";
+
+            /// <summary>
+            /// The register token value.
+            /// </summary>
+            public const string Register = Schema + "register";
+        }
+
+        #endregion
+
         #region Admin (Application).
 
         /// <summary>

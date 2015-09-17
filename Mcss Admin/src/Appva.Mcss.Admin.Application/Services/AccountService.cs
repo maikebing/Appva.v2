@@ -532,7 +532,7 @@ namespace Appva.Mcss.Admin.Application.Services
             account.SymmetricKey = Hash.Random().ToBase64();
             this.persitence.Save<Account>(account);
             this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
-            var mailBody = this.settingsService.CreateAccountMailBody();
+            var mailBody = this.settingsService.CreateBackendAccountMailBody();
             if (mailBody.IsNotEmpty())
             {
                 var mail = new MailMessage("noreply@appva.se", account.EmailAddress)

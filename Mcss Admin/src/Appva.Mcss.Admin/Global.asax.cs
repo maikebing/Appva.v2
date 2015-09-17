@@ -18,7 +18,6 @@ namespace Appva.Mcss.Admin
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
     using Appva.Mvc.Configuration;
-    using HibernatingRhinos.Profiler.Appender.NHibernate;
     using log4net.Config;
     using Appva.Mvc.ModelBinding;
 

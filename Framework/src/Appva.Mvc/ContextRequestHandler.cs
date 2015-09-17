@@ -78,6 +78,7 @@ namespace Appva.Mvc
         /// <param name="controller"></param>
         protected void Redirect(string url)
         {
+            this.context.Response.ClearHeaders();
             this.context.Response.Redirect(url);
         }
 

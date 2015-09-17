@@ -39,14 +39,14 @@ namespace Appva.Mcss.Admin.Application.Security.Extensions
         }
 
         /// <summary>
-        /// Returns whether or not the account password is equal to the password submitted.
+        /// Returns whether or not the account password is NOT equal to the password submitted.
         /// </summary>
-        /// <returns>True if the password is correct</returns>
+        /// <returns>True if the password is incorrect</returns>
         public static bool IsIncorrectPassword(this Account account, string password)
         {
             if (account.AdminPassword.IsEmpty() || account.Salt.IsEmpty())
             {
-                return false;
+                return true;
             }
             return ! account.AdminPassword.Equals(EncryptionUtils.Hash(password, account.Salt));
         }

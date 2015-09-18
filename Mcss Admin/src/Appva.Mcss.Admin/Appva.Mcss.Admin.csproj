@@ -206,6 +206,14 @@
     <Compile Include="Areas\Area51\Features\Settings\Update\UpdateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Notification\Features\News\Activate\ActivateNews.cs" />
+    <Compile Include="Areas\Notification\Features\News\Activate\ActivateNewsHandler.cs" />
+    <Compile Include="Areas\Notification\Features\News\NewsController.cs" />
+    <None Include="Areas\Notification\Features\News\Popup\Popup.cshtml" />
+    <Compile Include="Areas\Notification\Features\News\Popup\PopupNews.cs" />
+    <Compile Include="Areas\Notification\Features\News\Popup\PopupNewsHandler.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\List\ListNotifications.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\NotificationsController.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlert.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlertHandler.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\Handle\HandleAlert.cs" />
@@ -639,6 +647,7 @@
     <Content Include="Assets\js\placeholder.v3.0.2.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="media\appva-event.png" />
     <Content Include="media\jul.png" />
     <Content Include="media\logo-appva.png" />
     <Content Include="media\pagaende_insatser.png" />
@@ -1007,6 +1016,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Features\Authentication\SignOut\SignOut.cshtml" />
+    <Content Include="Areas\Notification\Features\web.config" />
+    <Content Include="Areas\Notification\Features\_ViewStart.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\List\List.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

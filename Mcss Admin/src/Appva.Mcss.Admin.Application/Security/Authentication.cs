@@ -198,7 +198,6 @@ namespace Appva.Mcss.Admin.Application.Security
                 new Claim(ClaimTypes.Name, account.FullName),
                 new Claim(ClaimTypes.AuthenticationMethod, method.Value),
                 new Claim(ClaimTypes.AuthenticationInstant, DateTime.UtcNow.ToString("s")),
-                new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(1).ToString("s")),
                 new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString())
             };
             if (this.settings.IsAccessControlListInstalled() && this.settings.IsAccessControlListActivated())
@@ -225,7 +224,7 @@ namespace Appva.Mcss.Admin.Application.Security
         {
             if (account == null)
             {
-                this.auditing.FailedAuthentication(null, "Användare {0} misslyckades att autentisera p g a att användarkontot ej existerar", credentials);
+                this.auditing.FailedAuthentication(null,    "Användare {0} misslyckades att autentisera p g a att användarkontot ej existerar", credentials);
                 return AuthenticationResult.NotFound;
             }
             if (account.IsInactive())

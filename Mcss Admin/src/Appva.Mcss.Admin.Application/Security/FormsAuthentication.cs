@@ -68,8 +68,11 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="FormsAuthentication"/> class.
         /// </summary>
-        /// <param name="identity">The <see cref="IIdentityService"/> implementation</param>
-        /// <param name="accountService">The <see cref="IAccountService"/> implementation</param>
+        /// <param name="identity">The <see cref="IIdentityService"/></param>
+        /// <param name="tenants">The <see cref="ITenantService"/></param>
+        /// <param name="accountService">The <see cref="IAccountService"/></param>
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
+        /// <param name="auditing">The <see cref="IAuditService"/></param>
         public FormsAuthentication(
             IIdentityService identity, 
             ITenantService tenants, 

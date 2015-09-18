@@ -23,6 +23,7 @@ namespace Appva.Mcss.Admin.Application.Security.Extensions
         /// <summary>
         /// Returns whether or not the account is inactive.
         /// </summary>
+        /// <param name="account">The current account</param>
         /// <returns>True if the account is inactive</returns>
         public static bool IsInactive(this Account account)
         {
@@ -32,6 +33,7 @@ namespace Appva.Mcss.Admin.Application.Security.Extensions
         /// <summary>
         /// Returns whether or not the account is in lock out mode.
         /// </summary>
+        /// <param name="account">The current account</param>
         /// <returns>True if the account is locked out</returns>
         public static bool IsLockout(this Account account)
         {
@@ -41,6 +43,8 @@ namespace Appva.Mcss.Admin.Application.Security.Extensions
         /// <summary>
         /// Returns whether or not the account password is NOT equal to the password submitted.
         /// </summary>
+        /// <param name="account">The current account</param>
+        /// <param name="password">The password</param>
         /// <returns>True if the password is incorrect</returns>
         public static bool IsIncorrectPassword(this Account account, string password)
         {

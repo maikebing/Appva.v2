@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// Authenticates the external identity provider (IdP) response token.
         /// </summary>
-        /// <param name="hsaId">The response token</param>
+        /// <param name="token">The response token</param>
         /// <param name="result">The authentication result</param>
         /// <returns>True, if the authentication was successful</returns>
         bool AuthenticateToken(string token, out IAuthenticationResult result);
@@ -100,6 +100,12 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="SithsAuthentication"/> class.
         /// </summary>
+        /// <param name="client">The <see cref="ISithsClient"/></param>
+        /// <param name="identity">The <see cref="IIdentityService"/></param>
+        /// <param name="tenants">The <see cref="ITenantService"/></param>
+        /// <param name="accounts">The <see cref="IAccountService"/></param>
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
+        /// <param name="auditing">The <see cref="IAuditService"/></param>
         public SithsAuthentication(
             ISithsClient client, 
             IIdentityService identity, 

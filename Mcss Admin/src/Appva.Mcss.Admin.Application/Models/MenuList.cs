@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Application.Models
     /// <summary>
     /// Represents a collection of menu items.
     /// </summary>
+    /// <typeparam name="T">The entry type</typeparam>
     public interface IMenuList<T> : IList<T> where T : IMenuItem
     {
     }

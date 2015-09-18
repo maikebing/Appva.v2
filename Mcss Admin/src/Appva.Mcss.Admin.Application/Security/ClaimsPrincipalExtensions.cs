@@ -23,8 +23,8 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// FIXME: Return a tenant object
         /// </summary>
-        /// <param name="principal"></param>
-        /// <returns></returns>
+        /// <param name="principal">The current principal</param>
+        /// <returns>A tenant ID</returns>
         public static Guid TenantId(this ClaimsPrincipal principal)
         {
             var claim = principal.FindFirst(Core.Resources.ClaimTypes.TenantId);
@@ -38,8 +38,8 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// FIXME: This should be implemented.
         /// </summary>
-        /// <param name="principal"></param>
-        /// <returns></returns>
+        /// <param name="principal">The current principal</param>
+        /// <returns>A tenant name</returns>
         public static string TenantName(this ClaimsPrincipal principal)
         {
             var claim = principal.FindFirst(Core.Resources.ClaimTypes.TenantName);

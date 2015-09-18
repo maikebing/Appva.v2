@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Application.Security
     #region Imports.
 
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IdentityModel;
     using System.IdentityModel.Tokens;
     using System.Threading.Tasks;
@@ -108,6 +109,7 @@ namespace Appva.Mcss.Admin.Application.Security
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     public sealed class SecurityTokenMiddleware : AuthenticationMiddleware<SecurityTokenOptions>
     {
         #region Variables.
@@ -249,7 +251,7 @@ namespace Appva.Mcss.Admin.Application.Security
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [Serializable]
-    public sealed class TokenExpiredException : Exception
+    internal sealed class TokenExpiredException : Exception
     {
         #region Constructor.
 
@@ -332,7 +334,7 @@ namespace Appva.Mcss.Admin.Application.Security
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [Serializable]
-    public sealed class TokenInvalidException : Exception
+    internal sealed class TokenInvalidException : Exception
     {
         #region Constructor.
 

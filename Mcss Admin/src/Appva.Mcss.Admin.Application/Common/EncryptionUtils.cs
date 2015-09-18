@@ -34,8 +34,9 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// Creates a hash from value and salt.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="salt"></param>
+        /// <param name="value">The plain text value</param>
+        /// <param name="salt">The salt</param>
+        /// <returns>A hashed value of the plain text</returns>
         public static string Hash(string value, string salt)
         {
             var i = salt.IndexOf('.');
@@ -51,6 +52,9 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// Generates a salt.
         /// </summary>
+        /// <param name="dateTime">The current date time</param>
+        /// <param name="iterations">The amount of iterations</param>
+        /// <returns>A random salt</returns>
         public static string GenerateSalt(DateTime dateTime, int? iterations = null)
         {
             return GenerateSalt(dateTime.Ticks, iterations);
@@ -59,6 +63,9 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// Generates a salt.
         /// </summary>
+        /// <param name="salt">The salt number</param>
+        /// <param name="iterations">The amount of iterations</param>
+        /// <returns>A random salt</returns>
         public static string GenerateSalt(long salt, int? iterations = null)
         {
             if (iterations.HasValue && iterations.Value < DefaultIterations)

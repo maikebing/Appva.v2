@@ -10,9 +10,26 @@ namespace Appva.Mcss.Admin.Application.Common
 
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     #endregion
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public enum Visibility : int
+    {
+        /// <summary>
+        /// Visibility is hidden.
+        /// </summary>
+        Hidden = 0,
+
+        /// <summary>
+        /// Visibility is visible.
+        /// </summary>
+        Visible = 1
+    }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
@@ -36,6 +53,7 @@ namespace Appva.Mcss.Admin.Application.Common
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [AttributeUsage(AttributeTargets.All)]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     public sealed class KeyAttribute : Attribute
     {
         #region Constructor.
@@ -225,11 +243,5 @@ namespace Appva.Mcss.Admin.Application.Common
         }
 
         #endregion
-    }
-
-    public enum Visibility : int
-    {
-        Hidden = 0,
-        Visible = 1
     }
 }

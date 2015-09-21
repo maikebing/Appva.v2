@@ -8,8 +8,10 @@ namespace Appva.Mcss.Admin.Areas.Notification.Features.News
 {
     #region Imports.
 
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mvc.Security;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -54,8 +56,9 @@ namespace Appva.Mcss.Admin.Areas.Notification.Features.News
         /// Returns the home view.
         /// </summary>
         /// <returns>The view</returns>
-        [Route]
+        [Route("activate")]
         [HttpGet, Dispatch("List", "Notification")]
+        [PermissionsAttribute(Permissions.News.UpdateValue)]
         public ActionResult Activate(ActivateNews request)
         {
             return this.View();

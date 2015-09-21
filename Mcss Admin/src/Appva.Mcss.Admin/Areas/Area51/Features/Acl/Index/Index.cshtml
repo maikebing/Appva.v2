@@ -17,6 +17,10 @@
 	{
 		@Html.Submit("Upgradera roller och behörigheter (enbart en gång)", new { @class = "btn" })
 	}
+    @using (Html.Post("UpdatePermissions", "Acl", null))
+    {
+        @Html.Submit("Upgradera behörigheter", new { @class = "btn" })
+    }
 </div>
 <div id="content" class="cf">
 	<div id="content-primary">

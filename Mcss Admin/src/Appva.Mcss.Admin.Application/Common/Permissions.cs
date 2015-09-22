@@ -979,7 +979,6 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(56)]
             [Name("Create news")]
             [Description("Permission to create a news")]
-            [Visibility(Visibility.Hidden)]
             public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
@@ -988,7 +987,6 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(57)]
             [Name("Read news")]
             [Description("Permission to read/view news")]
-            [Visibility(Visibility.Hidden)]
             public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
@@ -997,7 +995,6 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(58)]
             [Name("Update news")]
             [Description("Permission to update/edit a news")]
-            [Visibility(Visibility.Hidden)]
             public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
@@ -1006,7 +1003,6 @@ namespace Appva.Mcss.Admin.Application.Common
             [Sort(59)]
             [Name("Delete news")]
             [Description("Permission to delete a news")]
-            [Visibility(Visibility.Hidden)]
             public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
         }
 

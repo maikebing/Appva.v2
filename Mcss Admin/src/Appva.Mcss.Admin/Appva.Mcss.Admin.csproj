@@ -211,7 +211,6 @@
     <Compile Include="Areas\Notification\Features\News\Activate\ActivateNews.cs" />
     <Compile Include="Areas\Notification\Features\News\Activate\ActivateNewsHandler.cs" />
     <Compile Include="Areas\Notification\Features\News\NewsController.cs" />
-    <None Include="Areas\Notification\Features\News\Popup\Popup.cshtml" />
     <Compile Include="Areas\Notification\Features\News\Popup\PopupNews.cs" />
     <Compile Include="Areas\Notification\Features\News\Popup\PopupNewsHandler.cs" />
     <Compile Include="Areas\Notification\Features\Notification\List\ListNotifications.cs" />
@@ -1021,6 +1020,7 @@
     <Content Include="Areas\Notification\Features\web.config" />
     <Content Include="Areas\Notification\Features\_ViewStart.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\List\List.cshtml" />
+    <Content Include="Areas\Notification\Features\News\Popup\Popup.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

@@ -88,29 +88,6 @@
                         <label>@Html.TextBoxFor(m => m.RangeInMinutesAfter, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off" }) minuter efter</label>
 					    @Html.ValidationMessageFor(m => m.RangeInMinutesAfter)
                     </div>
-					<div class="reminder">
-						<div class="checkbox">
-                            @Html.CheckBoxFor(m => m.Reminder, new { @class = "toggle", @data_toggletarget = "toggle-target-3", @autocomplete = "off" })
-							@Html.LabelFor(m => m.Reminder)
-						</div>
-						<div class="toggle-target-3 row cf">
-							<div class="text mini col">
-                                @Html.LabelFor(m => m.ReminderInMinutesBefore)
-                                @Html.TextBoxFor(m => m.ReminderInMinutesBefore, new { @type = "number", @min = "0", @max = "120", @autocomplete = "off" })
-								minuter innan klockslag.
-                                @Html.ValidationMessageFor(m => m.ReminderInMinutesBefore)
-							</div>
-							@*<div class="select col">
-								@Html.LabelFor(m => m.ReminderRecipient)
-                                @Html.DropDownListFor(
-                                    m => m.ReminderRecipient,
-                                    new SelectList(Model.ReminderRecipients, "Value", "Text", Model.ReminderRecipient),
-                                    "Välj mottagare ..."
-                                )
-                                @Html.ValidationMessageFor(m => m.ReminderRecipient)
-							</div>*@
-						</div>
-					</div>
 				</div>
 				<div class="toggle-target toggle-target-2">
 					<div class="row cf">

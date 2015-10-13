@@ -30,25 +30,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
     {
         #region Variables.
 
-		/// <summary>
-        /// The <see cref="IIdentityService"/>.
-		/// </summary>
-        private readonly IIdentityService identityService;
-
         /// <summary>
         /// The <see cref="ITaskService"/>.
         /// </summary>
         private readonly ITaskService taskService;
-
-        /// <summary>
-        /// The <see cref="IAccountService"/>.
-        /// </summary>
-        private readonly IAccountService accountService;
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
-        /// </summary>
-        private readonly IPersistenceContext persistence;
 
 		#endregion
 
@@ -57,15 +42,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
 		/// <summary>
         /// Initializes a new instance of the <see cref="HandleAlertHandler"/> class.
 		/// </summary>
-        /// <param name="settings">The <see cref="IIdentityService"/> implementation</param>
-        /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
-        /// <param name="settings">The <see cref="IAccountService"/> implementation</param>
-        public HandleAlertHandler(IIdentityService identityService, ITaskService taskService, IAccountService accountService, IPersistenceContext persistence)
+        /// <param name="taskService">The <see cref="ITaskService"/></param>
+        public HandleAlertHandler(ITaskService taskService)
 		{
-            this.identityService = identityService;
             this.taskService = taskService;
-            this.accountService = accountService;
-            this.persistence = persistence;
 		}
 
 		#endregion
@@ -75,23 +55,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListAlert Handle(HandleAlert message)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
-            
-            var roles = account.Roles;
-            var list = new List<ScheduleSettings>();
-            foreach (var role in roles)
-            {
-                var ss = role.ScheduleSettings;
-                foreach (var schedule in ss)
-                {
-                    if (schedule.ScheduleType == ScheduleType.Action)
-                    {
-                        list.Add(schedule);
-                    }
-                }
-            }
-            var task = this.taskService.Get(message.TaskId);
-            this.taskService.HandleAnyAlert(account, task, list);
+            this.taskService.HandleAlert(message.TaskId);
             return new ListAlert
             {
                 Id = message.Id,

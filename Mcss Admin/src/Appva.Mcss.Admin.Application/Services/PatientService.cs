@@ -59,13 +59,6 @@ namespace Appva.Mcss.Admin.Application.Services
         bool PatientWithPersonalIdentityNumberExist(PersonalIdentityNumber personalIdentityNumber);
 
         /// <summary>
-        /// Updates the property HasUnatendedTasks.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="hasUnattendedTasks"></param>
-        void UpdateUnattendantTasks(Patient patient, bool hasUnattendedTasks);
-
-        /// <summary>
         /// Creates a new patient.
         /// </summary>
         /// <param name="firstName">The first name</param>
@@ -186,17 +179,6 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.persistence.QueryOver<Patient>()
                     .Where(x => x.PersonalIdentityNumber == personalIdentityNumber)
                     .RowCount() > 0;
-        }
-
-        /// <inheritdoc />
-        public void UpdateUnattendantTasks(Patient patient, bool hasUnattendedTasks)
-        {
-            if (patient == null)
-            {
-                return;
-            }
-            patient.HasUnattendedTasks = hasUnattendedTasks;
-            this.persistence.Update(patient);
         }
 
         /// <inheritdoc />

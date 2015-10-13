@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Repository;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -36,7 +37,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="patient"></param>
         /// <param name="isDelayedHandled"></param>
-        IList<Task> FindDelaysByPatient(Patient patient, bool isDelayHandled, List<ScheduleSettings> list);
+        IList<Task> FindDelaysByPatient(Patient patient, bool isDelayHandled, IList<ScheduleSettings> list);
 
         /// <summary>
         /// Lists tasks by given criterias
@@ -47,15 +48,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Updates the task status.
         /// </summary>
-        /// <param name="task"></param>
-        void HandleAnyAlert(Account account, Task task, List<ScheduleSettings> list);
+        /// <param name="taskId">The task ID</param>
+        void HandleAlert(Guid taskId);
 
         /// <summary>
-        /// Updates the status of all tasks
+        /// Updates the status of all tasks for a patient.
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="tasks"></param>
-        void HandleAnyAlert(Account account, Patient patient);
+        /// <param name="patient">The patient</param>
+        void HandleAlertsForPatient(Patient patient);
     }
 
     /// <summary>
@@ -66,19 +66,24 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IAuditService"/>.
+        /// The <see cref="IIdentityService"/>.
         /// </summary>
-        private readonly IAuditService auditing;
+        private readonly IIdentityService identityService;
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
+        /// The <see cref="IAccountService"/>.
         /// </summary>
-        private readonly IPersistenceContext context;
+        private readonly IAccountService accountService;
+
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditService;
 
         /// <summary>
         /// The <see cref="ITaskRepository"/>.
         /// </summary>
-        private readonly ITaskRepository tasks;
+        private readonly ITaskRepository taskRepository;
 
         #endregion
 
@@ -87,12 +92,16 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskService"/> class.
         /// </summary>
-        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
-        public TaskService(IAuditService auditing, IPersistenceContext context, ITaskRepository tasks)
+        /// <param name="identityService">The <see cref="IIdentityService"/></param>
+        /// <param name="accountService">The <see cref="IAccountService"/></param>
+        /// <param name="auditService">The <see cref="IAuditService"/></param>
+        /// <param name="taskRepository">The <see cref="ITaskRepository"/></param>
+        public TaskService(IIdentityService identityService, IAccountService accountService, IAuditService auditService, ITaskRepository taskRepository)
         {
-            this.auditing = auditing;
-            this.context = context;
-            this.tasks = tasks;
+            this.identityService = identityService;
+            this.accountService  = accountService;
+            this.auditService    = auditService;
+            this.taskRepository  = taskRepository;
         }
 
         #endregion
@@ -102,61 +111,111 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Task Get(Guid id)
         {
-            return this.context.Get<Task>(id);
+            return this.taskRepository.Find(id);
         }
 
         /// <inheritdoc />
-        public IList<Task> FindDelaysByPatient(Patient patient, bool isDelayHandled, List<ScheduleSettings> list)
+        public IList<Task> FindDelaysByPatient(Patient patient, bool isDelayHandled, IList<ScheduleSettings> list)
         {
-            var query = this.context.QueryOver<Task>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.Delayed == true)
-                .And(x => x.DelayHandled == isDelayHandled)
-                .And(x => x.Patient == patient);
-            if (list != null && list.Count > 0)
-            {
-                query.JoinQueryOver<Schedule>(x => x.Schedule)
-                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
-            return query.List();
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = GetAllRoleScheduleSettingsList(account);
+            return this.taskRepository.FindDelaysByPatient(patient, isDelayHandled, scheduleSettings);
         }
 
         /// <inheritdoc />
-        public void HandleAnyAlert(Account account, Task task, List<ScheduleSettings> list)
+        public void HandleAlert(Guid taskId)
         {
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var task = this.taskRepository.Find(taskId);
             task.DelayHandled = true;
             task.DelayHandledBy = account;
-            var tasks = FindDelaysByPatient(task.Patient, false, null);
-            if (tasks.Count == 0 || (tasks.Count.Equals(1) && tasks.First().Id.Equals(task.Id)))
-            {
-                var patient = task.Patient;
-                patient.HasUnattendedTasks = false;
-                this.context.Update(patient);
-            }
-            this.tasks.Update(task);
-            this.auditing.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
+            this.taskRepository.Update(task);
+            this.auditService.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
         }
 
         /// <inheritdoc />
-        public void HandleAnyAlert(Account account, Patient patient)
+        public void HandleAlertsForPatient(Patient patient)
         {
-            foreach (var task in FindDelaysByPatient(patient, false, null))
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = GetRoleScheduleSettingsList(account);
+            var tasks = this.FindDelaysByPatient(patient, false, scheduleSettings);
+            foreach (var task in tasks)
             {
                 task.DelayHandled = true;
                 task.DelayHandledBy = account;
-                this.tasks.Update(task);
-                this.auditing.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
+                this.taskRepository.Update(task);
+                this.auditService.Update(task.Patient, "kvitterade {0} ({1:yyyy-MM-dd HH:mm} REF: {2}).", task.Name, task.Scheduled, task.Id);
             }
-            patient.HasUnattendedTasks = false;
-            this.context.Update(patient);
-            this.auditing.Update(patient, "kvitterade alla försenade insatser för {0} ({1}).", patient.FullName, patient.Id);
+            this.auditService.Update(patient, "kvitterade alla försenade insatser för {0} ({1}).", patient.FullName, patient.Id);
         }
 
         /// <inheritdoc />
         public PageableSet<Task> List(ListTaskModel model, int page = 1, int pageSize = 10)
         {
-            return this.tasks.List(model, page, pageSize);
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = GetRoleScheduleSettingsList(account);
+            return this.taskRepository.List(model, scheduleSettings, page, pageSize);
+        }
+        
+        #endregion
+
+        #region Public Helper Methods.
+
+        /// <summary>
+        /// Returns the schedule settings applied to a role for a specific user account.
+        /// </summary>
+        /// <param name="account">The account</param>
+        /// <returns>A list of <see cref="ScheduleSettings"/></returns>
+        public static IList<ScheduleSettings> GetRoleScheduleSettingsList(Account account)
+        {
+            var retval = new List<ScheduleSettings>();
+            foreach (var role in account.Roles)
+            {
+                foreach (var schedule in role.ScheduleSettings)
+                {
+                    if (schedule.ScheduleType != ScheduleType.Action)
+                    {
+                        continue;
+                    }
+                    retval.Add(schedule);
+                }
+            }
+            return retval;
+        }
+
+        public static IList<ScheduleSettings> CalendarRoleScheduleSettingsList(Account account)
+        {
+            var retval = new List<ScheduleSettings>();
+            foreach (var role in account.Roles)
+            {
+                foreach (var schedule in role.ScheduleSettings)
+                {
+                    if (schedule.ScheduleType != ScheduleType.Calendar)
+                    {
+                        continue;
+                    }
+                    retval.Add(schedule);
+                }
+            }
+            return retval;
+        }
+
+        /// <summary>
+        /// Returns the schedule settings applied to a role for a specific user account.
+        /// </summary>
+        /// <param name="account">The account</param>
+        /// <returns>A list of <see cref="ScheduleSettings"/></returns>
+        public static IList<ScheduleSettings> GetAllRoleScheduleSettingsList(Account account)
+        {
+            var retval = new List<ScheduleSettings>();
+            foreach (var role in account.Roles)
+            {
+                foreach (var schedule in role.ScheduleSettings)
+                {
+                    retval.Add(schedule);
+                }
+            }
+            return retval;
         }
 
         #endregion

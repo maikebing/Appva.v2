@@ -23,6 +23,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 using Appva.Mcss.Web.Controllers;
 using NHibernate.Criterion;
 using NHibernate.Transform;
+using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -34,9 +35,9 @@ using NHibernate.Transform;
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPatientService"/>.
+        /// The <see cref="IIdentityService"/>.
         /// </summary>
-        private readonly IPatientService patientService;
+        private readonly IIdentityService identityService;
 
         /// <summary>
         /// The <see cref="ITaskService"/>.
@@ -44,19 +45,9 @@ using NHibernate.Transform;
         private readonly ITaskService taskService;
 
         /// <summary>
-        /// The <see cref="ILogService"/>.
-        /// </summary>
-        private readonly ILogService logService;
-
-        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
-
-        /// <summary>
-        /// The <see cref="IPatientTransformer"/>.
-        /// </summary>
-        private readonly IPatientTransformer transformer;
 
         /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>.
@@ -70,18 +61,19 @@ using NHibernate.Transform;
         /// <summary>
         /// Initializes a new instance of the <see cref="OverviewInventoryHandler"/> class.
         /// </summary>
-        /// <param name="settings">The <see cref="IPatientService"/> implementation</param>
-        /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
-        /// <param name="settings">The <see cref="ILogService"/> implementation</param>
+        /// <param name="identityService">The <see cref="IIdentityService"/></param>
+        /// <param name="taskService">The <see cref="ITaskService"/></param>
+        /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
+        /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/></param>
         public OverviewInventoryHandler(
-            IPatientService patientService, ITaskService taskService, ILogService logService, IPersistenceContext persistence,
-            IPatientTransformer transformer, ITaxonFilterSessionHandler filtering)
+            IIdentityService identityService,
+            ITaskService taskService, 
+            IPersistenceContext persistence,
+            ITaxonFilterSessionHandler filtering)
         {
-            this.patientService = patientService;
+            this.identityService = identityService;
             this.taskService = taskService;
-            this.logService = logService;
             this.persistence = persistence;
-            this.transformer = transformer;
             this.filtering = filtering;
         }
 
@@ -99,12 +91,18 @@ using NHibernate.Transform;
             Inventory inventory = null;
             Patient patient = null;
             Schedule schedule = null;
-            var allStockCounts = this.persistence.QueryOver<Sequence>()
+            ScheduleSettings scheduleSettings = null;
+            var account = this.persistence.Get<Account>(this.identityService.PrincipalId);
+            var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
+            var query = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
                 .JoinAlias(x => x.Schedule, () => schedule)
                     .Where(() => schedule.IsActive)
+                    .JoinAlias(x => schedule.ScheduleSettings, () => scheduleSettings)
+                        .WhereRestrictionOn(() => scheduleSettings.Id).IsIn(scheduleList.Select(x => x.Id).ToArray())
                 .JoinAlias(x => x.Inventory, () => inventory)
                     .Where(() => inventory.LastRecount < lastStockCalculationDate)
+                .OrderBy(() => inventory.LastRecount).Asc
                 .JoinAlias(x => x.Patient, () => patient)
                     .Where(() => patient.IsActive && !patient.Deceased)
                     .JoinQueryOver<Taxon>(() => patient.Taxon)
@@ -116,9 +114,8 @@ using NHibernate.Transform;
                     .Select(() => inventory.LastRecount).WithAlias(() => dto.LastRecount)
                     .Select(() => inventory.Id).WithAlias(() => dto.InventoryId)
                     .Select(x => x.Name).WithAlias(() => dto.SequenceName)
-                )
-                .OrderBy(() => inventory.LastRecount).Asc
-                .TransformUsing(Transformers.AliasToBean<RecountOverviewItemViewModel>())
+                );
+            var allStockCounts = query.TransformUsing(Transformers.AliasToBean<RecountOverviewItemViewModel>())
                 .List<RecountOverviewItemViewModel>();
             return new InventoryOverviewViewModel
             {

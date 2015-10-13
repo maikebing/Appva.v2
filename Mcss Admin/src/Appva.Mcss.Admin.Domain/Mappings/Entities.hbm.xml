@@ -318,7 +318,6 @@
       <property name="Value" column="UniqueIdentifier" access="nosetter.camelcase" />
     </component>
     <property name="Deceased" />
-    <property name="HasUnattendedTasks" />
     <many-to-one name="Taxon" class="Taxon" />
     <bag name="SeniorAlerts" cascade="save-update">
       <key column="PatientId" />

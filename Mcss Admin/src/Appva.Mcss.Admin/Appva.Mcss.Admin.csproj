@@ -262,6 +262,7 @@
     <Compile Include="Areas\Patient\Features\Patient\QuickSearch\QuickSearchPatient.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Shared\Assessment.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Shared\CreateOrUpdatePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Shared\PatientModel.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatientPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatient.cs" />
@@ -1042,7 +1043,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1080</IISUrl>
+          <IISUrl>http://localhost:1088</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

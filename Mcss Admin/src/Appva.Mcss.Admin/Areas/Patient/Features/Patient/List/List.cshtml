@@ -15,10 +15,10 @@
         </p>
         @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientSearch.cshtml")
     </div>
-    @if (Model.Search != null && Model.Search.Items.Count > 0)
+    @if (Model.Items != null && Model.Items.Count > 0)
     {
     <ul class="people">
-        @foreach (var item in Model.Search.Items)
+        @foreach (var item in Model.Items)
         {
             <li class="cf @(item.HasUnattendedTasks ? Html.HasPermissionFor(Permissions.Alert.Read) ? "alarm" : "" : "")">
                 @if (! item.Active)
@@ -138,7 +138,7 @@
             </li>
         }
     </ul>
-    @Html.Pager(Model.Search.PageSize, Model.Search.PageNumber, Model.Search.TotalItemCount).Options(x => x
+    @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(x => x
         .DisplayTemplate("Pagination")
         .MaxNrOfPages(15)
         .AlwaysAddFirstPageNumber()

@@ -173,46 +173,27 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<Task> FindWithinMonth(Patient patient, DateTime date)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
-            var roles = account.Roles;
-            var list = new List<ScheduleSettings>();
-            foreach (var role in roles)
-            {
-                var schedules = role.ScheduleSettings;
-                foreach (var schedule in schedules)
-                {
-                    if (schedule.ScheduleType == ScheduleType.Calendar)
-                    {
-                        list.Add(schedule);
-                    }
-                }
-            }
-
+            var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
             var firstInMonth = date.FirstOfMonth();
             var lastInMonth = firstInMonth.AddDays(DateTime.DaysInMonth(firstInMonth.Year, firstInMonth.Month));
-            var q1 = this.context.QueryOver<Sequence>()
+            var sequences = this.context.QueryOver<Sequence>()
                 .Where(x => x.Patient == patient)
-                .And(x => x.IsActive)
-                .And(x => x.Interval != 0 || x.EndDate >= firstInMonth || x.StartDate <= lastInMonth)
-                .JoinQueryOver<Schedule>(x => x.Schedule)
-                .JoinQueryOver<ScheduleSettings>(s => s.ScheduleSettings)
-                    .Where(s => s.ScheduleType == ScheduleType.Calendar);
-            if (list.Count > 0)
-            {
-                q1.WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
-            var sequences = q1.List();
-            var q2 = this.context.QueryOver<Task>()
-                .Where(x => x.IsActive)
-                .And(x => x.Patient == patient)
-                .And(x => x.Scheduled >= firstInMonth && x.Scheduled <= lastInMonth)
+                  .And(x => x.IsActive)
+                  .And(x => x.Interval != 0 || x.EndDate >= firstInMonth || x.StartDate <= lastInMonth)
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .Where(x => x.ScheduleType == ScheduleType.Calendar);
-            if (list.Count > 0)
-            {
-                q2.WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
-            var tasks = q2.List();
+                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                    .And(s => s.ScheduleType == ScheduleType.Calendar)
+                .List();
+            var tasks = this.context.QueryOver<Task>()
+                .Where(x => x.IsActive)
+                  .And(x => x.Patient == patient)
+                  .And(x => x.Scheduled >= firstInMonth && x.Scheduled <= lastInMonth)
+                .JoinQueryOver<Schedule>(x => x.Schedule)
+                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                    .And(s => s.ScheduleType == ScheduleType.Calendar)
+                .List();
             var retval = this.scheduleService.FindTasks(firstInMonth, lastInMonth, new List<Schedule>(), sequences, tasks, new List<Task>());
             foreach (var task in retval.Where(x => x.StartDate.GetValueOrDefault().Date != x.EndDate.GetValueOrDefault().Date).ToList())
             {
@@ -275,7 +256,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns></returns>
         public Guid CreateCategory(string name)
         {
-            var category = new ScheduleSettings()
+            var category = new ScheduleSettings
             {
                 Name = name,
                 ScheduleType = ScheduleType.Calendar,
@@ -288,34 +269,19 @@ namespace Appva.Mcss.Admin.Application.Services
                 NurseConfirmDeviation = false
             };
             var retval = this.context.Save(category);
-            return (Guid)retval;
+            return (Guid) retval;
         }
 
         public IList<ScheduleSettings> GetCategories()
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
-            var roles = account.Roles;
-            var list = new List<ScheduleSettings>();
-            foreach (var role in roles)
-            {
-                var schedules = role.ScheduleSettings;
-                foreach (var schedule in schedules)
-                {
-                    if (schedule.ScheduleType == ScheduleType.Calendar)
-                    {
-                        list.Add(schedule);
-                    }
-                }
-            }
-            var query = this.context.QueryOver<ScheduleSettings>()
-                .Where(x => x.IsActive)
-                .And(x => x.ScheduleType == ScheduleType.Calendar)
-                .OrderBy(x => x.Name).Asc;
-            if (list.Count > 0)
-            {
-                query.WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
-            return query.List();
+            var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
+            return this.context.QueryOver<ScheduleSettings>()
+                .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                  .And(x => x.ScheduleType == ScheduleType.Calendar)
+                  .And(x => x.IsActive)
+                .OrderBy(x => x.Name).Asc
+                .List();
         }
 
         /// <summary>
@@ -339,7 +305,7 @@ namespace Appva.Mcss.Admin.Application.Services
             bool absent
         )
         {
-            Schedule schedule = this.context.QueryOver<Schedule>()
+            var schedule = this.context.QueryOver<Schedule>()
                 .Where(x => x.Patient == patient)
                 .And(x => x.IsActive)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
@@ -353,7 +319,6 @@ namespace Appva.Mcss.Admin.Application.Services
                     Patient = patient,
                     ScheduleSettings = this.context.Get<ScheduleSettings>(scheduleSettingsId)
                 });
-
                 schedule = this.context.Get<Schedule>(scheduleID);
             }
             if (isAllDay)
@@ -425,11 +390,9 @@ namespace Appva.Mcss.Admin.Application.Services
             bool absent
         )
         {
-
             var evt = Get(eventId);
             if (scheduleSettingsId.NotEqual(evt.Schedule.ScheduleSettings.Id))
             {
-
                 var schedule = this.context.QueryOver<Schedule>()
                     .Where(x => x.Patient == evt.Patient)
                     .And(x => x.IsActive)
@@ -438,7 +401,7 @@ namespace Appva.Mcss.Admin.Application.Services
                     .SingleOrDefault();
                 if (schedule.IsNull())
                 {
-                    schedule = new Schedule()
+                    schedule = new Schedule
                     {
                         Patient = evt.Patient,
                         ScheduleSettings = this.context.Get<ScheduleSettings>(scheduleSettingsId)

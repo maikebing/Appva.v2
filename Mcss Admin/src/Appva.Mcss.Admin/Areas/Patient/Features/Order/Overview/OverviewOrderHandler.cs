@@ -23,6 +23,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 using Appva.Mcss.Web.Controllers;
 using NHibernate.Criterion;
 using NHibernate.Transform;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -34,29 +35,14 @@ using NHibernate.Transform;
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPatientService"/>.
+        /// The <see cref="IIdentityService"/>.
         /// </summary>
-        private readonly IPatientService patientService;
-
-        /// <summary>
-        /// The <see cref="ITaskService"/>.
-        /// </summary>
-        private readonly ITaskService taskService;
-
-        /// <summary>
-        /// The <see cref="ILogService"/>.
-        /// </summary>
-        private readonly ILogService logService;
+        private readonly IIdentityService identityService;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
-
-        /// <summary>
-        /// The <see cref="IPatientTransformer"/>.
-        /// </summary>
-        private readonly IPatientTransformer transformer;
 
         /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>.
@@ -70,18 +56,16 @@ using NHibernate.Transform;
         /// <summary>
         /// Initializes a new instance of the <see cref="OverviewOrderHandler"/> class.
         /// </summary>
-        /// <param name="settings">The <see cref="IPatientService"/> implementation</param>
-        /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
-        /// <param name="settings">The <see cref="ILogService"/> implementation</param>
+        /// <param name="identityService">The <see cref="IIdentityService"/></param>
+        /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
+        /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/></param>
         public OverviewOrderHandler(
-            IPatientService patientService, ITaskService taskService, ILogService logService, IPersistenceContext persistence,
-            IPatientTransformer transformer, ITaxonFilterSessionHandler filtering)
+            IIdentityService identityService, 
+            IPersistenceContext persistence,
+            ITaxonFilterSessionHandler filtering)
         {
-            this.patientService = patientService;
-            this.taskService = taskService;
-            this.logService = logService;
+            this.identityService = identityService;
             this.persistence = persistence;
-            this.transformer = transformer;
             this.filtering = filtering;
         }
 
@@ -92,15 +76,23 @@ using NHibernate.Transform;
         /// <inheritdoc />
         public override OrderOverviewViewModel Handle(OverviewOrder message)
         {
+            var account = this.persistence.Get<Account>(this.identityService.PrincipalId);
+            var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
             var filterTaxon = this.filtering.GetCurrentFilter();
+            Schedule scheduleAlias = null;
+            ScheduleSettings scheduleSettingsAlias = null;
             var orders = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
-                .And(x => x.RefillInfo.Refill)
+                  .And(x => x.RefillInfo.Refill)
                 .Fetch(x => x.RefillInfo.RefillOrderedBy).Eager
+                .JoinAlias(x => x.Schedule, () => scheduleAlias)
+                    .Where(() => scheduleAlias.IsActive)
+                    .JoinAlias(x => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
+                        .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(scheduleList.Select(x => x.Id).ToArray())
                 .TransformUsing(new DistinctRootEntityResultTransformer());
             orders.JoinQueryOver<Patient>(x => x.Patient)
                 .Where(x => x.IsActive)
-                .And(x => !x.Deceased)
+                  .And(x => !x.Deceased)
                 .JoinQueryOver<Taxon>(x => x.Taxon)
                     .Where(Restrictions.On<Taxon>(x => x.Path)
                         .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));

@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -25,6 +26,16 @@ namespace Appva.Mcss.Admin.Areas.Models
     internal sealed class FullReportHandler : RequestHandler<FullReport, FullReportModel>
     {
         #region Fields.
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
 
         /// <summary>
         /// The <see cref="IReportService"/>.
@@ -53,8 +64,16 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="FullReportHandler"/> class.
         /// </summary>
-        public FullReportHandler(IReportService reports, ITaskService tasks, IScheduleService schedules, ITaxonFilterSessionHandler filter)
+        public FullReportHandler(
+            IAccountService accountService, 
+            IIdentityService identityService,
+            IReportService reports, 
+            ITaskService tasks, 
+            IScheduleService schedules, 
+            ITaxonFilterSessionHandler filter)
         {
+            this.accountService = accountService;
+            this.identityService = identityService;
             this.reports = reports;
             this.tasks = tasks;
             this.schedules = schedules;
@@ -67,18 +86,20 @@ namespace Appva.Mcss.Admin.Areas.Models
 
         public override FullReportModel Handle(FullReport message)
         {
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
             return new FullReportModel
             {
                 Start = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
                 End = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
-                Schedules = this.schedules.GetSchedules(),
+                Schedules = scheduleSettings,
                 Tasks = tasks.List(
                     new ListTaskModel 
                     {
                         StartDate = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
                         EndDate = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
-                        ScheduleSetting = message.ScheduleSetting,
-                        Taxon = this.filter.GetCurrentFilter().Id
+                        ScheduleSettingId = message.ScheduleSetting,
+                        TaxonId = this.filter.GetCurrentFilter().Id
                     }, 
                     message.Page,
                     30),

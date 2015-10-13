@@ -31,13 +31,20 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         IRepository
     {
         /// <summary>
+        /// Returns delayed tasks by patient and if the delay is handled.
+        /// </summary>
+        /// <param name="patient"></param>
+        /// <param name="isDelayedHandled"></param>
+        IList<Task> FindDelaysByPatient(Patient patient, bool isDelayHandled, IList<ScheduleSettings> list);
+
+        /// <summary>
         /// List Tasks by given criterias
         /// </summary>
         /// <param name="model">The <see cref="SearchAccountModel"/></param>
         /// <param name="page">The current page, must be > 0</param>
         /// <param name="pageSize">The page-size</param>
         /// <returns>A <see cref="PageableSet"/> of <see cref="AccountModel"/></returns>
-        PageableSet<Task> List(ListTaskModel model, int page = 1, int pageSize = 10);
+        PageableSet<Task> List(ListTaskModel model, IList<ScheduleSettings> list, int page = 1, int pageSize = 10);
     }
 
     /// <summary>
@@ -68,92 +75,100 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
         #region ITaskRepository members
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <returns></returns>
-        public PageableSet<Task> List(ListTaskModel model, int page = 1, int pageSize = 10)
+        /// <inheritdoc />
+        public IList<Task> FindDelaysByPatient(Patient patient, bool isDelayHandled, IList<ScheduleSettings> list)
         {
+            return this.persistenceContext.QueryOver<Task>()
+                .Where(x => x.IsActive == true)
+                  .And(x => x.Delayed == true)
+                  .And(x => x.DelayHandled == isDelayHandled)
+                  .And(x => x.Patient == patient)
+                  .JoinQueryOver<Schedule>(x => x.Schedule)
+                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray())
+                .List();
+        }
+
+        /// <inheritdoc />
+        public PageableSet<Task> List(ListTaskModel model, IList<ScheduleSettings> list, int page = 1, int pageSize = 10)
+        {
+            page     = page < 1 ? 1 : page;
+            var skip = (page - 1) * pageSize;
             var query = this.persistenceContext.QueryOver<Task>()
                 .Where(x => x.OnNeedBasis == false)
-                .And(x => x.Scheduled >= model.StartDate)
-                .And(x => x.Scheduled <= model.EndDate);
-
-            if (!model.Account.GetValueOrDefault().IsEmpty())
+                  .And(x => x.Scheduled >= model.StartDate)
+                  .And(x => x.Scheduled <= model.EndDate);
+            Account accountAlias = null;
+            Patient patientAlias = null;
+            Taxon   taxonAlias   = null;
+            Schedule scheduleAlias = null;
+            ScheduleSettings scheduleSettingsAlias = null;
+            if (model.AccountId.IsNotEmpty())
             {
-                query.JoinQueryOver<Account>(x => x.CompletedBy)
-                    .Where(x => x.Id == model.Account.GetValueOrDefault());
+                query.JoinAlias(x => x.CompletedBy, () => accountAlias)
+                    .Where(() => accountAlias.Id == model.AccountId);
             }
-
-            if (!model.Patient.GetValueOrDefault().IsEmpty())
+            if (model.PatientId.IsNotEmpty())
             {
-                query.JoinQueryOver<Patient>(x => x.Patient)
-                    .Where(x => x.Id == model.Patient.GetValueOrDefault());
+                query.JoinAlias(x => x.Patient, () => patientAlias)
+                    .Where(() => patientAlias.Id == model.PatientId);
             }
-
-            if (!model.Taxon.GetValueOrDefault().IsEmpty())
+            if (model.TaxonId.IsNotEmpty())
             {
-                query.JoinQueryOver<Patient>(x => x.Patient)
-                    .JoinQueryOver<Taxon>(x => x.Taxon)
-                        .Where(Restrictions.Like(Projections.Property<Taxon>(x => x.Path), model.Taxon.GetValueOrDefault().ToString(), MatchMode.Anywhere));
+                query
+                    .JoinAlias(x => x.Patient, () => patientAlias)
+                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .WhereRestrictionOn(x => taxonAlias.Path)
+                        .IsLike(model.TaxonId.ToString(), MatchMode.Anywhere);
             }
-
-            if (!model.ScheduleSetting.GetValueOrDefault().IsEmpty())
+            if (model.ScheduleSettingId.IsNotEmpty())
             {
-                query.JoinQueryOver<Schedule>(x => x.Schedule)
-                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                        .Where(x => x.Id == model.ScheduleSetting.GetValueOrDefault());
+                query
+                    .JoinAlias(x => x.Schedule, () => scheduleAlias)
+                    .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
+                        .Where(() => scheduleSettingsAlias.Id == model.ScheduleSettingId);
             }
-            else if (!model.IncludeCalendarTasks)
+            else if (! model.IncludeCalendarTasks)
             {
-                query.JoinQueryOver<Schedule>(x => x.Schedule)
-                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                        .Where(x => x.ScheduleType == ScheduleType.Action);
+                query
+                    .JoinAlias(x => x.Schedule, () => scheduleAlias)
+                    .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
+                        .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(list.Select(x => x.Id).ToArray())
+                        .And(() => scheduleSettingsAlias.ScheduleType == ScheduleType.Action);
             }
-
-            //// Fetch, order and transform
-            query.Fetch(x => x.Patient).Eager
+            else
+            {
+                query
+                    .JoinAlias(x => x.Schedule, () => scheduleAlias)
+                    .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
+                        .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(list.Select(x => x.Id).ToArray());
+            }
+            var tasks = query.Fetch(x => x.Patient).Eager
                 .Fetch(x => x.StatusTaxon).Eager
                 .OrderBy(x => x.Scheduled).Desc
-                .ThenBy(x => x.CreatedAt).Desc
-                .TransformUsing(new DistinctRootEntityResultTransformer());
-
-            //// Checks that page is greater then 0
-            if (page < 1)
-            {
-                page = 1;
-            }
-
-            //// Number of rows to skip
-            var skip = (page - 1) * pageSize;
-
-            return new PageableSet<Task>()
+                 .ThenBy(x => x.CreatedAt).Desc
+                .TransformUsing(new DistinctRootEntityResultTransformer())
+                .Skip(skip)
+                .Take(pageSize)
+                .List<Task>();
+            var totalCount = query.RowCount();
+            return new PageableSet<Task>
             {
                 CurrentPage = page,
-                NextPage = page++,
-                PageSize = pageSize,
-                TotalCount = query.RowCount(),
-                Entities = query.Skip(skip).Take(pageSize).List<Task>()
+                NextPage    = page++,
+                PageSize    = pageSize,
+                TotalCount  = totalCount,
+                Entities    = tasks
             };
         }
 
-        /// <summary>
-        /// Gets a task whit the given id
-        /// </summary>
-        /// <param name="id">The id</param>
-        /// <returns>The <see cref="Task"/></returns>
+        /// <inheritdoc />
         public Task Find(Guid id)
         {
             return this.persistenceContext.Get<Task>(id);
         }
 
-        /// <summary>
-        /// Updates the task
-        /// </summary>
-        /// <param name="entity">The <see cref="Task"/></param>
+        /// <inheritdoc />
         public void Update(Task entity)
         {
             entity.UpdatedAt = DateTime.Now;

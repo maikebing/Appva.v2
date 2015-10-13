@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using NHibernate.Criterion;
     using NHibernate.Transform;
     using Appva.NHibernateUtils.Projections;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
 
     #endregion
@@ -52,6 +53,16 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/> dispatcher.
         /// </summary>
         private readonly IPersistenceContext persistence;
@@ -63,8 +74,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportService"/> class.
         /// </summary>
-        public ReportService(IPersistenceContext persistence)
+        public ReportService(IAccountService accountService, IIdentityService identityService, IPersistenceContext persistence)
         {
+            this.accountService = accountService;
+            this.identityService = identityService;
             this.persistence = persistence;
         }
 
@@ -221,19 +234,28 @@ namespace Appva.Mcss.Admin.Application.Services
                 query.JoinQueryOver<Account>(x => x.CompletedBy)
                     .Where(x => x.Id == filter.Account.GetValueOrDefault());
             }
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
             if (!filter.ScheduleSetting.GetValueOrDefault().IsEmpty())
             {
                 query.JoinQueryOver<Schedule>(x => x.Schedule)
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                        .Where(x => x.Id == filter.ScheduleSetting.GetValueOrDefault());
+                        .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                        .And(x => x.Id == filter.ScheduleSetting.GetValueOrDefault());
             }
             else if (!filter.IncludeCalendarTasks)
             {
                 query.JoinQueryOver<Schedule>(x => x.Schedule)
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                        .Where(x => x.ScheduleType == ScheduleType.Action);
+                        .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                        .And(x => x.ScheduleType == ScheduleType.Action);
             }
-
+            else
+            {
+                query.JoinQueryOver<Schedule>(x => x.Schedule)
+                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                        .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
+            }
             return query;
         }
         

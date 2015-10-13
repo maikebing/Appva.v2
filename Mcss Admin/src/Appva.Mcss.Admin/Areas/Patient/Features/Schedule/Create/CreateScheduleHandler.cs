@@ -73,26 +73,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override CreateScheduleForm Handle(CreateSchedule message)
         {
             var account = this.persistence.Get<Account>(this.identities.PrincipalId);
-            var roles = account.Roles;
-            var list = new List<ScheduleSettings>();
-            foreach (var role in roles)
-            {
-                var ss = role.ScheduleSettings;
-                foreach (var schedule in ss)
-                {
-                    if (schedule.ScheduleType == ScheduleType.Action)
-                    {
-                        list.Add(schedule);
-                    }
-                }
-            }
+            var list = TaskService.GetRoleScheduleSettingsList(account);
             var query = this.persistence.QueryOver<ScheduleSettings>()
-                    .Where(s => s.ScheduleType == ScheduleType.Action)
+                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray())
+                    .And(s => s.ScheduleType == ScheduleType.Action)
                     .OrderBy(x => x.Name).Asc;
-            if (list.Count > 0)
-            {
-                query.WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
             var items = query.List()
                     .Select(x => new SelectListItem
                     {

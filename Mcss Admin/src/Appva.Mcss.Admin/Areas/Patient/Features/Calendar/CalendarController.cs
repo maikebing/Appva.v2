@@ -374,7 +374,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [PermissionsAttribute(Permissions.Dashboard.ReadCalendarValue)]
         public PartialViewResult Overview()
         {
-            //// FIXME: Update to 1.5.1 version here!
+            var list = TaskService.CalendarRoleScheduleSettingsList(this.Identity());
             var taxon = this.filtering.GetCurrentFilter();
             var categories = this.eventService.GetCategories();
             Patient patientAlias = null;
@@ -390,7 +390,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
                 .TransformUsing(new DistinctRootEntityResultTransformer())
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                        .Where(x => x.ScheduleType == ScheduleType.Calendar)
+                        .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray())
+                        .And(x => x.ScheduleType == ScheduleType.Calendar)
                 .List();
             var tasks = this.context.QueryOver<Task>()
                 .Where(x => x.IsActive)
@@ -414,7 +415,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
                     .Where(x => x.IsActive)
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .Where(x => x.ScheduleType == ScheduleType.Calendar)
+                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray())
+                    .And(x => x.ScheduleType == ScheduleType.Calendar)
                 .List();
             var schedules = this.context.QueryOver<Schedule>()
                 .Where(x => x.IsActive)
@@ -423,7 +425,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
                     .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
                         .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .Where(x => x.ScheduleType == ScheduleType.Calendar)
+                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray())
+                    .And(x => x.ScheduleType == ScheduleType.Calendar)
                 .List();
             var startTime = tasks.Count > 0 ? tasks.FirstOrDefault().Scheduled : DateTime.Now;
             if (startTime > DateTime.Now)

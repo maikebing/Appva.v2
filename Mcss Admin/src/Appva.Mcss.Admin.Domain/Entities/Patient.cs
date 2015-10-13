@@ -80,15 +80,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// If the patient has delayed <see cref="Task"/> which are not quittenced.
-        /// </summary>
-        public virtual bool HasUnattendedTasks
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// List of <see cref="Delegation"/> for this patient.
         /// </summary>
         public virtual IList<Delegation> Delegations

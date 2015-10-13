@@ -116,6 +116,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
             this.persistence = persistence;
             this.filtering = filtering;
             this.transformer = transformer;
+            this.tenantService = tenantService;
         }
 
         #endregion
@@ -464,6 +465,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         public ActionResult DelegationReport(Guid id, Guid? tId, Guid? sId, DateTime? startDate, DateTime? endDate, int? page = 1)
         {
             var account = this.persistence.Get<Account>(id);
+            var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
             var taxons = this.taxonomyService.List(TaxonomicSchema.Organization);
             startDate = (startDate.HasValue) ? startDate.Value : DateTimeUtilities.Now().AddDays(-DateTimeUtilities.Now().DaysInMonth());
             endDate = (endDate.HasValue) ? endDate.Value.LastInstantOfDay() : DateTimeUtilities.Now().LastInstantOfDay();
@@ -495,9 +497,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                 {
                     StartDate = startDate.GetValueOrDefault(),
                     EndDate = endDate.GetValueOrDefault(),
-                    Account = account.Id,
-                    ScheduleSetting = sId,
-                    Taxon = this.filtering.GetCurrentFilter().Id
+                    AccountId = account.Id,
+                    ScheduleSettingId = sId,
+                    TaxonId = this.filtering.GetCurrentFilter().Id
                 }, page.GetValueOrDefault(1), 30),
                 DelegationId = tId,
                 Delegations = this.taxonomyService.ListChildren(TaxonomicSchema.Delegation).Select(x => new SelectListItem
@@ -506,7 +508,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                     Value = x.Id.ToString()
                 }).ToList(),
                 Schedule = sId,
-                Schedules = this.persistence.QueryOver<ScheduleSettings>().Where(x => x.IsActive == true).List(),
+                Schedules = scheduleSettings,
             });
 
         }
@@ -581,7 +583,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
             }.Filter(query);
             var tasks = query.List();
             var bytes = ExcelWriter.CreateNew<Task, ExcelTaskModel>(
-                PathResolver.ResolveAppRelativePath("\\Templates\\Template.xls"),
+                PathResolver.ResolveAppRelativePath("Templates\\Template.xls"),
                 x => new ExcelTaskModel
                 {
                     Task = x.Name,

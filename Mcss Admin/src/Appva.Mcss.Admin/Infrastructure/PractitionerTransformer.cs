@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Infrastructure
                 Active = account.IsActive,
                 FullName = account.FullName,
                 UniqueIdentifier = account.PersonalIdentityNumber,
-                Title = TitleHelper.GetTitle(account.Roles),
+                Title = account.Title,
                 Superior = superior != null ? superior.FullName : "Saknas",
                 Account = account
             };

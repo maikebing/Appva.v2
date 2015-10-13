@@ -105,10 +105,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     message.Year = DateTime.Now.Year;
                 }
                 startDate = new DateTime(message.Year.Value, message.Month.Value, 1);
-                endDate = new DateTime(message.Year.Value, message.Month.Value, DateTime.DaysInMonth(message.Year.Value, message.Month.Value));
+                endDate   = new DateTime(message.Year.Value, message.Month.Value, DateTime.DaysInMonth(message.Year.Value, message.Month.Value));
             }
             var list = new List<ScheduleSettings>();
-            
             var account = this.persistence.Get<Account>(this.identitfyService.PrincipalId);
             var roles = account.Roles;
             foreach (var role in roles)

@@ -1,4 +1,20 @@
 mcss.validation = {
+    PreparedSequenceCreate: function (params) {
+        $('.std-form form').validate({
+            'rules': {
+                'Name': 'required'
+            },
+            'messages': {
+                'Name': {
+                    'required': "Namn måste fyllas i."
+                }
+            },
+            'submitHandler': function (form) {
+                $(form).find('input[type=submit]').attr('disabled', 'disabled');
+                form.submit();
+            }
+        });
+    },
 	PatientCreate : function(params) {
 		var id = params['id'];
         var uidUrl = params['uidUrl'], 

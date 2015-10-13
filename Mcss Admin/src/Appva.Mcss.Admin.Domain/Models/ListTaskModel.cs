@@ -40,7 +40,7 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// The Account id, optional
         /// </summary>
-        public Guid? Account
+        public Guid? AccountId
         {
             get;
             set;
@@ -49,7 +49,7 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// The Patient id, optional
         /// </summary>
-        public Guid? Patient
+        public Guid? PatientId
         {
             get; 
             set;
@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// The organisation Taxon, optional
         /// </summary>
-        public Guid? Taxon
+        public Guid? TaxonId
         {
             get;
             set;
@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// The organisation Taxon, optional
         /// </summary>
-        public Guid? ScheduleSetting
+        public Guid? ScheduleSettingId
         {
             get;
             set;

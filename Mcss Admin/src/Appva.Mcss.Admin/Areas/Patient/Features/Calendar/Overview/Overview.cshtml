@@ -30,7 +30,10 @@
                             </td>
                             <td><span class="act @String.Format("cal-cat{0}", (Model.Categories.FirstOrDefault(x => x.Value == act.Schedule.ScheduleSettings).Key % Model.CalendarColors)+1)">@act.Schedule.ScheduleSettings.Name</span></td>
                             <td @((act.Scheduled.Date - DateTime.Now.Date).Days < 0 ? "class=urgent" : "")><span>@((act.Scheduled.Date - DateTime.Now.Date).Days) dagar</span></td>
-                            <td class="check"><input type="checkbox" name="@act.Scheduled" id="@act.Sequence.Id" class="cal-quittance" /></td>
+                            <td class="check">
+                                <input type="checkbox" name="@act.Scheduled" id="@act.Sequence.Id" class="cal-quittance" />
+                                <span class="cal-label-done">Kvitterad</span>
+                            </td>
                         </tr>
                     }        
                 </tbody>

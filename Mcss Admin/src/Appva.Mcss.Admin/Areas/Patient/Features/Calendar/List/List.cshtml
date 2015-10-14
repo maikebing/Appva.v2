@@ -106,6 +106,15 @@
                                                     }
                                                 </span>
 										        @evt.Schedule.ScheduleSettings.Name
+                                                @if (evt.Overview)
+                                                {
+                                                    <span class="act-activity">
+                                                        <input type="checkbox" @(evt.Quittanced ? "checked" : "") value="@evt.Quittanced.ToString()" name="@evt.Scheduled" id="@evt.Sequence.Id" class="cal-quittance" />
+                                                        <label class="cal-label" for="@evt.Scheduled">
+                                                            @(evt.Quittanced ? string.Format("Kvitterad av {0}", evt.QuittancedBy.FullName) : string.Format("Ej kvitterad"))
+                                                        </label>
+                                                    </span>
+                                                }
                                                 <span class="act-info">
                                                     <strong>Anteckningar/instruktion:</strong>
                                                     <span>

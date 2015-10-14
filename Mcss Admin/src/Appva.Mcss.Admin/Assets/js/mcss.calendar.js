@@ -18,14 +18,32 @@
     },
     quittance: function (task) {
         $.ajax({
-            url: 'patient/calendar/quittance',
+            url: '/patient/calendar/quittance',
             dataType: 'JSON',
             method: 'get',
             data: { id: task.attr('id'), date: task.attr('name') },
             success: function (data) {
                 if (data) {
-                    task.attr('checked', true);
-                    task.attr('disabled', true);
+                    if (data.success) {
+                        task.attr('checked', true);
+                        task.next(".cal-label-done").show();
+                        task.next("label.cal-label").html("Kvitterad av " + data.name);
+                    }
+                }
+            }
+        });
+    },
+    unQuittance: function (task) {
+        $.ajax({
+            url: '/patient/calendar/unquittance',
+            dataType: 'JSON',
+            method: 'get',
+            data: { id: task.attr('id'), date: task.attr('name') },
+            success: function (data) {
+                if (data) {
+                    task.attr('checked', false);
+                    task.next(".cal-label-done").hide();
+                    task.next("label.cal-label").html("Ej kvitterad");
                 }
             }
         });
@@ -54,7 +72,13 @@
             }
         });
         $(':checkbox.cal-quittance').click(function () {
-            mcss.Calendar.quittance($(this));
+            if ($(this).is(':checked')) {
+                mcss.Calendar.quittance($(this));
+            }
+            else {
+                mcss.Calendar.unQuittance($(this));
+            }
+
         });
     }
 };

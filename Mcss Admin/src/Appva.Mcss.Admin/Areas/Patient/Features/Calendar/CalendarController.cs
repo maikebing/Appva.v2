@@ -484,9 +484,48 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
                 {
                     this.context.Update(task);
                 }
-                return Json(true, JsonRequestBehavior.AllowGet);
+                this.logService.Info(string.Format("Användare {0} kvitterade händelse {1} (ref. {2})", Identity().FullName, task.Name, task.Id), Identity(), task.Patient);
+                return Json(new { success = true, name = Identity().FullName }, JsonRequestBehavior.AllowGet);
             }
-            return Json(false, JsonRequestBehavior.AllowGet);
+            return Json(new { success = false, name = Identity().FullName }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Ajax request to unquittance a task on the overview.
+        /// </summary>
+        /// <param name="id">The sequence id</param>
+        /// <param name="date">The date</param>
+        /// <returns><see cref="JsonResult"/></returns>
+        [Route("~/patient/calendar/unquittance")]
+        public JsonResult UnQuittance(Guid id, DateTime date)
+        {
+            var sequence = this.context.Get<Sequence>(id);
+            var tasks = this.context.QueryOver<Task>()
+                .Where(x => x.IsActive)
+                .And(x => x.Sequence == sequence)
+                .List();
+            var task = this.scheduleService.FindTasks(
+                date,
+                new List<Schedule> { sequence.Schedule },
+                new List<Sequence> { sequence },
+                tasks,
+                new List<Task>()).FirstOrDefault();
+            if (task.IsNotNull())
+            {
+                task.Quittanced = false;
+                task.QuittancedBy = null;
+                if (task.IsTransient)
+                {
+                    this.context.Save(task);
+                }
+                else
+                {
+                    this.context.Update(task);
+                }
+                this.logService.Info(string.Format("Användare {0} ångrade kvittering på händelse {1} (ref. {2})", Identity().FullName, task.Name, task.Id), Identity(), task.Patient);
+                return Json(new { success = true, name = Identity().FullName }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = false, name = Identity().FullName }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

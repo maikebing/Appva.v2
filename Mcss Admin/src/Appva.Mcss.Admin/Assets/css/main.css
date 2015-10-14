@@ -913,7 +913,12 @@ tr.modified { background-color:#f4f4f4; text-decoration: line-through; }
     vertical-align:middle;
 }
 
-.panel .order-check span {
+.panel table.cal-overview {
+    table-layout:fixed;
+}
+
+.panel .order-check span,
+.panel span.cal-label-done {
     vertical-align:middle;
     display:none;
     background:#67ae56;
@@ -2009,6 +2014,17 @@ form .time {width:4em;}
 #calendar .act:hover .act-info,
 #calendar .pause:hover .act-info {
 	display:block;
+}
+
+#calendar .act-activity {
+    font-size: 11px;
+    font-style:italic;
+    display:block;
+    margin-top:5px;
+}
+
+#calendar .act-activity input {
+    vertical-align:middle;
 }
 
 .cal-wrap {padding:0 12px;}

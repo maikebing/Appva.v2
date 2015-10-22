@@ -63,6 +63,7 @@
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Person.cs" />
+    <Compile Include="Models\CalendarTaskModel.cs" />
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />

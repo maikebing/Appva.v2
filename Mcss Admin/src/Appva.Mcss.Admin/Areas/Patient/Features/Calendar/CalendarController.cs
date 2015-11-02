@@ -97,6 +97,21 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
 
         #endregion
 
+        #region Details
+
+        /// <summary>
+        /// Returns details of an event
+        /// </summary>
+        /// <returns></returns>
+        [Route("details")]
+        [HttpGet, Dispatch]
+        public ActionResult Details(CalendarDetails request)
+        {
+            return View();
+        }
+
+        #endregion 
+
         #region Create.
 
         /// <summary>

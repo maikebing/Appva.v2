@@ -80,7 +80,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override EventListViewModel Handle(ListCalendar message)
         {
-            var filter = message.Filter ?? new string[0];
             var date = message.Date.HasValue ? message.Date.Value.FirstOfMonth() : DateTime.Today.FirstOfMonth();
             if (message.Prev.IsNotNull())
             {
@@ -91,6 +90,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 date = message.Date.GetValueOrDefault().NextMonth();
             }
             var categories = this.eventService.GetCategories();
+            var filter = message.Filter ?? categories.Select(x => x.Id).ToArray();
             var patient = this.patientService.Get(message.Id);
             var events = this.eventService.FindWithinMonth(patient, date);
             this.auditing.Read(patient, "läste kalenderaktiviteter för användare {0}(REF:{1})", patient.FullName, patient.Id);

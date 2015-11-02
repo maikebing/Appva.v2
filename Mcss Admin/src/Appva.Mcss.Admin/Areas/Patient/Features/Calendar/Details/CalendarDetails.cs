@@ -1,13 +1,15 @@
-﻿// <copyright file="CalendarWeek.cs" company="Appva AB">
+﻿// <copyright file="CalendarDetails.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Application.Models
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -17,29 +19,42 @@ namespace Appva.Mcss.Admin.Application.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CalendarWeek
+    public sealed class CalendarDetails : IRequest<CalendarTask>
     {
+
         #region Properties
 
         /// <summary>
-        /// The number of the week
+        /// The task id
         /// </summary>
-        public int WeekNumber
+        public Guid TaskId
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The days within the week
+        /// The Sequence id
         /// </summary>
-        public IList<CalendarDay> Days
+        public Guid SequenceId
         {
             get;
             set;
         }
 
-        public List<CalendarTask> AllEvents 
+        /// <summary>
+        /// The Starttime of the event
+        /// </summary>
+        public DateTime StartTime
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The endtime of the event
+        /// </summary>
+        public DateTime EndTime
         {
             get;
             set;

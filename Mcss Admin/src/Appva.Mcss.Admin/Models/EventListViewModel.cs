@@ -16,7 +16,7 @@ namespace Appva.Mcss.Web.ViewModels {
         public IList<CalendarWeek> Calendar { get; set; }
         public PatientViewModel Patient { get; set; }
         public EventViewModel EventViewModel { get; set; }
-        public IList<string> FilterList { get; set; }
+        public IList<Guid> FilterList { get; set; }
 
         private int _iterator = 1;
 

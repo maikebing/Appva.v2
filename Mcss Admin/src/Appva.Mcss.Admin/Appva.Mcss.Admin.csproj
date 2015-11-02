@@ -225,6 +225,8 @@
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidgetHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetails.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Details\CalenderDetailsHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\EditAll\EditAllEventSequence.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequence.cs" />
@@ -1022,6 +1024,7 @@
     <Content Include="Areas\Notification\Features\_ViewStart.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\List\List.cshtml" />
     <Content Include="Areas\Notification\Features\News\Popup\Popup.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

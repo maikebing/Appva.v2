@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Core.Utilities;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Transformers;
 
     #endregion
 
@@ -27,7 +28,7 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface IEventService : IService
     {
         Sequence Get(Guid id);
-        IList<Task> FindWithinMonth(Patient patient, DateTime date);
+        IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date);
         Guid CreateCategory(string name);
         IList<ScheduleSettings> GetCategories();
         void Create(
@@ -170,7 +171,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="patient"></param>
         /// <param name="date"></param>
-        public IList<Task> FindWithinMonth(Patient patient, DateTime date)
+        public IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
             var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
@@ -194,26 +195,7 @@ namespace Appva.Mcss.Admin.Application.Services
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                     .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
-            var retval = this.scheduleService.FindTasks(firstInMonth, lastInMonth, new List<Schedule>(), sequences, tasks, new List<Task>());
-            /*foreach (var task in retval.Where(x => x.StartDate.GetValueOrDefault().Date != x.EndDate.GetValueOrDefault().Date).ToList())
-            {
-                for (DateTime d = task.StartDate.GetValueOrDefault().AddDays(1); d.Date < task.EndDate.GetValueOrDefault().Date; d = d.AddDays(1))
-                {
-                    var newTask = CloneActivity(task);
-                    newTask.Scheduled = d;
-                    newTask.AllDay = true;
-                    retval.Add(newTask);
-                }
-                var firstTask = CloneActivity(task);
-                firstTask.EndDate = firstTask.StartDate.GetValueOrDefault().LastInstantOfDay();
-                firstTask.Scheduled = firstTask.StartDate.GetValueOrDefault().LastInstantOfDay();
-                retval.Add(firstTask);
-                task.StartDate = task.StartDate.Value.Date;
-                task.Scheduled = task.EndDate.GetValueOrDefault();
-            }*/
-
-            return retval;
-
+            return EventTransformer.ToEvent(this.scheduleService.FindTasks(firstInMonth, lastInMonth, new List<Schedule>(), sequences, tasks, new List<Task>()));
         }
 
         /// <summary>
@@ -503,7 +485,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var retval = new List<CalendarWeek>();
             var current = date;
-            while(current < date.LastOfMonth())
+            while(current <= date.LastOfMonth())
             {
                 retval.Add(CreateWeek(current, events));
                 current = current.FirstDateOfWeek().AddDays(7);
@@ -517,37 +499,41 @@ namespace Appva.Mcss.Admin.Application.Services
             var week = new CalendarWeek()
             { 
                 WeekNumber = date.GetWeekNumber(),
-                Days = date.
+                Days = new List<CalendarDay>(),
+                AllEvents = new List<CalendarTask>()
             };
+            
             var current = date.FirstDateOfWeek();
-
             for (var day = 0; day < 7; day++)
             {
-                week.Days.Add(this.CreateDay(current, date.Month, events));
+                var d = this.CreateDay(current, date.Month, events);
+                week.Days.Add(d);
+                week.AllEvents.AddRange(d.Events);
+                current = current.AddDays(1);
             }
 
             return week;
         }
 
-        private Calendar CreateDay(DateTime date, int currentMonthDisplayed, IList<CalendarTask> events)
+        private CalendarDay CreateDay(DateTime date, int currentMonthDisplayed, IList<CalendarTask> events)
         {
-            return new Calendar()
+            return new CalendarDay()
             {
                 IsWithinMonth = date.Month == currentMonthDisplayed,
                 IsToday = date.Equals(DateTime.Today),
-                Events = events.Where(x => x.StartTime.Date == date.Date).ToList(),
+                Events = date.DayOfWeek.Equals(DayOfWeek.Monday) ? events.Where(x => x.StartTime.Date <= date.Date && x.EndTime.Date >= date.Date).ToList() : events.Where(x => x.StartTime.Date == date.Date).ToList(),
                 NumberOfEvents = events.Where(x => x.StartTime.Date <= date.Date && x.EndTime.Date >= date.Date).Count(),
                 Date = date
             };
         }
 
-        private IList<Calendar> CalendarDaysInMonth(DateTime date, int daysInMonth, IList<CalendarTask> events)
+        private IList<CalendarDay> CalendarDaysInMonth(DateTime date, int daysInMonth, IList<CalendarTask> events)
         {
-            IList<Calendar> retval = new List<Calendar>();
+            IList<CalendarDay> retval = new List<CalendarDay>();
             for (var i = 0; i < daysInMonth; i++)
             {
                 var day = date.AddDays(i);
-                var calendar = new Calendar()
+                var calendar = new CalendarDay()
                 {
                     IsWithinMonth = true,
                     IsToday = day.Equals(DateTime.Today),
@@ -559,14 +545,14 @@ namespace Appva.Mcss.Admin.Application.Services
             return retval;
         }
 
-        private IList<Calendar> CalendarDaysBefore(DateTime date, int daysInMonth)
+        private IList<CalendarDay> CalendarDaysBefore(DateTime date, int daysInMonth)
         {
-            var retval = new List<Calendar>();
+            var retval = new List<CalendarDay>();
             var days = date.AddDays(-(DateTimeUtilities.FirstDayOfWeek() - date.DayOfWeek)).Subtract(date).Days;
             days = (days.LessThan(0)) ? days.Add(7) : days;
             for (var i = 0; i < days; i++)
             {
-                retval.Add(new Calendar()
+                retval.Add(new CalendarDay()
                 {
                     Date = date.AddDays(i.Add(1).Negate())
                 });
@@ -575,15 +561,15 @@ namespace Appva.Mcss.Admin.Application.Services
             return retval;
         }
 
-        private IList<Calendar> CalendarDaysAfter(DateTime date, int daysInMonth)
+        private IList<CalendarDay> CalendarDaysAfter(DateTime date, int daysInMonth)
         {
-            IList<Calendar> retval = new List<Calendar>();
+            IList<CalendarDay> retval = new List<CalendarDay>();
             var lastDateOfMonth = date.AddDays(daysInMonth.Subtract(1));
             var days = lastDateOfMonth.AddDays((DateTimeUtilities.FirstDayOfWeek() - lastDateOfMonth.DayOfWeek).Add(7)).Subtract(date).Days - daysInMonth;
             days = (days.Equals(7)) ? 0 : days;
             for (var i = 0; i < days; i++)
             {
-                retval.Add(new Calendar()
+                retval.Add(new CalendarDay()
                 {
                     Date = lastDateOfMonth.AddDays(i.Add(1))
                 });

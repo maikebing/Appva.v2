@@ -544,6 +544,8 @@
     <Content Include="Assets\i\clock_stop.png" />
     <Content Include="Assets\i\dayslot-hover.png" />
     <Content Include="Assets\i\dayslot-unsel.png" />
+    <Content Include="Assets\i\icn-change-password.png" />
+    <Content Include="Assets\i\icn-logout.png" />
     <Content Include="Assets\i\filter-sep.png" />
     <Content Include="Assets\i\footer-shade.png" />
     <Content Include="Assets\i\globalfilter-select.png" />
@@ -608,6 +610,8 @@
     <Content Include="Assets\i\page_white_excel.png" />
     <Content Include="Assets\i\popover.png" />
     <Content Include="Assets\i\popover2.png" />
+    <Content Include="Assets\i\profile-blue%402x.png" />
+    <Content Include="Assets\i\profile-white.png" />
     <Content Include="Assets\i\reportchart.png" />
     <Content Include="Assets\i\select-arrow.png" />
     <Content Include="Assets\i\shade-blue.png" />

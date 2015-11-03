@@ -1,8 +1,7 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationDateSpanViewModel
 @{
-    ViewBag.Title = "Förnya samtliga delegeringar";
+    SetTitle("Förnya samtliga delegeringar");
 }
-
 <div class="std-panel std-form lb-validate-form lb-panel-small" data-valclass="DelegationUpdate">
     @using (Html.BeginForm(new { id = Model.Id, taxonId = Model.TaxonId })) {
         <h3 class="section-title">Förnya samtliga delegeringar</h3>

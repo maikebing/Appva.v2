@@ -77,6 +77,7 @@ namespace Appva.Mvc
             }
             else
             {
+                this.MergeQueryParametersToRouteDataValues(filterContext);
                 this.Add(filterContext);
                 filterContext.Result = new RedirectToRouteResult(filterContext.RouteData.Values);
             }
@@ -101,12 +102,33 @@ namespace Appva.Mvc
             }
             if (filterContext.HttpContext.Request.IsAjaxRequest())
             {
-                filterContext.Result = new HttpStatusCodeResult((int)HttpStatusCode.BadRequest);
+                filterContext.Result = new HttpStatusCodeResult((int) HttpStatusCode.BadRequest);
             }
             else
             {
+                this.MergeQueryParametersToRouteDataValues(filterContext);
                 this.Add(filterContext);
                 filterContext.Result = new RedirectToRouteResult(filterContext.RouteData.Values);
+            }
+        }
+
+        /// <summary>
+        /// Merge any query parameters and adds them to the route data values.
+        /// </summary>
+        /// <param name="context">The <see cref="ControllerContext"/></param>
+        private void MergeQueryParametersToRouteDataValues(ControllerContext context)
+        {
+            var querystring = context.HttpContext.Request.QueryString;
+            if (querystring.Count == 0)
+            {
+                return;
+            }
+            foreach (var key in querystring.AllKeys)
+            {
+                if (! context.RouteData.Values.ContainsKey(key))
+                {
+                    context.RouteData.Values.Add(key, querystring[key]);
+                }
             }
         }
 

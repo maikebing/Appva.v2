@@ -1,5 +1,5 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationViewModel
-@{ ViewBag.Title = "Lägg till delegering"; }
+@{ SetTitle("Lägg till delegering"); }
 <div class="std-panel std-form delegdialog lb-validate-form" data-valclass="DelegationCreate">
     @using (Html.BeginForm(new { id = Model.AccountId })) {
         <h3 class="section-title">Lägg till delegering</h3>

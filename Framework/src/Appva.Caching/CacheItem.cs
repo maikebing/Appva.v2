@@ -9,7 +9,7 @@ namespace Appva.Caching
     #region Imports.
 
     using System;
-    using Logging;
+    using Core.Logging;
 
     #endregion
 
@@ -176,7 +176,7 @@ namespace Appva.Caching
         /// <returns>A new <see cref="ICacheItem"/> instance</returns>
         public static ICacheItem CreateNew(object key, object value)
         {
-            Log.DebugFormat(Debug.Messages.CacheItemConstructorInitialization, key, value);
+            Log.Debug(Debug.Messages.CacheItemConstructorInitialization, key, value);
             return new CacheItem(key, value);
         }
 
@@ -189,7 +189,7 @@ namespace Appva.Caching
         {
             this.Value = value;
             this.ModifiedAt = DateTime.UtcNow.Ticks;
-            Log.DebugFormat(Debug.Messages.CacheItemUpdateValue, value);
+            Log.Debug(Debug.Messages.CacheItemUpdateValue, value);
         }
 
         /// <inheritdoc />
@@ -197,7 +197,7 @@ namespace Appva.Caching
         {
             this.Hits += 1;
             this.AccessedAt = DateTime.UtcNow.Ticks;
-            Log.DebugFormat(Debug.Messages.CacheItemUpdateHit, this.Hits);
+            Log.Debug(Debug.Messages.CacheItemUpdateHit, this.Hits);
         }
 
         #endregion

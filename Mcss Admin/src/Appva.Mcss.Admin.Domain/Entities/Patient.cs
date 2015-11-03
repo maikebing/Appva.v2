@@ -20,36 +20,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Patient : Person<Patient>
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Patient"/> class.
-        /// </summary>
-        /*public Patient(string firstName, string lastName, string personalIdentityNumber)
-            : base(firstName, lastName, personalIdentityNumber)
-        {
-        }
-
-        protected Patient()
-        {
-        }
-         * */
-
-        #endregion
-
-        #region Person overrides.
-
-        /// <summary>
-        /// FIXME: Move to person! 
-        /// </summary>
-        public virtual PersonalIdentityNumber PersonalIdentityNumber
-        {
-            get;
-            set;
-        }
-
-        #endregion
-
         #region Properties.
 
         /// <summary>

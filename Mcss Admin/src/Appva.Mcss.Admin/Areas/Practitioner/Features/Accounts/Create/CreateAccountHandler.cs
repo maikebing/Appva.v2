@@ -38,12 +38,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="ISettingsService"/>.
         /// </summary>
-        private readonly ISettingsService settings;
+        private readonly ISettingsService settingsService;
 
         /// <summary>
         /// The <see cref="ITaxonomyService"/>.
         /// </summary>
-        private readonly ITaxonomyService taxonomies;
+        private readonly ITaxonomyService taxonomyService;
 
         /// <summary>
         /// The <see cref="IRoleService"/>.
@@ -58,13 +58,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="CreateAccountViewHandler"/> class.
         /// </summary>
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
-        /// <param name="settings">The <see cref="ISettingsService"/></param>
-        public CreateAccountHandler(IRuntimeMemoryCache cache, ISettingsService settings, ITaxonomyService taxonomies, IRoleService roleService)
+        /// <param name="settingsService">The <see cref="ISettingsService"/></param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
+        /// <param name="roleService">The <see cref="IRoleService"/></param>
+        public CreateAccountHandler(IRuntimeMemoryCache cache, ISettingsService settingsService, ITaxonomyService taxonomyService, IRoleService roleService)
         {
-            this.cache = cache;
-            this.settings = settings;
-            this.taxonomies = taxonomies;
-            this.roleService = roleService;
+            this.cache           = cache;
+            this.settingsService = settingsService;
+            this.taxonomyService = taxonomyService;
+            this.roleService     = roleService;
         }
 
         #endregion
@@ -75,12 +77,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             return new CreateAccountModel 
             {
-                IsHsaIdFieldVisible = this.settings.GetAdminLogin().Equals("siths"),
-                IsMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice) == false,
-                IsMobileDevicePasswordFieldVisible = this.settings.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice) == false,
-                IsUsernameVisible = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible),
-                Taxons = TaxonomyHelper.SelectList(this.taxonomies.List(TaxonomicSchema.Organization)),
-                Titles = TitleHelper.SelectList(roleService.ListVisible())
+                IsHsaIdFieldVisible                = this.settingsService.IsSithsAuthorizationEnabled(),
+                IsMobileDevicePasswordEditable     = this.settingsService.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice) == false,
+                IsMobileDevicePasswordFieldVisible = this.settingsService.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice) == false,
+                IsUsernameVisible                  = this.settingsService.Find<bool>(ApplicationSettings.IsUsernameVisible),
+                Taxons                             = TaxonomyHelper.SelectList(this.taxonomyService.List(TaxonomicSchema.Organization)),
+                Titles                             = TitleHelper.SelectList(this.roleService.ListVisible())
             };
         }
 

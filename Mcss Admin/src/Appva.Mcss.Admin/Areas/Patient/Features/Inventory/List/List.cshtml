@@ -1,7 +1,7 @@
 ﻿@using Appva.Core.Utilities;
 @model Appva.Mcss.Web.ViewModels.ListInventoryViewModel
 @{
-    ViewBag.Title = "Saldo händelser";
+    SetTitle("Saldo händelser");
     var today = DateTimeUtilities.Now().Date;
     var yesterday = DateTimeUtilities.Now().Date.AddDays(-1);
 }

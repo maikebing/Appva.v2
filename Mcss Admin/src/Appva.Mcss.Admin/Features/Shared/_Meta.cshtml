@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta http-equiv="Content-Language" content="@UICulture" />
-@if (@User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated)
 {
     <meta name="appvalytics-user-id" content="@User.Identity.GetUserId()" />
     <meta name="appvalytics-username" content="@User.Identity.GetUserName()" />

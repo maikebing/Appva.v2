@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Controllers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
+        /// Initializes a new instance of the <see cref="AclController"/> class.
         /// </summary>
         /// <param name="authentication">The <see cref="IMediator"/></param>
         public AclController(IMediator mediator)

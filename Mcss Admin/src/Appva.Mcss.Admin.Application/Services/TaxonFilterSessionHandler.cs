@@ -11,7 +11,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using System;
     using System.Collections.Generic;
     using System.Linq;
-using System.Web;
+    using System.Web;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
 
@@ -79,7 +79,6 @@ using System.Web;
         /// </summary>
         public TaxonFilterSessionHandler(IIdentityService identityService, ITaxonomyService taxaService, HttpContextBase context)
         {
-            //identityService.Principal.
             this.identityService = identityService;
             this.taxaService = taxaService;
             this.context = context;
@@ -100,6 +99,10 @@ using System.Web;
             if (id == null)
             {
                 var claim = this.identityService.Principal.FindFirst(Core.Resources.ClaimTypes.Taxon);
+                if (claim == null)
+                {
+                    return null;
+                }
                 return this.taxaService.Find(new Guid(claim.Value));
             }
             return this.taxaService.Find((Guid) id);

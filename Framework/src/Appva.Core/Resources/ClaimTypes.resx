@@ -129,6 +129,10 @@
     <value>https://schemas.appva.se/2015/04/identity/claims/permission</value>
     <comment>The permission claim type</comment>
   </data>
+  <data name="SithsEnabled" xml:space="preserve">
+    <value>https://schemas.appva.se/2015/04/security/claims/siths</value>
+    <comment>The siths enabled claim type, either 'Y' or 'N'</comment>
+  </data>
   <data name="Taxon" xml:space="preserve">
     <value>https://schemas.appva.se/2015/04/organization/taxon</value>
     <comment>The organizational taxon claim type</comment>

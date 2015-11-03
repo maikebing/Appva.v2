@@ -6,14 +6,18 @@
             <li>
                 <a class="profile">@User.Identity.Name</a>
                 <div class="profile">
-                    <p>
+    <p>
                         <span class="label">Inloggad som:</span>
                         @User.Identity.Name
-                    </p>
+    </p>
                     <ul>
+                        @if (! Principal.Claims.Any(x => x.Type == Appva.Core.Resources.ClaimTypes.SithsEnabled && x.Value == "Y"))
+                        {
                         <li>
                             @Html.ActionLink("Byt lösenord", "ChangePassword", "Accounts", new { Area = "Practitioner" }, new { @class = "change-password" })
                         </li>
+                        }
+                        
                         <li>
                             @Html.ActionLink("Logga ut", "SignOut", "Authentication", new { Area = string.Empty }, new { @class = "logout" })
                         </li>

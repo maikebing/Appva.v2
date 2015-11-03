@@ -1,6 +1,6 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationInactivateViewModel
 @{
-    ViewBag.Title = "Inactivate";
+    SetTitle("Inactivate");
 }
 <div class="std-panel std-form">
 @using (Html.BeginForm(new { Id = Model.Delegation.Id, post = true })) {

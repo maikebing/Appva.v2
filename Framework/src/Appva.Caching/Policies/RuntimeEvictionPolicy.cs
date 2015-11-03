@@ -13,6 +13,9 @@ namespace Appva.Caching.Policies
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public interface IRuntimeEvictionPolicy
     {
         /// <summary>
@@ -49,16 +52,16 @@ namespace Appva.Caching.Policies
         /// Non removable policy.
         /// </summary>
         public static readonly RuntimeEvictionPolicy NonRemovable = new RuntimeEvictionPolicy
-            {
-                Priority = CacheItemPriority.NotRemovable
-            };
+        {
+            Priority = CacheItemPriority.NotRemovable
+        };
 
         /// <summary>
         /// Default policy.
         /// </summary>
         public static readonly RuntimeEvictionPolicy Default = new RuntimeEvictionPolicy
-            {
-                Priority = CacheItemPriority.Default
-            };
+        {
+            Priority = CacheItemPriority.Default
+        };
     }
 }

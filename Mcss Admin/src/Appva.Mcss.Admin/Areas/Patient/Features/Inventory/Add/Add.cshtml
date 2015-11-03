@@ -1,5 +1,5 @@
 ﻿@model Appva.Mcss.Web.ViewModels.InventoryTransactionItemViewModel
-@{ ViewBag.Title = "Tillför mängd"; }
+@{ SetTitle("Tillför mängd"); }
 
 <div class="std-panel std-form lb-panel-small" data-valclass="AddToStock" data-valparams="">
     @using (Html.BeginForm("Create", "Inventory", new { id = Model.InventoryId, returnUrl = Model.ReturnUrl})) {

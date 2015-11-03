@@ -1,16 +1,11 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationReportViewModel
 @using Appva.Mcss.Admin.Application.Common;
-@{ ViewBag.Title = "Rapporter"; ViewBag.MainClass = "report-view"; }
+@{ 
+    SetTitle("Rapporter"); 
+    ViewBag.MainClass = "report-view"; 
+}
 @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
-@*Html.Action("Menu", "Menus", new
-            {
-                Key = "admin_account_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Account.Id.ToString(),
-                IgnoreAction = false
-            })*@
 <div id="subheader" class="cf">
 	<h1>Rapporter</h1>
     @using (Html.BeginForm(new { id = Model.AccountId })) {            

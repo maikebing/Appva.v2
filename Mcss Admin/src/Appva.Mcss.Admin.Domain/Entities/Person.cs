@@ -59,29 +59,17 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The Personal Identity Number / National Identity Number.
         /// </summary>
-        /*public virtual string PersonalIdentityNumber
+        public virtual PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
             set;
-        }*/
+        }
 
         public virtual string FullName
         {
             get;
             set;
         }
-
-        #endregion
-
-        #region Public Methods.
-
-        /// <summary>
-        /// The first name and last name.
-        /// </summary>
-        /*public virtual string FullName()
-        {
-            return this.FirstName + " " + this.LastName;
-        }*/
 
         #endregion
     }

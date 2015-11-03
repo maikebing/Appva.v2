@@ -32,7 +32,7 @@ namespace Appva.Mvc
         /// <param name="expression">The expression</param>
         /// <param name="group">The outer element css class; defaults to 'form-group'</param>
         /// <returns>A <see cref="FormGroupFor{TModel,TProperty}"/></returns>
-        public static FormGroupFor<TModel, TProperty> FormGroup<TModel, TProperty>([NotNull] this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string group = null)
+        public static FormGroupFor<TModel, TProperty> FormGroup<TModel, TProperty>([NotNull] this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string group = "form-group")
         {
             return new FormGroupFor<TModel, TProperty>(htmlHelper, expression, group);
         }

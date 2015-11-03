@@ -85,8 +85,12 @@ namespace Appva.Mvc
         /// <param name="context">The context</param>
         protected void Merge(ControllerContext context)
         {
-            var prevModelState = context.Controller.TempData[this.key] as ModelStateDictionary;
-            context.Controller.ViewData.ModelState.Merge(prevModelState);
+            var previousState = context.Controller.TempData[this.key] as ModelStateDictionary;
+            if (previousState == null)
+            {
+                return;
+            }
+            context.Controller.ViewData.ModelState.Merge(previousState);
         }
 
         /// <summary>

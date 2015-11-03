@@ -1,6 +1,6 @@
 ﻿@model CreateScheduleForm
 @{ 
-    Title("Ny signeringslista"); 
+    SetTitle("Ny signeringslista"); 
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="ScheduleCreate" data-valparams="id=@Model.Id;url=@Url.Action("VerifyUnique", "Schedule", new { Id = Model.Id })">
 	@using (Html.Post())

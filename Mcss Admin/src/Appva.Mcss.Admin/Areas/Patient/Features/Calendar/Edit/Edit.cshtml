@@ -1,5 +1,5 @@
 ﻿@model Appva.Mcss.Web.ViewModels.EventViewModel
-@{ ViewBag.Title = "Ny aktivitet"; }
+@{ SetTitle("Ny aktivitet"); }
 <div class="std-panel std-form lb-panel-small lb-validate-form calendar-edit" data-valclass="EventCreate">
     @using (Html.BeginForm(new { Id = Model.PatientId, seqId = Model.SequenceId, date = Model.ChoosedDate }))
     {

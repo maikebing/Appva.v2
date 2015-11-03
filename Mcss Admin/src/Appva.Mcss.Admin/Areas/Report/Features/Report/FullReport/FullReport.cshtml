@@ -1,4 +1,5 @@
 ﻿@model Appva.Mcss.Admin.Areas.Models.FullReportModel
+@using Appva.Mcss.Admin.Application.Common;
 @{ ViewBag.Title = "Översikt"; ViewBag.MainClass = "report-view"; }
 <div id="subheader" class="cf">
 	<h1>Fullständig resultatrapport</h1>
@@ -155,7 +156,14 @@
                         <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
                         <strong>Avvikelse:</strong>
                         if (task.DelayHandled) {
-                            @Html.ActionLink("Larm åtgärdat", "List", "Alert", new { id = task.Patient.Id }, new { })
+                            if (Html.HasPermissionFor(Permissions.Alert.Read))
+                            {
+                                @Html.ActionLink("Larm åtgärdat", "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
+                            }
+                            else
+                            {
+                                @:Larm åtgärdat    
+                            }
                         }
                         else {
                             @:Ej given

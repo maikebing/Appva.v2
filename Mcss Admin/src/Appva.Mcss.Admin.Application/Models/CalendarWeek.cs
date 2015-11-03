@@ -33,13 +33,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <summary>
         /// The days within the week
         /// </summary>
-        public IList<CalendarDay> Days
-        {
-            get;
-            set;
-        }
-
-        public List<CalendarTask> AllEvents 
+        public IList<Calendar> Days
         {
             get;
             set;

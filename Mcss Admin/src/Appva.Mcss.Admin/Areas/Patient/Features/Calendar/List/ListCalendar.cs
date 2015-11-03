@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Optional filter list.
         /// </summary>
-        public Guid[] Filter
+        public string[] Filter
         {
             get;
             set;

@@ -30,12 +30,6 @@ namespace Appva.Mcss.Admin.Application.Models
             set;
         }
 
-        public Guid SequenceId
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// The event starttime
         /// </summary>
@@ -64,15 +58,6 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// The category name
-        /// </summary>
-        public Guid CategoryId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The event description
         /// </summary>
         public string Description
@@ -82,17 +67,5 @@ namespace Appva.Mcss.Admin.Application.Models
         }
              
         #endregion
-
-        public string Color { get; set; }
-
-        public bool IsFullDayEvent { get; set; }
-
-        public Guid TaskId { get; set; }
-
-        public bool NeedsQuittance { get; set; }
-
-        public bool IsQuittanced { get; set; }
-
-        public Domain.Entities.Account QuittancedBy { get; set; }
     }
 }

@@ -196,17 +196,5 @@ $(document).ready(function () {
         var clicked = $(this);
         mcss.lightbox.openBox(content, clicked, 'lb-warning');
     });
-
-    // Checkbox to select/unselect all
-    $('input[type=checkbox].select-all').click(function (e) {
-        var elem = $(this);
-
-        if (elem.is(':checked')) {
-            elem.parent().parent().parent().find('input[type=checkbox]').attr('checked', true).change();
-        }
-        else {
-            elem.parent().parent().parent().find('input[type=checkbox]').attr('checked', false).change();
-        }
-    });
     
 });

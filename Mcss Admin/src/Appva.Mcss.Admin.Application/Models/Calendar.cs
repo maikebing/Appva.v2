@@ -6,7 +6,7 @@ using Appva.Mcss.Admin.Domain.Entities;
 namespace Appva.Mcss.Admin.Application.Models
 {
 
-    public class CalendarDay {
+    public class Calendar {
 
         public bool IsWithinMonth { get; set; }
         public bool IsToday { get; set; }

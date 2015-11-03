@@ -999,7 +999,8 @@ tr.modified { background-color:#f4f4f4; text-decoration: line-through; }
     font-size:10px;
 }
 
-.panel .order-check input {
+.panel .order-check input,
+.panel .cal-overview input {
     vertical-align:middle;
 }
 

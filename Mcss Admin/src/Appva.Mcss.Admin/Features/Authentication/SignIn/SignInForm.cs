@@ -8,8 +8,6 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Appva.Cqrs;
 

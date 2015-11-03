@@ -8,15 +8,12 @@ namespace Appva.Mcss.Admin.Application.Security
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
     /// <summary>
-    /// 
+    /// Represents a result of a processed authentication attempt.
     /// </summary>
     public interface IAuthenticationResult
     {
@@ -107,16 +104,34 @@ namespace Appva.Mcss.Admin.Application.Security
     {
         #region Variables.
 
+        /// <summary>
+        /// Generic failure result.
+        /// </summary>
         public static readonly IAuthenticationResult Failure = new AuthenticationResult(ResultCode.Failure);
 
+        /// <summary>
+        /// Failure due to invalid credentials result.
+        /// </summary>
         public static readonly IAuthenticationResult InvalidCredentials = new AuthenticationResult(ResultCode.InvalidCredentials);
 
+        /// <summary>
+        /// Failure due to ambigious identity.
+        /// </summary>
         public static readonly IAuthenticationResult AmbigiousIdentity = new AuthenticationResult(ResultCode.AmbigiousIdentity);
 
+        /// <summary>
+        /// Failiure due to identity not found.
+        /// </summary>
         public static readonly IAuthenticationResult NotFound = new AuthenticationResult(ResultCode.NotFound);
 
+        /// <summary>
+        /// Uncategorized failure.
+        /// </summary>
         public static readonly IAuthenticationResult Uncategorized = new AuthenticationResult(ResultCode.Uncategorized);
 
+        /// <summary>
+        /// Failure due to account lockout state.
+        /// </summary>
         public static readonly IAuthenticationResult Lockout = new AuthenticationResult(ResultCode.Lockout);
         
         #endregion
@@ -132,31 +147,6 @@ namespace Appva.Mcss.Admin.Application.Security
         {
             this.Code = code;
             this.Identity = identity;
-        }
-
-        #endregion
-
-        #region Static Functions.
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="AuthenticationResult"/> class.
-        /// </summary>
-        /// <param name="code">The result code</param>
-        /// <param name="identity">The identity if authenticated, otherwise null</param>
-        /// <returns>A new <see cref="IAuthenticationResult"/> instance</returns>
-        public static IAuthenticationResult CreateNew(ResultCode code, Account identity = null)
-        {
-            return new AuthenticationResult(code, identity);
-        }
-
-        /// <summary>
-        /// Creates a new authorization success result.
-        /// </summary>
-        /// <param name="identity">The authenticated identity</param>
-        /// <returns>A new successful <see cref="IAuthenticationResult"/> instance</returns>
-        public static IAuthenticationResult CreateSuccessResult(Account account)
-        {
-            return new AuthenticationResult(ResultCode.Success, account);
         }
 
         #endregion
@@ -283,6 +273,31 @@ namespace Appva.Mcss.Admin.Application.Security
         {
             get;
             private set;
+        }
+
+        #endregion
+
+        #region Static Functions.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="AuthenticationResult"/> class.
+        /// </summary>
+        /// <param name="code">The result code</param>
+        /// <param name="identity">The identity if authenticated, otherwise null</param>
+        /// <returns>A new <see cref="IAuthenticationResult"/> instance</returns>
+        public static IAuthenticationResult CreateNew(ResultCode code, Account identity = null)
+        {
+            return new AuthenticationResult(code, identity);
+        }
+
+        /// <summary>
+        /// Creates a new authorization success result.
+        /// </summary>
+        /// <param name="account">The authenticated identity</param>
+        /// <returns>A new successful <see cref="IAuthenticationResult"/> instance</returns>
+        public static IAuthenticationResult CreateSuccessResult(Account account)
+        {
+            return new AuthenticationResult(ResultCode.Success, account);
         }
 
         #endregion

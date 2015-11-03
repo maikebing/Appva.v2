@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
-    SetTitle("Utloggad - " +  Tenant);
+    SetTitle("Utloggad");
 }
 <div class="hd">
 	Du har nu blivit utloggad
@@ -12,5 +12,5 @@
 <div class="bd">
     Av säkerhetsskäl rekommenderar vi att du även stänger din webbläsare.
     <div class="hr"></div>
-    @Html.ActionLink("Till inloggning", "SignIn", null, new { @class = "btn" })
+    @Html.ActionLink("Till inloggning", "SignIn", "Authentication", null, new { @class = "btn" })
 </div>

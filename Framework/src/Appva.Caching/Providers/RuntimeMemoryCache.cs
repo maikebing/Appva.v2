@@ -14,7 +14,7 @@ namespace Appva.Caching.Providers
     using System.Linq;
     using System.Runtime.Caching;
     using System.Threading.Tasks;
-    using Logging;
+    using Core.Logging;
     using Policies;
 
     #endregion

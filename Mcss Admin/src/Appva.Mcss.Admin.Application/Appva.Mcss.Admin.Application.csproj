@@ -48,6 +48,15 @@
     <Reference Include="Microsoft.Owin.Security.OAuth">
       <HintPath>..\..\..\Packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
+    <Reference Include="MigraDoc.DocumentObjectModel">
+      <HintPath>..\..\..\Packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.DocumentObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.Rendering">
+      <HintPath>..\..\..\Packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.Rendering.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.RtfRendering">
+      <HintPath>..\..\..\Packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -58,9 +67,16 @@
     <Reference Include="Owin">
       <HintPath>..\..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PdfSharp">
+      <HintPath>..\..\..\Packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting">
+      <HintPath>..\..\..\Packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Tokens.Jwt">
       <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -98,20 +114,28 @@
     <Compile Include="Models\IReportingFilter.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuList.cs" />
-    <Compile Include="Models\PrintSchedule.cs" />
-    <Compile Include="Models\PrintSequence.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDataSegment.cs" />
     <Compile Include="Models\ReportSearch.cs" />
     <Compile Include="Models\Taxa.cs" />
     <Compile Include="Models\Taxon.cs" />
+    <Compile Include="Pdf\AbstractPdfDocument.cs" />
+    <Compile Include="Pdf\PdfTableDocument.cs" />
+    <Compile Include="Pdf\Prescriptions\PatientInformation.cs" />
+    <Compile Include="Pdf\Prescriptions\Period.cs" />
+    <Compile Include="Pdf\Prescriptions\Prescription.cs" />
+    <Compile Include="Pdf\Prescriptions\PrescriptionList.cs" />
+    <Compile Include="Pdf\Prescriptions\References.cs" />
+    <Compile Include="Pdf\Prescriptions\Signature.cs" />
+    <Compile Include="Pdf\Prescriptions\Symbol.cs" />
+    <Compile Include="Pdf\PdfPrintService.cs" />
+    <Compile Include="Pdf\PdfScheduleDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AuthenticationMethods.cs" />
     <Compile Include="Security\Authentication.cs" />
     <Compile Include="Security\AuthenticationResult.cs" />
     <Compile Include="Security\ClaimsPrincipalExtensions.cs" />
     <Compile Include="Security\Extensions\AccountExtensions.cs" />
-    <Compile Include="Security\Extensions\OwinExtensions.cs" />
     <Compile Include="Security\FormsAuthentication.cs" />
     <Compile Include="Security\AuthenticationType.cs" />
     <Compile Include="Security\Identity\DemoTenantIdentificationStrategy.cs" />
@@ -122,6 +146,7 @@
     <Compile Include="Security\Jwt\JwtToken.cs" />
     <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />
     <Compile Include="Security\ResetPasswordMiddleware.cs" />
+    <Compile Include="Services\AbstractTaskService.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IdentityService.cs" />
@@ -172,10 +197,6 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Fhir\Appva.Fhir.csproj">
       <Project>{3983ff1b-a557-4b58-a363-bcee62182f1e}</Project>
       <Name>Appva.Fhir</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
-      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
-      <Name>Appva.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Mvc\Appva.Mvc.csproj">
       <Project>{53a7fe5b-f451-4b7a-8932-9ad424f09165}</Project>

@@ -42,12 +42,6 @@ namespace Appva.Mcss.Admin.Application.Services
                 IList<Task> events = null,
                 bool findEventsForDay = false
             );
-        PrintSchedule PrintSchedule(IList<Task> tasks);
-        PrintSchedule PrintSchedule(
-            DateTime startDate,
-            DateTime endDate,
-            IList<Sequence> sequences
-        );
 
         /// <summary>
         /// Gets all schedulesettings in  the system or for a given patient/account
@@ -202,124 +196,6 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             var retval = ((any.Date - sequence.EndDate.GetValueOrDefault().Date).TotalDays + (any.Date - sequence.StartDate.Date).TotalDays) / 2;
             return retval;
-        }
-
-        /// <summary>
-        /// Creates task from the given sequences between endDate and startDate. 
-        /// Sorts the created tasks into the PrintSchedule structure
-        /// </summary>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <param name="sequences"></param>
-        /// <returns></returns>
-        public PrintSchedule PrintSchedule(
-            DateTime startDate,
-            DateTime endDate,
-            IList<Sequence> sequences
-        )
-        {
-            var currentDate = startDate;
-            var tasks = new List<Task>();
-
-            while (currentDate <= endDate)
-            {
-                tasks.AddRange(FindTasks(currentDate, new List<Schedule>(), sequences, new List<Task>(), new List<Task>()));
-                currentDate = currentDate.AddDays(1);
-            }
-            return PrintSchedule(tasks);
-        }
-
-        /// <summary>
-        /// Sorts all tasks into the PrintSchedule structure
-        /// </summary>
-        /// <param name="tasks"></param>
-        /// <returns></returns>
-        public PrintSchedule PrintSchedule(IList<Task> tasks)
-        {
-            PrintSchedule printSchedule = new PrintSchedule();
-
-            foreach (var task in tasks)
-            {
-                var currentMonth = task.Scheduled.FirstOfMonth();
-                if (!printSchedule.Sequences.ContainsKey(currentMonth))
-                {
-                    printSchedule.Sequences.Add(currentMonth, new Dictionary<string, PrintSequence>());
-                    printSchedule.Signatures.Add(currentMonth, new Dictionary<string, string>());
-                }
-                var uid = string.Format("{0} {1:HH:mm}", task.Sequence.Id, task.Scheduled);
-                if (task.OnNeedBasis)
-                {
-                    var i = 1;
-                    uid = string.Format("{0} {1}", uid, i);
-                    while (printSchedule.Sequences[currentMonth].ContainsKey(uid)
-                        && printSchedule.Sequences[currentMonth][uid].Days.ContainsKey(task.Scheduled.Day))
-                    {
-                        i++;
-                        uid = string.Format("{0} {1}", uid, i);
-                    }
-                }
-                if (!printSchedule.Sequences[currentMonth].ContainsKey(uid))
-                {
-                    var ps = new PrintSequence()
-                    {
-                        UID = uid,
-                        Name = task.Name,
-                        Time = string.Format("{0:HH:mm}", task.Scheduled),
-                        OnNeedBasis = task.OnNeedBasis,
-                        Days = new Dictionary<int, Task>(),
-                        Instruction = task.Sequence.Description
-                    };
-                    printSchedule.Sequences[currentMonth].Add(uid, ps);
-                }
-                try
-                {
-                    printSchedule.Sequences[currentMonth][uid].Days.Add(task.Scheduled.Day, task);
-                }
-                catch (Exception)
-                {
-                    try
-                    {
-                        /*var tenant = TenantService.Instance().Current();
-                        new Email(new Message()
-                        {
-                            To = Application.EmailExceptionsTo,
-                            Subject = string.Format("Database contains duplicated task."),
-                            Body = string.Format("<h2>Two tasks belonging covering the same slot for the same timeslot exist.</h2><p><strong>Task-id:</strong> {0}.</p> <p><strong>Tenant:</strong> {1}.", task.Id, tenant.Name),
-                        }).SendAsync();
-
-                        LogService.TakeAction(
-                            string.Format("Task whit id={0} is duplicated in the db. Another task belonging to the same sequence, covering the same timeslot exist.", task.Id),
-                            Current(),
-                            task.Patient,
-                            LogType.None
-                        );*/
-                    }
-                    catch (Exception)
-                    {
-                        // The SMTP should never bring the system down.
-                        // TODO: handle this!
-                    }
-                }
-                if (task.IsCompleted)
-                {
-                    var id = string.Format("{0};{1}", task.CompletedBy.FullName, task.CompletedBy.Id);
-                    if (!printSchedule.Signatures[currentMonth].ContainsKey(id))
-                    {
-                        var signature = string.Format("{0}{1}", task.CompletedBy.FirstName.Substring(0, 1), task.CompletedBy.LastName.Substring(0, 1));
-                        if (printSchedule.Signatures[currentMonth].ContainsValue(signature))
-                        {
-                            var counter = 2;
-                            while (printSchedule.Signatures[currentMonth].ContainsValue(string.Format("{0}{1}", signature, counter)))
-                            {
-                                counter++;
-                            }
-                            signature = string.Format("{0}{1}", signature, counter);
-                        }
-                        printSchedule.Signatures[currentMonth].Add(id, signature);
-                    }
-                }
-            }
-            return printSchedule;
         }
 
         /// <inheritdoc />
@@ -483,8 +359,8 @@ namespace Appva.Mcss.Admin.Application.Services
             foreach (var sequence in sequences)
             {
                 var isOccuring = findEventsForDay ?
-                    DateTimeUtils.DateIsCoveredByEvent(date.Date, sequence.StartDate.Date, sequence.EndDate.GetValueOrDefault(), sequence.Interval, sequence.Dates, intervalFactor: sequence.IntervalFactor, IntervalIsDate: sequence.IntervalIsDate) :
-                    DateTimeUtils.IsOccurring(date.Date, sequence.StartDate.Date, sequence.EndDate, sequence.Interval, sequence.Dates, sequence.Schedule.ScheduleSettings.ScheduleType, intervalFactor: sequence.IntervalFactor, IntervalIsDate: sequence.IntervalIsDate);
+                    DateTimeUtils.DateIsCoveredByEvent(date.Date, sequence.StartDate.Date, sequence.EndDate.GetValueOrDefault(), sequence.Interval, sequence.Dates, intervalFactor: sequence.IntervalFactor, intervalIsDate: sequence.IntervalIsDate) :
+                    DateTimeUtils.IsOccurring(date.Date, sequence.StartDate.Date, sequence.EndDate, sequence.Interval, sequence.Dates, sequence.Schedule.ScheduleSettings.ScheduleType, intervalFactor: sequence.IntervalFactor, intervalIsDate: sequence.IntervalIsDate);
                 if (isOccuring)
                 {
                     retval.Add(sequence);

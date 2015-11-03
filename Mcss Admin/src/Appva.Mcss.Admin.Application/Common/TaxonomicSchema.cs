@@ -35,6 +35,11 @@ namespace Appva.Mcss.Admin.Application.Common
         /// </summary>
         public static readonly TaxonomicSchema RiskAssessment = new TaxonomicSchema("SAI", "assessment");
 
+        /// <summary>
+        /// The taxonomic scheme identifier for sign status taxa.
+        /// </summary>
+        public static readonly TaxonomicSchema SignStatus = new TaxonomicSchema("SST", "sign-status");
+
         #endregion
 
         #region Constructor.

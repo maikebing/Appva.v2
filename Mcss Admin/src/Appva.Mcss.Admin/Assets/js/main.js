@@ -20,10 +20,6 @@ $(document).ready(function () {
         $(this).html('Visa');
         $(this).parent().parent().next().find('.alarm-view').slideUp(100);
     });
-    /*$('.delegate-view #signed-events a.btn-del').click(function () {
-        $('#deleg-del').show();
-        return false;
-    });*/
     $('#dialognote form').submit(function () {
         if ($('#notifytime').val() != '') {
             $('.addrow:visible .notify').append('<p><strong>Notifiering</strong> ' + $('#notifytime').val() + ' minuter före slut. </p>');
@@ -48,21 +44,18 @@ $(document).ready(function () {
             return false;
         });
     });
-
     $('a.alarm-stop').click(function () {
         alert('Kontrollera om avvikelsen ska journalföras.');
     });
     $('a.alarm-stop-all').click(function (e) {
         if (confirm('Alla avvikelser för patienten kommer att kvitteras. Kontrollera om någon avvikelse ska journalföras.')) {
             
-        }
-        else {
+        } else {
             e.stopPropagation();
             e.preventDefault();
             return false;
         }
     });
-
     $('#calendar a.del').click(function () {
         var conftext = 'Vill du fortsätta ta bort aktiviteten?';
         if ($(this).parent().hasClass('pause'))
@@ -72,13 +65,11 @@ $(document).ready(function () {
         } else {
             return false;
         }
-
     });
     $('#signlist .days a.del').live('click', function () {
         $(this).parent().hide(150);
         return false;
     });
-
     $('#addeleg .deleglist li, #addeleg .newgroup').hide();
     $('#addeleg .catlist a').click(function () {
         var t = $(this);
@@ -118,10 +109,6 @@ $(document).ready(function () {
             $('#addeleg .catselect .new').slideUp(100);
         }
     });
-
-    /* NEW STUFF SEPT 2012 */
-
-    // Radio toggles
     $('.std-form .toggle-group .radio .toggle').each(function () {
         var t = $(this);
         if (!t.attr('checked')) {
@@ -137,8 +124,6 @@ $(document).ready(function () {
             $('.' + t.data('toggletarget')).show();
         });
     });
-
-    // Checkbox toggles
     $('.std-form .checkbox .toggle').each(function () {
         var t = $(this);
         if (!t.attr('checked')) {
@@ -151,8 +136,6 @@ $(document).ready(function () {
             $('.' + t.data('toggletarget')).slideToggle(100);
         });
     });
-
-
     $('.activity-edit .freq .btn-mdatepick').each(function () {
         if ($(this).prev().val() != 'other') $(this).hide();
     });
@@ -176,7 +159,6 @@ $(document).ready(function () {
             }
         });
     });
-
     // Disable/enable delegation on update/create ordination
     $('.checkbox .nurse').change(function () {
         var t = $(this);
@@ -186,7 +168,6 @@ $(document).ready(function () {
             $('.delegation').removeAttr('disabled');
         }
     });
-    
     // About screen
     $('.about-link').click(function(e) {
         e.stopPropagation();
@@ -196,5 +177,4 @@ $(document).ready(function () {
         var clicked = $(this);
         mcss.lightbox.openBox(content, clicked, 'lb-warning');
     });
-    
 });

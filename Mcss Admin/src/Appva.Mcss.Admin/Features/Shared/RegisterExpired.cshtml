@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Features/Shared/_LoginLayout.cshtml";
+    SetTitle("Utgången lösenordslänk");
+    SetBodyCssClass("page-reset-password");
+}
+<div class="hd">
+    Utgången lösenordslänk
+</div>
+<div class="hd profile">
+    <img src="@Url.Content("~/Assets/i/profile-icon.png")" />
+</div>
+<div class="bd">
+    <span class="alert-danger">
+        Lösenordslänken har gått ut, vänligen begär en ny genom att klicka på knappen "skicka ny återställningslänk" nedan.
+    </span>
+    <div class="hr"></div>
+    @Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn" })
+    @Html.ActionLink("Skicka ny återställningslänk", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
+</div>

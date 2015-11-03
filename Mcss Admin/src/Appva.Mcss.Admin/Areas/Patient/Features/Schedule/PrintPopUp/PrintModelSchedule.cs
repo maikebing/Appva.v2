@@ -1,4 +1,4 @@
-﻿// <copyright file="DetailsSchedule.cs" company="Appva AB">
+﻿// <copyright file="PrintModelSchedule.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,8 +9,6 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
 
     #endregion

@@ -39,6 +39,8 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="PreAuthorizeTenantMiddleware"/> class.
         /// </summary>
+        /// <param name="tenantService">The <see cref="ITenantService"/></param>
+        /// <param name="next">The <see cref="OwinMiddleware"/></param>
         public PreAuthorizeTenantMiddleware(ITenantService tenantService, OwinMiddleware next)
             : base(next)
         {

@@ -8,10 +8,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
 	#region Imports.
 
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using Appva.Common.Domain;
+    using System;
+    using System.Collections.Generic;
+    using Appva.Core.Extensions;
+    using Appva.Cryptography;
 
 	#endregion
 
@@ -36,17 +36,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
 		}*/
 
 		#endregion
-
-		public static Account CreateForTest()
-		{
-			return new Account
-			{
-				Id = Guid.NewGuid(),
-				FirstName = "Johan",
-				LastName = "Sall Larson",
-				FullName = "Johan Sall Larsson"
-			};
-		}
 
         #region Private fields.
 
@@ -288,6 +277,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 			this.AdminPassword = password;
 			this.Salt = salt;
 			this.LastPasswordChangedDate = DateTime.Now;
+            this.SymmetricKey = Hash.Random().ToBase64();
 		}
 
         public virtual void Lockout(int minutes)

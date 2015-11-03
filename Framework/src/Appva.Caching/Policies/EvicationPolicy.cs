@@ -9,7 +9,7 @@ namespace Appva.Caching.Policies
     #region Imports.
 
     using System;
-    using Logging;
+    using Core.Logging;
 
     #endregion
 
@@ -125,7 +125,7 @@ namespace Appva.Caching.Policies
             }
             if (item != null)
             {
-                Log.DebugFormat(
+                Log.Debug(
                     Debug.Messages.EvicationPolicyCandidateFound, 
                     item.Key, 
                     item.Value, 

@@ -11,21 +11,19 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
+    using System.Configuration;
     using System.Runtime.Caching;
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
-    using Appva.Logging;
+    using Appva.Core.Extensions;
+    using Appva.Core.Logging;
+    using Appva.Core.Resources;
+    using Appva.Mcss.Admin.Application.Caching;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Persistence;
     using Newtonsoft.Json;
-    using Appva.Core.Extensions;
-    using System.Configuration;
-    using Appva.Mcss.Admin.Application.Caching;
-    using Appva.Core.Resources;
-    using Appva.Mcss.Admin.Application.Security.Jwt;
-    using Appva.Mcss.Admin.Domain.VO;
 
     #endregion
 
@@ -69,23 +67,63 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         bool DisplayAccountUsername();
         string GetNotificationAdmin();
         string GetAdminLogin();
+
+        /// <summary>
+        /// Returns whether or not to auto generate the password for the
+        /// mobile device.
+        /// </summary>
+        /// <returns>True if password auto generation is enables; otherwise false</returns>
+        bool AutogeneratePasswordForMobileDevice();
     }
 
+    /// <summary>
+    /// The security settings interface.
+    /// </summary>
     public interface ISecuritySettings
     {
         /// <summary>
-        /// 
+        /// Returns the security token configuration.
         /// </summary>
-        /// <returns></returns>
-        ResetPasswordToken ResetPasswordTokenConfiguration();
+        /// <returns>The <see cref="SecurityTokenConfiguration"/></returns>
+        SecurityTokenConfiguration SecurityTokenConfiguration();
 
         /// <summary>
-        /// 
+        /// Returns whether or not the security token configuration is
+        /// installed or not.
         /// </summary>
-        /// <returns></returns>
-        bool IsTokenConfigurationInstalled();
+        /// <returns>True if security token configuration is installed; otherwise false</returns>
+        bool IsSecurityTokenConfigurationInstalled();
+
+        /// <summary>
+        /// Returns the E-mail messaging configuration.
+        /// </summary>
+        /// <returns>The <see cref="SecurityMailerConfiguration"/></returns>
+        SecurityMailerConfiguration MailMessagingConfiguration();
+
+        /// <summary>
+        /// Returns whether or not siths authorization is enabled or not.
+        /// </summary>
+        /// <returns>True if siths authorization is enabled; otherwise false</returns>
+        bool IsSithsAuthorizationEnabled();
+
+        /// <summary>
+        /// Returns the password configuration.
+        /// </summary>
+        /// <returns>The <see cref="SecurityPasswordConfiguration"/></returns>
+        SecurityPasswordConfiguration PasswordConfiguration(); 
     }
 
+    /// <summary>
+    /// The gui look and feel interface.
+    /// </summary>
+    public interface ILookAndFeel
+    {
+        /// <summary>
+        /// Returns the pdf look and feel configuration.
+        /// </summary>
+        /// <returns>The <see cref="PdfLookAndFeel"/></returns>
+        PdfLookAndFeel PdfLookAndFeelConfiguration();
+    }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
@@ -93,6 +131,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     public interface ISettingsService :
         IAccessControlListTenantSettings,
         ISecuritySettings,
+        ILookAndFeel,
         IOldSettings,
         IService
     {
@@ -130,11 +169,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// The <see cref="ILog"/> logging instance.
         /// </summary>
         private static readonly ILog Log = LogProvider.For<SettingsService>();
-
-        /// <summary>
-        /// The lock.
-        /// </summary>
-        private static readonly object Lock = new object();
 
         /// <summary>
         /// The implemented <see cref="ITenantAwareMemoryCache"/> instance.
@@ -195,7 +229,9 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                     key.Name,
                     key.Description,
                     JsonConvert.SerializeObject(value),
-                    value.GetType())
+                    //// Temporary fix for checking types which can be used with other implementation
+                    //// of settings.
+                    value.GetType().Namespace.StartsWith("System") ? value.GetType() : typeof(string))
                     .Activate());
             }
             else
@@ -225,23 +261,58 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         #region ISecuritySettings.
 
         /// <inheritdoc />
-        public ResetPasswordToken ResetPasswordTokenConfiguration()
+        public SecurityTokenConfiguration SecurityTokenConfiguration()
         {
-            return this.Find<ResetPasswordToken>(ApplicationSettings.ResetPasswordTokenConfiguration);
+            return this.Find<SecurityTokenConfiguration>(ApplicationSettings.TokenConfiguration);
         }
 
-        public bool IsTokenConfigurationInstalled()
+        /// <inheritdoc />
+        public bool IsSecurityTokenConfigurationInstalled()
         {
-            return this.Find<ResetPasswordToken>(ApplicationSettings.ResetPasswordTokenConfiguration) != null;
+            return this.Find<SecurityTokenConfiguration>(ApplicationSettings.TokenConfiguration) != null;
+        }
+
+        /// <inheritdoc />
+        public SecurityMailerConfiguration MailMessagingConfiguration()
+        {
+            return this.Find<SecurityMailerConfiguration>(ApplicationSettings.MailMessagingConfiguration);
+        }
+
+        /// <inheritdoc />
+        public SecurityPasswordConfiguration PasswordConfiguration()
+        {
+            return this.Find<SecurityPasswordConfiguration>(ApplicationSettings.PasswordConfiguration);
+        }
+
+        /// <inheritdoc />
+        public bool IsSithsAuthorizationEnabled()
+        {
+            return this.GetAdminLogin() == "siths";
+        }
+
+        #endregion
+
+        #region ILookAndFeel Members.
+
+        /// <inheritdoc />
+        public PdfLookAndFeel PdfLookAndFeelConfiguration()
+        {
+            return this.Find(ApplicationSettings.PdfLookAndFeelConfiguration);
         }
 
         #endregion
 
         #region IOldSettings Members.
 
+        /// <inheritdoc />
+        public bool AutogeneratePasswordForMobileDevice()
+        {
+            return this.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice);
+        }
+
         ////
         //// FIXME: Old settings.
-        //// Old Settings which needs to be handles properly.
+        //// Old Settings which needs to be handled properly.
         ////
 
         /// <inheritdoc />
@@ -327,7 +398,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             var colors = this.persistence.QueryOver<Setting>()
                 .Where(x => x.IsActive)
                 .And(x => x.Name == "Web.Calendar.NumberOfCategoryColors").SingleOrDefault();
-            return colors.IsNull() ? 9 : Int32.Parse(colors.Value);
+            return colors.IsNull() ? 9 : int.Parse(colors.Value);
         }
 
         /// <inheritdoc />
@@ -339,7 +410,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 .And(x => x.Namespace == "MCSS.Calendar").List();
             foreach (var setting in settings)
             {
-                TypeConverter tc = TypeDescriptor.GetConverter(setting.Type);
+                var tc = TypeDescriptor.GetConverter(setting.Type);
                 result.Add(setting.Name, tc.ConvertFromString(setting.Value));
             }
             return result;
@@ -363,7 +434,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <inheritdoc />
         public bool HasCalendarOverview()
         {
-            var calendarSettings = GetCalendarSettings();
+            var calendarSettings = this.GetCalendarSettings();
             if (calendarSettings.ContainsKey("HasOverview"))
             {
                 return (bool) calendarSettings["HasOverview"];
@@ -469,13 +540,13 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                     {
                         return setting.Default;
                     }
-                    this.Add(item);
+                    this.Add<T>(item);
                 }
                 return (T) this.cache.Find<T>(cacheKey);
             }
             catch (Exception ex)
             {
-                Log.ErrorException("<SettingService> cache problem with key " + setting.Key, ex);
+                Log.Error(ex, "<SettingService> cache problem with key {0}", setting.Key);
                 return setting.Default;
             }
         }
@@ -485,21 +556,24 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        private bool Add(Setting item)
+        private bool Add<T>(Setting item)
         {
             try
             {
-                var cachedItem = JsonConvert.DeserializeObject(item.Value, item.Type);
-                this.cache.Upsert(this.CreateCacheKey(item.MachineName), cachedItem, new RuntimeEvictionPolicy
-                {
-                    Priority = CacheItemPriority.Default,
-                    SlidingExpiration = TimeSpan.FromMinutes(30)
-                });
+                var cachedItem = JsonConvert.DeserializeObject<T>(item.Value);
+                this.cache.Upsert(
+                    this.CreateCacheKey(item.MachineName), 
+                    cachedItem, 
+                    new RuntimeEvictionPolicy
+                        {
+                            Priority = CacheItemPriority.Default,
+                            SlidingExpiration = TimeSpan.FromMinutes(30)
+                        });
                 return true;
             }
             catch (Exception ex)
             {
-                Log.ErrorException("<SettingService> cache problem with id " + item.Id, ex);
+                Log.Error(ex, "<SettingService> cache problem with id {0}", item.Id);
                 return false;
             }
         }

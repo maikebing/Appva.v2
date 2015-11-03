@@ -9,35 +9,31 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Persistence;
+    using Application.Pdf;
+    using Application.Services;
     using Appva.Core.Extensions;
+    using Cqrs;
+    using Tenant.Identity;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// The print sequence command handler.
     /// </summary>
-    internal sealed class PrintSequenceHandler : RequestHandler<PrintSequence, PrintViewModel>
+    internal sealed class PrintSequenceHandler : RequestHandler<PrintSequence, FileContentResult>
     {
-        #region Private Variables.
+        #region Variables.
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
+        /// The <see cref="IPdfPrintService"/>.
         /// </summary>
-        private readonly IPersistenceContext context;
+        private readonly IPdfPrintService pdfService;
 
         /// <summary>
-        /// The <see cref="ISchedulerService"/>.
+        /// The <see cref="ITenantService"/>.
         /// </summary>
-        private readonly IScheduleService scheduleService;
+        private readonly ITenantService tenantService;
 
         #endregion
 
@@ -46,10 +42,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintSequenceHandler"/> class.
         /// </summary>
-        public PrintSequenceHandler(IPersistenceContext context, IScheduleService scheduleService)
+        /// <param name="pdfService">The <see cref="IPdfPrintService"/></param>
+        /// <param name="tenantService">The <see cref="ITenantService"/></param>
+        public PrintSequenceHandler(IPdfPrintService pdfService, ITenantService tenantService)
         {
-            this.context = context;
-            this.scheduleService = scheduleService;
+            this.pdfService = pdfService;
+            this.tenantService = tenantService;
         }
 
         #endregion
@@ -57,32 +55,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override PrintViewModel Handle(PrintSequence message)
+        public override FileContentResult Handle(PrintSequence message)
         {
-            var patient = this.context.Get<Patient>(message.Id);
-            var schedule = this.context.Get<Schedule>(message.ScheduleId);
-            var sequences = this.context.QueryOver<Sequence>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.Schedule.Id == schedule.Id);
-            if (! message.OnNeedBasis)
+            var bytes = this.pdfService.CreateBySchedule(message.StartDate, message.EndDate, message.Id, message.ScheduleId, message.OnNeedBasis, message.StandardSequences);
+            ITenantIdentity tenant;
+            this.tenantService.TryIdentifyTenant(out tenant);
+            return new FileContentResult(bytes, "application/pdf")
             {
-                sequences = sequences.AndNot(x => x.OnNeedBasis);
-            }
-            if (! message.StandardSequences)
-            {
-                sequences = sequences.And(x => x.OnNeedBasis);
-            }
-            var printable = this.scheduleService.PrintSchedule(message.StartDate, message.EndDate, sequences.List());
-            var statusTaxons = schedule.ScheduleSettings.StatusTaxons.Count == 0 ? this.context.QueryOver<Taxon>().Where(x => x.IsActive && x.IsRoot).JoinQueryOver<Taxonomy>(x => x.Taxonomy).Where(x => x.MachineName == "SST").List() : schedule.ScheduleSettings.StatusTaxons.ToList();
-            return new PrintViewModel
-            {
-                From = message.StartDate,
-                To = message.EndDate,
-                Patient = patient,
-                Schedule = schedule.ScheduleSettings,
-                StatusTaxons = statusTaxons,
-                PrintSchedule = printable,
-                EmptySchema = true
+                FileDownloadName = string.Format(
+                    "Signeringslista-{0}-{1}.pdf", 
+                    tenant.Name.ToUrlFriendly(), 
+                    DateTime.Now.ToFileTimeUtc())
             };
         }
 

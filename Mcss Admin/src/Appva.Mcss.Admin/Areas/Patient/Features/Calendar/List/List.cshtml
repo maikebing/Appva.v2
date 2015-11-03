@@ -56,11 +56,10 @@
             
             </div>
         }
-            <div id="calendar">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Vecka</th>
+		    <div id="calendar">
+			    <table>
+				    <thead>
+					    <tr>
                             @{
                                 var firstDayOfWeek = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
                                 var daysOfWeek = new List<string>() {
@@ -77,77 +76,76 @@
                             {
                                 <th scope="col">@day</th>
                             }
-                        </tr>
-                    </thead>
-                </table>
-                @foreach (var calendar in Model.Calendar)
-                {
-                    if (Model.IsBeginningOfWeek())
-                    {
-                        @:<table><tbody><tr><td>@calendar.Date.GetWeekNumber()</td>
-                    }
-                    var cssClass = (calendar.IsWithinMonth) ? "active" : "inactive";
-                    cssClass += (calendar.IsToday) ? " today" : string.Empty;
-                    <td class="@cssClass">
-                        <span class="slot">
-                            <span class="day">@calendar.Date.Day</span>
-                            @if (calendar.IsWithinMonth)
+					    </tr>
+				    </thead>
+				    <tbody>
+                        @foreach (var calendar in Model.Calendar)
+                        {
+                            if (Model.IsBeginningOfWeek())
                             {
-                                foreach (var evt in calendar.Events)
-                                {
-                                    <span class="@String.Format("act cal-cat{0}", (Model.Categories.FirstOrDefault(x => x.Value == evt.Schedule.ScheduleSettings).Key % (int)Model.CalendarSettings["ColorQuantity"]) + 1)" @((Model.FilterList.Count == 0 || Model.FilterList.Contains(evt.Schedule.ScheduleSettings.Id.ToString())) ? "" : "style=Display:none;")>
-                                        <span class="time">
-                                            @if (evt.AllDay)
-                                            {
-                                                @:Hela dagen
-                                                    }
-                                            else
-                                            {
-                                                @String.Format("{0:HH:mm} - {1:HH:mm}", evt.StartDate, evt.EndDate);
-                                            }
-                                        </span>
-                                        @evt.Schedule.ScheduleSettings.Name
-                                        @if (evt.Overview && evt.Scheduled.Date == calendar.Date)
-                                        {
-                                            <span class="act-activity">
-                                                <input type="checkbox" @(evt.Quittanced ? "checked" : "") value="@evt.Quittanced.ToString()" name="@evt.Scheduled" id="@evt.Sequence.Id" class="cal-quittance" />
-                                                <label class="cal-label" for="@evt.Scheduled">
-                                                    @(evt.Quittanced ? string.Format("Kvitterad av {0}", evt.QuittancedBy.FullName) : string.Format("Ej kvitterad"))
-                                                </label>
-                                            </span>
-                                        }
-                                        <span class="act-info">
-                                            <strong>Anteckningar/instruktion:</strong>
-                                            <span>
-                                                @evt.Sequence.Description
-                                            </span>
-                                        </span>
-                                        <span class="actions">
-                                            @if (evt.Id.NotEqual(Guid.Empty))
-                                            {
-                                                @Html.ActionLink(Permissions.Calendar.Update, "Ändra", "EditActivity", "Calendar", new { Id = Model.Patient.Id, TaskId = evt.Id }, new { @class = "edit lb-link", @title = "Ändra aktiviteten" })
-                                                @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "RemoveActivity", "Calendar", new { Id = Model.Patient.Id, TaskId = evt.Id }, new { @class = "del", @title = "Ta bort aktiviteten" })
-                                            }
-                                            else
-                                            {
-                                                @Html.ActionLink(Permissions.Calendar.Update, "Ändra", "Edit", "Calendar", new { Id = Model.Patient.Id, SequenceId = evt.Sequence.Id, Date = calendar.Date }, new { @class = "edit lb-link", @title = "Ändra aktiviteten" })
-                                                @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "Remove", "Calendar", new { Id = Model.Patient.Id, SequenceId = evt.Sequence.Id, Date = calendar.Date }, new { @class = "del", @title = "Ta bort aktiviteten" })
-                                            }
-                                        </span>
-                                    </span>
-                                }
+                                @:<tr>
                             }
-                        </span>
-                    </td>
-                    if (Model.IsEndOfWeek())
-                    {
-                        Model.WeekIterator = 0;
-                        @:</tr></tbody></table>
-                    }
-                    Model.WeekIterator = Model.WeekIterator + 1;
-                }
+                            var cssClass = (calendar.IsWithinMonth) ? "active" : "inactive";
+                            cssClass += (calendar.IsToday) ? " today" : string.Empty;   
+                            <td class="@cssClass">
+							    <span class="slot">
+								    <span class="day">@calendar.Date.Day</span>
+								    @if (calendar.IsWithinMonth)
+                                    {
+                                        foreach (var evt in calendar.Events)
+                                        {
+                                            <span class="@String.Format("act cal-cat{0}", (Model.Categories.FirstOrDefault(x => x.Value == evt.Schedule.ScheduleSettings).Key % (int)Model.CalendarSettings["ColorQuantity"]) + 1)" @((Model.FilterList.Count == 0 || Model.FilterList.Contains(evt.Schedule.ScheduleSettings.Id.ToString())) ? "" : "style=Display:none;")>
+										        <span class="time">
+                                                    @if (evt.AllDay)
+                                                    {
+                                                        @:Hela dagen
+                                                    }
+                                                    else
+                                                    {
+                                                        @String.Format("{0:HH:mm} - {1:HH:mm}", evt.StartDate, evt.EndDate);
+                                                    }
+                                                </span>
+										        @evt.Schedule.ScheduleSettings.Name
+                                                @if (evt.Overview)
+                                                {
+                                                    <span class="act-activity">
+                                                        <input type="checkbox" @(evt.Quittanced ? "checked" : "") value="@evt.Quittanced.ToString()" name="@evt.Scheduled" id="@evt.Sequence.Id" class="cal-quittance" />
+                                                        <label class="cal-label" for="@evt.Scheduled">
+                                                            @(evt.Quittanced ? string.Format("Kvitterad av {0}", evt.QuittancedBy.FullName) : string.Format("Ej kvitterad"))
+                                                        </label>
+                                                    </span>
+                                                }
+                                                <span class="act-info">
+                                                    <strong>Anteckningar/instruktion:</strong>
+                                                    <span>
+                                                        @evt.Sequence.Description
+                                                    </span>
+                                                </span>
+                                                <span class="actions">
+                                                    @if (evt.Id.NotEqual(Guid.Empty)) {
+                                                        @Html.ActionLink(Permissions.Calendar.Update, "Ändra", "EditActivity", "Calendar", new { Id = Model.Patient.Id, TaskId = evt.Id }, new { @class = "edit lb-link", @title = "Ändra aktiviteten" })
+                                                        @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "RemoveActivity", "Calendar", new { Id = Model.Patient.Id, TaskId = evt.Id }, new { @class = "del", @title = "Ta bort aktiviteten" })
+                                                    }
+                                                    else { 
+                                                        @Html.ActionLink(Permissions.Calendar.Update, "Ändra", "Edit", "Calendar", new { Id = Model.Patient.Id, SequenceId = evt.Sequence.Id, Date = calendar.Date }, new { @class = "edit lb-link", @title = "Ändra aktiviteten" })
+                                                        @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "Remove", "Calendar", new { Id = Model.Patient.Id, SequenceId = evt.Sequence.Id, Date = calendar.Date }, new { @class = "del", @title = "Ta bort aktiviteten" })
+                                                    }
+										        </span>
+									        </span>
+                                        }
+                                    }
+							    </span>
+						    </td>
+                            if (Model.IsEndOfWeek())
+                            {
+                                Model.WeekIterator = 0;
+                                @:</tr>
+                            }
+                            Model.WeekIterator = Model.WeekIterator + 1;
+                        }
+                    </tbody>
+                </table>
             </div>
-
         </div>
 		
     </div>

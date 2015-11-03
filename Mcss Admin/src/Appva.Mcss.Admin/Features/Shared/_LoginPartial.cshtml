@@ -6,10 +6,10 @@
             <li>
                 <a class="profile">@User.Identity.Name</a>
                 <div class="profile">
-    <p>
+                    <p>
                         <span class="label">Inloggad som:</span>
                         @User.Identity.Name
-    </p>
+                    </p>
                     <ul>
                         @if (! Principal.Claims.Any(x => x.Type == Appva.Core.Resources.ClaimTypes.SithsEnabled && x.Value == "Y"))
                         {
@@ -34,6 +34,6 @@
         e.stopPropagation();
     });
     $(document).click(function (e) {
-        $('li.profile a').toggleClass('focus');
+        $('li a.profile').toggleClass('focus');
     });
 </script>

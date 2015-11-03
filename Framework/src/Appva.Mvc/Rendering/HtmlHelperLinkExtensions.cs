@@ -110,6 +110,14 @@ namespace Appva.Mvc
             return true;
         }
 
+        /// <summary>
+        /// Returns a link to an external support-page
+        /// </summary>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/</param>
+        /// <param name="url">The url to the support-page</param>
+        /// <param name="linkText">Optional, link-text</param>
+        /// <param name="htmlAttributes">Optional, HTML attributes </param>
+        /// <returns></returns>
         public static MvcHtmlString CreateSupportLink([NotNull] this HtmlHelper htmlHelper, string url, string linkText = "Hjälp", object htmlAttributes = null)
         {
             var link = new TagBuilder("a");

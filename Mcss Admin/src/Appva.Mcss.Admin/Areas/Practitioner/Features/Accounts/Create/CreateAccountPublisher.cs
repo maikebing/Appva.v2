@@ -139,6 +139,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             account.DevicePassword         = password;
             account.Taxon                  = address;
             account.Roles                  = roles;
+            account.HsaId                  = message.HsaId;
             account.SymmetricKey           = Hash.Random().ToBase64();
             var permissions = this.permissions.ListByRoles(roles);
             if (permissions.Any(x => x.Resource.Equals(Permissions.Admin.Login.Value)))

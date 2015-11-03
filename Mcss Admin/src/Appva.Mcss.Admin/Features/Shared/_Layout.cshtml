@@ -377,7 +377,7 @@
         </script>
     </head>
     <body>
-        @if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
+        @if (ApplicationEnvironment.Is.Staging)
         {
             <div class="environment">
                 <p>ENVIRONMENT @ApplicationEnvironment.Environment | VERSION @ApplicationEnvironment.Info.Version | SERVER @ApplicationEnvironment.OperatingSystem.MachineName</p>

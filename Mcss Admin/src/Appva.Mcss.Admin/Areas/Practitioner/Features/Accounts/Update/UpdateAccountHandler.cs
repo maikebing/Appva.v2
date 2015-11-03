@@ -65,7 +65,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var account = this.accounts.Find(message.Id);
             return new UpdateAccount
             {
-                IsHsaIdFieldVisible                = this.settings.IsSithsAuthorizationEnabled(),
+                IsHsaIdFieldVisible                = this.settings.IsSithsAuthorizationEnabled() || this.settings.Find(ApplicationSettings.IsHsaIdVisible),
                 IsMobileDevicePasswordEditable     = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
                 IsMobileDevicePasswordFieldVisible = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
                 IsUsernameVisible                  = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible),

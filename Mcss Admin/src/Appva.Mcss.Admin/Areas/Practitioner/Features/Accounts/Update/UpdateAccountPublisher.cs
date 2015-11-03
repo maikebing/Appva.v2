@@ -95,7 +95,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             {
                 account.EmailAddress = message.Email;
             }
-            if (this.settings.IsSithsAuthorizationEnabled())
+            if (this.settings.IsSithsAuthorizationEnabled() || this.settings.Find(ApplicationSettings.IsHsaIdVisible))
             {
                 account.HsaId = message.HsaId;
             }

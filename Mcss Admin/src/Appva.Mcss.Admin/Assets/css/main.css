@@ -335,7 +335,7 @@ a.pause-btn:active {
 }
 
 #header {
-	padding:0 12px;
+	padding:0 20px;
 	background:#445068 url(../i/grad-12.png) repeat-x;
 }
 #logo {
@@ -345,6 +345,7 @@ a.pause-btn:active {
 }
 #logo img {display:block;}
 #header h1 {font-weight:bold; font-size:2em;}
+
 #logged-info {
 	float:right;
 	/*padding:16px 5px 0;*/
@@ -363,66 +364,85 @@ a.pause-btn:active {
 	box-shadow:0 1px 0 #637088, 0 2px 5px #113 inset;
 }
 
-
 #logged-info ul li a:hover{
     cursor:pointer;
 }
-    
+
+#logged-info ul li:hover, #logged-info ul li.sel {
+    color:#445068;
+	background:#fff url(../i/header-tab.png) repeat-x;
+	text-shadow:0 1px 0 #fff;
+}
+#logged-info ul li:hover a, #logged-info ul li.sel a {
+    color:#445068;
+	text-shadow:0 1px 0 #fff;
+}
+#logged-info ul li.support-info, 
+#logged-info ul li.user-info { 
+
+}
+
+#logged-info ul li .icon { padding-left:40px; background-size:16px; }
+#logged-info ul li .icon-profile { background:url(/Assets/i/profile-white.png) no-repeat 10px 50%; background-size:27px; }
+#logged-info ul li:hover .icon-profile { background:url(/Assets/i/icn-help.png) no-repeat 16px 50%; }
+#logged-info ul li .icon-help { background:url(/Assets/i/icn-help.png) no-repeat 16px 50%; }
+
 #logged-info ul li a.profile {
-    background:url(/Assets/i/profile-white.png) no-repeat 0 50%;
-    background-size:27px;
+    /*background:url(/Assets/i/profile-white.png) no-repeat 0 50%;
+    background-size:27px;*/
 }
 #logged-info ul li a.help {
-    background:url(../i/icn-help.png) no-repeat 0 50%;
+    /*background:url(../i/icn-help.png) no-repeat 0 50%;
     font-weight:normal;
-    padding-left:20px;
+    padding-left:20px;*/
 }
 
 #logged-info ul li a {
-    padding:16px 15px 16px 25px;
-    margin-left: 15px;
+    padding:16px;
     display:inline-block;
 }
 
 #logged-info ul li div.profile {
+    min-width:260px;
     position: absolute;
     right:0px;
-    display: none;
-    padding:10px 0;
-    background: rgba(255,255,255,0.9);
+    /*display: none;*/
+    padding: 25px 10px 10px;
+    background: #fff;
     color:rgb(75,87,118);
-    border:1px solid #d8dfe5;
-    margin-right:14px;
-    box-shadow:0 0 10px rgba(0,0,0,0.7);
-    z-index:9999999;
+    border:3px solid rgb(75,87,118);
+    border-top:none;
+    margin-right:17px;
+    box-shadow:0 5px 10px rgba(75,87,118,0.35);
+    z-index:999;
 }
 
 #logged-info ul li div.profile ul,
 #logged-info ul li div.profile ul li {
     width:100%;
     padding:0;
-    background:rgba(228,234,247,0.9);
-    border-bottom:1px solid #d8dfe5;
+    background:rgba(228,234,247,0.35);
+    float:none;
 }
+#logged-info ul li div.profile ul li { border-top:1px solid #d8dfe5; }
 
 #logged-info ul li div.profile ul li a,
 #logged-info ul li div.profile p {
     color:rgb(75,87,118);
     box-shadow:none;
-    padding:10px 10px 10px 25px;
+    padding:16px 16px 16px 30px;
     margin:0 15px;
     text-shadow:none;
     border:none;
-    ;
 }
 
 #logged-info ul li div.profile ul li a.logout {
     background: url(/Assets/i/icn-logout.png) no-repeat 0 50%;
-    background-size:20px;
+    background-size:16px;
 }
 #logged-info ul li div.profile ul li a.change-password {
     background: url(/Assets/i/icn-change-password.png) no-repeat 0 50%;
-    background-size:20px;
+    background-size:16px;
 }
 
 #logged-info ul li div.profile p {
@@ -430,7 +450,7 @@ a.pause-btn:active {
     font-size: 16px;
     font-weight: bold;
     color: rgb(75,87,118);
-    padding-top: 80px;
+    padding: 85px 16px 25px 16px;
     background: url(/Assets/i/profile-blue@2x.png) no-repeat 50% 15px;
     background-size: 60px;
 }
@@ -442,7 +462,7 @@ a.pause-btn:active {
 }
 
 #logged-info ul li div.profile ul li:hover {
-    background:#d8dfe5;
+    background:#eaeff9;
 }
 
 #logged-info ul li:hover div.profile,
@@ -657,7 +677,7 @@ a.pause-btn:active {
 /* Page designs */
 
 #subheader {
-	padding:12px 16px;
+	padding:12px 20px;
 	background:#e2e9f6 url(../i/shade-header.png) repeat-x 0 50%;
 	border-bottom:1px solid #b6c2e0;
 	text-shadow:0 1px 0 #fff;
@@ -2314,7 +2334,7 @@ form .time {width:4em;}
 }
 
 #status-filter {
-	padding:10px 12px;
+	padding:10px 20px;
 	margin-bottom:20px;
 	background:#e2e9f6 url(../i/shade-header.png) repeat-x 0 50%;
 	border-bottom:1px solid #b6c2e0;

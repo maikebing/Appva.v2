@@ -122,12 +122,13 @@ namespace Appva.Mvc
         {
             var link = new TagBuilder("a");
             link.MergeAttribute("href", url);
-
             link.InnerHtml = linkText;
             link.MergeAttributes(new RouteValueDictionary(htmlAttributes), true);
-            link.Attributes.Add("class", "help");
+            if (! link.Attributes.ContainsKey("class"))
+            {
+                link.Attributes.Add("class", "help");
+            }
             link.Attributes.Add("target", "_blank");
-
             return MvcHtmlString.Create(link.ToString(TagRenderMode.Normal));
         }
     }

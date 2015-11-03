@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Appva.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Appva.Mcss.Web.ViewModels
         public Guid TaskId { get; set; }
 
         [Display(Name = "Notis")]
+        [PlaceHolder("Frivilligt")]
         public string Description { get; set; }
 
         public string ReturnUrl { get; set; }

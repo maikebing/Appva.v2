@@ -75,7 +75,7 @@ namespace Appva.Mvc.Rendering.Html
             {
                 htmlDictionary.Add("placeholder", this.placeholder);
             }
-            return this.Root.HtmlHelper.TextBoxFor(this.expression, htmlDictionary);
+            return this.Root.HtmlHelper.TextAreaFor(this.expression, htmlDictionary);
         }
 
         #endregion

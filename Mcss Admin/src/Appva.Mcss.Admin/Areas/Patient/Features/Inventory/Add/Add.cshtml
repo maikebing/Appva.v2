@@ -5,9 +5,8 @@
     @using (Html.BeginForm("Create", "Inventory", new { id = Model.InventoryId, returnUrl = Model.ReturnUrl})) {
         <h3 class="section-title">Tillför mängd till @Model.InventoryName</h3>
         <div class="text medium">
-            @Html.LabelFor(m => m.Value)
-            @Html.TextBoxFor(m => m.Value, new { @type = "number", @min = "1", @max = "9999", step = "any" })
-            @Html.ValidationMessageFor(m => m.Value)
+            @Html.FormGroup(m => m.Value).Label().TextBox(htmlAttributes: new { @type = "number", @min = "1", @max = "9999", step = "any" }).Validate().Build()
+            @Html.FormGroup(m => m.Description).Label().TextArea("Frivilligt").Validate().Build()
             @Html.HiddenFor(m => m.SequenceId)
             @Html.HiddenFor(m => m.InventoryId)
             @Html.HiddenFor(m => m.Operation)

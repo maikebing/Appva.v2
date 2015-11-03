@@ -1,0 +1,41 @@
+.header,.title,.content,.subtitle,.footer-text {font-family:/*'Helvetica Neue',*/ Helvetica, Arial, sans-serif;color:#445068;}
+.header {vertical-align:middle;}
+.header img{vertical-align:middle;margin-right:20px;}
+.header .title{color:#ffffff;font-size:24px;font-weight:600;}
+.header .date{color: #ff9999;font-size:13px;}
+a{color: #445068;}
+.footer-text{font-size:12px;line-height:16px;color:#ff9999;font-weight:300;}
+.footer-text strong{font-weight:600;}
+.footer-text a{color:#ff9999;}
+.container{width:600px;max-width:600px;}
+.container-padding{padding-left:25px;padding-right:25px;padding-top:25px;padding-bottom:25px;}
+.content{background-color: #ffffff;}
+hr,.hr{border:0;border-bottom:1px solid #f4f4f4;}
+.hr{height: 1px;}
+.title {font-size:18px;font-weight:300;}
+.sub-title{font-size:16px;font-weight:300;color:#99a9c2;margin-bottom:10px;}
+.alert-message{background:#f5f8fa;padding:20px;color:#99a9c2;border-radius:4px;}
+.alert-message a,.alert-message a:link,.alert-message a:visited,.alert-message a:active,.alert-message a:hover{color:#99a9c2;}
+.button{background:#445068;margin:0;/*font-size:16px;line-height:22px;*/font-weight:300;color:#ffffff;text-align:center;text-decoration:none;border-radius:4px;padding:13px 0;border:1px solid #445068;display:block;}
+.body-text{font-size:14px;line-height:20px;text-align:left;font-weight:300;}
+.code-wrap {background-color:#f5f5f5;padding:5px;}
+code{font-family:Menlo,Courier,monospace;font-size:12px;word-break:break-word;}
+body{margin:0;padding:0;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
+table{border-spacing:0;}
+table td{border-collapse:collapse;}
+.odd{background:#f5f5f5;}
+.even{background:#fafafa;}
+.odd th,.odd td,.even th,.even td{padding:7px 10px;}
+.ExternalClass{width:100%;}
+.ExternalClass,.ExternalClass p,.ExternalClass span,.ExternalClass font,.ExternalClass td,.ExternalClass div {line-height:100%;}
+.ReadMsgBody{width:100%;background-color:#ebebeb;}
+table{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+img{-ms-interpolation-mode:bicubic;}
+.yshortcuts a{border-bottom: none !important;}
+@media screen and (max-width: 599px){
+	table[class="force-row"],table[class="container"]{width:100% !important;max-width:100% !important;}
+}
+@media screen and (max-width: 400px){
+	td[class*="container-padding"]{padding-left:12px !important;padding-right:12px !important;}
+}
+.ios-footer a{color:#ff9999 !important;text-decoration:underline;}

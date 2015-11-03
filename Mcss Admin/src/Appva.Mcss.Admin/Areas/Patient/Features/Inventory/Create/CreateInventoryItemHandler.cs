@@ -95,14 +95,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             switch (message.Operation)
             {
                 case "add":
-                    inventory.CurrentLevel += message.Value;
+                    inventory.CurrentLevel += Math.Round(Convert.ToDouble(message.Value), 4);
                     break;
                 case "recount":
-                    inventory.CurrentLevel = message.Value;
+                    inventory.CurrentLevel = Math.Round(Convert.ToDouble(message.Value), 4);
                     inventory.LastRecount = DateTime.Now;
                     break;
                 case "withdrawal":
-                    inventory.CurrentLevel = inventory.CurrentLevel - message.Value;
+                    inventory.CurrentLevel = inventory.CurrentLevel - Math.Round(Convert.ToDouble(message.Value), 4);
                     break;
                 default:
                     break;
@@ -113,7 +113,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Account = user,
                 Description = message.Description,
                 Operation = message.Operation,
-                Value = message.Value,
+                Value = Math.Round(Convert.ToDouble(message.Value), 4),
                 Sequence = message.SequenceId != Guid.Empty ? this.persistence.Get<Sequence>(message.SequenceId) : null,
                 Task = message.TaskId.IsEmpty() ? null : this.persistence.Get<Task>(message.TaskId),
                 Inventory = inventory,

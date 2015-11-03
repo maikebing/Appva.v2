@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
     using Appva.Mvc.Configuration;
+    using Appva.Mvc.ModelBinding;
     using HibernatingRhinos.Profiler.Appender.NHibernate;
     using log4net.Config;
 
@@ -49,7 +50,7 @@ namespace Appva.Mcss.Admin
         }
 
         #endregion
-
+    
         #region HttpApplication Overrides.
 
         /// <inheritdoc />
@@ -57,6 +58,7 @@ namespace Appva.Mcss.Admin
         {
             Log.Info("Application started ...");
             MvcHandler.DisableMvcResponseHeader = true;
+            ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
             ModelBinders.Binders.Add(typeof(PersonalIdentityNumber), new PersonalIdentityNumberModelBinder());
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             AreaRegistration.RegisterAllAreas();

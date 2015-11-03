@@ -118,14 +118,22 @@
                                                 {
                                                     <td>
                                                         <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
-                                                        <strong>Avvikelse:</strong> Kontollräknat saldo stämmer ej
+                                                        @if (transaction.Description.IsNotEmpty())
+                                                        {
+                                                            <strong>Notis:</strong> @transaction.Description
+                                                        }
+                                                        else
+                                                        {
+                                                            <strong>Avvikelse:</strong> @:Kontollräknat saldo stämmer ej
+                                                        }
+                                                        
                                                     </td>
                                                 }
                                                 else 
                                                 {
                                                     <td>@(transaction.Description != null || transaction.Description == "" ? transaction.Description : "-")</td>
                                                 }
-                                                <td>@TimeSpanDifference.ToShortDateTime(transaction.CreatedAt, "Idag", "Igår")</td>
+                                                <td>@string.Format("{0} {1:HH:mm}",TimeSpanDifference.ToShortDateTime(transaction.CreatedAt, "Idag", "Igår"), transaction.CreatedAt)</td>
                                                 <td>@transaction.Account.FullName</td>
                                             </tr>
                                         }

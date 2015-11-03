@@ -110,6 +110,7 @@
     <Compile Include="Messaging\MailService.cs" />
     <Compile Include="Messaging\MailMessage.cs" />
     <Compile Include="Messaging\NoOpMailService.cs" />
+    <Compile Include="ModelBinding\DecimalModelBinder.cs" />
     <Compile Include="Rendering\HtmlHelperInputExtensions.cs" />
     <Compile Include="Rendering\OwinExtensions.cs" />
     <Compile Include="Rendering\ViewEngine\FeatureViewLocationRazorViewEngine.cs" />

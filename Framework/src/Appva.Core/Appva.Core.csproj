@@ -119,6 +119,7 @@
     <Compile Include="Utilities\Attribute.cs" />
     <Compile Include="Utilities\DateTimeUtilities.cs" />
     <Compile Include="Utilities\ExpressionUtil.cs" />
+    <Compile Include="Utilities\RandomNumber.cs" />
     <Compile Include="Utilities\StringUtilities.cs" />
     <Compile Include="Validators\SwedishPersonalIdentityNumberValidator.cs" />
   </ItemGroup>

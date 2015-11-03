@@ -42,6 +42,7 @@
       <HintPath>..\..\..\Packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
@@ -60,6 +61,8 @@
     </Compile>
     <Compile Include="Exceptions\PersistenceContextAwareResolverException.cs" />
     <Compile Include="PersistenceUnit.cs" />
+    <Compile Include="Tests\DataPopulation.cs" />
+    <Compile Include="Tests\SqlDatasource.cs" />
     <Compile Include="Transformers\DeepTransformer.cs" />
     <Compile Include="Datasource.cs" />
     <Compile Include="DefaultDatasource.cs" />
@@ -86,6 +89,7 @@
       <LastGenOutput>Exceptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

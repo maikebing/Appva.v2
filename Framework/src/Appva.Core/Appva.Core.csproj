@@ -52,6 +52,8 @@
     <Compile Include="Contracts\IPersonalIdentityNumber.cs" />
     <Compile Include="Contracts\Permissions\IPermission.cs" />
     <Compile Include="Contracts\Validation\IValidator.cs" />
+    <Compile Include="Environment\ApplicationEnvironment.cs" />
+    <Compile Include="Environment\OperationalEnvironment.cs" />
     <Compile Include="Exceptions\DefaultExceptionHandler.cs" />
     <Compile Include="Exceptions\IExceptionHandler.cs" />
     <Compile Include="Exceptions\NoOpExceptionHandler.cs" />
@@ -110,13 +112,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RoleTypes.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\AttributeUtilities.cs" />
     <Compile Include="Utilities\DateTimeUtilities.cs" />
     <Compile Include="Utilities\ExpressionUtil.cs" />
+    <Compile Include="Utilities\RandomNumber.cs" />
     <Compile Include="Utilities\StringUtilities.cs" />
     <Compile Include="Validators\SwedishPersonalIdentityNumberValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CacheTypes.resx">

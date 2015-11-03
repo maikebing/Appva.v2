@@ -1,4 +1,4 @@
-﻿// <copyright file="RuntimeMemoryCacheProvider.cs" company="Appva AB">
+﻿// <copyright file="RuntimeMemoryCache.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -14,7 +14,7 @@ namespace Appva.Caching.Providers
     using System.Linq;
     using System.Runtime.Caching;
     using System.Threading.Tasks;
-    using Logging;
+    using Core.Logging;
     using Policies;
 
     #endregion

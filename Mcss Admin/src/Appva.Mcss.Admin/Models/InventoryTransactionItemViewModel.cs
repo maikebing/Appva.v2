@@ -18,7 +18,7 @@ namespace Appva.Mcss.Web.ViewModels
         public string Operation { get; set; }
 
         [Display(Name="Antal")]
-        public double Value { get; set; }
+        public decimal Value { get; set; }
 
         public Guid TaskId { get; set; }
 

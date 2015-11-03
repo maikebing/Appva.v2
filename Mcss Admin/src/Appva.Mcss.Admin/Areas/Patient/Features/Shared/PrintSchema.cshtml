@@ -1,6 +1,6 @@
 ﻿@model Appva.Mcss.Web.ViewModels.PrintViewModel
 @{
-    ViewBag.Title = "Print";
+    SetTitle("Print");
     Layout = "~/Areas/Patient/Features/Shared/_PrintLayout.cshtml";
 }
 @foreach (var schedule in Model.PrintSchedule.Sequences)

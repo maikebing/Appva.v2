@@ -1,0 +1,16 @@
+﻿@{
+	SetTitle("Area 51 - Javascript Web Token");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+	<h1>Javascript Web Token</h1>
+	@using (Html.Post("Install", "Token", null))
+	{
+		@Html.Submit("Installera JWT", new { @class = "btn" })
+	}
+</div>
+<div id="content" class="cf">
+	<div id="content-primary">
+		@Html.Alert()
+	</div>
+</div>

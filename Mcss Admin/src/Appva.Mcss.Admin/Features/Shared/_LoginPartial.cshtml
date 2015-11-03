@@ -2,7 +2,10 @@
 <div id="logged-info">
     <p>
         Inloggad som <strong>@User.Identity.Name</strong>
-        @Html.ActionLink("Byt lösenord", "ChangePassword", "Accounts", new { Area = "Practitioner" }, null)
+        @if (! Principal.Claims.Any(x => x.Type == Appva.Core.Resources.ClaimTypes.SithsEnabled && x.Value == "Y"))
+        {
+            @Html.ActionLink("Byt lösenord", "ChangePassword", "Accounts", new { Area = "Practitioner" }, null)
+        }
         @Html.ActionLink("Logga ut", "SignOut", "Authentication", new { Area = string.Empty }, new { @class = "btn" })
     </p>
 </div>

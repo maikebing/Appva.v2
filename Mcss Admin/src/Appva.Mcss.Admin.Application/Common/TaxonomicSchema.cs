@@ -28,12 +28,17 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// The taxonomic scheme identifier for delegation taxa.
         /// </summary>
-        public static readonly TaxonomicSchema Delegation   = new TaxonomicSchema("DEL", "delegation");
+        public static readonly TaxonomicSchema Delegation = new TaxonomicSchema("DEL", "delegation");
 
         /// <summary>
         /// The taxonomic scheme identifier for risk assessment (Senior Alert) taxa.
         /// </summary>
         public static readonly TaxonomicSchema RiskAssessment = new TaxonomicSchema("SAI", "assessment");
+
+        /// <summary>
+        /// The taxonomic scheme identifier for sign status taxa.
+        /// </summary>
+        public static readonly TaxonomicSchema SignStatus = new TaxonomicSchema("SST", "sign-status");
 
         #endregion
 

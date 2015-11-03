@@ -3,12 +3,12 @@
     <div class="about">
         <img src="@Url.Image("logo-about.png")" alt="MCSS" />
         <p class="sub">Medication and Care Support System</p>
-        <p class="sub">Version </p>
+        <p class="sub">Version @ApplicationEnvironment.Info.Version</p>
         <div class="contact cf">
             <div class="col">
                 <p><strong>Tillverkas av Appva AB</strong></p>
                 <p>Box 88 <br />421 21 Västra Frölunda</p>
-                <p><strong>Besöksadress:</strong> Norra Hamngatan 32, Göteborg</p>
+                <p><strong>Besöksadress:</strong> Föreningsgatan 4b Göteborg</p>
             </div>
             <div class="col">
                 <p><strong>Telefon:</strong> 070-766 82 86</p>
@@ -17,7 +17,7 @@
             </div>
             <div class="col last">
                 <img src="@Url.Image("ce-logo.png")" alt="CE" />
-                <p class="sub">Copyright &copy; 2015, Appva AB.</p>
+                <p class="sub">Copyright &copy; @DateTime.Now.Year, Appva AB.</p>
             </div>
         </div>
     </div>

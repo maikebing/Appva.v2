@@ -1,18 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using Appva.Mcss.Admin.Domain.Entities;
-
-
+﻿// <copyright file="Calendar.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+// </author>
 namespace Appva.Mcss.Admin.Application.Models
 {
+    #region Imports.
 
-    public class Calendar {
+    using System;
+    using System.Collections.Generic;
+    using Appva.Mcss.Admin.Domain.Entities;
 
-        public bool IsWithinMonth { get; set; }
-        public bool IsToday { get; set; }
-        public DateTime Date { get; set; }
-        public IList<Task> Events { get; set; }
+    #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public class Calendar
+    {
+        /// <summary>
+        /// Whether or not the calendar event is within month.
+        /// </summary>
+        public bool IsWithinMonth
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether or not the calendar event is today.
+        /// </summary>
+        public bool IsToday
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The calendar event date.
+        /// </summary>
+        public DateTime Date
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A list of events.
+        /// </summary>
+        public IList<Task> Events
+        {
+            get;
+            set;
+        }
     }
-
 }

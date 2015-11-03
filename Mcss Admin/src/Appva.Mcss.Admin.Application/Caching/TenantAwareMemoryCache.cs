@@ -50,6 +50,8 @@ namespace Appva.Mcss.Admin.Application.Caching
         /// <summary>
         /// Initializes a new instance of the <see cref="TenantAwareMemoryCache"/> class.
         /// </summary>
+        /// <param name="strategy">The <see cref="ITenantIdentificationStrategy"/></param>
+        /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
         public TenantAwareMemoryCache(ITenantIdentificationStrategy strategy, IRuntimeMemoryCache cache)
         {
             this.cache = cache;
@@ -126,6 +128,19 @@ namespace Appva.Mcss.Admin.Application.Caching
 
         #endregion
 
+        #region IDisposable Members.
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (this.cache != null)
+            {
+                this.cache.Dispose();
+            }
+        }
+
+        #endregion
+
         #region Private Methods.
 
         /// <summary>
@@ -145,19 +160,6 @@ namespace Appva.Mcss.Admin.Application.Caching
                 return string.Format("{0}.{1}", identifier.Value, cacheKey);
             }
             throw new SecurityException("Unable to identify tenant!");
-        }
-
-        #endregion
-
-        #region IDisposable Members.
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            if (this.cache != null)
-            {
-                this.cache.Dispose();
-            }
         }
 
         #endregion

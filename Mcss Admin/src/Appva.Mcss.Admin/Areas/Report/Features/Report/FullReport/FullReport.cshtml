@@ -1,5 +1,8 @@
 ﻿@model Appva.Mcss.Admin.Areas.Models.FullReportModel
-@{ ViewBag.Title = "Översikt"; ViewBag.MainClass = "report-view"; }
+@{ 
+    SetTitle("Översikt"); 
+    ViewBag.MainClass = "report-view"; 
+}
 <div id="subheader" class="cf">
 	<h1>Fullständig resultatrapport</h1>
     @Html.ActionLink("Exportera till Excel", "Excel", new { sId = Model.ScheduleSetting, startDate = Model.Start.ToShortDateString(), endDate = Model.End.ToShortDateString() }, new { @class = "export", download = string.Format("MCSS-rapport-{0}.xls", DateTime.Now.ToFileTimeUtc()) })

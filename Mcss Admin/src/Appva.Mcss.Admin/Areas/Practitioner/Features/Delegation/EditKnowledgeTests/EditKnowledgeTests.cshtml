@@ -1,6 +1,6 @@
 ﻿@model Appva.Mcss.Web.ViewModels.KnowledgeTestViewModel
 @{
-    ViewBag.Title = "Ändra kunskapstester";
+    SetTitle("Ändra kunskapstester");
 }
 <div class="std-panel std-form lb-validate-form" data-valclass="KnowledgeTestEdit">
 @using (Html.BeginForm(new { id = Model.AccountId, taxonId = Model.TaxonId })) {

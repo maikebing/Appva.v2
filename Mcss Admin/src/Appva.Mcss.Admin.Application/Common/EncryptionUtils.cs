@@ -9,7 +9,6 @@ namespace Appva.Mcss.Admin.Application.Common
     #region Imports.
 
     using System;
-    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -20,8 +19,7 @@ namespace Appva.Mcss.Admin.Application.Common
     /// </summary>
     public static class EncryptionUtils
     {
-
-        #region Private Fields.
+        #region Variables.
 
         /// <summary>
         /// Default iterations.
@@ -35,8 +33,9 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// Creates a hash from value and salt.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="salt"></param>
+        /// <param name="value">The plain text value</param>
+        /// <param name="salt">The salt</param>
+        /// <returns>A hashed value of the plain text</returns>
         public static string Hash(string value, string salt)
         {
             var i = salt.IndexOf('.');
@@ -52,6 +51,9 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// Generates a salt.
         /// </summary>
+        /// <param name="dateTime">The current date time</param>
+        /// <param name="iterations">The amount of iterations</param>
+        /// <returns>A random salt</returns>
         public static string GenerateSalt(DateTime dateTime, int? iterations = null)
         {
             return GenerateSalt(dateTime.Ticks, iterations);
@@ -60,6 +62,9 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// Generates a salt.
         /// </summary>
+        /// <param name="salt">The salt number</param>
+        /// <param name="iterations">The amount of iterations</param>
+        /// <returns>A random salt</returns>
         public static string GenerateSalt(long salt, int? iterations = null)
         {
             if (iterations.HasValue && iterations.Value < DefaultIterations)
@@ -74,38 +79,6 @@ namespace Appva.Mcss.Admin.Application.Common
             return string.Format("{0}.{1}", iterations.Value, Convert.ToBase64String(bytes));
         }
 
-        /// <summary>
-        /// Creates a default password.
-        /// </summary>
-        public static string GeneratePassword()
-        {
-            var retval = string.Empty;
-            retval += GetNumberOfCharactersFrom("abcdefghijklmnopqrstuvwxyz", 3);
-            retval += GetNumberOfCharactersFrom("0123456789", 1);
-            retval += GetNumberOfCharactersFrom("!@#$%&()?", 1);
-            retval += GetNumberOfCharactersFrom("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 3);
-            Random random = new Random();
-            return new string(retval.ToCharArray().OrderBy(s => (random.Next(2) % 2) == 0).ToArray());
-        }
-
-        /// <summary>
-        /// Helper for generating password.
-        /// </summary>
-        /// <param name="characters"></param>
-        /// <param name="length"></param>
-        private static string GetNumberOfCharactersFrom(string characters, int length)
-        {
-            Random random = new Random();
-            StringBuilder buffer = new StringBuilder(length);
-            for (int i = 0; i < length; i++)
-            {
-                int randomNumber = random.Next(0, characters.Length);
-                buffer.Append(characters, randomNumber, 1);
-            }
-            return buffer.ToString();
-        }
-
         #endregion
-
     }
 }

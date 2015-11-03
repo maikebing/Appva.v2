@@ -1,5 +1,7 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationRevisionViewModel
-@{ ViewBag.Title = string.Format("Alla mottagna delegeringar, {0}", Model.Account.FullName); }
+@{ 
+    SetTitle("Alla mottagna delegeringar, {0}", Model.Account.FullName); 
+}
 @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
 <div id="subheader" class="cf">

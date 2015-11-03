@@ -46,8 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\..\..\Packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -56,6 +57,10 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -63,16 +68,19 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
+    <Reference Include="Thinktecture.IdentityModel.Core, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Thinktecture.IdentityModel.Core.1.4.0\lib\net45\Thinktecture.IdentityModel.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Validation, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Validation.2.2.8\lib\portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Validation.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auditing\AuditService.cs" />
     <Compile Include="Auditing\HttpContextBaseExtensions.cs" />
     <Compile Include="Caching\TenantAwareMemoryCache.cs" />
-    <Compile Include="Common\AccountUtils.cs" />
     <Compile Include="Common\CacheUtils.cs" />
     <Compile Include="Common\EncryptionUtils.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -100,14 +108,16 @@
     <Compile Include="Security\AuthenticationResult.cs" />
     <Compile Include="Security\ClaimsPrincipalExtensions.cs" />
     <Compile Include="Security\Extensions\AccountExtensions.cs" />
-    <Compile Include="Security\Extensions\OwinExtensions.cs" />
     <Compile Include="Security\FormsAuthentication.cs" />
     <Compile Include="Security\AuthenticationType.cs" />
     <Compile Include="Security\Identity\DemoTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\DevelopmentTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\StagingTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\ProductionTenantIdentificationStrategy.cs" />
-    <Compile Include="Security\PreAuthorizeTenantIdentityProvider.cs" />
+    <Compile Include="Security\Jwt\JwtSecureDataFormat.cs" />
+    <Compile Include="Security\Jwt\JwtToken.cs" />
+    <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />
+    <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IdentityService.cs" />
@@ -155,10 +165,6 @@
       <Project>{3983ff1b-a557-4b58-a363-bcee62182f1e}</Project>
       <Name>Appva.Fhir</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
-      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
-      <Name>Appva.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.NHibernateUtils\Appva.NHibernateUtils.csproj">
       <Project>{68889619-9faa-4b0c-bfa7-98d2a60e5584}</Project>
       <Name>Appva.NHibernateUtils</Name>
@@ -189,6 +195,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

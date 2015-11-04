@@ -353,6 +353,7 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationEmail.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationForDeviceEmail.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationSithsEmail.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRoles.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesForm.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesFormHandler.cs" />
@@ -1055,6 +1056,8 @@
     <Content Include="Features\Shared\RegisterSuccess.cshtml" />
     <Content Include="Features\Shared\ResetExpired.cshtml" />
     <Content Include="Features\Shared\ResetSuccess.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\RegisterSithsUserEmail.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\UpdateUserMobileDeviceEmail.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>
@@ -1072,7 +1075,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

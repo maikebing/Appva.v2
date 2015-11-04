@@ -129,14 +129,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 this.roleService.Find(message.TitleRole.ToGuid())
             } : new List<Role>();
             var address  = this.taxonomies.Get(taxonId);
-            var password = this.settings.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : message.DevicePassword;
             var account  = new Account();
             account.FirstName              = message.FirstName.Trim().FirstToUpper();
             account.LastName               = message.LastName.Trim().FirstToUpper();
             account.FullName               = string.Format("{0} {1}", account.FirstName, account.LastName);
             account.PersonalIdentityNumber = message.PersonalIdentityNumber;
             account.EmailAddress           = message.Email;
-            account.DevicePassword         = password;
+            account.DevicePassword         = message.DevicePassword;
             account.Taxon                  = address;
             account.Roles                  = roles;
             account.HsaId                  = message.HsaId;
@@ -145,6 +144,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if (permissions.Any(x => x.Resource.Equals(Permissions.Admin.Login.Value)))
             {
                 account.UserName = accountService.CreateUniqueUserNameFor(account);
+            }
+            if (permissions.Any(x => x.Resource.Equals(Permissions.Device.Login.Value)))
+            {
+                account.DevicePassword = this.settings.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : message.DevicePassword;
             }
             accountService.Save(account);
             var configuration = this.settings.MailMessagingConfiguration();
@@ -165,11 +168,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="permissions">The permissions</param>
         private void SendRegistrationMail(Account account, SecurityMailerConfiguration configuration, IList<Permission> permissions)
         {
-            //// If siths is enabled then there is no need to send an e-mail.
-            if (this.settings.IsSithsAuthorizationEnabled())
-            {
-                return;
-            }
             if (! configuration.IsRegistrationMailEnabled)
             {
                 return;
@@ -178,10 +176,27 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 return;
             }
-            var token      = this.jwtSecureDataFormat.CreateNewRegistrationToken(account.Id, account.SymmetricKey);
+            //// Calculate the mcss link.
             var helper     = new UrlHelper(this.context.Request.RequestContext);
+            var tenantLink = helper.Action("Index", "Home", new RouteValueDictionary { { "Area", string.Empty } }, this.context.Request.Url.Scheme);
+            //// If siths is enabled then there is no need to send an e-mail.
+            //// If HSA ID is set then the account MUST log in via siths, sort of...
+            if (this.settings.IsSithsAuthorizationEnabled() || account.HsaId.IsNotEmpty())
+            {
+                this.mailService.Send(MailMessage.CreateNew()
+                    .Template("RegisterSithsUserEmail")
+                    .Model<RegistrationSithsEmail>(new RegistrationSithsEmail
+                    {
+                        Name = account.FullName
+                    })
+                    .To(account.EmailAddress)
+                    .Subject("Ny MCSS behörighet")
+                    .Build());
+                return;
+            }
+            //// Generate a token and token link.
+            var token      = this.jwtSecureDataFormat.CreateNewRegistrationToken(account.Id, account.SymmetricKey);
             var tokenLink  = helper.Action("Register", "Account", new RouteValueDictionary { { "Area", string.Empty }, { "token", token } }, this.context.Request.Url.Scheme);
-            var tenantLink = helper.Action("Index",    "Home",    new RouteValueDictionary { { "Area", string.Empty } }, this.context.Request.Url.Scheme);
             this.mailService.Send(MailMessage.CreateNew()
                 .Template("RegisterUserEmail")
                 .Model<RegistrationEmail>(new RegistrationEmail
@@ -192,7 +207,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         TenantLink = tenantLink
                     })
                 .To(account.EmailAddress)
-                .Subject("Registreringsbekräftelse: Nytt MCSS konto skapat")
+                .Subject("Ny MCSS behörighet")
                 .Build());
         }
 
@@ -220,7 +235,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         Password = account.DevicePassword
                     })
                 .To(account.EmailAddress)
-                .Subject("Lösenord: Nytt MCSS konto för mobil enhet skapat")
+                .Subject("Ny MCSS behörighet")
                 .Build());
             
         }

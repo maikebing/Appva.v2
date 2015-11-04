@@ -187,7 +187,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     .Template("RegisterSithsUserEmail")
                     .Model<RegistrationSithsEmail>(new RegistrationSithsEmail
                     {
-                        Name = account.FullName
+                        Name = account.FullName,
+                        TenantLink = tenantLink
                     })
                     .To(account.EmailAddress)
                     .Subject("Ny MCSS behörighet")

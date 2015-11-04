@@ -108,9 +108,9 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                 account.Taxon = taxon;
             }
             this.accounts.Update(account);
-            //// If the previous password is null or previous password is unaltered, then
+            //// If the the new password is null or empty, or previous password is unaltered, then
             //// then no reason to re-send an e-mail.
-            if (previousPassword.IsEmpty() || previousPassword.Equals(account.DevicePassword))
+            if (message.DevicePassword.IsEmpty() || previousPassword.Equals(message.DevicePassword))
             {
                 return true;
             }

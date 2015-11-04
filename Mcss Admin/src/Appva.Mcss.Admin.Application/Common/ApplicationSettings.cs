@@ -65,6 +65,17 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "Makes the usernames for accounts visible in administration",
             false);
 
+        /// <summary>
+        /// The visibility for Hsa ID on user accounts.
+        /// </summary>
+        /// <remarks>The setting returns a <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<bool> IsHsaIdVisible = ApplicationSettingIdentity<bool>.CreateNew(
+            "MCSS.Core.Account.IsHsaIdVisible",
+            "Hsa ID visibility",
+            "MCSS.Core.Account",
+            "The Hsa ID visibility on user accounts in administration",
+            false);
+
         #endregion
 
         #region Access Control List.

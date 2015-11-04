@@ -359,6 +359,7 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             //// Extract the permissions for the new roles (or combined).
             var permissions = this.permissions.ByRoles(roles);
+            var previousPermissions = this.permissions.ByRoles(account.Roles);
             if (permissions.Any(x => x.Resource.Equals(Common.Permissions.Device.Login.Value)))
             {
                 //// For backwards compatibility:
@@ -374,6 +375,9 @@ namespace Appva.Mcss.Admin.Application.Services
                 if (account.DevicePassword.IsEmpty())
                 {
                     account.DevicePassword = this.settingsService.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : null;
+                }
+                if (! previousPermissions.Any(x => x.Resource.Equals(Common.Permissions.Device.Login.Value)))
+                {
                     isAccountUpgradedForDeviceAccess = true;
                 }
             }
@@ -393,6 +397,9 @@ namespace Appva.Mcss.Admin.Application.Services
                 {
                     account.UserName = this.CreateUniqueUserNameFor(account);
                     Log.Debug("Generated new username {0}", account.UserName);
+                }
+                if (! previousPermissions.Any(x => x.Resource.Equals(Common.Permissions.Admin.Login.Value)))
+                {
                     isAccountUpgradedForAdminAccess = true;
                 }
             }

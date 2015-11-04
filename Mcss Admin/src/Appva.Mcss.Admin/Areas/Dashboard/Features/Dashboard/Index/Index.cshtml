@@ -1,7 +1,7 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
 @model HomeViewModel
 @{ SetTitle("Översikt"); }
-<div id="main" class="status-view">
+<div class="status-view">
     <div id="content" class="cf">
         <div id="status-filter" class="cf">
             @Html.ActionLink(Permissions.Report.Read, "Fullständig rapport ...", "FullReport", "Report", new { Area = "Report" }, new { @class = "btn" })

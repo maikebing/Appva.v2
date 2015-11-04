@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Repository;
     using NHibernate.Criterion;
     using Appva.Core.Extensions;
+    using Appva.Cryptography;
 
     #endregion
 
@@ -163,7 +164,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="account">The user account to be updated</param>
         /// <param name="roles">The list of roles to be added</param>
-        void UpdateRoles(Account account, IList<Role> roles);
+        /// <param name="isAccountUpgradedForAdminAccess">If true then the user has got new roles which permits them to access admin</param>
+        /// <param name="isAccountUpgradedForDeviceAccess">If true then the user has got new roles which permits them to access device</param>
+        void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess);
     }
 
     /// <summary>
@@ -177,6 +180,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// The <see cref="ILog"/>.
         /// </summary>
         private static readonly ILog Log = LogProvider.For<AccountService>();
+
+        /// <summary>
+        /// The password format.
+        /// </summary>
+        private static readonly IDictionary<char[], int> PasswordFormat = new Dictionary<char[], int>
+            {
+                { "0123456789".ToCharArray(), 4 }
+            };
 
         /// <summary>
         /// The <see cref="IAccountRepository"/> implementation.
@@ -321,8 +332,10 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void UpdateRoles(Account account, IList<Role> newRoles)
+        public void UpdateRoles(Account account, IList<Role> newRoles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess)
         {
+            isAccountUpgradedForAdminAccess = false;
+            isAccountUpgradedForDeviceAccess = false;
             var roles = newRoles ?? new List<Role>();
             if (! this.identityService.Principal.IsInRole(RoleTypes.Appva))
             {
@@ -357,6 +370,12 @@ namespace Appva.Mcss.Admin.Application.Services
                     roles.Add(deviceRole);
                     Log.Debug("Added role {0}", deviceRole.Name);
                 }
+                //// If the account has no device password then they have just received new permissions.
+                if (account.DevicePassword.IsEmpty())
+                {
+                    account.DevicePassword = this.settingsService.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : null;
+                    isAccountUpgradedForDeviceAccess = true;
+                }
             }
             if (permissions.Any(x => x.Resource.Equals(Common.Permissions.Admin.Login.Value)))
             {
@@ -374,6 +393,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 {
                     account.UserName = this.CreateUniqueUserNameFor(account);
                     Log.Debug("Generated new username {0}", account.UserName);
+                    isAccountUpgradedForAdminAccess = true;
                 }
             }
             //// Overwrite the new roles - no need to remove any roles per definition (device/backend).

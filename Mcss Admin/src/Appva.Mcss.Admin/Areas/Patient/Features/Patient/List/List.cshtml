@@ -3,146 +3,144 @@
 @{ 
     SetTitle("Boende"); 
 }
-<div id="main">
-    <div id="subheader" class="cf">
-	    <h1>Boende</h1>
-        @Html.ActionLink(Permissions.Patient.Create, "Ny boende", "Create", "Patient", null, new { @class = "btn lb-link" })
-        <p class="filter">
-            <strong>Visa:</strong>
-            @Html.ActionLink("Alla", "List", new { }, new { @class = (Model.IsActive && !Model.IsDeceased) ? "sel div" : "div" })
-            @Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = (!Model.IsActive) ? "sel div" : "div" })
-            @Html.ActionLink("Avlidna", "List", new { isDeceased = true }, new { @class = (Model.IsDeceased) ? "sel div" : "div" })
-        </p>
-        @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientSearch.cshtml")
-    </div>
-    @if (Model.Items != null && Model.Items.Count > 0)
+<div id="subheader" class="cf">
+	<h1>Boende</h1>
+    @Html.ActionLink(Permissions.Patient.Create, "Ny boende", "Create", "Patient", null, new { @class = "btn lb-link" })
+    <p class="filter">
+        <strong>Visa:</strong>
+        @Html.ActionLink("Alla", "List", new { }, new { @class = (Model.IsActive && !Model.IsDeceased) ? "sel div" : "div" })
+        @Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = (!Model.IsActive) ? "sel div" : "div" })
+        @Html.ActionLink("Avlidna", "List", new { isDeceased = true }, new { @class = (Model.IsDeceased) ? "sel div" : "div" })
+    </p>
+    @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientSearch.cshtml")
+</div>
+@if (Model.Items != null && Model.Items.Count > 0)
+{
+<ul class="people">
+    @foreach (var item in Model.Items)
     {
-    <ul class="people">
-        @foreach (var item in Model.Items)
-        {
-            <li class="cf @(item.HasUnattendedTasks ? Html.HasPermissionFor(Permissions.Alert.Read) ? "alarm" : "" : "")">
-                @if (! item.Active)
-                {
-                    @Html.ActionLink(Permissions.Patient.Reactivate, "Aktivera", "Reactivate", new { Id = item.Id }, new { @class = "btn" })
-                }
-                <div class="h">
-                    <h2>
-                        @if (item.HasUnattendedTasks)
+        <li class="cf @(item.HasUnattendedTasks ? Html.HasPermissionFor(Permissions.Alert.Read) ? "alarm" : "" : "")">
+            @if (! item.Active)
+            {
+                @Html.ActionLink(Permissions.Patient.Reactivate, "Aktivera", "Reactivate", new { Id = item.Id }, new { @class = "btn" })
+            }
+            <div class="h">
+                <h2>
+                    @if (item.HasUnattendedTasks)
+                    {
+                        if (Html.HasPermissionFor(Permissions.Alert.Read))
                         {
-                            if (Html.HasPermissionFor(Permissions.Alert.Read))
-                            {
-                                @Html.ActionLink(item.FullName, "List", "Alerts", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Schedule.Read))
-                            {
-                                @Html.ActionLink(item.FullName, "List", "Schedule", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Schedule.EventList))
-                            {
-                                @Html.ActionLink(item.FullName, "Sign", "Schedule", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Schedule.Report))
-                            {
-                                @Html.ActionLink(item.FullName, "ScheduleReport", "Schedule", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Calendar.Read))
-                            {
-                                @Html.ActionLink(item.FullName, "List", "Calendar", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Inventory.Read))
-                            {
-                                @Html.ActionLink(item.FullName, "List", "Inventory", new { id = item.Id }, null)
-                            }
-                            else
-                            {
-                                @item.FullName
-                            }
+                            @Html.ActionLink(item.FullName, "List", "Alerts", new { id = item.Id }, null)
+                        }
+                        else if (Html.HasPermissionFor(Permissions.Schedule.Read))
+                        {
+                            @Html.ActionLink(item.FullName, "List", "Schedule", new { id = item.Id }, null)
+                        }
+                        else if (Html.HasPermissionFor(Permissions.Schedule.EventList))
+                        {
+                            @Html.ActionLink(item.FullName, "Sign", "Schedule", new { id = item.Id }, null)
+                        }
+                        else if (Html.HasPermissionFor(Permissions.Schedule.Report))
+                        {
+                            @Html.ActionLink(item.FullName, "ScheduleReport", "Schedule", new { id = item.Id }, null)
+                        }
+                        else if (Html.HasPermissionFor(Permissions.Calendar.Read))
+                        {
+                            @Html.ActionLink(item.FullName, "List", "Calendar", new { id = item.Id }, null)
+                        }
+                        else if (Html.HasPermissionFor(Permissions.Inventory.Read))
+                        {
+                            @Html.ActionLink(item.FullName, "List", "Inventory", new { id = item.Id }, null)
                         }
                         else
                         {
-                            if (Html.HasPermissionFor(Permissions.Schedule.Read))
-                            {
-                                @Html.ActionLink(item.FullName, "List", "Schedule", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Schedule.EventList))
-                            {
-                                @Html.ActionLink(item.FullName, "Sign", "Schedule", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Alert.Read))
-                            {
-                                @Html.ActionLink(item.FullName, "List", "Alerts", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Schedule.Report))
-                            {
-                                @Html.ActionLink(item.FullName, "ScheduleReport", "Schedule", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Calendar.Read))
-                            {
-                                @Html.ActionLink(item.FullName, "List", "Calendar", new { id = item.Id }, null)
-                            }
-                            else if (Html.HasPermissionFor(Permissions.Inventory.Read))
-                            {
-                                @Html.ActionLink(item.FullName, "List", "Inventory", new { id = item.Id }, null)
-                            }
-                            else
-                            {
-                                @item.FullName
-                            }
+                            @item.FullName
                         }
-                        @if (item.SeniorAlerts.IsNotNull())
+                    }
+                    else
+                    {
+                        if (Html.HasPermissionFor(Permissions.Schedule.Read))
                         {
-                            foreach (var sa in item.SeniorAlerts)
-                            {
-                                <img src="@string.Format("/Assets/i/{0}", sa.Type)" alt="Senior Alert" title="@sa.Name" />
-                            }
+                            @Html.ActionLink(item.FullName, "List", "Schedule", new { id = item.Id }, null)
                         }
-                    </h2>
-                    <span class="pnr">@item.UniqueIdentifier</span>
+                        else if (Html.HasPermissionFor(Permissions.Schedule.EventList))
+                        {
+                            @Html.ActionLink(item.FullName, "Sign", "Schedule", new { id = item.Id }, null)
+                        }
+                        else if (Html.HasPermissionFor(Permissions.Alert.Read))
+                        {
+                            @Html.ActionLink(item.FullName, "List", "Alerts", new { id = item.Id }, null)
+                        }
+                        else if (Html.HasPermissionFor(Permissions.Schedule.Report))
+                        {
+                            @Html.ActionLink(item.FullName, "ScheduleReport", "Schedule", new { id = item.Id }, null)
+                        }
+                        else if (Html.HasPermissionFor(Permissions.Calendar.Read))
+                        {
+                            @Html.ActionLink(item.FullName, "List", "Calendar", new { id = item.Id }, null)
+                        }
+                        else if (Html.HasPermissionFor(Permissions.Inventory.Read))
+                        {
+                            @Html.ActionLink(item.FullName, "List", "Inventory", new { id = item.Id }, null)
+                        }
+                        else
+                        {
+                            @item.FullName
+                        }
+                    }
+                    @if (item.SeniorAlerts.IsNotNull())
+                    {
+                        foreach (var sa in item.SeniorAlerts)
+                        {
+                            <img src="@string.Format("/Assets/i/{0}", sa.Type)" alt="Senior Alert" title="@sa.Name" />
+                        }
+                    }
+                </h2>
+                <span class="pnr">@item.UniqueIdentifier</span>
+            </div>
+            @if (item.HasUnattendedTasks)
+            {
+                @Html.ActionLink(Permissions.Alert.Read, "Larm!", "List", "Alerts", new { id = item.Id }, new { @class = "alert" })
+            }
+            else
+            {
+                <div class="emptyalert">&nbsp;</div>
+            }
+            @if (item.Address.IsNotNull())
+            {
+                <div class="i">
+                    <strong>Adress:</strong>
+                    <span>@item.Address</span>
                 </div>
-                @if (item.HasUnattendedTasks)
-                {
-                    @Html.ActionLink(Permissions.Alert.Read, "Larm!", "List", "Alerts", new { id = item.Id }, new { @class = "alert" })
-                }
-                else
-                {
-                    <div class="emptyalert">&nbsp;</div>
-                }
-                @if (item.Address.IsNotNull())
-                {
-                    <div class="i">
-                        <strong>Adress:</strong>
-                        <span>@item.Address</span>
-                    </div>
-                }
-                @if (item.FirstLineContact.IsNotNull())
-                {
-                    <div class="i">
-                        <strong>Ansvarig kontaktperson:</strong>
-                        <span>@item.FirstLineContact</span>
-                    </div>
-                }
-                @if (item.Overseeing.IsNotNull())
-                {
-                    <div class="i">
-                        <strong>Ansvarig sjuksköterska:</strong>
-                        <span>@item.Overseeing</span>
-                    </div>
-                }
-                @if (item.Superior.IsNotNull())
-                {
-                    <div class="i">
-                        <strong>Enhetschef:</strong>
-                        <span>@item.Superior</span>
-                    </div>
-                }
-            </li>
-        }
-    </ul>
-    @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(x => x
-        .DisplayTemplate("Pagination")
-        .MaxNrOfPages(15)
-        .AlwaysAddFirstPageNumber()
-        .AddRouteValue("IsActive", Model.IsActive)
-        .AddRouteValue("IsDeceased", Model.IsDeceased))
+            }
+            @if (item.FirstLineContact.IsNotNull())
+            {
+                <div class="i">
+                    <strong>Ansvarig kontaktperson:</strong>
+                    <span>@item.FirstLineContact</span>
+                </div>
+            }
+            @if (item.Overseeing.IsNotNull())
+            {
+                <div class="i">
+                    <strong>Ansvarig sjuksköterska:</strong>
+                    <span>@item.Overseeing</span>
+                </div>
+            }
+            @if (item.Superior.IsNotNull())
+            {
+                <div class="i">
+                    <strong>Enhetschef:</strong>
+                    <span>@item.Superior</span>
+                </div>
+            }
+        </li>
     }
-</div>
+</ul>
+@Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(x => x
+    .DisplayTemplate("Pagination")
+    .MaxNrOfPages(15)
+    .AlwaysAddFirstPageNumber()
+    .AddRouteValue("IsActive", Model.IsActive)
+    .AddRouteValue("IsDeceased", Model.IsDeceased))
+}

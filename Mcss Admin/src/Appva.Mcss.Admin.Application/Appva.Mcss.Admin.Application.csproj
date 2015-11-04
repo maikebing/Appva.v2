@@ -161,6 +161,10 @@
       <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
       <Name>Appva.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Framework\src\Appva.Cryptography\Appva.Cryptography.csproj">
+      <Project>{d3b336cc-9a4a-4cad-8ab5-32a92e028726}</Project>
+      <Name>Appva.Cryptography</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Fhir\Appva.Fhir.csproj">
       <Project>{3983ff1b-a557-4b58-a363-bcee62182f1e}</Project>
       <Name>Appva.Fhir</Name>

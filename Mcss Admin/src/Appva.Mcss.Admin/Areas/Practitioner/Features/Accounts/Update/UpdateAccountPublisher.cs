@@ -85,8 +85,8 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             var previousPassword = account.DevicePassword;
             account.UpdatedAt = DateTime.Now;
             account.FirstName = message.FirstName.Trim().FirstToUpper();
-            account.LastName = message.LastName.Trim().FirstToUpper();
-            account.FullName = string.Format("{0} {1}", account.FirstName, account.LastName);
+            account.LastName  = message.LastName.Trim().FirstToUpper();
+            account.FullName  = string.Format("{0} {1}", account.FirstName, account.LastName);
             if (isMobileDevicePasswordEditable)
             {
                 account.DevicePassword = message.DevicePassword;
@@ -120,14 +120,14 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                 return true;
             }
             this.mailer.Send(MailMessage.CreateNew()
-                .Template("RegisterUserMobileDeviceEmail")
+                .Template("UpdateUserMobileDeviceEmail")
                 .Model<RegistrationForDeviceEmail>(new RegistrationForDeviceEmail
                     {
                         Name = account.FullName,
                         Password = account.DevicePassword
                     })
                 .To(account.EmailAddress)
-                .Subject("Ditt MCSS konto lösenord har redigerats för mobil enhet")
+                .Subject("Ditt MCSS konto har uppdaterats")
                 .Build());
             return true;
         }

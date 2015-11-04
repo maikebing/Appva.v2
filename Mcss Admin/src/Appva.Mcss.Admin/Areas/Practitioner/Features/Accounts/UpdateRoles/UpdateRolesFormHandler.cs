@@ -131,7 +131,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             bool isAccountUpgradedForDeviceAccess;
             this.accountService.UpdateRoles(account, roles, out isAccountUpgradedForAdminAccess, out isAccountUpgradedForDeviceAccess);
             var configuration = this.settings.MailMessagingConfiguration();
-            this.SendRegistrationMail(account, configuration, isAccountUpgradedForDeviceAccess);
+            this.SendRegistrationMail(account, configuration, isAccountUpgradedForAdminAccess);
             this.SendRegistrationMailForDevice(account, configuration, isAccountUpgradedForDeviceAccess);
             return new ListAccount();
         }

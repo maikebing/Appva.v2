@@ -177,7 +177,10 @@ namespace Appva.Mcss.Admin.Application.Services
                     {
                         continue;
                     }
-                    retval.Add(schedule);
+                    if (! retval.Contains(schedule))
+                    {
+                        retval.Add(schedule);
+                    }
                 }
             }
             return retval;
@@ -194,7 +197,10 @@ namespace Appva.Mcss.Admin.Application.Services
                     {
                         continue;
                     }
-                    retval.Add(schedule);
+                    if (! retval.Contains(schedule))
+                    {
+                        retval.Add(schedule);
+                    }
                 }
             }
             return retval;
@@ -212,7 +218,10 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 foreach (var schedule in role.ScheduleSettings)
                 {
-                    retval.Add(schedule);
+                    if (! retval.Contains(schedule))
+                    {
+                        retval.Add(schedule);
+                    }
                 }
             }
             return retval;

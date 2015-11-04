@@ -368,12 +368,12 @@ a.pause-btn:active {
     cursor:pointer;
 }
 
-#logged-info ul li:hover, #logged-info ul li.sel {
+#logged-info ul li.user-info:hover, #logged-info ul li.sel {
     color:#445068;
 	background:#fff url(../i/header-tab.png) repeat-x;
 	text-shadow:0 1px 0 #fff;
 }
-#logged-info ul li:hover a, #logged-info ul li.sel a {
+#logged-info ul li.user-info:hover a, #logged-info ul li.sel a {
     color:#445068;
 	text-shadow:0 1px 0 #fff;
 }
@@ -382,10 +382,11 @@ a.pause-btn:active {
 
 }
 
-#logged-info ul li .icon { padding-left:40px; background-size:16px; }
-#logged-info ul li .icon-profile { background:url(/Assets/i/profile-white.png) no-repeat 10px 50%; background-size:27px; }
-#logged-info ul li:hover .icon-profile { background:url(/Assets/i/icn-help.png) no-repeat 16px 50%; }
+#logged-info ul li .icon, #logged-info ul li.sel .icon { padding-left:40px; background-size:16px; }
+#logged-info ul li .icon-profile { background:url(/Assets/i/profile-white.png) no-repeat 16px 50%; background-size:16px; }
+#logged-info ul li:hover .icon-profile, #logged-info ul li.sel .icon-profile { background:url(/Assets/i/profile-blue.png) no-repeat 16px 50%; background-size:16px; }
 #logged-info ul li .icon-help { background:url(/Assets/i/icn-help.png) no-repeat 16px 50%; }
+#logged-info #nav-main ul li.user-info:hover a, #logged-info #nav-main ul li.sel a { border:none; }
 
 #logged-info ul li a.profile {
     /*background:url(/Assets/i/profile-white.png) no-repeat 0 50%;
@@ -406,15 +407,15 @@ a.pause-btn:active {
     min-width:260px;
     position: absolute;
     right:0px;
-    /*display: none;*/
+    display: none;
     padding: 25px 10px 10px;
     background: #fff;
     color:rgb(75,87,118);
     border:3px solid rgb(75,87,118);
     border-top:none;
-    margin-right:17px;
+    margin-right:17.5px;
     box-shadow:0 5px 10px rgba(75,87,118,0.35);
-    z-index:999;
+    z-index:98;
 }
 
 #logged-info ul li div.profile ul,
@@ -466,9 +467,7 @@ a.pause-btn:active {
 }
 
 #logged-info ul li:hover div.profile,
-#logged-info ul li > a.profile:focus + div.profile,
-#logged-info ul li > a.profile.focus + div.profile,
-#logged-info ul li > a.profile:active + div.profile {
+#logged-info ul li.sel div.profile {
     display:block;
 }
 
@@ -1019,7 +1018,8 @@ tr.modified { background-color:#f4f4f4; text-decoration: line-through; }
     font-size:10px;
 }
 
-.panel .order-check input {
+.panel .order-check input,
+.panel .cal-overview input {
     vertical-align:middle;
 }
 

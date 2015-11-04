@@ -28,11 +28,11 @@
 </div>
 
 <script type="text/javascript">
-    $('li a.profile').click(function (e) {
-        $(this).toggleClass('focus');
+    $('li.user-info').click(function (e) {
+        $(this).toggleClass('sel');
         e.stopPropagation();
     });
     $(document).click(function (e) {
-        $('li a.profile').toggleClass('focus');
+        $('li.user-info').removeClass('sel');
     });
 </script>

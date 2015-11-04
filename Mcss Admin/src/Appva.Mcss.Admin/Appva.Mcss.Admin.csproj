@@ -626,6 +626,7 @@
     <Content Include="Assets\i\popover.png" />
     <Content Include="Assets\i\popover2.png" />
     <Content Include="Assets\i\profile-blue%402x.png" />
+    <Content Include="Assets\i\profile-blue.png" />
     <Content Include="Assets\i\profile-white.png" />
     <Content Include="Assets\i\reportchart.png" />
     <Content Include="Assets\i\select-arrow.png" />

@@ -57,7 +57,7 @@ namespace Appva.Mcss.Web.Controllers {
                 .Where(x => x.Patient.Id == message.PatientId)
                 //.And(x => x.Inventory.Increased == null) // why is this not working, uncommented because of error?
                 //.And(x => x.Inventory.RecalculatedLevel == null) // why is this not working, uncommented because of error?
-                .And(x => x.UpdatedAt <= message.EndDate)
+                .And(x => x.Scheduled <= message.EndDate)
                 .Fetch(x => x.StatusTaxon).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer());
 
@@ -82,12 +82,12 @@ namespace Appva.Mcss.Web.Controllers {
                     query = query.Left.JoinAlias(x => x.StatusTaxon, () => st).OrderBy(() => st.Weight).Asc.ThenBy(x => x.Scheduled).Desc;
                     break;
                 case OrderTasksBy.Time:
-                    query = query.OrderBy(x => x.UpdatedAt).Desc;
+                    query = query.OrderBy(x => x.CompletedDate).Desc;
                     break;
             };
 
             if (message.StartDate.HasValue) {
-                query.Where(x => x.UpdatedAt >= message.StartDate);
+                query.Where(x => x.Scheduled >= message.StartDate);
             }
 
             if (message.FilterByNeedsBasis)

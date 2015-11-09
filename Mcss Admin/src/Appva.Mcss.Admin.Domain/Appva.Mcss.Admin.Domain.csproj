@@ -54,6 +54,7 @@
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Change.cs" />
     <Compile Include="Entities\ChangeSet.cs" />
+    <Compile Include="Entities\DashboardNotification.cs" />
     <Compile Include="Entities\Delegation.cs" />
     <Compile Include="Entities\Device.cs" />
     <Compile Include="Entities\EscalationAlert.cs" />
@@ -65,11 +66,14 @@
     <Compile Include="Entities\Log.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\MenuLink.cs" />
+    <Compile Include="Entities\Notification.cs" />
+    <Compile Include="Entities\NotificationReadByAccount.cs" />
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Person.cs" />
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
+    <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="VO\HsaId.cs" />
     <Compile Include="VO\PersonalIdentityNumber.cs" />

@@ -43,21 +43,46 @@
     <many-to-one name="Patient" class="Patient" />
   </class>
 
-  <!-- Notification
+  <!-- Notification -->
   <class name="Notification">
     <id name="Id">
       <generator class="guid.comb" />
     </id>
-    <property name="Created" />
-    <property name="Modified" />
-    <property name="Title" />
-    <property name="Message" type="StringClob">
-      <column name="Message" sql-type="NTEXT"/>
-    </property>
+    <discriminator column="NotificationType" />
+    <version name="Version" />
+    <property name="Name" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
     <property name="Published" />
     <property name="PublishedDate" />
     <property name="UnPublishedDate" />
-  </class> -->
+    <property name="IsVisibleToEveryone" />
+    <bag name="ViewedBy" cascade="save-update">
+      <key column="Notification" />
+      <one-to-many class="NotificationViewedBy" />
+    </bag>
+    <bag name="VisibleTo" cascade="save-update">
+      <key column="NotificationId" />
+      <many-to-many column="AccountId" class="Account" />
+    </bag>
+    <subclass name="DashboardNotification" discriminator-value="0">
+      <property name="Template" />
+    </subclass>
+  </class>
+
+  <!-- NotificationViewedByAccount -->
+  <class name="NotificationViewedBy">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <many-to-one name="Notification" class="Notification" />
+    <many-to-one name="Account" class="Account" />
+  </class>
 
   <!-- Account -->
   <class name="Account" table="Account">
@@ -591,5 +616,6 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
+
 
 </hibernate-mapping>

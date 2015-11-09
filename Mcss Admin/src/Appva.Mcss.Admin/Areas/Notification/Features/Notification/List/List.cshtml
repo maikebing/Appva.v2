@@ -1,7 +1,40 @@
-﻿@{
+﻿@model Appva.Mcss.Admin.Areas.Models.ListNotifictationsModel
+@using Appva.Mcss.Admin.Application.Common;
+@{
     SetTitle("Notifieringar");
 }
 <div id="subheader" class="cf">
     <h1>Notifieringar</h1>
-    @Html.ActionLink("Aktivera inloggnings-notis", "Activate", "News", new { Area = "Notification" }, new { @class = "btn" })
+    @*Html.ActionLink("Aktivera inloggnings-notis", "Activate", "News", new { Area = "Notification" }, new { @class = "btn" })*@
 </div>
+@if (Model.Notifications != null && Model.Total > 0)
+{
+    <ul class="people">
+        @foreach (var item in Model.Notifications)
+        {
+            <li class="cf">
+                <div class="h">
+                    <h2>
+                        @Html.ActionLink(Permissions.Notification.Read, item.Name, "Details", "Notification", new { id = item.Id }, new { })
+                    </h2>
+                </div>
+                <div class="i">
+                    <strong>Publicerad:</strong>
+                    <span>@(item.Published ? "Ja" : "Nej")</span>
+                </div>
+                <div class="i">
+                    <strong>Vissas till:</strong>
+                    <span>@(item.UnPublishedDate.HasValue ? item.UnPublishedDate.Value.ToString("d MMM yyyy") : "Tills vidare")</span>
+                </div>
+                <div class="i">
+                    <strong>Visas från:</strong>
+                    <span>@item.PublishedDate.ToString("d MMM yyyy")</span>
+                </div>
+            </li>
+        }
+    </ul>
+    @Html.Pager(Model.PageSize, Model.Page, Model.Total).Options(x => x
+    .DisplayTemplate("Pagination")
+    .MaxNrOfPages(15)
+    .AlwaysAddFirstPageNumber())
+}

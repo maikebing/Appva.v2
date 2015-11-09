@@ -1,0 +1,16 @@
+﻿@model Appva.Mcss.Admin.Areas.Models.NotificationDashboardModel
+
+    <div class="lb-blackout" style="opacity: 0.3;"></div>
+    <div class="lb-wrap std-lb">
+        @{Html.RenderPartial(Model.Template);}
+        
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.lb-panel .btn-close').click(function (e) {
+                mcss.lightbox.closeAll();
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+    </script>

@@ -62,7 +62,7 @@
         </div>
     </div>
 
-    @{ Html.RenderAction("Popup", "News", new { area = "notification" }); }
+    @{ Html.RenderAction("Dashboard", "Notification", new { area = "notification" }); }
 
 </div>
 @if (Html.HasPermissionFor(Permissions.Dashboard.ReadChart))

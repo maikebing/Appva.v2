@@ -2,7 +2,7 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:richard.alvegard@appva.se">Richard Alvegard</a>
 // </author>
 namespace Appva.Mcss.Admin.Modles.Handlers
 {
@@ -110,7 +110,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             this.accounts.Update(account);
             //// If the the new password is null or empty, or previous password is unaltered, then
             //// then no reason to re-send an e-mail.
-            if (message.DevicePassword.IsEmpty() || previousPassword.Equals(message.DevicePassword))
+            if (message.DevicePassword.IsEmpty() || (previousPassword.IsNotEmpty() &&  previousPassword.Equals(message.DevicePassword)))
             {
                 return true;
             }

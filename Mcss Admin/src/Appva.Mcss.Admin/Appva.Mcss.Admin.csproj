@@ -211,6 +211,9 @@
     <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCacheHandler.cs" />
     <Compile Include="Areas\Area51\Features\Home\HomeController.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162NoticeHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\NotificationsController.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Create\CreateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Update\UpdateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
@@ -223,7 +226,12 @@
     <Compile Include="Areas\Notification\Features\News\NewsController.cs" />
     <Compile Include="Areas\Notification\Features\News\Popup\PopupNews.cs" />
     <Compile Include="Areas\Notification\Features\News\Popup\PopupNewsHandler.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\Dashboard\NotificationDashboard.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\Dashboard\NotificationDashboardHandler.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\Dashboard\NotificationDashboardModel.cs" />
     <Compile Include="Areas\Notification\Features\Notification\List\ListNotifications.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\List\ListNotificationsHandler.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\List\ListNotifictationsModel.cs" />
     <Compile Include="Areas\Notification\Features\Notification\NotificationsController.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlert.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlertHandler.cs" />
@@ -675,6 +683,7 @@
     <Content Include="media\appva-event.png" />
     <Content Include="media\jul.png" />
     <Content Include="media\logo-appva.png" />
+    <Content Include="media\logout.png" />
     <Content Include="media\pagaende_insatser.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1037,7 +1046,7 @@
     <Content Include="Areas\Notification\Features\web.config" />
     <Content Include="Areas\Notification\Features\_ViewStart.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\List\List.cshtml" />
-    <Content Include="Areas\Notification\Features\News\Popup\Popup.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\Dashboard\Dashboard.cshtml" />
     <Content Include="Areas\Area51\Features\Token\Index\Index.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -1058,6 +1067,8 @@
     <Content Include="Features\Shared\ResetSuccess.cshtml" />
     <Content Include="Features\Shared\EmailTemplates\RegisterSithsUserEmail.cshtml" />
     <Content Include="Features\Shared\EmailTemplates\UpdateUserMobileDeviceEmail.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\version1.6.2.cshtml" />
+    <Content Include="Areas\Area51\Features\Notifications\Index\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

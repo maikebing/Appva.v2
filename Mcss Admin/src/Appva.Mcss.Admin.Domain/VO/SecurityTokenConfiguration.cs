@@ -26,14 +26,14 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// <summary>
         /// The default registration token life time.
         /// </summary>
-        /// <remarks>Defaults to 14 days</remarks>
-        private static readonly TimeSpan DefaultRegistrationTokenLifetime = TimeSpan.FromDays(14);
+        /// <remarks>Defaults to 42 days (6 weeks)</remarks>
+        private static readonly TimeSpan DefaultRegistrationTokenLifetime = TimeSpan.FromDays(42);
 
         /// <summary>
         /// The default reset token life time.
         /// </summary>
-        /// <remarks>Defaults to 30 minutes</remarks>
-        private static readonly TimeSpan DefaultResetTokenLifetime = TimeSpan.FromMinutes(30);
+        /// <remarks>Defaults to 60 minutes</remarks>
+        private static readonly TimeSpan DefaultResetTokenLifetime = TimeSpan.FromMinutes(60);
 
         #endregion
         

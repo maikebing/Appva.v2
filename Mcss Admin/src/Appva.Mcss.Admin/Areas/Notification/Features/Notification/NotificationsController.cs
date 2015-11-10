@@ -23,7 +23,6 @@ namespace Appva.Mcss.Admin.Areas.Notification.Features.Notifications
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [RouteArea("notification"), RoutePrefix("")]
-    [Permissions(Permissions.Notification.ReadValue)]
     public sealed class NotificationController : Controller
     {
         #region Constructor.
@@ -47,6 +46,7 @@ namespace Appva.Mcss.Admin.Areas.Notification.Features.Notifications
         /// <returns>The view</returns>
         [Route]
         [HttpGet, Dispatch]
+        [Permissions(Permissions.Notification.ReadValue)]
         public ActionResult List(ListNotifications request)
         {
             return this.View();

@@ -62,7 +62,7 @@
       <key column="Notification" />
       <one-to-many class="NotificationViewedBy" />
     </bag>
-    <bag name="VisibleTo" cascade="save-update">
+    <bag name="VisibleTo" table="NotificationVisibleTo" cascade="save-update">
       <key column="NotificationId" />
       <many-to-many column="AccountId" class="Account" />
     </bag>

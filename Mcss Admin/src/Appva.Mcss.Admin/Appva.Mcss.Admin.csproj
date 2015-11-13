@@ -230,6 +230,7 @@
     <Compile Include="Areas\Patient\Features\Calendar\EditAll\EditAllEventSequence.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequence.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequencePublisher.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendar.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendarHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItem.cs" />

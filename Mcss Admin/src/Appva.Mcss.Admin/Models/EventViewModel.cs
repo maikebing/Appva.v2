@@ -44,6 +44,8 @@ namespace Appva.Mcss.Web.ViewModels {
         public Guid SequenceId { get; set; }
         public Guid TaskId { get; set; }
         public DateTime ChoosedDate { get; set; }
+        public DateTime Date { get; set; }
+
 
         [DisplayName("Anteckning:")]
         public string Description { get; set; }

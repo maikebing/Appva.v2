@@ -277,6 +277,16 @@
                         SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
                     });
 
+                    $('.calendar-details :checkbox.cal-quittance').click(function () {
+                        if ($(this).is(':checked')) {
+                            mcss.Calendar.quittance($(this));
+                        }
+                        else {
+                            mcss.Calendar.unQuittance($(this));
+                        }
+
+                    });
+
                     $('#Interval').trigger('change');
                     $('#Category').trigger('change');
 

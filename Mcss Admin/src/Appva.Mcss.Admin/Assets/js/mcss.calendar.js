@@ -28,7 +28,7 @@
                     if (data.success) {
                         task.attr('checked', true);
                         task.next(".cal-label-done").show();
-                        task.next("label.cal-label").html("Kvitterad av " + data.name);
+                        task.prev("label.cal-label").html("Kvitterad av " + data.name);
                     }
                 }
             }
@@ -44,7 +44,7 @@
                 if (data) {
                     task.attr('checked', false);
                     task.next(".cal-label-done").hide();
-                    task.next("label.cal-label").html("Ej kvitterad");
+                    task.prev("label.cal-label").html("Ej kvitterad");
                 }
             }
         });

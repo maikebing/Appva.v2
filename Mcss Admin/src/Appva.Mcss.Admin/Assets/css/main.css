@@ -2295,6 +2295,86 @@ form .time {width:4em;}
     display:block;
     font-weight:bold;
 } 
+.calendar-details .info {
+    background: #f2f4f9;
+    padding:10px;
+    margin-bottom:10px;
+    color:#7c88a1;
+    border-radius: 4px;
+}
+
+.calendar-details .info label {
+    font-weight:bold;
+    color:#445068;
+} 
+
+.calendar-details .info h6 {
+    padding:3px;
+    margin:0;
+}
+.calendar-details .info span {
+    float:right;
+    vertical-align:middle;
+}
+.calendar-details .info span input,
+.calendar-details .info span label {
+    vertical-align:middle;
+    display:inline;
+    margin:3px;
+}
+
+.calendar-details .info .name {
+    font-weight:700;
+    margin-top:10px;
+    color:#445068;
+}
+
+.calendar-details .info span span {
+    margin-left:10px;
+}
+
+.calendar-details .info span p {
+    margin:1px;
+    padding:0;
+}
+
+.calendar-details .info span.status {
+    text-align:center;
+    font-size:11px;
+    color:#445068;
+}
+
+.calendar-details .info span p.time {
+    color:#445068;
+    font-size:11px;
+}
+
+.calendar-details .btn {
+    text-decoration: none;
+    background: #445068;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    display: inline-block;
+    line-height: 20px;
+    padding: 13px 0;
+    font-weight: 600;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-right:10px;
+}
+
+.calendar-details .btn:hover {
+    background-color: #374154;
+}
+
+.calendar-details .btn.btn-del {
+    background: #893a29;
+}
+.calendar-details .btn.btn-del:hover {
+    background-color: #702f21;
+}
 
 
 #main .cal-wrap .cal-filter label {

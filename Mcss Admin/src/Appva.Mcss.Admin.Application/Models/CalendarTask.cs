@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Application.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Core.Extensions;
 
     #endregion
 
@@ -94,5 +95,49 @@ namespace Appva.Mcss.Admin.Application.Models
         public bool IsQuittanced { get; set; }
 
         public Domain.Entities.Account QuittancedBy { get; set; }
+
+        public SignatureModel Signature { get; set; }
+
+        public bool NeedsSignature { get; set; }
+
+        public int Interval { get; set; }
+
+        public int IntervalFactor { get; set; }
+
+        public bool RepeatAtGivenDay { get; set; }
+
+
+        public string RepetionText
+        {
+            get 
+            {
+                if (this.Interval == 7)
+                {
+                    return string.Format("{1:dddd} {2} vecka",
+                        ((this.EndTime.Day - (this.EndTime.Day % 7)) / 7) + 1,
+                        this.EndTime,
+                        this.IntervalFactor == 1 ? "varje" : string.Format("var {0}", this.IntervalFactor)
+                        ).FirstToUpper();
+                }
+                else if (this.RepeatAtGivenDay)
+                {
+                    return string.Format("Den {0} {1:dddd}en {2} månad",
+                        ((this.EndTime.Day - (this.EndTime.Day % 7)) / 7) + 1,
+                        this.EndTime,
+                        this.IntervalFactor == 1 ? "varje" : string.Format("var {0}", this.IntervalFactor)
+                        );
+                }
+                else
+                {
+                    return string.Format("Den {0:d} {1} månad",
+                        this.EndTime,
+                        this.IntervalFactor == 1 ? "varje" : string.Format("var {0}",this.IntervalFactor)
+                        );
+                }
+            }
+        }
+
+
+        public Guid PatientId { get; set; }
     }
 }

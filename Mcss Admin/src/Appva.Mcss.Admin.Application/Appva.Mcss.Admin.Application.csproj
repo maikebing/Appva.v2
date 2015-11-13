@@ -94,6 +94,7 @@
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDataSegment.cs" />
     <Compile Include="Models\ReportSearch.cs" />
+    <Compile Include="Models\SignatureModel.cs" />
     <Compile Include="Models\Taxa.cs" />
     <Compile Include="Models\Taxon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

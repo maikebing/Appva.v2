@@ -40,6 +40,38 @@ mcss.lightbox = {
         if (content.hasClass('lb-validate-form')) this.applyValidation(content.data('valclass'), content.data('valparams'));
         mcss.customSelect($('.activity-edit .col:first'));
 
+        $('a.lb-link').click(function (e) {
+            var clicked = $(this);
+            var actionUri = clicked.attr('href');
+            $.ajax({
+                url: actionUri,
+                dataType: 'html',
+                method: 'get',
+                success: function (data) {
+                    var content = $(data);
+                    content.addClass('lb-panel');
+                    mcss.lightbox.replaceContent(panel, content);
+                }
+            });
+            e.preventDefault();
+            e.stopPropagation();
+
+        });
+
+        $('.calendar-details .btn-del').click(function () {
+            var clicked = $(this);
+            var content = $('<div class="lb-panel lb-panel-small"><div class="std-panel"><div class="prompt"></div></div></div>');
+            content.find('.prompt').append('<p class="warning">Vill du verkligen ta bort personen?</p>');
+            content.find('.prompt').append('<a class="btn btn-del" href="' + clicked.attr('href') + '">Ta bort personen</a><a class="cancel" href="#">Avbryt</a>');
+            mcss.lightbox.openBox(content, clicked, 'lb-warning', function (content) {
+                $('.lb-panel a.cancel').click(function () {
+                    $('.lb-blackout, .lb-wrap').remove();
+                    return false;
+                });
+            });
+            return false;
+        });
+
         this.callback();
     },
     applyValidation: function (dataclass, dataparams) {
@@ -59,6 +91,21 @@ mcss.lightbox = {
         $('.lb-wrap').remove();
         $('.lb-blackout').fadeOut(200, function () { $(this).remove(); });
         if (this.refocus) this.refocus.focus();
+    },
+    replaceContent: function (panel, content) {
+        content.addClass('lb-panel').show().prepend($('<a class="btn-close" href="#">Stäng</a>').click(function (e) {
+            mcss.lightbox.closeAll();
+            e.preventDefault();
+            e.stopPropagation();
+        })).css('top', $(document).scrollTop() + 100);
+        panel.append(content);
+        if (panel.find('.focusme').size()) {
+            panel.find('.focusme:first').focus().select();
+        } else {
+            panel.find('.btn-close').focus();
+        }
+        if (content.hasClass('lb-validate-form')) this.applyValidation(content.data('valclass'), content.data('valparams'));
+        mcss.customSelect($('.activity-edit .col:first'));
     },
     init: function () {
         $('a.lb-link').click(function (e) {

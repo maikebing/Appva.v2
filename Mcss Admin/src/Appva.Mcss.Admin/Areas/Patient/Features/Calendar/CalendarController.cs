@@ -164,32 +164,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         }
 
         /// <summary>
-        /// The Multi button does not work well with routes, so this is the ugly way
-        /// of fixing the issue sadly.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="editAction"></param>
-        /// <param name="seqId"></param>
-        /// <param name="date"></param>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [Route("edit")]
-        [HttpPost, Validate, ValidateAntiForgeryToken]
-        [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
-        public ActionResult Edit(Guid id, string editAction, Guid seqId, DateTime date, EventViewModel model)
-        {
-            if (editAction == "EditAll")
-            {
-                return this.EditAll(id, seqId, date, model);
-            }
-            if (editAction == "EditThis")
-            {
-                return this.EditThis(id, seqId, date, model);
-            }
-            return this.RedirectToAction("List", new { Id = id, StartDate = date });
-        }
-
-        /// <summary>
         /// Edits all events.
         /// </summary>
         /// <param name="id">The patient id</param>
@@ -197,37 +171,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">The date (for redirect)</param>
         /// <param name="model">The event model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("EditAll")]
-        [HttpPost, MultiButton, ValidateAntiForgeryToken]
+        [Route("edit")]
+        [HttpPost, MultiButton, Validate, ValidateAntiForgeryToken, Dispatch("List", "Calendar")]
         [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
-        public ActionResult EditAll(Guid id, Guid seqId, DateTime date, EventViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                if (model.Category.Equals("new"))
-                {
-                    model.Category = this.eventService.CreateCategory(model.NewCategory).ToString();
-                }
-                this.eventService.Update(
-                    seqId,
-                    new Guid(model.Category),
-                    model.Description,
-                    model.StartDate,
-                    model.EndDate,
-                    model.StartTime,
-                    model.EndTime,
-                    model.Interval,
-                    model.IntervalFactor,
-                    model.SpecificDate,
-                    model.Signable,
-                    model.VisibleOnOverview,
-                    model.AllDay,
-                    model.PauseAnyAlerts,
-                    model.Absent
-                );
-                return this.RedirectToAction("List", new { Id = id, StartDate = date });
-            }
-            return View(model);
+        public ActionResult Edit(EventViewModel request)
+        {                
+            return View();
         }
 
         /// <summary>

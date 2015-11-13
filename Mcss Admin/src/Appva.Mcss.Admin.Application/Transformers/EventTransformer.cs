@@ -47,7 +47,13 @@ using System.Linq;
                 IsFullDayEvent = t.AllDay,
                 NeedsQuittance = t.Overview,
                 IsQuittanced = t.Quittanced,
-                QuittancedBy = t.QuittancedBy
+                QuittancedBy = t.QuittancedBy,
+                NeedsSignature = t.CanRaiseAlert,
+                Signature = t.IsCompleted ? new SignatureModel(t.CompletedBy, t.CompletedDate.Value, t.StatusTaxon) : null,
+                Interval = t.Sequence.Interval,
+                IntervalFactor = t.Sequence.IntervalFactor,
+                RepeatAtGivenDay = t.Sequence.IntervalIsDate,
+                PatientId = t.Patient.Id
             };
         }
     }

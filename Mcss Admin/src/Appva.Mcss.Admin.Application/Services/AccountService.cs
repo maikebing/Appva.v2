@@ -195,6 +195,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="roles"></param>
         /// <param name="devicePassword"></param>
         void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon adress, IList<Role> roles, string hsaId, string devicePassword = null);
+
+        /// <summary>
+        /// Creates a proxy-entity from a guid
+        /// </summary>
+        /// <param name="id">The Guid</param>
+        /// <returns></returns>
+        Account Load(Guid id);
     }
 
     /// <summary>
@@ -592,6 +599,12 @@ namespace Appva.Mcss.Admin.Application.Services
                 };
                 this.mailService.Send(mail);
             }
+        }
+
+        /// <inheritdoc />
+        public Account Load(Guid id)
+        {
+            return this.repository.Load(id);
         }
 
         #endregion

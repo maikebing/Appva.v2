@@ -27,7 +27,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public interface IAccountRepository : 
         IIdentityRepository<Account>, 
-        IUpdateRepository<Account>, 
+        IUpdateRepository<Account>,
+        IProxyRepository<Account>,
         IRepository
     {
         /// <summary>
@@ -286,6 +287,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             entity.UpdatedAt = DateTime.Now;
             entity.Version = entity.Version++;
             this.persistenceContext.Update<Account>(entity);
+        }
+
+        #endregion
+
+        #region IProxyRepository Members.
+    
+        /// <inheritdoc /> 
+        public Account Load(Guid id)
+        {
+ 	        return this.persistenceContext.Session.Load<Account>(id);
         }
 
         #endregion

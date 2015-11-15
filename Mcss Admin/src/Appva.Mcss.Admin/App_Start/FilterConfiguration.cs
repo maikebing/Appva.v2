@@ -33,10 +33,6 @@ namespace Appva.Mcss.Admin
             filters.Add(new StrictTransportSecurityAttribute());
             //// Remove the ability to go back into the web application after a user is signed out by pressing back.
             filters.Add(new NoBrowserCacheAttribute());
-            if (Configuration.Application.IsInDevelopment)
-            {
-                filters.Add(new TimingAttribute());
-            }
         }
     }
 }

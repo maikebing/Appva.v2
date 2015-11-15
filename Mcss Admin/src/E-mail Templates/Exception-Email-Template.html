@@ -1,160 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="sv-se">
 	<head>
-		<title>Exception</title>
+		<title>@Model.Exception.GetType().Name</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="format-detection" content="telephone=no">
-		<style type="text/css">
-			.header,
-			.title,
-			.subtitle,
-			.footer-text {
-				font-family: Helvetica, Arial, sans-serif;
-			}
-			.header {
-				font-size: 24px;
-				font-weight: bold;
-				padding-bottom: 20px;
-				color: #ffffff;
-				vertical-align: middle;
-			}
-			.header img {
-			    vertical-align: middle;
-				margin-right: 20px;
-			}
-			.date {
-				color: #ff9999;
-				font-size: 13px;
-			}
-			.footer-text {
-				font-size: 12px;
-				line-height: 16px;
-				color: #ff9999;
-			}
-			.footer-text a {
-				color: #ff9999;
-			}
-			.container {
-				width: 600px;
-				max-width: 600px;
-			}
-			.container-padding {
-				padding-left: 24px;
-				padding-right: 24px;
-			}
-			.content {
-				padding-top: 12px;
-				padding-bottom: 12px;
-				background-color: #ffffff;
-				box-shadow: 0px 1px 2px #b12a2a;
-				border-radius: 4px;
-			}
-			.code-wrap {
-				background-color: #f5f5f5;
-				padding: 5px;
-			}
-			code {
-				font-family: Menlo, Courier, monospace;
-				font-size: 12px;
-				word-break: break-word;
-			}
-			hr {
-				border: 0;
-				border-bottom: 1px solid #f4f4f4;
-			}
-			.hr {
-				height: 1px;
-				border-bottom: 1px solid #f4f4f4;
-			}
-			.title {
-				font-size: 18px;
-				font-weight: 600;
-				color: #df3f3f;
-			}
-			.subtitle {
-				font-size: 16px;
-				font-weight: 600;
-				color: #2469A0;
-			}
-			.subtitle span {
-				font-weight: 400;
-				color: #999999;
-			}
-			.body-text {
-				font-family: Helvetica, Arial, sans-serif;
-				font-size: 14px;
-				line-height: 20px;
-				text-align: left;
-				color: #333333;
-			}
-			.odd { 
-				background: #f5f5f5;
-			}
-			.even { 
-				background: #fafafa;
-			}
-			.odd th, .odd td, .even th, .even td{ 
-				padding: 7px 10px;
-			}
-		</style>
-		<style type="text/css">
-			body {
-				margin: 0;
-				padding: 0;
-				-ms-text-size-adjust: 100%;
-				-webkit-text-size-adjust: 100%;
-			}
-			table {
-				border-spacing: 0;
-			}
-			table td {
-				border-collapse: collapse;
-			}
-			.ExternalClass {
-				width: 100%;
-			}
-			.ExternalClass,
-			.ExternalClass p,
-			.ExternalClass span,
-			.ExternalClass font,
-			.ExternalClass td,
-			.ExternalClass div {
-				line-height: 100%;
-			}
-			.ReadMsgBody {
-				width: 100%;
-				background-color: #ebebeb;
-			}
-			table {
-				mso-table-lspace: 0pt;
-				mso-table-rspace: 0pt;
-			}
-			img {
-				-ms-interpolation-mode: bicubic;
-			}
-			.yshortcuts a {
-				border-bottom: none !important;
-			}
-			@media screen and (max-width: 599px) {
-				table[class="force-row"],
-				table[class="container"] {
-					width: 100% !important;
-					max-width: 100% !important;
-				}
-			}
-			@media screen and (max-width: 400px) {
-				td[class*="container-padding"] {
-					padding-left: 12px !important;
-					padding-right: 12px !important;
-				}
-			}
-			.ios-footer a {
-				color: #ff9999 !important;
-				text-decoration: underline;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/exception-email.css" />
+		<!--<style type="text/css">
+			
+		</style>-->
 	</head>
 	<body style="margin:0; padding:0;" bgcolor="#df3f3f" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 		<table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#df3f3f">
@@ -165,15 +20,12 @@
 							<td class="container-padding header" align="left">
 								<table border="0" width="600" cellpadding="0" cellspacing="0">
 									<tr>
-										<td style="width: 78px">
-											<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAABLCAYAAAFWwqTaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3NzhGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo1OUQwM0Y0NTBBQ0UxMUU1QjRBQkY3MkE3QUJGQTUxRSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo1OUQwM0Y0NDBBQ0UxMUU1QjRBQkY3MkE3QUJGQTUxRSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M0IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3QThGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3NzhGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIvPiA8L3JkZjpEZXNjcmlwdGlv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"/>
+										<td style="width: 50px">
+											<img width="40px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAABLCAYAAAFWwqTaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3NzhGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo1OUQwM0Y0NTBBQ0UxMUU1QjRBQkY3MkE3QUJGQTUxRSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo1OUQwM0Y0NDBBQ0UxMUU1QjRBQkY3MkE3QUJGQTUxRSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M0IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3QThGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3NzhGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIvPiA8L3JkZjpEZXNjcmlwdGlv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"/>
 										</td>
-										<!--
-										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAABLCAYAAAFWwqTaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3NzhGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozMzVGNkZGMzBBRDQxMUU1QUNDOThFMjE0QTVGRDU5QiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozMzVGNkZGMjBBRDQxMUU1QUNDOThFMjE0QTVGRDU5QiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M0IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3QThGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3NzhGOEREMEREMkJFNDExQTZBM0NBOUNCQjRENzA1MyIvPiA8L3JkZjpEZXNjcmlwdGlv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"/>
-										-->
 										<td>
-											<div>KeyNotFoundException</div>
-											<span class="date">2015-01-26 14:34:00</span>
+											<div class="title">@Model.Exception.GetType().Name</div>
+											<span class="date">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTime.Now)</span>
 										</td>
 									</tr>
 								</table>
@@ -181,90 +33,61 @@
 						</tr>
 						<tr>
 							<td class="container-padding content" align="left">
-								<br>
-								<div class="title">KeyNotFoundException</div>
-								<br>
+								<div class="title">@Model.Exception.GetType().Name</div>
+								<br />
 								<div class="body-text">
-									The given key was not present in the dictionary.
-									<br><br>
+									@Model.Exception.Message
+									<br /><br />
 									<div class="code-wrap">
 										<code>
-										at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-										   at Appva.Mcss.Infrastructure.NHibernateInitializer`1.FindByKey(String key) in c:\inetpub\wwwroot\Appva\Appva.web\Solutions\Appva.Mcss.Infrastructure\Appva.Mcss.Infrastructure\Installers\NHibernate\NHibernateInitializer.cs:line 53
-										   at Appva.Mcss.Infrastructure.Mvc.NHibernateController.OnActionExecuting(ActionExecutingContext context) in c:\inetpub\wwwroot\Appva\Appva.web\Solutions\Appva.Mcss.Infrastructure\Appva.Mcss.Infrastructure\Mvc\Controllers\NHibernateController.cs:line 26
-										   at System.Web.Mvc.Async.AsyncControllerActionInvoker.InvokeActionMethodFilterAsynchronously(IActionFilter filter, ActionExecutingContext preContext, Func`1 nextInChain)
-										   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass37.b__31(AsyncCallback asyncCallback, Object asyncState)
-										   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.Begin(AsyncCallback callback, Object state, Int32 timeout)
-										   at System.Web.Mvc.Async.AsyncResultWrapper.Begin[TResult](AsyncCallback callback, Object state, BeginInvokeDelegate beginDelegate, EndInvokeDelegate`1 endDelegate, Object tag, Int32 timeout)
-										   at System.Web.Mvc.Async.AsyncResultWrapper.Begin[TResult](AsyncCallback callback, Object state, BeginInvokeDelegate beginDelegate, EndInvokeDelegate`1 endDelegate, Object tag)
-										   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass25.b__1e(AsyncCallback asyncCallback, Object asyncState)
+											@Model.Exception.StackTrace
 										</code>
 									</div>
-									<br>
-									<hr>
-									<br>
-									<table border="0" width="100%" cellpadding="0" cellspacing="0">
-										<tr class="odd">
-											<td width="150px"><code>USER NAME</code></td>
-											<td><code>Test Testsson</code></td>
-										</tr>
-										<tr class="even">
-											<td><code>USER ID</code></td>
-											<td><code>60ba92f1-d725-4274-8e7b-a14e017ad45b</code></td>
-										</tr>
-										<tr class="odd">
-											<td><code>URL</code></td>
-											<td><code>/account/d205dd1b-003d-456e-a466-a23600df56ca</code></td>
-										</tr>
-										<tr class="even">
-											<td><code>CONNECTION</code></td>
-											<td><code>Keep-Alive</code></td>
-										</tr>
-										<tr class="odd">
-											<td><code>ACCEPT</code></td>
-											<td><code>text/html, application/xhtml+xml, */*</code></td>
-										</tr>
-										<tr class="even">
-											<td><code>ACCEPT-ENCODING</code></td>
-											<td><code>gzip, deflate</code></td>
-										</tr>
-										<tr class="odd">
-											<td><code>ACCEPT-LANGUAGE</code></td>
-											<td><code>sv-SE,sv;q=0.5</code></td>
-										</tr>
-										<tr class="even">
-											<td><code>HOST</code></td>
-											<td><code>demo.appva.se</code></td>
-										</tr>
-										<tr class="odd">
-											<td><code>REFERER</code></td>
-											<td><code>https://demo.appva.se/account/d205dd1b-003d-456e-a466-a23600df56ca</code></td>
-										</tr>
-										<tr class="even">
-											<td><code>USER-AGENT</code></td>
-											<td><code>Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko</code></td>
-										</tr>
-										<tr class="odd">
-											<td><code>CLIENT-IP</code></td>
-											<td><code>128.00.01.000</code></td>
-										</tr>
-									</table>
-									<br>
+									<br />
+									<!--@if (Model.User != null || Model.Request != null)
+                                    {-->
+									    <hr />
+										<br />
+									    <table border="0" width="100%" cellpadding="0" cellspacing="0">
+										    <!--@if (Model.User != null)
+                                            {-->
+												<tr class="odd">
+													<td width="150px"><code>USER NAME</code></td>
+													<td><code>@Model.User.Name</code></td>
+												</tr>
+												<tr class="even">
+													<td><code>USER ID</code></td>
+													<td><code>@Model.User.Id</code></td>
+												</tr>
+                                            <!--}
+                                            @if (Model.Request != null)
+                                            {
+                                                var i = 0;
+                                                foreach (var kv in Model.Request.Data)
+                                                {-->
+                                                    <tr class="@(i % 2 == 0 ? "odd" : "even")" style="background: @(i % 2 == 0 ? "#f5f5f5" : "#fafafa");">
+											            <td width="150px"><code>@kv.Key</code></td>
+														<td><code>@kv.Value</code></td>
+										            </tr>
+                                                <!--i++;
+                                                }
+                                            }-->
+									    </table>
+                                    <!--}-->
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="container-padding footer-text" align="left">
-								<br><br>
-								Medication and Care Support System &copy; 2015 Appva AB
-								<br><br>
-								<strong>Appva AB</strong><br>
+								Medication and Care Support System &copy; @DateTime.Now.Year Appva AB
+								<br />
+								<br />
+								<strong>Appva AB</strong><br />
 								<span class="ios-footer">
-									Box 88<br>
-									421 21 V&auml;stra Fr&ouml;lunda<br>
+									Box 88<br />
+									421 21 Västra Frölunda<br />
 								</span>
-								<a href="http://appva.se/">Appva AB</a><br>
-								<br><br>
+								<a href="http://support.appva.se/">Appva AB</a><br />
 							</td>
 						</tr>
 					</table>

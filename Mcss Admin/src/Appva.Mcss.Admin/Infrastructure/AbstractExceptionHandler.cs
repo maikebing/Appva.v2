@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     #region Imports.
 
     using System;
+    using Appva.Core.Environment;
     using Appva.Core.Exceptions;
     using Appva.Core.Logging;
     using Appva.Mcss.Admin.Configuration;
@@ -33,6 +34,11 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// </summary>
         private readonly IRazorMailService mail;
 
+        /// <summary>
+        /// The <see cref="IApplicationEnvironment"/>.
+        /// </summary>
+        private readonly IApplicationEnvironment environment;
+
         #endregion
 
         #region Constructor.
@@ -40,9 +46,11 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// <summary>
         /// Initializes a new instance of the <see cref="AbstractExceptionHandler"/> class.
         /// </summary>
+        /// <param name="environment">The <see cref="IApplicationEnvironment"/></param>
         /// <param name="mail">The <see cref="IRazorMailService"/></param>
-        protected AbstractExceptionHandler(IRazorMailService mail)
+        protected AbstractExceptionHandler(IApplicationEnvironment environment, IRazorMailService mail)
         {
+            this.environment = environment;
             this.mail = mail;
         }
 
@@ -92,7 +100,7 @@ namespace Appva.Mcss.Admin.Infrastructure
         protected void SendMail(string title, ExceptionMail model)
         {
             Log.DebugJson(model);
-            var subject = string.Format("MCSS Admin Exception {0} - {1} - {2} - {3} - {4:yyyy-MM-dd HH:mm:ss}", title, Application.Environment, Application.Version, Application.MachineName, DateTime.Now);
+            var subject = string.Format("MCSS Admin Exception {0} - {1} - {2} - {3} - {4:yyyy-MM-dd HH:mm:ss}", title, this.environment.Environment.AsUserFriendlyText(), this.environment.Info.Version, this.environment.OperatingSystem.MachineName, DateTime.Now);
             this.mail.Send(MailMessage.CreateNew().Template("ExceptionEmail").Model(model).To("johansalllarsson@appva.se,richard.henriksson@appva.se").Subject(subject).Build());
         }
 

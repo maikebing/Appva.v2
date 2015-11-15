@@ -1,5 +1,7 @@
 ﻿@model Appva.Mcss.Admin.Models.UpdateAccount
-@{ ViewBag.Title = "Ändra medarbetaruppgifter"; }
+@{ 
+    SetTitle("Ändra medarbetaruppgifter"); 
+}
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AccountCreate" data-valparams="id=@Model.Id;uidUrl=@Url.Action("VerifyUniqueAccount");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
     @using (Html.Post())
     {

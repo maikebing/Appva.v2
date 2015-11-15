@@ -484,8 +484,8 @@ namespace Appva.Mcss.Admin.Application.Services
             foreach (var sequence in sequences)
             {
                 var isOccuring = findEventsForDay ?
-                    DateTimeUtils.DateIsCoveredByEvent(date.Date, sequence.StartDate.Date, sequence.EndDate.GetValueOrDefault(), sequence.Interval, sequence.Dates, intervalFactor: sequence.IntervalFactor, IntervalIsDate: sequence.IntervalIsDate) :
-                    DateTimeUtils.IsOccurring(date.Date, sequence.StartDate.Date, sequence.EndDate, sequence.Interval, sequence.Dates, sequence.Schedule.ScheduleSettings.ScheduleType, intervalFactor: sequence.IntervalFactor, IntervalIsDate: sequence.IntervalIsDate);
+                    DateTimeUtils.DateIsCoveredByEvent(date.Date, sequence.StartDate.Date, sequence.EndDate.GetValueOrDefault(), sequence.Interval, sequence.Dates, intervalFactor: sequence.IntervalFactor, intervalIsDate: sequence.IntervalIsDate) :
+                    DateTimeUtils.IsOccurring(date.Date, sequence.StartDate.Date, sequence.EndDate, sequence.Interval, sequence.Dates, sequence.Schedule.ScheduleSettings.ScheduleType, intervalFactor: sequence.IntervalFactor, intervalIsDate: sequence.IntervalIsDate);
                 if (isOccuring)
                 {
                     retval.Add(sequence);

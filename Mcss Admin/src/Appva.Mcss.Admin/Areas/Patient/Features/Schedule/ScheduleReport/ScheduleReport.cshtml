@@ -1,4 +1,5 @@
 ﻿@model Appva.Mcss.Web.ViewModels.ScheduleReportViewModel
+@using Appva.Mcss.Admin.Application.Common;
 @{ ViewBag.Title = "Rapport"; ViewBag.MainClass = "report-view"; }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
@@ -144,10 +145,19 @@
                                         if (task.Delayed) {
                                             <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
                                             <strong>Avvikelse:</strong>
-                                            if (task.DelayHandled) {
-                                                @Html.ActionLink("Larm åtgärdat", "List", "Alert", new { id = task.Patient.Id }, new { })
-                        }
-                        else {
+                                            if (task.DelayHandled)
+                                            {
+                                                if (Html.HasPermissionFor(Permissions.Alert.Read))
+                                                {
+                                                    @Html.ActionLink("Larm åtgärdat", "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
+                                                }
+                                                else
+                                                {
+                                                    @:Larm åtgärdat
+                                                }
+                                            }
+                                            else
+                                            {
                                                 @:Ej given
                                             }
                                         }

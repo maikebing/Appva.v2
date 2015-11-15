@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Features/Shared/_LoginLayout.cshtml";
+    SetTitle("Kontrollera din e-post");
+    SetBodyCssClass("page-forgot-password");
+}
+<div class="hd">
+	Kontrollera din e-post
+</div>
+<div class="hd org">
+    <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
+	<span>@Tenant</span>
+</div>
+<div class="bd">
+    Vi har skickat ett e-post till @TempData["EmailAddress"]. Klicka på länken i e-post för att återställa ditt lösenord.
+    Om du inte hittar e-post, kontrollera andra platser där det kan hamnat, så som din mapp för skräppost/spam eller andra mappar.
+    <div class="hr"></div>
+	@Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn" })
+    @Html.ActionLink("Jag fick inte något e-postmeddelande", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
+</div>

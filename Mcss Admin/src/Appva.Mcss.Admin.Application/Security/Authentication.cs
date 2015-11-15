@@ -12,16 +12,16 @@ namespace Appva.Mcss.Admin.Application.Security
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Extensions;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Application.Security.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Validation;
-    using Appva.Mcss.Admin.Application.Common;
-    using Microsoft.Owin.Security;
     using Appva.Tenant.Identity;
-    using Appva.Mcss.Admin.Application.Auditing;
+    using Microsoft.Owin.Security;
+    using Validation;
 
     #endregion
 
@@ -95,16 +95,18 @@ namespace Appva.Mcss.Admin.Application.Security
         /// </summary>
         /// <param name="identity">The <see cref="IIdentityService"/></param>
         /// <param name="tenants">The <see cref="ITenantService"/></param>
+        /// <param name="accounts">The <see cref="IAccountService"/></param>
         /// <param name="settings">The <see cref="ISettingsService"/></param>
+        /// <param name="auditing">The <see cref="IAuditService"/></param>
         /// <param name="method">The authentication method used</param>
         /// <param name="type">The authentication type used</param>
         protected Authentication(
-            IIdentityService identity, 
-            ITenantService tenants, 
-            IAccountService accounts, 
-            ISettingsService settings, 
+            IIdentityService identity,
+            ITenantService tenants,
+            IAccountService accounts,
+            ISettingsService settings,
             IAuditService auditing,
-            AuthenticationMethod method, 
+            AuthenticationMethod method,
             AuthenticationType type)
         {
             Requires.NotNull(identity, "identity");
@@ -136,10 +138,10 @@ namespace Appva.Mcss.Admin.Application.Security
             this.auditing.SignIn(account);
             this.IssueToken(
                 new ClaimsPrincipal(
-                    new ClaimsIdentity(this.IssueClaims(account, this.method), this.method.Value)), 
-                    this.method, 
-                    this.type, 
-                    null, 
+                    new ClaimsIdentity(this.IssueClaims(account, this.method), this.method.Value)),
+                    this.method,
+                    this.type,
+                    null,
                     isPersistent);
         }
 
@@ -158,6 +160,8 @@ namespace Appva.Mcss.Admin.Application.Security
         /// Issues a new authenticated token.
         /// </summary>
         /// <param name="principal">The current claims principal</param>
+        /// <param name="method">The authentication method</param>
+        /// <param name="type">The authentication type</param>
         /// <param name="expiresUtc">The token lifetime</param>
         /// <param name="isPersistent">Optional; whether or not to persist the cookie, defaults to false</param>
         protected virtual void IssueToken(ClaimsPrincipal principal, AuthenticationMethod method, AuthenticationType type, TimeSpan? expiresUtc = null, bool isPersistent = false)
@@ -170,7 +174,7 @@ namespace Appva.Mcss.Admin.Application.Security
                     new AuthenticationProperties
                     {
                         IsPersistent = isPersistent,
-                        ExpiresUtc = expiresUtc.HasValue ? DateTime.UtcNow.Add(expiresUtc.Value) : (DateTimeOffset?) null
+                        ExpiresUtc = expiresUtc.HasValue ? DateTime.UtcNow.Add(expiresUtc.Value) : (DateTimeOffset?)null
                     },
                     new ClaimsIdentity(principal.Claims, type.Value));
             }
@@ -179,6 +183,8 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// Revokes the current authenticated token.
         /// </summary>
+        /// <param name="method">The authentication method</param>
+        /// <param name="type">The authentication type</param>
         protected virtual void RevokeToken(AuthenticationMethod method, AuthenticationType type)
         {
             this.identity.SignOut(type.Value);
@@ -198,12 +204,15 @@ namespace Appva.Mcss.Admin.Application.Security
                 new Claim(ClaimTypes.Name, account.FullName),
                 new Claim(ClaimTypes.AuthenticationMethod, method.Value),
                 new Claim(ClaimTypes.AuthenticationInstant, DateTime.UtcNow.ToString("s")),
-                new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(1).ToString("s")),
                 new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString())
             };
             if (this.settings.IsAccessControlListInstalled() && this.settings.IsAccessControlListActivated())
             {
                 retval.Add(new Claim(Core.Resources.ClaimTypes.AclEnabled, "Y"));
+            }
+            if (this.settings.IsSithsAuthorizationEnabled())
+            {
+                retval.Add(new Claim(Core.Resources.ClaimTypes.SithsEnabled, "Y"));
             }
             ITenantIdentity identity = null;
             if (this.tenants.TryIdentifyTenant(out identity))
@@ -216,16 +225,17 @@ namespace Appva.Mcss.Admin.Application.Security
         }
 
         /// <summary>
-        /// 
+        /// Authenticates the account and password and returns a result.
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
+        /// <param name="credentials">The user name, hsa id or personal identity number</param>
+        /// <param name="account">The account</param>
+        /// <param name="password">The password</param>
+        /// <returns>A <see cref="IAuthenticationResult"/></returns>
         protected IAuthenticationResult Authenticate(object credentials, Account account, string password)
         {
             if (account == null)
             {
-                this.auditing.FailedAuthentication(null, "Användare {0} misslyckades att autentisera p g a att användarkontot ej existerar", credentials);
+                this.auditing.FailedAuthentication(null,   "Användare {0} misslyckades att autentisera p g a att användarkontot ej existerar", credentials);
                 return AuthenticationResult.NotFound;
             }
             if (account.IsInactive())
@@ -248,18 +258,19 @@ namespace Appva.Mcss.Admin.Application.Security
                 this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a felaktigt lösenord.");
                 return AuthenticationResult.InvalidCredentials;
             }
-            //// TODO: This is temporary - this should not have to be checked later on.
+
             if (this.settings.IsAccessControlListActivated())
             {
+                //// TODO: if (this.settings.IsAccessControlListActivated()) is temporary - this should not have to be checked later on.
                 if (! this.accounts.HasPermissions(account, Permissions.Admin.Login.Value))
                 {
                     this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");
                     return AuthenticationResult.Failure;
                 }
             }
-            //// TODO: This is temporary - this should be removed.
             else if (! this.accounts.IsInRoles(account, Core.Resources.RoleTypes.Backend))
             {
+                //// TODO: if (! this.accounts.IsInRoles(account, Core.Resources.RoleTypes.Backend)) is temporary - this should be removed.
                 this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");
                 return AuthenticationResult.Failure;
             }
@@ -267,10 +278,10 @@ namespace Appva.Mcss.Admin.Application.Security
         }
 
         /// <summary>
-        /// 
+        /// Verifies the authentication result and updates the account.
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="result"></param>
+        /// <param name="account">The account to be authenticated</param>
+        /// <param name="result">The authentication result</param>
         protected virtual void VerifyAuthenticationResult(Account account, IAuthenticationResult result)
         {
             if (account == null)

@@ -1,0 +1,16 @@
+﻿@{
+	SetTitle("Area 51 - Notification");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+	<h1>Notifieringar</h1>
+	@using (Html.Post("AddVersion162", "Notifications", null))
+	{
+		@Html.Submit("Installera Version 1.6.2", new { @class = "btn" })
+	}
+</div>
+<div id="content" class="cf">
+	<div id="content-primary">
+		@Html.Alert()
+	</div>
+</div>

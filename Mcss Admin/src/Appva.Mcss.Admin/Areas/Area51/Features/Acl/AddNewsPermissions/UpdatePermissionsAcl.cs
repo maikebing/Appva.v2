@@ -2,7 +2,7 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:richard.alvegard@appva.se">Richard Alvegard</a>
 // </author>
 namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.AddNewsPermissions
 {

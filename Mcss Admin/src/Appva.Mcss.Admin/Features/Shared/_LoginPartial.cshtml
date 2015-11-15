@@ -1,8 +1,38 @@
 ﻿@using Microsoft.AspNet.Identity
 <div id="logged-info">
-    <p>
-        Inloggad som <strong>@User.Identity.Name</strong>
-        @Html.ActionLink("Byt lösenord", "ChangePassword", "Accounts", new { Area = "Practitioner" }, null)
-        @Html.ActionLink("Logga ut", "SignOut", "Authentication", new { Area = string.Empty }, new { @class = "btn" })
-    </p>
+    <div id="nav-main">
+        <ul class="cf">
+            <li class="support-info">@Html.CreateSupportLink("http://support.appva.se", "Hjälp", new { @class = "icon icon-help" })</li>
+            <li class="user-info">
+                <a class="profile icon icon-profile">@User.Identity.Name</a>
+                <div class="profile">
+                    <p>
+                        <span class="label">Inloggad som:</span>
+                        @User.Identity.Name
+                    </p>
+                    <ul>
+                        @if (! Principal.Claims.Any(x => x.Type == Appva.Core.Resources.ClaimTypes.SithsEnabled && x.Value == "Y"))
+                        {
+                        <li>
+                            @Html.ActionLink("Byt lösenord", "ChangePassword", "Accounts", new { Area = "Practitioner" }, new { @class = "change-password" })
+                        </li>
+                        }
+                        <li>
+                            @Html.ActionLink("Logga ut", "SignOut", "Authentication", new { Area = string.Empty }, new { @class = "logout" })
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
+
+<script type="text/javascript">
+    $('li.user-info').click(function (e) {
+        $(this).toggleClass('sel');
+        e.stopPropagation();
+    });
+    $(document).click(function (e) {
+        $('li.user-info').removeClass('sel');
+    });
+</script>

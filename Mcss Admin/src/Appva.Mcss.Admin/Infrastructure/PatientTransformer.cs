@@ -141,6 +141,11 @@ namespace Appva.Mcss.Admin.Infrastructure
             var retval = new List<PatientViewModel>();
             var taxonMap = new Dictionary<string, ITaxon>(taxons.ToDictionary(x => x.Id.ToString(), x => x));
             var tenantHasSeniorAlert = this.settingsService.HasSeniorAlert();
+            IDictionary<string, Taxon> seniorAlertMap = null;
+            if (tenantHasSeniorAlert && seniorAlerts.IsNotNull())
+            {
+                seniorAlertMap = seniorAlerts.ToDictionary(x => x.Id.ToString(), x => x);
+            }
             foreach (var patient in patients)
             {
                 var address = string.Empty;
@@ -151,6 +156,17 @@ namespace Appva.Mcss.Admin.Infrastructure
                     if (!taxonMap[path].IsRoot)
                     {
                         address += taxonMap[path].Name + " ";
+                    }
+                }
+                IList<Taxon> seniorAlertTaxons = new List<Taxon>();
+                if (tenantHasSeniorAlert && seniorAlertMap.IsNotNull() && patient.SeniorAlerts.IsNotEmpty())
+                {
+                    foreach (var s in patient.SeniorAlerts.ToLower().Split('.'))
+                    {
+                        if (seniorAlertMap.ContainsKey(s))
+                        {
+                            seniorAlertTaxons.Add(seniorAlertMap[s]);
+                        }
                     }
                 }
                 var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
@@ -170,7 +186,7 @@ namespace Appva.Mcss.Admin.Infrastructure
                     Overseeing = (overseer.IsNotNull()) ? overseer.FullName : null,
                     FirstLineContact = (firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
                     HasUnattendedTasks = patient.HasUnattendedTask,
-                    SeniorAlerts = tenantHasSeniorAlert ? seniorAlerts : null
+                    SeniorAlerts = seniorAlertTaxons
                 });
             }
             return retval;

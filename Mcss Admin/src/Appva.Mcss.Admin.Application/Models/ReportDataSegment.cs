@@ -1,16 +1,14 @@
-﻿// <copyright file="ChartData.cs" company="Appva AB">
+﻿// <copyright file="ReportDataSegment.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:richard.alvegard@appva.se">Richard Alvegard</a>
 // </author>
 namespace Appva.Mcss.Admin.Application.Models
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -19,10 +17,10 @@ namespace Appva.Mcss.Admin.Application.Models
     /// </summary>
     public class ReportDataSegment
     {
-        #region Fields
+        #region Variables.
 
         /// <summary>
-        /// 
+        /// TODO: what is averageMinutesDelayed?
         /// </summary>
         private double averageMinutesDelayed;
 
@@ -31,14 +29,18 @@ namespace Appva.Mcss.Admin.Application.Models
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChartData"/> class.
+        /// Initializes a new instance of the <see cref="ReportDataSegment"/> class.
         /// </summary>
         public ReportDataSegment()
-        { }
+        {
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChartData"/> class.
+        /// Initializes a new instance of the <see cref="ReportDataSegment"/> class.
         /// </summary>
+        /// <param name="date">TODO: what is date?</param>
+        /// <param name="onTime">TODO: what is onTime?</param>
+        /// <param name="notOnTime">TODO: what is notOnTime?</param>
         public ReportDataSegment(DateTime date, double onTime, double notOnTime)
         {
             this.OnTime = onTime;
@@ -50,6 +52,9 @@ namespace Appva.Mcss.Admin.Application.Models
 
         #region Properties.
 
+        /// <summary>
+        /// TODO: Summary for Date. Should this have public setter?
+        /// </summary>
         public DateTime Date
         {
             get;
@@ -57,7 +62,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// 
+        /// TODO: Summary for OnTime. Should this have public setter?
         /// </summary>
         public double OnTime
         {
@@ -66,7 +71,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// 
+        /// TODO: Summary for NotOnTime. Should this have public setter?
         /// </summary>
         public double NotOnTime
         {
@@ -74,6 +79,9 @@ namespace Appva.Mcss.Admin.Application.Models
             set;
         }
 
+        /// <summary>
+        /// TODO: Summary for Total. Should this have public setter?
+        /// </summary>
         public double Total
         {
             get;
@@ -81,7 +89,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// 
+        /// TODO: Summary for Signed. Should this have public setter?
         /// </summary>
         public double Signed
         {
@@ -90,28 +98,41 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// 
+        /// TODO: Summary for OnTimePercentage.
         /// </summary>
         public double OnTimePercentage
         {
-            get { return this.Total == 0 ? 0 : Math.Round((this.OnTime / this.Total) * 100, 0); }
+            get
+            {
+                return this.Total == 0 ? 0 : Math.Round((this.OnTime / this.Total) * 100, 0);
+            }
         }
 
         /// <summary>
-        /// 
+        /// TODO: Summary for NotOnTimePercentage.
         /// </summary>
         public double NotOnTimePercentage
         {
-            get { return this.Total == 0 ? 0 : Math.Round((this.NotOnTime / this.Total) * 100, 0); }
+            get
+            {
+                return this.Total == 0 ? 0 : Math.Round((this.NotOnTime / this.Total) * 100, 0);
+            }
         }
 
         /// <summary>
-        /// 
+        /// TODO: Summary for AverageMinutesDelayed.
         /// </summary>
-        public double AverageMinutesDelayed 
+        public double AverageMinutesDelayed
         {
-            get { return this.averageMinutesDelayed != 0 ? this.averageMinutesDelayed / this.Total : 0; }
-            set { this.averageMinutesDelayed = value; } 
+            get
+            {
+                return this.averageMinutesDelayed != 0 ? this.averageMinutesDelayed / this.Total : 0;
+            }
+
+            set
+            {
+                this.averageMinutesDelayed = value;
+            }
         }
 
         #endregion

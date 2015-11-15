@@ -13,10 +13,10 @@ namespace Appva.Mcss.Web.ViewModels {
         public DateTime Current { get; set; }
         public DateTime Next { get; set; }
         public DateTime Previous { get; set; }
-        public IList<CalendarWeek> Calendar { get; set; }
+        public IList<Calendar> Calendar { get; set; }
         public PatientViewModel Patient { get; set; }
         public EventViewModel EventViewModel { get; set; }
-        public IList<Guid> FilterList { get; set; }
+        public IList<string> FilterList { get; set; }
 
         private int _iterator = 1;
 

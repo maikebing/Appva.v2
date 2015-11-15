@@ -119,12 +119,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
-        public virtual string Color
-        {
-            get;
-            set;
-        }
-
         #endregion
     }
 

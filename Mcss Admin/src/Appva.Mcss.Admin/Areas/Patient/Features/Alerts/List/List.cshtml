@@ -1,7 +1,7 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
 @model ListAlertModel
 @{
-    Title("Larm");
+    SetTitle("Larm");
 }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
@@ -78,8 +78,8 @@
                                                     @:Har ej genomförts
                                                 }
                                                 else {
-                                                    @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.UpdatedAt))
-                                                    @:, kl @string.Format("{0:HH:mm}", Item.UpdatedAt))
+                                                    @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.CompletedDate.GetValueOrDefault()))
+                                                    @(string.Format("{0:d MMMM yyyy}, kl {0:HH:mm} med status '{1}'", Item.CompletedDate.GetValueOrDefault(), Item.StatusTaxon != null ? Item.StatusTaxon.Name : ""))
                                                 }
                                             </td>
                                             <td>
@@ -198,10 +198,10 @@
                                                                 <td>@Item.Sequence.Name</td>
                                                                 <td>kl @string.Format("{0:HH:mm}", Item.Scheduled) @interval min</td>
                                                                 <td>
-                                                                    @if (Item.IsCompleted) {
-                                                                        @:Genomfördes för sent
-                                                                        Math.Round(Item.UpdatedAt.Subtract(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter)).TotalMinutes); @:minuter, kl
-                                                                        string.Format("{0:HH:mm}", Item.UpdatedAt);
+                                                                    @if (Item.IsCompleted)
+                                                                    {
+                                                                        @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.CompletedDate.GetValueOrDefault()))
+                                                                        @(string.Format("{0:d MMMM yyyy}, kl {0:HH:mm} med status '{1}'", Item.CompletedDate.GetValueOrDefault(), Item.StatusTaxon.Name))
                                                                     }
                                                                     else {
                                                                         @:Har ej genomförts

@@ -80,7 +80,6 @@ using System.Web;
         /// </summary>
         public TaxonFilterSessionHandler(IIdentityService identityService, ITaxonomyService taxaService, HttpContextBase context)
         {
-            //identityService.Principal.
             this.identityService = identityService;
             this.taxaService = taxaService;
             this.context = context;
@@ -101,7 +100,11 @@ using System.Web;
             if (id == null)
             {
                 var claim = this.identityService.Principal.FindFirst(Core.Resources.ClaimTypes.Taxon);
-                return this.taxaService.Find(new Guid(claim.Value), TaxonomicSchema.Organization);
+                if (claim == null)
+                {
+                    return null;
+                }
+                return this.taxaService.Find(new Guid(claim.Value));
             }
             return this.taxaService.Find((Guid)id, TaxonomicSchema.Organization);
         }

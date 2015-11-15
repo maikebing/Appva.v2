@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Appva.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,11 +19,12 @@ namespace Appva.Mcss.Web.ViewModels
         public string Operation { get; set; }
 
         [Display(Name="Antal")]
-        public double Value { get; set; }
+        public decimal Value { get; set; }
 
         public Guid TaskId { get; set; }
 
         [Display(Name = "Notis")]
+        [PlaceHolder("Frivilligt")]
         public string Description { get; set; }
 
         public string ReturnUrl { get; set; }

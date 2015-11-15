@@ -17,6 +17,9 @@ namespace Appva.Mcss.Admin.Application.Models
     /// </summary>
     public interface ITaxon
     {
+        /// <summary>
+        /// The ID.
+        /// </summary>
         Guid Id
         {
             get;
@@ -87,7 +90,7 @@ namespace Appva.Mcss.Admin.Application.Models
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Taxon"/> class.
+        /// Initializes a new instance of the <see cref="TaxonItem"/> class.
         /// </summary>
         /// <param name="id">The identifier</param>
         /// <param name="name">The name</param>
@@ -104,7 +107,7 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Path = path;
             this.Type = type;
             this.Sort = sort;
-            this.IsRoot = ! parentId.HasValue;
+            this.IsRoot = !parentId.HasValue;
             this.ParentId = parentId;
         }
 

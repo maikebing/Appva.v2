@@ -43,21 +43,46 @@
     <many-to-one name="Patient" class="Patient" />
   </class>
 
-  <!-- Notification
+  <!-- Notification -->
   <class name="Notification">
     <id name="Id">
       <generator class="guid.comb" />
     </id>
-    <property name="Created" />
-    <property name="Modified" />
-    <property name="Title" />
-    <property name="Message" type="StringClob">
-      <column name="Message" sql-type="NTEXT"/>
-    </property>
+    <discriminator column="NotificationType" />
+    <version name="Version" />
+    <property name="Name" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
     <property name="Published" />
     <property name="PublishedDate" />
     <property name="UnPublishedDate" />
-  </class> -->
+    <property name="IsVisibleToEveryone" />
+    <bag name="ViewedBy" cascade="save-update">
+      <key column="Notification" />
+      <one-to-many class="NotificationViewedBy" />
+    </bag>
+    <bag name="VisibleTo" table="NotificationVisibleTo" cascade="save-update">
+      <key column="NotificationId" />
+      <many-to-many column="AccountId" class="Account" />
+    </bag>
+    <subclass name="DashboardNotification" discriminator-value="0">
+      <property name="Template" />
+    </subclass>
+  </class>
+
+  <!-- NotificationViewedByAccount -->
+  <class name="NotificationViewedBy">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <many-to-one name="Notification" class="Notification" />
+    <many-to-one name="Account" class="Account" />
+  </class>
 
   <!-- Account -->
   <class name="Account" table="Account">
@@ -91,6 +116,9 @@
     <property name="Title" access="nosetter.camelcase-underscore" formula="substring((SELECT ', ' + r.Name FROM Role r Inner Join AccountRole a1 On r.Id = a1.RoleId Inner Join Account a On a1.AccountId = a.Id Where r.Active = 'true' And r.IsVisible = 'true' And a.Id = Id Order by r.Name FOR XML PATH('')), 3, 1000)" />
     <property name="ShowAdminNewsNotice" not-null="true">
       <column name="ShowAdminNewsNotice" default="1" />
+    </property>
+    <property name="SymmetricKey" not-null="true" type="StringClob">
+      <column name="SymmetricKey" sql-type="NTEXT" not-null="true" default="'MjVjNWQ1OGEwN2ExNGJjMTg4NGI0ZWQwNjcxODNlZjA='" />
     </property>
     <many-to-one name="Taxon" class="Taxon" />
     <bag name="Roles" table="AccountRole" cascade="save-update">
@@ -398,7 +426,6 @@
     <many-to-one name="CombineWith" class="ScheduleSettings" />
     <property name="ScheduleType" />
     <property name="Absence" />
-    <property name="Color" />
     <bag name="StatusTaxons" cascade="save-update">
       <key column="ScheduleSettingsId" />
       <many-to-many class="Taxon" column="TaxonId" property-ref="" />
@@ -589,5 +616,6 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
+
 
 </hibernate-mapping>

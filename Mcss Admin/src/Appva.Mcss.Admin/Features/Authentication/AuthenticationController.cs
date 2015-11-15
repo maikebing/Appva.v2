@@ -11,15 +11,12 @@ namespace Appva.Mcss.Admin.Features.Authentication
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Menus;
     using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Features.Authentication.Forgot;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
-    using Appva.Tenant.Identity;
 
     #endregion
 
@@ -32,11 +29,6 @@ namespace Appva.Mcss.Admin.Features.Authentication
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ITenantService"/>.
-        /// </summary>
-        private readonly ITenantService tenants;
-
-        /// <summary>
         /// The <see cref="ISithsAuthentication"/>.
         /// </summary>
         private readonly ISithsAuthentication siths;
@@ -47,19 +39,14 @@ namespace Appva.Mcss.Admin.Features.Authentication
         private readonly IFormsAuthentication authentication;
 
         /// <summary>
-        /// The <see cref="IMenuService"/>.
-        /// </summary>
-        private readonly IMenuService menus;
-
-        /// <summary>
         /// The <see cref="IAccountService"/>.
         /// </summary>
-        private readonly IAccountService accountService;
+        private readonly ISettingsService settings;
 
         /// <summary>
-        /// The <see cref="IAccountService"/>.
+        /// The <see cref="IMediator"/>.
         /// </summary>
-        private readonly ISettingsService settingsService;
+        private readonly IMediator mediator;
 
         #endregion
 
@@ -68,45 +55,44 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
         /// </summary>
-        /// <param name="tenants">The <see cref="ITenantService"/></param>
         /// <param name="siths">The <see cref="ISithsAuthentication"/></param>
         /// <param name="authentication">The <see cref="IFormsAuthentication"/></param>
-        public AuthenticationController(ITenantService tenants, ISithsAuthentication siths, IFormsAuthentication authentication, IMenuService menus,
-            IAccountService accountService, ISettingsService settingsService)
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
+        /// <param name="mediator">The <see cref="IMediator"/></param>
+        public AuthenticationController(
+            ISithsAuthentication siths,
+            IFormsAuthentication authentication,
+            ISettingsService settings,
+            IMediator mediator)
         {
-            this.tenants = tenants;
             this.siths = siths;
             this.authentication = authentication;
-            this.menus = menus;
-            this.accountService = accountService;
-            this.settingsService = settingsService;
+            this.settings = settings;
+            this.mediator = mediator;
         }
 
         #endregion
 
         #region Routes.
 
-        #region Sign In.
+        #region Sign in.
 
         /// <summary>
         /// Returns the sign in form view.
         /// </summary>
-        /// <returns>The sign in form</returns>
+        /// <returns>The <see cref="SignInForm"/></returns>
         [Route("sign-in")]
         [AllowAnonymous, HttpGet, Hydrate]
         public ActionResult SignIn(SignIn request)
         {
-            if (this.settingsService.GetAdminLogin() == "siths")
+            if (this.settings.IsSithsAuthorizationEnabled())
             {
                 return this.RedirectToAction("SignInSiths");
             }
-            ITenantIdentity identity = null;
-            this.tenants.TryIdentifyTenant(out identity);
             return this.View(new SignInForm
-                {
-                    Tenant = identity.Name,
-                    ReturnUrl = request.ReturnUrl
-                });
+            {
+                ReturnUrl = request.ReturnUrl
+            });
         }
 
         /// <summary>
@@ -118,52 +104,48 @@ namespace Appva.Mcss.Admin.Features.Authentication
         public ActionResult SignIn(SignInForm request)
         {
             IAuthenticationResult result;
-            if (this.authentication.AuthenticateWithUserNameAndPassword(request.UserName, request.Password, out result))
+            if (! this.authentication.AuthenticateWithUserNameAndPassword(request.UserName, request.Password, out result))
             {
-                this.authentication.SignIn(result.Identity);
-                if (! result.Identity.LastPasswordChangedDate.HasValue)
+                if (result.IsFailureDueToIdentityLockout)
                 {
-                    return this.RedirectToAction("ChangePassword", "Accounts", new 
-                    {
-                        Area = "Practitioner"
-                    });
+                    return this.RedirectToAction("Lockout");
                 }
-                return this.RedirectToAction("Index", "Home", new 
+                ModelState.AddModelError(string.Empty, string.Empty);
+                return this.View();
+            }
+            this.authentication.SignIn(result.Identity);
+            if (! result.Identity.LastPasswordChangedDate.HasValue)
+            {
+                return this.RedirectToAction("ChangePassword", "Accounts", new
                 {
-                    ReturnUrl = request.ReturnUrl
+                    Area = "Practitioner"
                 });
             }
-            if (result.IsFailureDueToIdentityLockout)
+            return this.RedirectToAction("Index", "Home", new
             {
-                return this.RedirectToAction("Lockout");
-            }
-            ModelState.AddModelError(string.Empty, string.Empty);
-            return this.View();
+                ReturnUrl = request.ReturnUrl
+            });
         }
 
         #endregion
 
-        #region Sign Out.
+        #region Sign out.
 
         /// <summary>
         /// Returns the sign in form view.
         /// </summary>
         /// <returns>The sign in form</returns>
-        [HttpGet, Route("sign-out")]
+        [Route("sign-out")]
+        [HttpGet]
         public ActionResult SignOut()
         {
             this.authentication.SignOut();
-            ITenantIdentity identity = null;
-            this.tenants.TryIdentifyTenant(out identity);
-            return this.View(new SignOut
-                {
-                    Tenant = identity.Name
-                });
+            return this.View();
         }
 
         #endregion
 
-        #region External Login (SITHS).
+        #region External login (siths).
 
         /// <summary>
         /// Redirects to the Siths Identity Provider (IdP) login page.
@@ -180,32 +162,32 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// <summary>
         /// The Siths Identity Provider (IdP) token response authentication.
         /// </summary>
-        /// <param name="token">The response token</param>
+        /// <param name="authify_response_token">The response token</param>
         /// <returns>A redirect to the external login</returns>
         [Route("sign-in/external/siths/token")]
         [AllowAnonymous, HttpGet]
         public async Task<ActionResult> SignInSithsViaToken(string authify_response_token)
         {
             var result = await this.siths.AuthenticateTokenAsync(authify_response_token);
-            if (result.IsAuthorized)
+            if (! result.IsAuthorized)
             {
-                this.authentication.SignIn(result.Identity);
-                await this.siths.LogoutAsync(authify_response_token);
-                return this.RedirectToAction("Index", "Home");
+                return this.RedirectToAction("SignInSiths");
             }
-            //// If everything fails; start over!
-            return this.RedirectToAction("SignInSiths");
+            this.authentication.SignIn(result.Identity);
+            await this.siths.LogoutAsync(authify_response_token);
+            return this.RedirectToAction("Index", "Home");
         }
 
         #endregion
 
-        #region Lock Out.
+        #region Lock out.
 
         /// <summary>
         /// Returns the sign in form view.
         /// </summary>
         /// <returns>The sign in form</returns>
-        [AllowAnonymous, HttpGet, Route("lock-out")]
+        [Route("lock-out")]
+        [AllowAnonymous, HttpGet]
         public ActionResult Lockout()
         {
             return this.View();
@@ -213,54 +195,17 @@ namespace Appva.Mcss.Admin.Features.Authentication
 
         #endregion
 
-        #region Forgot Password.
-
-        /// <summary>
-        /// Returns the sign in form view.
-        /// </summary>
-        /// <returns>The sign in form</returns>
-        [AllowAnonymous, HttpGet, Hydrate, Route("forgot-password")]
-        public ActionResult Forgot()
-        {
-            ITenantIdentity identity = null;
-            this.tenants.TryIdentifyTenant(out identity);
-            return this.View(new ForgotPassword
-            {
-                Tenant = identity.Name
-            });
-        }
-
-        /// <summary>
-        /// Signs in the user if successfully authenticated.
-        /// </summary>
-        /// <returns>A redirect to authorized return url or authorized menu</returns>
-        [AllowAnonymous, HttpPost, Validate, ValidateAntiForgeryToken, Route("forgot-password"), AlertSuccess("Ett nytt lösenord har skickats")]
-        public ActionResult Forgot(ForgotPassword model)
-        {
-            if (this.accountService.ForgotPassword(model.Email, model.PersonalIdentityNumber))
-            {
-                return this.RedirectToAction("SignIn", "Authentication");
-            }
-            ModelState.AddModelError(string.Empty, "Personnummer eller e-post är felaktigt.");
-            return this.View(model);
-        }
-
-        #endregion
-
-        #region Redirect For Old Invalid URLs.
+        #region Redirect for deprecated invalid urls.
 
         /// <summary>
         /// Redirects to the new authentication URL if the deprecated URL is used.
         /// </summary>
         /// <returns>A redirect to correct sign in</returns>
-        [AllowAnonymous]
-        [HttpGet, Route("~/Authenticate/LogIn")]
-        public ActionResult RedirectForOldAuthenticationLoginUrl()
+        [Route("~/Authenticate/LogIn")]
+        [AllowAnonymous, HttpGet]
+        public ActionResult RedirectForOldAuthenticationLoginUrl(SignIn request)
         {
-            return this.RedirectToAction("SignIn", new SignIn
-            {
-                ReturnUrl = string.Empty
-            });
+            return this.RedirectToAction("SignIn", request);
         }
 
         #endregion

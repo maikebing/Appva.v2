@@ -66,7 +66,7 @@ namespace Appva.Mvc
                 return;
             }
             response.Write(string.Format(
-                @"<div class='environment debug'>Action '{0}/{1}' took {2} ms to execute and {3} ms to render</div>",
+                @"<!-- Action '{0}/{1}' took {2} ms to execute and {3} ms to render -->",
                 filterContext.RouteData.Values["controller"],
                 filterContext.RouteData.Values[Action],
                 this.StopWatch(filterContext.HttpContext, Action).ElapsedMilliseconds,

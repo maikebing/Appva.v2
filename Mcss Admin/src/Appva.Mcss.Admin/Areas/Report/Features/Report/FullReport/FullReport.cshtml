@@ -1,5 +1,9 @@
 ﻿@model Appva.Mcss.Admin.Areas.Models.FullReportModel
-@{ ViewBag.Title = "Översikt"; ViewBag.MainClass = "report-view"; }
+@using Appva.Mcss.Admin.Application.Common;
+@{ 
+    SetTitle("Översikt"); 
+    ViewBag.MainClass = "report-view"; 
+}
 <div id="subheader" class="cf">
 	<h1>Fullständig resultatrapport</h1>
     @Html.ActionLink("Exportera till Excel", "Excel", new { sId = Model.ScheduleSetting, startDate = Model.Start.ToShortDateString(), endDate = Model.End.ToShortDateString() }, new { @class = "export", download = string.Format("MCSS-rapport-{0}.xls", DateTime.Now.ToFileTimeUtc()) })
@@ -155,7 +159,14 @@
                         <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
                         <strong>Avvikelse:</strong>
                         if (task.DelayHandled) {
-                            @Html.ActionLink("Larm åtgärdat", "List", "Alert", new { id = task.Patient.Id }, new { })
+                            if (Html.HasPermissionFor(Permissions.Alert.Read))
+                            {
+                                @Html.ActionLink("Larm åtgärdat", "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
+                            }
+                            else
+                            {
+                                @:Larm åtgärdat    
+                            }
                         }
                         else {
                             @:Ej given

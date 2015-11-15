@@ -2,7 +2,7 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:richard.alvegard@appva.se">Richard Alvegard</a>
 // </author>
 namespace Appva.Mcss.Admin.Areas.Models
 {
@@ -18,15 +18,26 @@ namespace Appva.Mcss.Admin.Areas.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListNotifications : IRequest<bool>
+    public sealed class ListNotifications : IRequest<ListNotifictationsModel>
     {
-        #region Constructor.
+        #region Properties
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListNotifications"/> class.
+        /// The current page
         /// </summary>
-        public ListNotifications()
+        public int Page
         {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The current page-size
+        /// </summary>
+        public int PageSize
+        {
+            get;
+            set;
         }
 
         #endregion

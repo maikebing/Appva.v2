@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Features.Taxa
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Features.Taxa.Filter;
     using Appva.Mcss.Web;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -59,9 +60,10 @@ namespace Appva.Mcss.Admin.Features.Taxa
         /// </summary>
         /// <returns>A select list of available taxons for the specific user</returns>
         [ChildActionOnly, Route("TaxonFilter")]
+        [PermissionsAttribute(Permissions.Admin.LoginValue)]
         public PartialViewResult TaxonFilter()
         {
-            if (! identity.Principal.Identity.IsAuthenticated)
+            if (!identity.Principal.Identity.IsAuthenticated)
             {
                 return null;
             }
@@ -73,7 +75,7 @@ namespace Appva.Mcss.Admin.Features.Taxa
             {
                 RootId = root.Id,
                 RootName = root.Name,
-                Items = SelectList(selected, taxons)
+                Items = SelectList((selected == null) ? root : selected, taxons)
             });
         }
 

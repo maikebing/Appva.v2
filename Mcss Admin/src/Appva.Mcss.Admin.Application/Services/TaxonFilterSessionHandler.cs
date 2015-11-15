@@ -14,7 +14,6 @@ namespace Appva.Mcss.Admin.Application.Services
 using System.Web;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -121,7 +120,7 @@ using System.Web;
         /// <inheritdoc />
         public void SetCurrentFilter(Guid taxonId)
         {
-            var taxon = this.taxaService.Find(taxonId, TaxonomicSchema.Organization);
+            var taxon = this.taxaService.Find(taxonId);
             if (taxon == null)
             {
                 return;

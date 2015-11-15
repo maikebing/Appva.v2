@@ -12,14 +12,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System.Collections.Generic;
 using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
-    using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
     #endregion
 
     /// <summary>
     /// The <see cref="Taxon"/> repository.
     /// </summary>
-    public interface ITaxonRepository : IIdentityRepository<Taxon>, IProxyRepository<Taxon>, IRepository
+    public interface ITaxonRepository : IIdentityRepository<Taxon>, IRepository
     {
         /// <summary>
         /// Returns a collection of <see cref="Taxon"/> by <see cref="Taxonomy.Key"/>
@@ -100,14 +99,6 @@ using Appva.Mcss.Admin.Domain.Entities;
 
         #endregion
 
-
-        #region IProxyRepository Members.
-
-        public Taxon Load(Guid id)
-        {
-            return this.persistenceContext.Session.Load<Taxon>(id);
-        }
-
-        #endregion
+        
     }
 }

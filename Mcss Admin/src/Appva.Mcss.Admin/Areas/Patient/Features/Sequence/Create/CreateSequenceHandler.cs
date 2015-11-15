@@ -34,9 +34,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IPersistenceContext context;
 
         /// <summary>
-        /// The <see cref="IDelegationService"/>.
+        /// The <see cref="ILogService"/>.
         /// </summary>
-        private readonly IDelegationService delegations;
+        private readonly ILogService logService;
 
         #endregion
 
@@ -45,10 +45,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceHandler"/> class.
         /// </summary>
-        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations)
+        public CreateSequenceHandler(IPersistenceContext context, ILogService logService)
         {
             this.context = context;
-            this.delegations = delegations;
+            this.logService = logService;
         }
 
         #endregion
@@ -63,10 +63,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 Id = message.Id,
                 ScheduleId = schedule.Id,
-                Delegations = this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
-                    .Select(x => new SelectListItem { 
-                        Text = x.Name,
-                        Value = x.Id.ToString() }),
+                Delegations = this.GetDelegations(schedule),
                 Times = CreateTimes().Select(x => new CheckBoxViewModel
                 {
                     Id = x,
@@ -78,6 +75,29 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #endregion
 
         #region Private Methods.
+
+        /// <summary>
+        /// TODO: MOVE?
+        /// </summary>
+        /// <param name="schedule"></param>
+        /// <returns></returns>
+        public IEnumerable<SelectListItem> GetDelegations(Schedule schedule)
+        {
+            var delegations = this.context.QueryOver<Taxon>()
+                .Where(x => x.IsActive == true)
+                .And(x => x.IsRoot == false)
+                .And(x => x.Parent == schedule.ScheduleSettings.DelegationTaxon)
+                .OrderBy(x => x.Weight).Asc
+                .ThenBy(x => x.Name).Asc
+                .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
+                    .Where(x => x.MachineName == TaxonomicSchema.Delegation.Id)
+                .List();
+            return delegations.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            });
+        }
 
         /// <summary>
         /// TODO: REFACTOR?

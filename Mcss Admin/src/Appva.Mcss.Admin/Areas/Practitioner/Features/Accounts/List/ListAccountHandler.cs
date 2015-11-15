@@ -64,11 +64,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ITaxonFilterSessionHandler filtering;
 
-        /// <summary>
-        /// The <see cref="IDelegationService"/>.
-        /// </summary>
-        private readonly IDelegationService delegations;
-
         #endregion
 
         #region Constructor.
@@ -82,7 +77,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="taxonomies">The <see cref="ITaxonomyService"/></param>
         /// <param name="roles">The <see cref="IRoleService"/></param>
         /// <param name="accounts">The <see cref="IAccountService"/></param>
-        /// <param name="delegations">The <see cref="IDelegationService"/></param>
         public ListAccountHandler(
             IRuntimeMemoryCache cache,
             ISettingsService settings,
@@ -90,8 +84,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             ITaxonomyService taxonomies,
             IRoleService roles,
             IAccountService accounts,
-            ITaxonFilterSessionHandler filtering,
-            IDelegationService delegations)
+            ITaxonFilterSessionHandler filtering)
         {
             this.cache = cache;
             this.settings = settings;
@@ -100,7 +93,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.roles = roles;
             this.accounts = accounts;
             this.filtering = filtering;
-            this.delegations = delegations;
         }
 
         #endregion
@@ -136,7 +128,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         })
                     .ToList()
                     ,
-                Delegations = this.delegations.ListDelegationTaxons(includeRoots: false)
+                Delegations = this.taxonomies.List(TaxonomicSchema.Delegation)
+                    .Where(x => !x.IsRoot)
                     .Select(
                         x => new SelectListItem()
                         {

@@ -68,7 +68,7 @@ namespace Appva.Mcss.Admin.Infrastructure
         {
             //// FIXME: Is this ever used, or will be used?
             var superiors = this.roleService.MembersOfRole("_superioraccount");
-            var taxon = this.taxonService.Find(account.Taxon.Id, TaxonomicSchema.Organization);
+            var taxon = this.taxonService.Find(account.Taxon.Id);
             var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
             var superior = superiorList.Count() > 0 ? superiorList.First() : null;
             return new AccountViewModel()

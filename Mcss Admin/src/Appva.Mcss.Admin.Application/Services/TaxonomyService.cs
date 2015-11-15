@@ -27,11 +27,11 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface ITaxonomyService : IService
     {
         /// <summary>
-        /// Finds a taxonomy by id
+        /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        ITaxon Find(Guid id, TaxonomicSchema schema);
+        ITaxon Find(Guid id);
 
         /// <summary>
         /// 
@@ -67,13 +67,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="id"></param>
         /// <returns></returns>
         IList<ITaxon> ListByParent(Guid id);
-
-        /// <summary>
-        /// Loads a taxon from the id. OBS only creates a proxy, not ful entity
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Taxon Load(Guid id);
 
         Taxon Get(Guid id);
         IList<Taxon> ListIn(params Guid[] ids);
@@ -116,9 +109,9 @@ namespace Appva.Mcss.Admin.Application.Services
         #region ITaxonomyService Members
 
         /// <inheritdoc />
-        public ITaxon Find(Guid id, TaxonomicSchema schema)
+        public ITaxon Find(Guid id)
         {
-            return this.List(schema)
+            return this.List(TaxonomicSchema.Organization)
                 .Where(x => x.Id == id).FirstOrDefault();
         }
 
@@ -180,12 +173,6 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<Taxon> ListIn(params Guid[] ids)
         {
             return this.repository.Pick(ids);
-        }
-
-        /// <inheritdoc />
-        public Taxon Load(Guid id)
-        {
-            return this.repository.Load(id);
         }
 
         #endregion

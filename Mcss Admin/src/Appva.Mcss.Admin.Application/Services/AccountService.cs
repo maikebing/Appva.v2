@@ -169,36 +169,6 @@ namespace Appva.Mcss.Admin.Application.Services
         void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess);
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="emailAddress"></param>
-        /// <param name="personalIdentityNumber"></param>
-        bool ForgotPassword(string emailAddress, PersonalIdentityNumber personalIdentityNumber);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <param name="personalIdentityNumber"></param>
-        /// <param name="emailAddress"></param>
-        /// <param name="password"></param>
-        /// <param name="adress"></param>
-        /// <param name="roles"></param>
-        void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon adress, IList<Role> roles, string hsaId);
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <param name="personalIdentityNumber"></param>
-        /// <param name="emailAddress"></param>
-        /// <param name="webPassword"></param>
-        /// <param name="adress"></param>
-        /// <param name="roles"></param>
-        /// <param name="devicePassword"></param>
-        void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon adress, IList<Role> roles, string hsaId, string devicePassword = null);
         /// Creates a proxy-entity from a guid
         /// </summary>
         /// <param name="id">The Guid</param>
@@ -499,72 +469,6 @@ namespace Appva.Mcss.Admin.Application.Services
         public Account Load(Guid id)
         {
             return this.repository.Load(id);
-        public void Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string password, Taxon address, IList<Role> roles, string hsaId)
-        {
-            var roleList = roles.IsNull() ? new List<Role>() : roles;
-            var account = new Account();
-            account.FirstName = firstName.FirstToUpper();
-            account.LastName = lastName.FirstToUpper();
-            account.FullName = string.Format("{0} {1}", account.FirstName, account.LastName);
-            account.PersonalIdentityNumber = personalIdentityNumber;
-            account.EmailAddress = emailAddress;
-            account.DevicePassword = password;
-            account.Taxon = address;
-            account.Roles = roleList;
-            account.IsPaused = false;
-            account.HsaId = hsaId;
-            this.persitence.Save<Account>(account);
-            this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
-            var mailBody = this.settingsService.CreateAccountMailBody();
-            if (mailBody.IsNotEmpty())
-            {
-                var mail = new MailMessage()
-                {
-                    Subject = ConfigurationManager.AppSettings.Get("EmailCreateAccountSubject"),
-                    Body = string.Format(mailBody, account.FullName, account.DevicePassword),
-                    IsBodyHtml = true
-                };
-                mail.To.Add(account.EmailAddress);
-                this.mailService.Send(mail);
-            }
-        }
-
-        /// <inheritdoc />
-        public void CreateBackendAccount(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string emailAddress, string webPassword, Taxon address, IList<Role> roles, string hsaId, string devicePassword = null)
-        {
-            var roleList = roles.IsNull() ? new List<Role>() : roles;
-            roleList.Add(this.roles.Find(RoleTypes.Backend));
-            var account = new Account();
-            account.UserName = AccountUtils.CreateUserName(
-                firstName,
-                lastName,
-                this.GetUserNames()
-            );
-            account.FirstName = firstName.FirstToUpper();
-            account.LastName = lastName.FirstToUpper();
-            account.FullName = string.Format("{0} {1}", account.FirstName, account.LastName);
-            account.PersonalIdentityNumber = personalIdentityNumber;
-            account.EmailAddress = emailAddress;
-            account.Salt = EncryptionUtils.GenerateSalt(DateTime.Now);
-            account.AdminPassword = EncryptionUtils.Hash(webPassword, account.Salt);
-            account.DevicePassword = devicePassword;
-            account.Taxon = address;
-            account.Roles = roleList;
-            account.IsPaused = false;
-            account.HsaId = hsaId;
-            this.persitence.Save<Account>(account);
-            this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
-            var mailBody = this.settingsService.CreateBackendAccountMailBody();
-            if (mailBody.IsNotEmpty())
-            {
-                var mail = new MailMessage("noreply@appva.se", account.EmailAddress)
-                {
-                    Subject = ConfigurationManager.AppSettings.Get("EmailCreateAccountSubject"),
-                    Body = string.Format(mailBody, account.FullName, account.DevicePassword, account.UserName, webPassword),
-                    IsBodyHtml = true
-                };
-                this.mailService.Send(mail);
-            }
         }
 
         #endregion

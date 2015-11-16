@@ -1,4 +1,3 @@
-
 @media all {
 
 /* RESET
@@ -345,10 +344,9 @@ a.pause-btn:active {
 }
 #logo img {display:block;}
 #header h1 {font-weight:bold; font-size:2em;}
-
 #logged-info {
 	float:right;
-	/*padding:16px 5px 0;*/
+
 	color:#d2d8e5;
 	text-shadow:0 -1px 0 #004;
 }
@@ -469,7 +467,7 @@ a.pause-btn:active {
 #logged-info ul li:hover div.profile,
 #logged-info ul li.sel div.profile {
     display:block;
-}
+} 
 
 #footer {
 	margin-top:50px;
@@ -2051,6 +2049,7 @@ form .time {width:4em;}
 #calendar table,
 #calendar th,
 #calendar td {
+    margin:0;
 	vertical-align:top;
 }
 #calendar .inactive {color:#aaa;}
@@ -2119,6 +2118,24 @@ form .time {width:4em;}
 }
 #calendar .act-info strong {
 	display:block;
+}
+
+#calendar .month-row a {
+    text-decoration:none;
+}
+
+#calendar .act:hover {
+    cursor:pointer;
+}
+#calendar .focus span.act {
+    box-shadow:0 0 15px rgba(0,0,0,0.9);
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.0),
+        rgba(255, 255, 255, 0.0) 10px,
+        rgba(255, 255, 255, 0.3) 10px,
+        rgba(255, 255, 255, 0.3) 20px);
+    transition:all ease-in 0.1s;
 }
 
 #calendar .act:hover .act-info,
@@ -3068,17 +3085,6 @@ select.custom-select {
 	margin:0;
 	font-size:12px;
 }
-/* span for delegations in lightbox must be min 350px wide */
-select.delegation.custom-select {
-    min-width:350px;
-}
-
-select.delegation.custom-select option {
-    border-bottom:1px, solid #445068;
-    font-size: 16px;
-    padding:10px;
-}
-
 /* Dynamically created SPAN, placed below the SELECT */
 span.custom-select {
 	position:absolute;
@@ -3336,6 +3342,7 @@ ul.people li {
 }
 
 #calendar table {
+    margin:0;
 	table-layout:fixed;
 }
 

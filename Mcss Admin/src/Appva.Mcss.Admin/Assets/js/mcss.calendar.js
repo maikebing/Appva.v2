@@ -2,18 +2,19 @@
     unmarkCat: function (cat) {
         var id = cat.attr('id');
         $(".act." + id).hide();
+        $('#select-all').attr('checked', false);
     },
     markCat: function (cat) {
         var id = cat.attr('id');
         $(".act." + id).show();
     },
     unmarkAll: function () {
-        $('#cal-all').attr('checked', false);
+        $('#select-all').attr('checked', false);
         $('.act').hide();
     },
     markAll: function () {
         $('.cal-filter :checkbox').attr('checked', false);
-        $('#cal-all').attr('checked', true);
+        $('#select-all').attr('checked', true);
         $('.act').show();
     },
     quittance: function (task) {
@@ -48,22 +49,26 @@
             }
         });
     },
+    focus: function (id) {
+        console.log(id);
+        $("." + id).parent().addClass("focus");
+    },
+    unFocus: function (id) {
+        console.log(id);
+        $("." + id).parent().removeClass("focus");
+    },
     init: function () {
-        $('.cal-filter :checkbox').click(function () {
+        $("span.act").hover(function (e) {
+            var id = $(this).attr('id');
+            $("." + id).parent().addClass("focus");
+        }, function (e) {
+            var id = $(this).attr('id');
+            $("." + id).parent().removeClass("focus");
+        });
+        $('.cal-filter :checkbox').change(function () {
             var elem = $(this);
-            if (elem.parent().hasClass('cal-all')) {
+            if (!elem.parent().hasClass('select-all')) {
                 if (elem.is(':checked')) {
-                    mcss.Calendar.markAll();
-                }
-                else {
-                    mcss.Calendar.unmarkAll();
-                }
-            }
-            else {
-                if (elem.is(':checked')) {
-                    if ($('#cal-all').is(':checked')) {
-                        mcss.Calendar.unmarkAll();
-                    }
                     mcss.Calendar.markCat(elem);
                 }
                 else {
@@ -80,5 +85,18 @@
             }
 
         });
+        $('.month-row').each(function (e) {
+            var elem = $(this);
+            elem.ready(function (e) {
+                var height = elem.height();
+                var gridHeight = elem.find('.evt-grid').height();
+                if ((gridHeight + 25) > height) {
+                    elem.height(gridHeight + 25);
+                }
+            });
+        });
+
+
+
     }
 };

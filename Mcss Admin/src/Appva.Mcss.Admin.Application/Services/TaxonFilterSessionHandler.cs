@@ -104,7 +104,7 @@ using System.Web;
                 {
                     return null;
                 }
-                return this.taxaService.Find(new Guid(claim.Value));
+                return this.taxaService.Find(new Guid(claim.Value), TaxonomicSchema.Organization);
             }
             return this.taxaService.Find((Guid)id, TaxonomicSchema.Organization);
         }

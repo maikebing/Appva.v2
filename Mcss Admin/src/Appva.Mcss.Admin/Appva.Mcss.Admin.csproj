@@ -243,6 +243,8 @@
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidgetHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetails.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetailsHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\EditAll\EditAllEventSequence.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequence.cs" />
@@ -1078,6 +1080,7 @@
     <Content Include="Features\Shared\EmailTemplates\UpdateUserMobileDeviceEmail.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\version1.6.2.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Index\Index.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

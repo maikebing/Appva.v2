@@ -426,6 +426,7 @@
     <many-to-one name="CombineWith" class="ScheduleSettings" />
     <property name="ScheduleType" />
     <property name="Absence" />
+    <property name="Color" />
     <bag name="StatusTaxons" cascade="save-update">
       <key column="ScheduleSettingsId" />
       <many-to-many class="Taxon" column="TaxonId" property-ref="" />

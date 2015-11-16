@@ -1,64 +1,64 @@
-﻿// <copyright file="ListCalendar.cs" company="Appva AB">
+﻿// <copyright file="Calendar.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Models
+namespace Appva.Mcss.Admin.Application.Models
 {
     #region Imports.
 
     using System;
-    using Appva.Cqrs;
-    using Appva.Mcss.Web.ViewModels;
+    using System.Collections.Generic;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListCalendar : IRequest<EventListViewModel>
+    public class CalendarDay
     {
         /// <summary>
-        /// The patient ID.
+        /// Whether or not the calendar event is within month.
         /// </summary>
-        public Guid Id
+        public bool IsWithinMonth
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional to use previous month, or previous month of date.
+        /// Whether or not the calendar event is today.
         /// </summary>
-        public string Prev
+        public bool IsToday
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional to use next month, or next month of date.
+        /// The calendar event date.
         /// </summary>
-        public string Next
+        public DateTime Date
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional current date used with prev/next.
+        /// A list of events starting this day
         /// </summary>
-        public DateTime? Date
+        public IList<CalendarTask> Events
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional filter list.
+        /// Number of events
         /// </summary>
-        public Guid[] Filter
+        public int NumberOfEvents
         {
             get;
             set;

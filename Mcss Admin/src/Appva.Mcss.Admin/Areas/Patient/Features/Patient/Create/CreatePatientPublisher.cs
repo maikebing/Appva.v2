@@ -75,12 +75,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 throw new ArgumentNullException("Taxon is null");
             }
-            var selectedIds = message.Assessments.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
+
             IList<Taxon> assessments = null;
-            if (selectedIds.Length > 0)
+            if (this.settingsService.HasSeniorAlert())
             {
-                assessments = this.taxonomyService.ListIn(selectedIds);
+                var selectedIds = message.Assessments.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
+                if (selectedIds.Length > 0)
+                {
+                    assessments = this.taxonomyService.ListIn(selectedIds);
+                }
             }
+            
             Patient patient = null;
             return this.patientService.Create(message.FirstName, message.LastName, message.PersonalIdentityNumber, message.Tag, taxon, assessments, out patient);
         }

@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Application.Models
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Core.Extensions;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -81,63 +82,146 @@ namespace Appva.Mcss.Admin.Application.Models
             get;
             set;
         }
-             
-        #endregion
 
-        public string Color { get; set; }
+        /// <summary>
+        /// The category color
+        /// </summary>
+        public string Color 
+        {
+            get;
+            set;
+        }
 
-        public bool IsFullDayEvent { get; set; }
+        /// <summary>
+        /// If activity is full day 
+        /// </summary>
+        public bool IsFullDayEvent 
+        {
+            get;
+            set; 
+        }
 
-        public Guid TaskId { get; set; }
+        /// <summary>
+        /// If task exist, the task id
+        /// </summary>
+        public Guid TaskId
+        {
+            get; 
+            set; 
+        }
 
-        public bool NeedsQuittance { get; set; }
+        /// <summary>
+        /// If activity need quittance
+        /// </summary>
+        public bool NeedsQuittance 
+        { 
+            get;
+            set; 
+        }
 
-        public bool IsQuittanced { get; set; }
+        /// <summary>
+        /// If the activity is quittanced
+        /// </summary>
+        public bool IsQuittanced 
+        { 
+            get;
+            set;
+        }
 
-        public Domain.Entities.Account QuittancedBy { get; set; }
+        /// <summary>
+        /// The Account which quittanced the activity
+        /// </summary>
+        public Account QuittancedBy 
+        {
+            get;
+            set;
+        }
 
-        public SignatureModel Signature { get; set; }
+        /// <summary>
+        /// If activity is signed the <see cref="SignatureModel"/>
+        /// </summary>
+        public SignatureModel Signature 
+        { 
+            get; 
+            set; 
+        }
 
-        public bool NeedsSignature { get; set; }
+        /// <summary>
+        /// If the event should be signed in mobile device
+        /// </summary>
+        public bool NeedsSignature 
+        { 
+            get;
+            set; 
+        }
 
-        public int Interval { get; set; }
+        /// <summary>
+        /// The interval, e.g. weekly monthly or yearly
+        /// </summary>
+        public int Interval 
+        { 
+            get; 
+            set; 
+        }
 
-        public int IntervalFactor { get; set; }
+        /// <summary>
+        /// The intervall factor, e.g. every, every second etc.
+        /// </summary>
+        public int IntervalFactor 
+        { 
+            get; 
+            set; 
+        }
 
-        public bool RepeatAtGivenDay { get; set; }
+        /// <summary>
+        /// If the event should be repeated on given day (e.g. "Monday")
+        /// </summary>
+        public bool RepeatAtGivenDay 
+        { 
+            get; 
+            set; 
+        }
 
-
+        /// <summary>
+        /// Returns the the repition in natural language
+        /// </summary>
         public string RepetionText
         {
-            get 
+            get
             {
                 if (this.Interval == 7)
                 {
                     return string.Format("{1:dddd} {2} vecka",
-                        ((this.EndTime.Day - (this.EndTime.Day % 7)) / 7) + 1,
-                        this.EndTime,
+                        ((this.StartTime.Day - (this.StartTime.Day % 7)) / 7) + 1,
+                        this.StartTime,
                         this.IntervalFactor == 1 ? "varje" : string.Format("var {0}", this.IntervalFactor)
                         ).FirstToUpper();
                 }
                 else if (this.RepeatAtGivenDay)
                 {
                     return string.Format("Den {0} {1:dddd}en {2} månad",
-                        ((this.EndTime.Day - (this.EndTime.Day % 7)) / 7) + 1,
-                        this.EndTime,
+                        ((this.StartTime.Day - (this.StartTime.Day % 7)) / 7) + 1,
+                        this.StartTime,
                         this.IntervalFactor == 1 ? "varje" : string.Format("var {0}", this.IntervalFactor)
                         );
                 }
                 else
                 {
                     return string.Format("Den {0:d} {1} månad",
-                        this.EndTime,
-                        this.IntervalFactor == 1 ? "varje" : string.Format("var {0}",this.IntervalFactor)
+                        this.StartTime,
+                        this.IntervalFactor == 1 ? "varje" : string.Format("var {0}", this.IntervalFactor)
                         );
                 }
             }
         }
 
-
+        /// <summary>
+        /// The patient id
+        /// </summary>
         public Guid PatientId { get; set; }
+             
+        #endregion
+
+       
     }
 }

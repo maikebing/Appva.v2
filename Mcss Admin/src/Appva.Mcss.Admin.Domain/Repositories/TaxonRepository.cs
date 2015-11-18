@@ -19,7 +19,11 @@ using Appva.Mcss.Admin.Domain.Entities;
     /// <summary>
     /// The <see cref="Taxon"/> repository.
     /// </summary>
-    public interface ITaxonRepository : IIdentityRepository<Taxon>, IProxyRepository<Taxon>, IRepository
+    public interface ITaxonRepository : 
+        IIdentityRepository<Taxon>, 
+        ISaveRepository<Taxon>, 
+        IProxyRepository<Taxon>, 
+        IRepository
     {
         /// <summary>
         /// Returns a collection of <see cref="Taxon"/> by <see cref="Taxonomy.Key"/>
@@ -34,6 +38,13 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <param name="ids">The taxon ID:s to fetch</param>
         /// <returns>A collection of <see cref="Taxon"/></returns>
         IList<Taxon> Pick(params Guid[] ids);
+
+        /// <summary>
+        /// Loads an taxonomy by its id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Taxonomy LoadTaxonomy(string machineName);
     }
 
     public sealed class TaxonRepository : ITaxonRepository
@@ -98,14 +109,34 @@ using Appva.Mcss.Admin.Domain.Entities;
                 .List();
         }
 
+        /// <inheritdoc />
+        public Taxonomy LoadTaxonomy(string machineName)
+        {
+            return this.persistenceContext.QueryOver<Taxonomy>()
+                .Where(x => x.MachineName == machineName)
+                .SingleOrDefault();
+        }
+
         #endregion
 
+        
+        #region IProxyRepository<Taxon> Members.
 
-        #region IProxyRepository Members.
-
+        /// <inheritdoc />
         public Taxon Load(Guid id)
         {
             return this.persistenceContext.Session.Load<Taxon>(id);
+        }
+
+        #endregion
+
+        
+        #region ISaveRepository<Taxon> Members.
+
+        /// <inheritdoc />
+        public void Save(Taxon entity)
+        {
+            this.persistenceContext.Save<Taxon>(entity);
         }
 
         #endregion

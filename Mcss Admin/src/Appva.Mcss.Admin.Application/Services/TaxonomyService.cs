@@ -77,6 +77,13 @@ namespace Appva.Mcss.Admin.Application.Services
 
         Taxon Get(Guid id);
         IList<Taxon> ListIn(params Guid[] ids);
+
+        /// <summary>
+        /// Saves a Taxon to database
+        /// </summary>
+        /// <param name="taxon"></param>
+        /// <param name="schema"></param>
+        void Save(ITaxon taxon, TaxonomicSchema schema);
     }
 
     /// <summary>
@@ -186,6 +193,24 @@ namespace Appva.Mcss.Admin.Application.Services
         public Taxon Load(Guid id)
         {
             return this.repository.Load(id);
+        }
+
+        /// <inheritdoc />
+        public void Save(ITaxon taxon, TaxonomicSchema schema)
+        {
+            this.repository.Save(new Taxon
+            {
+                Description = taxon.Description,
+                IsRoot = taxon.IsRoot,
+                Name = taxon.Name,
+                Parent = taxon.ParentId.HasValue ? this.repository.Load(taxon.ParentId.Value) : null,
+                Path = taxon.Path,
+                Taxonomy = this.repository.LoadTaxonomy(schema.Id),
+                Type = taxon.Type,
+                Weight = taxon.Sort
+            });
+
+            this.cache.Remove(schema.CacheKey);
         }
 
         #endregion

@@ -37,8 +37,6 @@ mcss.lightbox = {
         } else {
             panel.find('.btn-close').focus();
         }
-        if (content.hasClass('lb-validate-form')) this.applyValidation(content.data('valclass'), content.data('valparams'));
-        mcss.customSelect($('.activity-edit .col:first'));
 
         $('a.lb-link').click(function (e) {
             var clicked = $(this);
@@ -51,6 +49,7 @@ mcss.lightbox = {
                     var content = $(data);
                     content.addClass('lb-panel');
                     mcss.lightbox.replaceContent(panel, content);
+                    trigger.trigger("lightboxopen");
                 }
             });
             e.preventDefault();
@@ -61,8 +60,8 @@ mcss.lightbox = {
         $('.calendar-details .btn-del').click(function () {
             var clicked = $(this);
             var content = $('<div class="lb-panel lb-panel-small"><div class="std-panel"><div class="prompt"></div></div></div>');
-            content.find('.prompt').append('<p class="warning">Vill du verkligen ta bort personen?</p>');
-            content.find('.prompt').append('<a class="btn btn-del" href="' + clicked.attr('href') + '">Ta bort personen</a><a class="cancel" href="#">Avbryt</a>');
+            content.find('.prompt').append('<p class="warning">Vill du verkligen ta bort den här aktiviteten?</p>');
+            content.find('.prompt').append('<a class="btn btn-del" href="' + clicked.attr('href') + '">Ta bort aktivitet</a><a class="cancel" href="#">Avbryt</a>');
             mcss.lightbox.openBox(content, clicked, 'lb-warning', function (content) {
                 $('.lb-panel a.cancel').click(function () {
                     $('.lb-blackout, .lb-wrap').remove();
@@ -93,6 +92,7 @@ mcss.lightbox = {
         if (this.refocus) this.refocus.focus();
     },
     replaceContent: function (panel, content) {
+        panel.html("");
         content.addClass('lb-panel').show().prepend($('<a class="btn-close" href="#">Stäng</a>').click(function (e) {
             mcss.lightbox.closeAll();
             e.preventDefault();

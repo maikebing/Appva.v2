@@ -255,6 +255,7 @@
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidgetHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventModel.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetails.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetailsHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\EditAll\EditAllEventSequence.cs" />

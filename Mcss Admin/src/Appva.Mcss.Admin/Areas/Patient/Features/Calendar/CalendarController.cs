@@ -28,6 +28,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     using Appva.Persistence;
     using NHibernate.Criterion;
     using NHibernate.Transform;
+    using Appva.Mcss.Admin.Areas.Models;
 
     #endregion
 
@@ -125,7 +126,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [Route("create")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Calendar.CreateValue)]
-        public ActionResult Create(Identity<EventViewModel> request)
+        public ActionResult Create(Identity<CreateEventModel> request)
         {
             return View();
         }
@@ -140,7 +141,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Calendar")]
         [PermissionsAttribute(Permissions.Calendar.CreateValue)]
-        public ActionResult Create(EventViewModel request)
+        public ActionResult Create(CreateEventModel request)
         {
             return View();
         }

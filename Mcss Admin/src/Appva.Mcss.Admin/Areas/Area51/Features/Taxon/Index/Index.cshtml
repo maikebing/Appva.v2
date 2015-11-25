@@ -1,0 +1,32 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Models.TaxonIndexModel
+@{
+	SetTitle("Area 51 - Taxons");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+	<h1>Taxons</h1>
+	@using (Html.Post("InstallRiskAssesment", "Taxon", null))
+	{
+		@Html.Submit("Installera alla Profiluppgifter", new { @class = "btn" })
+	}
+</div>
+<div id="content" class="cf">
+	<div id="content-primary">
+		@Html.Alert()
+        <div>
+            <ul class="health-attr">
+                @foreach (var item in Model.InstalledItems)
+                {
+                    <li class="cf">
+                        <img src="/Assets/i/@item.Type">
+                        <div class="checkbox"></div>
+                        <div class="desc">
+                            <h3>@item.Name</h3>
+                            <p>@item.Description</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+	</div>
+</div>

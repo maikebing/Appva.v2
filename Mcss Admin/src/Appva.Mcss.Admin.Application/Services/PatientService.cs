@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Domain.Repositories;
     #endregion
 
     /// <summary>
@@ -86,6 +87,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="patient">The updated patient</param>
         /// <returns>True if successfully updated</returns>
         bool Update(Guid id, string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, out Patient patient);
+
+        /// <summary>
+        /// Loads a proxy of the patient from the id
+        /// </summary>
+        /// <param name="id">Patient id</param>
+        /// <returns>A proxy of <see cref="Patient"/></returns>
+        Patient Load(Guid id);
     }
 
     /// <summary>
@@ -94,6 +102,11 @@ namespace Appva.Mcss.Admin.Application.Services
     public sealed class PatientService : IPatientService
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="IPatientRepository"/>.
+        /// </summary>
+        private readonly IPatientRepository patients;
 
         private readonly IPersistenceContext persistence;
         private readonly IAuditService auditing;
@@ -105,8 +118,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="PatientService"/> class.
         /// </summary>
-        public PatientService(IAuditService auditing, IPersistenceContext persistence)
+        public PatientService(IPatientRepository patients, IAuditService auditing, IPersistenceContext persistence)
         {
+            this.patients = patients;
             this.auditing = auditing;
             this.persistence = persistence;
         }
@@ -254,6 +268,12 @@ namespace Appva.Mcss.Admin.Application.Services
                 }
             }
             return true;
+        }
+
+        /// <inheritdoc />
+        public Patient Load(Guid id)
+        {
+            return this.patients.Load(id);
         }
 
         #endregion

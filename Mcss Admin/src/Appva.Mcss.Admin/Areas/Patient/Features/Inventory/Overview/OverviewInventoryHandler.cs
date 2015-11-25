@@ -102,6 +102,7 @@ using Appva.Mcss.Admin.Application.Security.Identity;
                         .WhereRestrictionOn(() => scheduleSettings.Id).IsIn(scheduleList.Select(x => x.Id).ToArray())
                 .JoinAlias(x => x.Inventory, () => inventory)
                     .Where(() => inventory.LastRecount < lastStockCalculationDate)
+                    .And(() => inventory.IsActive)
                 .OrderBy(() => inventory.LastRecount).Asc
                 .JoinAlias(x => x.Patient, () => patient)
                     .Where(() => patient.IsActive && !patient.Deceased)
@@ -113,7 +114,7 @@ using Appva.Mcss.Admin.Application.Security.Identity;
                     .Select(() => patient.Id).WithAlias(() => dto.PatientId)
                     .Select(() => inventory.LastRecount).WithAlias(() => dto.LastRecount)
                     .Select(() => inventory.Id).WithAlias(() => dto.InventoryId)
-                    .Select(x => x.Name).WithAlias(() => dto.SequenceName)
+                    .Select(() => inventory.Description).WithAlias(() => dto.Name)
                 );
             var allStockCounts = query.TransformUsing(Transformers.AliasToBean<RecountOverviewItemViewModel>())
                 .List<RecountOverviewItemViewModel>();

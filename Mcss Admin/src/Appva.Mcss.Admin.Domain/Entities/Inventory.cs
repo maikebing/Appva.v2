@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Common.Domain;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -20,6 +21,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Inventory : AggregateRoot<Inventory>
     {
+        #region Fields.
+        
+        /// <summary>
+        /// The amountlist as a stored string
+        /// </summary>
+        private string amounts;
+
+        #endregion
+
         #region Constructor.
 
         /// <summary>
@@ -67,6 +77,48 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// The unit for the inventory
+        /// </summary>
+        public virtual string Unit
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The patient
+        /// </summary>
+        public virtual Patient Patient
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The amounts represented as a list
+        /// </summary>
+        public virtual IList<string> Amounts
+        {
+            get 
+            {
+                if (this.amounts == null)
+                    return null;
+                return JsonConvert.DeserializeObject<List<string>>(this.amounts);
+            }
+            set
+            {
+                if (value == null)
+                {
+                    this.amounts = null;
+                }
+                else
+                {
+                    this.amounts = JsonConvert.SerializeObject(value);
+                }
+            }
         }
 
         #endregion

@@ -130,6 +130,7 @@
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AuditingService.cs" />
     <Compile Include="Services\ILogService.cs" />
+    <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\MenuService.cs" />

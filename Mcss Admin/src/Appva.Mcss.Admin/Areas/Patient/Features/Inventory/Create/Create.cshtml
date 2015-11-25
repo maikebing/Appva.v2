@@ -1,0 +1,19 @@
+﻿@model Appva.Mcss.Admin.Models.CreateInventoryModel
+@{
+    SetTitle("Nytt saldo");
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="InventoryUpdate">
+    @using (Html.BeginForm(new { Id = Model.Id}))
+    {
+        <h3 class="section-title">Ändra</h3>
+        @Html.FormGroup(m => m.Name, "text medium").Label("Namn", new { @class = "col" }).TextBox().Validate().Build()
+        @Html.FormGroup(m => m.Unit, "text small").Label("Enhet", new { @class = "col" }).TextBox().Validate().Build()
+        @Html.FormGroup(m => m.Amounts, "text large").Label("Mängder", new { @class = "col" }).TextArea().Validate().Build()
+            
+        <div class="input">
+            @Html.AntiForgeryToken()
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

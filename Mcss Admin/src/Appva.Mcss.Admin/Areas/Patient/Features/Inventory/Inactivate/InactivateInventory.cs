@@ -1,32 +1,35 @@
-﻿// <copyright file="CreateInventoryItem.cs" company="Appva AB">
+﻿// <copyright file="InactivateInventory.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
 namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
     using System;
-using System.Collections.Generic;
-using Appva.Cqrs;
-using Appva.Mcss.Web.ViewModels;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateInventoryItem : InventoryTransactionItemViewModel, IRequest<bool>
+    public sealed class InactivateInventory : Identity<ListInventory>
     {
+        #region Properties.
+
         /// <summary>
-        /// The patient ID.
+        /// The inventory id
         /// </summary>
-        public Guid Id
+        public Guid Inventory
         {
             get;
             set;
         }
+
+        #endregion
     }
 }

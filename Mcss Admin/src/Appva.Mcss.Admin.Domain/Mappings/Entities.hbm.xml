@@ -584,6 +584,9 @@
     <property name="Description" />
     <property name="CurrentLevel" />
     <property name="LastRecount" />
+    <property name="Unit" />
+    <property name="Amounts" access="field.camelcase" />
+    <many-to-one name="Patient" />
     <bag name="Transactions" cascade="save-update">
       <key column="Inventory" />
       <one-to-many class="InventoryTransactionItem" />

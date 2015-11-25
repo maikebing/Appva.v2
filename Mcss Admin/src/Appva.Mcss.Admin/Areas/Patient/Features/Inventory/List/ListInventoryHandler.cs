@@ -28,7 +28,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ListInventoryHandler : RequestHandler<ListInventory, ListInventoryViewModel>
+    internal sealed class ListInventoryHandler : RequestHandler<ListInventory, ListInventoryModel>
     {
         #region Variables.
 
@@ -48,14 +48,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IIdentityService identityService;
 
         /// <summary>
+        /// The <see cref="IInventoryService"/>.
+        /// </summary>
+        private readonly IInventoryService inventoryService;
+
+        /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditing;
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
-        /// </summary>
-        private readonly IPersistenceContext persistence;
 
         /// <summary>
         /// The <see cref="IPatientTransformer"/>.
@@ -76,15 +76,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IPatientService patientService, 
             IAccountService accountService, 
             IIdentityService identityService,
+            IInventoryService inventoryService,
             IAuditService auditing, 
-            IPersistenceContext persistence,
             IPatientTransformer transformer)
         {
             this.patientService = patientService;
             this.accountService = accountService;
             this.identityService = identityService;
+            this.inventoryService = inventoryService;
             this.auditing = auditing;
-            this.persistence = persistence;
             this.transformer = transformer;
         }
 
@@ -93,10 +93,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override ListInventoryViewModel Handle(ListInventory message)
+        public override ListInventoryModel Handle(ListInventory message)
         {
-            var page = message.Page ?? 1;
-            var pageSize = 50;
             var patient = this.patientService.Get(message.Id);
             var startDate = message.StartDate ?? DateTime.Now.FirstOfMonth();
             var endDate = message.EndDate ?? DateTime.Now.LastOfMonth().LastInstantOfDay();
@@ -115,50 +113,37 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 endDate = new DateTime(message.Year.Value, message.Month.Value, 
                     DateTime.DaysInMonth(message.Year.Value, message.Month.Value)).LastInstantOfDay();
             }
-            var account = this.accountService.Find(this.identityService.PrincipalId);
-            var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
-            Schedule scheduleAlias = null;
-            ScheduleSettings scheduleSettingsAlias = null;
-            var inventories = this.persistence.QueryOver<Sequence>()
-                .Where(x => x.Patient.Id == message.Id)
-                .JoinAlias(x => x.Schedule, () => scheduleAlias)
-                    .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
-                        .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
-                .JoinQueryOver<Inventory>(x => x.Inventory)
-                    .Where(x => x.IsActive)
-                .List()
-                .Select(x => x.Inventory).ToList();
+
+            var inventories = this.inventoryService.Search(message.Id);
             if (inventories == null || inventories.Count < 1)
             {
-                return new ListInventoryViewModel
+                return new ListInventoryModel
                 {
                     Patient = this.transformer.ToPatient(patient)
                 };
             }
-            var inventory = this.persistence.QueryOver<Inventory>()
-                .Where(x => x.Id == message.InventoryId.GetValueOrDefault(inventories.FirstOrDefault().Id))
-                .SingleOrDefault();
-            var transactions = this.persistence.QueryOver<InventoryTransactionItem>()
-                .Where(x => x.IsActive)
-                .And(x => x.Inventory == inventory)
-                .And(x => x.CreatedAt >= startDate)
-                .And(x => x.CreatedAt <= endDate)
-                .OrderBy(x => x.CreatedAt).Desc;
+
+            var currentInventory = message.InventoryId.HasValue ?
+                inventories.Where(x => x.Id == message.InventoryId.Value).FirstOrDefault() :
+                inventories.FirstOrDefault();
+
+            var transactions = this.inventoryService.ListTransactionsFor(currentInventory.Id, startDate, endDate, message.Page.GetValueOrDefault(1), 50);
             this.auditing.Read(
                     patient,
                     "läste saldolista sida {0} för boende {1} (REF: {2}).",
-                    page,
+                    transactions.CurrentPage,
                     patient.FullName,
                     patient.Id);
-            return new ListInventoryViewModel
+            return new ListInventoryModel
             {
                 Patient = this.transformer.ToPatient(patient),
-                Inventories = inventories,
-                Inventory = inventory,
-                Transactions = transactions.Skip((page - 1) * pageSize).Take(pageSize).Future().ToList(),
-                TotalTransactionCount = transactions.ToRowCountQuery().FutureValue<int>().Value,
-                PageSize = pageSize,
-                Page = page,
+                ActiveInventories = inventories.Where(x => x.IsActive).ToDictionary<Inventory,Guid,string>(k => k.Id, e => e.Description),
+                InactiveInventories = inventories.Where(x => !x.IsActive).ToDictionary<Inventory, Guid, string>(k => k.Id, e => e.Description),
+                Inventory = currentInventory,
+                Transactions = transactions.Entities,
+                TotalTransactionCount = (int)transactions.TotalCount,
+                PageSize = (int)transactions.PageSize,
+                Page = (int)transactions.CurrentPage,
                 StartDate = startDate,
                 EndDate = endDate,
                 Years = DateTimeUtils.GetYearSelectList(patient.CreatedAt.Year, startDate.Year == endDate.Year ? startDate.Year : 0),

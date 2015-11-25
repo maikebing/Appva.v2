@@ -73,9 +73,11 @@
     <Compile Include="Entities\Person.cs" />
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
+    <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\Contracts\IProxyRepository.cs" />
     <Compile Include="Repositories\DelegationRepository.cs" />
+    <Compile Include="Repositories\PatientRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="VO\HsaId.cs" />
     <Compile Include="VO\PersonalIdentityNumber.cs" />

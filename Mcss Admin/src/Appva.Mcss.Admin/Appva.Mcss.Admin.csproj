@@ -265,8 +265,17 @@
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendarHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItemHandler.cs" />
-    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryItem.cs" />
-    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\CreateTransaction\CreateInventoryTransactionItem.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\CreateTransaction\CreateInventoryTransactionItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryModel.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Inactivate\InactivateInventory.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Inactivate\InactivateInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\List\ListInventoryModel.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Reactivate\ReactivateInventory.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Reactivate\ReactivateInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventory.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\InventoryController.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\List\ListInventory.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\List\ListInventoryHandler.cs" />
@@ -274,6 +283,9 @@
     <Compile Include="Areas\Patient\Features\Inventory\Overview\OverviewInventoryHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Recount\RecountInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Recount\RecountInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryModel.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItemHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
@@ -1097,6 +1109,8 @@
     <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
     <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
+    <Content Include="Areas\Patient\Features\Inventory\Update\Update.cshtml" />
+    <Content Include="Areas\Patient\Features\Inventory\Create\Create.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

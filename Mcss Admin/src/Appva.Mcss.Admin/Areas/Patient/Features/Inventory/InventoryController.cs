@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Areas.Models;
 
     #endregion
 
@@ -42,6 +43,100 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Inventory.ReadValue)]
         public ActionResult List(ListInventory request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Create
+
+        /// <summary>
+        /// Returns the inventory create view
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("create")]
+        [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Inventory.CreateValue)]
+        public ActionResult Create(Identity<CreateInventoryModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// The create POST
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("create")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "inventory")]
+        [PermissionsAttribute(Permissions.Inventory.CreateValue)]
+        public ActionResult Create(CreateInventoryModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Update.
+
+        /// <summary>
+        /// Returns the inventory update view
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("update/{inventory:guid}")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
+        public ActionResult Update(UpdateInventory request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// The update POST
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("update/{inventory:guid}")]
+        [HttpPost,Validate, ValidateAntiForgeryToken, Dispatch("list", "inventory")]
+        [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
+        public ActionResult Update(UpdateInventoryModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Inactivate
+
+        /// <summary>
+        /// Inactivates an inventory
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("inactivate/{inventory:guid}")]
+        [HttpGet, Dispatch("list","inventory")]
+        [PermissionsAttribute(Permissions.Inventory.DeleteValue)]
+        public ActionResult Inactivate(InactivateInventory request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Reactivate
+
+        /// <summary>
+        /// Reactivates an inventory
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("reactivate/{inventory:guid}")]
+        [HttpGet, Dispatch("list", "inventory")]
+        [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
+        public ActionResult Reactivate(ReactivateInventory request)
         {
             return this.View();
         }
@@ -128,10 +223,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <param name="model">The inventory transaction model</param>
         /// <param name="returnUrl">The return url</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("create")]
+        [Route("transaction/create")]
         [HttpPost, Dispatch, Validate, ValidateAntiForgeryToken]
         [PermissionsAttribute(Permissions.Inventory.CreateValue)]
-        public ActionResult Create(CreateInventoryItem request)
+        public ActionResult CreateTransaction(CreateInventoryTransactionItem request)
         {
             return this.Redirect(request.ReturnUrl);
         }

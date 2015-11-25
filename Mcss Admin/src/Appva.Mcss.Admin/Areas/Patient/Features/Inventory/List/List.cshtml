@@ -1,5 +1,6 @@
 ﻿@using Appva.Core.Utilities;
-@model Appva.Mcss.Web.ViewModels.ListInventoryViewModel
+@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.ListInventoryModel
 @{
     SetTitle("Saldo händelser");
     var today = DateTimeUtilities.Now().Date;
@@ -8,7 +9,8 @@
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
-    <h1>Saldo händelser</h1>
+    <h1>Saldon</h1>
+    @Html.ActionLink(Permissions.Inventory.Create, "Nytt saldo", "Create", "Inventory", null, new { @class = "btn lb-link" })
     @if (Model.Inventory != null) 
     {
         using (Html.BeginForm("List", "Inventory", FormMethod.Get)) 
@@ -24,43 +26,77 @@
     }
 </div>
 <div id="content" class="@(Model.Inventory != null ? "has-nav report-view cf" : "")">
-    @if (Model.Inventory != null) 
+    @if (Model.Inventory != null)
     {
-        if (Model.Inventories.Count > 0) 
-        {
-            <ul id="nav-sub">
-                @foreach (var inventory in Model.Inventories) 
-                {
-                    <li class="@(inventory.Id.Equals(Model.Inventory.Id) ? "sel" : "")">
-                        @Html.ActionLink(inventory.Description, "List", new { Id = Model.Patient.Id, InventoryId = inventory.Id })
-                    </li>
-                }
-            </ul>
-        }   
+        <div class="inventory-nav">
+            @if (Model.ActiveInventories.IsNotNull() && Model.ActiveInventories.Count > 0)
+            {
+                <h3>Aktiva saldon</h3>
+                <ul>
+                    @foreach (var inventory in Model.ActiveInventories)
+                    {
+                        <li class="@(inventory.Key.Equals(Model.Inventory.Id) ? "sel" : "")">
+                            @Html.ActionLink(inventory.Value, "List", new { Id = Model.Patient.Id, InventoryId = inventory.Key })
+                        </li>
+                    }
+                </ul>
+            }
+            @if (Model.InactiveInventories.IsNotNull() && Model.InactiveInventories.Count > 0)
+            {
+                <h3>Borttagna saldon</h3>
+                <ul>
+                    @foreach (var inventory in Model.InactiveInventories)
+                    {
+                        <li class="@(inventory.Key.Equals(Model.Inventory.Id) ? "sel" : "")">
+                            @Html.ActionLink(inventory.Value, "List", new { Id = Model.Patient.Id, InventoryId = inventory.Key })
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
         <div id="content-primary">
             <div id="report" class="cf">
                 <div class="data cf">
                     <h2 class="heading">
                         Status för @Model.Inventory.Description
                         <span class="inventory-tools">
-                            @Html.ActionLink("Uttag", "Withdraw", new { Id = Model.Patient.Id, InventoryId = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
-                            @Html.ActionLink("Tillför mängd", "Add", new { Id = Model.Patient.Id, InventoryId = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
-                            @Html.ActionLink("Kontrollräkna", "Recount", new { Id = Model.Patient.Id, InventoryId = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
+                            @if (Model.Inventory.IsActive)
+                            {
+                                @Html.ActionLink(Permissions.Inventory.Update, "Ändra", "Update", "Inventory", new { Id = Model.Patient.Id, Inventory = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
+                                @Html.ActionLink(Permissions.Inventory.Delete, "Ta bort", "Inactivate", "Inventory", new { Id = Model.Patient.Id, Inventory = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-del" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink(Permissions.Inventory.Update, "Aktivera", "Reactivate", "Inventory", new { Id = Model.Patient.Id, Inventory = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn" })
+                            }
                         </span>
                     </h2>
 
-                    <dl>
+                    <dl class="note">
                         <dt>Aktuellet saldo</dt>
-                        <dd>@Model.Inventory.CurrentLevel</dd>
+                        <dd>@string.Format("{0} {1}", Model.Inventory.CurrentLevel, Model.Inventory.Unit)</dd>
                     </dl>
                     <dl>
                         <dt>Senaste kontrollräkning</dt>
                         <dd class="small">@(Model.Inventory.LastRecount.HasValue ? TimeSpanDifference.ToShortDateTime(Model.Inventory.LastRecount.GetValueOrDefault(), "Idag", "Igår") : "-")</dd>
                     </dl>
+                    <dl>
+                        <dt>Saldots enhet</dt>
+                        <dd class="small">@(Model.Inventory.Unit.IsNotEmpty() ? Model.Inventory.Unit : "-")</dd>
+                    </dl>
                 </div>
 
                 <div class="listing">
-                    <h2 class="heading">Transaktioner under perioden</h2>
+                    <h2 class="heading">Transaktioner under perioden
+                        @if (Model.Inventory.IsActive)
+                        {
+                            <span class="inventory-tools">
+                                @Html.ActionLink("Uttag", "Withdraw", new { Id = Model.Patient.Id, InventoryId = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
+                                @Html.ActionLink("Tillför mängd", "Add", new { Id = Model.Patient.Id, InventoryId = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
+                                @Html.ActionLink("Kontrollräkna", "Recount", new { Id = Model.Patient.Id, InventoryId = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
+                            </span>
+                        }
+                    </h2>
                     @if (Model.Transactions != null && Model.Transactions.Count == 0) {
                         <div id="alarm-status">
                             <h2 class="ok">Inga händelser för angiven tidsperiod.</h2>
@@ -103,9 +139,9 @@
                                             }
                                             <tr @( recountAlarm ? "class=alarm" : "")>
                                                 <td>
-                                                    @if (Model.OperationTranslation.ContainsKey(transaction.Operation)) 
+                                                    @if (Model.OperationTranslationDictionary.ContainsKey(transaction.Operation)) 
                                                     {
-                                                        @Model.OperationTranslation[transaction.Operation]
+                                                        @Model.OperationTranslationDictionary[transaction.Operation]
                                                     }
                                                     else 
                                                     {

@@ -1,77 +1,75 @@
-﻿// <copyright file="ListInventory.cs" company="Appva AB">
+﻿// <copyright file="UpdateInventoryModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Models
+namespace Appva.Mcss.Admin.Areas.Models
 {
     #region Imports.
 
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Models;
     using System;
     using System.Collections.Generic;
-using Appva.Cqrs;
-    using Appva.Mcss.Web.ViewModels;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListInventory : Identity<ListInventoryModel>
+    public sealed class UpdateInventoryModel : IRequest<ListInventory>
     {
+        #region Properties
+
         /// <summary>
-        /// Optional inventory ID.
+        /// The id of the inventory
         /// </summary>
-        public Guid? InventoryId
+        public Guid Inventory
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional year.
+        /// The id of the patient
         /// </summary>
-        public int? Year
+        public Guid Id
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional month.
+        /// The descriptive name of the invnetory
         /// </summary>
-        public int? Month
+        [Required]
+        public string Name
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional start date.
+        /// The inventory unit
         /// </summary>
-        public DateTime? StartDate
+        public string Unit
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Optional end date.
+        /// The available withdrawal amounts
         /// </summary>
-        public DateTime? EndDate
+        public string Amounts
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// Optional page, defaults to 1.
-        /// </summary>
-        public int? Page
-        {
-            get;
-            set;
-        }
+        #endregion
     }
 }

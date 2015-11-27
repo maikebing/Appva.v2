@@ -73,7 +73,7 @@ using Appva.Mcss.Admin.Application.Services;
 
             return new ListCalendar
             {
-                Date = message.Date,
+                Date = message.StartDate,
                 Id = message.PatientId
             };
         }

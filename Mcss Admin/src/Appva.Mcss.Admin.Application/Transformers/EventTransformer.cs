@@ -21,17 +21,22 @@ using System.Linq;
     /// </summary>
     public static class EventTransformer
     {
-        public static IList<CalendarTask> ToEvent(IList<Task> tasks)
+        public static IList<CalendarTask> TasksToEvent(IList<Task> tasks)
         {
             var retval = new List<CalendarTask>();
             foreach (var t in tasks)
             {
-                retval.Add(ToEvent(t));
+                retval.Add(TasksToEvent(t));
             }
             return retval;
         }
 
-        public static CalendarTask ToEvent(Task t)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static CalendarTask TasksToEvent(Task t)
         {
             return new CalendarTask
             {
@@ -52,8 +57,30 @@ using System.Linq;
                 Signature = t.IsCompleted ? new SignatureModel(t.CompletedBy, t.CompletedDate.Value, t.StatusTaxon) : null,
                 Interval = t.Sequence.Interval,
                 IntervalFactor = t.Sequence.IntervalFactor,
-                RepeatAtGivenDay = t.Sequence.IntervalIsDate,
+                RepeatAtGivenDate = t.Sequence.IntervalIsDate,
                 PatientId = t.Patient.Id
+            };
+        }
+
+        internal static CalendarTask SequenceToEvent(Sequence sequence, DateTime startDate, DateTime endDate)
+        {
+            return new CalendarTask
+            {
+                Id = Guid.NewGuid(),
+                StartTime = startDate,
+                EndTime = endDate,
+                Description = sequence.Description,
+                CategoryName = sequence.Schedule.ScheduleSettings.Name,
+                Color = sequence.Schedule.ScheduleSettings.Color,
+                SequenceId = sequence.Id,
+                CategoryId = sequence.Schedule.ScheduleSettings.Id,
+                IsFullDayEvent = sequence.AllDay,
+                NeedsQuittance = sequence.Overview,
+                NeedsSignature = sequence.CanRaiseAlert,
+                Interval = sequence.Interval,
+                IntervalFactor = sequence.IntervalFactor,
+                RepeatAtGivenDate = sequence.IntervalIsDate,
+                PatientId = sequence.Patient.Id
             };
         }
     }

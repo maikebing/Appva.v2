@@ -174,9 +174,9 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// If the event should be repeated on given day (e.g. "Monday")
+        /// If the event should be repeated on given date (e.g. "26")
         /// </summary>
-        public bool RepeatAtGivenDay 
+        public bool RepeatAtGivenDate 
         { 
             get; 
             set; 
@@ -197,17 +197,17 @@ namespace Appva.Mcss.Admin.Application.Models
                         NumberToNaturalLanguage(this.IntervalFactor)
                         ).FirstToUpper();
                 }
-                else if (this.RepeatAtGivenDay)
+                else if (this.RepeatAtGivenDate)
                 {
-                    return string.Format("Den {0} {1:dddd}en {2} månad",
-                        ((this.StartTime.Day - (this.StartTime.Day % 7)) / 7) + 1,
+                    return string.Format("Den {0:D} {1} månad",
                         this.StartTime,
                         NumberToNaturalLanguage(this.IntervalFactor)
                         );
                 }
                 else
                 {
-                    return string.Format("Den {0:d} {1} månad",
+                    return string.Format("Den {0} {1:dddd}en {2} månad",
+                        ((this.StartTime.Day - (this.StartTime.Day % 7)) / 7) + 1,
                         this.StartTime,
                         NumberToNaturalLanguage(this.IntervalFactor)
                         );

@@ -64,7 +64,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             if (message.TaskId.IsNotEmpty())
             {
-                return EventTransformer.ToEvent(tasks.Get(message.TaskId));
+                return EventTransformer.TasksToEvent(tasks.Get(message.TaskId));
             }
 
             var sequence = this.sequences.Find(message.SequenceId);
@@ -76,7 +76,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 new List<Task>(),
                 new List<Task>()).FirstOrDefault();
 
-            return EventTransformer.ToEvent(task);
+            return EventTransformer.TasksToEvent(task);
         }
 
         #endregion

@@ -180,7 +180,7 @@ namespace Appva.Mcss.Admin.Application.Services
             var sequences = this.context.QueryOver<Sequence>()
                 .Where(x => x.Patient == patient)
                   .And(x => x.IsActive)
-                  .And(x => x.Interval != 0 || x.EndDate >= firstInMonth || x.StartDate <= lastInMonth)
+                  .And(x => x.Interval != 0 || (x.EndDate >= firstInMonth && x.StartDate <= lastInMonth))
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
@@ -189,13 +189,34 @@ namespace Appva.Mcss.Admin.Application.Services
             var tasks = this.context.QueryOver<Task>()
                 .Where(x => x.IsActive)
                   .And(x => x.Patient == patient)
-                  .And(x => x.Scheduled >= firstInMonth && x.Scheduled <= lastInMonth)
+                  .And(x => x.EndDate >= firstInMonth && x.StartDate <= lastInMonth)
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                     .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
-            return EventTransformer.ToEvent(this.scheduleService.FindTasks(firstInMonth, lastInMonth, new List<Schedule>(), sequences, tasks, new List<Task>()));
+
+            var tasksFromCanceledSequence = this.context.QueryOver<Task>()
+                .Where(x => x.IsActive)
+                .And(x => x.Patient == patient)
+                .And(x => x.EndDate >= firstInMonth && x.StartDate <= lastInMonth)
+                .JoinQueryOver<Sequence>(x => x.Sequence)
+                    .Where(x => !x.IsActive)
+                    .JoinQueryOver<Schedule>(x => x.Schedule)
+                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                        .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                        .And(s => s.ScheduleType == ScheduleType.Calendar)
+                .List();
+
+            var retval = new List<CalendarTask>();
+            retval.AddRange(EventTransformer.TasksToEvent(tasksFromCanceledSequence));
+            foreach (var sequence in sequences)
+            {
+                retval.AddRange(GetActivitiesWithinPeriodFor(sequence, firstInMonth, lastInMonth, tasks.Where(x => x.Sequence.Id == sequence.Id).ToList()));
+            }
+
+          
+            return retval;
         }
 
         /// <summary>
@@ -517,6 +538,10 @@ namespace Appva.Mcss.Admin.Application.Services
 
         private CalendarDay CreateDay(DateTime date, int currentMonthDisplayed, IList<CalendarTask> events)
         {
+            if (events.IsNull())
+            {
+                events = new List<CalendarTask>();
+            }
             return new CalendarDay()
             {
                 IsWithinMonth = date.Month == currentMonthDisplayed,
@@ -617,6 +642,104 @@ namespace Appva.Mcss.Admin.Application.Services
                         return retval;
                     }
                 }
+            }
+            return null;
+        }
+
+        private static IList<CalendarTask> GetActivitiesWithinPeriodFor(Sequence sequence, DateTime periodStart, DateTime periodEnd, IList<Task> tasks)
+        {
+            var startDate = sequence.StartDate;
+            var endDate = sequence.EndDate.GetValueOrDefault();
+
+            var retval = new List<CalendarTask>();
+            
+            while(startDate <= periodEnd)
+            {
+                if (endDate >= periodStart)
+                {
+                    var calendarTask = GetCalendarTaskFor(sequence, startDate, endDate, tasks);
+                    if (calendarTask.IsNotNull())
+                    {
+                        retval.Add(calendarTask);
+                    }
+                }
+                if (sequence.Interval == 0)
+                {
+                    break;
+                }
+                startDate = GetNextDateInSequence(startDate, sequence.Interval, sequence.IntervalFactor, sequence.IntervalIsDate);
+                endDate = GetNextDateInSequence(endDate, sequence.Interval, sequence.IntervalFactor, sequence.IntervalIsDate);                
+            }
+
+            return retval;
+        }
+
+        private static DateTime GetNextDateInSequence(DateTime date, int interval, int factor, bool repeatDate)
+        {
+            //// Repeat weekly
+            if (interval.Equals(7))
+            {
+                var days = factor * 7;
+                return date.AddDays(days);
+            }
+
+            //// Repeat yearly
+            if (interval.Equals(365))
+            {
+                return date.AddYears(1);
+            }
+
+            //// Repeat monthly
+            if (interval.Equals(31))
+            {
+                //// Repeat on given date (eg. 10 every month)
+                if (repeatDate)
+                {
+                    return date.AddMonths(factor);
+                }
+                //// Repeat on given day (eg. 2 monday every month)
+                else
+                {
+                    var newDate = date.AddMonths(factor);
+                                     
+                    while(newDate.Day%7 != 0)
+                    {
+                        if (newDate.DayOfWeek == date.DayOfWeek)
+                        {
+                            return newDate;
+                        }
+                        newDate = newDate.AddDays(1);
+                    }
+                    if (newDate.DayOfWeek == date.DayOfWeek)
+                    {
+                        return newDate;
+                    }
+                    newDate = newDate.AddDays(-1);
+                    while (newDate.Day % 7 != 0)
+                    {
+                        if (newDate.DayOfWeek == date.DayOfWeek)
+                        {
+                            return newDate;
+                        }
+                        newDate = newDate.AddDays(-1);
+                    }
+
+                    return newDate;
+                }
+            }
+            return date.AddDays(interval);
+        }
+
+        private static CalendarTask GetCalendarTaskFor(Sequence sequence, DateTime startDate, DateTime endDate, IList<Task> tasks)
+        {
+            var task = tasks.Where(x => x.Sequence.Id == sequence.Id && x.Scheduled == endDate && x.IsActive).FirstOrDefault();
+            if (task.IsNotNull())
+            {
+                return EventTransformer.TasksToEvent(task);
+            }
+            else if (endDate > DateTime.Now)
+            {
+                return EventTransformer.SequenceToEvent(sequence, startDate, endDate);
             }
             return null;
         }

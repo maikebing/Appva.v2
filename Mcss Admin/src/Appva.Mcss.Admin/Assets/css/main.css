@@ -2843,6 +2843,10 @@ form .time {width:4em;}
 }
 .std-panel a.cancel {margin-left:20px;}
 
+.std-form .sequence-inventory {
+    margin-top:40px;
+}
+
 
 /* Activity edit */
 .activity-edit {
@@ -3086,8 +3090,9 @@ select.custom-select {
 	font-size:12px;
 }
 
-/* span for delegations in lightbox must be min 350px wide */
-select.delegation.custom-select {
+/* span for delegations an inventories in lightbox must be min 350px wide */
+select.delegation.custom-select,
+select.inventories.custom-select {
     min-width:350px;
 }
 

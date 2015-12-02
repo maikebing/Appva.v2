@@ -69,7 +69,7 @@ namespace Appva.Mcss.Admin.Models
         }
 
         [Required]
-        [DisplayName("Ordination")]
+        [DisplayName("Insats")]
         public virtual string Name { get; set; }
 
         [DisplayName("Instruktion")]
@@ -139,8 +139,35 @@ namespace Appva.Mcss.Admin.Models
         public virtual Schedule Schedule { get; set; }
 
         [DisplayName("Får endast ges av legitimerad sjuksköterska")]
-        public bool Nurse { get; set;
+        public bool Nurse { get; set; }
+
+        /// <summary>
+        /// The inventory
+        /// </summary>
+        public Guid Inventory
+        {
+            get;
+            set;
         }
+
+        /// <summary>
+        /// The choosable inventories
+        /// </summary>
+        public IEnumerable<SelectListItem> Inventories
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If a new inventory should be created for this sequence
+        /// </summary>
+        public bool CreateNewInventory
+        {
+            get;
+            set;
+        }
+        
 
         #endregion
     }

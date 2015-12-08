@@ -65,9 +65,18 @@ namespace Appva.Mcss.Admin.Domain.Models
         }
 
         /// <summary>
-        /// The organisation Taxon, optional
+        /// The schedulesetting, optional
         /// </summary>
         public Guid? ScheduleSettingId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The Sequence, optional
+        /// </summary>
+        public Guid? SequenceId
         {
             get;
             set;

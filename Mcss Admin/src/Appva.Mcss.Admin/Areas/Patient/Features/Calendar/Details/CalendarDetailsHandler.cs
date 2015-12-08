@@ -33,9 +33,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ITaskService tasks;
 
         /// <summary>
-        /// The <see cref="ISequenceService"/>
+        /// The <see cref="IEventService"/>
         /// </summary>
-        private readonly ISequenceService sequences;
+        private readonly IEventService events;
 
         /// <summary>
         /// The <see cref="IScheduleService"/>
@@ -49,10 +49,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CalenderDetailsHandler"/> class.
         /// </summary>
-        public CalenderDetailsHandler(ITaskService tasks, ISequenceService sequences, IScheduleService schedules)
+        public CalenderDetailsHandler(ITaskService tasks, IEventService events, IScheduleService schedules)
         {
             this.tasks = tasks;
-            this.sequences = sequences;
+            this.events = events;
             this.schedules = schedules;
         }
 
@@ -64,19 +64,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             if (message.TaskId.IsNotEmpty())
             {
-                return EventTransformer.TasksToEvent(tasks.Get(message.TaskId));
+                return EventTransformer.TasksToEvent(this.tasks.Get(message.TaskId));
             }
 
-            var sequence = this.sequences.Find(message.SequenceId);
-
-            var task = this.schedules.FindTasks(
-                message.EndTime,
-                new List<Schedule> { sequence.Schedule },
-                new List<Sequence> { sequence },
-                new List<Task>(),
-                new List<Task>()).FirstOrDefault();
-
-            return EventTransformer.TasksToEvent(task);
+            return this.events.GetActivityInSequence(message.SequenceId, message.EndTime);
         }
 
         #endregion

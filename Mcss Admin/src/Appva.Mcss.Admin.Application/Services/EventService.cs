@@ -19,6 +19,8 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Transformers;
+    using Appva.Core.Logging;
+    using Appva.Mcss.Admin.Domain.Models;
 
     #endregion
 
@@ -86,6 +88,14 @@ namespace Appva.Mcss.Admin.Application.Services
         void DeleteSequence(Sequence sequence);
         void DeleteActivity(Task task);
         IList<CalendarWeek> Calendar(DateTime date, IList<CalendarTask> events);
+
+        /// <summary>
+        /// Gets the activity for a specific date
+        /// </summary>
+        /// <param name="Sequence"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        CalendarTask GetActivityInSequence(Guid Sequence, DateTime date);
     }
 
     /// <summary>
@@ -116,6 +126,11 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly IAccountService accountService;
 
         /// <summary>
+        /// The <see cref="ITaskService"/>
+        /// </summary>
+        private readonly ITaskService taskService;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext context;
@@ -124,6 +139,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditing;
+
+        /// <summary>
+        /// The <see cref="ILog"/>.
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<EventService>();
 
         #endregion
 
@@ -136,12 +156,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="sequenceService">The <see cref="ISequenceService"/></param>
         /// <param name="identityService">The <see cref="IIdentityService"/></param>
         /// <param name="accountService">The <see cref="IAccountService"/></param>
+        /// <param name="taskService">The <see cref="ITaskService"/></param>
         /// <param name="context">The <see cref="IPersistenceContext"/></param>
         public EventService(
             IScheduleService scheduleService,
             ISequenceService sequenceService,
             IIdentityService identityService,
             IAccountService accountService,
+            ITaskService taskService,
             IPersistenceContext context,
             IAuditService auditing)
         {
@@ -149,6 +171,7 @@ namespace Appva.Mcss.Admin.Application.Services
             this.sequenceService = sequenceService;
             this.identityService = identityService;
             this.accountService = accountService;
+            this.taskService = taskService;
             this.auditing = auditing;
             this.context = context;
         }
@@ -602,6 +625,35 @@ namespace Appva.Mcss.Admin.Application.Services
             return retval;
         }
 
+        /// <inheritdoc />
+        public CalendarTask GetActivityInSequence(Guid sequence, DateTime date)
+        {
+            var task = this.taskService.List(new ListTaskModel {
+                SequenceId = sequence,
+                EndDate = date,
+                StartDate = date,
+            }).Entities.FirstOrDefault();
+            
+            if(task.IsNotNull())
+            {
+                return EventTransformer.TasksToEvent(task);
+            }
+
+            var s = this.sequenceService.Find(sequence);
+            var endDate = s.EndDate.GetValueOrDefault();
+
+            while (endDate <= date)
+            {
+                if (endDate.Date.Equals(date.Date))
+                {
+                    return EventTransformer.SequenceToEvent(s, endDate.AddDays((s.StartDate - s.EndDate.GetValueOrDefault()).TotalDays), endDate);
+                }
+                endDate = s.GetNextDateInSequence(endDate);
+            }
+
+            throw new Exception("There is no event for this sequence on given date");
+        }
+
         #endregion
 
         #region Private Functions.
@@ -667,68 +719,14 @@ namespace Appva.Mcss.Admin.Application.Services
                 {
                     break;
                 }
-                startDate = GetNextDateInSequence(startDate, sequence.Interval, sequence.IntervalFactor, sequence.IntervalIsDate);
-                endDate = GetNextDateInSequence(endDate, sequence.Interval, sequence.IntervalFactor, sequence.IntervalIsDate);                
+                startDate = sequence.GetNextDateInSequence(startDate);
+                endDate = sequence.GetNextDateInSequence(endDate);                
             }
 
             return retval;
         }
 
-        private static DateTime GetNextDateInSequence(DateTime date, int interval, int factor, bool repeatDate)
-        {
-            //// Repeat weekly
-            if (interval.Equals(7))
-            {
-                var days = factor * 7;
-                return date.AddDays(days);
-            }
-
-            //// Repeat yearly
-            if (interval.Equals(365))
-            {
-                return date.AddYears(1);
-            }
-
-            //// Repeat monthly
-            if (interval.Equals(31))
-            {
-                //// Repeat on given date (eg. 10 every month)
-                if (repeatDate)
-                {
-                    return date.AddMonths(factor);
-                }
-                //// Repeat on given day (eg. 2 monday every month)
-                else
-                {
-                    var newDate = date.AddMonths(factor);
-                                     
-                    while(newDate.Day%7 != 0)
-                    {
-                        if (newDate.DayOfWeek == date.DayOfWeek)
-                        {
-                            return newDate;
-                        }
-                        newDate = newDate.AddDays(1);
-                    }
-                    if (newDate.DayOfWeek == date.DayOfWeek)
-                    {
-                        return newDate;
-                    }
-                    newDate = newDate.AddDays(-1);
-                    while (newDate.Day % 7 != 0)
-                    {
-                        if (newDate.DayOfWeek == date.DayOfWeek)
-                        {
-                            return newDate;
-                        }
-                        newDate = newDate.AddDays(-1);
-                    }
-
-                    return newDate;
-                }
-            }
-            return date.AddDays(interval);
-        }
+        
 
         private static CalendarTask GetCalendarTaskFor(Sequence sequence, DateTime startDate, DateTime endDate, IList<Task> tasks)
         {

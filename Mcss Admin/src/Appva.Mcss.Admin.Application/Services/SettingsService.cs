@@ -293,17 +293,26 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         ////
 
         /// <inheritdoc />
+        /// TODO: Rename to IsRiskAssessmentEnabled
         public bool HasSeniorAlert()
         {
+            if (this.Find<bool>(ApplicationSettings.IsRiskAssessmentEnabled))
+            {
+                return true;
+            }
+            //// Fallback for UNIQUE(NAME + NAMESPACE) which will be removed.
             var result = this.persistence.QueryOver<Setting>()
                 .Where(x => x.IsActive)
-                .And(x => x.Name == "IsActive" && x.Namespace == "MCSS.SeniorAlert").SingleOrDefault();
-            if (result != null)
+                  .And(x => x.Name == "IsActive")
+                  .And(x => x.Namespace == "MCSS.SeniorAlert")
+                .Take(1)
+                .SingleOrDefault();
+            if (result == null)
             {
-                TypeConverter tc = TypeDescriptor.GetConverter(result.Type);
-                return (bool)tc.ConvertFromString(result.Value);
+                return false;
             }
-            return false;
+            var converter = TypeDescriptor.GetConverter(result.Type);
+            return (bool) converter.ConvertFromString(result.Value);
         }
 
         /// <inheritdoc />

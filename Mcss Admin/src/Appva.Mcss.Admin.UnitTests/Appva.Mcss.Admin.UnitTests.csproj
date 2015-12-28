@@ -69,6 +69,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Domain\Repositories\NotificationRepositoryTests.cs" />
+    <Compile Include="Domain\Services\SettingsServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

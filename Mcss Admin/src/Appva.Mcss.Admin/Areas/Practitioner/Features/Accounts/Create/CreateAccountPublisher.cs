@@ -29,7 +29,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class CreateAccountPublisher : RequestHandler<CreateAccountModel, bool>
+    public sealed class CreateAccountPublisher : RequestHandler<CreateAccountModel, bool>
     {
         #region Variables.
 
@@ -140,16 +140,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             account.Roles                  = roles;
             account.HsaId                  = message.HsaId;
             account.SymmetricKey           = Hash.Random().ToBase64();
+            account.UserName               = this.accountService.CreateUniqueUserNameFor(account);
             var permissions = this.permissions.ListByRoles(roles);
-            if (permissions.Any(x => x.Resource.Equals(Permissions.Admin.Login.Value)))
-            {
-                account.UserName = accountService.CreateUniqueUserNameFor(account);
-            }
             if (permissions.Any(x => x.Resource.Equals(Permissions.Device.Login.Value)))
             {
                 account.DevicePassword = this.settings.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : message.DevicePassword;
             }
-            accountService.Save(account);
+            this.accountService.Save(account);
             var configuration = this.settings.MailMessagingConfiguration();
             this.SendRegistrationMail(account, configuration, permissions);
             this.SendRegistrationMailForDevice(account, configuration, permissions);

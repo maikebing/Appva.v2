@@ -147,6 +147,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 account.DevicePassword = this.settings.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : message.DevicePassword;
             }
             this.accountService.Save(account);
+            bool isAccountUpgradedForAdminAccess;
+            bool isAccountUpgradedForDeviceAccess;
+            this.accountService.UpdateRoles(account, roles, out isAccountUpgradedForAdminAccess, out isAccountUpgradedForDeviceAccess);
             var configuration = this.settings.MailMessagingConfiguration();
             this.SendRegistrationMail(account, configuration, permissions);
             this.SendRegistrationMailForDevice(account, configuration, permissions);

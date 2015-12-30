@@ -9,13 +9,20 @@ namespace Appva.Mcss.Admin.UnitTests.Helpers
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Linq;
     using System.Net;
+    using System.Security.Claims;
     using System.Web;
+    using Appva.Mcss.Admin.UnitTests.Domain.Handlers;
     using Moq;
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     internal static class MockedHttpRequestBase
     {
         public static HttpContextBase CreateNew()
@@ -41,9 +48,14 @@ namespace Appva.Mcss.Admin.UnitTests.Helpers
             context.SetupGet(x => x.Response).Returns(response.Object);
             context.SetupGet(x => x.Server).Returns(server.Object);
             context.SetupGet(x => x.Session).Returns(session.Object);
+            context.SetupGet(x => x.User).Returns(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, CurrentPrincipal.Ids.First().ToString())
+            }, "anonymous")));
             return context.Object;
         }
     }
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>

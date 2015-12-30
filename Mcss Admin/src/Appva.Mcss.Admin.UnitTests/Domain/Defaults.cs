@@ -12,7 +12,11 @@ namespace Appva.Mcss.Admin.UnitTests.Domain
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Core.Resources;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.VO;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -21,6 +25,11 @@ namespace Appva.Mcss.Admin.UnitTests.Domain
     /// </summary>
     internal static class Defaults
     {
+        /// <summary>
+        /// A static account ID.
+        /// </summary>
+        public static readonly Guid AccountId = new Guid("8364a38a-1280-4045-8907-7cb3e0e4cdda");
+
         /// <summary>
         /// Creates and returns basic roles.
         /// </summary>
@@ -84,6 +93,54 @@ namespace Appva.Mcss.Admin.UnitTests.Domain
                 }
             }
             return taxa;
+        }
+
+        /// <summary>
+        /// Creates a collection of permissions.
+        /// </summary>
+        /// <returns>A collection of <see cref="Permission"/></returns>
+        public static IList<Permission> CreatePermissions()
+        {
+            return new List<Permission>
+            {
+                new Permission(Permissions.Admin.Login.Key,  null, Permissions.Admin.Login.Value),
+                new Permission(Permissions.Device.Login.Key, null, Permissions.Device.Login.Value)
+            };
+        }
+
+        /// <summary>
+        /// Creates and returns basic settings.
+        /// </summary>
+        /// <returns>A collection of <see cref="Setting"/></returns>
+        public static IList<Setting> CreateSettings()
+        {
+            return new List<Setting>
+            {
+                Setting.CreateNew(
+                    ApplicationSettings.MailMessagingConfiguration.Key, 
+                    ApplicationSettings.MailMessagingConfiguration.Namespace,
+                    ApplicationSettings.MailMessagingConfiguration.Name,
+                    ApplicationSettings.MailMessagingConfiguration.Description, 
+                    JsonConvert.SerializeObject(SecurityMailerConfiguration.CreateNew(false, false, false, false, false, null)), 
+                    typeof(string))
+            };
+        }
+
+        /// <summary>
+        /// Creates a principal account.
+        /// </summary>
+        /// <param name="roles">A collection of roles</param>
+        /// <returns>An <see cref="Account"/></returns>
+        public static Account CreatePrincipalAccount(IList<Role> roles)
+        {
+            var account       = Account.CreateForTest(AccountId);
+            account.Roles     = roles;
+            account.FirstName = "John";
+            account.LastName  = "Doe";
+            account.FullName  = "John Doe";
+            account.PersonalIdentityNumber = new PersonalIdentityNumber("19020101-0101");
+            account.SymmetricKey = "x";
+            return account;
         }
     }
 }

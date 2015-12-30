@@ -337,7 +337,7 @@ namespace Appva.Mcss.Admin.Application.Services
             isAccountUpgradedForAdminAccess = false;
             isAccountUpgradedForDeviceAccess = false;
             var roles = newRoles ?? new List<Role>();
-            if (! this.identityService.Principal.IsInRole(RoleTypes.Appva))
+            if (this.identityService.Principal != null && ! this.identityService.Principal.IsInRole(RoleTypes.Appva))
             {
                 Log.Debug("The user is not of type {0} role", RoleTypes.Appva);
                 //// If the current user is NOT an Appva role then make sure hidden roles are not removable 

@@ -337,7 +337,7 @@ namespace Appva.Mcss.Admin.Application.Services
             isAccountUpgradedForAdminAccess = false;
             isAccountUpgradedForDeviceAccess = false;
             var roles = newRoles ?? new List<Role>();
-            if (! this.identityService.Principal.IsInRole(RoleTypes.Appva))
+            if (this.identityService.Principal != null && ! this.identityService.Principal.IsInRole(RoleTypes.Appva))
             {
                 Log.Debug("The user is not of type {0} role", RoleTypes.Appva);
                 //// If the current user is NOT an Appva role then make sure hidden roles are not removable 
@@ -483,13 +483,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>A unique user name</returns>
         private string CreateUserName(string firstname, string lastname, IList<string> usernames)
         {
-            var firstPart = firstname.ToNullSafeLower().ToUrlFriendly();
-            var secondPart = lastname.ToNullSafeLower().ToUrlFriendly();
+            var firstPart  = firstname.ToNullSafeLower().ToUrlFriendly();
+            var secondPart =  lastname.ToNullSafeLower().ToUrlFriendly();
             var username = string.Format(
                 "{0}{1}",
-                (firstPart.Length > 3) ? firstPart.Substring(0, 3) : firstPart,
+                (firstPart.Length  > 3) ? firstPart.Substring(0, 3)  : firstPart,
                 (secondPart.Length > 3) ? secondPart.Substring(0, 3) : secondPart);
-            if (!usernames.Contains(username))
+            if (! usernames.Contains(username))
             {
                 return username;
             }

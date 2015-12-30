@@ -117,5 +117,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
+
+        #region Public Static Functions.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Taxon"/> class.
+        /// </summary>
+        /// <param name="taxonomy">The taxonomy</param>
+        /// <param name="name">The taxon name</param>
+        /// <param name="description">The taxon description of usage</param>
+        /// <param name="type">The taxon type</param>
+        /// <param name="parent">Optional parent taxon</param>
+        /// <param name="sort">Optional sort order, defaults to 0</param>
+        /// <returns>A new <see cref="Taxon"/> instance</returns>
+        public static Taxon CreateNew(Taxonomy taxonomy, string name, string description, string type, Taxon parent = null, int sort = 0)
+        {
+            return new Taxon { Taxonomy = taxonomy, Name = name, Description = description, Type = type, Parent = parent, Weight = sort };
+        }
+
+        #endregion
     }
 }

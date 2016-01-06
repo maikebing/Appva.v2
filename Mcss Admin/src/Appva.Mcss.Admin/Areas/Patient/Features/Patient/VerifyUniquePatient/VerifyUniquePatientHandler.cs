@@ -54,7 +54,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var patient = this.patientService.Get(message.Id.Value);
             return patient != null && patient.PersonalIdentityNumber.Equals(message.UniqueIdentifier);*/
-            var patient = this.patientService.FindByPersonalIdentityNumber(message.UniqueIdentifier);
+            var patient = this.patientService.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
             if (!message.Id.HasValue || patient == null)
             {
                 return patient == null;

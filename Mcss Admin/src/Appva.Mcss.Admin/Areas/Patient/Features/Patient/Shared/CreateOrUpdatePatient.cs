@@ -54,7 +54,7 @@ namespace Appva.Mcss.Admin.Models
         [Required(ErrorMessage = "Personnummer måste fyllas i.")]
         [Appva.Mvc.PersonalIdentityNumber(ErrorMessage = "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001.")]
         [DisplayName("Personnummer")]
-        [Remote("VerifyUniquePatient", "Patient", AreaReference.UseCurrent, HttpMethod = "POST", ErrorMessage = "Address måste väljas.")]
+        [Remote("VerifyUniquePatient", "Patient", AreaReference.UseCurrent, HttpMethod = "POST", ErrorMessage = "Personnumret finns redan tidigare redan i MCSS.")]
         public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;

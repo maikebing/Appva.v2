@@ -3,8 +3,8 @@
     <div>
         <label for="searchq">Sök boende:</label> 
         <input type="text" id="searchq" name="SearchQuery" data-autocomplete-url="@Url.Action("QuickSearch", "Patient", new { isActive = Model.IsActive, isDeceased = Model.IsDeceased })" placeholder="Namn eller personnummer ..." />
-        <input type="hidden" name="IsActive" value="@Model.IsActive" />
-        <input type="hidden" name="IsDeceased" value="@Model.IsDeceased" />
+        <input type="hidden" name="IsActive" value="@Model.IsActive.ToString()" />
+        <input type="hidden" name="IsDeceased" value="@Model.IsDeceased.ToString()" />
     </div>
 }
 <script type="text/javascript">

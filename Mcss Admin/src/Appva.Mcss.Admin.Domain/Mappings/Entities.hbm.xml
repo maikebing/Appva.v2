@@ -339,7 +339,10 @@
     <property name="IsActive" column="Active" />
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
-    <property name="LastActivatedAt" />
+    <property name="LastActivatedAt">
+      <!-- Sets default to 1905-06-22. Will automatically be updated to CreatedAt (if LastActivatedAt < CreatedAt) when entity is loaded -->
+      <column name="LastActivatedAt" not-null="true" />
+    </property>
     <property name="LastInActivatedAt" />
     <property name="FirstName" />
     <property name="LastName" />

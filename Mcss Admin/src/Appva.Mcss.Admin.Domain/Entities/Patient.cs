@@ -20,6 +20,29 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Patient : Person<Patient>
     {
+        #region Fields.
+
+        /// <summary>
+        /// The LastActivatedAt field
+        /// TODO: Remove later
+        /// </summary>
+        private DateTime lastActivatedAt;
+
+        #endregion
+
+        #region Constructor 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Patient"/> class.
+        /// </summary>
+        public Patient()
+            :base()
+        {
+            this.LastActivatedAt = DateTime.Now;
+        }
+
+        #endregion
+
         #region Properties.
 
         /// <summary>
@@ -78,11 +101,23 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         /// <summary>
         /// When the patient was activated
+        /// Sets default to 1905-06-22. Will automatically be updated to CreatedAt 
+        /// (if LastActivatedAt less than CreatedAt) when entity is loaded
         /// </summary>
-        public virtual DateTime? LastActivatedAt
+        public virtual DateTime LastActivatedAt
         {
-            get;
-            set;
+            get
+            {
+                if (this.lastActivatedAt < this.CreatedAt)
+                {
+                    return this.CreatedAt;
+                }
+                return this.lastActivatedAt;
+            }
+            set
+            {
+                this.lastActivatedAt = value;
+            }
         }
 
         /// <summary>

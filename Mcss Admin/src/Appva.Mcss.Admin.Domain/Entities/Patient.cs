@@ -76,6 +76,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        /// <summary>
+        /// When the patient was activated
+        /// </summary>
+        public virtual DateTime? LastActivatedAt
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// When the patient was inactivated
+        /// </summary>
+        public virtual DateTime? LastInActivatedAt
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

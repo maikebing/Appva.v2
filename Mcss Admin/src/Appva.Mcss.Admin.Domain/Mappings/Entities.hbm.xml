@@ -339,6 +339,8 @@
     <property name="IsActive" column="Active" />
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
+    <property name="LastActivatedAt" />
+    <property name="LastInActivatedAt" />
     <property name="FirstName" />
     <property name="LastName" />
     <property name="FullName" />

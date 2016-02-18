@@ -112,7 +112,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #endregion
 
-        #region 
+        #region IPatientService implementation
 
         /// <inheritdoc />
         public Patient Get(Guid id)
@@ -155,6 +155,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             patient.IsActive = true;
             patient.UpdatedAt = DateTime.Now;
+            patient.LastActivatedAt = DateTime.Now;
             this.persistence.Update(patient);
             this.auditing.Update(
                 patient,
@@ -168,6 +169,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             patient.IsActive = false;
             patient.UpdatedAt = DateTime.Now;
+            patient.LastInActivatedAt = DateTime.Now;
             this.persistence.Update(patient);
             this.auditing.Update(
                 patient,

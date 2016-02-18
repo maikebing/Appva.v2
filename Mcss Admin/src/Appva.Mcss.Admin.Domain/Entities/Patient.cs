@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         /// <summary>
         /// When the patient was activated
-        /// Sets default to 1905-06-22. Will automatically be updated to CreatedAt 
+        /// Sets default to 2001-01-01. Will automatically be updated to CreatedAt 
         /// (if LastActivatedAt less than CreatedAt) when entity is loaded
         /// </summary>
         public virtual DateTime LastActivatedAt

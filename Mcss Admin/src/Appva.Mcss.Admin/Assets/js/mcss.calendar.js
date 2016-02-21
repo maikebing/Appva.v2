@@ -96,6 +96,10 @@
             });
         });
 
+        $('.cal-overview .toggleActDetails').click(function (e) {
+            $(this).parent().parent().next('.act-details').toggle();
+        });
+
 
 
     }

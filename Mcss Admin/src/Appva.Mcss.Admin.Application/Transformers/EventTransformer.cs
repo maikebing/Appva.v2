@@ -58,7 +58,8 @@ using System.Linq;
                 Interval = t.Sequence.Interval,
                 IntervalFactor = t.Sequence.IntervalFactor,
                 RepeatAtGivenDate = t.Sequence.IntervalIsDate,
-                PatientId = t.Patient.Id
+                PatientId = t.Patient.Id,
+                PatientName = t.Patient.FullName
             };
         }
 
@@ -80,7 +81,8 @@ using System.Linq;
                 Interval = sequence.Interval,
                 IntervalFactor = sequence.IntervalFactor,
                 RepeatAtGivenDate = sequence.IntervalIsDate,
-                PatientId = sequence.Patient.Id
+                PatientId = sequence.Patient.Id,
+                PatientName = sequence.Patient.FullName
             };
         }
     }

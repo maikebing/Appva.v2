@@ -264,6 +264,9 @@
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequencePublisher.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendar.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendarHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverview.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverviewHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverviewModel.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItemHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryItem.cs" />
@@ -1098,6 +1101,7 @@
     <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
     <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Overview\_OverviewCalendarTask.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>
@@ -1119,7 +1123,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1090/</IISUrl>
+          <IISUrl>http://localhost:1080/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

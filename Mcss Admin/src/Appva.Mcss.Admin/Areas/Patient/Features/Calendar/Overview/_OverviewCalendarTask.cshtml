@@ -1,0 +1,44 @@
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model Appva.Mcss.Admin.Application.Models.CalendarTask
+
+<tr>
+    <td>
+        @if (Html.HasPermissionFor(Permissions.Calendar.Read))
+        {
+            @Html.ActionLink(Permissions.Calendar.Read, Model.PatientName, "List", "Calendar", new { Id = Model.PatientId, Area = "Patient" }, new { })
+        }
+        else
+        {
+            @Model.PatientName
+        }
+    </td>
+    <td><span class="act toggleActDetails" style="background-color:@Model.Color;">@Model.CategoryName</span></td>
+    @if (Model.StartTime.Date <= DateTime.Now.Date)
+    {
+        <td @((Model.EndTime.Date - DateTime.Now.Date).Days < 0 ? "class=urgent" : "")><span>@((Model.EndTime.Date - DateTime.Now.Date).Days) dagar kvar</span></td>
+
+    }
+    else
+    {
+        <td @((Model.StartTime.Date - DateTime.Now.Date).Days < 0 ? "class=urgent" : "")><span>Om @((Model.StartTime.Date - DateTime.Now.Date).Days) dagar</span></td>
+
+    }
+    <td class="check">
+        <input type="checkbox" name="@Model.EndTime" id="@Model.SequenceId" class="cal-quittance" />
+        <span class="cal-label-done">Kvitterad</span>
+    </td>
+</tr>
+<tr class="act-details">
+    <td>
+        <h5>Startar</h5>
+        <p>@string.Format("{0:dddd HH:mm}", Model.StartTime)</p>
+    </td>
+    <td>
+        <h5>Slutar</h5>
+        <p>@string.Format("{0:dddd HH:mm}", Model.EndTime)</p>
+    </td>
+    <td colspan="2">
+        <h5>Instruktion</h5>
+        <p>@Model.Description</p>
+    </td>
+</tr>

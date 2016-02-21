@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Transformers;
     using Appva.Core.Logging;
     using Appva.Mcss.Admin.Domain.Models;
+    using NHibernate.Criterion;
 
     #endregion
 
@@ -31,6 +32,8 @@ namespace Appva.Mcss.Admin.Application.Services
     {
         Sequence Get(Guid id);
         IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date);
+        IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null);
+        IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null);
         Guid CreateCategory(string name);
         IList<ScheduleSettings> GetCategories();
         void Create(
@@ -196,50 +199,127 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="date"></param>
         public IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
-            var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
+            
             var firstInMonth = date.FirstOfMonth();
             var lastInMonth = firstInMonth.AddDays(DateTime.DaysInMonth(firstInMonth.Year, firstInMonth.Month));
+
+            return this.FindEventsWithinPeriod(firstInMonth, lastInMonth, patient: patient);
+        }
+
+        /// <summary>
+        /// Returns all events for a patient within specified period.
+        /// </summary>
+        /// <param name="patient"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null)
+        {
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
+
+            Taxon taxonAlias = null;
+            Patient patientAlias = null;
+
+            //// Creeate the queries
             var sequences = this.context.QueryOver<Sequence>()
-                .Where(x => x.Patient == patient)
-                  .And(x => x.IsActive)
-                  .And(x => x.Interval != 0 || (x.EndDate >= firstInMonth && x.StartDate <= lastInMonth))
-                .JoinQueryOver<Schedule>(x => x.Schedule)
+                .Where(x => x.IsActive)
+                .And(x => x.Interval != 0 || (x.EndDate >= start && x.StartDate <= end));
+             var tasks = this.context.QueryOver<Task>()
+                .Where(x => x.IsActive)
+                 .And(x => x.EndDate >= start && x.StartDate <= end);
+            var tasksFromCanceledSequence = this.context.QueryOver<Task>()
+                .Where(x => x.IsActive)
+                .And(x => x.EndDate >= start && x.StartDate <= end);
+            
+            //// If filtered by patient, add to query
+            if(patient != null)
+            {
+                sequences = sequences.Where(x => x.Patient == patient);
+                tasks = tasks.Where(x => x.Patient == patient);
+                tasksFromCanceledSequence = tasksFromCanceledSequence.Where(x => x.Patient == patient);
+            }
+
+            //// If org-filter is Active, filter on taxon
+            if(orgFilter != null)
+            {
+                sequences = sequences.JoinAlias(x => x.Patient, () => patientAlias)
+                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
+                        .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
+                    .And(() => patientAlias.IsActive && !patientAlias.Deceased);
+                tasks = tasks.JoinAlias(x => x.Patient, () => patientAlias)
+                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
+                        .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
+                    .And(() => patientAlias.IsActive && !patientAlias.Deceased);
+                tasksFromCanceledSequence = tasksFromCanceledSequence.JoinAlias(x => x.Patient, () => patientAlias)
+                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
+                        .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
+                    .And(() => patientAlias.IsActive && !patientAlias.Deceased);
+            }
+
+            //// Make the joins and list elements
+            var sequencesListed = sequences.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                     .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
-            var tasks = this.context.QueryOver<Task>()
-                .Where(x => x.IsActive)
-                  .And(x => x.Patient == patient)
-                  .And(x => x.EndDate >= firstInMonth && x.StartDate <= lastInMonth)
-                .JoinQueryOver<Schedule>(x => x.Schedule)
+           
+            var tasksListed = tasks.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                     .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
 
-            var tasksFromCanceledSequence = this.context.QueryOver<Task>()
-                .Where(x => x.IsActive)
-                .And(x => x.Patient == patient)
-                .And(x => x.EndDate >= firstInMonth && x.StartDate <= lastInMonth)
-                .JoinQueryOver<Sequence>(x => x.Sequence)
+            var tasksFromCanceledSequenceListed = tasksFromCanceledSequence.JoinQueryOver<Sequence>(x => x.Sequence)
                     .Where(x => !x.IsActive)
                     .JoinQueryOver<Schedule>(x => x.Schedule)
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                         .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                         .And(s => s.ScheduleType == ScheduleType.Calendar)
-                .List();
+                    .List();
 
             var retval = new List<CalendarTask>();
-            retval.AddRange(EventTransformer.TasksToEvent(tasksFromCanceledSequence));
-            foreach (var sequence in sequences)
+            retval.AddRange(EventTransformer.TasksToEvent(tasksFromCanceledSequenceListed));
+            foreach (var sequence in sequencesListed)
             {
-                retval.AddRange(GetActivitiesWithinPeriodFor(sequence, firstInMonth, lastInMonth, tasks.Where(x => x.Sequence.Id == sequence.Id).ToList()));
+                retval.AddRange(GetActivitiesWithinPeriodFor(sequence, start, end, tasksListed.Where(x => x.Sequence.Id == sequence.Id).ToList()));
             }
 
-          
+
             return retval;
+        }
+
+        /// <summary>
+        /// Finds all not quittanced activities before today
+        /// </summary>
+        /// <param name="orgFilter"></param>
+        /// <returns></returns>
+        public IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null)
+        {
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
+
+            Taxon taxonAlias = null;
+            Patient patientAlias = null;
+
+            var tasks = this.context.QueryOver<Task>()
+                .Where(x => x.IsActive)
+                .And(x => x.EndDate < DateTime.Now.Date)
+                .JoinAlias(x => x.Patient, () => patientAlias)
+                .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
+                        .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
+                .JoinQueryOver<Schedule>(x => x.Schedule)
+                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                    .And(s => s.ScheduleType == ScheduleType.Calendar)
+                .List();
+
+            return EventTransformer.TasksToEvent(tasks);
+
         }
 
         /// <summary>
@@ -743,5 +823,8 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         #endregion
+
+
+        
     }
 }

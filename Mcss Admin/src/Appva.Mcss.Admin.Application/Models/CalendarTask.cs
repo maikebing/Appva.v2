@@ -219,6 +219,11 @@ namespace Appva.Mcss.Admin.Application.Models
         /// The patient id
         /// </summary>
         public Guid PatientId { get; set; }
+
+        /// <summary>
+        /// The patient fullname
+        /// </summary>
+        public string PatientName { get; set; }
              
         #endregion
 

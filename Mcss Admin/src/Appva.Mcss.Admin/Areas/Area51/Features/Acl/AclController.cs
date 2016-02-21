@@ -132,6 +132,23 @@ namespace Appva.Mcss.Admin.Controllers
 
         #endregion
 
+        #region Hotfix #18
+
+        /// <summary>
+        /// This hot fix #18 will update fallback roles for user accounts.
+        /// </summary>
+        /// <returns>Void</returns>
+        [Route("hotfix-18")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Hotfix 18 - uppdatering av fallback-roller är genomfört!")]
+        public ActionResult Hotfix18()
+        {
+            this.mediator.Publish(new Hotfix18());
+            return this.RedirectToAction("Index");
+        }
+
+        #endregion
+
         #endregion
     }
 }

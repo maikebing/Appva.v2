@@ -33,7 +33,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The personal identity number.
         /// </summary>
-        public PersonalIdentityNumber UniqueIdentifier
+        public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
             set;

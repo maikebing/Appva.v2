@@ -85,6 +85,17 @@ namespace Appva.Persistence.Tests
             }
         }
 
+        /// <summary>
+        /// Returns a new <see cref="IPersistenceContext"/>.
+        /// </summary>
+        public IPersistenceContext OpenNew
+        {
+            get
+            {
+                return this.resolver.CreateNew().Open();
+            }
+        }
+
         #endregion
 
         #region IDisposable Members.

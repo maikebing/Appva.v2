@@ -201,6 +201,8 @@
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\AddNewsPermissions\UpdatePermissionsAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\AddNewsPermissions\UpdatePermissionsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18Handler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Upgrade\UpgradeAcl.cs" />

@@ -216,6 +216,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
+        #region Public Static Method.
+
+        public static Account CreateForTest(Guid id)
+        {
+            return new Account { Id = id };
+        }
+        #endregion
+
         #region Public Methods.
 
         /// <summary>

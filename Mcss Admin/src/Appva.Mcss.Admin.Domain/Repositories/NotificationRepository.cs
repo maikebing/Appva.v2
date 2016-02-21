@@ -97,24 +97,24 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             Account vissibleByAlias = null;
             DashboardNotification notificationAlias = null;
-            var query = this.persistenceContext.QueryOver<DashboardNotification>(() => notificationAlias)
+            var notification = this.persistenceContext.QueryOver<DashboardNotification>(() => notificationAlias)
                 .Where(x => x.IsActive)
-                .And(x => x.Published)
-                .And(x => x.PublishedDate <= DateTime.Now)
-                .And(x => x.UnPublishedDate == null || x.UnPublishedDate >= DateTime.Now)
+                  .And(x => x.Published)
+                  .And(x => x.PublishedDate <= DateTime.Now)
+                  .And(x => x.UnPublishedDate == null || x.UnPublishedDate >= DateTime.Now)
                 .Left.JoinAlias(n => n.VisibleTo, () => vissibleByAlias)
                     .Where(
                         Restrictions.Or(
                             Restrictions.Eq(Projections.Property(() => vissibleByAlias.Id), accountId), 
                             Restrictions.Eq(Projections.Property<Notification>(x => x.IsVisibleToEveryone), true)))
                 .WithSubquery.WhereValue(accountId).NotIn(QueryOver.Of<NotificationViewedBy>().Where(x => x.IsActive).And(x => x.Notification.Id == notificationAlias.Id).Select(x => x.Account.Id))
-                .OrderBy(x => x.PublishedDate).Asc;
-
-            return query.SingleOrDefault<DashboardNotification>();
+                .OrderBy(x => x.PublishedDate).Asc
+                .Take(1)
+                .SingleOrDefault();
+            return notification;
         }
 
         #endregion
-
 
         #region IPagingAndSortingRepository members.
 

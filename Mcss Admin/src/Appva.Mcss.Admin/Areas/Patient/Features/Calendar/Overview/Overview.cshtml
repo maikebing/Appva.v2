@@ -2,12 +2,12 @@
 @model Appva.Mcss.Admin.Areas.Models.CalendarOverviewModel
 <div>
     <div class="heading cf">
-        <h2>Kalender de närmaste 7 dagarna</h2>
+        <h2>Kalender</h2>
     </div>
     <div class="panel-c">
         @if (Model.OngoingEvents.IsNotNull() && Model.OngoingEvents.Count > 0)
         {
-            <h3>Pågående aktiviteter</h3>
+            <h3>Pågående</h3>
             <table class="cal-overview">
                 <thead>
                     <tr>
@@ -27,7 +27,7 @@
         }
         @if (Model.CommingEvents.IsNotNull() && Model.CommingEvents.Count > 0)
         {
-            <h3>Kommande aktiviteter</h3>
+            <h3>Kommande</h3>
             <table class="cal-overview">
                 <thead>
                     <tr>

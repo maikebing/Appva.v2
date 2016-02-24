@@ -87,14 +87,14 @@ namespace Appva.Mcss.Admin.Models.handlers
         public override ListPatientModel Handle(ListPatient message)
         {
             this.auditing.Read("genomförde en sökning i patientlistan på {0}.", message.SearchQuery);
-            var isActive = message.IsActive ?? true;
-            var isDeceased = message.IsDeceased ?? false;
-            var pageSize = 10;
-            var pageIndex = message.Page ?? 1;
+            var isActive    = message.IsActive ?? true;
+            var isDeceased  = message.IsDeceased ?? false;
+            var pageSize    = 10;
+            var pageIndex   = message.Page ?? 1;
             var firstResult = (pageIndex - 1) * pageSize;
             Patient patient = null;
             var query = this.persistence.QueryOver<Patient>(() => patient)
-                            .Where(x => x.IsActive == isActive);
+                .Where(x => x.IsActive == isActive);
             if (isActive)
             {
                 query.Where(x => x.Deceased == isDeceased);
@@ -104,7 +104,7 @@ namespace Appva.Mcss.Admin.Models.handlers
                 Expression<Func<Patient, object>> expression = x => x.FullName;
                 if (message.SearchQuery.First(2).Is(Char.IsNumber))
                 {
-                    expression = x => x.PersonalIdentityNumber;
+                    expression = x => x.PersonalIdentityNumber.Value;
                 }
                 query.Where(Restrictions.On<Patient>(expression).IsLike(message.SearchQuery, MatchMode.Anywhere)).OrderBy(x => x.LastName);
             }
@@ -115,7 +115,6 @@ namespace Appva.Mcss.Admin.Models.handlers
                     .Where(Restrictions.On<Taxon>(x => x.Path)
                         .IsLike(taxon.Id.ToString(), MatchMode.Anywhere));
             }
-
             var sub = QueryOver.Of<Task>()
                 .Where(x => x.Patient.Id == patient.Id)
                 .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
@@ -126,12 +125,10 @@ namespace Appva.Mcss.Admin.Models.handlers
                              0),
                         Projections.Constant(true),
                         Projections.Constant(false))).Take(1);
-
             var hasUnattendedTasksQuery = QueryOver.Of<Task>()
                 .Where(x => x.Patient.Id == patient.Id)
                 .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
                 .Select(Projections.Distinct(Projections.Property<Task>(x => x.Patient.Id)));
-
             PatientModel dto = null;
             Task aTask = null;
             var selectQuery = query.Clone().Left.JoinAlias(x => x.Tasks, () => aTask, Restrictions.Where(() => aTask.IsActive && aTask.Delayed && !aTask.DelayHandled))
@@ -148,13 +145,10 @@ namespace Appva.Mcss.Admin.Models.handlers
                         .Add(Projections.Group<Patient>(x => x.Taxon).WithAlias(() => dto.Taxon))
                         .Add(Projections.SqlProjection("substring((SELECT '.' + convert(nvarchar(255),TaxonId) FROM SeniorAlerts Where PatientId = {alias}.Id FOR XML PATH('')), 2, 1000) as SeniorAlerts", new[] { "SeniorAlerts" }, new IType[] { NHibernateUtil.String }).WithAlias(() => dto.SeniorAlerts))
                         .Add(Projections.Conditional(Restrictions.Eq(Projections.Group(() => aTask.IsActive), true), Projections.Constant(true), Projections.Constant(false)).WithAlias(() => dto.HasUnattendedTask)));
-
             selectQuery.OrderByAlias(() => dto.HasUnattendedTask).Desc
                 .ThenByAlias(() => dto.LastName).Asc
                 .TransformUsing(Transformers.AliasToBean<PatientModel>());
-
             var items = selectQuery.Skip(firstResult).Take(pageSize).List<PatientModel>();
-
             var seniorAlerts = this.settingsService.HasSeniorAlert() ? this.persistence.QueryOver<Taxon>()
                 .Where(x => x.IsActive)
                 .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
@@ -162,11 +156,11 @@ namespace Appva.Mcss.Admin.Models.handlers
                     .List() : null;
             return new ListPatientModel
             {
-                IsActive = isActive,
-                IsDeceased = isDeceased,
-                Items = this.transformer.ToPatientList(items, seniorAlerts),
-                PageNumber = pageIndex,
-                PageSize = pageSize,
+                IsActive       = isActive,
+                IsDeceased     = isDeceased,
+                Items          = this.transformer.ToPatientList(items, seniorAlerts),
+                PageNumber     = pageIndex,
+                PageSize       = pageSize,
                 TotalItemCount = query.RowCount()
             };
         }

@@ -190,7 +190,7 @@ namespace Appva.Mcss.Admin.Features.Account
         [AllowAnonymous, HttpGet, Hydrate]
         public ActionResult Forgot()
         {
-            return this.View();
+            return this.View(new Forgot());
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace Appva.Mcss.Admin.Features.Account
         /// Returns the forgot password success message.
         /// </summary>
         /// <returns>The success message</returns>
-        [Route("forgot-password/sucess")]
+        [Route("forgot-password/success")]
         [AllowAnonymous, HttpGet]
         public ActionResult ForgotSuccess()
         {

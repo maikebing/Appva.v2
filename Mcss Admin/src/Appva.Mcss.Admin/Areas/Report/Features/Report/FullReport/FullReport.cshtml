@@ -12,11 +12,11 @@
     <ul id="nav-sub">
         @if (Model.Schedules.IsNotNull()) {
             <li class="@(!Model.ScheduleSetting.HasValue ? "sel" : "")">
-                @Html.ActionLink("Alla", "Index")
+                @Html.ActionLink("Alla", "FullReport", new { Start = Model.Start.ToShortDateString(), End = Model.End.ToShortDateString() })
             </li>
             foreach (var schedule in Model.Schedules) {
                 <li class="@(Model.ScheduleSetting.HasValue && Model.ScheduleSetting.Value.Equals(schedule.Id) ? "sel" : "")">
-                    @Html.ActionLink(schedule.Name, "FullReport", new { ScheduleSetting = schedule.Id })
+                    @Html.ActionLink(schedule.Name, "FullReport", new { ScheduleSetting = schedule.Id, Start = Model.Start.ToShortDateString(), End = Model.End.ToShortDateString() })
                 </li>
             }
         }

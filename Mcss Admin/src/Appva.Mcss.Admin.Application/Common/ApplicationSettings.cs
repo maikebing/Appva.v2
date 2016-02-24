@@ -39,6 +39,17 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "Makes the field for Mobile Device password editable in administration",
             true);
 
+        /// <summary>
+        /// Whether or not risk assessment is enabled or not.
+        /// </summary>
+        /// <remarks>The setting returns a <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<bool> IsRiskAssessmentEnabled = ApplicationSettingIdentity<bool>.CreateNew(
+            "MCSS.SeniorAlert.IsActive",
+            "Risk assessment information is visible",
+            "MCSS.SeniorAlert",
+            "Whether or not risk assessment information, such as 'Senior' alert is visible",
+            false);
+
         #endregion
 
         #region Account

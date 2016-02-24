@@ -127,6 +127,23 @@
                 var endDate = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
                 return startDate <= endDate;
             });
+            $.validator.addMethod("interval", function (value, element, params) {
+                if (params[2].val() == 0)
+                    return true;
+                var start = params[0].val().split('-');
+                start = new Date(start[0], start[1], start[2]);
+                var end = params[1].val().split('-');
+                end = new Date(end[0], end[1], end[2]);
+
+                var diff = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
+
+                var interval = params[2].val() * params[3].val();
+
+                if (interval < diff) {
+                    return false;
+                }
+                return true;
+            });
 
         </script>
         

@@ -19,6 +19,9 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Transformers;
+    using Appva.Core.Logging;
+    using Appva.Mcss.Admin.Domain.Models;
+    using NHibernate.Criterion;
 
     #endregion
 
@@ -29,6 +32,8 @@ namespace Appva.Mcss.Admin.Application.Services
     {
         Sequence Get(Guid id);
         IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date);
+        IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null);
+        IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null);
         Guid CreateCategory(string name);
         IList<ScheduleSettings> GetCategories();
         void Create(
@@ -86,6 +91,14 @@ namespace Appva.Mcss.Admin.Application.Services
         void DeleteSequence(Sequence sequence);
         void DeleteActivity(Task task);
         IList<CalendarWeek> Calendar(DateTime date, IList<CalendarTask> events);
+
+        /// <summary>
+        /// Gets the activity for a specific date
+        /// </summary>
+        /// <param name="Sequence"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        CalendarTask GetActivityInSequence(Guid Sequence, DateTime date);
     }
 
     /// <summary>
@@ -116,6 +129,11 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly IAccountService accountService;
 
         /// <summary>
+        /// The <see cref="ITaskService"/>
+        /// </summary>
+        private readonly ITaskService taskService;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext context;
@@ -124,6 +142,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditing;
+
+        /// <summary>
+        /// The <see cref="ILog"/>.
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<EventService>();
 
         #endregion
 
@@ -136,12 +159,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="sequenceService">The <see cref="ISequenceService"/></param>
         /// <param name="identityService">The <see cref="IIdentityService"/></param>
         /// <param name="accountService">The <see cref="IAccountService"/></param>
+        /// <param name="taskService">The <see cref="ITaskService"/></param>
         /// <param name="context">The <see cref="IPersistenceContext"/></param>
         public EventService(
             IScheduleService scheduleService,
             ISequenceService sequenceService,
             IIdentityService identityService,
             IAccountService accountService,
+            ITaskService taskService,
             IPersistenceContext context,
             IAuditService auditing)
         {
@@ -149,6 +174,7 @@ namespace Appva.Mcss.Admin.Application.Services
             this.sequenceService = sequenceService;
             this.identityService = identityService;
             this.accountService = accountService;
+            this.taskService = taskService;
             this.auditing = auditing;
             this.context = context;
         }
@@ -173,29 +199,127 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="date"></param>
         public IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
-            var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
+            
             var firstInMonth = date.FirstOfMonth();
             var lastInMonth = firstInMonth.AddDays(DateTime.DaysInMonth(firstInMonth.Year, firstInMonth.Month));
+
+            return this.FindEventsWithinPeriod(firstInMonth, lastInMonth, patient: patient);
+        }
+
+        /// <summary>
+        /// Returns all events for a patient within specified period.
+        /// </summary>
+        /// <param name="patient"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null)
+        {
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
+
+            Taxon taxonAlias = null;
+            Patient patientAlias = null;
+
+            //// Creeate the queries
             var sequences = this.context.QueryOver<Sequence>()
-                .Where(x => x.Patient == patient)
-                  .And(x => x.IsActive)
-                  .And(x => x.Interval != 0 || x.EndDate >= firstInMonth || x.StartDate <= lastInMonth)
-                .JoinQueryOver<Schedule>(x => x.Schedule)
+                .Where(x => x.IsActive)
+                .And(x => x.Interval != 0 || (x.EndDate >= start && x.StartDate <= end));
+             var tasks = this.context.QueryOver<Task>()
+                .Where(x => x.IsActive)
+                 .And(x => x.EndDate >= start && x.StartDate <= end);
+            var tasksFromCanceledSequence = this.context.QueryOver<Task>()
+                .Where(x => x.IsActive)
+                .And(x => x.EndDate >= start && x.StartDate <= end);
+            
+            //// If filtered by patient, add to query
+            if(patient != null)
+            {
+                sequences = sequences.Where(x => x.Patient == patient);
+                tasks = tasks.Where(x => x.Patient == patient);
+                tasksFromCanceledSequence = tasksFromCanceledSequence.Where(x => x.Patient == patient);
+            }
+
+            //// If org-filter is Active, filter on taxon
+            if(orgFilter != null)
+            {
+                sequences = sequences.JoinAlias(x => x.Patient, () => patientAlias)
+                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
+                        .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
+                    .And(() => patientAlias.IsActive && !patientAlias.Deceased);
+                tasks = tasks.JoinAlias(x => x.Patient, () => patientAlias)
+                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
+                        .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
+                    .And(() => patientAlias.IsActive && !patientAlias.Deceased);
+                tasksFromCanceledSequence = tasksFromCanceledSequence.JoinAlias(x => x.Patient, () => patientAlias)
+                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
+                        .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
+                    .And(() => patientAlias.IsActive && !patientAlias.Deceased);
+            }
+
+            //// Make the joins and list elements
+            var sequencesListed = sequences.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                     .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
+           
+            var tasksListed = tasks.JoinQueryOver<Schedule>(x => x.Schedule)
+                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                    .And(s => s.ScheduleType == ScheduleType.Calendar)
+                .List();
+
+            var tasksFromCanceledSequenceListed = tasksFromCanceledSequence.JoinQueryOver<Sequence>(x => x.Sequence)
+                    .Where(x => !x.IsActive)
+                    .JoinQueryOver<Schedule>(x => x.Schedule)
+                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                        .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                        .And(s => s.ScheduleType == ScheduleType.Calendar)
+                    .List();
+
+            var retval = new List<CalendarTask>();
+            retval.AddRange(EventTransformer.TasksToEvent(tasksFromCanceledSequenceListed));
+            foreach (var sequence in sequencesListed)
+            {
+                retval.AddRange(GetActivitiesWithinPeriodFor(sequence, start, end, tasksListed.Where(x => x.Sequence.Id == sequence.Id).ToList()));
+            }
+
+
+            return retval;
+        }
+
+        /// <summary>
+        /// Finds all not quittanced activities before today
+        /// </summary>
+        /// <param name="orgFilter"></param>
+        /// <returns></returns>
+        public IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null)
+        {
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
+
+            Taxon taxonAlias = null;
+            Patient patientAlias = null;
+
             var tasks = this.context.QueryOver<Task>()
                 .Where(x => x.IsActive)
-                  .And(x => x.Patient == patient)
-                  .And(x => x.Scheduled >= firstInMonth && x.Scheduled <= lastInMonth)
+                .And(x => x.EndDate < DateTime.Now.Date)
+                .JoinAlias(x => x.Patient, () => patientAlias)
+                .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
+                        .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                     .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
-            return EventTransformer.ToEvent(this.scheduleService.FindTasks(firstInMonth, lastInMonth, new List<Schedule>(), sequences, tasks, new List<Task>()));
+
+            return EventTransformer.TasksToEvent(tasks);
+
         }
 
         /// <summary>
@@ -517,6 +641,10 @@ namespace Appva.Mcss.Admin.Application.Services
 
         private CalendarDay CreateDay(DateTime date, int currentMonthDisplayed, IList<CalendarTask> events)
         {
+            if (events.IsNull())
+            {
+                events = new List<CalendarTask>();
+            }
             return new CalendarDay()
             {
                 IsWithinMonth = date.Month == currentMonthDisplayed,
@@ -577,6 +705,35 @@ namespace Appva.Mcss.Admin.Application.Services
             return retval;
         }
 
+        /// <inheritdoc />
+        public CalendarTask GetActivityInSequence(Guid sequence, DateTime date)
+        {
+            var task = this.taskService.List(new ListTaskModel {
+                SequenceId = sequence,
+                EndDate = date,
+                StartDate = date,
+            }).Entities.FirstOrDefault();
+            
+            if(task.IsNotNull())
+            {
+                return EventTransformer.TasksToEvent(task);
+            }
+
+            var s = this.sequenceService.Find(sequence);
+            var endDate = s.EndDate.GetValueOrDefault();
+
+            while (endDate <= date)
+            {
+                if (endDate.Date.Equals(date.Date))
+                {
+                    return EventTransformer.SequenceToEvent(s, endDate.AddDays((s.StartDate - s.EndDate.GetValueOrDefault()).TotalDays), endDate);
+                }
+                endDate = s.GetNextDateInSequence(endDate);
+            }
+
+            throw new Exception("There is no event for this sequence on given date");
+        }
+
         #endregion
 
         #region Private Functions.
@@ -621,6 +778,53 @@ namespace Appva.Mcss.Admin.Application.Services
             return null;
         }
 
+        private static IList<CalendarTask> GetActivitiesWithinPeriodFor(Sequence sequence, DateTime periodStart, DateTime periodEnd, IList<Task> tasks)
+        {
+            var startDate = sequence.StartDate;
+            var endDate = sequence.EndDate.GetValueOrDefault();
+
+            var retval = new List<CalendarTask>();
+            
+            while(startDate <= periodEnd)
+            {
+                if (endDate >= periodStart)
+                {
+                    var calendarTask = GetCalendarTaskFor(sequence, startDate, endDate, tasks);
+                    if (calendarTask.IsNotNull())
+                    {
+                        retval.Add(calendarTask);
+                    }
+                }
+                if (sequence.Interval == 0)
+                {
+                    break;
+                }
+                startDate = sequence.GetNextDateInSequence(startDate);
+                endDate = sequence.GetNextDateInSequence(endDate);                
+            }
+
+            return retval;
+        }
+
+        
+
+        private static CalendarTask GetCalendarTaskFor(Sequence sequence, DateTime startDate, DateTime endDate, IList<Task> tasks)
+        {
+            var task = tasks.Where(x => x.Sequence.Id == sequence.Id && x.Scheduled == endDate && x.IsActive).FirstOrDefault();
+            if (task.IsNotNull())
+            {
+                return EventTransformer.TasksToEvent(task);
+            }
+            else if (endDate > DateTime.Now)
+            {
+                return EventTransformer.SequenceToEvent(sequence, startDate, endDate);
+            }
+            return null;
+        }
+
         #endregion
+
+
+        
     }
 }

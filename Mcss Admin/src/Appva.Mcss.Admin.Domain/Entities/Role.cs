@@ -112,5 +112,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
+
+        #region Public Static Functions.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Role"/> class.
+        /// </summary>
+        /// <param name="key">The unique internal machine key</param>
+        /// <param name="name">The public role name</param>
+        /// <param name="description">The role description</param>
+        /// <param name="sort">The role sort order, defaults to 0 (highest)</param>
+        /// <param name="isVisible">Optional public visibility of the role, defaults to true</param>
+        /// <param name="isDeletable">Optional public deletability of the roles, defaults to true</param>
+        /// <returns>A new <see cref="Role"/> instance</returns>
+        public static Role CreateNew(string key, string name, string description, int sort = 0, bool isVisible = true, bool isDeletable = true)
+        {
+            return new Role { MachineName = key, Name = name, Description = description, Weight = sort, IsVisible = isVisible, IsDeletable = isDeletable };
+        }
+
+        #endregion
     }
 }

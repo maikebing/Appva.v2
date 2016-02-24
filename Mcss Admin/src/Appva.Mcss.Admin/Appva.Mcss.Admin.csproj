@@ -201,6 +201,8 @@
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\AddNewsPermissions\UpdatePermissionsAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\AddNewsPermissions\UpdatePermissionsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18Handler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Upgrade\UpgradeAcl.cs" />
@@ -255,6 +257,7 @@
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidgetHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventModel.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetails.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetailsHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\EditAll\EditAllEventSequence.cs" />
@@ -263,6 +266,9 @@
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequencePublisher.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendar.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendarHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverview.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverviewHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverviewModel.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItemHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\CreateTransaction\CreateInventoryTransactionItem.cs" />
@@ -1109,6 +1115,7 @@
     <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
     <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Overview\_OverviewCalendarTask.cshtml" />
     <Content Include="Areas\Patient\Features\Inventory\Update\Update.cshtml" />
     <Content Include="Areas\Patient\Features\Inventory\Create\Create.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />

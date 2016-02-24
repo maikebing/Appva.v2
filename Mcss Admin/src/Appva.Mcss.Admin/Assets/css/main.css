@@ -1009,6 +1009,7 @@ tr.modified { background-color:#f4f4f4; text-decoration: line-through; }
     color: #FFFFFF;
     padding: 1px 8px;
     white-space: nowrap;
+    cursor:pointer;
 }
 
 .panel .orderTime {
@@ -1023,6 +1024,25 @@ tr.modified { background-color:#f4f4f4; text-decoration: line-through; }
 
 .panel table.cal-overview {
     table-layout:fixed;
+}
+
+.panel table.cal-overview .act-details {
+    display:none;
+    border-width:0;
+}
+.panel table.cal-overview .act-details h5 {
+    margin:0;
+    padding:2px 0 1px 0;
+}
+.panel table.cal-overview .act-details td {
+    border:none;
+}
+
+.panel table.cal-overview td {
+    border-top:1px solid #d8dfe5;
+    border-bottom:none;
+    border-left:none;
+    border-right:none;
 }
 
 .panel .order-check span,

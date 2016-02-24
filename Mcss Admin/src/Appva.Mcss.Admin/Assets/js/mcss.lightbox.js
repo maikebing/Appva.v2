@@ -37,6 +37,9 @@ mcss.lightbox = {
         } else {
             panel.find('.btn-close').focus();
         }
+        if (content.hasClass('lb-validate-form')) {
+            this.applyValidation(content.data('valclass'), content.data('valparams'));
+        }
 
         $('a.lb-link').click(function (e) {
             var clicked = $(this);

@@ -174,9 +174,9 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// If the event should be repeated on given day (e.g. "Monday")
+        /// If the event should be repeated on given date (e.g. "26")
         /// </summary>
-        public bool RepeatAtGivenDay 
+        public bool RepeatAtGivenDate 
         { 
             get; 
             set; 
@@ -194,22 +194,22 @@ namespace Appva.Mcss.Admin.Application.Models
                     return string.Format("{1:dddd} {2} vecka",
                         ((this.StartTime.Day - (this.StartTime.Day % 7)) / 7) + 1,
                         this.StartTime,
-                        this.IntervalFactor == 1 ? "varje" : string.Format("var {0}", this.IntervalFactor)
+                        NumberToNaturalLanguage(this.IntervalFactor)
                         ).FirstToUpper();
                 }
-                else if (this.RepeatAtGivenDay)
+                else if (this.RepeatAtGivenDate)
                 {
-                    return string.Format("Den {0} {1:dddd}en {2} månad",
-                        ((this.StartTime.Day - (this.StartTime.Day % 7)) / 7) + 1,
+                    return string.Format("Den {0:D} {1} månad",
                         this.StartTime,
-                        this.IntervalFactor == 1 ? "varje" : string.Format("var {0}", this.IntervalFactor)
+                        NumberToNaturalLanguage(this.IntervalFactor)
                         );
                 }
                 else
                 {
-                    return string.Format("Den {0:d} {1} månad",
+                    return string.Format("Den {0} {1:dddd}en {2} månad",
+                        ((this.StartTime.Day - (this.StartTime.Day % 7)) / 7) + 1,
                         this.StartTime,
-                        this.IntervalFactor == 1 ? "varje" : string.Format("var {0}", this.IntervalFactor)
+                        NumberToNaturalLanguage(this.IntervalFactor)
                         );
                 }
             }
@@ -219,9 +219,30 @@ namespace Appva.Mcss.Admin.Application.Models
         /// The patient id
         /// </summary>
         public Guid PatientId { get; set; }
+
+        /// <summary>
+        /// The patient fullname
+        /// </summary>
+        public string PatientName { get; set; }
              
         #endregion
 
-       
+        #region Static Helpers
+
+        private static string NumberToNaturalLanguage(int n)
+        {
+            if (n <= 1)
+            {
+                return "varje";
+            }
+            else if (n == 2)
+            {
+                return "varannan";
+            }
+            return string.Format("{0}:e", n);
+        } 
+
+        #endregion 
+
     }
 }

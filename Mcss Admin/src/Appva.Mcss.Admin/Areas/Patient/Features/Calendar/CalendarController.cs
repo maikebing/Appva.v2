@@ -28,6 +28,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     using Appva.Persistence;
     using NHibernate.Criterion;
     using NHibernate.Transform;
+    using Appva.Mcss.Admin.Areas.Models;
 
     #endregion
 
@@ -125,7 +126,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [Route("create")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Calendar.CreateValue)]
-        public ActionResult Create(Identity<EventViewModel> request)
+        public ActionResult Create(Identity<CreateEventModel> request)
         {
             return View();
         }
@@ -140,7 +141,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Calendar")]
         [PermissionsAttribute(Permissions.Calendar.CreateValue)]
-        public ActionResult Create(EventViewModel request)
+        public ActionResult Create(CreateEventModel request)
         {
             return View();
         }
@@ -335,85 +336,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("~/patient/calendar/overview")]
+        [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Dashboard.ReadCalendarValue)]
-        public PartialViewResult Overview()
+        public PartialViewResult Overview(CalendarOverview request)
         {
-            var list = TaskService.CalendarRoleScheduleSettingsList(this.Identity());
-            var taxon = this.filtering.GetCurrentFilter();
-            var categories = this.eventService.GetCategories();
-            Patient patientAlias = null;
-            Taxon taxonAlias = null;
-            var sequences = this.context.QueryOver<Sequence>()
-                .Where(x => x.IsActive)
-                .And(x => x.Overview)
-                .JoinAlias(x => x.Patient, () => patientAlias)
-                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
-                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                        .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
-                .Fetch(x => x.Patient).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer())
-                .JoinQueryOver<Schedule>(x => x.Schedule)
-                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                        .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray())
-                        .And(x => x.ScheduleType == ScheduleType.Calendar)
-                .List();
-            var tasks = this.context.QueryOver<Task>()
-                .Where(x => x.IsActive)
-                .And(Restrictions.Disjunction().Add<Task>( /// Alla kvitteringar inom veckan
-                    x => x.Scheduled < DateTime.Now.AddDays(7) &&
-                         x.Scheduled > DateTime.Now.Date &&
-                         x.Quittanced
-                ).Add<Task>( /// Samtliga tasks som ej kvitterats 
-                    x => x.Scheduled < DateTime.Now.Date &&
-                         x.Quittanced == false
-                ))
-                .And(x => x.Overview)
-                .OrderBy(x => x.Scheduled).Asc
-                .JoinAlias(x => x.Patient, () => patientAlias)
-                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
-                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                        .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
-                .Fetch(x => x.Patient).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer())
-                .JoinQueryOver<Sequence>(x => x.Sequence)
-                    .Where(x => x.IsActive)
-                .JoinQueryOver<Schedule>(x => x.Schedule)
-                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray())
-                    .And(x => x.ScheduleType == ScheduleType.Calendar)
-                .List();
-            var schedules = this.context.QueryOver<Schedule>()
-                .Where(x => x.IsActive)
-                .JoinAlias(x => x.Patient, () => patientAlias)
-                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
-                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                        .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
-                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray())
-                    .And(x => x.ScheduleType == ScheduleType.Calendar)
-                .List();
-            var startTime = tasks.Count > 0 ? tasks.FirstOrDefault().Scheduled : DateTime.Now;
-            if (startTime > DateTime.Now)
-            {
-                startTime = DateTime.Now;
-            }
-            /// Måste gå igenom så att alla sequencer finns. 
-            /// Vi kan ha en sekvens som inte ska vara på overview men har en task som är ett undantag och skall vara med på overview
-            foreach (var task in tasks)
-            {
-                if (!sequences.Contains(task.Sequence))
-                {
-                    sequences.Add(task.Sequence);
-                }
-            }
-            return PartialView(new EventOverviewViewModel
-            {
-                Activities = this.scheduleService.FindTasks(startTime, DateTime.Now.AddDays(7), schedules, sequences, tasks, new List<Task>())
-                    .Where(x => x.Overview && !x.Quittanced && x.Patient.IsActive && !x.Patient.Deceased)
-                    .ToList(),
-                Categories = categories.IsNotNull() ? categories.ToDictionary(x => categories.IndexOf(x)) : new Dictionary<int, ScheduleSettings>(),
-                CalendarColors = this.settingsService.GetCalendarColorQuantity()
-            });
+            return this.PartialView();
         }
 
         /// <summary>

@@ -21,6 +21,10 @@
     {
         @Html.Submit("Upgradera behörigheter", new { @class = "btn" })
     }
+    @using (Html.Post("Hotfix18", "Acl", null))
+    {
+        @Html.Submit("Lägg till DA och BA där det behövs", new { @class = "btn" })
+    }
 </div>
 <div id="content" class="cf">
 	<div id="content-primary">

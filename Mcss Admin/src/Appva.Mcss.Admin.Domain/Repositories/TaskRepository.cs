@@ -101,6 +101,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             Account accountAlias = null;
             Patient patientAlias = null;
             Taxon   taxonAlias   = null;
+            Sequence sequenceAlias = null;
             Schedule scheduleAlias = null;
             ScheduleSettings scheduleSettingsAlias = null;
             if (model.AccountId.IsNotEmpty())
@@ -120,6 +121,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
                     .WhereRestrictionOn(x => taxonAlias.Path)
                         .IsLike(model.TaxonId.ToString(), MatchMode.Anywhere);
+            }
+            if (model.SequenceId.IsNotEmpty())
+            {
+                query
+                    .JoinAlias(x => x.Sequence, () => sequenceAlias)
+                    .Where(() => sequenceAlias.Id == model.SequenceId); ;
             }
             if (model.ScheduleSettingId.IsNotEmpty())
             {

@@ -621,6 +621,10 @@
     <Content Include="Assets\i\icn-warning-diabetes.png" />
     <Content Include="Assets\i\icn-warning-varan.png" />
     <Content Include="Assets\i\icn-warning-waran.png" />
+    <Content Include="Assets\i\ico-activity-group.png" />
+    <Content Include="Assets\i\ico-activity-message.png" />
+    <Content Include="Assets\i\ico-walk-group.png" />
+    <Content Include="Assets\i\ico-walk-message.png" />
     <Content Include="Assets\i\icon-calendar.gif" />
     <Content Include="Assets\i\ipad-htoggle-off.png" />
     <Content Include="Assets\i\ipad-htoggle-on.png" />

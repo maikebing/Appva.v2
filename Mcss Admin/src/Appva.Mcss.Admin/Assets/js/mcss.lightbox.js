@@ -40,6 +40,7 @@ mcss.lightbox = {
         if (content.hasClass('lb-validate-form')) {
             this.applyValidation(content.data('valclass'), content.data('valparams'));
         }
+        mcss.customSelect($('.activity-edit .col:first'));
 
         $('a.lb-link').click(function (e) {
             var clicked = $(this);
@@ -57,7 +58,6 @@ mcss.lightbox = {
             });
             e.preventDefault();
             e.stopPropagation();
-
         });
 
         $('.calendar-details .btn-del').click(function () {

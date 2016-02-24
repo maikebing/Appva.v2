@@ -78,7 +78,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Id = x,
                     Checked = false
                 }).ToList(),
-                Inventories = this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }),
+                Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
                 CreateNewInventory = true
             };
         }

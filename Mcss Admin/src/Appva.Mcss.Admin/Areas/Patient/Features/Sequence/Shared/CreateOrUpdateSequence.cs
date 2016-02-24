@@ -68,7 +68,7 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
-        [Required]
+        [Required(ErrorMessage="Insats måste anges")]
         [DisplayName("Insats")]
         public virtual string Name { get; set; }
 
@@ -144,6 +144,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The inventory
         /// </summary>
+        [RequiredIf(Target = "CreateNewInventory", Value = false, ErrorMessage = "Saldo måste väljas")]
         public Guid Inventory
         {
             get;

@@ -1,41 +1,44 @@
-﻿// <copyright file="UpdateSequence.cs" company="Appva AB">
+﻿// <copyright file="InventoryAmountListModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Models
+namespace Appva.Mcss.Admin.Application.Models
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
-    using Appva.Cqrs;
-    using Appva.Mcss.Web.ViewModels;
+    using System.Linq;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class UpdateSequence : IRequest<UpdateSequenceForm>
+    public sealed class InventoryAmountListModel
     {
+        #region Properties
+
         /// <summary>
-        /// The patient ID.
+        /// The name of the list
         /// </summary>
-        public Guid Id
+        public string Name
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The sequence ID.
+        /// List of amounts in current list
         /// </summary>
-        public Guid SequenceId
+        public IList<double> Amounts
         {
             get;
             set;
         }
+
+        #endregion
     }
 }

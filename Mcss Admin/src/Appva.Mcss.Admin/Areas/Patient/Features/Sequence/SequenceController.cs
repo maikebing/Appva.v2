@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+using Appva.Core.Logging;
 
     #endregion
 

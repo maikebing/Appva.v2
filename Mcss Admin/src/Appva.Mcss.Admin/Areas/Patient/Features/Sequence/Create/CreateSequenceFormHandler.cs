@@ -167,7 +167,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     message.Inventory = this.inventories.Create(message.Name, null, null, message.Patient);
                 }
-                inventory = this.inventories.Find(message.Inventory);
+                inventory = this.inventories.Find(message.Inventory.GetValueOrDefault());
             }
            
             return new Sequence()
@@ -183,8 +183,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 RangeInMinutesAfter = message.RangeInMinutesAfter,
                 Times = string.Join(",", message.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray()),
                 Dates = message.Dates,
-                Hour = message.Hour,
-                Minute = message.Minute,
                 Interval = (message.OnNeedBasis) ? 1 : message.Interval.Value,
                 OnNeedBasis = message.OnNeedBasis,
                 Reminder = message.Reminder,

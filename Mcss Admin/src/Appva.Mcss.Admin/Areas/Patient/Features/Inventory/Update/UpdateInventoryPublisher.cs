@@ -5,9 +5,11 @@
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
 namespace Appva.Mcss.Admin.Areas.Models.Handlers {
+    
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
     using System;
@@ -47,7 +49,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers {
         /// <inheritdoc />
         public override ListInventory Handle(UpdateInventoryModel message)
         {
-            var amounts = message.Amounts.Trim().Split(',');
+            var amounts = message.Amounts.IsNotEmpty() ? message.Amounts.Trim().Split(';'): null;
             this.inventories.Update(message.Inventory, message.Name, message.Unit, amounts);           
 
             return new ListInventory 

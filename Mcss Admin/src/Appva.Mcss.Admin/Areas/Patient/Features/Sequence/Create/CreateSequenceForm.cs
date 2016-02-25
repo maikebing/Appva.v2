@@ -27,14 +27,5 @@ using Appva.Cqrs;
             get;
             set;
         }
-
-        /// <summary>
-        /// The schedule ID.
-        /// </summary>
-        public Guid ScheduleId
-        {
-            get;
-            set;
-        }
     }
 }

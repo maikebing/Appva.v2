@@ -11,8 +11,10 @@ namespace Appva.Mcss.Admin.Models
     using Appva.Cqrs;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Web.Mvc;
 
     #endregion
 
@@ -43,9 +45,19 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The available withdrawal amounts
+        /// The withdrawal amounts
         /// </summary>
+        [DisplayName("Uttags-alternativ")]
         public string Amounts
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// List of available amounts
+        /// </summary>
+        public IEnumerable<SelectListItem> AmountsList
         {
             get;
             set;

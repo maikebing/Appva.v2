@@ -590,7 +590,9 @@
     <property name="CurrentLevel" />
     <property name="LastRecount" />
     <property name="Unit" />
-    <property name="Amounts" access="field.camelcase" />
+    <property name="Amounts" access="field.camelcase" type="StringClob">
+      <column name="Amounts"  sql-type="NTEXT" />
+    </property>
     <many-to-one name="Patient" />
     <bag name="Transactions" cascade="save-update">
       <key column="Inventory" />

@@ -10,9 +10,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web.Mvc;
 
     #endregion
 
@@ -28,6 +30,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// </summary>
         private readonly IInventoryService inventories;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>
+        /// </summary>
+        private readonly ISettingsService settings;
+
         #endregion
 
         #region Constructor.
@@ -35,9 +42,10 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateInventoryHandler"/> class.
         /// </summary>
-        public UpdateInventoryHandler(IInventoryService inventories)
+        public UpdateInventoryHandler(IInventoryService inventories, ISettingsService settings)
         {
             this.inventories = inventories;
+            this.settings = settings;
         }
 
         #endregion
@@ -53,9 +61,14 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             {
                 Id = message.Id,
                 Inventory = inventory.Id ,
-                Amounts = inventory.Amounts != null ? string.Join(", ", inventory.Amounts): string.Empty,
+                Amounts = inventory.Amounts != null ? string.Join(";", inventory.Amounts): string.Empty,
                 Name = inventory.Description,
-                Unit = inventory.Unit
+                Unit = inventory.Unit,
+                AmountsList = this.settings.GetIventoryAmountLists().Select(x => new SelectListItem()
+                {
+                    Text = x.Name,
+                    Value = string.Join(";", x.Amounts)
+                })
             };
         }
 

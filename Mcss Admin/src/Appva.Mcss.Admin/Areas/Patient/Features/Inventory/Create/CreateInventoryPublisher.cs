@@ -54,7 +54,7 @@ namespace Appva.Mcss.Admin.Models
         /// <inheritdoc />
         public override ListInventory Handle(CreateInventoryModel message)
         {
-            var amounts = message.Amounts.IsNotEmpty() ? message.Amounts.Split(',').ToList() : null;
+            var amounts = message.Amounts.IsNotEmpty() ? message.Amounts.Split(';').ToList() : null;
             var patient = this.patients.Load(message.Id);
             var inventory = this.inventories.Create(message.Name, message.Unit, amounts, patient);
             return new ListInventory

@@ -9,9 +9,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web.Mvc;
 
     #endregion
 
@@ -20,13 +22,23 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     internal sealed class CreateInventoryHandler : RequestHandler<Identity<CreateInventoryModel>, CreateInventoryModel>
     {
+        #region Fields.
+
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settings;
+
+        #endregion
+
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateInventoryHandler"/> class.
         /// </summary>
-        public CreateInventoryHandler()
+        public CreateInventoryHandler(ISettingsService settings)
         {
+            this.settings = settings;
         }
 
         #endregion
@@ -38,7 +50,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             return new CreateInventoryModel
             {
-                Id = message.Id
+                Id = message.Id,
+                AmountsList = this.settings.GetIventoryAmountLists().Select(x => new SelectListItem() 
+                    { 
+                        Text = x.Name, 
+                        Value = string.Join(";",x.Amounts)})
             };
         }
 

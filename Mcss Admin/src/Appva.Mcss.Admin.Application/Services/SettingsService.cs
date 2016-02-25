@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Persistence;
     using Newtonsoft.Json;
+using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -114,12 +115,25 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     }
 
     /// <summary>
+    /// Tenant-specific configuration settings
+    /// </summary>
+    public interface IConfigurationSettings
+    {
+        /// <summary>
+        /// Gets all available inventory amount lists for withdrawal
+        /// </summary>
+        /// <returns>List of <see cref="InventoryAmountListModel"/></returns>
+        IList<InventoryAmountListModel> GetIventoryAmountLists();
+    }
+
+    /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public interface ISettingsService :
         IAccessControlListTenantSettings,
         ISecuritySettings,
         IOldSettings,
+        IConfigurationSettings,
         IService
     {
         /// <summary>
@@ -495,6 +509,40 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 return (string)tc.ConvertFromString(result.Value);
             }
             return "form";
+        }
+
+        #endregion
+
+        #region IConfigurationSettings implementation.
+
+        /// <inheritdoc />
+        public IList<InventoryAmountListModel> GetIventoryAmountLists()
+        {
+            var retval = new List<InventoryAmountListModel>();
+            
+            //// The default lists
+            var amounts = new List<double>();
+            var amounts2 = new List<double>();
+            for (int x = 0; x <= 100; x++)
+            {
+                amounts.Add(x);
+                amounts2.Add(x);
+            }
+
+            retval.Add(new InventoryAmountListModel
+            {
+                Name = "0-100",
+                Amounts = amounts
+            });
+
+            amounts2.Insert(1, 0.5);
+            retval.Add(new InventoryAmountListModel
+            {
+                Name = "0, 0.5, 1, 2-100",
+                Amounts = amounts2
+            });
+
+            return retval;
         }
 
         #endregion

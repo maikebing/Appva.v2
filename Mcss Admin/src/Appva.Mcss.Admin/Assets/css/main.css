@@ -2811,6 +2811,9 @@ form .time {width:4em;}
 	border:1px solid #D8DFE5;
 	border-width:0 0 1px 1px;
 }
+.std-form .checkbox-grid .wrap ul {
+    width: 100%;
+}
 .std-form .checkbox-grid .checkbox {
 	float:left;
 	width:40px;

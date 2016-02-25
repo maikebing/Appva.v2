@@ -93,6 +93,7 @@
     <Compile Include="Models\CalendarDay.cs" />
     <Compile Include="Models\CalendarTask.cs" />
     <Compile Include="Models\CalendarWeek.cs" />
+    <Compile Include="Models\InventoryAmountListModel.cs" />
     <Compile Include="Models\ReportData.cs" />
     <Compile Include="Models\ChartDataFilter.cs" />
     <Compile Include="Models\IReportingFilter.cs" />

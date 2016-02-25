@@ -73,10 +73,10 @@
 						<th scope="col">Frekvens</th>
 						<th scope="col">Ges inom</th>
 						<th scope="col" colspan="@times.Count">Tider</th>
-						<th scope="col" colspan="@((Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read)) ? 3 : 2)">Instruktion</th>
+						<th scope="col" colspan="@((Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read)) ? 1 : 2)">Instruktion</th>
                         @if (Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read))
                         {
-                            <th scope="col">Saldo</th>
+                            <th colspan="3" scope="col">Saldo</th>
                         }
 					</tr>
 					<tr>
@@ -156,19 +156,26 @@
                         }
                         
                         <td class="info"><p>@item.Description</p></td> 
+                       
                         @if (Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read))
                         {
-                            <td class="nedit">
-                            @Html.ActionLink(Permissions.Inventory.Create, "Tillför mängd", "Add", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
-                            @if (Model.Schedule.ScheduleSettings.CountInventory)
-                            {
-                                @Html.ActionLink("Kontrollräkna", "Recount", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
-                            }
+                            <td>
+                                <span class="date">
+                                    @Html.ActionLink(Permissions.Inventory.Read, item.Inventory.Description, "list", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id }, new { })
+                                </span>
+                                Saldo: @item.Inventory.CurrentLevel
                             </td>
                         }
                         @if (Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read))
                         {
-                            <td>@item.Inventory.CurrentLevel</td>
+                            <td class="nedit">
+                                @Html.ActionLink(Permissions.Inventory.Create, "Tillför mängd", "Add", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                @Html.ActionLink(Permissions.Inventory.Create, "Uttag", "Withdraw", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                @if (Model.Schedule.ScheduleSettings.CountInventory)
+                                {
+                                    @Html.ActionLink("Kontrollräkna", "Recount", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                }
+                            </td>
                         }
 						<td class="edit">
                             @Html.ActionLink(Permissions.Sequence.Update, "Ändra", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })

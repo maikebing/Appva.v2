@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
+using Appva.Core.Logging;
 
     #endregion
 
@@ -40,6 +41,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext context;
 
+        /// <summary>
+        /// The <see cref="IInventoryService"/>.
+        /// </summary>
+        private readonly IInventoryService inventories;
+
         #endregion
 
         #region Constructor.
@@ -47,9 +53,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceHandler"/> class.
         /// </summary>
-        public UpdateSequenceHandler(ISequenceService sequenceService, IPersistenceContext context)
+        public UpdateSequenceHandler(ISequenceService sequenceService, IInventoryService inventories, IPersistenceContext context)
         {
             this.sequenceService = sequenceService;
+            this.inventories = inventories;
             this.context = context;
         }
 
@@ -75,8 +82,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Delegation = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
                 Delegations = this.GetDelegations(schedule),
                 Dates = sequence.Dates,
-                Hour = sequence.Hour,
-                Minute = sequence.Minute,
                 Interval = sequence.Interval,
                 Times = this.CreateTimes(sequence),
                 OnNeedBasis = sequence.OnNeedBasis,
@@ -86,7 +91,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 ReminderInMinutesBefore = sequence.ReminderInMinutesBefore,
                 Patient = sequence.Patient,
                 Schedule = sequence.Schedule,
-                Nurse = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse)
+                Nurse = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse),
+                Inventory = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
+                Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null
             };
         }
 

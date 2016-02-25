@@ -112,7 +112,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #endregion
 
-        #region 
+        #region IPatientService implementation
 
         /// <inheritdoc />
         public Patient Get(Guid id)
@@ -121,17 +121,20 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
+        /// <exception cref="NotUniquePersonalIdentityNumberException">If the personal identity number is not unique an exception will be thrown</exception>
         public Patient FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber)
         {
             var accounts = this.persistence.QueryOver<Patient>()
-                //// .Where(x => x.IsActive) This should be ignored, e.g. using it with authentication or is unique methods.
                 .And(x => x.PersonalIdentityNumber == personalIdentityNumber)
                 .List();
+            if (accounts.Count > 1)
+            {
+                throw new NotUniquePersonalIdentityNumberException("Not unique personal identity number");
+            }
             if (accounts.Count == 1)
             {
-                return accounts[0];
+                return accounts.First();
             }
-            //// If above we need to throw exception
             return null;
         }
 
@@ -152,6 +155,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             patient.IsActive = true;
             patient.UpdatedAt = DateTime.Now;
+            patient.LastActivatedAt = DateTime.Now;
             this.persistence.Update(patient);
             this.auditing.Update(
                 patient,
@@ -165,6 +169,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             patient.IsActive = false;
             patient.UpdatedAt = DateTime.Now;
+            patient.LastInActivatedAt = DateTime.Now;
             this.persistence.Update(patient);
             this.auditing.Update(
                 patient,
@@ -184,6 +189,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public bool Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, Taxon address, IList<Taxon> assessments, out Patient patient)
         {
+            var check = this.FindByPersonalIdentityNumber(personalIdentityNumber);
+            if (check != null)
+            {
+                throw new NotUniquePersonalIdentityNumberException("Personal identity number already exists!");
+            }
             patient = new Patient
                 {
                     IsActive = true,
@@ -251,6 +261,49 @@ namespace Appva.Mcss.Admin.Application.Services
                 }
             }
             return true;
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Represents errors that occur a personal identity number is not unique.
+    /// </summary>
+    [Serializable]
+    public sealed class NotUniquePersonalIdentityNumberException : Exception
+    {
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the 
+        /// <see cref="NotUniquePersonalIdentityNumberException"/> class.
+        /// </summary>
+        public NotUniquePersonalIdentityNumberException()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the 
+        /// <see cref="NotUniquePersonalIdentityNumberException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error</param>
+        public NotUniquePersonalIdentityNumberException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the 
+        /// <see cref="NotUniquePersonalIdentityNumberException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error</param>
+        /// <param name="inner">
+        /// The exception that is the cause of the current exception, or a null reference
+        /// (Nothing in Visual Basic) if no inner exception is specified
+        /// </param>
+        public NotUniquePersonalIdentityNumberException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
 
         #endregion

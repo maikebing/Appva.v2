@@ -24,6 +24,7 @@ using Appva.Mcss.Web.Controllers;
 using NHibernate.Criterion;
 using NHibernate.Transform;
 using Appva.Mcss.Admin.Application.Security.Identity;
+using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -54,6 +55,11 @@ using Appva.Mcss.Admin.Application.Security.Identity;
         /// </summary>
         private readonly ITaxonFilterSessionHandler filtering;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settings;
+
         #endregion
 
         #region Constructor.
@@ -69,11 +75,13 @@ using Appva.Mcss.Admin.Application.Security.Identity;
             IIdentityService identityService,
             ITaskService taskService, 
             IPersistenceContext persistence,
+            ISettingsService settings,
             ITaxonFilterSessionHandler filtering)
         {
             this.identityService = identityService;
             this.taskService = taskService;
             this.persistence = persistence;
+            this.settings = settings;
             this.filtering = filtering;
         }
 
@@ -84,9 +92,10 @@ using Appva.Mcss.Admin.Application.Security.Identity;
         /// <inheritdoc />
         public override InventoryOverviewViewModel Handle(OverviewInventory message)
         {
+            var inventoryCalculationSpanInDays = this.settings.Find<int>(ApplicationSettings.InventoryCalculationSpanInDays);
             var taxon = this.filtering.GetCurrentFilter();
             var now = DateTime.Now;
-            var lastStockCalculationDate = now.AddDays(-30).AddDays(7);
+            var lastStockCalculationDate = now.AddDays(-inventoryCalculationSpanInDays).AddDays(7);
             RecountOverviewItemViewModel dto = null;
             Inventory inventory = null;
             Patient patient = null;
@@ -119,9 +128,9 @@ using Appva.Mcss.Admin.Application.Security.Identity;
                 .List<RecountOverviewItemViewModel>();
             return new InventoryOverviewViewModel
             {
-                DelayedStockCounts = allStockCounts.Where(x => now.Subtract(x.LastRecount.GetValueOrDefault()).TotalDays > 30).ToList(),
-                StockCounts = allStockCounts.Where(x => now.Subtract(x.LastRecount.GetValueOrDefault()).TotalDays <= 30).ToList(),
-                StockControlIntervalInDays = 30
+                DelayedStockCounts = allStockCounts.Where(x => now.Subtract(x.LastRecount.GetValueOrDefault()).TotalDays > inventoryCalculationSpanInDays).ToList(),
+                StockCounts = allStockCounts.Where(x => now.Subtract(x.LastRecount.GetValueOrDefault()).TotalDays <= inventoryCalculationSpanInDays).ToList(),
+                StockControlIntervalInDays = inventoryCalculationSpanInDays
             };
         }
 

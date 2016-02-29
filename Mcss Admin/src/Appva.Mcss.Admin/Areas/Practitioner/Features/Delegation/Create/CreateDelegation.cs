@@ -18,7 +18,7 @@ using System.Linq;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateDelegation : Identity<CreateDelegationModel>
+    public sealed class CreateDelegation : Identity<DelegationFormModel>
     {
        
     }

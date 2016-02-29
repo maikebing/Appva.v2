@@ -1,4 +1,4 @@
-﻿@model Appva.Mcss.Admin.Areas.Models.CreateDelegationModel
+﻿@model Appva.Mcss.Admin.Models.DelegationFormModel
 @{ ViewBag.Title = "Lägg till delegering"; }
 <div class="std-panel std-form delegdialog lb-validate-form" data-valclass="DelegationCreate">
     @using (Html.BeginForm(new { id = Model.Id })) {
@@ -24,12 +24,8 @@
                     @foreach (var delegationTemplate in Model.DelegationTemplate) {
                         foreach (var subDelegationTemplate in delegationTemplate.Value) {
                             <li class="@String.Format("cat{0}", subiterator)">
-                                <label>
-                                    @if (Model.DelegationsTaken.Contains(subDelegationTemplate.Id)) {
-                                        <input type="checkbox" checked="checked" disabled="disabled" name="Delegations" value="@subDelegationTemplate.Id" />
-                                    } else {
-                                        <input type="checkbox" name="Delegations" value="@subDelegationTemplate.Id" /> 
-                                    }
+                                <label>                                    
+                                    <input type="checkbox" name="Delegations" value="@subDelegationTemplate.Id" /> 
                                     @subDelegationTemplate.Name
                                 </label>
                             </li>
@@ -41,6 +37,25 @@
 		        <input type="hidden" id="TestDelegations" name="TestDelegations" />
             </div>
 	    </div>
+        <div class="select selectgroup cf">
+            <strong>Adress:</strong>
+            @if (Model.OrganizationTaxons.IsNotNull())
+            {
+                foreach (var taxon in Model.OrganizationTaxons)
+                {
+                    <div class="select">
+                        <label class="structural">@taxon.Label</label>
+                        @Html.DropDownList(taxon.Id,
+                                    new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
+                                    string.Format("Välj {0}...", taxon.OptionLabel),
+                                    new { @class = "dropdown" }
+                                )
+                    </div>
+                }
+            }
+            @Html.HiddenFor(m => m.OrganizationTaxon)
+            @Html.ValidationMessageFor(m => m.OrganizationTaxon)
+        </div>
         <div class="select multisel">
 		    @Html.LabelFor(m => m.Patient)
             @Html.DropDownListFor(

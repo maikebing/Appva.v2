@@ -63,10 +63,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 Id = message.Id,
                 ScheduleId = schedule.Id,
-                Delegations = this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
+                Delegations = schedule.ScheduleSettings.DelegationTaxon != null ? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
                     .Select(x => new SelectListItem { 
                         Text = x.Name,
-                        Value = x.Id.ToString() }),
+                        Value = x.Id.ToString() })
+                        : new List<SelectListItem>(),
                 Times = CreateTimes().Select(x => new CheckBoxViewModel
                 {
                     Id = x,

@@ -309,6 +309,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 .Where(x => x.IsActive)
                 .And(x => x.EndDate < DateTime.Now.Date)
                 .JoinAlias(x => x.Patient, () => patientAlias)
+                    .Where(() => patientAlias.IsActive)
+                    .And(() => !patientAlias.Deceased)
                 .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
                     .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
                         .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))

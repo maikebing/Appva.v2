@@ -425,6 +425,7 @@
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegation.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Sharedf\DelegationFormModel.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReport.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />

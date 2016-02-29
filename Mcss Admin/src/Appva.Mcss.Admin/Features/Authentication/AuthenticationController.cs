@@ -8,9 +8,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
 {
     #region Imports.
 
-    using System;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
     using Appva.Cqrs;
@@ -43,12 +41,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// <summary>
         /// The <see cref="IAccountService"/>.
         /// </summary>
-        private readonly IAccountService accountService;
-
-        /// <summary>
-        /// The <see cref="IAccountService"/>.
-        /// </summary>
-        private readonly ISettingsService settingsService;
+        private readonly ISettingsService settings;
 
         /// <summary>
         /// The <see cref="IMediator"/>.
@@ -64,13 +57,17 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         /// <param name="siths">The <see cref="ISithsAuthentication"/></param>
         /// <param name="authentication">The <see cref="IFormsAuthentication"/></param>
-        public AuthenticationController(ISithsAuthentication siths, IFormsAuthentication authentication,
-            IAccountService accountService, ISettingsService settingsService, IMediator mediator)
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
+        /// <param name="mediator">The <see cref="IMediator"/></param>
+        public AuthenticationController(
+            ISithsAuthentication siths,
+            IFormsAuthentication authentication,
+            ISettingsService settings,
+            IMediator mediator)
         {
             this.siths = siths;
             this.authentication = authentication;
-            this.accountService = accountService;
-            this.settingsService = settingsService;
+            this.settings = settings;
             this.mediator = mediator;
         }
 
@@ -78,17 +75,17 @@ namespace Appva.Mcss.Admin.Features.Authentication
 
         #region Routes.
 
-        #region Sign In.
+        #region Sign in.
 
         /// <summary>
         /// Returns the sign in form view.
         /// </summary>
-        /// <returns>The sign in form</returns>
+        /// <returns>The <see cref="SignInForm"/></returns>
         [Route("sign-in")]
         [AllowAnonymous, HttpGet, Hydrate]
         public ActionResult SignIn(SignIn request)
         {
-            if (this.settingsService.GetAdminLogin() == "siths")
+            if (this.settings.IsSithsAuthorizationEnabled())
             {
                 return this.RedirectToAction("SignInSiths");
             }
@@ -107,7 +104,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
         public ActionResult SignIn(SignInForm request)
         {
             IAuthenticationResult result;
-            if (!this.authentication.AuthenticateWithUserNameAndPassword(request.UserName, request.Password, out result))
+            if (! this.authentication.AuthenticateWithUserNameAndPassword(request.UserName, request.Password, out result))
             {
                 if (result.IsFailureDueToIdentityLockout)
                 {
@@ -117,7 +114,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
                 return this.View();
             }
             this.authentication.SignIn(result.Identity);
-            if (!result.Identity.LastPasswordChangedDate.HasValue)
+            if (! result.Identity.LastPasswordChangedDate.HasValue)
             {
                 return this.RedirectToAction("ChangePassword", "Accounts", new
                 {
@@ -132,7 +129,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
 
         #endregion
 
-        #region Sign Out.
+        #region Sign out.
 
         /// <summary>
         /// Returns the sign in form view.
@@ -148,7 +145,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
 
         #endregion
 
-        #region External Login (SITHS).
+        #region External login (siths).
 
         /// <summary>
         /// Redirects to the Siths Identity Provider (IdP) login page.
@@ -165,7 +162,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// <summary>
         /// The Siths Identity Provider (IdP) token response authentication.
         /// </summary>
-        /// <param name="token">The response token</param>
+        /// <param name="authify_response_token">The response token</param>
         /// <returns>A redirect to the external login</returns>
         [Route("sign-in/external/siths/token")]
         [AllowAnonymous, HttpGet]
@@ -183,7 +180,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
 
         #endregion
 
-        #region Lock Out.
+        #region Lock out.
 
         /// <summary>
         /// Returns the sign in form view.
@@ -198,72 +195,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
 
         #endregion
 
-        #region Forgot Password.
-
-        [Route("reset-password")]
-        [HttpGet, Hydrate]
-        public ActionResult ResetPassword()
-        {
-            return this.View();
-        }
-
-        [Route("reset-password")]
-        [HttpPost, Validate, ValidateAntiForgeryToken]
-        public ActionResult ResetPassword(ResetPassword model)
-        {
-            if (! this.mediator.Send(model))
-            {
-                ModelState.AddModelError(string.Empty, "Lösenord eller nytt lösenord är felaktigt.");
-                return this.View(model);
-            }
-            this.authentication.SignOut();
-            return this.RedirectToAction("ResetPasswordSuccess");
-        }
-
-        [Route("reset-password/success")]
-        [AllowAnonymous, HttpGet]
-        public ActionResult ResetPasswordSuccess()
-        {
-            return this.View("ResetPasswordSuccess");
-        }
-
-        [Route("reset-password/expired")]
-        [AllowAnonymous, HttpGet]
-        public ActionResult ResetPasswordExpired()
-        {
-            return this.View("ResetPasswordTokenExpired");
-        }
-
-        /// <summary>
-        /// Returns the sign in form view.
-        /// </summary>
-        /// <returns>The sign in form</returns>
-        [Route("forgot-password")]
-        [AllowAnonymous, HttpGet, Hydrate]
-        public ActionResult Forgot()
-        {
-            return this.View(new ForgotPassword());
-        }
-
-        /// <summary>
-        /// Signs in the user if successfully authenticated.
-        /// </summary>
-        /// <returns>A redirect to authorized return url or authorized menu</returns>
-        [Route("forgot-password")]
-        [AllowAnonymous, HttpPost, Validate, ValidateAntiForgeryToken]
-        public ActionResult Forgot(ForgotPassword model)
-        {
-            if (! this.mediator.Send(model))
-            {
-                ModelState.AddModelError(string.Empty, "Personnummer eller e-post är felaktigt.");
-                return this.View(model);
-            }
-            return this.View("ForgotPasswordSuccess", model);
-        }
-
-        #endregion
-
-        #region Redirect For Old Invalid URLs.
+        #region Redirect for deprecated invalid urls.
 
         /// <summary>
         /// Redirects to the new authentication URL if the deprecated URL is used.

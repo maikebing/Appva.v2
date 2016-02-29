@@ -9,11 +9,9 @@ namespace Appva.Mvc.Configuration
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Configuration;
     using System.Globalization;
-    using System.Linq;
     using System.Web.Configuration;
     using Appva.Core.Environment;
 
@@ -35,6 +33,9 @@ namespace Appva.Mvc.Configuration
 
         #region Properties.
 
+        /// <summary>
+        /// Gets the operational environment.
+        /// </summary>
         [ConfigurationProperty(EnvironmentConfigProperty, DefaultValue = OperationalEnvironment.Development, IsRequired = true)]
         [TypeConverter(typeof(OperationalEnvironmentConverter))]
         public OperationalEnvironment Environment
@@ -43,6 +44,7 @@ namespace Appva.Mvc.Configuration
             {
                 return (OperationalEnvironment) this[EnvironmentConfigProperty];
             }
+
             private set
             {
                 this[EnvironmentConfigProperty] = value;

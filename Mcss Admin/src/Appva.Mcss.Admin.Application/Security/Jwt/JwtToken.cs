@@ -11,7 +11,6 @@ namespace Appva.Mcss.Admin.Application.Security.Jwt
     using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens;
-    using System.Linq;
     using System.Security.Claims;
     using Appva.Core.Extensions;
     using Microsoft.Owin.Security.DataHandler.Encoder;
@@ -25,13 +24,14 @@ namespace Appva.Mcss.Admin.Application.Security.Jwt
     internal static class JwtToken
     {
         /// <summary>
-        /// 
+        /// Creates a new JWT token.
         /// </summary>
-        /// <param name="base64SymmetricKey"></param>
-        /// <param name="issuer"></param>
-        /// <param name="audience"></param>
-        /// <param name="expireAt"></param>
-        /// <param name="claims"></param>
+        /// <param name="base64SymmetricKey">The base64 symmetric key</param>
+        /// <param name="issuer">The issuer</param>
+        /// <param name="audience">The audience</param>
+        /// <param name="expireAt">The token lifetime</param>
+        /// <param name="claims">The list of claims</param>
+        /// <returns>A new <see cref="JwtSecurityToken"/> instance</returns>
         public static JwtSecurityToken CreateNew(string base64SymmetricKey, string issuer, string audience, DateTime expireAt, IEnumerable<Claim> claims)
         {
             var symmetricKey = TextEncodings.Base64Url.Decode(base64SymmetricKey);
@@ -45,10 +45,11 @@ namespace Appva.Mcss.Admin.Application.Security.Jwt
         }
 
         /// <summary>
-        /// 
+        /// Creates a new symmetric key.
         /// </summary>
-        /// <param name="tenantKey"></param>
-        /// <param name="userKey"></param>
+        /// <param name="tenantKey">The partial tenant key</param>
+        /// <param name="userKey">The partial user key</param>
+        /// <returns>A symmetric 64 bit byte array key</returns>
         public static byte[] CreateSymmetricKey(string tenantKey, string userKey)
         {
             var key1 = tenantKey.FromBase64();

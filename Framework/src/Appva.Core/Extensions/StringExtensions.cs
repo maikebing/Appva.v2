@@ -220,7 +220,7 @@ namespace Appva.Core.Extensions
                     builder.Append((char)(c | 32));
                     previousCharIsDash = false;
                 }
-                if (c.Equals(' ') || c.Equals(',') || c.Equals('.') || c.Equals('/') ||
+                if (c.Equals(' ')  || c.Equals(',') || c.Equals('.') || c.Equals('/') ||
                     c.Equals('\\') || c.Equals('-') || c.Equals('_') || c.Equals('='))
                 {
                     if (! previousCharIsDash && builder.Length > 0)

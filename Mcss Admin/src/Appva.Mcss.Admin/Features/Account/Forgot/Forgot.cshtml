@@ -1,0 +1,24 @@
+﻿@model Forgot
+@{
+    Layout = "~/Features/Shared/_LoginLayout.cshtml";
+    SetTitle("Glömt lösenord");
+    SetBodyCssClass("page-forgot-password");
+}
+<div class="hd">
+	Glömt lösenord
+</div>
+<div class="hd org">
+    <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
+	<span>@Tenant</span>
+</div>
+<div class="bd">
+	@using (Html.Post())
+    {
+        @Html.ValidationAlert("Felaktig e-postadress och/eller personnummer", string.Empty, new {  @class = "error-msg" })
+        @Html.FormGroup(x => x.EmailAddress).Label("E-postadress").TextBox("fornamn.efternamn@organisation.se", new { @autofocus = "autofocus" }).Build()
+        @Html.FormGroup(x => x.PersonalIdentityNumber).Label("Personnummer").TextBox("ÅÅÅÅMMDD-NNNN").Build()
+		<div class="hr"></div>
+        @Html.Submit("Skicka återställningslänk",  new { @class = "btn" })
+		@Html.ActionLink("Avbryt", "SignIn", "Authentication", null, new { @class = "btn btn-right cancel" })
+    }
+</div>

@@ -1,5 +1,7 @@
 ﻿@model Appva.Mcss.Admin.Models.UpdateAccount
-@{ ViewBag.Title = "Ändra medarbetaruppgifter"; }
+@{ 
+    SetTitle("Ändra medarbetaruppgifter"); 
+}
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AccountCreate" data-valparams="id=@Model.Id;uidUrl=@Url.Action("VerifyUniqueAccount");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
     @using (Html.Post())
     {
@@ -11,15 +13,15 @@
             @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()
             @if (Model.IsMobileDevicePasswordFieldVisible)
             {
-                @Html.FormGroup(x => x.DevicePassword, "text").Label().Password().Validate().Build()
+                @Html.FormGroup(x => x.DevicePassword, "text").Label().Password(null, new { value = Model.DevicePassword }).Validate().Build()
             }
             @if (Model.IsUsernameVisible)
             {
                 @Html.FormGroup(x => x.Username, "text").Label().TextBox(htmlAttributes: new { disabled = "disabled" }).Validate().Build()
             }
-            @if (Model.IsUsernameVisible)
+            @if (Model.IsHsaIdFieldVisible)
             {
-                @Html.FormGroup(x => x.Username, "text").Label().TextBox(htmlAttributes: new { disabled="disabled" }).Validate().Build()
+                @Html.FormGroup(x => x.HsaId, "text").Label("HSA ID").TextBox().Validate().Build()
             }
             <div class="select selectgroup cf">
                 <strong>Adress:</strong>

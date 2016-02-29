@@ -18,7 +18,6 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Apis.TenantServer.Legacy;
     using Appva.Caching.Providers;
     using Appva.Core.Environment;
-    using Appva.Core.Messaging;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Caching;
     using Appva.Mcss.Admin.Application.Security;
@@ -28,6 +27,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
     using Appva.Mvc.Configuration;
+    using Appva.Mvc.Messaging;
     using Appva.Persistence;
     using Appva.Persistence.Autofac;
     using Appva.Persistence.MultiTenant;
@@ -41,11 +41,8 @@ namespace Appva.Mcss.Admin.Configuration
     using Microsoft.Owin;
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.Cookies;
-    using Microsoft.Owin.Security.OAuth;
     using Owin;
     using RazorEngine.Configuration;
-    using Mvc = Appva.Mvc.Messaging;
-    using Appva.Hip;
 
     #endregion
 
@@ -54,17 +51,30 @@ namespace Appva.Mcss.Admin.Configuration
     /// </summary>
     public static class ContainerBuilderExtensions
     {
+        /// <summary>
+        /// Registers the application environment.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
+        /// <remarks>This must be registered first in order</remarks>
         public static void RegisterEnvironment(this ContainerBuilder builder)
         {
             var environment = WebApplicationConfiguration.For<MvcApplication>();
             builder.Register<IApplicationEnvironment>(x => environment).SingleInstance();
         }
 
+        /// <summary>
+        /// Registers the owin context.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterOwinContext(this ContainerBuilder builder)
         {
             builder.Register(x => HttpContext.Current.GetOwinContext()).As<IOwinContext>();
         }
 
+        /// <summary>
+        /// Registers the identity services.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterIdentityServices(this ContainerBuilder builder)
         {
             builder.Register(x =>
@@ -73,18 +83,31 @@ namespace Appva.Mcss.Admin.Configuration
             }).As<IIdentityService>().InstancePerLifetimeScope();
         }
 
+        /// <summary>
+        /// Registers the tenant services.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterTenantServices(this ContainerBuilder builder)
         {
             builder.RegisterType<TenantService>().As<ITenantService>().SingleInstance();
             builder.RegisterType<TenantAwareMemoryCache>().As<ITenantAwareMemoryCache>().SingleInstance();
         }
 
+        /// <summary>
+        /// Registers the mediator.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterMediator(this ContainerBuilder builder)
         {
             builder.RegisterType<Mediator>().As<IMediator>().InstancePerLifetimeScope();
             builder.RegisterType<MediatorDependencyResolver>().AsImplementedInterfaces().InstancePerLifetimeScope();
         }
 
+        /// <summary>
+        /// Registers all authorization/authentication.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
+        /// <param name="app">The <see cref="IAppBuilder"/></param>
         public static void RegisterAuthorization(this ContainerBuilder builder, IAppBuilder app)
         {
             builder.RegisterType<FormsAuthentication>().As<IFormsAuthentication>().InstancePerRequest();
@@ -93,17 +116,6 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<PreAuthorizeTenantMiddleware>().SingleInstance();
             builder.RegisterType<JwtSecurityTokenHandler>().AsSelf().SingleInstance();
             builder.RegisterType<JwtSecureDataFormat>().AsSelf().InstancePerRequest();
-            builder.Register<ResetPasswordOptions>(x => new ResetPasswordOptions
-            {
-                TokenQueryParam    = "token",
-                ResetPasswordPath  = new PathString("/auth/reset-password"),
-                TokenExpiredPath   = new PathString("/auth/reset-password/expired"),
-                TokenInvalidPath   = new PathString("/auth/sign-in"),
-                AuthenticationMode = AuthenticationMode.Active,
-                AuthenticationType = OAuthDefaults.AuthenticationType,
-                Provider           = x.Resolve<JwtSecureDataFormat>()
-            }).InstancePerRequest();
-            builder.RegisterType<ResetPasswordMiddleware>().InstancePerRequest();
             builder.Register<CookieAuthenticationOptions>(x => new CookieAuthenticationOptions
             {
                 AuthenticationMode = AuthenticationMode.Active,
@@ -112,37 +124,57 @@ namespace Appva.Mcss.Admin.Configuration
                 LoginPath          = new PathString("/auth/sign-in"),
                 LogoutPath         = new PathString("/auth/sign-out"),
                 SlidingExpiration  = true,
-                ExpireTimeSpan     = TimeSpan.FromMinutes(15)
+                ExpireTimeSpan     = TimeSpan.FromMinutes(30)
             }).SingleInstance();
             builder.RegisterType<CookieAuthenticationMiddleware>().SingleInstance();
+            builder.Register<SecurityTokenOptions>(x => new SecurityTokenOptions
+            {
+                RegisterTokenPath        = new PathString("/account/register"),
+                RegisterTokenExpiredPath = new PathString("/account/register/expired"),
+                ResetTokenPath           = new PathString("/account/reset-password"),
+                ResetTokenExpiredPath    = new PathString("/account/reset-password/expired"),
+                TokenInvalidPath         = new PathString("/auth/sign-in"),
+                Provider                 = x.Resolve<JwtSecureDataFormat>()
+            }).InstancePerRequest();
+            builder.RegisterType<SecurityTokenMiddleware>().InstancePerRequest();
         }
 
+        /// <summary>
+        /// Registers the e-mail messaging.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterEmailMessaging(this ContainerBuilder builder)
         {
             builder.Register(x => new TemplateServiceConfiguration
             {
-                TemplateManager = new Mvc.CshtmlTemplateManager("Features/Shared/EmailTemplates")
+                TemplateManager = new CshtmlTemplateManager("Features/Shared/EmailTemplates")
             }).As<ITemplateServiceConfiguration>().SingleInstance();
-            if (ApplicationEnvironment.Is.Production || ApplicationEnvironment.Is.Demo)
+            if (ApplicationEnvironment.Is.Production || ApplicationEnvironment.Is.Demo || ApplicationEnvironment.Is.Staging)
             {
-                builder.RegisterType<MailService>().As<ISimpleMailService>().SingleInstance();
-                builder.RegisterType<Mvc.MailService>().As<Mvc.IRazorMailService>().SingleInstance();
+                builder.RegisterType<MailService>().As<IRazorMailService>().SingleInstance();
             }
             else
             {
-                builder.RegisterType<NoOpMailService>().As<ISimpleMailService>().SingleInstance();
-                builder.RegisterType<Mvc.NoOpMailService>().As<Mvc.IRazorMailService>().SingleInstance();
+                builder.RegisterType<NoOpMailService>().As<IRazorMailService>().SingleInstance();
             }
         }
 
-        public static void RegisterNhibernateProvider(this ContainerBuilder builder)
+        /// <summary>
+        /// Registers the nhibernate profiler.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
+        public static void RegisterNhibernateProfiler(this ContainerBuilder builder)
         {
-            if (! ApplicationEnvironment.Is.Production)
+            if (ApplicationEnvironment.Is.Development)
             {
-                NHibernateProfiler.Initialize();
+                //NHibernateProfiler.Initialize();
             }
         }
 
+        /// <summary>
+        /// Registers the exception handling.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterExceptionHandling(this ContainerBuilder builder)
         {
             builder.RegisterType<ExceptionFilter>().AsExceptionFilterFor<Controller>().InstancePerRequest();
@@ -150,6 +182,10 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<PersistenceExceptionHandler>().As<IPersistenceExceptionHandler>().SingleInstance();
         }
 
+        /// <summary>
+        /// Registers the persistence.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterPersistence(this ContainerBuilder builder)
         {
             var properties = new Dictionary<string, string>();
@@ -185,26 +221,33 @@ namespace Appva.Mcss.Admin.Configuration
                 .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
         }
 
+        /// <summary>
+        /// Registers the authify client.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterAuthify(this ContainerBuilder builder)
         {
             builder.Register<SithsClient>(x => new SithsClient(new AuthifyWtfTokenizer())).As<ISithsClient>().SingleInstance();
         }
 
+        /// <summary>
+        /// Registers all repositories.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterRepositories(this ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(typeof(IRepository).Assembly).Where(x => x.GetInterfaces()
                 .Any(y => y.IsAssignableFrom(typeof(IRepository)))).AsImplementedInterfaces().InstancePerRequest();
         }
 
+        /// <summary>
+        /// Registers all services.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterServices(this ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(typeof(IService).Assembly).Where(x => x.GetInterfaces()
                 .Any(y => y.IsAssignableFrom(typeof(IService)))).AsImplementedInterfaces().InstancePerRequest();
         }
-
-        public static void RegisterHipClient(this ContainerBuilder builder)
-        {
-            builder.Register<DemoHipClient>(x => new DemoHipClient()).As<IHipClient>().SingleInstance(); 
-        }        
     }
 }

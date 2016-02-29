@@ -15,6 +15,10 @@
             {
                 @Html.FormGroup(x => x.DevicePassword, "text").Label().Password().Validate().Build()
             }
+            @if (Model.IsHsaIdFieldVisible)
+            {
+                @Html.FormGroup(x => x.HsaId, "text").Label("HSA ID").TextBox().Validate().Build()
+            }
             <div class="select">
                 @Html.LabelFor(m => m.TitleRole)
                 @Html.DropDownListFor(m => m.TitleRole, new SelectList(Model.Titles, "Value", "Text", Model.TitleRole), "Välj titel ...")

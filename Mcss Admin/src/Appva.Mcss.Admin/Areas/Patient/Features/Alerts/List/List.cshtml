@@ -7,7 +7,8 @@
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
     <h1>Larm</h1>
-    @using (Html.Get("List", "Alert", new { id = Model.Patient.Id }, null)) {
+    @using (Html.Get("List", "Alert", new { id = Model.Patient.Id }, null)) 
+    {
         <p class="filter">
             <strong>Tid:</strong>
             @Html.DropDownList("year", Model.Years, "År")
@@ -19,91 +20,95 @@
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
-        @if (Model.TaskCurrentMap.Count() == 0) {
+        @if (Model.TaskCurrentMap.Count() == 0) 
+        {
             <div id="alarm-status">
                 <h2 class="ok">Inga pågående larm.</h2>
             </div>
         }
-        else {
-
-            foreach (var TimeOfDay in Model.TaskCurrentMap) {
-
+        else 
+        {
+            foreach (var TimeOfDay in Model.TaskCurrentMap) 
+            {
                 <div class="alarm-view active-alarm alarm">
-
-
-                @foreach (var schedule in Model.TaskCurrentMap[TimeOfDay.Key]) {
-                    var day = string.Empty;
-                    if (TimeOfDay.Key.Date == DateTime.Today) {
-                        day = "idag";
-                    }
-                    else if (TimeOfDay.Key.Date == DateTime.Today.AddDays(-1)) {
-                        day = "igår";
-                    }
-
-                    <div class="heading cf">
-                        <h2>@schedule.Key.ScheduleSettings.AlternativeName kl @String.Format("{0:HH:mm}", TimeOfDay.Key) @day den @String.Format("{0:d MMMM yyyy}", TimeOfDay.Key)</h2>
-                    </div>
-                    <div class="body">
-                        <strong>Följande aktiviteter genomfördes inte i tid:</strong>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th scope="col">Aktivitet</th>
-                                    <th scope="col">Skulle genomföras</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Signerat av</th>
-                                    <th scope="col">Kvittera</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var Item in Model.TaskCurrentMap[TimeOfDay.Key][schedule.Key]) {
-
-                                    var interval = string.Empty;
-                                    if (Item.RangeInMinutesAfter == Item.RangeInMinutesBefore) {
-                                        interval = string.Format("±{0}", Item.RangeInMinutesAfter);
-                                    }
-                                    else {
-                                        interval = string.Format("-{0} +{1}", Item.RangeInMinutesBefore, Item.RangeInMinutesAfter);
-                                    }
+                    @foreach (var schedule in Model.TaskCurrentMap[TimeOfDay.Key]) 
+                    {
+                        var day = string.Empty;
+                        if (TimeOfDay.Key.Date == DateTime.Today) 
+                        {
+                            day = "idag";
+                        }
+                        else if (TimeOfDay.Key.Date == DateTime.Today.AddDays(-1)) 
+                        {
+                            day = "igår";
+                        }
+                        <div class="heading cf">
+                            <h2>@schedule.Key.ScheduleSettings.Name kl @string.Format("{0:HH:mm}", TimeOfDay.Key) @day den @string.Format("{0:d MMMM yyyy}", TimeOfDay.Key)</h2>
+                        </div>
+                        <div class="body">
+                            <strong>Följande aktiviteter genomfördes inte i tid:</strong>
+                            <table>
+                                <thead>
                                     <tr>
-                                        <td>@Item.Sequence.Name</td>
-                                        <td>kl @String.Format("{0:HH:mm}", Item.Scheduled) @interval min</td>
-                                        <td>
-                                            @if (!Item.IsCompleted) {
-                                                @:Har ej genomförts
-                                            }
-                                            else {
-                                                @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.UpdatedAt))
-                                                @:, kl @String.Format("{0:HH:mm}", Item.UpdatedAt))
-                                            }
-                                        </td>
-                                        <td>
-                                            @if (Item.CompletedBy.IsNotNull())
-                                            {
-                                                if (Html.HasPermissionFor(Permissions.Delegation.Read))
-                                                {
-                                                    @Html.ActionLink(Permissions.Delegation.Read, Item.CompletedBy.FullName, "List", "Delegation", new { Id = Item.CompletedBy.Id, Area = "Practitioner" }, null)
-                                                }
-                                                else
-                                                {
-                                                    @Item.CompletedBy.FullName
-                                                }
-                                            }
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink(Permissions.Alert.Handle, "Kvittera larm", "Handle", "Alerts", new { Id = Model.Patient.Id, TaskId = Item.Id, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "btn alarm-stop" })
-                                        </td>
+                                        <th scope="col">Aktivitet</th>
+                                        <th scope="col">Skulle genomföras</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Signerat av</th>
+                                        <th scope="col">Kvittera</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                }
-            </div>
+                                </thead>
+                                <tbody>
+                                    @foreach (var Item in Model.TaskCurrentMap[TimeOfDay.Key][schedule.Key]) 
+                                    {
+                                        var interval = string.Empty;
+                                        if (Item.RangeInMinutesAfter == Item.RangeInMinutesBefore) 
+                                        {
+                                            interval = string.Format("±{0}", Item.RangeInMinutesAfter);
+                                        }
+                                        else 
+                                        {
+                                            interval = string.Format("-{0} +{1}", Item.RangeInMinutesBefore, Item.RangeInMinutesAfter);
+                                        }
+                                        <tr>
+                                            <td>@Item.Sequence.Name</td>
+                                            <td>kl @string.Format("{0:HH:mm}", Item.Scheduled) @interval min</td>
+                                            <td>
+                                                @if (! Item.IsCompleted) 
+                                                {
+                                                    @:Har ej genomförts
+                                                }
+                                                else {
+                                                    @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.CompletedDate.GetValueOrDefault()))
+                                                    @(string.Format("{0:d MMMM yyyy}, kl {0:HH:mm} med status '{1}'", Item.CompletedDate.GetValueOrDefault(), Item.StatusTaxon != null ? Item.StatusTaxon.Name : ""))
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Item.CompletedBy.IsNotNull())
+                                                {
+                                                    if (Html.HasPermissionFor(Permissions.Delegation.Read))
+                                                    {
+                                                        @Html.ActionLink(Permissions.Delegation.Read, Item.CompletedBy.FullName, "List", "Delegation", new { Id = Item.CompletedBy.Id, Area = "Practitioner" }, null)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Item.CompletedBy.FullName
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(Permissions.Alert.Handle, "Kvittera larm", "Handle", "Alerts", new { Id = Model.Patient.Id, TaskId = Item.Id, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "btn alarm-stop" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
             }
         }
-
-        @if (Model.TaskEarlierMap.Count() > 0) {
+        @if (Model.TaskEarlierMap.Count() > 0) 
+        {
             <div class="h cf">
                 <h2>Kvitterade larm</h2>
             </div>
@@ -119,12 +124,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var TimeOfDay in Model.TaskEarlierMap.OrderByDescending(x => x.Key)) {
+                        @foreach (var TimeOfDay in Model.TaskEarlierMap.OrderByDescending(x => x.Key)) 
+                        {
                             bool Processed = true;
-                            foreach (var schedule in Model.TaskEarlierMap[TimeOfDay.Key]) {
+                            foreach (var schedule in Model.TaskEarlierMap[TimeOfDay.Key]) 
+                            {
                                 var quittencedBy = new List<string>();
-                                foreach (var Item in Model.TaskEarlierMap[TimeOfDay.Key][schedule.Key]) {
-                                    if (!Item.DelayHandled) {
+                                foreach (var Item in Model.TaskEarlierMap[TimeOfDay.Key][schedule.Key]) 
+                                {
+                                    if (! Item.DelayHandled) 
+                                    {
                                         Processed = false;
                                     }
                                     if (Item.DelayHandledBy.IsNotNull() && !quittencedBy.Contains(Item.DelayHandledBy.FullName)) {
@@ -132,15 +141,17 @@
                                     }
                                 }
                                 var scheduledDate = string.Format("{0:yyyy-MM-dd}", TimeOfDay.Key);
-                                if (TimeOfDay.Key.Date == DateTime.Today) {
+                                if (TimeOfDay.Key.Date == DateTime.Today) 
+                                {
                                     scheduledDate = "Idag";
                                 }
-                                else if (TimeOfDay.Key.Date == DateTime.Today.AddDays(-1)) {
+                                else if (TimeOfDay.Key.Date == DateTime.Today.AddDays(-1)) 
+                                {
                                     scheduledDate = "Igår";
                                 }
                                 <tr>
                                     <td>@scheduledDate</td>
-                                    <td>kl @String.Format("{0:HH:mm}", TimeOfDay.Key)</td>
+                                    <td>kl @string.Format("{0:HH:mm}", TimeOfDay.Key)</td>
                                     <td></td>
                                     <td>@string.Join(", ", quittencedBy.ToArray())</td>
                                     <td><a class="btn" href="#">Visa</a></td>
@@ -149,11 +160,12 @@
                                     <td colspan="5" class="view">
                                         <div class="alarm-view">
                                             <div class="heading cf">
-                                                @if (Processed) {
+                                                @if (Processed) 
+                                                {
                                                     <h2>
                                                         <strong>Åtgärdat larm:</strong> @schedule.Key.ScheduleSettings.Name kl
-                                                        @String.Format("{0:HH:mm}", TimeOfDay.Key) den
-                                                        @String.Format("{0:d MMMM yyyy}", TimeOfDay.Key)
+                                                        @string.Format("{0:HH:mm}", TimeOfDay.Key) den
+                                                        @string.Format("{0:d MMMM yyyy}", TimeOfDay.Key)
                                                     </h2>
                                                 }
                                                 else {
@@ -184,12 +196,12 @@
                                                             }
                                                             <tr>
                                                                 <td>@Item.Sequence.Name</td>
-                                                                <td>kl @String.Format("{0:HH:mm}", Item.Scheduled) @interval min</td>
+                                                                <td>kl @string.Format("{0:HH:mm}", Item.Scheduled) @interval min</td>
                                                                 <td>
-                                                                    @if (Item.IsCompleted) {
-                                                                        @:Genomfördes för sent
-                                                                        Math.Round(Item.UpdatedAt.Subtract(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter)).TotalMinutes); @:minuter, kl
-                                                                        string.Format("{0:HH:mm}", Item.UpdatedAt);
+                                                                    @if (Item.IsCompleted)
+                                                                    {
+                                                                        @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.CompletedDate.GetValueOrDefault()))
+                                                                        @(string.Format("{0:d MMMM yyyy}, kl {0:HH:mm} med status '{1}'", Item.CompletedDate.GetValueOrDefault(), Item.StatusTaxon.Name))
                                                                     }
                                                                     else {
                                                                         @:Har ej genomförts

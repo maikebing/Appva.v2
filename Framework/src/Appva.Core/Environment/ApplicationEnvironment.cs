@@ -17,6 +17,179 @@ namespace Appva.Core.Environment
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    public interface IApplicationEnvironment
+    {
+        /// <summary>
+        /// Returns the operational environment.
+        /// </summary>
+        OperationalEnvironment Environment
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the operational environment.
+        /// </summary>
+        IApplicationOperationalEnvironment Is
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the assembly information.
+        /// </summary>
+        IApplicationEnvironmentAssemblyInfo Info
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the operating system information.
+        /// </summary>
+        IApplicationEnvironmentOs OperatingSystem
+        {
+            get;
+        }
+    }
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public interface IApplicationOperationalEnvironment
+    {
+        /// <summary>
+        /// Returns whether or not the application is running in a production
+        /// environment.
+        /// </summary>
+        bool Production
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns whether or not the application is running in a demo
+        /// environment.
+        /// </summary>
+        bool Demo
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns whether or not the application is running in a staging
+        /// environment.
+        /// </summary>
+        bool Staging
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns whether or not the application is running in a development
+        /// environment.
+        /// </summary>
+        bool Development
+        {
+            get;
+        }
+    }
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public interface IApplicationEnvironmentAssemblyInfo
+    {
+        /// <summary>
+        /// Returns the assembly title information.
+        /// </summary>
+        string Title
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the assembly description information.
+        /// </summary>
+        string Description
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the company name information.
+        /// </summary>
+        string Company
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the product name information.
+        /// </summary>
+        string Product
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the copyright information.
+        /// </summary>
+        string Copyright
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the trademark information.
+        /// </summary>
+        string Trademark
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns  the build configuration, such as retail or debug, for the assembly.
+        /// </summary>
+        string Configuration
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the version for the application.
+        /// </summary>
+        string Version
+        {
+            get;
+        }
+    }
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public interface IApplicationEnvironmentOs
+    {
+        /// <summary>
+        /// Returns the NetBIOS name of this local computer.
+        /// </summary>
+        string MachineName
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Returns the <see cref="OperatingSystem"/> version that contains the current platform
+        /// identifier and version number.
+        /// </summary>
+        string Version
+        {
+            get;
+        }
+    }
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public sealed class ApplicationEnvironment : 
         IApplicationEnvironment, 
         IApplicationOperationalEnvironment, 

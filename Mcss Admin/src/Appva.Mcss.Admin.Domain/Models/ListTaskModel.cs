@@ -2,7 +2,7 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:richard.alvegard@appva.se">Richard Alvegard</a>
 // </author>
 namespace Appva.Mcss.Admin.Domain.Models
 {
@@ -40,7 +40,7 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// The Account id, optional
         /// </summary>
-        public Guid? Account
+        public Guid? AccountId
         {
             get;
             set;
@@ -49,7 +49,7 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// The Patient id, optional
         /// </summary>
-        public Guid? Patient
+        public Guid? PatientId
         {
             get; 
             set;
@@ -58,16 +58,25 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// The organisation Taxon, optional
         /// </summary>
-        public Guid? Taxon
+        public Guid? TaxonId
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The organisation Taxon, optional
+        /// The schedulesetting, optional
         /// </summary>
-        public Guid? ScheduleSetting
+        public Guid? ScheduleSettingId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The Sequence, optional
+        /// </summary>
+        public Guid? SequenceId
         {
             get;
             set;

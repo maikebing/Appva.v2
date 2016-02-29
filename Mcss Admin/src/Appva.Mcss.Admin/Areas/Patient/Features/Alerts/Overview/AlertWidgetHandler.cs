@@ -86,31 +86,35 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override AlertOverviewViewModel Handle(AlertWidget message)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.GetRoleScheduleSettingsList(account);
             var taxon = this.filtering.GetCurrentFilter();
+            Task taskAlias = null;
             Taxon taxonAlias = null;
             var query = this.persistence.QueryOver<Patient>()
                 .Where(x => x.IsActive)
-                .And(x => !x.Deceased)
-                .And(x => x.HasUnattendedTasks)
+                  .And(x => !x.Deceased)
                 .JoinAlias(x => x.Taxon, () => taxonAlias)
                     .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                    .IsLike(taxon.Id.ToString(), MatchMode.Anywhere));
-            var countAll = query.RowCount();
+                    .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
+                .JoinQueryOver(x => x.Tasks, () => taskAlias)
+                    .Where(() => taskAlias.IsActive)
+                      .And(() => taskAlias.Delayed)
+                      .And(() => taskAlias.DelayHandled == false)
+                .JoinQueryOver<Schedule>(x => x.Schedule)
+                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
+            var countAll = query.Clone().Select(Projections.CountDistinct<Patient>(x => x.Id))
+                .FutureValue<int>()
+                .Value; 
             IList<Patient> patients = null;
             if (! message.Status.Equals("notsigned"))
             {
-                patients = query.List();
+                patients = query.TransformUsing(new DistinctRootEntityResultTransformer()).List();
             }
-            Task task = null;
-            query.Inner.JoinAlias(x => x.Tasks, () => task)
-                .Where(() => task.IsActive)
-                .And(() => task.Delayed)
-                .And(() => task.DelayHandled == false)
-                .And(() => task.IsCompleted == false)
-                .TransformUsing(new DistinctRootEntityResultTransformer());
+            query = query.And(() => taskAlias.IsCompleted == false);
             if (patients == null)
             {
-                patients = query.List();
+                patients = query.TransformUsing(new DistinctRootEntityResultTransformer()).List();
             }
             var countNotSigned = query.Select(Projections.CountDistinct<Patient>(x => x.Id))
                 .FutureValue<int>()

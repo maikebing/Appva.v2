@@ -45,7 +45,7 @@ namespace Appva.Mcss.Admin
             builder.RegisterModule(new AutofacWebTypesModule());
             builder.RegisterFilterProvider();
             builder.RegisterEnvironment();
-            builder.RegisterNhibernateProvider();
+            builder.RegisterNhibernateProfiler();
             builder.RegisterRepositories();
             builder.RegisterServices();
             builder.RegisterTenantServices();
@@ -57,7 +57,6 @@ namespace Appva.Mcss.Admin
             builder.RegisterPersistence();
             builder.RegisterEmailMessaging();
             builder.RegisterExceptionHandling();
-            builder.RegisterHipClient();
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             app.UseAutofacMiddleware(container);

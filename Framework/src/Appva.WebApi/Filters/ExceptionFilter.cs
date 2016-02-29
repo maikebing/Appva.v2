@@ -8,9 +8,6 @@ namespace Appva.WebApi.Filters
 {
     #region Imports.
 
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Web.Http.ExceptionHandling;
     using System.Web.Http.Filters;
 
     #endregion

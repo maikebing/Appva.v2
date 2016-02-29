@@ -2,50 +2,73 @@
     unmarkCat: function (cat) {
         var id = cat.attr('id');
         $(".act." + id).hide();
+        $('#select-all').attr('checked', false);
     },
     markCat: function (cat) {
         var id = cat.attr('id');
         $(".act." + id).show();
     },
     unmarkAll: function () {
-        $('#cal-all').attr('checked', false);
+        $('#select-all').attr('checked', false);
         $('.act').hide();
     },
     markAll: function () {
         $('.cal-filter :checkbox').attr('checked', false);
-        $('#cal-all').attr('checked', true);
+        $('#select-all').attr('checked', true);
         $('.act').show();
     },
     quittance: function (task) {
         $.ajax({
-            url: 'patient/calendar/quittance',
+            url: '/patient/calendar/quittance',
             dataType: 'JSON',
             method: 'get',
             data: { id: task.attr('id'), date: task.attr('name') },
             success: function (data) {
                 if (data) {
-                    task.attr('checked', true);
-                    task.attr('disabled', true);
+                    if (data.success) {
+                        task.attr('checked', true);
+                        task.next(".cal-label-done").show();
+                        task.prev("label.cal-label").html("Kvitterad av " + data.name);
+                    }
                 }
             }
         });
     },
-    init: function () {
-        $('.cal-filter :checkbox').click(function () {
-            var elem = $(this);
-            if (elem.parent().hasClass('cal-all')) {
-                if (elem.is(':checked')) {
-                    mcss.Calendar.markAll();
-                }
-                else {
-                    mcss.Calendar.unmarkAll();
+    unQuittance: function (task) {
+        $.ajax({
+            url: '/patient/calendar/unquittance',
+            dataType: 'JSON',
+            method: 'get',
+            data: { id: task.attr('id'), date: task.attr('name') },
+            success: function (data) {
+                if (data) {
+                    task.attr('checked', false);
+                    task.next(".cal-label-done").hide();
+                    task.prev("label.cal-label").html("Ej kvitterad");
                 }
             }
-            else {
+        });
+    },
+    focus: function (id) {
+        console.log(id);
+        $("." + id).parent().addClass("focus");
+    },
+    unFocus: function (id) {
+        console.log(id);
+        $("." + id).parent().removeClass("focus");
+    },
+    init: function () {
+        $("span.act").hover(function (e) {
+            var id = $(this).attr('id');
+            $("." + id).parent().addClass("focus");
+        }, function (e) {
+            var id = $(this).attr('id');
+            $("." + id).parent().removeClass("focus");
+        });
+        $('.cal-filter :checkbox').change(function () {
+            var elem = $(this);
+            if (!elem.parent().hasClass('select-all')) {
                 if (elem.is(':checked')) {
-                    if ($('#cal-all').is(':checked')) {
-                        mcss.Calendar.unmarkAll();
-                    }
                     mcss.Calendar.markCat(elem);
                 }
                 else {
@@ -54,7 +77,30 @@
             }
         });
         $(':checkbox.cal-quittance').click(function () {
-            mcss.Calendar.quittance($(this));
+            if ($(this).is(':checked')) {
+                mcss.Calendar.quittance($(this));
+            }
+            else {
+                mcss.Calendar.unQuittance($(this));
+            }
+
         });
+        $('.month-row').each(function (e) {
+            var elem = $(this);
+            elem.ready(function (e) {
+                var height = elem.height();
+                var gridHeight = elem.find('.evt-grid').height();
+                if ((gridHeight + 25) > height) {
+                    elem.height(gridHeight + 25);
+                }
+            });
+        });
+
+        $('.cal-overview .toggleActDetails').click(function (e) {
+            $(this).parent().parent().next('.act-details').toggle();
+        });
+
+
+
     }
 };

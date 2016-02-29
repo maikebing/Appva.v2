@@ -9,21 +9,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using Appva.Core.Contracts.Permissions;
-    using Appva.Core.Resources;
     using Appva.Cqrs;
-    using Appva.Cryptography;
-    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.VO;
-    using Appva.Persistence;
     using Appva.Tenant.Identity;
-    using Appva.Core.Extensions;
 
     #endregion
 
@@ -49,11 +39,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InstallAclHandler"/> class.
+        /// Initializes a new instance of the <see cref="InstallTokenHandler"/> class.
         /// </summary>
         /// <param name="tenantService">The <see cref="ITenantService"/></param>
         /// <param name="settings">The <see cref="ISettingsService"/></param>
-        /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
         public InstallTokenHandler(ITenantService tenantService, ISettingsService settings)
         {
             this.tenantService = tenantService;
@@ -67,7 +56,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override void Handle(InstallToken notification)
         {
-            if (this.settings.IsTokenConfigurationInstalled())
+            if (this.settings.IsSecurityTokenConfigurationInstalled())
             {
                 return;
             }
@@ -84,13 +73,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private void CreateTokenConfiguration()
         {
             ITenantIdentity identity;
-            if (tenantService.TryIdentifyTenant(out identity))
+            if (this.tenantService.TryIdentifyTenant(out identity))
             {
-                var key = Hash.Random().ToBase64();
-                var issuer = string.Format("https://schemas.appva.se/jwt/issuer/{0}/{1}/{2}", identity.Id, Guid.NewGuid(), DateTime.Now.Ticks);
+                var issuer   = string.Format("https://schemas.appva.se/jwt/issuer/{0}/{1}/{2}", identity.Id, Guid.NewGuid(), DateTime.Now.Ticks);
                 var audience = string.Format("https://schemas.appva.se/jwt/audience/{0}", identity.Id);
-                var token = ResetPasswordToken.CreateNew(key, issuer, audience, TimeSpan.FromMinutes(20));
-                this.settings.Upsert(ApplicationSettings.ResetPasswordTokenConfiguration, token);
+                this.settings.Upsert(ApplicationSettings.TokenConfiguration, SecurityTokenConfiguration.CreateNew(issuer, audience));
             }
         }
 

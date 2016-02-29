@@ -54,7 +54,7 @@ $(document).ready(function () {
     });
     $('a.alarm-stop-all').click(function (e) {
         if (confirm('Alla avvikelser för patienten kommer att kvitteras. Kontrollera om någon avvikelse ska journalföras.')) {
-            
+
         }
         else {
             e.stopPropagation();
@@ -186,9 +186,9 @@ $(document).ready(function () {
             $('.delegation').removeAttr('disabled');
         }
     });
-    
+
     // About screen
-    $('.about-link').click(function(e) {
+    $('.about-link').click(function (e) {
         e.stopPropagation();
         e.preventDefault();
         var content = $('<div class="lb-panel"></div>');
@@ -196,5 +196,17 @@ $(document).ready(function () {
         var clicked = $(this);
         mcss.lightbox.openBox(content, clicked, 'lb-warning');
     });
-    
+
+    // Checkbox to select/unselect all
+    $('input[type=checkbox].select-all').click(function (e) {
+        var elem = $(this);
+
+        if (elem.is(':checked')) {
+            elem.parent().parent().parent().find('input[type=checkbox]').attr('checked', true).change();
+        }
+        else {
+            elem.parent().parent().parent().find('input[type=checkbox]').attr('checked', false).change();
+        }
+    });
+
 });

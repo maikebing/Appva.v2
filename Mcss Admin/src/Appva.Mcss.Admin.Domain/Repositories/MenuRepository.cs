@@ -54,7 +54,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
         #endregion
 
-
         #region IMenuRepository Members.
 
         /// <inheritdoc />

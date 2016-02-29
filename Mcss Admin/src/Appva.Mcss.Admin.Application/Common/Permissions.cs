@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Application.Common
 
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Appva.Core.Contracts.Permissions;
     using Appva.Core.Resources;
@@ -27,6 +28,26 @@ namespace Appva.Mcss.Admin.Application.Common
         /// The permission schema.
         /// </summary>
         private const string Schema = "https://schemas.appva.se/2015/04/permission/";
+
+        #endregion
+
+        #region Token (Reset / Registration)
+
+        /// <summary>
+        /// The token permissions.
+        /// </summary>
+        public static class Token
+        {
+            /// <summary>
+            /// The reset token value.
+            /// </summary>
+            public const string Reset = Schema + "reset";
+
+            /// <summary>
+            /// The register token value.
+            /// </summary>
+            public const string Register = Schema + "register";
+        }
 
         #endregion
 
@@ -122,36 +143,54 @@ namespace Appva.Mcss.Admin.Application.Common
             [Description("Permission to read/view the dashboard")]
             public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
+            /// <summary>
+            /// Permission to read/view delayed tasks.
+            /// </summary>
             [New]
             [Sort(0)]
             [Name("Read delayed tasks dashboard")]
             [Description("Permission to read/view delayed tasks widget on the dashboard")]
             public static readonly IPermission ReadDelayedTasks = PermissionType.CreateNew(ReadDelayedTasksValue);
 
+            /// <summary>
+            /// Permission to read/view control count narcotics on dashboard.
+            /// </summary>
             [New]
             [Sort(0)]
             [Name("Read narcotics control count dashboard")]
             [Description("Permission to read/view narcotics control count widget on the dashboard")]
             public static readonly IPermission ReadControlCountNarcotics = PermissionType.CreateNew(ReadControlCountNarcoticsValue);
 
+            /// <summary>
+            /// Permission to read/view chart.
+            /// </summary>
             [New]
             [Sort(0)]
             [Name("Read chart dashboard")]
             [Description("Permission to read/view chart widget on the dashboard")]
             public static readonly IPermission ReadChart = PermissionType.CreateNew(ReadChartValue);
 
+            /// <summary>
+            /// Permission to read/view order refill.
+            /// </summary>
             [New]
             [Sort(0)]
             [Name("Read order refill dashboard")]
             [Description("Permission to read/view order refill widget on the dashboard")]
             public static readonly IPermission ReadOrderRefill = PermissionType.CreateNew(ReadOrderRefillValue);
 
+            /// <summary>
+            /// Permission to read/view calender.
+            /// </summary>
             [New]
             [Sort(0)]
             [Name("Read calendar dashboard")]
             [Description("Permission to read/view calendar widget on the dashboard")]
             public static readonly IPermission ReadCalendar = PermissionType.CreateNew(ReadCalendarValue);
 
+            /// <summary>
+            /// Permission to read/view delegation.
+            /// </summary>
             [New]
             [Sort(0)]
             [Name("Read delegation dashboard")]
@@ -173,6 +212,9 @@ namespace Appva.Mcss.Admin.Application.Common
             /// </summary>
             public const string ReadValue = Schema + "report/read";
 
+            /// <summary>
+            /// The permission to read/view full report.
+            /// </summary>
             [New]
             [Sort(0)]
             [Name("Read full report")]
@@ -780,7 +822,7 @@ namespace Appva.Mcss.Admin.Application.Common
             /// The update value.
             /// </summary>
             public const string UpdateValue = Schema + "patient/calendar/event/update";
-            
+
             /// <summary>
             /// The delete value.
             /// </summary>
@@ -918,7 +960,7 @@ namespace Appva.Mcss.Admin.Application.Common
             [Description("Permission to create a notification")]
             [Visibility(Visibility.Hidden)]
             public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
-            
+
             /// <summary>
             /// Permission to read/view notifications.
             /// </summary>
@@ -927,7 +969,7 @@ namespace Appva.Mcss.Admin.Application.Common
             [Description("Permission to read/view notifications")]
             [Visibility(Visibility.Hidden)]
             public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
-            
+
             /// <summary>
             /// Permission to update/edit a notification.
             /// </summary>
@@ -944,6 +986,65 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Delete notification")]
             [Description("Permission to delete a notification")]
             [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
+        }
+
+        #endregion
+
+        #region News
+
+        public static class News
+        {
+            /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "notification/news/create";
+
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "notification/news/read";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "notification/news/update";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "notification/news/delete";
+
+            /// <summary>
+            /// Permission to create a news.
+            /// </summary>
+            [Sort(56)]
+            [Name("Create news")]
+            [Description("Permission to create a news")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
+
+            /// <summary>
+            /// Permission to read/view news.
+            /// </summary>
+            [Sort(57)]
+            [Name("Read news")]
+            [Description("Permission to read/view news")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+            /// <summary>
+            /// Permission to update/edit a news.
+            /// </summary>
+            [Sort(58)]
+            [Name("Update news")]
+            [Description("Permission to update/edit a news")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
+
+            /// <summary>
+            /// Permission to delete a news.
+            /// </summary>
+            [Sort(59)]
+            [Name("Delete news")]
+            [Description("Permission to delete a news")]
             public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
         }
 
@@ -1044,6 +1145,7 @@ namespace Appva.Mcss.Admin.Application.Common
     /// The <see cref="IPermission"/> implementation.
     /// TODO: Change name to e.g. ClaimPermission, SecurityPermission or InternalPermission
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed.")]
     internal sealed class PermissionType : IPermission
     {
         #region Constructor.
@@ -1060,20 +1162,7 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
-        #region Internal Static Functions.
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="ApplicationSettingIdentity"/> class.
-        /// </summary>
-        /// <param name="value">The value</param>
-        internal static IPermission CreateNew(string value)
-        {
-            return new PermissionType(value);
-        }
-
-        #endregion
-
-        #region Public Properties.
+        #region Properties.
 
         /// <summary>
         /// The unique key.
@@ -1091,6 +1180,20 @@ namespace Appva.Mcss.Admin.Application.Common
         {
             get;
             private set;
+        }
+
+        #endregion
+
+        #region Internal Static Functions.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="IPermission"/> class.
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns>A new <see cref="IPermission"/> instance</returns>
+        internal static IPermission CreateNew(string value)
+        {
+            return new PermissionType(value);
         }
 
         #endregion

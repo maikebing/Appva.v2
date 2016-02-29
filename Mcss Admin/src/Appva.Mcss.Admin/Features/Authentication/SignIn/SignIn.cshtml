@@ -2,7 +2,7 @@
 @model SignInForm
 @{
     Layout = Request.IsAjaxRequest() ? null : "~/Features/Shared/_LoginLayout.cshtml";
-    SetTitle("Logga in - {0}", Tenant);
+    SetTitle("Logga in");
     SetBodyCssClass("page-sign-in");
 }
 <div class="hd org">
@@ -13,12 +13,11 @@
     <div class="note">@Html.ActionLink("Klicka här", "SignInSiths") för att logga in med ditt SITHS eID</div>
 	@using (Html.Post())
     {
-        @Html.Alert(new {  @class = "success-msg" })
-        @Html.ValidationAlert("Felaktigt användarnamn och/eller lösenord", "", new {  @class = "error-msg" })
+        @Html.ValidationAlert("Felaktigt användarnamn och/eller lösenord", string.Empty, new {  @class = "error-msg" })
         @Html.FormGroup(x => x.UserName).Label("Användarnamn").TextBox("Ditt användarnamn").Build()
         @Html.FormGroup(x => x.Password).Label("Lösenord").Password("Ditt lösenord").Build()
 		<div class="hr"></div>
         @Html.Submit("Logga in", new { @class = "btn" })
-		@Html.ActionLink("Glömt lösenord?", "Forgot", null, new { @class = "btn btn-right forgot" })
+		@Html.ActionLink("Glömt lösenord?", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
     }
 </div>

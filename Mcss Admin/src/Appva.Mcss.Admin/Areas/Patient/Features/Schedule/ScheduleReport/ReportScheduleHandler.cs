@@ -10,10 +10,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
@@ -41,9 +43,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IPatientTransformer transformer;
 
         /// <summary>
-        /// The <see cref="IScheduleService"/>.
+        /// The <see cref="IAccountService"/>.
         /// </summary>
-        private readonly IScheduleService scheduleService;
+        private readonly IAccountService accountService;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
         
         /// <summary>
         /// The <see cref="ITaskService"/>.
@@ -72,7 +79,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportScheduleHandler"/> class.
         /// </summary>
-        public ReportScheduleHandler(IAuditService auditing, IPatientService patientService, IScheduleService scheduleService,
+        public ReportScheduleHandler(
+            IAuditService auditing, 
+            IPatientService patientService,
+            IAccountService accountService,
+            IIdentityService identityService,
             ITaskService taskService,
             IReportService reportService,
             IPatientTransformer transformer,
@@ -81,7 +92,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.auditing = auditing;
             this.patientService = patientService;
             this.transformer = transformer;
-            this.scheduleService = scheduleService;
+            this.accountService = accountService;
+            this.identityService = identityService;
             this.tasks = taskService;
             this.reportService = reportService;
             this.persistence = persistence;
@@ -96,15 +108,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var page = message.Page ?? 1;
             var patient = this.patientService.Get(message.Id);
-            var scheduleSettings = new List<ScheduleSettings>();
-            var schedules = this.persistence.QueryOver<Schedule>().Where(x => x.Patient.Id == patient.Id).List();
-            foreach (var schedule in schedules)
-            {
-                if (!scheduleSettings.Contains(schedule.ScheduleSettings))
-                {
-                    scheduleSettings.Add(schedule.ScheduleSettings);
-                }
-            }
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.GetRoleScheduleSettingsList(account);
+            var schedules = this.persistence.QueryOver<Schedule>()
+                .Where(x => x.Patient.Id == patient.Id)
+                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                    .List();
             var startDate = message.StartDate.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date;
             var endDate = message.EndDate.GetValueOrDefault(DateTime.Now).LastInstantOfDay();
             this.auditing.Read(
@@ -132,8 +142,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     StartDate = startDate,
                     EndDate = endDate,
-                    Patient = patient.Id,
-                    ScheduleSetting = message.ScheduleSettingsId
+                    PatientId = patient.Id,
+                    ScheduleSettingId = message.ScheduleSettingsId
                 }, page, 30)
             };
         }

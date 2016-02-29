@@ -1,12 +1,14 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
-@model Appva.Mcss.Web.ViewModels.EventOverviewViewModel
+@model Appva.Mcss.Admin.Areas.Models.CalendarOverviewModel
 <div>
     <div class="heading cf">
-        <h2>Kalender de närmaste 7 dagarna</h2>
+        <h2>Kalender</h2>
     </div>
     <div class="panel-c">
-        @if (Model.Activities.IsNotNull() && Model.Activities.Count > 0) {
-            <table>
+        @if (Model.OngoingEvents.IsNotNull() && Model.OngoingEvents.Count > 0)
+        {
+            <h3>Pågående</h3>
+            <table class="cal-overview">
                 <thead>
                     <tr>
                         <th scope="col">Boende</th>
@@ -16,27 +18,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var act in Model.Activities) { 
-                        <tr>
-                            <td>
-                                @if (Html.HasPermissionFor(Permissions.Calendar.Read))
-                                {
-                                    @Html.ActionLink(Permissions.Calendar.Read, act.Patient.FullName, "List", "Calendar", new { Id = act.Patient.Id, Area = "Patient" }, new { })
-                                }
-                                else
-                                {
-                                    @act.Patient.FullName
-                                }
-                            </td>
-                            <td><span class="act @String.Format("cal-cat{0}", (Model.Categories.FirstOrDefault(x => x.Value == act.Schedule.ScheduleSettings).Key % Model.CalendarColors)+1)">@act.Schedule.ScheduleSettings.Name</span></td>
-                            <td @((act.Scheduled.Date - DateTime.Now.Date).Days < 0 ? "class=urgent" : "")><span>@((act.Scheduled.Date - DateTime.Now.Date).Days) dagar</span></td>
-                            <td class="check"><input type="checkbox" name="@act.Scheduled" id="@act.Sequence.Id" class="cal-quittance" /></td>
-                        </tr>
-                    }        
+                    @foreach (var act in Model.OngoingEvents)
+                    {
+                        Html.RenderPartial("/Areas/Patient/Features/Calendar/Overview/_OverviewCalendarTask.cshtml", act);
+                    }
                 </tbody>
             </table>
         }
-        else {
+        @if (Model.CommingEvents.IsNotNull() && Model.CommingEvents.Count > 0)
+        {
+            <h3>Kommande</h3>
+            <table class="cal-overview">
+                <thead>
+                    <tr>
+                        <th scope="col">Boende</th>
+                        <th scope="col">Aktivitet</th>
+                        <th scope="col">Startar om</th>
+                        <th scope="col" class="check">Kvittera</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var act in Model.CommingEvents)
+                    {
+                        Html.RenderPartial("/Areas/Patient/Features/Calendar/Overview/_OverviewCalendarTask.cshtml", act);
+                    }
+                </tbody>
+            </table>
+        }
+        @if ((Model.OngoingEvents.IsNull() || Model.OngoingEvents.Count == 0) &&
+        (Model.CommingEvents.IsNull() || Model.CommingEvents.Count == 0))
+        {
             <div class="no-data">
                 <h3>Inga kommande händelser</h3>
             </div>
@@ -44,5 +55,5 @@
     </div>
     <script type="text/javascript">
         mcss.Calendar.init();
-    </script>
-</div>
+        </script>
+    </div>

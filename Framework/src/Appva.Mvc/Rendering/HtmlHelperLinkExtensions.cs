@@ -14,6 +14,7 @@ namespace Appva.Mvc
     using System.Web.Mvc.Html;
     using Appva.Core.Contracts.Permissions;
     using JetBrains.Annotations;
+    using System.Web.Routing;
 
     #endregion
 
@@ -107,6 +108,28 @@ namespace Appva.Mvc
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Returns a link to an external support-page
+        /// </summary>
+        /// <param name="htmlHelper">The <see cref="HtmlHelper"/</param>
+        /// <param name="url">The url to the support-page</param>
+        /// <param name="linkText">Optional, link-text</param>
+        /// <param name="htmlAttributes">Optional, HTML attributes </param>
+        /// <returns></returns>
+        public static MvcHtmlString CreateSupportLink([NotNull] this HtmlHelper htmlHelper, string url, string linkText = "Hjälp", object htmlAttributes = null)
+        {
+            var link = new TagBuilder("a");
+            link.MergeAttribute("href", url);
+            link.InnerHtml = linkText;
+            link.MergeAttributes(new RouteValueDictionary(htmlAttributes), true);
+            if (! link.Attributes.ContainsKey("class"))
+            {
+                link.Attributes.Add("class", "help");
+            }
+            link.Attributes.Add("target", "_blank");
+            return MvcHtmlString.Create(link.ToString(TagRenderMode.Normal));
         }
     }
 }

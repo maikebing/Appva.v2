@@ -1,4 +1,20 @@
 mcss.validation = {
+    PreparedSequenceCreate: function (params) {
+        $('.std-form form').validate({
+            'rules': {
+                'Name': 'required'
+            },
+            'messages': {
+                'Name': {
+                    'required': "Namn måste fyllas i."
+                }
+            },
+            'submitHandler': function (form) {
+                $(form).find('input[type=submit]').attr('disabled', 'disabled');
+                form.submit();
+            }
+        });
+    },
 	PatientCreate : function(params) {
 		var id = params['id'];
         var uidUrl = params['uidUrl'], 
@@ -444,6 +460,7 @@ mcss.validation = {
         $('.datepick').datePicker({ clickInput: true });
         $('.std-form form').validate({
             'rules': {
+                'Interval': { 'interval': [$('#StartDate'), $('#EndDate'), $('#Interval'), $('#IntervalFactor')] },
                 'Category' : 'required',
                 'NewCategory' : {
                     'required' : function () {
@@ -473,6 +490,7 @@ mcss.validation = {
                 }
             },
             'messages': {
+                'Interval' : "Upprepnings-intervallet kan inte vara kortare än aktiviten",
                 'Category' : "Kategori måste väljas",
                 'NewCategory' : "Namn måste anges på ny kategori",
                 'Description': "Aktiviteten måste ha en beskrivning.",

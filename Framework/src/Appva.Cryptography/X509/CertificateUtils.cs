@@ -8,7 +8,9 @@ namespace Appva.Cryptography.X509
 {
     #region Imports.
 
+    using System;
     using System.IO;
+    using System.Linq;
     using Org.BouncyCastle.Asn1.X509;
     using Org.BouncyCastle.Math;
     using Org.BouncyCastle.Pkcs;
@@ -64,7 +66,7 @@ namespace Appva.Cryptography.X509
         /// <returns>An instance of <c>X509Certificate2</c></returns>
         public static MSX509.X509Certificate2 LoadCertificateFromDisk(string inputFile, string password)
         {
-            return new MSX509.X509Certificate2(inputFile, password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
+            return new MSX509.X509Certificate2(inputFile, password, MSX509.X509KeyStorageFlags.Exportable);
         }
 
         #region Protected Members.
@@ -90,7 +92,7 @@ namespace Appva.Cryptography.X509
             var generator = cipher.CreateNew();
             var keys = generator.GenerateKeyPair();
             var signer = issuer == null ? keys : DotNetUtilities.GetKeyPair(issuer.PrivateKey);
-            var issuerSerialNumber = issuer == null ? serialNumber : new BigInteger(issuer.GetSerialNumber());
+            var issuerSerialNumber = issuer == null ? serialNumber : new BigInteger(issuer.GetSerialNumber().Reverse().ToArray());
             var issuerName = issuer == null ? name : issuer.GetSubject();
             var builder = new X509V3CertificateGenerator();
             builder.SetSerialNumber(serialNumber);

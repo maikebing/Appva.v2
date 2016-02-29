@@ -10,8 +10,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
-	using Appva.Common.Domain;
+    using Appva.Core.Extensions;
+    using Appva.Cryptography;
 
 	#endregion
 
@@ -20,34 +20,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
 	/// </summary>
 	public class Account : Person<Account>
 	{
-		#region Constructor.
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Account"/> class.
-		/// </summary>
-		/*public Account(bool IsActive, bool IsPaused, string firstName, string lastName, string personalIdentityNumber,
-			string userName, string emailAddress, string telephoneNumber, string devicePassword, string adminPassword, string salt)
-			: base (firstName, lastName, personalIdentityNumber)
-		{
-		}
-
-		protected Account()
-		{
-		}*/
-
-		#endregion
-
-		public static Account CreateForTest()
-		{
-			return new Account
-			{
-				Id = Guid.NewGuid(),
-				FirstName = "Johan",
-				LastName = "Sall Larson",
-				FullName = "Johan Sall Larsson"
-			};
-		}
-
         #region Private fields.
 
         /// <summary>
@@ -55,19 +27,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// </summary>
         private readonly string _title;
         
-        #endregion
-
-        #region Person overrides.
-
-        /// <summary>
-        /// TODO: Change in Person and remove me!
-        /// </summary>
-        public virtual PersonalIdentityNumber PersonalIdentityNumber
-        {
-            get;
-            set;
-        }
-
         #endregion
 
         #region Properties.
@@ -123,7 +82,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// </summary>
         public virtual string Title
         {
-            get { return _title; }
+            get
+            {
+                return _title;
+            }
         }
 
 		///<summary>
@@ -254,6 +216,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
 		#endregion
 
+        #region Public Static Method.
+
+        public static Account CreateForTest(Guid id)
+        {
+            return new Account { Id = id };
+        }
+        #endregion
+
 		#region Public Methods.
 
 		/// <summary>
@@ -288,6 +258,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 			this.AdminPassword = password;
 			this.Salt = salt;
 			this.LastPasswordChangedDate = DateTime.Now;
+            this.SymmetricKey = Hash.Random().ToBase64();
 		}
 
         public virtual void Lockout(int minutes)

@@ -30,20 +30,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
     {
         #region Variables.
 
-		/// <summary>
-        /// The <see cref="IIdentityService"/>.
-		/// </summary>
-        private readonly IIdentityService identityService;
-
         /// <summary>
         /// The <see cref="ITaskService"/>.
         /// </summary>
         private readonly ITaskService taskService;
-
-        /// <summary>
-        /// The <see cref="IAccountService"/>.
-        /// </summary>
-        private readonly IAccountService accountService;
 
         /// <summary>
         /// The <see cref="IPatientService"/>.
@@ -57,14 +47,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 		/// <summary>
         /// Initializes a new instance of the <see cref="HandleAllAlertHandler"/> class.
 		/// </summary>
-        /// <param name="settings">The <see cref="IIdentityService"/> implementation</param>
-        /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
-        /// <param name="settings">The <see cref="IAccountService"/> implementation</param>
-        public HandleAllAlertHandler(IIdentityService identityService, ITaskService taskService, IAccountService accountService, IPatientService patientService)
+        /// <param name="taskService">The <see cref="ITaskService"/></param>
+        /// <param name="patientService">The <see cref="IPatientService"/></param>
+        public HandleAllAlertHandler(ITaskService taskService, IPatientService patientService)
 		{
-            this.identityService = identityService;
             this.taskService = taskService;
-            this.accountService = accountService;
             this.patientService = patientService;
 		}
 
@@ -75,13 +62,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListAlert Handle(HandleAllAlert message)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
             var patient = this.patientService.Get(message.Id);
-            this.taskService.HandleAnyAlert(account, patient);
+            this.taskService.HandleAlertsForPatient(patient);
             return new ListAlert
             {
-                Id = message.Id,
-                Year = message.Year,
+                Id    = message.Id,
+                Year  = message.Year,
                 Month = message.Month
             };
         }

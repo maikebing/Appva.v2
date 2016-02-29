@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -37,9 +38,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IPatientService patientService;
 
         /// <summary>
-        /// The <see cref="ITaskService"/>.
+        /// The <see cref="IAccountService"/>.
         /// </summary>
-        private readonly ITaskService taskService;
+        private readonly IAccountService accountService;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
 
         /// <summary>
         /// The <see cref="IAuditService"/>.
@@ -67,11 +73,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="ILogService"/> implementation</param>
         public ListInventoryHandler(
-            IPatientService patientService, ITaskService taskService, IAuditService auditing, IPersistenceContext persistence,
+            IPatientService patientService, 
+            IAccountService accountService, 
+            IIdentityService identityService,
+            IAuditService auditing, 
+            IPersistenceContext persistence,
             IPatientTransformer transformer)
         {
             this.patientService = patientService;
-            this.taskService = taskService;
+            this.accountService = accountService;
+            this.identityService = identityService;
             this.auditing = auditing;
             this.persistence = persistence;
             this.transformer = transformer;
@@ -104,8 +115,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 endDate = new DateTime(message.Year.Value, message.Month.Value, 
                     DateTime.DaysInMonth(message.Year.Value, message.Month.Value)).LastInstantOfDay();
             }
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
+            Schedule scheduleAlias = null;
+            ScheduleSettings scheduleSettingsAlias = null;
             var inventories = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.Patient.Id == message.Id)
+                .JoinAlias(x => x.Schedule, () => scheduleAlias)
+                    .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
+                        .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                 .JoinQueryOver<Inventory>(x => x.Inventory)
                     .Where(x => x.IsActive)
                 .List()

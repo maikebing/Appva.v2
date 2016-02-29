@@ -1,24 +1,18 @@
 ﻿@using Appva.Core.Utilities;
 @model Appva.Mcss.Web.ViewModels.PrepareSchemaViewModel
-
 @{
     ViewBag.Title = "Iordningsställande";
 }
-
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
-
 <div id="subheader" class="cf">
 	<h1>Signeringslistor</h1>
     @Html.ActionLink("Skriv ut pappersversion", "PrintPopUp", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id, Date = Model.StartDate }, new { @class = "btn printp lb-link" })
     @Html.ActionLink("Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 </div>
-
 <div id="content" class="cf">
 	<div id="content-primary" class="signlist-collection">
-		
         <div id="signlist">
-			
             <div class="h cf">
 				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.UpdatedAt)</h2>
 				@Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
@@ -96,7 +90,6 @@
                                     }
                                     @if (!Model.ArchivedWeek)
                                     { 
-                                        
                                         <td class="edit">
                                             @Html.ActionLink(
                                                 "Ändra",
@@ -113,10 +106,8 @@
                                             )
 							            </td>
                                     }
-
 						        </tr>
                             }
-						    
 					    </tbody>
 				    </table>
 			    </div>
@@ -128,6 +119,4 @@
 
         </div>
     </div>
-    
-
 </div>

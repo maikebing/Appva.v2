@@ -52,8 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\..\..\Packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -62,9 +63,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -72,12 +70,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Thinktecture.IdentityModel.Core">
+    <Reference Include="Thinktecture.IdentityModel.Core, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Thinktecture.IdentityModel.Core.1.4.0\lib\net45\Thinktecture.IdentityModel.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
+    <Reference Include="Validation, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Validation.2.2.8\lib\portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Validation.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -91,8 +90,11 @@
     <Compile Include="Common\PermissionMeta.cs" />
     <Compile Include="Common\Permissions.cs" />
     <Compile Include="Common\TaxonomicSchema.cs" />
+    <Compile Include="Common\Taxons.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
-    <Compile Include="Models\Calendar.cs" />
+    <Compile Include="Models\CalendarDay.cs" />
+    <Compile Include="Models\CalendarTask.cs" />
+    <Compile Include="Models\CalendarWeek.cs" />
     <Compile Include="Models\ReportData.cs" />
     <Compile Include="Models\ChartDataFilter.cs" />
     <Compile Include="Models\IReportingFilter.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDataSegment.cs" />
     <Compile Include="Models\ReportSearch.cs" />
+    <Compile Include="Models\SignatureModel.cs" />
     <Compile Include="Models\Taxa.cs" />
     <Compile Include="Models\Taxon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,7 +114,6 @@
     <Compile Include="Security\AuthenticationResult.cs" />
     <Compile Include="Security\ClaimsPrincipalExtensions.cs" />
     <Compile Include="Security\Extensions\AccountExtensions.cs" />
-    <Compile Include="Security\Extensions\OwinExtensions.cs" />
     <Compile Include="Security\FormsAuthentication.cs" />
     <Compile Include="Security\AuthenticationType.cs" />
     <Compile Include="Security\Identity\DemoTenantIdentificationStrategy.cs" />
@@ -123,12 +125,14 @@
     <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />
     <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\ChartService.cs" />
+    <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Security\SithsAuthentication.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AuditingService.cs" />
     <Compile Include="Services\ILogService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\MenuService.cs" />
     <Compile Include="Services\PatientService.cs" />
@@ -143,6 +147,7 @@
     <Compile Include="Services\TaxonFilterSessionHandler.cs" />
     <Compile Include="Services\TaxonomyService.cs" />
     <Compile Include="Services\TenantService.cs" />
+    <Compile Include="Transformers\EventTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Apis.TenantServer.Legacy\Appva.Apis.TenantServer.Legacy.csproj">
@@ -172,14 +177,6 @@
     <ProjectReference Include="..\..\..\Framework\src\Appva.Fhir\Appva.Fhir.csproj">
       <Project>{3983ff1b-a557-4b58-a363-bcee62182f1e}</Project>
       <Name>Appva.Fhir</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Logging\Appva.Logging.csproj">
-      <Project>{227bb330-a5d5-4bc2-9177-da61d207d6d7}</Project>
-      <Name>Appva.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Mvc\Appva.Mvc.csproj">
-      <Project>{53a7fe5b-f451-4b7a-8932-9ad424f09165}</Project>
-      <Name>Appva.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.NHibernateUtils\Appva.NHibernateUtils.csproj">
       <Project>{68889619-9faa-4b0c-bfa7-98d2a60e5584}</Project>
@@ -212,9 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

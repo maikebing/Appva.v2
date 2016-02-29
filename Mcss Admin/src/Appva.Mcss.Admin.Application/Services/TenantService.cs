@@ -53,6 +53,14 @@ namespace Appva.Mcss.Admin.Application.Services
     {
         #region Variables.
 
+        /// <summary>
+        /// The tenant header key.
+        /// </summary>
+        private const string TenantKey = "Tenant-Name";
+
+        /// <summary>
+        /// The cache key.
+        /// </summary>
         private const string CacheKey = "https://schemas.appva.se/2015/04/cache/tenants";
 
         /// <summary>
@@ -129,7 +137,7 @@ namespace Appva.Mcss.Admin.Application.Services
             ITenantIdentity identity;
             if (this.TryIdentifyTenant(out identity))
             {
-                context.Request.Headers.Add(ClaimTypes.TenantName, new[]
+                context.Request.Headers.Add(TenantKey, new[]
                 {
                     identity.Name
                 });

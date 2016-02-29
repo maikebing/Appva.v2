@@ -60,8 +60,8 @@
       <HintPath>..\..\..\Packages\DataAnnotationsExtensions.1.1.0.0\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
     </Reference>
     <Reference Include="HibernatingRhinos.Profiler.Appender, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0774796e73ebf640, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\NHibernateProfiler.3.0.3069.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+      <HintPath>..\..\..\Packages\NHibernateProfiler.3.0.3088.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -96,8 +96,8 @@
       <HintPath>..\..\..\Packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.Jwt, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Microsoft.Owin.Security.Jwt.3.0.1\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -111,20 +111,20 @@
       <HintPath>..\..\..\Packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+      <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="RazorEngine, Version=3.7.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\RazorEngine.3.7.0\lib\net45\RazorEngine.dll</HintPath>
+    <Reference Include="RazorEngine, Version=3.7.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\RazorEngine.3.7.3\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
@@ -199,6 +199,10 @@
     <Compile Include="Areas\Area51\Features\Acl\AclController.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAclHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\AddNewsPermissions\UpdatePermissionsAcl.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\AddNewsPermissions\UpdatePermissionsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18Handler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Upgrade\UpgradeAcl.cs" />
@@ -208,14 +212,41 @@
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCacheHandler.cs" />
     <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCacheHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\CalendarController.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\Index\CalendarIndex.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\Index\CalendarIndexModel.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\Index\CalenderIndexHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColors.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColorsPublisher.cs" />
     <Compile Include="Areas\Area51\Features\Home\HomeController.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162NoticeHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\NotificationsController.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Create\CreateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Update\UpdateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
-    <Compile Include="Areas\Area51\Features\Token\Install\InstallToken .cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\Index\TaxonIndexHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\Index\TaxonIndexModel.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\InstallRiskAssesment\InstallRiskTaxons.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\InstallRiskAssesment\InstallRiskTaxonsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\TaxonController.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\Index\TaxonIndex.cs" />
+    <Compile Include="Areas\Area51\Features\Token\Install\InstallToken.cs" />
     <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
     <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Notification\Features\News\Activate\ActivateNews.cs" />
+    <Compile Include="Areas\Notification\Features\News\Activate\ActivateNewsHandler.cs" />
+    <Compile Include="Areas\Notification\Features\News\NewsController.cs" />
+    <Compile Include="Areas\Notification\Features\News\Popup\PopupNews.cs" />
+    <Compile Include="Areas\Notification\Features\News\Popup\PopupNewsHandler.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\Dashboard\NotificationDashboard.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\Dashboard\NotificationDashboardHandler.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\Dashboard\NotificationDashboardModel.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\List\ListNotifications.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\List\ListNotificationsHandler.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\List\ListNotifictationsModel.cs" />
+    <Compile Include="Areas\Notification\Features\Notification\NotificationsController.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlert.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\HandleAll\HandleAllAlertHandler.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\Handle\HandleAlert.cs" />
@@ -226,15 +257,22 @@
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidgetHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventModel.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetails.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetailsHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\EditAll\EditAllEventSequence.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequence.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequencePublisher.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendar.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendarHandler.cs" />
     <Compile Include="Areas\Patient\Features\Consents\ConsentsController.cs" />
     <Compile Include="Areas\Patient\Features\Consents\Create\CreateConsentHandler.cs" />
     <Compile Include="Areas\Patient\Features\Consents\Create\CreateConsent.cs" />
     <Compile Include="Areas\Patient\Features\Consents\Create\CreateConsentPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverview.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverviewHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverviewModel.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItemHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryItem.cs" />
@@ -280,6 +318,7 @@
     <Compile Include="Areas\Patient\Features\Patient\QuickSearch\QuickSearchPatient.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Shared\Assessment.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Shared\CreateOrUpdatePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Shared\PatientModel.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatientPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Update\UpdatePatient.cs" />
@@ -355,10 +394,12 @@
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
-    <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePasswordHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountPublisher.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationEmail.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationForDeviceEmail.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationSithsEmail.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRoles.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesForm.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesFormHandler.cs" />
@@ -389,10 +430,18 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccountPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegation.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegationHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegationPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
     <!--<Compile Include="Areas\Report\Features\ReportData\Chart\ReportChart.cs" />
     <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChartModel.cs" />
     <Compile Include="Areas\Report\Features\ReportData\ReportDataController.cs" />-->
+    <Compile Include="Areas\Practitioner\Features\Delegation\Edit\EditDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegation.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationModel.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReport.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
@@ -421,12 +470,17 @@
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
+    <Compile Include="Features\Account\AccountController.cs" />
+    <Compile Include="Features\Account\Forgot\Forgot.cs" />
+    <Compile Include="Features\Account\Forgot\ForgotEmail.cs" />
+    <Compile Include="Features\Account\Forgot\ForgotHandler.cs" />
+    <Compile Include="Features\Account\Register\Register.cs" />
+    <Compile Include="Features\Account\Register\RegisterHandler.cs" />
+    <Compile Include="Features\Account\Reset\Reset.cs" />
+    <Compile Include="Features\Account\Reset\ResetHandler.cs" />
+    <Compile Include="Features\Account\Shared\AbstractPassword.cs" />
+    <Compile Include="Features\Account\Shared\AbstractPasswordHandler.cs" />
     <Compile Include="Features\Authentication\AuthenticationController.cs" />
-    <Compile Include="Features\Authentication\Forgot\ForgotPassword.cs" />
-    <Compile Include="Features\Authentication\Forgot\ForgotPasswordEmail.cs" />
-    <Compile Include="Features\Authentication\Forgot\ForgotPasswordHandler.cs" />
-    <Compile Include="Features\Authentication\ResetPassword\ResetPasswordHandler.cs" />
-    <Compile Include="Features\Authentication\ResetPassword\ResetPassword.cs" />
     <Compile Include="Features\Authentication\SignIn\SignIn.cs" />
     <Compile Include="Features\Authentication\SignIn\SignInForm.cs" />
     <Compile Include="Features\Home\HomeController.cs" />
@@ -456,6 +510,7 @@
     <Compile Include="Infrastructure\Models\Parameterless.cs" />
     <Compile Include="Infrastructure\PatientTransformer.cs" />
     <Compile Include="Infrastructure\PersistenceExceptionHandler.cs" />
+    <Compile Include="Infrastructure\PersonalIdentityNumberModelBinder.cs" />
     <Compile Include="Infrastructure\PractitionerTransformer.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AddToStockViewModel.cs" />
@@ -562,6 +617,9 @@
     <Content Include="Assets\i\clock_stop.png" />
     <Content Include="Assets\i\dayslot-hover.png" />
     <Content Include="Assets\i\dayslot-unsel.png" />
+    <Content Include="Assets\i\icn-change-password.png" />
+    <Content Include="Assets\i\icn-dualstaffing.png" />
+    <Content Include="Assets\i\icn-logout.png" />
     <Content Include="Assets\i\filter-sep.png" />
     <Content Include="Assets\i\footer-shade.png" />
     <Content Include="Assets\i\globalfilter-select.png" />
@@ -609,8 +667,13 @@
     <Content Include="Assets\i\icn-toolpics.png" />
     <Content Include="Assets\i\icn-update.png" />
     <Content Include="Assets\i\icn-warning-diabetes.png" />
+    <Content Include="Assets\i\icn-warning-infection.png" />
     <Content Include="Assets\i\icn-warning-varan.png" />
     <Content Include="Assets\i\icn-warning-waran.png" />
+    <Content Include="Assets\i\ico-activity-group.png" />
+    <Content Include="Assets\i\ico-activity-message.png" />
+    <Content Include="Assets\i\ico-walk-group.png" />
+    <Content Include="Assets\i\ico-walk-message.png" />
     <Content Include="Assets\i\icon-calendar.gif" />
     <Content Include="Assets\i\ipad-htoggle-off.png" />
     <Content Include="Assets\i\ipad-htoggle-on.png" />
@@ -627,6 +690,9 @@
     <Content Include="Assets\i\popover.png" />
     <Content Include="Assets\i\popover2.png" />
     <Content Include="Assets\i\profile-icon.png" />
+    <Content Include="Assets\i\profile-blue%402x.png" />
+    <Content Include="Assets\i\profile-blue.png" />
+    <Content Include="Assets\i\profile-white.png" />
     <Content Include="Assets\i\reportchart.png" />
     <Content Include="Assets\i\select-arrow.png" />
     <Content Include="Assets\i\shade-blue.png" />
@@ -670,8 +736,10 @@
     <Content Include="Assets\js\zxcvbn.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="media\appva-event.png" />
     <Content Include="media\jul.png" />
     <Content Include="media\logo-appva.png" />
+    <Content Include="media\logout.png" />
     <Content Include="media\pagaende_insatser.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -689,7 +757,6 @@
     <Content Include="Features\_ViewStart.cshtml" />
     <Content Include="Features\Shared\Error.cshtml" />
     <Content Include="Features\Shared\_Layout.cshtml" />
-    <Content Include="Features\Authentication\Lockout\Lockout.cshtml" />
     <Content Include="Features\Shared\_LoginPartial.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Details\Details.cshtml" />
   </ItemGroup>
@@ -859,9 +926,6 @@
     <Content Include="Areas\Roles\Features\web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Features\Authentication\Forgot\Forgot.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Delegation\AddKnowledgeTest\AddKnowledgeTest.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\Changeset\Changeset.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\Create\Create.cshtml" />
@@ -1010,9 +1074,6 @@
     <Content Include="Areas\Dashboard\Features\Dashboard\Index\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Features\Shared\EmailTemplates\AuthenticationEmail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Features\Shared\EditorTemplates\Date.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1052,12 +1113,37 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Features\Authentication\SignOut\SignOut.cshtml" />
-    <Content Include="Areas\Area51\Features\Token\Index\Index.cshtml" />
-    <Content Include="Features\Authentication\ResetPassword\ResetPassword.cshtml" />
+    <Content Include="Areas\Notification\Features\web.config" />
+    <Content Include="Areas\Notification\Features\_ViewStart.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\List\List.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\Dashboard\Dashboard.cshtml" />
+    <Content Include="Areas\Area51\Features\Token\Index\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Features\Account\Forgot\Forgot.cshtml" />
+    <Content Include="Features\Account\Partials\_PartialPassword.cshtml" />
+    <Content Include="Features\Account\Partials\_PartialPasswordHeader.cshtml" />
+    <Content Include="Features\Account\Partials\_PartialPasswordStrength.cshtml" />
+    <Content Include="Features\Account\Register\Register.cshtml" />
+    <Content Include="Features\Account\Reset\Reset.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\RegisterUserEmail.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\RegisterUserMobileDeviceEmail.cshtml" />
     <Content Include="Features\Shared\EmailTemplates\ResetPasswordEmail.cshtml" />
-    <Content Include="Features\Shared\ForgotPasswordSuccess.cshtml" />
-    <Content Include="Features\Shared\ResetPasswordTokenExpired.cshtml" />
-    <Content Include="Features\Shared\ResetPasswordSuccess.cshtml" />
+    <Content Include="Features\Shared\ForgotSuccess.cshtml" />
+    <Content Include="Features\Shared\Lockout.cshtml" />
+    <Content Include="Features\Shared\RegisterExpired.cshtml" />
+    <Content Include="Features\Shared\RegisterSuccess.cshtml" />
+    <Content Include="Features\Shared\ResetExpired.cshtml" />
+    <Content Include="Features\Shared\ResetSuccess.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\RegisterSithsUserEmail.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\UpdateUserMobileDeviceEmail.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\version1.6.2.cshtml" />
+    <Content Include="Areas\Area51\Features\Notifications\Index\Index.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
+    <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
+    <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Overview\_OverviewCalendarTask.cshtml" />
+
     <Content Include="Areas\Patient\Features\Medication\UpdateSequence\UpdateSequence.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
@@ -1080,7 +1166,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1080</IISUrl>
+          <IISUrl>http://localhost:1080/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

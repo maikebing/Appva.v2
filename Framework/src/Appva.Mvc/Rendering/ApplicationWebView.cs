@@ -14,6 +14,7 @@ namespace Appva.Mvc
     using System.Diagnostics.CodeAnalysis;
     using System.Security.Claims;
     using System.Text;
+    using System.Web;
     using System.Web.Mvc;
     using Core.Extensions;
     using Resources;
@@ -21,20 +22,35 @@ namespace Appva.Mvc
     using System.Web;
 
     #endregion
-
+    
     /// <summary>
     /// Custom <see cref="WebViewPage{T}"/>.
     /// </summary>
     /// <typeparam name="T">The type</typeparam>
     public abstract class ApplicationWebView<T> : WebViewPage<T>
     {
+        #region Properties.
+
         /// <summary>
         /// Returns the claims principal.
         /// </summary>
-        /// <returns>The <see cref="ClaimsPrincipal"/></returns>
-        public ClaimsPrincipal Principal()
+        public ClaimsPrincipal Principal
+        {
+            get
         {
             return (ClaimsPrincipal) this.User;
+        }
+        }
+
+        /// <summary>
+        /// Returns the tenant name (from owin pipeline).
+        /// </summary>
+        public string Tenant
+        {
+            get
+            {
+                return this.Request.GetOwinContext().TenantName();
+            }
         }
 
         /// <summary>
@@ -54,10 +70,28 @@ namespace Appva.Mvc
         public string Title
         {
             get
+        {
+            get
             {
-                return this.ViewBag.Title;
+            return this.ViewBag.Title;
+        }
+        }
+
+        /// <summary>
+        /// Returns the body class.
+        /// </summary>
+        /// <returns>The body class</returns>
+        public string BodyCssClass
+        {
+            get
+            {
+                return this.ViewBag.BodyCssClass == null ? string.Empty : this.ViewBag.BodyCssClass;
             }
         }
+
+        #endregion
+
+        #region Public Methods.
 
         /// <summary>
         /// Sets the page title.
@@ -71,22 +105,12 @@ namespace Appva.Mvc
         /// <summary>
         /// Sets the page title.
         /// </summary>
-        /// <param name="pageTitle">The page title</param>
+        /// <param name="format">The page title format</param>
+        /// <param name="args">The page format arguments</param>
         public void SetTitle(string format, params string[] args)
         {
             this.ViewBag.Title = string.Format(format, args);
         }
-
-        /// <summary>
-        /// Returns the body class.
-        /// </summary>
-        /// <returns>The body class</returns>
-        public string BodyCssClass
-        {
-            get
-            {
-                return this.ViewBag.BodyCssClass == null ? string.Empty : this.ViewBag.BodyCssClass;
-            }
         }
 
         /// <summary>
@@ -122,11 +146,10 @@ namespace Appva.Mvc
             {
                 return MvcHtmlString.Empty;
             }
-            var builder = new StringBuilder();
+            var builder  = new StringBuilder();
             var metaTags = this.ViewBag.Meta as Dictionary<string, string>;
             if (metaTags.IsNotNull())
             {
-                Debug.Assert(metaTags != null, "metaTags != null");
                 foreach (var kv in metaTags)
                 {
                     var metaTag = new TagBuilder(Tags.Meta);
@@ -137,6 +160,8 @@ namespace Appva.Mvc
             }
             return MvcHtmlString.Create(builder.ToString());
         }
+
+        #endregion
     }
 
     /// <summary>

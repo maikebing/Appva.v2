@@ -77,31 +77,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ScheduleListViewModel Handle(ListSchedule message)
         {
             var account = this.persistence.Get<Account>(this.identities.PrincipalId);
-            var roles = account.Roles;
-            var list = new List<ScheduleSettings>();
-            foreach (var role in roles)
-            {
-                var ss = role.ScheduleSettings;
-                foreach (var schedule in ss)
-                {
-                    if (schedule.ScheduleType == ScheduleType.Action)
-                    {
-                        list.Add(schedule);
-                    }
-                }
-            }
+            var scheduleSettings = TaskService.GetRoleScheduleSettingsList(account);
             var patient = this.persistence.Get<Patient>(message.Id);
             var query = this.persistence.QueryOver<Schedule>()
                 .Where(s => s.Patient.Id == patient.Id && s.IsActive == true)
                 .JoinQueryOver<ScheduleSettings>(s => s.ScheduleSettings)
-                    .Where(s => s.ScheduleType == ScheduleType.Action);
-
-            if (list.Count > 0)
-            {
-                query.WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
+                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                    .And(s => s.ScheduleType == ScheduleType.Action);
             var schedules = query.List();
-
             this.auditing.Read(
                 patient,
                 "läste signeringslistor för boende {0} (REF: {1}).",

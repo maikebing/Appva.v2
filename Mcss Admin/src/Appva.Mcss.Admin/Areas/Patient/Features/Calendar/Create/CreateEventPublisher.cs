@@ -16,13 +16,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
+    using Appva.Mcss.Admin.Areas.Models;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class CreateEventPublisher : RequestHandler<EventViewModel, ListCalendar>
+    internal sealed class CreateEventPublisher : RequestHandler<CreateEventModel, ListCalendar>
     {
         #region Private Variables.
 
@@ -60,7 +61,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override ListCalendar Handle(EventViewModel message)
+        public override ListCalendar Handle(CreateEventModel message)
         {
             var patient = this.patientService.Get(message.Id);
             if (message.Category.Equals("new"))

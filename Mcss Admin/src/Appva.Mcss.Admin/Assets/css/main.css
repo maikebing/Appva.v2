@@ -1,4 +1,3 @@
-
 @media all {
 
 /* RESET
@@ -335,7 +334,7 @@ a.pause-btn:active {
 }
 
 #header {
-	padding:0 12px;
+	padding:0 20px;
 	background:#445068 url(../i/grad-12.png) repeat-x;
 }
 #logo {
@@ -347,7 +346,7 @@ a.pause-btn:active {
 #header h1 {font-weight:bold; font-size:2em;}
 #logged-info {
 	float:right;
-	padding:16px 5px 0;
+
 	color:#d2d8e5;
 	text-shadow:0 -1px 0 #004;
 }
@@ -362,6 +361,114 @@ a.pause-btn:active {
 #logged-info .btn:active {
 	box-shadow:0 1px 0 #637088, 0 2px 5px #113 inset;
 }
+
+#logged-info ul li a:hover{
+    cursor:pointer;
+}
+
+#logged-info ul li.user-info:hover, #logged-info ul li.sel {
+    color:#445068;
+	background:#fff url(../i/header-tab.png) repeat-x;
+	text-shadow:0 1px 0 #fff;
+}
+#logged-info ul li.user-info:hover a, #logged-info ul li.sel a {
+    color:#445068;
+	text-shadow:0 1px 0 #fff;
+}
+#logged-info ul li.support-info, 
+#logged-info ul li.user-info { 
+
+}
+
+#logged-info ul li .icon, #logged-info ul li.sel .icon { padding-left:40px; background-size:16px; }
+#logged-info ul li .icon-profile { background:url(/Assets/i/profile-white.png) no-repeat 16px 50%; background-size:16px; }
+#logged-info ul li:hover .icon-profile, #logged-info ul li.sel .icon-profile { background:url(/Assets/i/profile-blue.png) no-repeat 16px 50%; background-size:16px; }
+#logged-info ul li .icon-help { background:url(/Assets/i/icn-help.png) no-repeat 16px 50%; }
+#logged-info #nav-main ul li.user-info:hover a, #logged-info #nav-main ul li.sel a { border:none; }
+
+#logged-info ul li a.profile {
+    /*background:url(/Assets/i/profile-white.png) no-repeat 0 50%;
+    background-size:27px;*/
+}
+#logged-info ul li a.help {
+    /*background:url(../i/icn-help.png) no-repeat 0 50%;
+    font-weight:normal;
+    padding-left:20px;*/
+}
+
+#logged-info ul li a {
+    padding:16px;
+    display:inline-block;
+}
+
+#logged-info ul li div.profile {
+    min-width:260px;
+    position: absolute;
+    right:0px;
+    display: none;
+    padding: 25px 10px 10px;
+    background: #fff;
+    color:rgb(75,87,118);
+    border:3px solid rgb(75,87,118);
+    border-top:none;
+    margin-right:17.5px;
+    box-shadow:0 5px 10px rgba(75,87,118,0.35);
+    z-index:98;
+}
+
+#logged-info ul li div.profile ul,
+#logged-info ul li div.profile ul li {
+    width:100%;
+    padding:0;
+    background:rgba(228,234,247,0.35);
+    float:none;
+}
+#logged-info ul li div.profile ul li { border-top:1px solid #d8dfe5; }
+
+#logged-info ul li div.profile ul li a,
+#logged-info ul li div.profile p {
+    color:rgb(75,87,118);
+    box-shadow:none;
+    padding:16px 16px 16px 30px;
+    margin:0 15px;
+    text-shadow:none;
+    border:none;
+}
+
+#logged-info ul li div.profile ul li a.logout {
+    background: url(/Assets/i/icn-logout.png) no-repeat 0 50%;
+    background-size:16px;
+}
+#logged-info ul li div.profile ul li a.change-password {
+    background: url(/Assets/i/icn-change-password.png) no-repeat 0 50%;
+    background-size:16px;
+}
+
+#logged-info ul li div.profile p {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(75,87,118);
+    padding: 85px 16px 25px 16px;
+    background: url(/Assets/i/profile-blue@2x.png) no-repeat 50% 15px;
+    background-size: 60px;
+}
+
+#logged-info ul li div.profile p span.label {
+    display:block;
+    font-size:12px;
+    font-weight:normal;
+}
+
+#logged-info ul li div.profile ul li:hover {
+    background:#eaeff9;
+}
+
+#logged-info ul li:hover div.profile,
+#logged-info ul li.sel div.profile {
+    display:block;
+} 
+
 #footer {
 	margin-top:50px;
 	padding:12px 24px;
@@ -519,7 +626,7 @@ a.pause-btn:active {
 	font-weight:normal;
 }
 #nav-main a.print {background:url(../i/icn-print.png) no-repeat 0 50%;}
-#nav-main a.help {background:url(../i/icn-help.png) no-repeat 0 50%;}
+
 
 /* Panel-filters */
 
@@ -567,7 +674,7 @@ a.pause-btn:active {
 /* Page designs */
 
 #subheader {
-	padding:12px 16px;
+	padding:12px 20px;
 	background:#e2e9f6 url(../i/shade-header.png) repeat-x 0 50%;
 	border-bottom:1px solid #b6c2e0;
 	text-shadow:0 1px 0 #fff;
@@ -902,6 +1009,7 @@ tr.modified { background-color:#f4f4f4; text-decoration: line-through; }
     color: #FFFFFF;
     padding: 1px 8px;
     white-space: nowrap;
+    cursor:pointer;
 }
 
 .panel .orderTime {
@@ -909,11 +1017,36 @@ tr.modified { background-color:#f4f4f4; text-decoration: line-through; }
     font-size:10px;
 }
 
-.panel .order-check input {
+.panel .order-check input,
+.panel .cal-overview input {
     vertical-align:middle;
 }
 
-.panel .order-check span {
+.panel table.cal-overview {
+    table-layout:fixed;
+}
+
+.panel table.cal-overview .act-details {
+    display:none;
+    border-width:0;
+}
+.panel table.cal-overview .act-details h5 {
+    margin:0;
+    padding:2px 0 1px 0;
+}
+.panel table.cal-overview .act-details td {
+    border:none;
+}
+
+.panel table.cal-overview td {
+    border-top:1px solid #d8dfe5;
+    border-bottom:none;
+    border-left:none;
+    border-right:none;
+}
+
+.panel .order-check span,
+.panel span.cal-label-done {
     vertical-align:middle;
     display:none;
     background:#67ae56;
@@ -1936,6 +2069,7 @@ form .time {width:4em;}
 #calendar table,
 #calendar th,
 #calendar td {
+    margin:0;
 	vertical-align:top;
 }
 #calendar .inactive {color:#aaa;}
@@ -2006,9 +2140,38 @@ form .time {width:4em;}
 	display:block;
 }
 
+#calendar .month-row a {
+    text-decoration:none;
+}
+
+#calendar .act:hover {
+    cursor:pointer;
+}
+#calendar .focus span.act {
+    box-shadow:0 0 15px rgba(0,0,0,0.9);
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.0),
+        rgba(255, 255, 255, 0.0) 10px,
+        rgba(255, 255, 255, 0.3) 10px,
+        rgba(255, 255, 255, 0.3) 20px);
+    transition:all ease-in 0.1s;
+}
+
 #calendar .act:hover .act-info,
 #calendar .pause:hover .act-info {
 	display:block;
+}
+
+#calendar .act-activity {
+    font-size: 11px;
+    font-style:italic;
+    display:block;
+    margin-top:5px;
+}
+
+#calendar .act-activity input {
+    vertical-align:middle;
 }
 
 .cal-wrap {padding:0 12px;}
@@ -2118,6 +2281,230 @@ form .time {width:4em;}
 	border-color:#a20b0b;
 }
 
+#calendar .week-number{
+    background:#ebf0f8;
+    border-top:1px #ebf0f8 solid; 
+    border-bottom:1px #ebf0f8 solid; 
+    border-left:1px #ebf0f8 solid; 
+    border-right:none; 
+    width:35px;
+    text-align:right;
+    padding:0px 5px;
+    vertical-align:middle;
+    font-size:18px;
+    color:#445068;
+}
+#calendar .evt-grid .week-number {
+    background:none;
+    padding-right:8px;
+}
+
+#calendar .month-row {
+    position:relative;
+
+    min-height:100px;
+}
+
+#calendar .bg-table {
+    position:absolute;
+    padding:0px;
+    margin:0px;
+    height:100%;
+    top:0px;
+    table-layout:fixed;
+    border:none;
+}
+
+#calendar .evt-grid {
+    position:relative;
+    top:25px;
+    left:0;
+    border:none;
+}
+#calendar .evt-grid td {
+    border:none;
+    padding:0px 2px;
+    margin:0px
+}
+
+#calendar .time .end {
+    float:right;
+}
+
+#calendar .act.c-next-week .time .end{
+    visibility:hidden;
+}
+
+#calendar .act.c-from-last-week .time .start{
+    visibility:hidden;
+}
+
+#calendar .act.c-next-week{
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    padding-right: 8px;
+    vertical-align:middle;
+}
+
+#calendar .act.c-from-last-week{
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    padding-left: 20px;
+    vertical-align:middle;
+}
+
+#calendar .act.c-next-week:after,
+#calendar .act.c-from-last-week:before {
+    position: absolute;
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-right: 7px solid rgba(255,255,255,0.5);
+    border-top: 7px solid rgba(255,255,255,0.5);
+    border-left: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    top:50%;
+    margin-top:-7px;
+    margin-left: -15px;
+}
+
+#calendar .act.c-next-week:after {
+    float: right;
+    transform: rotate(45deg);
+    right:5px;
+}
+
+#calendar .act.c-from-last-week:before {
+    float: left;
+    transform: rotate(225deg);
+}
+
+.calendar-details {
+    padding: 10px;
+}
+
+.calendar-details .date {
+    float:left;
+    padding:0 10px;
+    margin-right: 10px;
+}
+
+.calendar-details .date .day {
+    width:100%;
+    font-size: 40px;
+    text-align:center;
+    color:#fff;
+}
+.calendar-details .date .month {
+    width:100%;
+    text-align:center;
+    font-size: 14px;
+    color:#fff;
+    padding:5px 10px;
+    margin-left:-10px;
+    background:rgba(0,0,0,0.3);
+}
+
+.calendar-details h3 {
+    border-bottom:#000 solid 1px;
+    margin-bottom:2px;
+}
+
+.calendar-details .time {
+    margin:0 10px 10px 10px;
+}
+
+.calendar-details .description {
+    min-height:40px;
+}
+
+.calendar-details .label {
+    display:block;
+    font-weight:bold;
+} 
+.calendar-details .info {
+    background: #f2f4f9;
+    padding:10px;
+    margin-bottom:10px;
+    color:#7c88a1;
+    border-radius: 4px;
+}
+
+.calendar-details .info label {
+    font-weight:bold;
+    color:#445068;
+} 
+
+.calendar-details .info h6 {
+    padding:3px;
+    margin:0;
+}
+.calendar-details .info span {
+    float:right;
+    vertical-align:middle;
+}
+.calendar-details .info span input,
+.calendar-details .info span label {
+    vertical-align:middle;
+    display:inline;
+    margin:3px;
+}
+
+.calendar-details .info .name {
+    font-weight:700;
+    margin-top:10px;
+    color:#445068;
+}
+
+.calendar-details .info span span {
+    margin-left:10px;
+}
+
+.calendar-details .info span p {
+    margin:1px;
+    padding:0;
+}
+
+.calendar-details .info span.status {
+    text-align:center;
+    font-size:11px;
+    color:#445068;
+}
+
+.calendar-details .info span p.time {
+    color:#445068;
+    font-size:11px;
+}
+
+.calendar-details .btn {
+    text-decoration: none;
+    background: #445068;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    display: inline-block;
+    line-height: 20px;
+    padding: 13px 0;
+    font-weight: 600;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-right:10px;
+}
+
+.calendar-details .btn:hover {
+    background-color: #374154;
+}
+
+.calendar-details .btn.btn-del {
+    background: #893a29;
+}
+.calendar-details .btn.btn-del:hover {
+    background-color: #702f21;
+}
+
+
 #main .cal-wrap .cal-filter label {
 	color:#445068;
 }
@@ -2207,7 +2594,7 @@ form .time {width:4em;}
 }
 
 #status-filter {
-	padding:10px 12px;
+	padding:10px 20px;
 	margin-bottom:20px;
 	background:#e2e9f6 url(../i/shade-header.png) repeat-x 0 50%;
 	border-bottom:1px solid #b6c2e0;
@@ -2846,6 +3233,19 @@ select.custom-select {
 	margin:0;
 	font-size:12px;
 }
+
+/* span for delegations in lightbox must be min 350px wide */
+select.delegation.custom-select {
+    min-width:350px;
+}
+
+select.delegation.custom-select option {
+    border-bottom:1px, solid #445068;
+    font-size: 16px;
+    padding:10px;
+}
+
+
 /* Dynamically created SPAN, placed below the SELECT */
 span.custom-select {
 	position:absolute;
@@ -3103,6 +3503,7 @@ ul.people li {
 }
 
 #calendar table {
+    margin:0;
 	table-layout:fixed;
 }
 

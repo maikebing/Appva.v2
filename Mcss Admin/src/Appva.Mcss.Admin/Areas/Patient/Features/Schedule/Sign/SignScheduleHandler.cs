@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Utilities;
     using Appva.Mcss.Admin.Commands;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -54,6 +55,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
         #endregion
 
         #region Constructor.
@@ -61,12 +72,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="SignScheduleHandler"/> class.
         /// </summary>
-        public SignScheduleHandler(IAuditService auditing, IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public SignScheduleHandler(IIdentityService identityService, IAccountService accountService, IAuditService auditing, IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
         {
             this.auditing = auditing;
             this.patientService = patientService;
             this.transformer = transformer;
             this.persistence = persistence;
+            this.accountService = accountService;
+            this.identityService = identityService;
         }
 
         #endregion
@@ -75,20 +88,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public override TaskListViewModel Handle(SignSchedule message)
         {
-            ///var account = Identity();
-            //var roles = account.Roles;
-            var list = new List<ScheduleSettings>();
-            /*foreach (var role in roles)
-            {
-                var ss = role.ScheduleSettings;
-                foreach (var schedule in ss)
-                {
-                    if (schedule.ScheduleType == ScheduleType.Action)
-                    {
-                        list.Add(schedule);
-                    }
-                }
-            }*/
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var list = TaskService.GetRoleScheduleSettingsList(account);
             var patient = this.patientService.Get(message.Id);
             var page = message.Page ?? 1;
             var filterByAnomalies = message.FilterByAnomalies ?? false;
@@ -117,21 +118,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 endDate, 
                 patient.FullName, 
                 patient.Id);
-            var scheduleSettings = new List<ScheduleSettings>();
-            var query = this.persistence.QueryOver<Schedule>().Where(x => x.Patient.Id == message.Id);
-            if (list.Count > 0)
-            {
-                query.JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray());
-            }
-            var schedules = query.List();
-            foreach (var schedule in schedules)
-            {
-                if (!scheduleSettings.Contains(schedule.ScheduleSettings))
-                {
-                    scheduleSettings.Add(schedule.ScheduleSettings);
-                }
-            }
+            var scheduleSettings = TaskService.GetRoleScheduleSettingsList(account);
+            var schedules = this.persistence.QueryOver<Schedule>().Where(x => x.Patient.Id == message.Id)
+                            .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                            .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                            .List();
             if (! message.ScheduleSettingsId.HasValue)
             {
                 if (schedules.Count > 0)
@@ -182,9 +173,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var scheduleSetting = this.persistence.Get<ScheduleSettings>(message.ScheduleSettingsId);
             var query = this.persistence.QueryOver<Task>()
                 .Where(x => x.Patient.Id == message.PatientId)
-                .And(x => x.Inventory.Increased == null) //// FIXME: 1.6 won't need old inventory!
-                .And(x => x.Inventory.RecalculatedLevel == null) //// FIXME: 1.6 won't need old inventory!
-                .And(x => x.UpdatedAt <= message.EndDate)
+                .And(x => x.Inventory.Increased == null)
+                .And(x => x.Inventory.RecalculatedLevel == null)
+                .And(x => x.Scheduled <= message.EndDate)
                 .Fetch(x => x.StatusTaxon).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer());
 
@@ -208,13 +199,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     query = query.Left.JoinAlias(x => x.StatusTaxon, () => st).OrderBy(() => st.Weight).Asc.ThenBy(x => x.Scheduled).Desc;
                     break;
                 case OrderTasksBy.Time:
-                    query = query.OrderBy(x => x.UpdatedAt).Desc;
+                    query = query.OrderBy(x => x.CompletedDate).Desc;
                     break;
             };
 
             if (message.StartDate.HasValue)
             {
-                query.Where(x => x.UpdatedAt >= message.StartDate);
+                query.Where(x => x.Scheduled >= message.StartDate);
             }
             if (message.FilterByNeedsBasis)
             {

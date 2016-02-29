@@ -43,21 +43,46 @@
     <many-to-one name="Patient" class="Patient" />
   </class>
 
-  <!-- Notification
+  <!-- Notification -->
   <class name="Notification">
     <id name="Id">
       <generator class="guid.comb" />
     </id>
-    <property name="Created" />
-    <property name="Modified" />
-    <property name="Title" />
-    <property name="Message" type="StringClob">
-      <column name="Message" sql-type="NTEXT"/>
-    </property>
+    <discriminator column="NotificationType" />
+    <version name="Version" />
+    <property name="Name" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
     <property name="Published" />
     <property name="PublishedDate" />
     <property name="UnPublishedDate" />
-  </class> -->
+    <property name="IsVisibleToEveryone" />
+    <bag name="ViewedBy" cascade="save-update">
+      <key column="Notification" />
+      <one-to-many class="NotificationViewedBy" />
+    </bag>
+    <bag name="VisibleTo" table="NotificationVisibleTo" cascade="save-update">
+      <key column="NotificationId" />
+      <many-to-many column="AccountId" class="Account" />
+    </bag>
+    <subclass name="DashboardNotification" discriminator-value="0">
+      <property name="Template" />
+    </subclass>
+  </class>
+
+  <!-- NotificationViewedByAccount -->
+  <class name="NotificationViewedBy">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <many-to-one name="Notification" class="Notification" />
+    <many-to-one name="Account" class="Account" />
+  </class>
 
   <!-- Account -->
   <class name="Account" table="Account">
@@ -314,6 +339,11 @@
     <property name="IsActive" column="Active" />
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
+    <property name="LastActivatedAt">
+      <!-- Sets default to 2001-01-01. Will automatically be updated to CreatedAt (if LastActivatedAt < CreatedAt) when entity is loaded -->
+      <column name="LastActivatedAt" not-null="true" default="'2001-01-01'" />
+    </property>
+    <property name="LastInActivatedAt" />
     <property name="FirstName" />
     <property name="LastName" />
     <property name="FullName" />
@@ -321,7 +351,6 @@
       <property name="Value" column="UniqueIdentifier" access="nosetter.camelcase" />
     </component>
     <property name="Deceased" />
-    <property name="HasUnattendedTasks" />
     <many-to-one name="Taxon" class="Taxon" />
     <bag name="SeniorAlerts" cascade="save-update">
       <key column="PatientId" />
@@ -402,6 +431,7 @@
     <many-to-one name="CombineWith" class="ScheduleSettings" />
     <property name="ScheduleType" />
     <property name="Absence" />
+    <property name="Color" />
     <bag name="StatusTaxons" cascade="save-update">
       <key column="ScheduleSettingsId" />
       <many-to-many class="Taxon" column="TaxonId" property-ref="" />
@@ -593,5 +623,6 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
+
 
 </hibernate-mapping>

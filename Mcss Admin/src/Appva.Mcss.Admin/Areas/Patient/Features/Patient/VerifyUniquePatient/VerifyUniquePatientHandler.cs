@@ -48,18 +48,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc /> 
         public override bool Handle(VerifyUniquePatient message)
         {
-            /*if (! message.Id.HasValue)
+            try
             {
-                return ! this.patientService.PatientWithPersonalIdentityNumberExist(message.UniqueIdentifier);
+                var patient = this.patientService.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
+                if (! message.Id.HasValue || patient == null)
+                {
+                    return patient == null;
+                }
+                return patient.Id.Equals(message.Id.Value);
             }
-            var patient = this.patientService.Get(message.Id.Value);
-            return patient != null && patient.PersonalIdentityNumber.Equals(message.UniqueIdentifier);*/
-            var patient = this.patientService.FindByPersonalIdentityNumber(message.UniqueIdentifier);
-            if (!message.Id.HasValue || patient == null)
+            catch (NotUniquePersonalIdentityNumberException)
             {
-                return patient == null;
+                return false;
             }
-            return patient.Id.Equals(message.Id.Value);
         }
 
         #endregion

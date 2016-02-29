@@ -20,6 +20,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Sequence : AggregateRoot<Sequence>
     {
+        #region Fields.
+
+        private const int Weekly = 7;
+        private const int Monthly = 31;
+        private const int Yearly = 365;
+
+        #endregion
+
         #region Constructor.
 
         /// <summary>
@@ -328,6 +336,72 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get;
             set;
+        }
+
+        #endregion
+
+        #region Members
+
+        /// <summary>
+        /// Returns the next date in the sequence from the given date
+        /// </summary>
+        /// <param name="date">Current date in sequence</param>
+        /// <returns>Next date in sequence</returns>
+        public virtual DateTime GetNextDateInSequence(DateTime date)
+        {
+            var factor = this.IntervalFactor < 1 ? 1 : this.IntervalFactor;
+
+            if (this.Interval.Equals(Weekly))
+            {
+                var days = factor * 7;
+                return date.AddDays(days);
+            }
+
+            if (this.Interval.Equals(Yearly))
+            {
+                return date.AddYears(1);
+            }
+
+            if (this.Interval.Equals(Monthly))
+            {
+                //// Repeat on given date (eg. 10 every month)
+                if (this.IntervalIsDate)
+                {
+                    return date.AddMonths(factor);
+                }
+                //// Repeat on given day (eg. 2 monday every month)
+                else
+                {
+                    var newDate = date.AddMonths(factor);
+
+                    while (newDate.Day % 7 != 0)
+                    {
+                        if (newDate.DayOfWeek == date.DayOfWeek)
+                        {
+                            return newDate;
+                        }
+                        newDate = newDate.AddDays(1);
+                    }
+                    if (newDate.DayOfWeek == date.DayOfWeek)
+                    {
+                        return newDate;
+                    }
+                    newDate = newDate.AddDays(-1);
+                    while (newDate.Day % 7 != 0)
+                    {
+                        if (newDate.DayOfWeek == date.DayOfWeek)
+                        {
+                            return newDate;
+                        }
+                        newDate = newDate.AddDays(-1);
+                    }
+
+                    return newDate;
+                }
+            }
+
+            //// Interval is specified in dates
+            return date.AddDays(this.Interval);
         }
 
         #endregion

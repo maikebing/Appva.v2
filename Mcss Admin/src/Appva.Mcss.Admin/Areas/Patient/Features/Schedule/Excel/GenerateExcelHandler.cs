@@ -22,6 +22,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.IO;
     using Appva.Tenant.Identity;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using System.Linq;
 
     #endregion
 
@@ -31,6 +33,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
     internal sealed class GenerateExcelHandler : RequestHandler<GenerateExcel, FileContentResult>
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
 
         /// <summary>
         /// The <see cref="IAuditService"/>.
@@ -54,9 +66,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="GenerateExcelHandler"/> class.
         /// </summary>
-        public GenerateExcelHandler(IAuditService auditing, ITenantService tenantService, IPersistenceContext persistence)
+        public GenerateExcelHandler(
+            IAuditService auditing, 
+            IAccountService accountService, 
+            IIdentityService identityService,
+            ITenantService tenantService, 
+            IPersistenceContext persistence)
         {
             this.auditing = auditing;
+            this.accountService = accountService;
+            this.identityService = identityService;
             this.tenantService = tenantService;
             this.persistence = persistence;
         }
@@ -77,11 +96,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 .Fetch(x => x.Patient).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer())
                 .OrderBy(x => x.UpdatedAt).Desc;
+            Schedule scheduleAlias = null;
+            ScheduleSettings scheduleSettingsAlias = null;
             if (message.ScheduleSettingsId.HasValue)
             {
-                Schedule scheduleAlias = null;
                 query.Inner.JoinAlias(x => x.Schedule, () => scheduleAlias)
                     .Where(() => scheduleAlias.ScheduleSettings.Id == message.ScheduleSettingsId);
+            }
+            else
+            {
+                var account = this.accountService.Find(this.identityService.PrincipalId);
+                var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
+                query.Inner.JoinAlias(x => x.Schedule, () => scheduleAlias)
+                    .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
+                    .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
             }
             var patient = this.persistence.Get<Patient>(message.Id);
             this.auditing.Read(

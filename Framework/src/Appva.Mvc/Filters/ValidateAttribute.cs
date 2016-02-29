@@ -112,6 +112,10 @@ namespace Appva.Mvc
             }
         }
 
+        /// <summary>
+        /// Merge any query parameters and adds them to the route data values.
+        /// </summary>
+        /// <param name="context">The <see cref="ControllerContext"/></param>
         private void MergeQueryParametersToRouteDataValues(ControllerContext context)
         {
             var querystring = context.HttpContext.Request.QueryString;
@@ -121,7 +125,7 @@ namespace Appva.Mvc
             }
             foreach (var key in querystring.AllKeys)
             {
-                if (!context.RouteData.Values.ContainsKey(key))
+                if (! context.RouteData.Values.ContainsKey(key))
                 {
                     context.RouteData.Values.Add(key, querystring[key]);
                 }

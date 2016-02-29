@@ -9,10 +9,6 @@ namespace Appva.Mvc
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Appva.Core.Resources;
     using Microsoft.Owin;
 
     #endregion
@@ -23,10 +19,15 @@ namespace Appva.Mvc
     public static class OwinExtensions
     {
         /// <summary>
-        /// 
+        /// The tenant header name.
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        public const string TenantHeader = "Tenant-Name";
+
+        /// <summary>
+        /// Returns the current tenant name from header.
+        /// </summary>
+        /// <param name="context">The <see cref="IOwinContext"/></param>
+        /// <returns>The current tenant name</returns>
         public static string TenantName(this IOwinContext context)
         {
             if (context == null)
@@ -34,7 +35,7 @@ namespace Appva.Mvc
                 return string.Empty;
             }
             string[] tenantName;
-            if (!context.Request.Headers.TryGetValue(ClaimTypes.TenantName, out tenantName))
+            if (! context.Request.Headers.TryGetValue(TenantHeader, out tenantName))
             {
                 return string.Empty;
             }

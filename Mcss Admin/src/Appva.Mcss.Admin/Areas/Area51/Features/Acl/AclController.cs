@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Areas.Area51.Features.Acl.AddNewsPermissions;
 
     #endregion
 
@@ -109,6 +110,40 @@ namespace Appva.Mcss.Admin.Controllers
         public ActionResult UpgradePermissionNamesAndAddNew()
         {
             this.mediator.Publish(new UpgradeAcl());
+            return this.RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Update Access Control.
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Route("update")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Uppgradering klar!")]
+        public ActionResult UpdatePermissions()
+        {
+            this.mediator.Publish(new UpdatePermissionsAcl());
+            return this.RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Hotfix #18
+
+        /// <summary>
+        /// This hot fix #18 will update fallback roles for user accounts.
+        /// </summary>
+        /// <returns>Void</returns>
+        [Route("hotfix-18")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Hotfix 18 - uppdatering av fallback-roller är genomfört!")]
+        public ActionResult Hotfix18()
+        {
+            this.mediator.Publish(new Hotfix18());
             return this.RedirectToAction("Index");
         }
 

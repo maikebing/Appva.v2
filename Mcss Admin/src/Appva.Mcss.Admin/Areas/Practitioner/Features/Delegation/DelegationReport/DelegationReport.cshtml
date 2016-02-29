@@ -1,15 +1,11 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationReportViewModel
-@{ ViewBag.Title = "Rapporter"; ViewBag.MainClass = "report-view"; }
+@using Appva.Mcss.Admin.Application.Common;
+@{ 
+    SetTitle("Rapporter"); 
+    ViewBag.MainClass = "report-view"; 
+}
 @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
-@*Html.Action("Menu", "Menus", new
-            {
-                Key = "admin_account_menu",
-                Action = Html.ViewContext.RouteData.GetRequiredString("action"),
-                Controller = Html.ViewContext.RouteData.GetRequiredString("controller"),
-                Id = Model.Account.Id.ToString(),
-                IgnoreAction = false
-            })*@
 <div id="subheader" class="cf">
 	<h1>Rapporter</h1>
     @using (Html.BeginForm(new { id = Model.AccountId })) {            
@@ -149,8 +145,15 @@ else {
                     if (task.Delayed) {
                         <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
                         <strong>Avvikelse:</strong>
-                        if (task.DelayHandled) {
-                            @Html.ActionLink("Larm åtgärdat", "List", "Alert", new { id = task.Patient.Id }, new { })
+                        if (task.DelayHandled)
+                        {
+                            if (Html.HasPermissionFor(Permissions.Alert.Read))
+                            {
+                                @Html.ActionLink("Larm åtgärdat", "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
+                            }
+                            else { 
+                            @:Larm åtgärdat
+            }
                         }
                         else {
                             @:Ej given

@@ -28,6 +28,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
     using Appva.Persistence;
     using NHibernate.Criterion;
     using NHibernate.Transform;
+    using Appva.Mcss.Admin.Areas.Models;
 
     #endregion
 
@@ -97,6 +98,21 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
 
         #endregion
 
+        #region Details
+	
+	    /// <summary>
+	    /// Returns details of an event
+	    /// </summary>
+	    /// <returns></returns>
+	    [Route("details")]
+	    [HttpGet, Dispatch]
+	    public ActionResult Details(CalendarDetails request)
+	    {
+	        return View();
+	    }
+	
+	    #endregion 
+
         #region Create.
 
         /// <summary>
@@ -110,7 +126,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [Route("create")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Calendar.CreateValue)]
-        public ActionResult Create(Identity<EventViewModel> request)
+        public ActionResult Create(Identity<CreateEventModel> request)
         {
             return View();
         }
@@ -125,7 +141,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Calendar")]
         [PermissionsAttribute(Permissions.Calendar.CreateValue)]
-        public ActionResult Create(EventViewModel request)
+        public ActionResult Create(CreateEventModel request)
         {
             return View();
         }
@@ -149,32 +165,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         }
 
         /// <summary>
-        /// The Multi button does not work well with routes, so this is the ugly way
-        /// of fixing the issue sadly.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="editAction"></param>
-        /// <param name="seqId"></param>
-        /// <param name="date"></param>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [Route("edit")]
-        [HttpPost, Validate, ValidateAntiForgeryToken]
-        [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
-        public ActionResult Edit(Guid id, string editAction, Guid seqId, DateTime date, EventViewModel model)
-        {
-            if (editAction == "EditAll")
-            {
-                return this.EditAll(id, seqId, date, model);
-            }
-            if (editAction == "EditThis")
-            {
-                return this.EditThis(id, seqId, date, model);
-            }
-            return this.RedirectToAction("List", new { Id = id, StartDate = date });
-        }
-
-        /// <summary>
         /// Edits all events.
         /// </summary>
         /// <param name="id">The patient id</param>
@@ -182,37 +172,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// <param name="date">The date (for redirect)</param>
         /// <param name="model">The event model</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("EditAll")]
-        [HttpPost, MultiButton, ValidateAntiForgeryToken]
+        [Route("edit")]
+        [HttpPost, MultiButton, Validate, ValidateAntiForgeryToken, Dispatch("List", "Calendar")]
         [PermissionsAttribute(Permissions.Calendar.UpdateValue)]
-        public ActionResult EditAll(Guid id, Guid seqId, DateTime date, EventViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                if (model.Category.Equals("new"))
-                {
-                    model.Category = this.eventService.CreateCategory(model.NewCategory).ToString();
-                }
-                this.eventService.Update(
-                    seqId,
-                    new Guid(model.Category),
-                    model.Description,
-                    model.StartDate,
-                    model.EndDate,
-                    model.StartTime,
-                    model.EndTime,
-                    model.Interval,
-                    model.IntervalFactor,
-                    model.SpecificDate,
-                    model.Signable,
-                    model.VisibleOnOverview,
-                    model.AllDay,
-                    model.PauseAnyAlerts,
-                    model.Absent
-                );
-                return this.RedirectToAction("List", new { Id = id, StartDate = date });
-            }
-            return View(model);
+        public ActionResult Edit(EventViewModel request)
+        {                
+            return View();
         }
 
         /// <summary>
@@ -371,82 +336,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// </summary>
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("~/patient/calendar/overview")]
+        [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Dashboard.ReadCalendarValue)]
-        public PartialViewResult Overview()
+        public PartialViewResult Overview(CalendarOverview request)
         {
-            //// FIXME: Update to 1.5.1 version here!
-            var taxon = this.filtering.GetCurrentFilter();
-            var categories = this.eventService.GetCategories();
-            Patient patientAlias = null;
-            Taxon taxonAlias = null;
-            var sequences = this.context.QueryOver<Sequence>()
-                .Where(x => x.IsActive)
-                .And(x => x.Overview)
-                .JoinAlias(x => x.Patient, () => patientAlias)
-                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
-                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                        .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
-                .Fetch(x => x.Patient).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer())
-                .JoinQueryOver<Schedule>(x => x.Schedule)
-                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                        .Where(x => x.ScheduleType == ScheduleType.Calendar)
-                .List();
-            var tasks = this.context.QueryOver<Task>()
-                .Where(x => x.IsActive)
-                .And(Restrictions.Disjunction().Add<Task>( /// Alla kvitteringar inom veckan
-                    x => x.Scheduled < DateTime.Now.AddDays(7) &&
-                         x.Scheduled > DateTime.Now.Date &&
-                         x.Quittanced
-                ).Add<Task>( /// Samtliga tasks som ej kvitterats 
-                    x => x.Scheduled < DateTime.Now.Date &&
-                         x.Quittanced == false
-                ))
-                .And(x => x.Overview)
-                .OrderBy(x => x.Scheduled).Asc
-                .JoinAlias(x => x.Patient, () => patientAlias)
-                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
-                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                        .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
-                .Fetch(x => x.Patient).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer())
-                .JoinQueryOver<Sequence>(x => x.Sequence)
-                    .Where(x => x.IsActive)
-                .JoinQueryOver<Schedule>(x => x.Schedule)
-                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .Where(x => x.ScheduleType == ScheduleType.Calendar)
-                .List();
-            var schedules = this.context.QueryOver<Schedule>()
-                .Where(x => x.IsActive)
-                .JoinAlias(x => x.Patient, () => patientAlias)
-                    .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
-                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                        .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
-                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .Where(x => x.ScheduleType == ScheduleType.Calendar)
-                .List();
-            var startTime = tasks.Count > 0 ? tasks.FirstOrDefault().Scheduled : DateTime.Now;
-            if (startTime > DateTime.Now)
-            {
-                startTime = DateTime.Now;
-            }
-            /// Måste gå igenom så att alla sequencer finns. 
-            /// Vi kan ha en sekvens som inte ska vara på overview men har en task som är ett undantag och skall vara med på overview
-            foreach (var task in tasks)
-            {
-                if (!sequences.Contains(task.Sequence))
-                {
-                    sequences.Add(task.Sequence);
-                }
-            }
-            return PartialView(new EventOverviewViewModel
-            {
-                Activities = this.scheduleService.FindTasks(startTime, DateTime.Now.AddDays(7), schedules, sequences, tasks, new List<Task>())
-                    .Where(x => x.Overview && !x.Quittanced && x.Patient.IsActive && !x.Patient.Deceased)
-                    .ToList(),
-                Categories = categories.IsNotNull() ? categories.ToDictionary(x => categories.IndexOf(x)) : new Dictionary<int, ScheduleSettings>(),
-                CalendarColors = this.settingsService.GetCalendarColorQuantity()
-            });
+            return this.PartialView();
         }
 
         /// <summary>
@@ -481,9 +375,48 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
                 {
                     this.context.Update(task);
                 }
-                return Json(true, JsonRequestBehavior.AllowGet);
+                this.logService.Info(string.Format("Användare {0} kvitterade händelse {1} (ref. {2})", Identity().FullName, task.Name, task.Id), Identity(), task.Patient);
+                return Json(new { success = true, name = Identity().FullName }, JsonRequestBehavior.AllowGet);
             }
-            return Json(false, JsonRequestBehavior.AllowGet);
+            return Json(new { success = false, name = Identity().FullName }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Ajax request to unquittance a task on the overview.
+        /// </summary>
+        /// <param name="id">The sequence id</param>
+        /// <param name="date">The date</param>
+        /// <returns><see cref="JsonResult"/></returns>
+        [Route("~/patient/calendar/unquittance")]
+        public JsonResult UnQuittance(Guid id, DateTime date)
+        {
+            var sequence = this.context.Get<Sequence>(id);
+            var tasks = this.context.QueryOver<Task>()
+                .Where(x => x.IsActive)
+                .And(x => x.Sequence == sequence)
+                .List();
+            var task = this.scheduleService.FindTasks(
+                date,
+                new List<Schedule> { sequence.Schedule },
+                new List<Sequence> { sequence },
+                tasks,
+                new List<Task>()).FirstOrDefault();
+            if (task.IsNotNull())
+            {
+                task.Quittanced = false;
+                task.QuittancedBy = null;
+                if (task.IsTransient)
+                {
+                    this.context.Save(task);
+                }
+                else
+                {
+                    this.context.Update(task);
+                }
+                this.logService.Info(string.Format("Användare {0} ångrade kvittering på händelse {1} (ref. {2})", Identity().FullName, task.Name, task.Id), Identity(), task.Patient);
+                return Json(new { success = true, name = Identity().FullName }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = false, name = Identity().FullName }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

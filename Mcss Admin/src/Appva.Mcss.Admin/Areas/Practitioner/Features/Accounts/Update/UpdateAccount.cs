@@ -2,7 +2,7 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:richard.alvegard@appva.se">Richard Alvegard</a>
 // </author>
 namespace Appva.Mcss.Admin.Models
 {
@@ -97,6 +97,15 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// The HSA ID.
+        /// </summary>
+        public string HsaId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The account address.
         /// </summary>
         public string Taxon
@@ -139,6 +148,15 @@ namespace Appva.Mcss.Admin.Models
         {
             get;
             set;
-        }   
+        }
+
+        /// <summary>
+        /// Whether or not the HSA ID is visible as input.
+        /// </summary>
+        public bool IsHsaIdFieldVisible
+        {
+            get;
+            set;
+        }
     }
 }

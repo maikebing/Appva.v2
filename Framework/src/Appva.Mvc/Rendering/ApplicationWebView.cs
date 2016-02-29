@@ -114,7 +114,7 @@ namespace Appva.Mvc
         /// <param name="content">The meta content</param>
         public void AddMeta(string name, string content)
         {
-            if (this.ViewBag.Meta.IsNull())
+            if (this.ViewBag.Meta == null)
             {
                 this.ViewBag.Meta = new Dictionary<string, string>();
             }

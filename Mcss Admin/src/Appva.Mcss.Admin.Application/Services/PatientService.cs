@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using NHibernate.Criterion;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Models;
     #endregion
 
     /// <summary>
@@ -29,7 +30,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="id"></param>
         Patient Get(Guid id);
 
-        IList<Patient> FindByTaxon(Taxon taxon, bool deceased = true);
+        IList<Patient> FindByTaxon(Guid taxon, bool deceased = true);
 
         /// <summary>
         /// Locates a patient by its unique Personal Identity Number. 
@@ -112,7 +113,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #endregion
 
-        #region IPatientService implementation
+        #region IPatientService members.
 
         /// <inheritdoc />
         public Patient Get(Guid id)
@@ -139,14 +140,16 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IList<Patient> FindByTaxon(Taxon taxon, bool deceased = true)
+        public IList<Patient> FindByTaxon(Guid taxon, bool deceased = true)
         {
             return this.persistence.QueryOver<Patient>()
                 .Where(x => x.IsActive == true)
                 .And(x => x.Deceased == deceased)
+                .OrderBy(x => x.LastName).Asc
+                .ThenBy(x => x.FirstName).Asc
                 .JoinQueryOver<Taxon>(x => x.Taxon)
                 .Where(Restrictions.On<Taxon>(x => x.Path)
-                .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
+                       .IsLike(taxon.ToString(), MatchMode.Anywhere))
                 .List();
         }
 

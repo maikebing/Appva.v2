@@ -460,6 +460,7 @@ mcss.validation = {
         $('.datepick').datePicker({ clickInput: true });
         $('.std-form form').validate({
             'rules': {
+                'Interval': { 'interval': [$('#StartDate'), $('#EndDate'), $('#Interval'), $('#IntervalFactor')] },
                 'Category' : 'required',
                 'NewCategory' : {
                     'required' : function () {
@@ -489,6 +490,7 @@ mcss.validation = {
                 }
             },
             'messages': {
+                'Interval' : "Upprepnings-intervallet kan inte vara kortare än aktiviten",
                 'Category' : "Kategori måste väljas",
                 'NewCategory' : "Namn måste anges på ny kategori",
                 'Description': "Aktiviteten måste ha en beskrivning.",

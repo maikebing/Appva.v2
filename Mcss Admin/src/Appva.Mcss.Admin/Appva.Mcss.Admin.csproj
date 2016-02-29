@@ -212,6 +212,12 @@
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCacheHandler.cs" />
     <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCacheHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\CalendarController.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\Index\CalendarIndex.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\Index\CalendarIndexModel.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\Index\CalenderIndexHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColors.cs" />
+    <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColorsPublisher.cs" />
     <Compile Include="Areas\Area51\Features\Home\HomeController.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162NoticeHandler.cs" />
@@ -219,6 +225,12 @@
     <Compile Include="Areas\Area51\Features\Settings\Create\CreateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Update\UpdateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\Index\TaxonIndexHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\Index\TaxonIndexModel.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\InstallRiskAssesment\InstallRiskTaxons.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\InstallRiskAssesment\InstallRiskTaxonsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\TaxonController.cs" />
+    <Compile Include="Areas\Area51\Features\Taxon\Index\TaxonIndex.cs" />
     <Compile Include="Areas\Area51\Features\Token\Install\InstallToken.cs" />
     <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
     <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
@@ -245,11 +257,18 @@
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertWidgetHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventModel.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetails.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Details\CalendarDetailsHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\EditAll\EditAllEventSequence.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequence.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Edit\EditEventSequencePublisher.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendar.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\List\ListCalendarHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverview.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverviewHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverviewModel.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItemHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryItem.cs" />
@@ -394,10 +413,18 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccountPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegation.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegationHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegationPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\DelegationController.cs" />
     <!--<Compile Include="Areas\Report\Features\ReportData\Chart\ReportChart.cs" />
     <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChartModel.cs" />
     <Compile Include="Areas\Report\Features\ReportData\ReportDataController.cs" />-->
+    <Compile Include="Areas\Practitioner\Features\Delegation\Edit\EditDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegation.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationModel.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReport.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
@@ -571,6 +598,7 @@
     <Content Include="Assets\i\dayslot-hover.png" />
     <Content Include="Assets\i\dayslot-unsel.png" />
     <Content Include="Assets\i\icn-change-password.png" />
+    <Content Include="Assets\i\icn-dualstaffing.png" />
     <Content Include="Assets\i\icn-logout.png" />
     <Content Include="Assets\i\filter-sep.png" />
     <Content Include="Assets\i\footer-shade.png" />
@@ -619,6 +647,7 @@
     <Content Include="Assets\i\icn-toolpics.png" />
     <Content Include="Assets\i\icn-update.png" />
     <Content Include="Assets\i\icn-warning-diabetes.png" />
+    <Content Include="Assets\i\icn-warning-infection.png" />
     <Content Include="Assets\i\icn-warning-varan.png" />
     <Content Include="Assets\i\icn-warning-waran.png" />
     <Content Include="Assets\i\ico-activity-group.png" />
@@ -1075,6 +1104,10 @@
     <Content Include="Features\Shared\EmailTemplates\UpdateUserMobileDeviceEmail.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\version1.6.2.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Index\Index.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
+    <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
+    <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
+    <Content Include="Areas\Patient\Features\Calendar\Overview\_OverviewCalendarTask.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>
@@ -1096,7 +1129,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1082/</IISUrl>
+          <IISUrl>http://localhost:1080/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

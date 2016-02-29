@@ -1,8 +1,7 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
-@model Appva.Mcss.Web.ViewModels.DelegationListViewModel
-@{ 
-    SetTitle("Aktuella delegeringar, {0}", Model.Account.FullName); 
-}
+@model Appva.Mcss.Admin.Areas.Models.ListDelegationModel
+@{ ViewBag.Title = string.Format("Aktuella delegeringar, {0}", Model.Account.FullName); }
+
 <div id="main" class="delegate-view">    
     @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)

@@ -1,58 +1,65 @@
-﻿// <copyright file="Calendar.cs" company="Appva AB">
+﻿// <copyright file="CalendarDetails.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Application.Models
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
     using System;
     using System.Collections.Generic;
-    using Appva.Mcss.Admin.Domain.Entities;
+    using System.Linq;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Calendar
+    public sealed class CalendarDetails : IRequest<CalendarTask>
     {
+
+        #region Properties
+
         /// <summary>
-        /// Whether or not the calendar event is within month.
+        /// The task id
         /// </summary>
-        public bool IsWithinMonth
+        public Guid TaskId
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Whether or not the calendar event is today.
+        /// The Sequence id
         /// </summary>
-        public bool IsToday
+        public Guid SequenceId
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The calendar event date.
+        /// The Starttime of the event
         /// </summary>
-        public DateTime Date
+        public DateTime StartTime
         {
             get;
             set;
         }
 
         /// <summary>
-        /// A list of events.
+        /// The endtime of the event
         /// </summary>
-        public IList<Task> Events
+        public DateTime EndTime
         {
             get;
             set;
         }
+
+        #endregion
     }
 }

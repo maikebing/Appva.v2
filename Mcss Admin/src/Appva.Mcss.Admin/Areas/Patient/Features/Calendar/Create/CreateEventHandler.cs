@@ -16,13 +16,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
+    using Appva.Mcss.Admin.Areas.Models;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class CreateEventHandler : RequestHandler<Identity<EventViewModel>, EventViewModel>
+    internal sealed class CreateEventHandler : RequestHandler<Identity<CreateEventModel>, CreateEventModel>
     {
         #region Private Variables.
 
@@ -54,7 +55,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override EventViewModel Handle(Identity<EventViewModel> message)
+        public override CreateEventModel Handle(Identity<CreateEventModel> message)
         {
             var categories = this.eventService.GetCategories();
             var categorySelectlist = categories.Select(x => new SelectListItem
@@ -72,7 +73,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Selected = false
                 });
             }*/
-            return new EventViewModel
+            return new CreateEventModel
             {
                 Id = message.Id,
                 PatientId = message.Id,

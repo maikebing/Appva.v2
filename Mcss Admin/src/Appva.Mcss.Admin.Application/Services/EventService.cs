@@ -518,6 +518,11 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             evt.Name = evt.Schedule.ScheduleSettings.Name;
             evt.Description = description;
+            if (isAllDay)
+            {
+                startTime = "00:00";
+                endTime = "23:59";
+            }
             evt.StartDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, Int32.Parse(startTime.Split(':')[0]), Int32.Parse(startTime.Split(':')[1]), 0);
             evt.EndDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, Int32.Parse(endTime.Split(':')[0]), Int32.Parse(endTime.Split(':')[1]), 0);
             evt.Interval = interval;

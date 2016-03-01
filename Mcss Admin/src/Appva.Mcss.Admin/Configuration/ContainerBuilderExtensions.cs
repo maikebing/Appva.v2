@@ -43,6 +43,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Microsoft.Owin.Security.Cookies;
     using Owin;
     using RazorEngine.Configuration;
+    using Appva.Hip;
 
     #endregion
 
@@ -249,5 +250,14 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterAssemblyTypes(typeof(IService).Assembly).Where(x => x.GetInterfaces()
                 .Any(y => y.IsAssignableFrom(typeof(IService)))).AsImplementedInterfaces().InstancePerRequest();
         }
+
+        /// <summary>
+        /// Registers the demo hip-client
+        /// </summary>
+        /// <param name="builder"></param>
+        public static void RegisterHipClient(this ContainerBuilder builder)
+        {
+            builder.Register<DemoHipClient>(x => new DemoHipClient()).As<IHipClient>().SingleInstance();
+        }        
     }
 }

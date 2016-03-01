@@ -57,6 +57,7 @@ namespace Appva.Mcss.Admin
             builder.RegisterPersistence();
             builder.RegisterEmailMessaging();
             builder.RegisterExceptionHandling();
+            builder.RegisterHipClient();
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             app.UseAutofacMiddleware(container);

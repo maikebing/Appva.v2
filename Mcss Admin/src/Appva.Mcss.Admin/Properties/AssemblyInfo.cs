@@ -13,6 +13,6 @@ using Microsoft.Owin;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("764471ba-e5e4-43a0-9b48-047a297985a2")]
-[assembly: AssemblyVersion("1.6.3.0")]
-[assembly: AssemblyFileVersion("1.6.3.0")]
+[assembly: AssemblyVersion("1.6.3.1")]
+[assembly: AssemblyFileVersion("1.6.3.1")]
 [assembly: OwinStartup("OwinConfiguration", typeof(OwinConfiguration))]

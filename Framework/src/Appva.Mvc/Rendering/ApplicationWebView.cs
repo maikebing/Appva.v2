@@ -37,19 +37,8 @@ namespace Appva.Mvc
         public ClaimsPrincipal Principal
         {
             get
-        {
-            return (ClaimsPrincipal) this.User;
-        }
-        }
-
-        /// <summary>
-        /// Returns the tenant name (from owin pipeline).
-        /// </summary>
-        public string Tenant
-        {
-            get
             {
-                return this.Request.GetOwinContext().TenantName();
+                return (ClaimsPrincipal) this.User;
             }
         }
 
@@ -63,6 +52,7 @@ namespace Appva.Mvc
                 return this.Request.GetOwinContext().TenantName();
             }
         }
+
         /// <summary>
         /// Returns the page title.
         /// </summary>
@@ -70,11 +60,9 @@ namespace Appva.Mvc
         public string Title
         {
             get
-        {
-            get
             {
-            return this.ViewBag.Title;
-        }
+                return this.ViewBag.Title;
+            }
         }
 
         /// <summary>
@@ -110,7 +98,6 @@ namespace Appva.Mvc
         public void SetTitle(string format, params string[] args)
         {
             this.ViewBag.Title = string.Format(format, args);
-        }
         }
 
         /// <summary>

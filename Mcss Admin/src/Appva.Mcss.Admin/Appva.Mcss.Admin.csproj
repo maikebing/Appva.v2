@@ -498,7 +498,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\AbstractExceptionHandler.cs" />
-    <Compile Include="Infrastructure\AdminModelBinder.cs" />
     <Compile Include="Infrastructure\Attributes\DispatchAsyncAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\DispatchAttribute.cs" />
     <Compile Include="Infrastructure\ControllerExtensions.cs" />
@@ -1143,7 +1142,6 @@
     <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
     <Content Include="Areas\Patient\Features\Calendar\Overview\_OverviewCalendarTask.cshtml" />
-
     <Content Include="Areas\Patient\Features\Medication\UpdateSequence\UpdateSequence.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />

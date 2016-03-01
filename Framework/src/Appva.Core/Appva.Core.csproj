@@ -54,10 +54,6 @@
     <Compile Include="Contracts\Permissions\IPermission.cs" />
     <Compile Include="Contracts\Validation\IValidator.cs" />
     <Compile Include="Environment\ApplicationEnvironment.cs" />
-    <Compile Include="Environment\IApplicationEnvironment.cs" />
-    <Compile Include="Environment\IApplicationEnvironmentAssemblyInfo.cs" />
-    <Compile Include="Environment\IApplicationEnvironmentOs.cs" />
-    <Compile Include="Environment\IApplicationOperationalEnvironment.cs" />
     <Compile Include="Environment\OperationalEnvironment.cs" />
     <Compile Include="Exceptions\DefaultExceptionHandler.cs" />
     <Compile Include="Exceptions\IExceptionHandler.cs" />
@@ -117,7 +113,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RoleTypes.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\Attribute.cs" />
     <Compile Include="Utilities\AttributeUtilities.cs" />
     <Compile Include="Utilities\DateTimeUtilities.cs" />
     <Compile Include="Utilities\ExpressionUtil.cs" />

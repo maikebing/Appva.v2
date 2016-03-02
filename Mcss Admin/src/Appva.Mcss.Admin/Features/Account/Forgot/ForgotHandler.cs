@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mvc.Messaging;
+    using Appva.Core.Extensions;
 
     #endregion
 
@@ -77,7 +78,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override bool Handle(Forgot message)
         {
             var account = this.accountService.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
-            if (account == null || account.IsPaused || ! account.IsActive || account.EmailAddress != message.EmailAddress)
+            if (account == null || account.IsPaused || !account.IsActive || ! account.EmailAddress.Equals(message.EmailAddress, StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }

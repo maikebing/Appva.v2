@@ -112,6 +112,7 @@
         <div class="input">
             @Html.HiddenFor(m => m.PatientId)
             @Html.HiddenFor(m => m.SequenceId)
+            @Html.HiddenFor(m => m.ChoosedDate)
             <input type="submit" value="Spara">
             @Html.AntiForgeryToken()
             @Html.Cancel("Avbryt")

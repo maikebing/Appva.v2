@@ -94,6 +94,7 @@ using Appva.Mcss.Admin.Application.Security.Identity;
             ScheduleSettings scheduleSettings = null;
             var account = this.persistence.Get<Account>(this.identityService.PrincipalId);
             var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
+
             var query = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
                 .JoinAlias(x => x.Schedule, () => schedule)

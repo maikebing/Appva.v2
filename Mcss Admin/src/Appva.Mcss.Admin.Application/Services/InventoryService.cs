@@ -77,6 +77,13 @@ using System.Linq;
         /// <param name="patient">The inventory patient</param>
         /// <returns>Id of created inventory</returns>
         Guid Create(string name, string unit, IList<string> amounts, Patient patient);
+
+        /// <summary>
+        /// Lists all inventorys which need a recount before date
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns>List of <see cref="Inventory"/></returns>
+        IList<Inventory> ListRecountsBefore(DateTime date, Guid? taxonFilter);
     }
 
     /// <summary>
@@ -100,6 +107,7 @@ using System.Linq;
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService audit;
+
 
         #endregion
 
@@ -182,6 +190,12 @@ using System.Linq;
             this.audit.Create("{0} skapade saldot {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, id);
 
             return id;
+        }
+
+        /// <inheritdoc />
+        public IList<Inventory> ListRecountsBefore(DateTime date, Guid? taxonFilter)
+        {
+            return this.repository.ListRecountsBefore(date, taxonFilter);
         }
 
         #endregion

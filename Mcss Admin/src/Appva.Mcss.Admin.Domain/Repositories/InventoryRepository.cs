@@ -53,6 +53,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="entity">The <see cref="Inventory"/></param>
         /// <returns>The id of the created inventory</returns>
         Guid Save(Inventory entity);
+
+        /// <summary>
+        /// Lists all inventorys which need a recount before date
+        /// </summary>
+        /// <param name="date">The date</param>
+        /// <returns>List of <see cref="Inventory"/></returns>
+        IList<Inventory> ListRecountsBefore(DateTime date, Guid? taxonFilter);
     }
 
     /// <summary>
@@ -162,6 +169,28 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public Guid Save(Inventory entity)
         {
             return (Guid)this.persistence.Save<Inventory>(entity);
+        }
+
+        /// <inheritdoc />
+        public IList<Inventory> ListRecountsBefore(DateTime date, Guid? taxonFilter)
+        {
+            var query = this.persistence.QueryOver<Inventory>()
+                .Where(x => x.IsActive)
+                .And(Restrictions.Disjunction()
+                    .Add(Restrictions.IsNull(Projections.Property<Inventory>(x => x.LastRecount)))
+                    .Add(Restrictions.Le(Projections.Property<Inventory>(x => x.LastRecount), date)))
+                .JoinQueryOver(x => x.Patient)
+                    .Where(x => x.IsActive && !x.Deceased);
+
+            if(taxonFilter.HasValue && taxonFilter.GetValueOrDefault() != Guid.Empty){
+                query.JoinQueryOver(x => x.Taxon)
+                    .WhereRestrictionOn(x => x.Path)
+                    .IsLike(taxonFilter.ToString(), MatchMode.Anywhere);
+            }
+
+            return query.List();
+            
+
         }
 
         #endregion

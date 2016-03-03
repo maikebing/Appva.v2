@@ -89,8 +89,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var scheduleSettings = TaskService.GetRoleScheduleSettingsList(account);
             var taxon = this.filtering.GetCurrentFilter();
             Task taskAlias = null;
+            Schedule scheduleAlias = null;
             Taxon taxonAlias = null;
-            var query = this.persistence.QueryOver<Patient>()
+            Patient patient = null;
+            var query = this.persistence.QueryOver<Patient>(() => patient)
                 .Where(x => x.IsActive)
                   .And(x => !x.Deceased)
                 .JoinAlias(x => x.Taxon, () => taxonAlias)
@@ -100,7 +102,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     .Where(() => taskAlias.IsActive)
                       .And(() => taskAlias.Delayed)
                       .And(() => taskAlias.DelayHandled == false)
-                .JoinQueryOver<Schedule>(x => x.Schedule)
+                .JoinQueryOver(x => x.Schedule, () => scheduleAlias, NHibernate.SqlCommand.JoinType.InnerJoin, Restrictions.Where(() => scheduleAlias.IsActive && scheduleAlias.Patient.Id == patient.Id))
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
             var countAll = query.Clone().Select(Projections.CountDistinct<Patient>(x => x.Id))

@@ -1,4 +1,4 @@
-﻿@model Appva.Mcss.Web.ViewModels.InventoryOverviewViewModel
+﻿@model Appva.Mcss.Admin.Models.OverviewInventoryModel
 @using Appva.Mcss.Admin.Application.Common;
 <div>
 	<div class="heading cf"><h2>Kontrollräkning narkotika</h2></div>
@@ -20,15 +20,15 @@
                         <td>
                             @if (Html.HasPermissionFor(Permissions.Inventory.Read))
                             {
-                                @Html.ActionLink(Permissions.Inventory.Read, item.Patient,
-                                "List", "Inventory", new { id = item.PatientId, inventoryId = item.InventoryId }, new { })
+                                @Html.ActionLink(Permissions.Inventory.Read, item.Patient.FullName,
+                                "List", "Inventory", new { id = item.Patient.Id, inventoryId = item.Id }, new { })
                             }
                             else
                             {
-                                @item.Patient
+                                @item.Patient.FullName
                             }
                         </td>
-		    			<td>@item.Name</td>
+		    			<td>@item.Description</td>
 		    			<td>
                             <span>@daysLeft @((daysLeft == 1) ? "dag" : "dagar")</span>
                         </td>
@@ -37,7 +37,7 @@
 		    	</tbody>
 		    </table>
         }
-        @if (Model.StockCounts.Count > 0) {
+        @if (Model.CommingStockCounts.Count > 0) {
 		    <h3>Kontrollräkningar</h3>
 		    <table>
 		    	<thead>
@@ -48,21 +48,21 @@
 		    		</tr>
 		    	</thead>
 		    	<tbody>
-                    @foreach (var item in Model.StockCounts) {
+                    @foreach (var item in Model.CommingStockCounts) {
                         var daysLeft = item.LastRecount.Value.Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
                         <tr class="@((daysLeft <= 7) ? "urgent" : "")">
 		    				<td>
                                 @if (Html.HasPermissionFor(Permissions.Inventory.Read))
                                 {
-                                    @Html.ActionLink(Permissions.Inventory.Read, item.Patient,
-                                 "List", "Inventory", new { id = item.PatientId, inventoryId = item.InventoryId }, new { })
+                                    @Html.ActionLink(Permissions.Inventory.Read, item.Patient.FullName,
+                                 "List", "Inventory", new { id = item.Patient.Id, inventoryId = item.Id }, new { })
                                 }
                                 else
                                 {
-                                    @item.Patient
+                                    @item.Patient.FullName
                                 }
                             </td>
-		    				<td>@item.Name</td>
+		    				<td>@item.Description</td>
                                     
 		    				<td>
                                 <span>@daysLeft @((daysLeft == 1) ? "dag" : "dagar")</span>
@@ -72,7 +72,7 @@
 		    	</tbody>
 		    </table>
         }
-        @if (Model.StockCounts.Count == 0 && Model.DelayedStockCounts.Count == 0) {
+        @if (Model.CommingStockCounts.Count == 0 && Model.DelayedStockCounts.Count == 0) {
             <div class="no-data">
                 <h3>Inga försenade kontrollräkningar</h3>
             </div>

@@ -31,7 +31,7 @@ using Appva.Mcss.Admin.Application.Services.Settings;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class OverviewInventoryHandler : RequestHandler<OverviewInventory, InventoryOverviewViewModel>
+    internal sealed class OverviewInventoryHandler : RequestHandler<OverviewInventory, OverviewInventoryModel>
     {
         #region Variables.
 
@@ -46,9 +46,9 @@ using Appva.Mcss.Admin.Application.Services.Settings;
         private readonly ITaskService taskService;
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
+        /// The <see cref="IInventoryService"/>.
         /// </summary>
-        private readonly IPersistenceContext persistence;
+        private readonly IInventoryService inventories;
 
         /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>.
@@ -74,13 +74,13 @@ using Appva.Mcss.Admin.Application.Services.Settings;
         public OverviewInventoryHandler(
             IIdentityService identityService,
             ITaskService taskService, 
-            IPersistenceContext persistence,
+            IInventoryService inventories,
             ISettingsService settings,
             ITaxonFilterSessionHandler filtering)
         {
             this.identityService = identityService;
             this.taskService = taskService;
-            this.persistence = persistence;
+            this.inventories = inventories;
             this.settings = settings;
             this.filtering = filtering;
         }
@@ -90,13 +90,16 @@ using Appva.Mcss.Admin.Application.Services.Settings;
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override InventoryOverviewViewModel Handle(OverviewInventory message)
+        public override OverviewInventoryModel Handle(OverviewInventory message)
         {
             var inventoryCalculationSpanInDays = this.settings.Find<int>(ApplicationSettings.InventoryCalculationSpanInDays);
             var taxon = this.filtering.GetCurrentFilter();
-            var now = DateTime.Now;
-            var lastStockCalculationDate = now.AddDays(-inventoryCalculationSpanInDays).AddDays(7);
-            RecountOverviewItemViewModel dto = null;
+            var today = DateTime.Now.Date;
+            var lastStockCalculationDate = today.AddDays(-inventoryCalculationSpanInDays);
+
+            var delayedStockCounts = this.inventories.ListRecountsBefore(lastStockCalculationDate, taxon.Id);
+            var commingStockCounts = this.inventories.ListRecountsBefore(lastStockCalculationDate.AddDays(7), taxon.Id);
+            /*RecountOverviewItemViewModel dto = null;
             Inventory inventory = null;
             Patient patient = null;
             Schedule schedule = null;
@@ -127,11 +130,11 @@ using Appva.Mcss.Admin.Application.Services.Settings;
                     .Select(() => inventory.Description).WithAlias(() => dto.Name)
                 );
             var allStockCounts = query.TransformUsing(Transformers.AliasToBean<RecountOverviewItemViewModel>())
-                .List<RecountOverviewItemViewModel>();
-            return new InventoryOverviewViewModel
+                .List<RecountOverviewItemViewModel>();*/
+            return new OverviewInventoryModel
             {
-                DelayedStockCounts = allStockCounts.Where(x => now.Subtract(x.LastRecount.GetValueOrDefault()).TotalDays > inventoryCalculationSpanInDays).ToList(),
-                StockCounts = allStockCounts.Where(x => now.Subtract(x.LastRecount.GetValueOrDefault()).TotalDays <= inventoryCalculationSpanInDays).ToList(),
+                DelayedStockCounts = delayedStockCounts,
+                CommingStockCounts = commingStockCounts,
                 StockControlIntervalInDays = inventoryCalculationSpanInDays
             };
         }

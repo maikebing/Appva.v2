@@ -7,12 +7,11 @@
     {
         <h3 class="section-title">Ändra</h3>
         @Html.FormGroup(m => m.Name, "text medium").Label("Namn", new { @class = "col" }).TextBox().Validate().Build()
-        @Html.FormGroup(m => m.Unit, "text small").Label("Enhet", new { @class = "col" }).TextBox().Validate().Build()
 
         <div class="row cf">
             <div class="select col">
                 @Html.LabelFor(m => m.Amounts)
-                @Html.DropDownListFor(m => m.Amounts, Model.AmountsList, "Välj uttags-alternativ..." , new { })
+                @Html.DropDownListFor(m => m.Amounts, Model.AmountsList, "Välj enhet..." , new { })
             </div>
         </div>
         <div class="input">

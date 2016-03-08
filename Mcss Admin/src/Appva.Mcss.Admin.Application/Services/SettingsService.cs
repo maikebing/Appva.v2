@@ -531,14 +531,14 @@ using Appva.Mcss.Admin.Application.Models;
 
             retval.Add(new InventoryAmountListModel
             {
-                Name = "0-100",
+                Name = "Dos",
                 Amounts = amounts
             });
 
             amounts2.Insert(1, 0.5);
             retval.Add(new InventoryAmountListModel
             {
-                Name = "0, 0.5, 1, 2-100",
+                Name = "Tbl",
                 Amounts = amounts2
             });
 

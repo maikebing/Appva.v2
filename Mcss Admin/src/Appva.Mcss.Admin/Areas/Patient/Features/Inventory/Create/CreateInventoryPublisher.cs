@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -34,6 +35,11 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         private readonly IPatientService patients;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>
+        /// </summary>
+        private readonly ISettingsService settings;
+
         #endregion
 
         #region Constructor.
@@ -41,10 +47,11 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateInventoryPublisher"/> class.
         /// </summary>
-        public CreateInventoryPublisher(IInventoryService inventories, IPatientService patients)
+        public CreateInventoryPublisher(IInventoryService inventories, IPatientService patients, ISettingsService settings)
         {
             this.inventories = inventories;
             this.patients = patients;
+            this.settings = settings;
         }
 
         #endregion
@@ -54,9 +61,9 @@ namespace Appva.Mcss.Admin.Models
         /// <inheritdoc />
         public override ListInventory Handle(CreateInventoryModel message)
         {
-            var amounts = message.Amounts.IsNotEmpty() ? message.Amounts.Split(';').ToList() : null;
+            var amounts = message.Amounts.IsNotEmpty() ? this.settings.GetIventoryAmountLists().Where(x => x.Name == message.Amounts).FirstOrDefault() : null;
             var patient = this.patients.Load(message.Id);
-            var inventory = this.inventories.Create(message.Name, message.Unit, amounts, patient);
+            var inventory = this.inventories.Create(message.Name, amounts.Name, amounts.Amounts, patient);
             return new ListInventory
             {
                 Id = patient.Id,

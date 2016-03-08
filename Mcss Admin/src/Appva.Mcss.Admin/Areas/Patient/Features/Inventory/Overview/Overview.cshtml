@@ -13,31 +13,34 @@
 		    			<th scope="col">Dagar kvar</th>
 		    		</tr>
 		    	</thead>
-		    	<tbody>
-                @foreach (var item in Model.DelayedStockCounts) {
-                    var daysLeft = item.LastRecount.Value.Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
-                    <tr class="urgent">
-                        <td>
-                            @if (Html.HasPermissionFor(Permissions.Inventory.Read))
-                            {
-                                @Html.ActionLink(Permissions.Inventory.Read, item.Patient.FullName,
-                                "List", "Inventory", new { id = item.Patient.Id, inventoryId = item.Id }, new { })
-                            }
-                            else
-                            {
-                                @item.Patient.FullName
-                            }
-                        </td>
-		    			<td>@item.Description</td>
-		    			<td>
-                            <span>@daysLeft @((daysLeft == 1) ? "dag" : "dagar")</span>
-                        </td>
-                    </tr>
+                <tbody>
+                    @foreach (var item in Model.DelayedStockCounts) {
+                        var daysLeft = item.LastRecount.GetValueOrDefault().Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
+                        var daysLeftText = item.LastRecount.HasValue ?
+                            string.Format("{0} {1}", daysLeft, (daysLeft == 1 ? "dag" : "dagar")) :
+                            string.Format("Aldrig räknad");
+                        <tr class="urgent">
+                            <td>
+                                @if (Html.HasPermissionFor(Permissions.Inventory.Read))
+                        {
+                                    @Html.ActionLink(Permissions.Inventory.Read, item.Patient.FullName,
+                            "List", "Inventory", new { id = item.Patient.Id, inventoryId = item.Id }, new { })
+                        }
+                        else
+                        {
+                                    @item.Patient.FullName
+                        }
+                            </td>
+                            <td>@item.Description</td>
+                            <td>
+                                <span>@daysLeftText</span>
+                            </td>
+                        </tr>
                 }
-		    	</tbody>
+                </tbody>
 		    </table>
         }
-        @if (Model.CommingStockCounts.Count > 0) {
+        @if (Model.CommingStockCounts.Where(x => x.LastRecount.HasValue).ToList().Count > 0) {
 		    <h3>Kontrollräkningar</h3>
 		    <table>
 		    	<thead>
@@ -47,29 +50,37 @@
 		    			<th scope="col">Dagar kvar</th>
 		    		</tr>
 		    	</thead>
-		    	<tbody>
-                    @foreach (var item in Model.CommingStockCounts) {
-                        var daysLeft = item.LastRecount.Value.Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
-                        <tr class="@((daysLeft <= 7) ? "urgent" : "")">
-		    				<td>
-                                @if (Html.HasPermissionFor(Permissions.Inventory.Read))
-                                {
-                                    @Html.ActionLink(Permissions.Inventory.Read, item.Patient.FullName,
+                <tbody>
+                    @foreach (var item in Model.CommingStockCounts)
+                    {
+                        if (item.LastRecount.HasValue)
+                        {
+                            var daysLeft = item.LastRecount.GetValueOrDefault().Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
+                            var daysLeftText = item.LastRecount.HasValue ?
+                                string.Format("{0} {1}", daysLeft, (daysLeft == 1 ? "dag" : "dagar")) :
+                                string.Format("Aldrig räknad");
+                            <tr class="@((daysLeft <= 7) ? "urgent" : "")">
+                                <td>
+                                    @if (Html.HasPermissionFor(Permissions.Inventory.Read))
+                                    {
+                                        @Html.ActionLink(Permissions.Inventory.Read, item.Patient.FullName,
                                  "List", "Inventory", new { id = item.Patient.Id, inventoryId = item.Id }, new { })
-                                }
-                                else
-                                {
-                                    @item.Patient.FullName
-                                }
-                            </td>
-		    				<td>@item.Description</td>
-                                    
-		    				<td>
-                                <span>@daysLeft @((daysLeft == 1) ? "dag" : "dagar")</span>
-                            </td>
-		    			</tr>
+                                    }
+                                    else
+                                    {
+                                        @item.Patient.FullName
+                                    }
+                                </td>
+                                <td>@item.Description</td>
+
+                                <td>
+                                    <span>@daysLeftText</span>
+                                </td>
+                            </tr>
+                        }
                     }
-		    	</tbody>
+                </tbody>
+
 		    </table>
         }
         @if (Model.CommingStockCounts.Count == 0 && Model.DelayedStockCounts.Count == 0) {

@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -30,6 +31,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers {
         /// </summary>
         private readonly IInventoryService inventories;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settings;
+
         #endregion
 
         #region Constructor.
@@ -37,9 +43,10 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateInventoryPublisher"/> class.
         /// </summary>
-        public UpdateInventoryPublisher(IInventoryService inventories)
+        public UpdateInventoryPublisher(IInventoryService inventories, ISettingsService settings)
         {
             this.inventories = inventories;
+            this.settings = settings;
         }
 
         #endregion
@@ -49,8 +56,8 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers {
         /// <inheritdoc />
         public override ListInventory Handle(UpdateInventoryModel message)
         {
-            var amounts = message.Amounts.IsNotEmpty() ? message.Amounts.Trim().Split(';'): null;
-            this.inventories.Update(message.Inventory, message.Name, message.Unit, amounts);           
+            var amounts = message.Amounts.IsNotEmpty() ? this.settings.GetIventoryAmountLists().Where(x => x.Name == message.Amounts).FirstOrDefault() : null;
+            this.inventories.Update(message.Inventory, message.Name, amounts.Name, amounts.Amounts);           
 
             return new ListInventory 
             {

@@ -55,18 +55,9 @@ namespace Appva.Mcss.Admin.Areas.Models
         }
 
         /// <summary>
-        /// The inventory unit
-        /// </summary>
-        public string Unit
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The available withdrawal amounts
         /// </summary> 
-        [DisplayName("Uttags-alternativ")]
+        [DisplayName("Enhet")]
         public string Amounts
         {
             get;

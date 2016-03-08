@@ -54,7 +54,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 AmountsList = this.settings.GetIventoryAmountLists().Select(x => new SelectListItem() 
                     { 
                         Text = x.Name, 
-                        Value = string.Join(";",x.Amounts)})
+                        Value = x.Name })
             };
         }
 

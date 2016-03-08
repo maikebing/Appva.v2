@@ -59,7 +59,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// </summary>
         /// <param name="date">The date</param>
         /// <returns>List of <see cref="Inventory"/></returns>
-        IList<Inventory> ListRecountsBefore(DateTime date, Guid? taxonFilter);
+        IList<Inventory> ListRecountsBefore(DateTime date, DateTime? toDate, Guid? taxonFilter);
     }
 
     /// <summary>
@@ -172,13 +172,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public IList<Inventory> ListRecountsBefore(DateTime date, Guid? taxonFilter)
+        public IList<Inventory> ListRecountsBefore(DateTime date, DateTime? toDate, Guid? taxonFilter)
         {
             var query = this.persistence.QueryOver<Inventory>()
                 .Where(x => x.IsActive)
                 .And(Restrictions.Disjunction()
                     .Add(Restrictions.IsNull(Projections.Property<Inventory>(x => x.LastRecount)))
-                    .Add(Restrictions.Le(Projections.Property<Inventory>(x => x.LastRecount), date)))
+                    .Add(Restrictions.Conjunction()
+                        .Add(Restrictions.Le(Projections.Property<Inventory>(x => x.LastRecount), date))
+                        .Add(Restrictions.Gt(Projections.Property<Inventory>(x => x.LastRecount), toDate.GetValueOrDefault(new DateTime(2000,1,1))))))
                 .JoinQueryOver(x => x.Patient)
                     .Where(x => x.IsActive && !x.Deceased);
 

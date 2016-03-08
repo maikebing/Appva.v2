@@ -61,13 +61,12 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             {
                 Id = message.Id,
                 Inventory = inventory.Id ,
-                Amounts = inventory.Amounts != null ? string.Join(";", inventory.Amounts): string.Empty,
+                Amounts = inventory.Unit,
                 Name = inventory.Description,
-                Unit = inventory.Unit,
                 AmountsList = this.settings.GetIventoryAmountLists().Select(x => new SelectListItem()
                 {
                     Text = x.Name,
-                    Value = string.Join(";", x.Amounts)
+                    Value = x.Name
                 })
             };
         }

@@ -35,7 +35,7 @@ using System.Linq;
         /// <param name="name">The updated name of the inventory</param>
         /// <param name="unit">The inventory unit</param>
         /// <param name="amounts">The available amounts</param>
-        void Update(Guid id, string name, string unit, IList<string> amounts);
+        void Update(Guid id, string name, string unit, IList<double> amounts);
 
         /// <summary>
         /// Returns all inventories which belongs to a patient
@@ -76,14 +76,14 @@ using System.Linq;
         /// <param name="amounts">The available amounts</param>
         /// <param name="patient">The inventory patient</param>
         /// <returns>Id of created inventory</returns>
-        Guid Create(string name, string unit, IList<string> amounts, Patient patient);
+        Guid Create(string name, string unit, IList<double> amounts, Patient patient);
 
         /// <summary>
         /// Lists all inventorys which need a recount before date
         /// </summary>
         /// <param name="date">The date</param>
         /// <returns>List of <see cref="Inventory"/></returns>
-        IList<Inventory> ListRecountsBefore(DateTime date, Guid? taxonFilter);
+        IList<Inventory> ListRecountsBefore(DateTime date, DateTime? toDate = null, Guid? taxonFilter = null);
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ using System.Linq;
         }
 
         /// <inheritdoc />
-        public void Update(Guid id, string name, string unit, IList<string> amounts)
+        public void Update(Guid id, string name, string unit, IList<double> amounts)
         {
             var inventory = this.repository.Find(id);
 
@@ -176,7 +176,7 @@ using System.Linq;
         }
 
         /// <inheritdoc />
-        public Guid Create(string name, string unit, IList<string> amounts, Patient patient)
+        public Guid Create(string name, string unit, IList<double> amounts, Patient patient)
         {
             var inventory = new Inventory
             {
@@ -193,9 +193,9 @@ using System.Linq;
         }
 
         /// <inheritdoc />
-        public IList<Inventory> ListRecountsBefore(DateTime date, Guid? taxonFilter)
+        public IList<Inventory> ListRecountsBefore(DateTime date, DateTime? toDate = null, Guid? taxonFilter = null)
         {
-            return this.repository.ListRecountsBefore(date, taxonFilter);
+            return this.repository.ListRecountsBefore(date, toDate, taxonFilter);
         }
 
         #endregion

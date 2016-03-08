@@ -1462,6 +1462,42 @@ a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
 #content-primary #signed-events td.view,
 #content-primary #signed-events td.viewshow {padding:0;}
 
+#content-primary #signlist .inactive-inventory {
+    background:#fbe1d4;
+}
+
+#content-primary #signlist .inactive-inventory h3 {
+    font-size:14px;
+    color: #606060;
+    margin:0;
+    padding:3px 0;
+}
+
+#content-primary #signlist .inactive-inventory p {
+    font-size:12px;
+    color: #606060;
+    margin:0;
+    padding:0;
+}
+
+#content-primary #signlist .archive .inactive-inventory {
+    background:#ffffff;
+}
+
+#content-primary #signlist .archive .inactive-inventory h3 {
+    font-size:14px;
+    color: #606060;
+    margin:0;
+    padding:3px 0;
+}
+
+#content-primary #signlist .archive .inactive-inventory p {
+    font-size:12px;
+    color: #606060;
+    margin:0;
+    padding:0;
+}
+
 /* Prepared weeks */
 #prepare-weeks {
 	border:1px solid #bbc9d5;

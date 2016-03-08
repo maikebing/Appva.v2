@@ -93,15 +93,16 @@
                 {
                     var isPast = (item.EndDate.HasValue) ? item.EndDate.Value.Date < DateTime.Today : false;
                     var isFuture = (item.StartDate.Date > DateTime.Today) ? true : false;
-                    <tr class="@( (isPast || isFuture) ? "inactive" : "active")" >
-						<td>@item.Name
-							<span class="date @(isFuture ? "future" : "") @(isPast ? "past" : "")">
+                    <tr class="@( (isPast || isFuture) ? "inactive" : "active")">
+                        <td>
+                            @item.Name
+                            <span class="date @(isFuture ? "future" : "") @(isPast ? "past" : "")">
                                 @String.Format("{0:yyyy-MM-dd}", item.StartDate)
-                                 — 
+                                —
                                 @((item.EndDate.HasValue) ? string.Format("{0:yyyy-MM-dd}", item.EndDate) : string.Empty)
                             </span>
-						</td>
-						<td class="freq">
+                        </td>
+                        <td class="freq">
                             @if (item.OnNeedBasis)
                             {
                                 @:Vid behov
@@ -111,8 +112,8 @@
                                 @intervalMap[item.Interval]
                             }
                         </td>
-						<td class="frame">
-							@if (item.OnNeedBasis)
+                        <td class="frame">
+                            @if (item.OnNeedBasis)
                             {
                                 <span style="text-align:center;">–</span>
                             }
@@ -121,10 +122,10 @@
                                 <span>@item.RangeInMinutesBefore min innan</span>
                                 <span>@item.RangeInMinutesAfter min efter</span>
                             }
-						</td>
-                        @{   
+                        </td>
+                        @{
                             List<int> itemTimes = new List<int>();
-                            if (! string.IsNullOrEmpty(item.Times))
+                            if (!string.IsNullOrEmpty(item.Times))
                             {
                                 foreach (var str in item.Times.Split(','))
                                 {
@@ -134,14 +135,14 @@
                                         itemTimes.Add(result);
                                     }
                                 }
-                            }     
-                        }    
+                            }
+                        }
                         @if (item.OnNeedBasis)
-                         {
+                        {
                             <td class="time" colspan="@times.Count.ToString()">
                                 –
                             </td>
-                         }
+                        }
                         else
                         {
                             foreach (var time in times)
@@ -154,34 +155,45 @@
                                 </td>
                             }
                         }
-                        
-                        <td class="info"><p>@item.Description</p></td> 
-                       
-                        @if (Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read))
+
+                        <td class="info"><p>@item.Description</p></td>
+
+                        @if (item.Inventory != null && Html.HasPermissionFor(Permissions.Inventory.Read))
                         {
-                            <td>
+                            <td @(item.Inventory.IsActive ? "" : "class=inactive-inventory")>
                                 <span class="date">
                                     @Html.ActionLink(Permissions.Inventory.Read, item.Inventory.Description, "list", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id }, new { })
                                 </span>
                                 Saldo: @item.Inventory.CurrentLevel
                             </td>
                         }
-                        @if (Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read))
+                        @if (item.Inventory != null && Html.HasPermissionFor(Permissions.Inventory.Read))
                         {
-                            <td class="nedit">
-                                @Html.ActionLink(Permissions.Inventory.Create, "Tillför mängd", "Add", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
-                                @Html.ActionLink(Permissions.Inventory.Create, "Uttag", "Withdraw", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
-                                @if (Model.Schedule.ScheduleSettings.CountInventory)
-                                {
-                                    @Html.ActionLink("Kontrollräkna", "Recount", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
-                                }
-                            </td>
+                            if (item.Inventory.IsActive)
+                            {
+                                <td class="nedit">
+                                    @Html.ActionLink(Permissions.Inventory.Create, "Tillför mängd", "Add", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                    @Html.ActionLink(Permissions.Inventory.Create, "Uttag", "Withdraw", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                    @if (Model.Schedule.ScheduleSettings.CountInventory)
+                                    {
+                                        @Html.ActionLink("Kontrollräkna", "Recount", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="inactive-inventory">
+                                    <h3>Observera</h3>
+                                    <p>Insatsen är kopplad till ett borttaget saldo</p>
+                                </td>
+                            }
+
                         }
-						<td class="edit">
+                        <td class="edit">
                             @Html.ActionLink(Permissions.Sequence.Update, "Ändra", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
                             @Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })
                         </td>
-					</tr>
+                    </tr>
                 }
                 </tbody>
 			</table>

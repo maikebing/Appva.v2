@@ -97,8 +97,8 @@ using Appva.Mcss.Admin.Application.Services.Settings;
             var today = DateTime.Now.Date;
             var lastStockCalculationDate = today.AddDays(-inventoryCalculationSpanInDays);
 
-            var delayedStockCounts = this.inventories.ListRecountsBefore(lastStockCalculationDate, taxon.Id);
-            var commingStockCounts = this.inventories.ListRecountsBefore(lastStockCalculationDate.AddDays(7), taxon.Id);
+            var delayedStockCounts = this.inventories.ListRecountsBefore(lastStockCalculationDate, null, taxon.Id);
+            var commingStockCounts = this.inventories.ListRecountsBefore(lastStockCalculationDate.AddDays(7), lastStockCalculationDate, taxon.Id);
             /*RecountOverviewItemViewModel dto = null;
             Inventory inventory = null;
             Patient patient = null;

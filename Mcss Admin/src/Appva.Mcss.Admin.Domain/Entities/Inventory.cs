@@ -100,13 +100,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The amounts represented as a list
         /// </summary>
-        public virtual IList<string> Amounts
+        public virtual IList<double> Amounts
         {
             get 
             {
                 if (this.amounts == null)
                     return null;
-                return JsonConvert.DeserializeObject<List<string>>(this.amounts);
+                return JsonConvert.DeserializeObject<List<double>>(this.amounts);
             }
             set
             {

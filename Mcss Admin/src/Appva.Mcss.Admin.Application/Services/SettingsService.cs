@@ -518,29 +518,50 @@ using Appva.Mcss.Admin.Application.Models;
         /// <inheritdoc />
         public IList<InventoryAmountListModel> GetIventoryAmountLists()
         {
+            var storedInDb = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Namespace == "MCSS.Core.Inventory.Units")
+                .List();
+
             var retval = new List<InventoryAmountListModel>();
-            
-            //// The default lists
-            var amounts = new List<double>();
-            var amounts2 = new List<double>();
-            for (int x = 0; x <= 100; x++)
+
+            if (storedInDb.Count < 1)
             {
-                amounts.Add(x);
-                amounts2.Add(x);
+                //// The default lists
+                var amounts = new List<double>();
+                var amounts2 = new List<double>();
+                for (int x = 0; x <= 100; x++)
+                {
+                    amounts.Add(x);
+                    amounts2.Add(x);
+                }
+
+                retval.Add(new InventoryAmountListModel
+                {
+                    Name = "Dos",
+                    Amounts = amounts
+                });
+
+                amounts2.Insert(1, 0.5);
+                retval.Add(new InventoryAmountListModel
+                {
+                    Name = "Tbl",
+                    Amounts = amounts2
+                });
+
+                return retval;
             }
-
-            retval.Add(new InventoryAmountListModel
+            else
             {
-                Name = "Dos",
-                Amounts = amounts
-            });
-
-            amounts2.Insert(1, 0.5);
-            retval.Add(new InventoryAmountListModel
-            {
-                Name = "Tbl",
-                Amounts = amounts2
-            });
+                foreach (var unit in storedInDb)
+                {
+                    retval.Add(new InventoryAmountListModel
+                    {
+                        Name = unit.Name,
+                        Amounts = JsonConvert.DeserializeObject<IList<double>>(unit.Value)
+                    });
+                }
+            }
 
             return retval;
         }

@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Area51.Features.Inventory.AddPatients
+namespace Appva.Mcss.Admin.Areas.Area51.Models
 {
     #region Imports.
 
@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Inventory.AddPatients
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class AddPatients : INotification
+    public sealed class AddPatientsNotice : INotification
     {
         
     }

@@ -1,5 +1,5 @@
-﻿// <copyright file="PrintSchemaScheduleHandler.cs" company="Appva AB">
-//     Copyright (c) Appva AB. All rights PrintTableScheduleHandler.
+﻿// <copyright file="PrintTableScheduleHandler.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
@@ -9,46 +9,31 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Persistence;
-    using NHibernate.Transform;
+    using System.Web.Mvc;
     using Appva.Core.Extensions;
-    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Pdf;
+    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Tenant.Identity;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class PrintTableScheduleHandler : RequestHandler<PrintTableSchedule, ScheduleTablePrintViewModel>
+    internal sealed class PrintTableScheduleHandler : RequestHandler<PrintTableSchedule, FileContentResult>
     {
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPatientService"/>.
+        /// The <see cref="IPdfPrintService"/>.
         /// </summary>
-        private readonly IPatientService patientService;
+        private readonly IPdfPrintService pdfService;
 
         /// <summary>
-        /// The <see cref="IScheduleService"/>.
+        /// The <see cref="ITenantService"/>.
         /// </summary>
-        private readonly IScheduleService scheduleService;
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
-        /// </summary>
-        private readonly IPersistenceContext persistence;
-
-        /// <summary>
-        /// The <see cref="IAuditService"/>.
-        /// </summary>
-        private readonly IAuditService auditing;
+        private readonly ITenantService tenantService;
 
         #endregion
 
@@ -57,52 +42,30 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintTableScheduleHandler"/> class.
         /// </summary>
-        public PrintTableScheduleHandler(IAuditService auditing, IPatientService patientService, IScheduleService scheduleService, IPersistenceContext persistence)
+        /// <param name="pdfService">The <see cref="IPdfPrintService"/></param>
+        /// <param name="tenantService">The <see cref="ITenantService"/></param>
+        public PrintTableScheduleHandler(IPdfPrintService pdfService, ITenantService tenantService)
         {
-            this.auditing = auditing;
-            this.patientService = patientService;
-            this.scheduleService = scheduleService;
-            this.persistence = persistence;
+            this.pdfService    = pdfService;
+            this.tenantService = tenantService;
         }
 
         #endregion
 
         #region RequestHandler Overrides.
 
-        public override ScheduleTablePrintViewModel Handle(PrintTableSchedule message)
+        /// <inheritdoc />
+        public override FileContentResult Handle(PrintTableSchedule message)
         {
-            var patient = this.patientService.Get(message.Id);
-            var query = this.persistence.QueryOver<Task>()
-                .Where(x => x.Patient.Id == patient.Id)
-                .And(x => x.Scheduled >= message.StartDate && x.Scheduled <= message.EndDate.LastInstantOfDay())
-                .And(x => x.IsActive)
-                .Fetch(x => x.StatusTaxon).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer());
-            if (message.ScheduleSettingsId.HasValue)
+            ITenantIdentity tenant;
+            this.tenantService.TryIdentifyTenant(out tenant);
+            var bytes = this.pdfService.CreateSignedTasksTable(message.StartDate, message.EndDate, message.Id, message.ScheduleSettingsId, message.OnNeedBasis, message.StandardSequences);
+            return new FileContentResult(bytes, "application/pdf")
             {
-                query.JoinQueryOver<Schedule>(x => x.Schedule)
-                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .Where(x => x.Id == message.ScheduleSettingsId);
-            }
-            if (! message.OnNeedBasis)
-            {
-                query.AndNot(x => x.OnNeedBasis);
-            }
-            if (! message.StandardSequences)
-            {
-                query.And(x => x.OnNeedBasis);
-            }
-            this.auditing.Read(
-                patient,
-                "skapade utskrift av signeringslista för boende {0} (REF: {1}).", 
-                patient.FullName, 
-                patient.Id);
-            return new ScheduleTablePrintViewModel
-            {
-                Patient = patient,
-                StartDate = message.StartDate,
-                EndDate = message.EndDate.LastInstantOfDay(),
-                Tasks = query.List<Task>()
+                FileDownloadName = string.Format(
+                    "Signerade-handelser-{0}-{1}.pdf",
+                    tenant.Name.ToUrlFriendly(),
+                    DateTime.Now.ToFileTimeUtc())
             };
         }
 

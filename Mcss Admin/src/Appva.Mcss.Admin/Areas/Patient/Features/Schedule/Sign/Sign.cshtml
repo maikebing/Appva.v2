@@ -35,9 +35,9 @@
 				new { Id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id, year = Model.Year, month = Model.Month, filterByNeedsBasis = true },
 				new { @class = (Model.FilterByNeedsBasis) ? "sel div" : "div" })
 			</p>
-			@Html.ActionLink("Skriv ut", "PrintPopUp",
+			@Html.ActionLink("Ladda ner som PDF", "PrintPopUp",
 				new { id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id, startDate = Model.StartDate, endDate = Model.EndDate }, new { @class = "btn printp lb-link" })
-		}                                                                                                                        
+		}
 	}
 </div>
 <div id="content" class="has-nav cf">

@@ -9,16 +9,14 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-using Appva.Mcss.Admin.Models;
-    using Appva.Mcss.Web.ViewModels;
+    using System.Web.Mvc;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PrintTableSchedule : Identity<ScheduleTablePrintViewModel>
+    public sealed class PrintTableSchedule : Identity<FileContentResult>
     {
         /// <summary>
         /// The schedule settings ID.

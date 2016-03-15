@@ -153,12 +153,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             //// Main query - As a view
             Account account = null;
-            var query = this.persistenceContext.QueryOver<Account>(() => account);
-            if (model.IsFilterByIsActiveEnabled != null)
-            {
-                query.Where(x => x.IsActive == model.IsFilterByIsActiveEnabled);
-            }
-            if (model.IsFilterByIsPausedEnabled != null)
+            var query = this.persistenceContext.QueryOver<Account>(() => account)
+                .Where(x => x.IsActive == model.IsFilterByIsActiveEnabled);
+            //// If searching in active-users, check paused, else list all 
+            if (model.IsFilterByIsActiveEnabled)
             {
                 query.Where(x => x.IsPaused == model.IsFilterByIsPausedEnabled);
             } 

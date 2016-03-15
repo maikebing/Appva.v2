@@ -8,22 +8,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Core.Extensions;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Commands;
-    using Appva.Persistence;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Application.Security.Identity;
-    using NHibernate.Transform;
-    using NHibernate.Criterion;
-    using Appva.Mcss.Web.Controllers;
+    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 
@@ -47,7 +36,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
-        private readonly IPatientService patients;
+        private readonly IPatientService patientService;
 
         /// <summary>
         /// The <see cref="IPatientTransformer"/>.
@@ -69,13 +58,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="IIdentityService"/> implementation</param>
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="IAccountService"/> implementation</param>
-        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, ITaxonFilterSessionHandler filtering, IPatientTransformer transformer, IPatientService patients)
+        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, ITaxonFilterSessionHandler filtering, IPatientTransformer transformer, IPatientService patientService)
 		{
-            this.transformer = transformer;
+            this.transformer     = transformer;
             this.identityService = identityService;
-            this.accountService = accountService;
-            this.patients = patients;
-            this.filtering = filtering;
+            this.accountService  = accountService;
+            this.patientService  = patientService;
+            this.filtering       = filtering;
 		}
 
 		#endregion
@@ -85,14 +74,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override AlertOverviewViewModel Handle(AlertWidget message)
         {
-            var taxon = this.filtering.GetCurrentFilter();
-            var delayedTasks = this.patients.FindDelayedPatientsBy(taxon);
-            var incompleteTasks = this.patients.FindDelayedPatientsBy(taxon, true);
-
+            var taxon           = this.filtering.GetCurrentFilter();
+            var delayedTasks    = this.patientService.FindDelayedPatientsBy(taxon);
+            var incompleteTasks = this.patientService.FindDelayedPatientsBy(taxon, true);
             return new AlertOverviewViewModel
             {
-                Patients = message.Status.Equals("all") ? this.transformer.ToPatientList(delayedTasks) : this.transformer.ToPatientList(incompleteTasks),
-                CountAll = delayedTasks.Count,
+                Patients       = message.Status.Equals("all") ? this.transformer.ToPatientList(delayedTasks) : this.transformer.ToPatientList(incompleteTasks),
+                CountAll       = delayedTasks.Count,
                 CountNotSigned = incompleteTasks.Count
             };
         }

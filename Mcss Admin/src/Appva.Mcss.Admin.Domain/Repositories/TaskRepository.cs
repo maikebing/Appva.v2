@@ -8,6 +8,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
@@ -16,9 +19,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using Appva.Repository;
     using NHibernate.Criterion;
     using NHibernate.Transform;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -92,12 +92,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public PageableSet<Task> List(ListTaskModel model, IList<ScheduleSettings> list, int page = 1, int pageSize = 10)
         {
-            page     = page < 1 ? 1 : page;
-            var skip = (page - 1) * pageSize;
+            page      = page < 1 ? 1 : page;
+            var skip  = (page - 1) * pageSize;
             var query = this.persistenceContext.QueryOver<Task>()
                 .Where(x => x.OnNeedBasis == false)
-                .And(x => x.Scheduled >= model.StartDate)
-                .And(x => x.Scheduled <= model.EndDate);
+                  .And(x => x.Scheduled >= model.StartDate)
+                  .And(x => x.Scheduled <= model.EndDate);
             Account accountAlias = null;
             Patient patientAlias = null;
             Taxon   taxonAlias   = null;
@@ -153,7 +153,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             var tasks = query.Fetch(x => x.Patient).Eager
                 .Fetch(x => x.StatusTaxon).Eager
                 .OrderBy(x => x.Scheduled).Desc
-                 .ThenBy(x => x.CreatedAt).Desc
+                .ThenBy(x => x.CreatedAt).Desc
                 .TransformUsing(new DistinctRootEntityResultTransformer())
                 .Skip(skip)
                 .Take(pageSize)

@@ -167,7 +167,7 @@ namespace Appva.Mcss.Admin.Configuration
         {
             if (ApplicationEnvironment.Is.Development)
             {
-                NHibernateProfiler.Initialize();
+                //// NHibernateProfiler.Initialize();
             }
         }
 

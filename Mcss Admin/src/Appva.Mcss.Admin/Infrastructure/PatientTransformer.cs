@@ -8,18 +8,16 @@ namespace Appva.Mcss.Admin.Infrastructure
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Persistence;
-    using System.Linq;
-    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 
@@ -38,7 +36,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     /// </summary>
     public sealed class PatientTransformer : IPatientTransformer
     {
-        #region Private Variables.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IPatientService"/>.

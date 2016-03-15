@@ -8,6 +8,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
@@ -17,10 +21,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using NHibernate.Criterion;
     using NHibernate.Transform;
     using NHibernate.Type;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
 
     #endregion
 
@@ -43,7 +43,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="pageSize"></param>
         /// <returns></returns>
         PageableSet<PatientModel> Search(SearchPatientModel model, IList<Guid> schedulePermissions, int page = 1, int pageSize = 10);
-
     }
 
     /// <summary>
@@ -51,7 +50,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public sealed class PatientRepository : IPatientRepository
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>
@@ -72,7 +71,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
         #endregion
 
-        #region IPatientRepository members
+        #region IPatientRepository Members.
 
         /// <inheritdoc />
         public IList<PatientModel> FindDelayedPatientsBy(Guid taxon,  bool hasIncompleteTask = false, IList<Guid> scheduleSettings = null)
@@ -80,17 +79,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             Schedule scheduleAlias = null;
             var tasks = QueryOver.Of<Task>()
                 .Where(x => x.IsActive)
-                .And(x => x.Delayed)
-                .And(x => !x.DelayHandled)
+                  .And(x => x.Delayed)
+                  .And(x => !x.DelayHandled)
                 .JoinAlias(x => x.Schedule, () => scheduleAlias)
                     .WhereRestrictionOn(() => scheduleAlias.ScheduleSettings.Id).IsIn(scheduleSettings.ToArray())
                 .Select(x => x.Patient.Id);
-
             if (hasIncompleteTask)
             {
                 tasks = tasks.Where(x => !x.IsCompleted);
             }
-
             PatientModel patientAlias = null;
             Taxon taxonAlias = null;
             var patients = this.context.QueryOver<Patient>()
@@ -112,7 +109,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Add(Projections.Constant(true).WithAlias(() => patientAlias.HasUnattendedTasks)))
                 .OrderByAlias(() => patientAlias.LastName).Desc
                 .TransformUsing(Transformers.AliasToBean<PatientModel>()); 
-
             return patients.List<PatientModel>();          
         }
 
@@ -141,26 +137,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Where(Restrictions.On<Taxon>(x => x.Path)
                         .IsLike(model.TaxonFilter.GetValueOrDefault().ToString(), MatchMode.Anywhere));
             }
-            /*var sub = QueryOver.Of<Task>()
-                .Where(x => x.Patient.Id == patient.Id)
-                .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
-                .Select(
-                    Projections.Conditional(
-                        Restrictions.Gt(
-                             Projections.Count(Projections.Property<Task>(x => x.Id)),
-                             0),
-                        Projections.Constant(true),
-                        Projections.Constant(false))).Take(1);*/
-
             var hasUnattendedTasksQuery = QueryOver.Of<Task>()
                 .Where(x => x.Patient.Id == patient.Id)
-                .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
+                  .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                 .WhereRestrictionOn(x => x.ScheduleSettings.Id).IsIn(schedulePermissions.ToArray())
-                .And(x => x.IsActive)
+                  .And(x => x.IsActive)
                 .Select(Projections.Distinct(Projections.Property<Task>(x => x.Patient.Id)));
             PatientModel dto = null;
-            //Task aTask = null;
             query.Select(
                     Projections.ProjectionList()
                         .Add(Projections.Group<Patient>(x => x.Id).WithAlias(() => dto.Id))
@@ -174,29 +158,22 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                         .Add(Projections.Group<Patient>(x => x.Taxon).WithAlias(() => dto.Taxon))
                         .Add(Projections.SqlProjection("substring((SELECT '.' + convert(nvarchar(255),TaxonId) FROM SeniorAlerts Where PatientId = {alias}.Id FOR XML PATH('')), 2, 1000) as SeniorAlerts", new[] { "SeniorAlerts" }, new IType[] { NHibernateUtil.String }).WithAlias(() => dto.ProfileAssements))
                         .Add(Projections.Conditional(Subqueries.PropertyIn("Id", hasUnattendedTasksQuery.DetachedCriteria), Projections.Constant(true), Projections.Constant(false)).WithAlias(() => dto.HasUnattendedTasks)));
-           
             query.OrderByAlias(() => dto.HasUnattendedTasks).Desc
                 .ThenByAlias(() => dto.LastName).Asc
                 .TransformUsing(Transformers.AliasToBean<PatientModel>());
-
             var start = page < 1 ? 1 : page;
             var first = (start - 1) * pageSize;
-
             var items = query.Skip(first).Take(pageSize).List<PatientModel>();
-
             return new PageableSet<PatientModel>
             {
-                CurrentPage = (long)start,
-                NextPage = (long)start++,
-                PageSize = (long)pageSize,
-                TotalCount = (long)query.RowCount(),
-                Entities = items
+                CurrentPage = (long) start,
+                NextPage    = (long) start++,
+                PageSize    = (long) pageSize,
+                TotalCount  = (long) query.RowCount(),
+                Entities    = items
             };
         }
 
         #endregion
-
-
-        
     }
 }

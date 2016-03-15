@@ -12,9 +12,6 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
-    using System.Web;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Microsoft.Owin;
     using Microsoft.Owin.Security;
 

@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Repository;
     #endregion
 
     /// <summary>
@@ -97,6 +98,15 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="incompleteTasks"></param>
         /// <returns></returns>
         IList<PatientModel> FindDelayedPatientsBy(ITaxon taxon, bool? incompleteTasks = null);
+
+        /// <summary>
+        /// Lists patients by search criteria
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        PageableSet<PatientModel> Search(SearchPatientModel model, int page = 1, int pageSize = 10);
     }
 
     /// <summary>
@@ -303,7 +313,19 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.FindDelayedPatientsBy(taxon.Id, incompleteTasks.GetValueOrDefault(false), schedulesettings);
         }
 
+        /// <inheritdoc />
+        public PageableSet<PatientModel> Search(SearchPatientModel model, int page = 1, int pageSize = 10)
+        {
+            this.auditing.Read("genomförde en sökning i patientlistan på {0}.", model.SearchQuery);
+
+            var schedulesettings = this.identity.SchedulePermissions().Select(x => new Guid(x.Value)).ToList();
+            return this.repository.Search(model, schedulesettings, page, pageSize);
+        }
+
         #endregion
+
+
+       
     }
 
     /// <summary>

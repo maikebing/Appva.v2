@@ -8,9 +8,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Persistence;
+    using Appva.Repository;
     using NHibernate;
     using NHibernate.Criterion;
     using NHibernate.Transform;
@@ -18,6 +20,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
 
     #endregion
 
@@ -31,6 +34,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="hasIncompleteTask"></param>
         /// <returns></returns>
         IList<PatientModel> FindDelayedPatientsBy(Guid taxon, bool hasIncompleteTask = false, IList<Guid> scheduleSettings = null);
+
+        /// <summary>
+        /// Lists patients by search criteria
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        PageableSet<PatientModel> Search(SearchPatientModel model, IList<Guid> schedulePermissions, int page = 1, int pageSize = 10);
+
     }
 
     /// <summary>
@@ -97,12 +110,93 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Add(Projections.Property<Patient>(x => x.Deceased).WithAlias(() => patientAlias.IsDeceased))
                     .Add(Projections.Property<Patient>(x => x.Identifier).WithAlias(() => patientAlias.Identifier))
                     .Add(Projections.Constant(true).WithAlias(() => patientAlias.HasUnattendedTasks)))
-                //.OrderBy(() => patientAlias.LastName).Desc
+                .OrderByAlias(() => patientAlias.LastName).Desc
                 .TransformUsing(Transformers.AliasToBean<PatientModel>()); 
 
             return patients.List<PatientModel>();          
         }
 
+        /// <inheritdoc />
+        public PageableSet<PatientModel> Search(SearchPatientModel model, IList<Guid> schedulePermissions, int page = 1, int pageSize = 10)
+        {
+            Patient patient = null;
+            var query = this.context.QueryOver<Patient>(() => patient)
+                .Where(x => x.IsActive == model.IsActive);
+            if (model.IsActive)
+            {
+                query.Where(x => x.Deceased == model.IsDeceased);
+            }
+            if (model.SearchQuery.IsNotEmpty())
+            {
+                Expression<Func<Patient, object>> expression = x => x.FullName;
+                if (model.SearchQuery.First(2).Is(Char.IsNumber))
+                {
+                    expression = x => x.PersonalIdentityNumber.Value;
+                }
+                query.Where(Restrictions.On<Patient>(expression).IsLike(model.SearchQuery, MatchMode.Anywhere)).OrderBy(x => x.LastName);
+            }
+            if (model.TaxonFilter.HasValue && model.TaxonFilter.GetValueOrDefault().IsNotEmpty())
+            {
+                query.JoinQueryOver<Taxon>(x => x.Taxon)
+                    .Where(Restrictions.On<Taxon>(x => x.Path)
+                        .IsLike(model.TaxonFilter.GetValueOrDefault().ToString(), MatchMode.Anywhere));
+            }
+            /*var sub = QueryOver.Of<Task>()
+                .Where(x => x.Patient.Id == patient.Id)
+                .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
+                .Select(
+                    Projections.Conditional(
+                        Restrictions.Gt(
+                             Projections.Count(Projections.Property<Task>(x => x.Id)),
+                             0),
+                        Projections.Constant(true),
+                        Projections.Constant(false))).Take(1);*/
+
+            var hasUnattendedTasksQuery = QueryOver.Of<Task>()
+                .Where(x => x.Patient.Id == patient.Id)
+                .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
+                .JoinQueryOver<Schedule>(x => x.Schedule)
+                .WhereRestrictionOn(x => x.ScheduleSettings.Id).IsIn(schedulePermissions.ToArray())
+                .And(x => x.IsActive)
+                .Select(Projections.Distinct(Projections.Property<Task>(x => x.Patient.Id)));
+            PatientModel dto = null;
+            //Task aTask = null;
+            query.Select(
+                    Projections.ProjectionList()
+                        .Add(Projections.Group<Patient>(x => x.Id).WithAlias(() => dto.Id))
+                        .Add(Projections.Group<Patient>(x => x.IsActive).WithAlias(() => dto.IsActive))
+                        .Add(Projections.Group<Patient>(x => x.FirstName).WithAlias(() => dto.FirstName))
+                        .Add(Projections.Group<Patient>(x => x.LastName).WithAlias(() => dto.LastName))
+                        .Add(Projections.Group<Patient>(x => x.FullName).WithAlias(() => dto.FullName))
+                        .Add(Projections.Group<Patient>(x => x.PersonalIdentityNumber).WithAlias(() => dto.PersonalIdentityNumber))
+                        .Add(Projections.Group<Patient>(x => x.Deceased).WithAlias(() => dto.IsDeceased))
+                        .Add(Projections.Group<Patient>(x => x.Identifier).WithAlias(() => dto.Identifier))
+                        .Add(Projections.Group<Patient>(x => x.Taxon).WithAlias(() => dto.Taxon))
+                        .Add(Projections.SqlProjection("substring((SELECT '.' + convert(nvarchar(255),TaxonId) FROM SeniorAlerts Where PatientId = {alias}.Id FOR XML PATH('')), 2, 1000) as SeniorAlerts", new[] { "SeniorAlerts" }, new IType[] { NHibernateUtil.String }).WithAlias(() => dto.ProfileAssements))
+                        .Add(Projections.Conditional(Subqueries.PropertyIn("Id", hasUnattendedTasksQuery.DetachedCriteria), Projections.Constant(true), Projections.Constant(false)).WithAlias(() => dto.HasUnattendedTasks)));
+           
+            query.OrderByAlias(() => dto.HasUnattendedTasks).Desc
+                .ThenByAlias(() => dto.LastName).Asc
+                .TransformUsing(Transformers.AliasToBean<PatientModel>());
+
+            var start = page < 1 ? 1 : page;
+            var first = (start - 1) * pageSize;
+
+            var items = query.Skip(first).Take(pageSize).List<PatientModel>();
+
+            return new PageableSet<PatientModel>
+            {
+                CurrentPage = (long)start,
+                NextPage = (long)start++,
+                PageSize = (long)pageSize,
+                TotalCount = (long)query.RowCount(),
+                Entities = items
+            };
+        }
+
         #endregion
+
+
+        
     }
 }

@@ -96,8 +96,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             var skip = (page - 1) * pageSize;
             var query = this.persistenceContext.QueryOver<Task>()
                 .Where(x => x.OnNeedBasis == false)
-                  .And(x => x.Scheduled >= model.StartDate)
-                  .And(x => x.Scheduled <= model.EndDate);
+                .And(x => x.Scheduled >= model.StartDate)
+                .And(x => x.Scheduled <= model.EndDate);
             Account accountAlias = null;
             Patient patientAlias = null;
             Taxon   taxonAlias   = null;

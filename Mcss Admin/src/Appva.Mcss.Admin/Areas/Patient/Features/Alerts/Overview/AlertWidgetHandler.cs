@@ -45,9 +45,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IAccountService accountService;
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
+        /// The <see cref="IPatientService"/>.
         /// </summary>
-        private readonly IPersistenceContext persistence;
+        private readonly IPatientService patients;
 
         /// <summary>
         /// The <see cref="IPatientTransformer"/>.
@@ -69,12 +69,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="IIdentityService"/> implementation</param>
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="IAccountService"/> implementation</param>
-        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, ITaxonFilterSessionHandler filtering, IPatientTransformer transformer, IPersistenceContext persistence)
+        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, ITaxonFilterSessionHandler filtering, IPatientTransformer transformer, IPatientService patients)
 		{
             this.transformer = transformer;
             this.identityService = identityService;
             this.accountService = accountService;
-            this.persistence = persistence;
+            this.patients = patients;
             this.filtering = filtering;
 		}
 
@@ -85,45 +85,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override AlertOverviewViewModel Handle(AlertWidget message)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
-            var scheduleSettings = TaskService.GetRoleScheduleSettingsList(account);
             var taxon = this.filtering.GetCurrentFilter();
-            Task taskAlias = null;
-            Taxon taxonAlias = null;
-            var query = this.persistence.QueryOver<Patient>()
-                .Where(x => x.IsActive)
-                  .And(x => !x.Deceased)
-                .JoinAlias(x => x.Taxon, () => taxonAlias)
-                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                    .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
-                .JoinQueryOver(x => x.Tasks, () => taskAlias)
-                    .Where(() => taskAlias.IsActive)
-                      .And(() => taskAlias.Delayed)
-                      .And(() => taskAlias.DelayHandled == false)
-                .JoinQueryOver<Schedule>(x => x.Schedule)
-                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
-            var countAll = query.Clone().Select(Projections.CountDistinct<Patient>(x => x.Id))
-                .FutureValue<int>()
-                .Value; 
-            IList<Patient> patients = null;
-            if (! message.Status.Equals("notsigned"))
-            {
-                patients = query.TransformUsing(new DistinctRootEntityResultTransformer()).List();
-            }
-            query = query.And(() => taskAlias.IsCompleted == false);
-            if (patients == null)
-            {
-                patients = query.TransformUsing(new DistinctRootEntityResultTransformer()).List();
-            }
-            var countNotSigned = query.Select(Projections.CountDistinct<Patient>(x => x.Id))
-                .FutureValue<int>()
-                .Value;
+            var delayedTasks = this.patients.FindDelayedPatientsBy(taxon);
+            var incompleteTasks = this.patients.FindDelayedPatientsBy(taxon, true);
+
             return new AlertOverviewViewModel
             {
-                Patients = this.transformer.ToPatientList(patients),
-                CountAll = countAll,
-                CountNotSigned = countNotSigned
+                Patients = message.Status.Equals("all") ? this.transformer.ToPatientList(delayedTasks) : this.transformer.ToPatientList(incompleteTasks),
+                CountAll = delayedTasks.Count,
+                CountNotSigned = incompleteTasks.Count
             };
         }
 

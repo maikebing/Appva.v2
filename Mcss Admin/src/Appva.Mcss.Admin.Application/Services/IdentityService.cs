@@ -52,6 +52,12 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         IEnumerable<Claim> Permissions();
 
         /// <summary>
+        /// Returns the current authenticated user schedule permissions.
+        /// </summary>
+        /// <returns>The current authenticated user schedule permissions or if not authenticated; null</returns>
+        IEnumerable<Claim> SchedulePermissions();
+
+        /// <summary>
         /// Returns whether the current authenticated user is a member of the specified role.
         /// </summary>
         /// <param name="role">The role which the user must be a member of</param>
@@ -193,6 +199,12 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         public IEnumerable<Claim> Permissions()
         {
             return this.Principal.Claims.Where(x => x.Type.Equals(Core.Resources.ClaimTypes.Permission)).ToList();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Claim> SchedulePermissions()
+        {
+            return this.Principal.Claims.Where(x => x.Type.Equals(Core.Resources.ClaimTypes.SchedulePermission)).ToList();
         }
 
         /// <inheritdoc />

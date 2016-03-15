@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Models.handlers
     #region Imports.
 
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using Appva.Core.Extensions;
     using Appva.Cqrs;
@@ -23,6 +24,9 @@ namespace Appva.Mcss.Admin.Models.handlers
     using NHibernate.Criterion;
     using NHibernate.Transform;
     using NHibernate.Type;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using System.IdentityModel.Claims;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -49,6 +53,11 @@ namespace Appva.Mcss.Admin.Models.handlers
         private readonly IPersistenceContext persistence;
 
         /// <summary>
+        /// The <see cref="IIdentityService"/>
+        /// </summary>
+        private readonly IIdentityService identity;
+
+        /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditing;
@@ -70,13 +79,15 @@ namespace Appva.Mcss.Admin.Models.handlers
             IPatientTransformer transformer,
             ITaxonFilterSessionHandler filtering,
             ISettingsService settingsService,
-            IPersistenceContext persistence)
+            IPersistenceContext persistence,
+            IIdentityService identity)
         {
             this.auditing = auditing;
             this.transformer = transformer;
             this.filtering = filtering;
             this.persistence = persistence;
             this.settingsService = settingsService;
+            this.identity = identity;
         }
 
         #endregion
@@ -125,13 +136,18 @@ namespace Appva.Mcss.Admin.Models.handlers
                              0),
                         Projections.Constant(true),
                         Projections.Constant(false))).Take(1);
+
+            var schedule = this.identity.SchedulePermissions().ToList();
             var hasUnattendedTasksQuery = QueryOver.Of<Task>()
                 .Where(x => x.Patient.Id == patient.Id)
                 .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
+                .JoinQueryOver<Schedule>(x => x.Schedule)
+                .WhereRestrictionOn(x => x.ScheduleSettings).IsIn(schedule)
+                .And(x => x.IsActive)
                 .Select(Projections.Distinct(Projections.Property<Task>(x => x.Patient.Id)));
-            PatientModel dto = null;
+            Appva.Mcss.Admin.Domain.Models.PatientModel dto = null;
             Task aTask = null;
-            var selectQuery = query.Clone().Left.JoinAlias(x => x.Tasks, () => aTask, Restrictions.Where(() => aTask.IsActive && aTask.Delayed && !aTask.DelayHandled))
+            var selectQuery = query.Clone()
                 .Select(
                     Projections.ProjectionList()
                         .Add(Projections.Group<Patient>(x => x.Id).WithAlias(() => dto.Id))
@@ -143,22 +159,22 @@ namespace Appva.Mcss.Admin.Models.handlers
                         .Add(Projections.Group<Patient>(x => x.Deceased).WithAlias(() => dto.IsDeceased))
                         .Add(Projections.Group<Patient>(x => x.Identifier).WithAlias(() => dto.Identifier))
                         .Add(Projections.Group<Patient>(x => x.Taxon).WithAlias(() => dto.Taxon))
-                        .Add(Projections.SqlProjection("substring((SELECT '.' + convert(nvarchar(255),TaxonId) FROM SeniorAlerts Where PatientId = {alias}.Id FOR XML PATH('')), 2, 1000) as SeniorAlerts", new[] { "SeniorAlerts" }, new IType[] { NHibernateUtil.String }).WithAlias(() => dto.SeniorAlerts))
-                        .Add(Projections.Conditional(Restrictions.Eq(Projections.Group(() => aTask.IsActive), true), Projections.Constant(true), Projections.Constant(false)).WithAlias(() => dto.HasUnattendedTask)));
-            selectQuery.OrderByAlias(() => dto.HasUnattendedTask).Desc
+                        .Add(Projections.SqlProjection("substring((SELECT '.' + convert(nvarchar(255),TaxonId) FROM SeniorAlerts Where PatientId = {alias}.Id FOR XML PATH('')), 2, 1000) as SeniorAlerts", new[] { "SeniorAlerts" }, new IType[] { NHibernateUtil.String }).WithAlias(() => dto.ProfileAssements))
+                        .Add(Projections.Conditional(Subqueries.PropertyIn("Id",hasUnattendedTasksQuery.DetachedCriteria), Projections.Constant(true), Projections.Constant(false)).WithAlias(() => dto.HasUnattendedTasks)));
+            selectQuery.OrderByAlias(() => dto.HasUnattendedTasks).Desc
                 .ThenByAlias(() => dto.LastName).Asc
-                .TransformUsing(Transformers.AliasToBean<PatientModel>());
-            var items = selectQuery.Skip(firstResult).Take(pageSize).List<PatientModel>();
-            var seniorAlerts = this.settingsService.HasSeniorAlert() ? this.persistence.QueryOver<Taxon>()
+                .TransformUsing(Transformers.AliasToBean<Appva.Mcss.Admin.Domain.Models.PatientModel>());
+            var items = selectQuery.Skip(firstResult).Take(pageSize).List<Appva.Mcss.Admin.Domain.Models.PatientModel>();
+            /*var seniorAlerts = this.settingsService.HasSeniorAlert() ? this.persistence.QueryOver<Taxon>()
                 .Where(x => x.IsActive)
                 .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
                     .Where(x => x.MachineName == "SAI")
-                    .List() : null;
+                    .List() : null;*/
             return new ListPatientModel
             {
                 IsActive       = isActive,
                 IsDeceased     = isDeceased,
-                Items          = this.transformer.ToPatientList(items, seniorAlerts),
+                Items          = this.transformer.ToPatientList(items),
                 PageNumber     = pageIndex,
                 PageSize       = pageSize,
                 TotalItemCount = query.RowCount()

@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     using Appva.Persistence;
     using System.Linq;
     using Appva.Core.Extensions;
-    using Appva.Mcss.Admin.Models;
+    using Appva.Mcss.Admin.Domain.Models;
 
     #endregion
 
@@ -30,7 +30,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     {
         PatientViewModel ToPatient(Patient patient);
         IList<PatientViewModel> ToPatientList(IList<Patient> patients);
-        IList<PatientViewModel> ToPatientList(IList<PatientModel> patients, IList<Taxon> seniorAlerts);
+        IList<PatientViewModel> ToPatientList(IList<PatientModel> patients);
     }
 
     /// <summary>
@@ -126,14 +126,15 @@ namespace Appva.Mcss.Admin.Infrastructure
                     Overseeing = (overseer.IsNotNull()) ? overseer.FullName : null,
                     FirstLineContact = (firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
                     HasUnattendedTasks = false,
-                    SeniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.ToList().Select(x => x).ToList() : null
+                    SeniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.ToList().Select(x => new TaxonItem(x.Id, x.Name, x.Description, x.Path, x.Type, x.Weight)).ToList<ITaxon>() : null
                 });
             }
             return retval;
         }
 
-        public IList<PatientViewModel> ToPatientList(IList<PatientModel> patients, IList<Taxon> seniorAlerts)
+        public IList<PatientViewModel> ToPatientList(IList<PatientModel> patients)
         {
+            var seniorAlerts = this.taxonService.List(TaxonomicSchema.RiskAssessment);
             var taxons = this.taxonService.List(TaxonomicSchema.Organization);
             var superiors = this.roleService.MembersOfRole("_superioraccount");
             var overseers = this.roleService.MembersOfRole("_overseeingaccount");
@@ -141,7 +142,7 @@ namespace Appva.Mcss.Admin.Infrastructure
             var retval = new List<PatientViewModel>();
             var taxonMap = new Dictionary<string, ITaxon>(taxons.ToDictionary(x => x.Id.ToString(), x => x));
             var tenantHasSeniorAlert = this.settingsService.HasSeniorAlert();
-            IDictionary<string, Taxon> seniorAlertMap = null;
+            IDictionary<string, ITaxon> seniorAlertMap = null;
             if (tenantHasSeniorAlert && seniorAlerts.IsNotNull())
             {
                 seniorAlertMap = seniorAlerts.ToDictionary(x => x.Id.ToString(), x => x);
@@ -158,10 +159,10 @@ namespace Appva.Mcss.Admin.Infrastructure
                         address += taxonMap[path].Name + " ";
                     }
                 }
-                IList<Taxon> seniorAlertTaxons = new List<Taxon>();
-                if (tenantHasSeniorAlert && seniorAlertMap.IsNotNull() && patient.SeniorAlerts.IsNotEmpty())
+                IList<ITaxon> seniorAlertTaxons = new List<ITaxon>();
+                if (tenantHasSeniorAlert && seniorAlertMap.IsNotNull() && patient.ProfileAssements.IsNotEmpty())
                 {
-                    foreach (var s in patient.SeniorAlerts.ToLower().Split('.'))
+                    foreach (var s in patient.ProfileAssements.ToLower().Split('.'))
                     {
                         if (seniorAlertMap.ContainsKey(s))
                         {
@@ -185,7 +186,7 @@ namespace Appva.Mcss.Admin.Infrastructure
                     Superior = (superior.IsNotNull()) ? superior.FullName : null,
                     Overseeing = (overseer.IsNotNull()) ? overseer.FullName : null,
                     FirstLineContact = (firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
-                    HasUnattendedTasks = patient.HasUnattendedTask,
+                    HasUnattendedTasks = patient.HasUnattendedTasks,
                     SeniorAlerts = seniorAlertTaxons
                 });
             }

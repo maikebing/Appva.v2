@@ -310,7 +310,7 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<PatientModel> FindDelayedPatientsBy(ITaxon taxon, bool? incompleteTasks = null)
         {
             var schedulesettings = this.identity.SchedulePermissions().Select(x => new Guid(x.Value)).ToList();
-            return this.repository.FindDelayedPatientsBy(taxon.Id, incompleteTasks.GetValueOrDefault(false), schedulesettings);
+            return this.repository.FindDelayedPatientsBy(taxon.Path, incompleteTasks.GetValueOrDefault(false), schedulesettings);
         }
 
         /// <inheritdoc />

@@ -118,6 +118,7 @@
     <Compile Include="Security\Identity\DevelopmentTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\StagingTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\ProductionTenantIdentificationStrategy.cs" />
+    <Compile Include="Security\Identity\TempTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Jwt\JwtSecureDataFormat.cs" />
     <Compile Include="Security\Jwt\JwtToken.cs" />
     <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />

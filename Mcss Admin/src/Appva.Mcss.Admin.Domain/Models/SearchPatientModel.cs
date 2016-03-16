@@ -39,7 +39,7 @@ namespace Appva.Mcss.Admin.Domain.Models
             set;
         }
 
-        public Guid? TaxonFilter
+        public string TaxonFilter
         {
             get;
             set;

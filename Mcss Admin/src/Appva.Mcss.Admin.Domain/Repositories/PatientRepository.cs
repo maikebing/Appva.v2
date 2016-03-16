@@ -33,7 +33,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="hasDelayedTask"></param>
         /// <param name="hasIncompleteTask"></param>
         /// <returns></returns>
-        IList<PatientModel> FindDelayedPatientsBy(Guid taxon, bool hasIncompleteTask = false, IList<Guid> scheduleSettings = null);
+        IList<PatientModel> FindDelayedPatientsBy(string taxon, bool hasIncompleteTask = false, IList<Guid> scheduleSettings = null);
 
         /// <summary>
         /// Lists patients by search criteria
@@ -74,7 +74,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IPatientRepository Members.
 
         /// <inheritdoc />
-        public IList<PatientModel> FindDelayedPatientsBy(Guid taxon,  bool hasIncompleteTask = false, IList<Guid> scheduleSettings = null)
+        public IList<PatientModel> FindDelayedPatientsBy(string taxon,  bool hasIncompleteTask = false, IList<Guid> scheduleSettings = null)
         {
             Schedule scheduleAlias = null;
             var tasks = QueryOver.Of<Task>()
@@ -95,7 +95,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .And(x => !x.Deceased)
                 .JoinAlias(x => x.Taxon, () => taxonAlias)
                     .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                    .IsLike(taxon.ToString(), MatchMode.Anywhere))
+                    .IsLike(taxon, MatchMode.Start))
                 .WithSubquery.WhereProperty(x => x.Id).In(tasks)
                 .Select(Projections.ProjectionList()
                     .Add(Projections.Property<Patient>(x => x.Id).WithAlias(() => patientAlias.Id))
@@ -131,11 +131,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 }
                 query.Where(Restrictions.On<Patient>(expression).IsLike(model.SearchQuery, MatchMode.Anywhere)).OrderBy(x => x.LastName);
             }
-            if (model.TaxonFilter.HasValue && model.TaxonFilter.GetValueOrDefault().IsNotEmpty())
+            if (model.TaxonFilter.IsNotEmpty())
             {
                 query.JoinQueryOver<Taxon>(x => x.Taxon)
                     .Where(Restrictions.On<Taxon>(x => x.Path)
-                        .IsLike(model.TaxonFilter.GetValueOrDefault().ToString(), MatchMode.Anywhere));
+                        .IsLike(model.TaxonFilter, MatchMode.Start));
             }
             var hasUnattendedTasksQuery = QueryOver.Of<Task>()
                 .Where(x => x.Patient.Id == patient.Id)
@@ -143,7 +143,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                 .WhereRestrictionOn(x => x.ScheduleSettings.Id).IsIn(schedulePermissions.ToArray())
                   .And(x => x.IsActive)
-                .Select(Projections.Distinct(Projections.Property<Task>(x => x.Patient.Id)));
+                .Select(Projections.Property<Task>(x => x.Patient.Id));
             PatientModel dto = null;
             query.Select(
                     Projections.ProjectionList()

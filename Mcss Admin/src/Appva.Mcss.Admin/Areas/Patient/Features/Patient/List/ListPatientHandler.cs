@@ -72,7 +72,7 @@ namespace Appva.Mcss.Admin.Models.handlers
             var result = this.patientService.Search(
                 new SearchPatientModel
                 {
-                    TaxonFilter = this.filtering.GetCurrentFilter().Id,
+                    TaxonFilter = this.filtering.GetCurrentFilter().Path,
                     IsActive    = isActive,
                     IsDeceased  = isDeceased,
                     SearchQuery = message.SearchQuery

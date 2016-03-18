@@ -1,4 +1,14 @@
 ﻿@using Appva.Mcss.Admin.Configuration;
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+        if (! identity.HasClaim(System.Security.Claims.ClaimTypes.Version, ApplicationEnvironment.Info.Version))
+        {
+            this.Response.Redirect(Url.Action("SignOut", "Authentication", new { area = string.Empty }));
+        }
+    }
+}
 <!DOCTYPE html>
 <!--[if IE 8]><html class="ie8"> <![endif]-->
 <!--[if IE 9]><html class="ie9 gt-ie8"> <![endif]-->

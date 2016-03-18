@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Application.Security
     using Appva.Tenant.Identity;
     using Microsoft.Owin.Security;
     using Validation;
+    using Appva.Core.Environment;
 
     #endregion
 
@@ -204,7 +205,8 @@ namespace Appva.Mcss.Admin.Application.Security
                 new Claim(ClaimTypes.Name, account.FullName),
                 new Claim(ClaimTypes.AuthenticationMethod, method.Value),
                 new Claim(ClaimTypes.AuthenticationInstant, DateTime.UtcNow.ToString("s")),
-                new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString())
+                new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString()),
+                new Claim(ClaimTypes.Version, ApplicationEnvironment.Info.Version)
             };
             if (this.settings.IsAccessControlListInstalled() && this.settings.IsAccessControlListActivated())
             {

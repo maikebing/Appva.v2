@@ -54,8 +54,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models.Handlers
                 "#47597f",
                 "#349d00",
                 "#e9d600",
-                "#0091ce",
-                "#e42525"};
+                "#0091ce"};
 
             foreach (var cat in categories)
             {

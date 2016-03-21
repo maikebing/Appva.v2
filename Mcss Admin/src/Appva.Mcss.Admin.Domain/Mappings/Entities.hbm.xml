@@ -591,7 +591,7 @@
     <property name="LastRecount" />
     <property name="Unit" />
     <property name="Amounts" access="field.camelcase" type="StringClob">
-      <column name="Amounts"  sql-type="NTEXT" />
+      <column name="Amounts"  sql-type="NVARCHAR(MAX)" />
     </property>
     <many-to-one name="Patient" />
     <bag name="Transactions" cascade="save-update">

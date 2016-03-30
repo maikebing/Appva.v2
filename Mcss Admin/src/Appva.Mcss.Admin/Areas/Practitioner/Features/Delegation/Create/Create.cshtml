@@ -3,43 +3,57 @@
 <div class="std-panel std-form delegdialog lb-validate-form" data-valclass="DelegationCreate">
     @using (Html.BeginForm(new { id = Model.Id })) {
         <h3 class="section-title">Lägg till delegering</h3>
-        <div class="row toggle-group cf">      
-			<div class="radio col">
-				<label for="activity-type-1">Välj i listan</label>
-			</div>
-			</div>
+        <div class="row toggle-group cf">
+            <div class="radio col">
+                <label for="activity-type-1">Välj i listan</label>
+            </div>
+        </div>
         <div class="toggle-target toggle-target-1">
-		    <div class="listgroup cf">
-			    <ul class="catlist">
+            <div class="listgroup cf">
+                <ul class="catlist">
                     @{ var iterator = 1; }
                     @foreach (var delegationTemplate in Model.DelegationTemplate) {
-				        <li><a class="@String.Format("cat{0}", iterator)" href="#">@delegationTemplate.Key.Name</a></li>
+                        <li><a class="@String.Format("cat{0}", iterator)" href="#">@delegationTemplate.Key.Name</a></li>
                         iterator++;
                     }
-			    </ul>
-                @{ 
+                </ul>
+                @{
                     var subiterator = 1;
                 }
-			    <ul class="deleglist">
+                <ul class="deleglist">
                     @foreach (var delegationTemplate in Model.DelegationTemplate) {
                         foreach (var subDelegationTemplate in delegationTemplate.Value) {
                             <li class="@String.Format("cat{0}", subiterator)">
-                                <label>                                    
-                                    <input type="checkbox" name="Delegations" value="@subDelegationTemplate.Id" /> 
+                                <label>
+                                    <input type="checkbox" name="Delegations" value="@subDelegationTemplate.Id" />
                                     @subDelegationTemplate.Name
                                 </label>
                             </li>
                         }
                         subiterator++;
                     }
-			    </ul>
+                </ul>
                 @Html.ValidationMessageFor(m => m.Delegations)
-		        <input type="hidden" id="TestDelegations" name="TestDelegations" />
+                <input type="hidden" id="TestDelegations" name="TestDelegations" />
             </div>
-	    </div>
-        <div class="select selectgroup cf">
-            <strong>Adress:</strong>
-            @if (Model.OrganizationTaxons.IsNotNull())
+        </div>
+        
+        <div class="row toggle-group cf">
+            <div class="radio col">
+                <label for="activity-type-2">Gäller för:</label>
+            </div>
+            <div class="radio col">
+                @Html.RadioButtonFor(m => m.ValidForSpecificPatients, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1" })
+                <label for="activity-type-1">Adress</label>
+            </div>
+            <div class="radio col">
+                @Html.RadioButtonFor(m => m.ValidForSpecificPatients, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2" })
+                <label for="activity-type-2">Boende</label>
+            </div>
+        </div>
+        <div class="toggle-target toggle-target-1">
+            <div class="select selectgroup cf">
+                @if (Model.OrganizationTaxons.IsNotNull())
             {
                 foreach (var taxon in Model.OrganizationTaxons)
                 {
@@ -53,34 +67,36 @@
                     </div>
                 }
             }
-            @Html.HiddenFor(m => m.OrganizationTaxon)
-            @Html.ValidationMessageFor(m => m.OrganizationTaxon)
+                @Html.HiddenFor(m => m.OrganizationTaxon)
+                @Html.ValidationMessageFor(m => m.OrganizationTaxon)
+            </div>
         </div>
-        <div class="select multisel">
-		    @Html.LabelFor(m => m.Patient)
-            @Html.DropDownListFor(
-                m => m.Patient,
-                new SelectList(Model.PatientItems, "Value", "Text", Model.Patient),
-                "Alla",
-                new { }
-            )
-            @Html.ValidationMessageFor(m => m.Patients)
-            <input type="hidden" id="TestPatients" name="TestPatients" />
-	    </div>
-	    <div class="dateinput">
+        <div class="toggle-target toggle-target-2">
+            <div class="select multisel">
+                @Html.DropDownListFor(
+            m => m.Patient,
+            new SelectList(Model.PatientItems, "Value", "Text", Model.Patient),
+            "Alla",
+            new { }
+        )
+                @Html.ValidationMessageFor(m => m.Patients)
+                <input type="hidden" id="TestPatients" name="TestPatients" />
+            </div>
+        </div>
+        <div class="dateinput">
             @Html.LabelFor(m => m.StartDate)
             @Html.EditorFor(m => m.StartDate)
             @Html.ValidationMessageFor(m => m.StartDate)
             @Html.LabelFor(m => m.EndDate)
             @Html.EditorFor(m => m.EndDate)
             @Html.ValidationMessageFor(m => m.EndDate)
-		    <em class="hint">Max 1 år</em>
-	    </div>
+            <em class="hint">Max 1 år</em>
+        </div>
         <p class="info">Observera att delegeringen börjar gälla först efter aktivering.</p>
-	    <div class="submit">
+        <div class="submit">
             @Html.AntiForgeryToken()
             @Html.Submit("Spara")
             @*Html.Cancel("Avbryt")*@
-	    </div>
-    }
-</div>
+        </div>
+        }
+    </div>

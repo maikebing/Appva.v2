@@ -48,37 +48,119 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// </summary>
         public Guid Id { get; set; }
 
-        public HashSet<Guid> DelegationsTaken { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public HashSet<Guid> DelegationsTaken
+        {
+            get;
+            set;
+        }
 
-        public IEnumerable<SelectListItem> DelegationTypes { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<SelectListItem> DelegationTypes
+        {
+            get;
+            set;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [Required(ErrorMessage = "Datum måste fyllas i.")]
         [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
         [DateLessThan(Target = "EndDate", ErrorMessage = "Startdatum måste vara ett tidigare datum är slutdatum.")]
         [PlaceHolder("T.ex. 2012-12-21")]
         [DisplayName("Gäller fr.o.m.")]
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate
+        {
+            get;
+            set;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [Required(ErrorMessage = "Datum måste fyllas i.")]
         [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
         [DateGreaterThan(Target = "StartDate", ErrorMessage = "Slutdatum måste vara ett senare datum är startdatum.")]
         [PlaceHolder("T.ex. 2012-12-21")]
         [DisplayName("Gäller t.o.m.")]
-        public DateTime EndDate { get; set; }
+        public DateTime EndDate
+        {
+            get;
+            set;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [DisplayName("För boende")]
-        public string Patient { get; set; }
-        public IEnumerable<SelectListItem> PatientItems { get; set; }
+        public string Patient
+        {
+            get;
+            set;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<SelectListItem> PatientItems
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [DisplayName("För avdelning")]
-        public string Taxon { get; set; }
-        public IEnumerable<TaxonViewModel> Taxons { get; set; }
+        public string Taxon
+        {
+            get;
+            set;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<TaxonViewModel> Taxons
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [Required(ErrorMessage = "Boende måste väljas.")]
-        public string[] Patients { get; set; }
+        public string[] Patients
+        {
+            get;
+            set;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [Required(ErrorMessage = "Delegering måste väljas.")]
         public Guid[] Delegations { get; set; }
-        public Dictionary<ITaxon, IList<ITaxon>> DelegationTemplate { get; set; }
+        public Dictionary<ITaxon, IList<ITaxon>> DelegationTemplate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If this delegation should be valid for a specific 
+        /// patient or part of the organisation
+        /// </summary>
+        public bool ValidForSpecificPatients
+        {
+            get;
+            set;
+        }
     }
 }

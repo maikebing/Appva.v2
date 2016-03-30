@@ -26,7 +26,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
     /// </summary>
     public sealed class CreateDelegationHandler : RequestHandler<CreateDelegation, DelegationFormModel>
     {
-        #region
+        #region Fields.
 
         /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>.
@@ -76,9 +76,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <inheritdoc />
         public override DelegationFormModel Handle(CreateDelegation message)
         {
-            var filterT = this.filtering.GetCurrentFilter();
+            var filterITaxon = this.filtering.GetCurrentFilter();
+            var filterTaxon = this.taxonomies.Load(filterITaxon.Id);
+            filterTaxon.Path = filterITaxon.Path;
             var account = this.accounts.Find(message.Id);
-            var patients = this.patients.FindByTaxon(filterT.Id);
+            var patients = this.patients.FindByTaxon(filterITaxon.Id);
             var taxons = this.delegations.ListDelegationTaxons().OrderByDescending<ITaxon, bool>(x => x.IsRoot).ToList();
             var patientTaxons = this.delegations.List(byAccount: account.Id, isActive: true, isGlobal: true);
             //var existingDelegations = new HashSet<Guid>(patientTaxons.Select(x => x.Taxon.Id));
@@ -119,7 +121,8 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                     Text = p.FullName,
                     Value = p.Id.ToString()
                 }).ToList(),
-                OrganizationTaxons = TaxonomyHelper.SelectList(this.taxonomies.List(TaxonomicSchema.Organization))
+                OrganizationTaxon = filterITaxon.Id.ToString(),
+                OrganizationTaxons = TaxonomyHelper.SelectList(filterTaxon,this.taxonomies.List(TaxonomicSchema.Organization))
             };
         }
 

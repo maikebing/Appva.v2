@@ -179,6 +179,16 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        /// <summary>
+        /// If this delegation should be valid for a specific 
+        /// patient or part of the organisation
+        /// </summary>
+        public bool ValidForSpecificPatients
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

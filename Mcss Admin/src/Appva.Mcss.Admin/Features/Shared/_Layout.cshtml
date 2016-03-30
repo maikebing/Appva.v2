@@ -3,7 +3,8 @@
     if (User.Identity.IsAuthenticated)
     {
         var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
-        if (! identity.HasClaim(System.Security.Claims.ClaimTypes.Version, ApplicationEnvironment.Info.Version))
+        var claim = identity.Claims.Where(x => x.Type == System.Security.Claims.ClaimTypes.Version).SingleOrDefault();
+        if (claim == null || ! claim.Value.Substring(0, claim.Value.LastIndexOf('.')).Equals(ApplicationEnvironment.Info.Version.Substring(0, ApplicationEnvironment.Info.Version.LastIndexOf('.'))))
         {
             this.Response.Redirect(Url.Action("SignOut", "Authentication", new { area = string.Empty }));
         }

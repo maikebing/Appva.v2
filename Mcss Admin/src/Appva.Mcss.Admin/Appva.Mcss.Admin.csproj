@@ -705,6 +705,7 @@
     <Content Include="Assets\i\trendup.png" />
     <Content Include="Assets\i\trest-logo.png" />
     <Content Include="Assets\i\web-ajax-loader.gif" />
+    <Content Include="Assets\i\webclip-152.png" />
     <Content Include="Assets\js\jquery\jquery-1.6.3.js" />
     <Content Include="Assets\js\jquery\jquery-1.6.3.min.js" />
     <Content Include="Assets\js\jquery\jquery-1.8.2.js" />

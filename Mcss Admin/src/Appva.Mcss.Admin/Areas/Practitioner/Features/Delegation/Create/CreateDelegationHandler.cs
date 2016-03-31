@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         {
             var filterT = this.filtering.GetCurrentFilter();
             var account = this.accounts.Find(message.Id);
-            var patients = this.patients.FindByTaxon(filterT.Id);
+            var patients = this.patients.FindByTaxon(filterT.Id, false);
             var taxons = this.delegations.ListDelegationTaxons().OrderByDescending<ITaxon, bool>(x => x.IsRoot).ToList();
             var patientTaxons = this.delegations.List(byAccount: account.Id, isActive: true, isGlobal: true);
             var existingDelegations = new HashSet<Guid>(patientTaxons.Select(x => x.Taxon.Id));

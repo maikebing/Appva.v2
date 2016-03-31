@@ -17,6 +17,10 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Repository;
     #endregion
 
     /// <summary>
@@ -86,6 +90,23 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="patient">The updated patient</param>
         /// <returns>True if successfully updated</returns>
         bool Update(Guid id, string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, out Patient patient);
+
+        /// <summary>
+        /// Gets all patients with delayed tasks
+        /// </summary>
+        /// <param name="taxon"></param>
+        /// <param name="incompleteTasks"></param>
+        /// <returns></returns>
+        IList<PatientModel> FindDelayedPatientsBy(ITaxon taxon, bool? incompleteTasks = null);
+
+        /// <summary>
+        /// Lists patients by search criteria
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        PageableSet<PatientModel> Search(SearchPatientModel model, int page = 1, int pageSize = 10);
     }
 
     /// <summary>
@@ -95,8 +116,25 @@ namespace Appva.Mcss.Admin.Application.Services
     {
         #region Variables.
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>
+        /// </summary>
         private readonly IPersistenceContext persistence;
+
+        /// <summary>
+        /// The <see cref="IAuditService"/>
+        /// </summary>
         private readonly IAuditService auditing;
+
+        /// <summary>
+        /// The <see cref="IPatientRepository"/>
+        /// </summary>
+        private readonly IPatientRepository repository;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>
+        /// </summary>
+        private readonly IIdentityService identity;
 
         #endregion
 
@@ -105,10 +143,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="PatientService"/> class.
         /// </summary>
-        public PatientService(IAuditService auditing, IPersistenceContext persistence)
+        public PatientService(IAuditService auditing, IPatientRepository repository, IIdentityService identity, IPersistenceContext persistence)
         {
             this.auditing = auditing;
             this.persistence = persistence;
+            this.repository = repository;
+            this.identity = identity;
         }
 
         #endregion
@@ -266,7 +306,26 @@ namespace Appva.Mcss.Admin.Application.Services
             return true;
         }
 
+        /// <inheritdoc />
+        public IList<PatientModel> FindDelayedPatientsBy(ITaxon taxon, bool? incompleteTasks = null)
+        {
+            var schedulesettings = this.identity.SchedulePermissions().Select(x => new Guid(x.Value)).ToList();
+            return this.repository.FindDelayedPatientsBy(taxon.Path, incompleteTasks.GetValueOrDefault(false), schedulesettings);
+        }
+
+        /// <inheritdoc />
+        public PageableSet<PatientModel> Search(SearchPatientModel model, int page = 1, int pageSize = 10)
+        {
+            this.auditing.Read("genomförde en sökning i patientlistan på {0}.", model.SearchQuery);
+
+            var schedulesettings = this.identity.SchedulePermissions().Select(x => new Guid(x.Value)).ToList();
+            return this.repository.Search(model, schedulesettings, page, pageSize);
+        }
+
         #endregion
+
+
+       
     }
 
     /// <summary>

@@ -94,7 +94,7 @@ namespace Appva.Siths.Configuration
         {
             get
             {
-                return "siths";
+                return Http.HttpUtils.IsMobileDevice() ? "tabletpki" : "siths";
             }
         }
 

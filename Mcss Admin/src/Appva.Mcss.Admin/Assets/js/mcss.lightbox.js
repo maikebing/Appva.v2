@@ -42,7 +42,8 @@ mcss.lightbox = {
         }
         mcss.customSelect($('.activity-edit .col:first'));
 
-        $('a.lb-link').click(function (e) {
+
+        $('.lb-wrap a.lb-link').click(function (e) {
             var clicked = $(this);
             var actionUri = clicked.attr('href');
             $.ajax({

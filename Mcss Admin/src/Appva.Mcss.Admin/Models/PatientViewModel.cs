@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Appva.Mcss.Admin.Domain.Entities;
 using Appva.Mvc;
+using Appva.Mcss.Admin.Application.Models;
 
 namespace Appva.Mcss.Web.ViewModels {
     
@@ -28,7 +29,7 @@ namespace Appva.Mcss.Web.ViewModels {
 
         public string Superior { get; set; }
 
-        public IList<Taxon> SeniorAlerts { get; set; }
+        public IList<ITaxon> SeniorAlerts { get; set; }
 
     }
 

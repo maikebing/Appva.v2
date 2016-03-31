@@ -60,12 +60,18 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateDelegationPublisher"/> class.
         /// </summary>
-        public CreateDelegationPublisher(IIdentityService identity, IAccountService accounts, ITaxonomyService taxonomies, IDelegationService delegations)
+        public CreateDelegationPublisher(
+            IIdentityService identity, 
+            IAccountService accounts, 
+            ITaxonomyService taxonomies, 
+            IDelegationService delegations,
+            IPatientService patientService)
         {
             this.identity = identity;
             this.accounts = accounts;
             this.taxonomies = taxonomies;
             this.delegations = delegations;
+            this.patients = patientService;
         }
 
         #endregion

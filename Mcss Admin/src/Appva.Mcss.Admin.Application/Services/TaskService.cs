@@ -153,7 +153,7 @@ namespace Appva.Mcss.Admin.Application.Services
         public PageableSet<Task> List(ListTaskModel model, int page = 1, int pageSize = 10)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
-            var scheduleSettings = GetRoleScheduleSettingsList(account);
+            var scheduleSettings = GetAllRoleScheduleSettingsList(account);
             return this.taskRepository.List(model, scheduleSettings, page, pageSize);
         }
         

@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Application.Security
     using Appva.Tenant.Identity;
     using Microsoft.Owin.Security;
     using Validation;
+    using Appva.Core.Environment;
 
     #endregion
 
@@ -204,7 +205,8 @@ namespace Appva.Mcss.Admin.Application.Security
                 new Claim(ClaimTypes.Name, account.FullName),
                 new Claim(ClaimTypes.AuthenticationMethod, method.Value),
                 new Claim(ClaimTypes.AuthenticationInstant, DateTime.UtcNow.ToString("s")),
-                new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString())
+                new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString()),
+                new Claim(ClaimTypes.Version, ApplicationEnvironment.Info.Version)
             };
             if (this.settings.IsAccessControlListInstalled() && this.settings.IsAccessControlListActivated())
             {
@@ -221,6 +223,7 @@ namespace Appva.Mcss.Admin.Application.Security
             }
             retval.AddRange(this.accounts.Roles(account).Select(x => new Claim(ClaimTypes.Role, x.MachineName)).ToList());
             retval.AddRange(this.accounts.Permissions(account).Select(x => new Claim(Core.Resources.ClaimTypes.Permission, x.Resource)).ToList());
+            retval.AddRange(TaskService.GetAllRoleScheduleSettingsList(account).Select(x => new Claim(Core.Resources.ClaimTypes.SchedulePermission, x.Id.ToString())).ToList());
             return retval;
         }
 

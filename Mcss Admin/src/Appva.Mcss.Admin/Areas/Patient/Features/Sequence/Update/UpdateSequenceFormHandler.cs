@@ -52,6 +52,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IAuditService auditing;
 
+        /// <summary>
+        /// The <see cref="IInventoryService"/>.
+        /// </summary>
+        private readonly IInventoryService inventories;
+
         #endregion
 
         #region Constructor.
@@ -59,12 +64,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceFormHandler"/> class.
         /// </summary>
-        public UpdateSequenceFormHandler(IAuditService auditing, IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService)
+        public UpdateSequenceFormHandler(IAuditService auditing, IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, IInventoryService inventories)
         {
             this.auditing = auditing;
             this.context = context;
             this.roleService = roleService;
             this.sequenceService = sequenceService;
+            this.inventories = inventories;
         }
 
         #endregion
@@ -159,16 +165,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }
             }
 
-            if (schedule.ScheduleSettings.HasInventory && sequence.Inventory == null)
+            if (schedule.ScheduleSettings.HasInventory)
             {
-                var inventory = new Inventory()
-                {
-                    CurrentLevel = (double) sequence.StockAmount,
-                    Description = sequence.Name,
-                    LastRecount = sequence.LastStockAmountCalculation //TODO: If null today
-                };
-                this.context.Save(inventory);
-                sequence.Inventory = inventory;
+                sequence.Inventory = this.inventories.Find(model.Inventory.GetValueOrDefault());
             }
             sequence.Name = model.Name;
             sequence.Description = model.Description;
@@ -178,8 +177,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.RangeInMinutesAfter = model.RangeInMinutesAfter;
             sequence.Times = string.Join(",", model.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray());
             sequence.Dates = model.Dates;
-            sequence.Hour = model.Hour;
-            sequence.Minute = model.Minute;
             sequence.Interval = model.OnNeedBasis ? 1 : model.Interval.Value;
             sequence.OnNeedBasis = model.OnNeedBasis;
             sequence.Reminder = model.Reminder;

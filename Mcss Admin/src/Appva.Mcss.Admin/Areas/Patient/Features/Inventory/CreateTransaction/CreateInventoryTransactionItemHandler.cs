@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class CreateInventoryItemHandler : RequestHandler<CreateInventoryItem, bool>
+    internal sealed class CreateInventoryTransactionItemHandler : RequestHandler<CreateInventoryTransactionItem, bool>
     {
         #region Variables.
 
@@ -66,12 +66,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateInventoryItemHandler"/> class.
+        /// Initializes a new instance of the <see cref="CreateInventoryTransactionItemHandler"/> class.
         /// </summary>
         /// <param name="settings">The <see cref="IPatientService"/> implementation</param>
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="ILogService"/> implementation</param>
-        public CreateInventoryItemHandler(
+        public CreateInventoryTransactionItemHandler(
             IPatientService patientService, ITaskService taskService, ILogService logService, IPersistenceContext persistence,
             IPatientTransformer transformer, IIdentityService identity)
         {
@@ -88,7 +88,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override bool Handle(CreateInventoryItem message)
+        public override bool Handle(CreateInventoryTransactionItem message)
         {
             var inventory = this.persistence.Get<Inventory>(message.InventoryId);
             var previousInventoryLevel = inventory.CurrentLevel;

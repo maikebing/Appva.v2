@@ -80,7 +80,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             var filterTaxon = this.taxonomies.Load(filterITaxon.Id);
             filterTaxon.Path = filterITaxon.Path;
             var account = this.accounts.Find(message.Id);
-            var patients = this.patients.FindByTaxon(filterITaxon.Id);
+            var patients = this.patients.FindByTaxon(filterT.Id, false);
             var taxons = this.delegations.ListDelegationTaxons().OrderByDescending<ITaxon, bool>(x => x.IsRoot).ToList();
             var patientTaxons = this.delegations.List(byAccount: account.Id, isActive: true, isGlobal: true);
             //var existingDelegations = new HashSet<Guid>(patientTaxons.Select(x => x.Taxon.Id));

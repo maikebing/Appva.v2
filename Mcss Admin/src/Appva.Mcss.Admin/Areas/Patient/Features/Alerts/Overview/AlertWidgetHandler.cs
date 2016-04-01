@@ -8,22 +8,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Core.Extensions;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Commands;
-    using Appva.Persistence;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Application.Security.Identity;
-    using NHibernate.Transform;
-    using NHibernate.Criterion;
-    using Appva.Mcss.Web.Controllers;
+    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 
@@ -45,9 +34,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IAccountService accountService;
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
+        /// The <see cref="IPatientService"/>.
         /// </summary>
-        private readonly IPersistenceContext persistence;
+        private readonly IPatientService patientService;
 
         /// <summary>
         /// The <see cref="IPatientTransformer"/>.
@@ -69,13 +58,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settings">The <see cref="IIdentityService"/> implementation</param>
         /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
         /// <param name="settings">The <see cref="IAccountService"/> implementation</param>
-        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, ITaxonFilterSessionHandler filtering, IPatientTransformer transformer, IPersistenceContext persistence)
+        public AlertWidgetHandler(IIdentityService identityService, IAccountService accountService, ITaxonFilterSessionHandler filtering, IPatientTransformer transformer, IPatientService patientService)
 		{
-            this.transformer = transformer;
+            this.transformer     = transformer;
             this.identityService = identityService;
-            this.accountService = accountService;
-            this.persistence = persistence;
-            this.filtering = filtering;
+            this.accountService  = accountService;
+            this.patientService  = patientService;
+            this.filtering       = filtering;
 		}
 
 		#endregion
@@ -85,45 +74,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override AlertOverviewViewModel Handle(AlertWidget message)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
-            var scheduleSettings = TaskService.GetRoleScheduleSettingsList(account);
-            var taxon = this.filtering.GetCurrentFilter();
-            Task taskAlias = null;
-            Taxon taxonAlias = null;
-            var query = this.persistence.QueryOver<Patient>()
-                .Where(x => x.IsActive)
-                  .And(x => !x.Deceased)
-                .JoinAlias(x => x.Taxon, () => taxonAlias)
-                    .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
-                    .IsLike(taxon.Id.ToString(), MatchMode.Anywhere))
-                .JoinQueryOver(x => x.Tasks, () => taskAlias)
-                    .Where(() => taskAlias.IsActive)
-                      .And(() => taskAlias.Delayed)
-                      .And(() => taskAlias.DelayHandled == false)
-                .JoinQueryOver<Schedule>(x => x.Schedule)
-                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
-            var countAll = query.Clone().Select(Projections.CountDistinct<Patient>(x => x.Id))
-                .FutureValue<int>()
-                .Value; 
-            IList<Patient> patients = null;
-            if (! message.Status.Equals("notsigned"))
-            {
-                patients = query.TransformUsing(new DistinctRootEntityResultTransformer()).List();
-            }
-            query = query.And(() => taskAlias.IsCompleted == false);
-            if (patients == null)
-            {
-                patients = query.TransformUsing(new DistinctRootEntityResultTransformer()).List();
-            }
-            var countNotSigned = query.Select(Projections.CountDistinct<Patient>(x => x.Id))
-                .FutureValue<int>()
-                .Value;
+            var taxon           = this.filtering.GetCurrentFilter();
+            var delayedTasks    = this.patientService.FindDelayedPatientsBy(taxon);
+            var incompleteTasks = this.patientService.FindDelayedPatientsBy(taxon, true);
             return new AlertOverviewViewModel
             {
-                Patients = this.transformer.ToPatientList(patients),
-                CountAll = countAll,
-                CountNotSigned = countNotSigned
+                Patients       = message.Status.Equals("all") ? this.transformer.ToPatientList(delayedTasks) : this.transformer.ToPatientList(incompleteTasks),
+                CountAll       = delayedTasks.Count,
+                CountNotSigned = incompleteTasks.Count
             };
         }
 

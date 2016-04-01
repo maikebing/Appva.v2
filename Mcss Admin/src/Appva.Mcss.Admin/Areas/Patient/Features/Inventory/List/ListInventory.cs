@@ -18,7 +18,7 @@ using Appva.Cqrs;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListInventory : Identity<ListInventoryViewModel>
+    public sealed class ListInventory : Identity<ListInventoryModel>
     {
         /// <summary>
         /// Optional inventory ID.

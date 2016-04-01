@@ -57,91 +57,270 @@ namespace Appva.Mcss.Admin.Models
 
         #region Properties.
 
+        #region Structural
+
+        /// <summary>
+        /// The patient id
+        /// </summary>
         public Guid PatientId
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The schedule id
+        /// </summary>
         public Guid ScheduleId
         {
             get;
             set;
         }
 
-        [Required]
-        [DisplayName("Ordination")]
-        public virtual string Name { get; set; }
+        /// <summary>
+        /// The Patient
+        /// </summary>
+        public Patient Patient 
+        {
+            get; 
+            set;
+        }
 
+        /// <summary>
+        /// The Schedule
+        /// </summary>
+        public Schedule Schedule 
+        { 
+            get; 
+            set; 
+        }
+
+        #endregion
+
+        #region Form
+
+        /// <summary>
+        /// The Sequence name
+        /// </summary>
+        [Required(ErrorMessage="Insats måste anges")]
+        [DisplayName("Insats")]
+        public string Name 
+        { 
+            get; 
+            set;
+        }
+
+        /// <summary>
+        /// The sequence description
+        /// </summary>
         [DisplayName("Instruktion")]
-        public virtual string Description { get; set; }
+        public string Description 
+        { 
+            get;
+            set; 
+        }
 
+        /// <summary>
+        /// If the sequence only can be completed by a nurse
+        /// </summary>
+        public bool Nurse 
+        { 
+            get; 
+            set; 
+        }
+
+        /// <summary>
+        /// If sequence needs delegation, the delegation
+        /// </summary>
         [DisplayName("Kräver delegering för")]
-        public virtual Guid? Delegation { get; set; }
+        public Guid? Delegation 
+        { 
+            get;
+            set; 
+        }
 
-        public virtual IEnumerable<SelectListItem> Delegations { get; set; }
+        /// <summary>
+        /// If a new inventory should be created for this sequence
+        /// </summary>
+        public bool CreateNewInventory
+        {
+            get;
+            set;
+        }
 
+        /// <summary>
+        /// The inventory
+        /// </summary>
+        [RequiredIf(Target = "CreateNewInventory", Value = false, ErrorMessage = "Saldo måste väljas")]
+        public Guid? Inventory
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The repeat interval
+        /// </summary>
         [DisplayName("Skall ges")]
-        public virtual int? Interval { get; set; }
+        public int? Interval 
+        { 
+            get;
+            set; 
+        }
 
-        public virtual IEnumerable<SelectListItem> Intervals { get; set; }
-
+        /// <summary>
+        /// The startdate, if scheduled
+        /// </summary>
         [Date]
-        [PlaceHolder("T.ex. 2012-12-21")]
         [DisplayName("Fr.o.m.")]
-        public virtual DateTime? StartDate { get; set; }
+        public virtual DateTime? StartDate 
+        { 
+            get; 
+            set;
+        }
 
+        /// <summary>
+        /// The enddate, if scheduled
+        /// </summary>
         [Date]
-        [PlaceHolder("T.ex. 2012-12-21")]
         [DisplayName("T.o.m.")]
-        public virtual DateTime? EndDate { get; set; }
+        public DateTime? EndDate 
+        {
+            get;
+            set;
+        }
 
-        public virtual string Dates { get; set; }
+        /// <summary>
+        /// If occures on specific dates, the dates
+        /// </summary>
+        public string Dates 
+        { 
+            get; 
+            set;
+        }
 
+        /// <summary>
+        /// The hours which the sequence shall occur
+        /// </summary>
         [DisplayName("Klockslag")]
-        public IEnumerable<CheckBoxViewModel> Times { get; set; }
+        public IEnumerable<CheckBoxViewModel> Times 
+        { 
+            get; 
+            set; 
+        }
 
-        public string Hour { get; set; }
-
-        public string Minute { get; set; }
-
+        /// <summary>
+        /// The timespan before its ok to complete.
+        /// In minutes.
+        /// </summary>
         [Range(0, 99999, ErrorMessage = "Måste vara mellan 0-99999")]
-        public virtual int RangeInMinutesBefore { get; set; }
+        public int RangeInMinutesBefore 
+        { 
+            get; 
+            set; 
+        }
 
+        /// <summary>
+        /// The timespan after its ok to complete.
+        /// In minutes.
+        /// </summary>
         [Range(0, 99999, ErrorMessage = "Måste vara mellan 0-99999")]
-        public virtual int RangeInMinutesAfter { get; set; }
+        public int RangeInMinutesAfter 
+        { 
+            get; 
+            set;
+        }
 
-        public virtual bool OnNeedBasis { get; set; }
+        /// <summary>
+        /// If the sequence is needs-based
+        /// </summary>
+        public bool OnNeedBasis 
+        { 
+            get; 
+            set; 
+        }
 
+        /// <summary>
+        /// If the sequence should have a specific reminder
+        /// </summary>
         [DisplayName("Lägg till påminnelse")]
-        public bool Reminder { get; set; }
+        public bool Reminder 
+        {
+            get;
+            set; 
+        }
 
+        /// <summary>
+        /// When the specific reminder shall be sent
+        /// </summary>
         [Range(0, 120, ErrorMessage = "Måste vara mellan 0-120")]
         [RequiredIf(Target = "Reminder", Value = true, ErrorMessage = "Påminnelse måste väljas.")]
         [DisplayName("Tid för påminnelse")]
-        public int ReminderInMinutesBefore { get; set; }
+        public int ReminderInMinutesBefore 
+        { 
+            get; 
+            set; 
+        }
 
+        /// <summary>
+        /// The startdate, if needs-based
+        /// </summary>
         [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessage = "Datum måste fyllas i.")]
         [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
         [DateLessThan(Target = "OnNeedBasisEndDate", ErrorMessage = "Startdatum måste vara ett tidigare datum är slutdatum.")]
-        [PlaceHolder("T.ex. 2012-12-21")]
         [DisplayName("Fr.o.m.")]
-        public virtual DateTime? OnNeedBasisStartDate { get; set; }
+        public DateTime? OnNeedBasisStartDate 
+        {
+            get;
+            set; 
+        }
 
+        /// <summary>
+        /// The enddate, if needs-based
+        /// </summary>
         [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessage = "Datum måste fyllas i.")]
         [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
         [DateGreaterThan(Target = "OnNeedBasisStartDate", ErrorMessage = "Slutdatum måste vara ett senare datum är startdatum.")]
-        [PlaceHolder("T.ex. 2012-12-21")]
         [DisplayName("T.o.m.")]
-        public virtual DateTime? OnNeedBasisEndDate { get; set; }
-
-        public virtual Patient Patient { get; set; }
-
-        public virtual Schedule Schedule { get; set; }
-
-        [DisplayName("Får endast ges av legitimerad sjuksköterska")]
-        public bool Nurse { get; set;
+        public DateTime? OnNeedBasisEndDate
+        {
+            get;
+            set;
         }
+
+        #endregion
+
+        #region Lists.
+
+        /// <summary>
+        /// All available delegations
+        /// </summary>
+        public IEnumerable<SelectListItem> Delegations 
+        { 
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// All availabel inventories
+        /// </summary>
+        public IEnumerable<SelectListItem> Inventories
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// All available intervals
+        /// </summary>
+        public IEnumerable<SelectListItem> Intervals
+        { 
+            get; 
+            set; 
+        }
+
+        #endregion
+
 
         #endregion
     }

@@ -93,6 +93,8 @@
     <Compile Include="Models\CalendarDay.cs" />
     <Compile Include="Models\CalendarTask.cs" />
     <Compile Include="Models\CalendarWeek.cs" />
+    <Compile Include="Models\InventoryAmountListModel.cs" />
+    <Compile Include="Models\ListInventoryRecountItem.cs" />
     <Compile Include="Models\ReportData.cs" />
     <Compile Include="Models\ChartDataFilter.cs" />
     <Compile Include="Models\IReportingFilter.cs" />
@@ -118,6 +120,7 @@
     <Compile Include="Security\Identity\DevelopmentTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\StagingTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\ProductionTenantIdentificationStrategy.cs" />
+    <Compile Include="Security\Identity\TempTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Jwt\JwtSecureDataFormat.cs" />
     <Compile Include="Security\Jwt\JwtToken.cs" />
     <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />
@@ -130,6 +133,7 @@
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AuditingService.cs" />
     <Compile Include="Services\ILogService.cs" />
+    <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\MenuService.cs" />

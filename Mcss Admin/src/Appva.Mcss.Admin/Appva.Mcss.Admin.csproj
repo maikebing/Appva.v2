@@ -219,6 +219,14 @@
     <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColors.cs" />
     <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColorsPublisher.cs" />
     <Compile Include="Areas\Area51\Features\Home\HomeController.cs" />
+    <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsNotice.cs" />
+    <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Inventory\Add\AddInventoryHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Inventory\Add\AddInventoryModel.cs" />
+    <Compile Include="Areas\Area51\Features\Inventory\Add\AddInventoryPublisher.cs" />
+    <Compile Include="Areas\Area51\Features\Inventory\InventoryController.cs" />
+    <Compile Include="Areas\Area51\Features\Inventory\List\ListInventoriesHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Inventory\List\ListInventoriesModel.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162NoticeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\NotificationsController.cs" />
@@ -271,8 +279,18 @@
     <Compile Include="Areas\Patient\Features\Calendar\Overview\CalendarOverviewModel.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Add\AddInventoryItemHandler.cs" />
-    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryItem.cs" />
-    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\CreateTransaction\CreateInventoryTransactionItem.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\CreateTransaction\CreateInventoryTransactionItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryModel.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Create\CreateInventoryPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Inactivate\InactivateInventory.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Inactivate\InactivateInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\List\ListInventoryModel.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Overview\OverviewInventoryModel.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Reactivate\ReactivateInventory.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Reactivate\ReactivateInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventory.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\InventoryController.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\List\ListInventory.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\List\ListInventoryHandler.cs" />
@@ -280,6 +298,9 @@
     <Compile Include="Areas\Patient\Features\Inventory\Overview\OverviewInventoryHandler.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Recount\RecountInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Recount\RecountInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryModel.cs" />
+    <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItemHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
@@ -651,6 +672,10 @@
     <Content Include="Assets\i\icn-warning-infection.png" />
     <Content Include="Assets\i\icn-warning-varan.png" />
     <Content Include="Assets\i\icn-warning-waran.png" />
+    <Content Include="Assets\i\ico-activity-group.png" />
+    <Content Include="Assets\i\ico-activity-message.png" />
+    <Content Include="Assets\i\ico-walk-group.png" />
+    <Content Include="Assets\i\ico-walk-message.png" />
     <Content Include="Assets\i\icon-calendar.gif" />
     <Content Include="Assets\i\ipad-htoggle-off.png" />
     <Content Include="Assets\i\ipad-htoggle-on.png" />
@@ -1105,6 +1130,11 @@
     <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
     <Content Include="Areas\Patient\Features\Calendar\Overview\_OverviewCalendarTask.cshtml" />
+    <Content Include="Areas\Patient\Features\Inventory\Update\Update.cshtml" />
+    <Content Include="Areas\Patient\Features\Inventory\Create\Create.cshtml" />
+    <Content Include="Areas\Area51\Features\Inventory\Index\Index.cshtml" />
+    <Content Include="Areas\Area51\Features\Inventory\List\List.cshtml" />
+    <Content Include="Areas\Area51\Features\Inventory\Add\Add.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>
@@ -1126,7 +1156,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1080/</IISUrl>
+          <IISUrl>http://localhost:1091/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

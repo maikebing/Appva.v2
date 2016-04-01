@@ -18,7 +18,7 @@ using Appva.Cqrs;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class OverviewInventory : IRequest<InventoryOverviewViewModel>
+    public sealed class OverviewInventory : IRequest<OverviewInventoryModel>
     {
     }
 }

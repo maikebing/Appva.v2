@@ -24,13 +24,14 @@ using Appva.Mcss.Web.Controllers;
 using NHibernate.Criterion;
 using NHibernate.Transform;
 using Appva.Mcss.Admin.Application.Security.Identity;
+using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class OverviewInventoryHandler : RequestHandler<OverviewInventory, InventoryOverviewViewModel>
+    internal sealed class OverviewInventoryHandler : RequestHandler<OverviewInventory, OverviewInventoryModel>
     {
         #region Variables.
 
@@ -45,14 +46,19 @@ using Appva.Mcss.Admin.Application.Security.Identity;
         private readonly ITaskService taskService;
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
+        /// The <see cref="IInventoryService"/>.
         /// </summary>
-        private readonly IPersistenceContext persistence;
+        private readonly IInventoryService inventories;
 
         /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>.
         /// </summary>
         private readonly ITaxonFilterSessionHandler filtering;
+
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settings;
 
         #endregion
 
@@ -68,12 +74,14 @@ using Appva.Mcss.Admin.Application.Security.Identity;
         public OverviewInventoryHandler(
             IIdentityService identityService,
             ITaskService taskService, 
-            IPersistenceContext persistence,
+            IInventoryService inventories,
+            ISettingsService settings,
             ITaxonFilterSessionHandler filtering)
         {
             this.identityService = identityService;
             this.taskService = taskService;
-            this.persistence = persistence;
+            this.inventories = inventories;
+            this.settings = settings;
             this.filtering = filtering;
         }
 
@@ -82,18 +90,23 @@ using Appva.Mcss.Admin.Application.Security.Identity;
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override InventoryOverviewViewModel Handle(OverviewInventory message)
+        public override OverviewInventoryModel Handle(OverviewInventory message)
         {
+            var inventoryCalculationSpanInDays = this.settings.Find<int>(ApplicationSettings.InventoryCalculationSpanInDays);
             var taxon = this.filtering.GetCurrentFilter();
-            var now = DateTime.Now;
-            var lastStockCalculationDate = now.AddDays(-30).AddDays(7);
-            RecountOverviewItemViewModel dto = null;
+            var today = DateTime.Now.Date;
+            var lastStockCalculationDate = today.AddDays(-inventoryCalculationSpanInDays);
+
+            var delayedStockCounts = this.inventories.ListRecountsBefore(lastStockCalculationDate, null, taxon.Id);
+            var commingStockCounts = this.inventories.ListRecountsBefore(lastStockCalculationDate.AddDays(7), lastStockCalculationDate, taxon.Id);
+            /*RecountOverviewItemViewModel dto = null;
             Inventory inventory = null;
             Patient patient = null;
             Schedule schedule = null;
             ScheduleSettings scheduleSettings = null;
             var account = this.persistence.Get<Account>(this.identityService.PrincipalId);
             var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
+
             var query = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
                 .JoinAlias(x => x.Schedule, () => schedule)
@@ -102,6 +115,7 @@ using Appva.Mcss.Admin.Application.Security.Identity;
                         .WhereRestrictionOn(() => scheduleSettings.Id).IsIn(scheduleList.Select(x => x.Id).ToArray())
                 .JoinAlias(x => x.Inventory, () => inventory)
                     .Where(() => inventory.LastRecount < lastStockCalculationDate)
+                    .And(() => inventory.IsActive)
                 .OrderBy(() => inventory.LastRecount).Asc
                 .JoinAlias(x => x.Patient, () => patient)
                     .Where(() => patient.IsActive && !patient.Deceased)
@@ -113,15 +127,15 @@ using Appva.Mcss.Admin.Application.Security.Identity;
                     .Select(() => patient.Id).WithAlias(() => dto.PatientId)
                     .Select(() => inventory.LastRecount).WithAlias(() => dto.LastRecount)
                     .Select(() => inventory.Id).WithAlias(() => dto.InventoryId)
-                    .Select(x => x.Name).WithAlias(() => dto.SequenceName)
+                    .Select(() => inventory.Description).WithAlias(() => dto.Name)
                 );
             var allStockCounts = query.TransformUsing(Transformers.AliasToBean<RecountOverviewItemViewModel>())
-                .List<RecountOverviewItemViewModel>();
-            return new InventoryOverviewViewModel
+                .List<RecountOverviewItemViewModel>();*/
+            return new OverviewInventoryModel
             {
-                DelayedStockCounts = allStockCounts.Where(x => now.Subtract(x.LastRecount.GetValueOrDefault()).TotalDays > 30).ToList(),
-                StockCounts = allStockCounts.Where(x => now.Subtract(x.LastRecount.GetValueOrDefault()).TotalDays <= 30).ToList(),
-                StockControlIntervalInDays = 30
+                DelayedStockCounts = delayedStockCounts,
+                CommingStockCounts = commingStockCounts,
+                StockControlIntervalInDays = inventoryCalculationSpanInDays
             };
         }
 

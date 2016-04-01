@@ -152,7 +152,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         public PatientService(IAuditService auditing, IPatientRepository repository, IIdentityService identity, IPersistenceContext persistence)
         {
-            this.patients = patients;
             this.auditing = auditing;
             this.persistence = persistence;
             this.repository = repository;
@@ -333,7 +332,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Patient Load(Guid id)
         {
-            return this.patients.Load(id);
+            return this.repository.Load(id);
         }
 
         #endregion

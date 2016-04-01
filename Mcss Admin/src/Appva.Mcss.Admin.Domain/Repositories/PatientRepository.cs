@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using NHibernate.Criterion;
     using NHibernate.Transform;
     using NHibernate.Type;
+    using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
     #endregion
 
@@ -181,7 +182,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public Patient Load(Guid id)
         {
-            return this.persistence.Session.Load<Patient>(id);
+            return this.context.Session.Load<Patient>(id);
         }
 
         #endregion

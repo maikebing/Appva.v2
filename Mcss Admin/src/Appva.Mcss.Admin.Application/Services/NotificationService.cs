@@ -108,7 +108,7 @@ using Appva.Mcss.Admin.Application.Security.Identity;
         }
 
         /// <inheritdoc />
-        PageableSet<Notification> INotificationService.List(int page = 1, int pageSize = 10)
+        public PageableSet<Notification> List(int page = 1, int pageSize = 10)
         {
             this.audit.Read("Användare {0} läste lista över notifieringar", this.identity.Principal.Identity.Name);
             return this.notifications.List((ulong)page, (ulong)pageSize);

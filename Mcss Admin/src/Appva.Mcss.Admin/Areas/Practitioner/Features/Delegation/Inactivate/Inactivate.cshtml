@@ -2,21 +2,13 @@
 @{
     SetTitle("Inactivate");
 }
-<div class="std-panel std-form">
-@using (Html.BeginForm(new { Id = Model.Delegation.Id, post = true })) {
-    <h3 class="section-title">Ta bort delegering</h3>
-	<div class="select">
-		<label>Ange orsakskod:</label>
-		<select>
-			<option selected="selected">Välj kod...</option>
-			<option>A1</option>
-			<option>B1</option>
-			<option>C1</option>
-		</select>
-	</div>
-	<div class="submit">
-        @Html.Submit("Ta bort")
-        @Html.Cancel("Avbryt")
-	</div>
-}
+<div class="std-panel lb-panel-small">
+    @using (Html.BeginForm(new { Id = Model.Delegation.Id, post = true }))
+    {
+        <div class="prompt">
+            <p class="warning">Vill du verkligen ta bort den här delegeringen?</p>
+            @Html.Submit("Ta bort", new { @class = "btn btn-del" })
+            @Html.Cancel("Avbryt")
+        </div>
+    }
 </div>

@@ -186,6 +186,7 @@ span.fullwidth-dec img {
 .caption em {margin-bottom:0;}
 .caption sup {bottom:3px;}
 
+input[type="submit"].btn,
 a.btn,
 a.btn:visited {
 	padding:5px 12px;
@@ -199,6 +200,7 @@ a.btn:visited {
 	text-shadow:0 -1px 0 #445068;
 	font-weight:bold;
 }
+input[type="submit"].btn:hover,
 a.btn:hover,
 a.btn:focus {
 	color:#fff;
@@ -206,7 +208,9 @@ a.btn:focus {
 	-webkit-box-shadow:0 0 4px #445068;
 	-moz-box-shadow:0 0 4px #445068;
 	box-shadow:0 0 4px #445068;
+    cursor:pointer;
 }
+input[type="submit"].btn:active,
 a.btn:active {
 	background:#445068;
 	-webkit-box-shadow:none;
@@ -214,6 +218,7 @@ a.btn:active {
 	box-shadow:none;
 }
 
+input[type="submit"].btn-del,
 a.btn-del,
 a.btn-del:visited,
 a.pause-btn,
@@ -223,6 +228,7 @@ a.pause-btn:visited {
 	background:#893a29 url(../i/bg-stdbtn-del.png) repeat-x;
 	text-shadow:0 -1px 0 #702515;
 }
+input[type="submit"].btn-del:active,
 a.btn-del:active,
 a.pause-btn:active {
 	background:#893a29;

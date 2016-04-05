@@ -34,16 +34,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPatientService"/>.
-        /// </summary>
-        private readonly IPatientService patientService;
-
-        /// <summary>
-        /// The <see cref="IPatientTransformer"/>.
-        /// </summary>
-        private readonly IPatientTransformer transformer;
-
-        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;

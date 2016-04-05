@@ -20,11 +20,22 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Sequence : AggregateRoot<Sequence>
     {
-        #region Fields.
+        #region Variables.
 
-        private const int Weekly = 7;
+        /// <summary>
+        /// Weekly interval.
+        /// </summary>
+        private const int Weekly  = 7;
+
+        /// <summary>
+        /// Monthlu interval.
+        /// </summary>
         private const int Monthly = 31;
-        private const int Yearly = 365;
+
+        /// <summary>
+        /// Yearly interval.
+        /// </summary>
+        private const int Yearly  = 365;
 
         #endregion
 

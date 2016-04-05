@@ -122,8 +122,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             var accounts = this.persistenceContext.QueryOver<Account>()
                 .Where(x => x.IsActive)
-                .And(x => x.IsPaused == false)
-                .And(x => x.UserName == username)
+                  .And(x => x.IsPaused == false)
+                  .And(x => x.UserName == username)
                 .List();
             if (accounts.Count == 1)
             {
@@ -137,8 +137,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             var accounts = this.persistenceContext.QueryOver<Account>()
                 .Where(x => x.IsActive)
-                .And(x => x.IsPaused == false)
-                .And(x => x.HsaId == hsaId)
+                  .And(x => x.IsPaused == false)
+                  .And(x => x.HsaId    == hsaId)
                 .List();
             if (accounts.Count == 1)
             {
@@ -174,9 +174,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             if (model.RoleFilterId.HasValue)
             {
                 Role role = null;
-                query.Left.JoinAlias(x => x.Roles, () => role)
-                    .Where(() => role.Id == model.RoleFilterId)
-                    .And(() => role.IsVisible);
+                query.Left.JoinAlias(x => x.Roles, () => role, () => role.Id == model.RoleFilterId && role.IsVisible);
             }
             else
             {

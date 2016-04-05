@@ -15,8 +15,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using Appva.Core.Resources;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
@@ -31,9 +31,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private Variables.
 
         /// <summary>
-        /// The <see cref="ISequenceService"/>.
+        /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly ISequenceService sequenceService;
+        private readonly IAuditService auditService;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -47,10 +47,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceHandler"/> class.
         /// </summary>
-        public UpdateSequenceHandler(ISequenceService sequenceService, IPersistenceContext context)
+        public UpdateSequenceHandler(IAuditService auditService, IPersistenceContext context)
         {
-            this.sequenceService = sequenceService;
-            this.context = context;
+            this.auditService = auditService;
+            this.context      = context;
         }
 
         #endregion
@@ -61,32 +61,32 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateSequenceForm Handle(UpdateSequence message)
         {
             //// FIXME: Log here!
-            var sequence = this.sequenceService.Find(message.SequenceId);
+            var sequence = this.context.Get<Sequence>(message.SequenceId);
             var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
             return new UpdateSequenceForm
             {
-                Id = message.Id,
-                Name = sequence.Name,
-                Description = sequence.Description,
-                StartDate = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.StartDate : (DateTime?) null,
-                EndDate = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.EndDate : (DateTime?) null,
-                RangeInMinutesBefore = sequence.RangeInMinutesBefore,
-                RangeInMinutesAfter = sequence.RangeInMinutesAfter,
-                Delegation = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
-                Delegations = this.GetDelegations(schedule),
-                Dates = sequence.Dates,
-                Hour = sequence.Hour,
-                Minute = sequence.Minute,
-                Interval = sequence.Interval,
-                Times = this.CreateTimes(sequence),
-                OnNeedBasis = sequence.OnNeedBasis,
-                OnNeedBasisStartDate = sequence.OnNeedBasis ? sequence.StartDate : (DateTime?) null,
-                OnNeedBasisEndDate = sequence.OnNeedBasis ? sequence.EndDate : (DateTime?) null,
-                Reminder = sequence.Reminder,
+                Id                      = message.Id,
+                Name                    = sequence.Name,
+                Description             = sequence.Description,
+                StartDate               = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.StartDate : (DateTime?) null,
+                EndDate                 = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.EndDate   : (DateTime?) null,
+                RangeInMinutesBefore    = sequence.RangeInMinutesBefore,
+                RangeInMinutesAfter     = sequence.RangeInMinutesAfter,
+                Delegation              = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
+                Delegations             = this.GetDelegations(schedule),
+                Dates                   = sequence.Dates,
+                Hour                    = sequence.Hour,
+                Minute                  = sequence.Minute,
+                Interval                = sequence.Interval,
+                Times                   = this.CreateTimes(sequence),
+                OnNeedBasis             = sequence.OnNeedBasis,
+                OnNeedBasisStartDate    = sequence.OnNeedBasis ? sequence.StartDate : (DateTime?) null,
+                OnNeedBasisEndDate      = sequence.OnNeedBasis ? sequence.EndDate   : (DateTime?) null,
+                Reminder                = sequence.Reminder,
                 ReminderInMinutesBefore = sequence.ReminderInMinutesBefore,
-                Patient = sequence.Patient,
-                Schedule = sequence.Schedule,
-                Nurse = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse)
+                Patient                 = sequence.Patient,
+                Schedule                = sequence.Schedule,
+                Nurse                   = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse)
             };
         }
 
@@ -103,16 +103,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var delegations = this.context.QueryOver<Taxon>()
                 .Where(x => x.IsActive == true)
-                .And(x => x.IsRoot == false)
-                .And(x => x.Parent == schedule.ScheduleSettings.DelegationTaxon)
+                  .And(x => x.IsRoot == false)
+                  .And(x => x.Parent == schedule.ScheduleSettings.DelegationTaxon)
                 .OrderBy(x => x.Weight).Asc
-                .ThenBy(x => x.Name).Asc
+                 .ThenBy(x => x.Name).Asc
                 .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
                     .Where(x => x.MachineName == TaxonomicSchema.Delegation.Id)
                 .List();
             return delegations.Select(x => new SelectListItem
             {
-                Text = x.Name,
+                Text  = x.Name,
                 Value = x.Id.ToString()
             });
         }

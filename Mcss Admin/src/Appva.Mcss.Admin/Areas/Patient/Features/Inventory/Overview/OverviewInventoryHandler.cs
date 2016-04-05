@@ -9,22 +9,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Core.Extensions;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Commands;
-    using Appva.Persistence;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure;
-using Appva.Mcss.Web.Controllers;
-using NHibernate.Criterion;
-using NHibernate.Transform;
-using Appva.Mcss.Admin.Application.Security.Identity;
-using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Web.ViewModels;
+    using Appva.Persistence;
+    using NHibernate.Criterion;
+    using NHibernate.Transform;
 
     #endregion
 
@@ -39,11 +33,6 @@ using Appva.Mcss.Admin.Application.Services.Settings;
         /// The <see cref="IIdentityService"/>.
         /// </summary>
         private readonly IIdentityService identityService;
-
-        /// <summary>
-        /// The <see cref="ITaskService"/>.
-        /// </summary>
-        private readonly ITaskService taskService;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -73,16 +62,14 @@ using Appva.Mcss.Admin.Application.Services.Settings;
         /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/></param>
         public OverviewInventoryHandler(
             IIdentityService identityService,
-            ITaskService taskService, 
             IPersistenceContext persistence,
             ISettingsService settings,
             ITaxonFilterSessionHandler filtering)
         {
             this.identityService = identityService;
-            this.taskService = taskService;
-            this.persistence = persistence;
-            this.settings = settings;
-            this.filtering = filtering;
+            this.persistence     = persistence;
+            this.settings        = settings;
+            this.filtering       = filtering;
         }
 
         #endregion
@@ -94,7 +81,7 @@ using Appva.Mcss.Admin.Application.Services.Settings;
         {
             var inventoryCalculationSpanInDays = this.settings.Find<int>(ApplicationSettings.InventoryCalculationSpanInDays);
             var taxon = this.filtering.GetCurrentFilter();
-            var now = DateTime.Now;
+            var now   = DateTime.Now;
             var lastStockCalculationDate = now.AddDays(-inventoryCalculationSpanInDays).AddDays(7);
             RecountOverviewItemViewModel dto = null;
             Inventory inventory = null;
@@ -105,19 +92,16 @@ using Appva.Mcss.Admin.Application.Services.Settings;
             var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
             var query = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
-                .JoinAlias(x => x.Schedule, () => schedule)
-                    .Where(() => schedule.IsActive)
-                    .JoinAlias(x => schedule.ScheduleSettings, () => scheduleSettings)
-                        .WhereRestrictionOn(() => scheduleSettings.Id).IsIn(scheduleList.Select(x => x.Id).ToArray())
-                .JoinAlias(x => x.Inventory, () => inventory)
+                .Left.JoinAlias(x => x.Schedule, () => schedule, () => schedule.IsActive == true)
+                .Left.JoinAlias(x => schedule.ScheduleSettings, () => scheduleSettings, () => scheduleSettings.IsActive == true)
+                    .WhereRestrictionOn(() => scheduleSettings.Id)
+                        .IsIn(scheduleList.Select(x => x.Id).ToArray())
+                .Left.JoinAlias(x => x.Inventory, () => inventory, () => inventory.IsActive == true)
                     .Where(() => inventory.LastRecount < lastStockCalculationDate)
-                      .And(() => inventory.IsActive)
                 .OrderBy(() => inventory.LastRecount).Asc
-                .JoinAlias(x => x.Patient, () => patient)
-                    .Where(() => patient.IsActive && !patient.Deceased)
+                .Left.JoinAlias(x => x.Patient, () => patient, () => patient.IsActive && patient.Deceased == false)
                     .JoinQueryOver<Taxon>(() => patient.Taxon)
-                        .WhereRestrictionOn(x => x.Path)
-                        .IsLike(taxon.Id.ToString(), MatchMode.Anywhere)
+                        .WhereRestrictionOn(x => x.Path).IsLike(taxon.Id.ToString(), MatchMode.Anywhere)
                 .SelectList(list => list
                     .Select(() => patient.FullName).WithAlias(() => dto.Patient)
                     .Select(() => patient.Id).WithAlias(() => dto.PatientId)

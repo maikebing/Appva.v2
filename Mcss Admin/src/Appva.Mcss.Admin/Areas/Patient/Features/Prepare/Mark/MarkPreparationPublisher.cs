@@ -8,23 +8,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Core.Extensions;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Commands;
-    using Appva.Persistence;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure;
-using Appva.Mcss.Web.Controllers;
-using NHibernate.Criterion;
-using NHibernate.Transform;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Security.Identity;
-
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
+    
     #endregion
 
     /// <summary>
@@ -35,14 +25,9 @@ using NHibernate.Transform;
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPatientService"/>.
+        /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly IPatientService patientService;
-
-        /// <summary>
-        /// The <see cref="IPatientTransformer"/>.
-        /// </summary>
-        private readonly IPatientTransformer transformer;
+        private readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -61,10 +46,9 @@ using NHibernate.Transform;
         /// <summary>
         /// Initializes a new instance of the <see cref="MarkPreparationPublisher"/> class.
         /// </summary>
-        public MarkPreparationPublisher(IPatientService patientService, IPatientTransformer transformer, IIdentityService identity, IPersistenceContext persistence)
+        public MarkPreparationPublisher(IAuditService auditing, IIdentityService identity, IPersistenceContext persistence)
         {
-            this.patientService = patientService;
-            this.transformer = transformer;
+            this.auditing = auditing;
             this.identity = identity;
             this.persistence = persistence;
         }
@@ -78,12 +62,18 @@ using NHibernate.Transform;
         {
             var tasks = this.persistence.QueryOver<PreparedTask>()
                     .Where(x => x.PreparedSequence.Id == message.PreparedSequenceId)
-                    .And(x => x.Date == message.Date)
+                      .And(x => x.Date == message.Date)
                     .List();
             if (message.UnMark)
             {
                 foreach (var task in tasks)
                 {
+                    this.auditing.Delete(
+                        "tog bort iordningsställande {0} [REF:{1}] {2:yyyy-MM-dd}{3}",
+                        task.PreparedSequence.Name,
+                        task.PreparedSequence.Id,
+                        task.Date,
+                        task.PreparedBy == null ? string.Empty : " iordningsställt av " + task.PreparedBy.FullName);
                     this.persistence.Delete(task);
                 }
                 return string.Empty;
@@ -94,11 +84,16 @@ using NHibernate.Transform;
                 var prepareSequence = this.persistence.Get<PreparedSequence>(message.PreparedSequenceId);
                 this.persistence.Save(new PreparedTask
                 {
-                    Date = message.Date,
-                    PreparedBy = user,
+                    Date             = message.Date,
+                    PreparedBy       = user,
                     PreparedSequence = prepareSequence,
-                    Schedule = prepareSequence.Schedule
+                    Schedule         = prepareSequence.Schedule
                 });
+                this.auditing.Delete(
+                    "iordningsställde {0} [REF:{1}] {2:yyyy-MM-dd}",
+                    prepareSequence.Name,
+                    prepareSequence.Id,
+                    message.Date);
                 return user.FullName;
             }
             return tasks.First().PreparedBy.FullName;

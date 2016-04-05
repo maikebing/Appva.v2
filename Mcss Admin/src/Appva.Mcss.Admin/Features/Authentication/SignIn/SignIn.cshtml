@@ -17,7 +17,7 @@
         @Html.FormGroup(x => x.UserName).Label("Användarnamn").TextBox("Ditt användarnamn").Build()
         @Html.FormGroup(x => x.Password).Label("Lösenord").Password("Ditt lösenord").Build()
 		<div class="hr"></div>
-        @Html.Submit("Logga in", new { @class = "btn" })
+        @Html.Submit("Logga in", new { @id = "submit-form", @class = "btn" })
 		@Html.ActionLink("Glömt lösenord?", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
     }
 </div>

@@ -372,10 +372,13 @@
                     }
                     if (self.val()) {
                         $('#Taxon').val(self.val());
+                        if (self.val() == '-1') {
+                            return;
+                        }
                         $.getJSON(url, { "id": self.val() }, function(data) {
                             var items = [];
                             if (data.length > 0) {
-                                items.push('<option value>Välj ...</option>');
+                                items.push('<option value="-1">Välj ...</option>');
                             }
                             $.each(data, function (i, obj) {
                                 items.push('<option value="' + obj.key + '">' + obj.value + '</option>');
@@ -404,7 +407,7 @@
                         var value = null;
                         self.parent().prevAll('.select').each(function(i, v) {
                             var val = $(v).find('.dropdown').val();
-                            if (val != null || val != 'undefined') {
+                            if (val != null || val != 'undefined' || val != '-1') {
                                 value = val;
                                 return false;
                             }

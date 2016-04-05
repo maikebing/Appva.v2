@@ -5,19 +5,28 @@
 <!--[if gt IE 9]><!-->
 <html class="gt-ie8 gt-ie9 not-ie">
 <!--<![endif]-->
-<head>
-    <title>@Title - @Tenant - Appva MCSS</title>
-    @Html.Partial("_Meta")
-    @Styles.Render("~/Assets/css/auth")
-</head>
-<body class="page page-dark-theme @BodyCssClass">
-    @RenderSection("nav", false)
-    <div class="container">
-        @RenderBody()
-    </div>
-    <div class="version">
-        Appva MCSS version @ApplicationEnvironment.Info.Version
-    </div>
-</body>
-@RenderSection("javascript", false)
+    <head>
+        <title>@Title - @Tenant - Appva MCSS</title>
+        @Html.Partial("_Meta")
+        @Styles.Render("~/Assets/css/auth")
+        @Scripts.Render("~/Assets/js/signin")
+    </head>
+    <body class="page page-dark-theme @BodyCssClass">
+        @RenderSection("nav", false)
+        <div class="container">
+            @RenderBody()
+        </div>
+        <div class="version">
+            Appva MCSS version @ApplicationEnvironment.Info.Version
+        </div>
+    </body>
+    @RenderSection("javascript", false)
+    <script type="text/javascript">
+        (function ($) {
+            $('#submit-form').submit(function () {
+                $(this).prop('disabled', true);
+                return true;
+            });
+        })(jQuery);
+    </script>
 </html>

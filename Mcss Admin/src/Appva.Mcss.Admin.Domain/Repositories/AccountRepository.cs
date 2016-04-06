@@ -174,7 +174,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             if (model.RoleFilterId.HasValue)
             {
                 Role role = null;
-                query.Left.JoinAlias(x => x.Roles, () => role, () => role.Id == model.RoleFilterId && role.IsVisible);
+                query.Left.JoinAlias(x => x.Roles, () => role)
+                    .Where(() => role.Id == model.RoleFilterId)
+                      .And(() => role.IsVisible);
             }
             else
             {

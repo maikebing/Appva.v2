@@ -924,16 +924,20 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [PermissionsAttribute(Permissions.Dashboard.ReadDelegationValue)]
         public PartialViewResult Overview()
         {
+            Account accountAlias = null;
+            Taxon taxonAlias = null;
+            Role roleAlias = null;
             var taxon = this.filtering.GetCurrentFilter();
             var fiftyDaysFromNow = DateTime.Today.AddDays(50);
             var delegations = this.persistence.QueryOver<Delegation>()
                 .Where(x => x.IsActive == true && x.Pending == false)
-                .And(x => x.EndDate <= fiftyDaysFromNow)
+                  .And(x => x.EndDate <= fiftyDaysFromNow)
                 .OrderBy(o => o.EndDate).Asc
-                    .JoinQueryOver<Account>(x => x.Account)
-                        .Where(x => x.IsActive == true)
-                    .JoinQueryOver<Taxon>(x => x.Taxon)
-                        .WhereRestrictionOn(x => x.Path).IsLike(taxon.Id.ToString(), MatchMode.Anywhere)
+                .Left.JoinAlias(x => x.Account, () => accountAlias,        () => accountAlias.IsActive && accountAlias.IsPaused == false)
+                .Left.JoinAlias(x => accountAlias.Roles, () => roleAlias)
+                    .Where(() => roleAlias.IsActive && roleAlias.IsVisible)
+                .Left.JoinAlias(x => accountAlias.Taxon, () => taxonAlias, () => taxonAlias.IsActive)
+                        .WhereRestrictionOn(() => taxonAlias.Path).IsLike(taxon.Id.ToString(), MatchMode.Anywhere)
                 .List();
             var delegationsExpired = from x in delegations
                                      where x.EndDate.Subtract(DateTimeUtilities.Now()).Days < 0

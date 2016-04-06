@@ -42,18 +42,18 @@
             <div class="radio col">
                 <label for="activity-type-2">Gäller för:</label>
             </div>
-            <div class="radio col">
-                @Html.RadioButtonFor(m => m.ValidForSpecificPatients, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1" })
+            <div class="radio col">                                              
+                @Html.RadioButtonFor(m => m.ValidForSpecificPatients, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1", @data_togglegroup = "toggle-delegation" })
                 <label for="activity-type-1">Adress</label>
             </div>
             <div class="radio col">
-                @Html.RadioButtonFor(m => m.ValidForSpecificPatients, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2" })
+                @Html.RadioButtonFor(m => m.ValidForSpecificPatients, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2", @data_togglegroup = "toggle-delegation" })
                 <label for="activity-type-2">Boende</label>
             </div>
         </div>
-        <div class="toggle-target toggle-target-1">
-            <div class="select selectgroup cf">
-                @if (Model.OrganizationTaxons.IsNotNull())
+    <div class="toggle-target toggle-target-1 toggle-delegation">
+        <div class="select selectgroup cf">
+            @if (Model.OrganizationTaxons.IsNotNull())
             {
                 foreach (var taxon in Model.OrganizationTaxons)
                 {
@@ -67,22 +67,22 @@
                     </div>
                 }
             }
-                @Html.HiddenFor(m => m.OrganizationTaxon)
-                @Html.ValidationMessageFor(m => m.OrganizationTaxon)
-            </div>
+            @Html.HiddenFor(m => m.OrganizationTaxon)
+            @Html.ValidationMessageFor(m => m.OrganizationTaxon)
         </div>
-        <div class="toggle-target toggle-target-2">
-            <div class="select multisel">
-                @Html.DropDownListFor(
+    </div>
+    <div class="toggle-target toggle-target-2 toggle-delegation">
+        <div class="select multisel">
+            @Html.DropDownListFor(
             m => m.Patient,
             new SelectList(Model.PatientItems, "Value", "Text", Model.Patient),
             "Alla",
             new { }
         )
-                @Html.ValidationMessageFor(m => m.Patients)
-                <input type="hidden" id="TestPatients" name="TestPatients" />
-            </div>
+            @Html.ValidationMessageFor(m => m.Patients)
+            <input type="hidden" id="TestPatients" name="TestPatients" />
         </div>
+    </div>
         <div class="dateinput">
             @Html.LabelFor(m => m.StartDate)
             @Html.EditorFor(m => m.StartDate)

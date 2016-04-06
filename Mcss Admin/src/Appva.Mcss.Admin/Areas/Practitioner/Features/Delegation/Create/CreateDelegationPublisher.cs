@@ -86,18 +86,22 @@ namespace Appva.Mcss.Admin.Areas.Models
             var delegatedAccount = this.accounts.Find(message.Id);
 
             var patients = new List<Patient>();
-            foreach (string guid in message.Patients)
+            if (message.ValidForSpecificPatients)
             {
-                Guid patientId;
-                if (Guid.TryParse(guid, out patientId))
+                foreach (string guid in message.Patients)
                 {
-                    var patient = this.patients.Get(patientId);
-                    if (!patients.Contains(patient))
+                    Guid patientId;
+                    if (Guid.TryParse(guid, out patientId))
                     {
-                        patients.Add(patient);
+                        var patient = this.patients.Get(patientId);
+                        if (!patients.Contains(patient))
+                        {
+                            patients.Add(patient);
+                        }
                     }
                 }
             }
+
             var root = this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
             var orgTaxon = message.Taxon.IsNotNull() ? this.taxonomies.Find(new Guid(message.Taxon), TaxonomicSchema.Organization) : this.taxonomies.Find(root.Id, TaxonomicSchema.Organization);
 

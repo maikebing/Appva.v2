@@ -7,7 +7,7 @@
         <h3 class="section-title">Skapa ny</h3>        
         <ul class="cal-settings new">
             <li class="cf">
-                @Html.LabelFor(m => m.Category, new { @class = "col" });
+                @Html.LabelFor(m => m.Category, new { @class = "col" })
                 <div class="col">
                     @Html.DropDownListFor(m => m.Category, new SelectList(Model.Categories, "Value", "Text"), "Välj...", new { id = "Category" })
                     @if(Model.Categories.Where(x => x.Value == "new").Count() > 0) {

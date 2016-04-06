@@ -81,7 +81,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .Where(x => x.IsActive)
                   .And(x => x.Delayed)
                   .And(x => !x.DelayHandled)
-                .Left.JoinAlias(x => x.Schedule, () => scheduleAlias, () => scheduleAlias.IsActive)
+                .JoinAlias(x => x.Schedule, () => scheduleAlias) //// FIXME: If schedule is active then we wont see tasks created but then deleted.
                     .WhereRestrictionOn(() => scheduleAlias.ScheduleSettings.Id).IsIn(scheduleSettings.ToArray())
                 .Select(x => x.Patient.Id);
             if (hasIncompleteTask)
@@ -140,7 +140,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             var hasUnattendedTasksQuery = QueryOver.Of<Task>()
                 .Where(x => x.Patient.Id == patient.Id)
                   .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
-                .JoinQueryOver<Schedule>(x => x.Schedule) //// Join with IsActive to optimize query
+                .JoinQueryOver<Schedule>(x => x.Schedule) //// Join with IsActive to optimize query however check on top.
                 .WhereRestrictionOn(x => x.ScheduleSettings.Id).IsIn(schedulePermissions.ToArray())
                   .And(x => x.IsActive)
                 .Select(Projections.Property<Task>(x => x.Patient.Id));

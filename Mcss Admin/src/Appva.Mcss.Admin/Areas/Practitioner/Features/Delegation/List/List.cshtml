@@ -1,17 +1,17 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
 @model Appva.Mcss.Admin.Areas.Models.ListDelegationModel
-@{ ViewBag.Title = string.Format("Aktuella delegeringar, {0}", Model.Account.FullName); }
-
+@{ 
+    SetTitle("Aktuella delegeringar, {0}", Model.Account.FullName); 
+}
+@if (! Model.IsAccountVisibilityHidden)
+{
 <div id="main" class="delegate-view">    
     @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
     <div id="subheader" class="cf">
 		<h1>Aktuell delegering</h1>
         @Html.ActionLink(Permissions.Delegation.Read, "Skriv ut delegeringsbeslut", "DelegationPrint", new { id = Model.Account.Id }, new { @class = "btn printp" })
-		@if (! Model.IsAccountVisibilityHidden)
-        {
-            @Html.ActionLink(Permissions.Delegation.Create, "Lägg till delegering", "Create", new { id = Model.Account.Id }, new { @class = "btn lb-link" })    
-        }
+		@Html.ActionLink(Permissions.Delegation.Create, "Lägg till delegering", "Create", new { id = Model.Account.Id }, new { @class = "btn lb-link" })    
 	</div>
     <div id="content">
 		<div id="content-primary">
@@ -103,3 +103,4 @@
         </div>
     </div>
 </div>
+}

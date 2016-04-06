@@ -111,7 +111,7 @@ using Appva.Mcss.Admin.Application.Services.Settings;
                         .WhereRestrictionOn(() => scheduleSettings.Id).IsIn(scheduleList.Select(x => x.Id).ToArray())
                 .JoinAlias(x => x.Inventory, () => inventory)
                     .Where(() => inventory.LastRecount < lastStockCalculationDate)
-                    .And(() => inventory.IsActive)
+                      .And(() => inventory.IsActive)
                 .OrderBy(() => inventory.LastRecount).Asc
                 .JoinAlias(x => x.Patient, () => patient)
                     .Where(() => patient.IsActive && !patient.Deceased)

@@ -11,7 +11,7 @@
 </div>
 <div class="bd">
     <div class="note">@Html.ActionLink("Klicka här", "SignInSiths") för att logga in med ditt SITHS eID</div>
-	@using (Html.Post())
+	@using (Html.Post(null, new { ReturnUrl = Model.ReturnUrl }))
     {
         @Html.ValidationAlert("Felaktigt användarnamn och/eller lösenord", string.Empty, new {  @class = "error-msg" })
         @Html.FormGroup(x => x.UserName).Label("Användarnamn").TextBox("Ditt användarnamn").Build()

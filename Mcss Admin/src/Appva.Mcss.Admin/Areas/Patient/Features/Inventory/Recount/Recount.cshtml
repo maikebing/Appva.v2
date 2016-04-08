@@ -6,7 +6,7 @@
     @using (Html.BeginForm("Create", "Inventory", new { id = Model.InventoryId, returnUrl = Model.ReturnUrl })) {
         <h3 class="section-title">Kontrollräkna @Model.InventoryName</h3>
         <div class="text medium">
-            @Html.FormGroup(m => m.Value).Label().TextBox(htmlAttributes: new { @type = "number", @min = "0", @max = "9999", step = "any" }).Validate().Build()
+            @Html.FormGroup(m => m.Value).Label().TextBox(htmlAttributes: new { /*@type = "number", @min = "0", @max = "9999", step = "any"*/ }).Validate().Build()
             @Html.FormGroup(m => m.Description).Label().TextArea("Frivilligt").Validate().Build()
             @Html.HiddenFor(m => m.SequenceId)
             @Html.HiddenFor(m => m.InventoryId)

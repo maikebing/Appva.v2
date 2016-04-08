@@ -8,7 +8,7 @@
                 <h3 class="section-title">Ange insats</h3>
                 <div class="text large">
                     @Html.LabelFor(m => m.Name)
-                    @Html.EditorFor(m => m.Name, new { @class = "wide" })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "check-length" })
                     @Html.ValidationMessageFor(m => m.Name)
                 </div>
                 <div class="text large">
@@ -112,4 +112,5 @@
 	    </div>
     }
     </div>
+    
 </div>

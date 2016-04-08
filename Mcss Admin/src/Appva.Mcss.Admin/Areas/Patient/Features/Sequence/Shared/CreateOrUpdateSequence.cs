@@ -70,7 +70,7 @@ namespace Appva.Mcss.Admin.Models
         }
 
         [Required]
-        [DisplayName("Ordination")]
+        [DisplayName("Insats")]
         public virtual string Name { get; set; }
 
         [DisplayName("Instruktion")]

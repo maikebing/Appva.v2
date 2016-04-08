@@ -329,6 +329,19 @@
                         }
                     });
 
+                    $(".check-length").bind("change keyup",function (e) {
+                        var elem = $(this);
+                        if (elem.val().length > 30) {
+                            if (elem.next(".warning-length").length < 1)
+                            {
+                                elem.after("<div class='warning-length'><span style='font-weight:bold;'>Observera!</span> För långa meningar kan oavsiktligt förkortas i signeringsenhet. Kontrollera att texten är synlig i sin helhet på signeringsenhet, eller använd instruktionsfältet för längre kompletterande text.</div>");
+                            }
+                        }
+                        else {
+                            $('.warning-length').remove();
+                        }
+                    });
+
 
                     $('.activity-edit .freq .btn-mdatepick').each(function () {
                         if ($(this).prev().val() != '0') $(this).hide();

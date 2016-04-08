@@ -23,8 +23,8 @@
     @RenderSection("javascript", false)
     <script type="text/javascript">
         (function ($) {
-            $('#submit-form').submit(function () {
-                $(this).prop('disabled', true);
+            $('form').submit(function () {
+                $('#submit-form').prop('disabled', true);
                 return true;
             });
         })(jQuery);

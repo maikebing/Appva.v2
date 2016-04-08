@@ -774,17 +774,19 @@ mcss.validation = {
             }
         });
 	},
-	AddToStock : function(params) {
+	AddToStock: function (params) {
 		$('.std-form form').validate({
             'rules': {
-                'Amount': {
-                    'min': 1,
+                'Value': {
+                    'number':true,
+                    'min':1,
                     'max': 99999,
                     'required': true
                 }
             },
             'messages': {
-                'Amount': {
+                'Value': {
+                    'number': 'Mängd måste vara ett numeriskt tal',
                     'required': "Mängd måste fyllas i.",
                     'min': "Mängd får ej vara mindre än 1.",
                     'max': "Mängd får ej vara större än 99999."
@@ -794,18 +796,17 @@ mcss.validation = {
 	},
 	RecalculateStock : function(params) {
 		$('.std-form form').validate({
-            onkeyup: true,
-            onfocusout: true,
-            debug: true,
             'rules': {
-                'Amount': {
+                'Value': {
+                    'number': true,
                     'min': 0,
                     'max': 99999,
                     'required': true
                 }
             },
             'messages': {
-                'Amount': {
+                'Value': {
+                    'number': 'Mängd måste vara ett numeriskt tal',
                     'required': "Mängd måste fyllas i.",
                     'min': "Mängd får ej vara mindre än 0.",
                     'max': "Mängd får ej vara större än 99999."

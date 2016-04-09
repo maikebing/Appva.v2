@@ -851,7 +851,23 @@ mcss.validation = {
                 }
             }
         });
-	}
+    },
+    InventoryCreateUpdate: function (params) {
+        $('.std-form form').validate({
+            'rules': {
+                'Name': 'required'
+            },
+            'messages': {
+                'Name': {
+                    'required': "Namn måste fyllas i."
+                }
+            },
+            'submitHandler': function (form) {
+                $(form).find('input[type=submit]').attr('disabled', 'disabled');
+                form.submit();
+            }
+        });
+    },
 };
 
 mcss.validation.applyRules = function(valclass,valparams) {

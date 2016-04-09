@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers {
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -56,7 +57,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers {
         /// <inheritdoc />
         public override ListInventory Handle(UpdateInventoryModel message)
         {
-            var amounts = message.Amounts.IsNotEmpty() ? this.settings.GetIventoryAmountLists().Where(x => x.Name == message.Amounts).FirstOrDefault() : null;
+            var amounts = message.Amounts.IsNotEmpty() ? this.settings.GetIventoryAmountLists().Where(x => x.Name == message.Amounts).FirstOrDefault() : new InventoryAmountListModel();
             this.inventories.Update(message.Inventory, message.Name, amounts.Name, amounts.Amounts);           
 
             return new ListInventory 

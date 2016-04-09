@@ -174,6 +174,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public IList<Inventory> ListRecountsBefore(DateTime date, DateTime? toDate, Guid? taxonFilter)
         {
+            Patient patientAlias = null;
+            Taxon taxonAlias = null;
+
             var query = this.persistence.QueryOver<Inventory>()
                 .Where(x => x.IsActive)
                 .And(Restrictions.Disjunction()
@@ -181,14 +184,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Add(Restrictions.Conjunction()
                         .Add(Restrictions.Le(Projections.Property<Inventory>(x => x.LastRecount), date))
                         .Add(Restrictions.Gt(Projections.Property<Inventory>(x => x.LastRecount), toDate.GetValueOrDefault(new DateTime(2000,1,1))))))
-                .JoinQueryOver(x => x.Patient)
-                    .Where(x => x.IsActive && !x.Deceased);
+                .Inner.JoinAlias(x => x.Patient, () => patientAlias, () => patientAlias.IsActive && !patientAlias.Deceased);
 
             if(taxonFilter.HasValue && taxonFilter.GetValueOrDefault() != Guid.Empty){
-                query.JoinQueryOver(x => x.Taxon)
-                    .WhereRestrictionOn(x => x.Path)
+                query.JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
+                    .WhereRestrictionOn(() => taxonAlias.Path)
                     .IsLike(taxonFilter.ToString(), MatchMode.Anywhere);
             }
+            query = query.OrderBy(x => x.LastRecount).Asc;
 
             return query.List();
             

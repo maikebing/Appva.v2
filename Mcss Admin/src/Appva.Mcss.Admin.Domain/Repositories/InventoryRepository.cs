@@ -8,14 +8,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories.Contracts;
     using Appva.Persistence;
     using Appva.Repository;
     using NHibernate.Criterion;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -28,7 +29,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         IRepository
     {
         /// <summary>
-        /// Lists all inventories for a given patient
+        /// Lists all inventories for a given patient.
         /// </summary>
         /// <param name="patientId">The patient id</param>
         /// <param name="scheduleSettings">List of schedulesettings for filtering</param>
@@ -37,7 +38,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         IList<Inventory> Search(Guid patientId, IList<Guid> scheduleSettings, bool? active = null);
 
         /// <summary>
-        /// Lists all transcations for an inventory
+        /// Lists all transcations for an inventory.
         /// </summary>
         /// <param name="inventory">Id of the <see cref="Inventory"/></param>
         /// <param name="fromDate">Filter from date</param>
@@ -48,14 +49,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         PageableSet<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10);
 
         /// <summary>
-        /// Saves the inventory
+        /// Saves the inventory.
         /// </summary>
         /// <param name="entity">The <see cref="Inventory"/></param>
         /// <returns>The id of the created inventory</returns>
         Guid Save(Inventory entity);
 
         /// <summary>
-        /// Lists all inventorys which need a recount before date
+        /// Lists all inventorys which need a recount before date.
         /// </summary>
         /// <param name="date">The date</param>
         /// <returns>List of <see cref="Inventory"/></returns>
@@ -67,7 +68,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public sealed class InventoryRepository : IInventoryRepository
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -81,6 +82,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryRepository"/> class.
         /// </summary>
+        /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
         public InventoryRepository(IPersistenceContext persistence)
         {
             this.persistence = persistence;
@@ -120,19 +122,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .Select(x => x.Inventory.Id)
                 .JoinQueryOver(x => x.Schedule)
                     .JoinQueryOver(x => x.ScheduleSettings)
-                    .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.ToArray());
-
+                        .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.ToArray());
             var query = this.persistence.QueryOver<Inventory>()
-                .Where(Restrictions.Or(
-                    Restrictions.Eq(Projections.Property<Inventory>(x => x.Patient.Id), patientId),
-                    Subqueries.WhereProperty<Inventory>(x => x.Id).In(sequenceSubQuery)));
-            if(active.HasValue)
+                .Where(
+                    Restrictions.Or(
+                        Restrictions.Eq(Projections.Property<Inventory>(x => x.Patient.Id), patientId),
+                        Subqueries.WhereProperty<Inventory>(x => x.Id).In(sequenceSubQuery)));
+            if (active.HasValue)
             {
                 query.Where(x => x.IsActive == active.GetValueOrDefault(true));
             }
-            query = query.OrderBy(x => x.IsActive).Desc
-                .ThenBy(x => x.Description).Asc;
-
+            query = query.OrderBy(x => x.IsActive).Desc.ThenBy(x => x.Description).Asc;
             return query.List();    
         }
 
@@ -142,8 +142,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             var skip = page != 0 ? (page - 1) * pageSize : 0;
             var query = this.persistence.QueryOver<InventoryTransactionItem>()
                 .Where(x => x.IsActive)
-                .And(x => x.Inventory.Id == inventory);
-            if(fromDate.HasValue)
+                  .And(x => x.Inventory.Id == inventory);
+            if (fromDate.HasValue)
             {
                 query.Where(x => x.CreatedAt >= fromDate);
             }
@@ -151,16 +151,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 query.Where(x => x.CreatedAt <= toDate);
             }
-
             query = query.OrderBy(x => x.CreatedAt).Desc;
-
             return new PageableSet<InventoryTransactionItem>
             {
                 CurrentPage = page,
-                NextPage = page++,
-                PageSize = pageSize,
-                TotalCount = query.ToRowCountQuery().RowCount(),
-                Entities = query.Skip(skip).Take(pageSize).List()
+                NextPage    = page++,
+                PageSize    = pageSize,
+                TotalCount  = query.ToRowCountQuery().RowCount(),
+                Entities    = query.Skip(skip).Take(pageSize).List()
             };
 
         }
@@ -176,7 +174,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             Patient patientAlias = null;
             Taxon taxonAlias = null;
-
             var query = this.persistence.QueryOver<Inventory>()
                 .Where(x => x.IsActive)
                 .And(Restrictions.Disjunction()
@@ -184,18 +181,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Add(Restrictions.Conjunction()
                         .Add(Restrictions.Le(Projections.Property<Inventory>(x => x.LastRecount), date))
                         .Add(Restrictions.Gt(Projections.Property<Inventory>(x => x.LastRecount), toDate.GetValueOrDefault(new DateTime(2000,1,1))))))
-                .Inner.JoinAlias(x => x.Patient, () => patientAlias, () => patientAlias.IsActive && !patientAlias.Deceased);
-
-            if(taxonFilter.HasValue && taxonFilter.GetValueOrDefault() != Guid.Empty){
+                .Inner.JoinAlias(x => x.Patient, () => patientAlias, () => patientAlias.IsActive && patientAlias.Deceased == false);
+            if (taxonFilter.IsNotEmpty()){
                 query.JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
                     .WhereRestrictionOn(() => taxonAlias.Path)
                     .IsLike(taxonFilter.ToString(), MatchMode.Anywhere);
             }
             query = query.OrderBy(x => x.LastRecount).Asc;
-
             return query.List();
-            
-
         }
 
         #endregion

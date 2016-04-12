@@ -8,17 +8,20 @@ namespace Appva.Mcss.Admin.Application.Services
 {
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Appva.Mcss.Admin.Application.Auditing;
-using Appva.Mcss.Admin.Application.Security.Identity;
-using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Admin.Domain.Repositories;
-using Appva.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Repository;
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public interface IInventoryService : IService
     {
         /// <summary>
@@ -91,7 +94,7 @@ using System.Linq;
     /// </summary>
     public sealed class InventoryService : IInventoryService
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IInventoryRepository"/>
@@ -108,7 +111,6 @@ using System.Linq;
         /// </summary>
         private readonly IAuditService audit;
 
-
         #endregion
 
         #region Constructor.
@@ -116,16 +118,19 @@ using System.Linq;
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryService"/> class.
         /// </summary>
+        /// <param name="repository">The <see cref="IInventoryRepository"/></param>
+        /// <param name="identity">>The <see cref="IAuditService"/></param>
+        /// <param name="audit">>The <see cref="IIdentityService"/></param>
         public InventoryService(IInventoryRepository repository, IIdentityService identity, IAuditService audit)
         {
             this.repository = repository;
-            this.identity = identity;
-            this.audit = audit;
+            this.identity   = identity;
+            this.audit      = audit;
         }
 
         #endregion
 
-        #region IInventoryService Members
+        #region IInventoryService Members.
 
         /// <inheritdoc />
         public Inventory Find(Guid id)
@@ -136,15 +141,12 @@ using System.Linq;
         /// <inheritdoc />
         public void Update(Guid id, string name, string unit, IList<double> amounts)
         {
-            var inventory = this.repository.Find(id);
-
+            var inventory         = this.repository.Find(id);
             inventory.Description = name;
-            inventory.Amounts = amounts;
-            inventory.Unit = unit;
-
+            inventory.Amounts     = amounts;
+            inventory.Unit        = unit;
             this.repository.Update(inventory);
-
-            this.audit.Update("{0} uppdaterade saldo {1} (ref. {2})", this.identity.Principal.Identity.Name, name, id);
+            this.audit.Update(inventory.Patient, "{0} uppdaterade saldo {1} (ref. {2})", this.identity.Principal.Identity.Name, name, id);
         }
 
         /// <inheritdoc />
@@ -154,6 +156,7 @@ using System.Linq;
             return this.repository.Search(patientId, scheduleSettings, active);
         }
 
+        /// <inheritdoc />
         public PageableSet<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10)
         {
             return this.repository.ListTransactionsFor(inventory, fromDate, toDate, page, pageSize);
@@ -164,7 +167,7 @@ using System.Linq;
         {
             inventory.IsActive = false;
             this.repository.Update(inventory);
-            this.audit.Delete("{0} inaktiverade saldo {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, inventory.Id);
+            this.audit.Delete(inventory.Patient, "{0} inaktiverade saldo {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, inventory.Id);
         }
 
         /// <inheritdoc />
@@ -172,7 +175,7 @@ using System.Linq;
         {
             inventory.IsActive = true;
             this.repository.Update(inventory);
-            this.audit.Delete("{0} återaktiverade saldo {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, inventory.Id);
+            this.audit.Update(inventory.Patient, "{0} återaktiverade saldo {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, inventory.Id);
         }
 
         /// <inheritdoc />
@@ -181,14 +184,12 @@ using System.Linq;
             var inventory = new Inventory
             {
                 Description = name,
-                Amounts = amounts,
-                Patient = patient,
-                Unit = unit
+                Amounts     = amounts,
+                Patient     = patient,
+                Unit        = unit
             };
             var id = this.repository.Save(inventory);
-
-            this.audit.Create("{0} skapade saldot {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, id);
-
+            this.audit.Create(patient, "{0} skapade saldot {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, id);
             return id;
         }
 

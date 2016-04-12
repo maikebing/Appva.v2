@@ -10,9 +10,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -21,12 +18,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     internal sealed class ReactivateInventoryHandler : RequestHandler<ReactivateInventory, ListInventory>
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IInventoryService"/>.
         /// </summary>
-        private readonly IInventoryService inventories;
+        private readonly IInventoryService inventoryService;
 
         #endregion
 
@@ -35,9 +32,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ReactivateInventoryHandler"/> class.
         /// </summary>
-        public ReactivateInventoryHandler(IInventoryService inventories)
+        /// <param name="inventoryService">The <see cref="IInventoryService"/></param>
+        public ReactivateInventoryHandler(IInventoryService inventoryService)
         {
-            this.inventories = inventories;
+            this.inventoryService = inventoryService;
         }
 
         #endregion
@@ -47,12 +45,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListInventory Handle(ReactivateInventory message)
         {
-            var inventory = this.inventories.Find(message.Inventory);
-            this.inventories.Reactivate(inventory);
-
+            var inventory = this.inventoryService.Find(message.Inventory);
+            this.inventoryService.Reactivate(inventory);
             return new ListInventory
             {
-                Id = message.Id,
+                Id          = message.Id,
                 InventoryId = message.Inventory
             };
         }

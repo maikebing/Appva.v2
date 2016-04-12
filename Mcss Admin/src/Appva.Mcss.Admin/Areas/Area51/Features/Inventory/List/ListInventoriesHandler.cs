@@ -11,9 +11,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Infrastructure.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -22,7 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models.Handlers
     /// </summary>
     internal sealed class ListInventoriesHandler : RequestHandler<Parameterless<ListInventoriesModel>, ListInventoriesModel>
     {
-        #region Fields
+        #region Variables
 
         /// <summary>
         /// The <see cref="ISettingsService"/>

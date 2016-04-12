@@ -1,4 +1,4 @@
-﻿// <copyright file="EditInventory.cs" company="Appva AB">
+﻿// <copyright file="UpdateInventory.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,11 +8,8 @@ namespace Appva.Mcss.Admin.Areas.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Models;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Appva.Mcss.Admin.Models;
 
     #endregion
 

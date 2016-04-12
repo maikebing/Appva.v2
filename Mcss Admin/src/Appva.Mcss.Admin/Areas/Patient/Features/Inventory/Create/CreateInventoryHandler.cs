@@ -8,12 +8,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services.Settings;
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -22,7 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     internal sealed class CreateInventoryHandler : RequestHandler<Identity<CreateInventoryModel>, CreateInventoryModel>
     {
-        #region Fields.
+        #region Variabels.
 
         /// <summary>
         /// The <see cref="ISettingsService"/>.
@@ -36,6 +34,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateInventoryHandler"/> class.
         /// </summary>
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
         public CreateInventoryHandler(ISettingsService settings)
         {
             this.settings = settings;
@@ -43,18 +42,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region RequestHandler Overrides
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
         public override CreateInventoryModel Handle(Identity<CreateInventoryModel> message)
         {
             return new CreateInventoryModel
             {
-                Id = message.Id,
-                AmountsList = this.settings.GetIventoryAmountLists().Select(x => new SelectListItem() 
-                    { 
-                        Text = x.Name, 
-                        Value = x.Name })
+                Id          = message.Id,
+                AmountsList = this.settings.GetIventoryAmountLists().Select(x => new SelectListItem { Text = x.Name, Value = x.Name })
             };
         }
 

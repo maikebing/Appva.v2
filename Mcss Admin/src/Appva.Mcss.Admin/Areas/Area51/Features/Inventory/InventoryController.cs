@@ -8,18 +8,14 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Inventory
 {
     #region Imports.
 
+    using System.Web.Mvc;
     using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Common;
-using Appva.Mcss.Admin.Areas.Area51.Models;
-using Appva.Mcss.Admin.Infrastructure.Attributes;
-using Appva.Mcss.Admin.Infrastructure.Models;
-using Appva.Mcss.Admin.Models;
-using Appva.Mvc;
-using Appva.Mvc.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Areas.Area51.Models;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -44,6 +40,7 @@ using System.Web.Mvc;
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryController"/> class.
         /// </summary>
+        /// <param name="mediator">The <see cref="IMediator"/></param>
         public InventoryController(IMediator mediator)
         {
             this.mediator = mediator;

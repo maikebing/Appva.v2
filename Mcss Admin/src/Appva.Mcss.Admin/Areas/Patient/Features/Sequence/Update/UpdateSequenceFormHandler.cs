@@ -50,7 +50,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IInventoryService"/>.
         /// </summary>
-        private readonly IInventoryService inventories;
+        private readonly IInventoryService inventoryService;
+
+        /// <summary>
+        /// The <see cref="ISequenceService"/>.
+        /// </summary>
+        private readonly ISequenceService sequenceService;
+
 
         #endregion
 
@@ -59,13 +65,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceFormHandler"/> class.
         /// </summary>
-        public UpdateSequenceFormHandler(IAuditService auditing, IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, IInventoryService inventories)
+        public UpdateSequenceFormHandler(IAuditService auditService, IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, IInventoryService inventoryService)
         {
-            this.auditing = auditing;
-            this.context = context;
-            this.roleService = roleService;
-            this.sequenceService = sequenceService;
-            this.inventories = inventories;
+            this.auditService       = auditService;
+            this.context            = context;
+            this.roleService        = roleService;
+            this.sequenceService    = sequenceService;
+            this.inventoryService   = inventoryService;
         }
 
         #endregion
@@ -75,7 +81,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override DetailsSchedule Handle(UpdateSequenceForm message)
         {
-            var sequence = this.context.Get<Sequence>(message.SequenceId);
+            var sequence = this.sequenceService.Find(message.SequenceId);
             var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
             Taxon delegation  = null;
             if (message.Delegation.HasValue && !message.Nurse)
@@ -167,7 +173,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             if (schedule.ScheduleSettings.HasInventory)
             {
-                sequence.Inventory = this.inventories.Find(model.Inventory.GetValueOrDefault());
+                sequence.Inventory = this.inventoryService.Find(model.Inventory.GetValueOrDefault());
             }
             sequence.Name = model.Name;
             sequence.Description = model.Description;

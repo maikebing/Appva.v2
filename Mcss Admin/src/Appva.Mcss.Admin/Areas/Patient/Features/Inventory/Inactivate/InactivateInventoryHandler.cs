@@ -9,10 +9,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+    using Appva.Mcss.Admin.Application.Services;
 
     #endregion
 
@@ -21,23 +18,24 @@ using System.Linq;
     /// </summary>
     internal sealed class InactivateInventoryHandler : RequestHandler<InactivateInventory, ListInventory>
     {
-        #region Fields.
+        #region Variabels.
 
         /// <summary>
         /// The <see cref="IInventoryService"/>.
         /// </summary>
-        private readonly IInventoryService inventories;
+        private readonly IInventoryService inventoryService;
 
         #endregion
 
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListInventoryHandler"/> class.
+        /// Initializes a new instance of the <see cref="InactivateInventoryHandler"/> class.
         /// </summary>
-        public InactivateInventoryHandler(IInventoryService inventories)
+        /// <param name="inventoryService">The <see cref="IInventoryService"/></param>
+        public InactivateInventoryHandler(IInventoryService inventoryService)
         {
-            this.inventories = inventories;
+            this.inventoryService = inventoryService;
         }
 
         #endregion
@@ -47,11 +45,11 @@ using System.Linq;
         /// <inheritdoc />
         public override ListInventory Handle(InactivateInventory message)
         {
-            var inventory = this.inventories.Find(message.Inventory);
-            this.inventories.Inactivate(inventory);
- 	        return new ListInventory
+            var inventory = this.inventoryService.Find(message.Inventory);
+            this.inventoryService.Inactivate(inventory);
+            return new ListInventory
             {
-                Id = message.Id,
+                Id          = message.Id,
                 InventoryId = message.Inventory
             };
         }

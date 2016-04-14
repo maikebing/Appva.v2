@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateInventoryItem.cs" company="Appva AB">
+﻿// <copyright file="CreateInventoryTransactionItem.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,9 +9,8 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
-using System.Collections.Generic;
-using Appva.Cqrs;
-using Appva.Mcss.Web.ViewModels;
+    using Appva.Cqrs;
+    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 

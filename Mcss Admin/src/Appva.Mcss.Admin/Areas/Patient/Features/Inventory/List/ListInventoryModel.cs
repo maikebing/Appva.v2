@@ -8,12 +8,11 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Web.ViewModels;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 
@@ -29,11 +28,12 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         public ListInventoryModel()
         {
-            OperationTranslationDictionary = new Dictionary<string, string>() {
-                {"withdrawal", "Uttag"},
-                {"add", "Insättning"},
-                {"recount", "Kontrollräkning"},
-                {"readd", "Återförd mängd"}
+            this.OperationTranslationDictionary = new Dictionary<string, string> 
+            {
+                { "withdrawal", "Uttag"           },
+                { "add",        "Insättning"      },
+                { "recount",    "Kontrollräkning" },
+                { "readd",      "Återförd mängd"  }
             };
         }
 
@@ -113,28 +113,33 @@ namespace Appva.Mcss.Admin.Models
             set; 
         }
 
-
+        /// <summary>
+        /// The end date.
+        /// </summary>
         public DateTime EndDate { get; set; }
 
+        /// <summary>
+        /// The start date.
+        /// </summary>
         public DateTime StartDate { get; set; }
 
         /// <summary>
-        /// Total count of transactions
+        /// Total count of transactions.
         /// </summary>
         public int TotalTransactionCount { get; set; }
 
         /// <summary>
-        /// Current pagesize of transactions
+        /// Current pagesize of transactions.
         /// </summary>
         public int PageSize { get; set; }
 
         /// <summary>
-        /// Current page of transactions
+        /// Current page of transactions.
         /// </summary>
         public int Page { get; set; }
 
         /// <summary>
-        /// The dictionary with translations for operations
+        /// The dictionary with translations for operations.
         /// </summary>
         public IDictionary<string, string> OperationTranslationDictionary
         {
@@ -144,6 +149,9 @@ namespace Appva.Mcss.Admin.Models
 
         #endregion
 
+        /// <summary>
+        /// The transactions.
+        /// </summary>
         public IList<InventoryTransactionItem> Transactions { get; set; }
     }
 }

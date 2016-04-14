@@ -8,12 +8,9 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Web.Mvc;
 
     #endregion
@@ -26,7 +23,7 @@ namespace Appva.Mcss.Admin.Models
         #region Properties
 
         /// <summary>
-        /// The descriptive name of the invnetory
+        /// The descriptive name of the invnetory.
         /// </summary>
         [Required]
         public string Name
@@ -36,7 +33,7 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The withdrawal amounts
+        /// The withdrawal amounts.
         /// </summary>
         [DisplayName("Enhet")]
         public string Amounts
@@ -46,7 +43,7 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// List of available amounts
+        /// List of available amounts.
         /// </summary>
         public IEnumerable<SelectListItem> AmountsList
         {

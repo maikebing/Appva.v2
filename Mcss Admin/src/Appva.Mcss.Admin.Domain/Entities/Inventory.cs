@@ -10,7 +10,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appva.Common.Domain;
     using Newtonsoft.Json;
 
@@ -21,7 +20,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Inventory : AggregateRoot<Inventory>
     {
-        #region Fields.
+        #region Variables.
         
         /// <summary>
         /// The amountlist as a stored string
@@ -44,7 +43,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// The current level of the inventory
+        /// The current level of the inventory.
         /// </summary>
         public virtual double CurrentLevel
         {
@@ -53,7 +52,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// All transactions in the current inventory
+        /// All transactions in the current inventory.
         /// </summary>
         public virtual IList<InventoryTransactionItem> Transactions
         {
@@ -62,7 +61,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Last time the inventory was checked and recounted
+        /// Last time the inventory was checked and recounted.
         /// </summary>
         public virtual DateTime? LastRecount
         {
@@ -71,7 +70,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Description of the inventory 
+        /// Description of the inventory.
         /// </summary>
         public virtual string Description
         {
@@ -80,7 +79,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// The unit for the inventory
+        /// The unit for the inventory.
         /// </summary>
         public virtual string Unit
         {
@@ -89,7 +88,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// The patient
+        /// The patient.
         /// </summary>
         public virtual Patient Patient
         {
@@ -98,26 +97,17 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// The amounts represented as a list
+        /// The amounts represented as a list.
         /// </summary>
         public virtual IList<double> Amounts
         {
             get 
             {
-                if (this.amounts == null)
-                    return null;
-                return JsonConvert.DeserializeObject<List<double>>(this.amounts);
+                return this.amounts == null ? null : JsonConvert.DeserializeObject<List<double>>(this.amounts);
             }
             set
             {
-                if (value == null)
-                {
-                    this.amounts = null;
-                }
-                else
-                {
-                    this.amounts = JsonConvert.SerializeObject(value);
-                }
+                this.amounts = value == null ? null : JsonConvert.SerializeObject(value);
             }
         }
 

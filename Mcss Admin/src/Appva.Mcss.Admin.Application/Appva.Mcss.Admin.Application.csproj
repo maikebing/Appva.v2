@@ -130,7 +130,6 @@
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Security\SithsAuthentication.cs" />
     <Compile Include="Services\AccountService.cs" />
-    <Compile Include="Services\AuditingService.cs" />
     <Compile Include="Services\ILogService.cs" />
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\NotificationService.cs" />

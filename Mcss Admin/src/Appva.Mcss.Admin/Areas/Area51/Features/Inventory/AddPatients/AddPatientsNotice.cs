@@ -9,9 +9,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
     #region Imports.
 
     using Appva.Cqrs;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -20,6 +17,5 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
     /// </summary>
     public sealed class AddPatientsNotice : INotification
     {
-        
     }
 }

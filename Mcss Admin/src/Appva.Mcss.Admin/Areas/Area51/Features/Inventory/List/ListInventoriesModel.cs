@@ -8,10 +8,8 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
 {
     #region Imports.
 
+    using System.Collections.Generic;
     using Appva.Mcss.Admin.Application.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
     #endregion
 
@@ -23,7 +21,7 @@ using System.Linq;
         #region Properties
 
         /// <summary>
-        /// The units
+        /// The units.
         /// </summary>
         public IList<InventoryAmountListModel> Units
         {

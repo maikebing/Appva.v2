@@ -8,14 +8,12 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models.Handlers
 {
     #region Imports.
 
+    using System.Collections.Generic;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Areas.Area51.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -24,7 +22,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models.Handlers
     /// </summary>
     internal sealed class AddInventoryPublisher : RequestHandler<AddInventoryModel, bool>
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>
@@ -38,6 +36,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="AddInventoryPublisher"/> class.
         /// </summary>
+        /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
         public AddInventoryPublisher(IPersistenceContext persistence)
         {
             this.persistence = persistence;
@@ -48,18 +47,16 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(AddInventoryModel message)
         {
+            var name    = message.Name;
             var amounts = JsonConvert.DeserializeObject<List<double>>(message.Amounts);
-            var name = message.Name;
-
-            var setting = Setting.CreateNew(
-                string.Format("MCSS.Core.Inventory.Units.{0}", name), 
-                "MCSS.Core.Inventory.Units", 
-                name, 
-                "Inventory unit", 
-                JsonConvert.SerializeObject(amounts), typeof(IList<double>));
-
-            this.persistence.Save<Setting>(setting);
-
+            this.persistence.Save<Setting> (
+                Setting.CreateNew(
+                    string.Format("MCSS.Core.Inventory.Units.{0}", name), 
+                    "MCSS.Core.Inventory.Units", 
+                    name, 
+                    "Inventory unit", 
+                    JsonConvert.SerializeObject(amounts), 
+                    typeof(IList<double>)));
             return true;
         }
     }

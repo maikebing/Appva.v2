@@ -8,12 +8,9 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
+    using Appva.Cqrs;
 
     #endregion
 

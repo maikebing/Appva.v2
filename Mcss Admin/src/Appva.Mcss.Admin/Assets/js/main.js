@@ -209,4 +209,16 @@ $(document).ready(function () {
         }
     });
 
+    // Warn if sequence header is to long
+    $("#Name").bind("change", function (e) {
+        console.Log("Hej");
+        var elem = $(this);
+        if (elem.val().length > 30) {
+            elem.after("<span class='length-warning'>To long....</span>");
+        }
+        else {
+            $('.length-warning').remove();
+        }
+    });
+
 });

@@ -329,6 +329,19 @@
                         }
                     });
 
+                    $(".check-length").bind("change keyup",function (e) {
+                        var elem = $(this);
+                        if (elem.val().length > 30) {
+                            if (elem.next(".warning-length").length < 1)
+                            {
+                                elem.after("<div class='warning-length'><span style='font-weight:bold;'>Observera!</span> För långa meningar kan oavsiktligt förkortas i signeringsenhet. Kontrollera att texten är synlig i sin helhet på signeringsenhet, eller använd instruktionsfältet för längre kompletterande text.</div>");
+                            }
+                        }
+                        else {
+                            $('.warning-length').remove();
+                        }
+                    });
+
 
                     $('.activity-edit .freq .btn-mdatepick').each(function () {
                         if ($(this).prev().val() != '0') $(this).hide();
@@ -370,12 +383,12 @@
                     } else {
                         self.parent().nextAll('.select').unbind("change").remove();
                     }
-                    if (self.val()) {
+                    if (self.val() != null && self.val() != 'undefined' && self.val() != '-1' && self.val() != '') {
                         $('#Taxon').val(self.val());
                         $.getJSON(url, { "id": self.val() }, function(data) {
                             var items = [];
                             if (data.length > 0) {
-                                items.push('<option value>Välj ...</option>');
+                                items.push('<option value="-1">Välj ...</option>');
                             }
                             $.each(data, function (i, obj) {
                                 items.push('<option value="' + obj.key + '">' + obj.value + '</option>');
@@ -392,7 +405,7 @@
                                     }).bind("change", dropdown);
                                     if(self.parent().hasClass('custom-select-wrap')) {
                                         $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent().parent());
-                                         mcss.customSelect($('.global-filter .select:last'));
+                                        mcss.customSelect($('.global-filter .select:last'));
                                     } else {
                                         $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent());
                                     }
@@ -404,7 +417,7 @@
                         var value = null;
                         self.parent().prevAll('.select').each(function(i, v) {
                             var val = $(v).find('.dropdown').val();
-                            if (val != null || val != 'undefined') {
+                            if (val != null || val != 'undefined' || val != '-1') {
                                 value = val;
                                 return false;
                             }

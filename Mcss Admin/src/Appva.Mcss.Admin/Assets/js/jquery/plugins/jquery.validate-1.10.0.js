@@ -1069,12 +1069,14 @@ $.extend($.validator, {
 		},
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/min
-		min: function( value, element, param ) {
+		min: function (value, element, param) {
+		    value = value == null ? null : value.replace(',', '.');
 			return this.optional(element) || value >= param;
 		},
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/max
-		max: function( value, element, param ) {
+		max: function (value, element, param) {
+		    value = value == null ? null : value.replace(',', '.');
 			return this.optional(element) || value <= param;
 		},
 
@@ -1107,7 +1109,8 @@ $.extend($.validator, {
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/number
 		number: function(value, element) {
-			return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
+		    //return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
+		    return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:\.\d{3})+)(?:,\d+)?$/.test(value);
 		},
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/digits

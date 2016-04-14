@@ -75,14 +75,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IPatientRepository Members.
 
         /// <inheritdoc />
-        public IList<PatientModel> FindDelayedPatientsBy(string taxon,  bool hasIncompleteTask = false, IList<Guid> scheduleSettings = null)
+        public IList<PatientModel> FindDelayedPatientsBy(string taxon, bool hasIncompleteTask = false, IList<Guid> scheduleSettings = null)
         {
             Schedule scheduleAlias = null;
             var tasks = QueryOver.Of<Task>()
                 .Where(x => x.IsActive)
                   .And(x => x.Delayed)
                   .And(x => !x.DelayHandled)
-                .JoinAlias(x => x.Schedule, () => scheduleAlias)
+                .JoinAlias(x => x.Schedule, () => scheduleAlias) //// FIXME: If schedule is active then we wont see tasks created but then deleted.
                     .WhereRestrictionOn(() => scheduleAlias.ScheduleSettings.Id).IsIn(scheduleSettings.ToArray())
                 .Select(x => x.Patient.Id);
             if (hasIncompleteTask)
@@ -93,8 +93,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             Taxon taxonAlias = null;
             var patients = this.context.QueryOver<Patient>()
                 .Where(x => x.IsActive)
-                .And(x => !x.Deceased)
-                .JoinAlias(x => x.Taxon, () => taxonAlias)
+                  .And(x => x.Deceased == false)
+                .Left.JoinAlias(x => x.Taxon, () => taxonAlias, () => taxonAlias.IsActive)
                     .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
                     .IsLike(taxon, MatchMode.Start))
                 .WithSubquery.WhereProperty(x => x.Id).In(tasks)
@@ -109,8 +109,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Add(Projections.Property<Patient>(x => x.Identifier).WithAlias(() => patientAlias.Identifier))
                     .Add(Projections.Constant(true).WithAlias(() => patientAlias.HasUnattendedTasks)))
                 .OrderByAlias(() => patientAlias.LastName).Desc
-                .TransformUsing(Transformers.AliasToBean<PatientModel>()); 
-            return patients.List<PatientModel>();          
+                .TransformUsing(Transformers.AliasToBean<PatientModel>());
+            return patients.List<PatientModel>();
         }
 
         /// <inheritdoc />
@@ -141,7 +141,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             var hasUnattendedTasksQuery = QueryOver.Of<Task>()
                 .Where(x => x.Patient.Id == patient.Id)
                   .And(x => x.IsActive && x.Delayed && x.DelayHandled == false)
-                .JoinQueryOver<Schedule>(x => x.Schedule)
+                .JoinQueryOver<Schedule>(x => x.Schedule) //// Join with IsActive to optimize query however check on top.
                 .WhereRestrictionOn(x => x.ScheduleSettings.Id).IsIn(schedulePermissions.ToArray())
                   .And(x => x.IsActive)
                 .Select(Projections.Property<Task>(x => x.Patient.Id));

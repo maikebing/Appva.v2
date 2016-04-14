@@ -15,8 +15,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using Appva.Core.Resources;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
@@ -32,9 +32,9 @@ using Appva.Core.Logging;
         #region Private Variables.
 
         /// <summary>
-        /// The <see cref="ISequenceService"/>.
+        /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly ISequenceService sequenceService;
+        private readonly IAuditService auditService;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -68,7 +68,7 @@ using Appva.Core.Logging;
         public override UpdateSequenceForm Handle(UpdateSequence message)
         {
             //// FIXME: Log here!
-            var sequence = this.sequenceService.Find(message.SequenceId);
+            var sequence = this.context.Get<Sequence>(message.SequenceId);
             var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
             return new UpdateSequenceForm
             {
@@ -119,7 +119,7 @@ using Appva.Core.Logging;
                 .List();
             return delegations.Select(x => new SelectListItem
             {
-                Text = x.Name,
+                Text  = x.Name,
                 Value = x.Id.ToString()
             });
         }

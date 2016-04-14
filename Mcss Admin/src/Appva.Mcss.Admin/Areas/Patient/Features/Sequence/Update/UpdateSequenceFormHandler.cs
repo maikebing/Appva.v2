@@ -38,11 +38,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IPersistenceContext context;
 
         /// <summary>
-        /// The <see cref="ISequenceService"/>.
-        /// </summary>
-        private readonly ISequenceService sequenceService;
-
-        /// <summary>
         /// The <see cref="IRoleService"/>.
         /// </summary>
         private readonly IRoleService roleService;
@@ -50,7 +45,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly IAuditService auditing;
+        private readonly IAuditService auditService;
 
         /// <summary>
         /// The <see cref="IInventoryService"/>.
@@ -80,17 +75,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override DetailsSchedule Handle(UpdateSequenceForm message)
         {
-            var sequence = this.sequenceService.Find(message.SequenceId);
+            var sequence = this.context.Get<Sequence>(message.SequenceId);
             var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
-            Account recipient = null;
-            Taxon delegation = null;
+            Taxon delegation  = null;
             if (message.Delegation.HasValue && !message.Nurse)
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
-            this.CreateOrUpdate(message, sequence, schedule, delegation, recipient);
+            this.CreateOrUpdate(message, sequence, schedule, delegation, null);
             this.context.Update(sequence);
-            this.auditing.Update(
+            this.auditService.Update(
                 sequence.Patient,
                 "ändrade {0} (REF: {1}) i {2} (REF: {3}).",
                  sequence.Name, 
@@ -101,7 +95,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.context.Update(schedule);
             return new DetailsSchedule
             {
-                Id = message.Id,
+                Id         = message.Id,
                 ScheduleId = schedule.Id
             };
         }
@@ -111,11 +105,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private Methods.
 
         /// <summary>
-        /// TODO: MOVE?
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="sequence"></param>
+        /// <param name="schedule"></param>
+        /// <param name="delegation"></param>
+        /// <param name="recipient"></param>
+        /// <returns></returns>
         private Sequence CreateOrUpdate(UpdateSequenceForm model, Sequence sequence, Schedule schedule, Taxon delegation, Account recipient)
         {
             DateTime startDate = DateTimeUtilities.Now();
-            DateTime? endDate = null;
+            DateTime? endDate  = null;
             DateTime tempDate;
             Role requiredRole = null;
             if (model.Dates.IsNotEmpty() && model.Interval == 0)
@@ -141,7 +142,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 requiredRole = this.roleService.Find(RoleTypes.Nurse);
             }
-
             if (model.OnNeedBasis)
             {
                 if (model.OnNeedBasisStartDate.HasValue)
@@ -187,8 +187,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.Taxon = delegation;
             sequence.Role = requiredRole;
             return sequence;
-            
-
         }
 
         #endregion

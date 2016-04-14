@@ -61,6 +61,7 @@ namespace Appva.Mcss.Admin
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
             ModelBinders.Binders.Add(typeof(PersonalIdentityNumber), new PersonalIdentityNumberModelBinder());
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+            AntiForgeryConfig.SuppressIdentityHeuristicChecks = true;
             AreaRegistration.RegisterAllAreas();
             FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfiguration.RegisterRoutes(RouteTable.Routes);

@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
 using Appva.Core.Logging;
+    using Appva.Mcss.Admin.Application.Services;
 
     #endregion
 
@@ -53,9 +54,8 @@ using Appva.Core.Logging;
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceHandler"/> class.
         /// </summary>
-        public UpdateSequenceHandler(ISequenceService sequenceService, IInventoryService inventories, IPersistenceContext context)
+        public UpdateSequenceHandler( IInventoryService inventories, IPersistenceContext context)
         {
-            this.sequenceService = sequenceService;
             this.inventories = inventories;
             this.context = context;
         }

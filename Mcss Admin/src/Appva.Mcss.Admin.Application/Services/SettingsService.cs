@@ -545,6 +545,16 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                     new InventoryAmountListModel
                     {
                         Name    = "dos",
+                        Amounts = zeropointfive
+                    },
+                    new InventoryAmountListModel
+                    {
+                        Name    = "ml",
+                        Amounts = InventoryAmountDefaults.ToList()
+                    },
+                    new InventoryAmountListModel
+                    {
+                        Name    = "plåster",
                         Amounts = InventoryAmountDefaults.ToList()
                     },
                     new InventoryAmountListModel

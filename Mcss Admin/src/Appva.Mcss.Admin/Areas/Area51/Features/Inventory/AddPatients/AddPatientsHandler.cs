@@ -12,6 +12,8 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Persistence;
+    using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -60,6 +62,21 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
                 inventory.Patient = sequence.Patient;
                 this.inventories.Update(inventory);
             }
+
+            //// Creates the update-notice
+            var notice = new DashboardNotification
+            {
+                IsActive = true,
+                IsVisibleToEveryone = true,
+                Name = "Nyheter - Saldo",
+                Published = true,
+                PublishedDate = DateTime.Now.Date,
+                Template = "Templates/inventory-news",
+                ViewedBy = new List<NotificationViewedBy>(),
+                VisibleTo = new List<Account>()
+            };
+
+            this.context.Save<DashboardNotification>(notice);
         }
     }
 }

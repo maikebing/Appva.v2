@@ -63,6 +63,7 @@
     </div>
 
     @{ Html.RenderAction("Dashboard", "Notification", new { area = "notification" }); }
+    @{ Html.RenderPartial("/Areas/Notification/Features/Notification/Partials/Templates/inventory-news.cshtml"); }
 
 </div>
 @if (Html.HasPermissionFor(Permissions.Dashboard.ReadChart))

@@ -146,7 +146,7 @@ namespace Appva.Mcss.Admin.Application.Services
             inventory.Amounts     = amounts;
             inventory.Unit        = unit;
             this.repository.Update(inventory);
-            this.audit.Update(inventory.Patient, "{0} uppdaterade saldo {1} (ref. {2})", this.identity.Principal.Identity.Name, name, id);
+            this.audit.Update(inventory.Patient, "uppdaterade saldo {0} (ref. {1})", name, id);
         }
 
         /// <inheritdoc />
@@ -167,7 +167,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             inventory.IsActive = false;
             this.repository.Update(inventory);
-            this.audit.Delete(inventory.Patient, "{0} inaktiverade saldo {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, inventory.Id);
+            this.audit.Delete(inventory.Patient, "inaktiverade saldo {0} (ref. {1})", inventory.Description, inventory.Id);
         }
 
         /// <inheritdoc />
@@ -175,7 +175,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             inventory.IsActive = true;
             this.repository.Update(inventory);
-            this.audit.Update(inventory.Patient, "{0} återaktiverade saldo {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, inventory.Id);
+            this.audit.Update(inventory.Patient, "återaktiverade saldo {0} (ref. {1})", inventory.Description, inventory.Id);
         }
 
         /// <inheritdoc />
@@ -189,7 +189,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 Unit        = unit
             };
             var id = this.repository.Save(inventory);
-            this.audit.Create(patient, "{0} skapade saldot {1} (ref. {2})", this.identity.Principal.Identity.Name, inventory.Description, id);
+            this.audit.Create(patient, "skapade saldot {0} (ref. {1})", inventory.Description, id);
             return id;
         }
 

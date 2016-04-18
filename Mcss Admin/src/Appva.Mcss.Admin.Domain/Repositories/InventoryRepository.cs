@@ -106,7 +106,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public void Update(Inventory entity)
         {
             entity.UpdatedAt = DateTime.Now;
-            entity.Version++;
             this.persistence.Update<Inventory>(entity);
         }
 

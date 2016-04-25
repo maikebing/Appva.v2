@@ -75,6 +75,7 @@
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\SearchPatientModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
+    <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\Contracts\IProxyRepository.cs" />
     <Compile Include="Repositories\DelegationRepository.cs" />

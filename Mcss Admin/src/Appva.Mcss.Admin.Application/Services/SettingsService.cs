@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Configuration;
+    using System.Linq;
     using System.Runtime.Caching;
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
@@ -24,6 +25,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Persistence;
     using Newtonsoft.Json;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -114,12 +116,25 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     }
 
     /// <summary>
+    /// Tenant-specific configuration settings
+    /// </summary>
+    public interface IConfigurationSettings
+    {
+        /// <summary>
+        /// Gets all available inventory amount lists for withdrawal
+        /// </summary>
+        /// <returns>List of <see cref="InventoryAmountListModel"/></returns>
+        IList<InventoryAmountListModel> GetIventoryAmountLists();
+    }
+
+    /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public interface ISettingsService :
         IAccessControlListTenantSettings,
         ISecuritySettings,
         IOldSettings,
+        IConfigurationSettings,
         IService
     {
         /// <summary>
@@ -171,6 +186,18 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
+
+        /// <summary>
+        /// The default amounts.
+        /// </summary>
+        public static readonly IReadOnlyCollection<double> InventoryAmountDefaults = new List<double>
+            { 
+                 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 
+                20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+                40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 59, 51, 52, 53, 54, 55, 56, 57, 58, 59, 
+                60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 
+                80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100
+            };
 
         #endregion
 
@@ -495,6 +522,58 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 return (string)tc.ConvertFromString(result.Value);
             }
             return "form";
+        }
+
+        #endregion
+
+        #region IConfigurationSettings implementation.
+
+        /// <inheritdoc />
+        public IList<InventoryAmountListModel> GetIventoryAmountLists()
+        {
+            const string InventoryNamespace = "MCSS.Core.Inventory.Units";
+            var units = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                  .And(x => x.Namespace == InventoryNamespace)
+                .List();
+            if (units.Count == 0)
+            {
+                var zeropointfive = InventoryAmountDefaults.ToList();
+                zeropointfive.Insert(1, 0.5);
+                return new List<InventoryAmountListModel>
+                {
+                    new InventoryAmountListModel
+                    {
+                        Name    = "dos",
+                        Amounts = zeropointfive
+                    },
+                    new InventoryAmountListModel
+                    {
+                        Name    = "ml",
+                        Amounts = new List<double> { 0.2, 0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10 }
+                    },
+                    new InventoryAmountListModel
+                    {
+                        Name    = "plåster",
+                        Amounts = InventoryAmountDefaults.ToList()
+                    },
+                    new InventoryAmountListModel
+                    {
+                        Name    = "tbl",
+                        Amounts = zeropointfive
+                    }
+                };
+            }
+            var retval = new List<InventoryAmountListModel>();
+            foreach (var unit in units)
+            {
+                retval.Add(new InventoryAmountListModel
+                {
+                    Name    = unit.Name,
+                    Amounts = JsonConvert.DeserializeObject<IList<double>>(unit.Value)
+                });
+            }
+            return retval;
         }
 
         #endregion

@@ -1,0 +1,16 @@
+﻿@{
+	SetTitle("Area 51 - Notification");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+	<h1>Saldo</h1>
+	@using (Html.Post("AddPatients", "Inventory", null))
+	{
+		@Html.Submit("Lägg till Patient på saldon", new { @class = "btn" })
+	}
+</div>
+<div id="content" class="cf">
+	<div id="content-primary">
+		@Html.Alert()
+	</div>
+</div>

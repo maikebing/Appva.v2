@@ -260,10 +260,15 @@ mcss.validation = {
                 'OnNeedBasisEndDate': {
                     'date': true,
                     'dategreaterthan': [$('#OnNeedBasisStartDate')]
+                },
+                'Inventory': {
+                    'required': function () {
+                        return $('#inventory-type-2:checked').length > 0;
+                    }
                 }
             },
             'messages': {
-                'Name': "Ordination måste fyllas i.",
+                'Name': "Insats måste fyllas i.",
                 'Interval': "En frekvens måste anges.",
                 'StartDate': {
                     'required': "Datum måste fyllas i.",
@@ -300,7 +305,10 @@ mcss.validation = {
                     'required': "Datum måste fyllas i.",
                     'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
                     'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
-                }
+                },
+                'Inventory': {
+                    'required': "Saldo måste väljas",
+                 }
             },
             'submitHandler': function(form) {
 	            $(form).find('input[type=submit]').attr('disabled','disabled');
@@ -349,6 +357,7 @@ mcss.validation = {
             ignore: [],
             'rules': {
                 'Name': 'required',
+                'Inventory': 'required',
                 'Interval': {
                     'required': function () {
                         return $('#activity-type-1:checked').length > 0;
@@ -410,7 +419,8 @@ mcss.validation = {
                 }
             },
             'messages': {
-                'Name': "Ordination måste fyllas i.",
+                'Name': "Insats måste fyllas i.",
+                'Inventory': "Saldo måste väljas.",
                 'Interval': "En frekvens måste anges.",
                 'StartDate': {
                     'required': "Datum måste fyllas i.",
@@ -838,7 +848,23 @@ mcss.validation = {
                 }
             }
         });
-	}
+    },
+    InventoryCreateUpdate: function (params) {
+        $('.std-form form').validate({
+            'rules': {
+                'Name': 'required'
+            },
+            'messages': {
+                'Name': {
+                    'required': "Namn måste fyllas i."
+                }
+            },
+            'submitHandler': function (form) {
+                $(form).find('input[type=submit]').attr('disabled', 'disabled');
+                form.submit();
+            }
+        });
+    },
 };
 
 mcss.validation.applyRules = function(valclass,valparams) {

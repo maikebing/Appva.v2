@@ -47,6 +47,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IAuditService auditing;
 
+        /// <summary>
+        /// The <see cref="IInventoryService"/>.
+        /// </summary>
+        private readonly IInventoryService inventories;
+
         #endregion
 
         #region Constructor.
@@ -54,9 +59,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceFormHandler"/> class.
         /// </summary>
-        public CreateSequenceFormHandler(IPersistenceContext context, IRoleService roleService, IAuditService auditing)
+        public CreateSequenceFormHandler(IPersistenceContext context, IInventoryService inventories, IRoleService roleService, IAuditService auditing)
         {
             this.context = context;
+            this.inventories = inventories;
             this.roleService = roleService;
             this.auditing = auditing;
         }
@@ -154,23 +160,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     endDate = message.EndDate.Value;
                 }
             }
-            var inventory = schedule.ScheduleSettings.HasInventory ? new Inventory()
-            {
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
-                IsActive = true,
-                CurrentLevel = 0,
-                Description = message.Name,
-                Transactions = new List<InventoryTransactionItem>()
-            } : null;
-            if (inventory != null)
-            {
-                if (schedule.ScheduleSettings.CountInventory)
+
+            Inventory inventory = null;
+            if(schedule.ScheduleSettings.HasInventory){
+                if(message.CreateNewInventory)
                 {
-                    inventory.LastRecount = DateTime.Now;
+                    message.Inventory = this.inventories.Create(message.Name, null, null, message.Patient);
                 }
-                this.context.Save(inventory);
+                inventory = this.inventories.Find(message.Inventory.GetValueOrDefault());
             }
+           
             return new Sequence()
             {
                 CreatedAt = DateTime.Now,
@@ -184,8 +183,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 RangeInMinutesAfter = message.RangeInMinutesAfter,
                 Times = string.Join(",", message.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray()),
                 Dates = message.Dates,
-                Hour = message.Hour,
-                Minute = message.Minute,
                 Interval = (message.OnNeedBasis) ? 1 : message.Interval.Value,
                 OnNeedBasis = message.OnNeedBasis,
                 Reminder = message.Reminder,

@@ -1,0 +1,23 @@
+﻿@model Appva.Mcss.Admin.Areas.Models.UpdateInventoryModel
+@{
+    SetTitle("Ändra saldo");
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="InventoryCreateUpdate">
+    @using (Html.Post(new { Id = Model.Id, Inventory = Model.Inventory }))
+    {
+        <h3 class="section-title">Ändra</h3>
+        @Html.FormGroup(m => m.Name, "text medium").Label("Namn", new { @class = "col" }).TextBox().Validate().Build()
+
+        <div class="row cf">
+            <div class="select col">
+                @Html.LabelFor(m => m.Amounts)
+                @Html.DropDownListFor(m => m.Amounts, Model.AmountsList, "Välj enhet...", new { })
+            </div>
+        </div>
+
+        <div class="input">
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

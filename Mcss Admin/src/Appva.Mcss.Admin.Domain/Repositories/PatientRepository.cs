@@ -21,10 +21,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using NHibernate.Criterion;
     using NHibernate.Transform;
     using NHibernate.Type;
+    using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
     #endregion
 
-    public interface IPatientRepository : IRepository
+    public interface IPatientRepository : IProxyRepository<Patient>, IRepository
     {
         /// <summary>
         /// Gets patients by taxon, filtered by delayed and incomplete tasks
@@ -172,6 +173,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 TotalCount  = (long) query.RowCount(),
                 Entities    = items
             };
+        }
+
+        #endregion
+
+        #region IProxyRepository<Patient> Members.
+
+        /// <inheritdoc />
+        public Patient Load(Guid id)
+        {
+            return this.context.Session.Load<Patient>(id);
         }
 
         #endregion

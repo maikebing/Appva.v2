@@ -187,9 +187,9 @@
                         }
                         t.click(function () {
                             var t = $(this);
-                            t.parents('.std-form:first').find('.toggled').removeClass('toggled');
+                            t.parent().parent().find('.toggled').removeClass('toggled');
                             t.parent().addClass('toggled');
-                            t.parents('.std-form').find('.toggle-target').hide();
+                            $('.' + t.data('togglegroup')).hide();
                             $('.' + t.data('toggletarget')).show();
                         });
                     });
@@ -383,11 +383,8 @@
                     } else {
                         self.parent().nextAll('.select').unbind("change").remove();
                     }
-                    if (self.val()) {
+                    if (self.val() != null && self.val() != 'undefined' && self.val() != '-1' && self.val() != '') {
                         $('#Taxon').val(self.val());
-                        if (self.val() == '-1') {
-                            return;
-                        }
                         $.getJSON(url, { "id": self.val() }, function(data) {
                             var items = [];
                             if (data.length > 0) {
@@ -408,7 +405,7 @@
                                     }).bind("change", dropdown);
                                     if(self.parent().hasClass('custom-select-wrap')) {
                                         $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent().parent());
-                                         mcss.customSelect($('.global-filter .select:last'));
+                                        mcss.customSelect($('.global-filter .select:last'));
                                     } else {
                                         $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent());
                                     }

@@ -92,6 +92,13 @@ namespace Appva.Mcss.Admin.Application.Services
         bool Update(Guid id, string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, out Patient patient);
 
         /// <summary>
+        /// Loads a proxy of the patient from the id
+        /// </summary>
+        /// <param name="id">Patient id</param>
+        /// <returns>A proxy of <see cref="Patient"/></returns>
+        Patient Load(Guid id);
+
+        /// <summary>
         /// Gets all patients with delayed tasks
         /// </summary>
         /// <param name="taxon"></param>
@@ -320,6 +327,12 @@ namespace Appva.Mcss.Admin.Application.Services
 
             var schedulesettings = this.identity.SchedulePermissions().Select(x => new Guid(x.Value)).ToList();
             return this.repository.Search(model, schedulesettings, page, pageSize);
+        }
+
+        /// <inheritdoc />
+        public Patient Load(Guid id)
+        {
+            return this.repository.Load(id);
         }
 
         #endregion

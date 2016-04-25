@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
@@ -30,18 +31,106 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <summary>
         /// Returns a list of 
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="inventoryId">The inventory id</param>
-        /// <param name="year">Optional year</param>
-        /// <param name="month">Optional month</param>
-        /// <param name="startDate">Optional start date</param>
-        /// <param name="endDate">Optional end date</param>
-        /// <param name="page">Optional page - defaults to 1</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The <see cref="ListInventory"/></param>
+        /// <returns>A <see cref="ListInventoryModel"/></returns>
         [Route("list")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Inventory.ReadValue)]
         public ActionResult List(ListInventory request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Create
+
+        /// <summary>
+        /// Returns the inventory create view
+        /// </summary>
+        /// <param name="request">A <see cref="Identity{CreateInventoryModel}"/></param>
+        /// <returns>A <see cref="ListInventory"/></returns>
+        [Route("create")]
+        [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Inventory.CreateValue)]
+        public ActionResult Create(Identity<CreateInventoryModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// The create POST
+        /// </summary>
+        /// <param name="request">A <see cref="CreateInventoryModel"/></param>
+        /// <returns>A <see cref="ListInventory"/></returns>
+        [Route("create")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "inventory")]
+        [PermissionsAttribute(Permissions.Inventory.CreateValue)]
+        public ActionResult Create(CreateInventoryModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Update.
+
+        /// <summary>
+        /// Returns the inventory update view
+        /// </summary>
+        /// <param name="request">The <see cref="UpdateInventory"/></param>
+        /// <returns>A <see cref="UpdateInventoryModel"/></returns>
+        [Route("update/{inventory:guid}")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
+        public ActionResult Update(UpdateInventory request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// The update POST.
+        /// </summary>
+        /// <param name="request">An <see cref="UpdateInventoryModel"/></param>
+        /// <returns>A <see cref="ListInventory"/></returns>
+        [Route("update/{inventory:guid}")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "inventory")]
+        [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
+        public ActionResult Update(UpdateInventoryModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Inactivate
+
+        /// <summary>
+        /// Inactivates an inventory
+        /// </summary>
+        /// <param name="request">The <see cref="InactivateInventory"/></param>
+        /// <returns>A <see cref="ListInventory"/></returns>
+        [Route("inactivate/{inventory:guid}")]
+        [HttpGet, Dispatch("list", "inventory")]
+        [PermissionsAttribute(Permissions.Inventory.DeleteValue)]
+        public ActionResult Inactivate(InactivateInventory request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Reactivate
+
+        /// <summary>
+        /// Reactivates an inventory
+        /// </summary>
+        /// <param name="request">The <see cref="ReactivateInventory"/></param>
+        /// <returns>A <see cref="ListInventory"/></returns>
+        [Route("reactivate/{inventory:guid}")]
+        [HttpGet, Dispatch("list", "inventory")]
+        [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
+        public ActionResult Reactivate(ReactivateInventory request)
         {
             return this.View();
         }
@@ -53,9 +142,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <summary>
         /// Returns the add inventory view.
         /// </summary>
-        /// <param name="id">TODO: This is the patient id ... The inventory id</param>
-        /// <param name="returnUrl">The return url</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The <see cref="AddInventoryItem"/></param>
+        /// <returns>A <see cref="InventoryTransactionItemViewModel"/></returns>
         [Route("add")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Inventory.CreateValue)]
@@ -71,9 +159,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <summary>
         /// Returns a withdraw from inventory view.
         /// </summary>
-        /// <param name="id">The inventory id</param>
-        /// <param name="returnUrl">The return url</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The <see cref="WithdrawInventoryItem"/></param>
+        /// <returns>A <see cref="InventoryTransactionItemViewModel"/></returns>
         [Route("withdraw")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
@@ -89,9 +176,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// <summary>
         /// Returns the recount inventory view.
         /// </summary>
-        /// <param name="id">The inventory id</param>
-        /// <param name="returnUrl">The return url</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <param name="request">The <see cref="RecountInventoryItem"/></param>
+        /// <returns>A <see cref="InventoryTransactionItemViewModel"/></returns>
         [Route("recount")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Inventory.UpdateValue)]
@@ -124,14 +210,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         /// Creates a transaction - either an addition, withdrawal or a recount for
         /// the specified inventory.
         /// </summary>
-        /// <param name="id">TODO: what id is id?</param>
-        /// <param name="model">The inventory transaction model</param>
-        /// <param name="returnUrl">The return url</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [Route("create")]
+        /// <param name="request">The <see cref="CreateInventoryTransactionItem"/></param>
+        /// <returns>A redirect to the return URL</returns>
+        [Route("transaction/create")]
         [HttpPost, Dispatch, Validate, ValidateAntiForgeryToken]
         [PermissionsAttribute(Permissions.Inventory.CreateValue)]
-        public ActionResult Create(CreateInventoryItem request)
+        public ActionResult CreateTransaction(CreateInventoryTransactionItem request)
         {
             return this.Redirect(request.ReturnUrl);
         }

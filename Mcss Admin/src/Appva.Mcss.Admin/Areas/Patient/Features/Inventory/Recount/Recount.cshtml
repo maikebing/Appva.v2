@@ -3,7 +3,7 @@
     SetTitle("Kontrollräkna"); 
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="RecalculateStock">
-    @using (Html.BeginForm("Create", "Inventory", new { id = Model.InventoryId, returnUrl = Model.ReturnUrl })) {
+    @using (Html.BeginForm("CreateTransaction", "Inventory", new { id = Model.InventoryId, returnUrl = Model.ReturnUrl })) {
         <h3 class="section-title">Kontrollräkna @Model.InventoryName</h3>
         <div class="text medium">
             @Html.FormGroup(m => m.Value).Label().TextBox(htmlAttributes: new { /*@type = "number", @min = "0", @max = "9999", step = "any"*/ }).Validate().Build()

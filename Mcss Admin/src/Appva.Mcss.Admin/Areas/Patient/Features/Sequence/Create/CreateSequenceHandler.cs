@@ -38,6 +38,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IDelegationService delegations;
 
+        /// <summary>
+        /// The <see cref="IInventoryService"/>
+        /// </summary>
+        private readonly IInventoryService inventories;
+
         #endregion
 
         #region Constructor.
@@ -45,10 +50,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceHandler"/> class.
         /// </summary>
-        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations)
+        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories)
         {
             this.context = context;
             this.delegations = delegations;
+            this.inventories = inventories;
         }
 
         #endregion
@@ -72,7 +78,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     Id = x,
                     Checked = false
-                }).ToList()
+                }).ToList(),
+                Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                CreateNewInventory = true
             };
         }
 

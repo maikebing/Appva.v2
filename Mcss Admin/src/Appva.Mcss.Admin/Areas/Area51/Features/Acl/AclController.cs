@@ -98,23 +98,6 @@ namespace Appva.Mcss.Admin.Controllers
 
         #endregion
 
-        #region Upgrade 1.6.0 Upgrade Access Control.
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        [Route("upgrade")]
-        [HttpPost, Validate, ValidateAntiForgeryToken]
-        [AlertSuccess("Uppgradering klar!")]
-        public ActionResult UpgradePermissionNamesAndAddNew()
-        {
-            this.mediator.Publish(new UpgradeAcl());
-            return this.RedirectToAction("Index");
-        }
-
-        #endregion
-
         #region Update Access Control.
 
         /// <summary>

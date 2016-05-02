@@ -444,6 +444,8 @@
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegation.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationModel.cs" />
+    <Compile Include="Areas\Report\Features\Report\Excel\FullReportExcel.cs" />
+    <Compile Include="Areas\Report\Features\Report\Excel\FullReportExcelHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReport.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
@@ -717,7 +719,6 @@
     <Content Include="Assets\js\jquery\plugins\jquery.flot-0.7.0.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.flot-0.7.0.min.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.validate-1.10.0.js" />
-    <Content Include="Assets\js\jquery\plugins\jquery.validate-1.10.0.min.js" />
     <Content Include="Assets\js\main.js" />
     <Content Include="Assets\js\mcss.calendar.js" />
     <Content Include="Assets\js\mcss.calendar.lb.js" />

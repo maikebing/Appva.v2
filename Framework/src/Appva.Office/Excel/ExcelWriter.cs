@@ -15,6 +15,7 @@ namespace Appva.Office
     using System.Linq.Expressions;
     using JetBrains.Annotations;
     using NPOI.HSSF.UserModel;
+    using NPOI.XSSF.UserModel;
     using NPOI.SS.UserModel;
 
     #endregion
@@ -39,7 +40,7 @@ namespace Appva.Office
             using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
             using (var memory = new MemoryStream())
             {
-                var workbook = new HSSFWorkbook(stream, true);
+                var workbook = new XSSFWorkbook(stream);
                 var sheet = workbook.GetSheetAt(0);
                 if (items.Count > 0)
                 {

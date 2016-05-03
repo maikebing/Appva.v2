@@ -127,6 +127,21 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         IList<InventoryAmountListModel> GetIventoryAmountLists();
     }
 
+    public interface IAuditConfiguration
+    {
+        /// <summary>
+        /// Returns whether or not the audit logging is enabled.
+        /// </summary>
+        /// <returns>True if enabled; otherwise false</returns>
+        bool IsAuditLoggingEnabled();
+
+        /// <summary>
+        /// Returns the audit logging configuration.
+        /// </summary>
+        /// <returns>The configuration</returns>
+        AuditLoggingConfiguration AuditLoggingConfiguration();
+    }
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
@@ -135,6 +150,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         ISecuritySettings,
         IOldSettings,
         IConfigurationSettings,
+        IAuditConfiguration,
         IService
     {
         /// <summary>
@@ -574,6 +590,22 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 });
             }
             return retval;
+        }
+
+        #endregion
+
+        #region IAuditConfiguration Members
+
+        /// <inheritdoc />
+        public bool IsAuditLoggingEnabled()
+        {
+            return this.Find<bool>(ApplicationSettings.IsAuditCollectionActivated);
+        }
+
+        /// <inheritdoc />
+        public AuditLoggingConfiguration AuditLoggingConfiguration()
+        {
+            return this.Find<AuditLoggingConfiguration>(ApplicationSettings.AuditConfiguration);
         }
 
         #endregion

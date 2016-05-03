@@ -1,0 +1,25 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Audit.AuditConfiguration
+@{
+	SetTitle("Area 51 - Konfiguration för loggning");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+	<h1>Installera konfigurering för loggning</h1>
+</div>
+<div id="content" class="cf">
+	<div id="content-primary">
+        @using (Html.Post())
+        {
+            if (Model.OrganizationalUnits != null)
+            {
+                @Html.FormGroup(x => x.OrganizationalUnits).Label("Organisatoriska vårdgränser").CheckboxList(new { @class = "health-attr" }).Validate().Build()
+            }
+            else
+            {
+                @: Inga organisatoriska enheter hittades?
+            }
+            @Html.Submit("Välj vårdgränser")
+        }
+        <br />
+	</div>
+</div>

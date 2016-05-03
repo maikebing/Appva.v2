@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Appva.Mcss.Admin.Application.Security.Jwt;
     using Appva.Mcss.Admin.Domain.VO;
@@ -175,6 +176,17 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "Mcss.Core.Security.Analytics.Audit",
             "If true the audit logging analytics is enabled and active for the tenant",
             false);
+
+        /// <summary>
+        /// Audit logging analytics collection is enabled for the current tenant.
+        /// </summary>
+        /// <remarks>The setting returns a <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<AuditLoggingConfiguration> AuditConfiguration = ApplicationSettingIdentity<AuditLoggingConfiguration>.CreateNew(
+            "Mcss.Core.Security.Analytics.Audit.Configuration",
+            "Audit logging configuration",
+            "Mcss.Core.Security.Analytics.Audit",
+            "The audit configuration settings",
+            AuditLoggingConfiguration.CreateNew(new List<Guid>()));
 
         #endregion
 

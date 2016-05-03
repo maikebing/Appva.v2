@@ -207,6 +207,15 @@
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Upgrade\UpgradeAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Upgrade\UpgradeHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\AuditController.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfigurationCreateHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfigurationHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Configuration\OrganizationalUnit.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Index\IsAuditPermissionsInstalled.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Install\InstallAuditPermissions.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Index\IsAuditPermissionsInstalledHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Install\InstallAuditPermissionsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfiguration.cs" />
     <Compile Include="Areas\Area51\Features\Cache\CacheController.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCacheHandler.cs" />
@@ -1136,6 +1145,8 @@
     <Content Include="Areas\Area51\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Area51\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\inventory-news.cshtml" />
+    <Content Include="Areas\Area51\Features\Audit\Index\Index.cshtml" />
+    <Content Include="Areas\Area51\Features\Audit\Configuration\Configuration.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

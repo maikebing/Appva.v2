@@ -352,6 +352,12 @@
     </component>
     <property name="Deceased" />
     <many-to-one name="Taxon" class="Taxon" />
+    <property name="IsPersonOfPublicInterest">
+      <column name="IsPersonOfPublicInterest" not-null="true" default="'false'" />
+    </property>
+    <property name="IsAllDemographicInformationSensitive">
+      <column name="IsAllDemographicInformationSensitive" not-null="true" default="'false'" />
+    </property>
     <bag name="SeniorAlerts" cascade="save-update">
       <key column="PatientId" />
       <many-to-many class="Taxon" column="TaxonId" property-ref="" />

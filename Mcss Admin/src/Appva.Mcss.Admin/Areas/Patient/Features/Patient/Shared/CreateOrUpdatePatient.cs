@@ -118,5 +118,25 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+
+        /// <summary>
+        /// Whether or not the patient is a person of public interest (VIP), or person who is
+        /// known to the staff.
+        /// </summary>
+        public bool IsPersonOfPublicInterestOrVip
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether or not the patient is a person with hightened sensitivity - all demographics
+        /// sensitivity.
+        /// </summary>
+        public bool IsPersonWithHightenedSensitivity
+        {
+            get;
+            set;
+        }
     }
 }

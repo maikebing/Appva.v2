@@ -243,6 +243,10 @@
     <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
     <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
+    <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
+    <Compile Include="Areas\Log\Features\Log\List\ListLogModel.cs" />
+    <Compile Include="Areas\Log\Features\Log\LogController.cs" />
     <Compile Include="Areas\Notification\Features\News\Activate\ActivateNews.cs" />
     <Compile Include="Areas\Notification\Features\News\Activate\ActivateNewsHandler.cs" />
     <Compile Include="Areas\Notification\Features\News\NewsController.cs" />
@@ -1135,6 +1139,7 @@
     <Content Include="Areas\Area51\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Area51\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\inventory-news.cshtml" />
+    <Content Include="Areas\Log\Features\web.config" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

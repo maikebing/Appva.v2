@@ -205,8 +205,6 @@
     <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18Handler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\Upgrade\UpgradeAcl.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\Upgrade\UpgradeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Cache\CacheController.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCacheHandler.cs" />

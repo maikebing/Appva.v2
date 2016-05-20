@@ -498,12 +498,18 @@ mcss.validation = {
                 'StartTime': {
                     'required': function () {
                         return $('#AllDay:checked').length == 0;
-                    }
+                    },
+                    'time': function () {
+                        return $('#AllDay:checked').length == 0;
+                    },
                 },
                 'EndTime': {
                     'required': function () {
                         return $('#AllDay:checked').length == 0;
-                    }
+                    },
+                    'time' : function () {
+                        return $('#AllDay:checked').length == 0;
+                    },
                 }
             },
             'messages': {

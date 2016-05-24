@@ -18,7 +18,7 @@ using System.Linq;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ListLogModel
+    public sealed class ListLogModel
     {
         #region Properties.
 
@@ -44,6 +44,24 @@ using System.Linq;
         /// The pagesize
         /// </summary>
         public int PageSize
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The total count
+        /// </summary>
+        public int TotalCount 
+        { 
+            get; 
+            set; 
+        }
+
+        /// <summary>
+        /// The tenant-name
+        /// </summary>
+        public string TenantName
         {
             get;
             set;

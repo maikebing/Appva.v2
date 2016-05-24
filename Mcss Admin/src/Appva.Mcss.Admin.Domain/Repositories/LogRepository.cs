@@ -70,19 +70,22 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             page = page < 1 ? 1 : page; 
 
             LogModel alias = null;
+            Patient patient = null;
+            Account account = null;
             var query = this.persistence.QueryOver<Log>()
-                .Where(x => x.IsActive)
+                //.Where(x => x.IsActive)
+                .Full.JoinAlias(x => x.Patient, () => patient)
+                .Full.JoinAlias(x => x.Account, () => account)
                 .SelectList(list => list
                     .Select(x => x.Id).WithAlias(() => alias.Id)
                     .Select(x => x.IpAddress).WithAlias(() => alias.IpAddress)
                     .Select(x => x.Level).WithAlias(() => alias.Level)
                     .Select(x => x.Message).WithAlias(() => alias.Message)
-                    .Select(x => x.Patient.FullName).WithAlias(() => alias.PatientName)
+                    .Select(() => patient.FullName).WithAlias(() => alias.PatientName)
                     .Select(x => x.Route).WithAlias(() => alias.Route)
                     .Select(x => x.System).WithAlias(() => alias.System)
                     .Select(x => x.Type).WithAlias(() => alias.Type)
-                    .Select(x => x.Version).WithAlias(() => alias.Version)
-                    .Select(x => x.Account.FullName).WithAlias(() => alias.AccountName)
+                    .Select(() => account.FullName).WithAlias(() => alias.AccountName)
                     .Select(x => x.CreatedAt).WithAlias(() => alias.CreatedAt))
                 .OrderByAlias(() => alias.CreatedAt).Desc
                 .TransformUsing(Transformers.AliasToBean<LogModel>());

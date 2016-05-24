@@ -80,8 +80,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             
             var retval = this.logRepository.List(cursor, page, pageSize);
-            this.audit.Read("Användare {0} läste logg mellan {1} och {2}", 
-                this.identity.PrincipalId, 
+            this.audit.Read("läste logg mellan {0} och {1}", 
                 ((List<LogModel>)retval.Entities).FirstOrDefault().CreatedAt, 
                 ((List<LogModel>)retval.Entities).Last().CreatedAt);
 

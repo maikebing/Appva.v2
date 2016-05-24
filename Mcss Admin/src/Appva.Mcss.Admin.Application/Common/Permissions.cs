@@ -1139,6 +1139,30 @@ namespace Appva.Mcss.Admin.Application.Common
         }
 
         #endregion
+
+        #region Log
+
+        /// <summary>
+        /// The log permissions.
+        /// </summary>
+        public static class Log
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "log/read";
+
+            /// <summary>
+            /// Permission to read/view notifications.
+            /// </summary>
+            [Sort(100)]
+            [Name("Read logs")]
+            [Description("Permission to read/view logs")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
+
+        #endregion
     }
 
     /// <summary>

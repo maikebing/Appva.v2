@@ -39,9 +39,25 @@ namespace Appva.Mcss.Admin.Application.Common
                 return;
             }
             var copy = items.Select(map).ToList();
+            CacheUtils.CacheList<TCacheEntry>(cache, cacheKey, copy);
+        }
+
+        /// <summary>
+        /// Cache a list of items.
+        /// </summary>
+        /// <typeparam name="TEntity">The entity type</typeparam>
+        /// <param name="cache">The cache store</param>
+        /// <param name="cacheKey">The cache key</param>
+        /// <param name="items">The list of entity items</param>
+        public static void CacheList<TEntity>(IRuntimeMemoryCache cache, string cacheKey, IList<TEntity> items)
+        {
+            if (cacheKey == null || items == null || items.Count == 0)
+            {
+                return;
+            }
             cache.Upsert(
                 cacheKey,
-                copy,
+                items,
                 new RuntimeEvictionPolicy
                 {
                     Priority = CacheItemPriority.Default

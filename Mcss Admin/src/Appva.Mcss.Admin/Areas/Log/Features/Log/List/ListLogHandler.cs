@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Log.Models;
     using System;
@@ -29,6 +30,11 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// </summary>
         private readonly ILogService logService;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
         #endregion
 
         #region Constructor.
@@ -36,9 +42,10 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListLogHandler"/> class.
         /// </summary>
-        public ListLogHandler(ILogService logService)
+        public ListLogHandler(ILogService logService, ITaxonomyService taxonomyService)
         {
             this.logService = logService;
+            this.taxonomyService = taxonomyService;
         }
 
         #endregion
@@ -48,7 +55,16 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// <inheritdoc />
         public override ListLogModel Handle(ListLog message)
         {
-            throw new NotImplementedException();
+            var list = this.logService.List(message.Cursor, message.Page);
+            var rootTaxon = this.taxonomyService.Roots(TaxonomicSchema.Organization).FirstOrDefault();
+            return new ListLogModel
+            {
+                Logs = list.Entities,
+                Page = (int)list.CurrentPage,
+                PageSize = (int)list.PageSize,
+                TotalCount = (int)list.TotalCount,
+                TenantName = rootTaxon.Name
+            };
         }
 
         #endregion

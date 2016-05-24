@@ -1140,6 +1140,8 @@
     <Content Include="Areas\Area51\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\inventory-news.cshtml" />
     <Content Include="Areas\Log\Features\web.config" />
+    <Content Include="Areas\Log\Features\Log\List\List.cshtml" />
+    <Content Include="Areas\Log\Features\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

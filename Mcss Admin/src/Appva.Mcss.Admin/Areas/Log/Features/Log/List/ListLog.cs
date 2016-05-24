@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ListLog : IRequest<ListLogModel>
+    public sealed class ListLog : IRequest<ListLogModel>
     {
         #region Properties.
 

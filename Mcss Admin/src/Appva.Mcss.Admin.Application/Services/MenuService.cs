@@ -89,26 +89,8 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
             {
                 return this.CreateMenuList(action, controller, area, this.CreateDefaultMenu());
             }
-            var cacheKey = this.CreateCacheKey(key);
-            if (this.cache.Find<IList<MenuItem>>(cacheKey) == null)
-            {
-                CacheUtils.CopyAndCacheList<MenuLink, MenuItem>(this.cache, cacheKey, this.repository.ListByMenu(key), x =>
-                     new MenuItem(
-                        x.Id,
-                        x.Label,
-                        x.Action,
-                        x.Controller,
-                        x.Area,
-                        false,
-                        x.ListItemCssClass,
-                        x.AnchorCssClass,
-                        x.Sort,
-                        x.Parent == null ? (Guid?) null : x.Parent.Id,
-                        x.Permission == null ? null : x.Permission.Resource
-                     ));
-            }
-            var items = this.cache.Find<IList<MenuItem>>(cacheKey);
-            return this.CreateMenuList(action, controller, area, items);
+
+            return this.CreateMenuList(action, controller, area, Menus.MainMenu);
         }
 
         #endregion
@@ -123,38 +105,72 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
         /// <param name="area">The area route</param>
         /// <param name="items">The menu item collection</param>
         /// <returns>A <see cref="IMenuList{IMenuItem}"/></returns>
-        private IList<IMenuItem> CreateMenuList(string action, string controller, string area, IList<MenuItem> items)
+        private IList<IMenuItem> CreateMenuList(string action, string controller, string area, IList<IMenuItem> links)
         {
-            var flattened = new Dictionary<Guid, MenuItem>();
-            Guid? parentId = null;
-            foreach (var item in items)
+            var retval = new List<IMenuItem>();
+            foreach (var link in links)
             {
-                if (item.Permission == null || this.identity.HasPermission(item.Permission))
+                if (link.Permission == null || this.identity.HasPermission(link.Permission.Value))
                 {
-                    var isSelected = MenuItem.IsSelectedItem(item, action, controller, area);
-                    if (isSelected)
+                    var item = link.Clone() as MenuItem;
+                    retval.Add(item);
+                    if(item.Children != null)
                     {
-                        parentId = item.ParentId;
+                        bool childSelected;
+                        item.Children = this.CreateMenuList(action, controller, area, item.Children, out childSelected);
+                        if(childSelected)
+                        { 
+                            ((MenuItem)item).MarkAsSelected(); 
+                        }
                     }
-                    flattened.Add(
-                        item.Id,
-                        new MenuItem(
-                            item.Id,
-                            item.Label,
-                            item.Action,
-                            item.Controller,
-                            item.Area,
-                            isSelected,
-                            item.ListItemCssClass,
-                            item.AnchorCssClass,
-                            item.Sort,
-                            item.ParentId,
-                            item.Permission
-                        ));
+                    if(MenuItem.IsSelectedItem(item, action, controller, area))
+                    {
+                        ((MenuItem)item).MarkAsSelected();
+                    }
                 }
+
             }
-            this.MarkParentsAsSelected(parentId, flattened);
-            return this.CreateHierarchyTree(flattened.Values.ToList());
+            return retval;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="controller"></param>
+        /// <param name="area"></param>
+        /// <param name="items"></param>
+        /// <param name="isSelected"></param>
+        /// <returns></returns>
+        private IList<IMenuItem> CreateMenuList(string action, string controller, string area, IList<IMenuItem> links, out bool isSelected)
+        {
+            isSelected = false;
+            var retval = new List<IMenuItem>();
+            foreach (var link in links)
+            {
+                if (link.Permission == null || this.identity.HasPermission(link.Permission.Value))
+                {
+                    var item = link.Clone() as MenuItem;
+                    retval.Add(item);
+                    if(item.Children != null)
+                    {
+                        bool childSelected;
+                        item.Children = this.CreateMenuList(action, controller, area, item.Children, out childSelected);
+                        if(childSelected)
+                        {
+                            ((MenuItem)item).MarkAsSelected();
+                            isSelected = true;
+                        }
+                    }
+                    if(MenuItem.IsSelectedItem(item, action, controller, area))
+                    {
+                        ((MenuItem)item).MarkAsSelected();
+                        isSelected = true;
+                    }
+                }
+
+            }
+            return retval;
         }
 
         /// <summary>
@@ -177,7 +193,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        private IList<IMenuItem> CreateHierarchyTree(IList<MenuItem> items)
+        /*private IList<IMenuItem> CreateHierarchyTree(IList<MenuItem> items)
         {
             return items.Where(x => x.ParentId.IsEmpty())
                 .OrderBy(x => x.Sort)
@@ -192,7 +208,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
                             this.CreateHierarchyTree(x, items)))
                 .Cast<IMenuItem>()
                 .ToList();
-        }
+        }*/
 
         /// <summary>
         /// 
@@ -200,7 +216,7 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
         /// <param name="item"></param>
         /// <param name="items"></param>
         /// <returns></returns>
-        private IList<IMenuItem> CreateHierarchyTree(MenuItem item, IList<MenuItem> items)
+        /*private IList<IMenuItem> CreateHierarchyTree(MenuItem item, IList<MenuItem> items)
         {
             return items.Where(x => x.ParentId.IsNotEmpty() && x.ParentId.Equals(item.Id))
                 .OrderBy(x => x.Sort)
@@ -215,15 +231,15 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
                             this.CreateHierarchyTree(x, items)))
                 .Cast<IMenuItem>()
                 .ToList();
-        }
+        }*/
 
         /// <summary>
         /// Creates default menu if access control is not enabled.
         /// </summary>
         /// <returns></returns>
-        private IList<MenuItem> CreateDefaultMenu()
+        private IList<IMenuItem> CreateDefaultMenu()
         {
-            var items = new List<MenuItem>();
+            var items = new List<IMenuItem>();
             //// 1st menu items.
             items.Add(new MenuItem(new Guid("7D2FD5DC-F3B1-4C23-80D8-A4A301313DA3"), "Översikt", "Index", "Dashboard", "Dashboard", false));
             items.Add(new MenuItem(new Guid("3D395383-AB8E-4A78-BC86-A4A301313DA4"), "Boende", "List", "Patient", "Patient", false));

@@ -67,6 +67,15 @@ using System.Linq;
             set;
         }
 
+        /// <summary>
+        /// The current cursor
+        /// </summary>
+        public DateTime Cursor
+        {
+            get;
+            set;
+        } 
+
         #endregion
     }
 }

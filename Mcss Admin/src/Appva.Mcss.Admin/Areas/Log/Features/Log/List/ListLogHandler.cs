@@ -63,7 +63,9 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
                 Page = (int)list.CurrentPage,
                 PageSize = (int)list.PageSize,
                 TotalCount = (int)list.TotalCount,
-                TenantName = rootTaxon.Name
+                TenantName = rootTaxon.Name,
+                Cursor = message.Cursor.GetValueOrDefault(list.Entities.FirstOrDefault().CreatedAt)
+                
             };
         }
 

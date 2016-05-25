@@ -104,15 +104,6 @@ using System.Linq;
         }
 
         /// <summary>
-        /// The version
-        /// </summary>
-        public int Version
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The created date
         /// </summary>
         public DateTime CreatedAt

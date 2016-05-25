@@ -79,7 +79,7 @@ namespace Appva.Mcss.Admin.Application.Services
         public PageableSet<LogModel> List(DateTime? cursor = null, int page = 1, int pageSize = 100)
         {
             
-            var retval = this.logRepository.List(cursor, page, pageSize);
+            var retval = this.logRepository.List(cursor, page, pageSize, this.identity.IsAppvaAccount());
             this.audit.Read("läste logg mellan {0} och {1}", 
                 ((List<LogModel>)retval.Entities).FirstOrDefault().CreatedAt, 
                 ((List<LogModel>)retval.Entities).Last().CreatedAt);

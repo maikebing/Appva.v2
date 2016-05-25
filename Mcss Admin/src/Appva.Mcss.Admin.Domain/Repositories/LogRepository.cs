@@ -8,10 +8,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
+    using Appva.Core.Resources;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Persistence;
     using Appva.Repository;
+    using NHibernate.Criterion;
     using NHibernate.Transform;
     using System;
     using System.Collections.Generic;
@@ -32,7 +34,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        PageableSet<LogModel> List(DateTime? cursor = null, int page = 1, int pageSize = 100);
+        PageableSet<LogModel> List(DateTime? cursor = null, int page = 1, int pageSize = 100, bool isAppvaAccount = false);
     }
 
     /// <summary>
@@ -64,7 +66,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region ILogRepository Members.
 
         /// <inheritdoc />
-        public PageableSet<LogModel> List(DateTime? cursor = null, int page = 1, int pageSize = 100)
+        public PageableSet<LogModel> List(DateTime? cursor = null, int page = 1, int pageSize = 100, bool isAppvaAccount = false)
         {
             //// If page is less then 1, then adjust it.
             page = page < 1 ? 1 : page; 
@@ -73,10 +75,27 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             Patient patient = null;
             Account account = null;
             var query = this.persistence.QueryOver<Log>()
-                //.Where(x => x.IsActive)
-                .Full.JoinAlias(x => x.Patient, () => patient)
-                .Full.JoinAlias(x => x.Account, () => account)
-                .SelectList(list => list
+                .Left.JoinAlias(x => x.Patient, () => patient)
+                .Left.JoinAlias(x => x.Account, () => account);
+
+             //// If we have a cursor, remove everything before the cursor to get the correct page
+            if (cursor.HasValue)
+            {
+                query.Where(x => x.CreatedAt <= cursor.GetValueOrDefault());
+            }
+
+            //// If not an appva-account, filter on appva-accounts
+            if (! isAppvaAccount)
+            {
+                var sub = QueryOver.Of<Account>()
+                    .Select(x => x.Id)
+                    .Inner.JoinQueryOver<Role>(x => x.Roles)
+                    .Where(x => x.MachineName == RoleTypes.Appva);
+
+                query.WithSubquery.WhereProperty(() => account.Id).NotIn(sub);
+            }
+
+            query.SelectList(list => list
                     .Select(x => x.Id).WithAlias(() => alias.Id)
                     .Select(x => x.IpAddress).WithAlias(() => alias.IpAddress)
                     .Select(x => x.Level).WithAlias(() => alias.Level)
@@ -90,15 +109,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .OrderByAlias(() => alias.CreatedAt).Desc
                 .TransformUsing(Transformers.AliasToBean<LogModel>());
 
-            //// If we have a cursor, use it for pagination, else use the page for "normal" pagination.
-            var entities = cursor.HasValue ?
-                query.Clone().Where(x => x.CreatedAt < cursor.GetValueOrDefault()).Take(pageSize).List<LogModel>() :
-                query.Skip(((page-1) * pageSize)).Take(pageSize).List<LogModel>();
-
             return new PageableSet<LogModel>
                 {
                     TotalCount = query.RowCount(),
-                    Entities = entities,
+                    Entities = query.Skip(((page-1) * pageSize)).Take(pageSize).List<LogModel>(),
                     CurrentPage = page,
                     NextPage = page++,
                     PageSize = pageSize

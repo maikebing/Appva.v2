@@ -155,11 +155,14 @@ namespace Appva.Mcss.Admin.Application.Services
                         References reference = null;
                         if (showInstructionsOnSeparatePage)
                         {
-                            if (references != null && ! references.ContainsKey(sequence.Id))
+                            if (!string.IsNullOrWhiteSpace(sequence.Description))
                             {
-                                references.Add(sequence.Id, References.CreateNew(references.Count, sequence.Description));
+                                if (references != null && ! references.ContainsKey(sequence.Id))
+                                {
+                                    references.Add(sequence.Id, References.CreateNew(references.Count, sequence.Description));
+                                }
+                                reference = references[sequence.Id];
                             }
-                            reference = references[sequence.Id];
                         }
                         items.Add(Prescription.CreateNew(sequence.Name, reference, dateTime, days));
                     }

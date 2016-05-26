@@ -127,7 +127,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
                 row.Cells[0].AddParagraph(task.Name.ToUpper());
                 row.Cells[1].AddParagraph(
                     string.Format(
-                    "{0:yyyy-MM-dd KL. HH:mm} {1} MIN",
+                    "{0:yyyy-MM-dd 'KL.' HH:mm} {1} MIN",
                     task.Scheduled,
                     task.RangeInMinutesBefore.Equals(task.RangeInMinutesAfter) ? "±" + task.RangeInMinutesBefore : "+" + task.RangeInMinutesAfter + " -" + task.RangeInMinutesBefore));
                 if (task.OnNeedBasis)

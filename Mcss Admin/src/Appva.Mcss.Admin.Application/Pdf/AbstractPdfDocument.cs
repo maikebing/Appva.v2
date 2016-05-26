@@ -247,7 +247,9 @@ namespace Appva.Mcss.Admin.Application.Pdf
             if (useLogotype)
             {
                 row1.Cells[5].MergeDown = 2;
-                row1.Cells[5].AddImage(this.LookAndFeel.LogotypePath);
+                var image = row1.Cells[5].AddImage(this.LookAndFeel.LogotypePath);
+                image.Width = Unit.FromCentimeter(2.75);
+                image.LockAspectRatio = true;
                 row1.Cells[5].Format.Alignment = ParagraphAlignment.Right;
             }
             var row2 = table.AddRow();

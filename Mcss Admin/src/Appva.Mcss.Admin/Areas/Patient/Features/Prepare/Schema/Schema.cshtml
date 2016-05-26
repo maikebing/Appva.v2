@@ -7,7 +7,7 @@
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
 	<h1>Signeringslistor</h1>
-    @Html.ActionLink("Ladda ner som PDF", "PrintPopUp", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id, Date = Model.StartDate }, new { @class = "btn printp lb-link" })
+    @Html.ActionLink("Skapa pdf", "PrintPopUp", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id, Date = Model.StartDate }, new { @class = "btn printp lb-link" })
     @Html.ActionLink("Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 </div>
 <div id="content" class="cf">

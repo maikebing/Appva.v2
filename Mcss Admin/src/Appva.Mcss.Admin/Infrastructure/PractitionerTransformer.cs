@@ -68,7 +68,7 @@ namespace Appva.Mcss.Admin.Infrastructure
         {
             //// FIXME: Is this ever used, or will be used?
             var superiors = this.roleService.MembersOfRole("_superioraccount");
-            var taxon = this.taxonService.Find(account.Taxon.Id);
+            var taxon = this.taxonService.Find(account.Taxon.Id, TaxonomicSchema.Organization);
             var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
             var superior = superiorList.Count() > 0 ? superiorList.First() : null;
             return new AccountViewModel()
@@ -79,7 +79,8 @@ namespace Appva.Mcss.Admin.Infrastructure
                 UniqueIdentifier = account.PersonalIdentityNumber,
                 Title = account.Title,
                 Superior = superior != null ? superior.FullName : "Saknas",
-                Account = account
+                Account = account,
+                IsPaused = account.IsPaused
             };
         }
 

@@ -10,7 +10,7 @@ namespace Appva.Mcss.Web.ViewModels
         public string Patient { get; set; }
         public Guid InventoryId { get; set; }
         public DateTime? LastRecount { get; set; }
-        public string SequenceName { get; set; }
+        public string Name { get; set; }
 
         public Guid PatientId { get; set; }
     }

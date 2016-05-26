@@ -23,6 +23,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web.Controllers;
     using NHibernate.Criterion;
     using NHibernate.Transform;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -34,14 +35,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPatientService"/>.
+        /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly IPatientService patientService;
-
-        /// <summary>
-        /// The <see cref="IPatientTransformer"/>.
-        /// </summary>
-        private readonly IPatientTransformer transformer;
+        private readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -55,11 +51,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="DeletePreparationPublisher"/> class.
         /// </summary>
-        public DeletePreparationPublisher(IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public DeletePreparationPublisher(IAuditService auditing, IPersistenceContext persistence)
         {
-            this.patientService = patientService;
-            this.transformer = transformer;
-            this.persistence = persistence;
+            this.auditing       = auditing;
+            this.persistence    = persistence;
         }
 
         #endregion
@@ -69,24 +64,30 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override SchemaPreparation Handle(DeletePreparation message)
         {
-            var patient = this.patientService.Get(message.Id);
-            var sequence = this.persistence.Get<PreparedSequence>(message.PreparedSequenceId);
-            sequence.IsActive = false;
+            var patient        = this.persistence.Get<Patient>(message.Id);
+            var sequence       = this.persistence.Get<PreparedSequence>(message.PreparedSequenceId);
+            sequence.IsActive  = false;
             sequence.UpdatedAt = message.StartDate.Date.AddDays(-1);
             this.persistence.Update(sequence);
             var tasks = this.persistence.QueryOver<PreparedTask>()
                 .Where(x => x.PreparedSequence.Id == sequence.Id)
-                .And(x => x.Date >= message.StartDate)
+                  .And(x => x.Date >= message.StartDate)
                 .List();
             foreach (var task in tasks)
             {
+                this.auditing.Delete(
+                    "tog bort iordningsställande {0} [REF:{1}] {2:yyyy-MM-dd}{3}", 
+                    task.PreparedSequence.Name, 
+                    task.PreparedSequence.Id,
+                    task.Date,
+                    task.PreparedBy == null ? string.Empty : " iordningsställt av " + task.PreparedBy.FullName);
                 this.persistence.Delete(task);
             }
             return new SchemaPreparation
             {
-                Id = patient.Id,
+                Id         = patient.Id,
                 ScheduleId = sequence.Schedule.Id,
-                StartDate = message.StartDate
+                StartDate  = message.StartDate
             };
         }
 

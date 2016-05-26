@@ -34,6 +34,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using Appva.Tenant.Identity;
     using NHibernate.Criterion;
     using NHibernate.Transform;
+    using Appva.Mcss.Admin.Areas.Models;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mvc;
 
     #endregion
 
@@ -138,91 +141,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("list/{id:guid}")]
+        [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Delegation.ReadValue)]
-        public ActionResult List(Guid id)
+        public ActionResult List(ListDelegation request)
         {
-            var user = this.Identity();
-            var account = this.persistence.Get<Account>(id);
-            if (account.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.Developer)).Count() != 0 &&
-                user.Roles.Where(x => x.MachineName.StartsWith(RoleTypes.AdminPrefix)).Count() == 0)
-            {
-                account = null;
-            }
-            var delegations = this.persistence.QueryOver<Delegation>()
-                .Where(d => d.Account.Id == id && d.IsActive == true)
-                .Fetch(x => x.CreatedBy).Eager
-                 .TransformUsing(new DistinctRootEntityResultTransformer())
-                .List();
-            var patients = this.persistence.QueryOver<Patient>()
-                .Where(p => p.IsActive == true)
-                .List();
-            var taxons = this.persistence.QueryOver<Taxon>()
-                .Where(t => t.IsActive == true)
-                .OrderBy(t => t.Parent).Asc
-                .ThenBy(x => x.Weight).Asc
-                .JoinQueryOver<Taxonomy>(t => t.Taxonomy)
-                    .Where(t => t.MachineName == "DEL")
-                    .And(t => t.IsActive == true)
-                .List();
-            var map = new Dictionary<Taxon, IList<Taxon>>();
-            foreach (var taxon in taxons)
-            {
-                if (taxon.Parent.IsNull())
-                {
-                    map.Add(taxon, new List<Taxon>());
-                }
-                else
-                {
-                    if (map.ContainsKey(taxon.Parent))
-                    {
-                        map[taxon.Parent].Add(taxon);
-                    }
-                }
-            }
-            var flattenedStructure = new Dictionary<Guid, Taxon>(taxons.ToDictionary(x => x.Id, x => x));
-            var delegationMap = new Dictionary<string, IList<Delegation>>();
-            foreach (var delegation in delegations)
-            {
-                var name = flattenedStructure[delegation.Taxon.Id].Parent.Name;
-                if (delegationMap.ContainsKey(name))
-                {
-                    delegationMap[name].Add(delegation);
-                }
-                else
-                {
-                    delegationMap.Add(name, new List<Delegation>() { delegation });
-                }
-            }
-            var knowledgeTestMap = new Dictionary<string, IList<KnowledgeTest>>();
-            var knowledgeTests = this.persistence.QueryOver<KnowledgeTest>()
-                    .Where(d => d.Account.Id == id && d.IsActive == true)
-                .List();
-            foreach (var knowledgeTest in knowledgeTests)
-            {
-                if (flattenedStructure.ContainsKey(knowledgeTest.DelegationTaxon.Id))
-                {
-                    var name = flattenedStructure[knowledgeTest.DelegationTaxon.Id].Name;
-                    if (knowledgeTestMap.ContainsKey(name))
-                    {
-                        knowledgeTestMap[name].Add(knowledgeTest);
-                    }
-                    else
-                    {
-                        knowledgeTestMap.Add(name, new List<KnowledgeTest>() { knowledgeTest });
-                    }
-                }
-            }
-            var taxonomy = this.taxonomyService.List(TaxonomicSchema.Organization);
-            this.auditing.Read("läste delegeringar för användare {0}", account.FullName);
-            return View(new DelegationListViewModel
-            {
-                AccountId = account.Id,
-                Account = MapToPatientViewModel(taxonomy, account),
-                DelegationMap = delegationMap.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value),
-                KnowledgeTestMap = knowledgeTestMap,
-                Patients = patients,
-                Template = map
-            });
+            return View();
         }
 
         #endregion
@@ -235,73 +158,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("Create/{id:guid}")]
+        [Dispatch]
         [PermissionsAttribute(Permissions.Delegation.CreateValue)]
-        public ActionResult Create(Guid id)
+        public ActionResult Create(CreateDelegation request)
         {
-            var filterT = this.filtering.GetCurrentFilter();
-            var account = this.persistence.Get<Account>(id);
-            var patients = this.persistence.QueryOver<Patient>()
-                .Where(p => p.IsActive == true)
-                .And(p => p.Deceased == false)
-                .OrderBy(x => x.LastName).Asc
-                .ThenBy(x => x.FirstName).Asc
-                .JoinQueryOver<Taxon>(x => x.Taxon)
-                    .Where(Restrictions.On<Taxon>(x => x.Path)
-                    .IsLike(filterT.Id.ToString(), MatchMode.Anywhere))
-                .List();
-            var taxons = this.persistence.QueryOver<Taxon>()
-                .Where(t => t.IsActive == true)
-                .OrderBy(t => t.Parent).Asc
-                .ThenBy(x => x.Weight).Asc
-                .ThenBy(x => x.Name).Asc
-                .JoinQueryOver<Taxonomy>(t => t.Taxonomy)
-                .Where(t => t.MachineName == "DEL")
-                .And(t => t.IsActive == true)
-                .List();
-            var patientTaxons = this.persistence.QueryOver<Delegation>()
-                .Where(x => x.Account == account)
-                .And(x => x.IsActive == true && x.IsGlobal == true)
-                .List();
-            var existingDelegations = new HashSet<Guid>(patientTaxons.Select(x => x.Taxon.Id));
-            var delegationTypes = new List<SelectListItem>();
-            var map = new Dictionary<Taxon, IList<Taxon>>();
-            foreach (var taxon in taxons)
-            {
-                if (taxon.Parent.IsNull())
-                {
-                    delegationTypes.Add(new SelectListItem
-                    {
-                        Text = taxon.Name,
-                        Value = taxon.Id.ToString()
-                    });
-                    map.Add(taxon, new List<Taxon>());
-                }
-                else
-                {
-                    if (map.ContainsKey(taxon.Parent))
-                    {
-                        map[taxon.Parent].Add(taxon);
-                    }
-                }
-            }
-            map = map.OrderBy(x => x.Value.FirstOrDefault().Weight).ToDictionary(x => x.Key, x => x.Value);
-            return View(
-                new DelegationViewModel
-                {
-                    AccountId = id,
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Now.AddDays(DateTime.IsLeapYear(DateTime.Now.Year) ? 366 : 365),
-                    DelegationTemplate = map,
-                    DelegationsTaken = existingDelegations,
-                    DelegationTypes = delegationTypes,
-                    PatientItems = patients.Select(p => new SelectListItem
-                    {
-                        Text = p.FullName,
-                        Value = p.Id.ToString()
-                    }).ToList(),
-                    Taxons = TaxonomyHelper.SelectList(this.taxonomyService.List(TaxonomicSchema.Organization))
-                }
-            );
+            return View();
         }
 
         /// <summary>
@@ -312,137 +173,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost]
         [Route("Create/{id:guid}")]
+        [ValidateAntiForgeryToken, Validate, Dispatch("list","delegation")]
         [PermissionsAttribute(Permissions.Delegation.CreateValue)]
-        public ActionResult Create(Guid id, DelegationViewModel model)
+        public ActionResult Create(CreateDelegationModel request)
         {
-            var user = Identity();
-            var account = this.persistence.Get<Account>(id);
-            if (ModelState.IsValid)
-            {
-                var patients = new List<Patient>();
-                foreach (string guid in model.Patients)
-                {
-                    Guid patientId;
-                    if (Guid.TryParse(guid, out patientId))
-                    {
-                        var patient = this.persistence.Get<Patient>(patientId);
-                        if (! patients.Contains(patient))
-                        {
-                            patients.Add(patient);
-                        }
-                    }
-                }
-                var root = this.taxonomyService.Roots(TaxonomicSchema.Organization).FirstOrDefault();
-                var orgTaxon = model.Taxon.IsNotNull() ? this.persistence.Get<Taxon>(new Guid(model.Taxon)) : this.persistence.Get<Taxon>(root.Id);
-                if (!model.CreateNew)
-                {
-                    foreach (Guid delegation in model.Delegations)
-                    {
-                        var taxon = this.persistence.Get<Taxon>(delegation);
-                        var del = new Delegation
-                        {
-                            Account = account,
-                            StartDate = model.StartDate,
-                            EndDate = model.EndDate,
-                            Name = taxon.Name,
-                            Pending = true,
-                            Patients = patients,
-                            OrganisationTaxon = orgTaxon,
-                            Taxon = taxon,
-                            CreatedBy = user,
-                            IsGlobal = (model.Patients.IsNotNull() && model.Patients.Count() > 0) ? false : true
-                        };
-                        this.persistence.Save(del);
-                        this.auditing.Create(
-                            "lade till delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för patient/patienter {4} för användare {5} (REF: {6}).",
-                            del.Name,
-                            del.StartDate, 
-                            del.EndDate,
-                            del.Id,
-                            del.IsGlobal ? "alla" : string.Join(",", del.Patients.ToArray().Select(x => x.FullName)),
-                            del.Account.FullName,
-                            del.Account.Id);
-                    }
-                }
-                else
-                {
-                    Guid taxon;
-                    if (Guid.TryParse(model.DelegationType, out taxon))
-                    {
-                        var node = this.persistence.Get<Taxon>(taxon);
-                        var taxonToInsert = new Taxon
-                        {
-                            Parent = node,
-                            Path = node.Path,
-                            Name = model.Delegation,
-                            Taxonomy = node.Taxonomy,
-                            Weight = 0
-                        };
-                        this.persistence.Save(taxonToInsert);
-                        this.persistence.Save(new Delegation
-                        {
-                            Account = account,
-                            StartDate = model.StartDate,
-                            EndDate = model.EndDate,
-                            Name = model.Delegation,
-                            Pending = true,
-                            Patients = patients,
-                            OrganisationTaxon = orgTaxon,
-                            IsGlobal = (model.Patients.IsNotNull() && model.Patients.Count() > 0) ? false : true,
-                            CreatedBy = user,
-                            Taxon = taxonToInsert
-                        });
-                    }
-
-                }
-                return this.RedirectToAction("List", new { Id = id });
-            }
-            var p = this.persistence.QueryOver<Patient>()
-                .Where(x => x.IsActive == true)
-                .List();
-            var taxons = this.persistence.QueryOver<Taxon>()
-                .Where(x => x.IsActive == true)
-                .OrderBy(x => x.Parent).Asc
-                .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
-                .Where(x => x.MachineName == "DEL")
-                .And(x => x.IsActive == true)
-                .List();
-            var patientTaxons = this.persistence.QueryOver<Delegation>()
-                .Where(x => x.Account == account)
-                .And(x => x.IsActive == true)
-                .List();
-            var existingDelegations = new HashSet<Guid>(patientTaxons.Select(x => x.Taxon.Id));
-            var delegationTypes = new List<SelectListItem>();
-            var map = new Dictionary<Taxon, IList<Taxon>>();
-            foreach (var taxon in taxons)
-            {
-                if (taxon.Parent.IsNull())
-                {
-                    delegationTypes.Add(new SelectListItem
-                    {
-                        Text = taxon.Name,
-                        Value = taxon.Id.ToString()
-                    });
-                    map.Add(taxon, new List<Taxon>());
-                }
-                else
-                {
-                    if (map.ContainsKey(taxon.Parent))
-                    {
-                        map[taxon.Parent].Add(taxon);
-                    }
-                }
-            }
-            model.AccountId = id;
-            model.DelegationTypes = delegationTypes;
-            model.DelegationTemplate = map;
-            model.DelegationsTaken = existingDelegations;
-            model.PatientItems = p.Select(x => new SelectListItem
-            {
-                Text = x.FullName,
-                Value = x.Id.ToString()
-            }).ToList();
-            return View(model);
+            return View();
         }
 
         #endregion
@@ -1189,16 +924,20 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [PermissionsAttribute(Permissions.Dashboard.ReadDelegationValue)]
         public PartialViewResult Overview()
         {
+            Account accountAlias = null;
+            Taxon taxonAlias = null;
+            Role roleAlias = null;
             var taxon = this.filtering.GetCurrentFilter();
             var fiftyDaysFromNow = DateTime.Today.AddDays(50);
             var delegations = this.persistence.QueryOver<Delegation>()
                 .Where(x => x.IsActive == true && x.Pending == false)
-                .And(x => x.EndDate <= fiftyDaysFromNow)
+                  .And(x => x.EndDate <= fiftyDaysFromNow)
                 .OrderBy(o => o.EndDate).Asc
-                    .JoinQueryOver<Account>(x => x.Account)
-                        .Where(x => x.IsActive == true)
-                    .JoinQueryOver<Taxon>(x => x.Taxon)
-                        .WhereRestrictionOn(x => x.Path).IsLike(taxon.Id.ToString(), MatchMode.Anywhere)
+                .Left.JoinAlias(x => x.Account, () => accountAlias,        () => accountAlias.IsActive && accountAlias.IsPaused == false)
+                .Left.JoinAlias(x => accountAlias.Roles, () => roleAlias)
+                    .Where(() => roleAlias.IsActive && roleAlias.IsVisible)
+                .Left.JoinAlias(x => accountAlias.Taxon, () => taxonAlias, () => taxonAlias.IsActive)
+                        .WhereRestrictionOn(() => taxonAlias.Path).IsLike(taxon.Id.ToString(), MatchMode.Anywhere)
                 .List();
             var delegationsExpired = from x in delegations
                                      where x.EndDate.Subtract(DateTimeUtilities.Now()).Days < 0

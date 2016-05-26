@@ -109,8 +109,13 @@
     <Compile Include="Common\PermissionMeta.cs" />
     <Compile Include="Common\Permissions.cs" />
     <Compile Include="Common\TaxonomicSchema.cs" />
+    <Compile Include="Common\Taxons.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
-    <Compile Include="Models\Calendar.cs" />
+    <Compile Include="Models\CalendarDay.cs" />
+    <Compile Include="Models\CalendarTask.cs" />
+    <Compile Include="Models\CalendarWeek.cs" />
+    <Compile Include="Models\InventoryAmountListModel.cs" />
+    <Compile Include="Models\ListInventoryRecountItem.cs" />
     <Compile Include="Models\ReportData.cs" />
     <Compile Include="Models\ChartDataFilter.cs" />
     <Compile Include="Models\IReportingFilter.cs" />
@@ -119,6 +124,7 @@
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDataSegment.cs" />
     <Compile Include="Models\ReportSearch.cs" />
+    <Compile Include="Models\SignatureModel.cs" />
     <Compile Include="Models\Taxa.cs" />
     <Compile Include="Models\Taxon.cs" />
     <Compile Include="Pdf\AbstractPdfDocument.cs" />
@@ -150,12 +156,13 @@
     <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\AbstractTaskService.cs" />
     <Compile Include="Services\ChartService.cs" />
+    <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Security\SithsAuthentication.cs" />
     <Compile Include="Services\AccountService.cs" />
-    <Compile Include="Services\AuditingService.cs" />
     <Compile Include="Services\ILogService.cs" />
+    <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\MenuService.cs" />
@@ -171,6 +178,7 @@
     <Compile Include="Services\TaxonFilterSessionHandler.cs" />
     <Compile Include="Services\TaxonomyService.cs" />
     <Compile Include="Services\TenantService.cs" />
+    <Compile Include="Transformers\EventTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Apis.TenantServer.Legacy\Appva.Apis.TenantServer.Legacy.csproj">

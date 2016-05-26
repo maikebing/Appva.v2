@@ -1,18 +1,13 @@
-﻿@model Appva.Mcss.Web.ViewModels.DelegationViewModel
-@{ SetTitle("Lägg till delegering"); }
+﻿@model Appva.Mcss.Admin.Areas.Models.CreateDelegationModel
+@{ ViewBag.Title = "Lägg till delegering"; }
 <div class="std-panel std-form delegdialog lb-validate-form" data-valclass="DelegationCreate">
-    @using (Html.BeginForm(new { id = Model.AccountId })) {
+    @using (Html.BeginForm(new { id = Model.Id })) {
         <h3 class="section-title">Lägg till delegering</h3>
         <div class="row toggle-group cf">      
 			<div class="radio col">
-                @Html.RadioButtonFor(m => m.CreateNew, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1" })
 				<label for="activity-type-1">Välj i listan</label>
 			</div>
-			<div class="radio col structural">
-                @Html.RadioButtonFor(m => m.CreateNew, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2" })
-				<label for="activity-type-2">Skapa ny</label>
 			</div>
-		</div>
         <div class="toggle-target toggle-target-1">
 		    <div class="listgroup cf">
 			    <ul class="catlist">
@@ -46,22 +41,6 @@
 		        <input type="hidden" id="TestDelegations" name="TestDelegations" />
             </div>
 	    </div>
-        <div class="toggle-target toggle-target-2 structural">
-            <div class="textarea big">
-                @Html.TextAreaFor(m => m.Delegation, new { @rows = "10", @cols = "57" })
-                @Html.ValidationMessageFor(m => m.Delegation)
-		    </div>
-            <div class="select catselect">
-                @Html.LabelFor(m => m.DelegationType)
-                @Html.DropDownListFor(
-                    m => m.DelegationType,
-                    new SelectList(Model.DelegationTypes, "Value", "Text", Model.DelegationType),
-                     "Välj delegeringstyp ...",
-                    new { }
-                )
-                @Html.ValidationMessageFor(m => m.DelegationType)
-		    </div>
-        </div>
         <div class="select multisel">
 		    @Html.LabelFor(m => m.Patient)
             @Html.DropDownListFor(

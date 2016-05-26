@@ -203,6 +203,21 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
              true);
  
          #endregion
+
+        #region Inventory
+
+        /// <summary>
+        /// The interval for inventory recount.
+        /// </summary>
+        /// <remarks>The setting returns an <c>int</c></remarks>
+        public static readonly ApplicationSettingIdentity<int> InventoryCalculationSpanInDays = ApplicationSettingIdentity<int>.CreateNew(
+           "MCSS.Core.Inventory.InventoryCalculationSpanInDays",
+           "The interval for inventory recount",
+           "MCSS.Core.Inventory",
+           "If an inventory is not reocunted in this number of days it will be listed on the overview",
+           30);
+
+        #endregion
     }
 
     /// <summary>

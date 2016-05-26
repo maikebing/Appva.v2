@@ -112,6 +112,7 @@
     <Compile Include="Messaging\NoOpMailService.cs" />
     <Compile Include="ModelBinding\DecimalModelBinder.cs" />
     <Compile Include="Rendering\HtmlHelperInputExtensions.cs" />
+    <Compile Include="Rendering\Html\EditorFor.cs" />
     <Compile Include="Rendering\OwinExtensions.cs" />
     <Compile Include="Rendering\ViewEngine\FeatureViewLocationRazorViewEngine.cs" />
     <Compile Include="Filters\AlertDangerAttribute.cs" />

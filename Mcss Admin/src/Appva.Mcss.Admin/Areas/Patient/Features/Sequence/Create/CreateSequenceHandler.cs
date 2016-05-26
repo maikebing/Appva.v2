@@ -34,9 +34,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IPersistenceContext context;
 
         /// <summary>
-        /// The <see cref="ILogService"/>.
+        /// The <see cref="IDelegationService"/>.
         /// </summary>
-        private readonly ILogService logService;
+        private readonly IDelegationService delegations;
+
+        /// <summary>
+        /// The <see cref="IInventoryService"/>
+        /// </summary>
+        private readonly IInventoryService inventories;
 
         #endregion
 
@@ -45,10 +50,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceHandler"/> class.
         /// </summary>
-        public CreateSequenceHandler(IPersistenceContext context, ILogService logService)
+        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories)
         {
             this.context = context;
-            this.logService = logService;
+            this.delegations = delegations;
+            this.inventories = inventories;
         }
 
         #endregion
@@ -63,41 +69,24 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 Id = message.Id,
                 ScheduleId = schedule.Id,
-                Delegations = this.GetDelegations(schedule),
+                Delegations = schedule.ScheduleSettings.DelegationTaxon != null ? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
+                    .Select(x => new SelectListItem { 
+                        Text = x.Name,
+                        Value = x.Id.ToString() })
+                        : new List<SelectListItem>(),
                 Times = CreateTimes().Select(x => new CheckBoxViewModel
                 {
                     Id = x,
                     Checked = false
-                }).ToList()
+                }).ToList(),
+                Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                CreateNewInventory = true
             };
         }
 
         #endregion
 
         #region Private Methods.
-
-        /// <summary>
-        /// TODO: MOVE?
-        /// </summary>
-        /// <param name="schedule"></param>
-        /// <returns></returns>
-        public IEnumerable<SelectListItem> GetDelegations(Schedule schedule)
-        {
-            var delegations = this.context.QueryOver<Taxon>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.IsRoot == false)
-                .And(x => x.Parent == schedule.ScheduleSettings.DelegationTaxon)
-                .OrderBy(x => x.Weight).Asc
-                .ThenBy(x => x.Name).Asc
-                .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
-                    .Where(x => x.MachineName == TaxonomicSchema.Delegation.Id)
-                .List();
-            return delegations.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.Id.ToString()
-            });
-        }
 
         /// <summary>
         /// TODO: REFACTOR?

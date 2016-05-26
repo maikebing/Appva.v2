@@ -25,7 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     /// </summary>
     internal sealed class FullReportHandler : RequestHandler<FullReport, FullReportModel>
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IAccountService"/>.
@@ -86,29 +86,29 @@ namespace Appva.Mcss.Admin.Areas.Models
 
         public override FullReportModel Handle(FullReport message)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var account          = this.accountService.Find(this.identityService.PrincipalId);
             var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
             return new FullReportModel
             {
-                Start = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
-                End = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
+                Start     = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
+                End       = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
                 Schedules = scheduleSettings,
-                Tasks = tasks.List(
+                Tasks     = tasks.List(
                     new ListTaskModel 
                     {
-                        StartDate = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
-                        EndDate = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
+                        StartDate         = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
+                        EndDate           = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
                         ScheduleSettingId = message.ScheduleSetting,
-                        TaxonId = this.filter.GetCurrentFilter().Id
+                        TaxonId           = this.filter.GetCurrentFilter().Id
                     }, 
                     message.Page,
                     30),
                 Report = reports.GetReportData(new ChartDataFilter 
                 {
-                    StartDate = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
-                    EndDate = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
+                    StartDate       = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
+                    EndDate         = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
                     ScheduleSetting = message.ScheduleSetting,
-                    Organisation = this.filter.GetCurrentFilter().Id
+                    Organisation    = this.filter.GetCurrentFilter().Id
                 }),
                 ScheduleSetting = message.ScheduleSetting
             };

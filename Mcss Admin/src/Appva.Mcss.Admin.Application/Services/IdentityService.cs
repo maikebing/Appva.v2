@@ -12,9 +12,6 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
-    using System.Web;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Microsoft.Owin;
     using Microsoft.Owin.Security;
 
@@ -50,6 +47,12 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// </summary>
         /// <returns>The current authenticated user permissions or if not authenticated; null</returns>
         IEnumerable<Claim> Permissions();
+
+        /// <summary>
+        /// Returns the current authenticated user schedule permissions.
+        /// </summary>
+        /// <returns>The current authenticated user schedule permissions or if not authenticated; null</returns>
+        IEnumerable<Claim> SchedulePermissions();
 
         /// <summary>
         /// Returns whether the current authenticated user is a member of the specified role.
@@ -193,6 +196,12 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         public IEnumerable<Claim> Permissions()
         {
             return this.Principal.Claims.Where(x => x.Type.Equals(Core.Resources.ClaimTypes.Permission)).ToList();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Claim> SchedulePermissions()
+        {
+            return this.Principal.Claims.Where(x => x.Type.Equals(Core.Resources.ClaimTypes.SchedulePermission)).ToList();
         }
 
         /// <inheritdoc />

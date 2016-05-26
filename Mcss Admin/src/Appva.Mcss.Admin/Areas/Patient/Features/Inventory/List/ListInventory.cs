@@ -9,16 +9,13 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-using Appva.Cqrs;
-    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListInventory : Identity<ListInventoryViewModel>
+    public sealed class ListInventory : Identity<ListInventoryModel>
     {
         /// <summary>
         /// Optional inventory ID.

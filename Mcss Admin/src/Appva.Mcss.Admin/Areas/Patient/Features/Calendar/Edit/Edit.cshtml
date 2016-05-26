@@ -110,15 +110,10 @@
 
         </ul>
         <div class="input">
-            @if (Model.Interval == 0)
-            {
-                <button type="submit" value="EditAll" name="EditAction">Spara</button>
-            }
-            else
-            {
-                <button type="submit" value="EditAll" name="EditAction">Spara sekvens</button>
-                <button type="submit" value="EditThis" name="EditAction">Spara denna aktivitet</button>
-            }
+            @Html.HiddenFor(m => m.PatientId)
+            @Html.HiddenFor(m => m.SequenceId)
+            @Html.HiddenFor(m => m.ChoosedDate)
+            <input type="submit" value="Spara">
             @Html.AntiForgeryToken()
             @Html.Cancel("Avbryt")
         </div>

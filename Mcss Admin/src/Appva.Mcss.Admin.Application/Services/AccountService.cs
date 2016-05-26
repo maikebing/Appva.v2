@@ -167,6 +167,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="isAccountUpgradedForAdminAccess">If true then the user has got new roles which permits them to access admin</param>
         /// <param name="isAccountUpgradedForDeviceAccess">If true then the user has got new roles which permits them to access device</param>
         void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess);
+
+        /// <summary>
+        /// Creates a proxy-entity from a guid
+        /// </summary>
+        /// <param name="id">The Guid</param>
+        /// <returns></returns>
+        Account Load(Guid id);
     }
 
     /// <summary>
@@ -239,11 +246,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="auditing">The <see cref="IAuditService"/></param>
         /// <param name="identityService">The <see cref="IIdentityService"/></param>
         public AccountService(
-            IAccountRepository repository,
-            IRoleRepository roles,
-            IPermissionRepository permissions,
+            IAccountRepository repository, 
+            IRoleRepository roles, 
+            IPermissionRepository permissions, 
             IPersistenceContext persitence,
-            ISettingsService settingsService,
+            ISettingsService settingsService, 
             IAuditService auditing,
             IIdentityService identityService)
         {
@@ -375,7 +382,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 if (account.DevicePassword.IsEmpty())
                 {
                     account.DevicePassword = this.settingsService.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : null;
-                }
+            }
                 if (! previousPermissions.Any(x => x.Resource.Equals(Common.Permissions.Device.Login.Value)))
                 {
                     isAccountUpgradedForDeviceAccess = true;
@@ -411,13 +418,13 @@ namespace Appva.Mcss.Admin.Application.Services
 
         /// <inheritdoc />
         public string CreateUniqueUserNameFor(Account account)
-        {
+            {
             return this.CreateUserName(account.FirstName, account.LastName, this.ListAllUserNames());
-        }
+            }
 
         /// <inheritdoc />
         public void Update(Account account)
-        {
+            {
             this.repository.Update(account);
             this.auditing.Update("uppdaterade kontot för {0} (REF: {1}).", account.FullName, account.Id);
         }
@@ -456,6 +463,12 @@ namespace Appva.Mcss.Admin.Application.Services
             account.UpdatedAt = DateTime.Now;
             this.repository.Update(account);
             this.auditing.Update("avpausade kontot för {0} (REF: {1}).", account.FullName, account.Id);
+        }
+
+        /// <inheritdoc />
+        public Account Load(Guid id)
+        {
+            return this.repository.Load(id);
         }
 
         #endregion

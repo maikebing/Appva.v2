@@ -157,7 +157,7 @@ namespace Appva.Mcss.Admin.Application.Services
                                 Schedule = schedule.IsNotNull() ? schedule : sequence.Schedule,
                                 Sequence = sequence,
                                 Patient = sequence.Patient,
-                                Scheduled = findEventsForDay ? sequence.EndDate.GetValueOrDefault().AddDays(CalculateInterval(any, sequence)) : time,
+                                Scheduled = time,
                                 RangeInMinutesBefore = sequence.RangeInMinutesBefore,
                                 RangeInMinutesAfter = sequence.RangeInMinutesAfter,
                                 IsReadyToExecute = true,
@@ -168,8 +168,9 @@ namespace Appva.Mcss.Admin.Application.Services
                                 CanRaiseAlert = sequence.CanRaiseAlert,
                                 Overview = sequence.Overview,
                                 PauseAnyAlerts = sequence.PauseAnyAlerts,
-                                StartDate = sequence.StartDate.AddDays(CalculateInterval(any, sequence)),
-                                EndDate = sequence.EndDate.GetValueOrDefault().AddDays(CalculateInterval(any, sequence))
+                                Taxon = sequence.Patient.Taxon,
+                                StartDate = sequence.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar ? sequence.StartDate.AddDays(CalculateInterval(time, sequence)) : sequence.StartDate,
+                                EndDate = sequence.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar ? sequence.EndDate.GetValueOrDefault().AddDays(CalculateInterval(time, sequence)) : sequence.EndDate
 
                                 //IsReadyToExecute = (timeOfDay.Within(
                                 //    time.AddMinutes(-sequence.RangeInMinutesBefore),
@@ -188,13 +189,13 @@ namespace Appva.Mcss.Admin.Application.Services
             return retval;
         }
 
-        private static double CalculateInterval(DateTime any, Sequence sequence)
+        private static double CalculateInterval(DateTime scheduled, Sequence sequence)
         {
-            if (any.Within(sequence.StartDate, sequence.EndDate.GetValueOrDefault()))
+            if (scheduled.Within(sequence.StartDate, sequence.EndDate.GetValueOrDefault()))
             {
                 return 0;
             }
-            var retval = ((any.Date - sequence.EndDate.GetValueOrDefault().Date).TotalDays + (any.Date - sequence.StartDate.Date).TotalDays) / 2;
+            var retval = (scheduled.Date - sequence.EndDate.GetValueOrDefault().Date).TotalDays;
             return retval;
         }
 

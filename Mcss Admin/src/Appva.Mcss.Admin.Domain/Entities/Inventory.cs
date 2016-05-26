@@ -10,8 +10,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appva.Common.Domain;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -20,6 +20,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Inventory : AggregateRoot<Inventory>
     {
+        #region Variables.
+        
+        /// <summary>
+        /// The amountlist as a stored string
+        /// </summary>
+        private string amounts;
+
+        #endregion
+
         #region Constructor.
 
         /// <summary>
@@ -34,7 +43,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// The current level of the inventory
+        /// The current level of the inventory.
         /// </summary>
         public virtual double CurrentLevel
         {
@@ -43,7 +52,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// All transactions in the current inventory
+        /// All transactions in the current inventory.
         /// </summary>
         public virtual IList<InventoryTransactionItem> Transactions
         {
@@ -52,7 +61,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Last time the inventory was checked and recounted
+        /// Last time the inventory was checked and recounted.
         /// </summary>
         public virtual DateTime? LastRecount
         {
@@ -61,12 +70,45 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Description of the inventory 
+        /// Description of the inventory.
         /// </summary>
         public virtual string Description
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// The unit for the inventory.
+        /// </summary>
+        public virtual string Unit
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The patient.
+        /// </summary>
+        public virtual Patient Patient
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The amounts represented as a list.
+        /// </summary>
+        public virtual IList<double> Amounts
+        {
+            get 
+            {
+                return this.amounts == null ? null : JsonConvert.DeserializeObject<List<double>>(this.amounts);
+            }
+            set
+            {
+                this.amounts = value == null ? null : JsonConvert.SerializeObject(value);
+            }
         }
 
         #endregion

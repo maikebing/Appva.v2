@@ -466,7 +466,14 @@ mcss.validation = {
         });
 	},
 	EventCreate : function(params) {
-		Date.format = 'yyyy-mm-dd';
+	    Date.format = 'yyyy-mm-dd';
+	    $('#AllDay').change(function () {
+            if ($(this).prop('checked')) {
+                $('#StartTime').val('00:00');
+                $('#EndTime').val('23:59');
+                $(".std-form form").valid();
+            }
+        });
         $('.datepick').datePicker({ clickInput: true });
         $('.std-form form').validate({
             'rules': {
@@ -491,12 +498,18 @@ mcss.validation = {
                 'StartTime': {
                     'required': function () {
                         return $('#AllDay:checked').length == 0;
-                    }
+                    },
+                    'time': function () {
+                        return $('#AllDay:checked').length == 0;
+                    },
                 },
                 'EndTime': {
                     'required': function () {
                         return $('#AllDay:checked').length == 0;
-                    }
+                    },
+                    'time' : function () {
+                        return $('#AllDay:checked').length == 0;
+                    },
                 }
             },
             'messages': {

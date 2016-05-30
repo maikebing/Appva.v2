@@ -446,7 +446,10 @@
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegation.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Renew\RenewDelegationsHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Sharedf\DelegationFormModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Renew\RenewDelegations.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Renew\RenewDelegationsModel.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReport.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
@@ -938,7 +941,7 @@
   <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Delegation\Overview\Overview.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\Revision\Revision.cshtml" />
-    <Content Include="Areas\Practitioner\Features\Delegation\Update\Update.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Renew\Renew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Patient\Features\Alerts\List\List.cshtml" />

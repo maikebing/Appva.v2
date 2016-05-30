@@ -1,4 +1,4 @@
-﻿@model Appva.Mcss.Admin.Models.DelegationFormModel
+﻿@model Appva.Mcss.Admin.Areas.Models.CreateDelegationModel
 @{ ViewBag.Title = "Lägg till delegering"; }
 <div class="std-panel std-form delegdialog lb-validate-form" data-valclass="DelegationCreate">
     @using (Html.BeginForm(new { id = Model.Id })) {
@@ -67,7 +67,7 @@
                     </div>
                 }
             }
-            @Html.HiddenFor(m => m.OrganizationTaxon)
+            @Html.HiddenFor(m => m.OrganizationTaxon, new { id = "Taxon" })
             @Html.ValidationMessageFor(m => m.OrganizationTaxon)
         </div>
     </div>

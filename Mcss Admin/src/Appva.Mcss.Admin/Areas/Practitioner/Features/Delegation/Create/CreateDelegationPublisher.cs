@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Models;
 
     #endregion
 
@@ -102,8 +103,7 @@ namespace Appva.Mcss.Admin.Areas.Models
                 }
             }
 
-            var root = this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
-            var orgTaxon = message.Taxon.IsNotNull() ? this.taxonomies.Find(new Guid(message.Taxon), TaxonomicSchema.Organization) : this.taxonomies.Find(root.Id, TaxonomicSchema.Organization);
+            var orgTaxon = message.OrganizationTaxon.IsNotNull() ? this.taxonomies.Find(new Guid(message.OrganizationTaxon), TaxonomicSchema.Organization) : this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
 
             foreach (Guid delegation in message.Delegations)
             {

@@ -16,7 +16,7 @@
 			    <div class="h cf">
                     <h2>@keyValue.Key</h2>
                     @Html.ActionLink(Permissions.Delegation.Update, "Förnya samtliga delegeringar", "Update", 
-                        new { id = Model.Account.Id, taxonId = keyValue.Value[0].Taxon.Id }, new { @class = "btn lb-link" })
+                        new { id = Model.Account.Id, taxonId = keyValue.Value[0].DelegationId }, new { @class = "btn lb-link" })
                     @Html.ActionLink(Permissions.Delegation.Update, "Aktivera samtliga delegeringar", "ActivateAll",
                         new { accountId = Model.Account.Id }, new { @class = "btn" })
                 </div>
@@ -33,9 +33,10 @@
 			            </thead>
 			            <tbody>
                             @foreach (var delegation in keyValue.Value) {
-				            <tr class="@(delegation.Pending ? "inactive" : "active")">
+				            <tr class="@(delegation.IsActivated ? "active" : "inactive")">
 					            <td>
-                                @if (!delegation.Pending) {
+                                @if (delegation.IsActivated)
+                                {
                                     <img src="@Url.Image("icn-ok.png")" alt="Ja" />
                                 } else {
                                     @Html.ActionLink("Aktivera", "Activate",
@@ -43,27 +44,34 @@
                                 }
                                 </td>
 					            <td>@delegation.Name</td>
-					            <td class="pats">
-                                    @if (!delegation.IsGlobal) {
-						            <ul>
-                                        @foreach (var patient in delegation.Patients) {
-							                <li>
-                                                @if (Html.HasPermissionFor(Permissions.Schedule.Read))
-                                                {
-                                                    @Html.ActionLink(patient.FullName, "List", "Schedule", new { id = patient.Id, Area = "Patient" }, new { @class = "link" })
-                                                }
-                                                else
-                                                {
-                                                    @patient.FullName
-                                                }
-                                            </li>
-                                        }
-						            </ul>
-                                    } else {
-                                        @:Alla
+                                <td class="pats">
+                                    @if (delegation.Patients.Count > 0)
+                                    {
+                                        <ul>
+                                            @foreach (var patient in delegation.Patients)
+                                            {
+                                                <li>
+                                                    @if (Html.HasPermissionFor(Permissions.Schedule.Read))
+                                                    {
+                                                        @Html.ActionLink(patient.Value, "List", "Schedule", new { id = patient.Key, Area = "Patient" }, new { @class = "link" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @patient.Value
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
                                     }
-					            </td>
-                                <td>@Html.ActionLink(delegation.CreatedBy.FullName, "List", "Delegation", new { id = delegation.CreatedBy.Id }, new { @class = "link" })</td>
+                                    else
+                                    {
+                                        <p>
+                                            Alla boende på:<br />
+                                            <b>@delegation.Address</b>
+                                        </p>
+                                    }
+                                </td>
+                                <td>@Html.ActionLink(delegation.CreatedBy.Value, "List", "Delegation", new { id = delegation.CreatedBy.Key }, new { @class = "link" })</td>
 					            <td class="@(delegation.EndDate.Subtract(DateTime.Now).Days < 30 ? "urgent" : "no-worries")">
                                     @String.Format("{0:yyyy-MM-dd}", delegation.StartDate) till @String.Format("{0:yyyy-MM-dd}", delegation.EndDate) <em>(@delegation.EndDate.Subtract(DateTime.Now).Days dagar kvar)</em>
                                 </td>
@@ -77,7 +85,7 @@
                         </tbody>
                     </table>
                     <div class="tests">
-                        @Html.ActionLink(Permissions.Delegation.Create, "Lägg till", "AddKnowledgeTest", new { id = Model.AccountId, taxonId = keyValue.Value.First().Taxon.Parent.Id }, new { @class = "btn lb-link" })
+                        @Html.ActionLink(Permissions.Delegation.Create, "Lägg till", "AddKnowledgeTest", new { id = Model.AccountId, taxonId = keyValue.Value.First().Category.Id }, new { @class = "btn lb-link" })
                         @if (Model.KnowledgeTestMap.ContainsKey(keyValue.Key)) {
                             var knowledgeTests = Model.KnowledgeTestMap[keyValue.Key];
                             <h3>Genomgångna kunskapstester</h3>

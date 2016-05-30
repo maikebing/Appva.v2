@@ -10,7 +10,9 @@ namespace Appva.Mcss.Admin.Models
 
     #region Imports.
 
+    using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mvc;
@@ -27,7 +29,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class DelegationFormModel
+    public class DelegationFormModel : IRequest<ListDelegation>
     {
         #region Constructor.
 
@@ -131,22 +133,16 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
-        
 
-
-
-        //public HashSet<Guid> DelegationsTaken { get; set; }
-
-        /*[RequiredIf(Target = "CreateNew", Value = false, ErrorMessage = "Delegering måste väljas.")]
-        [DisplayName("Ny Delegering")]
-        public string Delegation { get; set; }*/
-
-        /*[RequiredIf(Target = "CreateNew", Value = false, ErrorMessage = "Delegeringstyp måste väljas.")]
-        [DisplayName("Delegeringstyp")]
-        public string DelegationType { get; set; }*/
-
-        /*public IEnumerable<SelectListItem> DelegationTypes { get; set; }*/
-        /*public bool CreateNew { get; set; }*/
+        /// <summary>
+        /// If this delegation should be valid for a specific 
+        /// patient or part of the organisation
+        /// </summary>
+        public bool ValidForSpecificPatients
+        {
+            get;
+            set;
+        }
 
         #endregion
 
@@ -175,16 +171,6 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         public Dictionary<ITaxon, IList<ITaxon>> DelegationTemplate 
         { 
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// If this delegation should be valid for a specific 
-        /// patient or part of the organisation
-        /// </summary>
-        public bool ValidForSpecificPatients
-        {
             get;
             set;
         }

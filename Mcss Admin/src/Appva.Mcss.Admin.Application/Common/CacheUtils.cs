@@ -38,10 +38,19 @@ namespace Appva.Mcss.Admin.Application.Common
             {
                 return;
             }
-            var copy = items.Select(map).ToList();
+            CacheUtils.CacheList<TCacheEntry>(cache, cacheKey, items.Select(map).ToList());
+        }
+
+        public static void CacheList<TEntity>(
+            IRuntimeMemoryCache cache, string cacheKey, IList<TEntity> items)
+        {
+            if (cacheKey == null || items == null || items.Count == 0)
+            {
+                return;
+            }
             cache.Upsert(
                 cacheKey,
-                copy,
+                items,
                 new RuntimeEvictionPolicy
                 {
                     Priority = CacheItemPriority.Default

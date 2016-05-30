@@ -696,7 +696,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
 
         #endregion
 
-        #region Update
+        #region Renew
 
         /// <summary>
         /// Returns the update view.
@@ -704,9 +704,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The account id</param>
         /// <param name="taxonId">The taxon id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("Update/{id:guid}/{taxonId:guid}")]
+        [Route("renew/{id:guid}/{taxonId:guid}")]
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
-        public ActionResult Update(Guid id, Guid taxonId)
+        public ActionResult Renew(Guid id, Guid taxonId)
         {
             return View(new DelegationDateSpanViewModel
             {
@@ -723,9 +723,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="model">The delegation date span model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
-        [Route("Update/{id:guid}/{taxonId:guid}")]
+        [Route("renew/{id:guid}/{taxonId:guid}")]
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
-        public ActionResult Update(Guid id, Guid taxonId, DelegationDateSpanViewModel model)
+        public ActionResult Renew(Guid id, Guid taxonId, DelegationDateSpanViewModel model)
         {
             if (ModelState.IsValid)
             {

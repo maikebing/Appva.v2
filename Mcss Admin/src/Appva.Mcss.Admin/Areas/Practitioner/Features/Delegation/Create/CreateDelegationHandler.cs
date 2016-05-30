@@ -24,7 +24,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateDelegationHandler : RequestHandler<CreateDelegation, DelegationFormModel>
+    public sealed class CreateDelegationHandler : RequestHandler<CreateDelegation, CreateDelegationModel>
     {
         #region Fields.
 
@@ -74,7 +74,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         #region RequestHandler Members.
 
         /// <inheritdoc />
-        public override DelegationFormModel Handle(CreateDelegation message)
+        public override CreateDelegationModel Handle(CreateDelegation message)
         {
             var filterITaxon = this.filtering.GetCurrentFilter();
             var filterTaxon = this.taxonomies.Load(filterITaxon.Id);
@@ -83,7 +83,6 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             var patients = this.patients.FindByTaxon(filterTaxon.Id, false);
             var taxons = this.delegations.ListDelegationTaxons().OrderByDescending<ITaxon, bool>(x => x.IsRoot).ToList();
             var patientTaxons = this.delegations.List(byAccount: account.Id, isActive: true, isGlobal: true);
-            //var existingDelegations = new HashSet<Guid>(patientTaxons.Select(x => x.Taxon.Id));
             var delegationTypes = new List<SelectListItem>();
             var map = new Dictionary<ITaxon, IList<ITaxon>>();
             foreach (var taxon in taxons)
@@ -108,14 +107,12 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             }
             map = map.ToDictionary(x => x.Key, x => x.Value);
 
-            return new DelegationFormModel
+            return new CreateDelegationModel
             {
                 Id = message.Id,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(DateTime.IsLeapYear(DateTime.Now.Year) ? 366 : 365),
                 DelegationTemplate = map,
-                //DelegationsTaken = existingDelegations,
-                //DelegationTypes = delegationTypes,
                 PatientItems = patients.Select(p => new SelectListItem
                 {
                     Text = p.FullName,

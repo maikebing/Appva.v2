@@ -150,17 +150,33 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             if (this.cache.Find<IList<ITaxon>>(schema.CacheKey) == null)
             {
-                CacheUtils.CopyAndCacheList<Taxon, ITaxon>(this.cache, schema.CacheKey, this.repository.List(schema.Id), x =>
-                     new TaxonItem(
-                        x.Id,
-                        x.Name,
-                        x.Description,
-                        x.Path,
-                        x.Type,
-                        x.Weight,
-                        x.Parent == null ? (Guid?) null : x.Parent.Id));
+                CacheUtils.CacheList<ITaxon>(this.cache, schema.CacheKey, this.HierarchyConvert(this.repository.List(schema.Id), null, null));
             }
             return this.cache.Find<IList<ITaxon>>(schema.CacheKey);
+        }
+
+        private IList<ITaxon> HierarchyConvert(IList<Taxon> list, Guid? parentId, ITaxon parent)
+        {
+            var retval = new List<ITaxon>();
+            var items = parentId.HasValue ? 
+                list.Where(x => x.Parent != null && x.Parent.Id == parentId ).ToList() :
+                list.Where(x => x.Parent == null ).ToList();
+            foreach(var item in items)
+            {
+                var taxon = new TaxonItem(
+                        item.Id,
+                        item.Name,
+                        item.Description,
+                        item.Path,
+                        item.Type,
+                        item.Weight,
+                        parent);
+                retval.Add(taxon);
+                list.Remove(item);
+                retval.AddRange(HierarchyConvert(list, taxon.Id, taxon));
+            }
+            
+            return retval;
         }
 
         /// <inheritdoc />

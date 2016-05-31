@@ -181,6 +181,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Guid Create(string name, string unit, IList<double> amounts, Patient patient)
         {
+            if(patient == null)
+            {
+                throw new ArgumentException("Patient cannot be null in Invenvtory");
+            }
             var inventory = new Inventory
             {
                 Description = name,

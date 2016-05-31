@@ -65,7 +65,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
             }
 
             //// Creates the update-notice
-            var notice = new DashboardNotification
+            /*var notice = new DashboardNotification
             {
                 IsActive = true,
                 IsVisibleToEveryone = true,
@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
                 VisibleTo = new List<Account>()
             };
 
-            this.context.Save<DashboardNotification>(notice);
+            this.context.Save<DashboardNotification>(notice);*/
         }
     }
 }

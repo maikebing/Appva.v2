@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Application.Services
                         period,
                         new PatientInformation(patient.FullName, patient.PersonalIdentityNumber),
                         precriptions.Item1,
-                        CreateSymbols(symbols),
+                        CreateSymbols(symbols, false),
                         precriptions.Item2));
                 }
             }
@@ -388,7 +388,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="symbols"></param>
         /// <returns></returns>
-        private static IList<Symbol> CreateSymbols(IList<Taxon> symbols)
+        private static IList<Symbol> CreateSymbols(IList<Taxon> symbols, bool showAllSymbols = true)
         {
             if (symbols == null)
             {
@@ -397,7 +397,17 @@ namespace Appva.Mcss.Admin.Application.Services
             var result = new List<Symbol>();
             foreach (var symbol in symbols)
             {
-                result.Add(new Symbol(symbol.Name.Substring(0, 1), symbol.Name));
+                if (showAllSymbols)
+                {
+                    result.Add(new Symbol(symbol.Name.Substring(0, 1), symbol.Name));
+                }
+                else
+                {
+                    if (symbol.Weight > 1)
+                    {
+                        result.Add(new Symbol(symbol.Name.Substring(0, 1), symbol.Name));
+                    }
+                }
             }
             return result;
         }

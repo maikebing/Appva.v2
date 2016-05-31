@@ -272,7 +272,7 @@ namespace Appva.Mcss.Admin.Application.Services
             foreach (var task in tasks)
             {
                 var key = string.Format("{0:HH:mm}:{1}", task.Scheduled, task.Sequence.Id);
-                var time = task.OnNeedBasis ? (DateTime?)null : task.Scheduled;
+                var time = task.OnNeedBasis ? (DateTime?)null : new DateTime(task.Scheduled.Year, task.Scheduled.Month,  1, task.Scheduled.Hour, task.Scheduled.Minute, task.Scheduled.Second, 0, DateTimeKind.Local);
                 if (!temp.ContainsKey(key))
                 {
                     temp.Add(key, Prescription.CreateNew(task.Name, null, time));

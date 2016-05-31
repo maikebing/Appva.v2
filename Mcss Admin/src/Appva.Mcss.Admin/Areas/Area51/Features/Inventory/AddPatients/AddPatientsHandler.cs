@@ -61,6 +61,10 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
                 var inventory     = sequence.Inventory;
                 inventory.Patient = sequence.Patient;
                 inventory.IsActive = sequence.IsActive;
+                if (inventory.LastRecount == null)
+                {
+                    inventory.LastRecount = inventory.UpdatedAt;
+                }
                 this.inventories.Update(inventory);
             }
 

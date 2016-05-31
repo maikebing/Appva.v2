@@ -106,9 +106,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var transactions = this.inventoryService.ListTransactionsFor(currentInventory.Id, startDate, endDate, message.Page.GetValueOrDefault(1), 50);
             this.auditService.Read(
                     patient,
-                    "läste saldolista sida {0} för boende {1} (REF: {2}).",
+                    "läste saldolista för {0} (ref. {1}) sida {2} för boende {3}.",
+                    currentInventory.Description,
+                    currentInventory.Id,
                     transactions.CurrentPage,
-                    patient.FullName,
                     patient.Id);
             return new ListInventoryModel
             {

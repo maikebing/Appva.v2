@@ -190,7 +190,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 Description = name,
                 Amounts     = amounts,
                 Patient     = patient,
-                Unit        = unit
+                Unit        = unit,
+                LastRecount = DateTime.Now
             };
             var id = this.repository.Save(inventory);
             this.audit.Create(patient, "skapade saldot {0} (ref. {1})", inventory.Description, id);

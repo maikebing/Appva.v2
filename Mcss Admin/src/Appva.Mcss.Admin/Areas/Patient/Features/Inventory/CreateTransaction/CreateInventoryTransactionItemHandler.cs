@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -30,6 +31,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IIdentityService identityService;
 
         /// <summary>
+        /// The <see cref="IAuditService"/>
+        /// </summary>
+        private readonly IAuditService audit;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
@@ -43,10 +49,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="identityService">The <see cref="IIdentityService"/></param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
-        public CreateInventoryTransactionItemHandler(IIdentityService identityService, IPersistenceContext persistence)
+        public CreateInventoryTransactionItemHandler(IIdentityService identityService, IAuditService audit, IPersistenceContext persistence)
         {
             this.identityService = identityService;
             this.persistence     = persistence;
+            this.audit = audit;
         }
 
         #endregion
@@ -89,6 +96,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.persistence.Save(transaction);
             inventory.Transactions.Add(transaction);
             this.persistence.Update(inventory);
+
+            this.audit.Create("har skapat saldo-transaktionen {0} (ref. {1}) på saldo {2} (ref. {3})", 
+                transaction.Operation,
+                transaction.Id,
+                inventory.Description,
+                inventory.Id);
             return true;
         }
 

@@ -2,7 +2,22 @@
 @model Appva.Mcss.Web.ViewModels.AccountViewModel
            
 <div class="people people-item cf">
-    @Html.ActionLink(Permissions.Practitioner.Inactivate, "Ta bort", "Inactivate", "Accounts", new { id = Model.Id }, new { @class = "btn btn-del" })
+    @if (Model.Active) 
+    {
+        @Html.ActionLink(Permissions.Practitioner.Inactivate, "Ta bort", "Inactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn btn-del" })
+	} 
+	@if (! Model.Active && ! Model.IsPaused) 
+    {
+        @Html.ActionLink(Permissions.Practitioner.Reactivate, "Aktivera", "Reactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
+	}
+	@if (! Model.IsPaused && Model.Active)
+    {
+        @Html.ActionLink(Permissions.Practitioner.Pause, "Inaktivera", "Pause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
+	}
+	@if (Model.IsPaused ) 
+    {
+        @Html.ActionLink(Permissions.Practitioner.Resume, "Aktivera", "UnPause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
+	}
     @Html.ActionLink(Permissions.Practitioner.Update, "Ändra", "Update", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
     @Html.ActionLink(Permissions.Practitioner.UpdateRoles, "Ändra roller och behörigheter", "UpdateRoles", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
 	<div class="h">

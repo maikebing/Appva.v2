@@ -60,6 +60,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
             {
                 var inventory     = sequence.Inventory;
                 inventory.Patient = sequence.Patient;
+                inventory.IsActive = sequence.IsActive;
                 this.inventories.Update(inventory);
             }
 

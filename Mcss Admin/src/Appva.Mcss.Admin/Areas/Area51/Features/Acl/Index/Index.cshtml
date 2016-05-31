@@ -13,17 +13,9 @@
 	{
 		@Html.Submit("Aktivera roller och behörigheter", new { @class = "btn" })
 	}
-    @using (Html.Post("UpgradePermissionNamesAndAddNew", "Acl", null))
-	{
-		@Html.Submit("Upgradera roller och behörigheter (enbart en gång)", new { @class = "btn" })
-	}
     @using (Html.Post("UpdatePermissions", "Acl", null))
     {
         @Html.Submit("Upgradera behörigheter", new { @class = "btn" })
-    }
-    @using (Html.Post("Hotfix18", "Acl", null))
-    {
-        @Html.Submit("Lägg till DA och BA där det behövs", new { @class = "btn" })
     }
 </div>
 <div id="content" class="cf">

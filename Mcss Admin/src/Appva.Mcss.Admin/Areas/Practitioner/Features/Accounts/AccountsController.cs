@@ -218,11 +218,11 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/pause")]
-        [HttpGet, Dispatch("List", "Accounts")]
+        [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Practitioner.PauseValue)]
         public ActionResult Pause(PauseAccount request)
         {
-            return this.View();
+            return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         #endregion
@@ -235,11 +235,11 @@ namespace Appva.Mcss.Admin.Features.Accounts
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("{id:guid}/unpause")]
-        [HttpGet, Dispatch("List", "Accounts")]
+        [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Practitioner.ResumeValue)]
         public ActionResult Unpause(UnPauseAccount request)
         {
-            return this.View();
+            return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         #endregion

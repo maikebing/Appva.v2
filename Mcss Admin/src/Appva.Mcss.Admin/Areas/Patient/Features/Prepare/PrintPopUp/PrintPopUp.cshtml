@@ -1,10 +1,13 @@
 ﻿@model Appva.Mcss.Web.ViewModels.PreparePrintPopUpViewModel
 @{
-    ViewBag.Title = "Skriv ut pappersverion";
+    SetTitle("Skriv ut PDF");
 }
-
-<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PreparePrint" data-valparams="startdate=@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddYears(-10))">
-    @using (Html.BeginForm(new { id = Model.Id, scheduleId = Model.ScheduleId }))
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="PreparePrint" data-valparams="startdate=@string.Format("{0:yyyy-MM-dd}", DateTime.Now.AddYears(-10))">
+    @using (Html.BeginForm(new
+    {
+        id = Model.Id,
+        scheduleId = Model.ScheduleId
+    }))
     {
         <h3 class="section-title">Välj datum</h3>
         <div class="text medium">
@@ -13,14 +16,14 @@
             @Html.ValidationMessageFor(m => m.PrintStartDate)
         </div>
         <div class="text medium">
-			@Html.LabelFor(m => m.PrintEndDate)
+            @Html.LabelFor(m => m.PrintEndDate)
             @Html.EditorFor(m => m.PrintEndDate)
             @Html.ValidationMessageFor(m => m.PrintEndDate)
-		</div>
-	    <div class="submit">
+        </div>
+        <div class="submit">
             @Html.AntiForgeryToken()
-            @Html.Submit("Skriv ut")
+            @Html.Submit("Visa")
             @Html.Cancel("Avbryt")
-	    </div>
+        </div>
     }
 </div>

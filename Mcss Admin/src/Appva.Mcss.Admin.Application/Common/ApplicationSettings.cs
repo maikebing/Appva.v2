@@ -178,6 +178,32 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #endregion
 
+        #region PDF.
+ 
+         /// <summary>
+         /// PDF configuration for look and feel.
+         /// </summary>
+         /// <remarks>The setting returns a <c>PdfProcessing</c></remarks>
+         public static readonly ApplicationSettingIdentity<PdfLookAndFeel> PdfLookAndFeelConfiguration = ApplicationSettingIdentity<PdfLookAndFeel>.CreateNew(
+             "Mcss.Core.Pdf",
+             "Pdf Generation Configuration",
+             "Mcss.Core.Pdf",
+             "The PDF configuration for look and feel",
+             PdfLookAndFeel.CreateDefault(null, "Appva AB"));
+
+         /// <summary>
+         /// PDF configuration for look and feel.
+         /// </summary>
+         /// <remarks>The setting returns a <c>PdfProcessing</c></remarks>
+         public static readonly ApplicationSettingIdentity<bool> PdfShowInstructionsOnSeparatePage = ApplicationSettingIdentity<bool>.CreateNew(
+             "Mcss.Core.Pdf.ShowInstructionsOnSeparatePage",
+             "Pdf prescription name and instruction",
+             "Mcss.Core.Pdf",
+             "Whether or not to show the instructions on a separate reference page",
+             true);
+ 
+         #endregion
+
         #region Inventory
 
         /// <summary>

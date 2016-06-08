@@ -116,6 +116,18 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     }
 
     /// <summary>
+    /// The gui look and feel interface.
+    /// </summary>
+    public interface ILookAndFeel
+    {
+        /// <summary>
+        /// Returns the pdf look and feel configuration.
+        /// </summary>
+        /// <returns>The <see cref="PdfLookAndFeel"/></returns>
+        PdfLookAndFeel PdfLookAndFeelConfiguration();
+    }
+
+    /// <summary>
     /// Tenant-specific configuration settings
     /// </summary>
     public interface IConfigurationSettings
@@ -133,6 +145,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     public interface ISettingsService :
         IAccessControlListTenantSettings,
         ISecuritySettings,
+        ILookAndFeel,
         IOldSettings,
         IConfigurationSettings,
         IService
@@ -302,6 +315,16 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         public bool IsSithsAuthorizationEnabled()
         {
             return this.GetAdminLogin() == "siths";
+        }
+
+        #endregion
+
+        #region ILookAndFeel Members.
+
+        /// <inheritdoc />
+        public PdfLookAndFeel PdfLookAndFeelConfiguration()
+        {
+            return this.Find(ApplicationSettings.PdfLookAndFeelConfiguration);
         }
 
         #endregion

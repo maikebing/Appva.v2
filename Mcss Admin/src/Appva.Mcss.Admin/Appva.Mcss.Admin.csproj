@@ -553,10 +553,8 @@
     <Compile Include="Models\PrepareAddSequenceViewModel.cs" />
     <Compile Include="Models\PrepareEditSequenceViewModel.cs" />
     <Compile Include="Models\PreparePrintPopUpViewModel.cs" />
-    <Compile Include="Models\PreparePrintViewModel.cs" />
     <Compile Include="Models\PrepareSchemaViewModel.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\PrintPopUp\PrintSequenceSettingsForm.cs" />
-    <Compile Include="Models\PrintViewModel.cs" />
     <Compile Include="Models\RecalculateStockViewModel.cs" />
     <Compile Include="Models\RecountOverviewItemViewModel.cs" />
     <Compile Include="Models\ReportViewModel.cs" />
@@ -565,7 +563,6 @@
     <Compile Include="Models\ScheduleListViewModel.cs" />
     <Compile Include="Models\SchedulePrintPopOverViewModel.cs" />
     <Compile Include="Models\ScheduleReportViewModel.cs" />
-    <Compile Include="Models\ScheduleTabelPrintViewModel.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Create\CreateScheduleForm.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Shared\CreateOrUpdateSequence.cs" />
@@ -977,7 +974,6 @@
     <Content Include="Areas\Patient\Features\Prepare\Create\Create.cshtml" />
     <Content Include="Areas\Patient\Features\Prepare\Update\Update.cshtml" />
     <Content Include="Areas\Patient\Features\Prepare\PrintPopUp\PrintPopUp.cshtml" />
-    <Content Include="Areas\Patient\Features\Prepare\Print\Print.cshtml" />
     <Content Include="Areas\Patient\Features\Prepare\Schema\Schema.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -985,7 +981,6 @@
     <Content Include="Areas\Patient\Features\Schedule\Details\Details.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\PrintPopUp\PrintPopUp.cshtml" />
-    <Content Include="Areas\Patient\Features\Schedule\PrintTable\PrintTable.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\ScheduleReport\ScheduleReport.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\Sign\Sign.cshtml" />
   </ItemGroup>

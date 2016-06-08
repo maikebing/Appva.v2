@@ -9,7 +9,7 @@
     <ul class="cf">
         @foreach (var item in Model)
         {
-            <li class="@item.ListItemCssClass @(item.IsSelected ? "sel" : string.Empty)">
+            <li class="@item.ListItemCssClass @(item.IsSelected(actionName, controllerName, areaName) ? "sel" : string.Empty)">
                 @if (string.IsNullOrWhiteSpace(item.Action) || string.IsNullOrWhiteSpace(item.Controller))
                 {
                     @* 

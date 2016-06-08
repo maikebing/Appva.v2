@@ -59,13 +59,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             ITenantIdentity tenant;
             this.tenantService.TryIdentifyTenant(out tenant);
-            var bytes = this.pdfService.CreateSignedTasksTable(message.StartDate, message.EndDate, message.Id, message.ScheduleSettingsId, message.OnNeedBasis, message.StandardSequences);
+            var fileName = string.Format("Signerade-handelser-{0}-{1}.pdf", tenant.Name.ToUrlFriendly(), DateTime.Now.ToFileTimeUtc());
+            var bytes    = this.pdfService.CreateSignedTasksTable(fileName, message.StartDate, message.EndDate, message.Id, message.ScheduleSettingsId, message.OnNeedBasis, message.StandardSequences);
             return new FileContentResult(bytes, "application/pdf")
             {
-                FileDownloadName = string.Format(
-                    "Signerade-handelser-{0}-{1}.pdf",
-                    tenant.Name.ToUrlFriendly(),
-                    DateTime.Now.ToFileTimeUtc())
+                FileDownloadName = fileName
             };
         }
 

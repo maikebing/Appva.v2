@@ -29,6 +29,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <summary>
         /// Creates the by schedule.
         /// </summary>
+        /// <param name="title">The pdf title.</param>
         /// <param name="start">The start.</param>
         /// <param name="end">The end.</param>
         /// <param name="patientId">The patient ID</param>
@@ -36,11 +37,12 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <param name="showNeedBased">If set to <c>true</c> [show need based].</param>
         /// <param name="showStandardSequences">If set to <c>true</c> [show standard sequences].</param>
         /// <returns>A byte array</returns>
-        byte[] CreateBySchedule(DateTime start, DateTime end, Guid patientId, Guid scheduleId, bool showNeedBased = true, bool showStandardSequences = true);
+        byte[] CreateBySchedule(string title, DateTime start, DateTime end, Guid patientId, Guid scheduleId, bool showNeedBased = true, bool showStandardSequences = true);
 
         /// <summary>
         /// Creates the by tasks.
         /// </summary>
+        /// <param name="title">The pdf title.</param>
         /// <param name="start">The start.</param>
         /// <param name="end">The end.</param>
         /// <param name="patientId">The patient ID</param>
@@ -48,11 +50,12 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <param name="showNeedBased">If set to <c>true</c> [show need based].</param>
         /// <param name="showStandardSequences">If set to <c>true</c> [show standard sequences].</param>
         /// <returns>A byte array</returns>
-        byte[] CreateByTasks(DateTime start, DateTime end, Guid patientId, Guid? scheduleSettingsId, bool showNeedBased = true, bool showStandardSequences = true);
+        byte[] CreateByTasks(string title, DateTime start, DateTime end, Guid patientId, Guid? scheduleSettingsId, bool showNeedBased = true, bool showStandardSequences = true);
 
         /// <summary>
         /// Creates the signed tasks table.
         /// </summary>
+        /// <param name="title">The pdf title.</param>
         /// <param name="start">The start.</param>
         /// <param name="end">The end.</param>
         /// <param name="patientId">The patient ID</param>
@@ -60,17 +63,18 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <param name="showNeedBased">If set to <c>true</c> [show need based].</param>
         /// <param name="showStandardSequences">If set to <c>true</c> [show standard sequences].</param>
         /// <returns>A byte array</returns>
-        byte[] CreateSignedTasksTable(DateTime start, DateTime end, Guid patientId, Guid? scheduleSettingsId, bool showNeedBased = true, bool showStandardSequences = true);
+        byte[] CreateSignedTasksTable(string title, DateTime start, DateTime end, Guid patientId, Guid? scheduleSettingsId, bool showNeedBased = true, bool showStandardSequences = true);
 
         /// <summary>
         /// Creates the prepared sequence schedule.
         /// </summary>
+        /// <param name="title">The pdf title.</param>
         /// <param name="start">The start.</param>
         /// <param name="end">The end.</param>
         /// <param name="patientId">The patient ID</param>
         /// <param name="scheduleId">The schedule ID.</param>
         /// <returns>A byte array</returns>
-        byte[] CreateSignedPreparedTasks(DateTime start, DateTime end, Guid patientId, Guid scheduleId);
+        byte[] CreateSignedPreparedTasks(string title, DateTime start, DateTime end, Guid patientId, Guid scheduleId);
     }
 
     /// <summary>
@@ -122,7 +126,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
         #endregion
 
         /// <inheritdoc />
-        public byte[] CreateBySchedule(DateTime start, DateTime end, Guid patientId, Guid scheduleId, bool showNeedBased = true, bool showStandardSequences = true)
+        public byte[] CreateBySchedule(string title, DateTime start, DateTime end, Guid patientId, Guid scheduleId, bool showNeedBased = true, bool showStandardSequences = true)
         {
             var patient = this.context.Get<Patient>(patientId);
             var schedule = this.context.Get<Schedule>(scheduleId);
@@ -163,11 +167,11 @@ namespace Appva.Mcss.Admin.Application.Pdf
             var lookAndFeel = this.settingsService.PdfLookAndFeelConfiguration();
             var showInstructionsOnSeparatePage = this.settingsService.Find(ApplicationSettings.PdfShowInstructionsOnSeparatePage);
             var result = this.FindSequencesWithinTimeSpan(schedule.ScheduleSettings.Name, start, end, patient, sequences, statusTaxons, showInstructionsOnSeparatePage);
-            return PdfScheduleDocument.CreateNew(lookAndFeel).Process(result.Item1, result.Item2).Save();
+            return PdfScheduleDocument.CreateNew(title, lookAndFeel).Process(result.Item1, result.Item2).Save();
         }
 
         /// <inheritdoc />
-        public byte[] CreateByTasks(DateTime start, DateTime end, Guid patientId, Guid? scheduleSettingsId, bool showNeedBased = true, bool showStandardSequences = true)
+        public byte[] CreateByTasks(string title, DateTime start, DateTime end, Guid patientId, Guid? scheduleSettingsId, bool showNeedBased = true, bool showStandardSequences = true)
         {
             var patient = this.context.Get<Patient>(patientId);
             var query = this.context.QueryOver<Task>()
@@ -207,11 +211,11 @@ namespace Appva.Mcss.Admin.Application.Pdf
                 patient.Id);
             var lookAndFeel = this.settingsService.PdfLookAndFeelConfiguration();
             var result      = this.FindTasksWithinTimeSpan(scheduleSettings.Name, start, end, patient, query.List(), statusTaxons);
-            return PdfScheduleDocument.CreateNew(lookAndFeel).Process(result, null).Save();
+            return PdfScheduleDocument.CreateNew(title, lookAndFeel).Process(result, null).Save();
         }
 
         /// <inheritdoc />
-        public byte[] CreateSignedTasksTable(DateTime start, DateTime end, Guid patientId, Guid? scheduleSettingsId, bool showNeedBased = true, bool showStandardSequences = true)
+        public byte[] CreateSignedTasksTable(string title, DateTime start, DateTime end, Guid patientId, Guid? scheduleSettingsId, bool showNeedBased = true, bool showStandardSequences = true)
         {
             var patient = this.context.Get<Patient>(patientId);
             var query = this.context.QueryOver<Task>()
@@ -242,7 +246,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
                 patient.FullName,
                 patient.Id);
             var lookAndFeel = this.settingsService.PdfLookAndFeelConfiguration();
-            return PdfTableDocument.CreateNew(lookAndFeel).Process(
+            return PdfTableDocument.CreateNew(title, lookAndFeel).Process(
                 scheduleSettings.Name,
                 Period.CreateNew(start, end),
                 new PatientInformation(patient.FullName, patient.PersonalIdentityNumber),
@@ -250,7 +254,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
         }
 
         /// <inheritdoc />
-        public byte[] CreateSignedPreparedTasks(DateTime start, DateTime end, Guid patientId, Guid scheduleId)
+        public byte[] CreateSignedPreparedTasks(string title, DateTime start, DateTime end, Guid patientId, Guid scheduleId)
         {
             var patient = this.context.Get<Patient>(patientId);
             var schedule = this.context.Get<Schedule>(scheduleId);
@@ -267,6 +271,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
             var lookAndFeel = this.settingsService.PdfLookAndFeelConfiguration();
             var result = this.ConvertPreparedTasks("Iordningsställande: " + schedule.ScheduleSettings.Name, start, end, patient, tasks);
             return PdfScheduleDocument.CreateNew(
+                title, 
                 lookAndFeel,
                 false,
                 new List<string>

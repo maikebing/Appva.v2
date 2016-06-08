@@ -57,15 +57,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override FileContentResult Handle(PrintSchemaSchedule message)
         {
-            var bytes = this.pdfService.CreateByTasks(message.StartDate, message.EndDate, message.Id, message.ScheduleSettingsId, message.OnNeedBasis, message.StandardSequences);
             ITenantIdentity tenant;
             this.tenantService.TryIdentifyTenant(out tenant);
+            var fileName = string.Format("Signerade-handelser-{0}-{1}.pdf", tenant.Name.ToUrlFriendly(), DateTime.Now.ToFileTimeUtc());
+            var bytes    = this.pdfService.CreateByTasks(fileName, message.StartDate, message.EndDate, message.Id, message.ScheduleSettingsId, message.OnNeedBasis, message.StandardSequences);
             return new FileContentResult(bytes, "application/pdf")
             {
-                FileDownloadName = string.Format(
-                    "Signerade-handelser-{0}-{1}.pdf",
-                    tenant.Name.ToUrlFriendly(),
-                    DateTime.Now.ToFileTimeUtc())
+                FileDownloadName = fileName
             };
         }
 

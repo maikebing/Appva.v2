@@ -42,11 +42,12 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <summary>
         /// Initializes a new instance of the <see cref="PdfScheduleDocument"/> class.
         /// </summary>
+        /// <param name="title">The pdf title.</param>
         /// <param name="lookAndFeel">The <see cref="PdfLookAndFeel"/></param>
         /// <param name="isTimeVisible">Whether or not the time column is visible, defaults to <c>true</c></param>
         /// <param name="columnTexts">Custom header column texts</param>
-        private PdfScheduleDocument(PdfLookAndFeel lookAndFeel, bool isTimeVisible = true, IList<string> columnTexts = null)
-            : base(lookAndFeel)
+        private PdfScheduleDocument(string title, PdfLookAndFeel lookAndFeel, bool isTimeVisible = true, IList<string> columnTexts = null)
+            : base(title, lookAndFeel)
         {
             this.isTimeVisible = isTimeVisible;
             this.columnTexts   = columnTexts ?? new List<string>
@@ -64,13 +65,14 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <summary>
         /// Creates a new instance of the <see cref="PdfScheduleDocument"/> class.
         /// </summary>
+        /// <param name="title">The pdf title.</param>
         /// <param name="lookAndFeel">The <see cref="PdfLookAndFeel"/></param>
         /// <param name="isTimeVisible">Whether or not the time column is visible, defaults to <c>true</c></param>
         /// <param name="columnTexts">Custom header column texts</param>
         /// <returns>A new <see cref="PdfScheduleDocument"/> instance</returns>
-        public static PdfScheduleDocument CreateNew(PdfLookAndFeel lookAndFeel, bool isTimeVisible = true, IList<string> columnTexts = null)
+        public static PdfScheduleDocument CreateNew(string title, PdfLookAndFeel lookAndFeel, bool isTimeVisible = true, IList<string> columnTexts = null)
         {
-            return new PdfScheduleDocument(lookAndFeel, isTimeVisible, columnTexts);
+            return new PdfScheduleDocument(title, lookAndFeel, isTimeVisible, columnTexts);
         }
 
         #endregion

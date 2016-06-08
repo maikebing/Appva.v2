@@ -36,9 +36,10 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <summary>
         /// Initializes a new instance of the <see cref="PdfTableDocument"/> class.
         /// </summary>
+        /// <param name="title">The pdf title.</param>
         /// <param name="lookAndFeel">The <see cref="PdfLookAndFeel"/></param>
-        private PdfTableDocument(PdfLookAndFeel lookAndFeel)
-            : base(lookAndFeel)
+        private PdfTableDocument(string title, PdfLookAndFeel lookAndFeel)
+            : base(title, lookAndFeel)
         {
         }
 
@@ -49,11 +50,12 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <summary>
         /// Creates a new instance of the <see cref="PdfTableDocument"/> class.
         /// </summary>
+        /// <param name="title">The pdf title.</param>
         /// <param name="lookAndFeel">The <see cref="PdfLookAndFeel"/></param>
         /// <returns>A new <see cref="PdfTableDocument"/> instance</returns>
-        public static PdfTableDocument CreateNew(PdfLookAndFeel lookAndFeel)
+        public static PdfTableDocument CreateNew(string title, PdfLookAndFeel lookAndFeel)
         {
-            return new PdfTableDocument(lookAndFeel);
+            return new PdfTableDocument(title, lookAndFeel);
         }
 
         #endregion

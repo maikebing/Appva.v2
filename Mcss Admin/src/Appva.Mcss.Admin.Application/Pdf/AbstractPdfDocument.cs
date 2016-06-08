@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
 {
     #region Imports.
 
+    using System;
     using System.IO;
     using Appva.Mcss.Admin.Application.Pdf.Prescriptions;
     using Appva.Mcss.Admin.Domain.VO;
@@ -77,10 +78,13 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <summary>
         /// Initializes a new instance of the <see cref="AbstractPdfDocument"/> class.
         /// </summary>
+        /// <param name="title">The pdf title.</param>
         /// <param name="lookAndFeel">The <see cref="PdfLookAndFeel"/></param>
-        protected AbstractPdfDocument(PdfLookAndFeel lookAndFeel)
+        protected AbstractPdfDocument(string title, PdfLookAndFeel lookAndFeel)
         {
             this.Document = new Document();
+            this.Document.Info.Title  = title;
+            this.Document.Info.Author = "Appva AB";
             this.LookAndFeel = lookAndFeel;
             this.BackgroundColor = new Color(this.LookAndFeel.BackgroundColor.R, this.LookAndFeel.BackgroundColor.G, this.LookAndFeel.BackgroundColor.B);
             this.FontColor = new Color(this.LookAndFeel.FontColor.R, this.LookAndFeel.FontColor.G, this.LookAndFeel.FontColor.B);

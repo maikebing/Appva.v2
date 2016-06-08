@@ -1,0 +1,26 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Audit.IsAuditPermissionsInstalled
+@{
+	SetTitle("Area 51 - Loggning");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+	<h1>Loggning</h1>
+    @Html.ActionLink("Installera konfiguration", "Configuration", null, new { @class = "btn" })
+</div>
+<div id="content" class="cf">
+	<div id="content-primary">
+        <p>
+        @if (Model.IsInstalled)
+        {
+            @Html.Help("Behörigheter för loggrapport är installerad :)")
+        }
+        else
+        {
+            using (Html.Post("Install", "Audit", null))
+	        {
+		        @Html.Submit("Installera behörigheter för loggrapport", new { @class = "btn" })
+	        }
+        }
+        </p>
+	</div>
+</div>

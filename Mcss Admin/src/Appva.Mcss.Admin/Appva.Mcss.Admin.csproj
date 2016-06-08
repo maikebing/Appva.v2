@@ -225,6 +225,8 @@
     <Compile Include="Areas\Area51\Features\Inventory\InventoryController.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\List\ListInventoriesHandler.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\List\ListInventoriesModel.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNotice.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNoticeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162NoticeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\NotificationsController.cs" />
@@ -736,10 +738,12 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="media\appva-event.png" />
+    <Content Include="media\icn-pdf.png" />
     <Content Include="media\jul.png" />
     <Content Include="media\logo-appva.png" />
     <Content Include="media\logout.png" />
     <Content Include="media\pagaende_insatser.png" />
+    <Content Include="media\pdf.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1135,6 +1139,7 @@
     <Content Include="Areas\Area51\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\inventory-news.cshtml" />
     <Content Include="Assets\error-pages\web.config" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\pdf.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

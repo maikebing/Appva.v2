@@ -204,16 +204,24 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <inheritdoc />
         public bool IsSelected(string action, string controller, string area)
         {
+            var thisIsSelected =    this.Action.ToNullSafeLower() == action.ToNullSafeLower()
+                                 && this.Controller.ToNullSafeLower() == controller.ToNullSafeLower()
+                                 && this.Area.ToNullSafeLower() == area.ToNullSafeLower();
+            if(thisIsSelected)
+            {
+                return true;
+            }
             if (this.Children != null)
             {
                 foreach (var c in this.Children)
                 {
-                    return c.IsSelected(action, controller, area);
+                    if(c.IsSelected(action, controller, area))
+                    {
+                        return true;
+                    }
                 }
             }
-            return this.Action.ToNullSafeLower() == action.ToNullSafeLower()
-                && this.Controller.ToNullSafeLower() == controller.ToNullSafeLower()
-                && this.Area.ToNullSafeLower() == area.ToNullSafeLower();
+            return false;
         }
 
         #endregion

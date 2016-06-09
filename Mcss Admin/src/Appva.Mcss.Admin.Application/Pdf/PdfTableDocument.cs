@@ -156,7 +156,7 @@ namespace Appva.Mcss.Admin.Application.Pdf
                 {
                     if (task.StatusTaxon != null)
                     {
-                        row.Cells[4].AddParagraph(task.StatusTaxon.Weight < 2 ? task.StatusTaxon.Name : "AVVIKELSE: " + task.StatusTaxon.Name.ToUpper());
+                        row.Cells[4].AddParagraph(task.StatusTaxon.Weight < 2 ? task.StatusTaxon.Name.ToUpper() : "AVVIKELSE: " + task.StatusTaxon.Name.ToUpper());
                     }
                     else
                     {
@@ -184,7 +184,14 @@ namespace Appva.Mcss.Admin.Application.Pdf
                 }
                 else
                 {
-                    row.Cells[4].AddParagraph("AVVIKELSE");
+                    if (task.StatusTaxon != null)
+                    {
+                        row.Cells[4].AddParagraph(task.StatusTaxon.Weight < 2 ? task.StatusTaxon.Name.ToUpper() : "AVVIKELSE: " + task.StatusTaxon.Name.ToUpper());
+                    }
+                    else
+                    {
+                        row.Cells[4].AddParagraph("AVVIKELSE");
+                    }
                 }
                 if (task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon != null ? task.StatusTaxon.Weight > 1 : false))
                 {

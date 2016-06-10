@@ -443,6 +443,9 @@
       <many-to-many class="Taxon" column="TaxonId" property-ref="" />
     </bag>
     <property name="OrderRefill" />
+    <property name="GenerateIncompleteTasks">
+      <column name="GenerateIncompleteTasks" not-null="true" default="'True'" />
+    </property>
   </class>
 
   <!-- Schedule -->

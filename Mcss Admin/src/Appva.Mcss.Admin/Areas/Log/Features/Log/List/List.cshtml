@@ -7,7 +7,7 @@
     <h2>Logg för @Model.TenantName</h2>
     <div class="info">
         <p>Totalt antal rader</p>
-        <p class="bold">@Model.TotalCount</p>
+        <p class="bold">@Model.TotalCount.ToString("N")</p>
     </div>
 </div>
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml")
@@ -21,7 +21,7 @@
         {
             <p>Visar log efter <b>@Model.Cursor</b>. @Html.ActionLink(Permissions.Log.Read,"Klicka här","List","Log") för att visa de senaste händelserna</p>
         }
-        <p>Rad @((Model.Page - 1) * Model.PageSize)-@((Model.Page - 1) * Model.PageSize + Model.Logs.Count) av @Model.TotalCount</p>
+        <p>Rad @((Model.Page - 1) * Model.PageSize)-@((Model.Page - 1) * Model.PageSize + Model.Logs.Count) av @Model.TotalCount.ToString("N")</p>
         <table>
             <thead>
                 <tr class="head">

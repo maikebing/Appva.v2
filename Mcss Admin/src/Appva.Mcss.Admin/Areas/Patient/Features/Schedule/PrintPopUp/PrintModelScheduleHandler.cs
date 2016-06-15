@@ -9,16 +9,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
-    using NHibernate.Transform;
-    using Appva.Core.Extensions;
 
     #endregion
 
@@ -51,6 +47,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintModelScheduleHandler"/> class.
         /// </summary>
+        /// <param name="patientService">The <see cref="IPatientService"/></param>
+        /// <param name="transformer">The <see cref="IPatientTransformer"/></param>
+        /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
         public PrintModelScheduleHandler(IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
         {
             this.patientService = patientService;
@@ -62,11 +61,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler Overrides.
 
+        /// <inheritdoc />
         public override SchedulePrintPopOverViewModel Handle(PrintModelSchedule message)
         {
             var patient = this.patientService.Get(message.Id);
             var startDate = message.StartDate.HasValue && !message.StartDate.Equals(patient.CreatedAt) ? message.StartDate.Value.Date : DateTime.Now.FirstOfMonth();
-            // TODO: Check this -> endDate.HasValue && !startDate.Equals(patient.CreatedAt) - should it be startDate?
+            //// TODO: Check this -> endDate.HasValue && !startDate.Equals(patient.CreatedAt) - should it be startDate?
             var endDate = message.EndDate.HasValue && !message.EndDate.Equals(patient.CreatedAt) ? message.EndDate.Value.Date : DateTime.Now.LastOfMonth();
             return new SchedulePrintPopOverViewModel
             {

@@ -9,15 +9,14 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
-    using Appva.Cqrs;
-    using Appva.Mcss.Web.ViewModels;
+    using System.Web.Mvc;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// The print sequence request.
     /// </summary>
-    public class PrintSequence : Identity<PrintViewModel>
+    public sealed class PrintSequence : Identity<FileContentResult>
     {
         /// <summary>
         /// The schedule ID.

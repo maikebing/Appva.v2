@@ -96,7 +96,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 IsDeceased = patient.Deceased,
                 Assessments = assessments,
                 HasAlternativeIdentifier = this.settingsService.HasPatientTag(),
-                Tag = patient.Identifier
+                Tag = patient.Identifier,
+                IsPersonOfPublicInterestOrVip = patient.IsPersonOfPublicInterest,
+                IsPersonWithHightenedSensitivity = patient.IsAllDemographicInformationSensitive
             };
         }
 

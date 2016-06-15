@@ -72,14 +72,14 @@ namespace Appva.Mcss.Web.ViewModels {
         [DisplayName("Slutar:")]
         public DateTime EndDate { get; set; }
 
-        [RequiredIf(Target = "AllDay", Value = false, ErrorMessage = "Tid måste fyllas i.")] 
-        [RegularExpression(@"^(\d{2}\:\d{2})$", ErrorMessage = "Tid måste fyllas i med fyra siffror och kolon, t.ex. 14:30.")]
+        [RequiredIf(Target = "AllDay", Value = false, ErrorMessage = "Tid måste fyllas i.")]
+        [RegularExpression(@"^(\d{2}[:\.]\d{2})$", ErrorMessage = "Tid måste fyllas i med fyra siffror och kolon, t.ex. 14:30.")]
         [DisplayName("Starttid:")]
         [PlaceHolder("T.ex. 14:30")]
         public string StartTime { get; set; }
 
         [RequiredIf(Target = "AllDay", Value = false, ErrorMessage = "Tid måste fyllas i.")]
-        [RegularExpression(@"^(\d{2}\:\d{2})$", ErrorMessage = "Tid måste fyllas i med fyra siffror och kolon, t.ex. 14:30.")]
+        [RegularExpression(@"^(\d{2}[:\.]\d{2})$", ErrorMessage = "Tid måste fyllas i med fyra siffror och kolon, t.ex. 14:30.")]
         [DisplayName("Sluttid:")]
         [PlaceHolder("T.ex. 14:30")]
         public string EndTime { get; set; }

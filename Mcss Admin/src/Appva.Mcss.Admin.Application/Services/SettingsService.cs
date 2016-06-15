@@ -116,6 +116,18 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     }
 
     /// <summary>
+    /// The gui look and feel interface.
+    /// </summary>
+    public interface ILookAndFeel
+    {
+        /// <summary>
+        /// Returns the pdf look and feel configuration.
+        /// </summary>
+        /// <returns>The <see cref="PdfLookAndFeel"/></returns>
+        PdfLookAndFeel PdfLookAndFeelConfiguration();
+    }
+
+    /// <summary>
     /// Tenant-specific configuration settings
     /// </summary>
     public interface IConfigurationSettings
@@ -127,14 +139,31 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         IList<InventoryAmountListModel> GetIventoryAmountLists();
     }
 
+    public interface IAuditConfiguration
+    {
+        /// <summary>
+        /// Returns whether or not the audit logging is enabled.
+        /// </summary>
+        /// <returns>True if enabled; otherwise false</returns>
+        bool IsAuditLoggingEnabled();
+
+        /// <summary>
+        /// Returns the audit logging configuration.
+        /// </summary>
+        /// <returns>The configuration</returns>
+        AuditLoggingConfiguration AuditLoggingConfiguration();
+    }
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public interface ISettingsService :
         IAccessControlListTenantSettings,
         ISecuritySettings,
+        ILookAndFeel,
         IOldSettings,
         IConfigurationSettings,
+        IAuditConfiguration,
         IService
     {
         /// <summary>
@@ -302,6 +331,16 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         public bool IsSithsAuthorizationEnabled()
         {
             return this.GetAdminLogin() == "siths";
+        }
+
+        #endregion
+
+        #region ILookAndFeel Members.
+
+        /// <inheritdoc />
+        public PdfLookAndFeel PdfLookAndFeelConfiguration()
+        {
+            return this.Find(ApplicationSettings.PdfLookAndFeelConfiguration);
         }
 
         #endregion
@@ -574,6 +613,22 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                 });
             }
             return retval;
+        }
+
+        #endregion
+
+        #region IAuditConfiguration Members
+
+        /// <inheritdoc />
+        public bool IsAuditLoggingEnabled()
+        {
+            return this.Find<bool>(ApplicationSettings.IsAuditCollectionActivated);
+        }
+
+        /// <inheritdoc />
+        public AuditLoggingConfiguration AuditLoggingConfiguration()
+        {
+            return this.Find<AuditLoggingConfiguration>(ApplicationSettings.AuditConfiguration);
         }
 
         #endregion

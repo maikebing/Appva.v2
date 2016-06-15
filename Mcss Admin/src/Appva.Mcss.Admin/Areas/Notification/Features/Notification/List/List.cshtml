@@ -34,7 +34,7 @@
         }
     </ul>
     @Html.Pager(Model.PageSize, Model.Page, Model.Total).Options(x => x
-    .DisplayTemplate("Pagination")
-    .MaxNrOfPages(15)
-    .AlwaysAddFirstPageNumber())
+            .DisplayTemplate("Pagination")
+            .MaxNrOfPages(15)
+            .AlwaysAddFirstPageNumber())
 }

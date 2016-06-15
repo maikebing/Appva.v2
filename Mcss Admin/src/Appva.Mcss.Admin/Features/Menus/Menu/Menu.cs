@@ -30,33 +30,6 @@ using Appva.Cqrs;
         }
 
         /// <summary>
-        /// The current action route.
-        /// </summary>
-        public string ActionName
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The current controller route.
-        /// </summary>
-        public string ControllerName
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The current area route.
-        /// </summary>
-        public string AreaName
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The partial view to execute.
         /// </summary>
         public string PartialView

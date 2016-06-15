@@ -61,11 +61,15 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
                 var inventory     = sequence.Inventory;
                 inventory.Patient = sequence.Patient;
                 inventory.IsActive = sequence.IsActive;
+                if (inventory.LastRecount == null)
+                {
+                    inventory.LastRecount = inventory.UpdatedAt;
+                }
                 this.inventories.Update(inventory);
             }
 
             //// Creates the update-notice
-            var notice = new DashboardNotification
+            /*var notice = new DashboardNotification
             {
                 IsActive = true,
                 IsVisibleToEveryone = true,
@@ -77,7 +81,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
                 VisibleTo = new List<Account>()
             };
 
-            this.context.Save<DashboardNotification>(notice);
+            this.context.Save<DashboardNotification>(notice);*/
         }
     }
 }

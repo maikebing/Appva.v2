@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Appva.Mcss.Admin.Application.Security.Jwt;
     using Appva.Mcss.Admin.Domain.VO;
@@ -176,7 +177,44 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "If true the audit logging analytics is enabled and active for the tenant",
             false);
 
+        /// <summary>
+        /// Audit logging analytics collection is enabled for the current tenant.
+        /// </summary>
+        /// <remarks>The setting returns a <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<AuditLoggingConfiguration> AuditConfiguration = ApplicationSettingIdentity<AuditLoggingConfiguration>.CreateNew(
+            "Mcss.Core.Security.Analytics.Audit.Configuration",
+            "Audit logging configuration",
+            "Mcss.Core.Security.Analytics.Audit",
+            "The audit configuration settings",
+            AuditLoggingConfiguration.CreateNew(new List<Guid>()));
+
         #endregion
+
+        #region PDF.
+ 
+         /// <summary>
+         /// PDF configuration for look and feel.
+         /// </summary>
+         /// <remarks>The setting returns a <c>PdfProcessing</c></remarks>
+         public static readonly ApplicationSettingIdentity<PdfLookAndFeel> PdfLookAndFeelConfiguration = ApplicationSettingIdentity<PdfLookAndFeel>.CreateNew(
+             "Mcss.Core.Pdf",
+             "Pdf Generation Configuration",
+             "Mcss.Core.Pdf",
+             "The PDF configuration for look and feel",
+             PdfLookAndFeel.CreateDefault(null, "Appva AB"));
+
+         /// <summary>
+         /// PDF configuration for look and feel.
+         /// </summary>
+         /// <remarks>The setting returns a <c>PdfProcessing</c></remarks>
+         public static readonly ApplicationSettingIdentity<bool> PdfShowInstructionsOnSeparatePage = ApplicationSettingIdentity<bool>.CreateNew(
+             "Mcss.Core.Pdf.ShowInstructionsOnSeparatePage",
+             "Pdf prescription name and instruction",
+             "Mcss.Core.Pdf",
+             "Whether or not to show the instructions on a separate reference page",
+             true);
+ 
+         #endregion
 
         #region Inventory
 

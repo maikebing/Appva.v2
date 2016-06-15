@@ -181,12 +181,17 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Guid Create(string name, string unit, IList<double> amounts, Patient patient)
         {
+            if(patient == null)
+            {
+                throw new ArgumentException("Patient cannot be null in Invenvtory");
+            }
             var inventory = new Inventory
             {
                 Description = name,
                 Amounts     = amounts,
                 Patient     = patient,
-                Unit        = unit
+                Unit        = unit,
+                LastRecount = DateTime.Now
             };
             var id = this.repository.Save(inventory);
             this.audit.Create(patient, "skapade saldot {0} (ref. {1})", inventory.Description, id);

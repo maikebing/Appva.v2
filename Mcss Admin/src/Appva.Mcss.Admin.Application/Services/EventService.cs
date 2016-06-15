@@ -199,10 +199,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="date"></param>
         public IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date)
         {
-            
             var firstInMonth = date.FirstOfMonth();
-            var lastInMonth = firstInMonth.AddDays(DateTime.DaysInMonth(firstInMonth.Year, firstInMonth.Month));
-
+            var lastInMonth  = firstInMonth.AddDays(DateTime.DaysInMonth(firstInMonth.Year, firstInMonth.Month));
             return this.FindEventsWithinPeriod(firstInMonth, lastInMonth, patient: patient);
         }
 
@@ -215,23 +213,20 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns></returns>
         public IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var account          = this.accountService.Find(this.identityService.PrincipalId);
             var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
-
-            Taxon taxonAlias = null;
+            Taxon taxonAlias     = null;
             Patient patientAlias = null;
-
-            //// Creeate the queries
+            //// Create the queries
             var sequences = this.context.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
-                .And(x => x.Interval != 0 || (x.EndDate >= start && x.StartDate <= end));
+                  .And(x => x.Interval != 0 || (x.EndDate >= start && x.StartDate <= end));
              var tasks = this.context.QueryOver<Task>()
                 .Where(x => x.IsActive)
-                 .And(x => x.EndDate >= start && x.StartDate <= end);
+                  .And(x => x.EndDate >= start && x.StartDate <= end);
             var tasksFromCanceledSequence = this.context.QueryOver<Task>()
                 .Where(x => x.IsActive)
-                .And(x => x.EndDate >= start && x.StartDate <= end);
-            
+                  .And(x => x.EndDate >= start && x.StartDate <= end);
             //// If filtered by patient, add to query
             if(patient != null)
             {
@@ -239,7 +234,6 @@ namespace Appva.Mcss.Admin.Application.Services
                 tasks = tasks.Where(x => x.Patient == patient);
                 tasksFromCanceledSequence = tasksFromCanceledSequence.Where(x => x.Patient == patient);
             }
-
             //// If org-filter is Active, filter on taxon
             if(orgFilter != null)
             {
@@ -259,20 +253,16 @@ namespace Appva.Mcss.Admin.Application.Services
                         .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
                     .And(() => patientAlias.IsActive && !patientAlias.Deceased);
             }
-
-            //// Make the joins and list elements
             var sequencesListed = sequences.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                     .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
-           
             var tasksListed = tasks.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                     .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
-
             var tasksFromCanceledSequenceListed = tasksFromCanceledSequence.JoinQueryOver<Sequence>(x => x.Sequence)
                     .Where(x => !x.IsActive)
                     .JoinQueryOver<Schedule>(x => x.Schedule)
@@ -280,15 +270,12 @@ namespace Appva.Mcss.Admin.Application.Services
                         .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                         .And(s => s.ScheduleType == ScheduleType.Calendar)
                     .List();
-
             var retval = new List<CalendarTask>();
             retval.AddRange(EventTransformer.TasksToEvent(tasksFromCanceledSequenceListed));
             foreach (var sequence in sequencesListed)
             {
                 retval.AddRange(GetActivitiesWithinPeriodFor(sequence, start, end, tasksListed.Where(x => x.Sequence.Id == sequence.Id).ToList()));
             }
-
-
             return retval;
         }
 
@@ -299,27 +286,24 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns></returns>
         public IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null)
         {
-            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var account          = this.accountService.Find(this.identityService.PrincipalId);
             var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
-
-            Taxon taxonAlias = null;
+            Taxon taxonAlias     = null;
             Patient patientAlias = null;
-
             var tasks = this.context.QueryOver<Task>()
                 .Where(x => x.IsActive)
-                .And(x => x.EndDate < DateTime.Now.Date)
+                  .And(x => x.EndDate < DateTime.Now.Date)
                 .JoinAlias(x => x.Patient, () => patientAlias)
                     .Where(() => patientAlias.IsActive)
-                    .And(() => !patientAlias.Deceased)
+                      .And(() => !patientAlias.Deceased)
                 .JoinAlias(() => patientAlias.Taxon, () => taxonAlias)
                     .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
                         .IsLike(orgFilter.Id.ToString(), MatchMode.Anywhere))
                 .JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
-                    .And(s => s.ScheduleType == ScheduleType.Calendar)
+                      .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
-
             return EventTransformer.TasksToEvent(tasks);
 
         }
@@ -333,27 +317,27 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             return new Task(task.Id)
             {
-                Name = task.Name,
-                Absent = task.Absent,
-                AllDay = task.AllDay,
-                CanRaiseAlert = task.CanRaiseAlert,
-                IsCompleted = task.IsCompleted,
-                Delayed = task.Delayed,
-                DelayHandled = task.DelayHandled,
-                EndDate = task.EndDate,
-                Overview = task.Overview,
-                Patient = task.Patient,
-                CompletedBy = task.CompletedBy,
-                CompletedDate = task.CompletedDate,
+                Name                   = task.Name,
+                Absent                 = task.Absent,
+                AllDay                 = task.AllDay,
+                CanRaiseAlert          = task.CanRaiseAlert,
+                IsCompleted            = task.IsCompleted,
+                Delayed                = task.Delayed,
+                DelayHandled           = task.DelayHandled,
+                EndDate                = task.EndDate,
+                Overview               = task.Overview,
+                Patient                = task.Patient,
+                CompletedBy            = task.CompletedBy,
+                CompletedDate          = task.CompletedDate,
                 CurrentEscalationLevel = task.CurrentEscalationLevel,
-                PauseAnyAlerts = task.PauseAnyAlerts,
-                DelayHandledBy = task.DelayHandledBy,
-                Schedule = task.Schedule,
-                Scheduled = task.Scheduled,
-                Sequence = task.Sequence,
-                StartDate = task.StartDate,
-                Status = task.Status,
-                Taxon = task.Taxon
+                PauseAnyAlerts         = task.PauseAnyAlerts,
+                DelayHandledBy         = task.DelayHandledBy,
+                Schedule               = task.Schedule,
+                Scheduled              = task.Scheduled,
+                Sequence               = task.Sequence,
+                StartDate              = task.StartDate,
+                Status                 = task.Status,
+                Taxon                  = task.Taxon
             };
         }
 
@@ -366,18 +350,18 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var category = new ScheduleSettings
             {
-                Name = name,
-                ScheduleType = ScheduleType.Calendar,
-                CanRaiseAlerts = false,
-                CountInventory = false,
-                HasInventory = false,
-                HasSetupDrugsPanel = false,
-                IsPausable = false,
-                MachineName = name.Substring(0, 4),
+                Name                  = name,
+                ScheduleType          = ScheduleType.Calendar,
+                CanRaiseAlerts        = false,
+                CountInventory        = false,
+                HasInventory          = false,
+                HasSetupDrugsPanel    = false,
+                IsPausable            = false,
+                MachineName           = name.Substring(0, 4),
                 NurseConfirmDeviation = false
             };
             var retval = this.context.Save(category);
-            return (Guid)retval;
+            return (Guid) retval;
         }
 
         public IList<ScheduleSettings> GetCategories()
@@ -415,11 +399,10 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var schedule = this.context.QueryOver<Schedule>()
                 .Where(x => x.Patient == patient)
-                .And(x => x.IsActive)
+                  .And(x => x.IsActive)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .Where(x => x.Id == scheduleSettingsId)
                 .SingleOrDefault();
-
             if (schedule.IsNull())
             {
                 var scheduleID = this.context.Save<Schedule>(new Schedule()
@@ -429,31 +412,10 @@ namespace Appva.Mcss.Admin.Application.Services
                 });
                 schedule = this.context.Get<Schedule>(scheduleID);
             }
-            if (isAllDay)
-            {
-                startTime = "00:00";
-                endTime = "23:59";
-            }
-            var start = new DateTime(
-                startDate.Year,
-                startDate.Month,
-                startDate.Day,
-                Int32.Parse(startTime.Split(':')[0]),
-                Int32.Parse(startTime.Split(':')[1]),
-                0
-            );
-            var end = new DateTime(
-                endDate.Year,
-                endDate.Month,
-                endDate.Day,
-                Int32.Parse(endTime.Split(':')[0]),
-                Int32.Parse(endTime.Split(':')[1]),
-                0
-            );
             this.sequenceService.Create(
                 patient,
-                start,
-                end,
+                this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),
+                this.GetDateTimeWithHourAndMinutes(endDate,   endTime,   isAllDay ? "23:59" : null),
                 schedule,
                 description,
                 canRaiseAlert,
@@ -520,14 +482,9 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             evt.Name = evt.Schedule.ScheduleSettings.Name;
             evt.Description = description;
-            if (isAllDay)
-            {
-                startTime = "00:00";
-                endTime = "23:59";
-            }
-            evt.StartDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, Int32.Parse(startTime.Split(':')[0]), Int32.Parse(startTime.Split(':')[1]), 0);
-            evt.EndDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, Int32.Parse(endTime.Split(':')[0]), Int32.Parse(endTime.Split(':')[1]), 0);
-            evt.Interval = interval;
+            evt.StartDate = this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null);
+            evt.EndDate   = this.GetDateTimeWithHourAndMinutes(endDate,   endTime,   isAllDay ? "23:59" : null);
+            evt.Interval  = interval;
             evt.IntervalFactor = intervalFactor;
             evt.IntervalIsDate = intervalIsDate;
             evt.CanRaiseAlert = canRaiseAlert;
@@ -746,13 +703,31 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #region Private Functions.
 
+        private DateTime GetDateTimeWithHourAndMinutes(DateTime dateTime, string timeStr, string defaultTimeStr = null)
+        {
+            if (CanGetValueFromTimeString(timeStr))
+            {
+                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, this.GetHour(timeStr).Value, this.GetMinute(timeStr).Value, 0);
+            }
+            if (defaultTimeStr.IsNotEmpty())
+            {
+                return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, this.GetHour(defaultTimeStr).Value, this.GetMinute(defaultTimeStr).Value, 0);
+            }
+            throw new ArgumentException(string.Format("Timestring {0} is incorrect", timeStr));
+        }
+
+        public bool CanGetValueFromTimeString(string timeStr)
+        {
+            return this.GetHour(timeStr) != null && this.GetMinute(timeStr) != null;
+        }
+
         /// <summary>
         /// Returns the hour from a string, e.g. hour 14 from 14:26.
         /// </summary>
         /// <param name="time"></param>
         private int? GetHour(string time)
         {
-            return GetTime(time, 0);
+            return this.GetTime(time, 0);
         }
 
         /// <summary>
@@ -761,7 +736,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="time"></param>
         private int? GetMinute(string time)
         {
-            return GetTime(time, 1);
+            return this.GetTime(time, 1);
         }
 
         /// <summary>
@@ -773,8 +748,8 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             if (time.IsNotEmpty())
             {
-                var times = time.Split(':');
-                if (times.Count() == 2)
+                var times = time.Split(':', '.');
+                if (times.Length == 2)
                 {
                     int retval;
                     if (int.TryParse(times[index], out retval))

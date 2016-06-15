@@ -205,6 +205,15 @@
     <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18Handler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\AuditController.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfigurationCreateHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfigurationHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Configuration\OrganizationalUnit.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Index\IsAuditPermissionsInstalled.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Install\InstallAuditPermissions.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Index\IsAuditPermissionsInstalledHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Install\InstallAuditPermissionsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfiguration.cs" />
     <Compile Include="Areas\Area51\Features\Cache\CacheController.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCacheHandler.cs" />
@@ -225,6 +234,8 @@
     <Compile Include="Areas\Area51\Features\Inventory\InventoryController.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\List\ListInventoriesHandler.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\List\ListInventoriesModel.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNotice.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNoticeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162NoticeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\NotificationsController.cs" />
@@ -241,6 +252,10 @@
     <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
     <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
+    <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
+    <Compile Include="Areas\Log\Features\Log\List\ListLogModel.cs" />
+    <Compile Include="Areas\Log\Features\Log\LogController.cs" />
     <Compile Include="Areas\Notification\Features\News\Activate\ActivateNews.cs" />
     <Compile Include="Areas\Notification\Features\News\Activate\ActivateNewsHandler.cs" />
     <Compile Include="Areas\Notification\Features\News\NewsController.cs" />
@@ -551,10 +566,8 @@
     <Compile Include="Models\PrepareAddSequenceViewModel.cs" />
     <Compile Include="Models\PrepareEditSequenceViewModel.cs" />
     <Compile Include="Models\PreparePrintPopUpViewModel.cs" />
-    <Compile Include="Models\PreparePrintViewModel.cs" />
     <Compile Include="Models\PrepareSchemaViewModel.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\PrintPopUp\PrintSequenceSettingsForm.cs" />
-    <Compile Include="Models\PrintViewModel.cs" />
     <Compile Include="Models\RecalculateStockViewModel.cs" />
     <Compile Include="Models\RecountOverviewItemViewModel.cs" />
     <Compile Include="Models\ReportViewModel.cs" />
@@ -563,7 +576,6 @@
     <Compile Include="Models\ScheduleListViewModel.cs" />
     <Compile Include="Models\SchedulePrintPopOverViewModel.cs" />
     <Compile Include="Models\ScheduleReportViewModel.cs" />
-    <Compile Include="Models\ScheduleTabelPrintViewModel.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Create\CreateScheduleForm.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Shared\CreateOrUpdateSequence.cs" />
@@ -736,10 +748,12 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="media\appva-event.png" />
+    <Content Include="media\icn-pdf.png" />
     <Content Include="media\jul.png" />
     <Content Include="media\logo-appva.png" />
     <Content Include="media\logout.png" />
     <Content Include="media\pagaende_insatser.png" />
+    <Content Include="media\pdf.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -973,7 +987,6 @@
     <Content Include="Areas\Patient\Features\Prepare\Create\Create.cshtml" />
     <Content Include="Areas\Patient\Features\Prepare\Update\Update.cshtml" />
     <Content Include="Areas\Patient\Features\Prepare\PrintPopUp\PrintPopUp.cshtml" />
-    <Content Include="Areas\Patient\Features\Prepare\Print\Print.cshtml" />
     <Content Include="Areas\Patient\Features\Prepare\Schema\Schema.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -981,7 +994,6 @@
     <Content Include="Areas\Patient\Features\Schedule\Details\Details.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\PrintPopUp\PrintPopUp.cshtml" />
-    <Content Include="Areas\Patient\Features\Schedule\PrintTable\PrintTable.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\ScheduleReport\ScheduleReport.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\Sign\Sign.cshtml" />
   </ItemGroup>
@@ -1134,6 +1146,13 @@
     <Content Include="Areas\Area51\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Area51\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\inventory-news.cshtml" />
+    <Content Include="Areas\Area51\Features\Audit\Index\Index.cshtml" />
+    <Content Include="Areas\Area51\Features\Audit\Configuration\Configuration.cshtml" />
+    <Content Include="Assets\error-pages\web.config" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\pdf.cshtml" />
+    <Content Include="Areas\Log\Features\web.config" />
+    <Content Include="Areas\Log\Features\Log\List\List.cshtml" />
+    <Content Include="Areas\Log\Features\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

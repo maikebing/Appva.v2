@@ -1,4 +1,5 @@
-﻿@model UpdatePatient
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model UpdatePatient
 @{ 
     SetTitle("Ändra boendeuppgifter"); 
 }
@@ -49,6 +50,14 @@
                 @Html.ValidationMessageFor(m => m.Taxon)
 	        </div>
             @Html.FormGroup(x => x.IsDeceased, "checkbox").Checkbox("Avliden").Validate().Build()
+            @if (Html.HasPermissionFor(Permissions.SecurityConfidentiality.UpdatePeopleofPublicInterest))
+            {
+                @Html.FormGroup(x => x.IsPersonOfPublicInterestOrVip, "checkbox").Checkbox("Är allmänt känd?").Validate().Build()
+            }
+            @if (Html.HasPermissionFor(Permissions.SecurityConfidentiality.UpdateAllDemographicInformationSensitivity))
+            {
+                @Html.FormGroup(x => x.IsPersonWithHightenedSensitivity, "checkbox").Checkbox("Har skyddade uppgifter?").Validate().Build()
+            }
         </div>
         if (Model.Assessments.IsNotNull())
         { 

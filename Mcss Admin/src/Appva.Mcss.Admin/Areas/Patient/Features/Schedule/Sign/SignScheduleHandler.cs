@@ -11,20 +11,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web.Mvc;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Commands;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Web.Controllers;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
     using NHibernate.Transform;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Web.Controllers;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Commands;
-    using Appva.Mcss.Admin.Application.Auditing;
-    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -173,12 +171,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var scheduleSetting = this.persistence.Get<ScheduleSettings>(message.ScheduleSettingsId);
             var query = this.persistence.QueryOver<Task>()
                 .Where(x => x.Patient.Id == message.PatientId)
-                .And(x => x.Inventory.Increased == null)
-                .And(x => x.Inventory.RecalculatedLevel == null)
-                .And(x => x.Scheduled <= message.EndDate)
+                  .And(x => x.Inventory.Increased == null)
+                  .And(x => x.Inventory.RecalculatedLevel == null)
+                  .And(x => x.Scheduled <= message.EndDate)
                 .Fetch(x => x.StatusTaxon).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer());
-
             switch (message.Order)
             {
                 case OrderTasksBy.Day:
@@ -202,7 +199,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     query = query.OrderBy(x => x.CompletedDate).Desc;
                     break;
             };
-
             if (message.StartDate.HasValue)
             {
                 query.Where(x => x.Scheduled >= message.StartDate);
@@ -219,19 +215,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 query.Where(x => x.CanRaiseAlert);
             }
-
             query.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                 .Where(x => x.Id == message.ScheduleSettingsId);
-
             var items = query.Skip((message.PageNumber - 1) * message.PageSize).Take(message.PageSize).Future().ToList();
             var totalCount = query.ToRowCountQuery().FutureValue<int>();
-
             return new SearchViewModel<Task>
             {
-                Items = items,
-                PageNumber = message.PageNumber,
-                PageSize = message.PageSize,
+                Items          = items,
+                PageNumber     = message.PageNumber,
+                PageSize       = message.PageSize,
                 TotalItemCount = totalCount.Value
             };
         }

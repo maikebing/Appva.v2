@@ -75,7 +75,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 throw new ArgumentNullException("Taxon is null");
             }
-
             IList<Taxon> assessments = null;
             if (this.settingsService.HasSeniorAlert())
             {
@@ -85,9 +84,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     assessments = this.taxonomyService.ListIn(selectedIds);
                 }
             }
-            
             Patient patient = null;
-            return this.patientService.Create(message.FirstName, message.LastName, message.PersonalIdentityNumber, message.Tag, taxon, assessments, out patient);
+            return this.patientService.Create(message.FirstName, message.LastName, message.PersonalIdentityNumber, message.Tag, taxon, assessments, message.IsPersonOfPublicInterestOrVip, message.IsPersonWithHightenedSensitivity, out patient);
         }
 
         #endregion

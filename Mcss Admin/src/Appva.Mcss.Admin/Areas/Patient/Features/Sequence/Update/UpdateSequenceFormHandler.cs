@@ -43,11 +43,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IRoleService roleService;
 
         /// <summary>
-        /// The <see cref="IAuditService"/>.
-        /// </summary>
-        private readonly IAuditService auditService;
-
-        /// <summary>
         /// The <see cref="IInventoryService"/>.
         /// </summary>
         private readonly IInventoryService inventoryService;
@@ -65,9 +60,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceFormHandler"/> class.
         /// </summary>
-        public UpdateSequenceFormHandler(IAuditService auditService, IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, IInventoryService inventoryService)
+        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, IInventoryService inventoryService)
         {
-            this.auditService       = auditService;
             this.context            = context;
             this.roleService        = roleService;
             this.sequenceService    = sequenceService;
@@ -89,14 +83,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
             this.CreateOrUpdate(message, sequence, schedule, delegation, null);
-            this.context.Update(sequence);
-            this.auditService.Update(
-                sequence.Patient,
-                "ändrade {0} (REF: {1}) i {2} (REF: {3}).",
-                 sequence.Name, 
-                 sequence.Id, 
-                 schedule.ScheduleSettings.Name, 
-                 sequence.Schedule.Id);
+            this.sequenceService.Update(sequence);
+            
             schedule.UpdatedAt = DateTime.Now;
             this.context.Update(schedule);
             return new DetailsSchedule

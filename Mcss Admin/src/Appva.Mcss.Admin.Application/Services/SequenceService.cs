@@ -13,6 +13,8 @@ namespace Appva.Mcss.Admin.Application.Services
     using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -21,7 +23,18 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface ISequenceService : IService
     {
+        /// <summary>
+        /// Finds a sequence by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         Sequence Find(Guid id);
+
+        /// <summary>
+        /// Updates the sequence
+        /// </summary>
+        /// <param name="sequence"></param>
+        void Update(Sequence sequence);
 
         void Create(
             Patient patient,
@@ -63,6 +76,16 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IPersistenceContext context;
 
+        /// <summary>
+        /// The <see cref="ISequenceRepository"/>
+        /// </summary>
+        private readonly ISequenceRepository sequenceRepository;
+
+        /// <summary>
+        /// The <see cref="IAuditService"/>
+        /// </summary>
+        private readonly IAuditService auditService;
+
         #endregion
 
         #region Constructor.
@@ -71,20 +94,37 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="SequenceService"/> class.
         /// </summary>
         /// <param name="context">The <see cref="IPersistenceContext"/></param>
-        public SequenceService(IPersistenceContext context)
+        public SequenceService(ISequenceRepository sequenceRepository, IAuditService auditService, IPersistenceContext context)
         {
             this.context = context;
+            this.sequenceRepository = sequenceRepository;
+            this.auditService = auditService;
         }
 
         #endregion
 
         #region ISequenceService Members.
 
+        /// <inheritdoc />
         public Sequence Find(Guid id)
         {
             return this.context.Get<Sequence>(id);
         }
 
+        public void Update(Sequence sequence)
+        {
+            this.auditService.Update(
+                sequence.Patient,
+                "ändrade {0} (REF: {1}) i {2} (REF: {3}).",
+                 sequence.Name,
+                 sequence.Id,
+                 sequence.Schedule.ScheduleSettings.Name,
+                 sequence.Schedule.Id);
+
+            this.sequenceRepository.Update(sequence);
+        }
+
+        /// <inheritdoc />
         public void Create(
             Patient patient,
             DateTime startDate,

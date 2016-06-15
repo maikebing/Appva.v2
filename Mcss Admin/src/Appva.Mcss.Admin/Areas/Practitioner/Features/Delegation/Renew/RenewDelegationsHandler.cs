@@ -9,6 +9,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Practitioner.Models;
     using System;
     using System.Collections.Generic;
@@ -21,13 +23,23 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
     /// </summary>
     internal sealed class RenewDelegationsHandler : RequestHandler<RenewDelegations, RenewDelegationsModel>
     {
+        #region Fields.
+
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
+        #endregion
+
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RenewDelegationsHandler"/> class.
         /// </summary>
-        public RenewDelegationsHandler()
+        public RenewDelegationsHandler(ITaxonomyService taxonomyService)
         {
+            this.taxonomyService = taxonomyService;
         }
 
         #endregion
@@ -37,13 +49,18 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
         /// <inheritdoc />
         public override RenewDelegationsModel Handle(RenewDelegations message)
         {
+            var category = this.taxonomyService.Find(message.DelegationCategoryId, TaxonomicSchema.Delegation);
+            while (! category.IsRoot){
+                category = category.Parent;
+            }
             return new RenewDelegationsModel
             {
                 StartDate               = DateTime.Now.Date,
-                EndDate                 = DateTime.Now.AddYear(1).Date,
+                EndDate                 = DateTime.Now.AddYears(1).Date,
                 AccountId               = message.Id,
-                DelegationCategoryId    = message.CategoryId
-            }
+                DelegationCategoryId    = category.Id,
+                DelegationCategoryName  = category.Name
+            };
         }
 
         #endregion

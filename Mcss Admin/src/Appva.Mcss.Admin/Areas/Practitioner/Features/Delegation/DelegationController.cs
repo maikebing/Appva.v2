@@ -37,6 +37,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mvc;
+    using Appva.Mcss.Admin.Areas.Practitioner.Models;
 
     #endregion
 
@@ -704,15 +705,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The account id</param>
         /// <param name="taxonId">The taxon id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("renew/{id:guid}/{taxonId:guid}")]
+        [Route("renew/{id:guid}/{DelegationCategoryId:guid}")]
+        [Dispatch()]
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
-        public ActionResult Renew(Guid id, Guid taxonId)
+        public ActionResult Renew(RenewDelegations request)
         {
-            return View(new DelegationDateSpanViewModel
-            {
-                Id = id,
-                TaxonId = taxonId
-            });
+            return View();
         }
 
         /// <summary>
@@ -752,56 +750,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult UpdateAllActiveDelegationsWithStartEndDate(Guid id, Guid taxonId, DateTime startDate, DateTime endDate)
         {
-            var currentUser = Identity();
-            var taxon = this.persistence.Get<Taxon>(taxonId);
-            var delegations = this.persistence.QueryOver<Delegation>()
-                .Where(x => x.Account.Id == id)
-                .JoinQueryOver<Taxon>(x => x.Taxon)
-                .Where(x => x.Parent.Id == taxon.Parent.Id)
-                .List();
-            foreach (var delegation in delegations)
-            {
-                this.persistence.Save(new ChangeSet
-                {
-                    EntityId = delegation.Id,
-                    Entity = typeof(Delegation).ToString(),
-                    Revision = delegation.Version,
-                    ModifiedBy = Identity(),
-                    Changes = new List<Change> {
-                        new Change {
-                            Property = "StartDate",
-                            OldState = delegation.StartDate.ToShortDateString(),
-                            NewState = startDate.ToShortDateString(),
-                            TypeOf = typeof(DateTime).ToString()
-                        },
-                        new Change {
-                            Property = "EndDate",
-                            OldState = delegation.EndDate.ToShortDateString(),
-                            NewState = endDate.ToShortDateString(),
-                            TypeOf = typeof(DateTime).ToString()
-                        },
-                        new Change {
-                            Property = "CreatedBy",
-                            OldState = delegation.CreatedBy.ToString(),
-                            NewState = Identity().ToString(),
-                            TypeOf = typeof(Account).ToString()
-                        }
-                    }
-                });
-                delegation.StartDate = startDate;
-                delegation.EndDate = endDate;
-                delegation.UpdatedAt = DateTime.Now;
-                delegation.CreatedBy = Identity();
-                this.persistence.Update(delegation);
-                this.auditing.Update(
-                    "förnyade start och slutdatum för delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för användare {4} (REF: {5}).",
-                    delegation.Name,
-                    delegation.StartDate, 
-                    delegation.EndDate,
-                    delegation.Id,
-                    delegation.Account.FullName,
-                    delegation.Account.Id);
-            }
+            
             return this.RedirectToAction("List", new { Id = id });
         }
 

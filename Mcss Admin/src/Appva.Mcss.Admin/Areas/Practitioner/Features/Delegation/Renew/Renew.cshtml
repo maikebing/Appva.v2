@@ -1,10 +1,10 @@
-﻿@model Appva.Mcss.Web.ViewModels.DelegationDateSpanViewModel
+﻿@model Appva.Mcss.Admin.Areas.Practitioner.Models.RenewDelegationsModel
 @{
-    SetTitle("Förnya samtliga delegeringar");
+    SetTitle("Förnya delegeringar");
 }
 <div class="std-panel std-form lb-validate-form lb-panel-small" data-valclass="DelegationUpdate">
-    @using (Html.BeginForm(new { id = Model.Id, taxonId = Model.TaxonId })) {
-        <h3 class="section-title">Förnya samtliga delegeringar</h3>
+    @using (Html.BeginForm(new { id = Model.DelegationCategoryId, taxonId = Model.DelegationCategoryId })) {
+        <h3 class="section-title">Förnya samtliga delegeringar för @Model.DelegationCategoryName</h3>
         <div class="text medium">
             @Html.LabelFor(m => m.StartDate)
             @Html.EditorFor(m => m.StartDate)

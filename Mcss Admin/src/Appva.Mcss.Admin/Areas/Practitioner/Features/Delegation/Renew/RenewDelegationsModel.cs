@@ -8,6 +8,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
 {
     #region Imports.
 
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mvc;
     using DataAnnotationsExtensions;
     using System;
@@ -21,7 +23,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class RenewDelegationsModel
+    public sealed class RenewDelegationsModel : IRequest<ListDelegation>
     {
         #region Properties
 
@@ -54,6 +56,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
         /// The delegation category id.
         /// </summary>
         public Guid DelegationCategoryId { get; set; }
+
+        /// <summary>
+        /// The delegation category name
+        /// </summary>
+        public string DelegationCategoryName { get; set; }
 
         #endregion
     }

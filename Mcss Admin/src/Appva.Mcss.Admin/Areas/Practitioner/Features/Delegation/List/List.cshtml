@@ -15,9 +15,9 @@
             @foreach (var keyValue in Model.DelegationMap) {
 			    <div class="h cf">
                     <h2>@keyValue.Key</h2>
-                    @Html.ActionLink(Permissions.Delegation.Update, "Förnya samtliga delegeringar", "Update", 
-                        new { id = Model.Account.Id, taxonId = keyValue.Value[0].DelegationId }, new { @class = "btn lb-link" })
-                    @Html.ActionLink(Permissions.Delegation.Update, "Aktivera samtliga delegeringar", "ActivateAll",
+                    @Html.ActionLink(Permissions.Delegation.Update, "Förnya delegeringar", "Renew",
+                         new { id = Model.Account.Id, DelegationCategoryId = keyValue.Value[0].DelegationId }, new { @class = "btn lb-link" })
+                    @Html.ActionLink(Permissions.Delegation.Update, "Aktivera delegeringar", "ActivateAll",
                         new { accountId = Model.Account.Id }, new { @class = "btn" })
                 </div>
 	            <div id="signed-events">

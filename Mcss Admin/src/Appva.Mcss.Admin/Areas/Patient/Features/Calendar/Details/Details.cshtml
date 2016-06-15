@@ -78,7 +78,7 @@
                     </span>
                     <span>
                         <p class="name">@Model.Signature.SignedBy.FullName </p>
-                        <p class="time">@(Model.Signature.SignatureDate.Date == DateTime.Now.Date ? Model.Signature.SignatureDate.ToString("Idag hh:mm") : Model.Signature.SignatureDate.ToString("yyyy-MM-dd hh:mm"))</p>
+                        <p class="time">@(Model.Signature.SignatureDate.Date == DateTime.Now.Date ? string.Format("Idag {0:HH:mm}",Model.Signature.SignatureDate) : Model.Signature.SignatureDate.ToString("yyyy-MM-dd HH:mm"))</p>
                     </span>
                 </span>
             }

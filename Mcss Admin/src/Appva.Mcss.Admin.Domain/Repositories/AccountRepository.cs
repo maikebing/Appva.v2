@@ -122,8 +122,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             var accounts = this.persistenceContext.QueryOver<Account>()
                 .Where(x => x.IsActive)
-                .And(x => x.IsPaused == false)
-                .And(x => x.UserName == username)
+                  .And(x => x.IsPaused == false)
+                  .And(x => x.UserName == username)
                 .List();
             if (accounts.Count == 1)
             {
@@ -137,8 +137,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             var accounts = this.persistenceContext.QueryOver<Account>()
                 .Where(x => x.IsActive)
-                .And(x => x.IsPaused == false)
-                .And(x => x.HsaId == hsaId)
+                  .And(x => x.IsPaused == false)
+                  .And(x => x.HsaId    == hsaId)
                 .List();
             if (accounts.Count == 1)
             {
@@ -153,12 +153,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             //// Main query - As a view
             Account account = null;
-            var query = this.persistenceContext.QueryOver<Account>(() => account);
-            if (model.IsFilterByIsActiveEnabled != null)
-            {
-                query.Where(x => x.IsActive == model.IsFilterByIsActiveEnabled);
-            }
-            if (model.IsFilterByIsPausedEnabled != null)
+            var query = this.persistenceContext.QueryOver<Account>(() => account)
+                .Where(x => x.IsActive == model.IsFilterByIsActiveEnabled);
+            //// If searching in active-users, check paused, else list all 
+            if (model.IsFilterByIsActiveEnabled)
             {
                 query.Where(x => x.IsPaused == model.IsFilterByIsPausedEnabled);
             } 
@@ -178,7 +176,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 Role role = null;
                 query.Left.JoinAlias(x => x.Roles, () => role)
                     .Where(() => role.Id == model.RoleFilterId)
-                    .And(() => role.IsVisible);
+                      .And(() => role.IsVisible);
             }
             else
             {
@@ -189,14 +187,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                         Restrictions.Where(() => role.IsVisible)
                     ));
             }
-
             if (model.OrganisationFilterId.HasValue && model.OrganisationFilterId.Value.IsNotEmpty())
             {
                 query.JoinQueryOver<Taxon>(x => x.Taxon)
                    .Where(Restrictions.On<Taxon>(x => x.Path)
                        .IsLike(model.OrganisationFilterId.Value.ToString(), MatchMode.Anywhere));
             }
-
             if (model.IsFilterByCreatedByEnabled)
             {
                 query.Left.JoinQueryOver<Delegation>(x => x.Delegations)
@@ -208,22 +204,19 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Where(x => x.Taxon.Id == model.DelegationFilterId.Value
                         && x.IsActive == true && x.Pending == false);
             }
-
             //// Subqueries to get days until delegation expires 
             var delegationSubquery = QueryOver.Of<Delegation>()
                     .Where(x => x.IsActive)
-                    .And(x => !x.Pending)
-                    .And(x => x.Account.Id == account.Id)
-                    .And(x => x.EndDate != null)
+                      .And(x => !x.Pending)
+                      .And(x => x.Account.Id == account.Id)
+                      .And(x => x.EndDate != null)
                     .OrderBy(x => x.EndDate).Asc;
-
             var daysLeftSubquery = delegationSubquery.Clone()
                 .Select(Projections.SqlFunction(
                                     new SQLFunctionTemplate(
                                         NHibernateUtil.Int32,
                                         "DateDiff(day, '" + DateTime.Now.ToString("yyyy-MM-dd") + "', EndDate)"),
                                     NHibernateUtil.Int32)).Take(1);
-
             var showAlertOnDaysLeftSubquery = delegationSubquery.Clone()
                 .Select(
                     Projections.Conditional(
@@ -236,7 +229,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                             50), 
                         Projections.Constant(true), 
                         Projections.Constant(false))).Take(1);
-
             //// Merges queries and selects needed columns and order rows for main query
             AccountModel accountModel = null;
             var mainQuery = query.Clone().Select(
@@ -252,28 +244,24 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Add(Projections.Property<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
                     .Add(Projections.Property<Account>(x => x.Title).WithAlias(() => accountModel.Title))
                     .Add(Projections.Property<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber))));                
-
             //// Ordering and transforming
             mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
                 .ThenByAlias(() => accountModel.LastName).Asc
                 .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
-
             //// Checks that page is greater then 0
             if (page < 1)
             {
                 page = 1;
             }
-
             //// Number of rows to skip
             var skip = (page - 1) * pageSize;
-
             return new PageableSet<AccountModel>()
             {
                 CurrentPage = page,
-                NextPage = page++,
-                PageSize = pageSize,
-                TotalCount = query.Clone().Select(Projections.CountDistinct("Id")).SingleOrDefault<int>(),
-                Entities = mainQuery.Skip(skip).Take(pageSize).List<AccountModel>()               
+                NextPage    = page++,
+                PageSize    = pageSize,
+                TotalCount  = query.Clone().Select(Projections.CountDistinct("Id")).SingleOrDefault<int>(),
+                Entities    = mainQuery.Skip(skip).Take(pageSize).List<AccountModel>()               
             };
         }
 

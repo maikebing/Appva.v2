@@ -6,7 +6,7 @@
 }
 <div id="subheader" class="cf">
 	<h1>Fullständig resultatrapport</h1>
-    @Html.ActionLink("Exportera till Excel", "Excel", new { sId = Model.ScheduleSetting, startDate = Model.Start.ToShortDateString(), endDate = Model.End.ToShortDateString() }, new { @class = "export", download = string.Format("MCSS-rapport-{0}.xls", DateTime.Now.ToFileTimeUtc()) })
+    @Html.ActionLink("Exportera till Excel", "Excel", new { ScheduleSettingsId = Model.ScheduleSetting, StartDate = Model.Start.ToShortDateString(), EndDate = Model.End.ToShortDateString() }, new { @class = "export", download = string.Format("MCSS-rapport-{0}.xls", DateTime.Now.ToFileTimeUtc()) })
 </div>
 <div id="content" class="has-nav cf">
     <ul id="nav-sub">

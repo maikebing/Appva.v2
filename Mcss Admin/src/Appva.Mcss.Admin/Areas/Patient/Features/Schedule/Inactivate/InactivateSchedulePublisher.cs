@@ -9,17 +9,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
-    using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
-    using NHibernate.Transform;
 
     #endregion
 
@@ -31,24 +26,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPatientService"/>.
+        /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly IPatientService patientService;
-
-        /// <summary>
-        /// The <see cref="IPatientTransformer"/>.
-        /// </summary>
-        private readonly IPatientTransformer transformer;
+        private readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
-
-        /// <summary>
-        /// The <see cref="IAuditService"/>.
-        /// </summary>
-        private readonly IAuditService auditing;
 
         #endregion
 
@@ -57,11 +42,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="InactivateSchedulePublisher"/> class.
         /// </summary>
-        public InactivateSchedulePublisher(IAuditService auditing, IPatientService patientService, IPatientTransformer transformer, IPersistenceContext persistence)
+        public InactivateSchedulePublisher(IAuditService auditing, IPersistenceContext persistence)
         {
-            this.auditing = auditing;
-            this.patientService = patientService;
-            this.transformer = transformer;
+            this.auditing    = auditing;
             this.persistence = persistence;
         }
 
@@ -72,8 +55,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListSchedule Handle(InactivateSchedule message)
         {
-            var patient = this.patientService.Get(message.Id);
-            var schedule = this.persistence.Get<Schedule>(message.ScheduleId);
+            var patient       = this.persistence.Get<Patient> (message.Id);
+            var schedule      = this.persistence.Get<Schedule>(message.ScheduleId);
             schedule.IsActive = false;
             schedule.UpdatedAt = DateTime.Now;
             this.persistence.Update(schedule);
@@ -82,6 +65,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 "inaktiverade lista {0} (REF: {1}).", 
                 schedule.ScheduleSettings.Name, 
                 schedule.Id);
+            //// We also need to inactivate the sequences.
+            var sequences = this.persistence.QueryOver<Sequence>().Where(x => x.Schedule.Id == schedule.Id).List();
+            foreach (var sequence in sequences)
+            {
+                if (sequence.IsActive)
+                {
+                    sequence.IsActive  = false;
+                    sequence.UpdatedAt = DateTime.Now;
+                    this.auditing.Delete(sequence.Patient, "inaktiverade insats {0} för lista {1} (REF: {2}).", sequence.Name, schedule.ScheduleSettings.Name, sequence.Id);
+                }
+            }
             return new ListSchedule
             {
                 Id = patient.Id

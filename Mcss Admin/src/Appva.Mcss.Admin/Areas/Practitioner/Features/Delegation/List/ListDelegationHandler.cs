@@ -104,18 +104,18 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <inheritdoc />
         public override ListDelegationModel Handle(ListDelegation message)
         {
-            var user = this.identity.PrincipalId;
-            var account = this.accounts.Find(message.Id);
-            if (account.Roles.Where(x => x.IsVisible).Count() == 0 && !this.identity.IsInRole("_AA"))
-            {
-                account = null;
-            }
-            var delegations = this.delegations.List(byAccount: account.Id, isActive: true); 
-            
+            var user        = this.identity.PrincipalId;
+            var account     = this.accounts.Find(message.Id);
+            var isInvisible = account.Roles.Where(x => x.IsVisible).Count() == 0 && ! this.identity.IsInRole("_AA");
+            var delegations = this.delegations.List(byAccount: message.Id, isActive: true); 
             var delegationMap = new Dictionary<string, IList<Delegation>>();
             foreach (var delegation in delegations)
             {
                 var name = this.taxonomies.Find(delegation.Taxon.Parent.Id,TaxonomicSchema.Delegation).Name;
+                if (name == null)
+                {
+                    continue;
+                }
                 if (delegationMap.ContainsKey(name))
                 {
                     delegationMap[name].Add(delegation);
@@ -127,11 +127,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             }
             var knowledgeTestMap = new Dictionary<string, IList<KnowledgeTest>>();
             var knowledgeTests = this.persistence.QueryOver<KnowledgeTest>()
-                    .Where(d => d.Account.Id == message.Id && d.IsActive == true)
+                    .Where(x => x.IsActive)
+                      .And(x => x.Account.Id == message.Id)
                 .List();
             foreach (var knowledgeTest in knowledgeTests)
             {
-
                 if (this.taxonomies.Find(knowledgeTest.DelegationTaxon.Id, TaxonomicSchema.Delegation) != null)
                 {
                     var name = this.taxonomies.Find(knowledgeTest.DelegationTaxon.Id, TaxonomicSchema.Delegation).Name;
@@ -146,13 +146,13 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                 }
             }
             this.auditing.Read("läste delegeringar för användare {0}", account.FullName);
-
             return new ListDelegationModel
             {
-                AccountId = account.Id,
-                Account = this.transformer.ToAccount(account),
-                DelegationMap = delegationMap.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value),
-                KnowledgeTestMap = knowledgeTestMap
+                AccountId                 = account.Id,
+                Account                   = this.transformer.ToAccount(account),
+                DelegationMap             = delegationMap.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value),
+                KnowledgeTestMap          = knowledgeTestMap,
+                IsAccountVisibilityHidden = isInvisible
             };
         }
 

@@ -33,5 +33,19 @@ namespace Appva.Siths.Http
             var host = string.Format("{0}://{1}", request.Url.Scheme, request.Url.IsDefaultPort ? request.Url.Host : request.Url.Authority);
             return (request.ApplicationPath == "/") ? new Uri(new Uri(host), redirectPath) : new Uri(new Uri(host + request.ApplicationPath), redirectPath);
         }
+
+        /// <summary>
+        /// Checks if request comes from a mobile device
+        /// TODO: Add more mobile agents
+        /// </summary>
+        /// <returns>True if mobile device</returns>
+        public static bool IsMobileDevice()
+        {
+            if (HttpContext.Current == null || HttpContext.Current.Request == null)
+            {
+                return false;
+            }
+            return HttpContext.Current.Request.UserAgent.ToLower().Contains("ipad");
+        }
     }
 }

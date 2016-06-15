@@ -90,6 +90,14 @@ namespace Appva.Mvc.Rendering.Html
         IFormGroupFor<TModel, TProperty> Help(string helpText);
 
         /// <summary>
+        /// Creates an HTML text input element.
+        /// </summary>
+        /// <param name="placeholder">Optional placeholder</param>
+        /// <param name="htmlAttributes">Optional HTML attributes</param>
+        /// <returns><see cref="IFormGroupFor{TModel, TProperty}"/></returns>
+        IFormGroupFor<TModel, TProperty> Editor(string placeholder = null, object htmlAttributes = null);
+
+        /// <summary>
         /// Builds the Html.
         /// </summary>
         /// <returns>An <see cref="MvcHtmlString"/></returns>
@@ -196,6 +204,13 @@ namespace Appva.Mvc.Rendering.Html
         public IFormGroupFor<TModel, TProperty> Help(string helpText)
         {
             this.Add(new Help<FormGroupFor<TModel, TProperty>, TModel, TProperty>(this, helpText));
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IFormGroupFor<TModel, TProperty> Editor(string placeholder = null, object htmlAttributes = null)
+        {
+            this.Add(new EditorFor<FormGroupFor<TModel, TProperty>, TModel, TProperty>(this, this.expression, placeholder, htmlAttributes));
             return this;
         }
 

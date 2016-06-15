@@ -1,57 +1,51 @@
-﻿// <copyright file="ListEventModel.cs" company="Appva AB">
+﻿// <copyright file="CreateInventoryModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Application.Models
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListEventModel
+    public sealed class CreateInventoryModel : Identity<ListInventory>
     {
-        #region Properties.
+        #region Properties
 
         /// <summary>
-        /// The patient id, optional
+        /// The descriptive name of the invnetory.
         /// </summary>
-        public Guid? Patient
+        [Required]
+        public string Name
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The startdate, optional
+        /// The withdrawal amounts.
         /// </summary>
-        public DateTime? StartDate
+        [DisplayName("Enhet")]
+        public string Amounts
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The enddate, must be set
+        /// List of available amounts.
         /// </summary>
-        public DateTime EndDate
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The category id, optional
-        /// </summary>
-        public Guid? Category
+        public IEnumerable<SelectListItem> AmountsList
         {
             get;
             set;

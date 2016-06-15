@@ -719,6 +719,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 SequenceId = sequence,
                 EndDate = date,
                 StartDate = date,
+                IncludeCalendarTasks = true
             }).Entities.FirstOrDefault();
             
             if(task.IsNotNull())

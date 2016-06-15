@@ -13,6 +13,8 @@ namespace Appva.Mcss.Admin.Areas.Report.Features
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Models;
 
     #endregion
 
@@ -46,6 +48,18 @@ namespace Appva.Mcss.Admin.Areas.Report.Features
         public ActionResult FullReport(FullReport request)
         {
             return this.View();
+        }
+
+        /// <summary>
+        /// Creates a full report for the organisation
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("excel")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Report.ReadValue)]
+        public ActionResult Excel(FullReportExcel request)
+        {
+            return this.ExcelFile();
         }
 
         #endregion

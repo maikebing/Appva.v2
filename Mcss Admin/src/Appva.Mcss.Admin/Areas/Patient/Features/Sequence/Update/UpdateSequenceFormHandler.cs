@@ -38,11 +38,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IPersistenceContext context;
 
         /// <summary>
-        /// The <see cref="ISequenceService"/>.
-        /// </summary>
-        private readonly ISequenceService sequenceService;
-
-        /// <summary>
         /// The <see cref="IRoleService"/>.
         /// </summary>
         private readonly IRoleService roleService;
@@ -50,7 +45,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly IAuditService auditing;
+        private readonly IAuditService auditService;
+
+        /// <summary>
+        /// The <see cref="IInventoryService"/>.
+        /// </summary>
+        private readonly IInventoryService inventoryService;
+
+        /// <summary>
+        /// The <see cref="ISequenceService"/>.
+        /// </summary>
+        private readonly ISequenceService sequenceService;
+
 
         #endregion
 
@@ -59,12 +65,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceFormHandler"/> class.
         /// </summary>
-        public UpdateSequenceFormHandler(IAuditService auditing, IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService)
+        public UpdateSequenceFormHandler(IAuditService auditService, IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, IInventoryService inventoryService)
         {
-            this.auditing = auditing;
-            this.context = context;
-            this.roleService = roleService;
-            this.sequenceService = sequenceService;
+            this.auditService       = auditService;
+            this.context            = context;
+            this.roleService        = roleService;
+            this.sequenceService    = sequenceService;
+            this.inventoryService   = inventoryService;
         }
 
         #endregion
@@ -76,15 +83,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var sequence = this.sequenceService.Find(message.SequenceId);
             var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
-            Account recipient = null;
-            Taxon delegation = null;
+            Taxon delegation  = null;
             if (message.Delegation.HasValue && !message.Nurse)
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
-            this.CreateOrUpdate(message, sequence, schedule, delegation, recipient);
+            this.CreateOrUpdate(message, sequence, schedule, delegation, null);
             this.context.Update(sequence);
-            this.auditing.Update(
+            this.auditService.Update(
                 sequence.Patient,
                 "ändrade {0} (REF: {1}) i {2} (REF: {3}).",
                  sequence.Name, 
@@ -95,7 +101,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.context.Update(schedule);
             return new DetailsSchedule
             {
-                Id = message.Id,
+                Id         = message.Id,
                 ScheduleId = schedule.Id
             };
         }
@@ -105,11 +111,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private Methods.
 
         /// <summary>
-        /// TODO: MOVE?
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="sequence"></param>
+        /// <param name="schedule"></param>
+        /// <param name="delegation"></param>
+        /// <param name="recipient"></param>
+        /// <returns></returns>
         private Sequence CreateOrUpdate(UpdateSequenceForm model, Sequence sequence, Schedule schedule, Taxon delegation, Account recipient)
         {
             DateTime startDate = DateTimeUtilities.Now();
-            DateTime? endDate = null;
+            DateTime? endDate  = null;
             DateTime tempDate;
             Role requiredRole = null;
             if (model.Dates.IsNotEmpty() && model.Interval == 0)
@@ -135,7 +148,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 requiredRole = this.roleService.Find(RoleTypes.Nurse);
             }
-
             if (model.OnNeedBasis)
             {
                 if (model.OnNeedBasisStartDate.HasValue)
@@ -159,16 +171,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }
             }
 
-            if (schedule.ScheduleSettings.HasInventory && sequence.Inventory == null)
+            if (schedule.ScheduleSettings.HasInventory)
             {
-                var inventory = new Inventory()
-                {
-                    CurrentLevel = (double) sequence.StockAmount,
-                    Description = sequence.Name,
-                    LastRecount = sequence.LastStockAmountCalculation //TODO: If null today
-                };
-                this.context.Save(inventory);
-                sequence.Inventory = inventory;
+                sequence.Inventory = this.inventoryService.Find(model.Inventory.GetValueOrDefault());
             }
             sequence.Name = model.Name;
             sequence.Description = model.Description;
@@ -178,8 +183,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.RangeInMinutesAfter = model.RangeInMinutesAfter;
             sequence.Times = string.Join(",", model.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray());
             sequence.Dates = model.Dates;
-            sequence.Hour = model.Hour;
-            sequence.Minute = model.Minute;
             sequence.Interval = model.OnNeedBasis ? 1 : model.Interval.Value;
             sequence.OnNeedBasis = model.OnNeedBasis;
             sequence.Reminder = model.Reminder;
@@ -190,8 +193,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.Taxon = delegation;
             sequence.Role = requiredRole;
             return sequence;
-            
-
         }
 
         #endregion

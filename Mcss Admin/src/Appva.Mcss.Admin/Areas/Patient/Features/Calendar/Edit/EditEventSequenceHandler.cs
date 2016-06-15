@@ -65,38 +65,28 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Text = x.Name,
                 Value = x.Id.ToString()
             }).ToList() : new List<SelectListItem>();
-            //// Shall check which role needed to have premissions to create categories.
-            /*if (PermissionUtils.UserHasPermission(Identity(), "CreateCalendarCategory"))
-            {
-                categorySelectlist.Add(new SelectListItem
-                {
-                    Value = "new",
-                    Text = "Skapa ny...",
-                    Selected = false
-                });
-            }*/
             return new EventViewModel
             {
-                Id = evt.Patient.Id,
-                PatientId = evt.Patient.Id,
-                SequenceId = evt.Id,
-                ChoosedDate = message.Date,
-                Description = evt.Description,
-                StartDate = evt.StartDate,
-                EndDate = (DateTime)evt.EndDate,
-                AllDay = evt.AllDay,
-                StartTime = string.Format("{0:HH:mm}", evt.StartDate),
-                EndTime = string.Format("{0:HH:mm}", evt.EndDate),
-                Absent = evt.Absent,
-                PauseAnyAlerts = evt.PauseAnyAlerts,
-                Interval = evt.Interval,
-                IntervalFactor = evt.IntervalFactor,
-                SpecificDate = evt.IntervalIsDate,
-                Signable = evt.CanRaiseAlert,
+                Id                = evt.Patient.Id,
+                PatientId         = evt.Patient.Id,
+                SequenceId        = evt.Id,
+                ChoosedDate       = message.Date,
+                Description       = evt.Description,
+                StartDate         = evt.StartDate,
+                EndDate           = (DateTime) evt.EndDate,
+                AllDay            = evt.AllDay,
+                StartTime         = string.Format("{0:HH:mm}", evt.StartDate),
+                EndTime           = string.Format("{0:HH:mm}", evt.EndDate),
+                Absent            = evt.Absent,
+                PauseAnyAlerts    = evt.PauseAnyAlerts,
+                Interval          = evt.Interval,
+                IntervalFactor    = evt.IntervalFactor,
+                SpecificDate      = evt.IntervalIsDate,
+                Signable          = evt.CanRaiseAlert,
                 VisibleOnOverview = evt.Overview,
-                Category = evt.Schedule.ScheduleSettings.Id.ToString(),
-                Categories = categorySelectlist,
-                CalendarSettings = this.settingsService.GetCalendarSettings()
+                Category          = evt.Schedule.ScheduleSettings.Id.ToString(),
+                Categories        = categorySelectlist,
+                CalendarSettings  = this.settingsService.GetCalendarSettings()
             };
         }
 

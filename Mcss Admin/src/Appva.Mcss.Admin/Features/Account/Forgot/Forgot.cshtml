@@ -18,7 +18,7 @@
         @Html.FormGroup(x => x.EmailAddress).Label("E-postadress").TextBox("fornamn.efternamn@organisation.se", new { @autofocus = "autofocus" }).Build()
         @Html.FormGroup(x => x.PersonalIdentityNumber).Label("Personnummer").TextBox("ÅÅÅÅMMDD-NNNN").Build()
 		<div class="hr"></div>
-        @Html.Submit("Skicka återställningslänk",  new { @class = "btn" })
+        @Html.Submit("Skicka återställningslänk",  new { @id = "submit-form", @class = "btn" })
 		@Html.ActionLink("Avbryt", "SignIn", "Authentication", null, new { @class = "btn btn-right cancel" })
     }
 </div>

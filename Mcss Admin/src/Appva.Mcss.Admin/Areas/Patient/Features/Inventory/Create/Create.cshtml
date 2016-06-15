@@ -1,11 +1,11 @@
 ﻿@model Appva.Mcss.Admin.Models.CreateInventoryModel
 @{
-    SetTitle("Nytt saldo");
+    SetTitle("Lägg till");
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="InventoryCreateUpdate">
     @using (Html.Post(new { Id = Model.Id}))
     {
-        <h3 class="section-title">Ändra</h3>
+        <h3 class="section-title">Lägg till</h3>
         @Html.FormGroup(m => m.Name, "text medium").Label("Namn", new { @class = "col" }).TextBox().Validate().Build()
 
         <div class="row cf">

@@ -10,7 +10,7 @@
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
     <h1>Saldon</h1>
-    @Html.ActionLink(Permissions.Inventory.Create, "Nytt saldo", "Create", "Inventory", null, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Inventory.Create, "Lägg till", "Create", "Inventory", null, new { @class = "btn lb-link" })
     @if (Model.Inventory != null) 
     {
         using (Html.BeginForm("List", "Inventory", FormMethod.Get)) 
@@ -31,7 +31,7 @@
         <div class="inventory-nav">
             @if (Model.ActiveInventories.IsNotNull() && Model.ActiveInventories.Count > 0)
             {
-                <h3>Aktiva saldon</h3>
+                <h3>Aktuella</h3>
                 <ul>
                     @foreach (var inventory in Model.ActiveInventories)
                     {
@@ -43,7 +43,7 @@
             }
             @if (Model.InactiveInventories.IsNotNull() && Model.InactiveInventories.Count > 0)
             {
-                <h3>Borttagna saldon</h3>
+                <h3>Borttagna</h3>
                 <ul>
                     @foreach (var inventory in Model.InactiveInventories)
                     {

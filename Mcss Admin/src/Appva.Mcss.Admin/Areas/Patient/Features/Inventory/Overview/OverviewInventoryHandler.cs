@@ -10,9 +10,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using System;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Security.Identity;
+using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Settings;
+using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 

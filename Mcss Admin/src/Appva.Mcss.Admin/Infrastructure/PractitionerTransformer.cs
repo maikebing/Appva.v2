@@ -79,7 +79,8 @@ namespace Appva.Mcss.Admin.Infrastructure
                 UniqueIdentifier = account.PersonalIdentityNumber,
                 Title = account.Title,
                 Superior = superior != null ? superior.FullName : "Saknas",
-                Account = account
+                Account = account,
+                IsPaused = account.IsPaused
             };
         }
 

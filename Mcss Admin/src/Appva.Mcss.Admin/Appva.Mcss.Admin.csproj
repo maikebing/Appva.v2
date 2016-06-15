@@ -1134,6 +1134,7 @@
     <Content Include="Areas\Area51\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Area51\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\inventory-news.cshtml" />
+    <Content Include="Assets\error-pages\web.config" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

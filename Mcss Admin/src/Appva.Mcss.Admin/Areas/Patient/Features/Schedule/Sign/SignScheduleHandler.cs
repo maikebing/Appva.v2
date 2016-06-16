@@ -140,7 +140,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new TaskListViewModel
             {
                 Patient = this.transformer.ToPatient(patient),
-                Schedules = scheduleSettings,
+                Schedules = schedules.Select(x => x.ScheduleSettings).Distinct().ToList<ScheduleSettings>(),
                 Schedule = scheduleSetting,
                 Search = this.Search(new SearchTaskCommand
                 {

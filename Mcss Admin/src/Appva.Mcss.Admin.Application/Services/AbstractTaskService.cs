@@ -180,6 +180,10 @@ namespace Appva.Mcss.Admin.Application.Services
                         CreateEmptySignaturesRows(4)));
                 }
             }
+            if (result.Count == 0)
+            {
+                return this.ReturnEmpty(title, patient, start, end);
+            }
             return new Tuple<IList<PrescriptionList>, IList<References>>(result, references.Values.ToList());
         }
 

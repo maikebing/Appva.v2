@@ -128,25 +128,22 @@ namespace Appva.Mcss.Admin.Application.Pdf
         /// <inheritdoc />
         public byte[] CreateBySchedule(string title, DateTime start, DateTime end, Guid patientId, Guid scheduleId, bool showNeedBased = true, bool showStandardSequences = true)
         {
-            var patient = this.context.Get<Patient>(patientId);
+            var patient  = this.context.Get<Patient>(patientId);
             var schedule = this.context.Get<Schedule>(scheduleId);
-            //// If both are false - there is no result! 
-            //// FIXME: Should not be like this!
-            if (showNeedBased == false && showStandardSequences == false)
-            {
-                return null;
-            }
             var query = this.context.QueryOver<Sequence>()
                 .Where(x => x.IsActive == true)
                 .And(x => x.Schedule.Id == schedule.Id);
+            //// FIXME: check the sql if both are false, might be and [OnNeedBasis] == 0 AND [OnNeedBasis] == 1 which makes it 0 results.
             //// If false then remove all needs based sequences.
             if (! showNeedBased)
             {
+                /// if its not included we filter it away.
                 query.And(x => x.OnNeedBasis == false);
             }
             //// if false then remove 
             if (! showStandardSequences)
             {
+                /// just filter on need based.
                 query.And(x => x.OnNeedBasis == true);
             }
             var sequences = query.List();

@@ -26,6 +26,8 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Persistence;
     using Newtonsoft.Json;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Ldap.Configuration;
+    using Validation;
 
     #endregion
 
@@ -139,6 +141,18 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         IList<InventoryAmountListModel> GetIventoryAmountLists();
     }
 
+    /// <summary>
+    /// Settings for Ldap connection
+    /// </summary>
+    public interface ILdapSettings
+    {
+        /// <summary>
+        /// Get Ldap configuration
+        /// </summary>
+        /// <returns></returns>
+        ILdapConfiguration GetLdapConfiguration();
+    }
+
     public interface IAuditConfiguration
     {
         /// <summary>
@@ -164,6 +178,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         IOldSettings,
         IConfigurationSettings,
         IAuditConfiguration,
+        ILdapSettings,
         IService
     {
         /// <summary>
@@ -281,6 +296,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             {
                 item.Update(key.Key, key.Namespace, key.Name, key.Description, JsonConvert.SerializeObject(value));
             }
+            this.cache.Upsert<T>(key.Key, value);
         }
 
         #endregion
@@ -633,6 +649,37 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #endregion
 
+        #region ILdapSettings
+
+        /// <inheritdoc />
+        public ILdapConfiguration GetLdapConfiguration()
+        {
+            var settings = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Namespace == "MCSS.Integration.ActiveDirectory")
+                .List();
+
+            if(settings.Count < 1)
+            {
+                return null;
+            }
+
+            return LdapConfiguration.CreateNew(
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.LDAPConnectionString").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.LDAPUsername").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.LDAPPassword").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.UsernameField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.PinField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.MailField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.HsaField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.SSNField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.FirstNameField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.LastNameField").Value
+                );
+        }
+
+        #endregion
+
         #region Private Methods.
 
         /// <summary>
@@ -644,12 +691,9 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <returns></returns>
         private T ReturnCached<T>(ApplicationSettingIdentity<T> setting)
         {
+            Requires.NotNull(setting, "setting");
             try
             {
-                if (setting == null)
-                {
-                    return setting.Default;
-                }
                 var cacheKey = this.CreateCacheKey(setting.Key);
                 if (this.cache.Find(cacheKey) == null)
                 {
@@ -707,5 +751,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         }
 
         #endregion
+
     }
 }

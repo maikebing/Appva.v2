@@ -687,6 +687,9 @@
     <Content Include="Assets\i\ico-activity-message.png" />
     <Content Include="Assets\i\ico-walk-group.png" />
     <Content Include="Assets\i\ico-walk-message.png" />
+    <Content Include="Assets\i\ico-warning-antiglukos.png" />
+    <Content Include="Assets\i\ico-warning-bpsd.png" />
+    <Content Include="Assets\i\ico-warning-hypersensitive.png" />
     <Content Include="Assets\i\icon-calendar.gif" />
     <Content Include="Assets\i\ipad-htoggle-off.png" />
     <Content Include="Assets\i\ipad-htoggle-on.png" />

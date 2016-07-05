@@ -86,6 +86,7 @@
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="VO\AuditLoggingConfiguration.cs" />
     <Compile Include="VO\HsaId.cs" />
+    <Compile Include="VO\LdapConfiguration.cs" />
     <Compile Include="VO\PdfLookAndFeel.cs" />
     <Compile Include="VO\PersonalIdentityNumber.cs" />
     <Compile Include="Entities\PreparedSequence.cs" />

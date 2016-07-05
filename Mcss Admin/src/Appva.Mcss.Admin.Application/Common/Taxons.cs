@@ -64,11 +64,12 @@ namespace Appva.Mcss.Admin.Application.Common
 
         /// <summary>
         /// The Warning - Waran risk assesment
+        /// REMOVE: Replaced by new symbol, Antiglukos
         /// </summary>
-        public static readonly ITaxon Waran = CreateRiskAssement(
+        /*public static readonly ITaxon Waran = CreateRiskAssement(
             "Waran",
             "Observera waran",
-            "icn-warning-waran.png");
+            "icn-warning-waran.png");*/
 
         /// <summary>
         /// The Warning - Infection risk assesment
@@ -85,6 +86,30 @@ namespace Appva.Mcss.Admin.Application.Common
             "Dubbelbemaning",
             "Observera dubbelbemaning",
             "icn-dualstaffing.png");
+
+        /// <summary>
+        /// The BPSD risk assesment
+        /// </summary>
+        public static readonly ITaxon Bpsd = CreateRiskAssement(
+            "BPSD",
+            "Observera BPSD. För mer info, se journal.",
+            "ico-warning-bpsd.png");
+
+        /// <summary>
+        /// The hypersensitivity risk assesment
+        /// </summary>
+        public static readonly ITaxon Hypersensitivity = CreateRiskAssement(
+            "Överkänslighet",
+            "Observera överkänslighet. För mer info, se journal.",
+            "ico-warning-hypersensitive.png");
+
+        /// <summary>
+        /// The Antiglukos risk assesment
+        /// </summary>
+        public static readonly ITaxon Antiglukos = CreateRiskAssement(
+            "Blodförtunnande",
+            "Observera blodförtunnande",
+            "ico-warning-antiglukos.png");
 
         #endregion
 

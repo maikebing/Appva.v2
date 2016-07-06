@@ -296,7 +296,14 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             {
                 item.Update(key.Key, key.Namespace, key.Name, key.Description, JsonConvert.SerializeObject(value));
             }
-            this.cache.Upsert<T>(key.Key, value);
+            this.cache.Upsert<T>(
+                this.CreateCacheKey(key.Key), 
+                value,
+                new RuntimeEvictionPolicy
+                {
+                    Priority = CacheItemPriority.Default,
+                    SlidingExpiration = TimeSpan.FromMinutes(30)
+                });
         }
 
         #endregion

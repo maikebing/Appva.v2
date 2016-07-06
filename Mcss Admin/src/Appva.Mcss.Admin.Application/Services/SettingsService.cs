@@ -28,6 +28,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Ldap.Configuration;
     using Validation;
+    using Newtonsoft.Json.Serialization;
 
     #endregion
 

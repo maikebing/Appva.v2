@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Handlers
                 LastNameField           = config.FieldLastName,
                 LdapConnectionString    = config.LdapString,
                 LdapPassword            = config.LdapPassword,
-                LdapUsername            = config.LdapUsername,
+                LdapUsername            = config.LdapUser,
                 MailField               = config.FieldMail,
                 PinField                = config.FieldPin,
                 UniqueIdentiferField    = config.FieldUniqueIdentifier,

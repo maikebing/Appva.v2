@@ -144,7 +144,8 @@ namespace Appva.Mcss.Admin.Application.Common
                         MenuItem.CreateNew("Aktuella delegeringar", "List", "Delegation", "Practitioner", null, null, Permissions.Delegation.Read, null),
                         MenuItem.CreateNew("Alla mottagna delegeringar", "Revision", "Delegation", "Practitioner", null, null, Permissions.Delegation.Revision, null),
                         MenuItem.CreateNew("Utställda delegeringar", "Issued", "Delegation", "Practitioner", null, null, Permissions.Delegation.Issued, null),
-                        MenuItem.CreateNew("Rapporter", "DelegationReport", "Delegation", "Practitioner", null, null, Permissions.Delegation.Report, null)
+                        MenuItem.CreateNew("Rapporter", "DelegationReport", "Delegation", "Practitioner", null, null, Permissions.Delegation.Report, null),
+                        MenuItem.CreateNew("Synkronisering", "GetSynchronizedAccount","Synchronization","Practitioner", null, null, Permissions.Synchronization.Read, null)
                     };
                 }
                 return this.account;

@@ -1304,6 +1304,30 @@ namespace Appva.Mcss.Admin.Application.Common
         }
 
         #endregion
+
+        #region Synchronization
+
+        /// <summary>
+        /// The synchronization permissions.
+        /// </summary>
+        public static class Synchronization
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "synchronization/read";
+
+            /// <summary>
+            /// Permission to read/view notifications.
+            /// </summary>
+            [Sort(100)]
+            [Name("Read synchronization")]
+            [Description("Permission to read/view synchronizations")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
+
+        #endregion
     }
 
     /// <summary>

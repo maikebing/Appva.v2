@@ -1,20 +1,24 @@
 ﻿@model System.Collections.Generic.List<Appva.Ldap.Models.User>
-    @{
-        SetTitle("Area 51 - LDAP");
-    }
-    @Html.Partial("_Area51MenuPartial")
-    <div id="subheader" class="cf">
-        <h1>LDAP</h1>
-    </div>
-    <div id="content" class="cf">
-        <div id="content-primary">
-            @if (Model != null && Model.Count > 0)
+@{
+    SetTitle("Area 51 - LDAP");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>LDAP</h1>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        @if (Model != null)
+        {
+            foreach (var u in Model)
             {
-                foreach (var u in Model)
-                {
-                    <p>Namn: @string.Format("{0} {1}", u.FirstName, u.LastName)</p>
-                }
-
+                <p>Namn: @string.Format("{0} {1}", u.FirstName, u.LastName)</p>
             }
-        </div>
+
+        }
+        else
+        {
+            <p>Ldap är inte aktiverat</p>
+        }
     </div>
+</div>

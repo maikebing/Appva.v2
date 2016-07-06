@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Handlers
 
     using Appva.Cqrs;
     using Appva.Ldap;
+    using Appva.Ldap.Configuration;
     using Appva.Ldap.Models;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Area51.Models;
@@ -47,9 +48,13 @@ namespace Appva.Mcss.Admin.Areas.Area51.Handlers
 
         public override IList<User> Handle(ListLdap message)
         {
-            var client = new LdapClient(this.settings.GetLdapConfiguration());
-
-            return client.List();
+            if (this.settings.Find<bool>(ApplicationSettings.IsLdapConnectionEnabled))
+            {
+                var client = new LdapClient(this.settings.Find<LdapConfiguration>(ApplicationSettings.LdapConfiguration));
+                return client.List();
+            }
+            return null;
+           
         }
     }
 }

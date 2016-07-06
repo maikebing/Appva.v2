@@ -43,8 +43,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Appva.Ldap, Version=0.0.1.16960, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.6\lib\net45\Appva.Ldap.dll</HintPath>
+    <Reference Include="Appva.Ldap, Version=0.0.1.25447, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Autofac">
@@ -472,6 +472,10 @@
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegation.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Synchronization\GetSynchronizedAccount\GetSynchronizedAccount.cs" />
+    <Compile Include="Areas\Practitioner\Features\Synchronization\GetSynchronizedAccount\GetSynchronizedAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Synchronization\GetSynchronizedAccount\GetSynchronizedAccountModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Synchronization\SynchronizationController.cs" />
     <Compile Include="Areas\Report\Features\Report\Excel\FullReportExcel.cs" />
     <Compile Include="Areas\Report\Features\Report\Excel\FullReportExcelHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReport.cs" />
@@ -1171,6 +1175,7 @@
     <Content Include="Areas\Area51\Features\Ldap\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Ldap\Config\Config.cshtml" />
     <Content Include="Areas\Area51\Features\Ldap\List\List.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Synchronization\GetSynchronizedAccount\GetSynchronizedAccount.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

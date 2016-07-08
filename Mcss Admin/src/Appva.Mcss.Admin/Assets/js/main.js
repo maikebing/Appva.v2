@@ -210,9 +210,10 @@ $(document).ready(function () {
     });
 
     // Show/hide details in synchronization
-    $('.sync .error-msg').click(function (e) {
+    $('.sync .error-msg h2, .sync .success-msg h2').click(function (e) {
         var elem = $(this);
-        elem.find('table').toggle();
+        elem.parent().find('table').toggle();
+        elem.parent().find('.sync-control').toggle();
         elem.find('.show-more').text(function (i, text) {
             return text === "Visa detaljer" ? "Dölj detaljer" : "Visa detaljer";
         })

@@ -204,6 +204,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Where(x => x.Taxon.Id == model.DelegationFilterId.Value
                         && x.IsActive == true && x.Pending == false);
             }
+            if (model.IsFilterByIsSynchronizedEnabled.HasValue)
+            {
+                query.Where(x => x.IsSynchronized == model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault());
+            }
+
             //// Subqueries to get days until delegation expires 
             var delegationSubquery = QueryOver.Of<Delegation>()
                     .Where(x => x.IsActive)
@@ -243,6 +248,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Add(Projections.Property<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
                     .Add(Projections.Property<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
                     .Add(Projections.Property<Account>(x => x.Title).WithAlias(() => accountModel.Title))
+                    .Add(Projections.Property<Account>(x => x.IsSynchronized).WithAlias(() => accountModel.IsSynchronized))
+                    .Add(Projections.Property<Account>(x => x.LastSynchronized).WithAlias(() => accountModel.LastSynchronized))
                     .Add(Projections.Property<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber))));                
             //// Ordering and transforming
             mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc

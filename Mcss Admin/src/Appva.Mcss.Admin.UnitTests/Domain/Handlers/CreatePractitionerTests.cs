@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
     using System.Web;
     using Appva.Caching.Providers;
     using Appva.Core.Resources;
+    using Appva.Core.Messaging.RazorMail;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Caching;
     using Appva.Mcss.Admin.Application.Security.Identity;
@@ -24,7 +25,6 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Models.Handlers;
     using Appva.Mcss.Admin.UnitTests.Helpers;
-    using Appva.Mvc.Messaging;
     using Appva.Persistence;
     using Appva.Persistence.Tests;
     using Xunit;

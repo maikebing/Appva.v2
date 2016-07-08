@@ -1318,13 +1318,55 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string ReadValue = Schema + "synchronization/read";
 
             /// <summary>
-            /// Permission to read/view notifications.
+            /// The create value.
             /// </summary>
-            [Sort(100)]
+            public const string CreateValue = Schema + "synchronization/create";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "synchronization/delete";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "synchronization/update";
+
+            /// <summary>
+            /// Permission to read/view synchronizations.
+            /// </summary>
+            [Sort(110)]
             [Name("Read synchronization")]
             [Description("Permission to read/view synchronizations")]
             [Visibility(Visibility.Hidden)]
             public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+            /// <summary>
+            /// Permission to create synchronizations.
+            /// </summary>
+            [Sort(111)]
+            [Name("Create synchronization")]
+            [Description("Permission to create synchronizations")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
+
+            /// <summary>
+            /// Permission to create synchronizations.
+            /// </summary>
+            [Sort(112)]
+            [Name("Delete synchronization")]
+            [Description("Permission to delete synchronizations")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
+
+            /// <summary>
+            /// Permission to update synchronizations.
+            /// </summary>
+            [Sort(113)]
+            [Name("Update synchronization")]
+            [Description("Permission to update synchronizations")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
         }
 
         #endregion

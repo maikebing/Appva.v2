@@ -20,57 +20,89 @@ namespace Appva.Mcss.Admin.Domain.Models
     /// </summary>
     public sealed class SearchAccountModel
     {
-        #region Constructor.
+        #region Properties.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SearchAccountModel"/> class.
+        /// The current account id
         /// </summary>
-        public SearchAccountModel()
-        {
-        }
-
-        #endregion
-
         public Guid CurrentUserId
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// The search-query
+        /// </summary>
         public string SearchQuery
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Filter by is active
+        /// </summary>
         public bool IsFilterByIsActiveEnabled
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Filter by is paused
+        /// </summary>
         public bool IsFilterByIsPausedEnabled
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Filter by delegation id
+        /// </summary>
         public Guid? DelegationFilterId
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Filter by role id
+        /// </summary>
         public Guid? RoleFilterId
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Filter by "created-by" current account
+        /// </summary>
         public bool IsFilterByCreatedByEnabled
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Organization filter id
+        /// </summary>
         public Guid? OrganisationFilterId 
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Filter by synchronized account
+        /// </summary>
+        public bool? IsFilterByIsSynchronizedEnabled 
+        { 
+            get; 
+            set;
+        }
+
+        #endregion
     }
 }

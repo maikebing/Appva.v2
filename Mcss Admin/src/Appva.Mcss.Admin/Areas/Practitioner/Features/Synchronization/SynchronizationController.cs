@@ -39,8 +39,10 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Synchronization
 
         #region Routes.
 
+        #region GetSynchronizedAccount.
+
         /// <summary>
-        /// 
+        /// Displays the status of the sync for a specified account
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -51,6 +53,59 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Synchronization
         {
             return this.View();
         }
+
+        #endregion
+
+        #region Activate LDAP sync.
+
+        /// <summary>
+        /// Activates the ldap synchronization for an account
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("activate/{id:guid}/ldap")]
+        [PermissionsAttribute(Permissions.Synchronization.CreateValue)]
+        [HttpGet, Dispatch("GetSynchronizedAccount", "Synchronization")]
+        public ActionResult ActivateLdap(ActivateLdap request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Inactivate LDAP sync.
+
+        /// <summary>
+        /// Inactivates the ldap synchronization for an account
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("inactivate/{id:guid}/ldap")]
+        [PermissionsAttribute(Permissions.Synchronization.DeleteValue)]
+        [HttpGet, Dispatch("GetSynchronizedAccount", "Synchronization")]
+        public ActionResult InactivateLdap(InactivateLdap request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Synchronize with Ldap
+
+        /// <summary>
+        /// Inactivates the ldap synchronization for an account
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("inactivate/{id:guid}/ldap")]
+        [PermissionsAttribute(Permissions.Synchronization.DeleteValue)]
+        [HttpPost, Dispatch("GetSynchronizedAccount", "Synchronization")]
+        public ActionResult SynchronizeLdap(SynchronizeLdap request)
+        {
+            return this.View();
+        }
+
+        #endregion
 
         #endregion
     }

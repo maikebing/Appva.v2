@@ -15,7 +15,19 @@
             @if (Model.SynchronizationAvailable)
             {
                 <div class="h cf">
-                    <h2>LDAP</h2>
+                    <h2>
+                        LDAP
+                        <span class="status @(Model.LocalAccount.IsSynchronized ? "ok" : "")">@(Model.LocalAccount.IsSynchronized ? "Aktiverad" : "Ej aktiverad")</span>
+                    </h2>
+
+                    @if (Model.LdapUser != null && Model.LocalAccount.IsSynchronized)
+                    {
+                        @Html.ActionLink(Permissions.Synchronization.Delete, "Ta bort synkronisering", "InActivateLdap", "Synchronization", new { area = "Practitioner", id = Model.Account.Id }, new { @class = "btn btn-del" })
+                    }
+                    else if (Model.LdapUser != null)
+                    {
+                        @Html.ActionLink(Permissions.Synchronization.Create, "Aktivera synkronisering", "ActivateLdap", "Synchronization", new { area = "Practitioner", id = Model.Account.Id }, new { @class = "btn" })
+                    }
                 </div>
                 if (Model.LdapUser != null)
                 {
@@ -41,7 +53,7 @@
                                 <tr class="head">
                                     <th scope="col"></th>
                                     <th scope="col">MCSS</th>
-                                    <th scope="col">Extern Katalog</th>
+                                    <th colspan="2" scope="col">Extern Katalog</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,50 +61,90 @@
                                     <td class="title">Användarnamn</td>
                                     <td>@Model.LocalAccount.UserName</td>
                                     <td>@Model.LdapUser.Username</td>
+                                    <td class="@(string.IsNullOrEmpty(Model.LdapUser.Username) || Model.LdapUser.Username == Model.LocalAccount.UserName ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
                                     <td class="title">Förnamn</td>
                                     <td>@Model.LocalAccount.FirstName</td>
                                     <td>@Model.LdapUser.FirstName</td>
+                                    <td class="@(string.IsNullOrEmpty(Model.LdapUser.FirstName) || Model.LdapUser.FirstName == Model.LocalAccount.FirstName ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
-                                    <td class ="title">Efternamn</td>
+                                    <td class="title">Efternamn</td>
                                     <td>@Model.LocalAccount.LastName</td>
                                     <td>@Model.LdapUser.LastName</td>
+                                    <td class="@(string.IsNullOrEmpty(Model.LdapUser.LastName) || Model.LdapUser.LastName == Model.LocalAccount.LastName ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
                                     <td class="title">Mail</td>
                                     <td>@Model.LocalAccount.EmailAddress</td>
                                     <td>@Model.LdapUser.Mail</td>
+                                    <td class="@(string.IsNullOrEmpty(Model.LdapUser.Mail) || Model.LdapUser.Mail == Model.LocalAccount.EmailAddress ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
                                     <td class="title">Pin</td>
                                     <td>@Model.LocalAccount.DevicePassword</td>
                                     <td>@Model.LdapUser.Pin</td>
+                                    <td class="@(string.IsNullOrEmpty(Model.LdapUser.Pin) || Model.LdapUser.Pin == Model.LocalAccount.DevicePassword ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
                                     <td class="title">HSA</td>
                                     <td>@Model.LocalAccount.HsaId</td>
                                     <td>@Model.LdapUser.HsaId</td>
+                                    <td class="@(string.IsNullOrEmpty(Model.LdapUser.HsaId) || Model.LdapUser.HsaId == Model.LocalAccount.HsaId ? "ok" : "alert")"></td>
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="sync-control cf">
+                            @using (Html.Post("SynchronizeLdap", "Synchronization", new { }))
+                            {
+                                <div>
+                                    @if (Model.LocalAccount.IsSynchronized)
+                                    {
+                                        @Html.Submit("Synkronisera", new { @class = "btn" })
+                                    }
+                                    else
+                                    {
+                                        @Html.Submit("Synkronisera", new { @class = "btn", disabled = "disabled" })
+                                    }
+                                </div>
+                                <div>
+                                    @if (Model.LocalAccount.LastSynchronized.HasValue)
+                                    {
+                                        <p class="last-sync">Användaren synkroniserades senast <span class="bold">@Model.LocalAccount.LastSynchronized.GetValueOrDefault().ToString()</span></p>
+                                    }
+                                    else
+                                    {
+                                        <p class="last-sync">Användaren har aldrig synkroniserats</p>
+                                    }
+                                    @if (!Model.LocalAccount.IsSynchronized)
+                                    {
+                                        <p>Ldap-synkronisering måste aktiveras innan användaren kan synkroniseras</p>
+                                    }
+                                </div>
+                                
+                               
+                            }
+                        </div>
                     </div>
-                    
-                            
-                        
+
+
+
 
                 }
                 else
                 {
-                    <p>Ingen användare hittades. Var vänlig kontrollera att användaren finns i den externa katalogen och att personnumret är matchar i MCSS</p>
+                    <div class="note">
+                        <h2>Ingen användare hittades</h2>
+                        <p>Var vänlig kontrollera att användaren finns i den externa katalogen och att personnumret är matchar i MCSS</p>
+                    </div>
                 }
 
             }
             else
             {
-                <h3>Det finns ingen synkronisering aktiverad</h3>
-                <p>Kontakta din administratör om att aktivera synkronisering av användare i MCSS</p>
+                    <h3>Det finns ingen synkronisering aktiverad</h3>
+                    <p>Kontakta din administratör om att aktivera synkronisering av användare i MCSS</p>
             }
         </div>
     </div>

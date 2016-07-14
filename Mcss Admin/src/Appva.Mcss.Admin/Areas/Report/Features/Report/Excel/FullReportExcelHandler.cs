@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Office;
     using Appva.Persistence;
     using Appva.Tenant.Identity;
+    using NHibernate.Criterion;
     using NHibernate.Transform;
 
     #endregion
@@ -49,6 +50,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ITenantService tenantService;
 
         /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler filter;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext context;
@@ -64,12 +70,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IAuditService auditing,
             IIdentityService identityService,
             ITenantService tenantService,
+            ITaxonFilterSessionHandler filter,
             IPersistenceContext context)
         {
-            this.auditing = auditing;
+            this.auditing        = auditing;
             this.identityService = identityService;
-            this.tenantService = tenantService;
-            this.context = context;
+            this.tenantService   = tenantService;
+            this.filter          = filter;
+            this.context         = context;
         }
 
         #endregion
@@ -101,12 +109,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             else
             {
-                var account          = this.context.Get<Account>(this.identityService.PrincipalId);
+                var account = this.context.Get<Account>(this.identityService.PrincipalId);
+                var schedulerSettingsIds = TaskService.GetAllRoleScheduleSettingsList(account)
+                    .Where(x => x.ScheduleType == ScheduleType.Action || x.CanRaiseAlerts).Select(x => x.Id);
                 query.Inner
                     .JoinAlias(x => x.Schedule, () => scheduleAlias, () => scheduleAlias.IsActive)
                     .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias )
                     .WhereRestrictionOn(() => scheduleSettingsAlias.Id)
-                        .IsIn(TaskService.GetAllRoleScheduleSettingsList(account).Select(x => x.Id).ToArray());
+                        .IsIn(schedulerSettingsIds.ToArray());
+            }
+            if (this.filter.GetCurrentFilter() != null && this.filter.GetCurrentFilter().Id.IsNotEmpty())
+            {
+                query.JoinQueryOver<Patient>(x => x.Patient)
+                    .JoinQueryOver<Taxon>(x => x.Taxon)
+                        .WhereRestrictionOn(x => x.Path).IsLike(this.filter.GetCurrentFilter().Id.ToString(), MatchMode.Anywhere);
             }
             this.auditing.Read("skapade excellista för perioden {0} t o m {1}.", message.StartDate, message.EndDate);
             var tasks = query.List();
@@ -117,7 +133,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     Task                 = x.Name,
                     TaskCompletedOnDate  = x.IsCompleted ? x.CompletedDate.Value.Date : x.UpdatedAt, //// FIXME: Its either completed or null.
-                    TaskCompletedOnTime  = (x.Delayed && x.CompletedBy.IsNull()) ? "Ej given" : string.Format("{0} {1:HH:mm}", "kl", x.CompletedDate),
+                    TaskCompletedOnTime  = x.Delayed && x.CompletedBy.IsNull() ? "Ej given" : string.Format("{0} {1:HH:mm}", "kl", x.CompletedDate),
                     TaskScheduledOnDate  = x.Scheduled.Date,
                     TaskScheduledOnTime  = string.Format("{0} {1:HH:mm}", "kl", x.Scheduled),
                     MinutesBefore        = x.RangeInMinutesBefore,

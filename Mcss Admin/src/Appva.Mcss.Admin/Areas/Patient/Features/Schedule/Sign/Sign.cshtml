@@ -21,7 +21,7 @@
 			<p class="filter"><strong>Tid:</strong>
 			@Html.Hidden("scheduleSettingsId", Request["scheduleSettingsId"])
 			@Html.Hidden("order", (int)Model.Order)
-			@Html.DropDownList("year", Model.Years, "År")
+            @Html.DropDownListFor(x => x.Year, Model.Years, "År")
 			@Html.DropDownList("month", Model.Months, "Månad")
 			@Html.Submit("Visa")
 			<strong>Typ:</strong>
@@ -40,16 +40,33 @@
 		}
 	}
 </div>
-<div id="content" class="has-nav cf">
-	@if (Model.Schedules.Count > 0) {
-		<ul id="nav-sub">
-			@foreach (var schedule in Model.Schedules) {
+<div id="content" class="has-nav report-view cf">
+    <div class="inventory-nav">
+	@if (Model.ActiveScheduleSettings.Count > 0)
+    {
+        <h3>Aktuella</h3>
+		<ul>
+			@foreach (var schedule in Model.ActiveScheduleSettings) 
+            {
 				<li class="@(Model.Schedule.Id.Equals(schedule.Id) ? "sel" : "")"> 
-					@Html.ActionLink(schedule.Name, "Sign", new { id = Model.Patient.Id, scheduleSettingsId = schedule.Id })
+					@Html.ActionLink(schedule.Name, "Sign", new { Id = Model.Patient.Id, ScheduleSettingsId = schedule.Id, StartDate = Model.StartDate, EndDate = Model.EndDate, FilterByNeedsBasis = Model.FilterByNeedsBasis, FilterByAnomalies = Model.FilterByAnomalies })
 				</li>
-	  }
+	        }
 		</ul>
 	}
+    @if (Model.InactiveScheduleSettings.Count > 0)
+    {
+        <h3>Borttagna</h3>
+		<ul>
+			@foreach (var schedule in Model.InactiveScheduleSettings) 
+            {
+				<li class="@(Model.Schedule.Id.Equals(schedule.Id) ? "sel" : "")"> 
+					@Html.ActionLink(schedule.Name, "Sign", new { Id = Model.Patient.Id, ScheduleSettingsId = schedule.Id, StartDate = Model.StartDate, EndDate = Model.EndDate, FilterByNeedsBasis = Model.FilterByNeedsBasis, FilterByAnomalies = Model.FilterByAnomalies })
+				</li>
+	        }
+		</ul>
+	}
+    </div>
 	<div id="content-primary">
 		@if (Model.Search == null || Model.Search.TotalItemCount == 0)
         {

@@ -84,20 +84,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler Overrides.
 
+        /// <inheritdoc />
         public override TaskListViewModel Handle(SignSchedule message)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
-            var list = TaskService.GetRoleScheduleSettingsList(account);
+            var list    = TaskService.GetRoleScheduleSettingsList(account);
             var patient = this.patientService.Get(message.Id);
-            var page = message.Page ?? 1;
-            var filterByAnomalies = message.FilterByAnomalies ?? false;
+            var page    = message.Page ?? 1;
+            var filterByAnomalies  = message.FilterByAnomalies  ?? false;
             var filterByNeedsBasis = message.FilterByNeedsBasis ?? false;
             var startDate = message.StartDate ?? DateTime.Now.FirstOfMonth();
-            var endDate = message.EndDate ?? DateTime.Now.LastOfMonth().LastInstantOfDay();
+            var endDate   = message.EndDate   ?? DateTime.Now.LastOfMonth().LastInstantOfDay();
             if (message.Year.HasValue)
             {
                 startDate = new DateTime(message.Year.Value, 1, 1);
-                endDate = new DateTime(message.Year.Value, 12, 31);
+                endDate   = new DateTime(message.Year.Value, 12, 31);
             }
             if (message.Month.HasValue)
             {
@@ -106,9 +107,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     message.Year = DateTime.Now.Year;
                 }
                 startDate = new DateTime(message.Year.Value, message.Month.Value, 1);
-                endDate = new DateTime(message.Year.Value, message.Month.Value, 
-                    DateTime.DaysInMonth(message.Year.Value, message.Month.Value)).LastInstantOfDay();
+                endDate   = new DateTime(message.Year.Value, message.Month.Value, DateTime.DaysInMonth(message.Year.Value, message.Month.Value)).LastInstantOfDay();
             }
+            if (! message.Year.HasValue)
+            {
+                message.Year = startDate.Year;
+            }
+            /*if (! message.Month.HasValue)
+            {
+                message.Month = endDate.Month;
+            }*/
             this.auditing.Read(
                 patient,
                 "läste signeringar mellan {0:yyyy-MM-dd} och {1:yyyy-MM-dd} för boende {2} (REF: {3}).", 
@@ -119,7 +127,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var scheduleSettings = TaskService.GetRoleScheduleSettingsList(account);
             var schedules = this.persistence.QueryOver<Schedule>().Where(x => x.Patient.Id == message.Id)
                             .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                            .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
+                                .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                             .List();
             if (! message.ScheduleSettingsId.HasValue)
             {
@@ -131,38 +139,40 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     return new TaskListViewModel
                     {
-                        Patient = this.transformer.ToPatient(patient),
-                        Schedules = new List<ScheduleSettings>()
+                        Patient                  = this.transformer.ToPatient(patient),
+                        ActiveScheduleSettings   = new List<ScheduleSettings>(),
+                        InactiveScheduleSettings = new List<ScheduleSettings>()
                     };
                 }
             }
             var scheduleSetting = this.persistence.Get<ScheduleSettings>(message.ScheduleSettingsId);
             return new TaskListViewModel
             {
-                Patient = this.transformer.ToPatient(patient),
-                Schedules = schedules.Select(x => x.ScheduleSettings).Distinct().ToList<ScheduleSettings>(),
-                Schedule = scheduleSetting,
-                Search = this.Search(new SearchTaskCommand
+                Patient                  = this.transformer.ToPatient(patient),
+                ActiveScheduleSettings   = schedules.Select(x => x.ScheduleSettings).Distinct().Where(x => x.IsActive ==  true).ToList<ScheduleSettings>(),
+                InactiveScheduleSettings = schedules.Select(x => x.ScheduleSettings).Distinct().Where(x => x.IsActive == false).ToList<ScheduleSettings>(),
+                Schedule  = scheduleSetting,
+                Search    = this.Search(new SearchTaskCommand
                 {
-                    PatientId = patient.Id,
+                    PatientId          = patient.Id,
                     ScheduleSettingsId = scheduleSetting.Id,
-                    StartDate = startDate,
-                    EndDate = endDate,
-                    FilterByAnomalies = filterByAnomalies,
+                    StartDate          = startDate,
+                    EndDate            = endDate,
+                    FilterByAnomalies  = filterByAnomalies,
                     FilterByNeedsBasis = filterByNeedsBasis,
-                    PageNumber = page,
-                    PageSize = 30,
-                    Order = message.Order
+                    PageNumber         = page,
+                    PageSize           = 30,
+                    Order              = message.Order
                 }),
-                FilterByAnomalies = filterByAnomalies,
+                FilterByAnomalies  = filterByAnomalies,
                 FilterByNeedsBasis = filterByNeedsBasis,
-                StartDate = startDate,
-                EndDate = endDate,
-                Years = DateTimeUtils.GetYearSelectList(patient.CreatedAt.Year, startDate.Year == endDate.Year ? startDate.Year : 0),
-                Months = startDate.Month == endDate.Month ? DateTimeUtils.GetMonthSelectList(startDate.Month) : DateTimeUtils.GetMonthSelectList(),
-                Order = message.Order,
-                Year = message.Year,
-                Month = message.Month
+                StartDate          = startDate,
+                EndDate            = endDate,
+                Years              = DateTimeUtils.GetYearSelectList(patient.CreatedAt.Year, startDate.Year == endDate.Year ? startDate.Year : 0),
+                Months             = startDate.Month == endDate.Month ? DateTimeUtils.GetMonthSelectList(startDate.Month) : DateTimeUtils.GetMonthSelectList(),
+                Order              = message.Order,
+                Year               = message.Year,
+                Month              = message.Month
             };
         }
 
@@ -217,8 +227,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             query.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
-                .Where(x => x.Id == message.ScheduleSettingsId);
-            var items = query.Skip((message.PageNumber - 1) * message.PageSize).Take(message.PageSize).Future().ToList();
+                    .Where(x => x.Id == message.ScheduleSettingsId);
+            var items      = query.Skip((message.PageNumber - 1) * message.PageSize).Take(message.PageSize).Future().ToList();
             var totalCount = query.ToRowCountQuery().FutureValue<int>();
             return new SearchViewModel<Task>
             {

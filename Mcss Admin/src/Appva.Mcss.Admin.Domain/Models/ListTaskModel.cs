@@ -20,6 +20,25 @@ namespace Appva.Mcss.Admin.Domain.Models
     public class ListTaskModel
     {
         /// <summary>
+        /// Whether or not to override any paging parameters.
+        /// </summary>
+        public bool SkipPaging
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether or not to include only active tasks or inactive tasks.
+        /// If not set it will select both active and inactive.
+        /// </summary>
+        public bool? IsActive
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The startdate
         /// </summary>
         public DateTime StartDate 

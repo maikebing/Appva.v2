@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Web.Controllers;
     using Appva.Office;
     using Appva.Persistence;
@@ -50,6 +51,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ITenantService tenantService;
 
         /// <summary>
+        /// The <see cref="ITaskService"/>
+        /// </summary>
+        private readonly ITaskService taskService;
+
+        /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>
         /// </summary>
         private readonly ITaxonFilterSessionHandler filter;
@@ -70,12 +76,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IAuditService auditing,
             IIdentityService identityService,
             ITenantService tenantService,
+            ITaskService taskService,
             ITaxonFilterSessionHandler filter,
             IPersistenceContext context)
         {
             this.auditing        = auditing;
             this.identityService = identityService;
             this.tenantService   = tenantService;
+            this.taskService     = taskService;
             this.filter          = filter;
             this.context         = context;
         }
@@ -87,7 +95,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override FileContentResult Handle(FullReportExcel message)
         {
-            Schedule         scheduleAlias         = null;
+            var account          = this.context.Get <Account>(this.identityService.PrincipalId);
+            var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
+            var tasks            = this.taskService.List(new ListTaskModel
+            {
+                SkipPaging        = true,
+                IsActive          = true,
+                ScheduleSettingId = message.ScheduleSettingsId,
+                StartDate         = message.StartDate.Date,
+                EndDate           = message.EndDate.LastInstantOfDay(),
+                TaxonId           = this.filter.GetCurrentFilter().Id
+            });
+           /* Schedule         scheduleAlias         = null;
             ScheduleSettings scheduleSettingsAlias = null;
             var query = this.context.QueryOver<Task>()
                 .Where(x => x.IsActive)
@@ -125,7 +144,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         .WhereRestrictionOn(x => x.Path).IsLike(this.filter.GetCurrentFilter().Id.ToString(), MatchMode.Anywhere);
             }
             this.auditing.Read("skapade excellista för perioden {0} t o m {1}.", message.StartDate, message.EndDate);
-            var tasks = query.List();
+            var tasks = query.List();*/
+            this.auditing.Read("skapade excellista för perioden {0} t o m {1}.", message.StartDate, message.EndDate);
             var path  = PathResolver.ResolveAppRelativePath("Templates\\Template.xlsx");
             var bytes = ExcelWriter.CreateNew<Task, ExcelTaskModel>(
                 path,
@@ -142,7 +162,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     CompletedBy          = x.CompletedBy.IsNotNull() ? x.CompletedBy.FullName : "",
                     TaskCompletionStatus = Status(x)
                 },
-                tasks);
+                tasks.Entities);
             ITenantIdentity tenant;
             this.tenantService.TryIdentifyTenant(out tenant);
             return new FileContentResult(bytes, "application/vnd.ms-excel")

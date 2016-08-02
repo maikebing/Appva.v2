@@ -96,6 +96,7 @@ namespace Appva.Mcss.Admin.Areas.Models
                 Tasks     = tasks.List(
                     new ListTaskModel 
                     {
+                        IsActive          = true,
                         StartDate         = message.Start.GetValueOrDefault(DateTime.Now.AddMonths(-1)).Date,
                         EndDate           = message.End.GetValueOrDefault(DateTime.Now).LastInstantOfDay(),
                         ScheduleSettingId = message.ScheduleSetting,

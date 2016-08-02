@@ -218,32 +218,32 @@ namespace Appva.Mcss.Admin.Application.Services
                 .And(x => x.Scheduled <= filter.EndDate.LastInstantOfDay());
 
             //// Optional filters
-            if (!filter.Organisation.GetValueOrDefault().IsEmpty() && filter.Patient.GetValueOrDefault().IsEmpty())
+            if (! filter.Organisation.GetValueOrDefault().IsEmpty() && filter.Patient.GetValueOrDefault().IsEmpty())
             {
                 query.JoinQueryOver<Patient>(x => x.Patient)
                     .JoinQueryOver<Taxon>(x => x.Taxon)
                         .Where(Restrictions.Like(Projections.Property<Taxon>(x => x.Path), filter.Organisation.GetValueOrDefault().ToString(), MatchMode.Anywhere));
             }
-            if (!filter.Patient.GetValueOrDefault().IsEmpty())
+            if (! filter.Patient.GetValueOrDefault().IsEmpty())
             {
                 query.JoinQueryOver<Patient>(x => x.Patient)
                     .Where(x => x.Id == filter.Patient.GetValueOrDefault());
             }
-            if (!filter.Account.GetValueOrDefault().IsEmpty())
+            if (! filter.Account.GetValueOrDefault().IsEmpty())
             {
                 query.JoinQueryOver<Account>(x => x.CompletedBy)
                     .Where(x => x.Id == filter.Account.GetValueOrDefault());
             }
             var account = this.accountService.Find(this.identityService.PrincipalId);
             var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
-            if (!filter.ScheduleSetting.GetValueOrDefault().IsEmpty())
+            if (! filter.ScheduleSetting.GetValueOrDefault().IsEmpty())
             {
                 query.JoinQueryOver<Schedule>(x => x.Schedule)
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                         .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
                         .And(x => x.Id == filter.ScheduleSetting.GetValueOrDefault());
             }
-            else if (!filter.IncludeCalendarTasks)
+            else if (! filter.IncludeCalendarTasks)
             {
                 query.JoinQueryOver<Schedule>(x => x.Schedule)
                     .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)

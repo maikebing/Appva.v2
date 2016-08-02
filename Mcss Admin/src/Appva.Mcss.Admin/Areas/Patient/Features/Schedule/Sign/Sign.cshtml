@@ -44,7 +44,10 @@
     <div class="inventory-nav">
 	@if (Model.ActiveScheduleSettings.Count > 0)
     {
+        if (Model.InactiveScheduleSettings.Count > 0)
+        {
         <h3>Aktuella</h3>
+        }
 		<ul>
 			@foreach (var schedule in Model.ActiveScheduleSettings) 
             {

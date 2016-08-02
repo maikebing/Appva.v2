@@ -318,7 +318,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
             }.Filter(query);
             var tasks = query.List();
             var bytes = ExcelWriter.CreateNew<Task, ExcelTaskModel>(
-                PathResolver.ResolveAppRelativePath("Templates\\Template.xls"),
+                PathResolver.ResolveAppRelativePath("Templates\\Template.xlsx"),
                 x => new ExcelTaskModel
                 {
                     Task = x.Name,
@@ -336,7 +336,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
             ITenantIdentity identity;
             this.tenantService.TryIdentifyTenant(out identity);
             return File(bytes, "application/vnd.ms-excel",
-                string.Format("Rapport-{0}-{1}.xls", identity.Name.Replace(" ", "-"),
+                string.Format("Rapport-{0}-{1}.xlsx", identity.Name.Replace(" ", "-"),
                 DateTime.Now.ToFileTimeUtc()));
         }
 

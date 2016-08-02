@@ -118,7 +118,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 patient.FullName, 
                 patient.Id);
             var tasks = query.List();
-            var path = PathResolver.ResolveAppRelativePath("Templates\\Template.xls");
+            var path = PathResolver.ResolveAppRelativePath("Templates\\Template.xlsx");
             var bytes = ExcelWriter.CreateNew<Task, ExcelTaskModel>(
                 path,
                 x => new ExcelTaskModel
@@ -139,7 +139,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.tenantService.TryIdentifyTenant(out tenant);
             return new FileContentResult(bytes, "application/vnd.ms-excel")
             {
-                FileDownloadName = string.Format("Rapport-{0}-{1}.xls", tenant.Name.Replace(" ", "-"), DateTime.Now.ToFileTimeUtc())
+                FileDownloadName = string.Format("Rapport-{0}-{1}.xlsx", tenant.Name.Replace(" ", "-"), DateTime.Now.ToFileTimeUtc())
             };
         }
 

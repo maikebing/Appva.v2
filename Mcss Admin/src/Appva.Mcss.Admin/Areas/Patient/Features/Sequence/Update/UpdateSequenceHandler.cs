@@ -37,6 +37,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IAuditService auditService;
 
         /// <summary>
+        /// The <see cref="IRoleService"/>.
+        /// </summary>
+        private readonly IRoleService roleService;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext context;
@@ -53,9 +58,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceHandler"/> class.
         /// </summary>
-        public UpdateSequenceHandler( IInventoryService inventories, IPersistenceContext context)
+        public UpdateSequenceHandler( IInventoryService inventories, IRoleService roleService, IPersistenceContext context)
         {
             this.inventories = inventories;
+            this.roleService = roleService;
             this.context = context;
         }
 
@@ -69,6 +75,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             //// FIXME: Log here!
             var sequence = this.context.Get<Sequence>(message.SequenceId);
             var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
+            var requiredRole = schedule.ScheduleSettings.RequiredRole;
+            if (requiredRole == null)
+            {
+                requiredRole = this.roleService.Find(RoleTypes.Nurse);
+            }
             return new UpdateSequenceForm
             {
                 Id                          = message.Id,
@@ -92,7 +103,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Schedule                    = sequence.Schedule,
                 Nurse                       = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse),
                 Inventory                   = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
-                Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null
+                Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                RequiredRoleText            = (requiredRole.MachineName.StartsWith(RoleTypes.Nurse) ? "legitimerad " : "") + requiredRole.Name.ToLower()
             };
         }
 

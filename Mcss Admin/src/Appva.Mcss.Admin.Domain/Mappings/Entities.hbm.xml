@@ -446,6 +446,7 @@
     <property name="GenerateIncompleteTasks">
       <column name="GenerateIncompleteTasks" not-null="true" default="'True'" />
     </property>
+    <many-to-one name="RequiredRole" class="Role" />
   </class>
 
   <!-- Schedule -->

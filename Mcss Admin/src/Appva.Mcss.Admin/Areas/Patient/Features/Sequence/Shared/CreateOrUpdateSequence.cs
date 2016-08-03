@@ -130,6 +130,15 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// The required role text, eg. the sequence can only be completed by a nurse.
+        /// </summary>
+        public string RequiredRoleText
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// If sequence needs delegation, the delegation
         /// </summary>
         [DisplayName("Kräver delegering för")]

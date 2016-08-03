@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using Appva.Core.Resources;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
@@ -43,6 +44,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IInventoryService inventories;
 
+        /// <summary>
+        /// The <see cref="IRoleService"/>
+        /// </summary>
+        private readonly IRoleService roleService;
+
         #endregion
 
         #region Constructor.
@@ -50,11 +56,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceHandler"/> class.
         /// </summary>
-        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories)
+        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories, IRoleService roleService)
         {
             this.context = context;
             this.delegations = delegations;
             this.inventories = inventories;
+            this.roleService = roleService;
         }
 
         #endregion
@@ -65,6 +72,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override CreateSequenceForm Handle(CreateSequence message)
         {
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
+            var requiredRole = schedule.ScheduleSettings.RequiredRole;
+            if (requiredRole == null)
+            {
+                requiredRole = this.roleService.Find(RoleTypes.Nurse);
+            }
             return new CreateSequenceForm
             {
                 Id = message.Id,
@@ -80,7 +92,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Checked = false
                 }).ToList(),
                 Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
-                CreateNewInventory = true
+                CreateNewInventory = true,
+                RequiredRoleText = (requiredRole.MachineName.StartsWith(RoleTypes.Nurse) ? "legitimerad " : "") + requiredRole.Name.ToLower()
+                
             };
         }
 

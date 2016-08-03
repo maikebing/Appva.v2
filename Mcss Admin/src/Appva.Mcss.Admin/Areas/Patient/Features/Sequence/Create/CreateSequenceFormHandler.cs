@@ -135,7 +135,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             if (message.Nurse)
             {
-                requiredRole = this.roleService.Find(RoleTypes.Nurse);
+                requiredRole = schedule.ScheduleSettings.RequiredRole;
+                if (requiredRole == null)
+                {
+                    this.roleService.Find(RoleTypes.Nurse);
+                }
             }
 
             if (message.OnNeedBasis)

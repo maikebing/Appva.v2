@@ -1,4 +1,4 @@
-﻿// <copyright file="ListLdapHandler.cs" company="Appva AB">
+﻿// <copyright file="FindUserHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,10 +8,12 @@ namespace Appva.Mcss.Admin.Areas.Area51.Handlers
 {
     #region Imports.
 
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Ldap;
     using Appva.Ldap.Configuration;
     using Appva.Ldap.Models;
+    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Area51.Models;
     using System;
@@ -23,38 +25,41 @@ namespace Appva.Mcss.Admin.Areas.Area51.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ListLdapHandler : RequestHandler<ListLdap, IList<User>>
+    public sealed class FindHandler : RequestHandler<Find, Find>
     {
         #region Fields.
 
         /// <summary>
-        /// The <see cref="ISettingsService"/>
+        /// The <see cref="ILdapService"/>
         /// </summary>
-        private readonly ISettingsService settings;
+        private readonly ILdapService ldapService;
 
         #endregion
 
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListLdapHandler"/> class.
+        /// Initializes a new instance of the <see cref="FindHandler"/> class.
         /// </summary>
-        public ListLdapHandler(ISettingsService settings)
+        public FindHandler(ILdapService ldapService)
         {
-            this.settings = settings;
+            this.ldapService = ldapService;
         }
 
         #endregion
 
-        public override IList<User> Handle(ListLdap message)
+        #region RequestHandler overrides
+
+
+        public override Find Handle(Find message)
         {
-            if (this.settings.Find<bool>(ApplicationSettings.IsLdapConnectionEnabled))
+            if (message.UniqueIdentifier.IsNotEmpty())
             {
-                var client = new LdapClient(this.settings.Find<LdapConfiguration>(ApplicationSettings.LdapConfiguration));
-                return client.List();
+                message.User = this.ldapService.Find(message.UniqueIdentifier);
             }
-            return null;
-           
+            return message;
         }
+
+        #endregion
     }
 }

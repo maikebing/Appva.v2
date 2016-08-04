@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Ldap
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Area51.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mvc.Security;
     using System;
     using System.Collections.Generic;
@@ -41,9 +42,10 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Ldap
 
         #region Index
 
-        [Route("index")]
+        [Route("find")]
         [HttpGet]
-        public ActionResult Index()
+        [Dispatch(typeof(Find))]
+        public ActionResult Find()
         {
             return this.View();
         }
@@ -76,21 +78,33 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Ldap
 
         #endregion
 
-        [Route("finduser")]
+        [Route("find")]
         [HttpPost]
         [Dispatch]
-        public ActionResult FindUser(FindUser request)
+        public ActionResult Find(Find request)
         {
             return this.View();
         }
 
-        [Route("list")]
+        #region Synchronization
+
+        [Route("synchronization")]
         [HttpGet]
         [Dispatch]
-        public ActionResult List(ListLdap request)
+        public ActionResult Synchronization(LdapSync request)
         {
             return this.View();
         }
+
+        [Route("synchronization")]
+        [HttpPost]
+        [Dispatch("Synchronization","Ldap")]
+        public ActionResult Synchronization(LdapSyncModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
 
         #endregion
     }

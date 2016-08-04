@@ -98,7 +98,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Synchronization
         /// <param name="request"></param>
         /// <returns></returns>
         [Route("inactivate/{id:guid}/ldap")]
-        [PermissionsAttribute(Permissions.Synchronization.DeleteValue)]
+        [PermissionsAttribute(Permissions.Synchronization.UpdateValue)]
         [HttpPost, Dispatch("GetSynchronizedAccount", "Synchronization")]
         public ActionResult SynchronizeLdap(SynchronizeLdap request)
         {

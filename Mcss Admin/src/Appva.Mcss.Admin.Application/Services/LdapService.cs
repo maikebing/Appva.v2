@@ -48,11 +48,31 @@ namespace Appva.Mcss.Admin.Application.Services
         User Find(PersonalIdentityNumber id);
 
         /// <summary>
+        /// Gets a user from the LDAP directory
+        /// </summary>
+        /// <param name="id">The identifer</param>
+        /// <returns>The <see cref="User"/></returns>
+        User Find(string id);
+
+        /// <summary>
+        /// Lists users in the ldap directory
+        /// </summary>
+        /// <returns></returns>
+        IList<User> List();
+
+        /// <summary>
         /// Synchronizes an account with the ldap directory
         /// </summary>
         /// <param name="accountId">The account id</param>
         /// <returns>If the synchronization was successfull or not</returns>
         bool SynchronizeLdapAccount(Guid accountId);
+
+        /// <summary>
+        /// Synchronizes an account with the ldap directory
+        /// </summary>
+        /// <param name="account">The account</param>
+        /// <returns>If the synchronization was successfull or not</returns>
+        bool SynchronizeLdapAccount(Account account);
     }
 
     /// <summary>
@@ -149,30 +169,48 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
+        public User Find(string id)
+        {
+            return this.Ldap.Find(id);
+        }
+
+        /// <inheritdoc />
+        public IList<User> List()
+        {
+            return this.Ldap.List();
+        }
+
+        /// <inheritdoc />
         public bool SynchronizeLdapAccount(Guid accountId)
         {
             var account = this.accountService.Find(accountId);
+            return this.SynchronizeLdapAccount(account);
+        }
+
+        /// <inheritdoc />
+        public bool SynchronizeLdapAccount(Account account)
+        {
             if (account != null && account.IsSynchronized)
             {
-                var user = this.Find(account.PersonalIdentityNumber);                
-                if(user != null)
+                var user = this.Find(account.PersonalIdentityNumber);
+                if (user != null)
                 {
                     bool usernameUpdated;
                     bool pinUpdated;
-                    account.UserName            = GetStringProperty(account.UserName, user.Username, out usernameUpdated);
-                    account.DevicePassword      = GetStringProperty(account.DevicePassword, user.Pin, out pinUpdated);
-                    account.EmailAddress        = GetStringProperty(account.EmailAddress, user.Mail);
-                    account.FirstName           = GetStringProperty(account.FirstName, user.FirstName);
-                    account.LastName            = GetStringProperty(account.LastName, user.LastName);
-                    account.HsaId               = GetStringProperty(account.HsaId, user.HsaId);
-                    account.FullName            = GetStringProperty(account.FullName, string.Format("{0} {1}", user.FirstName, user.LastName));
-                    account.LastSynchronized    = DateTime.Now;
+                    account.UserName = GetStringProperty(account.UserName, user.Username, out usernameUpdated);
+                    account.DevicePassword = GetStringProperty(account.DevicePassword, user.Pin, out pinUpdated);
+                    account.EmailAddress = GetStringProperty(account.EmailAddress, user.Mail);
+                    account.FirstName = GetStringProperty(account.FirstName, user.FirstName);
+                    account.LastName = GetStringProperty(account.LastName, user.LastName);
+                    account.HsaId = GetStringProperty(account.HsaId, user.HsaId);
+                    account.FullName = GetStringProperty(account.FullName, string.Format("{0} {1}", user.FirstName, user.LastName));
+                    account.LastSynchronized = DateTime.Now;
 
                     this.audit.Update("synkroniserade användare {0} med ldap-katalog", account.Id);
                     this.accountService.Update(account);
 
                     SendSynchronizationMail(account, usernameUpdated, pinUpdated);
-                }    
+                }
             }
             return false;
         }
@@ -190,13 +228,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns></returns>
         private static string GetStringProperty(string account, string user, out bool isUpdated)
         {
-            if (user.IsNotEmpty())
+            if (user.IsNotEmpty() && account != user)
             {
-                if (account != user)
-                {
-                    isUpdated = true;
-                    return user;
-                }
+                isUpdated = true;
+                return user;
             }
             isUpdated = false;
             return account;
@@ -235,7 +270,7 @@ namespace Appva.Mcss.Admin.Application.Services
             if (updates.Count > 0)
             {
                 this.mailer.Send(MailMessage.CreateNew()
-                    .Template("UpdateUserMobileDeviceEmail")
+                    .Template("SynchronizationEmail")
                     .Model<SynchronizationEmailData>(new SynchronizationEmailData
                     {
                         Name = account.FullName,

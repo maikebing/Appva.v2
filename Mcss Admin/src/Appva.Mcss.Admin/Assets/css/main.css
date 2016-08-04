@@ -3599,6 +3599,18 @@ span.custom-select {
     float:left;
 }
 
+.sync .note{
+    border-radius:4px;
+    background:#f2f4f9;
+    margin:10px;
+    padding:20px;
+    color:#7c88a1;
+}
+
+.sync .note h2 {
+    color:#7c88a1;
+}
+
 /* END @media screen, projection */
 }
 

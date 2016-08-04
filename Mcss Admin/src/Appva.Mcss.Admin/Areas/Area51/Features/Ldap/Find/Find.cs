@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class FindUser : IRequest<User>
+    public sealed class Find : IRequest<Find>
     {
         #region Properties.
 
@@ -27,6 +27,15 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
         /// Unique identifier for the 
         /// </summary>
         public string UniqueIdentifier
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The user
+        /// </summary>
+        public User User
         {
             get;
             set;

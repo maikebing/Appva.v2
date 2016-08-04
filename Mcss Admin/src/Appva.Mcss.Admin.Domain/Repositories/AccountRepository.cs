@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using NHibernate;
     using NHibernate.Criterion;
     using NHibernate.Dialect.Function;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -29,6 +30,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         IIdentityRepository<Account>, 
         IUpdateRepository<Account>,
         IProxyRepository<Account>,
+        IListRepository<Account>,
         IRepository
     {
         /// <summary>
@@ -292,6 +294,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public Account Load(Guid id)
         {
  	        return this.persistenceContext.Session.Load<Account>(id);
+        }
+
+        #endregion
+
+        #region IListRepository Members.
+
+        /// <inheritdoc />
+        public IList<Account> List(ulong maximumItems = long.MaxValue)
+        {
+            return this.persistenceContext.QueryOver<Account>().List();
         }
 
         #endregion

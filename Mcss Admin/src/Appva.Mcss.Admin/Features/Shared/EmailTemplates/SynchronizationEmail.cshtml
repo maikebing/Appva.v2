@@ -36,16 +36,19 @@
 								<div class="title" style="font-family: Helvetica, Arial, sans-serif;color: #445068;font-size: 18px;font-weight: 300;">Ditt användarkonto i MCSS har updaterats efter en synkronisering</div>
 								<br>
 								<div class="body-text" style="font-size: 14px;line-height: 20px;text-align: left;font-weight: 300;">
-									Följande uppgifter har uppdaterats:</b><br><br>
-                                    <table>
-                                        @foreach (var update in Model.Updates)
-                                        {
-                                            <tr>
-                                                <td style="border:none;">@update.Key</td>
-                                                <td style="border:none;font-weight:bold;">@update.Key</td>
-                                            </tr>
-                                        }
-                                    </table>
+									<p>Följande uppgifter har uppdaterats:</p>
+                                    <div style="padding:20px;margin-bottom:20px; background:#e8eef3;">
+                                        <table>
+                                            @foreach (var update in Model.Updates)
+                                            {
+                                                <tr>
+                                                    <td style="border:none;">@update.Key</td>
+                                                    <td style="border:none;font-weight:bold;">@update.Value</td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                    
 									<div class="alert-message" style="background: #f5f8fa;padding: 20px;color: #99a9c2;border-radius: 4px;">
 										<div class="sub-title" style="font-size: 16px;font-weight: 300;color: #99a9c2;margin-bottom: 10px;">Kontakta oss</div>
 										Behöver du hjälp når du oss säkrast via vårt <a href="http://support.appva.se/" style="color: #99a9c2;">supportsystem</a>. Här hittar du även guider och lathundar för MCSS.

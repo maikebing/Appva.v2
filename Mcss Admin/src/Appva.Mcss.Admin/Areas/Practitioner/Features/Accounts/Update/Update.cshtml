@@ -1,16 +1,38 @@
 ﻿@model Appva.Mcss.Admin.Models.UpdateAccount
-@{ 
-    SetTitle("Ändra medarbetaruppgifter"); 
+@{
+    SetTitle("Ändra medarbetaruppgifter");
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AccountCreate" data-valparams="id=@Model.Id;uidUrl=@Url.Action("VerifyUniqueAccount");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
     @using (Html.Post())
     {
         <div>
             <h3 class="section-title">Ändra medarbetaruppgifter</h3>
-            @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
-            @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
+            @if (Model.IsFirstNameFieldVisible)
+            {
+                @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
+            }
+            else
+            {
+                @Html.HiddenFor(x => x.FirstName, "text large")
+            }
+            @if (Model.IsFirstNameFieldVisible)
+            {
+                @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
+            }
+            else
+            {
+                @Html.HiddenFor(x => x.LastName, "text large")
+            }
             @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
-            @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()
+            @if (Model.IsMailFieldVisible)
+            {
+                @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()
+            }
+            else
+            {
+                @Html.HiddenFor(x => x.Email, "text large")
+            }
+            
             @if (Model.IsMobileDevicePasswordFieldVisible)
             {
                 @Html.FormGroup(x => x.DevicePassword, "text").Label().Password(null, new { value = Model.DevicePassword }).Validate().Build()

@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListLdap : IRequest<IList<User>>
+    public sealed class LdapSync : IRequest<LdapSyncModel>
     {
         
     }

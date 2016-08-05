@@ -70,7 +70,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Ldap
         /// </summary>
         /// <returns></returns>
         [Route("config")]
-        [HttpPost, Dispatch("index","ldap")]
+        [HttpPost, Dispatch("find","ldap")]
         public ActionResult Config(LdapConfigModel request)
         {
             return this.View();

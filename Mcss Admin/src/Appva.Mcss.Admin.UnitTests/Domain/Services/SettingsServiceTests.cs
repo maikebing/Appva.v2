@@ -64,6 +64,38 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Services
             Assert.Equal(true, setting.HasSeniorAlert());
         }
 
+        /// <summary>
+        /// Test:    Find should not accept null params
+        /// Expects: Throws an ArgumentException
+        /// </summary>
+        [Fact]
+        public void Should_Throw_Exception_When_Parameter_Null()
+        {
+            var cache   = new TenantAwareMemoryCache(new DevelopmentTenantIdentificationStrategy(), new RuntimeMemoryCache("https://schemas.appva.se/tests"));
+            var setting = new SettingsService(cache, new SettingsRepository(this.database.PersistenceContext), this.database.PersistenceContext);
+
+            Assert.Throws<ArgumentNullException>(() => setting.Find<bool>(null));
+        }
+
+        /// <summary>
+        /// Test:    Settings should be updated in cache on upsert
+        /// Expects: Find should return true after upsert
+        /// </summary>
+        [Fact]
+        public void Should_Update_Cache_On_Upsert()
+        {
+            var cache = new TenantAwareMemoryCache(new DevelopmentTenantIdentificationStrategy(), new RuntimeMemoryCache("https://schemas.appva.se/tests"));
+            var setting = new SettingsService(cache, new SettingsRepository(this.database.PersistenceContext), this.database.PersistenceContext);
+
+            //// Caches false
+            setting.Find<bool>(ApplicationSettings.IsLdapConnectionEnabled);
+
+            //// Update to true
+            setting.Upsert<bool>(ApplicationSettings.IsLdapConnectionEnabled, true);
+
+            Assert.True(setting.Find<bool>(ApplicationSettings.IsLdapConnectionEnabled));
+        }
+
         #endregion
     }
 

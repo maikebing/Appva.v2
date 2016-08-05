@@ -10,8 +10,8 @@ namespace Appva.Mcss.Admin.Infrastructure
 
     using System;
     using Appva.Core.Environment;
-    using Appva.Mvc.Messaging;
     using Appva.Persistence;
+    using Appva.Core.Messaging.RazorMail;
 
     #endregion
 

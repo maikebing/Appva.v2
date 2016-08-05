@@ -113,14 +113,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var accounts = this.accounts.Search(
                 new SearchAccountModel
                 {
-                    IsFilterByIsActiveEnabled = message.isActive.GetValueOrDefault(true),
-                    IsFilterByIsPausedEnabled = message.isPaused.GetValueOrDefault(false),
-                    IsFilterByCreatedByEnabled = message.filterByCreatedBy.GetValueOrDefault(false),
-                    DelegationFilterId = message.DelegationFilterId,
-                    RoleFilterId = message.RoleFilterId,
-                    OrganisationFilterId = this.filtering.GetCurrentFilter().Id,
-                    CurrentUserId = this.identities.PrincipalId,
-                    SearchQuery = message.q
+                    IsFilterByIsActiveEnabled       = message.isActive.GetValueOrDefault(true),
+                    IsFilterByIsPausedEnabled       = message.isPaused.GetValueOrDefault(false),
+                    IsFilterByIsSynchronizedEnabled = message.isSynchronized,
+                    IsFilterByCreatedByEnabled      = message.filterByCreatedBy.GetValueOrDefault(false),
+                    DelegationFilterId              = message.DelegationFilterId,
+                    RoleFilterId                    = message.RoleFilterId,
+                    OrganisationFilterId            = this.filtering.GetCurrentFilter().Id,
+                    CurrentUserId                   = this.identities.PrincipalId,
+                    SearchQuery                     = message.q
                 },
                 page: message.page.GetValueOrDefault(1));
 
@@ -148,7 +149,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 DelegationFilterId = message.DelegationFilterId,
                 IsFilterByCreatedByEnabled = message.filterByCreatedBy,
                 IsFilterByIsActiveEnabled = message.isActive.GetValueOrDefault(true),
-                IsFilterByIsPausedEnabled = message.isPaused.GetValueOrDefault(false)
+                IsFilterByIsPausedEnabled = message.isPaused.GetValueOrDefault(false),
+                IsFilterByIsSynchronizedEnabled = message.isSynchronized
             };
         }
 

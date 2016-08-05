@@ -1,0 +1,61 @@
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model Appva.Mcss.Admin.Areas.Area51.Models.LdapSyncModel
+@{
+    SetTitle("Area 51 - LDAP");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>LDAP</h1>
+    @Html.ActionLink("Konfiguration", "Config", "Ldap", new { area = "Area51" }, new { @class = "lb-link btn" })
+</div>
+        <div id="content" class="cf">
+            <div id="content-primary">
+                <div class="people-nav">
+                    <ul class="nav cf">
+                        <li>@Html.ActionLink("Sök", "Index", "Ldap")</li>
+                        <li>@Html.ActionLink("Sync", "Synchronization", "Ldap")</li>
+                    </ul>
+                </div>
+                <h2>Synkronisering</h2>
+                <p><span class="bold">@Model.NotInLdap.Count</span> i MCSS användarkatalog kunde inte hittas i LDAP</p>
+                <p><span class="bold">@Model.Synchronized.Count</span> i MCSS användarkatalog är synkroniserade med LDAP</p>
+                <div>
+                    <h3>Redo för synkronisering</h3>
+                    <p>Nedan användare är identiska eller innehåller mindre skillnader som inte påverkar funktionalitet, dvs stavning på namn osv. Användarnamn och lösenord är identiska.</p>
+                    @if (Model.ReadyToSync != null)
+                    {
+                        using (Html.BeginForm())
+                        {
+                            @Html.FormGroup(x => x.ReadyToSync, "text").CheckboxList().Validate().Build()
+                            @Html.Submit("Aktivera synkronisering")
+                        }
+                    }
+                    else
+                    {
+                        <p>Inga användare är redo för synkronisering</p>
+                    }
+                </div>
+                <div>
+                    <h3>Ej redo för synkronisering</h3>
+                    <p>Nedan användare har skillnader som gör att nya användaruppgifter kommer att skickas ut dvs. Användarnamn och lösenord är ej identiska.</p>
+                    @if (Model.NotReadyForSync != null)
+                    {
+                        <table>
+                            <tr>
+                                <th>Personnummer</th>
+                                <th>Namn</th>
+                                <th>Mail</th>
+                            </tr>
+                            @foreach (var u in Model.NotReadyForSync)
+                            {
+                                <tr>
+                                    <td>@u.PersonalIdentityNumber</td>
+                                    <td>@Html.ActionLink(Permissions.Synchronization.Read, u.FullName, "GetSynchronizedAccount", "Synchronization", new { Area = "Practitioner", Id = u.Id }, new { })</td>
+                                    <td>@u.EmailAddress</td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>

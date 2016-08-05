@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using NHibernate;
     using NHibernate.Criterion;
     using NHibernate.Dialect.Function;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -29,6 +30,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         IIdentityRepository<Account>, 
         IUpdateRepository<Account>,
         IProxyRepository<Account>,
+        IListRepository<Account>,
         IRepository
     {
         /// <summary>
@@ -204,6 +206,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Where(x => x.Taxon.Id == model.DelegationFilterId.Value
                         && x.IsActive == true && x.Pending == false);
             }
+            if (model.IsFilterByIsSynchronizedEnabled.HasValue)
+            {
+                query.Where(x => x.IsSynchronized == model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault());
+            }
+
             //// Subqueries to get days until delegation expires 
             var delegationSubquery = QueryOver.Of<Delegation>()
                     .Where(x => x.IsActive)
@@ -243,6 +250,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .Add(Projections.Property<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
                     .Add(Projections.Property<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
                     .Add(Projections.Property<Account>(x => x.Title).WithAlias(() => accountModel.Title))
+                    .Add(Projections.Property<Account>(x => x.IsSynchronized).WithAlias(() => accountModel.IsSynchronized))
+                    .Add(Projections.Property<Account>(x => x.LastSynchronized).WithAlias(() => accountModel.LastSynchronized))
                     .Add(Projections.Property<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber))));                
             //// Ordering and transforming
             mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
@@ -285,6 +294,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public Account Load(Guid id)
         {
  	        return this.persistenceContext.Session.Load<Account>(id);
+        }
+
+        #endregion
+
+        #region IListRepository Members.
+
+        /// <inheritdoc />
+        public IList<Account> List(ulong maximumItems = long.MaxValue)
+        {
+            return this.persistenceContext.QueryOver<Account>().List();
         }
 
         #endregion

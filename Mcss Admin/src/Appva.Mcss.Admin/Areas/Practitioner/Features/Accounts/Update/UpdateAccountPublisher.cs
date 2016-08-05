@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mvc.Messaging;
+    using Appva.Core.Messaging.RazorMail;
 
     #endregion
 

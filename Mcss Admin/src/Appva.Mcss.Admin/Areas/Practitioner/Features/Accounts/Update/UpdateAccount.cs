@@ -133,6 +133,33 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// Whether or not the device password field is visible.
+        /// </summary>
+        public bool IsFirstNameFieldVisible
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether or not the device password field is visible.
+        /// </summary>
+        public bool IsLastNameFieldVisible
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether or not the device password field is visible.
+        /// </summary>
+        public bool IsMailFieldVisible
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Whether or not the device password field is editable.
         /// </summary>
         public bool IsMobileDevicePasswordEditable

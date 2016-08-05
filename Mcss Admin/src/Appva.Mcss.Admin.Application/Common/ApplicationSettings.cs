@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Diagnostics.CodeAnalysis;
     using Appva.Mcss.Admin.Application.Security.Jwt;
     using Appva.Mcss.Admin.Domain.VO;
+    using Appva.Ldap.Configuration;
 
     #endregion
 
@@ -228,6 +229,32 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
            "MCSS.Core.Inventory",
            "If an inventory is not reocunted in this number of days it will be listed on the overview",
            30);
+
+        #endregion
+
+        #region LDAP.
+
+        /// <summary>
+        /// LDAP connection is enabled
+        /// </summary>
+        /// <remarks>The setting returns a <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<bool> IsLdapConnectionEnabled = ApplicationSettingIdentity<bool>.CreateNew(
+            "Mcss.Integration.Ldap.IsLdapConnectionEnabled",
+            "Ldap connection enabled",
+            "Mcss.Integration.Ldap",
+            "Id the ldap connection is configured and enabled",
+            false);
+
+        /// <summary>
+        /// LDAP configuration
+        /// </summary>
+        /// <remarks>The setting returns a <c>LdapConfiguration</c></remarks>
+        public static readonly ApplicationSettingIdentity<LdapConfiguration> LdapConfiguration = ApplicationSettingIdentity<LdapConfiguration>.CreateNew(
+            "Mcss.Integration.Ldap.LdapConfiguration",
+            "LDAP connection configuration",
+            "Mcss.Integration.Ldap",
+            "The LDAP configuration",
+            null);
 
         #endregion
     }

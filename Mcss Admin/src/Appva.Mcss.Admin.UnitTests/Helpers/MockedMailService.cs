@@ -9,7 +9,7 @@ namespace Appva.Mcss.Admin.UnitTests.Helpers
     #region Imports.
 
     using Appva.Core.Messaging;
-using Appva.Mvc.Messaging;
+    using Appva.Core.Messaging.RazorMail;
 
     #endregion
 

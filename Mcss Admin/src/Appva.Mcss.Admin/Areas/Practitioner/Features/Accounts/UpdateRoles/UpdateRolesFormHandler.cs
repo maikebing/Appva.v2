@@ -20,8 +20,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.VO;
-    using Appva.Mvc.Messaging;
     using Appva.Persistence;
+    using Appva.Core.Messaging.RazorMail;
 
     #endregion
 

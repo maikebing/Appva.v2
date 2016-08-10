@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Areas.Practitioner.Models;
 
     #endregion
 
@@ -315,7 +316,36 @@ namespace Appva.Mcss.Admin.Features.Accounts
         }
 
         #endregion
-        
+
+        #region Upload import
+
+        /// <summary>
+        /// Return the upload practioner view.
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("upload")]
+        [HttpGet, Hydrate, Dispatch(typeof(Parameterless<UploadPractitionerModel>))]
+        [PermissionsAttribute(Permissions.Practitioner.UploadImportFileValue)]
+        public ActionResult Upload()
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Uploads the file if the model is valid
+        /// </summary>
+        /// <param name="request">The update model</param>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("upload")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Accounts")]
+        [PermissionsAttribute(Permissions.Practitioner.UploadImportFileValue)]
+        public ActionResult Upload(UploadPractitionerModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
         #endregion
     }
 }

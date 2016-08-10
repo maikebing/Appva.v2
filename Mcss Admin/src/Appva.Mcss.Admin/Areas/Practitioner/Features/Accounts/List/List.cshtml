@@ -6,6 +6,7 @@
 <div id="subheader" class="cf">
 	<h1>Medarbetare</h1>
 	@Html.ActionLink(Permissions.Practitioner.Create, "Ny medarbetare", "Create", "Accounts", null, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Practitioner.UploadImportFile, "Ladda upp", "upload", "Accounts", null, new { @class = "btn lb-link" })
 	@Html.Partial("_AccountSearch")
 </div>
 <div class="col-wrap cols-2-1 cf">

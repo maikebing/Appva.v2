@@ -1,0 +1,17 @@
+﻿@model Appva.Mcss.Admin.Areas.Practitioner.Models.UploadPractitionerModel
+@{ 
+    SetTitle("Ladda upp medarbetare"); 
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AccountUpload">
+    @using (Html.Post(null, null, new {}, new {}, true))
+    {
+        <div>
+            <h3 class="section-title">Ladda upp medarbetare</h3>
+            @Html.FormGroup(x => x.File, "text large").Label().TextBox("Välj fil", new { type = "file" }).Validate().Build()
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

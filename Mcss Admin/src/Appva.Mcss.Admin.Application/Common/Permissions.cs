@@ -413,6 +413,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string ResumeValue = Schema + "practitioner/resume";
 
             /// <summary>
+            /// The upload import file value.
+            /// </summary>
+            public const string UploadImportFileValue = Schema + "practitioner/uploadimportfile";
+
+            /// <summary>
             /// Permission to create a practitioner.
             /// </summary>
             [Sort(1)]
@@ -475,6 +480,11 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Resume paused practitioner")]
             [Description("Permission to resume paused practitioner")]
             public static readonly IPermission Resume = PermissionType.CreateNew(ResumeValue);
+
+            [Sort(8)]
+            [Name("Upload practioioner import file")]
+            [Description("Permission permission to upload file with practioner import")]
+            public static readonly IPermission UploadImportFile = PermissionType.CreateNew(UploadImportFileValue);
         }
 
         #endregion

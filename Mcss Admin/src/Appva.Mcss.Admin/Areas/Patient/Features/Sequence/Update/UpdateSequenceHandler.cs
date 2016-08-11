@@ -73,13 +73,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateSequenceForm Handle(UpdateSequence message)
         {
             //// FIXME: Log here!
-            var sequence = this.context.Get<Sequence>(message.SequenceId);
-            var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
-            var requiredRole = schedule.ScheduleSettings.RequiredRole;
-            if (requiredRole == null)
-            {
-                requiredRole = this.roleService.Find(RoleTypes.Nurse);
-            }
+            var sequence     = this.context.Get<Sequence>(message.SequenceId);
+            var schedule     = this.context.Get<Schedule>(sequence.Schedule.Id);
+            var requiredRole = schedule.ScheduleSettings.RequiredRole ?? this.roleService.Find(RoleTypes.Nurse);
             return new UpdateSequenceForm
             {
                 Id                          = message.Id,
@@ -101,10 +97,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 ReminderInMinutesBefore     = sequence.ReminderInMinutesBefore,
                 Patient                     = sequence.Patient,
                 Schedule                    = sequence.Schedule,
-                Nurse                       = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse),
+                Nurse                       = sequence.Role != null,
                 Inventory                   = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
                 Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
-                RequiredRoleText            = (requiredRole.MachineName.StartsWith(RoleTypes.Nurse) ? "legitimerad " : "") + requiredRole.Name.ToLower()
+                RequiredRoleText            = requiredRole.Name.ToLower()
             };
         }
 

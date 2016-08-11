@@ -101,6 +101,11 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             }
             if (message.PersonalIdentityNumber.IsNotNull())
             {
+                //// If PersonalIdentityNumber is changed, disabel sync
+                if(account.IsSynchronized)
+                {
+                    account.IsSynchronized = account.PersonalIdentityNumber == message.PersonalIdentityNumber;
+                }
                 account.PersonalIdentityNumber = message.PersonalIdentityNumber;
             }
             if (taxon.IsNotNull())

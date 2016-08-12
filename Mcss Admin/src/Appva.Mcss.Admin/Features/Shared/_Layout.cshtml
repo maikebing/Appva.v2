@@ -342,6 +342,18 @@
                         }
                     });
 
+                    $(".check-datetime-update").bind("change", function (e) {
+                        var save = $('.std-panel .submit input[type="submit"]')
+                        if (true) {
+                            if (save.next(".warning-datetime").length < 1) {
+                                save.after("<div class='warning-datetime'><span style='font-weight:bold;'>Observera!</span>Larm kommer inte att genereras för de tider som redan passerats</div>");
+                            }
+                        }
+                        else {
+                            save.next(".warning-datetime").remove();
+                        }
+                    });
+
 
                     $('.activity-edit .freq .btn-mdatepick').each(function () {
                         if ($(this).prev().val() != '0') $(this).hide();

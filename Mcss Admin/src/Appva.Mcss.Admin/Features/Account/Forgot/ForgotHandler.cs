@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mvc.Messaging;
     using Appva.Core.Extensions;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -40,6 +41,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// The <see cref="IAccountService"/>.
         /// </summary>
         private readonly IAccountService accountService;
+        
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditService;
 
         /// <summary>
         /// The <see cref="IRazorMailService"/>.
@@ -58,16 +64,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
 		/// <summary>
         /// Initializes a new instance of the <see cref="ForgotHandler"/> class.
 		/// </summary>
-        /// <param name="jwtSecureDataFormat">The <see cref="JwtSecureDataFormat"/></param>
-        /// <param name="accountService">The <see cref="IAccountService"/></param>
-        /// <param name="mailService">The <see cref="IRazorMailService"/></param>
-        /// <param name="context">The <see cref="HttpContextBase"/></param>
-        public ForgotHandler(JwtSecureDataFormat jwtSecureDataFormat, IAccountService accountService, IRazorMailService mailService, HttpContextBase context)
+        /// <param name="jwtSecureDataFormat">The <see cref="JwtSecureDataFormat"/>.</param>
+        /// <param name="accountService">The <see cref="IAccountService"/>.</param>
+        /// <param name="auditService">The <see cref="IAuditService"/>.</param>
+        /// <param name="mailService">The <see cref="IRazorMailService"/>.</param>
+        /// <param name="context">The <see cref="HttpContextBase"/>.</param>
+        public ForgotHandler(JwtSecureDataFormat jwtSecureDataFormat, IAccountService accountService, IAuditService auditService, IRazorMailService mailService, HttpContextBase context)
 		{
             this.jwtSecureDataFormat = jwtSecureDataFormat;
-            this.accountService = accountService;
-            this.mailService = mailService;
-            this.context = context;
+            this.accountService      = accountService;
+            this.auditService        = auditService;
+            this.mailService         = mailService;
+            this.context             = context;
 		}
 
 		#endregion
@@ -77,7 +85,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(Forgot message)
         {
-            var account = this.accountService.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
+            var account =  this.accountService.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
             if (account == null || account.IsPaused || !account.IsActive || ! account.EmailAddress.Equals(message.EmailAddress, StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
@@ -87,12 +95,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 return false;
             }
+            this.auditService.ForgotPassword(account, "skickade återställningslänk till {0}", account.EmailAddress.ToNullSafeLower());
             var token  = this.jwtSecureDataFormat.CreateNewResetPasswordToken(account.Id, account.SymmetricKey);
             var helper = new UrlHelper(this.context.Request.RequestContext);
-            var link   = helper.Action("Reset", "Account", new RouteValueDictionary
-            {
-                { "token", token }
-            }, this.context.Request.Url.Scheme);
+            var link   = helper.Action("Reset", "Account", new RouteValueDictionary { { "token", token } }, this.context.Request.Url.Scheme);
             this.mailService.Send(MailMessage.CreateNew().Template("ResetPasswordEmail").Model(new ForgotEmail
             {
                 Name      = account.FullName,

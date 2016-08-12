@@ -76,10 +76,10 @@
                             @Html.ValidationMessageFor(m => m.Interval)
 						</div>
 						<div class="text freq-show col">
-							<a class="btn btn-mdatepick" href="#">Välj dagar</a>
+                            <a class="btn btn-mdatepick check-datetime-create" href="#">Välj dagar</a>
                             @Html.HiddenFor(m => m.Dates, new { @id = "activity-freq-days" })
 						</div>
-                                @Html.FormGroup(x => x.StartDate, "text freq-hide col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
+                                @Html.FormGroup(x => x.StartDate, "text freq-hide col check-datetime-create").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
                                 @Html.FormGroup(x => x.EndDate, "text freq-hide col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
 						</div>
 					<div class="checkbox-grid">

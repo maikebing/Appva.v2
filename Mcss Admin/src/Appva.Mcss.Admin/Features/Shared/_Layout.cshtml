@@ -342,18 +342,40 @@
                         }
                     });
 
-                    $(".check-datetime-update").bind("change", function (e) {
-                        var save = $('.std-panel .submit input[type="submit"]')
-                        if (true) {
-                            if (save.next(".warning-datetime").length < 1) {
-                                save.after("<div class='warning-datetime'><span style='font-weight:bold;'>Observera!</span>Larm kommer inte att genereras för de tider som redan passerats</div>");
-                            }
-                        }
-                        else {
-                            save.next(".warning-datetime").remove();
-                        }
+                    $(".check-datetime-update, .check-datetime-update #StartDate").bind("change", function (e) {
+                        ShowUpdateSequenceAlertWarning(e);
                     });
 
+                    $(".check-datetime-update.btn").bind("click", function (e) {
+                        ShowUpdateSequenceAlertWarning(e);
+                    });
+
+                    $(".check-datetime-create #StartDate").bind("change", function (e) {
+                        elem = $(this);
+                        var now = new Date();
+                        var start = new Date(elem.val());
+
+                        if (now > start) {
+                            ShowCreateSequenceAlertWarning(e);
+                        }
+                        else {
+                            $(".warning-datetime").remove();
+                        }
+
+                        
+                    });
+
+                    $("a.btn.btn-mdatepick.check-datetime-create.dp-applied").bind("dpClosed", function (e) {
+                        var vals = $("#activity-freq-days").val().split(',');
+                        var now = new Date();
+                        $.each(vals, function (index, elem) {
+                            var date = new Date(elem);
+                            if (now > date) {
+                                ShowCreateSequenceAlertWarning(e);
+                            }
+                        });
+                                              
+                    });
 
                     $('.activity-edit .freq .btn-mdatepick').each(function () {
                         if ($(this).prev().val() != '0') $(this).hide();
@@ -379,6 +401,20 @@
                         });
                     });
                 });
+
+                function ShowUpdateSequenceAlertWarning(e) {
+                    var save = $('.std-panel .submit input[type="submit"]')
+                    if (save.prev(".warning-datetime").length < 1) {
+                        save.before("<div class='warning-datetime'><span style='font-weight:bold;'>Observera!</span> Om du ändrat tider för när insatsen skall utföras kommer inga larm att skapas för de tider som inträffat före du gjort ändringen. Insatserna kommer att kunna signeras men kommer inte att generera några larm.</div>");
+                    }     
+                }
+
+                function ShowCreateSequenceAlertWarning(e) {
+                    var save = $('.std-panel .submit input[type="submit"]')
+                    if (save.prev(".warning-datetime").length < 1) {
+                        save.before("<div class='warning-datetime'><span style='font-weight:bold;'>Observera!</span> Insatser som skulle ha utförts före insatsen skapats kommer inte markeras som avikelser eller skapa några larm. Insatserna kommer att synas och kan signeras men kommer inte att generera några larm.</div>");
+                    }
+                }
 
                 function disableDelegation(t) {
                     if (t.is(':checked')) {

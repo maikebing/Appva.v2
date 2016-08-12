@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
@@ -27,7 +28,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     internal sealed class CreateSequenceHandler : RequestHandler<CreateSequence, CreateSequenceForm>
     {
-        #region Private Variables.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -49,6 +50,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IRoleService roleService;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
         #endregion
 
         #region Constructor.
@@ -56,12 +62,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceHandler"/> class.
         /// </summary>
-        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories, IRoleService roleService)
+        public CreateSequenceHandler(IPersistenceContext context, IDelegationService delegations, IInventoryService inventories, ISettingsService settingsService, IRoleService roleService)
         {
             this.context = context;
             this.delegations = delegations;
             this.inventories = inventories;
             this.roleService = roleService;
+            this.settingsService = settingsService;
         }
 
         #endregion
@@ -72,7 +79,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override CreateSequenceForm Handle(CreateSequence message)
         {
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
-            var requiredRole = schedule.ScheduleSettings.RequiredRole;
+            //// Temporary mapping
+            Role requiredRole = null;
+            var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
+            if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
+            {
+                requiredRole = this.roleService.Find(temp[schedule.ScheduleSettings.Id]);
+            }
             if (requiredRole == null)
             {
                 requiredRole = this.roleService.Find(RoleTypes.Nurse);
@@ -93,7 +106,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }).ToList(),
                 Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
                 CreateNewInventory = true,
-                RequiredRoleText = (requiredRole.MachineName.StartsWith(RoleTypes.Nurse) ? "legitimerad " : "") + requiredRole.Name.ToLower()
+                RequiredRoleText   = requiredRole.Name.ToLower()
                 
             };
         }

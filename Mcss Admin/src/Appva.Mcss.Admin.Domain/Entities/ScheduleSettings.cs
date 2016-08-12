@@ -131,15 +131,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
-        /// <summary>
-        /// The role which is required to complete a task for this type of schedule or sequence.
-        /// </summary>
-        public virtual Role RequiredRole
-        {
-            get;
-            set;
-        }
-
         #endregion
     }
 

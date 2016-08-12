@@ -230,6 +230,21 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
            30);
 
         #endregion
+
+        #region Temporary Fixes.
+
+        /// <summary>
+        /// The schedule settings role map.
+        /// </summary>
+        /// <remarks>The setting returns a dictionary with schedule setting ID (key) role ID (value)</remarks>
+        public static readonly ApplicationSettingIdentity<Dictionary<Guid, Guid>> TemporaryScheduleSettingsRoleMap = ApplicationSettingIdentity<Dictionary<Guid, Guid>>.CreateNew(
+           "MCSS.Temporary.Sequence.Role",
+           "The schedule settings role mapping",
+           "MCSS.Temporary",
+           "A simple dictionary schedule settings ID to role ID for required role on sequence",
+           new Dictionary<Guid, Guid>());
+
+        #endregion
     }
 
     /// <summary>

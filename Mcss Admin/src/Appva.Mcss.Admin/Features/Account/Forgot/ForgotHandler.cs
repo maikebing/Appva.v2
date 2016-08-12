@@ -16,10 +16,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Security;
-    using Appva.Mcss.Admin.Application.Security.Extensions;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Core.Messaging.RazorMail;
     using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mvc.Messaging;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Auditing;
 
@@ -41,7 +40,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// The <see cref="IAccountService"/>.
         /// </summary>
         private readonly IAccountService accountService;
-        
+
         /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>

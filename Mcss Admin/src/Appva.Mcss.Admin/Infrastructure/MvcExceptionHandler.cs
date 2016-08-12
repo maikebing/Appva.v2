@@ -12,8 +12,8 @@ namespace Appva.Mcss.Admin.Infrastructure
     using Appva.Core.Environment;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mvc;
-    using Appva.Mvc.Messaging;
     using Appva.Tenant.Identity;
+    using Appva.Core.Messaging.RazorMail;
 
     #endregion
 

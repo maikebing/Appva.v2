@@ -80,5 +80,14 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+
+        /// <summary>
+        /// Optional <c>Account.IsSynchronized</c> to filter by. Defaults False
+        /// </summary>
+        public bool? isSynchronized
+        {
+            get;
+            set;
+        }
     }
 }

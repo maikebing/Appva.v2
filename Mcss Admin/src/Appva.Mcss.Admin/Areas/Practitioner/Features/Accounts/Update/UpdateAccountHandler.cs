@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Ldap.Configuration;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
@@ -63,11 +64,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateAccount Handle(Identity<UpdateAccount> message)
         {
             var account = this.accounts.Find(message.Id);
+
+            var ldapIsActive = this.settings.Find<bool>(ApplicationSettings.IsLdapConnectionEnabled);
+            var ldapConfig   = this.settings.Find<LdapConfiguration>(ApplicationSettings.LdapConfiguration);
             return new UpdateAccount
             {
-                IsHsaIdFieldVisible                = this.settings.IsSithsAuthorizationEnabled() || this.settings.Find(ApplicationSettings.IsHsaIdVisible),
-                IsMobileDevicePasswordEditable     = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
-                IsMobileDevicePasswordFieldVisible = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
+                IsHsaIdFieldVisible                = (account.IsSynchronized && ldapIsActive) ? string.IsNullOrEmpty(ldapConfig.FieldHsaId) : this.settings.IsSithsAuthorizationEnabled() || this.settings.Find(ApplicationSettings.IsHsaIdVisible),
+                IsMobileDevicePasswordEditable     = (account.IsSynchronized && ldapIsActive) ? string.IsNullOrEmpty(ldapConfig.FieldPin) && this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable) : this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
+                IsMobileDevicePasswordFieldVisible = (account.IsSynchronized && ldapIsActive) ? string.IsNullOrEmpty(ldapConfig.FieldPin) && this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable) : this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
                 IsUsernameVisible                  = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible),
                 Taxons                             = TaxonomyHelper.SelectList(account.Taxon, this.taxonomies.List(TaxonomicSchema.Organization)),
                 Id                                 = account.Id,
@@ -78,7 +82,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 PersonalIdentityNumber             = account.PersonalIdentityNumber,
                 Taxon                              = account.Taxon.Id.ToString(),
                 Username                           = account.UserName,
-                HsaId                              = account.HsaId
+                HsaId                              = account.HsaId,
+                IsFirstNameFieldVisible            = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldFirstName) : true,
+                IsLastNameFieldVisible             = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldLastName) : true,
+                IsMailFieldVisible                 = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldMail) : true
             };
         }
 

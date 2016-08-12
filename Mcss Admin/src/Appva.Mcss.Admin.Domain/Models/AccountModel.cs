@@ -123,6 +123,24 @@ namespace Appva.Mcss.Admin.Domain.Models
             set;
         }
 
+        /// <summary>
+        /// If synchronization is activated for this account
+        /// </summary>
+        public bool IsSynchronized
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Last time the account was synchronized
+        /// </summary>
+        public DateTime? LastSynchronized
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

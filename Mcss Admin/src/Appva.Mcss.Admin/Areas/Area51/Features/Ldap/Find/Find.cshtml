@@ -1,0 +1,56 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Models.Find
+@{
+    SetTitle("Area 51 - LDAP");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>LDAP</h1>
+    @Html.ActionLink("Konfiguration", "Config", "Ldap", new { area = "Area51" }, new { @class = "lb-link btn" })
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        <div class="people-nav">
+            <ul class="nav cf">
+                <li>@Html.ActionLink("Sök", "Index", "Ldap")</li>
+                <li>@Html.ActionLink("Sync", "Synchronization", "Ldap")</li>
+            </ul>
+        </div>
+        <div>
+            @using (Html.Post("Find", "Ldap", null))
+            {
+                <h3>Sök på personnummer</h3>
+                <p>Hela personnummret måste anges för att ge träff, "19010101-0101"</p>
+                @Html.FormGroup(m => m.UniqueIdentifier).TextBox().Build()
+                @Html.Submit("Sök", new { @class = "btn" })
+            }
+        </div>
+        @if (Model.User != null)
+        {
+            <h3>Sökresultat</h3>
+            <div>
+                <table>
+                    <tr>
+                        <th>Förnamn</th>
+                        <td>@Model.User.FirstName</td>
+                    </tr>
+                    <tr>
+                        <th>Efternamn</th>
+                        <td>@Model.User.LastName</td>
+                    </tr>
+                    <tr>
+                        <th>Användarnamn</th>
+                        <td>@Model.User.Username</td>
+                    </tr>
+                    <tr>
+                        <th>Mail</th>
+                        <td>@Model.User.Mail</td>
+                    </tr>
+                    <tr>
+                        <th>HSA</th>
+                        <td>@Model.User.HsaId</td>
+                    </tr>
+                </table>
+            </div>
+        }
+    </div>
+</div>

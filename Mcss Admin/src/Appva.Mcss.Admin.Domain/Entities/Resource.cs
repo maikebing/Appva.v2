@@ -18,14 +18,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class File : AggregateRoot<File>
+    public class Resource : AggregateRoot<Resource>
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="File"/> class.
+        /// Initializes a new instance of the <see cref="Data"/> class.
         /// </summary>
-        public File()
+        public Resource()
         {
         }
 
@@ -54,13 +54,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The resource
         /// </summary>
-        public virtual byte[] Resource
+        public virtual byte[] Data
         {
             get;
             set;
         }
 
-        public virtual FileType FileType
+        public virtual ResourceType ResourceType
         {
             get;
             set;
@@ -69,8 +69,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #endregion
     }
 
-    public enum FileType
+    public enum ResourceType
     {
         XLS
     }
 }
+

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Appva.Mcss.Admin.Domain.Entities
 {
-    public class XLS : File
+    public class XLS : Resource
     {
         public XLS()
         {
@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         private XLS(string name, byte[] file, string description)
         {
             this.Name = name;
-            this.Resource = file;
+            this.Data = file;
             this.Description = description;            
         }
         

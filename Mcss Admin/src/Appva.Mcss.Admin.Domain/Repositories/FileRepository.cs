@@ -23,7 +23,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories.Contracts
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IFileRepository : ISaveRepository<File>, IRepository
+    public interface IFileRepository : ISaveRepository<Resource>, IRepository
     {
     }
 
@@ -57,9 +57,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories.Contracts
         #region IFileRepository Members.
 
         /// <inheritdoc />
-        public void Save(File entity)
+        public void Save(Resource entity)
         {
-            this.persistenceContext.Save<File>(entity);
+            this.persistenceContext.Save<Resource>(entity);
         }
 
         #endregion

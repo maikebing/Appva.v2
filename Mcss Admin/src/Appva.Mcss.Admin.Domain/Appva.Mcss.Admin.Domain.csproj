@@ -81,7 +81,7 @@
     <Compile Include="Entities\Device.cs" />
     <Compile Include="Entities\EscalationAlert.cs" />
     <Compile Include="Entities\EscalationLevel.cs" />
-    <Compile Include="Entities\File.cs" />
+    <Compile Include="Entities\Resource.cs" />
     <Compile Include="Entities\Inventory.cs" />
     <Compile Include="Entities\InventoryOld.cs" />
     <Compile Include="Entities\InventoryTransactionItem.cs" />

@@ -6,6 +6,8 @@
 // </author>
 namespace Appva.Mcss.Admin.Areas.Practitioner.Models
 {
+    using Admin.Models;
+    using Cqrs;
     #region Imports.
 
     using System;
@@ -19,7 +21,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class UploadPractitionerModel
+    public sealed class UploadPractitionerModel : IRequest<ListAccount>
     {
         #region Properties.
 

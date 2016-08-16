@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -486,6 +487,7 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccountPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Upload\UploadPractitionerHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Upload\UploadPractitionerModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\Upload\UploadPractitionerPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccountHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegation.cs" />

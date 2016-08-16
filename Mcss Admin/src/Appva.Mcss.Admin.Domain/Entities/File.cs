@@ -51,6 +51,26 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        /// <summary>
+        /// The resource
+        /// </summary>
+        public virtual byte[] Resource
+        {
+            get;
+            set;
+        }
+
+        public virtual FileType FileType
+        {
+            get;
+            set;
+        } 
+
         #endregion
+    }
+
+    public enum FileType
+    {
+        XLS
     }
 }

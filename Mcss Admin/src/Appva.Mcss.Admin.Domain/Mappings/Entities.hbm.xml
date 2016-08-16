@@ -71,6 +71,22 @@
     </subclass>
   </class>
 
+  <class name="File">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <discriminator column="FileType" />
+    <version name="Version" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <property name="Name" />
+    <property name="Description" />
+    <subclass name="XLS" discriminator-value="0">
+
+    </subclass>
+  </class>
+
   <!-- NotificationViewedByAccount -->
   <class name="NotificationViewedBy">
     <id name="Id">

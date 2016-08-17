@@ -53,12 +53,14 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
         public override ListAccount Handle(UploadPractitionerModel message)
         {
             byte[] fileData = null;
+
             using (var binaryReader = new BinaryReader(message.File.InputStream))
             {
                 fileData = binaryReader.ReadBytes(message.File.ContentLength);
             }
-
-            var xls = XLS.CreateNew(message.File.FileName, fileData, "");
+            
+            
+            var xls = XLS.CreateNew(message.File.FileName, fileData, message.Description);
             this.service.SaveXLS(xls);
 
             return new ListAccount();

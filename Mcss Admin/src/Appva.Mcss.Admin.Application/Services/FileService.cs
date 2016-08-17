@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories.Contracts;
+    using Security.Identity;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -36,19 +37,28 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IFileRepository repository;
 
+        /// <summary>
+        /// The <see cref="IIdentityService"/> implementation.
+        /// </summary>
+        private readonly IIdentityService identityService;
+        private readonly IAccountService accountService;
+
         #endregion
         /// <summary>
         /// Initializes a new instance of the <see cref="FileService"/> class.
         /// </summary>
         /// <param name="repository"></param>
-        public FileService(IFileRepository repository)
+        public FileService(IFileRepository repository, IIdentityService identityService, IAccountService accountService)
         {
             this.repository = repository;
+            this.identityService = identityService;
+            this.accountService = accountService;
         }
 
         /// <inheritdoc />
         public void SaveXLS(XLS xls)
         {
+            xls.UploadedBy = this.accountService.Load(this.identityService.PrincipalId);
             this.repository.Save(xls);
         }
     }

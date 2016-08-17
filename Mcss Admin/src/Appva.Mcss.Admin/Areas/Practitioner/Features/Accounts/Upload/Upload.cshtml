@@ -8,6 +8,7 @@
         <div>
             <h3 class="section-title">Ladda upp medarbetare</h3>
             @Html.FormGroup(x => x.File, "text large").Label().TextBox("Välj fil", new { type = "file" }).Validate().Build()
+            @Html.FormGroup(x => x.Description, "text large").Label().TextBox().Validate().Build()
         </div>
         <div class="submit">
             @Html.Submit("Spara")

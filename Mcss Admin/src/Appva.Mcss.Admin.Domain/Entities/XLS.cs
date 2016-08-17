@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             this.Name = name;
             this.Data = file;
-            this.Description = description;            
+            this.Description = description;
         }
         
         public static XLS CreateNew(string name, byte[] file, string description)

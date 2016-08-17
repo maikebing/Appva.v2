@@ -254,6 +254,11 @@
     <Compile Include="Areas\Area51\Features\Calendar\Index\CalenderIndexHandler.cs" />
     <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColors.cs" />
     <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColorsPublisher.cs" />
+    <Compile Include="Areas\Area51\Features\File\FileController.cs" />
+    <Compile Include="Areas\Area51\Features\File\GetFile\FileDetailsModel.cs" />
+    <Compile Include="Areas\Area51\Features\File\GetFile\GetFileHandler.cs" />
+    <Compile Include="Areas\Area51\Features\File\List\ListFileHandler.cs" />
+    <Compile Include="Areas\Area51\Features\File\List\FileModel.cs" />
     <Compile Include="Areas\Area51\Features\Home\HomeController.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsNotice.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsHandler.cs" />
@@ -1205,6 +1210,7 @@
     <Content Include="Areas\Practitioner\Features\Synchronization\GetSynchronizedAccount\GetSynchronizedAccount.cshtml" />
     <Content Include="Features\Shared\EmailTemplates\SynchronizationEmail.cshtml" />
     <Content Include="Areas\Practitioner\Features\Accounts\Upload\Upload.cshtml" />
+    <Content Include="Areas\Area51\Features\File\List\List.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

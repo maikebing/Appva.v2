@@ -64,7 +64,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get;
             set;
-        } 
+        }
+
+        /// <summary>
+        /// The account
+        /// </summary>
+        public virtual Account UploadedBy
+        {
+            get;
+            set;
+        }
 
         #endregion
     }

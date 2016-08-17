@@ -1,0 +1,41 @@
+﻿@model IList<Appva.Mcss.Admin.Areas.Area51.Features.File.List.FileModel>
+@{
+    SetTitle("Area 51 - Filer");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>Filer</h1>
+</div>
+
+<div id="content-primary">
+    @if (Model.Count > 0)
+    {
+        <table id="signed-events">
+            <thead class="head">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Created at</th>
+                    <th>Uploaded by</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.CreatedAt</td>
+                        <td>@Html.ActionLink(item.UploadedBy.FullName, "List", "Delegation", new { area = "Practitioner", id = item.UploadedBy.Id }, null)</td>
+                        <td>@Html.ActionLink("Importera", "", new {  }, new { @class = "btn" })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Inga filer</p>
+    }
+</div>

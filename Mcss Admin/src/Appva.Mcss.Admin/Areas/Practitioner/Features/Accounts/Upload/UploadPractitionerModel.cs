@@ -37,6 +37,14 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
             set;
         }
 
+        [Display(Name ="Beskrivning")]
+        [DataType(DataType.Text)]
+        public string Description
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

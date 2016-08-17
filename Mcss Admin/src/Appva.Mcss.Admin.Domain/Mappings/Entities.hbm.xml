@@ -646,13 +646,14 @@
     </id>
     <discriminator column="FileType" />
     <version name="Version" />
+    <many-to-one name="UploadedBy" class="Account" lazy="false" />
     <property name="IsActive" />
     <property name="CreatedAt" />
     <property name="UpdatedAt" />
     <property name="Name" />
     <property name="Description" />
-    <property name="Data" type="StringClob">
-      <column name="Data" sql-type="VARBINARY(MAX)"/>
+    <property name="Data">
+      <column name="Data" sql-type="VARBINARY(MAX)" length="2147483647"/>
     </property>
     <subclass name="XLS" discriminator-value="0">
     </subclass>

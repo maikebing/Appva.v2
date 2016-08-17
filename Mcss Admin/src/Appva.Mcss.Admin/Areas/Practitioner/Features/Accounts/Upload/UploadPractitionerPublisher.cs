@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
             
             
             var xls = XLS.CreateNew(message.File.FileName, fileData, message.Description);
-            this.service.SaveXLS(xls);
+            this.service.UploadFile<XLS>(xls);
 
             return new ListAccount();
         }

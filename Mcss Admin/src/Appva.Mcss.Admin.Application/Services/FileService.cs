@@ -30,7 +30,7 @@ using System.Threading.Tasks;
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        T Find<T>(Guid id);
+        T Find<T>(Guid id) where T : Resource;
 
         /// <summary>
         /// Stores an uploaded file

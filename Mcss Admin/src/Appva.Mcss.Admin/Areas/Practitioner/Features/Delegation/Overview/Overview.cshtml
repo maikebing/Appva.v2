@@ -15,19 +15,19 @@
 		    		</tr>
 		    	</thead>
 		    	<tbody>
-                    @foreach (var delegation in Model.DelegationsExpired) {
+                    @foreach (var account in Model.DelegationsExpired) {
                         <tr class="urgent">
 		    				<td>
                                 @if (Html.HasPermissionFor(Permissions.Delegation.Read))
                                 { 
-                                    @Html.ActionLink(delegation.FullName, "List", "Delegation", new { id = delegation.Id }, new { })
+                                    @Html.ActionLink(account.FullName, "List", "Delegation", new { id = account.Id }, new { })
                                 }
                                 else
                                 {
-                                    @delegation.FullName
+                                    @account.FullName
                                 }
                             </td>
-		    				<td><span>@delegation.DaysLeft dagar</span></td>
+		    				<td><span>@account.DelegationDaysLeft dagar</span></td>
 		    			</tr>
                     }
 		    	</tbody>
@@ -45,19 +45,20 @@
 		    		</tr>
 		    	</thead>
 		    	<tbody>
-                    @foreach (var delegation in Model.DelegationsExpiresWithin50Days) {
-                        <tr class="@( delegation.DaysLeft < 30 ? "urgent" : "")">
+                    @foreach (var account in Model.DelegationsExpiresWithin50Days)
+                    {
+                        <tr class="@( account.DelegationDaysLeft < 30 ? "urgent" : "")">
 		    				<td>
                                 @if (Html.HasPermissionFor(Permissions.Delegation.Read))
                                 { 
-                                    @Html.ActionLink(delegation.FullName, "List", "Delegation", new { id = delegation.Id }, new { })
+                                    @Html.ActionLink(account.FullName, "List", "Delegation", new { id = account.Id }, new { })
                                 }
                                 else
                                 {
-                                    @delegation.FullName
+                                    @account.FullName
                                 }
                             </td>
-		    				<td><span>@delegation.DaysLeft dagar</span></td>
+		    				<td><span>@account.DelegationDaysLeft dagar</span></td>
 		    			</tr>
                     }
 		    	</tbody>

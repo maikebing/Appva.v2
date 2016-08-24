@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using NHibernate.Criterion;
     using NHibernate.Dialect.Function;
 using System.Collections.Generic;
+    using NHibernate.SqlCommand;
 
     #endregion
 
@@ -53,7 +54,13 @@ using System.Collections.Generic;
         /// <returns>An <see cref="Account"/> if found, else null</returns>
         Account FindByHsaId(string hsaId);
 
-        ///IList<Account> ListByExpiringDelegate();
+        /// <summary>
+        /// Lists all accounts with delegations expiring in given number of days
+        /// </summary>
+        /// <param name="expiringDate">The expiring date</param>
+        /// <param name="taxonFilter">The path to filter</param>
+        /// <returns>List of <see cref="Account"/></returns>
+        IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate);
 
         /// <summary>
         /// Search for accounts to given search-criteria
@@ -152,6 +159,43 @@ using System.Collections.Generic;
         }
 
         /// <inheritdoc />
+        public IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate)
+        {
+            Account account = null;
+            Delegation delegation = null;
+            Taxon orgTaxon = null;
+            AccountModel accountModel = null;
+            var query = this.persistenceContext.QueryOver<Account>(() => account)
+                .Where(x => x.IsActive)
+                .Inner.JoinAlias(x => x.Delegations, () => delegation)
+                    .Where(() => delegation.IsActive)
+                    .And(() => delegation.EndDate <= expiringDate)
+                    .Inner.JoinAlias(() => delegation.OrganisationTaxon, () => orgTaxon)
+                        .WhereRestrictionOn(() => orgTaxon.Path).IsLike(taxonFilter.StartsWith(taxonFilter, MatchMode.Start))
+                    .Select(
+                        Projections.ProjectionList()
+                            .Add(Projections.Group<Account>(x => x.Id).WithAlias(() => accountModel.Id))
+                            .Add(Projections.Constant(true).WithAlias(() => accountModel.HasExpiringDelegation))
+                            .Add(Projections.Min(Projections.SqlFunction(
+                                            new SQLFunctionTemplate(
+                                                NHibernateUtil.Int32,
+                                                "DateDiff(day, '" + DateTime.Now.ToString("yyyy-MM-dd") + "', EndDate)"),
+                                            NHibernateUtil.Int32)).WithAlias(() => accountModel.DelegationDaysLeft))
+                            .Add(Projections.Group<Account>(x => x.IsActive).WithAlias(() => accountModel.IsActive))
+                            .Add(Projections.Group<Account>(x => x.FirstName).WithAlias(() => accountModel.FirstName))
+                            .Add(Projections.Group<Account>(x => x.LastName).WithAlias(() => accountModel.LastName))
+                            .Add(Projections.Group<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
+                            .Add(Projections.Group<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
+                            .Add(Projections.Group<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber)));
+
+            //// Ordering and transforming
+            query.OrderByAlias(() => accountModel.DelegationDaysLeft).Desc
+                .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
+
+            return query.List<AccountModel>();
+        }
+
+        /// <inheritdoc />
         public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
             //// Main query - As a view
@@ -232,6 +276,7 @@ using System.Collections.Generic;
                             50), 
                         Projections.Constant(true), 
                         Projections.Constant(false))).Take(1);
+
             //// Merges queries and selects needed columns and order rows for main query
             AccountModel accountModel = null;
             var mainQuery = query.Clone().Select(

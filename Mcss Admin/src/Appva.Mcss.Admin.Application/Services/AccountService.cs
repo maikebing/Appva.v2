@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using NHibernate.Criterion;
     using Appva.Core.Extensions;
     using Appva.Cryptography;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -167,6 +168,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="isAccountUpgradedForAdminAccess">If true then the user has got new roles which permits them to access admin</param>
         /// <param name="isAccountUpgradedForDeviceAccess">If true then the user has got new roles which permits them to access device</param>
         void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess);
+
+        /// <summary>
+        /// Lists all accounts with expiring
+        /// </summary>
+        /// <param name="taxonFilter"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        IList<AccountModel> ListByExpiringDelegation(ITaxon taxonFilter, DateTime expiringDate);
 
         /// <summary>
         /// Creates a proxy-entity from a guid
@@ -469,6 +478,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public Account Load(Guid id)
         {
             return this.repository.Load(id);
+        }
+
+        /// <inheritdoc />
+        public IList<AccountModel> ListByExpiringDelegation(ITaxon taxonFilter, DateTime expiringDate)
+        {
+            return this.repository.ListByExpiringDelegation(taxonFilter.Path, expiringDate);
         }
 
         #endregion

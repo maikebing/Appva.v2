@@ -35,9 +35,9 @@ using System.Linq;
         private readonly ITaxonFilterSessionHandler filtering;
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>
+        /// The <see cref="IAccountService"/>
         /// </summary>
-        private readonly IPersistenceContext persistence;
+        private readonly IAccountService accountService;
 
         #endregion
 
@@ -46,10 +46,10 @@ using System.Linq;
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegationOverviewHandler"/> class.
         /// </summary>
-        public DelegationOverviewHandler(IPersistenceContext persistence, ITaxonFilterSessionHandler filtering)
+        public DelegationOverviewHandler(ITaxonFilterSessionHandler filtering, IAccountService accountService)
         {
-            this.persistence = persistence;
-            this.filtering   = filtering;
+            this.filtering      = filtering;
+            this.accountService = accountService;
         }
 
         #endregion
@@ -59,39 +59,14 @@ using System.Linq;
         /// <inheritdoc />
         public override DelegationOverviewModel Handle(Parameterless<DelegationOverviewModel> message)
         {
-            var taxon = this.filtering.GetCurrentFilter();
-            var fiftyDaysFromNow = DateTime.Today.AddDays(50);
-            var delegations = this.persistence.QueryOver<Delegation>()
-                .Where(x => x.IsActive == true && x.Pending == false)
-                .And(x => x.EndDate <= fiftyDaysFromNow)
-                .OrderBy(o => o.EndDate).Asc
-                    .JoinQueryOver<Account>(x => x.Account)
-                        .Where(x => x.IsActive == true)
-                    .JoinQueryOver<Taxon>(x => x.Taxon)
-                        .WhereRestrictionOn(x => x.Path).IsLike(taxon.Id.ToString(), MatchMode.Anywhere)
-                .List();
-            var delegationsExpired = from x in delegations
-                                     where x.EndDate.Subtract(DateTimeUtilities.Now()).Days < 0
-                                     group x by x.Account into gr
-                                     select new DelegationExpired
-                                     {
-                                         Id = gr.Key.Id,
-                                         FullName = gr.Key.FullName,
-                                         DaysLeft = gr.Min(x => x.EndDate.Subtract(DateTimeUtilities.Now()).Days)
-                                     };
-            var delegationsExpiresWithin50Days = from x in delegations
-                                                 where x.EndDate.Subtract(DateTimeUtilities.Now()).Days >= 0
-                                                 group x by x.Account into gr
-                                                 select new DelegationExpired
-                                                 {
-                                                     Id = gr.Key.Id,
-                                                     FullName = gr.Key.FullName,
-                                                     DaysLeft = gr.Min(x => x.EndDate.Subtract(DateTimeUtilities.Now()).Days)
-                                                 };
+            var accounts = this.accountService.ListByExpiringDelegation(
+                this.filtering.GetCurrentFilter(), 
+                DateTime.Today.AddDays(50));
+
             return new DelegationOverviewModel
             {
-                DelegationsExpired = delegationsExpired,
-                DelegationsExpiresWithin50Days = delegationsExpiresWithin50Days
+                DelegationsExpired = accounts.Where(x => x.DelegationDaysLeft < 0).ToList(),
+                DelegationsExpiresWithin50Days = accounts.Where(x => x.DelegationDaysLeft >= 0).ToList()
             };
         }
 

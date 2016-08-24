@@ -72,5 +72,11 @@ namespace Appva.Mcss.Admin.Domain.Models
             get;
             set;
         }
+
+        public int? DaysLeft
+        { 
+            get; 
+            set;
+        }
     }
 }

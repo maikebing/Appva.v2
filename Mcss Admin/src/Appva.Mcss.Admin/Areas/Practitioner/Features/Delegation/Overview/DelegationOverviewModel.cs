@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
 {
     #region Imports.
 
+    using Appva.Mcss.Admin.Domain.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -24,7 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
         /// <summary>
         /// Accounts with delegations expiring in 50 days
         /// </summary>
-        public IEnumerable<DelegationExpired> DelegationsExpiresWithin50Days 
+        public IEnumerable<AccountModel> DelegationsExpiresWithin50Days 
         { 
             get;
             set; 
@@ -33,30 +34,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
         /// <summary>
         /// Accounts with expired delegations
         /// </summary>
-        public IEnumerable<DelegationExpired> DelegationsExpired 
+        public IEnumerable<AccountModel> DelegationsExpired 
         { 
             get; 
             set; 
         }
 
         #endregion
-    }
-
-    public class DelegationExpired
-    {
-        /// <summary>
-        /// The account-id
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// The account fulname
-        /// </summary>
-        public string FullName { get; set; }
-
-        /// <summary>
-        /// Days left before expire
-        /// </summary>
-        public int DaysLeft { get; set; }
     }
 }

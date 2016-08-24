@@ -162,6 +162,14 @@ using System.Collections.Generic;
         /// <inheritdoc />
         public IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate)
         {
+            var paths = new List<string>();
+            var path = taxonFilter;
+            while(path.Contains("."))
+            {
+                paths.Add(path);
+                path = path.Substring(0,path.LastIndexOf('.'));
+            }
+            paths.Add(path);
             Account accountAlias = null;
             Delegation delegationAlias = null;
             Taxon taxonAlias = null;
@@ -174,10 +182,12 @@ using System.Collections.Generic;
                     .Where(() => roleAlias.IsActive)
                     .And(() => roleAlias.IsVisible)
                 .Inner.JoinAlias(x => x.Delegations, () => delegationAlias)
-                    .Where(() => delegationAlias.IsActive)
+                    .Where(() => delegationAlias.IsActive == true && delegationAlias.Pending == false)
                     .And(() => delegationAlias.EndDate <= expiringDate)
                     .Inner.JoinAlias(() => delegationAlias.OrganisationTaxon, () => taxonAlias)
-                        .WhereRestrictionOn(() => taxonAlias.Path).IsLike(taxonFilter, MatchMode.Start)
+                        .Where(Restrictions.Disjunction()
+                            .Add(Restrictions.Like(Projections.Property(() => taxonAlias.Path), taxonFilter, MatchMode.Start))
+                            .Add(Restrictions.In(Projections.Property(() => taxonAlias.Path), paths)))
                     .Select(
                         Projections.ProjectionList()
                             .Add(Projections.Group<Account>(x => x.Id).WithAlias(() => accountModel.Id))

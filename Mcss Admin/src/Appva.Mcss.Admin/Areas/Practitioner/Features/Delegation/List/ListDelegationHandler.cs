@@ -109,8 +109,9 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             var user        = this.identity.PrincipalId;
             var account     = this.accounts.Find(message.Id);
             var isInvisible = account.Roles.Where(x => x.IsVisible).Count() == 0 && ! this.identity.IsInRole("_AA");
-            var delegations = this.delegations.List(byAccount: message.Id, isActive: true); 
-            var delegationMap = new Dictionary<string, IList<Delegation>>();
+            var delegations = this.delegations.List(byAccount: message.Id, isActive: true);
+            var taxons      = this.taxonomies.List(TaxonomicSchema.Organization);    
+            var delegationMap = new Dictionary<string, IList<DelegationViewModel>>();
             foreach (var delegation in delegations)
             {
                 var name = this.taxonomies.Find(delegation.Taxon.Parent.Id,TaxonomicSchema.Delegation).Name;

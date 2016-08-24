@@ -22,15 +22,15 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Delegation
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class DelegationController : Controller
+    [RouteArea("area51"), RoutePrefix("delegation")]
+    [Permissions(Permissions.Area51.ReadValue)]
+    public sealed class DelegationController : Controller
     {
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegationController"/> class.
         /// </summary>
-        [RouteArea("area51"), RoutePrefix("")]
-        [Permissions(Permissions.Area51.ReadValue)]
         public DelegationController()
         {
         }

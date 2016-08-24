@@ -59,6 +59,15 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
             set; 
         }
 
+        /// <summary>
+        /// The text about who the delegationpaper should be snet to
+        /// </summary>
+        public string SendToText
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

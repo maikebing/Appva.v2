@@ -257,6 +257,21 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             null);
 
         #endregion
+
+        #region Delegation
+
+        /// <summary>
+        /// The send-to text in print delegation
+        /// </summary>
+        /// <remarks>The setting returns an <c>string</c></remarks>
+        public static readonly ApplicationSettingIdentity<string> PrintDelegationSendToText = ApplicationSettingIdentity<string>.CreateNew(
+           "MCSS.Core.Delegation.Print.SendToText",
+           "The send-to text on printed delegations",
+           "MCSS.Core.Delegation.Print",
+           "The text showed at the bottom about who the paper shall be sent to",
+           "Sänd kopia till MAS och enhetschef.");
+
+        #endregion
     }
 
     /// <summary>

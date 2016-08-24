@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Application.Transformers;
     using Appva.Mcss.Admin.Areas.Practitioner.Models;
     using Appva.Mcss.Admin.Domain.Entities;
@@ -61,6 +62,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
         /// </summary>
         private readonly IAuditService auditing;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>
+        /// </summary>
+        private readonly ISettingsService settings;
+
         #endregion
 
         #region Constructor.
@@ -74,7 +80,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
             ITaxonomyService taxonomyService,
             IIdentityService identity,
             IPersistenceContext persistence,
-            IAuditService auditing)
+            IAuditService auditing,
+            ISettingsService settings)
         {
             this.accountService     = accountService;
             this.delegationService  = delegationService;
@@ -82,6 +89,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
             this.identity           = identity;
             this.persistence        = persistence;
             this.auditing           = auditing;
+            this.settings           = settings;
         }
 
         #endregion
@@ -111,7 +119,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
                 DelegationRecipient = account,
                 Delegations = DelegationTransformer.ToDelegationViewModel(delegations, this.taxonomyService.List(TaxonomicSchema.Organization)),
                 KnowledgeTests = knowledgeTests,
-                DelegationIssuer = user
+                DelegationIssuer = user,
+                SendToText = this.settings.Find<string>(ApplicationSettings.PrintDelegationSendToText)
             };
         }
 

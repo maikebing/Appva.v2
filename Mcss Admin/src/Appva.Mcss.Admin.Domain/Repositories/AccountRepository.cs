@@ -162,17 +162,22 @@ using System.Collections.Generic;
         /// <inheritdoc />
         public IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate)
         {
-            Account account = null;
-            Delegation delegation = null;
-            Taxon orgTaxon = null;
+            Account accountAlias = null;
+            Delegation delegationAlias = null;
+            Taxon taxonAlias = null;
+            Role roleAlias = null;
             AccountModel accountModel = null;
-            var query = this.persistenceContext.QueryOver<Account>(() => account)
+            var query = this.persistenceContext.QueryOver<Account>(() => accountAlias)
                 .Where(x => x.IsActive)
-                .Inner.JoinAlias(x => x.Delegations, () => delegation)
-                    .Where(() => delegation.IsActive)
-                    .And(() => delegation.EndDate <= expiringDate)
-                    .Inner.JoinAlias(() => delegation.OrganisationTaxon, () => orgTaxon)
-                        .WhereRestrictionOn(() => orgTaxon.Path).IsLike(taxonFilter, MatchMode.Start)
+                .And(x => x.IsPaused == false)
+                .Left.JoinAlias(x => x.Roles, () => roleAlias)
+                    .Where(() => roleAlias.IsActive)
+                    .And(() => roleAlias.IsVisible)
+                .Inner.JoinAlias(x => x.Delegations, () => delegationAlias)
+                    .Where(() => delegationAlias.IsActive)
+                    .And(() => delegationAlias.EndDate <= expiringDate)
+                    .Inner.JoinAlias(() => delegationAlias.OrganisationTaxon, () => taxonAlias)
+                        .WhereRestrictionOn(() => taxonAlias.Path).IsLike(taxonFilter, MatchMode.Start)
                     .Select(
                         Projections.ProjectionList()
                             .Add(Projections.Group<Account>(x => x.Id).WithAlias(() => accountModel.Id))

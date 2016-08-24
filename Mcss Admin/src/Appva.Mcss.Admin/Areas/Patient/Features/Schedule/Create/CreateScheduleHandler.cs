@@ -70,23 +70,28 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler Overrides.
 
+        /// <inheritdoc /> 
         public override CreateScheduleForm Handle(CreateSchedule message)
         {
-            var account = this.persistence.Get<Account>(this.identities.PrincipalId);
-            var list = TaskService.GetRoleScheduleSettingsList(account);
-            var query = this.persistence.QueryOver<ScheduleSettings>()
-                    .WhereRestrictionOn(x => x.Id).IsIn(list.Select(x => x.Id).ToArray())
-                    .And(s => s.ScheduleType == ScheduleType.Action)
-                    .OrderBy(x => x.Name).Asc;
+            var account   = this.persistence.Get<Account>(this.identities.PrincipalId);
+            //// Retrieve the schedule settings which the user has permissions for.
+            var schedules = TaskService.GetRoleScheduleSettingsList(account);
+            //// Any inactive schedulesettings will not be recreated.
+            var query   = this.persistence.QueryOver<ScheduleSettings>()
+                    .WhereRestrictionOn(x => x.Id)
+                        .IsIn(schedules.Where(x => x.IsActive).Select(x => x.Id).ToArray())
+                    .And(x => x.ScheduleType == ScheduleType.Action)
+                    .OrderBy(x => x.Name)
+                        .Asc;
             var items = query.List()
                     .Select(x => new SelectListItem
                     {
-                        Text = x.Name,
+                        Text  = x.Name,
                         Value = x.Id.ToString()
                     }).ToList();
             return new CreateScheduleForm
             {
-                Id = message.Id,
+                Id    = message.Id,
                 Items = items
             };
         }

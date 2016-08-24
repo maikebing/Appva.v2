@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Web.Mvc;
     using System.Web.Routing;
     using Appva.Core.Extensions;
+    using Appva.Core.Messaging.RazorMail;
     using Appva.Cqrs;
     using Appva.Cryptography;
     using Appva.Mcss.Admin.Application.Common;
@@ -22,7 +23,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.VO;
-    using Appva.Mvc.Messaging;
+    
 
     #endregion
 

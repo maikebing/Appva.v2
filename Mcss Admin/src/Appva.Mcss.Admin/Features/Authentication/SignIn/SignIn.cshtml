@@ -11,13 +11,13 @@
 </div>
 <div class="bd">
     <div class="note">@Html.ActionLink("Klicka här", "SignInSiths") för att logga in med ditt SITHS eID</div>
-	@using (Html.Post())
+	@using (Html.Post(null, new { ReturnUrl = Model.ReturnUrl }))
     {
         @Html.ValidationAlert("Felaktigt användarnamn och/eller lösenord", string.Empty, new {  @class = "error-msg" })
         @Html.FormGroup(x => x.UserName).Label("Användarnamn").TextBox("Ditt användarnamn").Build()
         @Html.FormGroup(x => x.Password).Label("Lösenord").Password("Ditt lösenord").Build()
 		<div class="hr"></div>
-        @Html.Submit("Logga in", new { @class = "btn" })
+        @Html.Submit("Logga in", new { @id = "submit-form", @class = "btn" })
 		@Html.ActionLink("Glömt lösenord?", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
     }
 </div>

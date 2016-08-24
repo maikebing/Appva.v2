@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateInventoryItemHandler.cs" company="Appva AB">
+﻿// <copyright file="CreateInventoryTransactionItemHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,18 +9,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Web.ViewModels;
     using Appva.Core.Extensions;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Commands;
-    using Appva.Persistence;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -32,34 +26,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPatientService"/>.
+        /// The <see cref="IIdentityService"/>.
         /// </summary>
-        private readonly IPatientService patientService;
+        private readonly IIdentityService identityService;
 
         /// <summary>
-        /// The <see cref="ITaskService"/>.
+        /// The <see cref="IAuditService"/>
         /// </summary>
-        private readonly ITaskService taskService;
-
-        /// <summary>
-        /// The <see cref="ILogService"/>.
-        /// </summary>
-        private readonly ILogService logService;
+        private readonly IAuditService audit;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
-
-        /// <summary>
-        /// The <see cref="IPatientTransformer"/>.
-        /// </summary>
-        private readonly IPatientTransformer transformer;
-
-        /// <summary>
-        /// The <see cref="IIdentityService"/>.
-        /// </summary>
-        private readonly IIdentityService identity;
 
         #endregion
 
@@ -68,19 +47,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateInventoryTransactionItemHandler"/> class.
         /// </summary>
-        /// <param name="settings">The <see cref="IPatientService"/> implementation</param>
-        /// <param name="settings">The <see cref="ITaskService"/> implementation</param>
-        /// <param name="settings">The <see cref="ILogService"/> implementation</param>
-        public CreateInventoryTransactionItemHandler(
-            IPatientService patientService, ITaskService taskService, ILogService logService, IPersistenceContext persistence,
-            IPatientTransformer transformer, IIdentityService identity)
+        /// <param name="identityService">The <see cref="IIdentityService"/></param>
+        /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
+        public CreateInventoryTransactionItemHandler(IIdentityService identityService, IAuditService audit, IPersistenceContext persistence)
         {
-            this.patientService = patientService;
-            this.taskService = taskService;
-            this.logService = logService;
-            this.persistence = persistence;
-            this.transformer = transformer;
-            this.identity = identity;
+            this.identityService = identityService;
+            this.persistence     = persistence;
+            this.audit = audit;
         }
 
         #endregion
@@ -107,22 +80,28 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 default:
                     break;
             }
-            var user = this.persistence.Get<Account>(this.identity.PrincipalId);
+            var user = this.persistence.Get<Account>(this.identityService.PrincipalId);
             var transaction = new InventoryTransactionItem
             {
-                Account = user,
-                Description = message.Description,
-                Operation = message.Operation,
-                Value = Math.Round(Convert.ToDouble(message.Value), 4),
-                Sequence = message.SequenceId != Guid.Empty ? this.persistence.Get<Sequence>(message.SequenceId) : null,
-                Task = message.TaskId.IsEmpty() ? null : this.persistence.Get<Task>(message.TaskId),
-                Inventory = inventory,
-                CurrentInventoryValue = inventory.CurrentLevel,
+                Account                = user,
+                Description            = message.Description,
+                Operation              = message.Operation,
+                Value                  = Math.Round(Convert.ToDouble(message.Value), 4),
+                Sequence               = message.SequenceId != Guid.Empty ? this.persistence.Get<Sequence>(message.SequenceId) : null,
+                Task                   = message.TaskId.IsEmpty() ? null : this.persistence.Get<Task>(message.TaskId),
+                Inventory              = inventory,
+                CurrentInventoryValue  = inventory.CurrentLevel,
                 PreviousInventoryValue = previousInventoryLevel
             };
             this.persistence.Save(transaction);
             inventory.Transactions.Add(transaction);
             this.persistence.Update(inventory);
+
+            this.audit.Create("har skapat saldo-transaktionen {0} (ref. {1}) på saldo {2} (ref. {3})", 
+                transaction.Operation,
+                transaction.Id,
+                inventory.Description,
+                inventory.Id);
             return true;
         }
 

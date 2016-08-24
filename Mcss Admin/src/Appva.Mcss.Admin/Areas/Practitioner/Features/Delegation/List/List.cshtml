@@ -1,7 +1,10 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
 @model Appva.Mcss.Admin.Areas.Models.ListDelegationModel
-@{ ViewBag.Title = string.Format("Aktuella delegeringar, {0}", Model.Account.FullName); }
-
+@{ 
+    SetTitle("Aktuella delegeringar, {0}", Model.Account.FullName); 
+}
+@if (! Model.IsAccountVisibilityHidden)
+{
 <div id="main" class="delegate-view">    
     @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
@@ -12,7 +15,8 @@
 	</div>
     <div id="content">
 		<div id="content-primary">
-            @foreach (var keyValue in Model.DelegationMap) {
+            @foreach (var keyValue in Model.DelegationMap) 
+            {
 			    <div class="h cf">
                     <h2>@keyValue.Key</h2>
                     @Html.ActionLink(Permissions.Delegation.Update, "Förnya delegeringar", "Renew",
@@ -44,24 +48,24 @@
                                 }
                                 </td>
 					            <td>@delegation.Name</td>
-                                <td class="pats">
+					            <td class="pats">
                                     @if (delegation.Patients.Count > 0)
                                     {
-                                        <ul>
+						            <ul>
                                             @foreach (var patient in delegation.Patients)
                                             {
-                                                <li>
-                                                    @if (Html.HasPermissionFor(Permissions.Schedule.Read))
-                                                    {
+							                <li>
+                                                @if (Html.HasPermissionFor(Permissions.Schedule.Read))
+                                                {
                                                         @Html.ActionLink(patient.Value, "List", "Schedule", new { id = patient.Key, Area = "Patient" }, new { @class = "link" })
-                                                    }
-                                                    else
-                                                    {
+                                                }
+                                                else
+                                                {
                                                         @patient.Value
-                                                    }
-                                                </li>
-                                            }
-                                        </ul>
+                                                }
+                                            </li>
+                                        }
+						            </ul>
                                     }
                                     else
                                     {
@@ -70,7 +74,7 @@
                                             <b>@delegation.Address</b>
                                         </p>
                                     }
-                                </td>
+					            </td>
                                 <td>@Html.ActionLink(delegation.CreatedBy.Value, "List", "Delegation", new { id = delegation.CreatedBy.Key }, new { @class = "link" })</td>
 					            <td class="@(delegation.EndDate.Subtract(DateTime.Now).Days < 30 ? "urgent" : "no-worries")">
                                     @String.Format("{0:yyyy-MM-dd}", delegation.StartDate) till @String.Format("{0:yyyy-MM-dd}", delegation.EndDate) <em>(@delegation.EndDate.Subtract(DateTime.Now).Days dagar kvar)</em>
@@ -108,3 +112,4 @@
         </div>
     </div>
 </div>
+}

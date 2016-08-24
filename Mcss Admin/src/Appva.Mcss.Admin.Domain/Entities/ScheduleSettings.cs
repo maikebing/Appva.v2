@@ -125,6 +125,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;		
         }
 
+        public virtual bool GenerateIncompleteTasks
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 

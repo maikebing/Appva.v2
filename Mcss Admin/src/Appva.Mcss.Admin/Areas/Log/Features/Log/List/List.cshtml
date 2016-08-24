@@ -1,0 +1,88 @@
+﻿@model Appva.Mcss.Admin.Areas.Log.Models.ListLogModel
+@using Appva.Mcss.Admin.Application.Common;
+@{
+    SetTitle("Logg");
+}
+<div id="log-details">
+    <h2>Logg för @Model.TenantName</h2>
+    <div class="info">
+        <p>Totalt antal rader</p>
+        <p class="bold">@Model.TotalCount.ToString("N")</p>
+    </div>
+</div>
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml")
+<div id="subheader" class="cf">
+    <h1>Logg</h1>
+</div>
+@if (Model.Logs != null && Model.TotalCount > 0)
+{
+    <div id="content" class="log cf">
+        @if (ViewContext.HttpContext.Request.RawUrl.Contains("cursor="))
+        {
+            <p>Visar log efter <b>@Model.Cursor</b>. @Html.ActionLink(Permissions.Log.Read,"Klicka här","List","Log") för att visa de senaste händelserna</p>
+        }
+        <p>Rad @((Model.Page - 1) * Model.PageSize)-@((Model.Page - 1) * Model.PageSize + Model.Logs.Count) av @Model.TotalCount.ToString("N")</p>
+        <table>
+            <thead>
+                <tr class="head">
+                    <th scope="col">
+                        Datum
+                    </th>
+                    <th scope="col">
+                        Användare
+                    </th>
+                    <th scope="col">
+                        Boende
+                    </th>
+                    <th scope="col">
+                        Meddelande
+                    </th>
+                    <th scope="col">
+                        System
+                    </th>
+                    <th scope="col">
+                        Typ
+                    </th>
+                    <th scope="col">
+                        Nivå
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Logs)
+                {
+                    <tr>
+                        <td>
+                            @item.CreatedAt.ToString()
+                        </td>
+                        <td>
+                            @item.AccountName
+                        </td>
+                        <td>
+                            @item.PatientName
+                        </td>
+                        <td>
+                            @item.Message
+                        </td>
+                        <td>
+                            @item.System
+                        </td>
+                        <td>
+                            @item.Type
+                        </td>
+                        <td>
+                            @item.Level
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Pager(Model.PageSize, Model.Page, Model.TotalCount).Options(x => x
+        .DisplayTemplate("Pagination")
+        .AddRouteValue("cursor", Model.Cursor)
+        .MaxNrOfPages(15)
+        .AlwaysAddFirstPageNumber())
+
+    </div>
+
+}

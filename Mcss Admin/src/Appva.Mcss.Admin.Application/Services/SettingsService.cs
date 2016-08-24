@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Configuration;
+    using System.Linq;
     using System.Runtime.Caching;
     using Appva.Caching.Policies;
     using Appva.Caching.Providers;
@@ -24,7 +25,10 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Persistence;
     using Newtonsoft.Json;
-using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Ldap.Configuration;
+    using Validation;
+    using Newtonsoft.Json.Serialization;
 
     #endregion
 
@@ -115,6 +119,18 @@ using Appva.Mcss.Admin.Application.Models;
     }
 
     /// <summary>
+    /// The gui look and feel interface.
+    /// </summary>
+    public interface ILookAndFeel
+    {
+        /// <summary>
+        /// Returns the pdf look and feel configuration.
+        /// </summary>
+        /// <returns>The <see cref="PdfLookAndFeel"/></returns>
+        PdfLookAndFeel PdfLookAndFeelConfiguration();
+    }
+
+    /// <summary>
     /// Tenant-specific configuration settings
     /// </summary>
     public interface IConfigurationSettings
@@ -127,13 +143,43 @@ using Appva.Mcss.Admin.Application.Models;
     }
 
     /// <summary>
+    /// Settings for Ldap connection
+    /// </summary>
+    public interface ILdapSettings
+    {
+        /// <summary>
+        /// Get Ldap configuration
+        /// </summary>
+        /// <returns></returns>
+        ILdapConfiguration GetLdapConfiguration();
+    }
+
+    public interface IAuditConfiguration
+    {
+        /// <summary>
+        /// Returns whether or not the audit logging is enabled.
+        /// </summary>
+        /// <returns>True if enabled; otherwise false</returns>
+        bool IsAuditLoggingEnabled();
+
+        /// <summary>
+        /// Returns the audit logging configuration.
+        /// </summary>
+        /// <returns>The configuration</returns>
+        AuditLoggingConfiguration AuditLoggingConfiguration();
+    }
+
+    /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public interface ISettingsService :
         IAccessControlListTenantSettings,
         ISecuritySettings,
+        ILookAndFeel,
         IOldSettings,
         IConfigurationSettings,
+        IAuditConfiguration,
+        ILdapSettings,
         IService
     {
         /// <summary>
@@ -185,6 +231,18 @@ using Appva.Mcss.Admin.Application.Models;
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
+
+        /// <summary>
+        /// The default amounts.
+        /// </summary>
+        public static readonly IReadOnlyCollection<double> InventoryAmountDefaults = new List<double>
+            { 
+                 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 
+                20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+                40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 59, 51, 52, 53, 54, 55, 56, 57, 58, 59, 
+                60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 
+                80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100
+            };
 
         #endregion
 
@@ -239,6 +297,14 @@ using Appva.Mcss.Admin.Application.Models;
             {
                 item.Update(key.Key, key.Namespace, key.Name, key.Description, JsonConvert.SerializeObject(value));
             }
+            this.cache.Upsert<T>(
+                this.CreateCacheKey(key.Key), 
+                value,
+                new RuntimeEvictionPolicy
+                {
+                    Priority = CacheItemPriority.Default,
+                    SlidingExpiration = TimeSpan.FromMinutes(30)
+                });
         }
 
         #endregion
@@ -289,6 +355,16 @@ using Appva.Mcss.Admin.Application.Models;
         public bool IsSithsAuthorizationEnabled()
         {
             return this.GetAdminLogin() == "siths";
+        }
+
+        #endregion
+
+        #region ILookAndFeel Members.
+
+        /// <inheritdoc />
+        public PdfLookAndFeel PdfLookAndFeelConfiguration()
+        {
+            return this.Find(ApplicationSettings.PdfLookAndFeelConfiguration);
         }
 
         #endregion
@@ -518,52 +594,96 @@ using Appva.Mcss.Admin.Application.Models;
         /// <inheritdoc />
         public IList<InventoryAmountListModel> GetIventoryAmountLists()
         {
-            var storedInDb = this.persistence.QueryOver<Setting>()
+            const string InventoryNamespace = "MCSS.Core.Inventory.Units";
+            var units = this.persistence.QueryOver<Setting>()
                 .Where(x => x.IsActive)
-                .And(x => x.Namespace == "MCSS.Core.Inventory.Units")
+                  .And(x => x.Namespace == InventoryNamespace)
+                .List();
+            if (units.Count == 0)
+            {
+                var zeropointfive = InventoryAmountDefaults.ToList();
+                zeropointfive.Insert(1, 0.5);
+                return new List<InventoryAmountListModel>
+                {
+                    new InventoryAmountListModel
+                    {
+                        Name    = "dos",
+                        Amounts = zeropointfive
+                    },
+                    new InventoryAmountListModel
+                    {
+                        Name    = "ml",
+                        Amounts = new List<double> { 0.2, 0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10 }
+                    },
+                    new InventoryAmountListModel
+                    {
+                        Name    = "plåster",
+                        Amounts = InventoryAmountDefaults.ToList()
+                    },
+                    new InventoryAmountListModel
+                    {
+                        Name    = "tbl",
+                        Amounts = zeropointfive
+                    }
+                };
+            }
+            var retval = new List<InventoryAmountListModel>();
+            foreach (var unit in units)
+            {
+                retval.Add(new InventoryAmountListModel
+                {
+                    Name    = unit.Name,
+                    Amounts = JsonConvert.DeserializeObject<IList<double>>(unit.Value)
+                });
+            }
+            return retval;
+        }
+
+        #endregion
+
+        #region IAuditConfiguration Members
+
+        /// <inheritdoc />
+        public bool IsAuditLoggingEnabled()
+        {
+            return this.Find<bool>(ApplicationSettings.IsAuditCollectionActivated);
+        }
+
+        /// <inheritdoc />
+        public AuditLoggingConfiguration AuditLoggingConfiguration()
+        {
+            return this.Find<AuditLoggingConfiguration>(ApplicationSettings.AuditConfiguration);
+        }
+
+        #endregion
+
+        #region ILdapSettings
+
+        /// <inheritdoc />
+        public ILdapConfiguration GetLdapConfiguration()
+        {
+            var settings = this.persistence.QueryOver<Setting>()
+                .Where(x => x.IsActive)
+                .And(x => x.Namespace == "MCSS.Integration.ActiveDirectory")
                 .List();
 
-            var retval = new List<InventoryAmountListModel>();
-
-            if (storedInDb.Count < 1)
+            if(settings.Count < 1)
             {
-                //// The default lists
-                var amounts = new List<double>();
-                var amounts2 = new List<double>();
-                for (int x = 0; x <= 100; x++)
-                {
-                    amounts.Add(x);
-                    amounts2.Add(x);
-                }
-
-                retval.Add(new InventoryAmountListModel
-                {
-                    Name = "Dos",
-                    Amounts = amounts
-                });
-
-                amounts2.Insert(1, 0.5);
-                retval.Add(new InventoryAmountListModel
-                {
-                    Name = "Tbl",
-                    Amounts = amounts2
-                });
-
-                return retval;
-            }
-            else
-            {
-                foreach (var unit in storedInDb)
-                {
-                    retval.Add(new InventoryAmountListModel
-                    {
-                        Name = unit.Name,
-                        Amounts = JsonConvert.DeserializeObject<IList<double>>(unit.Value)
-                    });
-                }
+                return null;
             }
 
-            return retval;
+            return LdapConfiguration.CreateNew(
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.LDAPConnectionString").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.LDAPUsername").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.LDAPPassword").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.UsernameField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.PinField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.MailField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.HsaField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.SSNField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.FirstNameField").Value,
+                    settings.FirstOrDefault(x => x.MachineName == "MCSS.Integration.ActiveDirectory.LastNameField").Value
+                );
         }
 
         #endregion
@@ -579,12 +699,9 @@ using Appva.Mcss.Admin.Application.Models;
         /// <returns></returns>
         private T ReturnCached<T>(ApplicationSettingIdentity<T> setting)
         {
+            Requires.NotNull(setting, "setting");
             try
             {
-                if (setting == null)
-                {
-                    return setting.Default;
-                }
                 var cacheKey = this.CreateCacheKey(setting.Key);
                 if (this.cache.Find(cacheKey) == null)
                 {
@@ -642,5 +759,6 @@ using Appva.Mcss.Admin.Application.Models;
         }
 
         #endregion
+
     }
 }

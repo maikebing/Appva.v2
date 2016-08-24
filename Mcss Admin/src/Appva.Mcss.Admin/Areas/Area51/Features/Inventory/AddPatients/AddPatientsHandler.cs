@@ -9,14 +9,11 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
     #region Imports.
 
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Mcss.Admin.Models;
     using Appva.Persistence;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -44,9 +41,11 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="AddPatientsHandler"/> class.
         /// </summary>
+        /// <param name="context">The <see cref="IPersistenceContext"/></param>
+        /// <param name="inventories">The <see cref="IInventoryRepository"/></param>
         public AddPatientsHandler(IPersistenceContext context, IInventoryRepository inventories)
         {
-            this.context = context;
+            this.context     = context;
             this.inventories = inventories;
         }
 
@@ -57,14 +56,32 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
         {
             var sequences = this.context.QueryOver<Sequence>()
                 .Where(x => x.Inventory != null).List();
-
-            foreach (var s in sequences)
+            foreach (var sequence in sequences)
             {
-                var inv = s.Inventory;
-                inv.Patient = s.Patient;
-
-                this.inventories.Update(inv);
+                var inventory     = sequence.Inventory;
+                inventory.Patient = sequence.Patient;
+                inventory.IsActive = sequence.IsActive;
+                if (inventory.LastRecount == null)
+                {
+                    inventory.LastRecount = inventory.UpdatedAt;
+                }
+                this.inventories.Update(inventory);
             }
+
+            //// Creates the update-notice
+            /*var notice = new DashboardNotification
+            {
+                IsActive = true,
+                IsVisibleToEveryone = true,
+                Name = "Nyheter - Saldo",
+                Published = true,
+                PublishedDate = DateTime.Now.Date,
+                Template = "Templates/inventory-news",
+                ViewedBy = new List<NotificationViewedBy>(),
+                VisibleTo = new List<Account>()
+            };
+
+            this.context.Save<DashboardNotification>(notice);*/
         }
     }
 }

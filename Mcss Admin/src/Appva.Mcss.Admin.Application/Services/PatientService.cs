@@ -74,7 +74,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="assessments">Optional collection of risk assessments</param>
         /// <param name="patient">The created patient</param>
         /// <returns>True if the patient is created successfully</returns>
-        bool Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, Taxon address, IList<Taxon> assessments, out Patient patient);
+        bool Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, Taxon address, IList<Taxon> assessments, bool isPersonOfPublicInterest, bool isPersonWithAllDemographicsSensitivity, out Patient patient);
 
         /// <summary>
         /// Updates a patient.
@@ -89,7 +89,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="assessments">The assessments to be updated</param>
         /// <param name="patient">The updated patient</param>
         /// <returns>True if successfully updated</returns>
-        bool Update(Guid id, string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, out Patient patient);
+        bool Update(Guid id, string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, bool isPersonOfPublicInterest, bool isPersonWithAllDemographicsSensitivity, out Patient patient);
 
         /// <summary>
         /// Loads a proxy of the patient from the id
@@ -237,7 +237,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public bool Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, Taxon address, IList<Taxon> assessments, out Patient patient)
+        public bool Create(string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, Taxon address, IList<Taxon> assessments, bool isPersonOfPublicInterest, bool isPersonWithAllDemographicsSensitivity, out Patient patient)
         {
             var check = this.FindByPersonalIdentityNumber(personalIdentityNumber);
             if (check != null)
@@ -246,15 +246,17 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             patient = new Patient
                 {
-                    IsActive = true,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
-                    FirstName = firstName.TrimEnd().TrimStart().FirstToUpper(),
-                    LastName = lastName.TrimEnd().TrimStart().FirstToUpper(),
-                    FullName = string.Format("{0} {1}", firstName, lastName),
-                    PersonalIdentityNumber = personalIdentityNumber,
-                    Taxon = address,
-                    Identifier = alternativeIdentity
+                    IsActive                             = true,
+                    CreatedAt                            = DateTime.Now,
+                    UpdatedAt                            = DateTime.Now,
+                    FirstName                            = firstName.TrimEnd().TrimStart().FirstToUpper(),
+                    LastName                             = lastName.TrimEnd().TrimStart().FirstToUpper(),
+                    FullName                             = string.Format("{0} {1}", firstName, lastName),
+                    PersonalIdentityNumber               = personalIdentityNumber,
+                    Taxon                                = address,
+                    Identifier                           = alternativeIdentity,
+                    IsAllDemographicInformationSensitive = isPersonWithAllDemographicsSensitivity,
+                    IsPersonOfPublicInterest             = isPersonOfPublicInterest
                 };
             this.persistence.Save(patient);
             this.auditing.Create(
@@ -266,7 +268,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public bool Update(Guid id, string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, out Patient patient)
+        public bool Update(Guid id, string firstName, string lastName, PersonalIdentityNumber personalIdentityNumber, string alternativeIdentity, bool isDeceased, Taxon address, IList<Taxon> assessments, bool isPersonOfPublicInterest, bool isPersonWithAllDemographicsSensitivity, out Patient patient)
         {
             patient = this.Get(id);
             var oldSA = patient.SeniorAlerts;
@@ -279,8 +281,9 @@ namespace Appva.Mcss.Admin.Application.Services
             patient.UpdatedAt = DateTime.Now;
             patient.SeniorAlerts = assessments;
             patient.Identifier = alternativeIdentity;
+            patient.IsAllDemographicInformationSensitive = isPersonWithAllDemographicsSensitivity;
+            patient.IsPersonOfPublicInterest = isPersonOfPublicInterest;
             this.persistence.Update(patient);
-            
             this.auditing.Update(
                 patient,
                 "ändrade boendes {0} uppgifter (REF: {1}).", 
@@ -288,7 +291,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 patient.Id);
             foreach (var sa in assessments)
             {
-                if (!oldSA.Contains(sa))
+                if (! oldSA.Contains(sa))
                 {
                     this.auditing.Update(
                         patient,
@@ -335,10 +338,7 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.Load(id);
         }
 
-        #endregion
-
-
-       
+        #endregion 
     }
 
     /// <summary>

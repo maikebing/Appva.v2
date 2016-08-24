@@ -10,16 +10,16 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
-using Appva.Core.Logging;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// The sequence http controller.
     /// </summary>
     [RouteArea("patient"), RoutePrefix("sequence")]
     public sealed class SequenceController : Controller
@@ -31,23 +31,20 @@ using Appva.Core.Logging;
         /// <summary>
         /// Returns a create sequence view.
         /// </summary>
-        /// <param name="request">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
+        /// <param name="request">The create sequence request</param>
         /// <returns>A create form</returns>
         [Route("patient/{id:guid}/schedule/{scheduleId:guid}/create")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Sequence.CreateValue)]
         public ActionResult Create(CreateSequence request)
         {
-            return View();
+            return this.View();
         }
 
         /// <summary>
         /// Saves a sequence if valid.
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
-        /// <param name="model"></param>
+        /// <param name="request">The create sequence request</param>
         /// <returns>A redirect to schedule details if successful</returns>
         [Route("patient/{id:guid}/schedule/{scheduleId:guid}/create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Schedule")]
@@ -64,7 +61,7 @@ using Appva.Core.Logging;
         /// <summary>
         /// Returns the edit form view.
         /// </summary>
-        /// <param name="id">The sequence id</param>
+        /// <param name="request">The update sequence request</param>
         /// <returns>A sequence edit form</returns>
         [Route("{id:guid}/update")]
         [HttpGet, Hydrate, Dispatch]
@@ -77,8 +74,7 @@ using Appva.Core.Logging;
         /// <summary>
         /// Updates the sequence if valid.
         /// </summary>
-        /// <param name="id">The sequence id</param>
-        /// <param name="model">The sequence model</param>
+        /// <param name="request">The update sequence request</param>
         /// <returns>A redirect to schedule details if successful</returns>
         [Route("{id:guid}/update")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("Details", "Schedule")]
@@ -95,10 +91,10 @@ using Appva.Core.Logging;
         /// <summary>
         /// Inactivates a sequence.
         /// </summary>
-        /// <param name="id">The sequence id</param>
+        /// <param name="request">The inactivate sequence request</param>
         /// <returns>A redirect to schedule details if successful</returns>
         [Route("{id:guid}/inactivate")]
-        [HttpGet, /*Validate, ValidateAntiForgeryToken,*/ Dispatch("Details", "Schedule")]
+        [HttpGet, Dispatch("Details", "Schedule")]
         [PermissionsAttribute(Permissions.Sequence.InactivateValue)]
         public ActionResult Inactivate(InactivateSequence request)
         {
@@ -112,19 +108,14 @@ using Appva.Core.Logging;
         /// <summary>
         /// Returns a printable schedule view.
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
-        /// <param name="startDate">The start date</param>
-        /// <param name="endDate">The end date</param>
-        /// <param name="OnNeedBasis">If false skip need based</param>
-        /// <param name="StandardSequences">If false only show need based</param>
-        /// <returns></returns>
+        /// <param name="request">The print schedule request</param>
+        /// <returns>A pdf file</returns>
         [HttpGet, Dispatch]
         [Route("{id:guid}/print/{scheduleId:guid}")]
         [PermissionsAttribute(Permissions.Sequence.PrintValue)]
-        public ActionResult PrintSchema(PrintSequence request)
+        public PdfFileResult PrintSchema(PrintSequence request)
         {
-            return this.View();
+            return this.PdfFile();
         }
 
         #endregion
@@ -132,11 +123,10 @@ using Appva.Core.Logging;
         #region Print Date Popup View.
 
         /// <summary>
-        /// TODO PRINT SETUP!!!
         /// Returns the print pop up view.
+        /// TODO: Rename to PrintSetup.
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
+        /// <param name="request">The print sequence request</param>
         /// <returns>The print schedule pop up selection view</returns>
         [HttpGet, Hydrate, Dispatch]
         [Route("{id:guid}/setup/print/{scheduleId:guid}")]
@@ -147,11 +137,9 @@ using Appva.Core.Logging;
         }
 
         /// <summary>
-        /// The print pop up post back. 
+        /// The print pop up postback. 
         /// </summary>
-        /// <param name="id">The patient id</param>
-        /// <param name="scheduleId">The schedule id</param>
-        /// <param name="model">The print model</param>
+        /// <param name="request">The print sequence request</param>
         /// <returns>Redirects to print if successful</returns>
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("PrintSchema", "Sequence")]
         [Route("{id:guid}/setup/print/{scheduleId:guid}")]

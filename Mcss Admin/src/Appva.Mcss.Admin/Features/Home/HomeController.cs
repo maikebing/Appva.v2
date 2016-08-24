@@ -75,7 +75,7 @@ namespace Appva.Mcss.Admin.Features.Home
             }
             //// If there is not return URL then take the first from the menu list, this should either be
             //// dashboard OR something else.
-            var items = this.menuService.Render(MenuKey, "Index", "Dashboard", "Dashboard");
+            var items = this.menuService.Render();
             if (items.Count > 0)
             {
                 var item = items.First();
@@ -105,12 +105,12 @@ namespace Appva.Mcss.Admin.Features.Home
         {
             var values = UriUtils.RouteValues(redirectUrl);
             var redirect = UrlRedirectResult.CreateNew(values);
-            var items = this.menuService.Render(MenuKey, redirect.Action, redirect.Controller, redirect.Area);
+            var items = this.menuService.Render();
             if (items == null)
             {
                 return null;
             }
-            var selected = this.LastSelected(items.Where(x => x.IsSelected).FirstOrDefault());
+            var selected = this.LastSelected(items.Where(x => x.IsSelected(redirect.Action, redirect.Controller, redirect.Area)).FirstOrDefault(), redirect.Action, redirect.Controller, redirect.Area);
             if (selected != null)
             {
                 return UrlRedirectResult.CreateNew(
@@ -120,10 +120,21 @@ namespace Appva.Mcss.Admin.Features.Home
                     redirect.Values);
             }
             var item = items.FirstOrDefault();
+            if(item.IsNotNull())
+            {
+                return UrlRedirectResult.CreateNew(
+                   item.Action,
+                   item.Controller,
+                   item.Area);
+            }
+
+            //// The account has no access so direct back to sign in. This should never happen since the user
+            //// should be authenticated at this stage.
             return UrlRedirectResult.CreateNew(
-                    item.Action,
-                    item.Controller,
-                    item.Area);
+                "SignIn", 
+                "Authentication",
+                string.Empty);
+           
         }
 
         /// <summary>
@@ -131,7 +142,7 @@ namespace Appva.Mcss.Admin.Features.Home
         /// </summary>
         /// <param name="selected">The selected menu item</param>
         /// <returns>A menu item or null</returns>
-        private IMenuItem LastSelected(IMenuItem selected)
+        private IMenuItem LastSelected(IMenuItem selected, string action, string controller, string area)
         {
             if (selected == null)
             {
@@ -139,10 +150,10 @@ namespace Appva.Mcss.Admin.Features.Home
             }
             if (selected.Children.Count > 0)
             {
-                var item = selected.Children.Where(x => x.IsSelected).FirstOrDefault();
+                var item = selected.Children.Where(x => x.IsSelected(action, controller, area)).FirstOrDefault();
                 if (item != null)
                 {
-                    return this.LastSelected(item);
+                    return this.LastSelected(item, action, controller, area);
                 }
             }
             return selected;

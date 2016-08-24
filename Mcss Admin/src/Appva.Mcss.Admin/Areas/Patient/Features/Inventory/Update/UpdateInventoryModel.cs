@@ -8,14 +8,13 @@ namespace Appva.Mcss.Admin.Areas.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Models;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Web.Mvc;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Models;
 
     #endregion
 
@@ -73,8 +72,6 @@ namespace Appva.Mcss.Admin.Areas.Models
             set;
         }
 
-        #endregion
-
-        
+        #endregion  
     }
 }

@@ -37,6 +37,16 @@ namespace Appva.Mcss.Admin.Areas.Models
 
         public Dictionary<string, IList<Domain.Entities.KnowledgeTest>> KnowledgeTestMap { get; set; }
 
-        public Dictionary<string, IList<DelegationViewModel>> DelegationMap { get; set; }
+        public Dictionary<string, IList<Domain.Entities.Delegation>> DelegationMap { get; set; }
+
+        /// <summary>
+        /// Whether or not the user account is hidden, e.g. has only
+        /// roels which are not shown in any common lists.
+        /// </summary>
+        public bool IsAccountVisibilityHidden
+        {
+            get;
+            set;
+        }
     }
 }

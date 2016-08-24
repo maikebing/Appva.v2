@@ -7,7 +7,7 @@
         <div class="row cf">
             <div class="form-section col">
                 <h3 class="section-title">Ange insats</h3>
-                @Html.FormGroup(x => x.Name, "text large").Label().TextBox(null, new { @class = "wide" }).Validate().Build()
+                @Html.FormGroup(x => x.Name, "text large").Label().TextBox(null, new { @class = "wide check-length" }).Validate().Build()
                 @Html.FormGroup(x => x.Description, "text large").Label().TextArea(null, new { @rows = "24", @cols = "80", @class = "wide" }).Validate().Build()
                 @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox("Får endast ges av legitimerad sjuksköterska", new { @class = "nurse" }).Validate().Build()
                 @if (Model.Delegations.Count() > 0) { 
@@ -66,13 +66,13 @@
 						</div>
                         @Html.FormGroup(x => x.StartDate, "text freq-hide col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
                         @Html.FormGroup(x => x.EndDate, "text freq-hide col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-					</div>
-                    <div class="checkbox-grid">
-                        <strong class="label">Klockslag:</strong>
+						</div>
+					<div class="checkbox-grid">
+						<strong class="label">Klockslag:</strong>
                         @Html.FormGroup(x => x.Times, "wrap cf").CheckboxList().Validate().Build()
-                        <input id="TestTimes" name="TestTimes" type="hidden" />
+                            <input id="TestTimes" name="TestTimes" type="hidden" />
 
-                    </div>
+					</div>
 					<div class="text mini label-group">
 						<strong class="label">Ges inom:</strong>
 						<label>@Html.TextBoxFor(m => m.RangeInMinutesBefore, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off" }) minuter innan</label>
@@ -86,7 +86,7 @@
                         <div class="row cf">
                             @Html.FormGroup(x => x.OnNeedBasisStartDate, "text col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
                             @Html.FormGroup(x => x.OnNeedBasisEndDate, "text col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
-                        </div>
+						</div>
 					</div>
 				</div>
             </div>

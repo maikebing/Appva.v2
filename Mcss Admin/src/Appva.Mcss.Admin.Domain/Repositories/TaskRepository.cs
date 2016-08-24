@@ -98,6 +98,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .Where(x => x.OnNeedBasis == false)
                   .And(x => x.Scheduled >= model.StartDate)
                   .And(x => x.Scheduled <= model.EndDate);
+            if (model.IsActive.HasValue)
+            {
+                query.Where(x => x.IsActive == model.IsActive);
+            }
             Account accountAlias = null;
             Patient patientAlias = null;
             Taxon   taxonAlias   = null;
@@ -128,36 +132,49 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .JoinAlias(x => x.Sequence, () => sequenceAlias)
                     .Where(() => sequenceAlias.Id == model.SequenceId); ;
             }
-            if (model.ScheduleSettingId.IsNotEmpty())
+            var schedulesetting = model.ScheduleSettingId.IsEmpty() ? null : this.persistenceContext.Get<ScheduleSettings>(model.ScheduleSettingId);
+            if (schedulesetting != null)
             {
                 query
                     .JoinAlias(x => x.Schedule, () => scheduleAlias)
                     .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
-                        .Where(() => scheduleSettingsAlias.Id == model.ScheduleSettingId);
+                        .Where(() => scheduleSettingsAlias.Id == schedulesetting.Id);
+                //// If selecting a calendar event, should we check if it can raise alert?
+                if (schedulesetting.ScheduleType == ScheduleType.Calendar)
+                {
+                    query.Where(x => x.CanRaiseAlert);
+                }
             }
-            else if (! model.IncludeCalendarTasks)
-            {
-                query
-                    .JoinAlias(x => x.Schedule, () => scheduleAlias)
-                    .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
-                        .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(list.Select(x => x.Id).ToArray())
-                        .And(() => scheduleSettingsAlias.ScheduleType == ScheduleType.Action);
-            }
-            else
+            //// Does this mean all calendar tasks or simply the ones that are CanRaiseAlert?
+            else if (model.IncludeCalendarTasks)
             {
                 query
                     .JoinAlias(x => x.Schedule, () => scheduleAlias)
                     .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
                         .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(list.Select(x => x.Id).ToArray());
             }
-            var tasks = query.Fetch(x => x.Patient).Eager
-                .Fetch(x => x.StatusTaxon).Eager
+            else
+            {
+                query
+                    .JoinAlias(x => x.Schedule, () => scheduleAlias)
+                    .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
+                        .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(list.Select(x => x.Id).ToArray())
+                        .And(Restrictions.Or(
+                            Restrictions.Where(() => scheduleSettingsAlias.ScheduleType == ScheduleType.Action),
+                            Restrictions.Where<Task>(x => x.CanRaiseAlert)
+                        ));
+            }
+            query
+                .Fetch  (x => x.Patient).Eager
+                .Fetch  (x => x.StatusTaxon).Eager
                 .OrderBy(x => x.Scheduled).Desc
-                .ThenBy(x => x.CreatedAt).Desc
-                .TransformUsing(new DistinctRootEntityResultTransformer())
-                .Skip(skip)
-                .Take(pageSize)
-                .List<Task>();
+                .ThenBy (x => x.CreatedAt).Desc
+                .TransformUsing(new DistinctRootEntityResultTransformer());
+            if (model.SkipPaging == false) 
+            {
+                query.Skip(skip).Take(pageSize);
+            }
+            var tasks = query.List<Task>();
             var totalCount = query.RowCount();
             return new PageableSet<Task>
             {

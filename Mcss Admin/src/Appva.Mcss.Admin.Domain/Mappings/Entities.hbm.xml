@@ -120,6 +120,8 @@
     <property name="SymmetricKey" not-null="true" type="StringClob">
       <column name="SymmetricKey" sql-type="NTEXT" not-null="true" default="'MjVjNWQ1OGEwN2ExNGJjMTg4NGI0ZWQwNjcxODNlZjA='" />
     </property>
+    <property name="IsSynchronized" column="Synchronized"/>
+    <property name="LastSynchronized" />
     <many-to-one name="Taxon" class="Taxon" />
     <bag name="Roles" table="AccountRole" cascade="save-update">
       <key column="AccountId" />
@@ -352,6 +354,12 @@
     </component>
     <property name="Deceased" />
     <many-to-one name="Taxon" class="Taxon" />
+    <property name="IsPersonOfPublicInterest">
+      <column name="IsPersonOfPublicInterest" not-null="true" default="'false'" />
+    </property>
+    <property name="IsAllDemographicInformationSensitive">
+      <column name="IsAllDemographicInformationSensitive" not-null="true" default="'false'" />
+    </property>
     <bag name="SeniorAlerts" cascade="save-update">
       <key column="PatientId" />
       <many-to-many class="Taxon" column="TaxonId" property-ref="" />
@@ -437,6 +445,9 @@
       <many-to-many class="Taxon" column="TaxonId" property-ref="" />
     </bag>
     <property name="OrderRefill" />
+    <property name="GenerateIncompleteTasks">
+      <column name="GenerateIncompleteTasks" not-null="true" default="'True'" />
+    </property>
   </class>
 
   <!-- Schedule -->

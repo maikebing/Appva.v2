@@ -20,7 +20,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Patient : Person<Patient>
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The LastActivatedAt field
@@ -124,6 +124,25 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// When the patient was inactivated
         /// </summary>
         public virtual DateTime? LastInActivatedAt
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether or not the patient is a person of public interest (VIP).
+        /// </summary>
+        public virtual bool IsPersonOfPublicInterest
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether or not the patient is a person of which all demographic
+        /// information is sensitive.
+        /// </summary>
+        public virtual bool IsAllDemographicInformationSensitive
         {
             get;
             set;

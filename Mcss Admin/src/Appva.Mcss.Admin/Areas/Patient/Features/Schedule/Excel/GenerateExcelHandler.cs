@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using System.Linq;
+    using Appva.Mcss.Admin.Domain.Models;
 
     #endregion
 
@@ -50,6 +51,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IAuditService auditing;
 
         /// <summary>
+        /// The <see cref="ITaskService"/>.
+        /// </summary>
+        private readonly ITaskService taskService;
+
+        /// <summary>
         /// The <see cref="ITenantService"/>.
         /// </summary>
         private readonly ITenantService tenantService;
@@ -71,11 +77,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IAccountService accountService, 
             IIdentityService identityService,
             ITenantService tenantService, 
+            ITaskService taskService,
             IPersistenceContext persistence)
         {
             this.auditing = auditing;
             this.accountService = accountService;
             this.identityService = identityService;
+            this.taskService = taskService;
             this.tenantService = tenantService;
             this.persistence = persistence;
         }
@@ -87,7 +95,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override FileContentResult Handle(GenerateExcel message)
         {
-            var query = this.persistence.QueryOver<Task>()
+            var tasks = this.taskService.List(new ListTaskModel
+                {
+                    IsActive = true,
+                    SkipPaging = true,
+                    StartDate = message.StartDate.Date,
+                    EndDate = message.EndDate.LastInstantOfDay(),
+                    PatientId = message.Id,
+                    ScheduleSettingId = message.ScheduleSettingsId
+                }, 1, 30);
+            /*var query = this.persistence.QueryOver<Task>()
                 .Where(x => x.IsActive == true)
                 .And(x => x.OnNeedBasis == false)
                 .And(x => x.Scheduled >= message.StartDate.Date)
@@ -110,15 +127,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 query.Inner.JoinAlias(x => x.Schedule, () => scheduleAlias)
                     .JoinAlias(() => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
                     .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
-            }
+            }*/
             var patient = this.persistence.Get<Patient>(message.Id);
             this.auditing.Read(
                 patient,
                 "skapade excellista för boende {0} (REF: {1}).", 
                 patient.FullName, 
                 patient.Id);
-            var tasks = query.List();
-            var path = PathResolver.ResolveAppRelativePath("Templates\\Template.xls");
+            //var tasks = query.List();
+            var path = PathResolver.ResolveAppRelativePath("Templates\\Template.xlsx");
             var bytes = ExcelWriter.CreateNew<Task, ExcelTaskModel>(
                 path,
                 x => new ExcelTaskModel
@@ -134,12 +151,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     CompletedBy = x.CompletedBy.IsNotNull() ? x.CompletedBy.FullName : "",
                     TaskCompletionStatus = Status(x)
                 },
-                tasks);
+                tasks.Entities);
             ITenantIdentity tenant;
             this.tenantService.TryIdentifyTenant(out tenant);
             return new FileContentResult(bytes, "application/vnd.ms-excel")
             {
-                FileDownloadName = string.Format("Rapport-{0}-{1}.xls", tenant.Name.Replace(" ", "-"), DateTime.Now.ToFileTimeUtc())
+                FileDownloadName = string.Format("Rapport-{0}-{1}.xlsx", tenant.Name.Replace(" ", "-"), DateTime.Now.ToFileTimeUtc())
             };
         }
 

@@ -1,0 +1,31 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Models.LdapConfigModel
+@{
+    SetTitle("Area 51 - LDAP konfig");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <div class="form-tab form-tab-1">
+            <h3 class="section-title">LDAP Konfiguration</h3>
+            @Html.ValidationAlert("Ett fel inträffade", "Var vänlig korrigera markerade fält i formuläret och försök igen")
+            @Html.FormGroup(x => x.LdapConnectionIsEnabled).Checkbox("LDAP aktiverad", new { }).Validate().Build()
+            @Html.FormGroup(x => x.LdapConnectionString, "text large").Label("Connectionstring").TextBox().Validate().Build()
+            <h3 class="section-title">Autentisering</h3>
+            @Html.FormGroup(x => x.LdapUsername, "text large").Label("Användarnamn").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.LdapPassword, "text large").Label("Lösenord").TextBox().Validate().Build()
+            <h3 class="section-title">Fält för properties</h3>
+            @Html.FormGroup(x => x.UniqueIdentiferField, "text large").Label("Personnummer").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.FirstNameField, "text large").Label("Förnamn").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.LastNameField, "text large").Label("Efternamn").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.UsernameField, "text large").Label("Användarnamn").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.MailField, "text large").Label("Mail").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.HsaField, "text large").Label("HSA id").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.PinField, "text large").Label("Pin").TextBox().Validate().Build()
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara")
+            @*Html.Cancel("Avbryt")*@
+        </div>
+    }
+</div>

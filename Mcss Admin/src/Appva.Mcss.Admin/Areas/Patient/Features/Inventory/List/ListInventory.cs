@@ -9,9 +9,6 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-using Appva.Cqrs;
-    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 

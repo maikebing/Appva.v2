@@ -31,6 +31,7 @@ using System.Collections.Generic;
         IIdentityRepository<Account>, 
         IUpdateRepository<Account>,
         IProxyRepository<Account>,
+        IListRepository<Account>,
         IRepository
     {
         /// <summary>
@@ -148,7 +149,7 @@ using System.Collections.Generic;
             var accounts = this.persistenceContext.QueryOver<Account>()
                 .Where(x => x.IsActive)
                 .And(x => x.IsPaused == false)
-                .And(x => x.HsaId == hsaId)
+                  .And(x => x.HsaId    == hsaId)
                 .List();
             if (accounts.Count == 1)
             {
@@ -251,6 +252,11 @@ using System.Collections.Generic;
                     .Where(x => x.Taxon.Id == model.DelegationFilterId.Value
                         && x.IsActive == true && x.Pending == false);
             }
+            if (model.IsFilterByIsSynchronizedEnabled.HasValue)
+            {
+                query.Where(x => x.IsSynchronized == model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault());
+            }
+
             //// Subqueries to get days until delegation expires 
             var delegationSubquery = QueryOver.Of<Delegation>()
                     .Where(x => x.IsActive)
@@ -291,6 +297,8 @@ using System.Collections.Generic;
                     .Add(Projections.Property<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
                     .Add(Projections.Property<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
                     .Add(Projections.Property<Account>(x => x.Title).WithAlias(() => accountModel.Title))
+                    .Add(Projections.Property<Account>(x => x.IsSynchronized).WithAlias(() => accountModel.IsSynchronized))
+                    .Add(Projections.Property<Account>(x => x.LastSynchronized).WithAlias(() => accountModel.LastSynchronized))
                     .Add(Projections.Property<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber))));                
             //// Ordering and transforming
             mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
@@ -333,6 +341,16 @@ using System.Collections.Generic;
         public Account Load(Guid id)
         {
  	        return this.persistenceContext.Session.Load<Account>(id);
+        }
+
+        #endregion
+
+        #region IListRepository Members.
+
+        /// <inheritdoc />
+        public IList<Account> List(ulong maximumItems = long.MaxValue)
+        {
+            return this.persistenceContext.QueryOver<Account>().List();
         }
 
         #endregion

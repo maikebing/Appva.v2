@@ -46,7 +46,7 @@ namespace Appva.Mcss.Admin.Features.Menus
         /// <inheritdoc />
         public override IList<IMenuItem> Handle(Menu message)
         {
-            return menus.Render(message.Key, message.ActionName, message.ControllerName, message.AreaName);
+            return menus.Render();
         }
 
         #endregion

@@ -8,10 +8,7 @@ namespace Appva.Mcss.Admin.Application.Common
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using Appva.Core.Contracts.Permissions;
     using Appva.Core.Resources;
 
@@ -28,6 +25,150 @@ namespace Appva.Mcss.Admin.Application.Common
         /// The permission schema.
         /// </summary>
         private const string Schema = "https://schemas.appva.se/2015/04/permission/";
+
+        #endregion
+
+        #region Audit 
+
+        /// <summary>
+        /// All permissions to auditable reports.
+        /// </summary>
+        public static class Reports
+        {
+            /// <summary>
+            /// The audit reports sign in value.
+            /// </summary>
+            public const string SignInValue = Schema + "/audit/reports/sign-in";
+            
+            /// <summary>
+            /// Permission to sign in to auditing. 
+            /// </summary>
+            [Sort(1000)]
+            [Name("Sign in audit report")]
+            [Description("Permission to sign in to audit report system")]
+            public static readonly IPermission SignIn = PermissionType.CreateNew(SignInValue);
+
+            /// <summary>
+            /// The audit reports notification value.
+            /// </summary>
+            public const string AuditReportNotificationValue = Schema + "/audit/reports/notification";
+
+            /// <summary>
+            /// Permission to receive audit report notification.
+            /// </summary>
+            [Sort(1001)]
+            [Name("Recieve audit report notification")]
+            [Description("Permission to recive report notification")]
+            public static readonly IPermission AuditReportNotification = PermissionType.CreateNew(AuditReportNotificationValue);
+
+            /// <summary>
+            /// The audit excluded value.
+            /// </summary>
+            public const string ExcludeFromAuditValue = Schema + "/audit/reports/ignore";
+
+            /// <summary>
+            /// Permission to be excluded in auditing.
+            /// </summary>
+            /// <remarks>
+            /// Any role which has this permission will be excluded in audits.
+            /// </remarks>
+            [Sort(1002)]
+            [Name("Ignore include in auditing")]
+            [Description("Permission to recive report notification")]
+            public static readonly IPermission ExcludeFromAudit = PermissionType.CreateNew(ExcludeFromAuditValue);
+
+            /// <summary>
+            /// The audit hideable value.
+            /// </summary>
+            public const string HideAuditRecordFromPublicValue = Schema + "/audit/reports/hide";
+
+            /// <summary>
+            /// Permission to hide the audit log from public visibility.
+            /// </summary>
+            /// <remarks>
+            /// Any role which has this permission will be hidden in read audit logs.
+            /// </remarks>
+            [Sort(1003)]
+            [Name("Hide in audit log reads")]
+            [Description("Permission to hide audit log record from public view")]
+            public static readonly IPermission HideAuditRecordFromPublic = PermissionType.CreateNew(HideAuditRecordFromPublicValue);
+        }
+
+        /// <summary>
+        /// Information confidentiality settings.
+        /// </summary>
+        public static class SecurityConfidentiality
+        {
+            /// <summary>
+            /// Policy for handling information related to a celebrity (people of public 
+            /// interest (VIP), which will be afforded heightened confidentiality. Celebrities 
+            /// are people of public interest (VIP) about whose information an enterprise may 
+            /// have a policy that requires heightened confidentiality. Information deemed 
+            /// sensitive may include health information and patient role information including 
+            /// patient status, demographics, next of kin, and location.
+            /// </summary>
+            public const string CreatePeopleofPublicInterestValue = Schema + "cel/create";
+
+            /// <summary>
+            /// Policy for handling information related to a celebrity (people of public 
+            /// interest (VIP), which will be afforded heightened confidentiality. Celebrities 
+            /// are people of public interest (VIP) about whose information an enterprise may 
+            /// have a policy that requires heightened confidentiality. Information deemed 
+            /// sensitive may include health information and patient role information including 
+            /// patient status, demographics, next of kin, and location.
+            /// </summary>
+            public const string UpdatePeopleofPublicInterestValue = Schema + "cel/update";
+
+            /// <summary>
+            /// Permission to create people of public interest.
+            /// </summary>
+            [Sort(1004)]
+            [Name("Create people of public interest (VIP)")]
+            [Description("Permission to create people of public interest (VIP)")]
+            public static readonly IPermission CreatePeopleofPublicInterest = PermissionType.CreateNew(CreatePeopleofPublicInterestValue);
+
+            /// <summary>
+            /// Permission to create people of public interest.
+            /// </summary>
+            [Sort(1005)]
+            [Name("Update people of public interest (VIP)")]
+            [Description("Permission to update people of public interest (VIP)")]
+            public static readonly IPermission UpdatePeopleofPublicInterest = PermissionType.CreateNew(UpdatePeopleofPublicInterestValue);
+
+            /// <summary>
+            /// Policy for handling all demographic information about an information subject, 
+            /// which will be afforded heightened confidentiality. Policies may govern 
+            /// sensitivity of information related to all demographic about an information 
+            /// subject, the disclosure of which could impact the privacy, well-being, or 
+            /// safety of that subject. 
+            /// </summary>
+            public const string CreateAllDemographicInformationSensitivityValue = Schema + "demo/create";
+
+            /// <summary>
+            /// Policy for handling all demographic information about an information subject, 
+            /// which will be afforded heightened confidentiality. Policies may govern 
+            /// sensitivity of information related to all demographic about an information 
+            /// subject, the disclosure of which could impact the privacy, well-being, or 
+            /// safety of that subject. 
+            /// </summary>
+            public const string UpdateAllDemographicInformationSensitivityValue = Schema + "demo/update";
+
+            /// <summary>
+            /// Permission to create patients with a hightened confidentiality about all demographics.
+            /// </summary>
+            [Sort(1006)]
+            [Name("Create patients with a hightened confidentiality about all democraphics")]
+            [Description("Permission to create patients with a hightened confidentiality about all democraphics")]
+            public static readonly IPermission CreateAllDemographicInformationSensitivity = PermissionType.CreateNew(CreateAllDemographicInformationSensitivityValue);
+
+            /// <summary>
+            /// Permission to update patients with a hightened confidentiality about all demographics.
+            /// </summary>
+            [Sort(1007)]
+            [Name("Update patients with a hightened confidentiality about all democraphics")]
+            [Description("Permission to update patients with a hightened confidentiality about all democraphics")]
+            public static readonly IPermission UpdateAllDemographicInformationSensitivity = PermissionType.CreateNew(UpdateAllDemographicInformationSensitivityValue);
+        }
 
         #endregion
 
@@ -1136,6 +1277,96 @@ namespace Appva.Mcss.Admin.Application.Common
             [Description("Permission to read/view area51")]
             [Visibility(Visibility.Hidden)]
             public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
+
+        #endregion
+
+        #region Log
+
+        /// <summary>
+        /// The log permissions.
+        /// </summary>
+        public static class Log
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "log/read";
+
+            /// <summary>
+            /// Permission to read/view notifications.
+            /// </summary>
+            [Sort(100)]
+            [Name("Read logs")]
+            [Description("Permission to read/view logs")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
+
+        #endregion
+
+        #region Synchronization
+
+        /// <summary>
+        /// The synchronization permissions.
+        /// </summary>
+        public static class Synchronization
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "synchronization/read";
+
+            /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "synchronization/create";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "synchronization/delete";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "synchronization/update";
+
+            /// <summary>
+            /// Permission to read/view synchronizations.
+            /// </summary>
+            [Sort(110)]
+            [Name("Read synchronization")]
+            [Description("Permission to read/view synchronizations")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+            /// <summary>
+            /// Permission to create synchronizations.
+            /// </summary>
+            [Sort(111)]
+            [Name("Create synchronization")]
+            [Description("Permission to create synchronizations")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
+
+            /// <summary>
+            /// Permission to create synchronizations.
+            /// </summary>
+            [Sort(112)]
+            [Name("Delete synchronization")]
+            [Description("Permission to delete synchronizations")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
+
+            /// <summary>
+            /// Permission to update synchronizations.
+            /// </summary>
+            [Sort(113)]
+            [Name("Update synchronization")]
+            [Description("Permission to update synchronizations")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
         }
 
         #endregion

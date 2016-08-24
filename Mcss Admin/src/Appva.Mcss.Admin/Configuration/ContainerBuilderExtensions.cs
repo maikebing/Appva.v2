@@ -27,7 +27,6 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
     using Appva.Mvc.Configuration;
-    using Appva.Mvc.Messaging;
     using Appva.Persistence;
     using Appva.Persistence.Autofac;
     using Appva.Persistence.MultiTenant;
@@ -43,6 +42,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Microsoft.Owin.Security.Cookies;
     using Owin;
     using RazorEngine.Configuration;
+    using Appva.Core.Messaging.RazorMail;
 
     #endregion
 

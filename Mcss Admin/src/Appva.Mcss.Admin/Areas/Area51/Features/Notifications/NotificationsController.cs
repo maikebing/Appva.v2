@@ -66,6 +66,15 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Notifications
             return this.RedirectToAction("Index");
         }
 
+        [Route("AddPdf")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Notis för PDF uppdatering är nu installerad!")]
+        public ActionResult AddPdf()
+        {
+            this.mediator.Publish(new AddPdfNotice());
+            return this.RedirectToAction("Index");
+        }
+
         #endregion
     }
 }

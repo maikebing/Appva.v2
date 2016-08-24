@@ -9,6 +9,7 @@ namespace Appva.Mvc
 {
     #region Imports.
 
+    using System.Net.Mime;
     using System.Web;
     using System.Web.Mvc;
 
@@ -24,9 +25,13 @@ namespace Appva.Mvc
         /// <summary>
         /// Initializes a new instance of the <see cref="PdfFileResult"/> class.
         /// </summary>
-        public PdfFileResult()
+        public PdfFileResult(bool inline = true)
             : base("application/pdf")
         {
+            this.ContentDisposition = new ContentDisposition
+            {
+                Inline = inline
+            };
         }
 
         #endregion
@@ -42,6 +47,12 @@ namespace Appva.Mvc
             private set;
         }
 
+        public ContentDisposition ContentDisposition
+        {
+            get;
+            private set;
+        }
+
         #endregion
 
         #region FileResult Overrides.
@@ -52,15 +63,20 @@ namespace Appva.Mvc
             var result = context.Controller.ViewData.Model as FileContentResult;
             if (result != null)
             {
-                this.FileContents = result.FileContents;
+                this.FileContents     = result.FileContents;
                 this.FileDownloadName = result.FileDownloadName;
-                result.ExecuteResult(context);
+                ContentDisposition.FileName = this.FileDownloadName;
+                //// result.ExecuteResult(context);
+                WriteFile(context.HttpContext.Response);
             }
         }
 
         /// <inheritdoc />
         protected override void WriteFile(HttpResponseBase response)
         {
+            response.Clear();
+            response.ContentType = ContentType;
+            response.AddHeader("Content-Disposition", ContentDisposition.ToString());
             response.OutputStream.Write(this.FileContents, 0, this.FileContents.Length);
         }
 

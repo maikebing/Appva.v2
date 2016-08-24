@@ -9,14 +9,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
 
     #endregion
@@ -29,14 +24,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private Variables.
 
         /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
+        /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext context;
-
-        /// <summary>
-        /// The <see cref="ILogService"/>.
-        /// </summary>
-        private readonly ILogService logService;
 
         #endregion
 
@@ -45,10 +40,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="InactivateSequenceHandler"/> class.
         /// </summary>
-        public InactivateSequenceHandler(IPersistenceContext context, ILogService logService)
+        /// <param name="auditing">The <see cref="IAuditService"/></param>
+        /// <param name="context"The <see cref="IPersistenceContext"/>></param>
+        public InactivateSequenceHandler(IAuditService auditing, IPersistenceContext context)
         {
-            this.context = context;
-            this.logService = logService;
+            this.auditing = auditing;
+            this.context  = context;
         }
 
         #endregion
@@ -58,14 +55,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override DetailsSchedule Handle(InactivateSequence message)
         {
-            var entity = this.context.Get<Sequence>(message.SequenceId);
-            entity.IsActive = false;
-            entity.UpdatedAt = DateTime.Now;
-            this.context.Update(entity);
+            var sequence = this.context.Get<Sequence>(message.SequenceId);
+            sequence.IsActive  = false;
+            sequence.UpdatedAt = DateTime.Now;
+            this.context.Update(sequence);
+            this.auditing.Delete(sequence.Patient, "inaktiverade insats {0} (REF: {1}).", sequence.Name, sequence.Id);
             return new DetailsSchedule
             {
-                Id = message.Id,
-                ScheduleId = entity.Schedule.Id
+                Id         = message.Id,
+                ScheduleId = sequence.Schedule.Id
             };
         }
 

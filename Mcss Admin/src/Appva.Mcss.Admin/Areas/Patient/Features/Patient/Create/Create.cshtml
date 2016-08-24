@@ -1,4 +1,5 @@
-﻿@model CreatePatient
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model CreatePatient
 @{ 
     SetTitle("Ny boende");
 }
@@ -46,6 +47,14 @@
                 @Html.HiddenFor(m => m.Taxon)
                 @Html.ValidationMessageFor(m => m.Taxon)
 	        </div>
+            @if (Html.HasPermissionFor(Permissions.SecurityConfidentiality.CreatePeopleofPublicInterest))
+            {
+                @Html.FormGroup(x => x.IsPersonOfPublicInterestOrVip, "checkbox").Checkbox("Är allmänt känd?").Validate().Build()
+            }
+            @if (Html.HasPermissionFor(Permissions.SecurityConfidentiality.CreateAllDemographicInformationSensitivity))
+            {
+                @Html.FormGroup(x => x.IsPersonWithHightenedSensitivity, "checkbox").Checkbox("Har skyddade uppgifter?").Validate().Build()
+            }
         </div>
         if (Model.Assessments.IsNotNull())
         { 

@@ -1,4 +1,4 @@
-﻿// <copyright file="Class1.cs" company="Appva AB">
+﻿// <copyright file="OverviewInventoryModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,10 +8,8 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Domain.Entities;
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 

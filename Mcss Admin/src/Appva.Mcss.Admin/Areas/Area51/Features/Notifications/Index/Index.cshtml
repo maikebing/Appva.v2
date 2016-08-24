@@ -4,9 +4,9 @@
 @Html.Partial("_Area51MenuPartial")
 <div id="subheader" class="cf">
 	<h1>Notifieringar</h1>
-	@using (Html.Post("AddVersion162", "Notifications", null))
+	@using (Html.Post("AddPdf", "Notifications", null))
 	{
-		@Html.Submit("Installera Version 1.6.2", new { @class = "btn" })
+		@Html.Submit("Lägg till notis för PDF (alla tenants)", new { @class = "btn" })
 	}
 </div>
 <div id="content" class="cf">

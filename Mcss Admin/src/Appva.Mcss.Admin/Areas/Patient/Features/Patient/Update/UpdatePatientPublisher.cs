@@ -80,7 +80,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 assessments = this.taxonomyService.ListIn(selectedIds);
             }
             Patient patient = null;
-            if (! this.patientService.Update(message.Id, message.FirstName, message.LastName, message.PersonalIdentityNumber, message.Tag, message.IsDeceased, address, assessments, out patient))
+            if (! this.patientService.Update(message.Id, message.FirstName, message.LastName, message.PersonalIdentityNumber, message.Tag, message.IsDeceased, address, assessments, message.IsPersonOfPublicInterestOrVip, message.IsPersonWithHightenedSensitivity, out patient))
             {
                 throw new Exception("Unable to update patient ID " + message.Id);
             }

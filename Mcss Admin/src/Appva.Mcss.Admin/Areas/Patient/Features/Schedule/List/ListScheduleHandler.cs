@@ -74,12 +74,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler Overrides.
 
+        /// <inheritdoc />
         public override ScheduleListViewModel Handle(ListSchedule message)
         {
+            //// TODO: Should an inactive schedule settings be visible? 
+            //// How do we show inactive schedules or schedule settings?
             var account = this.persistence.Get<Account>(this.identities.PrincipalId);
             var scheduleSettings = TaskService.GetRoleScheduleSettingsList(account);
             var patient = this.persistence.Get<Patient>(message.Id);
-            var query = this.persistence.QueryOver<Schedule>()
+            var query   = this.persistence.QueryOver<Schedule>()
                 .Where(s => s.Patient.Id == patient.Id && s.IsActive == true)
                 .JoinQueryOver<ScheduleSettings>(s => s.ScheduleSettings)
                     .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
@@ -92,7 +95,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 patient.Id);
             return new ScheduleListViewModel
             {
-                Patient = this.transformer.ToPatient(patient),
+                Patient   = this.transformer.ToPatient(patient),
                 Schedules = schedules
             };
         }

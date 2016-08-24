@@ -214,6 +214,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        /// <summary>
+        /// If the account is synchronized with an external directory
+        /// </summary>
+        public virtual bool IsSynchronized
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Last time the account was synchronized with an external directory
+        /// </summary>
+        public virtual DateTime? LastSynchronized
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Public Static Method.

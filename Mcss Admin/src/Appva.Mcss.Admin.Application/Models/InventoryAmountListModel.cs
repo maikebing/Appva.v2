@@ -8,9 +8,7 @@ namespace Appva.Mcss.Admin.Application.Models
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -22,7 +20,7 @@ namespace Appva.Mcss.Admin.Application.Models
         #region Properties
 
         /// <summary>
-        /// The name of the list
+        /// The name of the list.
         /// </summary>
         public string Name
         {
@@ -31,7 +29,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// List of amounts in current list
+        /// List of amounts in current list.
         /// </summary>
         public IList<double> Amounts
         {

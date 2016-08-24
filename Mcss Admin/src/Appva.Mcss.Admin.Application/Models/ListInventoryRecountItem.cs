@@ -1,16 +1,14 @@
-// <copyright file="ListInventoryRecountItems.cs" company="Appva AB">
+// <copyright file="ListInventoryRecountItem.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author><a href="mailto:your@email.address">Your name</a></author>
+// <author>
+//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+// </author>
 namespace Appva.Mcss.Admin.Application.Models
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     #endregion
 
@@ -22,7 +20,7 @@ namespace Appva.Mcss.Admin.Application.Models
         #region Properties.
 
         /// <summary>
-        /// The patient name
+        /// The patient name.
         /// </summary>
         public string PatientName
         {
@@ -31,7 +29,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// The patient id
+        /// The patient id.
         /// </summary>
         public Guid PatientId
         {
@@ -40,7 +38,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// The inventory id
+        /// The inventory id.
         /// </summary>
         public Guid InventoryId
         {
@@ -49,7 +47,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// The inventory name
+        /// The inventory name.
         /// </summary>
         public string InventoryName
         {

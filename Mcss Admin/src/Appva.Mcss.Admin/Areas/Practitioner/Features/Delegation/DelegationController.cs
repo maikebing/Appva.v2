@@ -223,14 +223,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                     ScheduleSetting = sId,
                     Organisation = this.filtering.GetCurrentFilter().Id
                 }),
-                /*PreviousPeriodReport = this.reports.GetReportData(new ChartDataFilter
-                {
-                    Account = account.Id,
-                    StartDate = previousPeriodStart,
-                    EndDate = previousPeriodEnd,
-                    ScheduleSetting = sId,
-                    Organisation = this.filtering.GetCurrentFilter().Id
-                }),*/
                 Tasks = this.tasks.List(new ListTaskModel 
                 {
                     StartDate = startDate.GetValueOrDefault(),
@@ -266,32 +258,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         }
 
         /// <summary>
-        /// Generates JSON chart code for delegations.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <param name="tId">Optional taxon id filter</param>
-        /// <param name="sId">Optional schedule settings filter</param>
-        /// <param name="startDate">Optional start date - defaults to now</param>
-        /// <param name="endDate">Optional end date - defaults to last instant of today</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        /*[HttpGet]
-        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        public ActionResult Chart(Guid id, Guid? tId, Guid? sId, DateTime startDate, DateTime endDate)
-        {
-            return Json(ExecuteCommand<List<object[]>>(new CreateChartCommand<DelegationReportFilter>
-            {
-                StartDate = startDate,
-                EndDate = endDate,
-                Filter = new DelegationReportFilter
-                {
-                    AccountId = id,
-                    TaxonId = tId,
-                    ScheduleSettingsId = sId
-                }
-            }), JsonRequestBehavior.AllowGet);
-        }*/
-
-        /// <summary>
         /// Returns an Excel document with all delegations for this account.
         /// </summary>
         /// <param name="account">The account id</param>
@@ -305,7 +271,17 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [PermissionsAttribute(Permissions.Delegation.ReportValue)]
         public FileContentResult Excel(Guid account, Guid? taxon, Guid? sId, DateTime startDate, DateTime endDate)
         {
-            var query = this.persistence.QueryOver<Task>()
+            var tasks = this.tasks.List(new ListTaskModel
+                {
+                    AccountId         = account,
+                    SkipPaging        = true,
+                    IsActive          = true,
+                    ScheduleSettingId = sId,
+                    StartDate         = startDate.Date,
+                    EndDate           = endDate.LastInstantOfDay(),
+                    TaxonId           = this.filtering.GetCurrentFilter().Id
+                }, 1, 30);
+            /*var query = this.persistence.QueryOver<Task>()
                 .Where(x => x.IsActive == true)
                 .And(x => x.OnNeedBasis == false)
                 .And(x => x.UpdatedAt >= startDate)
@@ -319,9 +295,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                 TaxonId = taxon,
                 ScheduleSettingsId = sId
             }.Filter(query);
-            var tasks = query.List();
+            var tasks = query.List();*/
             var bytes = ExcelWriter.CreateNew<Task, ExcelTaskModel>(
-                PathResolver.ResolveAppRelativePath("Templates\\Template.xls"),
+                PathResolver.ResolveAppRelativePath("Templates\\Template.xlsx"),
                 x => new ExcelTaskModel
                 {
                     Task = x.Name,
@@ -335,11 +311,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                     CompletedBy = x.CompletedBy.IsNotNull() ? x.CompletedBy.FullName : "",
                     TaskCompletionStatus = Status(x)
                 },
-                tasks);
+                tasks.Entities);
             ITenantIdentity identity;
             this.tenantService.TryIdentifyTenant(out identity);
             return File(bytes, "application/vnd.ms-excel",
-                string.Format("Rapport-{0}-{1}.xls", identity.Name.Replace(" ", "-"),
+                string.Format("Rapport-{0}-{1}.xlsx", identity.Name.Replace(" ", "-"),
                 DateTime.Now.ToFileTimeUtc()));
         }
 
@@ -429,9 +405,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         [Dispatch("list","delegation")]
         public ActionResult Update(UpdateDelegationModel request)
-        {
+            {
             return this.View();
-        }
+                }
 
         #endregion
 
@@ -560,9 +536,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [PermissionsAttribute(Permissions.Delegation.ReadValue)]
         [Dispatch]
         public ActionResult Print(Identity<PrintDelegationModel> request)
-        {
+                {
             return this.View();
-        }
+            }
 
         #endregion
 

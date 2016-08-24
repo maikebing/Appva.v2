@@ -165,7 +165,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if(schedule.ScheduleSettings.HasInventory){
                 if(message.CreateNewInventory)
                 {
-                    message.Inventory = this.inventories.Create(message.Name, null, null, message.Patient);
+                    message.Inventory = this.inventories.Create(message.Name, null, null, schedule.Patient);
                 }
                 inventory = this.inventories.Find(message.Inventory.GetValueOrDefault());
             }

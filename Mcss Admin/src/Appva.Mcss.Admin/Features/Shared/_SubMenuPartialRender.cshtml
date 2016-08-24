@@ -1,13 +1,19 @@
 ﻿@model IList<IMenuItem>
+@{
+    var context = ViewContext.ParentActionViewContext ?? ViewContext;
+    var actionName = context.RouteData.GetRequiredString("action");
+    var controllerName = context.RouteData.GetRequiredString("controller");
+    var areaName = context.RouteData.DataTokens["area"] as string;
+}
 <div class="people-nav">
     <ul class="nav cf">
         @foreach (var item in Model)
         {
-            if (item.IsSelected && item.Children.Count > 0)
+            if (item.IsSelected(actionName, controllerName, areaName) && item.Children.Count > 0)
             {
                 foreach(var child in item.Children)
                 {
-                    <li class="@child.ListItemCssClass @(child.IsSelected ? "sel" : string.Empty)">
+                    <li class="@child.ListItemCssClass @(child.IsSelected(actionName, controllerName, areaName) ? "sel" : string.Empty)">
                         @Html.ActionLink(child.Label, child.Action, child.Controller, new { Area = child.Area }, new { @class = @child.AnchorCssClass })
                     </li>
                 }

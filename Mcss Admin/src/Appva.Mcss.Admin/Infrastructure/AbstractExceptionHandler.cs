@@ -13,7 +13,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     using Appva.Core.Exceptions;
     using Appva.Core.Logging;
     using Appva.Mcss.Admin.Configuration;
-    using Appva.Mvc.Messaging;
+    using Appva.Core.Messaging.RazorMail;
 
     #endregion
 

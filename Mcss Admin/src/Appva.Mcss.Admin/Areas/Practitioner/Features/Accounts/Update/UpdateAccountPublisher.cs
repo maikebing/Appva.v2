@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mvc.Messaging;
+    using Appva.Core.Messaging.RazorMail;
 
     #endregion
 
@@ -101,6 +101,11 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             }
             if (message.PersonalIdentityNumber.IsNotNull())
             {
+                //// If PersonalIdentityNumber is changed, disabel sync
+                if(account.IsSynchronized)
+                {
+                    account.IsSynchronized = account.PersonalIdentityNumber == message.PersonalIdentityNumber;
+                }
                 account.PersonalIdentityNumber = message.PersonalIdentityNumber;
             }
             if (taxon.IsNotNull())

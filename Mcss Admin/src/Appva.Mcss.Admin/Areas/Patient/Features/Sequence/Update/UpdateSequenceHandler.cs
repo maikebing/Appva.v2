@@ -15,12 +15,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using Appva.Core.Resources;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
-using Appva.Core.Logging;
+    using Appva.Mcss.Admin.Application.Services;
 
     #endregion
 
@@ -32,9 +32,9 @@ using Appva.Core.Logging;
         #region Private Variables.
 
         /// <summary>
-        /// The <see cref="ISequenceService"/>.
+        /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly ISequenceService sequenceService;
+        private readonly IAuditService auditService;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -53,9 +53,8 @@ using Appva.Core.Logging;
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceHandler"/> class.
         /// </summary>
-        public UpdateSequenceHandler(ISequenceService sequenceService, IInventoryService inventories, IPersistenceContext context)
+        public UpdateSequenceHandler( IInventoryService inventories, IPersistenceContext context)
         {
-            this.sequenceService = sequenceService;
             this.inventories = inventories;
             this.context = context;
         }
@@ -68,32 +67,32 @@ using Appva.Core.Logging;
         public override UpdateSequenceForm Handle(UpdateSequence message)
         {
             //// FIXME: Log here!
-            var sequence = this.sequenceService.Find(message.SequenceId);
+            var sequence = this.context.Get<Sequence>(message.SequenceId);
             var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
             return new UpdateSequenceForm
             {
-                Id = message.Id,
-                Name = sequence.Name,
-                Description = sequence.Description,
-                StartDate = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.StartDate : (DateTime?) null,
-                EndDate = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.EndDate : (DateTime?) null,
-                RangeInMinutesBefore = sequence.RangeInMinutesBefore,
-                RangeInMinutesAfter = sequence.RangeInMinutesAfter,
-                Delegation = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
-                Delegations = this.GetDelegations(schedule),
-                Dates = sequence.Dates,
-                Interval = sequence.Interval,
-                Times = this.CreateTimes(sequence),
-                OnNeedBasis = sequence.OnNeedBasis,
-                OnNeedBasisStartDate = sequence.OnNeedBasis ? sequence.StartDate : (DateTime?) null,
-                OnNeedBasisEndDate = sequence.OnNeedBasis ? sequence.EndDate : (DateTime?) null,
-                Reminder = sequence.Reminder,
-                ReminderInMinutesBefore = sequence.ReminderInMinutesBefore,
-                Patient = sequence.Patient,
-                Schedule = sequence.Schedule,
-                Nurse = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse),
-                Inventory = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
-                Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null
+                Id                          = message.Id,
+                Name                        = sequence.Name,
+                Description                 = sequence.Description,
+                StartDate                   = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.StartDate : (DateTime?) null,
+                EndDate                     = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.EndDate : (DateTime?) null,
+                RangeInMinutesBefore        = sequence.RangeInMinutesBefore,
+                RangeInMinutesAfter         = sequence.RangeInMinutesAfter,
+                Delegation                  = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
+                Delegations                 = this.GetDelegations(schedule),
+                Dates                       = sequence.Dates,
+                Interval                    = sequence.Interval,
+                Times                       = this.CreateTimes(sequence),
+                OnNeedBasis                 = sequence.OnNeedBasis,
+                OnNeedBasisStartDate        = sequence.OnNeedBasis ? sequence.StartDate : (DateTime?) null,
+                OnNeedBasisEndDate          = sequence.OnNeedBasis ? sequence.EndDate : (DateTime?) null,
+                Reminder                    = sequence.Reminder,
+                ReminderInMinutesBefore     = sequence.ReminderInMinutesBefore,
+                Patient                     = sequence.Patient,
+                Schedule                    = sequence.Schedule,
+                Nurse                       = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse),
+                Inventory                   = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
+                Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null
             };
         }
 
@@ -119,7 +118,7 @@ using Appva.Core.Logging;
                 .List();
             return delegations.Select(x => new SelectListItem
             {
-                Text = x.Name,
+                Text  = x.Name,
                 Value = x.Id.ToString()
             });
         }

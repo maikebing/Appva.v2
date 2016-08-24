@@ -183,6 +183,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="id">The Guid</param>
         /// <returns></returns>
         Account Load(Guid id);
+
+        /// <summary>
+        /// Lists all the accounts
+        /// </summary>
+        /// <returns></returns>
+        IList<Account> List();
     }
 
     /// <summary>
@@ -478,6 +484,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public Account Load(Guid id)
         {
             return this.repository.Load(id);
+        }
+
+        /// <inheritdoc />
+        public IList<Account> List()
+        {
+            return this.repository.List();
         }
 
         /// <inheritdoc />

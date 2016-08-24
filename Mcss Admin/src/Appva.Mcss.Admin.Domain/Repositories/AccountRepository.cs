@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using NHibernate;
     using NHibernate.Criterion;
     using NHibernate.Dialect.Function;
+using System.Collections.Generic;
 
     #endregion
 
@@ -51,6 +52,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="hsaId">The unique HSA id</param>
         /// <returns>An <see cref="Account"/> if found, else null</returns>
         Account FindByHsaId(string hsaId);
+
+        ///IList<Account> ListByExpiringDelegate();
 
         /// <summary>
         /// Search for accounts to given search-criteria

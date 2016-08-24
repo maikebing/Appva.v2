@@ -38,7 +38,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="isPending"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        IList<Delegation> List(Guid? byAccount = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null);
+        IList<Delegation> List(Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null);
 
         /// <summary>
         /// Saves a delegation to database
@@ -107,9 +107,9 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IList<Delegation> List(Guid? byAccount = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null)
+        public IList<Delegation> List(Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null)
         {
-            return this.repository.List(byAccount, isPending, isGlobal, isActive);
+            return this.repository.List(byAccount, createdBy, byCategory, isPending, isGlobal, isActive);
         }
 
         public void Save(Delegation delegation)

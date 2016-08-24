@@ -35,14 +35,14 @@ using System.Linq;
         private readonly IIdentityService identityService;
 
         /// <summary>
-        /// The <see cref="ITaxonomyService"/>
-        /// </summary>
-        private readonly ITaxonomyService taxonomyService;
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>
+        /// the <see cref="IPersistenceContext"/>
         /// </summary>
         private readonly IPersistenceContext persistence;
+
+        /// <summary>
+        /// The <see cref="IDelegationService"/>
+        /// </summary>
+        private readonly IDelegationService delegationService;
 
         /// <summary>
         /// The <see cref="IAccountService"/>
@@ -61,13 +61,18 @@ using System.Linq;
         /// <summary>
         /// Initializes a new instance of the <see cref="RenewDelegationPublisher"/> class.
         /// </summary>
-        public RenewDelegationPublisher(IIdentityService identityService, ITaxonomyService taxonomyService, IAccountService accountService, IAuditService auditService,  IPersistenceContext persistence)
+        public RenewDelegationPublisher(
+            IIdentityService identityService, 
+            IAccountService accountService, 
+            IAuditService auditService,  
+            IPersistenceContext persistence,
+            IDelegationService delegationService)
         {
             this.identityService    = identityService;
-            this.taxonomyService    = taxonomyService;
             this.accountService     = accountService;
             this.auditService       = auditService;
             this.persistence        = persistence;
+            this.delegationService  = delegationService;
         }
 
         #endregion
@@ -77,13 +82,13 @@ using System.Linq;
         /// <inheritdoc />
         public override ListDelegation Handle(RenewDelegationsModel message)
         {
-            var currentUser = this.accountService.Find(this.identityService.PrincipalId);
-            var taxon = this.taxonomyService.Get(message.DelegationCategoryId);
-            var delegations = this.persistence.QueryOver<Delegation>()
-                .Where(x => x.Account.Id == message.AccountId)
-                .JoinQueryOver<Taxon>(x => x.Taxon)
-                .Where(x => x.Parent.Id == taxon.Parent.Id)
-                .List();
+            var currentUser = this.accountService.Load(this.identityService.PrincipalId);
+            var delegations = this.delegationService.List(
+                byAccount:  message.AccountId,
+                createdBy:  message.RenewAllDelegations ? (Guid?)null : this.identityService.PrincipalId, 
+                byCategory: message.DelegationCategoryId,
+                isActive:   true);
+
             foreach (var delegation in delegations)
             {
                 this.persistence.Save(new ChangeSet
@@ -97,19 +102,19 @@ using System.Linq;
                             Property = "StartDate",
                             OldState = delegation.StartDate.ToShortDateString(),
                             NewState = message.StartDate.ToShortDateString(),
-                            TypeOf = typeof(DateTime).ToString()
+                            TypeOf   = typeof(DateTime).ToString()
                         },
                         new Change {
                             Property = "EndDate",
                             OldState = delegation.EndDate.ToShortDateString(),
                             NewState = message.EndDate.ToShortDateString(),
-                            TypeOf = typeof(DateTime).ToString()
+                            TypeOf   = typeof(DateTime).ToString()
                         },
                         new Change {
                             Property = "CreatedBy",
                             OldState = delegation.CreatedBy.ToString(),
                             NewState = currentUser.ToString(),
-                            TypeOf = typeof(Account).ToString()
+                            TypeOf   = typeof(Account).ToString()
                         }
                     }
                 });

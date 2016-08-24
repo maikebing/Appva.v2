@@ -1,4 +1,4 @@
-﻿@model Appva.Mcss.Web.ViewModels.DelegationPrintViewModel
+﻿@model Appva.Mcss.Admin.Areas.Practitioner.Models.PrintDelegationModel
 @{
     SetTitle("Delegeringsbeslut");
     Layout = "~/Areas/Patient/Features/Shared/_PrintLayout.cshtml";
@@ -12,38 +12,49 @@
 	<table>
 		<tbody>
 			<tr>
-				<td>Namn<h2>@Model.Account.FullName</h2></td>
-				<td>Personnummer<h2>@Model.Account.PersonalIdentityNumber</h2></td>
-				<td>Titel<h2>@Model.Account.Title</h2></td>
+				<td>Namn<h2>@Model.DelegationRecipient.FullName</h2></td>
+				<td>Personnummer<h2>@Model.DelegationRecipient.PersonalIdentityNumber</h2></td>
+				<td>Titel<h2>@Model.DelegationRecipient.Title</h2></td>
 			</tr>
 		</tbody>
 	</table>
 	<h2>Delegerade hälso- och sjukvårdsuppgifter:</h2>
     <table>
-    	<caption>Den verksamhet där delegeringen gäller är: _____________________________________</caption>
 		<thead>
 			<tr>
 				<th colspan="3">Delegerade hälso- och sjukvårdsuppgifter:</th>
 			</tr>
 			<tr class="head">
 				<th scope="col">Delegering</th>
-				<th scope="col" class="pats">För boende</th>
+				<th scope="col" class="pats">Gäller för</th>
 				<th scope="col">Gäller (max 1 år)</th>
 			</tr>
 		</thead>
 		<tbody>
-            @foreach (var delegation in Model.Delegations) {
-			<tr>
-				<td>@delegation.Name</td>
-				<td class="pats">
-					<ul>
-                        @foreach(var patient in delegation.Patients) {
-						    <li>@patient.FullName</li>
+            @foreach (var delegation in Model.Delegations)
+            {
+                <tr>
+                    <td>@delegation.Name</td>
+                    <td class="pats">
+                        @if (delegation.Patients.Count > 0)
+                        {
+                            <ul>
+                                @foreach (var patient in delegation.Patients)
+                                {
+                                    <li>@patient.Value</li>
+                                }
+                            </ul>
                         }
-					</ul>
-				</td>
-				<td>@String.Format("{0:yyyy-MM-dd}", delegation.StartDate) till @String.Format("{0:yyyy-MM-dd}", delegation.EndDate)</td>
-			</tr>
+                        else
+                        {
+                            <p>
+                                Alla boende på:<br />
+                                <b>@delegation.Address</b>
+                            </p>
+                        }
+                    </td>
+                    <td>@String.Format("{0:yyyy-MM-dd}", delegation.StartDate) till @String.Format("{0:yyyy-MM-dd}", delegation.EndDate)</td>
+                </tr>
             }
 		</tbody>
 	</table>
@@ -73,7 +84,7 @@
 			<strong>Namnunderskrift delegerande sjuksköterska;</strong>
 			<p>Datum</p>
 			<p>Underskrift</p>
-			<p id="nameTitle">@Model.Identity.FullName</p>
+			<p id="nameTitle">@Model.DelegationIssuer.FullName</p>
 		</div>
 		<div class="col">
 			<strong>Namnunderskrift av den som tar emot delegeringen;</strong>

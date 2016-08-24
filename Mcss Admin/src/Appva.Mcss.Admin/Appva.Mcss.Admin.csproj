@@ -114,8 +114,8 @@
       <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RazorEngine, Version=3.7.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\RazorEngine.3.7.3\lib\net45\RazorEngine.dll</HintPath>
+    <Reference Include="RazorEngine, Version=3.9.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\RazorEngine.3.9.0\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -442,7 +442,12 @@
     <!--<Compile Include="Areas\Report\Features\ReportData\Chart\ReportChart.cs" />
     <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChartModel.cs" />
     <Compile Include="Areas\Report\Features\ReportData\ReportDataController.cs" />-->
-    <Compile Include="Areas\Practitioner\Features\Delegation\Edit\EditDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Overview\DelegationOverviewHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Overview\DelegationOverviewModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Print\PrintDelegationHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Print\PrintDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Update\UpdateDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Update\UpdateDelegationHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegation.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\List\ListDelegationModel.cs" />
@@ -451,6 +456,7 @@
     <Compile Include="Areas\Practitioner\Features\Delegation\Sharedf\DelegationFormModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Renew\RenewDelegations.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Renew\RenewDelegationsModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Update\UpdateDelegationPublisher.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReport.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
@@ -929,10 +935,10 @@
     <Content Include="Areas\Practitioner\Features\Delegation\AddKnowledgeTest\AddKnowledgeTest.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\Changeset\Changeset.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\Create\Create.cshtml" />
-    <Content Include="Areas\Practitioner\Features\Delegation\DelegationPrint\DelegationPrint.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Print\Print.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\DelegationReport\DelegationReport.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\EditKnowledgeTests\EditKnowledgeTests.cshtml" />
-    <Content Include="Areas\Practitioner\Features\Delegation\Edit\Edit.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Update\Update.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\Inactivate\Inactivate.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\Issued\Issued.cshtml" />
   </ItemGroup>

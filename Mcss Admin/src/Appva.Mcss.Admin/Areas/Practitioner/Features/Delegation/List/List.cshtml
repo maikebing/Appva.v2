@@ -7,7 +7,7 @@
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
     <div id="subheader" class="cf">
 		<h1>Aktuell delegering</h1>
-        @Html.ActionLink(Permissions.Delegation.Read, "Skriv ut delegeringsbeslut", "DelegationPrint", new { id = Model.Account.Id }, new { @class = "btn printp" })
+        @Html.ActionLink(Permissions.Delegation.Read, "Skriv ut delegeringsbeslut", "Print", new { id = Model.Account.Id }, new { @class = "btn printp" })
 		@Html.ActionLink(Permissions.Delegation.Create, "Lägg till delegering", "Create", new { id = Model.Account.Id }, new { @class = "btn lb-link" })
 	</div>
     <div id="content">
@@ -76,7 +76,7 @@
                                     @String.Format("{0:yyyy-MM-dd}", delegation.StartDate) till @String.Format("{0:yyyy-MM-dd}", delegation.EndDate) <em>(@delegation.EndDate.Subtract(DateTime.Now).Days dagar kvar)</em>
                                 </td>
 					            <td class="btns">
-                                    @Html.ActionLink(Permissions.Delegation.Update, "Ändra", "Edit", new { Id = delegation.Id }, new { @class = "btn lb-link" })
+                                    @Html.ActionLink(Permissions.Delegation.Update, "Ändra", "Update", new { Id = delegation.Id }, new { @class = "btn lb-link" })
                                     <!--<a class="btn btn-print" href="#">Skriv ut</a>-->
                                     @Html.ActionLink(Permissions.Delegation.Delete, "Ta bort", "Inactivate", new { Id = delegation.Id }, new { @class = "btn btn-del lb-link" })
                                 </td>

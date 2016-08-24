@@ -38,6 +38,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mvc;
     using Appva.Mcss.Admin.Areas.Practitioner.Models;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mcss.Admin.Infrastructure.Models;
 
     #endregion
 
@@ -408,35 +410,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// </summary>
         /// <param name="id">The delegation id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("Edit/{id:guid}")]
+        [Route("update/{id:guid}")]
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
-        public ActionResult Edit(Guid id)
+        [Dispatch]
+        public ActionResult Update(Identity<UpdateDelegationModel> request)
         {
-            var filterT = this.filtering.GetCurrentFilter();
-            var delegation = this.persistence.Get<Delegation>(id);
-            var patients = this.persistence.QueryOver<Patient>()
-                .Where(p => p.IsActive == true)
-                .And(p => p.Deceased == false)
-                .OrderBy(x => x.LastName).Asc
-                .ThenBy(x => x.FirstName).Asc
-                .JoinQueryOver<Taxon>(x => x.Taxon)
-                    .Where(Restrictions.On<Taxon>(x => x.Path)
-                    .IsLike(filterT.Id.ToString(), MatchMode.Anywhere))
-                .List();
-            return View(new DelegationEditViewModel
-            {
-                Id = delegation.Id,
-                StartDate = delegation.StartDate,
-                EndDate = delegation.EndDate,
-                ConnectedPatients = delegation.Patients.ToList(),
-                PatientItems = patients.Select(x => new SelectListItem
-                {
-                    Text = string.Format("{0} {1}", x.FirstName, x.LastName),
-                    Value = x.Id.ToString()
-                }).ToList(),
-                Taxons = TaxonomyHelper.SelectList(delegation.OrganisationTaxon, this.taxonomyService.List(TaxonomicSchema.Organization)),
-                Taxon = delegation.OrganisationTaxon.IsNull() ? this.taxonomyService.Roots(TaxonomicSchema.Organization).First().Id.ToString() : delegation.OrganisationTaxon.Id.ToString()
-            });
+            return this.View();
         }
 
         /// <summary>
@@ -446,96 +425,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="model">The delegation model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost]
-        [Route("Edit/{id:guid}")]
+        [Route("update/{id:guid}")]
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
-        public ActionResult Edit(Guid id, DelegationEditViewModel model)
+        [Dispatch("list","delegation")]
+        public ActionResult Update(UpdateDelegationModel request)
         {
-            var delegation = this.persistence.Get<Delegation>(id);
-            var oldPatients = delegation.Patients;
-            var rootId = this.taxonomyService.Roots(TaxonomicSchema.Organization).First().Id;
-            var orgTaxon = model.Taxon.IsNotNull() ? this.persistence.Get<Taxon>(new Guid(model.Taxon)) : this.persistence.Get<Taxon>(rootId);
-            foreach (var patient in delegation.Patients.ToArray<Patient>())
-            {
-                delegation.Patients.Remove(patient);
-            }
-            var patients = new List<Patient>();
-            if (model.Patients != null && model.Patients.Count() > 0)
-            {
-                foreach (string guid in model.Patients)
-                {
-                    Guid patientId;
-                    if (Guid.TryParse(guid, out patientId))
-                    {
-                        Patient patient = this.persistence.Get<Patient>(patientId);
-                        if (!patients.Contains(patient))
-                        {
-                            delegation.Add(patient);
-                        }
-                    }
-                }
-                delegation.IsGlobal = false;
-            }
-            else
-            {
-                delegation.IsGlobal = true;
-            }
-            this.persistence.Save(new ChangeSet
-            {
-                EntityId = delegation.Id,
-                Entity = typeof(Delegation).ToString(),
-                Revision = delegation.Version,
-                ModifiedBy = Identity(),
-                Changes = new List<Change> {
-                    new Change {
-                        Property = "StartDate",
-                        OldState = delegation.StartDate.ToShortDateString(),
-                        NewState = model.StartDate.ToShortDateString(),
-                        TypeOf = typeof(DateTime).ToString()
-                    },
-                    new Change {
-                        Property = "EndDate",
-                        OldState = delegation.EndDate.ToShortDateString(),
-                        NewState = model.EndDate.ToShortDateString(),
-                        TypeOf = typeof(DateTime).ToString()
-                    },
-                    new Change {
-                        Property = "Patients",
-                        OldState = string.Join(",", oldPatients),
-                        NewState = string.Join(",", patients),
-                        TypeOf = typeof(Array).ToString()
-                    },
-                    new Change {
-                        Property = "OrganisationTaxon",
-                        OldState = delegation.Taxon.ToString(),
-                        NewState = orgTaxon.ToString(),
-                        TypeOf = typeof(Taxon).ToString()
-                    },
-                    new Change {
-                        Property = "CreatedBy",
-                        OldState = delegation.CreatedBy.ToString(),
-                        NewState = Identity().ToString(),
-                        TypeOf = typeof(Account).ToString()
-                    }
-                }
-            });
-            delegation.StartDate = model.StartDate;
-            delegation.EndDate = model.EndDate;
-            delegation.UpdatedAt = DateTime.Now;
-            delegation.OrganisationTaxon = orgTaxon;
-            delegation.CreatedBy = Identity();
-            this.persistence.Update(delegation);
-            var currentUser = Identity();
-            this.auditing.Update(
-                "ändrade delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för patient/patienter {4} för användare {5} (REF: {6}).",
-                delegation.Name,
-                delegation.StartDate, 
-                delegation.EndDate,
-                delegation.Id,
-                delegation.IsGlobal ? "alla" : string.Join(",", delegation.Patients.ToArray().Select(x => x.FullName)),
-                delegation.Account.FullName,
-                delegation.Account.Id);
-            return this.RedirectToAction("List", new { Id = delegation.Account.Id });
-
+            return this.View();
         }
 
         #endregion
@@ -661,38 +556,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// </summary>
         /// <param name="id">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("DelegationPrint/{id:guid}")]
+        [Route("print/{id:guid}")]
         [PermissionsAttribute(Permissions.Delegation.ReadValue)]
-        public ActionResult DelegationPrint(Guid id)
+        [Dispatch]
+        public ActionResult Print(Identity<PrintDelegationModel> request)
         {
-            var account = this.persistence.QueryOver<Account>()
-                .Where(x => x.Id == id)
-                .Fetch(x => x.Roles).Eager.SingleOrDefault();
-            var delegations = new List<Delegation>();
-            foreach (var delegation in account.Delegations)
-            {
-                if (delegation.IsActive)
-                {
-                    delegations.Add(delegation);
-                }
-            }
-            var knowledgeTests = this.persistence.QueryOver<KnowledgeTest>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.Account == account)
-                .List();
-            var user = Identity();
-            this.auditing.Read(
-                "skapade utskrift för delegeringar för användare {0} (REF: {1}).",
-                    account.FullName,
-                    account.Id);
-            return View(new DelegationPrintViewModel
-            {
-                Account = account,
-                AccountId = account.Id,
-                Delegations = delegations,
-                KnowledgeTests = knowledgeTests,
-                Identity = Identity()
-            });
+            return this.View();
         }
 
         #endregion
@@ -706,11 +575,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="taxonId">The taxon id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [Route("renew/{id:guid}/{DelegationCategoryId:guid}")]
-        [Dispatch()]
+        [Dispatch]
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         public ActionResult Renew(RenewDelegations request)
         {
-            return View();
+            return this.View();
         }
 
         /// <summary>
@@ -721,37 +590,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="model">The delegation date span model</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost, ValidateAntiForgeryToken]
-        [Route("renew/{id:guid}/{taxonId:guid}")]
+        [Route("renew/{accountId:guid}/{delegationCategoryId:guid}")]
+        [Dispatch("List", "Delegation")]
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
-        public ActionResult Renew(Guid id, Guid taxonId, DelegationDateSpanViewModel model)
+        public ActionResult Renew(RenewDelegationsModel request)
         {
-            if (ModelState.IsValid)
-            {
-                return this.RedirectToAction("UpdateAllActiveDelegationsWithStartEndDate", new
-                {
-                    Id = id,
-                    TaxonId = taxonId,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate
-                });
-            }
-            return View(model);
-        }
-
-        /// <summary>
-        /// Updates all active delegations with new start/end dates.
-        /// </summary>
-        /// <param name="id">The account id</param>
-        /// <param name="taxonId">The taxon id</param>
-        /// <param name="startDate">The start date</param>
-        /// <param name="endDate">The end date</param>
-        /// <returns><see cref="ActionResult"/></returns>
-        [Route("UpdateAllActiveDelegationsWithStartEndDate/{id:guid}/{taxonId:guid}")]
-        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
-        public ActionResult UpdateAllActiveDelegationsWithStartEndDate(Guid id, Guid taxonId, DateTime startDate, DateTime endDate)
-        {
-            
-            return this.RedirectToAction("List", new { Id = id });
+            return this.View();
         }
 
         #endregion
@@ -871,42 +715,10 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("overview")]
         [PermissionsAttribute(Permissions.Dashboard.ReadDelegationValue)]
+        [Dispatch(typeof(Parameterless<DelegationOverviewModel>))]
         public PartialViewResult Overview()
         {
-            var taxon = this.filtering.GetCurrentFilter();
-            var fiftyDaysFromNow = DateTime.Today.AddDays(50);
-            var delegations = this.persistence.QueryOver<Delegation>()
-                .Where(x => x.IsActive == true && x.Pending == false)
-                .And(x => x.EndDate <= fiftyDaysFromNow)
-                .OrderBy(o => o.EndDate).Asc
-                    .JoinQueryOver<Account>(x => x.Account)
-                        .Where(x => x.IsActive == true)
-                    .JoinQueryOver<Taxon>(x => x.Taxon)
-                        .WhereRestrictionOn(x => x.Path).IsLike(taxon.Id.ToString(), MatchMode.Anywhere)
-                .List();
-            var delegationsExpired = from x in delegations
-                                     where x.EndDate.Subtract(DateTimeUtilities.Now()).Days < 0
-                                     group x by x.Account into gr
-                                     select new DelegationExpired
-                                     {
-                                         Id = gr.Key.Id,
-                                         FullName = gr.Key.FullName,
-                                         DaysLeft = gr.Min(x => x.EndDate.Subtract(DateTimeUtilities.Now()).Days)
-                                     };
-            var delegationsExpiresWithin50Days = from x in delegations
-                                                 where x.EndDate.Subtract(DateTimeUtilities.Now()).Days >= 0
-                                                 group x by x.Account into gr
-                                                 select new DelegationExpired
-                                                 {
-                                                     Id = gr.Key.Id,
-                                                     FullName = gr.Key.FullName,
-                                                     DaysLeft = gr.Min(x => x.EndDate.Subtract(DateTimeUtilities.Now()).Days)
-                                                 };
-            return PartialView(new DelegationOverviewViewModel
-            {
-                DelegationsExpired = delegationsExpired,
-                DelegationsExpiresWithin50Days = delegationsExpiresWithin50Days
-            });
+            return this.PartialView();
         }
 
         #endregion

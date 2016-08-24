@@ -25,6 +25,18 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
     /// </summary>
     public sealed class RenewDelegationsModel : IRequest<ListDelegation>
     {
+        #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RenewDelegationsModel"/> class.
+        /// </summary>
+        public RenewDelegationsModel()
+        {
+            this.RenewAllDelegations = false;
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -46,6 +58,16 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
         [DataType(DataType.Date)]
         [DisplayName("Till")]
         public DateTime EndDate { get; set; }
+
+        /// <summary>
+        /// If all delegations should be renewed or only those created by current user
+        /// </summary>
+        [Required(ErrorMessage = "Måste väljas")]
+        public bool RenewAllDelegations
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The account-id

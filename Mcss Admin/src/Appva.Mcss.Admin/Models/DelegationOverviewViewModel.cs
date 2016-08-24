@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Appva.Mcss.Admin.Domain.Entities;
+using Appva.Mcss.Admin.Areas.Practitioner.Models;
 
 namespace Appva.Mcss.Web.ViewModels {
     public class DelegationOverviewViewModel {
@@ -12,9 +13,5 @@ namespace Appva.Mcss.Web.ViewModels {
         public IEnumerable<DelegationExpired> DelegationsExpired { get; set; }
     }
 
-    public class DelegationExpired {
-        public Guid Id { get; set; }
-        public string FullName { get; set; }
-        public int DaysLeft { get; set; }
-    }
+   
 }

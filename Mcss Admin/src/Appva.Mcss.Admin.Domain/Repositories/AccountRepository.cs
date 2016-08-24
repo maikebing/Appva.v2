@@ -171,7 +171,7 @@ using System.Collections.Generic;
                     .Where(() => delegation.IsActive)
                     .And(() => delegation.EndDate <= expiringDate)
                     .Inner.JoinAlias(() => delegation.OrganisationTaxon, () => orgTaxon)
-                        .WhereRestrictionOn(() => orgTaxon.Path).IsLike(taxonFilter.StartsWith(taxonFilter, MatchMode.Start))
+                        .WhereRestrictionOn(() => orgTaxon.Path).IsLike(taxonFilter, MatchMode.Start)
                     .Select(
                         Projections.ProjectionList()
                             .Add(Projections.Group<Account>(x => x.Id).WithAlias(() => accountModel.Id))

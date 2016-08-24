@@ -218,6 +218,9 @@
     <Compile Include="Areas\Area51\Features\Calendar\Index\CalenderIndexHandler.cs" />
     <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColors.cs" />
     <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColorsPublisher.cs" />
+    <Compile Include="Areas\Area51\Features\Delegation\AddOrganisation\AddOrganisation.cs" />
+    <Compile Include="Areas\Area51\Features\Delegation\AddOrganisation\AddOrganisationHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Delegation\DelegationController.cs" />
     <Compile Include="Areas\Area51\Features\Home\HomeController.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsNotice.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsHandler.cs" />
@@ -1145,6 +1148,7 @@
     <Content Include="Areas\Area51\Features\Inventory\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Area51\Features\Inventory\Add\Add.cshtml" />
+    <Content Include="Areas\Area51\Features\Delegation\Index\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
   </ItemGroup>

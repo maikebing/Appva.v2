@@ -1,13 +1,13 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationRevisionViewModel
 @{
     SetTitle("Delegering");
-    var wasActive = true;
+    var wasActive = Model.Delegation.Pending == false;
     DateTime startDate = DateTime.Now;
     DateTime endDate = DateTime.Now;
     var patients = string.Empty;
     foreach(var change in Model.ChangeSet.Changes) {
-        if (change.Property.Equals("Active")) {
-            wasActive = (change.NewState.Equals("True")) ? true : false;
+        if (change.Property.Equals("IsActive")) {
+            wasActive = (change.NewState.Equals("true")) ? true : false;
         }
         if (change.Property.Equals("StartDate")) {
             startDate = DateTime.Parse(change.NewState);
@@ -46,7 +46,7 @@
                         </td>
 						<td>@Model.Delegation.Name</td>
                         <td>@patients</td>
-                        <td>@Model.Account.FullName</td>
+                        <td>@Model.Delegation.CreatedBy.FullName</td>
 					</tr>
 				</tbody>
 			</table>

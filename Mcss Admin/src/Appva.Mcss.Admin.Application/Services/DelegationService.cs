@@ -71,6 +71,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="delegation"></param>
         void Update(Guid delegationId, DelegationUpdateModel model);
+
+        /// <summary>
+        /// Activates a pending delegation
+        /// </summary>
+        /// <param name="delegation"></param>
+        void Activate(Delegation delegation);
     }
 
     /// <summary>
@@ -302,9 +308,21 @@ namespace Appva.Mcss.Admin.Application.Services
             this.repository.Update(delegation,changeSet);
         }
 
+        /// <inheritdoc />
+        public void Activate(Delegation delegation)
+        {
+            delegation.Pending = false;
+            this.repository.Update(delegation);
+            this.auditing.Update(
+                "aktiverade delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för användare {4} (REF: {5}).",
+                delegation.Name,
+                delegation.StartDate,
+                delegation.EndDate,
+                delegation.Id,
+                delegation.Account.FullName,
+                delegation.Account.Id);
+        }
+
         #endregion
-
-
-        
     }
 }

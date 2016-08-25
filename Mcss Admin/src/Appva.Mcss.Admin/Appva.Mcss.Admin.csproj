@@ -489,6 +489,8 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Update\UpdateAccountPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccount.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\VerifyUniqueAccount\VerifyUniqueAccountHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\AcitvateAll\ActivateAllDelegations.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\AcitvateAll\ActivateAllDelegationsHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegation.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegationHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Create\CreateDelegationModel.cs" />

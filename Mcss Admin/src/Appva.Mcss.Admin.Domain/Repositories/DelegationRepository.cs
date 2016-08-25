@@ -19,7 +19,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #endregion
 
     public interface IDelegationRepository : 
-        IIdentityRepository<Delegation>, 
+        IIdentityRepository<Delegation>,
+        IUpdateRepository<Delegation>,
         ISaveRepository<Delegation>,
         IRepository
     {
@@ -119,9 +120,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public void Update(Delegation entity, ChangeSet changes)
         {
+            this.persistence.Save<ChangeSet>(changes);
+            this.Update(entity);
+        }
+
+        public void Update(Delegation entity)
+        {
             entity.UpdatedAt = DateTime.Now;
             entity.Version += 1;
-            this.persistence.Save<ChangeSet>(changes);
             this.persistence.Update<Delegation>(entity);
         }
 

@@ -447,37 +447,17 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// </summary>
         /// <param name="accountId">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("ActivateAll/{accountId:guid}")]
+        [Route("activate/{accountId:guid}/Category/{delegationCategoryId:guid}")]
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
-        public ActionResult ActivateAll(Guid accountId)
+        [Dispatch("list", "delegation")]
+        public ActionResult ActivateAll(ActivateAllDelegations request)
         {
-            var currentUser = Identity();
-            var delegations = this.persistence.QueryOver<Delegation>()
-                .Where(x => x.IsActive)
-                .And(x => x.Pending)
-                .JoinQueryOver<Account>(x => x.Account)
-                    .Where(x => x.Id == accountId)
-                .List();
-            foreach (var delegation in delegations)
-            {
-                delegation.Pending = false;
-                delegation.UpdatedAt = DateTime.Now;
-                this.persistence.Update(delegation);
-                this.auditing.Update(
-                    "aktiverade delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för användare {4} (REF: {5}).",
-                    delegation.Name,
-                    delegation.StartDate, 
-                    delegation.EndDate,
-                    delegation.Id,
-                    delegation.Account.FullName,
-                    delegation.Account.Id);
-            }
-            return this.RedirectToAction("List", new { Id = accountId });
+            return this.View();
         }
 
         #endregion
 
-        #region Inactivate.
+        #region Delete.
 
         /// <summary>
         /// Returns a inactivate delegation view. 

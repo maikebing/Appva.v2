@@ -19,8 +19,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using NHibernate;
     using NHibernate.Criterion;
     using NHibernate.Dialect.Function;
-using System.Collections.Generic;
+    using System.Collections.Generic;
     using NHibernate.SqlCommand;
+    using Appva.NHibernateUtils.Restrictions;
 
     #endregion
 
@@ -162,14 +163,6 @@ using System.Collections.Generic;
         /// <inheritdoc />
         public IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate)
         {
-            var paths = new List<string>();
-            var path = taxonFilter;
-            while(path.Contains("."))
-            {
-                paths.Add(path);
-                path = path.Substring(0,path.LastIndexOf('.'));
-            }
-            paths.Add(path);
             Account accountAlias = null;
             Delegation delegationAlias = null;
             Taxon taxonAlias = null;
@@ -182,25 +175,22 @@ using System.Collections.Generic;
                     .Where(() => roleAlias.IsActive)
                     .And(() => roleAlias.IsVisible)
                 .Inner.JoinAlias(x => x.Delegations, () => delegationAlias, () => delegationAlias.IsActive == true && delegationAlias.Pending == false && delegationAlias.EndDate <= expiringDate)
-                    .Inner.JoinAlias(() => delegationAlias.OrganisationTaxon, () => taxonAlias)
-                        .Where(Restrictions.Disjunction()
-                            .Add(Restrictions.Like(Projections.Property(() => taxonAlias.Path), taxonFilter, MatchMode.Start))
-                            .Add(Restrictions.In(Projections.Property(() => taxonAlias.Path), paths)))
-                    .Select(
-                        Projections.ProjectionList()
-                            .Add(Projections.Group<Account>(x => x.Id).WithAlias(() => accountModel.Id))
-                            .Add(Projections.Constant(true).WithAlias(() => accountModel.HasExpiringDelegation))
-                            .Add(Projections.Min(Projections.SqlFunction(
-                                            new SQLFunctionTemplate(
-                                                NHibernateUtil.Int32,
-                                                "DateDiff(day, '" + DateTime.Now.ToString("yyyy-MM-dd") + "', EndDate)"),
-                                            NHibernateUtil.Int32)).WithAlias(() => accountModel.DelegationDaysLeft))
-                            .Add(Projections.Group<Account>(x => x.IsActive).WithAlias(() => accountModel.IsActive))
-                            .Add(Projections.Group<Account>(x => x.FirstName).WithAlias(() => accountModel.FirstName))
-                            .Add(Projections.Group<Account>(x => x.LastName).WithAlias(() => accountModel.LastName))
-                            .Add(Projections.Group<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
-                            .Add(Projections.Group<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
-                            .Add(Projections.Group<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber)));
+                    .Inner.JoinAlias(() => delegationAlias.OrganisationTaxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, taxonFilter))
+                .Select(
+                    Projections.ProjectionList()
+                        .Add(Projections.Group<Account>(x => x.Id).WithAlias(() => accountModel.Id))
+                        .Add(Projections.Constant(true).WithAlias(() => accountModel.HasExpiringDelegation))
+                        .Add(Projections.Min(Projections.SqlFunction(
+                                        new SQLFunctionTemplate(
+                                            NHibernateUtil.Int32,
+                                            "DateDiff(day, '" + DateTime.Now.ToString("yyyy-MM-dd") + "', EndDate)"),
+                                        NHibernateUtil.Int32)).WithAlias(() => accountModel.DelegationDaysLeft))
+                        .Add(Projections.Group<Account>(x => x.IsActive).WithAlias(() => accountModel.IsActive))
+                        .Add(Projections.Group<Account>(x => x.FirstName).WithAlias(() => accountModel.FirstName))
+                        .Add(Projections.Group<Account>(x => x.LastName).WithAlias(() => accountModel.LastName))
+                        .Add(Projections.Group<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
+                        .Add(Projections.Group<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
+                        .Add(Projections.Group<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber)));
 
             //// Ordering and transforming
             query.OrderByAlias(() => accountModel.DelegationDaysLeft).Desc
@@ -248,16 +238,15 @@ using System.Collections.Generic;
                         Restrictions.Where(() => role.IsVisible)
                     ));
             }
-            if (model.OrganisationFilterId.HasValue && model.OrganisationFilterId.Value.IsNotEmpty())
+            if (model.OrganisationFilterTaxonPath.IsNotEmpty())
             {
-                query.JoinQueryOver<Taxon>(x => x.Taxon)
-                   .Where(Restrictions.On<Taxon>(x => x.Path)
-                       .IsLike(model.OrganisationFilterId.Value.ToString(), MatchMode.Anywhere));
+                Taxon taxonAlias = null;
+                query.Inner.JoinAlias<Taxon>(x => x.Taxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, model.OrganisationFilterTaxonPath));
             }
             if (model.IsFilterByCreatedByEnabled)
             {
-                query.Left.JoinQueryOver<Delegation>(x => x.Delegations)
-                    .Where(x => x.CreatedBy.Id == model.CurrentUserId);
+                Delegation delegationAlias = null;
+                query.Left.JoinAlias<Delegation>(x => x.Delegations, () => delegationAlias, () => delegationAlias.CreatedBy.Id == model.CurrentUserId);
             }
             else if (model.DelegationFilterId.HasValue)
             {

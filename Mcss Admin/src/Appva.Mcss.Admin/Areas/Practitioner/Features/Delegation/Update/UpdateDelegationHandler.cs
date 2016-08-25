@@ -95,7 +95,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
                 PatientItems = patients,
                 OrganizationTaxons = TaxonomyHelper.SelectList(delegation.OrganisationTaxon, this.taxonomyService.List(TaxonomicSchema.Organization)),
                 OrganizationTaxon = delegation.OrganisationTaxon.IsNull() ? filter.Id.ToString() : delegation.OrganisationTaxon.Id.ToString(),
-                ValidForSpecificPatients = delegation.Patients.Count() != 0
+                ValidForSpecificPatients = delegation.Patients.Count() != 0,
+                AccountId = delegation.Account.Id
             };
         }
 

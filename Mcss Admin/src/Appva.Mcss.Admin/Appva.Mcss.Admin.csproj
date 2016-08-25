@@ -60,7 +60,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Mvc, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Mvc.0.4.0\lib\net45\Appva.Mvc.dll</HintPath>
+      <HintPath>..\..\..\Packages\Appva.Mvc.0.5.0\lib\net45\Appva.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Autofac">
@@ -497,6 +497,9 @@
     <!--<Compile Include="Areas\Report\Features\ReportData\Chart\ReportChart.cs" />
     <Compile Include="Areas\Report\Features\ReportData\Chart\ReportChartModel.cs" />
     <Compile Include="Areas\Report\Features\ReportData\ReportDataController.cs" />-->
+    <Compile Include="Areas\Practitioner\Features\Delegation\Delete\DeleteDelegationHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Delete\DeleteDelegationModel.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Delete\DeleteDelegationPublisher.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Overview\DelegationOverviewHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Overview\DelegationOverviewModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Print\PrintDelegationHandler.cs" />
@@ -997,7 +1000,7 @@
     <Content Include="Areas\Practitioner\Features\Delegation\DelegationReport\DelegationReport.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\EditKnowledgeTests\EditKnowledgeTests.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\Update\Update.cshtml" />
-    <Content Include="Areas\Practitioner\Features\Delegation\Inactivate\Inactivate.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Delegation\Delete\Delete.cshtml" />
     <Content Include="Areas\Practitioner\Features\Delegation\Issued\Issued.cshtml" />
   </ItemGroup>
   <ItemGroup>

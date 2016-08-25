@@ -1,10 +1,8 @@
-﻿// <copyright file="SearchAccountModel.cs" company="Appva AB">
+// <copyright file="UpdateDelegationModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:richard.alvegard@appva.se">Richard Alvegard</a>
-// </author>
-namespace Appva.Mcss.Admin.Domain.Models
+// <author><a href="mailto:your@email.address">Your name</a></author>
+namespace Appva.Mcss.Admin.Application.Models
 {
     #region Imports.
 
@@ -12,94 +10,89 @@ namespace Appva.Mcss.Admin.Domain.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class SearchAccountModel
+    public sealed class DelegationUpdateModel
     {
         #region Properties.
 
         /// <summary>
-        /// The current account id
+        /// The name.
         /// </summary>
-        public Guid CurrentUserId
+        public bool? IsActive
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The search-query
+        /// Sets this delegation to all patients, new and old.
         /// </summary>
-        public string SearchQuery
+        public bool? IsGlobal
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Filter by is active
+        /// List of <see cref="Patient"/>.
         /// </summary>
-        public bool IsFilterByIsActiveEnabled
+        public IList<Patient> Patients
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Filter by is paused
+        /// The delegation start date.
         /// </summary>
-        public bool IsFilterByIsPausedEnabled
+        public DateTime? StartDate
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Filter by delegation id
+        /// The delagation end date.
         /// </summary>
-        public Guid? DelegationFilterId
+        public DateTime? EndDate
+        {
+            get;
+            set;
+        }
+
+        
+
+        /// <summary>
+        /// The organisation taxon
+        /// </summary>
+        public Taxon OrganisationTaxon
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Filter by role id
+        /// <see cref="Account"/> which created the <see cref="Delegation"/>.
         /// </summary>
-        public Guid? RoleFilterId
+        public Account CreatedBy
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Filter by "created-by" current account
+        /// The change reason
         /// </summary>
-        public bool IsFilterByCreatedByEnabled
+        public string Reason
         {
             get;
-            set;
-        }
-
-        /// <summary>
-        /// Organization filter id
-        /// </summary>
-        public string OrganisationFilterTaxonPath 
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Filter by synchronized account
-        /// </summary>
-        public bool? IsFilterByIsSynchronizedEnabled 
-        { 
-            get; 
             set;
         }
 

@@ -4,7 +4,7 @@
 }
 <div class="std-panel delegdialog std-form lb-panel-small lb-validate-form" data-valclass="DelegationEdit">
 
-    @using (Html.BeginForm(new { id = Model.Id })) {
+    @using (Html.BeginForm(new { id = Model.Id, AccountId = Model.AccountId })) {
 
         <h3 class="section-title">Ändra delegering</h3>
         <div class="row toggle-group cf">

@@ -19,7 +19,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
@@ -40,6 +39,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
     using Appva.Mcss.Admin.Areas.Practitioner.Models;
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -379,7 +379,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
 
         #endregion
 
-        #region Edit View.
+        #region Update View.
 
         /// <summary>
         /// Returns the delegation edit view.
@@ -405,9 +405,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         [Dispatch("list","delegation")]
         public ActionResult Update(UpdateDelegationModel request)
-            {
+        {
             return this.View();
-                }
+        }
 
         #endregion
 
@@ -485,42 +485,26 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <param name="id">The delegation id</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpGet]
-        [Route("Inactivate/{id:guid}")]
-        [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
-        public ActionResult Inactivate(Guid id)
+        [Route("delete/{id:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.DeleteValue)]
+        [Dispatch]
+        public ActionResult Delete(Identity<DeleteDelegationModel> request)
         {
-            var delegation = this.persistence.Get<Delegation>(id);
-            return View(new DelegationInactivateViewModel
-            {
-                Delegation = delegation
-            });
+            return this.View();
         }
 
         /// <summary>
         /// Inactivates a delegation by id.
-        /// TODO: post parameter is not used - is it just to differentiate?
         /// </summary>
         /// <param name="id">The delegation id</param>
-        /// <param name="post">Not used</param>
         /// <returns><see cref="ActionResult"/></returns>
         [HttpPost]
-        [Route("Inactivate/{id:guid}")]
-        public ActionResult Inactivate(Guid id, bool post)
+        [Route("delete/{DelegationId:guid}")]
+        [PermissionsAttribute(Permissions.Delegation.DeleteValue)]
+        [Dispatch("list", "delegation")]
+        public ActionResult Delete(DeleteDelegationModel request)
         {
-            var delegation = this.persistence.Get<Delegation>(id);
-            delegation.IsActive = false;
-            delegation.UpdatedAt = DateTime.Now;
-            this.persistence.Update(delegation);
-            var currentUser = Identity();
-            this.auditing.Update(
-                "inaktiverade delegering {0} ({1:yyyy-MM-dd} - {2:yyyy-MM-dd} REF: {3}) för användare {4} (REF: {5}).",
-                delegation.Name,
-                delegation.StartDate, 
-                delegation.EndDate,
-                delegation.Id,
-                delegation.Account.FullName,
-                delegation.Account.Id);
-            return this.RedirectToAction("List", new { Id = delegation.Account.Id });
+            return this.View();
         }
 
         #endregion

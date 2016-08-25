@@ -20,7 +20,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     public interface IDelegationRepository : 
         IIdentityRepository<Delegation>, 
-        IUpdateRepository<Delegation>,
         ISaveRepository<Delegation>,
         IRepository
     {
@@ -32,6 +31,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="isActive"></param>
         /// <returns></returns>
         IList<Delegation> List(Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null);
+
+        /// <summary>
+        /// Updates a delegation and saves the changes
+        /// </summary>
+        /// <param name="entity">The delegation</param>
+        /// <param name="changes">The changes</param>
+        void Update(Delegation entity, ChangeSet changes);
     }
 
     /// <summary>
@@ -111,9 +117,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IUpdateRepository members.
 
         /// <inheritdoc />
-        public void Update(Delegation entity)
+        public void Update(Delegation entity, ChangeSet changes)
         {
-            throw new NotImplementedException();
+            entity.UpdatedAt = DateTime.Now;
+            entity.Version += 1;
+            this.persistence.Save<ChangeSet>(changes);
+            this.persistence.Update<Delegation>(entity);
         }
 
         #endregion

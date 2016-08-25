@@ -22,7 +22,7 @@
                     @Html.ActionLink(Permissions.Delegation.Update, "Förnya delegeringar", "Renew",
                          new { id = Model.Account.Id, DelegationCategoryId = keyValue.Value[0].DelegationId }, new { @class = "btn lb-link" })
                     @Html.ActionLink(Permissions.Delegation.Update, "Aktivera delegeringar", "ActivateAll",
-                        new { accountId = Model.Account.Id }, new { @class = "btn" })
+                         new { accountId = Model.Account.Id, DelegationCategoryId = keyValue.Value[0].DelegationId }, new { @class = "btn" })
                 </div>
 	            <div id="signed-events">
 		            <table>
@@ -82,7 +82,7 @@
 					            <td class="btns">
                                     @Html.ActionLink(Permissions.Delegation.Update, "Ändra", "Update", new { Id = delegation.Id }, new { @class = "btn lb-link" })
                                     <!--<a class="btn btn-print" href="#">Skriv ut</a>-->
-                                    @Html.ActionLink(Permissions.Delegation.Delete, "Ta bort", "Inactivate", new { Id = delegation.Id }, new { @class = "btn btn-del lb-link" })
+                                    @Html.ActionLink(Permissions.Delegation.Delete, "Ta bort", "Delete", new { Id = delegation.Id }, new { @class = "btn btn-del lb-link" })
                                 </td>
 				            </tr>
                             }

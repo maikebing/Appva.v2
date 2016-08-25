@@ -112,8 +112,8 @@ using System.Linq;
                         },
                         new Change {
                             Property = "CreatedBy",
-                            OldState = delegation.CreatedBy.ToString(),
-                            NewState = currentUser.ToString(),
+                            OldState = delegation.CreatedBy.Id.ToString(),
+                            NewState = currentUser.Id.ToString(),
                             TypeOf   = typeof(Account).ToString()
                         }
                     }

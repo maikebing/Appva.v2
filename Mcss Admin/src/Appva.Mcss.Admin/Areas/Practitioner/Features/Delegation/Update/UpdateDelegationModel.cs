@@ -44,7 +44,7 @@ namespace Appva.Mcss.Admin.Areas.Models
         #region Properties
 
         /// <summary>
-        /// The account id
+        /// The delegation id
         /// </summary>
         public Guid Id
         {
@@ -126,6 +126,15 @@ namespace Appva.Mcss.Admin.Areas.Models
             set;
         }
 
+        /// <summary>
+        /// The account id
+        /// </summary>
+        public Guid AccountId 
+        { 
+            get; 
+            set; 
+        }
+
         #region Collections.
 
         /// <summary>
@@ -149,5 +158,7 @@ namespace Appva.Mcss.Admin.Areas.Models
         #endregion
 
         #endregion
+
+        
     }
 }

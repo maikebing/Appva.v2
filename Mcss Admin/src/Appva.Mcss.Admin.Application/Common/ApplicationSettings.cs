@@ -271,6 +271,31 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
            "The text showed at the bottom about who the paper shall be sent to",
            "Sänd kopia till MAS och enhetschef.");
 
+        /// <summary>
+        /// If a reason should be specified on delegation removal
+        /// </summary>
+        /// <remarks>The setting returns an <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<bool> SpecifyReasonOnDelegationRemoval = ApplicationSettingIdentity<bool>.CreateNew(
+           "MCSS.Core.Delegation.Delete.SpecifyReason",
+           "If a reason should be specified on delegation removal",
+           "MCSS.Core.Delegation.Delete",
+           "If the user should be prompted to specify a reson when deleteing a delegation",
+           false);
+
+        /// <summary>
+        /// If a reason should be specified on delegation removal
+        /// </summary>
+        /// <remarks>The setting returns an <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<List<string>> DelegationRemovalReasons = ApplicationSettingIdentity<List<string>>.CreateNew(
+           "MCSS.Core.Delegation.Delete.Reasons",
+           "Reasons for delegation removal",
+           "MCSS.Core.Delegation.Delete",
+           "Reasons for delegation removal",
+           new List<string> { 
+               "Delegering utgången, förnyas ej",
+               "Medarbetare slutat"
+           });
+
         #endregion
 
         #region Temporary Fixes.

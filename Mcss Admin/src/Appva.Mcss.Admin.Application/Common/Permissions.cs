@@ -19,6 +19,8 @@ namespace Appva.Mcss.Admin.Application.Common
     /// </summary>
     public static class Permissions
     {
+        #region Admin
+
         #region Constants.
 
         /// <summary>
@@ -1368,6 +1370,41 @@ namespace Appva.Mcss.Admin.Application.Common
             [Visibility(Visibility.Hidden)]
             public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
         }
+
+        #endregion
+
+        #endregion
+
+        #region Resource
+
+        #region Constants.
+
+        /// <summary>
+        /// The permission schema for mobile.
+        /// </summary>
+        private const string DeviceSchema = "https://schemas.appva.se/permission/device";
+
+        #endregion
+
+        #region NFC.
+
+        public static class NFC
+        {
+            /// <summary>
+            /// The register NFC value.
+            /// </summary>
+            public const string RegisterValue = Schema + "/nfc/register";
+
+            /// <summary>
+            /// Permission to register a NFC tag by mobile device
+            /// </summary>
+            [Sort(10000)]
+            [Name("Register nfc from mobile device")]
+            [Description("Permission to register a NFC tag by a mobiledevice")]
+            public static readonly IPermission SignIn = PermissionType.CreateNew(RegisterValue);
+        }
+
+        #endregion
 
         #endregion
     }

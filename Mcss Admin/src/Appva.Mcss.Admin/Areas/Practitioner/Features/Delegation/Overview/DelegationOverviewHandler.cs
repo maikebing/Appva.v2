@@ -65,8 +65,8 @@ using System.Linq;
 
             return new DelegationOverviewModel
             {
-                DelegationsExpired = accounts.Where(x => x.DelegationDaysLeft < 0).ToList(),
-                DelegationsExpiresWithin50Days = accounts.Where(x => x.DelegationDaysLeft >= 0).ToList()
+                DelegationsExpired = accounts.Where(x => x.DelegationDaysLeft < 0).OrderByDescending(x => x.DelegationDaysLeft).ToList(),
+                DelegationsExpiresWithin50Days = accounts.Where(x => x.DelegationDaysLeft >= 0).OrderBy(x => x.DelegationDaysLeft).ToList()
             };
         }
 

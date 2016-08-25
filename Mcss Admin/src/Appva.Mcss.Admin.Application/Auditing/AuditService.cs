@@ -93,6 +93,10 @@ namespace Appva.Mcss.Admin.Application.Auditing
         /// </summary>
         void SignOut();
 
+        void ForgotPassword(Account account, string format, params object[] args);
+
+        void ChangedPassword(Account account, string format, params object[] args);
+
         /// <summary>
         /// 
         /// </summary>
@@ -200,6 +204,15 @@ namespace Appva.Mcss.Admin.Application.Auditing
         public void FailedAuthentication(Account account, string format, params object[] args)
         {
             this.CreateEventLog(LogType.Authentication, account, null, format, args);
+        }
+
+        public void ForgotPassword(Account account, string format, params object[] args)
+        {
+            this.CreateEventLog(LogType.None, account, null, format, args);
+        }
+        public void ChangedPassword(Account account, string format, params object[] args)
+        {
+            this.CreateEventLog(LogType.Write, account, null, format, args);
         }
 
         #endregion

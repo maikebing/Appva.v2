@@ -336,6 +336,7 @@ namespace Appva.Mcss.Admin.Application.Services
             var salt     = EncryptionUtils.GenerateSalt(DateTime.Now);
             var password = EncryptionUtils.Hash(newPassword, salt);
             account.ChangePassword(password, salt);
+            this.auditing.ChangedPassword(account, "uppdaterade lösenord{0}", string.Empty);
             this.repository.Update(account);
         }
 

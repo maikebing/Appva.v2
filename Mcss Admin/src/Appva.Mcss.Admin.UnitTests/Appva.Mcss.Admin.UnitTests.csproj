@@ -38,6 +38,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Appva.Caching, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Caching.0.3.0\lib\net45\Appva.Caching.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Common, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Appva.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Core.0.5.0\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
@@ -54,12 +62,16 @@
       <HintPath>..\..\..\Packages\Appva.Mvc.0.5.0\lib\net45\Appva.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <HintPath>..\..\..\Packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -95,7 +107,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
+      <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
@@ -181,34 +193,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Caching\Appva.Caching.csproj">
-      <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
-      <Name>Appva.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Common\Appva.Common.csproj">
-      <Project>{4b12b272-329e-42da-b8c9-bc49d9544766}</Project>
-      <Name>Appva.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
-      <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
-      <Name>Appva.Core.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Cqrs\Appva.Cqrs.csproj">
-      <Project>{0c3cc633-42b5-413f-b1a6-57da6f65a61a}</Project>
-      <Name>Appva.Cqrs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
-      <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
-      <Name>Appva.Persistence</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
-      <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
-      <Name>Appva.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
-      <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
-      <Name>Appva.Tenant</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.Admin.Application\Appva.Mcss.Admin.Application.csproj">
       <Project>{0e34a41f-f641-45d2-91e4-ff4c3e9b7853}</Project>
       <Name>Appva.Mcss.Admin.Application</Name>

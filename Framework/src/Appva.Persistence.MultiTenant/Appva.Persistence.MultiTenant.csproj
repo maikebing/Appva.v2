@@ -76,18 +76,6 @@
     <Compile Include="Exceptions\TenantsResultException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Appva.Caching\Appva.Caching.csproj">
-      <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
-      <Name>Appva.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
-      <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
-      <Name>Appva.Core.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Appva.Persistence\Appva.Persistence.csproj">
-      <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
-      <Name>Appva.Persistence</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Appva.Tenant\Appva.Tenant.csproj">
       <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
       <Name>Appva.Tenant</Name>

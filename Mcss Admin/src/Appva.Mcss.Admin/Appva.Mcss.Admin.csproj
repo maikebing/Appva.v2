@@ -43,12 +43,28 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Appva.Apis.TenantServer.Legacy, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Apis.TenantServer.Legacy.0.4.0\lib\net45\Appva.Apis.TenantServer.Legacy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Caching, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Caching.0.3.0\lib\net45\Appva.Caching.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Common, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Appva.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Core.0.5.0\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core.Messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Core.Messaging.0.0.4\lib\net45\Appva.Core.Messaging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Cqrs, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Cqrs.0.3.0\lib\net45\Appva.Cqrs.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Cryptography, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -61,6 +77,34 @@
     </Reference>
     <Reference Include="Appva.Mvc, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Mvc.0.5.0\lib\net45\Appva.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Office, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Office.0.3.0\lib\net45\Appva.Office.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Persistence.Autofac, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.Autofac.0.3.0\lib\net45\Appva.Persistence.Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Persistence.MultiTenant, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.MultiTenant.0.3.0\lib\net45\Appva.Persistence.MultiTenant.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Repository, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Repository.0.3.0\lib\net45\Appva.Repository.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Siths, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Siths.0.4.0\lib\net45\Appva.Siths.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Tenant, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Tenant.0.4.0\lib\net45\Appva.Tenant.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Autofac">
@@ -85,6 +129,10 @@
     </Reference>
     <Reference Include="HibernatingRhinos.Profiler.Appender, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0774796e73ebf640, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NHibernateProfiler.3.0.3088.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\NPOI.2.1.3.1\lib\net40\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
@@ -136,6 +184,22 @@
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\NPOI.2.1.3.1\lib\net40\NPOI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\NPOI.2.1.3.1\lib\net40\NPOI.OOXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RazorEngine, Version=3.8.2.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
@@ -256,6 +320,9 @@
     <Compile Include="Areas\Area51\Features\Delegation\AddOrganisation\AddOrganisation.cs" />
     <Compile Include="Areas\Area51\Features\Delegation\AddOrganisation\AddOrganisationHandler.cs" />
     <Compile Include="Areas\Area51\Features\Delegation\DelegationController.cs" />
+    <Compile Include="Areas\Area51\Features\Delegation\DeleteDelegationSettings\DeleteDelegationSettings.cs" />
+    <Compile Include="Areas\Area51\Features\Delegation\DeleteDelegationSettings\DeleteDelegationSettingsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Delegation\DeleteDelegationSettings\DeleteDelegationSettingsPublisher.cs" />
     <Compile Include="Areas\Area51\Features\Home\HomeController.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsNotice.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsHandler.cs" />
@@ -854,58 +921,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Apis.TenantServer.Legacy\Appva.Apis.TenantServer.Legacy.csproj">
-      <Project>{d6cd965a-fa1e-429e-94e7-7efb4e66ce3f}</Project>
-      <Name>Appva.Apis.TenantServer.Legacy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Apis.Tenant\Appva.Apis.TenantServer.csproj">
-      <Project>{84a3404b-798f-43d7-85d9-d2a510895f9e}</Project>
-      <Name>Appva.Apis.TenantServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Caching\Appva.Caching.csproj">
-      <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
-      <Name>Appva.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Common\Appva.Common.csproj">
-      <Project>{4b12b272-329e-42da-b8c9-bc49d9544766}</Project>
-      <Name>Appva.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Core.Configuration\Appva.Core.Configuration.csproj">
-      <Project>{338b5ba3-4825-42c7-9c77-819999ec12ea}</Project>
-      <Name>Appva.Core.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Cqrs\Appva.Cqrs.csproj">
-      <Project>{0c3cc633-42b5-413f-b1a6-57da6f65a61a}</Project>
-      <Name>Appva.Cqrs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Office\Appva.Office.csproj">
-      <Project>{7536e156-eab5-4812-87fb-8ec58eb00f99}</Project>
-      <Name>Appva.Office</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.Autofac\Appva.Persistence.Autofac.csproj">
-      <Project>{9041f4f2-26b2-44de-ad32-3edaeaed35d2}</Project>
-      <Name>Appva.Persistence.Autofac</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.MultiTenant\Appva.Persistence.MultiTenant.csproj">
-      <Project>{3d8f0261-b3b3-4202-adfd-ceb0ec3d93e3}</Project>
-      <Name>Appva.Persistence.MultiTenant</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
-      <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
-      <Name>Appva.Persistence</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
-      <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
-      <Name>Appva.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Siths\Appva.Siths.csproj">
-      <Project>{00fa489c-6f1d-42fb-8caf-426b90f1f223}</Project>
-      <Name>Appva.Siths</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
-      <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
-      <Name>Appva.Tenant</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Appva.Admin.Utils\Appva.Admin.Utils.csproj">
       <Project>{2edab8ce-5318-400f-a1a8-7b604732cf5b}</Project>
       <Name>Appva.Admin.Utils</Name>
@@ -1216,6 +1231,7 @@
     <Content Include="Areas\Practitioner\Features\Synchronization\GetSynchronizedAccount\GetSynchronizedAccount.cshtml" />
     <Content Include="Features\Shared\EmailTemplates\SynchronizationEmail.cshtml" />
     <Content Include="Areas\Area51\Features\Delegation\Index\Index.cshtml" />
+    <Content Include="Areas\Area51\Features\Delegation\DeleteDelegationSettings\DeleteDelegationSettings.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

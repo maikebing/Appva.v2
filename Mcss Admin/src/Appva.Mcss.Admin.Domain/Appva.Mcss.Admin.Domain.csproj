@@ -34,12 +34,32 @@
       <HintPath>..\..\..\Packages\Appva.Azure.0.3.0\lib\net45\Appva.Azure.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Appva.Common, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Appva.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Core.0.5.0\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Appva.Cryptography, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Appva.NHibernateUtils, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.NHibernateUtils.0.4.0\lib\net45\Appva.NHibernateUtils.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Repository, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Repository.0.3.0\lib\net45\Appva.Repository.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
@@ -159,24 +179,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Common\Appva.Common.csproj">
-      <Project>{4b12b272-329e-42da-b8c9-bc49d9544766}</Project>
-      <Name>Appva.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Cryptography\Appva.Cryptography.csproj">
-      <Project>{d3b336cc-9a4a-4cad-8ab5-32a92e028726}</Project>
-      <Name>Appva.Cryptography</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
-      <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
-      <Name>Appva.Persistence</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
-      <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
-      <Name>Appva.Repository</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

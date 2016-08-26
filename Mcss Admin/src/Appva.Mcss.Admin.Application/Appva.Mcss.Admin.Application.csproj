@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Appva.Caching, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Caching.0.3.0\lib\net45\Appva.Caching.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Common, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Appva.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Core.0.5.0\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
@@ -38,12 +46,36 @@
       <HintPath>..\..\..\Packages\Appva.Core.Messaging.0.0.4\lib\net45\Appva.Core.Messaging.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Appva.Cryptography, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Appva.Ldap, Version=0.0.1.25447, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.NHibernateUtils, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.NHibernateUtils.0.4.0\lib\net45\Appva.NHibernateUtils.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Repository, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Repository.0.3.0\lib\net45\Appva.Repository.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Siths, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Siths.0.4.0\lib\net45\Appva.Siths.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Tenant, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Tenant.0.4.0\lib\net45\Appva.Tenant.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Iesi.Collections">
@@ -204,50 +236,6 @@
     <Compile Include="Transformers\EventTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Apis.TenantServer.Legacy\Appva.Apis.TenantServer.Legacy.csproj">
-      <Project>{d6cd965a-fa1e-429e-94e7-7efb4e66ce3f}</Project>
-      <Name>Appva.Apis.TenantServer.Legacy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Apis.Tenant\Appva.Apis.TenantServer.csproj">
-      <Project>{84a3404b-798f-43d7-85d9-d2a510895f9e}</Project>
-      <Name>Appva.Apis.TenantServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Caching\Appva.Caching.csproj">
-      <Project>{198c0868-a2cd-46bb-a331-437a1b1e029a}</Project>
-      <Name>Appva.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Common\Appva.Common.csproj">
-      <Project>{4b12b272-329e-42da-b8c9-bc49d9544766}</Project>
-      <Name>Appva.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Cryptography\Appva.Cryptography.csproj">
-      <Project>{d3b336cc-9a4a-4cad-8ab5-32a92e028726}</Project>
-      <Name>Appva.Cryptography</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Fhir\Appva.Fhir.csproj">
-      <Project>{3983ff1b-a557-4b58-a363-bcee62182f1e}</Project>
-      <Name>Appva.Fhir</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence.MultiTenant\Appva.Persistence.MultiTenant.csproj">
-      <Project>{3d8f0261-b3b3-4202-adfd-ceb0ec3d93e3}</Project>
-      <Name>Appva.Persistence.MultiTenant</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Persistence\Appva.Persistence.csproj">
-      <Project>{6db8ceae-d19e-4f16-8eec-8d300b70ded1}</Project>
-      <Name>Appva.Persistence</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Repository\Appva.Repository.csproj">
-      <Project>{98356b49-4fbd-4f29-9a13-5418cae3e55d}</Project>
-      <Name>Appva.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Siths\Appva.Siths.csproj">
-      <Project>{00fa489c-6f1d-42fb-8caf-426b90f1f223}</Project>
-      <Name>Appva.Siths</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.Tenant\Appva.Tenant.csproj">
-      <Project>{443693e3-d712-40fb-837b-a1da866695fd}</Project>
-      <Name>Appva.Tenant</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.Admin.Domain\Appva.Mcss.Admin.Domain.csproj">
       <Project>{26d66f09-5072-4fb2-81c4-29df5249aaa7}</Project>
       <Name>Appva.Mcss.Admin.Domain</Name>

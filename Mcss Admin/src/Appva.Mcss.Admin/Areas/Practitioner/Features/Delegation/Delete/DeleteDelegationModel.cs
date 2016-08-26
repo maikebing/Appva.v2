@@ -12,8 +12,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
     using Appva.Mcss.Admin.Areas.Models;
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
+    using System.ComponentModel;
     using System.Web.Mvc;
 
     #endregion
@@ -37,6 +36,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
         /// <summary>
         /// The reason for delete
         /// </summary>
+        [DisplayName("Ange orsak")]
         public string Reason
         {
             get;
@@ -46,7 +46,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
         /// <summary>
         /// The reason for delete
         /// </summary>
-        [Display(Name="Ange orsak")]
         public string ReasonText
         {
             get;

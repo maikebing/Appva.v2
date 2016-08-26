@@ -878,10 +878,6 @@
       <Project>{0c3cc633-42b5-413f-b1a6-57da6f65a61a}</Project>
       <Name>Appva.Cqrs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Framework\src\Appva.NHibernateUtils\Appva.NHibernateUtils.csproj">
-      <Project>{68889619-9faa-4b0c-bfa7-98d2a60e5584}</Project>
-      <Name>Appva.NHibernateUtils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Framework\src\Appva.Office\Appva.Office.csproj">
       <Project>{7536e156-eab5-4812-87fb-8ec58eb00f99}</Project>
       <Name>Appva.Office</Name>

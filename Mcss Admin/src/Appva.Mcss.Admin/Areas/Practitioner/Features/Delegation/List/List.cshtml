@@ -21,7 +21,7 @@
                     <h2>@keyValue.Key</h2>
                     @Html.ActionLink(Permissions.Delegation.Update, "Förnya delegeringar", "Renew",
                          new { id = Model.Account.Id, DelegationCategoryId = keyValue.Value[0].DelegationId }, new { @class = "btn lb-link" })
-                    @Html.ActionLink(Permissions.Delegation.Update, string.Format("Aktivera all delegeringar i {0}", keyValue.Key), "ActivateAll",
+                    @Html.ActionLink(Permissions.Delegation.Update, string.Format("Aktivera alla delegeringar för {0}", keyValue.Key), "ActivateAll",
                          new { accountId = Model.Account.Id, DelegationCategoryId = keyValue.Value[0].DelegationId }, new { @class = "btn" })
                 </div>
 	            <div id="signed-events">

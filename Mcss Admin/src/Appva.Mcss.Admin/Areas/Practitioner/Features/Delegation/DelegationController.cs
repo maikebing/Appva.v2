@@ -447,7 +447,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// </summary>
         /// <param name="accountId">The account id</param>
         /// <returns><see cref="ActionResult"/></returns>
-        [Route("activate/{accountId:guid}/Category/{delegationCategoryId:guid}")]
+        [Route("activate/{accountId:guid}/category/{delegationCategoryId:guid}")]
         [PermissionsAttribute(Permissions.Delegation.UpdateValue)]
         [Dispatch("list", "delegation")]
         public ActionResult ActivateAll(ActivateAllDelegations request)

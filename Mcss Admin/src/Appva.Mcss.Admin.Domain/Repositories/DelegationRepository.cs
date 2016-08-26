@@ -124,10 +124,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             this.Update(entity);
         }
 
+        /// <inheritdoc />
         public void Update(Delegation entity)
         {
             entity.UpdatedAt = DateTime.Now;
-            entity.Version += 1;
             this.persistence.Update<Delegation>(entity);
         }
 

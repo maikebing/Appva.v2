@@ -4,13 +4,14 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Area51.Handlers
+namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Area51.Models;
+    using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using System;
     using System.Collections.Generic;

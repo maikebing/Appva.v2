@@ -1,0 +1,19 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.CreateDelegationModel
+@{
+    SetTitle("Skapa delegering");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post(new {},new { CategoryId = Model.CategoryId }))
+    {
+        <div>
+            <h3 class="section-title">Skapa delegering</h3>
+            @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.Description, "text large").Label().TextArea().Validate().Build()
+
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
+        </div>
+    }
+</div>

@@ -82,6 +82,7 @@ namespace Appva.Mcss.Admin.Application.Common
                         MenuItem.CreateNew("Logg", "List", "Log", "Log", null, null, Permissions.Log.Read, this.Log),
                         MenuItem.CreateNew("Notiser", "List", "Notification", "Notification", null, null, Permissions.Notification.Read, null),
                         MenuItem.CreateNew("Area51", "Index", "Home", "Area51", null, null, Permissions.Area51.Read, null),
+                        MenuItem.CreateNew("Administration", "List", "Delegation", "backoffice", null, null, Permissions.Backoffice.Read, null),
                         MenuItem.CreateNew("Skriv ut sidan", string.Empty, string.Empty, string.Empty, "supp", "print", null, null)
                     };
                 }

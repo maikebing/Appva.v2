@@ -69,6 +69,13 @@ namespace Appva.Mcss.Admin.Application.Services
         IList<ITaxon> ListByParent(Guid id);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        IList<ITaxon> ListByParent(TaxonomicSchema schema, ITaxon parent);
+
+        /// <summary>
         /// Loads a taxon from the id. OBS only creates a proxy, not ful entity
         /// </summary>
         /// <param name="id"></param>
@@ -84,6 +91,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="taxon"></param>
         /// <param name="schema"></param>
         void Save(ITaxon taxon, TaxonomicSchema schema);
+
+        /// <summary>
+        /// Updates the taxon in database and cache
+        /// </summary>
+        /// <param name="taxon"></param>
+        /// <param name="schema"></param>
+        void Update(ITaxon taxon, TaxonomicSchema schema);
     }
 
     /// <summary>
@@ -194,6 +208,13 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
+        public IList<ITaxon> ListByParent(TaxonomicSchema schema, ITaxon parent)
+        {
+            return this.List(schema)
+                .Where(x => x.Parent == parent).ToList();
+        }
+
+        /// <inheritdoc />
         public Taxon Get(Guid id)
         {
             return this.repository.Find(id);
@@ -224,8 +245,23 @@ namespace Appva.Mcss.Admin.Application.Services
                 Taxonomy = this.repository.LoadTaxonomy(schema.Id),
                 Type = taxon.Type,
                 Weight = taxon.Sort
-            });
+            }, (schema == TaxonomicSchema.Delegation || schema == TaxonomicSchema.Organization));
 
+            this.cache.Remove(schema.CacheKey);
+        }
+
+        /// <inheritdoc />
+        public void Update(ITaxon taxon, TaxonomicSchema schema)
+        {
+            var t = this.repository.Find(taxon.Id);
+            t.Description = taxon.Description;
+            t.IsRoot = taxon.IsRoot;
+            t.Name = taxon.Name;
+            t.Path = taxon.Path;
+            t.Type = taxon.Type;
+            t.Weight = taxon.Sort;
+            
+            this.repository.Update(t);
             this.cache.Remove(schema.CacheKey);
         }
 

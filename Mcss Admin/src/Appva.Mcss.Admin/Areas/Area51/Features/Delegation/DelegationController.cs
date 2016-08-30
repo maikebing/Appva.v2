@@ -11,12 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Delegation
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Area51.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Infrastructure.Models;
-    using Appva.Mvc;
     using Appva.Mvc.Security;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
 
     #endregion
@@ -65,34 +60,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Delegation
         [Route("addorganisation")]
         [Dispatch("Index","Delegation")]
         public ActionResult AddOrganisation(AddOrganisation request)
-        {
-            return this.View();
-        }
-
-        #endregion
-
-        #region Delete delegation settings
-
-        /// <summary>
-        /// Specify settings for delete delegation
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Route("delete/settings")]
-        [HttpGet, Dispatch(typeof(Parameterless<DeleteDelegationSettingsModel>))]
-        public ActionResult DeleteDelegationSettings()
-        {
-            return this.View();
-        }
-
-        /// <summary>
-        /// Specify settings for delete delegation
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Route("delete/settings")]
-        [HttpPost, Validate, Dispatch("index","delegation")]
-        public ActionResult DeleteDelegationSettings(DeleteDelegationSettingsModel request)
         {
             return this.View();
         }

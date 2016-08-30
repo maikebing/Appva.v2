@@ -1373,6 +1373,30 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
+        #region Backoffice.
+
+        /// <summary>
+        /// The Backoffice permissions.
+        /// </summary>
+        public static class Backoffice
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "backoffice/read";
+
+            /// <summary>
+            /// Permission to read/view backoffice.
+            /// </summary>
+            [Sort(100000)]
+            [Name("Read backoffice")]
+            [Description("Permission to read/view backoffice")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
+
+        #endregion
+
         #endregion
 
         #region Resource

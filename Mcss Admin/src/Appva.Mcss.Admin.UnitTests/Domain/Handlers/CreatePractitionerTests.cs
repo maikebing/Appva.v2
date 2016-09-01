@@ -102,7 +102,7 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
                 PersonalIdentityNumber = new PersonalIdentityNumber("19010101-0102")
             });
             context.Commit(true);
-            var account = new AccountRepository(this.database.OpenNew).FindByPersonalIdentityNumber(new PersonalIdentityNumber("19010101-0102"));
+            var account = new AccountRepository(this.database.PersistenceContext).FindByPersonalIdentityNumber(new PersonalIdentityNumber("19010101-0102"));
             Assert.NotNull(account);
             Assert.Equal("johdoe1", account.UserName);
         }
@@ -147,7 +147,7 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
                 TitleRole = roleRepository.List().Where(x => x.MachineName == RoleTypes.Nurse).SingleOrDefault().Id.ToString()
             });
             context.Commit(true);
-            var account = new AccountRepository(this.database.OpenNew).FindByPersonalIdentityNumber(new PersonalIdentityNumber("19010101-0101"));
+            var account = new AccountRepository(this.database.PersistenceContext).FindByPersonalIdentityNumber(new PersonalIdentityNumber("19010101-0101"));
             Assert.NotNull(account);
             Assert.Equal(3, account.Roles.Count);
             Assert.NotNull(account.Roles.Where(x => x.MachineName == RoleTypes.Nurse).SingleOrDefault());

@@ -50,6 +50,26 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="Patient"></param>
         /// <returns></returns>
         IList<ScheduleSettings> GetSchedules(Guid? Account = null, Guid? Patient = null);
+
+        /// <summary>
+        /// Gets a schedulesetting
+        /// </summary>
+        /// <param name="Account"></param>
+        /// <param name="Patient"></param>
+        /// <returns></returns>
+        ScheduleSettings GetScheduleSettings(Guid id);
+
+        /// <summary>
+        /// Updates a schedule setting
+        /// </summary>
+        /// <param name="schedule"></param>
+        void UpdateScheduleSetting(ScheduleSettings schedule);
+
+        /// <summary>
+        /// Creates a new schedule setting
+        /// </summary>
+        /// <param name="schedule"></param>
+        void SaveScheduleSetting(ScheduleSettings schedule);
     }
 
     /// <summary>
@@ -205,6 +225,25 @@ namespace Appva.Mcss.Admin.Application.Services
             var query = this.persistence.QueryOver<ScheduleSettings>().Where(x => x.IsActive == true);
 
             return query.List();
+        }
+
+        /// <inheritdoc />
+        public ScheduleSettings GetScheduleSettings(Guid id)
+        {
+            return this.persistence.Get<ScheduleSettings>(id);
+        }
+
+        /// <inheritdoc />
+        public void UpdateScheduleSetting(ScheduleSettings schedule) 
+        {
+            schedule.UpdatedAt = DateTime.Now;
+            this.persistence.Update<ScheduleSettings>(schedule);
+        }
+
+        /// <inheritdoc />
+        public void SaveScheduleSetting(ScheduleSettings schedule)
+        {
+            this.persistence.Save<ScheduleSettings>(schedule);
         }
 
         /// <summary>

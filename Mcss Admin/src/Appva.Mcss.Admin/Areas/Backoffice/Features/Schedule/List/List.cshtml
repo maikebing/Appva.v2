@@ -1,0 +1,48 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListScheduleModel
+@{
+    SetTitle("Admin - Listor");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Listor</h1>
+    @Html.ActionLink("Ny lista", "Create", "Schedule", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+</div>
+
+<div id="content">
+    <div id="content-primary">
+        @if (Model.Schedules != null && Model.Schedules.Count > 0)
+        {
+            <ul class="people">
+                @foreach (var list in Model.Schedules)
+                {
+                    <li class="cf">
+                        <div class="h">
+                            <h2>
+                                @Html.ActionLink(list.Name, "Details", "Schedule", new { id = list.Id }, new { })
+                            </h2>
+                        </div>
+                        <div class="i">
+                            <strong>Publicerad:</strong>
+                            <span></span>
+                        </div>
+                        <div class="i">
+                            <strong>Vissas till:</strong>
+                            <span></span>
+                        </div>
+                        <div class="i">
+                            <strong>Visas från:</strong>
+                            <span></span>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div class="note">
+                <h2>Det finns inga listor ännu</h2>
+            </div>
+        }
+
+    </div>
+</div>

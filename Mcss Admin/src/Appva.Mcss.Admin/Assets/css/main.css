@@ -3618,6 +3618,30 @@ span.custom-select {
     color:#7c88a1;
 }
 
+/* Administration - Schedule */
+
+#content.admin-schedule table {
+    width:auto;
+}
+
+#content.admin-schedule table,
+#content.admin-schedule table td {
+    border:none;
+    padding: 6px;
+}
+
+#content.admin-schedule table td.label{
+    text-align:right;
+    font-weight:bold;
+}
+
+#content.admin-schedule table td.desc{
+    color:#bbc9d5;
+    padding-left:20px;
+    margin-left:50px;
+    background:url(/Assets/i/icn-help.png) no-repeat 0 50%;
+}
+
 /* END @media screen, projection */
 }
 

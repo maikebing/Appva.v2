@@ -1,0 +1,31 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.UpdateScheduleModel
+@{
+    SetTitle("Uppdatera lista");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post(new { }, new { Id = Model.Id }))
+    {
+        <div>
+            <h3 class="section-title">Inställningar för lista</h3>
+            @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.AlternativeName, "text").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.IsPausable, "checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.CanRaiseAlerts, "checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.HasSetupDrugsPanel, "checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.HasInventory, "checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.CountInventory, "checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.OrderRefill, "checkbox").Checkbox("").Label().Validate().Build()
+            <h3 class="section-title">Dialogruta vid avvikande signering</h3>
+            @Html.FormGroup(x => x.NurseConfirmDeviation, "checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.SpecificNurseConfirmDeviation, "checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.NurseConfirmDeviationMessage, "text large").Label().TextArea().Validate().Build()
+            <h3 class="section-title">Delegering</h3>
+            @Html.LabelFor(x => x.DelegationTaxon)
+            @Html.DropDownListFor(x => x.DelegationTaxon, Model.Delegations, "Ingen delegering")
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
+        </div>
+    }
+</div>

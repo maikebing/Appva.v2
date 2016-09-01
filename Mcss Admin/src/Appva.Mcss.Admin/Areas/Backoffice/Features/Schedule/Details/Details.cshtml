@@ -1,0 +1,86 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.DetailsScheduleModel
+@{
+    SetTitle("Admin - " + Model.Schedule.Name);
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>@Model.Schedule.Name</h1>
+    @Html.ActionLink("Redigera", "Update", "Schedule", new { }, new { @class="lb-link btn" })
+</div>
+<div id="content" class="log admin-schedule">
+
+        <table>
+            <tr>
+                <td class="label"><span>Namn</span></td>
+                <td><span>@Model.Schedule.Name</span></td>
+                <td class="desc">Namnet på listan</td>
+            </tr>
+            <tr>
+                <td class="label"><span>Alternativt namn</span></td>
+                <td><span>@Model.Schedule.AlternativeName</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Kan pausas</span></td>
+                <td><span>@(Model.Schedule.IsPausable ? "Ja" : "Nej")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Larmar vid utebliven insats</span></td>
+                <td><span>@(Model.Schedule.CanRaiseAlerts ? "Ja" : "Nej")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Iordningställande-flik</span></td>
+                <td><span>@(Model.Schedule.HasSetupDrugsPanel ? "Ja" : "Nej")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Saldokontroll</span></td>
+                <td><span>@(Model.Schedule.HasInventory ? "Ja" : "Nej")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Kräver kontrollräkning</span></td>
+                <td><span>@(Model.Schedule.CountInventory ? "Ja" : "Nej")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Visa kontrollruta vid avvikande signering</span></td>
+                <td><span>@(Model.Schedule.NurseConfirmDeviation ? "Ja" : "Nej")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Ange kontaktad SSK vi avvikande signering</span></td>
+                <td><span>@(Model.Schedule.SpecificNurseConfirmDeviation ? "Ja" : "Nej")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Specifikt meddelande vid avvikande signering</span></td>
+                <td><span>@Model.Schedule.NurseConfirmDeviationMessage</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Specifikt meddelande vid avvikande signering</span></td>
+                <td><span>@Model.Schedule.NurseConfirmDeviationMessage</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Begär påfyllning</span></td>
+                <td><span>@(Model.Schedule.OrderRefill ? "Ja" : "Nej")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Delegering</span></td>
+                <td><span>@(Model.Schedule.DelegationTaxon != null ? Model.Schedule.DelegationTaxon.Name : "Inga")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Signeringsalternativ</span></td>
+                <td>
+                    <ul>
+                        @foreach (var taxon in Model.Schedule.StatusTaxons)
+                        {
+                            <li><p><img src="@Url.Image(taxon.Path)" />@taxon.Name</p></li>
+                        }
+                    </ul>
+                   
+                </td>
+                <td>
+                    @Html.ActionLink("Ändra", "EditSigningOptions", "Schedule", new { Id = Model.Schedule.Id,}, new { @class = "edit lb-link", @title = "Ändra raden" })
+                </td>
+
+            </tr>
+        </table>
+
+</div>
+
+

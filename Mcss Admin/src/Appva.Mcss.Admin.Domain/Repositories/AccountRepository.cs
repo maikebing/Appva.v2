@@ -62,7 +62,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="expiringDate">The expiring date</param>
         /// <param name="taxonFilter">The path to filter</param>
         /// <returns>List of <see cref="Account"/></returns>
-        IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate);
+        IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null);
 
         /// <summary>
         /// Search for accounts to given search-criteria
@@ -161,20 +161,35 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate)
+        public IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null)
         {
             Account accountAlias = null;
             Delegation delegationAlias = null;
             Taxon taxonAlias = null;
             Role roleAlias = null;
             AccountModel accountModel = null;
+            Expression<Func<bool>> delegationFilter;
+            if (filterByIssuerId.HasValue && filterByIssuerId.GetValueOrDefault() != Guid.Empty)
+            {
+                delegationFilter = () => delegationAlias.IsActive == true && 
+                                        delegationAlias.Pending == false && 
+                                        delegationAlias.EndDate <= expiringDate && 
+                                        delegationAlias.CreatedBy.Id == filterByIssuerId.GetValueOrDefault();
+            }
+            else
+            {
+                delegationFilter = () => delegationAlias.IsActive == true && 
+                                        delegationAlias.Pending == false && 
+                                        delegationAlias.EndDate <= expiringDate;
+            }
+           
             var query = this.persistenceContext.QueryOver<Account>(() => accountAlias)
                 .Where(x => x.IsActive)
                 .And(x => x.IsPaused == false)
-                .Left.JoinAlias(x => x.Roles, () => roleAlias)
+                .Inner.JoinAlias(x => x.Roles, () => roleAlias)
                     .Where(() => roleAlias.IsActive)
                     .And(() => roleAlias.IsVisible)
-                .Inner.JoinAlias(x => x.Delegations, () => delegationAlias, () => delegationAlias.IsActive == true && delegationAlias.Pending == false && delegationAlias.EndDate <= expiringDate)
+                .Inner.JoinAlias(x => x.Delegations, () => delegationAlias, delegationFilter)
                     .Inner.JoinAlias(() => delegationAlias.OrganisationTaxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, taxonFilter))
                 .Select(
                     Projections.ProjectionList()
@@ -225,14 +240,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             if (model.RoleFilterId.HasValue)
             {
                 Role role = null;
-                query.Left.JoinAlias(x => x.Roles, () => role)
+                query.Inner.JoinAlias(x => x.Roles, () => role)
                     .Where(() => role.Id == model.RoleFilterId)
                     .And(() => role.IsVisible);
             }
             else
             {
                 Role role = null;
-                query.Left.JoinAlias(x => x.Roles, () => role)
+                query.Inner.JoinAlias(x => x.Roles, () => role)
                     .Where(Restrictions.Or(
                         Restrictions.On(() => role.Accounts).IsNull,
                         Restrictions.Where(() => role.IsVisible)
@@ -246,11 +261,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             if (model.IsFilterByCreatedByEnabled)
             {
                 Delegation delegationAlias = null;
-                query.Left.JoinAlias<Delegation>(x => x.Delegations, () => delegationAlias, () => delegationAlias.CreatedBy.Id == model.CurrentUserId);
+                query.Inner.JoinAlias<Delegation>(x => x.Delegations, () => delegationAlias, () => delegationAlias.CreatedBy.Id == model.CurrentUserId);
             }
             else if (model.DelegationFilterId.HasValue)
             {
-                query.Left.JoinQueryOver<Delegation>(x => x.Delegations)
+                query.Inner.JoinQueryOver<Delegation>(x => x.Delegations)
                     .Where(x => x.Taxon.Id == model.DelegationFilterId.Value
                         && x.IsActive == true && x.Pending == false);
             }

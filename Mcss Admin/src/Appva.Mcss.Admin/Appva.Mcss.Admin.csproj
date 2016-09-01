@@ -595,6 +595,7 @@
     <Compile Include="Areas\Practitioner\Features\Delegation\Delete\DeleteDelegationHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Delete\DeleteDelegationModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Delete\DeleteDelegationPublisher.cs" />
+    <Compile Include="Areas\Practitioner\Features\Delegation\Overview\DelegationOverview.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Overview\DelegationOverviewHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Overview\DelegationOverviewModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Delegation\Print\PrintDelegationHandler.cs" />

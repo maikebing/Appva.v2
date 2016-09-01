@@ -1,25 +1,32 @@
 ﻿@model Appva.Mcss.Admin.Areas.Practitioner.Models.DelegationOverviewModel
 @using Appva.Mcss.Admin.Application.Common;
 <div>
-	<div class="heading cf"><h2>Utlöpande delegeringar</h2>
+    <div class="heading cf">
+        <h2>Utlöpande delegeringar</h2>
+        <p class="filter">
+            @Html.ActionLink("Alla", "Overview", new { FilterByIssuer = false }, new { @class = "div" + (Model.FilteredByIssuer == false ? " sel" : "") })
+            @Html.ActionLink("Mina", "Overview", new { FilterByIssuer = true }, new { @class = "div" + (Model.FilteredByIssuer == true ? " sel" : "") })
+        </p>
         @Html.ActionLink(Permissions.Delegation.Read, "Alla delegeringar ...", "List", "Accounts", new { Area = "Practitioner" }, null)
     </div>
-        @if (Model.DelegationsExpired.Count() > 0) {
-        <div class="panel-c"> 
-		    <h3><img src="@Url.Image("icn-alarm-s.png")" alt=""> Har löpt ut</h3>
-		    <table>
-		    	<thead>
-		    		<tr>
-		    			<th scope="col">Person</th>
-		    			<th scope="col">Dagar kvar</th>
-		    		</tr>
-		    	</thead>
-		    	<tbody>
-                    @foreach (var account in Model.DelegationsExpired) {
+    @if (Model.DelegationsExpired.Count() > 0)
+    {
+        <div class="panel-c">
+            <h3><img src="@Url.Image("icn-alarm-s.png")" alt=""> Har löpt ut</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Person</th>
+                        <th scope="col">Dagar kvar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var account in Model.DelegationsExpired)
+                    {
                         <tr class="urgent">
-		    				<td>
+                            <td>
                                 @if (Html.HasPermissionFor(Permissions.Delegation.Read))
-                                { 
+                                {
                                     @Html.ActionLink(account.FullName, "List", "Delegation", new { id = account.Id }, new { })
                                 }
                                 else
@@ -27,30 +34,31 @@
                                     @account.FullName
                                 }
                             </td>
-		    				<td><span>@account.DelegationDaysLeft dagar</span></td>
-		    			</tr>
+                            <td><span>@account.DelegationDaysLeft dagar</span></td>
+                        </tr>
                     }
-		    	</tbody>
-		    </table>
+                </tbody>
+            </table>
         </div>
-        }
-        @if (Model.DelegationsExpiresWithin50Days.Count() > 0) {
-        <div class="panel-c"> 
-		    <h3>Löper ut inom 50 dagar</h3>
-		    <table>
-		    	<thead>
-		    		<tr>
-		    			<th scope="col">Person</th>
-		    			<th scope="col">Dagar kvar</th>
-		    		</tr>
-		    	</thead>
-		    	<tbody>
+    }
+    @if (Model.DelegationsExpiresWithin50Days.Count() > 0)
+    {
+        <div class="panel-c">
+            <h3>Löper ut inom 50 dagar</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Person</th>
+                        <th scope="col">Dagar kvar</th>
+                    </tr>
+                </thead>
+                <tbody>
                     @foreach (var account in Model.DelegationsExpiresWithin50Days)
                     {
                         <tr class="@( account.DelegationDaysLeft < 30 ? "urgent" : "")">
-		    				<td>
+                            <td>
                                 @if (Html.HasPermissionFor(Permissions.Delegation.Read))
-                                { 
+                                {
                                     @Html.ActionLink(account.FullName, "List", "Delegation", new { id = account.Id }, new { })
                                 }
                                 else
@@ -58,18 +66,31 @@
                                     @account.FullName
                                 }
                             </td>
-		    				<td><span>@account.DelegationDaysLeft dagar</span></td>
-		    			</tr>
+                            <td><span>@account.DelegationDaysLeft dagar</span></td>
+                        </tr>
                     }
-		    	</tbody>
-		    </table>
+                </tbody>
+            </table>
         </div>
-        }
-        @if (Model.DelegationsExpiresWithin50Days.Count() == 0 && Model.DelegationsExpired.Count() == 0) {
-        <div class="panel-c"> 
+    }
+    @if (Model.DelegationsExpiresWithin50Days.Count() == 0 && Model.DelegationsExpired.Count() == 0)
+    {
+        <div class="panel-c">
             <div class="no-data">
                 <h3>Inga utlöpande delegeringar</h3>
             </div>
         </div>
-        }
+    }
 </div>
+
+<script>
+        $('div.heading p.filter a').click(function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var elem = $(this);
+            elem.parent().find('.sel').removeClass('sel');
+            elem.addClass("sel");
+            elem.parent().parent().parent().find('.panel-c').append('<div class="loading"><img src="@Url.Image("ajax-load.gif")" alt="Laddar" /></div>');
+            elem.parent().parent().parent().find('.panel-c').load(elem.attr('href') + " .panel-c table");
+        });
+</script>

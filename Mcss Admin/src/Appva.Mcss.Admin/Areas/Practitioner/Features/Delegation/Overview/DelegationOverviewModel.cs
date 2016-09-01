@@ -40,6 +40,15 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
             set; 
         }
 
+        /// <summary>
+        /// If the view is filtered by the issuer
+        /// </summary>
+        public bool FilteredByIssuer
+        { 
+            get;
+            set; 
+        }
+
         #endregion
     }
 }

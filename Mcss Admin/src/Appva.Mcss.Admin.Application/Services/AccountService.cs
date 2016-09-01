@@ -175,7 +175,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="taxonFilter"></param>
         /// <param name="date"></param>
         /// <returns></returns>
-        IList<AccountModel> ListByExpiringDelegation(ITaxon taxonFilter, DateTime expiringDate);
+        IList<AccountModel> ListByExpiringDelegation(ITaxon taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null);
 
         /// <summary>
         /// Creates a proxy-entity from a guid
@@ -494,9 +494,9 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IList<AccountModel> ListByExpiringDelegation(ITaxon taxonFilter, DateTime expiringDate)
+        public IList<AccountModel> ListByExpiringDelegation(ITaxon taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null)
         {
-            return this.repository.ListByExpiringDelegation(taxonFilter.Path, expiringDate);
+            return this.repository.ListByExpiringDelegation(taxonFilter.Path, expiringDate, filterByIssuerId);
         }
 
         #endregion

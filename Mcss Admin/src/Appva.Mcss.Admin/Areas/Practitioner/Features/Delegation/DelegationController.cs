@@ -655,8 +655,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// <returns><see cref="PartialViewResult"/></returns>
         [Route("overview")]
         [PermissionsAttribute(Permissions.Dashboard.ReadDelegationValue)]
-        [Dispatch(typeof(Parameterless<DelegationOverviewModel>))]
-        public PartialViewResult Overview()
+        [Dispatch]
+        public PartialViewResult Overview(DelegationOverview request)
         {
             return this.PartialView();
         }

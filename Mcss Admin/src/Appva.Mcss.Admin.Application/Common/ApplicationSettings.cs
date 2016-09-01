@@ -296,6 +296,18 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
                "Medarbetare slutat"
            });
 
+        /// <summary>
+        /// If a reason should be specified on delegation removal
+        /// </summary>
+        /// <remarks>The setting returns an <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<bool> DefaultFilterDelegationOverviewByIssuer = ApplicationSettingIdentity<bool>.CreateNew(
+           "MCSS.Core.Delegation.Overview.DefaultFilterByIssuer",
+           "If the delegation overview by default should be filtered by the issuer",
+           "MCSS.Core.Delegation.Overview",
+           "If the delegation overview by default should be filtered by the issuer",
+           false);
+        
+
         #endregion
 
         #region Temporary Fixes.

@@ -79,8 +79,8 @@
       <HintPath>..\..\..\Packages\Appva.Mvc.0.5.0\lib\net45\Appva.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Office, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Office.0.3.0\lib\net45\Appva.Office.dll</HintPath>
+    <Reference Include="Appva.Office, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Office.0.3.1\lib\net45\Appva.Office.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">

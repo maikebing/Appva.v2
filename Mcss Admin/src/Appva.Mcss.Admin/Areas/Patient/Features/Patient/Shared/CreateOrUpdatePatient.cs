@@ -85,7 +85,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The patient alternative identity.
         /// </summary>
-        [DisplayName("Tag")]
+        [DisplayName("Tagg")]
         public string Tag
         {
             get;

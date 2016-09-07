@@ -98,7 +98,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
                 StartDate = message.StartDate,
                 EndDate = message.EndDate,
                 CreatedBy = currentUser,
-                IsGlobal = message.ValidForSpecificPatients == false
+                IsGlobal = message.ValidForSpecificPatients == false || message.Patients.Length == 0
             };
             if (message.ValidForSpecificPatients)
             {

@@ -124,7 +124,7 @@ namespace Appva.Mcss.Admin.Features.Taxa
                         Id = value,
                         Selected = selectedXXX,
                         Label = label,
-                        OptionLabel = string.IsNullOrEmpty(label) ? label.ToLower() : string.Empty,
+                        OptionLabel = !string.IsNullOrEmpty(label) ? label.ToLower() : string.Empty,
                         Taxons = items
                     });
                 }

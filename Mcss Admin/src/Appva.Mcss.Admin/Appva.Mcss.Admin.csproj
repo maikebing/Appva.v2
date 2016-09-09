@@ -76,8 +76,8 @@
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Mvc, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Mvc.0.5.0\lib\net45\Appva.Mvc.dll</HintPath>
+    <Reference Include="Appva.Mvc, Version=0.3.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Mvc.0.5.3\lib\net45\Appva.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Office, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -1274,6 +1274,10 @@
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Language.en-US.resx" />
+    <EmbeddedResource Include="Resources\Language.sv-SE.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

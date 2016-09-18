@@ -76,8 +76,8 @@
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Mvc, Version=0.3.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Mvc.0.5.3\lib\net45\Appva.Mvc.dll</HintPath>
+    <Reference Include="Appva.Mvc, Version=0.3.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Mvc.0.5.4\lib\net45\Appva.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Office, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -746,6 +746,24 @@
     <Compile Include="Models\TaxonViewModel.cs" />
     <Compile Include="Models\TitleHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Language.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Language.en-US.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Language.sv-SE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language.sv-SE.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Temp\GlobalResourceProvider.cs" />
+    <Compile Include="Temp\GlobalResourceProviderFactory.cs" />
+    <Compile Include="Temp\HtmlHelperTextExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\css\auth.css" />
@@ -1276,8 +1294,19 @@
     <Content Include="Templates\Template.xlsx" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Language.en-US.resx" />
-    <EmbeddedResource Include="Resources\Language.sv-SE.resx" />
+    <EmbeddedResource Include="Resources\Language.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Language.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Language.sv-SE.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.sv-SE.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

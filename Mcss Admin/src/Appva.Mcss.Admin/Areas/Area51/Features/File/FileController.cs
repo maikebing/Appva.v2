@@ -8,7 +8,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.File
 {
     using Admin.Models;
     using Application.Common;
-    using GetFile;
+    using Details;
     using Infrastructure.Attributes;
     using Infrastructure.Models;
     using List;
@@ -51,7 +51,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.File
 
         [Route("{id:guid}/details")]
         [HttpGet, Dispatch]
-        public ActionResult Details(Identity<FileDetailsModel> request)
+        public ActionResult Details(Identity<DetailsModel> request)
         {
             return this.View();
         }

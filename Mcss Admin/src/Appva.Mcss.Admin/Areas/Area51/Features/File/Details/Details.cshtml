@@ -1,0 +1,29 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Features.File.Details.DetailsModel
+@{
+    SetTitle("Area 51 - Filer/" + Model.FileName);
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>@Model.FileName</h1>
+</div>
+<div id="content-primary">
+    @using (Html.Post())
+    {
+        <table>
+            <tbody>
+                @for (int i = 0; i < Model.Accounts.Count; i++)
+                {
+                    <tr>
+                        <td>@Html.FormGroup(x => x.Accounts[i].FirstName).TextBox().Validate().Build()</td>
+                        <td>@Html.FormGroup(x => x.Accounts[i].LastName).TextBox().Validate().Build()</td>
+                        <td>@Html.FormGroup(x => x.Accounts[i].PersonalIdentityNumber).TextBox().Validate().Build()</td>
+                        <td>@Html.FormGroup(x => x.Accounts[i].EmailAddress).TextBox().Validate().Build()</td>
+                        <td>@Html.FormGroup(x => x.Accounts[i].HsaId).TextBox().Validate().Build()</td>
+                        <td>@Html.DropDownListFor(m => m.Titles, new SelectList(Model.Titles, "Value", "Text"), "Välj titel ...")</td>
+                        @*<td>@Html.DropDownListFor(m => m.Taxons, new SelectList(Model.Taxons, "Value", "Text"), string.Format("Välj {0}...", Model.Taxons.First().OptionLabel))</td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

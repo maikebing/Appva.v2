@@ -28,7 +28,7 @@
                         <td>@item.Description</td>
                         <td>@item.CreatedAt</td>
                         <td>@Html.ActionLink(item.UploadedBy.FullName, "List", "Delegation", new { area = "Practitioner", id = item.UploadedBy.Id }, null)</td>
-                        <td>@Html.ActionLink("Importera", "", new {  }, new { @class = "btn" })</td>
+                        <td>@Html.ActionLink("Details", "Details", "File", new { id = item.Id }, new { @class = "btn" })</td>
                     </tr>
                 }
             </tbody>

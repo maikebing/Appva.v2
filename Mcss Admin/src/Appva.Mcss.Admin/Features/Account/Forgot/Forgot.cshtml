@@ -4,21 +4,23 @@
     SetTitle("Glömt lösenord");
     SetBodyCssClass("page-forgot-password");
 }
-<div class="hd">
-	Glömt lösenord
-</div>
 <div class="hd org">
-    <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
-	<span>@Tenant</span>
+    <img src="@Url.Content("~/Assets/i/loginpage-logo.png")" alt="Appva MCSS" />
+    <!--span>@Tenant</span-->
+    <h1>Återställ lösenord</h1>
 </div>
-<div class="bd">
-	@using (Html.Post())
-    {
-        @Html.ValidationAlert("Felaktig e-postadress och/eller personnummer", string.Empty, new {  @class = "error-msg" })
-        @Html.FormGroup(x => x.EmailAddress).Label("E-postadress").TextBox("fornamn.efternamn@organisation.se", new { @autofocus = "autofocus" }).Build()
-        @Html.FormGroup(x => x.PersonalIdentityNumber).Label("Personnummer").TextBox("ÅÅÅÅMMDD-NNNN").Build()
-		<div class="hr"></div>
-        @Html.Submit("Skicka återställningslänk",  new { @id = "submit-form", @class = "btn" })
-		@Html.ActionLink("Avbryt", "SignIn", "Authentication", null, new { @class = "btn btn-right cancel" })
-    }
+<div class="row">
+    <div class="bd col">
+        <p>Ange din e-postadress och ditt person-nummer så skickar vi en länk på e-post som du kan klicka på för att återställa ditt lösenord.</p>
+        @using (Html.Post())
+        {
+            @Html.ValidationAlert("Felaktig e-postadress och/eller personnummer", string.Empty, new { @class = "error-msg" })
+            @Html.FormGroup(x => x.EmailAddress).Label("E-postadress").TextBox("namn@organisation.se", new { @autofocus = "autofocus" }).Build()
+            @Html.FormGroup(x => x.PersonalIdentityNumber).Label("Personnummer").TextBox("ÅÅÅÅMMDD-NNNN").Build()
+            <div class="controls">
+                @Html.Submit("Skicka återställningslänk", new { @id = "submit-form", @class = "btn full" })
+                @Html.ActionLink("Avbryt", "SignIn", "Authentication", null, new { @class = "cancel" })
+            </div>
+        }
+    </div>
 </div>

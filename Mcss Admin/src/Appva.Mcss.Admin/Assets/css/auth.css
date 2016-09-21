@@ -172,6 +172,7 @@ input[type="radio"][disabled],input[type="checkbox"][disabled],input[type="radio
 /** Page specific **/
 .page-reset-password .container{max-width:500px;}
 .page-reset-password .container .col .bd{text-align:center;}
+.page-register-password .container, .page-register-password .container .bd{max-width:500px;}
 .page-sign-in .container img.siths-icon{display:block; max-width:211px; margin:0 auto;}
 
 /* logout specific */

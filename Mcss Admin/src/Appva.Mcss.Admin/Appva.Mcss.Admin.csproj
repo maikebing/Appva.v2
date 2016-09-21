@@ -787,6 +787,7 @@
     <Content Include="Assets\i\bubble-tip-left.png" />
     <Content Include="Assets\i\bullet-action.png" />
     <Content Include="Assets\i\ce-logo.png" />
+    <Content Include="Assets\i\check-icon.png" />
     <Content Include="Assets\i\clock.png" />
     <Content Include="Assets\i\clock_red.png" />
     <Content Include="Assets\i\clock_stop.png" />

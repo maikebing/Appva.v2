@@ -3,15 +3,22 @@
     SetTitle("Ditt lösenord är sparat");
     SetBodyCssClass("page-forgot-password");
 }
-<div class="hd">
-	Ditt lösenord är sparat.
-</div>
+
 <div class="hd org">
-    <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
-	<span>@Tenant</span>
+    <img src="@Url.Content("~/Assets/i/loginpage-logo.png")" alt="Appva MCSS" />
+    <h1>Ditt lösenord är sparat</h1>
 </div>
-<div class="bd">
-    Var vänlig använd ditt valda lösenord för att logga in i MCSS.
-    <div class="hr"></div>
-	@Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn" })
+
+<div class="row">
+    <div class="col">
+        <div class="profile">
+            <img src="@Url.Content("~/Assets/i/profile-icon.png")" />
+        </div>
+        <div class="bd">
+            <p>Var vänlig använd ditt valda lösenord för att logga in i MCSS.</p>
+            <div class="controls">
+                @Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn full green" })
+            </div>
+        </div>
+    </div>
 </div>

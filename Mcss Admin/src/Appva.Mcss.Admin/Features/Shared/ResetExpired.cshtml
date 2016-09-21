@@ -3,17 +3,24 @@
     SetTitle("Utgången återställningslänk");
     SetBodyCssClass("page-reset-password");
 }
-<div class="hd">
-    Utgången återställningslänk
+<div class="hd org">
+    <img src="@Url.Content("~/Assets/i/loginpage-logo.png")" alt="Appva MCSS" />
+    <h1>Utgången återställningslänk</h1>
 </div>
-<div class="hd profile">
-    <img src="@Url.Content("~/Assets/i/profile-icon.png")" />
-</div>
-<div class="bd">
-    <span class="alert-danger">
-        Återställningslänken har gått ut, vänligen begär en ny.
-    </span>
-    <div class="hr"></div>
-    @Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn" })
-    @Html.ActionLink("Skicka ny återställningslänk", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
+
+<div class="row">
+    <div class="col">
+        <div class="profile">
+            <img src="@Url.Content("~/Assets/i/profile-icon.png")" />
+        </div>
+        <div class="bd">
+            <span class="alert-danger">
+                Återställningslänken har gått ut, vänligen begär en ny.
+            </span>
+            <div class="controls">
+                @Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn center" })
+                @Html.ActionLink("Skicka ny återställningslänk", "Forgot", "Account", null, new { @class = "cancel" })
+            </div>
+        </div>       
+    </div>
 </div>

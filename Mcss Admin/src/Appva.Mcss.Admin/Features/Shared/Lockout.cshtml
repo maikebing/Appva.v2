@@ -2,19 +2,26 @@
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
     SetTitle("Tillfälligt spärrat konto");
 }
-<div class="hd">
-	Tillfälligt spärrat konto
-</div>
+
 <div class="hd org">
-    <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
-	<span>@Tenant</span>
+    <img src="@Url.Content("~/Assets/i/loginpage-logo.png")" alt="Appva MCSS" />
+    <h1>Tillfälligt spärrat konto</h1>
 </div>
-<div class="bd">
-    <span class="alert-danger">
-        Ditt konto har tillfälligt blivit spärrat efter upprepade misslyckade försök att logga in, var
-        vänlig försök igen senare.
-    </span>
-    <div class="hr"></div>
-    @Html.ActionLink("Tillbaka till inloggning", "SignIn", "Authentication", null, new { @class = "btn" })
-    @Html.ActionLink("Glömt lösenord?", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
+
+<div class="row">
+    <div class="col">
+        <div class="profile">
+            <img src="@Url.Content("~/Assets/i/profile-icon.png")" />
+        </div>
+        <div class="bd">
+            <span class="alert-danger">
+                Ditt konto har tillfälligt blivit spärrat efter upprepade misslyckade försök att logga in, var
+                vänlig försök igen senare.
+            </span>
+            <div class="controls">
+                @Html.ActionLink("Tillbaka till inloggning", "SignIn", "Authentication", null, new { @class = "btn full" })
+                @Html.ActionLink("Glömt lösenord?", "Forgot", "Account", null, new { @class = "cancel" })
+            </div>
+        </div>
+    </div>
 </div>

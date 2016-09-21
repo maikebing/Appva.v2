@@ -32,12 +32,12 @@ h2 { font-size: 16px; margin-top:0; padding-top:0; }
 .page .header .container{margin:0 auto;border:none;background:transparent;}
 .page .container{margin:5% auto 40px;}
 .page .container .row {margin:0 auto;text-align:center; }
-.page .container .row .col {display:inline-block; text-align:left; vertical-align:top;}
-.page .container .bd,.page .container .ft{min-width:251px;max-width:251px;min-height:251px; margin:0 16px;padding: 25px;}
+.page .container .row .col {display:inline-block; text-align:left; vertical-align:top;margin:0 16px;}
+.page .container .bd,.page .container .ft{min-width:251px;max-width:251px; padding: 25px;}
 .page .container .hd{font-size:18px;text-align:center;}
 .page .container .bd{border:1px solid #d8dfe5; background: #fff; text-align:left;}
 .page .container .org,.page .container .profile{overflow:auto;font-size:14px;}
-.page .container .profile{background:#f2f4f9;}
+.page .container .profile{background:#f2f4f9; padding:25px;border:1px solid #d8dfe5; border-bottom:none;}
 .page .container .org img{margin:0 auto;display:block; width:160px;}
 .page .container .profile img{margin:0 auto;display:block;}
 .page .container .org span,.page .container .profile span{text-align:center;color:#8f9ab2;margin-top:5px;display:inline-block;}
@@ -68,7 +68,7 @@ h2 { font-size: 16px; margin-top:0; padding-top:0; }
     cursor:pointer;
     border-radius:5px;
     display:inline-block;
-    padding:16px;
+    padding:14px;
     font-weight:600;
     font-family:MuseoSans_500;
     font-weight:500;
@@ -170,9 +170,16 @@ input[type="radio"][disabled],input[type="checkbox"][disabled],input[type="radio
 .password-strength .very-strong span{color:#67ad3d;}
 
 /** Page specific **/
-.page-reset-password .container{max-width:500px;margin-top:50px;}
+.page-reset-password .container{max-width:500px;}
+.page-reset-password .container .col .bd{text-align:center;}
 .page-sign-in .container img.siths-icon{display:block; max-width:211px; margin:0 auto;}
 
+/* logout specific */
+.page-sign-out .container .bd img{max-width:55px;}
+.page-sign-out .container .col.bd{text-align:center;}
+.page-sign-out .container .col.bd h1 {padding:14px 0 40px 0; margin:0;}
+.page-sign-out .container .hd.org img {margin-bottom:60px;}
+.page-sign-out .container .bd {min-height:200px;}
 
 /** Themed **/
 .page  .header .user,.page  .header .tenant{display:none;}

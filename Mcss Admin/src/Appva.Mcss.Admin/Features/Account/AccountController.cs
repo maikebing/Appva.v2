@@ -61,7 +61,8 @@ namespace Appva.Mcss.Admin.Features.Account
         /// </summary>
         /// <returns>A <see cref="Reset"/></returns>
         [Route("reset-password")]
-        [Permissions(Permissions.Token.Reset)]
+        //[Permissions(Permissions.Token.Reset)]
+        [AllowAnonymous]
         [HttpGet, Hydrate]
         public ActionResult Reset()
         {
@@ -123,9 +124,9 @@ namespace Appva.Mcss.Admin.Features.Account
         /// Returns a reset password form.
         /// </summary>
         /// <returns>A <see cref="Register"/></returns>
-        [Route("register")]
-        [Permissions(Permissions.Token.Register)]
-        [HttpGet, Hydrate]
+        [Route("registera")]
+        ////[Permissions(Permissions.Token.Register)]
+        [HttpGet,AllowAnonymous]
         public ActionResult Register()
         {
             return this.View();
@@ -141,7 +142,7 @@ namespace Appva.Mcss.Admin.Features.Account
         /// invalid results
         /// </returns>
         [Route("register")]
-        [Permissions(Permissions.Token.Register)]
+        ////[Permissions(Permissions.Token.Register)]
         [HttpPost, Validate, ValidateAntiForgeryToken]
         public ActionResult Register(Register model)
         {

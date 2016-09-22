@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -387,6 +388,14 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateSchedulePublisher.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\DevicesController.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Inactivate\InactivateDevice.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Inactivate\InactivateDeviceHandler.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\List\ListDevice.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\List\ListDeviceHandler.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\List\ListDeviceModel.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Reactivate\ReactivateDevice.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Reactivate\ReactivateDeviceHandler.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogModel.cs" />
@@ -683,6 +692,7 @@
     <Compile Include="Infrastructure\ControllerExtensions.cs" />
     <Compile Include="Infrastructure\Controllers\AbstractMediatorController.cs" />
     <Compile Include="Infrastructure\Controllers\IdentityController.cs" />
+    <Compile Include="Infrastructure\DeviceTransformer.cs" />
     <Compile Include="Infrastructure\DispatchExcelFileContentResult.cs" />
     <Compile Include="Infrastructure\DispatchJsonResult.cs" />
     <Compile Include="Infrastructure\MvcExceptionHandler.cs" />
@@ -707,6 +717,7 @@
     <Compile Include="Models\DelegationReportViewModel.cs" />
     <Compile Include="Models\DelegationRevisionViewModel.cs" />
     <Compile Include="Models\DelegationViewModel.cs" />
+    <Compile Include="Models\DeviceViewModel.cs" />
     <Compile Include="Models\EventListViewModel.cs" />
     <Compile Include="Models\EventOverviewViewModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
@@ -1271,6 +1282,10 @@
     <Content Include="Areas\Backoffice\Features\Schedule\Update\Update.cshtml" />
     <Content Include="Areas\Backoffice\Features\Schedule\Create\Create.cshtml" />
     <Content Include="Areas\Backoffice\Features\Schedule\EditSigningOptions\EditSigningOptions.cshtml" />
+    <Content Include="Areas\Devices\Features\Web.config" />
+    <Content Include="Areas\Devices\Features\_ViewStart.cshtml" />
+    <Content Include="Areas\Devices\Features\Devices\List\List.cshtml" />
+    <Content Include="Areas\Devices\Features\Devices\Partials\_DeviceSearch.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

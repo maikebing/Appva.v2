@@ -1,0 +1,23 @@
+﻿@model Appva.Mcss.Admin.Areas.Devices.Features.Devices.List.ListDeviceModel
+@using (Html.BeginForm("List", "Devices", FormMethod.Get, new { @id = "search" }))
+{
+    <div>
+        <label for="searchq">Sök medarbetare:</label>
+        <input type="text" id="searchq" name="q" data-autocomplete-url="@Url.Action("QuickSearch", "Devices", new {  })" placeholder="Beskrivning ..." />
+        <input type="hidden" name="isActive" value="@Model.IsActive" /> />
+    </div>
+}
+<script type="text/javascript">
+$(function() {
+    $("input[data-autocomplete-url]").each(function () {
+        var self = $(this);
+        self.autocomplete({
+            'source': self.data('autocomplete-url'),
+            'select': function (event, ui) {
+                self.val(ui.item.value);
+                self.parent().parent().submit();
+            }
+        });
+    });
+});
+</script>

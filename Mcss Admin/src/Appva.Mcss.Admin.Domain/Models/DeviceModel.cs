@@ -1,69 +1,45 @@
-﻿// <copyright file="Device.cs" company="Appva AB">
+﻿// <copyright file="DeviceModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:kalle.jigfors@appva.se">Kalle Jigfors</a>
 // </author>
-namespace Appva.Mcss.Admin.Domain.Entities
+namespace Appva.Mcss.Admin.Domain.Models
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Device : AggregateRoot<Device>
+    public sealed class DeviceModel
     {
-        #region Constructor.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Device"/> class.
-        /// </summary>
-        public Device()
-        {
-        }
-
-        #endregion
-
         #region Properties.
 
         /// <summary>
-        /// The Device UDID.
+        /// The id.
         /// </summary>
-        public virtual string UDID
+        public Guid Id
+        {
+            get;
+            set;
+        }
+
+        public DateTime CreatedAt
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Taxon node.
+        /// The description.
         /// </summary>
-        public virtual Taxon Taxon
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Last pinged date.
-        /// </summary>
-        public virtual DateTime? LastPingedDate
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-		/// The description of the device, e.g. where it is located etc.
-		/// </summary>
-        public virtual string Description
+        public string Description
         {
             get;
             set;
@@ -72,7 +48,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The OS.
         /// </summary>
-        public virtual string OS
+        public string OS
         {
             get;
             set;
@@ -81,7 +57,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The os version.
         /// </summary>
-        public virtual string OSVersion
+        public string OSVersion
         {
             get;
             set;
@@ -90,7 +66,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The app bundle.
         /// </summary>
-        public virtual string AppBundle
+        public string AppBundle
         {
             get;
             set;
@@ -99,7 +75,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The app version.
         /// </summary>
-        public virtual string AppVersion
+        public string AppVersion
         {
             get;
             set;
@@ -108,7 +84,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The hardware.
         /// </summary>
-        public virtual string Hardware
+        public string Hardware
+        {
+            get;
+            set;
+        }
+
+        public bool IsActive
         {
             get;
             set;

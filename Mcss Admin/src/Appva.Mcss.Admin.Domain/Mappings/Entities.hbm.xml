@@ -327,9 +327,15 @@
     <property name="IsActive" column="Active" />
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
+    <property name="Description" />
     <property name="UDID" />
     <property name="LastPingedDate" />
     <many-to-one name="Taxon" class="Taxon" />
+    <property name="OS" />
+    <property name="OSVersion" />
+    <property name="AppBundle" />
+    <property name="AppVersion" />
+    <property name="Hardware" />
   </class>
 
   <!-- Patient -->

@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <NuGetPackageImportStamp>e4e3cce0</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,6 +72,14 @@
       <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Appva.GrandId, Version=0.1.0.17180, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.0\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Http, Version=0.1.0.17181, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Http.0.1.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Appva.Ldap, Version=0.0.1.25447, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
       <Private>True</Private>
@@ -97,10 +106,6 @@
     </Reference>
     <Reference Include="Appva.Repository, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Repository.0.3.0\lib\net45\Appva.Repository.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Appva.Siths, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Siths.0.4.0\lib\net45\Appva.Siths.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Tenant, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -651,6 +656,7 @@
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
+    <Compile Include="Configuration\GrandIdConfiguration.cs" />
     <Compile Include="Features\Account\AccountController.cs" />
     <Compile Include="Features\Account\Forgot\Forgot.cs" />
     <Compile Include="Features\Account\Forgot\ForgotEmail.cs" />
@@ -1303,6 +1309,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\..\..\Packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\Packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\Packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\Packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

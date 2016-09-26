@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
 {
     #region Imports.
 
+    using System;
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -155,26 +156,28 @@ namespace Appva.Mcss.Admin.Features.Authentication
         [AllowAnonymous, HttpGet]
         public async Task<ActionResult> SignInSiths()
         {
-            var url = await this.siths.ExternalLoginUrlAsync();
-            return this.Redirect(url.ToString());
+            var urlHelper   = new UrlHelper(this.Request.RequestContext);
+            var callback    = urlHelper.Action("SignInSithsViaToken", "Authentication", new RouteValueDictionary { { "Area", string.Empty } }, this.Request.Url.Scheme);
+            var response    = await this.siths.ExternalLoginUrlAsync(new Uri(callback));
+            return this.Redirect(response.RedirectUri.ToString());
         }
 
         /// <summary>
         /// The Siths Identity Provider (IdP) token response authentication.
         /// </summary>
-        /// <param name="authify_response_token">The response token</param>
+        /// <param name="sessionId">The response token</param>
         /// <returns>A redirect to the external login</returns>
         [Route("sign-in/external/siths/token")]
         [AllowAnonymous, HttpGet]
-        public async Task<ActionResult> SignInSithsViaToken(string authify_response_token)
+        public async Task<ActionResult> SignInSithsViaToken(string sessionId)
         {
-            var result = await this.siths.AuthenticateTokenAsync(authify_response_token);
+            var result = await this.siths.AuthenticateTokenAsync(sessionId);
             if (! result.IsAuthorized)
             {
                 return this.RedirectToAction("SignInSiths");
             }
             this.authentication.SignIn(result.Identity);
-            await this.siths.LogoutAsync(authify_response_token);
+            await this.siths.LogoutAsync(sessionId);
             return this.RedirectToAction("Index", "Home");
         }
 

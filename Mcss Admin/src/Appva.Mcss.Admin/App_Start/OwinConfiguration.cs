@@ -52,8 +52,8 @@ namespace Appva.Mcss.Admin
             builder.RegisterOwinContext();
             builder.RegisterIdentityServices();
             builder.RegisterMediator();
+            builder.RegisterGrandId();
             builder.RegisterAuthorization(app);
-            builder.RegisterAuthify();
             builder.RegisterPersistence();
             builder.RegisterEmailMessaging();
             builder.RegisterExceptionHandling();

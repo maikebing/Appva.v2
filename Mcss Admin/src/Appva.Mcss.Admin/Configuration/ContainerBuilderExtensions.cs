@@ -30,8 +30,6 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Persistence;
     using Appva.Persistence.Autofac;
     using Appva.Persistence.MultiTenant;
-    using Appva.Siths;
-    using Appva.Siths.Security;
     using Appva.Tenant.Identity;
     using Appva.Tenant.Interoperability.Client;
     using Autofac;
@@ -43,6 +41,10 @@ namespace Appva.Mcss.Admin.Configuration
     using Owin;
     using RazorEngine.Configuration;
     using Appva.Core.Messaging.RazorMail;
+    using Appva.GrandId;
+    using Appva.Http;
+    using Appva.Http.ModelBinding;
+    using System.Reflection;
 
     #endregion
 
@@ -167,7 +169,7 @@ namespace Appva.Mcss.Admin.Configuration
         {
             if (ApplicationEnvironment.Is.Development)
             {
-                NHibernateProfiler.Initialize();
+                //// NHibernateProfiler.Initialize();
             }
         }
 
@@ -225,9 +227,12 @@ namespace Appva.Mcss.Admin.Configuration
         /// Registers the authify client.
         /// </summary>
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
-        public static void RegisterAuthify(this ContainerBuilder builder)
+        public static void RegisterGrandId(this ContainerBuilder builder)
         {
-            builder.Register<SithsClient>(x => new SithsClient(new AuthifyWtfTokenizer())).As<ISithsClient>().SingleInstance();
+            var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+            var options     = RestOptions.CreateNew(null, modelBinder);
+            var credentials = GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey);
+            builder.Register(x => new GrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), credentials)).As<IGrandIdClient>().SingleInstance();
         }
 
         /// <summary>

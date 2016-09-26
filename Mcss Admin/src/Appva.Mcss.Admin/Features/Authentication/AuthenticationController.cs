@@ -165,7 +165,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// <summary>
         /// The Siths Identity Provider (IdP) token response authentication.
         /// </summary>
-        /// <param name="sessionId">The response token</param>
+        /// <param name="grandidsession">The response session ID.</param>
         /// <returns>A redirect to the external login</returns>
         [Route("sign-in/external/siths/token")]
         [AllowAnonymous, HttpGet]

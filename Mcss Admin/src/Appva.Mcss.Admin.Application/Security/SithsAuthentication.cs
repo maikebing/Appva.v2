@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Application.Security
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Microsoft.Owin;
 
     #endregion
 
@@ -62,9 +63,19 @@ namespace Appva.Mcss.Admin.Application.Security
         private static readonly ILog Log = LogProvider.For<SithsAuthentication>();
 
         /// <summary>
+        /// The <see cref="IOwinContext"/>.
+        /// </summary>
+        private readonly IOwinContext context;
+
+        /// <summary>
         /// The <see cref="IGrandIdClient"/>.
         /// </summary>
         private readonly IGrandIdClient client;
+
+        /// <summary>
+        /// The <see cref="IMobileGrandIdClient"/>.
+        /// </summary>
+        private readonly IMobileGrandIdClient mobileClient;
 
         /// <summary>
         /// The <see cref="IAccountService"/>.
@@ -85,7 +96,9 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <param name="settings">The <see cref="ISettingsService"/></param>
         /// <param name="auditing">The <see cref="IAuditService"/></param>
         public SithsAuthentication(
+            IOwinContext context,
             IGrandIdClient client,
+            IMobileGrandIdClient mobileClient,
             IIdentityService identity,
             ITenantService tenants,
             IAccountService accounts,
@@ -93,8 +106,10 @@ namespace Appva.Mcss.Admin.Application.Security
             IAuditService auditing)
             : base(identity, tenants, accounts, settings, auditing, AuthenticationMethod.Siths, AuthenticationType.Administrative)
         {
-            this.client   = client;
-            this.accounts = accounts;
+            this.context      = context;
+            this.client       = client;
+            this.mobileClient = mobileClient;
+            this.accounts     = accounts;
         }
 
         #endregion
@@ -104,7 +119,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <inheritdoc />
         public async Task<FederatedLogin> ExternalLoginUrlAsync(Uri callback)
         {
-            var result = await this.client.FederatedLoginAsync(callback);
+            var result = await this.GetClient().FederatedLoginAsync(callback);
             if (result == null)
             {
                 Log.Error("GrandID 'FederatedLogin' failed for callback {0}", callback);
@@ -121,7 +136,11 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <inheritdoc />
         public async Task<IAuthenticationResult> AuthenticateTokenAsync(string sessionId)
         {
-            var response = await this.client.GetSessionAsync<SithsIdentity>(sessionId);
+            if (string.IsNullOrWhiteSpace(sessionId))
+            {
+                Log.Error("GrandID 'GetSession' failed because sessionId is null");
+            }
+            var response = await this.GetClient().GetSessionAsync<SithsIdentity>(sessionId);
             if (response == null)
             {
                 Log.Error("GrandID 'GetSession' failed for session ID {0}", sessionId);
@@ -146,7 +165,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <inheritdoc />
         public async Task<bool> LogoutAsync(string sessionId)
         {
-            var response = await this.client.LogoutAsync(sessionId);
+            var response = await this.GetClient().LogoutAsync(sessionId);
             if (response == null)
             {
                 Log.Error("GrandID 'Logout' failed for session ID {0}", sessionId);
@@ -162,6 +181,28 @@ namespace Appva.Mcss.Admin.Application.Security
                 Log.Warn("GrandID 'Logout' session is not deleted for session ID {0}", sessionId);
             }
             return response.IsSessionDeleted;
+        }
+
+        #endregion
+
+        #region Private Methods.
+
+        /// <summary>
+        /// Returns the client.
+        /// </summary>
+        /// <returns>A <see cref="IGrandIdClient"/>.</returns>
+        private IGrandIdClient GetClient()
+        {
+            return this.IsMobileDevice() ? this.mobileClient : this.client;
+        }
+
+        /// <summary>
+        /// Returns whether or not it is a mobile device.
+        /// </summary>
+        /// <returns>True if a mobile device, such as an ipad; otherwise false.</returns>
+        private bool IsMobileDevice()
+        {
+            return this.context.Request.Headers.Get("User-Agent").ToString().ToLower().Contains("ipad");
         }
 
         #endregion

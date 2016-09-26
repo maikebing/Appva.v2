@@ -231,8 +231,8 @@ namespace Appva.Mcss.Admin.Configuration
         {
             var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
             var options     = RestOptions.CreateNew(null, modelBinder);
-            var credentials = GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey);
-            builder.Register(x => new GrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), credentials)).As<IGrandIdClient>().SingleInstance();
+            builder.Register(x => new GrandIdClient      (options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
+            builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
         }
 
         /// <summary>

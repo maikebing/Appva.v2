@@ -3,6 +3,7 @@ h1, h2, h3 {
     color:#445067;
     text-align:center;
     font-family:Helvetica, Arial, sans-serif;
+    font-weight:500;
 }
 
 h1 { font-size: 20px; margin:20px 0;}

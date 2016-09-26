@@ -165,19 +165,19 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// <summary>
         /// The Siths Identity Provider (IdP) token response authentication.
         /// </summary>
-        /// <param name="sessionId">The response token</param>
+        /// <param name="grandidsession">The response session ID.</param>
         /// <returns>A redirect to the external login</returns>
         [Route("sign-in/external/siths/token")]
         [AllowAnonymous, HttpGet]
-        public async Task<ActionResult> SignInSithsViaToken(string sessionId)
+        public async Task<ActionResult> SignInSithsViaToken(string grandidsession)
         {
-            var result = await this.siths.AuthenticateTokenAsync(sessionId);
+            var result = await this.siths.AuthenticateTokenAsync(grandidsession);
             if (! result.IsAuthorized)
             {
                 return this.RedirectToAction("SignInSiths");
             }
             this.authentication.SignIn(result.Identity);
-            await this.siths.LogoutAsync(sessionId);
+            await this.siths.LogoutAsync(grandidsession);
             return this.RedirectToAction("Index", "Home");
         }
 

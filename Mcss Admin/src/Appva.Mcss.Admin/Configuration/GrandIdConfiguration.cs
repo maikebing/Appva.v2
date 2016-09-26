@@ -52,5 +52,27 @@ namespace Appva.Mcss.Admin
                 return ConfigurationManager.AppSettings.Get("GrandId.AuthenticationServiceKey");
             }
         }
+
+        /// <summary>
+        /// Returns the grand id mobile api key.
+        /// </summary>
+        public static string MobileApiKey
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings.Get("GrandId.Mobile.ApiKey");
+            }
+        }
+
+        /// <summary>
+        /// Returns the grand id mobile authentication service key.
+        /// </summary>
+        public static string MobileAuthenticationServiceKey
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings.Get("GrandId.Mobile.AuthenticationServiceKey");
+            }
+        }
     }
 }

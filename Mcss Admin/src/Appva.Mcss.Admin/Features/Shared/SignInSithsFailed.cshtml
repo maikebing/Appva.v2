@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Features/Shared/_LoginLayout.cshtml";
+    SetTitle("Inloggning misslyckades");
+}
+
+<div class="hd org">
+    <img src="@Url.Content("~/Assets/i/loginpage-logo.png")" alt="Appva MCSS" />
+    <h1>Inloggning misslyckade</h1>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="bd">
+            <span class="alert-danger">
+                Inloggning med SITHS misslyckades. Ingen användare hittades för detta SITHS-kort.
+            </span>
+            <div class="controls">
+                @Html.ActionLink("Försök igen", "SignInSiths", "Authentication", null, new { @class = "btn full" })
+                @Html.ActionLink("Tillbaka till inloggning", "SignIn", "Authentication", null, new { @class = "cancel" })
+            </div>
+        </div>
+    </div>
+</div>

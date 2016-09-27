@@ -174,11 +174,22 @@ namespace Appva.Mcss.Admin.Features.Authentication
             var result = await this.siths.AuthenticateTokenAsync(grandidsession);
             if (! result.IsAuthorized)
             {
-                return this.RedirectToAction("SignInSiths");
+                return this.RedirectToAction("SignInSithsFailed");
             }
             this.authentication.SignIn(result.Identity);
             await this.siths.LogoutAsync(grandidsession);
             return this.RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Returns a siths-auth failed message
+        /// </summary>
+        /// <returns>Sign-in failed message</returns>
+        [Route("sign-in/external/siths/failed")]
+        [AllowAnonymous, HttpGet]
+        public ActionResult SignInSithsFailed()
+        {
+            return this.View();
         }
 
         #endregion

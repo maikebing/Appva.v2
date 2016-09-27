@@ -11,11 +11,15 @@
 </div>
 <div class="row">
     <div class="col bd">
-        Vi har skickat ett e-post till @TempData["EmailAddress"]. Klicka på länken i e-post för att återställa ditt lösenord.
-        Om du inte hittar e-post, kontrollera andra platser där det kan hamnat, så som din mapp för skräppost/spam eller andra mappar.
+        <h2>
+            Vi har skickat ett meddelande till din e-postadress. Klicka på länken i meddelandet för att återställa ditt lösenord.
+        </h2>
+        <h3>Hittar du inte meddelandet?</h3>
+        <p>Kontrollera att det inte har hamnat bland din skräppost eller i någon annan mapp.</p>
         <div class="controls">
-            @Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn full" })
-            @Html.ActionLink("Jag fick inte något e-postmeddelande", "Forgot", "Account", null, new { @class = "cancel" })
+            
+            @Html.ActionLink("Jag hittar fortfarande inte meddelandet", "Forgot", "Account", null, new { @class = "cancel" })
+            @Html.ActionLink("Tillbaka till inloggning", "SignIn", "Authentication", null, new { @class = "cancel" })
         </div>
     </div>
 </div>

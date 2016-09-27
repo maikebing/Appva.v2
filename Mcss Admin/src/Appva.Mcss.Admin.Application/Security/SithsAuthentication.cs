@@ -156,7 +156,7 @@ namespace Appva.Mcss.Admin.Application.Security
                 Log.Error("GrandID 'GetSession' failed due to not authenticated for session ID {0}", sessionId);
                 return AuthenticationResult.Failure;
             }
-            var account = this.accounts.FindByHsaId(response.UserAttributes.HsaId);
+            var account = this.accounts.FindByHsaId(response.Username);
             var result  = this.Authenticate(response.UserAttributes.HsaId, account, null);
             this.VerifyAuthenticationResult(account, result);
             return result;

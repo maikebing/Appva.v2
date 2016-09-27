@@ -140,7 +140,7 @@ namespace Appva.Mcss.Admin.Application.Security
             {
                 Log.Error("GrandID 'GetSession' failed because sessionId is null");
             }
-            var response = await this.GetClient().GetSessionAsync<SithsIdentity>(sessionId);
+            var response = await this.GetClient().GetSessionAsync<DesktopSithsIdentity>(sessionId);
             if (response == null)
             {
                 Log.Error("GrandID 'GetSession' failed for session ID {0}", sessionId);
@@ -157,7 +157,7 @@ namespace Appva.Mcss.Admin.Application.Security
                 return AuthenticationResult.Failure;
             }
             var account = this.accounts.FindByHsaId(response.Username);
-            var result  = this.Authenticate(response.UserAttributes.HsaId, account, null);
+            var result  = this.Authenticate(response.Username, account, null);
             this.VerifyAuthenticationResult(account, result);
             return result;
         }

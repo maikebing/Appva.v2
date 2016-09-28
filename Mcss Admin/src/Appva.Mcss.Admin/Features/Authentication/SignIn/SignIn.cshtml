@@ -12,7 +12,7 @@
 </div>
 <div class="row cf">
     <div class="col bd">
-        <h2>Med SITHS-kort</h2>
+        <h2 class="center">Med SITHS-kort</h2>
         <img class="siths-icon"src="@Url.Content("~/Assets/i/siths-icon.png")" alt="SITHS-kort" />
         <div class="controls">
             @Html.ActionLink("Logga in med ditt SITHS-kort", "SignInSiths", "Authentication", null, new { @class = "btn green full" })
@@ -21,7 +21,7 @@
     </div>
     <div class="col bd">
 
-        <h2>Med användarnamn och lösenord</h2>
+        <h2 class="center">Med användarnamn och lösenord</h2>
         @using (Html.Post(null, new { ReturnUrl = Model.ReturnUrl }))
         {
             @Html.ValidationAlert("Felaktigt användarnamn och/eller lösenord", string.Empty, new { @class = "error-msg" })

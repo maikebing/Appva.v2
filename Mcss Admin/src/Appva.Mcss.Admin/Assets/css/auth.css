@@ -6,8 +6,9 @@ h1, h2, h3 {
 }
 
 h1 { font-size: 20px; margin:20px 0; text-align:center;}
-h2 { font-size: 16px; margin-top:0; padding-top:0; }
+h2 { font-size: 16px; margin-top:0; padding-top:0;}
 h3 { font-size: 14px; font-weight:bold; margin-bottom:0; padding-bottom:0;  }
+.center {text-align:center;}
 
 .cf:after {
 	display:block;

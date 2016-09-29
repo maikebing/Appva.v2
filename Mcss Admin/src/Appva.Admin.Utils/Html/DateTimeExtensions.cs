@@ -23,6 +23,24 @@ namespace Appva.Admin.Utils.Html
     public static class DateTimeExtensions
     {
         /// <summary>
+        /// Date time representing the number of milliseconds since 1 January 
+        /// 1970 00:00:00 UTC (Unix Epoch).
+        /// </summary>
+        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        /// <summary>
+        /// Returns the number of milliseconds since 1 January 1970 00:00:00 
+        /// UTC (Unix Epoch).
+        /// </summary>
+        /// <param name="dateTime">A UTC date time</param>
+        /// <returns>the number of milliseconds since 1 January 1970 00:00:00 
+        /// UTC (Unix Epoch)</returns>
+        public static long ToUnixEpochMilliseconds(this DateTime dateTime)
+        {
+            return (long) (dateTime.ToUniversalTime().Ticks - UnixEpoch.Ticks) / TimeSpan.TicksPerMillisecond;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="htmlHelper"></param>

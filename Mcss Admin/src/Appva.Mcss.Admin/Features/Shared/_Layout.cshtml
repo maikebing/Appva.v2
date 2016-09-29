@@ -483,14 +483,19 @@
                 <p>ENVIRONMENT @ApplicationEnvironment.Environment | VERSION @ApplicationEnvironment.Info.Version | SERVER @ApplicationEnvironment.OperatingSystem.MachineName</p>
             </div>
         }
-        @if (ApplicationEnvironment.Is.Development)
+        @if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
         {
             var expiration = Request.GetOwinContext().Get<DateTimeOffset?>("ExpiresUtc");
-            if (expiration.HasValue)
+            if (expiration.HasValue && User.Identity.IsAuthenticated)
             {
-                <div class="environment">
-                    <p>Expires at @expiration.Value.LocalDateTime.ToString("s")</p>
-                </div>
+                <script type="text/javascript">
+                    mcss.auth.init(@expiration.Value.LocalDateTime.ToUnixEpochMilliseconds(),
+                        {
+                            loginUrl:                 '/auth/sign-in',
+                            redirectToLogin:           true,
+                            showCountdownAfterMinutes: 5
+                        });
+                </script>
             }
         }
         <div class="global-filter">

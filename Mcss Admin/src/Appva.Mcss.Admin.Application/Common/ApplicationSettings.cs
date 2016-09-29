@@ -11,23 +11,17 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Appva.Mcss.Admin.Application.Security.Jwt;
-    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Ldap.Configuration;
+    using Appva.Mcss.Admin.Domain.VO;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// TODO: Split up in different classes for each specific settings group, e.g. 
+    /// public static partial ApplicationSettings { ... }
     /// </summary>
     public static class ApplicationSettings
     {
-        #region Device.
-
-        //// TODO: Add more here.
-
-        #endregion
-
         #region Admin.
 
         /// <summary>
@@ -163,6 +157,16 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "The password configuration",
             SecurityPasswordConfiguration.CreateNew());
 
+        /// <summary>
+        /// The tenant authentication cookie expiration timespan.
+        /// </summary>
+        public static readonly ApplicationSettingIdentity<TimeSpan> CookieExpiration = ApplicationSettingIdentity<TimeSpan>.CreateNew(
+            "Mcss.Core.Security.Configuration.CookieExpiration",
+            "Cookie Expiration Configuration",
+            "Mcss.Core.Security.CookieExpiration",
+            "The authentication cookie expiration configuration",
+            TimeSpan.FromMinutes(30));
+
         #endregion
 
         #region External Auditing Logging.
@@ -291,7 +295,8 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
            "Reasons for delegation removal",
            "MCSS.Core.Delegation.Delete",
            "Reasons for delegation removal",
-           new List<string> { 
+           new List<string> 
+           { 
                "Delegering utgången, förnyas ej",
                "Medarbetare slutat"
            });
@@ -307,7 +312,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
            "If the delegation overview by default should be filtered by the issuer",
            false);
         
-
         #endregion
 
         #region Temporary Fixes.
@@ -345,11 +349,11 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="defaultValue">The default value</param>
         private ApplicationSettingIdentity(string key, string name, string @namespace, string description, T defaultValue)
         {
-            this.Key = key;
-            this.Name = name;
-            this.Namespace = @namespace;
+            this.Key         = key;
+            this.Name        = name;
+            this.Namespace   = @namespace;
             this.Description = description;
-            this.Default = defaultValue;
+            this.Default     = defaultValue;
         }
 
         #endregion

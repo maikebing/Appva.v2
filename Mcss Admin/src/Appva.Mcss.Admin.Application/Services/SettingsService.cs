@@ -19,16 +19,15 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Core.Extensions;
     using Appva.Core.Logging;
     using Appva.Core.Resources;
+    using Appva.Ldap.Configuration;
     using Appva.Mcss.Admin.Application.Caching;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Persistence;
     using Newtonsoft.Json;
-    using Appva.Mcss.Admin.Application.Models;
-    using Appva.Ldap.Configuration;
     using Validation;
-    using Newtonsoft.Json.Serialization;
 
     #endregion
 
@@ -169,6 +168,15 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         AuditLoggingConfiguration AuditLoggingConfiguration();
     }
 
+    public interface ICookieExpiration
+    {
+        /// <summary>
+        /// Returns the cookie expiration.
+        /// </summary>
+        /// <returns>The time span</returns>
+        TimeSpan GetCookieExpiration();
+    }
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
@@ -180,6 +188,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         IConfigurationSettings,
         IAuditConfiguration,
         ILdapSettings,
+        ICookieExpiration,
         IService
     {
         /// <summary>
@@ -760,5 +769,14 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #endregion
 
+        #region ICookieExpiration Members.
+
+        /// <inheritdoc />
+        public TimeSpan GetCookieExpiration()
+        {
+            return this.Find<TimeSpan>(ApplicationSettings.CookieExpiration);
+        }
+
+        #endregion
     }
 }

@@ -5,15 +5,14 @@
 }
 
 <div class="hd org">
-    <img src="@Url.Content("~/Assets/i/loginpage-logo.png")" alt="Appva MCSS" />
-    <!--span>@Tenant</span-->
+    @Html.Partial("_LoginHeaderLogo")
 </div>
 <div class="row">
     <div class="col bd">
         <img class="logout" src="@Url.Content("~/Assets/i/check-icon.png")" alt="Appva MCSS" />
         <h1>Du är nu utloggad</h1>
         <div class="controls">
-            @Html.ActionLink("Logga in på nytt", "SignIn", "Authentication", null, new { @class = "btn green" })
+            @Html.ActionLink("Logga in på nytt", "SignIn", "Authentication", null, new { @class = "btn green full" })
         </div>
     </div>
 </div>

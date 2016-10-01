@@ -1,0 +1,14 @@
+﻿@using Appva.Mcss.Admin.Application.Extensions 
+@model SignInForm
+
+@using (Html.Post("SignIn","Authentication",null, new { ReturnUrl = Model.ReturnUrl },false))
+{
+    @Html.ValidationAlert("Felaktigt användarnamn och/eller lösenord", string.Empty, new { @class = "error-msg" })
+    @Html.FormGroup(x => x.UserName).Label("Användarnamn").TextBox("Ditt användarnamn").Build()
+    @Html.FormGroup(x => x.Password).Label("Lösenord").Password("Ditt lösenord").Build()
+    @Html.ActionLink("Glömt lösenord?", "Forgot", "Account", null, new { @class = "btn-right full forgot" })
+    <div class="controls">
+        @Html.Submit("Logga in", new { @id = "submit-form", @class = "btn full" })
+        @Html.HiddenFor(m => m.LoginView)
+    </div>
+}

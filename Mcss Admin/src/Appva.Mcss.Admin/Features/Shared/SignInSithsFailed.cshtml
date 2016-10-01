@@ -4,16 +4,18 @@
 }
 
 <div class="hd org">
-    <img src="@Url.Content("~/Assets/i/loginpage-logo.png")" alt="Appva MCSS" />
+    @Html.Partial("_LoginHeaderLogo")
     <h1>Inloggning misslyckades</h1>
 </div>
 
 <div class="row">
     <div class="col">
         <div class="bd">
-            <span class="alert-danger">
-                Inloggning med SITHS misslyckades. Ingen användare hittades för detta SITHS-kort.
-            </span>
+            <div class="alert alert-danger error-msg">
+                <span class="title">
+                    Inloggning med SITHS misslyckades. Ingen användare hittades för detta SITHS-kort.
+                </span>
+            </div>
             <div class="controls">
                 @Html.ActionLink("Försök igen", "SignInSiths", "Authentication", null, new { @class = "btn full" })
                 @Html.ActionLink("Tillbaka till inloggning", "SignIn", "Authentication", null, new { @class = "cancel" })

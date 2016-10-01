@@ -4,7 +4,7 @@
     SetBodyCssClass("page-reset-password");
 }
 <div class="hd org">
-    <img src="@Url.Content("~/Assets/i/loginpage-logo.png")" alt="Appva MCSS" />
+    @Html.Partial("_LoginHeaderLogo")
     <h1>Utgången återställningslänk</h1>
 </div>
 
@@ -14,9 +14,11 @@
             <img src="@Url.Content("~/Assets/i/profile-icon.png")" />
         </div>
         <div class="bd">
-            <span class="alert-danger">
-                Återställningslänken har gått ut, vänligen begär en ny.
-            </span>
+            <div class="alert alert-danger error-msg">
+                <span class="title">
+                    Återställningslänken har gått ut, vänligen begär en ny.
+                </span>
+            </div>
             <div class="controls">
                 @Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn center" })
                 @Html.ActionLink("Skicka ny återställningslänk", "Forgot", "Account", null, new { @class = "cancel" })

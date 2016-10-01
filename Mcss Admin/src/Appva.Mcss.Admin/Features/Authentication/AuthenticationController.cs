@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         /// <returns>A redirect to authorized return url or authorized menu</returns>
         [Route("sign-in")]
-        [AllowAnonymous, HttpPost, Validate, ValidateAntiForgeryToken]
+        [AllowAnonymous, HttpPost, Validate(UseReferalRoute:true), ValidateAntiForgeryToken]
         public ActionResult SignIn(SignInForm request)
         {
             IAuthenticationResult result;
@@ -112,7 +112,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
                     return this.RedirectToAction("Lockout");
                 }
                 ModelState.AddModelError(string.Empty, string.Empty);
-                return this.View();
+                return this.View(request.LoginView);
             }
             this.authentication.SignIn(result.Identity);
             if (! result.Identity.LastPasswordChangedDate.HasValue)

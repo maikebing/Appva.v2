@@ -34,9 +34,11 @@ h3 { font-size: 14px; font-weight:bold; margin-bottom:0; padding-bottom:0;  }
 .page .container .org,.page .container .profile{overflow:auto;font-size:14px;}
 .page .container .profile{background:#f2f4f9; padding:25px;border:1px solid #d8dfe5; border-bottom:none;}
 .page .container .org img{margin:0 auto;display:block; width:160px;}
+.page .container .org span{text-transform: uppercase; }
+.page .container .org h1 {margin-top:30px;}
 .page .container .profile img{margin:0 auto;display:block;}
 .page .container .profile h1 {margin-bottom:0; padding-bottom:0;}
-.page .container .org span,.page .container .profile span{text-align:center;color:#8f9ab2;margin-top:5px;display:inline-block;}
+.page .container .profile span{text-align:center;color:#8f9ab2;margin-top:5px;display:inline-block;}
 .page .container .hr{border-bottom:1px solid #d8dfe5;margin:25px -25px;}
 .page .container .note{background:#f2f4f9;padding:10px;color:#7c88a1;margin-bottom:25px;border-radius:4px;}
 .page .container .note a{color:#7c88a1;text-decoration:none;border-bottom:1px dotted #7c88a1;}
@@ -44,9 +46,10 @@ h3 { font-size: 14px; font-weight:bold; margin-bottom:0; padding-bottom:0;  }
 .page .container .btn,.page .container .btn:active,.page .container .btn:focus{outline:0 !important;outline-offset:0 !important}
 
 .page .container .btn-fluid{width:100%;display:block;}
-.page .container .btn-right{float:right;}
-.page .container .bd .controls{vertical-align:bottom; margin-top:27px;}
+.page .container .btn-right{text-align:right;display:block;}
+.page .container .bd .controls{vertical-align:bottom; margin-top:20px;}
 .page .container .bd form {position:relative;bottom:0;}
+.page .container .bd .form .forgot{margin-top:-10px;padding:0;}
 .page .container .forgot, .page .container .cancel{background-color:transparent;color:#7c88a0;font-weight:300; padding-top:16px;}
 .page .container .forgot:hover, .page .container .cancel:hover{color:#374154;}
 .page .container .cancel{ display:block; text-align:center;padding-top:25px;}
@@ -167,14 +170,18 @@ input[type="radio"][disabled],input[type="checkbox"][disabled],input[type="radio
 /** Page specific **/
 .page-reset-password .container{max-width:500px;}
 .page-reset-password .container .col .bd{text-align:center;}
-.page-register-password .container, .page-register-password .container .bd{max-width:500px;}
-.page-sign-in .container img.siths-icon{display:block; max-width:211px; margin:0 auto;}
+.page-sign-in .container img.siths-icon, .page-sign-in .container p.siths-text{display:block; max-width:211px; margin:0 auto 16px;}
+.page-sign-in .bd .form {padding-top:20px;}
+.page-sign-in .container .bd {height:100%;}
+.page-sign-in .bd .form .forgot {margin-bottom:52px;}
+
+
 
 /* logout specific */
 .page-sign-out .container .bd img{max-width:55px;}
 .page-sign-out .container .col.bd{text-align:center;}
 .page-sign-out .container .col.bd h1 {padding:14px 0 40px 0; margin:0;}
-.page-sign-out .container .hd.org img {margin-bottom:60px;}
+.page-sign-out .container .hd.org {margin-bottom:60px;}
 .page-sign-out .container .bd {min-height:200px;}
 
 /** Themed **/

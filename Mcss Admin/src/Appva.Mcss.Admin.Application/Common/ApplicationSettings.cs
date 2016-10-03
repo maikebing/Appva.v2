@@ -306,7 +306,17 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
            "MCSS.Core.Delegation.Overview",
            "If the delegation overview by default should be filtered by the issuer",
            false);
-        
+
+        /// <summary>
+        /// After a change the delegation should be pending for a new activation
+        /// </summary>
+        /// <remarks>The setting returns an <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<bool> RequireDelegationActivationAfterChange = ApplicationSettingIdentity<bool>.CreateNew(
+           "MCSS.Core.Delegation.Setting.RequireActivationAfterChange",
+           "If a delegation should require a new activation after a change",
+           "MCSS.Core.Delegation.Setting",
+           "After a change the delegation should be pending for a new activation",
+           false);
 
         #endregion
 

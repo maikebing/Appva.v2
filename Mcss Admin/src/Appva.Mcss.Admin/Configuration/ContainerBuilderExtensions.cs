@@ -8,12 +8,10 @@ namespace Appva.Mcss.Admin.Configuration
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.IdentityModel.Tokens;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using Appva.Apis.TenantServer.Legacy;
@@ -39,6 +37,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Tenant.Interoperability.Client;
     using Autofac;
     using Autofac.Integration.Mvc;
+    using HibernatingRhinos.Profiler.Appender.NHibernate;
     using Microsoft.Owin;
     using Microsoft.Owin.Infrastructure;
     using Microsoft.Owin.Security.Cookies;
@@ -166,9 +165,9 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterNhibernateProfiler(this ContainerBuilder builder)
         {
-            if (ApplicationEnvironment.Is.Development)
+            if (ApplicationEnvironment.Is.Staging)
             {
-                //// NHibernateProfiler.Initialize();
+                NHibernateProfiler.Initialize();
             }
         }
 

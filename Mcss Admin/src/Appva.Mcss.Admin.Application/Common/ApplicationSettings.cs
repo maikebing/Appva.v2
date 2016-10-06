@@ -165,7 +165,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "Cookie Expiration Configuration",
             "Mcss.Core.Security.CookieExpiration",
             "The authentication cookie expiration configuration",
-            TimeSpan.FromMinutes(30));
+            TimeSpan.FromHours(1));
 
         #endregion
 

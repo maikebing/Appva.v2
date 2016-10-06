@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -111,6 +112,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IAuditService auditing;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>
+        /// </summary>
+        private readonly ISettingsService settings;
+
         #endregion
 
         #region Constructor.
@@ -123,13 +129,15 @@ namespace Appva.Mcss.Admin.Application.Services
             IDelegationRepository repository, 
             IAccountService accountService,
             IIdentityService identity,
-            IAuditService auditing)
+            IAuditService auditing, 
+            ISettingsService settings)
         {
             this.taxonomies     = taxonomies;
             this.repository     = repository;
             this.accountService = accountService;
             this.identity       = identity;
             this.auditing       = auditing;
+            this.settings       = settings;
         }
 
         #endregion
@@ -163,8 +171,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
         /// <inheritdoc />
         public void Save(Delegation delegation)
-        {
-            
+        {   
             this.repository.Save(delegation);
 
             this.auditing.Create(
@@ -215,6 +222,10 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var changes = new List<Change>();
             var delegation = this.Find(delegationId);
+            if (this.settings.Find<bool>(ApplicationSettings.RequireDelegationActivationAfterChange))
+            {
+                delegation.Pending = true;
+            }
             if (model.CreatedBy.IsNotNull())
             {
                 changes.Add(new Change

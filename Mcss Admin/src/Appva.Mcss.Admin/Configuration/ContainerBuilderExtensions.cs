@@ -13,15 +13,18 @@ namespace Appva.Mcss.Admin.Configuration
     using System.Data;
     using System.IdentityModel.Tokens;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using Appva.Apis.TenantServer.Legacy;
     using Appva.Caching.Providers;
     using Appva.Core.Environment;
+    using Appva.Core.Messaging.RazorMail;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Caching;
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Security.Middleware.Cookie;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Infrastructure;
@@ -36,13 +39,13 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Tenant.Interoperability.Client;
     using Autofac;
     using Autofac.Integration.Mvc;
-    using HibernatingRhinos.Profiler.Appender.NHibernate;
     using Microsoft.Owin;
-    using Microsoft.Owin.Security;
+    using Microsoft.Owin.Infrastructure;
     using Microsoft.Owin.Security.Cookies;
+    using Microsoft.Owin.Security.DataHandler;
+    using Microsoft.Owin.Security.DataProtection;
     using Owin;
     using RazorEngine.Configuration;
-    using Appva.Core.Messaging.RazorMail;
 
     #endregion
 
@@ -51,6 +54,7 @@ namespace Appva.Mcss.Admin.Configuration
     /// </summary>
     public static class ContainerBuilderExtensions
     {
+
         /// <summary>
         /// Registers the application environment.
         /// </summary>
@@ -116,18 +120,15 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<PreAuthorizeTenantMiddleware>().SingleInstance();
             builder.RegisterType<JwtSecurityTokenHandler>().AsSelf().SingleInstance();
             builder.RegisterType<JwtSecureDataFormat>().AsSelf().InstancePerRequest();
-            builder.Register<CookieAuthenticationOptions>(x => new CookieAuthenticationOptions
-            {
-                AuthenticationMode = AuthenticationMode.Active,
-                AuthenticationType = AuthenticationType.Administrative.Value,
-                CookieSecure       = CookieSecureOption.SameAsRequest,
-                LoginPath          = new PathString("/auth/sign-in"),
-                LogoutPath         = new PathString("/auth/sign-out"),
-                SlidingExpiration  = true,
-                ExpireTimeSpan     = TimeSpan.FromMinutes(30)
-            }).SingleInstance();
-            builder.RegisterType<CookieAuthenticationMiddleware>().SingleInstance();
-            builder.Register<SecurityTokenOptions>(x => new SecurityTokenOptions
+            //// Create the data protector at start up as a singleton to remove overhead on each request.
+            var protector = app.CreateDataProtector(typeof(CookieAuthenticationMiddleware).FullName, AuthenticationType.Administrative.Value, "v1");
+            builder.Register(x => new TicketDataFormat(protector)).AsSelf().SingleInstance();
+            builder.Register(x => new CookieAuthenticationProvider()).As<ICookieAuthenticationProvider>().SingleInstance();
+            builder.Register(x => new ChunkingCookieManager()).As<ICookieManager>().SingleInstance();
+            //// The expiration handler will handle tenant specific expiration timeouts.
+            builder.RegisterType<TenantCookieAuthenticationOptions>().InstancePerRequest();
+            builder.RegisterType<TenantCookieAuthenticationMiddleware>().InstancePerRequest();
+            builder.Register(x => new SecurityTokenOptions
             {
                 RegisterTokenPath        = new PathString("/account/register"),
                 RegisterTokenExpiredPath = new PathString("/account/register/expired"),
@@ -167,7 +168,7 @@ namespace Appva.Mcss.Admin.Configuration
         {
             if (ApplicationEnvironment.Is.Development)
             {
-                NHibernateProfiler.Initialize();
+                //// NHibernateProfiler.Initialize();
             }
         }
 
@@ -216,8 +217,8 @@ namespace Appva.Mcss.Admin.Configuration
             }).As<IMultiTenantDatasourceConfiguration>().SingleInstance();
             builder.RegisterType<MultiTenantDatasource>().As<IMultiTenantDatasource>().SingleInstance();
             builder.RegisterType<MultiTenantPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
-            builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerLifetimeScope();
-            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerLifetimeScope()
+            builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerRequest();
+            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerRequest()
                 .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
         }
 

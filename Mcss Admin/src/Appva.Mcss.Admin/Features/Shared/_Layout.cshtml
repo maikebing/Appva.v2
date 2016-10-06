@@ -483,6 +483,21 @@
                 <p>ENVIRONMENT @ApplicationEnvironment.Environment | VERSION @ApplicationEnvironment.Info.Version | SERVER @ApplicationEnvironment.OperatingSystem.MachineName</p>
             </div>
         }
+        @if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
+        {
+            var expiration = Request.GetOwinContext().Get<DateTimeOffset?>("ExpiresUtc");
+            if (expiration.HasValue && User.Identity.IsAuthenticated)
+            {
+                <script type="text/javascript">
+                    mcss.auth.init(@expiration.Value.LocalDateTime.ToUnixEpochMilliseconds(),
+                        {
+                            loginUrl:                 '/auth/sign-in',
+                            redirectToLogin:           true,
+                            showCountdownAfterMinutes: 5
+                        });
+                </script>
+            }
+        }
         <div class="global-filter">
             @Html.Action("TaxonFilter", "Taxa", new { Area = string.Empty })
         </div>

@@ -49,9 +49,9 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
         /// <inheritdoc />
         public bool TryIdentifyTenant(out ITenantIdentifier identifier)
         {
-            identifier = Identifier;
-            return true;
-            /*identifier = null;
+            /*identifier = Identifier;
+            return true;*/
+            identifier = null;
             var context = HttpContext.Current;
             try
             {
@@ -70,7 +70,7 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
             {
                 Log.Error(ex);
             }
-            return identifier != null;*/
+            return identifier != null;
         }
 
         /// <inheritdoc />

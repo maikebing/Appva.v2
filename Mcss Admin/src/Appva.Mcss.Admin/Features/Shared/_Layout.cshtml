@@ -343,11 +343,11 @@
                     });
 
                     $(".check-datetime-update, .check-datetime-update #StartDate").bind("change", function (e) {
-                        ShowUpdateSequenceAlertWarning(e);
+                        ShowSequenceReminderWarning(e);
                     });
 
                     $(".check-datetime-update.btn").bind("click", function (e) {
-                        ShowUpdateSequenceAlertWarning(e);
+                        ShowSequenceReminderWarning(e);
                     });
 
                     $(".check-datetime-create #StartDate").bind("change", function (e) {
@@ -356,7 +356,7 @@
                         var start = new Date(elem.val());
 
                         if (now > start) {
-                            ShowCreateSequenceAlertWarning(e);
+                            ShowSequenceReminderWarning(e);
                         }
                         else {
                             $(".warning-datetime").remove();
@@ -371,7 +371,7 @@
                         $.each(vals, function (index, elem) {
                             var date = new Date(elem);
                             if (now > date) {
-                                ShowCreateSequenceAlertWarning(e);
+                                ShowSequenceReminderWarning(e);
                             }
                         });
                                               
@@ -402,18 +402,11 @@
                     });
                 });
 
-                function ShowUpdateSequenceAlertWarning(e) {
+                function ShowSequenceReminderWarning(e) {
                     var save = $('.std-panel .submit input[type="submit"]')
                     if (save.prev(".warning-datetime").length < 1) {
-                        save.before("<div class='warning-datetime'><span style='font-weight:bold;'>Observera!</span> Om du ändrat tider för när insatsen skall utföras kommer inga larm att skapas för de tider som inträffat före du gjort ändringen. Insatserna kommer att kunna signeras men kommer inte att generera några larm.</div>");
+                        save.before("<div class='warning-datetime'><span style='font-weight:bold;'>Observera!</span> Påminnelser genereras inte retroaktivt.</div>");
                     }     
-                }
-
-                function ShowCreateSequenceAlertWarning(e) {
-                    var save = $('.std-panel .submit input[type="submit"]')
-                    if (save.prev(".warning-datetime").length < 1) {
-                        save.before("<div class='warning-datetime'><span style='font-weight:bold;'>Observera!</span> Insatser som skulle ha utförts före insatsen skapats kommer inte markeras som avikelser eller skapa några larm. Insatserna kommer att synas och kan signeras men kommer inte att generera några larm.</div>");
-                    }
                 }
 
                 function disableDelegation(t) {

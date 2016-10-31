@@ -288,6 +288,10 @@
     <Compile Include="App_Start\FilterConfiguration.cs" />
     <Compile Include="App_Start\OwinConfiguration.cs" />
     <Compile Include="App_Start\RouteConfiguration.cs" />
+    <Compile Include="Areas\Area51\Features\Account\AccountController.cs" />
+    <Compile Include="Areas\Area51\Features\Account\DeleteDuplicate\DeleteDuplicate.cs" />
+    <Compile Include="Areas\Area51\Features\Account\ListDuplicates\DuplicatedAccount.cs" />
+    <Compile Include="Areas\Area51\Features\Account\ListDuplicates\ListDuplicatesHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\AclController.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAclHandler.cs" />
@@ -1271,6 +1275,7 @@
     <Content Include="Areas\Backoffice\Features\Schedule\Update\Update.cshtml" />
     <Content Include="Areas\Backoffice\Features\Schedule\Create\Create.cshtml" />
     <Content Include="Areas\Backoffice\Features\Schedule\EditSigningOptions\EditSigningOptions.cshtml" />
+    <Content Include="Areas\Area51\Features\Account\ListDuplicates\ListDuplicates.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

@@ -1,4 +1,4 @@
-﻿// <copyright file="DeleteDelegationSettingsPublisher.cs" company="Appva AB">
+﻿// <copyright file="DelegationSettingsPublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -11,7 +11,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Areas.Area51.Models;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using System;
     using System.Collections.Generic;
@@ -22,7 +21,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class DeleteDelegationSettingsPublisher : RequestHandler<DeleteDelegationSettingsModel,object>
+    internal sealed class DelegationSettingsPublisher : RequestHandler<DelegationSettingsModel, object>
     {
         #region Fields.
 
@@ -36,9 +35,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteDelegationSettingsPublisher"/> class.
+        /// Initializes a new instance of the <see cref="DelegationSettingsPublisher"/> class.
         /// </summary>
-        public DeleteDelegationSettingsPublisher(ISettingsService settings)
+        public DelegationSettingsPublisher(ISettingsService settings)
         {
             this.settings = settings;
         }
@@ -47,15 +46,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
         #region RequestHandler overrides
 
-        /// <inheritdoc />
-        public override object Handle(DeleteDelegationSettingsModel message)
+        public override object Handle(DelegationSettingsModel message)
         {
+            this.settings.Upsert<bool>(ApplicationSettings.RequireDelegationActivationAfterChange, message.RequireActivationOnChange);
             this.settings.Upsert<bool>(ApplicationSettings.SpecifyReasonOnDelegationRemoval, message.SpecifyReasonIsActive);
             this.settings.Upsert<List<string>>(
                 ApplicationSettings.DelegationRemovalReasons,
                 message.Reasons.Replace("\r\n", "\n").Split('\n').Where(x => x.IsNotEmpty()).ToList()
                 );
-            
+
             return null;
         }
 

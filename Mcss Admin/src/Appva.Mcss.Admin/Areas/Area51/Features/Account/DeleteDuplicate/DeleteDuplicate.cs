@@ -4,11 +4,12 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Area51.Features.Account.DeleteDuplicate
+namespace Appva.Mcss.Admin.Areas.Area51.Models
 {
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Infrastructure.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,15 +19,26 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account.DeleteDuplicate
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class DeleteDuplicate : IRequest<bool>
+    public sealed class DeleteDuplicate : IRequest<Parameterless<List<DuplicatedAccount>>>
     {
-        #region Constructor.
+        #region Properties.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteDuplicate"/> class.
+        /// The account to remove
         /// </summary>
-        public DeleteDuplicate()
+        public Guid AccountToRemove
         {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The accoutn to keep
+        /// </summary>
+        public Guid AccountToKeep
+        {
+            get;
+            set;
         }
 
         #endregion

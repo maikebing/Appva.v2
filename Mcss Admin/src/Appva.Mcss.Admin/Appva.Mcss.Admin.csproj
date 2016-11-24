@@ -291,6 +291,7 @@
     <Compile Include="App_Start\RouteConfiguration.cs" />
     <Compile Include="Areas\Area51\Features\Account\AccountController.cs" />
     <Compile Include="Areas\Area51\Features\Account\DeleteDuplicate\DeleteDuplicate.cs" />
+    <Compile Include="Areas\Area51\Features\Account\DeleteDuplicate\DeleteDuplicateHandler.cs" />
     <Compile Include="Areas\Area51\Features\Account\ListDuplicates\DuplicatedAccount.cs" />
     <Compile Include="Areas\Area51\Features\Account\ListDuplicates\ListDuplicatesHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\AclController.cs" />

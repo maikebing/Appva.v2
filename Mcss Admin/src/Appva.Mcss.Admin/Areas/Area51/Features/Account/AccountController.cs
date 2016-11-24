@@ -54,8 +54,14 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account
             return this.View();
         }
 
-        [Route("duplicates/{id:guid}/delete")]
-        public ActionResult DeleteDuplicate(DeleteDuplicate request)
+        /// <summary>
+        /// Deletes the duplicated account
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("duplicates/{AccountToRemove:guid}/delete")]
+        [HttpPost, Dispatch("ListDuplicates", "Account")]
+        public ActionResult DeleteDuplicate(Models.DeleteDuplicate request)
         { 
             return this.View();
         }

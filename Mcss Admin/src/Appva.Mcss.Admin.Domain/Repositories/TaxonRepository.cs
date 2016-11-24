@@ -156,7 +156,6 @@ using Appva.Mcss.Admin.Domain.Entities;
                 entity.Path = entity.Parent != null ? string.Format("{0}.{1}", entity.Parent.Path, entity.Id) : entity.Id.ToString();
                 this.persistenceContext.Update<Taxon>(entity);
             }
-            
         }
 
         #endregion

@@ -328,12 +328,7 @@
     <Compile Include="Areas\Area51\Features\Home\HomeController.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsNotice.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\AddPatients\AddPatientsHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Inventory\Add\AddInventoryHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Inventory\Add\AddInventoryModel.cs" />
-    <Compile Include="Areas\Area51\Features\Inventory\Add\AddInventoryPublisher.cs" />
     <Compile Include="Areas\Area51\Features\Inventory\InventoryController.cs" />
-    <Compile Include="Areas\Area51\Features\Inventory\List\ListInventoriesHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Inventory\List\ListInventoriesModel.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Config\LdapConfig.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Config\LdapConfigHandler.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Config\LdapConfigModel.cs" />
@@ -377,6 +372,18 @@
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\Delete\DeleteInventoryUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\InventoryController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\List\ListInventoriesHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\List\ListInventoriesModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitPublisher.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateSchedulePublisher.cs" />
@@ -1247,8 +1254,6 @@
     <Content Include="Areas\Patient\Features\Inventory\Update\Update.cshtml" />
     <Content Include="Areas\Patient\Features\Inventory\Create\Create.cshtml" />
     <Content Include="Areas\Area51\Features\Inventory\Index\Index.cshtml" />
-    <Content Include="Areas\Area51\Features\Inventory\List\List.cshtml" />
-    <Content Include="Areas\Area51\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\inventory-news.cshtml" />
     <Content Include="Areas\Area51\Features\Audit\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Audit\Configuration\Configuration.cshtml" />
@@ -1277,6 +1282,9 @@
     <Content Include="Areas\Backoffice\Features\Schedule\EditSigningOptions\EditSigningOptions.cshtml" />
     <Content Include="Areas\Area51\Features\Account\ListDuplicates\ListDuplicates.cshtml" />
     <Content Include="Areas\Backoffice\Features\Delegation\Settings\Settings.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Inventory\Add\Add.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Inventory\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Inventory\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

@@ -1,0 +1,38 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListInventoriesModel
+@{
+	SetTitle("Backoffice - Förbrukningsjournal");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+	<h1>Förbrukningsjournal</h1>
+    @Html.ActionLink("Lägg till enhet", "Add", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        <div id="signlist">
+            @Html.Alert()
+            <table id="signed-events">
+                <thead class="head">
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Namn</th>
+                        <th>Värden</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var unit in Model.Units)
+                    {
+                        <tr>
+                            <td class="edit">
+                                @Html.ActionLink("Ändra", "Update", "Inventory", new { unit.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                                @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                            </td>
+                            <td>@unit.Name</td>
+                            <td>@Html.Serialize(unit.Amounts)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

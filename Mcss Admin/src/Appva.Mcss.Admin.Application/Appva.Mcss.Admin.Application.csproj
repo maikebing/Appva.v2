@@ -154,6 +154,7 @@
     <Compile Include="Common\EncryptionUtils.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Common\InventoryDefaults.cs" />
     <Compile Include="Common\Menus.cs" />
     <Compile Include="Common\PermissionMeta.cs" />
     <Compile Include="Common\Permissions.cs" />

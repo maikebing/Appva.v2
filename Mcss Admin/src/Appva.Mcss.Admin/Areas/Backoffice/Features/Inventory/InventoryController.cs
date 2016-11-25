@@ -24,7 +24,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Inventory
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [RouteArea("backoffice"), RoutePrefix("inventory")]
-    [Permissions(Permissions.Area51.ReadValue)]
+    [Permissions(Permissions.Backoffice.ReadValue)]
     public sealed class InventoryController : Controller
     {
         #region Variables.

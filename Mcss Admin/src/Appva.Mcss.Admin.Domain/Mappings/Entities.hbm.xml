@@ -12,7 +12,7 @@
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
     <property name="Name" />
-    <property name="Value" type="StringClob" length="10000">
+    <property name="Value" type="StringClob">
       <column name="Value" sql-type="NVARCHAR(MAX)"/>
     </property>
     <property name="Description" type="StringClob">

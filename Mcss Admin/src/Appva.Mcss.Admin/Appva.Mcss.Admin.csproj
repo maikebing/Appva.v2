@@ -395,6 +395,7 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\ScheduleController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Schedule\Shared\Model\ConfirmDeviationMessage.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateSchedulePublisher.cs" />

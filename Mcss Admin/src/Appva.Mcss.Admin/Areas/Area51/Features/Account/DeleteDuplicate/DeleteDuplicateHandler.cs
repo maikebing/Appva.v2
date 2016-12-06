@@ -198,6 +198,9 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account.DeleteDuplicate
             removeAccount.FirstName = "Arkiverat";
             removeAccount.LastName  = "Konto";
             removeAccount.FullName  = "Arkiverat Konto";
+            removeAccount.EmailAddress = null;
+            removeAccount.DevicePassword = null;
+            removeAccount.UserName  = null;
             removeAccount.HsaId     = string.Format("Account was duplicate of account {0}", newAccount.Id);
             removeAccount.PersonalIdentityNumber = new PersonalIdentityNumber(string.Format("18010101-{0}", random.Next(1000,9999)));
             removeAccount.AdminPassword = null;

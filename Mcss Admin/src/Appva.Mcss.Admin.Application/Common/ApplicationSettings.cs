@@ -13,6 +13,8 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Diagnostics.CodeAnalysis;
     using Appva.Ldap.Configuration;
     using Appva.Mcss.Admin.Domain.VO;
+using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -234,6 +236,18 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
            "If an inventory is not reocunted in this number of days it will be listed on the overview",
            30);
 
+        /// <summary>
+        /// The different units available for inventories
+        /// </summary>
+        /// <remarks>The setting returns a List of <c>InventoryAmountListModel</c></remarks>
+        public static readonly ApplicationSettingIdentity<List<InventoryAmountListModel>> InventoryUnitsWithAmounts = ApplicationSettingIdentity<List<InventoryAmountListModel>>.CreateNew(
+            "MCSS.Core.Inventory.Units",
+            "The units available as for an inventory",
+            "MCSS.Core.Inventory",
+            "The units available for inventories, and their amount-lists",
+            InventoryDefaults.Units()
+            );
+
         #endregion
 
         #region LDAP.
@@ -289,7 +303,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <summary>
         /// If a reason should be specified on delegation removal
         /// </summary>
-        /// <remarks>The setting returns an <c>bool</c></remarks>
+        /// <remarks>The setting returns an <c>List</c></remarks>
         public static readonly ApplicationSettingIdentity<List<string>> DelegationRemovalReasons = ApplicationSettingIdentity<List<string>>.CreateNew(
            "MCSS.Core.Delegation.Delete.Reasons",
            "Reasons for delegation removal",

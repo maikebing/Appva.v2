@@ -8,7 +8,8 @@ namespace Appva.Mcss.Admin.Application.Models
 {
     #region Imports.
 
-    using System.Collections.Generic;
+    using System;
+using System.Collections.Generic;
 
     #endregion
 
@@ -18,6 +19,15 @@ namespace Appva.Mcss.Admin.Application.Models
     public sealed class InventoryAmountListModel
     {
         #region Properties
+
+        /// <summary>
+        /// The inventory id
+        /// </summary>
+        public Guid Id
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The name of the list.

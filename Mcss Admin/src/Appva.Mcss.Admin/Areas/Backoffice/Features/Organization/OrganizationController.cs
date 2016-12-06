@@ -113,7 +113,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Organization
         #region delete 
 
         /// <summary>
-        /// Deleta an organizationalunit
+        /// Delete an organizationalunit
         /// </summary>
         /// <returns></returns>
         [Route("{id:guid}/delete")]

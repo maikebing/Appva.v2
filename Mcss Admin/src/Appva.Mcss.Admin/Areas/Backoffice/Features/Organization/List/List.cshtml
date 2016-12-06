@@ -17,9 +17,10 @@
                 <a class="addnode lb-link" href="@Url.Action("Create", new { node.Id })">
                     <img src="@Url.Image("bullet-add.png")" alt="Ny nod" />
                 </a>
-                <a class="delnode" href="@Url.Action("Delete", new { node.Id })">
+                @* Delete is not yet implemented
+                    <a class="delnode" href="@Url.Action("Delete", new { node.Id })">
                     <img src="@Url.Image("bullet-delete.png")" alt="Ta bort nod" />
-                </a>
+                </a>*@
             </div>
         </div>
         @if (node.Children.Any())

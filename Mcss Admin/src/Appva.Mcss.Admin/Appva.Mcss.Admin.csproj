@@ -340,6 +340,8 @@
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\SyncLdap.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\LdapSyncHandler.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\LdapSyncModel.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddChristmas2016\AddChristmas2016Handler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddChristmas2016\AddChristmas2016Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNotice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNoticeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
@@ -1286,6 +1288,7 @@
     <Content Include="Areas\Backoffice\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\Update\Update.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\christmas2016.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

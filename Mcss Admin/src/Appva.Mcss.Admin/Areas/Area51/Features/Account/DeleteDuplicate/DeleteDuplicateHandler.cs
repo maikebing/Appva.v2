@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Area51.Features.Account.DeleteDuplicate
+namespace Appva.Mcss.Admin.Areas.Area51.Features.Handlers
 {
     #region Imports.
 

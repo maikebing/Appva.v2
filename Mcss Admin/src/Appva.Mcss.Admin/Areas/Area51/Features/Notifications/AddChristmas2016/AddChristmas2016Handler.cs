@@ -58,7 +58,8 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Handlers
                 IsVisibleToEveryone = true,
                 Name = "God Jul och Gott Nytt år 2016",
                 Published = true,
-                PublishedDate = DateTime.Now.Date,
+                PublishedDate = new DateTime(2016, 12, 19),
+                UnPublishedDate = new DateTime(2017, 1, 6),
                 Template = "Templates/christmas2016",
                 ViewedBy = new List<NotificationViewedBy>(),
                 VisibleTo = new List<Account>()

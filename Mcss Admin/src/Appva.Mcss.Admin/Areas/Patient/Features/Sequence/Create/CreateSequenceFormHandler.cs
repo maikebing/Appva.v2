@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using Appva.Core.Resources;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
@@ -123,22 +124,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate = null;
-            DateTime tempDate;
             Role requiredRole = null;
             if (message.Dates.IsNotEmpty() && message.Interval == 0)
             {
-                var dates = message.Dates.Split(',');
-                if (dates.Count() > 0)
-                {
-                    if (!DateTime.TryParse(dates[0], out startDate))
-                    {
-                        startDate = DateTimeUtilities.Now();
-                    }
-                    if (DateTime.TryParse(dates[dates.Count() - 1], out tempDate))
-                    {
-                        endDate = tempDate;
-                    }
-                }
+                DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out startDate, out endDate);
             }
             if (message.Interval > 0)
             {
@@ -215,6 +204,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Inventory = inventory
             };
         }
+
+   
 
         #endregion
     }

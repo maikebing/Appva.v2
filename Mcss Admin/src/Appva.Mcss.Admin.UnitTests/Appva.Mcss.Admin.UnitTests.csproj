@@ -203,6 +203,7 @@
     </Compile>
     <Compile Include="Domain\Repositories\NotificationRepositoryTests.cs" />
     <Compile Include="Domain\Services\SettingsServiceTests.cs" />
+    <Compile Include="Domain\Utils\DateTimeUtilsTest.cs" />
     <Compile Include="Helpers\CurrentPrincipal.cs" />
     <Compile Include="Helpers\HttpRequest.cs" />
     <Compile Include="Helpers\MockedMailService.cs" />
@@ -231,6 +232,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

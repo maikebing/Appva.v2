@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using Appva.Core.Resources;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
@@ -122,17 +123,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if (model.Dates.IsNotEmpty() && model.Interval == 0)
             {
                 var dates = model.Dates.Split(',');
-                if (dates.Count() > 0)
-                {
-                    if (! DateTime.TryParse(dates[0], out startDate))
-                    {
-                        startDate = DateTimeUtilities.Now();
-                    }
-                    if (DateTime.TryParse(dates[dates.Count() - 1], out tempDate))
-                    {
-                        endDate = tempDate;
-                    }
-                }
+                DateTimeUtils.GetEarliestAndLatestDateFrom(dates, out startDate, out endDate);
             }
             if (model.Interval > 0)
             {

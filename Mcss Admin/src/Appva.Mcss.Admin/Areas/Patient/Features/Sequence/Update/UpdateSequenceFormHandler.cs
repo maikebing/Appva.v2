@@ -118,7 +118,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate  = null;
-            DateTime tempDate;
             Role requiredRole = null;
             if (model.Dates.IsNotEmpty() && model.Interval == 0)
             {

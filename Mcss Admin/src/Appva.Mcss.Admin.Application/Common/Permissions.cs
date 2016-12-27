@@ -615,6 +615,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string ReactivateValue = Schema + "patient/reactivate";
 
             /// <summary>
+            /// The archive value.
+            /// </summary>
+            public const string ArchiveValue = Schema + "patient/archive";
+
+            /// <summary>
             /// Permission to create a patient.
             /// </summary>
             [Sort(15)]
@@ -653,6 +658,14 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Reactivate patient")]
             [Description("Permission to reactivate a patient")]
             public static readonly IPermission Reactivate = PermissionType.CreateNew(ReactivateValue);
+            
+            /// <summary>
+            /// Permission to inactivate a patient.
+            /// </summary>
+            [Sort(19)]
+            [Name("Archive patient - Only for Appva Admins")]
+            [Description("Permission to archive a patient")]
+            public static readonly IPermission Archive = PermissionType.CreateNew(ArchiveValue);
         }
 
         #endregion

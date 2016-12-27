@@ -114,6 +114,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="pageSize"></param>
         /// <returns></returns>
         PageableSet<PatientModel> Search(SearchPatientModel model, int page = 1, int pageSize = 10);
+
+        /// <summary>
+        /// Archives a patient.
+        /// </summary>
+        /// <param name="id">The id of the Patient</param>
+        void Archive(Guid id);
     }
 
     /// <summary>
@@ -336,6 +342,23 @@ namespace Appva.Mcss.Admin.Application.Services
         public Patient Load(Guid id)
         {
             return this.repository.Load(id);
+        }
+
+        /// <inheritdoc />
+        public void Archive(Guid id)
+        {
+            var patient = this.Get(id);
+            this.Archive(patient);
+        }
+
+        /// <inheritdoc />
+        public void Archive(Patient patient)
+        {
+            this.auditing.Update("arkiverade patient (ref. {0})", patient.Id);
+
+            patient.IsArchived = true;
+
+            this.repository.Update(patient);
         }
 
         #endregion 

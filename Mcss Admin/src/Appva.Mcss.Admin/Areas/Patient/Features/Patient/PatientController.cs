@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Areas.Patient.Models;
 
     #endregion
 
@@ -137,6 +138,23 @@ namespace Appva.Mcss.Admin.Controllers
         [HttpGet, Dispatch("List", "Patient")]
         [PermissionsAttribute(Permissions.Patient.InactivateValue)]
         public ActionResult Inactivate(InactivatePatient request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Archive Patient.
+
+        /// <summary>
+        /// Archives a patient.
+        /// </summary>
+        /// <param name="request">The id of the patient</param>
+        /// <returns>Redirects to patient/list</returns>
+        [Route("{id:guid}/archive")]
+        [HttpGet, Dispatch("List", "Patient")]
+        [PermissionsAttribute(Permissions.Patient.ArchiveValue)]
+        public ActionResult Archive(ArchivePatient request)
         {
             return this.View();
         }

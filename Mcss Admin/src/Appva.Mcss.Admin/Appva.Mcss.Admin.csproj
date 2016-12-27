@@ -462,6 +462,8 @@
     <Compile Include="Areas\Patient\Features\Order\Undo\UndoOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\Undo\UndoOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\UndoRefill\UndoRefillOrderHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Archive\ArchivePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Archive\ArchivePatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Reactivate\ReactivatePatient.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Reactivate\ReactivatePatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Create\CreatePatientHandler.cs" />

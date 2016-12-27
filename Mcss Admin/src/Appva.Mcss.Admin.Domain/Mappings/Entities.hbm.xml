@@ -353,6 +353,9 @@
       <property name="Value" column="UniqueIdentifier" access="nosetter.camelcase" />
     </component>
     <property name="Deceased" />
+    <property name="IsArchived">
+      <column name="IsArchived" not-null="true" default="'false'" />
+    </property>  
     <many-to-one name="Taxon" class="Taxon" />
     <property name="IsPersonOfPublicInterest">
       <column name="IsPersonOfPublicInterest" not-null="true" default="'false'" />

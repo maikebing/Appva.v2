@@ -22,6 +22,7 @@
         <li class="cf @(item.HasUnattendedTasks ? Html.HasPermissionFor(Permissions.Alert.Read) ? "alarm" : "" : "")">
             @if (! item.Active)
             {
+                @Html.ActionLink(Permissions.Patient.Archive, "Arkivera", "Archive", new { Id = item.Id }, new { @class = "btn btn-del" })
                 @Html.ActionLink(Permissions.Patient.Reactivate, "Aktivera", "Reactivate", new { Id = item.Id }, new { @class = "btn" })
             }
             <div class="h">

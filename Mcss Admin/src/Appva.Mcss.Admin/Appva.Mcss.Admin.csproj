@@ -345,6 +345,10 @@
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162NoticeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\NotificationsController.cs" />
+    <Compile Include="Areas\Area51\Features\Sequence\ListCorruptSequences\ListCorruptSequencesHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Sequence\ListCorruptSequences\ListSequenceModel.cs" />
+    <Compile Include="Areas\Area51\Features\Sequence\SequenceController.cs" />
+    <Compile Include="Areas\Area51\Features\Sequence\UpdateStartAndEndDate\UpdateStartAndEndDate.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Create\CreateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Update\UpdateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
@@ -1273,6 +1277,7 @@
     <Content Include="Areas\Backoffice\Features\Schedule\Update\Update.cshtml" />
     <Content Include="Areas\Backoffice\Features\Schedule\Create\Create.cshtml" />
     <Content Include="Areas\Backoffice\Features\Schedule\EditSigningOptions\EditSigningOptions.cshtml" />
+    <Content Include="Areas\Area51\Features\Sequence\ListCorruptSequences\ListCorruptSequences.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

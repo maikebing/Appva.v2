@@ -983,6 +983,9 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Backoffice\Features\Calendar\Create\" />
+    <Folder Include="Areas\Backoffice\Features\Calendar\List\" />
+    <Folder Include="Areas\Backoffice\Features\Calendar\Update\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>

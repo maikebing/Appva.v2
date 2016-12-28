@@ -64,9 +64,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             schedule.HasSetupDrugsPanel = message.HasSetupDrugsPanel;
             schedule.IsPausable = message.IsPausable;
             schedule.NurseConfirmDeviation = message.NurseConfirmDeviation;
-            schedule.NurseConfirmDeviationMessage = message.NurseConfirmDeviationMessage;
+            schedule.NurseConfirmDeviationMessage = message.DeviationMessage.ToHtmlString();
             schedule.OrderRefill = message.OrderRefill;
-            schedule.SpecificNurseConfirmDeviation = message.SpecificNurseConfirmDeviation;
+            schedule.SpecificNurseConfirmDeviation = message.DeviationMessage.IncludeListOfNurses;
             schedule.DelegationTaxon = message.DelegationTaxon.HasValue ? this.taxonomyService.Load(message.DelegationTaxon.Value) : null;
 
             this.scheduleService.UpdateScheduleSetting(schedule);

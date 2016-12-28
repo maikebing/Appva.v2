@@ -9,13 +9,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation
     #region Imports.
 
     using Appva.Mcss.Admin.Application.Common;
-using Appva.Mcss.Admin.Areas.Backoffice.Models;
-using Appva.Mcss.Admin.Infrastructure.Attributes;
-using Appva.Mcss.Admin.Infrastructure.Models;
-using Appva.Mcss.Admin.Models;
-using Appva.Mvc;
-using Appva.Mvc.Security;
-using System.Web.Mvc;
+    using Appva.Mcss.Admin.Areas.Backoffice.Models;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mvc;
+    using Appva.Mvc.Security;
+    using System.Web.Mvc;
 
     #endregion
 
@@ -108,28 +108,28 @@ using System.Web.Mvc;
 
         #endregion
 
-        #region Delete delegation settings
+        #region Settings
 
         /// <summary>
-        /// Specify settings for delete delegation
+        /// Specify settings for delegations
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("delete/settings")]
-        [HttpGet, Dispatch(typeof(Parameterless<DeleteDelegationSettingsModel>))]
-        public ActionResult DeleteDelegationSettings()
+        [Route("settings")]
+        [HttpGet, Hydrate, Dispatch(typeof(Parameterless<DelegationSettingsModel>))]
+        public ActionResult Settings()
         {
             return this.View();
         }
 
         /// <summary>
-        /// Specify settings for delete delegation
+        /// Specify settings for delegations
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("delete/settings")]
+        [Route("settings")]
         [HttpPost, Validate, Dispatch("list", "delegation")]
-        public ActionResult DeleteDelegationSettings(DeleteDelegationSettingsModel request)
+        public ActionResult Settings(DelegationSettingsModel request)
         {
             return this.View();
         }

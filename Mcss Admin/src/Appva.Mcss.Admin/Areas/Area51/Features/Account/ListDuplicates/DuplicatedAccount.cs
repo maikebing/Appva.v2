@@ -1,4 +1,4 @@
-﻿// <copyright file="AddInventoryModel.cs" company="Appva AB">
+﻿// <copyright file="DuplicatedAccount.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,30 +8,33 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models
 {
     #region Imports.
 
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class AddInventoryModel : IRequest<bool>
+    public sealed class DuplicatedAccount
     {
-        #region Properties
+        #region Properties.
 
-        [DisplayName("Namn")]
-        [Required]
-        public string Name
+        /// <summary>
+        /// The primary account
+        /// </summary>
+        public Account Primary
         {
             get;
             set;
         }
 
-        [DisplayName("Enheter")]
-        [Required]
-        public string Amounts
+        /// <summary>
+        /// The secondary account
+        /// </summary>
+        public Account Secondary
         {
             get;
             set;

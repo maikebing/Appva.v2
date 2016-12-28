@@ -3385,6 +3385,39 @@ span.custom-select {
 
 #footer .about {display:none;}
 
+/* LOGOUT MESSAGE
+=============================================================================================================================*/
+
+#message-container {
+    z-index:2000;position:fixed;width:250px;right:20px;bottom:25px;overflow:auto;pointer-events:none;
+}
+
+#message-container .automatic-logout-alert {
+    display:none;
+    background:#3d485d;
+    color:#fff;
+    padding:15px 15px;
+    border-radius: 4px;
+}
+#message-container .automatic-logout-alert .title {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+#message-container .automatic-logout-alert .close {
+  pointer-events: auto;
+  color: #fff;
+  text-decoration: none;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #364053;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+#message-container .automatic-logout-alert .body {
+    display:block;
+}
+
 /* INVENTORY
 =============================================================================================================================*/
 

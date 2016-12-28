@@ -4,11 +4,12 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Area51.Models.Handlers
+namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Newtonsoft.Json;
@@ -18,14 +19,14 @@ namespace Appva.Mcss.Admin.Areas.Area51.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class AddInventoryHandler : RequestHandler<Parameterless<AddInventoryModel>, AddInventoryModel>
+    internal sealed class AddInventoryUnitHandler : RequestHandler<Parameterless<AddInventoryUnitModel>, AddInventoryUnitModel>
     {
         /// <inheritdoc />
-        public override AddInventoryModel Handle(Parameterless<AddInventoryModel> message)
+        public override AddInventoryUnitModel Handle(Parameterless<AddInventoryUnitModel> message)
         {
-            return new AddInventoryModel
+            return new AddInventoryUnitModel
             {
-                Amounts = JsonConvert.SerializeObject(SettingsService.InventoryAmountDefaults)
+                Amounts = JsonConvert.SerializeObject(InventoryDefaults.AmountList).Replace("[","").Replace("]","")
             };
         }
     }

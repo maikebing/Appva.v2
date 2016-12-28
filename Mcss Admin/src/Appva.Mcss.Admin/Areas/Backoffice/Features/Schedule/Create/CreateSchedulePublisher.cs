@@ -72,10 +72,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 MachineName = Guid.NewGuid().ToString(),
                 Name = message.Name,
                 NurseConfirmDeviation = message.NurseConfirmDeviation,
-                NurseConfirmDeviationMessage = message.NurseConfirmDeviationMessage.IsEmpty() ? null : message.NurseConfirmDeviationMessage,
+                NurseConfirmDeviationMessage = message.DeviationMessage.ToHtmlString(),
                 OrderRefill = message.OrderRefill,
                 ScheduleType = ScheduleType.Action,
-                SpecificNurseConfirmDeviation = message.SpecificNurseConfirmDeviation
+                SpecificNurseConfirmDeviation = message.DeviationMessage.IncludeListOfNurses
             };
 
             this.scheduleService.SaveScheduleSetting(schedule);

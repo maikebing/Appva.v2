@@ -1,0 +1,52 @@
+﻿@model System.Collections.Generic.List<Appva.Mcss.Admin.Areas.Area51.Models.DuplicatedAccount>
+@{
+    SetTitle("Area 51 - Användare");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>Användare</h1>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        @Html.Alert()
+    </div>
+    <h1>Duplicerade användare</h1>
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var u in Model)
+        {
+            <table>
+                <tr>
+                    <td>@u.Primary.Id</td>
+                    <td>@u.Primary.FullName</td>
+                    <td>@u.Primary.PersonalIdentityNumber</td>
+                    <td>@u.Primary.CreatedAt</td>
+                    <td>@u.Primary.UpdatedAt</td>
+                    <td>@u.Primary.Version</td>
+                    <td>
+                        @using (Html.Post("DeleteDuplicate", "Account", new { AccountToRemove = u.Primary.Id }, null, false))
+                        {
+                            @Html.Hidden("AccountToKeep", u.Secondary.Id)
+                            @Html.Submit("Ta bort", new { @class = "btn" })
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>@u.Secondary.Id</td>
+                    <td>@u.Secondary.FullName</td>
+                    <td>@u.Secondary.PersonalIdentityNumber</td>
+                    <td>@u.Secondary.CreatedAt</td>
+                    <td>@u.Secondary.UpdatedAt</td>
+                    <td>@u.Secondary.Version</td>
+                    <td>
+                        @using (Html.Post("DeleteDuplicate", "Account", new { AccountToRemove = u.Secondary.Id }, null, false))
+                        {
+                            @Html.Hidden("AccountToKeep", u.Primary.Id)
+                            @Html.Submit("Ta bort", new { @class = "btn" })
+                        }
+                    </td>
+                </tr>
+            </table>
+        }
+    }
+</div>

@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
+    using NHibernate;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -43,12 +44,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public override bool Handle(VerifyUniqueAccount message)
         {
-            var account = this.accounts.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
-            if (! message.Id.HasValue || account == null )
+            try
             {
-                return account == null;
+                var account = this.accounts.FindByPersonalIdentityNumber(message.PersonalIdentityNumber);
+                if (!message.Id.HasValue || account == null)
+                {
+                    return account == null;
+                }
+                return account.Id.Equals(message.Id.Value);
             }
-            return account.Id.Equals(message.Id.Value);   
+            catch (NonUniqueResultException e)
+            {
+                //// Todo: Log and notify techs about exception
+                return false;
+            }
+               
         }
 
         #endregion

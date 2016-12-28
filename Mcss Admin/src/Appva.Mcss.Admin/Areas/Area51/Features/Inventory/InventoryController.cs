@@ -61,43 +61,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Inventory
 
         #endregion
 
-        #region List
-
-        [Route("list")]
-        [HttpGet, Dispatch(typeof(Parameterless<ListInventoriesModel>))]
-        public ActionResult List()
-        {
-            return this.View();
-        }
-
-        #endregion
-
-        #region Add
-
-        /// <summary>
-        /// Add inventory unit
-        /// </summary>
-        /// <returns></returns>
-        [Route("add")]
-        [HttpGet, Dispatch(typeof(Parameterless<AddInventoryModel>))]
-        public ActionResult Add()
-        {
-            return this.View();
-        }
-
-        /// <summary>
-        /// Post for add inventory unit
-        /// </summary>
-        /// <returns></returns>
-        [Route("add")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list","inventory")]
-        public ActionResult Add(AddInventoryModel request)
-        {
-            return this.View();
-        }
-
-        #endregion
-
         [Route("add-patients")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
         [AlertSuccess("Patienter tillagda på alla inventories")]

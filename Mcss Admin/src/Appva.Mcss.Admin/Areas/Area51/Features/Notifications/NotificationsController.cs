@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Notifications
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Areas.Area51.Features.Models;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
@@ -57,7 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Notifications
             return this.View();
         }
 
-        [Route("AddVersion162")]
+        /*[Route("AddVersion162")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
         [AlertSuccess("Notis för uppdatering är nu installerad!")]
         public ActionResult AddVersion162()
@@ -72,6 +73,15 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Notifications
         public ActionResult AddPdf()
         {
             this.mediator.Publish(new AddPdfNotice());
+            return this.RedirectToAction("Index");
+        }*/
+
+        [Route("AddChristmasGreeting2016")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Notis för julhälsning 2016 uppdatering är nu installerad!")]
+        public ActionResult AddChristmasGreeting2016()
+        {
+            this.mediator.Publish(new AddChristmas2016Notice());
             return this.RedirectToAction("Index");
         }
 

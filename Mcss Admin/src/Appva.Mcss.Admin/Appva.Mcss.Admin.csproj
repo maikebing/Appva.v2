@@ -359,6 +359,10 @@
     <Compile Include="Areas\Area51\Features\Token\Install\InstallToken.cs" />
     <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
     <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CalendarController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\ListCategories\ListCategoriesHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\ListCategories\ListCategoriesModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\Shared\Models\CategoryModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\CreateCategory\CreateDelegationCategoryHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\CreateCategory\CreateDelegationCategoryModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\CreateCategory\CreateDelegationCategoryPublisher.cs" />
@@ -983,9 +987,9 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Backoffice\Features\Calendar\Create\" />
-    <Folder Include="Areas\Backoffice\Features\Calendar\List\" />
-    <Folder Include="Areas\Backoffice\Features\Calendar\Update\" />
+    <Folder Include="Areas\Backoffice\Features\Calendar\CategoryDetails\" />
+    <Folder Include="Areas\Backoffice\Features\Calendar\CreateCategory\" />
+    <Folder Include="Areas\Backoffice\Features\Calendar\UpdateCategory\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
@@ -1292,6 +1296,7 @@
     <Content Include="Areas\Backoffice\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\Update\Update.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\christmas2016.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Calendar\ListCategories\ListCategories.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

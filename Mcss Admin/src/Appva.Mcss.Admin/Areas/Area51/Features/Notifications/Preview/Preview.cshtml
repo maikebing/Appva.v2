@@ -1,0 +1,15 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Models.PreviewTemplateModel
+
+@{Html.RenderPartial(Model.Template);}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.lb-panel .btn-close').click(function (e) {
+            mcss.lightbox.closeAll();
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    });
+</script>
+
+

@@ -346,7 +346,15 @@
     <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNoticeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162NoticeHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Create\CreateNotificationPublisher.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Create\CreateNotificationHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Create\CreateNotificationModel.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\ListTemplates\ListTemplatesHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\ListTemplates\ListTemplatesModel.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\NotificationsController.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Preview\PreviewTemplateHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Preview\PreviewTemplateModel.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Preview\PreviewTemplate.cs" />
     <Compile Include="Areas\Area51\Features\Sequence\ListCorruptSequences\ListCorruptSequencesHandler.cs" />
     <Compile Include="Areas\Area51\Features\Sequence\ListCorruptSequences\ListSequenceModel.cs" />
     <Compile Include="Areas\Area51\Features\Sequence\SequenceController.cs" />
@@ -1255,7 +1263,7 @@
     <Content Include="Features\Shared\EmailTemplates\RegisterSithsUserEmail.cshtml" />
     <Content Include="Features\Shared\EmailTemplates\UpdateUserMobileDeviceEmail.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\version1.6.2.cshtml" />
-    <Content Include="Areas\Area51\Features\Notifications\Index\Index.cshtml" />
+    <Content Include="Areas\Area51\Features\Notifications\ListTemplates\ListTemplates.cshtml" />
     <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
     <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
@@ -1296,6 +1304,9 @@
     <Content Include="Areas\Backoffice\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\Update\Update.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\christmas2016.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\user-meetup2017.cshtml" />
+    <Content Include="Areas\Area51\Features\Notifications\Preview\Preview.cshtml" />
+    <Content Include="Areas\Area51\Features\Notifications\Create\Create.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

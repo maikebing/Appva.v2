@@ -11,6 +11,9 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Notifications
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Area51.Features.Models;
+    using Appva.Mcss.Admin.Areas.Area51.Models;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+    using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
@@ -51,12 +54,54 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Notifications
 
         #region Routes.
 
-        [Route("index")]
-        [HttpGet]
-        public ActionResult Index()
+        /// <summary>
+        /// Lists all installed templates
+        /// </summary>
+        /// <returns></returns>
+        [Route("templates/list")]
+        [HttpGet, Dispatch(typeof(Parameterless<ListTemplatesModel>))]
+        public ActionResult ListTemplates()
         {
             return this.View();
         }
+
+        /// <summary>
+        /// Preview a template
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("template/{template}/preview")]
+        [HttpGet, Dispatch()]
+        public ActionResult Preview(PreviewTemplate request)
+        {
+            return this.View();
+        }
+
+        #region Create.
+        
+        /// <summary>
+        /// Get method for create-notice view
+        /// </summary>
+        /// <returns></returns>
+        [Route("create")]
+        [HttpGet, Hydrate, Dispatch(typeof(Parameterless<CreateNotificationModel>))]
+        public ActionResult Create()
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Post for create-notice view
+        /// </summary>
+        /// <returns></returns>
+        [Route("create")]
+        [HttpPost, Validate, Dispatch("ListTemplates", "Notifications")]
+        public ActionResult Create(CreateNotificationModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
 
         /*[Route("AddVersion162")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
@@ -82,7 +127,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Notifications
         public ActionResult AddChristmasGreeting2016()
         {
             this.mediator.Publish(new AddChristmas2016Notice());
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction("ListTemplates");
         }
 
         #endregion

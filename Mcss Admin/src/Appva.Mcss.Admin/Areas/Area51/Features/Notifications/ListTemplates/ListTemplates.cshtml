@@ -1,0 +1,32 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Models.ListTemplatesModel
+@{
+    SetTitle("Area 51 - Notification");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>Notifieringar</h1>
+    @Html.ActionLink("Lägg till noits för alla kunder", "Create", "Notifications", new { area = "Area51" }, new { @class = "lb-link btn" })
+    @*using (Html.Post("AddChristmasGreeting2016", "Notifications", null))
+        {
+            @Html.Submit("Lägg till julhälsning 2016 (alla tenants)", new { @class = "btn" })
+        }*@
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        @Html.Alert()
+
+        @if (Model.Templates != null && Model.Templates.Count > 0)
+        {
+            <table>
+                @foreach (var template in Model.Templates)
+                {
+                    <tr>
+                        <td>@template</td>
+                        <td>@Html.ActionLink("Förhandsgranska", "Preview","Notifications", new { template = template }, new { @class = "lb-link btn"})</td>
+                    </tr>
+                }
+            </table>
+        }
+        
+    </div>
+</div>

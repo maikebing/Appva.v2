@@ -1,0 +1,44 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.CreateCategoryModel
+@{
+    SetTitle("Skapa lista");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <div>
+            <h3 class="section-title">Inställningar för lista</h3>
+            @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.Absence, "checkbox").Checkbox("").Label().Validate().Build()
+            <h3 class="section-title">Färg för kategori</h3>
+            @Html.LabelFor(x => x.Color)
+            @Html.DropDownListFor(x => x.Color, Model.Colors, "Välj färg...")
+            <h3 class="section-title">Dialogruta vid avvikande signering</h3>
+            @Html.FormGroup(x => x.NurseConfirmDeviation, "nurse-confirm-deviation checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.DeviationMessage.IncludeListOfNurses, "nurse-confirm-deviation-option checkbox").Checkbox("Inkludera lista med sköterskor att kontakta").Validate().Build()
+            @Html.FormGroup(x => x.DeviationMessage.Header, "nurse-confirm-deviation-option text large").Label("Rubrik").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.DeviationMessage.Message, "nurse-confirm-deviation-option text large").Label("Meddelande").TextArea().Validate().Build()           
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        toggleMessageOptions($('.nurse-confirm-deviation input'))
+        $('.nurse-confirm-deviation input').change(function (e) {
+            toggleMessageOptions($(this));
+        });
+    });
+
+    function toggleMessageOptions(e) {
+        if (e.prop('checked')) {
+            $('.nurse-confirm-deviation-option input, .nurse-confirm-deviation-option textarea').prop('disabled', false)
+        }
+        else {
+            $('.nurse-confirm-deviation-option input, .nurse-confirm-deviation-option textarea').prop('disabled', true)
+        }
+    }
+</script>

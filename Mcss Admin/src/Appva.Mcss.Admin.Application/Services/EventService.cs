@@ -99,6 +99,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="date"></param>
         /// <returns></returns>
         CalendarTask GetActivityInSequence(Guid Sequence, DateTime date);
+
+        /// <summary>
+        /// Returns a calendar category
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        CalendarCategory Category(Guid id);
     }
 
     /// <summary>
@@ -699,6 +706,12 @@ namespace Appva.Mcss.Admin.Application.Services
             throw new Exception("There is no event for this sequence on given date");
         }
 
+        /// <inheritdoc />
+        public CalendarCategory Category(Guid id)
+        {
+            return new CalendarCategory();
+        }
+
         #endregion
 
         #region Private Functions.
@@ -805,9 +818,6 @@ namespace Appva.Mcss.Admin.Application.Services
             return null;
         }
 
-        #endregion
-
-
-        
+        #endregion    
     }
 }

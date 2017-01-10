@@ -360,6 +360,11 @@
     <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
     <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CalendarController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategoryPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategoryModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategoryHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\ListCategories\ListCategoriesHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\ListCategories\ListCategoriesModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\Shared\Models\CategoryModel.cs" />
@@ -401,7 +406,6 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\ScheduleController.cs" />
-    <Compile Include="Areas\Backoffice\Features\Schedule\Shared\Model\ConfirmDeviationMessage.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateSchedulePublisher.cs" />
@@ -987,8 +991,6 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Backoffice\Features\Calendar\CategoryDetails\" />
-    <Folder Include="Areas\Backoffice\Features\Calendar\CreateCategory\" />
     <Folder Include="Areas\Backoffice\Features\Calendar\UpdateCategory\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
@@ -1297,6 +1299,8 @@
     <Content Include="Areas\Backoffice\Features\Inventory\Update\Update.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\christmas2016.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\ListCategories\ListCategories.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategory.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetails.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

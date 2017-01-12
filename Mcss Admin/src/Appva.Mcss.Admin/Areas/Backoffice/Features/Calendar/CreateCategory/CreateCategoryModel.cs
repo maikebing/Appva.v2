@@ -9,7 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     #region Imports.
 
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Shared.Model;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using System;
     using System.Collections.Generic;
@@ -100,4 +100,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
         #endregion
     }
+
+    /*public enum Colors
+    {
+        Blue = "#5d5d5d",
+        Red = "#d5d5d5"
+    }*/
 }

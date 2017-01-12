@@ -35,7 +35,14 @@ namespace Appva.Mcss.Admin.Application.Services
         IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null);
         IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null);
         Guid CreateCategory(string name);
-        IList<ScheduleSettings> GetCategories();
+
+        /// <summary>
+        /// Gets all categories based on users permission 
+        /// </summary>
+        /// <param name="forceGetAllCategories">Used to force listing of all categories, overrides permissions</param>
+        /// <returns>List of <see cref="ScheduleSettings"/></returns>
+        IList<ScheduleSettings> GetCategories(bool forceGetAllCategories = false);
+
         void Create(
             Guid scheduleSettingsId,
             Patient patient,
@@ -371,15 +378,21 @@ namespace Appva.Mcss.Admin.Application.Services
             return (Guid) retval;
         }
 
-        public IList<ScheduleSettings> GetCategories()
+        /// <inheritdoc />
+        public IList<ScheduleSettings> GetCategories(bool forceGetAllCategories = false)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
             var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
-            return this.context.QueryOver<ScheduleSettings>()
-                .WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray())
-                  .And(x => x.ScheduleType == ScheduleType.Calendar)
-                  .And(x => x.IsActive)
-                .OrderBy(x => x.Name).Asc
+            var categories = this.context.QueryOver<ScheduleSettings>()
+                .Where(x => x.ScheduleType == ScheduleType.Calendar)
+                .And(x => x.IsActive);
+
+            if (!forceGetAllCategories) 
+            {
+                categories.WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
+            }
+            
+            return categories.OrderBy(x => x.Name).Asc
                 .List();
         }
 
@@ -709,7 +722,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public CalendarCategory Category(Guid id)
         {
-            return new CalendarCategory();
+            var setting = this.scheduleService.GetScheduleSettings(id);
+            return new CalendarCategory
+            {
+                Id      = setting.Id,
+                Name    = setting.Name,
+                Absence = setting.Absence,
+                Color   = setting.Color
+            };
         }
 
         #endregion

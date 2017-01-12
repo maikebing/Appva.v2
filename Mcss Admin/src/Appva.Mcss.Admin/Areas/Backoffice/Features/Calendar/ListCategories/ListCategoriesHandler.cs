@@ -49,7 +49,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override ListCategoriesModel Handle(Parameterless<ListCategoriesModel> message)
         {
-            var categories = this.eventService.GetCategories();
+            var categories = this.eventService.GetCategories(forceGetAllCategories: true);
 
             return new ListCategoriesModel
             {

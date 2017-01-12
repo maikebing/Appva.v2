@@ -8,7 +8,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
 
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Domain.Entities;
@@ -50,6 +52,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override bool Handle(CreateCategoryModel message)
         {
+            if (message.DeviationMessage.IsNull())
+            {
+                message.DeviationMessage = new ConfirmDeviationMessage();
+            }
             var category = new ScheduleSettings
             {
                 Absence = message.Absence,
@@ -63,7 +69,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 NurseConfirmDeviationMessage = message.DeviationMessage.ToHtmlString(),
                 OrderRefill = false,
                 ScheduleType = ScheduleType.Calendar,
-                SpecificNurseConfirmDeviation = message.DeviationMessage.IncludeListOfNurses
+                SpecificNurseConfirmDeviation = message.DeviationMessage.IncludeListOfNurses,
+                GenerateIncompleteTasks = true
             };
 
             this.scheduleService.SaveScheduleSetting(category);

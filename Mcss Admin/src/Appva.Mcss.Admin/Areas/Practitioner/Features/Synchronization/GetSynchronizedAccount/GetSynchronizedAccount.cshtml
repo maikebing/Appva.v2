@@ -46,7 +46,14 @@
                                 Användaren är ej synkroniserad
                                 <span class="show-more">Visa detaljer</span>
                             </h2>
-                            <p>Innehåller @Model.SynchronizationErrorCount.ToString() fel</p>
+                            if (Model.SynchronizationErrorCount == -1)
+                            {
+                                <p>Synkronisering är inte aktiverad</p>
+                            }
+                            else
+                            {
+                                <p>Innehåller @Model.SynchronizationErrorCount.ToString() fel</p>
+                            }
                         }
                         <table>
                             <thead>
@@ -137,7 +144,7 @@
                 {
                     <div class="note">
                         <h2>Ingen användare hittades</h2>
-                        <p>Var vänlig kontrollera att användaren finns i den externa katalogen och att personnumret är matchar i MCSS</p>
+                        <p>Var vänlig kontrollera att användaren finns i den externa katalogen och att personnumret matchar de i MCSS</p>
                     </div>
                 }
 

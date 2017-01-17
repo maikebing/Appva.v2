@@ -88,7 +88,7 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// Organization filter id
         /// </summary>
-        public Guid? OrganisationFilterId 
+        public string OrganisationFilterTaxonPath 
         {
             get;
             set;

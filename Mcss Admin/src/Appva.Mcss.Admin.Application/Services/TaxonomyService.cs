@@ -69,6 +69,13 @@ namespace Appva.Mcss.Admin.Application.Services
         IList<ITaxon> ListByParent(Guid id);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        IList<ITaxon> ListByParent(TaxonomicSchema schema, ITaxon parent);
+
+        /// <summary>
         /// Loads a taxon from the id. OBS only creates a proxy, not ful entity
         /// </summary>
         /// <param name="id"></param>
@@ -84,6 +91,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="taxon"></param>
         /// <param name="schema"></param>
         void Save(ITaxon taxon, TaxonomicSchema schema);
+
+        /// <summary>
+        /// Updates the taxon in database and cache
+        /// </summary>
+        /// <param name="taxon"></param>
+        /// <param name="schema"></param>
+        void Update(ITaxon taxon, TaxonomicSchema schema);
     }
 
     /// <summary>
@@ -150,17 +164,33 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             if (this.cache.Find<IList<ITaxon>>(schema.CacheKey) == null)
             {
-                CacheUtils.CopyAndCacheList<Taxon, ITaxon>(this.cache, schema.CacheKey, this.repository.List(schema.Id), x =>
-                     new TaxonItem(
-                        x.Id,
-                        x.Name,
-                        x.Description,
-                        x.Path,
-                        x.Type,
-                        x.Weight,
-                        x.Parent == null ? (Guid?) null : x.Parent.Id));
+                CacheUtils.CacheList<ITaxon>(this.cache, schema.CacheKey, this.HierarchyConvert(this.repository.List(schema.Id), null, null));
             }
             return this.cache.Find<IList<ITaxon>>(schema.CacheKey);
+        }
+
+        private IList<ITaxon> HierarchyConvert(IList<Taxon> list, Guid? parentId, ITaxon parent)
+        {
+            var retval = new List<ITaxon>();
+            var items = parentId.HasValue ? 
+                list.Where(x => x.Parent != null && x.Parent.Id == parentId ).ToList() :
+                list.Where(x => x.Parent == null ).ToList();
+            foreach(var item in items)
+            {
+                var taxon = new TaxonItem(
+                        item.Id,
+                        item.Name,
+                        item.Description,
+                        item.Path,
+                        item.Type,
+                        item.Weight,
+                        parent);
+                retval.Add(taxon);
+                list.Remove(item);
+                retval.AddRange(HierarchyConvert(list, taxon.Id, taxon));
+            }
+            
+            return retval;
         }
 
         /// <inheritdoc />
@@ -175,6 +205,13 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             return this.List(TaxonomicSchema.Organization)
                 .Where(x => x.ParentId == id).ToList();
+        }
+
+        /// <inheritdoc />
+        public IList<ITaxon> ListByParent(TaxonomicSchema schema, ITaxon parent)
+        {
+            return this.List(schema)
+                .Where(x => x.Parent == parent).ToList();
         }
 
         /// <inheritdoc />
@@ -208,8 +245,23 @@ namespace Appva.Mcss.Admin.Application.Services
                 Taxonomy = this.repository.LoadTaxonomy(schema.Id),
                 Type = taxon.Type,
                 Weight = taxon.Sort
-            });
+            }, (schema == TaxonomicSchema.Delegation || schema == TaxonomicSchema.Organization));
 
+            this.cache.Remove(schema.CacheKey);
+        }
+
+        /// <inheritdoc />
+        public void Update(ITaxon taxon, TaxonomicSchema schema)
+        {
+            var t = this.repository.Find(taxon.Id);
+            t.Description = taxon.Description;
+            t.IsRoot = taxon.IsRoot;
+            t.Name = taxon.Name;
+            t.Path = taxon.Path;
+            t.Type = taxon.Type;
+            t.Weight = taxon.Sort;
+            
+            this.repository.Update(t);
             this.cache.Remove(schema.CacheKey);
         }
 

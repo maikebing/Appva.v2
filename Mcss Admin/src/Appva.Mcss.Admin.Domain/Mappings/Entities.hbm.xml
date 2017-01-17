@@ -13,10 +13,10 @@
     <property name="UpdatedAt" column="Modified" />
     <property name="Name" />
     <property name="Value" type="StringClob">
-      <column name="Value" sql-type="NTEXT"/>
+      <column name="Value" sql-type="NVARCHAR(MAX)"/>
     </property>
     <property name="Description" type="StringClob">
-      <column name="Description" sql-type="NTEXT"/>
+      <column name="Description" sql-type="NVARCHAR(MAX)"/>
     </property>
     <property name="MachineName" unique="true" />
     <property name="Namespace" />
@@ -31,12 +31,12 @@
     <property name="CreatedAt" column="Created" />
     <property name="Level" />
     <property name="Message" type="StringClob">
-      <column name="Message" sql-type="NTEXT"/>
+      <column name="Message" sql-type="NVARCHAR(MAX)"/>
     </property>
     <property name="Type" />
     <property name="System" />
     <property name="Route" type="StringClob">
-      <column name="Route" sql-type="NTEXT"/>
+      <column name="Route" sql-type="NVARCHAR(MAX)"/>
     </property>
     <property name="IpAddress" />
     <many-to-one name="Account" class="Account" />
@@ -102,7 +102,7 @@
     <property name="EmailAddress" column="Email" />
     <property name="TelephoneNumber" column="TelephoneNo" />
     <component name="PersonalIdentityNumber">
-      <property name="Value" column="UniqueIdentifier" access="nosetter.camelcase" />  
+      <property name="Value" column="UniqueIdentifier" unique="true" access="nosetter.camelcase" />  
     </component> 
     <property name="DevicePassword" column="Password" />
     <property name="AdminPassword" column="HashedPassword" />
@@ -118,7 +118,7 @@
       <column name="ShowAdminNewsNotice" default="1" />
     </property>
     <property name="SymmetricKey" not-null="true" type="StringClob">
-      <column name="SymmetricKey" sql-type="NTEXT" not-null="true" default="'MjVjNWQ1OGEwN2ExNGJjMTg4NGI0ZWQwNjcxODNlZjA='" />
+      <column name="SymmetricKey" sql-type="NVARCHAR(MAX)" not-null="true" default="'MjVjNWQ1OGEwN2ExNGJjMTg4NGI0ZWQwNjcxODNlZjA='" />
     </property>
     <property name="IsSynchronized" column="Synchronized"/>
     <property name="LastSynchronized" />
@@ -267,7 +267,7 @@
     <property name="Name" />
     <property name="Description" />
     <property name="Path" type="StringClob">
-      <column name="Path" sql-type="NTEXT"/>
+      <column name="Path" sql-type="NVARCHAR(MAX)"/>
     </property>
     <property name="Type" />
     <property name="IsRoot" />
@@ -350,9 +350,12 @@
     <property name="LastName" />
     <property name="FullName" />
     <component name="PersonalIdentityNumber">
-      <property name="Value" column="UniqueIdentifier" access="nosetter.camelcase" />
+      <property name="Value" column="UniqueIdentifier" unique="true" access="nosetter.camelcase" />
     </component>
     <property name="Deceased" />
+    <property name="IsArchived">
+      <column name="IsArchived" not-null="true" default="'false'" />
+    </property>  
     <many-to-one name="Taxon" class="Taxon" />
     <property name="IsPersonOfPublicInterest">
       <column name="IsPersonOfPublicInterest" not-null="true" default="'false'" />
@@ -485,7 +488,7 @@
     <property name="RangeInMinutesAfter" />
     <property name="Times" />
     <property name="Dates" type="StringClob">
-      <column name="Dates" sql-type="NTEXT"/>
+      <column name="Dates" sql-type="NVARCHAR(MAX)"/>
     </property>
     <property name="Minute" />
     <property name="Hour" />

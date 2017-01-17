@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Areas.Models
 {
     #region Imports.
 
+    using Appva.Mcss.Admin.Application.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -36,7 +37,7 @@ namespace Appva.Mcss.Admin.Areas.Models
 
         public Dictionary<string, IList<Domain.Entities.KnowledgeTest>> KnowledgeTestMap { get; set; }
 
-        public Dictionary<string, IList<Domain.Entities.Delegation>> DelegationMap { get; set; }
+        public Dictionary<string, IList<DelegationViewModel>> DelegationMap { get; set; }
 
         /// <summary>
         /// Whether or not the user account is hidden, e.g. has only

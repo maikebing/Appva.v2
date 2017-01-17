@@ -1,0 +1,10 @@
+﻿@model IList<Appva.Mcss.Admin.Features.Area51.Cache.ListSetting>
+@{
+    SetTitle("Area 51");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>Delegeringar</h1>
+    @Html.ActionLink("Orsak vid borttagning av delegering", "DeleteDelegationSettings", "Delegation", new { area = "Area51" }, new { @class = "lb-link btn" })
+    @Html.ActionLink("Lägg till org på alla delegeringar (Global) ", "AddOrganisation", "Delegation", new { area = "Area51" }, new { @class = "btn" })
+</div>

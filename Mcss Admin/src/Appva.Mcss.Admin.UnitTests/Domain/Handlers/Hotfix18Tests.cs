@@ -85,7 +85,7 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
             var handler = new Hotfix18Handler(accountService, context);
             handler.Handle(new Models.Hotfix18());
             context.Commit(true);
-            var newContext = this.database.OpenNew;
+            var newContext = this.database.PersistenceContext;
             var accounts   = newContext.QueryOver<Account>().List();
             var actual     = 0;
             foreach(var account in accounts)

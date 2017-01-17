@@ -139,7 +139,7 @@ namespace Appva.Mcss.Admin.Application.Services
                             sequence.EndDate,
                             sequence.Interval,
                             sequence.IntervalFactor,
-                            DateTimeUtils.FromStringToDateTime(sequence.Dates)))
+                            DateTimeUtils.Parse(sequence.Dates).ToList()))
                         {
                             days.Add(current.Day);
                         }

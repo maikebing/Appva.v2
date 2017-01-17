@@ -25,7 +25,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     #endregion
 
-    public interface IPatientRepository : IProxyRepository<Patient>, IRepository
+    public interface IPatientRepository :
+        IUpdateRepository<Patient>,
+        IProxyRepository<Patient>, 
+        IRepository
     {
         /// <summary>
         /// Gets patients by taxon, filtered by delayed and incomplete tasks
@@ -93,7 +96,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             Taxon taxonAlias = null;
             var patients = this.context.QueryOver<Patient>()
                 .Where(x => x.IsActive)
-                  .And(x => x.Deceased == false)
+                .And(x => x.IsArchived == false)
+                .And(x => x.Deceased == false)
                 .Left.JoinAlias(x => x.Taxon, () => taxonAlias, () => taxonAlias.IsActive)
                     .Where(Restrictions.On<Taxon>(x => taxonAlias.Path)
                     .IsLike(taxon, MatchMode.Start))
@@ -118,7 +122,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             Patient patient = null;
             var query = this.context.QueryOver<Patient>(() => patient)
-                .Where(x => x.IsActive == model.IsActive);
+                .Where(x => x.IsActive == model.IsActive)
+                .And(x => x.IsArchived == false);
             if (model.IsActive)
             {
                 query.Where(x => x.Deceased == model.IsDeceased);
@@ -183,6 +188,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public Patient Load(Guid id)
         {
             return this.context.Session.Load<Patient>(id);
+        }
+
+        #endregion
+
+        #region IUpdateRepository<Patient> Members.
+
+        /// <inheritdoc />
+        public void Update(Patient entity)
+        {
+            this.context.Update<Patient>(entity);
         }
 
         #endregion

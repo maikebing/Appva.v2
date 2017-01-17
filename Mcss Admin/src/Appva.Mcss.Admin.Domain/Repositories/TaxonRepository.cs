@@ -21,6 +21,7 @@ using Appva.Mcss.Admin.Domain.Entities;
     /// </summary>
     public interface ITaxonRepository : 
         IIdentityRepository<Taxon>, 
+        IUpdateRepository<Taxon>,
         ISaveRepository<Taxon>, 
         IProxyRepository<Taxon>, 
         IRepository
@@ -45,6 +46,13 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <param name="id"></param>
         /// <returns></returns>
         Taxonomy LoadTaxonomy(string machineName);
+
+        /// <summary>
+        /// Saves a taxon and sets the path if nessecary
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="setPath"></param>
+        void Save(Taxon entity, bool setPath);
     }
 
     public sealed class TaxonRepository : ITaxonRepository
@@ -136,7 +144,29 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <inheritdoc />
         public void Save(Taxon entity)
         {
+            this.Save(entity, false);
+        }
+
+        /// <inheritdoc />
+        public void Save(Taxon entity, bool setPath)
+        {
             this.persistenceContext.Save<Taxon>(entity);
+            if (setPath)
+            {
+                entity.Path = entity.Parent != null ? string.Format("{0}.{1}", entity.Parent.Path, entity.Id) : entity.Id.ToString();
+                this.persistenceContext.Update<Taxon>(entity);
+            }
+        }
+
+        #endregion
+
+        #region IUpdateRepository members.
+
+        /// <inheritdoc />
+        public void Update(Taxon entity)
+        {
+            entity.UpdatedAt = DateTime.Now;
+            this.persistenceContext.Update<Taxon>(entity);
         }
 
         #endregion

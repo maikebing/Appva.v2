@@ -21,6 +21,11 @@ using System.Linq;
     /// </summary>
     public static class EventTransformer
     {
+        /// <summary>
+        /// Converts Tasks to CalendarTasks
+        /// </summary>
+        /// <param name="tasks"></param>
+        /// <returns></returns>
         public static IList<CalendarTask> TasksToEvent(IList<Task> tasks)
         {
             var retval = new List<CalendarTask>();
@@ -32,7 +37,7 @@ using System.Linq;
         }
 
         /// <summary>
-        /// 
+        /// Convert a Task to a CalendarTask
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>

@@ -32,10 +32,14 @@
             {
                 @Html.HiddenFor(x => x.Email, "text large")
             }
-            
+
             @if (Model.IsMobileDevicePasswordFieldVisible)
             {
                 @Html.FormGroup(x => x.DevicePassword, "text").Label().Password(null, new { value = Model.DevicePassword }).Validate().Build()
+            }
+            else
+            {
+                @Html.HiddenFor(x => x.DevicePassword, "")
             }
             @if (Model.IsUsernameVisible)
             {
@@ -44,6 +48,10 @@
             @if (Model.IsHsaIdFieldVisible)
             {
                 @Html.FormGroup(x => x.HsaId, "text").Label("HSA ID").TextBox().Validate().Build()
+            }
+            else
+            {
+                @Html.HiddenFor(x => x.HsaId, "")
             }
             <div class="select selectgroup cf">
                 <strong>Adress:</strong>

@@ -6,7 +6,7 @@
         var claim = identity.Claims.Where(x => x.Type == System.Security.Claims.ClaimTypes.Version).SingleOrDefault();
         if (claim == null || ! claim.Value.Substring(0, claim.Value.LastIndexOf('.')).Equals(ApplicationEnvironment.Info.Version.Substring(0, ApplicationEnvironment.Info.Version.LastIndexOf('.'))))
         {
-            this.Response.Redirect(Url.Action("SignOut", "Authentication", new { area = string.Empty }));
+            //this.Response.Redirect(Url.Action("SignOut", "Authentication", new { area = string.Empty }));
         }
     }
 }
@@ -342,6 +342,40 @@
                         }
                     });
 
+                    $(".check-datetime-update, .check-datetime-update #StartDate").bind("change", function (e) {
+                        ShowSequenceReminderWarning(e);
+                    });
+
+                    $(".check-datetime-update.btn").bind("click", function (e) {
+                        ShowSequenceReminderWarning(e);
+                    });
+
+                    $(".check-datetime-create #StartDate").bind("change", function (e) {
+                        elem = $(this);
+                        var now = new Date();
+                        var start = new Date(elem.val());
+
+                        if (now > start) {
+                            ShowSequenceReminderWarning(e);
+                        }
+                        else {
+                            $(".warning-datetime").remove();
+                        }
+
+                        
+                    });
+
+                    $("a.btn.btn-mdatepick.check-datetime-create.dp-applied").bind("dpClosed", function (e) {
+                        var vals = $("#activity-freq-days").val().split(',');
+                        var now = new Date();
+                        $.each(vals, function (index, elem) {
+                            var date = new Date(elem);
+                            if (now > date) {
+                                ShowSequenceReminderWarning(e);
+                            }
+                        });
+                                              
+                    });
 
                     $('.activity-edit .freq .btn-mdatepick').each(function () {
                         if ($(this).prev().val() != '0') $(this).hide();
@@ -367,6 +401,13 @@
                         });
                     });
                 });
+
+                function ShowSequenceReminderWarning(e) {
+                    var save = $('.std-panel .submit input[type="submit"]')
+                    if (save.prev(".warning-datetime").length < 1) {
+                        save.before("<div class='warning-datetime'><span style='font-weight:bold;'>Observera!</span> Påminnelser genereras inte retroaktivt.</div>");
+                    }     
+                }
 
                 function disableDelegation(t) {
                     if (t.is(':checked')) {
@@ -434,6 +475,21 @@
             <div class="environment">
                 <p>ENVIRONMENT @ApplicationEnvironment.Environment | VERSION @ApplicationEnvironment.Info.Version | SERVER @ApplicationEnvironment.OperatingSystem.MachineName</p>
             </div>
+        }
+        @if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
+        {
+            var expiration = Request.GetOwinContext().Get<DateTimeOffset?>("ExpiresUtc");
+            if (expiration.HasValue && User.Identity.IsAuthenticated)
+            {
+                <script type="text/javascript">
+                    mcss.auth.init(@expiration.Value.LocalDateTime.ToUnixEpochMilliseconds(),
+                        {
+                            loginUrl:                 '/auth/sign-in',
+                            redirectToLogin:           true,
+                            showCountdownAfterMinutes: 5
+                        });
+                </script>
+            }
         }
         <div class="global-filter">
             @Html.Action("TaxonFilter", "Taxa", new { Area = string.Empty })

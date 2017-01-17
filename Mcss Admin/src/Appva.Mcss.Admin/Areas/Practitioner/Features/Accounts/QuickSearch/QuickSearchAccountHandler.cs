@@ -101,7 +101,7 @@ using Appva.Mcss.Admin.Infrastructure;
                     IsFilterByCreatedByEnabled = message.IsFilterByCreatedByEnabled,
                     DelegationFilterId = message.DelegationFilterId,
                     RoleFilterId = message.RoleFilterId,
-                    OrganisationFilterId = filtering.GetCurrentFilter().Id,
+                    OrganisationFilterTaxonPath = filtering.GetCurrentFilter().Path,
                     CurrentUserId = this.identities.PrincipalId,
                     SearchQuery = message.Term
                 },

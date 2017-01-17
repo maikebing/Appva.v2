@@ -22,6 +22,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using Appva.Core.Resources;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Extensions;
+    using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -30,7 +32,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     internal sealed class UpdateSequenceFormHandler : RequestHandler<UpdateSequenceForm, DetailsSchedule>
     {
-        #region Private Variables.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -52,6 +54,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ISequenceService sequenceService;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
 
         #endregion
 
@@ -60,12 +66,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceFormHandler"/> class.
         /// </summary>
-        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, IInventoryService inventoryService)
+        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService)
         {
             this.context            = context;
             this.roleService        = roleService;
             this.sequenceService    = sequenceService;
             this.inventoryService   = inventoryService;
+            this.settingsService    = settingsService;
         }
 
         #endregion
@@ -111,22 +118,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate  = null;
-            DateTime tempDate;
             Role requiredRole = null;
             if (model.Dates.IsNotEmpty() && model.Interval == 0)
             {
                 var dates = model.Dates.Split(',');
-                if (dates.Count() > 0)
-                {
-                    if (! DateTime.TryParse(dates[0], out startDate))
-                    {
-                        startDate = DateTimeUtilities.Now();
-                    }
-                    if (DateTime.TryParse(dates[dates.Count() - 1], out tempDate))
-                    {
-                        endDate = tempDate;
-                    }
-                }
+                DateTimeUtils.GetEarliestAndLatestDateFrom(dates, out startDate, out endDate);
             }
             if (model.Interval > 0)
             {
@@ -134,7 +130,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             if (model.Nurse)
             {
-                requiredRole = this.roleService.Find(RoleTypes.Nurse);
+                //// Temporary mapping
+                var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
+                if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
+                {
+                    requiredRole = this.roleService.Find(temp[schedule.ScheduleSettings.Id]);
+                }
+                if (requiredRole == null)
+                {
+                    requiredRole = this.roleService.Find(RoleTypes.Nurse);
+                }
             }
             if (model.OnNeedBasis)
             {
@@ -176,7 +181,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.Reminder = model.Reminder;
             sequence.ReminderInMinutesBefore = model.ReminderInMinutesBefore;
             sequence.ReminderRecipient = recipient; //// FIXME: This is always NULL why is it here at all? 
-            ////sequence.Patient = Patient; // unnecassary
             sequence.Schedule = schedule;
             sequence.Taxon = delegation;
             sequence.Role = requiredRole;

@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #endregion
 
     public interface IDelegationRepository : 
-        IIdentityRepository<Delegation>, 
+        IIdentityRepository<Delegation>,
         IUpdateRepository<Delegation>,
         ISaveRepository<Delegation>,
         IRepository
@@ -31,7 +31,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="isPending"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        IList<Delegation> List(Guid? byAccount = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null);
+        IList<Delegation> List(Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null);
+
+        /// <summary>
+        /// Updates a delegation and saves the changes
+        /// </summary>
+        /// <param name="entity">The delegation</param>
+        /// <param name="changes">The changes</param>
+        void Update(Delegation entity, ChangeSet changes);
     }
 
     /// <summary>
@@ -63,13 +70,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IDelegationRepository members.
 
         /// <inheritdoc />
-        public IList<Delegation> List(Guid? byAccount = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null)
+        public IList<Delegation> List(Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null)
         {
             var query = this.persistence.QueryOver<Delegation>();
 
             if (byAccount.HasValue && byAccount.Value.IsNotEmpty())
             {
                 query.Where(x => x.Account.Id == byAccount.Value);
+            }
+            if (createdBy.HasValue && createdBy.Value.IsNotEmpty())
+            {
+                query.Where(x => x.CreatedBy.Id == createdBy.Value);
             }
             if (isPending.HasValue)
             {
@@ -82,6 +93,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             if (isGlobal.HasValue)
             {
                 query.Where(x => x.IsGlobal == isGlobal.Value);
+            }
+            if (byCategory.HasValue && byCategory.Value.IsNotEmpty())
+            {
+                query.JoinQueryOver<Taxon>(x => x.Taxon)
+                    .Where(x => x.Parent.Id == byCategory.Value);
             }
 
             return query.List();
@@ -102,9 +118,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IUpdateRepository members.
 
         /// <inheritdoc />
+        public void Update(Delegation entity, ChangeSet changes)
+        {
+            this.persistence.Save<ChangeSet>(changes);
+            this.Update(entity);
+        }
+
+        /// <inheritdoc />
         public void Update(Delegation entity)
         {
-            throw new NotImplementedException();
+            entity.UpdatedAt = DateTime.Now;
+            this.persistence.Update<Delegation>(entity);
         }
 
         #endregion

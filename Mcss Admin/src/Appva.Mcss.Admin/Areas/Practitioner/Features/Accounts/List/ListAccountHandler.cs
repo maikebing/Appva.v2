@@ -119,7 +119,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     IsFilterByCreatedByEnabled      = message.filterByCreatedBy.GetValueOrDefault(false),
                     DelegationFilterId              = message.DelegationFilterId,
                     RoleFilterId                    = message.RoleFilterId,
-                    OrganisationFilterId            = this.filtering.GetCurrentFilter().Id,
+                    OrganisationFilterTaxonPath     = this.filtering.GetCurrentFilter().Path,
                     CurrentUserId                   = this.identities.PrincipalId,
                     SearchQuery                     = message.q
                 },

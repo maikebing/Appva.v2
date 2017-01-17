@@ -19,6 +19,8 @@ namespace Appva.Mcss.Admin.Application.Common
     /// </summary>
     public static class Permissions
     {
+        #region Admin
+
         #region Constants.
 
         /// <summary>
@@ -623,6 +625,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string ReactivateValue = Schema + "patient/reactivate";
 
             /// <summary>
+            /// The archive value.
+            /// </summary>
+            public const string ArchiveValue = Schema + "patient/archive";
+
+            /// <summary>
             /// Permission to create a patient.
             /// </summary>
             [Sort(15)]
@@ -661,6 +668,14 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Reactivate patient")]
             [Description("Permission to reactivate a patient")]
             public static readonly IPermission Reactivate = PermissionType.CreateNew(ReactivateValue);
+            
+            /// <summary>
+            /// Permission to inactivate a patient.
+            /// </summary>
+            [Sort(19)]
+            [Name("Archive patient - Only for Appva Admins")]
+            [Description("Permission to archive a patient")]
+            public static readonly IPermission Archive = PermissionType.CreateNew(ArchiveValue);
         }
 
         #endregion
@@ -1378,6 +1393,65 @@ namespace Appva.Mcss.Admin.Application.Common
             [Visibility(Visibility.Hidden)]
             public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
         }
+
+        #endregion
+
+        #region Backoffice.
+
+        /// <summary>
+        /// The Backoffice permissions.
+        /// </summary>
+        public static class Backoffice
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "backoffice/read";
+
+            /// <summary>
+            /// Permission to read/view backoffice.
+            /// </summary>
+            [Sort(100000)]
+            [Name("Read backoffice")]
+            [Description("Permission to read/view backoffice")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Resource
+
+        #region Constants.
+
+        /// <summary>
+        /// The permission schema for mobile.
+        /// </summary>
+        private const string DeviceSchema = "https://schemas.appva.se/permission/device";
+
+        #endregion
+
+        #region NFC.
+
+        public static class NFC
+        {
+            /// <summary>
+            /// The register NFC value.
+            /// </summary>
+            public const string RegisterValue = Schema + "/nfc/register";
+
+            /// <summary>
+            /// Permission to register a NFC tag by mobile device
+            /// </summary>
+            [Sort(10000)]
+            [Name("Register nfc from mobile device")]
+            [Description("Permission to register a NFC tag by a mobiledevice")]
+            public static readonly IPermission SignIn = PermissionType.CreateNew(RegisterValue);
+        }
+
+        #endregion
 
         #endregion
     }

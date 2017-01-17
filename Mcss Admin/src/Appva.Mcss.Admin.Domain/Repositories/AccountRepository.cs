@@ -20,6 +20,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using NHibernate.Criterion;
     using NHibernate.Dialect.Function;
     using System.Collections.Generic;
+    using NHibernate.SqlCommand;
+    using Appva.NHibernateUtils.Restrictions;
 
     #endregion
 
@@ -53,6 +55,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="hsaId">The unique HSA id</param>
         /// <returns>An <see cref="Account"/> if found, else null</returns>
         Account FindByHsaId(string hsaId);
+
+        /// <summary>
+        /// Lists all accounts with delegations expiring in given number of days
+        /// </summary>
+        /// <param name="expiringDate">The expiring date</param>
+        /// <param name="taxonFilter">The path to filter</param>
+        /// <returns>List of <see cref="Account"/></returns>
+        IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null);
 
         /// <summary>
         /// Search for accounts to given search-criteria
@@ -115,7 +125,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 return accounts[0];
             }
-            //// FIXME: should throw exception if we have several!
+            if (accounts.Count > 1)
+            {
+                throw new NonUniqueResultException(accounts.Count);
+            }
             return null;
         }
 
@@ -124,8 +137,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             var accounts = this.persistenceContext.QueryOver<Account>()
                 .Where(x => x.IsActive)
-                  .And(x => x.IsPaused == false)
-                  .And(x => x.UserName == username)
+                .And(x => x.IsPaused == false)
+                .And(x => x.UserName == username)
                 .List();
             if (accounts.Count == 1)
             {
@@ -139,7 +152,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             var accounts = this.persistenceContext.QueryOver<Account>()
                 .Where(x => x.IsActive)
-                  .And(x => x.IsPaused == false)
+                .And(x => x.IsPaused == false)
                   .And(x => x.HsaId    == hsaId)
                 .List();
             if (accounts.Count == 1)
@@ -148,6 +161,60 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             }
             //// FIXME: should throw exception if we have several!
             return null;
+        }
+
+        /// <inheritdoc />
+        public IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null)
+        {
+            Account accountAlias = null;
+            Delegation delegationAlias = null;
+            Taxon taxonAlias = null;
+            Role roleAlias = null;
+            AccountModel accountModel = null;
+            Expression<Func<bool>> delegationFilter;
+            if (filterByIssuerId.HasValue && filterByIssuerId.GetValueOrDefault() != Guid.Empty)
+            {
+                delegationFilter = () => delegationAlias.IsActive == true && 
+                                        delegationAlias.Pending == false && 
+                                        delegationAlias.EndDate <= expiringDate && 
+                                        delegationAlias.CreatedBy.Id == filterByIssuerId.GetValueOrDefault();
+            }
+            else
+            {
+                delegationFilter = () => delegationAlias.IsActive == true && 
+                                        delegationAlias.Pending == false && 
+                                        delegationAlias.EndDate <= expiringDate;
+            }
+           
+            var query = this.persistenceContext.QueryOver<Account>(() => accountAlias)
+                .Where(x => x.IsActive)
+                .And(x => x.IsPaused == false)
+                .Inner.JoinAlias(x => x.Roles, () => roleAlias)
+                    .Where(() => roleAlias.IsActive)
+                    .And(() => roleAlias.IsVisible)
+                .Inner.JoinAlias(x => x.Delegations, () => delegationAlias, delegationFilter)
+                    .Inner.JoinAlias(() => delegationAlias.OrganisationTaxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, taxonFilter))
+                .Select(
+                    Projections.ProjectionList()
+                        .Add(Projections.Group<Account>(x => x.Id).WithAlias(() => accountModel.Id))
+                        .Add(Projections.Constant(true).WithAlias(() => accountModel.HasExpiringDelegation))
+                        .Add(Projections.Min(Projections.SqlFunction(
+                                        new SQLFunctionTemplate(
+                                            NHibernateUtil.Int32,
+                                            "DateDiff(day, '" + DateTime.Now.ToString("yyyy-MM-dd") + "', EndDate)"),
+                                        NHibernateUtil.Int32)).WithAlias(() => accountModel.DelegationDaysLeft))
+                        .Add(Projections.Group<Account>(x => x.IsActive).WithAlias(() => accountModel.IsActive))
+                        .Add(Projections.Group<Account>(x => x.FirstName).WithAlias(() => accountModel.FirstName))
+                        .Add(Projections.Group<Account>(x => x.LastName).WithAlias(() => accountModel.LastName))
+                        .Add(Projections.Group<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
+                        .Add(Projections.Group<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
+                        .Add(Projections.Group<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber)));
+
+            //// Ordering and transforming
+            query.OrderByAlias(() => accountModel.DelegationDaysLeft).Desc
+                .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
+
+            return query.List<AccountModel>();
         }
 
         /// <inheritdoc />
@@ -176,33 +243,32 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             if (model.RoleFilterId.HasValue)
             {
                 Role role = null;
-                query.Left.JoinAlias(x => x.Roles, () => role)
+                query.Inner.JoinAlias(x => x.Roles, () => role)
                     .Where(() => role.Id == model.RoleFilterId)
-                      .And(() => role.IsVisible);
+                    .And(() => role.IsVisible);
             }
             else
             {
                 Role role = null;
-                query.Left.JoinAlias(x => x.Roles, () => role)
+                query.Inner.JoinAlias(x => x.Roles, () => role)
                     .Where(Restrictions.Or(
                         Restrictions.On(() => role.Accounts).IsNull,
                         Restrictions.Where(() => role.IsVisible)
                     ));
             }
-            if (model.OrganisationFilterId.HasValue && model.OrganisationFilterId.Value.IsNotEmpty())
+            if (model.OrganisationFilterTaxonPath.IsNotEmpty())
             {
-                query.JoinQueryOver<Taxon>(x => x.Taxon)
-                   .Where(Restrictions.On<Taxon>(x => x.Path)
-                       .IsLike(model.OrganisationFilterId.Value.ToString(), MatchMode.Anywhere));
+                Taxon taxonAlias = null;
+                query.Inner.JoinAlias<Taxon>(x => x.Taxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, model.OrganisationFilterTaxonPath));
             }
             if (model.IsFilterByCreatedByEnabled)
             {
-                query.Left.JoinQueryOver<Delegation>(x => x.Delegations)
-                    .Where(x => x.CreatedBy.Id == model.CurrentUserId);
+                Delegation delegationAlias = null;
+                query.Inner.JoinAlias<Delegation>(x => x.Delegations, () => delegationAlias, () => delegationAlias.CreatedBy.Id == model.CurrentUserId);
             }
             else if (model.DelegationFilterId.HasValue)
             {
-                query.Left.JoinQueryOver<Delegation>(x => x.Delegations)
+                query.Inner.JoinQueryOver<Delegation>(x => x.Delegations)
                     .Where(x => x.Taxon.Id == model.DelegationFilterId.Value
                         && x.IsActive == true && x.Pending == false);
             }
@@ -236,6 +302,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                             50), 
                         Projections.Constant(true), 
                         Projections.Constant(false))).Take(1);
+
             //// Merges queries and selects needed columns and order rows for main query
             AccountModel accountModel = null;
             var mainQuery = query.Clone().Select(

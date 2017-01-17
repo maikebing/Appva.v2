@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web;
     using System;
     using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
     /// </summary>
     public sealed class CreateDelegationHandler : RequestHandler<CreateDelegation, CreateDelegationModel>
     {
-        #region
+        #region Fields.
 
         /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>.
@@ -75,12 +76,13 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <inheritdoc />
         public override CreateDelegationModel Handle(CreateDelegation message)
         {
-            var filterT = this.filtering.GetCurrentFilter();
+            var filterITaxon = this.filtering.GetCurrentFilter();
+            var filterTaxon = this.taxonomies.Load(filterITaxon.Id);
+            filterTaxon.Path = filterITaxon.Path;
             var account = this.accounts.Find(message.Id);
-            var patients = this.patients.FindByTaxon(filterT.Id, false);
+            var patients = this.patients.FindByTaxon(filterTaxon.Id, false);
             var taxons = this.delegations.ListDelegationTaxons().OrderByDescending<ITaxon, bool>(x => x.IsRoot).ToList();
             var patientTaxons = this.delegations.List(byAccount: account.Id, isActive: true, isGlobal: true);
-            var existingDelegations = new HashSet<Guid>(patientTaxons.Select(x => x.Taxon.Id));
             var delegationTypes = new List<SelectListItem>();
             var map = new Dictionary<ITaxon, IList<ITaxon>>();
             foreach (var taxon in taxons)
@@ -111,14 +113,13 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(DateTime.IsLeapYear(DateTime.Now.Year) ? 366 : 365),
                 DelegationTemplate = map,
-                DelegationsTaken = existingDelegations,
-                DelegationTypes = delegationTypes,
                 PatientItems = patients.Select(p => new SelectListItem
                 {
                     Text = p.FullName,
                     Value = p.Id.ToString()
                 }).ToList(),
-                Taxons = TaxonomyHelper.SelectList(this.taxonomies.List(TaxonomicSchema.Organization))
+                OrganizationTaxon = filterITaxon.Id.ToString(),
+                OrganizationTaxons = TaxonomyHelper.SelectList(filterTaxon,this.taxonomies.List(TaxonomicSchema.Organization))
             };
         }
 

@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -29,12 +30,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     internal sealed class UpdateSequenceHandler : RequestHandler<UpdateSequence, UpdateSequenceForm>
     {
-        #region Private Variables.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditService;
+
+        /// <summary>
+        /// The <see cref="IRoleService"/>.
+        /// </summary>
+        private readonly IRoleService roleService;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -46,6 +52,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IInventoryService inventories;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
         #endregion
 
         #region Constructor.
@@ -53,10 +64,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceHandler"/> class.
         /// </summary>
-        public UpdateSequenceHandler( IInventoryService inventories, IPersistenceContext context)
+        public UpdateSequenceHandler( IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IPersistenceContext context)
         {
-            this.inventories = inventories;
-            this.context = context;
+            this.inventories     = inventories;
+            this.roleService     = roleService;
+            this.settingsService = settingsService;
+            this.context         = context;
         }
 
         #endregion
@@ -67,8 +80,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateSequenceForm Handle(UpdateSequence message)
         {
             //// FIXME: Log here!
-            var sequence = this.context.Get<Sequence>(message.SequenceId);
-            var schedule = this.context.Get<Schedule>(sequence.Schedule.Id);
+            var sequence     = this.context.Get<Sequence>(message.SequenceId);
+            var schedule     = this.context.Get<Schedule>(sequence.Schedule.Id);
+            //// Temporary mapping
+            Role requiredRole = null;
+            var temp  = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
+            if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
+            {
+                requiredRole = this.roleService.Find(temp[schedule.ScheduleSettings.Id]);
+            }
+            if (requiredRole == null)
+            {
+                requiredRole = this.roleService.Find(RoleTypes.Nurse);
+            }
             return new UpdateSequenceForm
             {
                 Id                          = message.Id,
@@ -85,14 +109,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Times                       = this.CreateTimes(sequence),
                 OnNeedBasis                 = sequence.OnNeedBasis,
                 OnNeedBasisStartDate        = sequence.OnNeedBasis ? sequence.StartDate : (DateTime?) null,
-                OnNeedBasisEndDate          = sequence.OnNeedBasis ? sequence.EndDate : (DateTime?) null,
+                OnNeedBasisEndDate          = sequence.OnNeedBasis ? sequence.EndDate   : (DateTime?) null,
                 Reminder                    = sequence.Reminder,
                 ReminderInMinutesBefore     = sequence.ReminderInMinutesBefore,
                 Patient                     = sequence.Patient,
                 Schedule                    = sequence.Schedule,
-                Nurse                       = sequence.Role != null && sequence.Role.MachineName.Equals(RoleTypes.Nurse),
+                Nurse                       = sequence.Role != null,
                 Inventory                   = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
-                Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null
+                Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                RequiredRoleText            = requiredRole.Name.ToLower()
             };
         }
 

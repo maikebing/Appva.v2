@@ -1,0 +1,61 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListDelegationModel
+@{
+    SetTitle("Admin - Delegering");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Delegeringar</h1>
+    @Html.ActionLink("Ny kategori", "CreateCategory", "Delegation", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+    @Html.ActionLink("Orsak vid borttagning av delegering", "DeleteDelegationSettings", "Delegation", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+    @Html.ActionLink("Inställningar", "Settings", "Delegation", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+</div>
+
+<div id="content" class="delegate-view log">
+    <div id="content-primary">
+        @if (Model.Delegations != null && Model.Delegations.Count > 0)
+        {
+            foreach (var cat in Model.Delegations)
+            {
+                <div class="h cf">
+                    <h2>@cat.Key.Name</h2>
+                    @Html.ActionLink("Lägg till delegering", "Create", "Delegation", new { Id = cat.Key.Id }, new { @class = "lb-link btn" })
+                </div>
+                if (cat.Value != null && cat.Value.Count > 0)
+                {
+                    <table>
+                        <tr class="head">
+                            <th>Namn</th>
+                            <th>Beskrivning</th>
+                            <th></th>
+                        </tr>
+                        @foreach (var del in cat.Value)
+                        {
+                            <tr>
+                                <td>@del.Name</td>
+                                <td>@del.Description</td>
+                                <td>@Html.ActionLink("Ändra", "Update", "Delegation", new { id = del.Id }, new { @class = "lb-link btn" })</td>
+                            </tr>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <div class="note">
+                        <h2>Kategorin innehåller inga delegeringar ännu</h2>
+                    </div>
+                    
+                }
+            }
+        }
+        else
+        {
+            <div class="note">
+                <h2>Det finns inga delegeringar ännu</h2>
+            </div>
+            
+        }
+
+    </div>
+</div>
+
+

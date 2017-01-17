@@ -12,8 +12,10 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Transformers;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Persistence;
@@ -107,8 +109,9 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             var user        = this.identity.PrincipalId;
             var account     = this.accounts.Find(message.Id);
             var isInvisible = account.Roles.Where(x => x.IsVisible).Count() == 0 && ! this.identity.IsInRole("_AA");
-            var delegations = this.delegations.List(byAccount: message.Id, isActive: true); 
-            var delegationMap = new Dictionary<string, IList<Delegation>>();
+            var delegations = this.delegations.List(byAccount: message.Id, isActive: true);
+            var taxons      = this.taxonomies.List(TaxonomicSchema.Organization);    
+            var delegationMap = new Dictionary<string, IList<DelegationViewModel>>();
             foreach (var delegation in delegations)
             {
                 var name = this.taxonomies.Find(delegation.Taxon.Parent.Id,TaxonomicSchema.Delegation).Name;
@@ -118,11 +121,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                 }
                 if (delegationMap.ContainsKey(name))
                 {
-                    delegationMap[name].Add(delegation);
+                    delegationMap[name].Add(DelegationTransformer.ToDelegationViewModel(delegation, taxons));
                 }
                 else
                 {
-                    delegationMap.Add(name, new List<Delegation>() { delegation });
+                    delegationMap.Add(name, new List<DelegationViewModel>() { DelegationTransformer.ToDelegationViewModel(delegation, taxons) });
                 }
             }
             var knowledgeTestMap = new Dictionary<string, IList<KnowledgeTest>>();

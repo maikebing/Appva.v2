@@ -38,6 +38,10 @@ namespace Appva.Mcss.Admin.Models
                 new SelectListItem { Text = "Varje vecka",      Value = "7" },
                 new SelectListItem { Text = "Varannan vecka",   Value = "14" },
                 new SelectListItem { Text = "Var tredje vecka", Value = "21" },
+                new SelectListItem { Text = "Var fjärde vecka", Value = "28" },
+                new SelectListItem { Text = "Var femte vecka",  Value = "35" },
+                new SelectListItem { Text = "Var åttonde vecka",  Value = "56" },
+                new SelectListItem { Text = "Var tolfte vecka",  Value = "84" },
                 new SelectListItem { Text = "Annan ...",        Value = "0" }
             };
 
@@ -127,6 +131,15 @@ namespace Appva.Mcss.Admin.Models
         { 
             get; 
             set; 
+        }
+
+        /// <summary>
+        /// The required role text, eg. the sequence can only be completed by a nurse.
+        /// </summary>
+        public string RequiredRoleText
+        {
+            get;
+            set;
         }
 
         /// <summary>

@@ -63,15 +63,6 @@ namespace Appva.Mcss.Admin.Application.Common
             "icn-warning-diabetes.png");
 
         /// <summary>
-        /// The Warning - Waran risk assesment
-        /// REMOVE: Replaced by new symbol, Antiglukos
-        /// </summary>
-        /*public static readonly ITaxon Waran = CreateRiskAssement(
-            "Waran",
-            "Observera waran",
-            "icn-warning-waran.png");*/
-
-        /// <summary>
         /// The Warning - Infection risk assesment
         /// </summary>
         public static readonly ITaxon Infection = CreateRiskAssement(

@@ -220,7 +220,8 @@ namespace Appva.Mcss.Admin.Application.Pdf
                   .And(x => x.Patient.Id == patient.Id)
                   .And(x => x.Scheduled >= start && x.Scheduled <= end.LastInstantOfDay())
                 .Fetch(x => x.StatusTaxon).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer());
+                .TransformUsing(new DistinctRootEntityResultTransformer())
+                .OrderBy(x => x.Scheduled).Asc;
             if (scheduleSettingsId.HasValue)
             {
                 query.JoinQueryOver<Schedule>(x => x.Schedule)

@@ -1,0 +1,17 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.CreateDelegationCategoryModel
+@{
+    SetTitle("Skapa kategort");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <div>
+            <h3 class="section-title">Skapa kategori</h3>
+            @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
+        </div>
+    }
+</div>

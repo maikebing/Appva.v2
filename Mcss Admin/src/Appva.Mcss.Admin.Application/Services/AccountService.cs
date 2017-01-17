@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using NHibernate.Criterion;
     using Appva.Core.Extensions;
     using Appva.Cryptography;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -167,6 +168,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="isAccountUpgradedForAdminAccess">If true then the user has got new roles which permits them to access admin</param>
         /// <param name="isAccountUpgradedForDeviceAccess">If true then the user has got new roles which permits them to access device</param>
         void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess);
+
+        /// <summary>
+        /// Lists all accounts with expiring
+        /// </summary>
+        /// <param name="taxonFilter"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        IList<AccountModel> ListByExpiringDelegation(ITaxon taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null);
 
         /// <summary>
         /// Creates a proxy-entity from a guid
@@ -327,6 +336,7 @@ namespace Appva.Mcss.Admin.Application.Services
             var salt     = EncryptionUtils.GenerateSalt(DateTime.Now);
             var password = EncryptionUtils.Hash(newPassword, salt);
             account.ChangePassword(password, salt);
+            this.auditing.ChangedPassword(account, "uppdaterade lösenord{0}", string.Empty);
             this.repository.Update(account);
         }
 
@@ -481,6 +491,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<Account> List()
         {
             return this.repository.List();
+        }
+
+        /// <inheritdoc />
+        public IList<AccountModel> ListByExpiringDelegation(ITaxon taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null)
+        {
+            return this.repository.ListByExpiringDelegation(taxonFilter.Path, expiringDate, filterByIssuerId);
         }
 
         #endregion

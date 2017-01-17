@@ -1,23 +1,79 @@
-﻿@model Appva.Mcss.Web.ViewModels.DelegationDateSpanViewModel
+﻿@model Appva.Mcss.Admin.Areas.Models.UpdateDelegationModel
 @{
-    SetTitle("Förnya samtliga delegeringar");
+    SetTitle("Edit");
 }
-<div class="std-panel std-form lb-validate-form lb-panel-small" data-valclass="DelegationUpdate">
-    @using (Html.BeginForm(new { id = Model.Id, taxonId = Model.TaxonId })) {
-        <h3 class="section-title">Förnya samtliga delegeringar</h3>
-        <div class="text medium">
+<div class="std-panel delegdialog std-form lb-panel-small lb-validate-form" data-valclass="DelegationEdit">
+
+    @using (Html.BeginForm(new { id = Model.Id, AccountId = Model.AccountId })) {
+
+        <h3 class="section-title">Ändra delegering</h3>
+        <div class="row toggle-group cf">
+            <div class="radio col">
+                <label for="activity-type-2">Gäller för:</label>
+            </div>
+            <div class="radio col">
+                @Html.RadioButtonFor(m => m.ValidForSpecificPatients, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1", @data_togglegroup = "toggle-delegation" })
+                <label for="activity-type-1">Adress</label>
+            </div>
+            <div class="radio col">
+                @Html.RadioButtonFor(m => m.ValidForSpecificPatients, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2", @data_togglegroup = "toggle-delegation" })
+                <label for="activity-type-2">Boende</label>
+            </div>
+        </div>
+        <div class="toggle-target toggle-target-1 toggle-delegation">
+            <div class="select selectgroup cf">
+                @if (Model.OrganizationTaxons.IsNotNull())
+                {
+                    foreach (var taxon in Model.OrganizationTaxons)
+                    {
+                        <div class="select">
+                            <label class="structural">@taxon.Label</label>
+                            @Html.DropDownList(taxon.Id,
+                                        new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
+                                        string.Format("Välj {0}...", taxon.OptionLabel),
+                                        new { @class = "dropdown" }
+                                    )
+                        </div>
+                    }
+                }
+                @Html.HiddenFor(m => m.OrganizationTaxon, new { id = "Taxon" })
+                @Html.ValidationMessageFor(m => m.OrganizationTaxon)
+            </div>
+        </div>
+        <div class="toggle-target toggle-target-2 toggle-delegation">
+            <div class="select multisel">
+                @Html.LabelFor(m => m.Patient)
+                @Html.DropDownListFor(
+                    m => m.Patient,
+                        new SelectList(Model.PatientItems, "Value", "Text", Model.Patient),
+                        "Alla",
+                    new { }
+                )
+                @Html.ValidationMessageFor(m => m.Patient)
+                @foreach (var patient in Model.ConnectedPatients)
+                {
+                    <span class="person">
+                        @patient.FirstName @patient.LastName
+                        <a href="#" title="Ta bort">Ta bort</a>
+                        <input name="Patients" type="hidden" value="@patient.Id" />
+                    </span>
+                }
+                <input type="hidden" id="TestPatients" name="TestPatients" />
+            </div>
+        </div>
+        
+	    <div class="dateinput">
             @Html.LabelFor(m => m.StartDate)
             @Html.EditorFor(m => m.StartDate)
             @Html.ValidationMessageFor(m => m.StartDate)
-        </div>
-        <div class="text medium">
-			@Html.LabelFor(m => m.EndDate)
+            @Html.LabelFor(m => m.EndDate)
             @Html.EditorFor(m => m.EndDate)
             @Html.ValidationMessageFor(m => m.EndDate)
-		</div>
+		    <em class="hint">Max 1 år</em>
+	    </div>
 	    <div class="submit">
             @Html.AntiForgeryToken()
-            @Html.Submit("Förnya")
+            @Html.Submit("Spara")
             @Html.Cancel("Avbryt")
 	    </div>
     }

@@ -1,0 +1,32 @@
+﻿@model Appva.Mcss.Admin.Areas.Practitioner.Models.RenewDelegationsModel
+@{
+    SetTitle("Förnya delegeringar");
+}
+<div class="std-panel std-form lb-validate-form lb-panel-small" data-valclass="DelegationUpdate">
+    @using (Html.BeginForm(new { DelegationCategoryId = Model.DelegationCategoryId, AccountId = Model.AccountId }))
+    {
+        <h3 class="section-title">Förnya delegeringar för @Model.DelegationCategoryName</h3>
+        <div class="text medium">
+            @Html.LabelFor(m => m.StartDate)
+            @Html.EditorFor(m => m.StartDate)
+            @Html.ValidationMessageFor(m => m.StartDate)
+        </div>
+        <div class="text medium">
+            @Html.LabelFor(m => m.EndDate)
+            @Html.EditorFor(m => m.EndDate)
+            @Html.ValidationMessageFor(m => m.EndDate)
+        </div>
+        <h3 class="section-title">Förnya alla delegeringar?</h3>
+        <div class="radio">
+            @Html.RadioButtonFor(m => m.RenewAllDelegations, false, new { id = "My" })
+            <label for="My">Endast mina</label>
+            @Html.RadioButtonFor(m => m.RenewAllDelegations, true, new { id = "All" })
+            <label for="All">Alla delegeringar</label>
+        </div>
+	    <div class="submit">
+            @Html.AntiForgeryToken()
+            @Html.Submit("Förnya")
+            @Html.Cancel("Avbryt")
+	    </div>
+    }
+</div>

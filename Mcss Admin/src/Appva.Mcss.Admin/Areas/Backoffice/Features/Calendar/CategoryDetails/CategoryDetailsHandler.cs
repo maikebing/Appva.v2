@@ -50,8 +50,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override CategoryDetailsModel Handle(Identity<CategoryDetailsModel> message)
         {
-            //var category = eventService.CreateCategory();
-            return new CategoryDetailsModel();
+            var category = eventService.Category(message.Id);
+
+            return new CategoryDetailsModel
+            {
+                Name = category.Name,
+                Absence = category.Absence,
+                Color = category.Color,
+                Id = category.Id,
+                StatusTaxons = category.StatusTaxons,
+                NurseConfirmDeviation = category.NurseConfirmDeviation,
+                DeviationMessage = category.ConfirmDevitationMessage
+            };
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿// <copyright file="CategoryDetailsModel.cs" company="Appva AB">
+﻿// <copyright file="UpdateCategoryModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,8 +8,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
+    using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Models;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -21,12 +23,31 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CategoryDetailsModel
+    public sealed class UpdateCategoryModel : IRequest<Identity<CategoryDetailsModel>>
     {
+        #region Const.              
+
+        /// <summary>
+        /// The available colors
+        /// </summary>
+        public readonly List<SelectListItem> Colors = new List<SelectListItem>()
+        {
+            new SelectListItem { Text = "Mörkgrå", Value = "#5d5d5d" },
+            new SelectListItem { Text = "Turkos", Value = "#1ed288" },
+            new SelectListItem { Text = "Orange", Value = "#e28a00" },
+            new SelectListItem { Text = "Lila", Value = "#b668ca" },
+            new SelectListItem { Text = "Mörkblå", Value = "#47597f" },
+            new SelectListItem { Text = "Gul", Value = "#e9d600" },
+            new SelectListItem { Text = "Blå", Value = "#0091ce" },
+            new SelectListItem { Text = "Grön", Value = "#349d00" }
+        };
+
+        #endregion
+
         #region Properties.
 
         /// <summary>
-        /// The id of the schedule
+        /// The id of the category
         /// </summary>
         public Guid Id
         {
@@ -82,15 +103,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// The popup message when task signed as a deviation
         /// </summary>
         public ConfirmDeviationMessage DeviationMessage
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The status-taxon available for this category
-        /// </summary>
-        public IList<Taxon> StatusTaxons
         {
             get;
             set;

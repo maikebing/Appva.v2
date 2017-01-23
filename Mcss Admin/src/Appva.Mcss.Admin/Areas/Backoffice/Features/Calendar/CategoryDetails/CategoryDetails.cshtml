@@ -1,44 +1,66 @@
-﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.CreateCategoryModel
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.CategoryDetailsModel
 @{
-    SetTitle("Skapa lista");
+    SetTitle("Admin - " + Model.Name);
 }
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>@Model.Name</h1>
+    @Html.ActionLink("Redigera", "UpdateCategory", "Calendar", new { id = Model.Id }, new { @class = "lb-link btn" })
+</div>
+<div id="content" class="log admin-schedule">
 
-<div class="std-panel std-form lb-panel-small lb-validate-form">
-    @using (Html.Post())
-    {
-        <div>
-            <h3 class="section-title">Inställningar för lista</h3>
-            @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
-            @Html.FormGroup(x => x.Absence, "checkbox").Checkbox("").Label().Validate().Build()
-            <h3 class="section-title">Färg för kategori</h3>
-            @Html.LabelFor(x => x.Color)
-            @Html.DropDownListFor(x => x.Color, Model.Colors, "Välj färg...")
-            <h3 class="section-title">Dialogruta vid avvikande signering</h3>
-            @Html.FormGroup(x => x.NurseConfirmDeviation, "nurse-confirm-deviation checkbox").Checkbox("").Label().Validate().Build()
-            @Html.FormGroup(x => x.DeviationMessage.IncludeListOfNurses, "nurse-confirm-deviation-option checkbox").Checkbox("Inkludera lista med sköterskor att kontakta").Validate().Build()
-            @Html.FormGroup(x => x.DeviationMessage.Header, "nurse-confirm-deviation-option text large").Label("Rubrik").TextBox().Validate().Build()
-            @Html.FormGroup(x => x.DeviationMessage.Message, "nurse-confirm-deviation-option text large").Label("Meddelande").TextArea().Validate().Build()           
-        </div>
-        <div class="submit">
-            @Html.Submit("Spara", new { @class = "btn" })
-        </div>
-    }
+    <table>
+        <tr>
+            <td class="label"><span>Namn</span></td>
+            <td><span>@Model.Name</span></td>
+            <td class="desc">Namnet på listan</td>
+        </tr>
+        <tr>
+            <td class="label"><span>Färg</span></td>
+            <td><span style="background:@Model.Color; border-radius:10px 10px; padding:5px 10px; margin-top:5px; line-height: 24px;">&nbsp;</span>
+</td>
+            <td class="desc">Färg som visas med kalender</td>
+        </tr>
+        <tr>
+            <td class="label"><span>Innehåller frånvaro</span></td>
+            <td><span>@(Model.Absence ? "Ja" : "Nej")</span></td>
+        </tr>
+        <tr>
+            <td class="label"><span>Visa kontrollruta vid avvikande signering</span></td>
+            <td><span>@(Model.NurseConfirmDeviation ? "Ja" : "Nej")</span></td>
+        </tr>
+        @if (Model.NurseConfirmDeviation)
+        {
+            <tr>
+                <td class="label"><span>Ange kontaktad SSK vi avvikande signering</span></td>
+                <td><span>@(Model.DeviationMessage.IncludeListOfNurses ? "Ja" : "Nej")</span></td>
+            </tr>
+            <tr>
+                <td class="label"><span>Specifikt meddelande vid avvikande signering</span></td>
+                <td>
+                    <h3>@Model.DeviationMessage.Header</h3>
+                    <p>@Model.DeviationMessage.Message</p>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td class="label"><span>Signeringsalternativ</span></td>
+            <td>
+                <ul>
+                    @foreach (var taxon in Model.StatusTaxons)
+                    {
+                        <li><p><img src="@Url.Image(taxon.Path)" />@taxon.Name</p></li>
+                    }
+                </ul>
+
+            </td>
+            <td>
+                @Html.ActionLink("Ändra", "EditSigningOptions", "Schedule", new { Id = Model.Id, }, new { @class = "edit lb-link", @title = "Ändra raden" })
+            </td>
+
+        </tr>
+    </table>
+
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        toggleMessageOptions($('.nurse-confirm-deviation input'))
-        $('.nurse-confirm-deviation input').change(function (e) {
-            toggleMessageOptions($(this));
-        });
-    });
 
-    function toggleMessageOptions(e) {
-        if (e.prop('checked')) {
-            $('.nurse-confirm-deviation-option input, .nurse-confirm-deviation-option textarea').prop('disabled', false)
-        }
-        else {
-            $('.nurse-confirm-deviation-option input, .nurse-confirm-deviation-option textarea').prop('disabled', true)
-        }
-    }
-</script>

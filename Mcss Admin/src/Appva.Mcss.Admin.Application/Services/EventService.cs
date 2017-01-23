@@ -725,10 +725,13 @@ namespace Appva.Mcss.Admin.Application.Services
             var setting = this.scheduleService.GetScheduleSettings(id);
             return new CalendarCategory
             {
-                Id      = setting.Id,
-                Name    = setting.Name,
-                Absence = setting.Absence,
-                Color   = setting.Color
+                Id              = setting.Id,
+                Name            = setting.Name,
+                Absence         = setting.Absence,
+                Color           = setting.Color,
+                StatusTaxons    = setting.StatusTaxons,
+                NurseConfirmDeviation       = setting.NurseConfirmDeviation,
+                ConfirmDevitationMessage    = new ConfirmDeviationMessage(setting.NurseConfirmDeviationMessage, setting.SpecificNurseConfirmDeviation)
             };
         }
 

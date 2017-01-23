@@ -68,7 +68,17 @@ namespace Appva.Mcss.Admin.Application.Models
         /// Initializes a new instance of the <see cref="ConfirmDeviationMessage"/> class.
         /// </summary>
         /// <param name="htmlString">The Html string</param>
-        public ConfirmDeviationMessage(string htmlString)
+        public ConfirmDeviationMessage(string htmlString) : this(htmlString, false)
+        {
+            
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfirmDeviationMessage"/> class.
+        /// </summary>
+        /// <param name="htmlString">The Html string</param>
+        /// <param name="includeListOfContacts">If a list of contacts should be included</param>
+        public ConfirmDeviationMessage(string htmlString, bool includeListOfContacts)
         {
             
             if (htmlString.IsEmpty())

@@ -8,7 +8,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
 
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
@@ -55,6 +57,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override Identity<DetailsScheduleModel> Handle(UpdateScheduleModel message)
         {
+            if(message.DeviationMessage.IsNull())
+            {
+                message.DeviationMessage = new ConfirmDeviationMessage();
+            }
             var schedule = this.scheduleService.GetScheduleSettings(message.Id);
             schedule.Name = message.Name;
             schedule.AlternativeName = message.AlternativeName;

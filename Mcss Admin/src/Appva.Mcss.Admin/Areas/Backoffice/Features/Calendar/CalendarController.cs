@@ -99,6 +99,34 @@ using System.Web.Mvc;
 
         #endregion
 
+        #region Update category.
+
+        /// <summary>
+        /// Update details view
+        /// </summary>
+        /// <param name="request">The is of the category</param>
+        /// <returns>The details view as an ActionResult</returns>
+        [Route("category/{id:guid}/update")]
+        [HttpGet, Hydrate, Dispatch()]
+        public ActionResult UpdateCategory(Identity<UpdateCategoryModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Update details view
+        /// </summary>
+        /// <param name="request">The is of the category</param>
+        /// <returns>The details view as an ActionResult</returns>
+        [Route("category/{id:guid}/update")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("CategoryDetails", "Calendar")]
+        public ActionResult UpdateCategory(UpdateCategoryModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
         #endregion
     }
 }

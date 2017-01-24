@@ -148,10 +148,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Scehdule
         /// <param name="request"></param>
         /// <returns></returns>
         [Route("{id:guid}/editsigningoptions")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("details","schedule")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         public ActionResult EditSigningOptions(EditSigningOptionsModel request)
         {
-            return this.View();
+            return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         #endregion

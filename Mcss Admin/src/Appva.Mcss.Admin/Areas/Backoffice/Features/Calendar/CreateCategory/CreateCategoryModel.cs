@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using System;
@@ -31,14 +32,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// </summary>
         public readonly List<SelectListItem> Colors = new List<SelectListItem>()
         {
-            new SelectListItem { Text = "Blå", Value = "#5d5d5d" },
-            new SelectListItem { Text = "Grön", Value = "#1ed288" },
-            new SelectListItem { Text = "Gul", Value = "#e28a00" },
-            new SelectListItem { Text = "Orange", Value = "#b668ca" },
-            new SelectListItem { Text = "Rosa", Value = "#47597f" },
-            new SelectListItem { Text = "Svart", Value = "#e9d600" },
-            new SelectListItem { Text = "Röd", Value = "#0091ce" },
-            new SelectListItem { Text = "Turkos", Value = "#349d00" }
+            new SelectListItem { Text = Application.Common.Color.Blue.Name() , Value = Application.Common.Color.Blue.Hex() },
+            new SelectListItem { Text = Application.Common.Color.DarkBlue.Name() , Value = Application.Common.Color.DarkBlue.Hex() },
+            new SelectListItem { Text = Application.Common.Color.DarkGrey.Name() , Value = Application.Common.Color.DarkGrey.Hex() },
+            new SelectListItem { Text = Application.Common.Color.Green.Name() , Value = Application.Common.Color.Green.Hex() },
+            new SelectListItem { Text = Application.Common.Color.Orange.Name() , Value = Application.Common.Color.Orange.Hex() },
+            new SelectListItem { Text = Application.Common.Color.Purple.Name() , Value = Application.Common.Color.Purple.Hex() },
+            new SelectListItem { Text = Application.Common.Color.Turquoise.Name() , Value = Application.Common.Color.Turquoise.Hex() },
+            new SelectListItem { Text = Application.Common.Color.Yellow.Name() , Value = Application.Common.Color.Yellow.Hex() }
         };
 
         #endregion
@@ -100,10 +101,4 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
         #endregion
     }
-
-    /*public enum Colors
-    {
-        Blue = "#5d5d5d",
-        Red = "#d5d5d5"
-    }*/
 }

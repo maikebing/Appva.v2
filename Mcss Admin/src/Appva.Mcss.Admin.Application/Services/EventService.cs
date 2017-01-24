@@ -382,13 +382,13 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<ScheduleSettings> GetCategories(bool forceGetAllCategories = false)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
-            var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
             var categories = this.context.QueryOver<ScheduleSettings>()
                 .Where(x => x.ScheduleType == ScheduleType.Calendar)
                 .And(x => x.IsActive);
 
             if (!forceGetAllCategories) 
             {
+                var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
                 categories.WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
             }
             

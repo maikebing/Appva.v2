@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -386,6 +387,15 @@
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Delete\DeleteOrganizationalUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Delete\DeleteOrganizationalUnitPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Delete\DeleteOrganizationalUnitModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Update\UpdateOrganizationalUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Update\UpdateOrganizationalUnitModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Update\UpdateOrganizationalUnitPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitPublisher.cs" />
@@ -413,6 +423,9 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateSchedulePublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\List\ListOrganizationHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\List\ListOrganizationModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\OrganizationController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
@@ -815,12 +828,15 @@
     <Content Include="Assets\i\btn-lb-close.png" />
     <Content Include="Assets\i\bubble-tip-left.png" />
     <Content Include="Assets\i\bullet-action.png" />
+    <Content Include="Assets\i\bullet-add.png" />
+    <Content Include="Assets\i\bullet-delete.png" />
     <Content Include="Assets\i\ce-logo.png" />
     <Content Include="Assets\i\clock.png" />
     <Content Include="Assets\i\clock_red.png" />
     <Content Include="Assets\i\clock_stop.png" />
     <Content Include="Assets\i\dayslot-hover.png" />
     <Content Include="Assets\i\dayslot-unsel.png" />
+    <Content Include="Assets\i\dot-grey.png" />
     <Content Include="Assets\i\icn-change-password.png" />
     <Content Include="Assets\i\icn-dualstaffing.png" />
     <Content Include="Assets\i\icn-logout.png" />
@@ -890,6 +906,7 @@
     <Content Include="Assets\i\ipad-nextarrow.png" />
     <Content Include="Assets\i\ipad-now.png" />
     <Content Include="Assets\i\ipad-toggledarrow.png" />
+    <Content Include="Assets\i\line-grey-h.png" />
     <Content Include="Assets\i\list-arrow.png" />
     <Content Include="Assets\i\logo-about.png" />
     <Content Include="Assets\i\logo.png" />
@@ -1300,6 +1317,9 @@
     <Content Include="Areas\Area51\Features\Sequence\ListCorruptSequences\ListCorruptSequences.cshtml" />
     <Content Include="Areas\Area51\Features\Account\ListDuplicates\ListDuplicates.cshtml" />
     <Content Include="Areas\Backoffice\Features\Delegation\Settings\Settings.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Organization\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Organization\Create\Create.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Organization\Update\Update.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\Update\Update.cshtml" />

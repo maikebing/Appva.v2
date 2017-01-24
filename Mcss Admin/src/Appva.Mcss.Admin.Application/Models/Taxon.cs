@@ -103,6 +103,14 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="Name"></param>
         /// <param name="description"></param>
         void Update(string name, string description);
+
+        /// <summary>
+        /// Updates the taxon
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="description"></param>
+        /// <param name="sort"></param>
+        void Update(string name, string description, int sort);
     }
 
     /// <summary>
@@ -218,6 +226,13 @@ namespace Appva.Mcss.Admin.Application.Models
         {
             this.Name        = name;
             this.Description = description;
+        }
+
+        public void Update(string name, string description, int sort)
+        {
+            this.Name = name;
+            this.Description = description;
+            this.Sort = sort;
         }
 
         #endregion

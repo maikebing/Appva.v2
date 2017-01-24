@@ -16,20 +16,73 @@ namespace Appva.Mcss.Admin.Application.Common
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Predefined colors for MCSS
     /// </summary>
     public enum Color
     {
-        Blue, DarkGrey, 
+        Blue, DarkGrey, Orange, Purple, DarkBlue, Yellow, Green, Turquoise
     }
+    
+    public static class ColorExtensions {
 
-    new SelectListItem { Text = "Mörkgrå", Value = "#5d5d5d" },
-            new SelectListItem { Text = "Turkos", Value = "#1ed288" },
-            new SelectListItem { Text = "Orange", Value = "#e28a00" },
-            new SelectListItem { Text = "Lila", Value = "#b668ca" },
-            new SelectListItem { Text = "Mörkblå", Value = "#47597f" },
-            new SelectListItem { Text = "Gul", Value = "#e9d600" },
-            new SelectListItem { Text = "Blå", Value = "#0091ce" },
-            new SelectListItem { Text = "Grön", Value = "#349d00" }
+        /// <summary>
+        /// The readable name of a color
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns>Readable name </returns>
+        public static string Name(this Color color)
+        {
+            switch (color) {
+                case Color.Blue:
+                    return "Blå";
+                case Color.DarkBlue:
+                    return "Mörkblå";
+                case Color.DarkGrey:
+                    return "Mörkgrå";
+                case Color.Green:
+                    return "Grön";
+                case Color.Orange:
+                    return "Orange";
+                case Color.Purple:
+                    return "Lila";
+                case Color.Turquoise:
+                    return "Turkos";
+                case Color.Yellow:
+                    return "Gul";
+                default:
+                    return "Transparent";
+            }
+        }
+
+        /// <summary>
+        /// The hex-representation of a color
+        /// </summary>
+        /// <param name="color">The <see cref="Color"/></param>
+        /// <returns>The hex-color as a string including #</returns>
+        public static string Hex(this Color color)
+        {
+            switch (color) {
+                case Color.Blue:
+                    return "#0091ce";
+                case Color.DarkBlue:
+                    return "#47597f";
+                case Color.DarkGrey:
+                    return "#5d5d5d";
+                case Color.Green:
+                    return "#349d00";
+                case Color.Orange:
+                    return "#e28a00";
+                case Color.Purple:
+                    return "#b668ca";
+                case Color.Turquoise:
+                    return "#1ed288";
+                case Color.Yellow:
+                    return "#e9d600";
+                default:
+                    return "Transparent";
+            }
+        }
+
+    }
 }
 

@@ -151,6 +151,7 @@
     <Compile Include="Auditing\HttpContextBaseExtensions.cs" />
     <Compile Include="Caching\TenantAwareMemoryCache.cs" />
     <Compile Include="Common\CacheUtils.cs" />
+    <Compile Include="Common\Color.cs" />
     <Compile Include="Common\EncryptionUtils.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
@@ -161,9 +162,11 @@
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Common\Taxons.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
+    <Compile Include="Models\CalendarCategory.cs" />
     <Compile Include="Models\CalendarDay.cs" />
     <Compile Include="Models\CalendarTask.cs" />
     <Compile Include="Models\CalendarWeek.cs" />
+    <Compile Include="Models\ConfirmDeviationMessage.cs" />
     <Compile Include="Models\DelegationCategoryModel.cs" />
     <Compile Include="Models\DelegationViewModel.cs" />
     <Compile Include="Models\InventoryAmountListModel.cs" />
@@ -176,6 +179,7 @@
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDataSegment.cs" />
     <Compile Include="Models\ReportSearch.cs" />
+    <Compile Include="Models\ScheduleSettings\ConfirmDeviationMessage.cs" />
     <Compile Include="Models\SignatureModel.cs" />
     <Compile Include="Models\SynchronizationEmailData.cs" />
     <Compile Include="Models\Taxa.cs" />

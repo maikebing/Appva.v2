@@ -9,7 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     #region Imports.
 
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Shared.Model;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
     using System;

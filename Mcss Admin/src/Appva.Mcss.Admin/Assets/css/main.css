@@ -172,6 +172,12 @@ input,textarea,select {font-size:1em;}
     border-radius: 3px;
 }
 
+.org-hierarchy .ctrl .title {
+    background: url(../i/btn-edit.png) no-repeat 100% 0;
+    padding-right:30px;
+    background-size:27px;
+}
+
 
 /* GLOBAL CLASSES
 ============================================================================================================================ */

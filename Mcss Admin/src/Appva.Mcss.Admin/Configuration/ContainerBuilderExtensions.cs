@@ -43,6 +43,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Owin;
     using RazorEngine.Configuration;
     using Appva.Core.Messaging.RazorMail;
+    using Appva.Mvc.Localization;
 
     #endregion
 
@@ -248,6 +249,19 @@ namespace Appva.Mcss.Admin.Configuration
         {
             builder.RegisterAssemblyTypes(typeof(IService).Assembly).Where(x => x.GetInterfaces()
                 .Any(y => y.IsAssignableFrom(typeof(IService)))).AsImplementedInterfaces().InstancePerRequest();
+        }
+
+        /// <summary>
+        /// Registers localization managers
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/</param>
+        public static void RegisterLocalization(this ContainerBuilder builder)
+        {
+            var localizer = new ResourceManagerStringLocalizerFactory().Create(typeof(Resources.Language));
+            builder.Register(x => localizer).As<IStringLocalizer>().SingleInstance();
+            builder.RegisterType<HtmlLocalizer>().As<IHtmlLocalizer>().SingleInstance();
+            builder.RegisterType<ViewLocalizer>().As<IViewLocalizer>().InstancePerRequest();
+            builder.RegisterSource(new ViewRegistrationSource());
         }
     }
 }

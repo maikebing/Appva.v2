@@ -1,29 +1,29 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
 @model ListAlertModel
 @{
-    SetTitle("Larm");
+    SetTitle(Localizer["Larm"].ToString());
 }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
-    <h1>Larm</h1>
+    <h1>@Localizer["Larm"]</h1>
     @using (Html.Get("List", "Alert", new { id = Model.Patient.Id }, null)) 
     {
         <p class="filter">
-            <strong>Tid:</strong>
-            @Html.DropDownList("year", Model.Years, "År")
-            @Html.DropDownList("month", Model.Months, "Månad")
-            @Html.Submit("Visa")
+            <strong>@Localizer["Tid_"]</strong>
+            @Html.DropDownList("year", Model.Years, Localizer["År"].ToString())
+            @Html.DropDownList("month", Model.Months, Localizer["Månad"].ToString())
+            @Html.Submit(Localizer["Visa"].ToString())
         </p>
     }
-    @Html.ActionLink(Permissions.Alert.HandleAll, "Kvittera alla larm", "HandleAll", "Alerts", new { Id = Model.Patient.Id, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "btn alarm-stop-all" })
+    @Html.ActionLink(Permissions.Alert.HandleAll, Localizer["Kvittera_alla_larm"].ToString(), "HandleAll", "Alerts", new { Id = Model.Patient.Id, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "btn alarm-stop-all" })
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
         @if (Model.TaskCurrentMap.Count() == 0) 
         {
             <div id="alarm-status">
-                <h2 class="ok">Inga pågående larm.</h2>
+                <h2 class="ok">@Localizer["Inga_pågående_larm"]</h2>
             </div>
         }
         else 
@@ -36,36 +36,36 @@
                         var day = string.Empty;
                         if (TimeOfDay.Key.Date == DateTime.Today) 
                         {
-                            day = "idag";
+                            day = Localizer["idag"].ToString();
                         }
                         else if (TimeOfDay.Key.Date == DateTime.Today.AddDays(-1)) 
                         {
-                            day = "igår";
+                            day = Localizer["igår"].ToString();
                         }
                         <div class="heading cf">
                             <h2>@schedule.Key.ScheduleSettings.Name kl @string.Format("{0:HH:mm}", TimeOfDay.Key) @day den @string.Format("{0:d MMMM yyyy}", TimeOfDay.Key)</h2>
                         </div>
                         <div class="body">
-                            <strong>Följande aktiviteter genomfördes inte i tid:</strong>
+                            <strong>@Localizer["Följande_aktiviteter_genomfördes_inte_i_tid_"]</strong>
                             <table>
                                 <thead>
                                     <tr>
-                                        <th scope="col">Aktivitet</th>
-                                        <th scope="col">Skulle genomföras</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Signerat av</th>
-                                        <th scope="col">Kvittera</th>
+                                        <th scope="col">@Localizer["Aktivitet"]</th>
+                                        <th scope="col">@Localizer["Skulle_genomföras"]</th>
+                                        <th scope="col">@Localizer["Status"]</th>
+                                        <th scope="col">@Localizer["Signerat_av"]</th>
+                                        <th scope="col">@Localizer["Kvittera"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var Item in Model.TaskCurrentMap[TimeOfDay.Key][schedule.Key]) 
+                                    @foreach (var Item in Model.TaskCurrentMap[TimeOfDay.Key][schedule.Key])
                                     {
                                         var interval = string.Empty;
-                                        if (Item.RangeInMinutesAfter == Item.RangeInMinutesBefore) 
+                                        if (Item.RangeInMinutesAfter == Item.RangeInMinutesBefore)
                                         {
                                             interval = string.Format("±{0}", Item.RangeInMinutesAfter);
                                         }
-                                        else 
+                                        else
                                         {
                                             interval = string.Format("-{0} +{1}", Item.RangeInMinutesBefore, Item.RangeInMinutesAfter);
                                         }
@@ -73,13 +73,13 @@
                                             <td>@Item.Sequence.Name</td>
                                             <td>kl @string.Format("{0:HH:mm}", Item.Scheduled) @interval min</td>
                                             <td>
-                                                @if (! Item.IsCompleted) 
+                                                @if (! Item.IsCompleted)
                                                 {
-                                                    @:Har ej genomförts
+                                                    @Localizer["Har_ej_genomförts"]
                                                 }
                                                 else {
                                                     @:Genomfördes för sent (@TimeSpanDifference.ToReadableText(Item.Scheduled.AddMinutes(Item.RangeInMinutesAfter), Item.CompletedDate.GetValueOrDefault()))
-                                                    @(string.Format("{0:d MMMM yyyy}, kl {0:HH:mm} med status '{1}'", Item.CompletedDate.GetValueOrDefault(), Item.StatusTaxon != null ? Item.StatusTaxon.Name : ""))
+                                                    @(string.Format(Localizer["_0date___0time__med_status__1_"].ToString(), Item.CompletedDate.GetValueOrDefault(), Item.StatusTaxon != null ? Item.StatusTaxon.Name : ""))
                                                 }
                                             </td>
                                             <td>
@@ -96,7 +96,7 @@
                                                 }
                                             </td>
                                             <td>
-                                                @Html.ActionLink(Permissions.Alert.Handle, "Kvittera larm", "Handle", "Alerts", new { Id = Model.Patient.Id, TaskId = Item.Id, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "btn alarm-stop" })
+                                                @Html.ActionLink(Permissions.Alert.Handle, Localizer["Kvittera_larm"].ToString(), "Handle", "Alerts", new { Id = Model.Patient.Id, TaskId = Item.Id, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "btn alarm-stop" })
                                             </td>
                                         </tr>
                                     }
@@ -110,29 +110,29 @@
         @if (Model.TaskEarlierMap.Count() > 0) 
         {
             <div class="h cf">
-                <h2>Kvitterade larm</h2>
+                <h2>@Localizer["Kvitterade_larm"]</h2>
             </div>
             <div id="signed-events" class="alarm-list">
                 <table>
                     <thead>
                         <tr class="head">
-                            <th scope="col">Dag</th>
-                            <th scope="col">Tid</th>
-                            <th scope="col">Ansvarig ssk</th>
-                            <th scope="col">Hanterat av</th>
+                            <th scope="col">@Localizer["Dag"]</th>
+                            <th scope="col">@Localizer["Tid"]</th>
+                            <th scope="col">@Localizer["Ansvarig_ssk"]</th>
+                            <th scope="col">@Localizer["Hanterat_av"]</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var TimeOfDay in Model.TaskEarlierMap.OrderByDescending(x => x.Key)) 
+                        @foreach (var TimeOfDay in Model.TaskEarlierMap.OrderByDescending(x => x.Key))
                         {
                             bool Processed = true;
-                            foreach (var schedule in Model.TaskEarlierMap[TimeOfDay.Key]) 
+                            foreach (var schedule in Model.TaskEarlierMap[TimeOfDay.Key])
                             {
                                 var quittencedBy = new List<string>();
-                                foreach (var Item in Model.TaskEarlierMap[TimeOfDay.Key][schedule.Key]) 
+                                foreach (var Item in Model.TaskEarlierMap[TimeOfDay.Key][schedule.Key])
                                 {
-                                    if (! Item.DelayHandled) 
+                                    if (! Item.DelayHandled)
                                     {
                                         Processed = false;
                                     }
@@ -141,47 +141,47 @@
                                     }
                                 }
                                 var scheduledDate = string.Format("{0:yyyy-MM-dd}", TimeOfDay.Key);
-                                if (TimeOfDay.Key.Date == DateTime.Today) 
+                                if (TimeOfDay.Key.Date == DateTime.Today)
                                 {
-                                    scheduledDate = "Idag";
+                                    scheduledDate = Localizer["Idag"].ToString();
                                 }
-                                else if (TimeOfDay.Key.Date == DateTime.Today.AddDays(-1)) 
+                                else if (TimeOfDay.Key.Date == DateTime.Today.AddDays(-1))
                                 {
-                                    scheduledDate = "Igår";
+                                    scheduledDate = Localizer["Igår"].ToString();
                                 }
                                 <tr>
                                     <td>@scheduledDate</td>
                                     <td>kl @string.Format("{0:HH:mm}", TimeOfDay.Key)</td>
                                     <td></td>
                                     <td>@string.Join(", ", quittencedBy.ToArray())</td>
-                                    <td><a class="btn" href="#">Visa</a></td>
+                                    <td><a class="btn" href="#">@Localizer["Visa"]</a></td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="view">
                                         <div class="alarm-view">
                                             <div class="heading cf">
-                                                @if (Processed) 
+                                                @if (Processed)
                                                 {
                                                     <h2>
-                                                        <strong>Åtgärdat larm:</strong> @schedule.Key.ScheduleSettings.Name kl
+                                                        <strong>@Localizer["Åtgärdat_larm_"]</strong> @schedule.Key.ScheduleSettings.Name kl
                                                         @string.Format("{0:HH:mm}", TimeOfDay.Key) den
                                                         @string.Format("{0:d MMMM yyyy}", TimeOfDay.Key)
                                                     </h2>
                                                 }
                                                 else {
-                                                    <h2><strong>Ej åtgärdat larm</strong></h2>
+                                                    <h2><strong>@Localizer["Ej_åtgärdat_larm_"]</strong></h2>
                                                 }
                                             </div>
                                             <div class="body">
-                                                <strong>Följande aktiviteter genomfördes inte i tid:</strong>
+                                                <strong>@Localizer["Följande_aktiviteter_genomfördes_inte_i_tid_"]</strong>
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col">Aktivitet</th>
-                                                            <th scope="col">Skulle genomföras</th>
-                                                            <th scope="col">Status</th>
-                                                            <th scope="col">Signerat av</th>
-                                                            <th scope="col">Hanterat av</th>
+                                                            <th scope="col">@Localizer["Aktivitet"]</th>
+                                                            <th scope="col">@Localizer["Skulle_genomföras"]</th>
+                                                            <th scope="col">@Localizer["Status"]</th>
+                                                            <th scope="col">@Localizer["Signerat_av"]</th>
+                                                            <th scope="col">@Localizer["Hanterat_av"]</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

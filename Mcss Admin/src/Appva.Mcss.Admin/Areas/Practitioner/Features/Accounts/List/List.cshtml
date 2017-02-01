@@ -1,11 +1,11 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
 @model ListAccountModel
 @{
-    SetTitle("Medarbetare"); 
+    SetTitle(Localizer["Medarbetare"].ToString()); 
 }
 <div id="subheader" class="cf">
 	<h1>Medarbetare</h1>
-	@Html.ActionLink(Permissions.Practitioner.Create, "Ny medarbetare", "Create", "Accounts", null, new { @class = "btn lb-link" })
+	@Html.ActionLink(Permissions.Practitioner.Create, Localizer["Ny_medarbetare"].ToString(), "Create", "Accounts", null, new { @class = "btn lb-link" })
 	@Html.Partial("_AccountSearch")
 </div>
 <div class="col-wrap cols-2-1 cf">
@@ -16,30 +16,30 @@
                 <div class="filter-row">
                     <strong>Visa:</strong>
                     <ul>
-                        <li>@Html.ActionLink("Alla", "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false) && Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) && !Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false) && !Model.IsFilterByIsSynchronizedEnabled.HasValue) ? "div sel" : "div" })</li>
-                        <li>@Html.ActionLink("Mina delegeringar", "List", new { FilterByCreatedBy = true }, new { @class = (Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
-                        <li>@Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = !Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) ? "div sel" : "div" })</li>
-                        <li>@Html.ActionLink("Inaktiverade", "List", new { isPaused = true }, new { @class = (Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
+                        <li>@Html.ActionLink(Localizer["Alla"].ToString(), "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false) && Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) && !Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false) && !Model.IsFilterByIsSynchronizedEnabled.HasValue) ? "div sel" : "div" })</li>
+                        <li>@Html.ActionLink(Localizer["Mina_delegeringar"].ToString(), "List", new { FilterByCreatedBy = true }, new { @class = (Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
+                        <li>@Html.ActionLink(Localizer["Borttagna"].ToString(), "List", new { isActive = false }, new { @class = !Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) ? "div sel" : "div" })</li>
+                        <li>@Html.ActionLink(Localizer["Inaktiverade"].ToString(), "List", new { isPaused = true }, new { @class = (Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
                         @if(Html.HasPermissionFor(Permissions.Synchronization.Read))
                         {
-                            <li>@Html.ActionLink("Synkroniserade", "List", new { isSynchronized = true }, new { @class = Model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault(false) ? "div sel" : "div" })</li>
-                            <li>@Html.ActionLink("Ej synkroniserade", "List", new { isSynchronized = false }, new { @class = (!Model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault(true)) ? "div sel" : "div" })</li>
+                            <li>@Html.ActionLink(Localizer["Synkroniserade"].ToString(), "List", new { isSynchronized = true }, new { @class = Model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault(false) ? "div sel" : "div" })</li>
+                            <li>@Html.ActionLink(Localizer["Ej_synkroniserade"].ToString(), "List", new { isSynchronized = false }, new { @class = (!Model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault(true)) ? "div sel" : "div" })</li>
                         }
                     </ul>
                 </div>
 				if (Model.Delegations.Count > 0)
 				{
 					<div class="filter-row">
-						<strong>Med delegering</strong>
-						@Html.DropDownListFor(x => x.DelegationFilterId, new SelectList(Model.Delegations, "Value", "Text"), "Alla")
+						<strong>@Localizer["Med_delegering_"]</strong>
+						@Html.DropDownListFor(x => x.DelegationFilterId, new SelectList(Model.Delegations, "Value", "Text"), Localizer["Alla"].ToString())
 					</div>
 				}
 				<div class="filter-row">
-					<strong>Med titel:</strong>
-					@Html.DropDownListFor(x => x.RoleFilterId, new SelectList(Model.Roles, "Value", "Text"), "Alla")
+					<strong>@Localizer["Med_titel_"]</strong>
+					@Html.DropDownListFor(x => x.RoleFilterId, new SelectList(Model.Roles, "Value", "Text"), Localizer["Alla"].ToString())
 				</div>
 				<div class="filter-row">
-					@Html.Submit("Visa")
+					@Html.Submit(Localizer["Visa"].ToString())
 				</div>
 		 }
 		</div>
@@ -53,19 +53,19 @@
                     <li class="cf @((item.HasExpiringDelegation) ? "update" : "")">
                         @if (item.IsActive)
                         {
-                            @Html.ActionLink(Permissions.Practitioner.Inactivate, "Ta bort", "Inactivate", "Accounts", new { Id = item.Id }, new { @class = "btn btn-del" })
+                            @Html.ActionLink(Permissions.Practitioner.Inactivate, Localizer["Ta_bort"].ToString(), "Inactivate", "Accounts", new { Id = item.Id }, new { @class = "btn btn-del" })
                         }
                         @if (!item.IsActive && !item.IsPaused)
                         {
-                            @Html.ActionLink(Permissions.Practitioner.Reactivate, "Aktivera", "Reactivate", "Accounts", new { Id = item.Id }, new { @class = "btn" })
+                            @Html.ActionLink(Permissions.Practitioner.Reactivate, Localizer["Aktivera"].ToString(), "Reactivate", "Accounts", new { Id = item.Id }, new { @class = "btn" })
                         }
                         @if (!item.IsPaused && item.IsActive)
                         {
-                            @Html.ActionLink(Permissions.Practitioner.Pause, "Inaktivera", "Pause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
+                            @Html.ActionLink(Permissions.Practitioner.Pause, Localizer["Inaktivera"].ToString(), "Pause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
                         }
                         @if (item.IsPaused)
                         {
-                            @Html.ActionLink(Permissions.Practitioner.Resume, "Aktivera", "UnPause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
+                            @Html.ActionLink(Permissions.Practitioner.Resume, Localizer["Aktivera"].ToString(), "UnPause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
                         }
                         <div class="h">
                             <h2>
@@ -83,18 +83,18 @@
                             </span>
                         </div>
                         <div class="i">
-                            <strong>Titel:</strong>
+                            <strong>@Localizer["Titel_"]</strong>
                             <span>@item.Title</span>
                         </div>
                         <div class="i">
-                            <strong>Chef:</strong>
+                            <strong>@Localizer["Chef_"]</strong>
                             <span>@*item.Superior*@</span>
                         </div>
                         @if (Html.HasPermissionFor(Permissions.Synchronization.Read))
                         {
                             <div class="i">
-                                <strong>Synkroniserad:</strong>
-                                <span>@(item.IsSynchronized && item.LastSynchronized.HasValue ? item.LastSynchronized.GetValueOrDefault().ToString() : "Nej") </span>
+                                <strong>@Localizer["Synkroniserad_"]</strong>
+                                <span>@(item.IsSynchronized && item.LastSynchronized.HasValue ? item.LastSynchronized.GetValueOrDefault().ToString() : Localizer["Nej"].ToString()) </span>
                             </div>
                         }
                     </li>

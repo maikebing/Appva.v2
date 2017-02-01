@@ -2,19 +2,19 @@
 @model Appva.Mcss.Admin.Areas.Models.CalendarOverviewModel
 <div>
     <div class="heading cf">
-        <h2>Kalender</h2>
+        <h2>@Localizer["Kalender"]</h2>
     </div>
     <div class="panel-c">
         @if (Model.OngoingEvents.IsNotNull() && Model.OngoingEvents.Count > 0)
         {
-            <h3>Pågående</h3>
+            <h3>@Localizer["Pågående"]</h3>
             <table class="cal-overview">
                 <thead>
                     <tr>
-                        <th scope="col">Boende</th>
-                        <th scope="col">Aktivitet</th>
-                        <th scope="col">Dagar kvar</th>
-                        <th scope="col" class="check">Kvittera</th>
+                        <th scope="col">@Localizer["Boende"]</th>
+                        <th scope="col">@Localizer["Aktivitet"]</th>
+                        <th scope="col">@Localizer["Dagar_kvar"]</th>
+                        <th scope="col" class="check">@Localizer["Kvittera"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,14 +27,14 @@
         }
         @if (Model.CommingEvents.IsNotNull() && Model.CommingEvents.Count > 0)
         {
-            <h3>Kommande</h3>
+            <h3>@Localizer["Kommande"]</h3>
             <table class="cal-overview">
                 <thead>
                     <tr>
-                        <th scope="col">Boende</th>
-                        <th scope="col">Aktivitet</th>
-                        <th scope="col">Startar om</th>
-                        <th scope="col" class="check">Kvittera</th>
+                        <th scope="col">@Localizer["Boende"]</th>
+                        <th scope="col">@Localizer["Aktivitet"]</th>
+                        <th scope="col">@Localizer["Startar_om"]</th>
+                        <th scope="col" class="check">@Localizer["Kvittera"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +49,7 @@
         (Model.CommingEvents.IsNull() || Model.CommingEvents.Count == 0))
         {
             <div class="no-data">
-                <h3>Inga kommande händelser</h3>
+                <h3>@Localizer["Inga_kommande_händelser"]</h3>
             </div>
         }
     </div>

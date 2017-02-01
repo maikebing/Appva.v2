@@ -4,32 +4,35 @@
 <div class="people people-item cf">
     @if (Model.Active) 
     {
-        @Html.ActionLink(Permissions.Practitioner.Inactivate, "Ta bort", "Inactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn btn-del" })
+        @Html.ActionLink(Permissions.Practitioner.Inactivate, Localizer["Ta_bort"].ToString(), "Inactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn btn-del" })
 	} 
 	@if (! Model.Active && ! Model.IsPaused) 
     {
-        @Html.ActionLink(Permissions.Practitioner.Reactivate, "Aktivera", "Reactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
+        @Html.ActionLink(Permissions.Practitioner.Reactivate, Localizer["Aktivera"].ToString(), "Reactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
 	}
 	@if (! Model.IsPaused && Model.Active)
     {
-        @Html.ActionLink(Permissions.Practitioner.Pause, "Inaktivera", "Pause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
+        @Html.ActionLink(Permissions.Practitioner.Pause, Localizer["Inaktivera"].ToString(), "Pause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
 	}
 	@if (Model.IsPaused ) 
     {
-        @Html.ActionLink(Permissions.Practitioner.Resume, "Aktivera", "UnPause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
+        @Html.ActionLink(Permissions.Practitioner.Resume, Localizer["Aktivera"].ToString(), "UnPause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
 	}
-    @Html.ActionLink(Permissions.Practitioner.Update, "Ändra", "Update", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
-    @Html.ActionLink(Permissions.Practitioner.UpdateRoles, "Ändra roller och behörigheter", "UpdateRoles", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Practitioner.Update, Localizer["Ändra"].ToString(), "Update", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Practitioner.UpdateRoles, Localizer["Ändra_roller_och_behörigheter"].ToString(), "UpdateRoles", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
 	<div class="h">
     	<h2>@Model.FullName</h2>
     	<span class="pnr">@Model.UniqueIdentifier</span>
     </div>
     <div class="i">
-    	<strong>Titel:</strong>
+    	<strong>@Localizer["Titel_"]</strong>
     	<span>@Model.Title</span>
     </div>
-    <div class="i">
-    	<strong>Chef:</strong>
-		<span>@Model.Superior</span>
-    </div>
+    @if (Model.Superior != null && Model.Superior != "")
+    {
+        <div class="i">
+            <strong>@Localizer["Chef_"]</strong>
+            <span>@Model.Superior</span>
+        </div>
+    }
 </div>

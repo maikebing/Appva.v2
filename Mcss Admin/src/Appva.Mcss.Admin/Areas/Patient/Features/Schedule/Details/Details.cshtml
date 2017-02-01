@@ -2,22 +2,22 @@
 @model Appva.Mcss.Web.ViewModels.ScheduleDetailsViewModel
 
 @{
-    ViewBag.Title = "Ordinationer";
+    ViewBag.Title = Localizer["Ordinationer"].ToString();
     var intervalMap = new Dictionary<int, string>();
-    intervalMap.Add(0, "Annan");
-    intervalMap.Add(1, "Varje dag");
-    intervalMap.Add(2, "Varannan dag");
-    intervalMap.Add(3, "Var tredje dag");
-    intervalMap.Add(4, "Var fjärde dag");
-    intervalMap.Add(5, "Var femte dag");
-    intervalMap.Add(6, "Var sjätte dag");
-    intervalMap.Add(7, "Varje vecka");
-    intervalMap.Add(14, "Varannan vecka");
-    intervalMap.Add(21, "Var tredje vecka");
-    intervalMap.Add(28, "Var fjärde vecka");
-    intervalMap.Add(35, "Var femte vecka");
-    intervalMap.Add(56, "Var åttonde vecka");
-    intervalMap.Add(84, "Var tolfte vecka");
+    intervalMap.Add(0, Localizer["Annan"].ToString());
+    intervalMap.Add(1, Localizer["Varje_dag"].ToString());
+    intervalMap.Add(2, Localizer["Varannan_dag"].ToString());
+    intervalMap.Add(3, Localizer["Var_tredje_dag"].ToString());
+    intervalMap.Add(4, Localizer["Var_fjärde_dag"].ToString());
+    intervalMap.Add(5, Localizer["Var_femte_dag"].ToString());
+    intervalMap.Add(6, Localizer["Var_sjätte_dag"].ToString());
+    intervalMap.Add(7, Localizer["Varje_vecka"].ToString());
+    intervalMap.Add(14, Localizer["Varannan_vecka"].ToString());
+    intervalMap.Add(21, Localizer["Var_tredje_vecka"].ToString());
+    intervalMap.Add(28, Localizer["Var_fjärde_vecka"].ToString());
+    intervalMap.Add(35, Localizer["Var_femte_vecka"].ToString());
+    intervalMap.Add(56, Localizer["Var_åttonde_vecka"].ToString());
+    intervalMap.Add(84, Localizer["Var_tolfte_vecka"].ToString());
     List<int> times = new List<int>();
     foreach (var item in Model.ScheduleItems) 
     {
@@ -47,8 +47,8 @@
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
 	<h1>Signeringslistor</h1>
-    @Html.ActionLink(Permissions.Sequence.Print, "Skapa pdf", "PrintPopUp", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })
-    @Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Sequence.Print, Localizer["Skapa_pdf"].ToString(), "PrintPopUp", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })
+    @Html.ActionLink(Permissions.Sequence.Create,  Localizer["Lägg_till"].ToString(), "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 </div>
 
 <div id="content" class="cf">
@@ -59,28 +59,28 @@
 			
             <div class="h cf">
 				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.UpdatedAt)</h2>
-				@Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
+				@Html.ActionLink(Localizer["Stäng_listan"].ToString(), "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
 			</div>
 			
             <ul class="nav cf">
                 
-				@Html.MenuLink("Insatser", "Details", "Schedule", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
+				@Html.MenuLink(Localizer["Insatser"].ToString(), "Details", "Schedule", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
                 @if (Model.Schedule.ScheduleSettings.HasSetupDrugsPanel && Html.HasPermissionFor(Permissions.Prepare.Read))
                 { 
-                    @Html.MenuLink("Iordningsställande", "Schema", "Prepare", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
+                    @Html.MenuLink(Localizer["Iordningsställande"].ToString(), "Schema", "Prepare", false, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
                 }
 			</ul>
 			<table>
 				<thead>
 					<tr class="head">
-						<th scope="col">Att ge</th>
-						<th scope="col">Frekvens</th>
-						<th scope="col">Ges inom</th>
-						<th scope="col" colspan="@times.Count">Tider</th>
-						<th scope="col" colspan="@((Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read)) ? 1 : 2)">Instruktion</th>
+						<th scope="col">@Localizer["Att_ge"]</th>
+						<th scope="col">@Localizer["Frekvens"]</th>
+						<th scope="col">@Localizer["inom"]</th>
+						<th scope="col" colspan="@times.Count">@Localizer["Tider"]</th>
+						<th scope="col" colspan="@((Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read)) ? 1 : 2)">@Localizer["Instruktion"]</th>
                         @if (Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read))
                         {
-                            <th colspan="3" scope="col">Saldo</th>
+                            <th colspan="3" scope="col">@Localizer["Saldo"]</th>
                         }
 					</tr>
 					<tr>
@@ -109,7 +109,7 @@
                         <td class="freq">
                             @if (item.OnNeedBasis)
                             {
-                                @:Vid behov
+                                @Localizer["Vid_behov"]
                             }
                             else
                             {
@@ -123,8 +123,8 @@
                             }
                             else
                             {
-                                <span>@item.RangeInMinutesBefore min innan</span>
-                                <span>@item.RangeInMinutesAfter min efter</span>
+                                <span>@item.RangeInMinutesBefore @Localizer["min_innan"]</span>
+                                <span>@item.RangeInMinutesAfter @Localizer["min_efter"]</span>
                             }
                         </td>
                         @{
@@ -168,7 +168,7 @@
                                 <span class="date">
                                     @Html.ActionLink(Permissions.Inventory.Read, item.Inventory.Description, "list", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id }, new { })
                                 </span>
-                                Saldo: @item.Inventory.CurrentLevel
+                                @Localizer["Saldo"]: @item.Inventory.CurrentLevel
                             </td>
                         }
                         @if (item.Inventory != null && Html.HasPermissionFor(Permissions.Inventory.Read))
@@ -176,33 +176,33 @@
                             if (item.Inventory.IsActive)
                             {
                                 <td class="nedit">
-                                    @Html.ActionLink(Permissions.Inventory.Create, "Tillför mängd", "Add", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
-                                    @Html.ActionLink(Permissions.Inventory.Create, "Uttag", "Withdraw", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                    @Html.ActionLink(Permissions.Inventory.Create, Localizer["Tillför_mängd"].ToString(), "Add", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                    @Html.ActionLink(Permissions.Inventory.Create, Localizer["Uttag"].ToString(), "Withdraw", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
                                     @if (Model.Schedule.ScheduleSettings.CountInventory)
                                     {
-                                        @Html.ActionLink("Kontrollräkna", "Recount", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
+                                        @Html.ActionLink(Localizer["Kontrollräkna"].ToString(), "Recount", "Inventory", new { Id = Model.Patient.Id, InventoryId = item.Inventory.Id, ReturnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "addamount lb-link" })
                                     }
                                 </td>
                             }
                             else
                             {
                                 <td class="inactive-inventory">
-                                    <h3>Observera</h3>
-                                    <p>Insatsen är kopplad till ett borttaget saldo</p>
+                                    <h3>@Localizer["Observera"]</h3>
+                                    <p>@Localizer["Insatsen_är_kopplad_till_ett_borttaget_ saldo"]</p>
                                 </td>
                             }
 
                         }
                         <td class="edit">
-                            @Html.ActionLink(Permissions.Sequence.Update, "Ändra", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
-                            @Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                            @Html.ActionLink(Permissions.Sequence.Update, Localizer["Ändra"].ToString(), "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                            @Html.ActionLink(Permissions.Sequence.Inactivate, Localizer["Ta_bort"].ToString(), "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })
                         </td>
                     </tr>
                 }
                 </tbody>
 			</table>
             <div id="add-sign" class="cf">
-				@Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+				@Html.ActionLink(Permissions.Sequence.Create, Localizer["Lägg_till"].ToString(), "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 			</div>
 		</div>
 	</div>

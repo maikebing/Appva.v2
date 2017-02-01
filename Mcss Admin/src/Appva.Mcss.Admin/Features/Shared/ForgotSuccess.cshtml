@@ -1,19 +1,19 @@
 ﻿@{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
-    SetTitle("Kontrollera din e-post");
+    SetTitle(Localizer["Kontrollera_din_e_post"].ToString());
     SetBodyCssClass("page-forgot-password");
 }
 <div class="hd">
-	Kontrollera din e-post
+    @Localizer["Kontrollera_din_e_post"]
 </div>
 <div class="hd org">
     <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
 	<span>@Tenant</span>
 </div>
 <div class="bd">
-    Vi har skickat ett e-post till @TempData["EmailAddress"]. Klicka på länken i e-post för att återställa ditt lösenord.
-    Om du inte hittar e-post, kontrollera andra platser där det kan hamnat, så som din mapp för skräppost/spam eller andra mappar.
+    @string.Format(Localizer["Vi_har_skickat_ett_e_post_till__0____Klicka_på_länken_i_e_post_för_att_återställa_ditt_lösenord"].ToString(), @TempData["EmailAddress"])
+    @Localizer["Om_du_inte_hittar_e_post__kontrollera_andra_platser_där_det_kan_hamnat_så_som_din_mapp_för_skräppost_spam_eller_andra_mappar"]
     <div class="hr"></div>
-	@Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn" })
-    @Html.ActionLink("Jag fick inte något e-postmeddelande", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
+	@Html.ActionLink(Localizer["Logga_in"].ToString(), "SignIn", "Authentication", null, new { @class = "btn" })
+    @Html.ActionLink(Localizer["Jag_fick_inte_något_e_postmeddelande"].ToString(), "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
 </div>

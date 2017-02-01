@@ -1,23 +1,23 @@
 ﻿@model Appva.Mcss.Admin.Areas.Models.UpdateInventoryModel
 @{
-    SetTitle("Ändra saldo");
+    SetTitle(Localizer["Ändra_saldo"].ToString());
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="InventoryCreateUpdate">
     @using (Html.Post(new { Id = Model.Id, Inventory = Model.Inventory }))
     {
-        <h3 class="section-title">Ändra</h3>
-        @Html.FormGroup(m => m.Name, "text medium").Label("Namn", new { @class = "col" }).TextBox().Validate().Build()
+        <h3 class="section-title">@Localizer["Ändra"]</h3>
+        @Html.FormGroup(m => m.Name, "text medium").Label(Localizer["Namn"].ToString(), new { @class = "col" }).TextBox().Validate().Build()
 
         <div class="row cf">
             <div class="select col">
                 @Html.LabelFor(m => m.Amounts)
-                @Html.DropDownListFor(m => m.Amounts, Model.AmountsList, "Välj enhet...", new { })
+                @Html.DropDownListFor(m => m.Amounts, Model.AmountsList, Localizer["Välj_enhet_"].ToString(), new { })
             </div>
         </div>
 
         <div class="input">
-            @Html.Submit("Spara")
-            @Html.Cancel("Avbryt")
+            @Html.Submit(Localizer["Spara"].ToString())
+            @Html.Cancel(Localizer["Avbryt"].ToString())
         </div>
     }
 </div>

@@ -2,25 +2,25 @@
 @using Appva.Mcss.Admin.Application.Common;
 <div>
 	<div class="heading cf">
-        <h2>Pågående insatser</h2>
+        <h2>@Localizer["Pågående_insatser"]</h2>
         <p class="filter">
-            @Html.ActionLink("Ej signerade (" + Model.CountNotSigned + ")", "Overview", new { status = "notsigned" }, new { @class = "div" + (Request["status"] == "notsigned" || Request["status"] == null ? " sel":"") })
-            @Html.ActionLink("Försenade (" + Model.CountAll + ")", "Overview", new { status = "all" }, new { @class = "div" + (Request["status"] == "all" ? " sel" : "") })
+            @Html.ActionLink(string.Format("{0} ({1})",Localizer["Pågående_insatser"],Model.CountNotSigned), "Overview", new { status = "notsigned" }, new { @class = "div" + (Request["status"] == "notsigned" || Request["status"] == null ? " sel":"") })
+            @Html.ActionLink(string.Format("{0} ({1})",Localizer["Försenade"],Model.CountAll), "Overview", new { status = "all" }, new { @class = "div" + (Request["status"] == "all" ? " sel" : "") })
         </p>
     </div>
 	<div class="panel-c">
 		@if (Model.Patients.Count == 0) {
             <div class="no-data">
-                <h3>Inga försenade insatser just nu</h3>
+                <h3>@Localizer["Inga_försenade_insatser_just_nu"]</h3>
             </div>
         } else {
             <table>
 		    	<thead>
 		    		<tr>
-		    			<th scope="col">Boende</th>
-		    			<th scope="col">Adress</th>
-		    			<th scope="col">Ansvarig</th>
-		    			<th scope="col">Larm</th>
+		    			<th scope="col">@Localizer["Boende"]</th>
+		    			<th scope="col">@Localizer["Adress"]</th>
+		    			<th scope="col">@Localizer["Ansvarig"]</th>
+		    			<th scope="col">@Localizer["Larm"]</th>
 		    		</tr>
 		    	</thead>
 		    	<tbody>
@@ -58,7 +58,7 @@
                         </td>
 		    			<td>@patient.Address</td>
 		    			<td>@patient.Overseeing</td>
-		    			<td>@Html.ActionLink(Permissions.Alert.Read, "Larm", "List", "Alerts", new { id = patient.Id }, new { @class = "larm" })</td>
+		    			<td>@Html.ActionLink(Permissions.Alert.Read, Localizer["Larm"].ToString(), "List", "Alerts", new { id = patient.Id }, new { @class = "larm" })</td>
 		    		</tr>
                     }
 		    	</tbody>

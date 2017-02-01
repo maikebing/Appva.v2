@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Security.Identity;
     using System.Linq;
     using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mvc.Localization;
 
     #endregion
 
@@ -65,6 +66,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IHtmlLocalizer"/>
+        /// </summary>
+        private readonly IHtmlLocalizer localizer;
+
         #endregion
 
         #region Constructor.
@@ -78,14 +84,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IIdentityService identityService,
             ITenantService tenantService, 
             ITaskService taskService,
-            IPersistenceContext persistence)
+            IPersistenceContext persistence,
+            IHtmlLocalizer localizer)
         {
-            this.auditing = auditing;
+            this.auditing       = auditing;
             this.accountService = accountService;
             this.identityService = identityService;
-            this.taskService = taskService;
-            this.tenantService = tenantService;
-            this.persistence = persistence;
+            this.taskService    = taskService;
+            this.tenantService  = tenantService;
+            this.persistence    = persistence;
+            this.localizer      = localizer;
         }
 
         #endregion
@@ -142,9 +150,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     Task = x.Name,
                     TaskCompletedOnDate = x.IsCompleted ? x.CompletedDate.Value.Date : x.UpdatedAt, //// FIXME: Its either completed or null.
-                    TaskCompletedOnTime = (x.Delayed && x.CompletedBy.IsNull()) ? "Ej given" : string.Format("{0} {1:HH:mm}", "kl", x.CompletedDate),
+                    TaskCompletedOnTime = (x.Delayed && x.CompletedBy.IsNull()) ? this.localizer["Ej_given"].ToString() : this.localizer["kl_{0:HH:mm}", x.CompletedDate].ToString(),
                     TaskScheduledOnDate = x.Scheduled.Date,
-                    TaskScheduledOnTime = string.Format("{0} {1:HH:mm}", "kl", x.Scheduled),
+                    TaskScheduledOnTime = this.localizer["kl_{0:HH:mm}", x.Scheduled].ToString(),
                     MinutesBefore = x.RangeInMinutesBefore,
                     MinutesAfter = x.RangeInMinutesAfter,
                     PatientFullName = x.Patient.FullName,
@@ -156,7 +164,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.tenantService.TryIdentifyTenant(out tenant);
             return new FileContentResult(bytes, "application/vnd.ms-excel")
             {
-                FileDownloadName = string.Format("Rapport-{0}-{1}.xlsx", tenant.Name.Replace(" ", "-"), DateTime.Now.ToFileTimeUtc())
+                FileDownloadName = this.localizer["Rapport-{0}-{1}.xlsx", tenant.Name.Replace(" ", "-"), DateTime.Now.ToFileTimeUtc()].ToString()
             };
         }
 
@@ -176,7 +184,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 if (task.Delayed && task.StatusTaxon.Weight < 2)
                 {
-                    return string.Format("{0} för sent", task.StatusTaxon.Name);
+                    return this.localizer["{0}_för_sent", task.StatusTaxon.Name].ToString();
                 }
                 else
                 {
@@ -187,37 +195,37 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 if (task.Delayed)
                 {
-                    return "Given för sent";
+                    return this.localizer["Given_för_sent"].ToString();
                 }
-                return "OK";
+                return this.localizer["OK"].ToString();
             }
             else if (task.Status.Equals(2))
             {
-                return "Delvis given";
+                return this.localizer["Delvis_given"].ToString();
             }
             else if (task.Status.Equals(3))
             {
-                return "Ej given";
+                return this.localizer["Ej_given"].ToString();
             }
             else if (task.Status.Equals(4))
             {
-                return "Kan ej ta";
+                return this.localizer["Kan_ej_ta"].ToString();
             }
             else if (task.Status.Equals(5))
             {
-                return "Medskickad";
+                return this.localizer["Medskickad"].ToString();
             }
             else if (task.Status.Equals(6))
             {
-                return "Räknad mängd stämmer ej med saldo";
+                return this.localizer["Räknad_mängd_stämmer_ej_med_saldo"].ToString();
             }
             if (task.Status.Equals(0) || task.Delayed)
             {
                 if (task.DelayHandled)
                 {
-                    return "Larm åtgärdat";
+                    return this.localizer["Larm_åtgärdat"].ToString();
                 }
-                return "Ej given";
+                return this.localizer["Ej_given"].ToString();
             }
             return string.Empty;
         }

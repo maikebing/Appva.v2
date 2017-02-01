@@ -2,7 +2,7 @@
 @using Appva.Mcss.Admin.Application.Common;
 @model Appva.Mcss.Web.ViewModels.TaskListViewModel
 @{ 
-	ViewBag.Title = "Signerade händelser";
+	ViewBag.Title = Localizer["Signerade_händelser"].ToString();
 	var today = DateTimeUtilities.Now().Date;
     var yesterday = DateTimeUtilities.Now().Date.AddDays(-1);
 	var isFilterByTodaySelected = (Model.StartDate.HasValue && Model.StartDate.Value.Equals(today))
@@ -15,27 +15,27 @@
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 
 <div id="subheader" class="cf">
-	<h1>Signerade händelser</h1>
+	<h1>@Localizer["Signerade_händelser"]</h1>
 	@if (Model.Schedule != null) {
 		using (Html.BeginForm("Sign", "Schedule", FormMethod.Get)) {
-			<p class="filter"><strong>Tid:</strong>
+			<p class="filter"><strong>@Localizer["Tid_"]</strong>
 			@Html.Hidden("scheduleSettingsId", Request["scheduleSettingsId"])
 			@Html.Hidden("order", (int)Model.Order)
-            @Html.DropDownListFor(x => x.Year, Model.Years, "År")
-			@Html.DropDownList("month", Model.Months, "Månad")
-			@Html.Submit("Visa")
-			<strong>Typ:</strong>
-			@Html.ActionLink("Alla", "Sign",
+            @Html.DropDownListFor(x => x.Year, Model.Years, Localizer["År"].ToString())
+			@Html.DropDownList("month", Model.Months, Localizer["Månad"].ToString())
+			@Html.Submit(Localizer["Visa"].ToString())
+			<strong>@Localizer["Typ_"]</strong>
+			@Html.ActionLink(Localizer["Alla"].ToString(), "Sign",
 				new { id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id },
 				new { @class = (!Model.FilterByAnomalies && !Model.FilterByNeedsBasis) ? "sel div" : "div" })
-			@Html.ActionLink("Endast avvikelser", "Sign",
+			@Html.ActionLink(Localizer["Endast_avvikelser"].ToString(), "Sign",
 				new { Id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id, year = Model.Year, month = Model.Month, filterByAnomalies = true },
 				new { @class = (Model.FilterByAnomalies) ? "sel div" : "div" })
-			@Html.ActionLink("Endast vid behov", "Sign",
+			@Html.ActionLink(Localizer["Endast_vid_behov"].ToString(), "Sign",
 				new { Id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id, year = Model.Year, month = Model.Month, filterByNeedsBasis = true },
 				new { @class = (Model.FilterByNeedsBasis) ? "sel div" : "div" })
 			</p>
-			@Html.ActionLink("Skapa pdf", "PrintPopUp",
+			@Html.ActionLink(Localizer["Skapa_pdf"].ToString(), "PrintPopUp",
 				new { id = Model.Patient.Id, scheduleSettingsId = Model.Schedule.Id, startDate = Model.StartDate, endDate = Model.EndDate }, new { @class = "btn printp lb-link" })
 		}
 	}
@@ -46,7 +46,7 @@
     {
         if (Model.InactiveScheduleSettings.Count > 0)
         {
-        <h3>Aktuella</h3>
+        <h3>@Localizer["Aktuella"]</h3>
         }
 		<ul>
 			@foreach (var schedule in Model.ActiveScheduleSettings) 
@@ -59,7 +59,7 @@
 	}
     @if (Model.InactiveScheduleSettings.Count > 0)
     {
-        <h3>Borttagna</h3>
+        <h3>@Localizer["Borttagna"]</h3>
 		<ul>
 			@foreach (var schedule in Model.InactiveScheduleSettings) 
             {
@@ -74,7 +74,7 @@
 		@if (Model.Search == null || Model.Search.TotalItemCount == 0)
         {
 			<div id="alarm-status">
-				<h2 class="ok">Inga signerade händelser för angiven tidsperiod.</h2>
+				<h2 class="ok">@Localizer["Inga_signerade_händelser_för_angiven_tidsperiod"]</h2>
 			</div>
 		}
 		else { 
@@ -84,7 +84,7 @@
 						<tr class="head">
 							<th scope="col">
 								@Html.ActionLink(
-									isInventory ? "Gavs" : "Preparat",
+									Localizer[isInventory ? "Gavs" : "Preparat"].ToString(),
 									"Sign",
 									new
 									{
@@ -100,7 +100,7 @@
 							</th>
 							<th scope="col">
 								@Html.ActionLink(
-									"Dag",
+                                    Localizer["Dag"].ToString(),
 									"Sign",
 									new
 									{
@@ -116,7 +116,7 @@
 							</th>
 							<th scope="col">
 								@Html.ActionLink(
-									"Tid",
+                                    Localizer["Tid"].ToString(),
 									"Sign",
 									new
 									{
@@ -132,7 +132,7 @@
 							</th>
 							<th scope="col">
 								@Html.ActionLink(
-									"Skulle ges",
+									Localizer["Skulle_ges"].ToString(),
 									"Sign",
 									new
 									{
@@ -148,7 +148,7 @@
 							</th>
 							<th scope="col">
 								@Html.ActionLink(
-									"Signerat av",
+									Localizer["Signerat_av"].ToString(),
 									"Sign",
 									new
 									{
@@ -164,7 +164,7 @@
 							</th>
 							<th scope="col">
 								@Html.ActionLink(
-									"Status",
+                                    Localizer["Status"].ToString(),
 									"Sign",
 									new
 									{
@@ -200,7 +200,7 @@
 									</td>
 									<td>
 										@if (task.Delayed && task.CompletedBy.IsNull()) {
-											@:Ej signerad
+											@Localizer["Ej_signerad"]
 										} else {
 											if (task.OnNeedBasis) {
 												@:kl @String.Format("{0:HH:mm}", task.UpdatedAt)
@@ -210,7 +210,7 @@
 										}
 									</td>
 									<td>
-                                        @TimeSpanDifference.ToShortDateTime(task.Scheduled, "Idag", "Igår") kl @String.Format("{0:HH:mm}", task.Scheduled) 
+                                        @TimeSpanDifference.ToShortDateTime(task.Scheduled, Localizer["Idag"].ToString(), Localizer["Igår"].ToString()) kl @String.Format("{0:HH:mm}", task.Scheduled) 
 										@if (task.RangeInMinutesBefore.Equals(task.RangeInMinutesAfter)) {
 											@:±@task.RangeInMinutesBefore min
 										} else {
@@ -230,11 +230,11 @@
 											<img src="@Url.Image(task.StatusTaxon.Path)" alt="@task.StatusTaxon.Name" />
 											if (task.Delayed && task.StatusTaxon.Weight < 2)
 											{
-												<strong>Avvikelse:</strong> @String.Format("{0} för sent", task.StatusTaxon.Name)
+												<strong>@Localizer["Avvikelse_"]</strong> @Localizer["Ej_signerad"]@String.Format("{0} för sent", task.StatusTaxon.Name)
 											}
 											else if (task.StatusTaxon.Weight > 1)
 											{
-												<strong>Avvikelse:</strong> @task.StatusTaxon.Name
+												<strong>@Localizer["Avvikelse_"]</strong> @task.StatusTaxon.Name
 											}
 											else
 											{
@@ -248,57 +248,57 @@
 												<img src="@Url.Image("icn-ok.png")" alt="OK" />
 												if (task.Delayed)
 												{
-													<strong>Avvikelse:</strong> @:Given för sent
+													<strong>@Localizer["Avvikelse_"]</strong> @Localizer["Given_för_sent"]
 												}
 												else
 												{
-													@:OK
+													@Localizer["OK"]
 												}
 											}
 											else if (task.Status.Equals(2))
 											{
 												<img src="@Url.Image("icn-part.png")" alt="Delvis given" />
-												<strong>Avvikelse:</strong> @:Delvis given
+												<strong>@Localizer["Avvikelse_"]</strong> @Localizer["Delvis_given"]
 											}
 											else if (task.Status.Equals(3))
 											{
 												<img src="@Url.Image("icn-none.png")" alt="Ej given" />
-												<strong>Avvikelse:</strong> @:Ej given
+												<strong>@Localizer["Avvikelse_"]</strong> @Localizer["Ej_given"]
 											}
 											else if (task.Status.Equals(4))
 											{
 												<img src="@Url.Image("icn-nothx.png")" alt="Kan ej ta" />
-												<strong>Avvikelse:</strong> @: Kan ej ta
+												<strong>@Localizer["Avvikelse_"]</strong> @Localizer["Kan_ej_ta"] 
 											}
 											else if (task.Status.Equals(5))
 											{
-												<img src="@Url.Image("icn-sent.png")" alt="Medskickad" /> @:Medskickad
+												<img src="@Url.Image("icn-sent.png")" alt="Medskickad" /> @Localizer["Medskickad"]
 											}
 											else if (task.Status.Equals(6))
 											{
 												<img src="@Url.Image("icn-none.png")" alt="Larm" />
-												<strong>Avvikelse:</strong> @:Räknad mängd stämmer ej med saldo
+												<strong>@Localizer["Avvikelse_"]</strong> @Localizer["Räknad_mängd_stämmer_ej_med_saldo"]
 											}
 											else
 											{
 												if (task.Delayed)
 												{
 													<img src="@Url.Image("icn-alarm.png")" alt="Larm" />
-													<strong>Avvikelse:</strong>
+													<strong>@Localizer["Avvikelse_"]</strong>
                                                     if (task.DelayHandled)
                                                     {
                                                         if (Html.HasPermissionFor(Permissions.Alert.Read))
                                                         {
-                                                            @Html.ActionLink("Larm åtgärdat", "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
+                                                            @Html.ActionLink(Localizer["Larm_åtgärdat"].ToString(), "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
                                                         }
                                                         else
                                                         {
-                                                            @:Larm åtgärdat
+                                                            @Localizer["Larm_åtgärdat"]
                                                         }
                                                     }
                                                     else
                                                     {
-														@:Ej given
+														@Localizer["Ej_given"]
 													}
 												}
 											}
@@ -308,7 +308,7 @@
 									@if (Html.HasPermissionFor(Permissions.Area51.Read) || User.IsInRole(Appva.Core.Resources.RoleTypes.Appva))
 									{
 										<td>
-											@Html.ActionLink("Ta bort", "DeleteTask", new { id = Model.Patient.Id, taskId = task.Id }, new { @class = "btn" })
+											@Html.ActionLink(Localizer["Ta_bort"].ToString(), "DeleteTask", new { id = Model.Patient.Id, taskId = task.Id }, new { @class = "btn" })
 										</td>
 									}
 								</tr>

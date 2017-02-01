@@ -1,17 +1,17 @@
 ﻿@model Appva.Mcss.Web.ViewModels.DelegationRevisionViewModel
 @{ 
-    SetTitle("Alla mottagna delegeringar, {0}", Model.Account.FullName); 
+    SetTitle(Localizer["Alla_mottagna_delegeringar__{0}", Model.Account.FullName].ToString()); 
 }
 @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
 <div id="subheader" class="cf">
-	<h1>Mottagna delegeringar</h1>
+	<h1>@Localizer["Mottagna_delegeringar"]</h1>
      @using (Html.BeginForm(new { id = Model.AccountId })) {
         <p class="filter">
-            <label>Visa delegering för datum:</label> 
+            <label>@Localizer["Visa_delegering_för_datum_"]</label> 
             @Html.EditorFor(m => m.Date)
             @Html.ValidationMessageFor(m => m.Date)
-            @Html.Submit("Visa")
+            @Html.Submit(Localizer["Visa"].ToString())
         </p>
      }
 </div>
@@ -21,8 +21,8 @@
 			<table>
 				<thead>
 					<tr class="head">
-						<th scope="col">Datum</th>
-						<th scope="col">Utfärdat av</th>
+						<th scope="col">@Localizer["Datum"]</th>
+						<th scope="col">@Localizer["Utfärdat_av"]</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -49,7 +49,7 @@
             },
             'messages': {
                 'Date': {
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
+                    'date': "@Localizer["Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012-12-21"]",
                 }
             }
         });

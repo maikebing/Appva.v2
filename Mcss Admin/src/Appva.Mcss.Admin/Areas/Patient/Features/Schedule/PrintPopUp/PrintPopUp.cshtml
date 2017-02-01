@@ -1,11 +1,11 @@
 ﻿@model Appva.Mcss.Web.ViewModels.SchedulePrintPopOverViewModel
 @{
-    SetTitle("Skriv ut PDF");
+    SetTitle(Localizer["Skriv_ut_PDF"].ToString());
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="SchedulePrint" data-valparams="startdate=@string.Format("{0:yyyy-MM-dd}", DateTime.Now.AddYears(-10))">
     @using (Html.BeginForm(new { id = Model.Id, scheduleId = Model.ScheduleSettingsId }))
     {
-        <h3 class="section-title">Välj datum</h3>
+        <h3 class="section-title">@Localizer["Välj_datum"]</h3>
         <div class="text medium">
             @Html.LabelFor(m => m.PrintStartDate)
             @Html.EditorFor(m => m.PrintStartDate)
@@ -16,12 +16,12 @@
             @Html.EditorFor(m => m.PrintEndDate)
             @Html.ValidationMessageFor(m => m.PrintEndDate)
 		</div>
-        <h3 class="section-title">Välj format</h3>
+        <h3 class="section-title">@Localizer["Välj_format"]</h3>
         <div class="radio">
             @Html.RadioButtonFor(m => m.Template, 1, new { @id = "Template-1", @checked="checked"})
-            <label for="Template-1">Ifylld signeringslista</label>
+            <label for="Template-1">@Localizer["Ifylld_signeringslista"]</label>
             @Html.RadioButtonFor(m => m.Template, 0, new { @id = "Template-0" }) 
-            <label for="Template-0">Tabell</label>
+            <label for="Template-0">@Localizer["Tabell"]</label>
             @Html.ValidationMessageFor(m => m.Template)
         </div>
         <div class="checkbox">
@@ -34,8 +34,8 @@
         </div>
 	    <div class="submit">
             @Html.AntiForgeryToken()
-            @Html.Submit("Visa")
-            @Html.Cancel("Avbryt")
+            @Html.Submit(Localizer["Visa"].ToString())
+            @Html.Cancel(Localizer["Avbryt"].ToString())
 	    </div>
     }
 </div>

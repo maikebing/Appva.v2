@@ -1,14 +1,14 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
 @model Appva.Mcss.Web.ViewModels.ScheduleListViewModel
 @{ 
-    SetTitle("Patients"); 
+    SetTitle(Localizer["Signeringslistor"].ToString()); 
 }
 <div id="main">
     @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
     <div id="subheader" class="cf">
-	    <h1>Signeringslistor</h1>
-        @Html.ActionLink(Permissions.Schedule.Create, "Ny Lista", "Create", "Schedule", new { Id = Model.Patient.Id }, new { @class = "btn lb-link" })
+	    <h1>@Localizer["Signeringslistor"]</h1>
+        @Html.ActionLink(Permissions.Schedule.Create, Localizer["Ny_Lista"].ToString(), "Create", "Schedule", new { Id = Model.Patient.Id }, new { @class = "btn lb-link" })
     </div>
 	<div id="content" class="cf">
 		<div id="content-primary">
@@ -19,7 +19,7 @@
                         <li>
                             @Html.ActionLink(schedule.ScheduleSettings.Name, "Details", new { Id = Model.Patient.Id, ScheduleId = schedule.Id })
                             @string.Format("{0:yyyy-MM-dd}", schedule.CreatedAt) Kl @String.Format("{0:H:mm}", schedule.CreatedAt)
-                            @Html.ActionLink(Permissions.Schedule.Inactivate, "Ta bort", "Inactivate", "Schedule", new { Id = Model.Patient.Id, ScheduleId = schedule.Id }, new { @class = "item-delete", @title = "Ta bort listan" })
+                            @Html.ActionLink(Permissions.Schedule.Inactivate, Localizer["Ta_bort"].ToString(), "Inactivate", "Schedule", new { Id = Model.Patient.Id, ScheduleId = schedule.Id }, new { @class = "item-delete", @title = Localizer["Ta_bort_listan"].ToString() })
                         </li>
                     }
                 </ul>

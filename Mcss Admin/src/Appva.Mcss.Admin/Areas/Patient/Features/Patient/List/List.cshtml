@@ -1,16 +1,16 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
 @model Appva.Mcss.Web.ViewModels.ListPatientModel
 @{ 
-    SetTitle("Boende"); 
+    SetTitle(Localizer["Boende"].ToString()); 
 }
 <div id="subheader" class="cf">
 	<h1>Boende</h1>
-    @Html.ActionLink(Permissions.Patient.Create, "Ny boende", "Create", "Patient", null, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Patient.Create, Localizer["Ny_boende"].ToString(), "Create", "Patient", null, new { @class = "btn lb-link" })
     <p class="filter">
-        <strong>Visa:</strong>
-        @Html.ActionLink("Alla", "List", new { }, new { @class = (Model.IsActive && !Model.IsDeceased) ? "sel div" : "div" })
-        @Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = (!Model.IsActive) ? "sel div" : "div" })
-        @Html.ActionLink("Avlidna", "List", new { isDeceased = true }, new { @class = (Model.IsDeceased) ? "sel div" : "div" })
+        <strong>@Localizer["Visa"]</strong>
+        @Html.ActionLink(Localizer["Alla"].ToString(), "List", new { }, new { @class = (Model.IsActive && !Model.IsDeceased) ? "sel div" : "div" })
+        @Html.ActionLink(Localizer["Borttagna"].ToString(), "List", new { isActive = false }, new { @class = (!Model.IsActive) ? "sel div" : "div" })
+        @Html.ActionLink(Localizer["Avlidna"].ToString(), "List", new { isDeceased = true }, new { @class = (Model.IsDeceased) ? "sel div" : "div" })
     </p>
     @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientSearch.cshtml")
 </div>
@@ -22,7 +22,7 @@
         <li class="cf @(item.HasUnattendedTasks ? Html.HasPermissionFor(Permissions.Alert.Read) ? "alarm" : "" : "")">
             @if (! item.Active)
             {
-                @Html.ActionLink(Permissions.Patient.Reactivate, "Aktivera", "Reactivate", new { Id = item.Id }, new { @class = "btn" })
+                @Html.ActionLink(Permissions.Patient.Reactivate, Localizer["Aktivera"].ToString(), "Reactivate", new { Id = item.Id }, new { @class = "btn" })
             }
             <div class="h">
                 <h2>
@@ -100,7 +100,7 @@
             </div>
             @if (item.HasUnattendedTasks)
             {
-                @Html.ActionLink(Permissions.Alert.Read, "Larm!", "List", "Alerts", new { id = item.Id }, new { @class = "alert" })
+                @Html.ActionLink(Permissions.Alert.Read, Localizer["Larm_"].ToString(), "List", "Alerts", new { id = item.Id }, new { @class = "alert" })
             }
             else
             {
@@ -109,28 +109,28 @@
             @if (item.Address.IsNotNull())
             {
                 <div class="i">
-                    <strong>Adress:</strong>
+                    <strong>@Localizer["Adress_"]</strong>
                     <span>@item.Address</span>
                 </div>
             }
             @if (item.FirstLineContact.IsNotNull())
             {
                 <div class="i">
-                    <strong>Ansvarig kontaktperson:</strong>
+                    <strong>@Localizer["Ansvarig_kontaktperson_"]</strong>
                     <span>@item.FirstLineContact</span>
                 </div>
             }
             @if (item.Overseeing.IsNotNull())
             {
                 <div class="i">
-                    <strong>Ansvarig sjuksköterska:</strong>
+                    <strong>@Localizer["Ansvarig_sjuksköterska_"]</strong>
                     <span>@item.Overseeing</span>
                 </div>
             }
             @if (item.Superior.IsNotNull())
             {
                 <div class="i">
-                    <strong>Enhetschef:</strong>
+                    <strong>@Localizer["Enhetschef_"]</strong>
                     <span>@item.Superior</span>
                 </div>
             }

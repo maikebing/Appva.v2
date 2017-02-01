@@ -1,12 +1,12 @@
 ﻿@model Appva.Mcss.Web.ViewModels.OrderOverviewViewModel
 @using Appva.Mcss.Admin.Application.Common;
 <div>
-    <div class="heading cf"><h2>Påfyllning av läkemedel</h2></div>
+    <div class="heading cf"><h2>@Localizer["Påfyllning_av_läkemedel"]</h2></div>
     <div class="panel-c">
         @if (Model.Orders == null || Model.Orders.Count == 0)
         {
             <div class="no-data">
-                <h3>Inga påfyllningar begärda</h3>
+                <h3>@Localizer["Inga_påfyllningar_begärda"]</h3>
             </div>
         }
         else
@@ -14,11 +14,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th scope="col">Boende</th>
-                        <th scope="col">Läkemedel</th>
-                        <th scope="col">Begärdes av</th>
-                        <th scope="col">Beställd</th>
-                        <th scope="col" class="check">Påfyllning klar</th>
+                        <th scope="col">@Localizer["Boende"]</th>
+                        <th scope="col">@Localizer["Läkemedel"]</th>
+                        <th scope="col">@Localizer["Begärdes_av"]</th>
+                        <th scope="col">@Localizer["Beställd"]</th>
+                        <th scope="col" class="check">@Localizer["Påfyllning_klar"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,7 +77,7 @@
                                     <input type="checkbox" name="order-checkbox" class="order-checkbox" value="@order.Id.ToString()" />
                                     @if (order.RefillInfo.Ordered) 
                                     {
-                                        <span class="order-status ordered">Beställd</span>
+                                        <span class="order-status ordered">@Localizer["Beställd"]</span>
                                     }
                                     else 
                                     {

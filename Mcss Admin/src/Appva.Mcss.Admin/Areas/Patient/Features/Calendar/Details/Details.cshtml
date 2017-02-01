@@ -13,11 +13,11 @@
             {
                 if (Model.IsFullDayEvent)
                 {
-                    formatString = "Hela dagen {1:d MMM yyyy}";
+                    formatString = Localizer["Hela_dagen_{1:d MMM yyyy}"].ToString();
                 }
                 else
                 {
-                    formatString = " {1:d MMM yyyy} {0:HH:mm} till {1:HH:mm}";
+                    formatString = Localizer["{1:d MMM yyyy}_{0:HH:mm}_till_{1:HH:mm}"].ToString();
                 }
                 
             }
@@ -25,11 +25,11 @@
             {
                 if (Model.IsFullDayEvent)
                 {
-                    formatString = "{0:d MMM yyyy} till {1:d MMM yyyy}";
+                    formatString = Localizer["{0:d MMM yyyy}_till_{1:d MMM yyyy}"].ToString();
                 }
                 else
                 {
-                    formatString = "{0:d MMM yyyy HH:mm} till {1:d MMM yyyy HH:mm}";
+                    formatString = Localizer["{0:d MMM yyyy HH:mm}_till_{1:d MMM yyyy HH:mm}"].ToString();
                 }
                  
             }
@@ -42,7 +42,7 @@
     <div class="info cf">
         @if (Model.Interval != 0)
         {
-            <label class="">Upprepning:</label>
+            <label class="">@Localizer["Upprepning_"]</label>
             <span>
                 @Model.RepetionText
             </span>
@@ -50,23 +50,23 @@
         
     </div>
     <div class="info cf">
-        <h6>Kvittering</h6>
+        <h6>@Localizer["Kvittering"]</h6>
         @if (Model.NeedsQuittance)
         {
             <span class="act-activity">
                 <label class="cal-label" for="@Model.EndTime">
-                    @(Model.IsQuittanced ? string.Format("Kvitterad av {0}", Model.QuittancedBy.FullName) : string.Format("Ej kvitterad"))
+                    @(Model.IsQuittanced ? string.Format(Localizer["Kvitterad_av_{0}"].ToString(), Model.QuittancedBy.FullName) : string.Format(Localizer["Ej_kvitterad"].ToString()))
                 </label>
                 <input type="checkbox" @(Model.IsQuittanced ? "checked" : "") value="@Model.IsQuittanced.ToString()" name="@Model.EndTime" id="@Model.SequenceId" class="cal-quittance" />
             </span>
         }
         else
         {
-            <span>Händelsen behöver inte kvitteras</span>
+            <span>@Localizer["Händelsen_behöver_inte_kvitteras"]</span>
         }
     </div>
     <div class="info cf">
-        <h6>Signering</h6>
+        <h6>@Localizer["Signering"]</h6>
         @if (Model.NeedsSignature)
         {
             if (Model.Signature != null)
@@ -78,30 +78,30 @@
                     </span>
                     <span>
                         <p class="name">@Model.Signature.SignedBy.FullName </p>
-                        <p class="time">@(Model.Signature.SignatureDate.Date == DateTime.Now.Date ? string.Format("Idag {0:HH:mm}",Model.Signature.SignatureDate) : Model.Signature.SignatureDate.ToString("yyyy-MM-dd HH:mm"))</p>
+                        <p class="time">@(Model.Signature.SignatureDate.Date == DateTime.Now.Date ? string.Format(Localizer["Idag_{0:HH:mm}"].ToString(),Model.Signature.SignatureDate) : Model.Signature.SignatureDate.ToString("yyyy-MM-dd HH:mm"))</p>
                     </span>
                 </span>
             }
             else
             {
-                <span>Inte signerad</span>
+                <span>@Localizer["Inte_signerad"]</span>
             }
 
         }
         else
         {
-            <span>Händelsen behöver inte signeras</span>
+            <span>@Localizer["Händelsen_behöver_inte_signeras"]</span>
         }
     </div>
     <div>
-        @Html.ActionLink(Permissions.Calendar.Update, "Ändra", "Edit", "Calendar", new { Id = Model.PatientId, SequenceId = Model.SequenceId, Date = Model.EndTime }, new { @class = "btn lb-link", @title = "Ändra aktiviteten" })
+        @Html.ActionLink(Permissions.Calendar.Update, Localizer["Ändra"].ToString(), "Edit", "Calendar", new { Id = Model.PatientId, SequenceId = Model.SequenceId, Date = Model.EndTime }, new { @class = "btn lb-link", @title = Localizer["Ändra_aktiviteten"].ToString() })
         @if (Model.TaskId.NotEqual(Guid.Empty))
         {
-            @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "RemoveActivity", "Calendar", new { Id = Model.PatientId, TaskId = Model.TaskId }, new { @class = "btn btn-del", @title = "Ta bort aktiviteten" })
+            @Html.ActionLink(Permissions.Calendar.Delete, Localizer["Ta_bort"].ToString(), "RemoveActivity", "Calendar", new { Id = Model.PatientId, TaskId = Model.TaskId }, new { @class = "btn btn-del", @title = Localizer["Ta_bort_aktiviteten"].ToString() })
         }
         else
         {
-            @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "Remove", "Calendar", new { Id = Model.PatientId, SequenceId = Model.SequenceId, Date = Model.EndTime }, new { @class = "btn btn-del", @title = "Ta bort aktiviteten" })
+            @Html.ActionLink(Permissions.Calendar.Delete, Localizer["Ta_bort"].ToString(), "Remove", "Calendar", new { Id = Model.PatientId, SequenceId = Model.SequenceId, Date = Model.EndTime }, new { @class = "btn btn-del", @title = Localizer["Ta_bort_aktiviteten"].ToString() })
         }
     </div>
     

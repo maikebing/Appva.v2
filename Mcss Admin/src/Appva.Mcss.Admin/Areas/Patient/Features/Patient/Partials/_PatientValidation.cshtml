@@ -2,7 +2,7 @@
 <script type="text/javascript">
     $(function () {
         var id = "@((Model.PatientId.HasValue) ? Model.PatientId.Value.ToString() : "")";
-        var uidUrl = "@Url.Action("IsUnique")", 
+        var uidUrl = "@Url.Action("IsUnique")",
             taxonUrl = "@Url.Action("VerifyTaxon", "Taxonomy")";
         $('.std-form form').validate({
             'rules': {
@@ -15,7 +15,7 @@
                         'url': uidUrl,
                         'type': "post",
                         'data': {
-                            'id': id, 
+                            'id': id,
                             'uniqueIdentifier': $('#UniqueIdentifier').val()
                         }
                     }
@@ -32,14 +32,14 @@
                 }
             },
             'messages': {
-                'FirstName': "Förnamn måste fyllas i.",
-                'LastName': "Efternamn måste fyllas i.",
+                'FirstName': '@Localizer["Förnamn_måste_fyllas_i"]',
+                'LastName': '@Localizer["Efternamn_måste_fyllas_i"]',
                 'UniqueIdentifier': {
-                    'required': "Personnummer måste fyllas i.",
-                    'remote': "Personnumret finns redan tidigare redan i MCSS.",
-                    'socialsecuritynumber': "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001."
+                    'required': '@Localizer["Personnummer_måste_fyllas_i"]',
+                    'remote': '@Localizer["Personnumret_finns_redan_tidigare_redan_i_MCSS"]',
+                    'socialsecuritynumber': '@Localizer["Personnummer_måste_fyllas_i_med_tolv_siffror_och_bindestreck__t__ex__19010101_0001"]'
                 },
-                'Taxon': "Adress måste väljas."
+                'Taxon': '@Localizer["Adress_måste_väljas"]'
             }
         });
     });

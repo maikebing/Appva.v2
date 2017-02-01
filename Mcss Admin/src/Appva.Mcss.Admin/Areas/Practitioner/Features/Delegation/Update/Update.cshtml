@@ -1,23 +1,23 @@
 ﻿@model Appva.Mcss.Admin.Areas.Models.UpdateDelegationModel
 @{
-    SetTitle("Edit");
+    SetTitle(Localizer["Ändra"].ToString());
 }
 <div class="std-panel delegdialog std-form lb-panel-small lb-validate-form" data-valclass="DelegationEdit">
 
     @using (Html.BeginForm(new { id = Model.Id, AccountId = Model.AccountId })) {
 
-        <h3 class="section-title">Ändra delegering</h3>
+        <h3 class="section-title">@Localizer["Ändra_delegering"]</h3>
         <div class="row toggle-group cf">
             <div class="radio col">
-                <label for="activity-type-2">Gäller för:</label>
+                <label for="activity-type-2">@Localizer["Gäller_för_"]</label>
             </div>
             <div class="radio col">
                 @Html.RadioButtonFor(m => m.ValidForSpecificPatients, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1", @data_togglegroup = "toggle-delegation" })
-                <label for="activity-type-1">Adress</label>
+                <label for="activity-type-1">@Localizer["Adress"]</label>
             </div>
             <div class="radio col">
                 @Html.RadioButtonFor(m => m.ValidForSpecificPatients, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2", @data_togglegroup = "toggle-delegation" })
-                <label for="activity-type-2">Boende</label>
+                <label for="activity-type-2">@Localizer["Boende"]</label>
             </div>
         </div>
         <div class="toggle-target toggle-target-1 toggle-delegation">
@@ -30,7 +30,7 @@
                             <label class="structural">@taxon.Label</label>
                             @Html.DropDownList(taxon.Id,
                                         new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
-                                        string.Format("Välj {0}...", taxon.OptionLabel),
+                                        Localizer["Välj_{0}_", taxon.OptionLabel].ToString(),
                                         new { @class = "dropdown" }
                                     )
                         </div>
@@ -46,7 +46,7 @@
                 @Html.DropDownListFor(
                     m => m.Patient,
                         new SelectList(Model.PatientItems, "Value", "Text", Model.Patient),
-                        "Alla",
+                        Localizer["Alla"].ToString(),
                     new { }
                 )
                 @Html.ValidationMessageFor(m => m.Patient)
@@ -54,7 +54,7 @@
                 {
                     <span class="person">
                         @patient.FirstName @patient.LastName
-                        <a href="#" title="Ta bort">Ta bort</a>
+                        <a href="#" title="Ta bort">@Localizer["Ta_bort"]</a>
                         <input name="Patients" type="hidden" value="@patient.Id" />
                     </span>
                 }
@@ -69,12 +69,12 @@
             @Html.LabelFor(m => m.EndDate)
             @Html.EditorFor(m => m.EndDate)
             @Html.ValidationMessageFor(m => m.EndDate)
-		    <em class="hint">Max 1 år</em>
+		    <em class="hint">@Localizer["Max_1_år"]</em>
 	    </div>
 	    <div class="submit">
             @Html.AntiForgeryToken()
-            @Html.Submit("Spara")
-            @Html.Cancel("Avbryt")
+            @Html.Submit(Localizer["Spara"].ToString())
+            @Html.Cancel(Localizer["Avbryt"].ToString())
 	    </div>
     }
 </div>

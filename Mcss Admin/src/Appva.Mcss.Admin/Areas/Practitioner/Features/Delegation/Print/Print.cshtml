@@ -1,33 +1,33 @@
 ﻿@model Appva.Mcss.Admin.Areas.Practitioner.Models.PrintDelegationModel
 @{
-    SetTitle("Delegeringsbeslut");
+    SetTitle(Localizer["Delegeringsbeslut"].ToString());
     Layout = "~/Areas/Patient/Features/Shared/_PrintLayout.cshtml";
 }
 <div id="header" class="cf">
-	<h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
-	<p>(Sparas i 10 år)</p>
+	<h1>@Localizer["Delegeringsbeslut_av_sjuksköterskan_gällande_hälso-_och_sjukvårdsuppgifter"]</h1>
+	<p>@Localizer["(Sparas_i_10_år)"]</p>
 </div>
 
 <div id="signprint">
 	<table>
 		<tbody>
 			<tr>
-				<td>Namn<h2>@Model.DelegationRecipient.FullName</h2></td>
-				<td>Personnummer<h2>@Model.DelegationRecipient.PersonalIdentityNumber</h2></td>
-				<td>Titel<h2>@Model.DelegationRecipient.Title</h2></td>
+				<td>@Localizer["Namn"]<h2>@Model.DelegationRecipient.FullName</h2></td>
+				<td>@Localizer["Personnummer"]<h2>@Model.DelegationRecipient.PersonalIdentityNumber</h2></td>
+				<td>@Localizer["Titel"]<h2>@Model.DelegationRecipient.Title</h2></td>
 			</tr>
 		</tbody>
 	</table>
-	<h2>Delegerade hälso- och sjukvårdsuppgifter:</h2>
+	<h2>@Localizer["Delegerade_hälso-_och_sjukvårdsuppgifter_"]</h2>
     <table>
 		<thead>
 			<tr>
-				<th colspan="3">Delegerade hälso- och sjukvårdsuppgifter:</th>
+				<th colspan="3">@Localizer["Delegerade_hälso-_och_sjukvårdsuppgifter_"]</th>
 			</tr>
 			<tr class="head">
-				<th scope="col">Delegering</th>
-				<th scope="col" class="pats">Gäller för</th>
-				<th scope="col">Gäller (max 1 år)</th>
+				<th scope="col">@Localizer["Delegering"]</th>
+				<th scope="col" class="pats">@Localizer["Gäller_för"]</th>
+				<th scope="col">@Localizer["Gäller_(max_1_år)"]</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -48,7 +48,7 @@
                         else
                         {
                             <p>
-                                Alla boende på:<br />
+                                @Localizer["Alla_boende_på_"]<br />
                                 <b>@delegation.Address</b>
                             </p>
                         }
@@ -64,8 +64,8 @@
 		    <table>
 			    <thead>
 				    <tr>
-					    <th scope="col">Test</th>
-					    <th scope="col">Genomfördes</th>
+					    <th scope="col">@Localizer["Test"]</th>
+					    <th scope="col">@Localizer["Genomfördes"]</th>
 				    </tr>
 			    </thead>
 			    <tbody>
@@ -81,15 +81,15 @@
     }
 	<div class="signature cf">
 		<div class="col">
-			<strong>Namnunderskrift delegerande sjuksköterska;</strong>
-			<p>Datum</p>
-			<p>Underskrift</p>
+			<strong>@Localizer["Namnunderskrift_delegerande_sjuksköterska"]</strong>
+			<p>@Localizer["Datum"]</p>
+			<p>@Localizer["Underskrift"]</p>
 			<p id="nameTitle">@Model.DelegationIssuer.FullName</p>
 		</div>
 		<div class="col">
-			<strong>Namnunderskrift av den som tar emot delegeringen;</strong>
-			<p>Datum</p>
-			<p>Underskrift</p>
+			<strong>@Localizer["Namnunderskrift_av_den_som_tar_emot_delegeringen"]</strong>
+			<p>@Localizer["Datum"]</p>
+			<p>@Localizer["Underskrift"]</p>
 		</div>
 		<p><br/><br/><strong>@Model.SendToText</strong></p>
 	</div>

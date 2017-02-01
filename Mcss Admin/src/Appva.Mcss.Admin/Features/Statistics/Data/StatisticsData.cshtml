@@ -2,52 +2,52 @@
 
 <div class="data cf">
     <dl>
-        <dt>I tid</dt>
+        <dt>@Localizer["I_tid"]</dt>
         <dd>
             @Model.OnTimePercentage %
             @if (Model.OnTimePercentage > Model.PreviousPeriod.OnTimePercentage)
             {
-                <img src="@Url.Image("trendup.png")" alt="Uppåtgående" />
+                <img src="@Url.Image("trendup.png")" alt="@Localizer["Uppåtgående"]" />
             }
             else
             {
-                <img src="@Url.Image("trenddn.png")" alt="Nedåtgående" />
+                <img src="@Url.Image("trenddn.png")" alt="@Localizer["Nedåtgående"]" />
             }
-        </dd>
+        ></dd>
     </dl>
     <dl>
-        <dt>Ej i tid</dt>
+        <dt>@Localizer["Ej_i_tid"]</dt>
         <dd>
             @Model.NotOnTimePercentage %
         </dd>
     </dl>
     <dl>
-        <dt>Förändring från föregående period</dt>
+        <dt>@Localizer["Förändring_från_föregående_period"]</dt>
         @{
 
             var amount = string.Empty;
             var change = Model.OnTimePercentage - Model.PreviousPeriod.OnTimePercentage;
             if (change < 0)
             {
-                amount = string.Format("{0} i tid", "färre");
+                amount = Localizer["färre_i_tid"].ToString();
             }
             else
             {
-                amount = string.Format("{0} i tid", "fler");
+                amount = Localizer["fler_i_tid"].ToString();
             }
-        }
+}
         <dd class="small">@change % @amount</dd>
     </dl>
     <dl>
-        <dt>Genomsnittlig avvikelse i tid</dt>
+        <dt>@Localizer["Genomsnittlig_avvikelse_i_tid"]</dt>
         <dd class="small">@TimeSpanDifference.ToReadableText(TimeSpan.FromMinutes(Model.AverageMinutesDelayed))</dd>
     </dl>
     <dl>
-        <dt>Andel signerade insatser</dt>
+        <dt>@Localizer["Andel_signerade_insatser"]</dt>
         <dd class="small">@Model.SignedTaskPercentage %</dd>
     </dl>
     <dl>
-        <dt>Totalt antal insatser</dt>
+        <dt>@Localizer["Totalt_antal_insatser"]</dt>
         <dd class="small">@Model.Total</dd>
     </dl>
 </div>

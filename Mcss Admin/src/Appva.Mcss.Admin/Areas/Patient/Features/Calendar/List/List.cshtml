@@ -1,6 +1,6 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
 @model Appva.Mcss.Web.ViewModels.EventListViewModel
-@{ ViewBag.Title = "Kalender"; }
+@{ ViewBag.Title = Localizer["Kalender"].ToString(); }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 @section JavaScript {
@@ -17,8 +17,8 @@
     </script>
 }
 <div id="subheader" class="cf">
-    <h1>Kalender</h1>
-    @Html.ActionLink(Permissions.Calendar.Create, "Ny aktivitet", "Create", "Calendar", new { Id = Model.Patient.Id, Date = Model.Current }, new { @class = "btn lb-link" })
+    <h1>@Localizer["Kalender"]</h1>
+    @Html.ActionLink(Permissions.Calendar.Create, Localizer["Ny_aktivitet"].ToString(), "Create", "Calendar", new { Id = Model.Patient.Id, Date = Model.Current }, new { @class = "btn lb-link" })
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
@@ -32,8 +32,8 @@
                     <input type="submit" name="next" value="@String.Format("{0:MMMM} {1}", Model.Next, WebUtility.HtmlDecode("&rarr;")).FirstToUpper()" class="next" />
                 </div>
                 <div class="cal-filter">
-                    @Html.ActionLink(Permissions.Calendar.Create, "+ Skapa ny aktivitet", "Create", "Calendar", new { Id = Model.Patient.Id, Date = Model.Current }, new { @class = "btn btn-new lb-link" })
-                    <h3>Filtrera på kategori:</h3>
+                    @Html.ActionLink(Permissions.Calendar.Create, Localizer["Skapa_ny_aktivitet"].ToString(), "Create", "Calendar", new { Id = Model.Patient.Id, Date = Model.Current }, new { @class = "btn btn-new lb-link" })
+                    <h3>@Localizer["Filtrera_på_kategori_"]</h3>
                     <ul>
                         <li class="all">
                             <span class="cal-all">
@@ -51,7 +51,7 @@
                                 @Html.Label(string.Format("cal-cat{0}", (cat.Key % (int)Model.CalendarSettings["ColorQuantity"]) + 1), cat.Value.Name)
                             </li>
                         }
-                        @Html.Submit("Välj")
+                        @Html.Submit(Localizer["Välj"].ToString())
                     </ul>
 
                 </div>
@@ -64,13 +64,13 @@
                             @{
                                 var firstDayOfWeek = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
                                 var daysOfWeek = new List<string>() {
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Måndag" : "Söndag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Tisdag" : "Måndag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Onsdag" : "Tisdag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Torsdag" : "Onsdag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Fredag" : "Torsdag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Lördag" : "Fredag",
-                                    DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Söndag" : "Lördag"
+                                    Localizer[DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Måndag" : "Söndag"].ToString(),
+                                    Localizer[DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Tisdag" : "Måndag"].ToString(),
+                                    Localizer[DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Onsdag" : "Tisdag"].ToString(),
+                                    Localizer[DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Torsdag" : "Onsdag"].ToString(),
+                                    Localizer[DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Fredag" : "Torsdag"].ToString(),
+                                    Localizer[DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Lördag" : "Fredag"].ToString(),
+                                    Localizer[DayOfWeek.Monday.Equals(firstDayOfWeek) ? "Söndag" : "Lördag"].ToString()
                                 };
                             }
                             @foreach (var day in daysOfWeek)
@@ -128,7 +128,7 @@
                                                         <span class="time">
                                                             @if (e.IsFullDayEvent)
                                                             {
-                                                                @:Hela dagen
+                                                                @Localizer["Hela_dagen"]
                                                             }
                                                             else
                                                             {
@@ -142,23 +142,23 @@
                                                         </span>
                                                         @e.CategoryName
                                                         <span class="act-info">
-                                                            <strong>Från:</strong>
+                                                            <strong>@Localizer["Från_"]</strong>
                                                             <span>
                                                                 @e.StartTime
                                                             </span>
-                                                            <strong>Till:</strong>
+                                                            <strong>@Localizer["Till_"]</strong>
                                                             <span>
                                                                 @e.EndTime
                                                             </span>
-                                                            <strong>Anteckningar/instruktion:</strong>
+                                                            <strong>@Localizer["Anteckningar_instruktion_"]</strong>
                                                             <span>
                                                                 @e.Description
                                                             </span>
                                                             @if (e.NeedsQuittance)
                                                             {
-                                                                <strong>Kvitterad av:</strong>
+                                                                <strong>@Localizer["Kvitterad_av_"]</strong>
                                                                 <span>
-                                                                    @(e.IsQuittanced ? string.Format("{0}", e.QuittancedBy.FullName) : string.Format("Ej kvitterad"))
+                                                                    @(e.IsQuittanced ? string.Format("{0}", e.QuittancedBy.FullName) : string.Format(Localizer["Ej_kvitterad"].ToString()))
                                                                 </span>
                                                             }
                                                         </span>

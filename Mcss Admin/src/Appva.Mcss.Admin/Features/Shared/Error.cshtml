@@ -1,12 +1,12 @@
 ﻿@model HandleErrorInfo
 @{
-    SetTitle("Ett fel inträffade");
+    SetTitle(Localizer["Ett_fel_inträffade"].ToString());
 }
 <div class="std-paging cf">
     <h2>
-        Ett fel har uppstått!
+        @Localizer["Ett_fel_har_uppstått"]
     </h2>
     <p>
-        Var vänlig kontakta <a href="http://support.appva.se/open.php">support</a> om detta fel uppstår igen.
+        @Localizer["Var_vänlig_kontakta_support_om_detta_fel_uppstår_igen"]
     </p>
 </div>

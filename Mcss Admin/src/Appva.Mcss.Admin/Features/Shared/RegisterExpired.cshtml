@@ -1,19 +1,19 @@
 ﻿@{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
-    SetTitle("Utgången lösenordslänk");
+    SetTitle(Localizer["Utgången_lösenordslänk"].ToString());
     SetBodyCssClass("page-reset-password");
 }
 <div class="hd">
-    Utgången lösenordslänk
+    @Localizer["Utgången_lösenordslänk"]
 </div>
 <div class="hd profile">
     <img src="@Url.Content("~/Assets/i/profile-icon.png")" />
 </div>
 <div class="bd">
     <span class="alert-danger">
-        Lösenordslänken har gått ut, vänligen begär en ny genom att klicka på knappen "skicka ny återställningslänk" nedan.
+        @Localizer["Lösenordslänken_har_gått_ut__vänligen_begär_en_ny_genom_att_klicka_på_knappen__skicka_ny_återställningslänk__nedan"]
     </span>
     <div class="hr"></div>
-    @Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn" })
-    @Html.ActionLink("Skicka ny återställningslänk", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
+    @Html.ActionLink(Localizer["Logga_in"].ToString(), "SignIn", "Authentication", null, new { @class = "btn" })
+    @Html.ActionLink(Localizer["Skicka_ny_återställningslänk"].ToString(), "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
 </div>

@@ -1,17 +1,17 @@
 ﻿@{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
-    SetTitle("Ditt lösenord är sparat");
+    SetTitle(Localizer["Ditt_lösenord_är_sparat"].ToString());
     SetBodyCssClass("page-forgot-password");
 }
 <div class="hd">
-	Ditt lösenord är sparat.
+	@Localizer["Ditt_lösenord_är_sparat"]
 </div>
 <div class="hd org">
     <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
 	<span>@Tenant</span>
 </div>
 <div class="bd">
-    Var vänlig använd ditt valda lösenord för att logga in i MCSS.
+    @Localizer["Var_vänlig_använd_ditt_valda_lösenord_för_att_logga_in_i_MCSS"]
     <div class="hr"></div>
-	@Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn" })
+	@Html.ActionLink(Localizer["Logga_in"].ToString(), "SignIn", "Authentication", null, new { @class = "btn" })
 </div>

@@ -36,11 +36,11 @@
         {
             if (link.DisplayText == "«")
             {
-                aBuilder.SetInnerText("Föregående");
+                aBuilder.SetInnerText(Localizer["Föregående"].ToString());
             }
             else if (link.DisplayText == "»")
             {
-                aBuilder.SetInnerText("Nästa");
+                aBuilder.SetInnerText(Localizer["Nästa"].ToString());
             }
             else
             {

@@ -1,6 +1,6 @@
 ﻿@model Appva.Mcss.Web.ViewModels.ScheduleReportViewModel
 @using Appva.Mcss.Admin.Application.Common;
-@{ ViewBag.Title = "Rapport"; ViewBag.MainClass = "report-view"; }
+@{ ViewBag.Title = Localizer["Rapport"].ToString(); ViewBag.MainClass = "report-view"; }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
@@ -11,18 +11,18 @@
             @Html.EditorFor(m => m.StartDate)
             @Html.LabelFor(m => m.EndDate)
             @Html.EditorFor(m => m.EndDate) 
-            @Html.Submit("Visa")
+            @Html.Submit(Localizer["Visa"].ToString())
         </p>
         }
 	<a class="btn print" href="#">Skriv ut</a>
-   @Html.ActionLink("Exportera till Excel", "Excel", "Schedule", new { Id = Model.Patient.Id, ScheduleSettingsId = Model.Schedule, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "export" })
+   @Html.ActionLink(Localizer["Exportera_till_Excel"].ToString(), "Excel", "Schedule", new { Id = Model.Patient.Id, ScheduleSettingsId = Model.Schedule, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "export" })
 
 </div>
 <div id="content" class="has-nav cf">
     <ul id="nav-sub">
         @if (Model.Schedules.IsNotNull()) {
             <li class="@(!Model.Schedule.HasValue ? "sel" : "")">
-                @Html.ActionLink("Alla", "ScheduleReport", new { Id = Model.Patient.Id, StartDate = Model.StartDate.ToShortDateString(), EndDate = Model.EndDate.ToShortDateString() })
+                @Html.ActionLink(Localizer["Alla"].ToString(), "ScheduleReport", new { Id = Model.Patient.Id, StartDate = Model.StartDate.ToShortDateString(), EndDate = Model.EndDate.ToShortDateString() })
             </li>
             foreach (var schedule in Model.Schedules) {
                 <li class="@(Model.Schedule.HasValue && Model.Schedule.Value.Equals(schedule.Id) ? "sel" : "")">
@@ -39,17 +39,17 @@
 
             @if (Model.Tasks.Entities.Count > 0) {
             <div id="signed-events" class="listing">
-			    <h2 class="heading">Insatser under perioden</h2>
+			    <h2 class="heading">@Localizer["Insatser_under_perioden"]</h2>
                 <table>
 				    <thead>
 					    <tr class="head">
-						    <th scope="col">Gavs</th>
-						    <th scope="col">Dag</th>
-						    <th scope="col">Tid</th>
-						    <th scope="col">Skulle ges</th>
-                            <th scope="col">Boende</th>
-                            <th scope="col">Signerat av</th>
-						    <th scope="col">Status</th>
+						    <th scope="col">@Localizer["Gavs"]</th>
+						    <th scope="col">@Localizer["Dag"]</th>
+						    <th scope="col">@Localizer["Tid"]</th>
+						    <th scope="col">@Localizer["Skulle_ges"]</th>
+                            <th scope="col">@Localizer["Boende"]</th>
+                            <th scope="col">@Localizer["Signerat_av"]</th>
+						    <th scope="col">@Localizer["Status"]</th>
 					    </tr>
 				    </thead>
 				    <tbody>
@@ -58,13 +58,13 @@
 						    <td>@task.Name</td>
 						    <td>
                                 @if (task.OnNeedBasis) {
-                                    @TimeSpanDifference.ToShortDateTime(task.UpdatedAt, "Idag", "Igår")
+                                    @TimeSpanDifference.ToShortDateTime(task.UpdatedAt, Localizer["Idag"].ToString(), Localizer["Igår"].ToString())
                                 } else {
                                     if (!task.IsCompleted) {
                                         @:-
                                     }
                                     else {
-                                        @TimeSpanDifference.ToShortDateTime(task.CompletedDate.GetValueOrDefault(), "Idag", "Igår")
+                                        @TimeSpanDifference.ToShortDateTime(task.CompletedDate.GetValueOrDefault(), Localizer["Idag"].ToString(), Localizer["Igår"].ToString())
                                     }
                                 }
                             </td>
@@ -80,7 +80,7 @@
                                 }
                             </td>
 						    <td>
-                                @TimeSpanDifference.ToShortDateTime(task.Scheduled, "Idag", "Igår") kl @String.Format("{0:HH:mm}", task.Scheduled)
+                                @TimeSpanDifference.ToShortDateTime(task.Scheduled, Localizer["Idag"].ToString(), Localizer["Igår"].ToString()) kl @String.Format("{0:HH:mm}", task.Scheduled)
                                 @if (task.RangeInMinutesBefore.Equals(task.RangeInMinutesAfter)) {
                                     @:±@task.RangeInMinutesBefore min
                                 }
@@ -103,10 +103,10 @@
             @if (task.StatusTaxon != null) {
                                     <img src="@Url.Image(task.StatusTaxon.Path)" alt="@task.StatusTaxon.Name" />
                 if (task.Delayed && task.StatusTaxon.Weight < 2) {
-                                        <strong>Avvikelse:</strong> @String.Format("{0} för sent", task.StatusTaxon.Name)
+                                        <strong>@Localizer["Avvikelse_"]</strong> @Localizer["{0}_för_sent", task.StatusTaxon.Name]
                                     }
                 else if (task.StatusTaxon.Weight > 1) {
-                                        <strong>Avvikelse:</strong> @task.StatusTaxon.Name
+                                        <strong>@Localizer["Avvikelse_"]</strong> @task.StatusTaxon.Name
                                     }
                 else {
                                         @task.StatusTaxon.Name
@@ -116,7 +116,7 @@
                 if (task.Status.Equals(1)) {
                                         <img src="@Url.Image("icn-ok.png")" alt="OK" />
                                         if (task.Delayed) {
-                                            <strong>Avvikelse:</strong> @:Given för sent
+                                            <strong>@Localizer["Avvikelse_"]</strong> @Localizer["Given_för_sent"]
                                         }
                     else {
                                             @:OK
@@ -124,41 +124,41 @@
                 }
                 else if (task.Status.Equals(2)) {
                                         <img src="@Url.Image("icn-part.png")" alt="Delvis given" />
-                                        <strong>Avvikelse:</strong> @:Delvis given
+                                        <strong>@Localizer["Avvikelse_"]</strong> @Localizer["Delvis_given"]
                                     }
                 else if (task.Status.Equals(3)) {
                                         <img src="@Url.Image("icn-none.png")" alt="Ej given" />
-                                        <strong>Avvikelse:</strong> @:Ej given
+                                        <strong>@Localizer["Avvikelse_"]</strong> @Localizer["Ej_given"]
                                     }
                 else if (task.Status.Equals(4)) {
                                         <img src="@Url.Image("icn-nothx.png")" alt="Kan ej ta" />
-                                        <strong>Avvikelse:</strong> @: Kan ej ta
+                                        <strong>@Localizer["Avvikelse_"]</strong> @Localizer["Kan_ej_ta"]
                                     }
                 else if (task.Status.Equals(5)) {
-                                        <img src="@Url.Image("icn-sent.png")" alt="Medskickad" /> @:Medskickad
+                                        <img src="@Url.Image("icn-sent.png")" alt="Medskickad" /> @Localizer["Medskickad"]
                                     }
                 else if (task.Status.Equals(6)) {
                                         <img src="@Url.Image("icn-none.png")" alt="Larm" />
-                                        <strong>Avvikelse:</strong> @:Räknad mängd stämmer ej med saldo
+                                        <strong>@Localizer["Avvikelse_"]</strong> @Localizer["Räknad_mängd_stämmer_ej_med_saldo"]
                                     }
                 else {
                                         if (task.Delayed) {
                                             <img src="@Url.Image("icn-alarm.png")" alt="Larm" />
-                                            <strong>Avvikelse:</strong>
+                                            <strong>@Localizer["Avvikelse_"]</strong>
                                             if (task.DelayHandled)
                                             {
                                                 if (Html.HasPermissionFor(Permissions.Alert.Read))
                                                 {
-                                                    @Html.ActionLink("Larm åtgärdat", "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
+                                                    @Html.ActionLink(Localizer["Larm_åtgärdat"].ToString(), "List", "Alerts", new { Area = "patient", id = task.Patient.Id }, null)
                                                 }
                                                 else
                                                 {
-                                                    @:Larm åtgärdat
+                                                    @Localizer["Larm_åtgärdat"]
                                                 }
                                             }
                                             else
                                             {
-                                                @:Ej given
+                                                @Localizer["Ej_given"]
                                             }
                                         }
                                     }
@@ -187,7 +187,7 @@
         Date.format = 'yyyy-mm-dd';
         $('.datepick').datePicker({
             'startDate': '1970-01-01',
-            'clickInput': true 
+            'clickInput': true
         });
         $('#subheader form').validate({
             'rules': {
@@ -202,23 +202,23 @@
             },
             'messages': {
                 'StartDate': {
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'date': "@Localizer["Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012-12-21"]",
+                    'datelessthan': "@Localizer["Startdatum_måste_vara_ett_tidigare_datum_är_slutdatum"]"
                 },
                 'EndDate': {
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'date': "@Localizer["Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012-12-21"]",
+                    'dategreaterthan': "@Localizer["Slutdatum_måste_vara_ett_senare_datum_är_startdatum"]"
                 }
             }
         });
-        mcss.chart.Load({ 
+        mcss.chart.Load({
             'selector': '#chart',
             'url': '@Url.Action("GetChartData", "Statistics", new { area = "" })',
             'min': new Date(@Model.StartDate.Year, @(Model.StartDate.Month - 1), @Model.StartDate.Day),
             'max': new Date(@Model.EndDate.Year, @(Model.EndDate.Month - 1), @Model.EndDate.Day),
             'parameters': {
                 'Patient': '@Model.Patient.Id',
-                'ScheduleSetting': '@Model.Schedule', 
+                'ScheduleSetting': '@Model.Schedule',
                 'Start': '@Model.StartDate.ToShortDateString()',
                 'End': '@Model.EndDate.ToShortDateString()'
             }

@@ -1,11 +1,11 @@
 ﻿@model Forgot
 @{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
-    SetTitle("Glömt lösenord");
+    SetTitle(Localizer["Glömt_lösenord"].ToString());
     SetBodyCssClass("page-forgot-password");
 }
 <div class="hd">
-	Glömt lösenord
+	@Localizer["Glömt_lösenord"]
 </div>
 <div class="hd org">
     <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
@@ -14,11 +14,11 @@
 <div class="bd">
 	@using (Html.Post())
     {
-        @Html.ValidationAlert("Felaktig e-postadress och/eller personnummer", string.Empty, new {  @class = "error-msg" })
-        @Html.FormGroup(x => x.EmailAddress).Label("E-postadress").TextBox("fornamn.efternamn@organisation.se", new { @autofocus = "autofocus" }).Build()
-        @Html.FormGroup(x => x.PersonalIdentityNumber).Label("Personnummer").TextBox("ÅÅÅÅMMDD-NNNN").Build()
+        @Html.ValidationAlert(Localizer["Felaktig_e_postadress_och_eller_personnummer"].ToString(), string.Empty, new {  @class = "error-msg" })
+        @Html.FormGroup(x => x.EmailAddress).Label(Localizer["E_postadress"].ToString()).TextBox(Localizer["fornamn.efternamn@organisation.se"].ToString(), new { @autofocus = "autofocus" }).Build()
+        @Html.FormGroup(x => x.PersonalIdentityNumber).Label(Localizer["Personnummer"].ToString()).TextBox(Localizer["ÅÅÅÅMMDD-NNNN"].ToString()).Build()
 		<div class="hr"></div>
-        @Html.Submit("Skicka återställningslänk",  new { @id = "submit-form", @class = "btn" })
-		@Html.ActionLink("Avbryt", "SignIn", "Authentication", null, new { @class = "btn btn-right cancel" })
+        @Html.Submit(Localizer["Skicka_återställningslänk"].ToString(),  new { @id = "submit-form", @class = "btn" })
+		@Html.ActionLink(Localizer["Avbryt"].ToString(), "SignIn", "Authentication", null, new { @class = "btn btn-right cancel" })
     }
 </div>

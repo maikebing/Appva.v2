@@ -1,22 +1,22 @@
 ﻿@model Appva.Mcss.Admin.Models.UpdateSequenceForm
-@{ ViewBag.Title = "Ändra"; }
+@{ ViewBag.Title = Localizer["Ändra"].ToString(); }
 
 <div class="lb-panel lb-validate-form" data-valclass="SequenceEdit">
 	<div class="std-panel activity-edit std-form">
     @using (Html.BeginForm()) {
         <div class="row cf">
             <div class="form-section col">
-                <h3 class="section-title">Ange insats</h3>
+                <h3 class="section-title">@Localizer["Ange_insats"]</h3>
                 @Html.FormGroup(x => x.Name, "text large").Label().TextBox(null, new { @class = "wide check-length" }).Validate().Build()
                 @Html.FormGroup(x => x.Description, "text large").Label().TextArea(null, new { @rows = "24", @cols = "80", @class = "wide" }).Validate().Build()
-                @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox("Får endast ges av legitimerad " + Model.RequiredRoleText, new { @class = "nurse" }).Validate().Build()
+                @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox(Localizer["Får_endast_ges_av_legitimerad_{0}", Model.RequiredRoleText].ToString(), new { @class = "nurse" }).Validate().Build()
                 @if (Model.Delegations.Count() > 0) { 
                     <div class="select">
                         @Html.LabelFor(m => m.Delegation)
                         @Html.DropDownListFor(
                             m => m.Delegation,
                             new SelectList(Model.Delegations, "Value", "Text", Model.Delegation),
-                            "Välj delegering ...",
+                            Localizer["Välj_delegering_"].ToString(),
                             new { @class = "delegation" }
                         )
                         @Html.ValidationMessageFor(m => m.Delegation)
@@ -25,27 +25,27 @@
                 @if (Model.Inventories != null)
                 {
                     <div class="sequence-inventory">
-                        <h3 class="section-title">Ange saldo</h3>
+                        <h3 class="section-title">@Localizer["Ange_saldo"]</h3>
                         <div class="">
                             @Html.DropDownListFor(
                                         m => m.Inventory,
                                         new SelectList(Model.Inventories, "Value", "Text", Model.Inventory),
-                                        "Välj saldo ...",
+                                        Localizer["Välj_saldo_"].ToString(),
                                         new { @class = "inventories" })
                         </div>
                     </div>
                 }
             </div>
             <div class="form-section wide-section col">
-                <h3 class="section-title">Ange när det ska ges</h3>
+                <h3 class="section-title">@Localizer["Ange_när_det_ska_ges"]</h3>
 				<div class="row toggle-group cf">
 					<div class="radio col">
                         @Html.RadioButtonFor(m => m.OnNeedBasis, false, new { @id = "activity-type-1", @class = "toggle", @data_toggletarget = "toggle-target-1", @data_togglegroup = "toggle-in-need-based" })
-						<label for="activity-type-1">Stående</label>
+						<label for="activity-type-1">@Localizer["Stående"]</label>
 					</div>
 					<div class="radio col">
                         @Html.RadioButtonFor(m => m.OnNeedBasis, true, new { @id = "activity-type-2", @class = "toggle", @data_toggletarget = "toggle-target-2", @data_togglegroup = "toggle-in-need-based" })
-						<label for="activity-type-2">Vid behov</label>
+						<label for="activity-type-2">@Localizer["Vid_behov"]</label>
 					</div>
 				</div>
                 <div class="toggle-target toggle-target-1 toggle-in-need-based">
@@ -55,26 +55,26 @@
                             @Html.DropDownListFor(
                                 m => m.Interval,
                                 new SelectList(Model.Intervals, "Value", "Text", Model.Interval),
-                                "Välj frekvens ...",
+                                Localizer["Välj_frekvens_"].ToString(),
                                 new { @class = "freq-select check-datetime-update" }
                             )
                             @Html.ValidationMessageFor(m => m.Interval)
                         </div>
                         <div class="text freq-show col">
-                            <a class="btn btn-mdatepick check-datetime-update" href="#">Välj dagar</a>
+                            <a class="btn btn-mdatepick check-datetime-update" href="#">@Localizer["Välj_dagar"]</a>
                             @Html.HiddenFor(m => m.Dates, new { @id = "activity-freq-days" })
                         </div>
                         @Html.FormGroup(x => x.StartDate, "text freq-hide col check-datetime-update").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
                         @Html.FormGroup(x => x.EndDate, "text freq-hide col").Label().Editor(string.Format("T.ex. {0}-01-01", DateTime.Now.Year), new { @class = "datepick date" }).Validate().Build()
                     </div>
                     <div class="checkbox-grid">
-                        <strong class="label">Klockslag:</strong>
+                        <strong class="label">@Localizer["Klockslag_"]</strong>
                         @Html.FormGroup(x => x.Times, "wrap cf").CheckboxList(new { @class = "checkbox-grid check-datetime-update" }).Validate().Build()
                         <input id="TestTimes" name="TestTimes" type="hidden" />
 
                     </div>
                     <div class="text mini label-group">
-                        <strong class="label">Ges inom:</strong>
+                        <strong class="label">@Localizer["Ges_inom_"]</strong>
                         <label>@Html.TextBoxFor(m => m.RangeInMinutesBefore, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off", @class = "check-datetime-update" }) minuter innan</label>
                         @Html.ValidationMessageFor(m => m.RangeInMinutesBefore)
                         <label>@Html.TextBoxFor(m => m.RangeInMinutesAfter, new { @type = "number", @min = "0", @max = "60", @autocomplete = "off", @class = "check-datetime-update" }) minuter efter</label>
@@ -93,8 +93,8 @@
         </div>
 	    <div class="submit">
             @Html.AntiForgeryToken()
-            @Html.Submit("Spara")
-            @Html.Cancel("Avbryt")
+            @Html.Submit(Localizer["Spara"].ToString())
+            @Html.Cancel(Localizer["Avbryt"].ToString())
 	    </div>
     }
 	</div>

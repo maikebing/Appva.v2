@@ -1,8 +1,8 @@
 ﻿@model Appva.Mcss.Web.ViewModels.KnowledgeTestFormModel
-@{ SetTitle("Lägg till kunskapstest"); }
+@{ SetTitle(Localizer["Lägg_till_kunskapstest"].ToString()); }
 <div class="std-panel std-form lb-validate-form" data-valclass="KnowledgeTestAdd">
 @using (Html.BeginForm(new { id = Model.AccountId, taxonId = Model.TaxonId })) {
-    <h3 class="section-title">Lägg till kunskapstest</h3>
+    <h3 class="section-title">@Localizer["Lägg_till_kunskapstest"]</h3>
     <div class="text">
         @Html.LabelFor(m => m.Name)
         @Html.EditorFor(m => m.Name)
@@ -15,8 +15,8 @@
 	</div>
 	<div class="submit">
         @Html.AntiForgeryToken()
-        @Html.Submit("Spara")
-        @Html.Cancel("Avbryt")
+        @Html.Submit(Localizer["Spara"].ToString())
+        @Html.Cancel(Localizer["Avbryt"].ToString())
 	</div>
 }
 </div>

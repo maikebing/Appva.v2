@@ -1,26 +1,26 @@
 ﻿@using Appva.Core.Utilities;
 @model Appva.Mcss.Web.ViewModels.PrepareSchemaViewModel
 @{
-    SetTitle("Iordningsställande");
+    SetTitle(Localizer["Iordningsställande"].ToString());
 }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
-	<h1>Signeringslistor</h1>
-    @Html.ActionLink("Skapa pdf", "PrintPopUp", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id, Date = Model.StartDate }, new { @class = "btn printp lb-link" })
-    @Html.ActionLink("Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+	<h1>@Localizer["Signeringslistor"]</h1>
+    @Html.ActionLink(Localizer["Skapa_pdf"].ToString(), "PrintPopUp", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id, Date = Model.StartDate }, new { @class = "btn printp lb-link" })
+    @Html.ActionLink(Localizer["Lägg_till"].ToString(), "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 </div>
 <div id="content" class="cf">
 	<div id="content-primary" class="signlist-collection">
         <div id="signlist">
             <div class="h cf">
 				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.UpdatedAt)</h2>
-				@Html.ActionLink("Stäng listan", "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
+				@Html.ActionLink(Localizer["Stäng_listan"].ToString(), "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
 			</div>
 			
             <ul class="nav cf">
-				@Html.MenuLink("Ordinationer", "Details", "Schedule", true, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
-                @Html.MenuLink("Iordningsställande", "Schema", "Prepare", true, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
+				@Html.MenuLink(Localizer["Ordinationer"].ToString(), "Details", "Schedule", true, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
+                @Html.MenuLink(Localizer["Iordningsställande"].ToString(), "Schema", "Prepare", true, new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id })
 			</ul>
             <div id="prepare-weeks">
 			    <div class="week-h">
@@ -30,14 +30,14 @@
                             @Model.StartDate.Day.ToString() @(Model.StartDate.Month != Model.StartDate.AddDays(7).Month ? @Model.StartDate.ToString("MMMM") : "")
                             –@Model.StartDate.AddDays(6).Day.ToString() @Model.StartDate.AddDays(7).ToString("MMMM")</span></h2>
 				    @Html.ActionLink(
-                            String.Format("{0} Vecka {1}", WebUtility.HtmlDecode("&larr;"), Model.StartDate.AddDays(-7).GetWeekNumber()), 
+                            String.Format(Localizer["{0}_Vecka_{1}"].ToString(), WebUtility.HtmlDecode("&larr;"), Model.StartDate.AddDays(-7).GetWeekNumber()), 
                             "Schema",
                             "Prepare",
                             new { id = Model.Patient.Id, startDate = Model.StartDate.AddDays(-7), scheduleId = Model.Schedule.Id }, 
                             new { @class="prev" }
                     )
                     @Html.ActionLink(
-                            String.Format("Vecka {0} {1}",  Model.StartDate.AddDays(8).GetWeekNumber(), WebUtility.HtmlDecode("&rarr;")), 
+                            String.Format(Localizer["Vecka_{0}_{1}"].ToString(),  Model.StartDate.AddDays(8).GetWeekNumber(), WebUtility.HtmlDecode("&rarr;")), 
                             "Schema",
                             "Prepare",
                             new { id = Model.Patient.Id, startDate = Model.StartDate.AddDays(7), scheduleId = Model.Schedule.Id }, 
@@ -48,7 +48,7 @@
 				    <table>
 					    <thead>
 						    <tr>
-							    <th scope="col" class="med">Läkemedel</th>
+							    <th scope="col" class="med">@Localizer["Läkemedel"]</th>
                                 @for (var day = Model.StartDate; Model.StartDate.AddDays(7) > day; day = day.AddDays(1)) {
                                     var dayOfWeek = String.Format("{0:dddd}", day); 
                                     <th scope="col">@dayOfWeek.FirstToUpper() <span>@String.Format("{0:d MMMM}",day)</span></th>
@@ -75,10 +75,10 @@
                                         }
                                         <td @(hasTask ? "class=sel" : "")>
                                             @if (Model.ArchivedWeek) { 
-                                                <span class="mark">@(hasTask ? "Avmarkera" : "Markera")</span>
+                                                <span class="mark">@Localizer[(hasTask ? "Avmarkera" : "Markera")]</span>
                                             } else { 
                                                 @Html.ActionLink(
-                                                    hasTask ? "Avmarkera" : "Markera",
+                                                    Localizer[hasTask ? "Avmarkera" : "Markera"].ToString(),
                                                     "Mark",
                                                     "Prepare",
                                                     new { Id = Model.Patient.Id, PreparedSequenceId = sequence.Id, Date = date, unMark = hasTask },
@@ -92,17 +92,17 @@
                                     { 
                                         <td class="edit">
                                             @Html.ActionLink(
-                                                "Ändra",
+                                                Localizer["Ändra"].ToString(),
                                                 "Update", 
                                                 "Prepare", 
                                                 new { Id = Model.Patient.Id, PreparedSequenceId = sequence.Id }, 
-                                                new { @class = "edit lb-link", @title = "Ändra raden" })
+                                                new { @class = "edit lb-link", @title = Localizer["Ändra_raden"].ToString() })
                                             @Html.ActionLink(
-                                                "Ta bort",
+                                                Localizer["Ta bort"].ToString(),
                                                 "Delete",
                                                 "Prepare",
                                                 new { Id = Model.Patient.Id, StartDate = Model.StartDate, ScheduleId = Model.Schedule.Id, PreparedSequenceId = sequence.Id },
-                                                new { title = "Ta bort läkemedlet", @class = "delete" }
+                                                new { title = Localizer["Ta_bort_läkemedlet"].ToString(), @class = "delete" }
                                             )
 							            </td>
                                     }
@@ -112,8 +112,8 @@
 				    </table>
 			    </div>
 			    <div class="week-a">
-                    @Html.ActionLink("Lägg till", "Create", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
-				    en rad. Markera sedan de dagar som iordningsställts.
+                    @Html.ActionLink(Localizer["Lägg till"].ToString(), "Create", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+				    @Localizer["en_rad__Markera_sedan_de_dagar_som_iordningsställts"]
 			    </div>
             </div>
 

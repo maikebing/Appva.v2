@@ -1,9 +1,9 @@
 ﻿@{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
-    SetTitle("Tillfälligt spärrat konto");
+    SetTitle(Localizer["Tillfälligt_spärrat_konto"].ToString());
 }
 <div class="hd">
-	Tillfälligt spärrat konto
+	@Localizer["Tillfälligt_spärrat_konto"]
 </div>
 <div class="hd org">
     <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
@@ -11,10 +11,9 @@
 </div>
 <div class="bd">
     <span class="alert-danger">
-        Ditt konto har tillfälligt blivit spärrat efter upprepade misslyckade försök att logga in, var
-        vänlig försök igen senare.
+        @Localizer["Ditt_konto_har_tillfälligt_blivit_spärrat_efter_upprepade_misslyckade_försök_att_logga_in__var_vänlig_försök_igen_senare"]
     </span>
     <div class="hr"></div>
-    @Html.ActionLink("Tillbaka till inloggning", "SignIn", "Authentication", null, new { @class = "btn" })
-    @Html.ActionLink("Glömt lösenord?", "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
+    @Html.ActionLink(Localizer["Tillbaka_till_inloggning"].ToString(), "SignIn", "Authentication", null, new { @class = "btn" })
+    @Html.ActionLink(Localizer["Glömt_lösenord_"].ToString(), "Forgot", "Account", null, new { @class = "btn btn-right forgot" })
 </div>

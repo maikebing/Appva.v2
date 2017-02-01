@@ -1,24 +1,24 @@
 ﻿@model Appva.Mcss.Admin.Models.OverviewInventoryModel
 @using Appva.Mcss.Admin.Application.Common;
 <div>
-	<div class="heading cf"><h2>Kontrollräkning narkotika</h2></div>
+	<div class="heading cf"><h2>@Localizer["Kontrollräkning_narkotika"]</h2></div>
 	<div class="panel-c">
         @if (Model.DelayedStockCounts.Count > 0) {
-            <h3><img src="@Url.Image("icn-alarm-s.png")" alt=""> Försenade kontrollräkningar</h3>
+            <h3><img src="@Url.Image("icn-alarm-s.png")" alt=""> @Localizer["Försenade_kontrollräkningar"]</h3>
 		    <table>
 		    	<thead>
 		    		<tr>
-		    			<th scope="col">Boende</th>
-		    			<th scope="col">Preparat</th>
-		    			<th scope="col">Dagar kvar</th>
+		    			<th scope="col">@Localizer["Boende"]</th>
+		    			<th scope="col">@Localizer["Preparat"]</th>
+		    			<th scope="col">@Localizer["Dagar_kvar"]</th>
 		    		</tr>
 		    	</thead>
                 <tbody>
                     @foreach (var item in Model.DelayedStockCounts) {
                         var daysLeft = item.LastRecount.GetValueOrDefault().Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
                         var daysLeftText = item.LastRecount.HasValue ?
-                            string.Format("{0} {1}", daysLeft, (daysLeft == 1 ? "dag" : "dagar")) :
-                            string.Format("Aldrig räknad");
+                            string.Format("{0} {1}", daysLeft, (daysLeft == 1 ? Localizer["day"].ToString() : Localizer["days"].ToString())) :
+                            string.Format(Localizer["Aldrig_räknad"].ToString());
                         <tr class="urgent">
                             <td>
                                 @if (Html.HasPermissionFor(Permissions.Inventory.Read))
@@ -41,13 +41,13 @@
 		    </table>
         }
         @if (Model.CommingStockCounts.Where(x => x.LastRecount.HasValue).ToList().Count > 0) {
-		    <h3>Kontrollräkningar</h3>
+		    <h3>@Localizer["Kontrollräkningar"]</h3>
 		    <table>
 		    	<thead>
 		    		<tr>
-		    			<th scope="col">Boende</th>
-		    			<th scope="col">Preparat</th>
-		    			<th scope="col">Dagar kvar</th>
+		    			<th scope="col">@Localizer["Boende"]</th>
+		    			<th scope="col">@Localizer["Preparat"]</th>
+		    			<th scope="col">@Localizer["Dagar_kvar"]</th>
 		    		</tr>
 		    	</thead>
                 <tbody>
@@ -57,8 +57,8 @@
                         {
                             var daysLeft = item.LastRecount.GetValueOrDefault().Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
                             var daysLeftText = item.LastRecount.HasValue ?
-                                string.Format("{0} {1}", daysLeft, (daysLeft == 1 ? "dag" : "dagar")) :
-                                string.Format("Aldrig räknad");
+                                string.Format("{0} {1}", daysLeft, (daysLeft == 1 ? Localizer["day"].ToString() : Localizer["days"].ToString())) :
+                                string.Format(Localizer["Aldrig_räknad"].ToString());
                             <tr class="@((daysLeft <= 7) ? "urgent" : "")">
                                 <td>
                                     @if (Html.HasPermissionFor(Permissions.Inventory.Read))
@@ -85,7 +85,7 @@
         }
         @if (Model.CommingStockCounts.Count == 0 && Model.DelayedStockCounts.Count == 0) {
             <div class="no-data">
-                <h3>Inga försenade kontrollräkningar</h3>
+                <h3>@Localizer["Inga_försenade_kontrollräkningar"]</h3>
             </div>
         }
 	</div>

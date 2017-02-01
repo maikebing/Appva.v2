@@ -1,10 +1,10 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
 @model HomeViewModel
-@{ SetTitle("Översikt"); }
+@{ SetTitle(Localizer["Översikt"].ToString()); }
 <div class="status-view">
     <div id="content" class="cf">
         <div id="status-filter" class="cf">
-            @Html.ActionLink(Permissions.Report.Read, "Fullständig rapport ...", "FullReport", "Report", new { Area = "Report" }, new { @class = "btn" })
+            @Html.ActionLink(Permissions.Report.Read, Localizer["Fullständig_rapport_"].ToString(), "FullReport", "Report", new { Area = "Report" }, new { @class = "btn" })
         </div>
         @if (TempData["Message"] != null) {
             <div class="success-msg" style="margin: 0 20px 20px;">
@@ -14,30 +14,30 @@
         <div id="content-primary">
             @if (Html.HasPermissionFor(Permissions.Dashboard.ReadDelayedTasks))
             { 
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Alerts", widgetArea = "Patient", header = "Pågående insatser" }); 
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Alerts", widgetArea = "Patient", header = Localizer["Pågående_insatser"].ToString() }); 
             }
             @if (Html.HasPermissionFor(Permissions.Dashboard.ReadControlCountNarcotics))
-            { 
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Inventory", widgetArea = "Patient", header = "Kontrollräkning narkotika" }); 
+            {
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Inventory", widgetArea = "Patient", header = Localizer["Kontrollräkning_narkotika"].ToString() }); 
             }
             @if (Html.HasPermissionFor(Permissions.Dashboard.ReadChart))
             {
             <div class="panel">
                 <div class="heading cf">
-                    @Html.ActionLink(Permissions.Report.Read, "Fullständig rapport ...", "FullReport", "Report", new { Area = "Report" }, new { })
+                    @Html.ActionLink(Permissions.Report.Read, Localizer["Fullständig_rapport_"].ToString(), "FullReport", "Report", new { Area = "Report" }, new { })
                     <h2>Totalt resultat senaste veckan</h2>
                 </div>
                 <div id="report" class="cf">
                     <div id="chart" class="chart" style="height: 200px;"></div>
                     <div class="data cf">
                         <dl>
-                            <dt>I tid</dt>
+                            <dt>@Localizer["I_tid"]</dt>
                             <dd id="onTime">
-                                <img src="@Url.Image("ajax-load.gif")" alt="Laddar" />
+                                <img src="@Url.Image("ajax-load.gif")" alt="@Localizer["Laddar"]" />
                             </dd>
-                            <dt>Ej i tid</dt>
+                            <dt>@Localizer["Ej_i_tid"]</dt>
                             <dd id="notOnTime">
-                                <img src="@Url.Image("ajax-load.gif")" alt="Laddar" />
+                                <img src="@Url.Image("ajax-load.gif")" alt="@Localizer["Laddar"]" />
                             </dd>
                         </dl>
                     </div>
@@ -48,24 +48,24 @@
         <div id="content-secondary">
             @if (Model.HasOrderOverview && Html.HasPermissionFor(Permissions.Dashboard.ReadOrderRefill))
             {
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Order", widgetArea = "Patient", header = "Påfyllning av läkemedel" });
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Order", widgetArea = "Patient", header = Localizer["Påfyllning_av_läkemedel"].ToString() });
             }
             @if (Model.HasCalendarOverview && Html.HasPermissionFor(Permissions.Dashboard.ReadCalendar))
             {
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Calendar", widgetArea = "Patient", header = "Kalender de närmaste 7 dagarna" });
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Calendar", widgetArea = "Patient", header = Localizer["Kalender_de_närmaste_7_dagarna"].ToString() });
             }
             @if (Html.HasPermissionFor(Permissions.Dashboard.ReadDelegation))
-            { 
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Delegation", widgetArea = "Practitioner", header = "Utlöpande delegeringar" }); 
+            {
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Delegation", widgetArea = "Practitioner", header = Localizer["Utlöpande_delegeringar"].ToString() });
             }
-                
+
         </div>
     </div>
 
     @{ Html.RenderAction("Dashboard", "Notification", new { area = "notification" }); }
     @*{ Html.RenderPartial("/Areas/Notification/Features/Notification/Partials/Templates/pdf.cshtml"); }*@
 
-</div>
+></div>
 @if (Html.HasPermissionFor(Permissions.Dashboard.ReadChart))
 {
 <script type="text/javascript">
@@ -84,16 +84,16 @@
                 $('#notOnTime').html(data.NotOnTimePercentage + "%");
                 $('#onTime').html(data.OnTimePercentage + "%");
                 if (data.OnTimePercentage > 0) {
-                    $('#onTime').append('<img src="@Url.Image("trendup.png")" alt="Uppåtgående" />');
+                    $('#onTime').append('<img src="@Url.Image("trendup.png")" alt="@Localizer["Uppåtgående"].ToString()" />');
                 }
                 else {
-                    $('#onTime').append('<img src="@Url.Image("trenddn.png")" alt="Nedåtgående" />');
+                    $('#onTime').append('<img src="@Url.Image("trenddn.png")" alt="@Localizer["Nedåtgående"].ToString()" />');
                 }
             })
     .error(function () {
         $("#report").addClass('error');
         $("#report").empty();
-        $("#report").append('<div class="loader">Ett fel inträffade!</div>')
+        $("#report").append('<div class="loader">@Localizer["Ett_fel_inträffade"].ToString()</div>')
     });
 </script>
 }

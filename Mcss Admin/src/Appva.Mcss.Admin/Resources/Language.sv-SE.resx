@@ -117,7 +117,1255 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LoggaIn" xml:space="preserve">
+  <data name="(Sparas_i_10_år)" xml:space="preserve">
+    <value>(Sparas i 10 år)</value>
+  </data>
+  <data name="Adress" xml:space="preserve">
+    <value>Adress</value>
+  </data>
+  <data name="Adress_" xml:space="preserve">
+    <value>Adress:</value>
+  </data>
+  <data name="Adress_måste_väljas" xml:space="preserve">
+    <value>Adress måste väljas.</value>
+  </data>
+  <data name="Aktivera" xml:space="preserve">
+    <value>Aktivera</value>
+  </data>
+  <data name="Aktiverad" xml:space="preserve">
+    <value>Aktiverad</value>
+  </data>
+  <data name="Aktivera_alla_delegeringar_för_{0}" xml:space="preserve">
+    <value>Aktivera alla delegeringar_för {0}</value>
+  </data>
+  <data name="Aktivera_synkronisering" xml:space="preserve">
+    <value>Aktivera synkronisering</value>
+  </data>
+  <data name="Aktivitet" xml:space="preserve">
+    <value>Aktivitet</value>
+  </data>
+  <data name="Aktuella" xml:space="preserve">
+    <value>Aktuella</value>
+  </data>
+  <data name="Aktuella_delegeringar__{0}" xml:space="preserve">
+    <value>Aktuella delegeringar, {0}</value>
+  </data>
+  <data name="Aktuellet_saldo" xml:space="preserve">
+    <value>Aktuellet saldo</value>
+  </data>
+  <data name="Aktuell_delegering" xml:space="preserve">
+    <value>Aktuell delegering</value>
+  </data>
+  <data name="Aldrig_räknad" xml:space="preserve">
+    <value>Aldrig räknad</value>
+  </data>
+  <data name="Alla" xml:space="preserve">
+    <value>Alla</value>
+  </data>
+  <data name="Alla_boende_på_" xml:space="preserve">
+    <value>Alla boende på:</value>
+  </data>
+  <data name="Alla_delegeringar" xml:space="preserve">
+    <value>Alla delegeringar</value>
+  </data>
+  <data name="Alla_delegeringar_" xml:space="preserve">
+    <value>Alla delegeringar...</value>
+  </data>
+  <data name="Alla_mottagna_delegeringar__{0}" xml:space="preserve">
+    <value>Alla mottagna delegeringar, {0}</value>
+  </data>
+  <data name="Andel_signerade_insatser" xml:space="preserve">
+    <value>Andel signerade insatser</value>
+  </data>
+  <data name="Ange_när_det_ska_ges" xml:space="preserve">
+    <value>Ange när det ska ges</value>
+  </data>
+  <data name="Ange_saldo" xml:space="preserve">
+    <value>Ange förbrukningsjournal</value>
+  </data>
+  <data name="Ansvarig" xml:space="preserve">
+    <value>Ansvarig</value>
+  </data>
+  <data name="Ansvarig_kontaktperson_" xml:space="preserve">
+    <value>Ansvarig kontaktperson:</value>
+  </data>
+  <data name="Ansvarig_sjuksköterska_" xml:space="preserve">
+    <value>Ansvarig sjuksköterska:</value>
+  </data>
+  <data name="Ansvarig_ssk" xml:space="preserve">
+    <value>Ansvarig ssk:</value>
+  </data>
+  <data name="Antal" xml:space="preserve">
+    <value>Antal</value>
+  </data>
+  <data name="Anteckningar_instruktion_" xml:space="preserve">
+    <value>Anteckningar/instruktion:</value>
+  </data>
+  <data name="Anteckning_eller_instruktion" xml:space="preserve">
+    <value>Anteckning eller instruktion</value>
+  </data>
+  <data name="Användaren_har_aldrig_synkroniserats" xml:space="preserve">
+    <value>Användaren har aldrig synkroniserats</value>
+  </data>
+  <data name="Användaren_synkroniserades_senast" xml:space="preserve">
+    <value>Användaren synkroniserades senast</value>
+  </data>
+  <data name="Användaren_är_ej_synkroniserad" xml:space="preserve">
+    <value>Användaren är ej synkroniserad</value>
+  </data>
+  <data name="Användaren_är_synkroniserad" xml:space="preserve">
+    <value>Användaren är synkroniserad</value>
+  </data>
+  <data name="Användarnamn" xml:space="preserve">
+    <value>Användarnamn</value>
+  </data>
+  <data name="Appva_MCSS_version" xml:space="preserve">
+    <value>Appva MCSS version</value>
+  </data>
+  <data name="Att_ge" xml:space="preserve">
+    <value>To do</value>
+  </data>
+  <data name="Avbryt" xml:space="preserve">
+    <value>Avbryt</value>
+  </data>
+  <data name="Avlidna" xml:space="preserve">
+    <value>Avlidna</value>
+  </data>
+  <data name="Avmarkera" xml:space="preserve">
+    <value>Avmarkera</value>
+  </data>
+  <data name="Avvikelse_" xml:space="preserve">
+    <value>Avvikelse:</value>
+  </data>
+  <data name="Av_säkerhetsskäl_rekommenderar_vi_att_du_även_stänger_din_webbläsare" xml:space="preserve">
+    <value>Av säkerhetsskäl rekommenderar vi att du även stänger din webbläsare</value>
+  </data>
+  <data name="Begärdes_av" xml:space="preserve">
+    <value>Begärdes av</value>
+  </data>
+  <data name="Beställd" xml:space="preserve">
+    <value>Beställd</value>
+  </data>
+  <data name="Boende" xml:space="preserve">
+    <value>Boende</value>
+  </data>
+  <data name="Borttagna" xml:space="preserve">
+    <value>Borttagna</value>
+  </data>
+  <data name="Byt_lösenord" xml:space="preserve">
+    <value>Byt lösenord</value>
+  </data>
+  <data name="Chef_" xml:space="preserve">
+    <value>Chef:</value>
+  </data>
+  <data name="Dag" xml:space="preserve">
+    <value>Dag</value>
+  </data>
+  <data name="dagar" xml:space="preserve">
+    <value>dagar</value>
+  </data>
+  <data name="dagar_kvar" xml:space="preserve">
+    <value>dagar kvar</value>
+  </data>
+  <data name="Datum" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012-12-21" xml:space="preserve">
+    <value>Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21</value>
+  </data>
+  <data name="Delegerade_hälso-_och_sjukvårdsuppgifter_" xml:space="preserve">
+    <value>Delegerade hälso- och sjukvårdsuppgifter:</value>
+  </data>
+  <data name="Delegering" xml:space="preserve">
+    <value>Delegering</value>
+  </data>
+  <data name="Delegeringsbeslut" xml:space="preserve">
+    <value>Delegeringsbeslut</value>
+  </data>
+  <data name="Delegeringsbeslut_av_sjuksköterskan_gällande_hälso-_och_sjukvårdsuppgifter" xml:space="preserve">
+    <value>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</value>
+  </data>
+  <data name="Delvis_given" xml:space="preserve">
+    <value>Delvis given</value>
+  </data>
+  <data name="den_1_torsdagen" xml:space="preserve">
+    <value>den 1 torsdagen</value>
+  </data>
+  <data name="Den_boende_har_inga_saldon" xml:space="preserve">
+    <value>Den boende har inga saldon</value>
+  </data>
+  <data name="Det_finns_ingen_synkronisering_aktiverad" xml:space="preserve">
+    <value>Det finns ingen synkronisering aktiverad</value>
+  </data>
+  <data name="Ditt_användarnamn" xml:space="preserve">
+    <value>Ditt användarnamn</value>
+  </data>
+  <data name="Ditt_konto_har_tillfälligt_blivit_spärrat_efter_upprepade_misslyckade_försök_att_logga_in__var_vänlig_försök_igen_senare" xml:space="preserve">
+    <value>Ditt konto har tillfälligt blivit spärrat efter upprepade misslyckade försök att logga in, var vänlig försök igen senare</value>
+  </data>
+  <data name="Ditt_lösenord" xml:space="preserve">
+    <value>Ditt lösenord</value>
+  </data>
+  <data name="Ditt_lösenord_är_nu_bytt" xml:space="preserve">
+    <value>Ditt lösenord är nu bytt</value>
+  </data>
+  <data name="Ditt_lösenord_är_sparat" xml:space="preserve">
+    <value>Ditt lösenord är sparat</value>
+  </data>
+  <data name="Du_har_nu_blivit_utloggad" xml:space="preserve">
+    <value>Du har nu blivit utloggad</value>
+  </data>
+  <data name="Efternamn" xml:space="preserve">
+    <value>Efternamn</value>
+  </data>
+  <data name="Efternamn_måste_fyllas_i" xml:space="preserve">
+    <value>Efternamn måste fyllas i.</value>
+  </data>
+  <data name="Ej synkroniserade" xml:space="preserve">
+    <value>Ej synkroniserade</value>
+  </data>
+  <data name="Ej_aktiverad" xml:space="preserve">
+    <value>Ej aktiverad</value>
+  </data>
+  <data name="Ej_given" xml:space="preserve">
+    <value>Ej given</value>
+  </data>
+  <data name="Ej_i_tid" xml:space="preserve">
+    <value>Ej i tid</value>
+  </data>
+  <data name="Ej_kvitterad" xml:space="preserve">
+    <value>Ej kvitterad</value>
+  </data>
+  <data name="Ej_åtgärdat_larm_" xml:space="preserve">
+    <value>Ej åtgärdat larm:</value>
+  </data>
+  <data name="Endast_avvikelser" xml:space="preserve">
+    <value>Endast avvikelser</value>
+  </data>
+  <data name="Endast_mina" xml:space="preserve">
+    <value>Endast mina</value>
+  </data>
+  <data name="Endast_vid_behov" xml:space="preserve">
+    <value>Endast vid behov</value>
+  </data>
+  <data name="Enhetschef_" xml:space="preserve">
+    <value>Enhetschef:</value>
+  </data>
+  <data name="en_rad__Markera_sedan_de_dagar_som_iordningsställts" xml:space="preserve">
+    <value>en rad. Markera sedan de dagar som iordningsställts</value>
+  </data>
+  <data name="Ett_fel_har_uppstått" xml:space="preserve">
+    <value>Ett fel har uppstått</value>
+  </data>
+  <data name="Ett_fel_inträffade" xml:space="preserve">
+    <value>Ett fel inträffade</value>
+  </data>
+  <data name="Exportera_till_Excel" xml:space="preserve">
+    <value>Exportera till Excel</value>
+  </data>
+  <data name="Extern_Katalog" xml:space="preserve">
+    <value>Extern Katalog</value>
+  </data>
+  <data name="E_postadress" xml:space="preserve">
+    <value>E-postadress</value>
+  </data>
+  <data name="Felaktigt_användarnamn_och_eller_lösenord" xml:space="preserve">
+    <value>Felaktigt användarnamn och eller lösenord</value>
+  </data>
+  <data name="Felaktig_e_postadress_och_eller_personnummer" xml:space="preserve">
+    <value>Felaktig e-postadress och eller personnummer</value>
+  </data>
+  <data name="Filtrera_på_kategori_" xml:space="preserve">
+    <value>Filtrera på kategori:</value>
+  </data>
+  <data name="fler_i_tid" xml:space="preserve">
+    <value>fler i tid</value>
+  </data>
+  <data name="fornamn_efternamn_organisation_se" xml:space="preserve">
+    <value>fornamn.efternamn@organisation.se</value>
+  </data>
+  <data name="Fredag" xml:space="preserve">
+    <value>Fredag</value>
+  </data>
+  <data name="Frekvens" xml:space="preserve">
+    <value>Frekvens</value>
+  </data>
+  <data name="Frivilligt" xml:space="preserve">
+    <value>Frivilligt</value>
+  </data>
+  <data name="Frånvaro_" xml:space="preserve">
+    <value>Frånvaro?</value>
+  </data>
+  <data name="Från_" xml:space="preserve">
+    <value>Från:</value>
+  </data>
+  <data name="Fullständig_rapport_" xml:space="preserve">
+    <value>Fullständig rapport...</value>
+  </data>
+  <data name="Fullständig_resultatrapport" xml:space="preserve">
+    <value>Fullständig resultatrapport</value>
+  </data>
+  <data name="färre_i_tid" xml:space="preserve">
+    <value>färre i tid</value>
+  </data>
+  <data name="Får_endast_ges_av_legitimerad_{0}" xml:space="preserve">
+    <value>Får endast ges av legitimerad_{0}</value>
+  </data>
+  <data name="Följande_aktiviteter_genomfördes_inte_i_tid_" xml:space="preserve">
+    <value>Följande aktiviteter genomfördes inte i tid:</value>
+  </data>
+  <data name="Förbrukningsjournal" xml:space="preserve">
+    <value>Förbrukningsjournal</value>
+  </data>
+  <data name="Föregående" xml:space="preserve">
+    <value>Föregående</value>
+  </data>
+  <data name="Förnamn" xml:space="preserve">
+    <value>Förnamn</value>
+  </data>
+  <data name="Förnamn_måste_fyllas_i" xml:space="preserve">
+    <value>Förnamn måste fyllas i.</value>
+  </data>
+  <data name="Förnya" xml:space="preserve">
+    <value>Förnya</value>
+  </data>
+  <data name="Förnya_alla_delegeringar_" xml:space="preserve">
+    <value>Förnya alla delegeringar:</value>
+  </data>
+  <data name="Förnya_delegeringar" xml:space="preserve">
+    <value>Förnya delegeringar</value>
+  </data>
+  <data name="Förnya_delegeringar_för_{0}" xml:space="preserve">
+    <value>Förnya delegeringar för {0}</value>
+  </data>
+  <data name="Försenade" xml:space="preserve">
+    <value>Försenade</value>
+  </data>
+  <data name="Försenade_kontrollräkningar" xml:space="preserve">
+    <value>Försenade kontrollräkningar</value>
+  </data>
+  <data name="för_att_logga_in_med_ditt_SITHS_eID" xml:space="preserve">
+    <value>för att logga in med ditt SITHS eID</value>
+  </data>
+  <data name="För_boende" xml:space="preserve">
+    <value>För boende</value>
+  </data>
+  <data name="För_långa_meningar_kan_oavsiktligt_förkortas_i_signeringsenhet_Kontrollera_att_texten_är_synlig_i_sin_helhet_på_signeringsenhet__eller_använd_instruktionsfältet_för_längre_kompletterande_text" xml:space="preserve">
+    <value>För långa meningar kan oavsiktligt förkortas i signeringsenhet. Kontrollera att texten är synlig i sin helhet på signeringsenhet eller använd instruktionsfältet för längre kompletterande text</value>
+  </data>
+  <data name="Förändring_från_föregående_period" xml:space="preserve">
+    <value>Förändring från föregående period</value>
+  </data>
+  <data name="Gavs" xml:space="preserve">
+    <value>Gavs</value>
+  </data>
+  <data name="Genomförd" xml:space="preserve">
+    <value>Genomförd</value>
+  </data>
+  <data name="Genomfördes" xml:space="preserve">
+    <value>Genomfördes</value>
+  </data>
+  <data name="genomfördes_" xml:space="preserve">
+    <value>genomfördes:</value>
+  </data>
+  <data name="Genomförd_av" xml:space="preserve">
+    <value>Genomförd av</value>
+  </data>
+  <data name="Genomgångna_kunskapstester" xml:space="preserve">
+    <value>Genomgångna kunskapstester</value>
+  </data>
+  <data name="Genomsnittlig_avvikelse_i_tid" xml:space="preserve">
+    <value>Genomsnittlig avvikelse i tid</value>
+  </data>
+  <data name="Ges_inom_" xml:space="preserve">
+    <value>Ges inom:</value>
+  </data>
+  <data name="Given_för_sent" xml:space="preserve">
+    <value>Given för sent</value>
+  </data>
+  <data name="Glömt_lösenord" xml:space="preserve">
+    <value>Glömt lösenord</value>
+    <comment>Forgot password title</comment>
+  </data>
+  <data name="Glömt_lösenord_" xml:space="preserve">
+    <value>Glömt lösenord?</value>
+    <comment>Forgot password button</comment>
+  </data>
+  <data name="Gäller" xml:space="preserve">
+    <value>Gäller</value>
+  </data>
+  <data name="Gäller_(max_1_år)" xml:space="preserve">
+    <value>Gäller (max 1 år)</value>
+  </data>
+  <data name="Gäller_för" xml:space="preserve">
+    <value>Gäller för</value>
+  </data>
+  <data name="Gäller_för_" xml:space="preserve">
+    <value>Gäller för:</value>
+  </data>
+  <data name="Hanterat_av" xml:space="preserve">
+    <value>Hanterat av</value>
+  </data>
+  <data name="Har_ej_genomförts" xml:space="preserve">
+    <value>Har ej genomförts</value>
+  </data>
+  <data name="Har_skyddade_uppgifter_" xml:space="preserve">
+    <value>Har skyddade uppgifter?</value>
+  </data>
+  <data name="Hej" xml:space="preserve">
+    <value>Hej</value>
+  </data>
+  <data name="Hela_dagen" xml:space="preserve">
+    <value>Hela dagen</value>
+  </data>
+  <data name="Hela_dagen_{1:d MMM yyyy}" xml:space="preserve">
+    <value>Hela dagen {1:d MMM yyyy}</value>
+  </data>
+  <data name="Historik" xml:space="preserve">
+    <value>Historik</value>
+  </data>
+  <data name="Hjälp" xml:space="preserve">
+    <value>Hjälp</value>
+  </data>
+  <data name="HSA" xml:space="preserve">
+    <value>HSA</value>
+  </data>
+  <data name="HSA_ID" xml:space="preserve">
+    <value>HSA ID</value>
+  </data>
+  <data name="Händelsen_behöver_inte_kvitteras" xml:space="preserve">
+    <value>Händelsen behöver inte kvitteras</value>
+  </data>
+  <data name="Händelsen_behöver_inte_signeras" xml:space="preserve">
+    <value>Händelsen behöver inte signeras</value>
+  </data>
+  <data name="idag" xml:space="preserve">
+    <value>idag</value>
+  </data>
+  <data name="Idag_{0:HH:mm}" xml:space="preserve">
+    <value>Idag {0:HH:mm}</value>
+  </data>
+  <data name="Ifylld_signeringslista" xml:space="preserve">
+    <value>Ifylld signeringslista</value>
+  </data>
+  <data name="igår" xml:space="preserve">
+    <value>igår</value>
+  </data>
+  <data name="Inaktivera" xml:space="preserve">
+    <value>Inaktivera</value>
+  </data>
+  <data name="Inaktiverade" xml:space="preserve">
+    <value>Inaktiverade</value>
+  </data>
+  <data name="Inga_försenade_insatser_just_nu" xml:space="preserve">
+    <value>Inga försenade insatser just nu</value>
+  </data>
+  <data name="Inga_försenade_kontrollräkningar" xml:space="preserve">
+    <value>Inga försenade kontrollräkningar</value>
+  </data>
+  <data name="Inga_händelser_för_angiven_ tidsperiod" xml:space="preserve">
+    <value>Inga händelser för angiven tidsperiod</value>
+  </data>
+  <data name="Inga_kommande_händelser" xml:space="preserve">
+    <value>Inga kommande händelser</value>
+  </data>
+  <data name="Inga_påfyllningar_begärda" xml:space="preserve">
+    <value>Inga påfyllningar begärda</value>
+  </data>
+  <data name="Inga_pågående_larm" xml:space="preserve">
+    <value>Inga pågående larm</value>
+  </data>
+  <data name="Inga_signerade_händelser_för_angiven_tidsperiod" xml:space="preserve">
+    <value>Inga signerade händelser för angiven tidsperiod</value>
+  </data>
+  <data name="Inga_utlöpande_delegeringar" xml:space="preserve">
+    <value>Inga utlöpande delegeringar</value>
+  </data>
+  <data name="Ingen_användare_hittades" xml:space="preserve">
+    <value>Ingen användare hittades</value>
+  </data>
+  <data name="Inloggad_som" xml:space="preserve">
+    <value>Inloggad som:</value>
+  </data>
+  <data name="Innehåller_{0}_fel" xml:space="preserve">
+    <value>Innehåller {0} fel</value>
+  </data>
+  <data name="inom" xml:space="preserve">
+    <value>inom</value>
+  </data>
+  <data name="Insatsen_är_kopplad_till_ett_borttaget_ saldo" xml:space="preserve">
+    <value>Insatsen är kopplad till en borttagen förbrukningsjournal</value>
+  </data>
+  <data name="Insatser" xml:space="preserve">
+    <value>Insatser</value>
+  </data>
+  <data name="Insatser_som_skulle_ha_utförts_före_insatsen_skapats_kommer_inte_markeras_som_avikelser_eller_skapa_några_larm__Insatserna_kommer_att_synas_och_kan_signeras_men_kommer_inte_att_generera_några_larm" xml:space="preserve">
+    <value>Insatser som skulle ha utförts före insatsen skapats kommer inte markeras som avikelser eller skapa några larm. Insatserna kommer att synas och kan signeras men kommer inte att generera några larm</value>
+  </data>
+  <data name="Insatser_under_perioden" xml:space="preserve">
+    <value>Insatser under perioden</value>
+  </data>
+  <data name="Instruktion" xml:space="preserve">
+    <value>Instruktion</value>
+  </data>
+  <data name="Inte_signerad" xml:space="preserve">
+    <value>Inte signerad</value>
+  </data>
+  <data name="Iordningsställande" xml:space="preserve">
+    <value>Iordningsställande</value>
+  </data>
+  <data name="I_tid" xml:space="preserve">
+    <value>I tid</value>
+  </data>
+  <data name="Jag_fick_inte_något_e_postmeddelande" xml:space="preserve">
+    <value>Jag fick inte något e-postmeddelande</value>
+  </data>
+  <data name="Kalender" xml:space="preserve">
+    <value>Kalender</value>
+  </data>
+  <data name="Kalender_de_närmaste_7_dagarna" xml:space="preserve">
+    <value>Kalender de närmaste 7 dagarna</value>
+  </data>
+  <data name="Kan_ej_ta" xml:space="preserve">
+    <value>Kan ej ta</value>
+  </data>
+  <data name="Klicka_här" xml:space="preserve">
+    <value>Klicka här</value>
+  </data>
+  <data name="Klockan_" xml:space="preserve">
+    <value>Klockan:</value>
+  </data>
+  <data name="Klockslag_" xml:space="preserve">
+    <value>Klockslag:</value>
+  </data>
+  <data name="kl_{0:HH:mm}" xml:space="preserve">
+    <value>kl {0:HH:mm}</value>
+  </data>
+  <data name="kl_{0}" xml:space="preserve">
+    <value>kl {0}</value>
+  </data>
+  <data name="Kommande" xml:space="preserve">
+    <value>Kommande</value>
+  </data>
+  <data name="Kontakta_din_administratör_om_att_aktivera_synkronisering_av_användare_i_MCSS" xml:space="preserve">
+    <value>Kontakta din administratör om att aktivera synkronisering av användare i MCSS</value>
+  </data>
+  <data name="Kontollräknat_saldo_stämmer_ ej" xml:space="preserve">
+    <value>Kontollräknat saldo stämmer ej</value>
+  </data>
+  <data name="Kontrollera_din_e_post" xml:space="preserve">
+    <value>Kontrollera din e-post</value>
+  </data>
+  <data name="Kontrollräkna" xml:space="preserve">
+    <value>Kontrollräkna</value>
+  </data>
+  <data name="Kontrollräkningar" xml:space="preserve">
+    <value>Kontrollräkningar</value>
+  </data>
+  <data name="Kontrollräkning_narkotika" xml:space="preserve">
+    <value>Kontrollräkning narkotika</value>
+  </data>
+  <data name="Kunskapstester" xml:space="preserve">
+    <value>Kunskapstester</value>
+  </data>
+  <data name="Kvittera" xml:space="preserve">
+    <value>Kvittera</value>
+  </data>
+  <data name="Kvitterad" xml:space="preserve">
+    <value>Kvitterad</value>
+  </data>
+  <data name="Kvitterade_larm" xml:space="preserve">
+    <value>Kvitterade larm</value>
+  </data>
+  <data name="Kvitterad_av_" xml:space="preserve">
+    <value>Kvitterad av:</value>
+  </data>
+  <data name="Kvitterad_av_{0}" xml:space="preserve">
+    <value>Kvitterad av {0}</value>
+  </data>
+  <data name="Kvittera_alla_larm" xml:space="preserve">
+    <value>Kvittera alla larm</value>
+  </data>
+  <data name="Kvittera_larm" xml:space="preserve">
+    <value>Kvittera larm</value>
+  </data>
+  <data name="Kvittering" xml:space="preserve">
+    <value>Kvittering</value>
+  </data>
+  <data name="Larm" xml:space="preserve">
+    <value>Larm</value>
+  </data>
+  <data name="Larm_" xml:space="preserve">
+    <value>Larm!</value>
+  </data>
+  <data name="Larm_åtgärdat" xml:space="preserve">
+    <value>Larm åtgärdat</value>
+  </data>
+  <data name="LDAP" xml:space="preserve">
+    <value>LDAP</value>
+  </data>
+  <data name="Ldap-synkronisering_måste_aktiveras_innan_användaren_kan_synkroniseras" xml:space="preserve">
+    <value>Ldap-synkronisering måste aktiveras innan användaren kan synkroniseras</value>
+  </data>
+  <data name="Logga_in" xml:space="preserve">
     <value>Logga in</value>
+  </data>
+  <data name="Logga_in1" xml:space="preserve">
+    <value>Logga in </value>
+  </data>
+  <data name="Logga_in_på_nytt_för_att_använda_MCSS" xml:space="preserve">
+    <value>Logga in på nytt för att använda MCSS</value>
+  </data>
+  <data name="Logga_ut" xml:space="preserve">
+    <value>Logga ut</value>
+  </data>
+  <data name="Lägg_till" xml:space="preserve">
+    <value>Lägg till</value>
+  </data>
+  <data name="Lägg_till_delegering" xml:space="preserve">
+    <value>Lägg till delegering</value>
+  </data>
+  <data name="Lägg_till_kunskapstest" xml:space="preserve">
+    <value>Lägg till kunskapstest</value>
+  </data>
+  <data name="Lägg_till_rad" xml:space="preserve">
+    <value>Lägg till rad</value>
+  </data>
+  <data name="Läkemedel" xml:space="preserve">
+    <value>Läkemedel</value>
+  </data>
+  <data name="Löper_ut" xml:space="preserve">
+    <value>Löper ut</value>
+  </data>
+  <data name="Löper_ut_inom_50_dagar" xml:space="preserve">
+    <value>Löper ut inom 50 dagar</value>
+  </data>
+  <data name="Lördag" xml:space="preserve">
+    <value>Lördag</value>
+  </data>
+  <data name="Lösenord" xml:space="preserve">
+    <value>Lösenord</value>
+  </data>
+  <data name="Lösenordslänken_har_gått_ut__vänligen_begär_en_ny_genom_att_klicka_på_knappen__skicka_ny_återställningslänk__nedan" xml:space="preserve">
+    <value>Lösenordslänken har gått ut, vänligen begär en ny genom att klicka på knappen "skicka ny återställningslänk" nedan</value>
+  </data>
+  <data name="Lösenord_måste_stämma_överens" xml:space="preserve">
+    <value>Lösenord måste stämma överens</value>
+  </data>
+  <data name="Mail" xml:space="preserve">
+    <value>Mail</value>
+  </data>
+  <data name="Markera" xml:space="preserve">
+    <value>Markera</value>
+  </data>
+  <data name="Max_1_år" xml:space="preserve">
+    <value>Max 1 år</value>
+  </data>
+  <data name="MCSS" xml:space="preserve">
+    <value>MCSS</value>
+  </data>
+  <data name="Medarbetare" xml:space="preserve">
+    <value>Medarbetare</value>
+  </data>
+  <data name="Medskickad" xml:space="preserve">
+    <value>Medskickad</value>
+  </data>
+  <data name="Med_delegering_" xml:space="preserve">
+    <value>Med delegering:</value>
+  </data>
+  <data name="Med_titel_" xml:space="preserve">
+    <value>Med titel:</value>
+  </data>
+  <data name="Mina" xml:space="preserve">
+    <value>Mina</value>
+  </data>
+  <data name="Mina_delegeringar" xml:space="preserve">
+    <value>Mina delegeringar</value>
+  </data>
+  <data name="minuter_efter" xml:space="preserve">
+    <value>minuter efter</value>
+  </data>
+  <data name="minuter_innan" xml:space="preserve">
+    <value>minuter innan</value>
+  </data>
+  <data name="min_efter" xml:space="preserve">
+    <value>min efter</value>
+  </data>
+  <data name="min_innan" xml:space="preserve">
+    <value>min innan</value>
+  </data>
+  <data name="Mottagna_delegeringar" xml:space="preserve">
+    <value>Mottagna delegeringar</value>
+  </data>
+  <data name="månad" xml:space="preserve">
+    <value>månad</value>
+  </data>
+  <data name="Måndag" xml:space="preserve">
+    <value>Måndag</value>
+  </data>
+  <data name="Namn" xml:space="preserve">
+    <value>Namn</value>
+  </data>
+  <data name="Namnunderskrift_av_den_som_tar_emot_delegeringen" xml:space="preserve">
+    <value>Namnunderskrift av den som tar emot delegeringen</value>
+  </data>
+  <data name="Namnunderskrift_delegerande_sjuksköterska" xml:space="preserve">
+    <value>Namnunderskrift delegerande sjuksköterska</value>
+  </data>
+  <data name="Namn_eller_personnummer_" xml:space="preserve">
+    <value>Namn eller personnummer...</value>
+  </data>
+  <data name="Nedåtgående" xml:space="preserve">
+    <value>Nedåtgående</value>
+  </data>
+  <data name="Nej" xml:space="preserve">
+    <value>Nej</value>
+  </data>
+  <data name="Notis" xml:space="preserve">
+    <value>Notis</value>
+  </data>
+  <data name="Notis_" xml:space="preserve">
+    <value>Notis:</value>
+  </data>
+  <data name="Nuvarande_lösenord_måste_fyllas_i" xml:space="preserve">
+    <value>Nuvarande lösenord måste fyllas i</value>
+  </data>
+  <data name="Nytt_Lösenord" xml:space="preserve">
+    <value>Nytt Lösenord</value>
+  </data>
+  <data name="Nytt_lösenord_måste_fyllas_i" xml:space="preserve">
+    <value>Nytt lösenord måste fyllas i.</value>
+  </data>
+  <data name="Nytt_lösenord_måste_vara_minst_8_tecken_långt" xml:space="preserve">
+    <value>Nytt lösenord måste vara minst 8 tecken _långt</value>
+  </data>
+  <data name="Ny_aktivitet" xml:space="preserve">
+    <value>Ny aktivitet</value>
+  </data>
+  <data name="Ny_boende" xml:space="preserve">
+    <value>Ny boende</value>
+  </data>
+  <data name="Ny_kategori" xml:space="preserve">
+    <value>Ny kategori</value>
+  </data>
+  <data name="Ny_Lista" xml:space="preserve">
+    <value>Ny Lista</value>
+  </data>
+  <data name="Ny_medarbetare" xml:space="preserve">
+    <value>Ny medarbetare</value>
+  </data>
+  <data name="Ny_signeringslista" xml:space="preserve">
+    <value>Ny signeringslista</value>
+  </data>
+  <data name="Nästa" xml:space="preserve">
+    <value>Nästa</value>
+  </data>
+  <data name="Observera" xml:space="preserve">
+    <value>Observera</value>
+  </data>
+  <data name="Observera_att_delegeringen_börjar_gälla_först_efter_aktivering" xml:space="preserve">
+    <value>Observera att delegeringen börjar gälla först efter aktivering</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Om_du_inte_hittar_e_post__kontrollera_andra_platser_där_det_kan_hamnat_så_som_din_mapp_för_skräppost_spam_eller_andra_mappar" xml:space="preserve">
+    <value>Om du inte hittar e-post, kontrollera andra platser där det kan hamnat så som din mapp för skräppost spam eller andra mappar</value>
+  </data>
+  <data name="Om_du_ändrat_tider_för_när_insatsen_skall_utföras_kommer_inga_larm_att_skapas_för_de_tider_som_inträffat_före_du_gjort_ändringen__Insatserna_kommer_att_kunna_signeras_men_kommer_inte_att_generera_några_larm" xml:space="preserve">
+    <value>Om du ändrat tider för när insatsen skall utföras kommer inga larm att skapas för de tider som inträffat före du gjort ändringen. Insatserna kommer att kunna signeras men kommer inte att generera några larm</value>
+  </data>
+  <data name="Om_{0}_dagar" xml:space="preserve">
+    <value>Om {0} dagar</value>
+  </data>
+  <data name="Onsdag" xml:space="preserve">
+    <value>Onsdag</value>
+  </data>
+  <data name="Ordinationer" xml:space="preserve">
+    <value>Ordinationer</value>
+  </data>
+  <data name="Person" xml:space="preserve">
+    <value>Person</value>
+  </data>
+  <data name="Personnummer" xml:space="preserve">
+    <value>Personnummer</value>
+  </data>
+  <data name="Personnummer_måste_fyllas_i" xml:space="preserve">
+    <value>Personnummer måste fyllas i.</value>
+  </data>
+  <data name="Personnummer_måste_fyllas_i_med_tolv_siffror_och_bindestreck__t__ex__19010101_0001" xml:space="preserve">
+    <value>Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001</value>
+  </data>
+  <data name="Personnumret_finns_redan_tidigare_redan_i_MCSS" xml:space="preserve">
+    <value>Personnumret finns sedan tidigare redan i MCSS</value>
+  </data>
+  <data name="Personuppgifter" xml:space="preserve">
+    <value>Personuppgifter</value>
+  </data>
+  <data name="Pin" xml:space="preserve">
+    <value>Pin</value>
+  </data>
+  <data name="Preparat" xml:space="preserve">
+    <value>Preparat</value>
+  </data>
+  <data name="Profiluppgifter" xml:space="preserve">
+    <value>Profiluppgifter</value>
+  </data>
+  <data name="Påfyllning_av_läkemedel" xml:space="preserve">
+    <value>Påfyllning av läkemedel</value>
+  </data>
+  <data name="Påfyllning_klar" xml:space="preserve">
+    <value>Påfyllning klar</value>
+  </data>
+  <data name="Pågående" xml:space="preserve">
+    <value>Pågående</value>
+  </data>
+  <data name="Pågående_insatser" xml:space="preserve">
+    <value>Pågående insatser</value>
+  </data>
+  <data name="Påminnelse_" xml:space="preserve">
+    <value>Påminnelse?</value>
+  </data>
+  <data name="På_givet_datum" xml:space="preserve">
+    <value>På givet datum</value>
+  </data>
+  <data name="På_veckodag" xml:space="preserve">
+    <value>På veckodag</value>
+  </data>
+  <data name="Rapport" xml:space="preserve">
+    <value>Rapport</value>
+  </data>
+  <data name="Rapport-{0}-{1}.xlsx" xml:space="preserve">
+    <value>Rapport-{0}-{1}.xlsx</value>
+  </data>
+  <data name="Rapporter" xml:space="preserve">
+    <value>Rapporter</value>
+  </data>
+  <data name="Redigera" xml:space="preserve">
+    <value>Redigera</value>
+  </data>
+  <data name="Redigera_aktivitet" xml:space="preserve">
+    <value>Redigera aktivitet</value>
+  </data>
+  <data name="Räknad_mängd_stämmer_ej_med_saldo" xml:space="preserve">
+    <value>Räknad mängd stämmer ej med saldo</value>
+  </data>
+  <data name="Saldo" xml:space="preserve">
+    <value>Förbrukningsjournal</value>
+  </data>
+  <data name="Saldo-status" xml:space="preserve">
+    <value>Saldo-status</value>
+  </data>
+  <data name="Saldots_enhet" xml:space="preserve">
+    <value>Förbrukningsjournalens enhet</value>
+  </data>
+  <data name="Sammanfattning_" xml:space="preserve">
+    <value>Sammanfattning:</value>
+  </data>
+  <data name="Senaste_kontrollräkning" xml:space="preserve">
+    <value>Senaste kontrollräkning</value>
+  </data>
+  <data name="Signerade-handelser-{0}-{1}.pdf" xml:space="preserve">
+    <value>Signerade-handelser-{0}-{1}.pdf</value>
+  </data>
+  <data name="Signerade_händelser" xml:space="preserve">
+    <value>Signerade händelser</value>
+  </data>
+  <data name="Signerat_av" xml:space="preserve">
+    <value>Signerat av</value>
+  </data>
+  <data name="Signering" xml:space="preserve">
+    <value>Signering</value>
+  </data>
+  <data name="Signeringslista-{0}-{1}.pdf" xml:space="preserve">
+    <value>Signeringslista-{0}-{1}.pdf</value>
+  </data>
+  <data name="Signeringslistor" xml:space="preserve">
+    <value>Signeringslistor</value>
+  </data>
+  <data name="Skapa" xml:space="preserve">
+    <value>Skapa</value>
+  </data>
+  <data name="Skapa_ny" xml:space="preserve">
+    <value>Skapa ny</value>
+  </data>
+  <data name="Skapa_nytt_saldo" xml:space="preserve">
+    <value>Skapa ny förbrukningsjournal</value>
+  </data>
+  <data name="Skapa_ny_aktivitet" xml:space="preserve">
+    <value>Skapa ny aktivitet</value>
+  </data>
+  <data name="Skapa_pdf" xml:space="preserve">
+    <value>Skapa pdf</value>
+  </data>
+  <data name="Skicka_ny_återställningslänk" xml:space="preserve">
+    <value>Skicka ny återställningslänk</value>
+  </data>
+  <data name="Skicka_återställningslänk" xml:space="preserve">
+    <value>Skicka återställningslänk</value>
+  </data>
+  <data name="Skriv_in_ditt_nya_lösenord" xml:space="preserve">
+    <value>Skriv in ditt nya lösenord</value>
+  </data>
+  <data name="Skriv_ut_delegeringsbeslut" xml:space="preserve">
+    <value>Skriv ut delegeringsbeslut</value>
+  </data>
+  <data name="Skriv_ut_PDF" xml:space="preserve">
+    <value>Skriv ut PDF</value>
+  </data>
+  <data name="Skulle_genomföras" xml:space="preserve">
+    <value>Skulle genomföras</value>
+  </data>
+  <data name="Skulle_ges" xml:space="preserve">
+    <value>Skulle ges</value>
+  </data>
+  <data name="Slutar" xml:space="preserve">
+    <value>Slutar</value>
+  </data>
+  <data name="Slutdatum_måste_vara_ett_senare_datum_är_startdatum" xml:space="preserve">
+    <value>Slutdatum måste vara ett senare datum är startdatum.</value>
+  </data>
+  <data name="Spara" xml:space="preserve">
+    <value>Spara</value>
+  </data>
+  <data name="Starka_lösenord_inkluderar_siffror_bokstäver_och_skiljetecken_Lär_dig_mer_om_lösenord_på" xml:space="preserve">
+    <value>Starka lösenord inkluderar siffror bokstäver och skiljetecken. Lär dig mer om lösenord på</value>
+  </data>
+  <data name="Startar" xml:space="preserve">
+    <value>Startar</value>
+  </data>
+  <data name="Startar_om" xml:space="preserve">
+    <value>Startar om</value>
+  </data>
+  <data name="Startdatum_måste_vara_ett_tidigare_datum_är_slutdatum" xml:space="preserve">
+    <value>Startdatum måste vara ett tidigare datum än slutdatum.</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Status_för" xml:space="preserve">
+    <value>Status för</value>
+  </data>
+  <data name="Stäng_listan" xml:space="preserve">
+    <value>Stäng listan</value>
+  </data>
+  <data name="Stående" xml:space="preserve">
+    <value>Stående</value>
+  </data>
+  <data name="support" xml:space="preserve">
+    <value>support</value>
+  </data>
+  <data name="support_url" xml:space="preserve">
+    <value>http://support.appva.se</value>
+  </data>
+  <data name="Synkronisera" xml:space="preserve">
+    <value>Synkronisera</value>
+  </data>
+  <data name="Synkroniserade" xml:space="preserve">
+    <value>Synkroniserade</value>
+  </data>
+  <data name="Synkroniserades_{0}" xml:space="preserve">
+    <value>Synkroniserades {0}</value>
+  </data>
+  <data name="Synkroniserad_" xml:space="preserve">
+    <value>Synkroniserad:</value>
+  </data>
+  <data name="Synkronisering" xml:space="preserve">
+    <value>Synkronisering</value>
+  </data>
+  <data name="Synkronisering_av_{0}" xml:space="preserve">
+    <value>Synkronisering av {0}</value>
+  </data>
+  <data name="Synkronisering_är_inte_aktiverad" xml:space="preserve">
+    <value>Synkronisering är inte aktiverad</value>
+  </data>
+  <data name="Sök_boende_" xml:space="preserve">
+    <value>Sök boende:</value>
+  </data>
+  <data name="Sök_medarbetare_" xml:space="preserve">
+    <value>Sök medarbetare:</value>
+  </data>
+  <data name="Söndag" xml:space="preserve">
+    <value>Söndag</value>
+  </data>
+  <data name="Tabell" xml:space="preserve">
+    <value>Tabell</value>
+  </data>
+  <data name="Ta_bort" xml:space="preserve">
+    <value>Ta bort</value>
+  </data>
+  <data name="Ta_bort_aktiviteten" xml:space="preserve">
+    <value>Ta bort aktiviteten</value>
+  </data>
+  <data name="Ta_bort_delegering" xml:space="preserve">
+    <value>Ta bort delegering</value>
+  </data>
+  <data name="Ta_bort_listan" xml:space="preserve">
+    <value>Ta bort listan</value>
+  </data>
+  <data name="Ta_bort_läkemedlet" xml:space="preserve">
+    <value>Ta bort läkemedlet</value>
+  </data>
+  <data name="Ta_bort_synkronisering" xml:space="preserve">
+    <value>Ta bort synkronisering</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="Tid" xml:space="preserve">
+    <value>Tid</value>
+  </data>
+  <data name="Tider" xml:space="preserve">
+    <value>Tider</value>
+  </data>
+  <data name="Tid_" xml:space="preserve">
+    <value>Tid:</value>
+  </data>
+  <data name="Tillbaka" xml:space="preserve">
+    <value>Tillbaka</value>
+  </data>
+  <data name="Tillbaka_till_inloggning" xml:space="preserve">
+    <value>Tillbaka till inloggning</value>
+  </data>
+  <data name="Tillfälligt_spärrat_konto" xml:space="preserve">
+    <value>Tillfälligt spärrat konto</value>
+  </data>
+  <data name="Tillför_mängd" xml:space="preserve">
+    <value>Tillför mängd</value>
+  </data>
+  <data name="Tillför_mängd_till" xml:space="preserve">
+    <value>Tillför mängd till</value>
+  </data>
+  <data name="Till_" xml:space="preserve">
+    <value>Till:</value>
+  </data>
+  <data name="Till_inloggning" xml:space="preserve">
+    <value>Till inloggning</value>
+  </data>
+  <data name="Tisdag" xml:space="preserve">
+    <value>Tisdag</value>
+  </data>
+  <data name="Titel" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="Titel_" xml:space="preserve">
+    <value>Titel:</value>
+  </data>
+  <data name="Torsdag" xml:space="preserve">
+    <value>Torsdag</value>
+  </data>
+  <data name="Totalt_antal_insatser" xml:space="preserve">
+    <value>Totalt antal insatser</value>
+  </data>
+  <data name="Transaktion" xml:space="preserve">
+    <value>Transaktion</value>
+  </data>
+  <data name="Transaktioner_under_perioden" xml:space="preserve">
+    <value>Transaktioner under perioden</value>
+  </data>
+  <data name="Typ_" xml:space="preserve">
+    <value>Typ:</value>
+  </data>
+  <data name="T__ex__dosett" xml:space="preserve">
+    <value>T. ex. dosett</value>
+  </data>
+  <data name="Underskrift" xml:space="preserve">
+    <value>Underskrift</value>
+  </data>
+  <data name="Upprepas" xml:space="preserve">
+    <value>Upprepas</value>
+  </data>
+  <data name="Upprepa_ditt_nya_lösenord_för_att_undvika_eventuella_misstag" xml:space="preserve">
+    <value>Upprepa ditt nya lösenord för att undvika eventuella misstag</value>
+  </data>
+  <data name="Upprepa_lösenord_måste_fyllas_i" xml:space="preserve">
+    <value>Upprepa lösenord måste fyllas i</value>
+  </data>
+  <data name="Upprepa_nytt_lösenord" xml:space="preserve">
+    <value>Upprepa nytt lösenord</value>
+  </data>
+  <data name="Uppåtgående" xml:space="preserve">
+    <value>Uppåtgående</value>
+  </data>
+  <data name="Utfärdades_till" xml:space="preserve">
+    <value>Utfärdades till</value>
+  </data>
+  <data name="Utfärdad_av" xml:space="preserve">
+    <value>Utfärdad av</value>
+  </data>
+  <data name="Utfärdat_av" xml:space="preserve">
+    <value>Utfärdat av</value>
+  </data>
+  <data name="Utgången_lösenordslänk" xml:space="preserve">
+    <value>Utgången lösenordslänk</value>
+  </data>
+  <data name="Utgången_återställningslänk" xml:space="preserve">
+    <value>Utgången återställningslänk</value>
+  </data>
+  <data name="Utloggad" xml:space="preserve">
+    <value>Utloggad</value>
+  </data>
+  <data name="Utlöpande_delegeringar" xml:space="preserve">
+    <value>Utlöpande delegeringar</value>
+  </data>
+  <data name="Utställda_delegeringar" xml:space="preserve">
+    <value>Utställda delegeringar</value>
+  </data>
+  <data name="Utställda_delegeringar__{0}" xml:space="preserve">
+    <value>Utställda delegeringar, {0}</value>
+  </data>
+  <data name="Uttag" xml:space="preserve">
+    <value>Uttag</value>
+  </data>
+  <data name="Uttag_från" xml:space="preserve">
+    <value>Uttag från</value>
+  </data>
+  <data name="varje_månad" xml:space="preserve">
+    <value>varje månad</value>
+  </data>
+  <data name="Var_vänlig_använd_ditt_valda_lösenord_för_att_logga_in_i_MCSS" xml:space="preserve">
+    <value>Var vänlig använd ditt valda lösenord för att logga in i MCSS</value>
+  </data>
+  <data name="Var_vänlig_kontakta_support_om_detta_fel_uppstår_igen" xml:space="preserve">
+    <value>Var vänlig kontakta &lt;a href="http://support.appva.se/open.php"&gt;support&lt;/a&gt; om detta fel uppstår igen</value>
+  </data>
+  <data name="Var_vänlig_kontrollera_att_användaren_finns_i_den_externa_katalogen_och_att_personnumret_matchar_de_i_MCSS" xml:space="preserve">
+    <value>Var vänlig kontrollera att användaren finns i den externa katalogen och att personnumret matchar de i MCSS</value>
+  </data>
+  <data name="vecka" xml:space="preserve">
+    <value>vecka</value>
+  </data>
+  <data name="Vecka {0} {1}" xml:space="preserve">
+    <value>Vecka {0} {1}</value>
+  </data>
+  <data name="Vid_behov" xml:space="preserve">
+    <value>Vid behov</value>
+  </data>
+  <data name="Vill_du_verkligen_ta_bort_den_här_delegeringen_" xml:space="preserve">
+    <value>Vill du verkligen ta bort den här delegeringen?</value>
+  </data>
+  <data name="Visa" xml:space="preserve">
+    <value>Visa</value>
+  </data>
+  <data name="Visa_delegering_för_datum_" xml:space="preserve">
+    <value>Visa delegering för datum:</value>
+  </data>
+  <data name="Visa_detaljer" xml:space="preserve">
+    <value>Visa detaljer</value>
+  </data>
+  <data name="Visa_rapport_för_" xml:space="preserve">
+    <value>Visa rapport för:</value>
+  </data>
+  <data name="Vi_har_skickat_ett_e_post_till__0____Klicka_på_länken_i_e_post_för_att_återställa_ditt_lösenord" xml:space="preserve">
+    <value>Vi har skickat ett e-post till {0}. Klicka på länken i e-post för att återställa ditt lösenord</value>
+  </data>
+  <data name="Välj" xml:space="preserve">
+    <value>Välj</value>
+  </data>
+  <data name="Välj_" xml:space="preserve">
+    <value>Välj...</value>
+    <comment>Used for dropdowns as default</comment>
+  </data>
+  <data name="Välj_befintligt_saldo" xml:space="preserve">
+    <value>Välj befintligt förbrukningsjournal</value>
+  </data>
+  <data name="Välj_dagar" xml:space="preserve">
+    <value>Välj dagar</value>
+  </data>
+  <data name="Välj_datum" xml:space="preserve">
+    <value>Välj datum</value>
+  </data>
+  <data name="Välj_delegering_" xml:space="preserve">
+    <value>Välj delegering:</value>
+  </data>
+  <data name="Välj_enhet_" xml:space="preserve">
+    <value>Välj enhet...</value>
+  </data>
+  <data name="Välj_format" xml:space="preserve">
+    <value>Välj format</value>
+  </data>
+  <data name="Välj_frekvens_" xml:space="preserve">
+    <value>Välj frekvens...</value>
+  </data>
+  <data name="Välj_lösenord" xml:space="preserve">
+    <value>Välj lösenord</value>
+  </data>
+  <data name="Välj_saldo_" xml:space="preserve">
+    <value>Välj förbrukningsjournal...</value>
+  </data>
+  <data name="Välj_typ_" xml:space="preserve">
+    <value>Välj typ...</value>
+  </data>
+  <data name="Välj_{0}_" xml:space="preserve">
+    <value>Välj {0}...</value>
+  </data>
+  <data name="_0date___0time__med_status__1_" xml:space="preserve">
+    <value>{0:d MMMM yyyy}, kl {0:HH:mm} med status '{1}'</value>
+  </data>
+  <data name="{0:d MMM yyyy HH:mm}_till_{1:d MMM yyyy HH:mm}" xml:space="preserve">
+    <value>{0:d MMM yyyy HH:mm} till {1:d MMM yyyy HH:mm}</value>
+  </data>
+  <data name="{0:d MMM yyyy}_till_{1:d MMM yyyy}" xml:space="preserve">
+    <value>{0:d MMM yyyy} till {1:d MMM yyyy}</value>
+  </data>
+  <data name="{0}_för_sent" xml:space="preserve">
+    <value>{0} för sent</value>
+  </data>
+  <data name="{0}_Vecka_{1}" xml:space="preserve">
+    <value>{0} Vecka {1}</value>
+  </data>
+  <data name="{1:d MMM yyyy}_{0:HH:mm}_till_{1:HH:mm}" xml:space="preserve">
+    <value> {1:d MMM yyyy} {0:HH:mm} till {1:HH:mm}</value>
+  </data>
+  <data name="Ändra" xml:space="preserve">
+    <value>Ändra</value>
+  </data>
+  <data name="Ändra_aktiviteten" xml:space="preserve">
+    <value>Ändra aktiviteten</value>
+  </data>
+  <data name="Ändra_boendeuppgifter" xml:space="preserve">
+    <value>Ändra boendeuppgifter</value>
+  </data>
+  <data name="Ändra_delegering" xml:space="preserve">
+    <value>Ändra delegering</value>
+  </data>
+  <data name="Ändra_kunskapstester" xml:space="preserve">
+    <value>Ändra kunskapstester</value>
+  </data>
+  <data name="Ändra_medarbetaruppgifter" xml:space="preserve">
+    <value>Ändra medarbetaruppgifter</value>
+  </data>
+  <data name="Ändra_raden" xml:space="preserve">
+    <value>Ändra raden</value>
+  </data>
+  <data name="Ändra_roll" xml:space="preserve">
+    <value>Ändra roll</value>
+  </data>
+  <data name="Ändra_roller_och_behörigheter" xml:space="preserve">
+    <value>Ändra roller och behörigheter</value>
+  </data>
+  <data name="Ändra_saldo" xml:space="preserve">
+    <value>Ändra förbrukningsjournalen</value>
+  </data>
+  <data name="Är_allmänt_känd_" xml:space="preserve">
+    <value>Är allmänt känd?</value>
+  </data>
+  <data name="År" xml:space="preserve">
+    <value>År</value>
+  </data>
+  <data name="Återställningslänken_har_gått_ut__vänligen_begär_en_ny" xml:space="preserve">
+    <value>The recoverylink has expired, please request a new</value>
+  </data>
+  <data name="Återställ_lösenord" xml:space="preserve">
+    <value>Återställ lösenord</value>
+  </data>
+  <data name="Åtgärdat_larm_" xml:space="preserve">
+    <value>Åtgärdat larm:</value>
+  </data>
+  <data name="ÅÅÅÅMMDD_NNNN" xml:space="preserve">
+    <value>YYYYMMDD-NNNN</value>
+  </data>
+  <data name="Översikt" xml:space="preserve">
+    <value>Översikt</value>
   </data>
 </root>

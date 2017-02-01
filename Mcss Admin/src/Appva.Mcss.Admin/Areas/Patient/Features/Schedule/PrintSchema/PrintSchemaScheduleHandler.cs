@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Pdf;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Tenant.Identity;
+    using Appva.Mvc.Localization;
 
     #endregion
 
@@ -35,6 +36,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ITenantService tenantService;
 
+        /// <summary>
+        /// The <see cref="IHtmlLocalizer"/>
+        /// </summary>
+        private readonly IHtmlLocalizer localizer;
+
         #endregion
 
         #region Constructor.
@@ -44,10 +50,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="pdfService">The <see cref="IPdfPrintService"/></param>
         /// <param name="tenantService">The <see cref="ITenantService"/></param>
-        public PrintSchemaScheduleHandler(IPdfPrintService pdfService, ITenantService tenantService)
+        public PrintSchemaScheduleHandler(IPdfPrintService pdfService, ITenantService tenantService, IHtmlLocalizer localizer)
         {
             this.pdfService    = pdfService;
             this.tenantService = tenantService;
+            this.localizer     = localizer;
+
         }
 
         #endregion
@@ -59,7 +67,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             ITenantIdentity tenant;
             this.tenantService.TryIdentifyTenant(out tenant);
-            var fileName = string.Format("Signerade-handelser-{0}-{1}.pdf", tenant.Name.ToUrlFriendly(), DateTime.Now.ToFileTimeUtc());
+            var fileName = this.localizer["Signerade-handelser-{0}-{1}.pdf", tenant.Name.ToUrlFriendly(), DateTime.Now.ToFileTimeUtc()].ToString();
             var bytes    = this.pdfService.CreateByTasks(fileName, message.StartDate, message.EndDate, message.Id, message.ScheduleSettingsId, message.OnNeedBasis, message.StandardSequences);
             return new FileContentResult(bytes, "application/pdf")
             {

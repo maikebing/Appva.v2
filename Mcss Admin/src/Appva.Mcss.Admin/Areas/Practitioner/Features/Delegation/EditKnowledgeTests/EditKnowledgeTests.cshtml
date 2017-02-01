@@ -1,20 +1,20 @@
 ﻿@model Appva.Mcss.Web.ViewModels.KnowledgeTestViewModel
 @{
-    SetTitle("Ändra kunskapstester");
+    SetTitle(Localizer["Ändra_kunskapstester"].ToString());
 }
 <div class="std-panel std-form lb-validate-form" data-valclass="KnowledgeTestEdit">
 @using (Html.BeginForm(new { id = Model.AccountId, taxonId = Model.TaxonId })) {
-    <h3 class="section-title">Ändra kunskapstester</h3>
+    <h3 class="section-title">@Localizer["Ändra_kunskapstester"]</h3>
 	foreach(var test in Model.Tests) { 
         <div class="input">
 		    <input id="Checkbox_@(test.Id)" name="Checkbox_@(test.Id)" @(test.Active ? "checked=checked" : "") value="True" type="checkbox" /> 
-            <label for="Checkbox_@(test.Id)">@test.Name</label> genomfördes: 
+            <label for="Checkbox_@(test.Id)">@test.Name</label> @Localizer["genomfördes_"] 
             <input id="Textfield_@(test.Id)" name="Textfield_@(test.Id)" class="datepick date" value="@(test.CompletedDate.HasValue ? test.CompletedDate.Value.ToShortDateString() : null)" type="text" />  
 	    </div>
      }
 	<div class="submit">
-        @Html.Submit("Spara")
-        @Html.Cancel("Avbryt")
+        @Html.Submit(Localizer["Spara"].ToString())
+        @Html.Cancel(Localizer["Avbryt"].ToString())
 	</div>
 }
 </div>

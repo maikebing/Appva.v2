@@ -1,15 +1,15 @@
 ﻿@model Appva.Mcss.Web.ViewModels.IssuedDelegationsViewModel
 @{
-    SetTitle("Utställda delegeringar, {0}", Model.Account.FullName); 
+    SetTitle(Localizer["Utställda_delegeringar__{0}", Model.Account.FullName].ToString()); 
 }
 @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
 <div id="subheader" class="cf">
-	<h1>Utställda delegeringar</h1>
+	<h1>@Localizer["Utställda_delegeringar"]</h1>
     <p class="filter">
         <strong>Visa:</strong>
-        @Html.ActionLink("Aktuella", "Issued", new { Id = Model.AccountId }, new { @class = !Model.History ? "sel div" : "div" })
-        @Html.ActionLink("Historik", "Issued", new { Id = Model.AccountId, History = true }, new { @class = Model.History ? "sel div" : "div" })
+        @Html.ActionLink(Localizer["Aktuella"].ToString(), "Issued", new { Id = Model.AccountId }, new { @class = !Model.History ? "sel div" : "div" })
+        @Html.ActionLink(Localizer["Historik"].ToString(), "Issued", new { Id = Model.AccountId, History = true }, new { @class = Model.History ? "sel div" : "div" })
     </p>
 </div>
 <div id="content" class="delegate-view">
@@ -18,10 +18,10 @@
 			<table>
 				<thead>
 					<tr class="head">
-						<th scope="col">Datum</th>
-						<th scope="col">Delegering</th>
-						<th scope="col">Utfärdades till</th>
-						<th scope="col">Löper ut</th>
+						<th scope="col">@Localizer["Datum"]</th>
+						<th scope="col">@Localizer["Delegering"]</th>
+						<th scope="col">@Localizer["Utfärdades_till"]</th>
+						<th scope="col">@Localizer["Löper_ut"]</th>
 					</tr>
 				</thead>
                 @if (Model.Delegations.IsNotNull()) { 
@@ -31,7 +31,7 @@
                             <td>@String.Format("{0:yyyy-MM-dd}",delegation.UpdatedAt)</td>
                             <td>@delegation.Name</td>
                             <td>@Html.ActionLink(delegation.Account.FullName, "List", new { id=delegation.Account.Id})</td>
-                            <td>@(delegation.Pending ? "Ej aktiverad" : string.Format("Om {0} dagar", delegation.EndDate.Subtract(DateTime.Now).Days))</td>
+                            <td>@(delegation.Pending ? Localizer["Ej_aktiverad"].ToString() : Localizer["Om_{0}_dagar", delegation.EndDate.Subtract(DateTime.Now).Days].ToString())</td>
                         </tr>
                     }
 				</tbody>

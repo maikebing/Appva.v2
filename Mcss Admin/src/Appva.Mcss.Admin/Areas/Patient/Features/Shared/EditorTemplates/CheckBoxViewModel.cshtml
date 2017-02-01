@@ -2,6 +2,6 @@
 
 <div class="checkbox">
     @Html.CheckBoxFor(x => x.Checked)
-    @Html.LabelFor(x => x.Checked, string.Format("kl {0}", Model.Id))
+    @Html.LabelFor(x => x.Checked, Localizer["kl_{0}", Model.Id].ToString())
     @Html.HiddenFor(x => x.Id)
 </div>

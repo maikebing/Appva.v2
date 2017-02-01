@@ -1,19 +1,19 @@
 ﻿@model Appva.Mcss.Web.ViewModels.EventViewModel
-@{ SetTitle("Ny aktivitet"); }
+@{ SetTitle(Localizer["Redigera_aktivitet"].ToString()); }
 <div class="std-panel std-form lb-panel-small lb-validate-form calendar-edit" data-valclass="EventCreate">
     @using (Html.BeginForm(new { Id = Model.PatientId, seqId = Model.SequenceId, date = Model.ChoosedDate }))
     {
-        <h3 class="section-title">Redigera</h3>
+        <h3 class="section-title">@Localizer["Redigera"]</h3>
         <ul class="cal-settings">
             <li class="cf">
                 <input type="hidden" name="Test" value="testest" />
                 @Html.LabelFor(m => m.Category, new { @class = "col" })
                 <div class="col">
-                    @Html.DropDownListFor(m => m.Category, new SelectList(Model.Categories, "Value", "Text"), "Välj...", new { id = "Category" })
+                    @Html.DropDownListFor(m => m.Category, new SelectList(Model.Categories, "Value", "Text"), Localizer["Välj_"].ToString(), new { id = "Category" })
                     @if (Model.Categories.Where(x => x.Value == "new").Count() > 0)
                     {
                         <span id="NewCat">
-                            @Html.TextBoxFor(m => m.NewCategory, new { @placeholder = "Ny kategori" })
+                            @Html.TextBoxFor(m => m.NewCategory, new { @placeholder = Localizer["Ny_kategori"].ToString() })
                         </span>
                     }
                 </div>
@@ -21,7 +21,7 @@
             <li class="cf">
                 @Html.LabelFor(m => m.Description, new { @class = "col" })
                 <div class="col text medium">
-                    @Html.TextAreaFor(m => m.Description, new { @placeholder = "Anteckning eller instruktion", @cols = "80", @rows = "24" })
+                    @Html.TextAreaFor(m => m.Description, new { @placeholder = Localizer["Anteckning_eller_instruktion"].ToString(), @cols = "80", @rows = "24" })
                 </div>
             </li>
             <li class="cf">
@@ -29,7 +29,7 @@
                 <div class="col">
                     @Html.EditorFor(m => m.StartDate)
                     @Html.ValidationMessageFor(m => m.StartDate)
-                    @Html.LabelFor(m => m.StartTime, new { @class = "structural" }) <span class="hour">Klockan:</span>
+                    @Html.LabelFor(m => m.StartTime, new { @class = "structural" }) <span class="hour">@Localizer["Klockan_"]</span>
                     @Html.EditorFor(m => m.StartTime, new { @class = "time" })
                     @Html.ValidationMessageFor(m => m.StartTime)
                 </div>
@@ -39,7 +39,7 @@
                 <div class="col">
                     @Html.EditorFor(m => m.EndDate)
                     @Html.ValidationMessageFor(m => m.EndDate)
-                    @Html.LabelFor(m => m.EndTime, new { @class = "structural" }) <span class="hour">Klockan:</span>
+                    @Html.LabelFor(m => m.EndTime, new { @class = "structural" }) <span class="hour">@Localizer["Klockan_"]</span>
                     @Html.EditorFor(m => m.EndTime, new { @class = "time" })
                     @Html.ValidationMessageFor(m => m.EndTime)
                 </div>
@@ -62,21 +62,21 @@
                 @Html.LabelFor(m => m.IntervalFactor, new { @class = "col" })
                 <div class="col">
                     @Html.DropDownListFor(m => m.IntervalFactor, new SelectList(Model.IntervalFactors, "Value", "Text"))
-                    <span id="intervalFactorText">månad</span>
+                    <span id="intervalFactorText">@Localizer["månad"]</span>
                     <div class="checkbox date">
                         @Html.RadioButtonFor(x => x.SpecificDate, true, new { @class = "SpecificDate" })
-                        <span>På givet datum</span>
+                        <span>@Localizer["På_givet_datum"]</span>
                         @Html.RadioButtonFor(x => x.SpecificDate, false, new { @class = "SpecificDate" })
-                        <span>På veckodag</span>
+                        <span>@Localizer["På_veckodag"]</span>
                     </div>
                 </div>
             </li>
             <li class="factors cf">
-                <label class="col">Sammnfattning:</label>
-                <div class="summary col">Upprepas <span id="dateSummary">den 1 torsdagen</span> <span id="intervalSummary">varje månad</span></div>
+                <label class="col">@Localizer["Sammnfattning_"]</label>
+                <div class="summary col">@Localizer["Upprepas"] <span id="dateSummary">@Localizer["den_1_torsdagen"]</span> <span id="intervalSummary">@Localizer["varje_månad"]</span></div>
             </li>
             <li id="Absence" class="separate cf">
-                <label class="col">Frånvaro?</label>
+                <label class="col">@Localizer["Frånvaro_"]</label>
                 @Html.HiddenFor(x => x.Absent)
                 <div class="col">
                     <div class="checkbox">
@@ -88,7 +88,7 @@
             @if ((Model.CalendarSettings.ContainsKey("HasOverview") && (bool)Model.CalendarSettings["HasOverview"]) || (Model.CalendarSettings.ContainsKey("SignableEvent") && (bool)Model.CalendarSettings["SignableEvent"]))
             {
                 <li class="separate cf">
-                    <label class="col">Påminnelse?</label>
+                    <label class="col">@Localizer["Påminnelse_"]</label>
                     <div class="col">
                         @if (Model.CalendarSettings.ContainsKey("HasOverview") && (bool)Model.CalendarSettings["HasOverview"])
                         {
@@ -113,9 +113,9 @@
             @Html.HiddenFor(m => m.PatientId)
             @Html.HiddenFor(m => m.SequenceId)
             @Html.HiddenFor(m => m.ChoosedDate)
-            <input type="submit" value="Spara">
+            <input type="submit" value="@Localizer["Spara"]">
             @Html.AntiForgeryToken()
-            @Html.Cancel("Avbryt")
+            @Html.Cancel(Localizer["Avbryt"].ToString())
         </div>
     }
 </div>

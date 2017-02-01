@@ -14,26 +14,26 @@
     	</h2>
     	<span class="pnr">@Model.UniqueIdentifier</span>
     </div>
-    @Html.ActionLink(Permissions.Patient.Inactivate, "Ta bort", "Inactivate", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
-    @Html.ActionLink(Permissions.Patient.Update, "Ändra boendeuppgifter", "Update", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Patient.Inactivate, Localizer["Ta_bort"].ToString(), "Inactivate", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
+    @Html.ActionLink(Permissions.Patient.Update, Localizer["Ändra_boendeuppgifter"].ToString(), "Update", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
     @if (Model.Address.IsNotNull())
     { 
         <div class="i">
-    	    <strong>Adress:</strong>
+    	    <strong>@Localizer["Adress_"]</strong>
     	    <span>@Model.Address</span>
         </div>
     }
     @if (Model.FirstLineContact.IsNotNull())
     { 
         <div class="i">
-    	    <strong>Ansvarig kontaktperson:</strong>
+    	    <strong>@Localizer["Ansvarig_kontaktperson_"]</strong>
             @Model.FirstLineContact
         </div>
     }
     @if (Model.Overseeing.IsNotNull())
     { 
         <div class="i">
-    	    <strong>Ansvarig sjuksköterska:</strong>
+    	    <strong>@Localizer["Ansvarig_sjuksköterska_"]</strong>
             @Model.Overseeing
 	    </div>
     }

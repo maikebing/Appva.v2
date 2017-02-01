@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Tenant.Identity;
     using NHibernate.Criterion;
     using NHibernate.Transform;
+    using Appva.Mvc.Localization;
 
     #endregion
 
@@ -65,6 +66,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext context;
 
+        /// <summary>
+        /// The <see cref="IHtmlLocalizer"/>.
+        /// </summary>
+        private readonly IHtmlLocalizer localizer;
+
         #endregion
 
         #region Constructor.
@@ -78,7 +84,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             ITenantService tenantService,
             ITaskService taskService,
             ITaxonFilterSessionHandler filter,
-            IPersistenceContext context)
+            IPersistenceContext context,
+            IHtmlLocalizer localizer)
         {
             this.auditing        = auditing;
             this.identityService = identityService;
@@ -86,6 +93,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.taskService     = taskService;
             this.filter          = filter;
             this.context         = context;
+            this.localizer       = localizer;
         }
 
         #endregion
@@ -153,9 +161,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     Task                 = x.Name,
                     TaskCompletedOnDate  = x.IsCompleted ? x.CompletedDate.Value.Date : x.UpdatedAt, //// FIXME: Its either completed or null.
-                    TaskCompletedOnTime  = x.Delayed && x.CompletedBy.IsNull() ? "Ej given" : string.Format("{0} {1:HH:mm}", "kl", x.CompletedDate),
+                    TaskCompletedOnTime  = x.Delayed && x.CompletedBy.IsNull() ? this.localizer["Ej_given"].ToString() : this.localizer["kl_{0:HH:mm}", x.CompletedDate].ToString(),
                     TaskScheduledOnDate  = x.Scheduled.Date,
-                    TaskScheduledOnTime  = string.Format("{0} {1:HH:mm}", "kl", x.Scheduled),
+                    TaskScheduledOnTime  = this.localizer["kl_{0:HH:mm}",  x.Scheduled].ToString(),
                     MinutesBefore        = x.RangeInMinutesBefore,
                     MinutesAfter         = x.RangeInMinutesAfter,
                     PatientFullName      = x.Patient.FullName,
@@ -167,7 +175,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.tenantService.TryIdentifyTenant(out tenant);
             return new FileContentResult(bytes, "application/vnd.ms-excel")
             {
-                FileDownloadName = string.Format("Rapport-{0}-{1}.xlsx", tenant.Name.Replace(" ", "-"), DateTime.Now.ToFileTimeUtc())
+                FileDownloadName = this.localizer["Rapport-{0}-{1}.xlsx", tenant.Name.Replace(" ", "-"), DateTime.Now.ToFileTimeUtc()].ToString()
             };
         }
 
@@ -185,26 +193,26 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             if (task.StatusTaxon != null)
             {
-                return task.Delayed && task.StatusTaxon.Weight < 2 ? task.StatusTaxon.Name + " för sent" : task.StatusTaxon.Name;
+                return task.Delayed && task.StatusTaxon.Weight < 2 ? this.localizer["{0}_för_sent", task.StatusTaxon.Name].ToString() : task.StatusTaxon.Name;
             }
             switch (task.Status)
             {
                 case 1:
-                    return task.Delayed ? "Given för sent" : "OK";
+                    return this.localizer[(task.Delayed ? "Given_för_sent" : "OK")].ToString();
                 case 2:
-                    return "Delvis given";
+                    return this.localizer["Delvis_given"].ToString();
                 case 3:
-                    return "Ej given";
+                    return this.localizer["Ej_given"].ToString();
                 case 4:
-                    return "Kan ej ta";
+                    return this.localizer["Kan_ej_ta"].ToString();
                 case 5:
-                    return "Medskickad";
+                    return this.localizer["Medskickad"].ToString();
                 case 6:
-                    return "Räknad mängd stämmer ej med saldo";
+                    return this.localizer["Räknad_mängd_stämmer_ej_med_saldo"].ToString();
                 default:
                     if (task.Status.Equals(0) || task.Delayed)
                     {
-                        return task.DelayHandled ? "Larm åtgärdat" : "Ej given";
+                        return this.localizer[(task.DelayHandled ? "Larm_åtgärdat" : "Ej_given")].ToString();
                     }
                     return string.Empty;
             }

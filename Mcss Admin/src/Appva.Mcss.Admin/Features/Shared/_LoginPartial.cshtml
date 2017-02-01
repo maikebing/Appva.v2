@@ -2,23 +2,23 @@
 <div id="logged-info">
     <div id="nav-main">
         <ul class="cf">
-            <li class="support-info">@Html.CreateSupportLink("http://support.appva.se", "Hjälp", new { @class = "icon icon-help" })</li>
+            <li class="support-info">@Html.CreateSupportLink(Localizer["support_url"].ToString(), Localizer["Hjälp"].ToString(), new { @class = "icon icon-help" })</li>
             <li class="user-info">
                 <a class="profile icon icon-profile">@User.Identity.Name</a>
                 <div class="profile">
                     <p>
-                        <span class="label">Inloggad som:</span>
+                        <span class="label">@Localizer["Inloggad_som"]</span>
                         @User.Identity.Name
                     </p>
                     <ul>
                         @if (! Principal.Claims.Any(x => x.Type == Appva.Core.Resources.ClaimTypes.SithsEnabled && x.Value == "Y"))
                         {
                         <li>
-                            @Html.ActionLink("Byt lösenord", "ChangePassword", "Accounts", new { Area = "Practitioner" }, new { @class = "change-password" })
+                            @Html.ActionLink(Localizer["Byt_lösenord"].ToString(), "ChangePassword", "Accounts", new { Area = "Practitioner" }, new { @class = "change-password" })
                         </li>
                         }
                         <li>
-                            @Html.ActionLink("Logga ut", "SignOut", "Authentication", new { Area = string.Empty }, new { @class = "logout" })
+                            @Html.ActionLink(Localizer["Logga_ut"].ToString(), "SignOut", "Authentication", new { Area = string.Empty }, new { @class = "logout" })
                         </li>
                     </ul>
                 </div>

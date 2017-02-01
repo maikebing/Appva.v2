@@ -1,14 +1,14 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
 @model Appva.Mcss.Admin.Areas.Practitioner.Models.GetSynchronizedAccountModel
 @{
-    SetTitle("Synkronisering av {0}", Model.Account.FullName);
+    SetTitle(Localizer["Synkronisering_av_{0}", Model.Account.FullName].ToString());
 }
 
 <div id="main" class="delegate-view">
     @Html.Partial("~/Areas/Practitioner/Features/Accounts/_AccountDetails.cshtml", Model.Account)
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Account)
     <div id="subheader" class="cf">
-        <h1>Synkronisering</h1>
+        <h1>@Localizer["Synkronisering"]</h1>
     </div>
     <div id="content" class="sync">
         <div id="content-primary">
@@ -16,17 +16,17 @@
             {
                 <div class="h cf">
                     <h2>
-                        LDAP
-                        <span class="status @(Model.LocalAccount.IsSynchronized ? "ok" : "")">@(Model.LocalAccount.IsSynchronized ? "Aktiverad" : "Ej aktiverad")</span>
+                        @Localizer["LDAP"]
+                        <span class="status @(Model.LocalAccount.IsSynchronized ? "ok" : "")">@Localizer[(Model.LocalAccount.IsSynchronized ? "Aktiverad" : "Ej_aktiverad")]</span>
                     </h2>
 
                     @if (Model.LdapUser != null && Model.LocalAccount.IsSynchronized)
                     {
-                        @Html.ActionLink(Permissions.Synchronization.Delete, "Ta bort synkronisering", "InActivateLdap", "Synchronization", new { area = "Practitioner", id = Model.Account.Id }, new { @class = "btn btn-del" })
+                        @Html.ActionLink(Permissions.Synchronization.Delete, Localizer["Ta_bort_synkronisering"].ToString(), "InActivateLdap", "Synchronization", new { area = "Practitioner", id = Model.Account.Id }, new { @class = "btn btn-del" })
                     }
                     else if (Model.LdapUser != null)
                     {
-                        @Html.ActionLink(Permissions.Synchronization.Create, "Aktivera synkronisering", "ActivateLdap", "Synchronization", new { area = "Practitioner", id = Model.Account.Id }, new { @class = "btn" })
+                        @Html.ActionLink(Permissions.Synchronization.Create, Localizer["Aktivera_synkronisering"].ToString(), "ActivateLdap", "Synchronization", new { area = "Practitioner", id = Model.Account.Id }, new { @class = "btn" })
                     }
                 </div>
                 if (Model.LdapUser != null)
@@ -35,67 +35,67 @@
                         @if (Model.AccountSynchronized)
                         {
                             <h2>
-                                Användaren är synkroniserad
-                                <span class="show-more">Visa detaljer</span>
+                                @Localizer["Användaren_är_synkroniserad"]
+                                <span class="show-more">@Localizer["Visa_detaljer"]</span>
                             </h2>
-                            <p>Synkroniserades @Model.LocalAccount.LastSynchronized.ToString()</p>
+                            <p>@Localizer["Synkroniserades_{0}", Model.LocalAccount.LastSynchronized.ToString()]</p>
                         }
                         else
                         {
                             <h2>
-                                Användaren är ej synkroniserad
-                                <span class="show-more">Visa detaljer</span>
+                                @Localizer["Användaren_är_ej_synkroniserad"]
+                                <span class="show-more">@Localizer["Visa_detaljer"]</span>
                             </h2>
                             if (Model.SynchronizationErrorCount == -1)
                             {
-                                <p>Synkronisering är inte aktiverad</p>
+                                <p>@Localizer["Synkronisering_är_inte_aktiverad"]</p>
                             }
                             else
                             {
-                                <p>Innehåller @Model.SynchronizationErrorCount.ToString() fel</p>
+                                <p>@Localizer["Innehåller_{0}_fel", Model.SynchronizationErrorCount.ToString()]</p>
                             }
                         }
                         <table>
                             <thead>
                                 <tr class="head">
                                     <th scope="col"></th>
-                                    <th scope="col">MCSS</th>
-                                    <th colspan="2" scope="col">Extern Katalog</th>
+                                    <th scope="col">@Localizer["MCSS"]</th>
+                                    <th colspan="2" scope="col">@Localizer["Extern_Katalog"]</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="title">Användarnamn</td>
+                                    <td class="title">@Localizer["Användarnamn"]</td>
                                     <td>@Model.LocalAccount.UserName</td>
                                     <td>@Model.LdapUser.Username</td>
                                     <td class="@(string.IsNullOrEmpty(Model.LdapUser.Username) || Model.LdapUser.Username == Model.LocalAccount.UserName ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
-                                    <td class="title">Förnamn</td>
+                                    <td class="title">@Localizer["Förnamn"]</td>
                                     <td>@Model.LocalAccount.FirstName</td>
                                     <td>@Model.LdapUser.FirstName</td>
                                     <td class="@(string.IsNullOrEmpty(Model.LdapUser.FirstName) || Model.LdapUser.FirstName == Model.LocalAccount.FirstName ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
-                                    <td class="title">Efternamn</td>
+                                    <td class="title">@Localizer["Efternamn"]</td>
                                     <td>@Model.LocalAccount.LastName</td>
                                     <td>@Model.LdapUser.LastName</td>
                                     <td class="@(string.IsNullOrEmpty(Model.LdapUser.LastName) || Model.LdapUser.LastName == Model.LocalAccount.LastName ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
-                                    <td class="title">Mail</td>
+                                    <td class="title">@Localizer["Mail"]</td>
                                     <td>@Model.LocalAccount.EmailAddress</td>
                                     <td>@Model.LdapUser.Mail</td>
                                     <td class="@(string.IsNullOrEmpty(Model.LdapUser.Mail) || Model.LdapUser.Mail == Model.LocalAccount.EmailAddress ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
-                                    <td class="title">Pin</td>
+                                    <td class="title">@Localizer["Pin"]</td>
                                     <td>@(new String(Model.LocalAccount.DevicePassword.Select(s => '*').ToArray()))</td>
                                     <td>@(new String(Model.LdapUser.Pin.Select(s => '*').ToArray()))</td>
                                     <td class="@(string.IsNullOrEmpty(Model.LdapUser.Pin) || Model.LdapUser.Pin == Model.LocalAccount.DevicePassword ? "ok" : "alert")"></td>
                                 </tr>
                                 <tr>
-                                    <td class="title">HSA</td>
+                                    <td class="title">@Localizer["HSA"]</td>
                                     <td>@Model.LocalAccount.HsaId</td>
                                     <td>@Model.LdapUser.HsaId</td>
                                     <td class="@(string.IsNullOrEmpty(Model.LdapUser.HsaId) || Model.LdapUser.HsaId == Model.LocalAccount.HsaId ? "ok" : "alert")"></td>
@@ -110,26 +110,26 @@
                                     <div>
                                         @if (Model.LocalAccount.IsSynchronized)
                                         {
-                                            @Html.Submit("Synkronisera", new { @class = "btn" })
+                                            @Html.Submit(Localizer["Synkronisera"].ToString(), new { @class = "btn" })
                                         }
                                         else
                                         {
-                                            @Html.Submit("Synkronisera", new { @class = "btn", disabled = "disabled" })
+                                            @Html.Submit(Localizer["Synkronisera"].ToString(), new { @class = "btn", disabled = "disabled" })
                                         }
                                     </div>
                                 }
                                 <div>
                                     @if (Model.LocalAccount.LastSynchronized.HasValue)
                                     {
-                                        <p class="last-sync">Användaren synkroniserades senast <span class="bold">@Model.LocalAccount.LastSynchronized.GetValueOrDefault().ToString()</span></p>
+                                        <p class="last-sync">@Localizer["Användaren_synkroniserades_senast"] <span class="bold">@Model.LocalAccount.LastSynchronized.GetValueOrDefault().ToString()</span></p>
                                     }
                                     else
                                     {
-                                        <p class="last-sync">Användaren har aldrig synkroniserats</p>
+                                        <p class="last-sync">@Localizer["Användaren_har_aldrig_synkroniserats"]</p>
                                     }
                                     @if (!Model.LocalAccount.IsSynchronized && Html.HasPermissionFor(Permissions.Synchronization.Update))
                                     {
-                                        <p>Ldap-synkronisering måste aktiveras innan användaren kan synkroniseras</p>
+                                        <p>@Localizer["Ldap-synkronisering_måste_aktiveras_innan_användaren_kan_synkroniseras"]</p>
                                     }
                                 </div>
                             }
@@ -143,8 +143,8 @@
                 else
                 {
                     <div class="note">
-                        <h2>Ingen användare hittades</h2>
-                        <p>Var vänlig kontrollera att användaren finns i den externa katalogen och att personnumret matchar de i MCSS</p>
+                        <h2>@Localizer["Ingen_användare_hittades"]</h2>
+                        <p>@Localizer["Var_vänlig_kontrollera_att_användaren_finns_i_den_externa_katalogen_och_att_personnumret_matchar_de_i_MCSS"]</p>
                     </div>
                 }
 
@@ -152,8 +152,8 @@
             else
             {
                 <div class="note">
-                    <h2>Det finns ingen synkronisering aktiverad</h2>
-                    <p>Kontakta din administratör om att aktivera synkronisering av användare i MCSS</p>
+                    <h2>@Localizer["Det_finns_ingen_synkronisering_aktiverad"]</h2>
+                    <p>@Localizer["Kontakta_din_administratör_om_att_aktivera_synkronisering_av_användare_i_MCSS"]</p>
                 </div>
             }
         </div>

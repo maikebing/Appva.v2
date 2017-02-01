@@ -2,12 +2,12 @@
 @using Appva.Mcss.Admin.Application.Common;
 <div>
     <div class="heading cf">
-        <h2>Utlöpande delegeringar</h2>
+        <h2>@Localizer["Utlöpande_delegeringar"]</h2>
         <p class="filter">
-            @Html.ActionLink("Alla", "Overview", new { FilterByIssuer = false }, new { @class = "div" + (Model.FilteredByIssuer == false ? " sel" : "") })
-            @Html.ActionLink("Mina", "Overview", new { FilterByIssuer = true }, new { @class = "div" + (Model.FilteredByIssuer == true ? " sel" : "") })
+            @Html.ActionLink(Localizer["Alla"].ToString(), "Overview", new { FilterByIssuer = false }, new { @class = "div" + (Model.FilteredByIssuer == false ? " sel" : "") })
+            @Html.ActionLink(Localizer["Mina"].ToString(), "Overview", new { FilterByIssuer = true }, new { @class = "div" + (Model.FilteredByIssuer == true ? " sel" : "") })
         </p>
-        @Html.ActionLink(Permissions.Delegation.Read, "Alla delegeringar ...", "List", "Accounts", new { Area = "Practitioner" }, null)
+        @Html.ActionLink(Permissions.Delegation.Read, Localizer["Alla_delegeringar_"].ToString(), "List", "Accounts", new { Area = "Practitioner" }, null)
     </div>
     <div class="deleg-overview">
         @if (Model.DelegationsExpired.Count() > 0) {
@@ -16,8 +16,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th scope="col">Person</th>
-                        <th scope="col">Dagar kvar</th>
+                        <th scope="col">@Localizer["Person"]</th>
+                        <th scope="col">@Localizer["Dagar_kvar"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,7 +34,7 @@
                                     @account.FullName
                                 }
                             </td>
-                            <td><span>@account.DelegationDaysLeft dagar</span></td>
+                            <td><span>@account.DelegationDaysLeft @Localizer["dagar"]</span></td>
                         </tr>
                     }
                 </tbody>
@@ -44,12 +44,12 @@
         @if (Model.DelegationsExpiresWithin50Days.Count() > 0)
         {
         <div class="panel-c">
-            <h3>Löper ut inom 50 dagar</h3>
+            <h3>@Localizer["Löper_ut_inom_50_dagar"]</h3>
             <table>
                 <thead>
                     <tr>
-                        <th scope="col">Person</th>
-                        <th scope="col">Dagar kvar</th>
+                        <th scope="col">@Localizer["Person"]</th>
+                        <th scope="col">@Localizer["Dagar_kvar"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,7 +66,7 @@
                                     @account.FullName
                                     }
                             </td>
-                            <td><span>@account.DelegationDaysLeft dagar</span></td>
+                            <td><span>@account.DelegationDaysLeft @Localizer["dagar"]</span></td>
                         </tr>
                         }
                 </tbody>
@@ -77,7 +77,7 @@
         {
             <div class="panel-c">
                 <div class="no-data">
-                    <h3>Inga utlöpande delegeringar</h3>
+                    <h3>@Localizer["Inga_utlöpande_delegeringar"]</h3>
                 </div>
             </div>
         }

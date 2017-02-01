@@ -1,8 +1,8 @@
 ﻿@model Appva.Mcss.Admin.Models.ListAccountModel
 @using (Html.BeginForm("List", "Accounts", FormMethod.Get, new { @id = "search" })) {
     <div>
-        <label for="searchq">Sök medarbetare:</label> 
-        <input type="text" id="searchq" name="q" data-autocomplete-url="@Url.Action("QuickSearch", "Accounts", new { IsFilterByIsActiveEnabled = Model.IsFilterByIsActiveEnabled, IsFilterByIsPausedEnabled = Model.IsFilterByIsPausedEnabled, DelegationFilterId = Model.DelegationFilterId, RoleFilterId = Model.RoleFilterId, IsFilterByCreatedByEnabled = Model.IsFilterByCreatedByEnabled })" placeholder="Namn eller personnummer ..." />
+        <label for="searchq">@Localizer["Sök_medarbetare_"]</label> 
+        <input type="text" id="searchq" name="q" data-autocomplete-url="@Url.Action("QuickSearch", "Accounts", new { IsFilterByIsActiveEnabled = Model.IsFilterByIsActiveEnabled, IsFilterByIsPausedEnabled = Model.IsFilterByIsPausedEnabled, DelegationFilterId = Model.DelegationFilterId, RoleFilterId = Model.RoleFilterId, IsFilterByCreatedByEnabled = Model.IsFilterByCreatedByEnabled })" placeholder="@Localizer["Namn_eller_personnummer_"]" />
         <input type="hidden" name="isActive" value="@Model.IsFilterByIsActiveEnabled.ToString()" />
         <input type="hidden" name="isPaused" value="@Model.IsFilterByIsPausedEnabled.ToString()" />
         <input type="hidden" name="DelegationFilterId" value="@Model.DelegationFilterId.ToString()" />

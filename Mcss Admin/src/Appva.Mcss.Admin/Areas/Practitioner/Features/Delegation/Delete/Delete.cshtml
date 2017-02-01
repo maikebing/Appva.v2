@@ -1,28 +1,28 @@
 ﻿@model Appva.Mcss.Admin.Areas.Practitioner.Models.DeleteDelegationModel
 @{
-    SetTitle("Inactivate");
+    SetTitle(Localizer["Ta_bort"].ToString());
 }
 <div class="std-panel std-form lb-panel-small">
     @using (Html.BeginForm(new { DelegationId = Model.DelegationId }))
     {
         if (Model.Reasons != null && Model.Reasons.Count > 0)
         {
-            <h3 class="section-title">Ta bort delegering</h3>
+            <h3 class="section-title">@Localizer["Ta_bort_delegering"]</h3>
             <div class="select">
                 @Html.LabelFor(m => m.Reason)
-                @Html.DropDownListFor(m => m.Reason, Model.Reasons, "Välj...", new { })
+                @Html.DropDownListFor(m => m.Reason, Model.Reasons, Localizer["Välj_"].ToString(), new { })
             </div>
             <div class="submit">
-                @Html.Submit("Ta bort", new { @class = "btn btn-del" })
-                @Html.Cancel("Avbryt")
+                @Html.Submit(Localizer["Ta_bort"].ToString(), new { @class = "btn btn-del" })
+                @Html.Cancel(Localizer["Avbryt"].ToString())
             </div>
         }
         else
         {
             <div class="prompt">
-                <p class="warning">Vill du verkligen ta bort den här delegeringen?</p>
-                @Html.Submit("Ta bort", new { @class = "btn btn-del" })
-                @Html.Cancel("Avbryt")
+                <p class="warning">@Localizer["Vill_du_verkligen_ta_bort_den_här_delegeringen_"]</p>
+                @Html.Submit(Localizer["Ta_bort"].ToString(), new { @class = "btn btn-del" })
+                @Html.Cancel(Localizer["Avbryt"].ToString())
             </div>
         }
     }

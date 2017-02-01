@@ -1,11 +1,11 @@
 ﻿@model Appva.Mcss.Admin.Areas.Practitioner.Models.RenewDelegationsModel
 @{
-    SetTitle("Förnya delegeringar");
+    SetTitle(Localizer["Förnya_delegeringar"].ToString());
 }
 <div class="std-panel std-form lb-validate-form lb-panel-small" data-valclass="DelegationUpdate">
     @using (Html.BeginForm(new { DelegationCategoryId = Model.DelegationCategoryId, AccountId = Model.AccountId }))
     {
-        <h3 class="section-title">Förnya delegeringar för @Model.DelegationCategoryName</h3>
+        <h3 class="section-title">@Localizer["Förnya_delegeringar_för_{0}", Model.DelegationCategoryName]</h3>
         <div class="text medium">
             @Html.LabelFor(m => m.StartDate)
             @Html.EditorFor(m => m.StartDate)
@@ -16,17 +16,17 @@
             @Html.EditorFor(m => m.EndDate)
             @Html.ValidationMessageFor(m => m.EndDate)
         </div>
-        <h3 class="section-title">Förnya alla delegeringar?</h3>
+        <h3 class="section-title">@Localizer["Förnya_alla_delegeringar_"]</h3>
         <div class="radio">
             @Html.RadioButtonFor(m => m.RenewAllDelegations, false, new { id = "My" })
-            <label for="My">Endast mina</label>
+            <label for="My">@Localizer["Endast_mina"]</label>
             @Html.RadioButtonFor(m => m.RenewAllDelegations, true, new { id = "All" })
-            <label for="All">Alla delegeringar</label>
+            <label for="All">@Localizer["Alla_delegeringar"]</label>
         </div>
 	    <div class="submit">
             @Html.AntiForgeryToken()
-            @Html.Submit("Förnya")
-            @Html.Cancel("Avbryt")
+            @Html.Submit(Localizer["Förnya"].ToString())
+            @Html.Cancel(Localizer["Avbryt"].ToString())
 	    </div>
     }
 </div>

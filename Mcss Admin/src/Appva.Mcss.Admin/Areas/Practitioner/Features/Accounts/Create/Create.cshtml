@@ -1,12 +1,12 @@
 ﻿@model CreateAccountModel
 @{ 
-    SetTitle("Ny medarbetare"); 
+    SetTitle(Localizer["Ny_medarbetare"].ToString()); 
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AccountCreate" data-valparams="id=@((Model.AccountId.HasValue) ? Model.AccountId.Value.ToString() : "");uidUrl=@Url.Action("VerifyUniqueAccount");taxonUrl=@Url.Action("VerifyTaxon", "Taxa", new { Area = string.Empty })">
     @using (Html.Post())
     {
         <div>
-            <h3 class="section-title">Ny medarbetare</h3>
+            <h3 class="section-title">@Localizer["Ny_medarbetare"]</h3>
             @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
@@ -17,15 +17,15 @@
             }
             @if (Model.IsHsaIdFieldVisible)
             {
-                @Html.FormGroup(x => x.HsaId, "text").Label("HSA ID").TextBox().Validate().Build()
+                @Html.FormGroup(x => x.HsaId, "text").Label(Localizer["HSA_ID"].ToString()).TextBox().Validate().Build()
             }
             <div class="select">
                 @Html.LabelFor(m => m.TitleRole)
-                @Html.DropDownListFor(m => m.TitleRole, new SelectList(Model.Titles, "Value", "Text", Model.TitleRole), "Välj titel ...")
+                @Html.DropDownListFor(m => m.TitleRole, new SelectList(Model.Titles, "Value", "Text", Model.TitleRole), Localizer["Välj_titel_"].ToString())
                 @Html.ValidationMessageFor(m => m.TitleRole)
 	        </div>
             <div class="select selectgroup cf">
-                <strong>Adress:</strong>
+                <strong>@Localizer["Adress_"]</strong>
                 @if (Model.Taxons.IsNotNull())
                 {
                     foreach (var taxon in Model.Taxons)
@@ -34,7 +34,7 @@
                             <label class="structural">@taxon.Label</label>
                             @Html.DropDownList(taxon.Id,
                                 new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
-                                string.Format("Välj {0}...", taxon.OptionLabel),
+                                  Localizer["Välj_{0}_", taxon.OptionLabel].ToString(),
                                 new { @class = "dropdown" }
                             )
                         </div>
@@ -45,8 +45,8 @@
             </div>
         </div>
         <div class="submit">
-            @Html.Submit("Spara")
-            @Html.Cancel("Avbryt")
+            @Html.Submit(Localizer["Spara"].ToString())
+            @Html.Cancel(Localizer["Avbryt"].ToString())
         </div>
     }
 </div>

@@ -81,7 +81,30 @@
     }
 	<div class="signature cf">
 		<div class="col">
-			<strong>Namnunderskrift delegerande sjuksköterska;</strong>
+            @if (Model.DelegationIssuer.Title.Contains("Sjuksköterska"))
+            {
+                <strong>Namnunderskrift delegerande sjuksköterska;</strong>
+            }
+            else if (Model.DelegationIssuer.Title.Contains("Fysioterapeut"))
+            {
+                <strong>Namnunderskrift delegerande fysioterapeut;</strong>
+            }
+            else if (Model.DelegationIssuer.Title.Contains("Arbetsterapeut"))
+            {
+                <strong>Namnunderskrift delegerande arbetsterapeut;</strong>
+            }
+            else if (Model.DelegationIssuer.Title.Contains("Sjukgymnast"))
+            {
+                <strong>Namnunderskrift delegerande sjukgymnast;</strong>
+            }
+            else if (Model.DelegationIssuer.Title.Contains("Dietist"))
+            {
+                <strong>Namnunderskrift delegerande dietist;</strong>
+            }
+            else
+            {
+                <strong>Namnunderskrift av den som urfärdar delegeringen</strong>
+            }
 			<p>Datum</p>
 			<p>Underskrift</p>
 			<p id="nameTitle">@Model.DelegationIssuer.FullName</p>

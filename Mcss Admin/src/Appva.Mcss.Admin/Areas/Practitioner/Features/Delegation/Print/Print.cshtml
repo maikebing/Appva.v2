@@ -2,6 +2,8 @@
 @{
     SetTitle("Delegeringsbeslut");
     Layout = "~/Areas/Patient/Features/Shared/_PrintLayout.cshtml";
+
+    var issuerTitle = Model.DelegationIssuer.Title != null ? Model.DelegationIssuer.Title : string.Empty;
 }
 <div id="header" class="cf">
 	<h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
@@ -81,29 +83,29 @@
     }
 	<div class="signature cf">
 		<div class="col">
-            @if (Model.DelegationIssuer.Title.Contains("Sjuksköterska"))
+            @if (issuerTitle.Contains("Sjuksköterska"))
             {
                 <strong>Namnunderskrift delegerande sjuksköterska;</strong>
             }
-            else if (Model.DelegationIssuer.Title.Contains("Fysioterapeut"))
+            else if (issuerTitle.Contains("Fysioterapeut"))
             {
                 <strong>Namnunderskrift delegerande fysioterapeut;</strong>
             }
-            else if (Model.DelegationIssuer.Title.Contains("Arbetsterapeut"))
+            else if (issuerTitle.Contains("Arbetsterapeut"))
             {
                 <strong>Namnunderskrift delegerande arbetsterapeut;</strong>
             }
-            else if (Model.DelegationIssuer.Title.Contains("Sjukgymnast"))
+            else if (issuerTitle.Contains("Sjukgymnast"))
             {
                 <strong>Namnunderskrift delegerande sjukgymnast;</strong>
             }
-            else if (Model.DelegationIssuer.Title.Contains("Dietist"))
+            else if (issuerTitle.Contains("Dietist"))
             {
                 <strong>Namnunderskrift delegerande dietist;</strong>
             }
             else
             {
-                <strong>Namnunderskrift av den som urfärdar delegeringen</strong>
+                <strong>Namnunderskrift av den som utfärdar delegeringen;</strong>
             }
 			<p>Datum</p>
 			<p>Underskrift</p>

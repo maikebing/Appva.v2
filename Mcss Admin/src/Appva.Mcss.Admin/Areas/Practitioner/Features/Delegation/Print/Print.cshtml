@@ -6,7 +6,30 @@
     var issuerTitle = Model.DelegationIssuer.Title != null ? Model.DelegationIssuer.Title : string.Empty;
 }
 <div id="header" class="cf">
-	<h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
+    @if (issuerTitle.Contains("Sjuksköterska"))
+    {
+        <h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else if (issuerTitle.Contains("Fysioterapeut"))
+    {
+        <h1>Delegeringsbeslut av fysioterapeut gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else if (issuerTitle.Contains("Arbetsterapeut"))
+    {
+        <h1>Delegeringsbeslut av arbetsterapeut gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else if (issuerTitle.Contains("Sjukgymnast"))
+    {
+        <h1>Delegeringsbeslut av sjukgymnast gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else if (issuerTitle.Contains("Dietist"))
+    {
+        <h1>Delegeringsbeslut av dietist gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else
+    {
+        <h1>Delegeringsbeslut gällande hälso- och sjukvårdsuppgifter</h1>
+    }
 	<p>(Sparas i 10 år)</p>
 </div>
 

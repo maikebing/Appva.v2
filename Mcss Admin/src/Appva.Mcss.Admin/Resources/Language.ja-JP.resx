@@ -1,0 +1,1381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="(Sparas_i_10_år)" xml:space="preserve">
+    <value>（１０年間は保存する）</value>
+  </data>
+  <data name="Adress" xml:space="preserve">
+    <value>住所</value>
+  </data>
+  <data name="Adress_" xml:space="preserve">
+    <value>住所</value>
+  </data>
+  <data name="Adress_måste_väljas" xml:space="preserve">
+    <value>住所を選択しなければならない</value>
+  </data>
+  <data name="Aktivera" xml:space="preserve">
+    <value>稼働させる</value>
+  </data>
+  <data name="Aktiverad" xml:space="preserve">
+    <value>稼働された</value>
+  </data>
+  <data name="Aktivera_alla_delegeringar_för_{0}" xml:space="preserve">
+    <value>（０）　　のためのあらゆる委任事項を稼働させる</value>
+  </data>
+  <data name="Aktivera_synkronisering" xml:space="preserve">
+    <value>稼働させる　　シンクロナイズする</value>
+  </data>
+  <data name="Aktivitet" xml:space="preserve">
+    <value>アクテイビテイ</value>
+  </data>
+  <data name="Aktuella" xml:space="preserve">
+    <value>現状</value>
+  </data>
+  <data name="Aktuella_delegeringar__{0}" xml:space="preserve">
+    <value>現状の委任事項　　　（０）</value>
+  </data>
+  <data name="Aktuellet_saldo" xml:space="preserve">
+    <value>現状の残り</value>
+  </data>
+  <data name="Aktuell_delegering" xml:space="preserve">
+    <value>現状の委任事項</value>
+  </data>
+  <data name="Aldrig_räknad" xml:space="preserve">
+    <value>一度も計算されていない</value>
+  </data>
+  <data name="Alla" xml:space="preserve">
+    <value>すべて</value>
+  </data>
+  <data name="Alla_boende_på_" xml:space="preserve">
+    <value>　　の全入居者</value>
+  </data>
+  <data name="Alla_delegeringar" xml:space="preserve">
+    <value>すべての委任事項</value>
+  </data>
+  <data name="Alla_delegeringar_" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Alla_mottagna_delegeringar__{0}" xml:space="preserve">
+    <value>（０）受け取ったすべての委任事項</value>
+  </data>
+  <data name="Andel_signerade_insatser" xml:space="preserve">
+    <value>署名ずみ支援行為の割合</value>
+  </data>
+  <data name="Ange_insats" xml:space="preserve">
+    <value>支援を指示</value>
+  </data>
+  <data name="Ange_när_det_ska_ges" xml:space="preserve">
+    <value>何時支援をするのかを伝える</value>
+  </data>
+  <data name="Ange_saldo" xml:space="preserve">
+    <value>残りを伝える</value>
+  </data>
+  <data name="Ansvarig" xml:space="preserve">
+    <value>責任</value>
+  </data>
+  <data name="Ansvarig_kontaktperson_" xml:space="preserve">
+    <value>担当職員で責任のある人（コンタクトパーソン）</value>
+  </data>
+  <data name="Ansvarig_sjuksköterska_" xml:space="preserve">
+    <value>看護師の責任者</value>
+  </data>
+  <data name="Ansvarig_ssk" xml:space="preserve">
+    <value>正看護師の責任者</value>
+  </data>
+  <data name="Antal" xml:space="preserve">
+    <value>数値</value>
+  </data>
+  <data name="Anteckningar_instruktion_" xml:space="preserve">
+    <value>メモまたは指示</value>
+  </data>
+  <data name="Anteckning_eller_instruktion" xml:space="preserve">
+    <value>メモまたは指示</value>
+  </data>
+  <data name="Användaren_har_aldrig_synkroniserats" xml:space="preserve">
+    <value>ユーザーは一度もシンクロナイズされていない</value>
+  </data>
+  <data name="Användaren_synkroniserades_senast" xml:space="preserve">
+    <value>ユーザーが最後にシンクロナイズされたのは</value>
+  </data>
+  <data name="Användaren_är_ej_synkroniserad" xml:space="preserve">
+    <value>ユーザーがシンクロナイズされていない</value>
+  </data>
+  <data name="Användaren_är_synkroniserad" xml:space="preserve">
+    <value>ユーザーはシンクロナイズされている</value>
+  </data>
+  <data name="Användarnamn" xml:space="preserve">
+    <value>ユーザー名</value>
+  </data>
+  <data name="Appva_MCSS_version" xml:space="preserve">
+    <value>Appva　MCSS　バージョン</value>
+  </data>
+  <data name="Att_ge" xml:space="preserve">
+    <value>与える</value>
+  </data>
+  <data name="Avbryt" xml:space="preserve">
+    <value>中止する</value>
+  </data>
+  <data name="Avlidna" xml:space="preserve">
+    <value>死亡者</value>
+  </data>
+  <data name="Avmarkera" xml:space="preserve">
+    <value>選択を解除する</value>
+  </data>
+  <data name="Avvikelse_" xml:space="preserve">
+    <value>偏差</value>
+  </data>
+  <data name="Av_säkerhetsskäl_rekommenderar_vi_att_du_även_stänger_din_webbläsare" xml:space="preserve">
+    <value>安全のために、プラウザも閉じてください</value>
+  </data>
+  <data name="Begärdes_av" xml:space="preserve">
+    <value>要求者</value>
+  </data>
+  <data name="Beställd" xml:space="preserve">
+    <value>注文した</value>
+  </data>
+  <data name="Boende" xml:space="preserve">
+    <value>入居者</value>
+  </data>
+  <data name="Borttagna" xml:space="preserve">
+    <value>除去された</value>
+  </data>
+  <data name="Byt_lösenord" xml:space="preserve">
+    <value>パスワードを変更す</value>
+  </data>
+  <data name="Chef_" xml:space="preserve">
+    <value>上司</value>
+  </data>
+  <data name="Dag" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="dagar" xml:space="preserve">
+    <value>数日</value>
+  </data>
+  <data name="dagar_kvar" xml:space="preserve">
+    <value>残りの日数</value>
+  </data>
+  <data name="Datum" xml:space="preserve">
+    <value>日付</value>
+  </data>
+  <data name="Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012-12-21" xml:space="preserve">
+    <value>日付は８つの数字をハイフォンで結ぶ形で記入しなければならない。　例　２０１２－１２－２１</value>
+  </data>
+  <data name="Delegerade_hälso-_och_sjukvårdsuppgifter_" xml:space="preserve">
+    <value>委任されている、保健医療ケアに関する情報</value>
+  </data>
+  <data name="Delegering" xml:space="preserve">
+    <value>委任事項</value>
+  </data>
+  <data name="Delegeringsbeslut" xml:space="preserve">
+    <value>委任事項の決定</value>
+  </data>
+  <data name="Delegeringsbeslut_av_sjuksköterskan_gällande_hälso-_och_sjukvårdsuppgifter" xml:space="preserve">
+    <value>看護師による保健医療ケアに関する委任決定</value>
+  </data>
+  <data name="Delvis_given" xml:space="preserve">
+    <value>一部与えられた</value>
+  </data>
+  <data name="den_1_torsdagen" xml:space="preserve">
+    <value>１の木曜日</value>
+  </data>
+  <data name="Den_boende_har_inga_saldon" xml:space="preserve">
+    <value>居住者には残りがない</value>
+  </data>
+  <data name="Det_finns_ingen_synkronisering_aktiverad" xml:space="preserve">
+    <value>シンクロナイズがされていない</value>
+  </data>
+  <data name="Ditt_användarnamn" xml:space="preserve">
+    <value>貴方のユーザー名</value>
+  </data>
+  <data name="Ditt_konto_har_tillfälligt_blivit_spärrat_efter_upprepade_misslyckade_försök_att_logga_in__var_vänlig_försök_igen_senare" xml:space="preserve">
+    <value>何回もログインしようとして失敗したので貴方の口座がブロックされています。しばらくしてからもう一度ログインしてください。</value>
+  </data>
+  <data name="Ditt_lösenord" xml:space="preserve">
+    <value>貴方のパスワード</value>
+  </data>
+  <data name="Ditt_lösenord_är_nu_bytt" xml:space="preserve">
+    <value>貴方のパスワードは、今、変更されました</value>
+  </data>
+  <data name="Ditt_lösenord_är_sparat" xml:space="preserve">
+    <value>貴方のパスワードは保存されました</value>
+  </data>
+  <data name="Du_har_nu_blivit_utloggad" xml:space="preserve">
+    <value>貴方は今ログアウトされました</value>
+  </data>
+  <data name="Efternamn" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="Efternamn_måste_fyllas_i" xml:space="preserve">
+    <value>姓名は記入しなければなりません</value>
+  </data>
+  <data name="Ej_aktiverad" xml:space="preserve">
+    <value>稼働されていません</value>
+  </data>
+  <data name="Ej_given" xml:space="preserve">
+    <value>与えられていない</value>
+  </data>
+  <data name="Ej_i_tid" xml:space="preserve">
+    <value>決められた時間にされていない</value>
+  </data>
+  <data name="Ej_kvitterad" xml:space="preserve">
+    <value>承認されていない</value>
+  </data>
+  <data name="Ej_synkroniserade" xml:space="preserve">
+    <value>シンクロナイズされていません</value>
+  </data>
+  <data name="Ej_åtgärdat_larm_" xml:space="preserve">
+    <value>対処されていないアラーム</value>
+  </data>
+  <data name="Endast_avvikelser" xml:space="preserve">
+    <value>偏差のみ</value>
+  </data>
+  <data name="Endast_mina" xml:space="preserve">
+    <value>私のもののみ</value>
+  </data>
+  <data name="Endast_vid_behov" xml:space="preserve">
+    <value>必要時のもののみ</value>
+  </data>
+  <data name="Enhetschef_" xml:space="preserve">
+    <value>ユニットチーフ</value>
+  </data>
+  <data name="en_rad__Markera_sedan_de_dagar_som_iordningsställts" xml:space="preserve">
+    <value>準備されている日に印をつける</value>
+  </data>
+  <data name="Ett_fel_har_uppstått" xml:space="preserve">
+    <value>間違いが起こった　</value>
+  </data>
+  <data name="Ett_fel_inträffade" xml:space="preserve">
+    <value>間違いがあった　</value>
+  </data>
+  <data name="Exportera_till_Excel" xml:space="preserve">
+    <value>Excelにエキスポートする</value>
+  </data>
+  <data name="Extern_Katalog" xml:space="preserve">
+    <value>外部カタログ</value>
+  </data>
+  <data name="E_postadress" xml:space="preserve">
+    <value>電子メールのアドレス</value>
+  </data>
+  <data name="Felaktigt_användarnamn_och_eller_lösenord" xml:space="preserve">
+    <value>ユーザー名またはパスワードが違っている</value>
+  </data>
+  <data name="Felaktig_e_postadress_och_eller_personnummer" xml:space="preserve">
+    <value>電子メールのアドレスまたはマイナンバーが違っている</value>
+  </data>
+  <data name="Filtrera_på_kategori_" xml:space="preserve">
+    <value>カテゴリー別にフィルターにかける</value>
+  </data>
+  <data name="fler_i_tid" xml:space="preserve">
+    <value>決められた時間にされることが多い</value>
+  </data>
+  <data name="fornamn_efternamn_organisation_se" xml:space="preserve">
+    <value>名前　　姓名　　組織を見る</value>
+  </data>
+  <data name="Fredag" xml:space="preserve">
+    <value>金曜日</value>
+  </data>
+  <data name="Frekvens" xml:space="preserve">
+    <value>頻度</value>
+  </data>
+  <data name="Frivilligt" xml:space="preserve">
+    <value>自発的</value>
+  </data>
+  <data name="Frånvaro_" xml:space="preserve">
+    <value>欠席</value>
+  </data>
+  <data name="Från_" xml:space="preserve">
+    <value>　から</value>
+  </data>
+  <data name="Fullständig_rapport_" xml:space="preserve">
+    <value>完全な報告書</value>
+  </data>
+  <data name="Fullständig_resultatrapport" xml:space="preserve">
+    <value>完全な結果報告書</value>
+  </data>
+  <data name="färre_i_tid" xml:space="preserve">
+    <value>決められた時間にされることは少ない</value>
+  </data>
+  <data name="Får_endast_ges_av_legitimerad_{0}" xml:space="preserve">
+    <value>有資格者によりのみ与えられる</value>
+  </data>
+  <data name="Följande_aktiviteter_genomfördes_inte_i_tid_" xml:space="preserve">
+    <value>以下のアクテイビテイが決められた時間に実施されていない</value>
+  </data>
+  <data name="Förbrukningsjournal" xml:space="preserve">
+    <value>消耗品のカルテ</value>
+  </data>
+  <data name="Föregående" xml:space="preserve">
+    <value>前期</value>
+  </data>
+  <data name="Förnamn" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="Förnamn_måste_fyllas_i" xml:space="preserve">
+    <value>名前は記入しなければなりません</value>
+  </data>
+  <data name="Förnya" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="Förnya_alla_delegeringar_" xml:space="preserve">
+    <value>すべての委任事項を更新する</value>
+  </data>
+  <data name="Förnya_delegeringar" xml:space="preserve">
+    <value>委任事項を更新する</value>
+  </data>
+  <data name="Förnya_delegeringar_för_{0}" xml:space="preserve">
+    <value>　のための委任事項を更新する</value>
+  </data>
+  <data name="Försenade" xml:space="preserve">
+    <value>遅れた</value>
+  </data>
+  <data name="Försenade_kontrollräkningar" xml:space="preserve">
+    <value>集計が遅れた</value>
+  </data>
+  <data name="för_att_logga_in_med_ditt_SITHS_eID" xml:space="preserve">
+    <value>貴方のSITHS　eIDでログインするために</value>
+  </data>
+  <data name="För_boende" xml:space="preserve">
+    <value>入居者のために</value>
+  </data>
+  <data name="För_långa_meningar_kan_oavsiktligt_förkortas_i_signeringsenhet_Kontrollera_att_texten_är_synlig_i_sin_helhet_på_signeringsenhet__eller_använd_instruktionsfältet_för_längre_kompletterande_text" xml:space="preserve">
+    <value>長すぎる文章は不注意に署名ユニットで短縮されることがあるので、文章が署名ユニットできちんと読めるかどうかチェックするか、長い追加文章には指示フィールドを使用する。</value>
+  </data>
+  <data name="Förändring_från_föregående_period" xml:space="preserve">
+    <value>前期からの変化</value>
+  </data>
+  <data name="Gavs" xml:space="preserve">
+    <value>与える</value>
+  </data>
+  <data name="Genomförd" xml:space="preserve">
+    <value>実施された</value>
+  </data>
+  <data name="Genomfördes" xml:space="preserve">
+    <value>実施された</value>
+  </data>
+  <data name="genomfördes_" xml:space="preserve">
+    <value>実施された</value>
+  </data>
+  <data name="Genomförd_av" xml:space="preserve">
+    <value>実施者</value>
+  </data>
+  <data name="Genomgångna_kunskapstester" xml:space="preserve">
+    <value>完了した能力テスト</value>
+  </data>
+  <data name="Genomsnittlig_avvikelse_i_tid" xml:space="preserve">
+    <value>決められた時間に実施することの、偏差の平均値</value>
+  </data>
+  <data name="Ges_inom_" xml:space="preserve">
+    <value>与える</value>
+  </data>
+  <data name="Given_för_sent" xml:space="preserve">
+    <value>与えた時間が遅すぎる</value>
+  </data>
+  <data name="Glömt_lösenord" xml:space="preserve">
+    <value>パスワードを忘れた</value>
+  </data>
+  <data name="Glömt_lösenord_" xml:space="preserve">
+    <value>パスワードを忘れた</value>
+  </data>
+  <data name="Gäller" xml:space="preserve">
+    <value>有効だ</value>
+  </data>
+  <data name="Gäller_(max_1_år)" xml:space="preserve">
+    <value>有効だ　（最高１年間）</value>
+  </data>
+  <data name="Gäller_för" xml:space="preserve">
+    <value>　に有効だ</value>
+  </data>
+  <data name="Gäller_för_" xml:space="preserve">
+    <value>　に有効だ</value>
+  </data>
+  <data name="Hanterat_av" xml:space="preserve">
+    <value>対処者</value>
+  </data>
+  <data name="Har_ej_genomförts" xml:space="preserve">
+    <value>実施されていない</value>
+  </data>
+  <data name="Har_skyddade_uppgifter_" xml:space="preserve">
+    <value>機密扱いの情報がある</value>
+  </data>
+  <data name="Hej" xml:space="preserve">
+    <value>こんにちは</value>
+  </data>
+  <data name="Hela_dagen" xml:space="preserve">
+    <value>一日中</value>
+  </data>
+  <data name="Hela_dagen_{1:d MMM yyyy}" xml:space="preserve">
+    <value>一日中　</value>
+  </data>
+  <data name="Historik" xml:space="preserve">
+    <value>歴史</value>
+  </data>
+  <data name="Hjälp" xml:space="preserve">
+    <value>ヘルプ</value>
+  </data>
+  <data name="HSA" xml:space="preserve">
+    <value>HAS</value>
+  </data>
+  <data name="HSA_ID" xml:space="preserve">
+    <value>HASのID</value>
+  </data>
+  <data name="Händelsen_behöver_inte_kvitteras" xml:space="preserve">
+    <value>承認する必要のない出来事</value>
+  </data>
+  <data name="Händelsen_behöver_inte_signeras" xml:space="preserve">
+    <value>署名する必要のない出来事</value>
+  </data>
+  <data name="idag" xml:space="preserve">
+    <value>今日</value>
+  </data>
+  <data name="Idag_{0:HH:mm}" xml:space="preserve">
+    <value>今日</value>
+  </data>
+  <data name="Ifylld_signeringslista" xml:space="preserve">
+    <value>記入された署名表</value>
+  </data>
+  <data name="igår" xml:space="preserve">
+    <value>昨日</value>
+  </data>
+  <data name="Inaktivera" xml:space="preserve">
+    <value>稼働されていない</value>
+  </data>
+  <data name="Inaktiverade" xml:space="preserve">
+    <value>稼働されていなかった</value>
+  </data>
+  <data name="Inga_försenade_insatser_just_nu" xml:space="preserve">
+    <value>現時点では支援遅れはない</value>
+  </data>
+  <data name="Inga_försenade_kontrollräkningar" xml:space="preserve">
+    <value>集計遅れはない</value>
+  </data>
+  <data name="Inga_händelser_för_angiven_ tidsperiod" xml:space="preserve">
+    <value>与えられた期間内に出来事はない</value>
+  </data>
+  <data name="Inga_kommande_händelser" xml:space="preserve">
+    <value>今後予定されている出来事はない</value>
+  </data>
+  <data name="Inga_påfyllningar_begärda" xml:space="preserve">
+    <value>補充要求はない</value>
+  </data>
+  <data name="Inga_pågående_larm" xml:space="preserve">
+    <value>現在発生しているアラームはない</value>
+  </data>
+  <data name="Inga_signerade_händelser_för_angiven_tidsperiod" xml:space="preserve">
+    <value>与えられた期間内に署名された出来事はない</value>
+  </data>
+  <data name="Inga_utlöpande_delegeringar" xml:space="preserve">
+    <value>継続している委任事項はない</value>
+  </data>
+  <data name="Ingen_användare_hittades" xml:space="preserve">
+    <value>ユーザー名が見つからない</value>
+  </data>
+  <data name="Inloggad_som" xml:space="preserve">
+    <value>　としてログインされている</value>
+  </data>
+  <data name="Innehåller_{0}_fel" xml:space="preserve">
+    <value>　（０）間違いを含む</value>
+  </data>
+  <data name="inom" xml:space="preserve">
+    <value>内</value>
+  </data>
+  <data name="Insats" xml:space="preserve">
+    <value>支援</value>
+  </data>
+  <data name="Insatsen_är_kopplad_till_ett_borttaget_ saldo" xml:space="preserve">
+    <value>支援は除去された残りに結びついている　</value>
+  </data>
+  <data name="Insatser" xml:space="preserve">
+    <value>支援</value>
+  </data>
+  <data name="Insatser_som_skulle_ha_utförts_före_insatsen_skapats_kommer_inte_markeras_som_avikelser_eller_skapa_några_larm__Insatserna_kommer_att_synas_och_kan_signeras_men_kommer_inte_att_generera_några_larm" xml:space="preserve">
+    <value>支援が決定される以前に実施された支援は偏差として印づけしないかアラームを発生させない。支援は読み取れるし、署名できるが、アラームは発生させない。</value>
+  </data>
+  <data name="Insatser_under_perioden" xml:space="preserve">
+    <value>期間内の支援</value>
+  </data>
+  <data name="Instruktion" xml:space="preserve">
+    <value>指示</value>
+  </data>
+  <data name="Inte_signerad" xml:space="preserve">
+    <value>署名されていない</value>
+  </data>
+  <data name="Iordningsställande" xml:space="preserve">
+    <value>準備された</value>
+  </data>
+  <data name="I_tid" xml:space="preserve">
+    <value>決められた時間にされた</value>
+  </data>
+  <data name="Jag_fick_inte_något_e_postmeddelande" xml:space="preserve">
+    <value>電子メールで何も連絡をうけていません</value>
+  </data>
+  <data name="Kalender" xml:space="preserve">
+    <value>カレンダー</value>
+  </data>
+  <data name="Kalender_de_närmaste_7_dagarna" xml:space="preserve">
+    <value>この７日間のカレンダー</value>
+  </data>
+  <data name="Kan_ej_ta" xml:space="preserve">
+    <value>出来ません</value>
+  </data>
+  <data name="Klicka_här" xml:space="preserve">
+    <value>ここをクリックしてください</value>
+  </data>
+  <data name="Klockan_" xml:space="preserve">
+    <value>時</value>
+  </data>
+  <data name="Klockslag_" xml:space="preserve">
+    <value>時</value>
+  </data>
+  <data name="kl_{0:HH:mm}" xml:space="preserve">
+    <value>{0:HH:mm}時</value>
+  </data>
+  <data name="kl_{0}" xml:space="preserve">
+    <value>{0}時</value>
+  </data>
+  <data name="Kommande" xml:space="preserve">
+    <value>今後の</value>
+  </data>
+  <data name="Kontakta_din_administratör_om_att_aktivera_synkronisering_av_användare_i_MCSS" xml:space="preserve">
+    <value>MCSSのユーザーのシンクロナイズするために、貴方のアドミニストレーターに連絡してください</value>
+  </data>
+  <data name="Kontollräknat_saldo_stämmer_ ej" xml:space="preserve">
+    <value>残りの集計数値が一致しない</value>
+  </data>
+  <data name="Kontrollera_din_e_post" xml:space="preserve">
+    <value>電子メールをチックしてください</value>
+  </data>
+  <data name="Kontrollräkna" xml:space="preserve">
+    <value>集計する</value>
+  </data>
+  <data name="Kontrollräkningar" xml:space="preserve">
+    <value>集計表</value>
+  </data>
+  <data name="Kontrollräkning_narkotika" xml:space="preserve">
+    <value>麻薬品の集計をする</value>
+  </data>
+  <data name="Kunskapstester" xml:space="preserve">
+    <value>能力テストの変更</value>
+  </data>
+  <data name="Kvittera" xml:space="preserve">
+    <value>承認する</value>
+  </data>
+  <data name="Kvitterad" xml:space="preserve">
+    <value>承認した</value>
+  </data>
+  <data name="Kvitterade_larm" xml:space="preserve">
+    <value>承認されたアラーム</value>
+  </data>
+  <data name="Kvitterad_av_" xml:space="preserve">
+    <value>承認者</value>
+  </data>
+  <data name="Kvitterad_av_{0}" xml:space="preserve">
+    <value>{0} 承認者</value>
+  </data>
+  <data name="Kvittera_alla_larm" xml:space="preserve">
+    <value>すべてのアラームを承認する</value>
+  </data>
+  <data name="Kvittera_larm" xml:space="preserve">
+    <value>アラームを承認する</value>
+  </data>
+  <data name="Kvittering" xml:space="preserve">
+    <value>承認</value>
+  </data>
+  <data name="Larm" xml:space="preserve">
+    <value>アラーム</value>
+  </data>
+  <data name="Larm_" xml:space="preserve">
+    <value>アラーム</value>
+  </data>
+  <data name="Larm_åtgärdat" xml:space="preserve">
+    <value>アラームには対処ずみ</value>
+  </data>
+  <data name="LDAP" xml:space="preserve">
+    <value>LDAP</value>
+  </data>
+  <data name="Ldap-synkronisering_måste_aktiveras_innan_användaren_kan_synkroniseras" xml:space="preserve">
+    <value>LDAPシンクロナイズはユーザーがシンクロナイズされる前に稼働されなければならない</value>
+  </data>
+  <data name="Logga_in" xml:space="preserve">
+    <value>ログイン</value>
+  </data>
+  <data name="Logga_in1" xml:space="preserve">
+    <value>１にログインする</value>
+  </data>
+  <data name="Logga_in_på_nytt_för_att_använda_MCSS" xml:space="preserve">
+    <value>MCSSを使用するために新たにログインする</value>
+  </data>
+  <data name="Logga_ut" xml:space="preserve">
+    <value>ログアウト</value>
+  </data>
+  <data name="Lägg_till" xml:space="preserve">
+    <value>加える</value>
+  </data>
+  <data name="Lägg_till_delegering" xml:space="preserve">
+    <value>委任事項に加える</value>
+  </data>
+  <data name="Lägg_till_kunskapstest" xml:space="preserve">
+    <value>能力テストに加える</value>
+  </data>
+  <data name="Lägg_till_rad" xml:space="preserve">
+    <value>ラインに加える</value>
+  </data>
+  <data name="Läkemedel" xml:space="preserve">
+    <value>医薬品</value>
+  </data>
+  <data name="Löper_ut" xml:space="preserve">
+    <value>有効期限が切れる</value>
+  </data>
+  <data name="Löper_ut_inom_50_dagar" xml:space="preserve">
+    <value>５０日以内に有効期限が切れる</value>
+  </data>
+  <data name="Lördag" xml:space="preserve">
+    <value>土曜日</value>
+  </data>
+  <data name="Lösenord" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
+  <data name="Lösenordslänken_har_gått_ut__vänligen_begär_en_ny_genom_att_klicka_på_knappen__skicka_ny_återställningslänk__nedan" xml:space="preserve">
+    <value>パスワードが時間ぎれなので、下の”リカバリーリンクを送ってください”というボタンを押して新しいパスワードを請求してください。</value>
+  </data>
+  <data name="Lösenord_måste_stämma_överens" xml:space="preserve">
+    <value>パスワードが一致しなければならない</value>
+  </data>
+  <data name="Mail" xml:space="preserve">
+    <value>メール</value>
+  </data>
+  <data name="Markera" xml:space="preserve">
+    <value>マークする（印づけする）</value>
+  </data>
+  <data name="Max_1_år" xml:space="preserve">
+    <value>最高１年</value>
+  </data>
+  <data name="MCSS" xml:space="preserve">
+    <value>MCSS</value>
+  </data>
+  <data name="Medarbetare" xml:space="preserve">
+    <value>同僚</value>
+  </data>
+  <data name="Medskickad" xml:space="preserve">
+    <value>添付した</value>
+  </data>
+  <data name="Med_delegering_" xml:space="preserve">
+    <value>委任により</value>
+  </data>
+  <data name="Med_titel_" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
+  <data name="Mina" xml:space="preserve">
+    <value>私のもの</value>
+  </data>
+  <data name="Mina_delegeringar" xml:space="preserve">
+    <value>私の委任事項</value>
+  </data>
+  <data name="minuter_efter" xml:space="preserve">
+    <value>　分後</value>
+  </data>
+  <data name="minuter_innan" xml:space="preserve">
+    <value>　分前</value>
+  </data>
+  <data name="min_efter" xml:space="preserve">
+    <value>分後に</value>
+  </data>
+  <data name="min_innan" xml:space="preserve">
+    <value>分前に</value>
+  </data>
+  <data name="Mottagna_delegeringar" xml:space="preserve">
+    <value>受け取った委任事項</value>
+  </data>
+  <data name="månad" xml:space="preserve">
+    <value>月</value>
+  </data>
+  <data name="Måndag" xml:space="preserve">
+    <value>月曜日</value>
+  </data>
+  <data name="Namn" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="Namnunderskrift_av_den_som_tar_emot_delegeringen" xml:space="preserve">
+    <value>委任事項を受ける人の署名</value>
+  </data>
+  <data name="Namnunderskrift_delegerande_sjuksköterska" xml:space="preserve">
+    <value>委任する看護師の署名</value>
+  </data>
+  <data name="Namn_eller_personnummer_" xml:space="preserve">
+    <value>名前またはマイナンバー</value>
+  </data>
+  <data name="Nedåtgående" xml:space="preserve">
+    <value>下記</value>
+  </data>
+  <data name="Nej" xml:space="preserve">
+    <value>いいえ</value>
+  </data>
+  <data name="Notis" xml:space="preserve">
+    <value>メモ</value>
+  </data>
+  <data name="Notis_" xml:space="preserve">
+    <value>メモ</value>
+  </data>
+  <data name="Nuvarande_lösenord_måste_fyllas_i" xml:space="preserve">
+    <value>現在のパスワードを記入しなければなりません</value>
+  </data>
+  <data name="Nytt_Lösenord" xml:space="preserve">
+    <value>新しいパスワード</value>
+  </data>
+  <data name="Nytt_lösenord_måste_fyllas_i" xml:space="preserve">
+    <value>新しいパスワードを記入しなければなりません</value>
+  </data>
+  <data name="Nytt_lösenord_måste_vara_minst_8_tecken_långt" xml:space="preserve">
+    <value>新しいパスワードは、少なくとも８文字なければなりません</value>
+  </data>
+  <data name="Ny_aktivitet" xml:space="preserve">
+    <value>新しいアクテイビテイ</value>
+  </data>
+  <data name="Ny_boende" xml:space="preserve">
+    <value>新しい入居者</value>
+  </data>
+  <data name="Ny_kategori" xml:space="preserve">
+    <value>新しいカテゴリー</value>
+  </data>
+  <data name="Ny_Lista" xml:space="preserve">
+    <value>新しいリスト</value>
+  </data>
+  <data name="Ny_medarbetare" xml:space="preserve">
+    <value>新しい同僚</value>
+  </data>
+  <data name="Ny_signeringslista" xml:space="preserve">
+    <value>新しい署名リスト</value>
+  </data>
+  <data name="Nästa" xml:space="preserve">
+    <value>次</value>
+  </data>
+  <data name="Observera" xml:space="preserve">
+    <value>注意する</value>
+  </data>
+  <data name="Observera_att_delegeringen_börjar_gälla_först_efter_aktivering" xml:space="preserve">
+    <value>稼働した後に、委任事項は有効になるということに注意</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Om_du_inte_hittar_e_post__kontrollera_andra_platser_där_det_kan_hamnat_så_som_din_mapp_för_skräppost_spam_eller_andra_mappar" xml:space="preserve">
+    <value>電子メールが見つからない場合には、迷惑メールなどのマップにあるかもしれないので、それらのマップを探してみること。</value>
+  </data>
+  <data name="Om_du_ändrat_tider_för_när_insatsen_skall_utföras_kommer_inga_larm_att_skapas_för_de_tider_som_inträffat_före_du_gjort_ändringen__Insatserna_kommer_att_kunna_signeras_men_kommer_inte_att_generera_några_larm" xml:space="preserve">
+    <value>支援実施の時間を変更しても、時間変更に対しては変更をする前にはアラームは発生しません。,支援は署名できますが、アラームは発生しません。</value>
+  </data>
+  <data name="Om_{0}_dagar" xml:space="preserve">
+    <value>{0} 日後</value>
+  </data>
+  <data name="Onsdag" xml:space="preserve">
+    <value>水曜日</value>
+  </data>
+  <data name="Ordinationer" xml:space="preserve">
+    <value>処方</value>
+  </data>
+  <data name="Person" xml:space="preserve">
+    <value>人</value>
+  </data>
+  <data name="Personnummer" xml:space="preserve">
+    <value>マイナンバー</value>
+  </data>
+  <data name="Personnummer_måste_fyllas_i" xml:space="preserve">
+    <value>マイナンバーを記入しなければなりません</value>
+  </data>
+  <data name="Personnummer_måste_fyllas_i_med_tolv_siffror_och_bindestreck__t__ex__19010101_0001" xml:space="preserve">
+    <value>マイナンバーは１２の数字をハイフォンで結んだものでなければなりません。例　１９０１０１０１－０００１</value>
+  </data>
+  <data name="Personnumret_finns_redan_tidigare_redan_i_MCSS" xml:space="preserve">
+    <value>マイナンバーは、すでにMCSSのラインに記入されています</value>
+  </data>
+  <data name="Personuppgifter" xml:space="preserve">
+    <value>個人情報</value>
+  </data>
+  <data name="Pin" xml:space="preserve">
+    <value>ピン</value>
+  </data>
+  <data name="Preparat" xml:space="preserve">
+    <value>加工ずみ薬品　</value>
+  </data>
+  <data name="Profiluppgifter" xml:space="preserve">
+    <value>プロファイル情報</value>
+  </data>
+  <data name="Påfyllning_av_läkemedel" xml:space="preserve">
+    <value>医薬品の補充</value>
+  </data>
+  <data name="Påfyllning_klar" xml:space="preserve">
+    <value>補充完了</value>
+  </data>
+  <data name="Pågående" xml:space="preserve">
+    <value>進行している</value>
+  </data>
+  <data name="Pågående_insatser" xml:space="preserve">
+    <value>進行している支援</value>
+  </data>
+  <data name="Påminnelse_" xml:space="preserve">
+    <value>催促する（リマインダー）</value>
+  </data>
+  <data name="På_givet_datum" xml:space="preserve">
+    <value>日時に与えられた</value>
+  </data>
+  <data name="På_veckodag" xml:space="preserve">
+    <value>曜日に与えられた</value>
+  </data>
+  <data name="Rapport" xml:space="preserve">
+    <value>報告書</value>
+  </data>
+  <data name="Rapport-{0}-{1}.xlsx" xml:space="preserve">
+    <value>報告書</value>
+  </data>
+  <data name="Rapporter" xml:space="preserve">
+    <value>報告する</value>
+  </data>
+  <data name="Redigera" xml:space="preserve">
+    <value>調整する</value>
+  </data>
+  <data name="Redigera_aktivitet" xml:space="preserve">
+    <value>アクテイビテイを調整する</value>
+  </data>
+  <data name="Räknad_mängd_stämmer_ej_med_saldo" xml:space="preserve">
+    <value>計算した量が残高と一致しない</value>
+  </data>
+  <data name="Saldo" xml:space="preserve">
+    <value>残り</value>
+  </data>
+  <data name="Saldo-status" xml:space="preserve">
+    <value>残りの状況</value>
+  </data>
+  <data name="Saldots_enhet" xml:space="preserve">
+    <value>個数</value>
+  </data>
+  <data name="Sammanfattning_" xml:space="preserve">
+    <value>まとめ</value>
+  </data>
+  <data name="Senaste_kontrollräkning" xml:space="preserve">
+    <value>最新の集計</value>
+  </data>
+  <data name="Signerade-handelser-{0}-{1}.pdf" xml:space="preserve">
+    <value>署名した出来事</value>
+  </data>
+  <data name="Signerade_händelser" xml:space="preserve">
+    <value>署名した出来事</value>
+  </data>
+  <data name="Signerat_av" xml:space="preserve">
+    <value>署名者</value>
+  </data>
+  <data name="Signering" xml:space="preserve">
+    <value>署名する</value>
+  </data>
+  <data name="Signeringslista-{0}-{1}.pdf" xml:space="preserve">
+    <value>署名リスト</value>
+  </data>
+  <data name="Signeringslistor" xml:space="preserve">
+    <value>署名リスト</value>
+  </data>
+  <data name="Skapa" xml:space="preserve">
+    <value>作成する</value>
+  </data>
+  <data name="Skapa_ny" xml:space="preserve">
+    <value>新しく作成する</value>
+  </data>
+  <data name="Skapa_nytt_saldo" xml:space="preserve">
+    <value>新しい残りを作成する</value>
+  </data>
+  <data name="Skapa_ny_aktivitet" xml:space="preserve">
+    <value>新しいアクテイビテイを作成する</value>
+  </data>
+  <data name="Skapa_pdf" xml:space="preserve">
+    <value>ｐｄｆを作成する</value>
+  </data>
+  <data name="Skicka_ny_återställningslänk" xml:space="preserve">
+    <value>新しいリカバリー　リンクを送信する</value>
+  </data>
+  <data name="Skicka_återställningslänk" xml:space="preserve">
+    <value>リカバリー　リンクを送信する</value>
+  </data>
+  <data name="Skriv_in_ditt_nya_lösenord" xml:space="preserve">
+    <value>貴方の新しいパスワードを記入してください</value>
+  </data>
+  <data name="Skriv_ut_delegeringsbeslut" xml:space="preserve">
+    <value>委任事項決定書をプリント　アウトしてください</value>
+  </data>
+  <data name="Skriv_ut_PDF" xml:space="preserve">
+    <value>PDFをプリント　アウトしてください</value>
+  </data>
+  <data name="Skulle_genomföras" xml:space="preserve">
+    <value>実施される予定の時間</value>
+  </data>
+  <data name="Skulle_ges" xml:space="preserve">
+    <value>指示されていた時間</value>
+  </data>
+  <data name="Slutar" xml:space="preserve">
+    <value>辞める</value>
+  </data>
+  <data name="Slutdatum_måste_vara_ett_senare_datum_är_startdatum" xml:space="preserve">
+    <value>終了日は開始日よりも後の日にちでなければならない</value>
+  </data>
+  <data name="Spara" xml:space="preserve">
+    <value>保存する</value>
+  </data>
+  <data name="Starka_lösenord_inkluderar_siffror_bokstäver_och_skiljetecken_Lär_dig_mer_om_lösenord_på" xml:space="preserve">
+    <value>強力なパスワードは、数字と文字と句読点から成り立っている。パスワードについて　　！！！</value>
+  </data>
+  <data name="Startar" xml:space="preserve">
+    <value>スタートする</value>
+  </data>
+  <data name="Startar_om" xml:space="preserve">
+    <value>開始する</value>
+  </data>
+  <data name="Startdatum_måste_vara_ett_tidigare_datum_är_slutdatum" xml:space="preserve">
+    <value>開始日は終了日よりも以前の日時でなければならない</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>ステータス</value>
+  </data>
+  <data name="Status_för" xml:space="preserve">
+    <value>ステータス</value>
+  </data>
+  <data name="Stäng_listan" xml:space="preserve">
+    <value>リストを閉じる</value>
+  </data>
+  <data name="Stående" xml:space="preserve">
+    <value>存続している</value>
+  </data>
+  <data name="support" xml:space="preserve">
+    <value>サポートする</value>
+  </data>
+  <data name="support_url" xml:space="preserve">
+    <value>サポートする　url</value>
+  </data>
+  <data name="Synkronisera" xml:space="preserve">
+    <value>シンクロナイズする</value>
+  </data>
+  <data name="Synkroniserade" xml:space="preserve">
+    <value>シンクロナイズされた</value>
+  </data>
+  <data name="Synkroniserades_{0}" xml:space="preserve">
+    <value>（０）シンクロナイズされた</value>
+  </data>
+  <data name="Synkroniserad_" xml:space="preserve">
+    <value>シンクロナイズした</value>
+  </data>
+  <data name="Synkronisering" xml:space="preserve">
+    <value>シンクロナイズ</value>
+  </data>
+  <data name="Synkronisering_av_{0}" xml:space="preserve">
+    <value>（０）によるシンクロナイズ</value>
+  </data>
+  <data name="Synkronisering_är_inte_aktiverad" xml:space="preserve">
+    <value>シンクロナイズが稼働されていない</value>
+  </data>
+  <data name="Sök_boende_" xml:space="preserve">
+    <value>入居者を探す</value>
+  </data>
+  <data name="Sök_medarbetare_" xml:space="preserve">
+    <value>同僚を探す</value>
+  </data>
+  <data name="Söndag" xml:space="preserve">
+    <value>日曜日</value>
+  </data>
+  <data name="Tabell" xml:space="preserve">
+    <value>一覧表</value>
+  </data>
+  <data name="Ta_bort" xml:space="preserve">
+    <value>除去する</value>
+  </data>
+  <data name="Ta_bort_aktiviteten" xml:space="preserve">
+    <value>アクテイビテイを除去する</value>
+  </data>
+  <data name="Ta_bort_delegering" xml:space="preserve">
+    <value>委任事項を除去する</value>
+  </data>
+  <data name="Ta_bort_listan" xml:space="preserve">
+    <value>リストを除去する</value>
+  </data>
+  <data name="Ta_bort_läkemedlet" xml:space="preserve">
+    <value>医薬品を除去する</value>
+  </data>
+  <data name="Ta_bort_synkronisering" xml:space="preserve">
+    <value>シンクロナイズを除去する</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>テスト</value>
+  </data>
+  <data name="Tid" xml:space="preserve">
+    <value>時間</value>
+  </data>
+  <data name="Tider" xml:space="preserve">
+    <value>時間</value>
+  </data>
+  <data name="Tid_" xml:space="preserve">
+    <value>時間</value>
+  </data>
+  <data name="Tillbaka" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="Tillbaka_till_inloggning" xml:space="preserve">
+    <value>ログインに戻る</value>
+  </data>
+  <data name="Tillfälligt_spärrat_konto" xml:space="preserve">
+    <value>アカウントが一時的にブロックされる</value>
+  </data>
+  <data name="Tillför_mängd" xml:space="preserve">
+    <value>量を増やす</value>
+  </data>
+  <data name="Tillför_mängd_till" xml:space="preserve">
+    <value>量を増やす</value>
+  </data>
+  <data name="Till_" xml:space="preserve">
+    <value>　　に</value>
+  </data>
+  <data name="Till_inloggning" xml:space="preserve">
+    <value>ログインするに</value>
+  </data>
+  <data name="Tisdag" xml:space="preserve">
+    <value>火曜日</value>
+  </data>
+  <data name="Titel" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
+  <data name="Titel_" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
+  <data name="Torsdag" xml:space="preserve">
+    <value>木曜日</value>
+  </data>
+  <data name="Totalt_antal_insatser" xml:space="preserve">
+    <value>支援の総回数</value>
+  </data>
+  <data name="Transaktion" xml:space="preserve">
+    <value>処理</value>
+  </data>
+  <data name="Transaktioner_under_perioden" xml:space="preserve">
+    <value>期間内の処理</value>
+  </data>
+  <data name="Typ_" xml:space="preserve">
+    <value>タイプ</value>
+  </data>
+  <data name="T__ex__dosett" xml:space="preserve">
+    <value>　個のドセット</value>
+  </data>
+  <data name="Underskrift" xml:space="preserve">
+    <value>署名</value>
+  </data>
+  <data name="Upprepas" xml:space="preserve">
+    <value>繰り返す</value>
+  </data>
+  <data name="Upprepa_ditt_nya_lösenord_för_att_undvika_eventuella_misstag" xml:space="preserve">
+    <value>ミスが起こらないために貴方の新しいパスワードを繰り返してください</value>
+  </data>
+  <data name="Upprepa_lösenord_måste_fyllas_i" xml:space="preserve">
+    <value>パスワードを繰り返し、記入しなければなりません</value>
+  </data>
+  <data name="Upprepa_nytt_lösenord" xml:space="preserve">
+    <value>新しいパスワードを繰り返してください</value>
+  </data>
+  <data name="Uppåtgående" xml:space="preserve">
+    <value>進行中</value>
+  </data>
+  <data name="Utfärdades_till" xml:space="preserve">
+    <value>　に実施された</value>
+  </data>
+  <data name="Utfärdad_av" xml:space="preserve">
+    <value>　により実施された</value>
+  </data>
+  <data name="Utfärdat_av" xml:space="preserve">
+    <value>　により実施された</value>
+  </data>
+  <data name="Utgången_lösenordslänk" xml:space="preserve">
+    <value>パスワードリンクの終了</value>
+  </data>
+  <data name="Utgången_återställningslänk" xml:space="preserve">
+    <value>リセットリンクの終了</value>
+  </data>
+  <data name="Utloggad" xml:space="preserve">
+    <value>ログアウトした</value>
+  </data>
+  <data name="Utlöpande_delegeringar" xml:space="preserve">
+    <value>満期になった委任事項</value>
+  </data>
+  <data name="Utställda_delegeringar" xml:space="preserve">
+    <value>与えられた委任事項</value>
+  </data>
+  <data name="Utställda_delegeringar__{0}" xml:space="preserve">
+    <value>与えられた委任事項</value>
+  </data>
+  <data name="Uttag" xml:space="preserve">
+    <value>量を減らす</value>
+  </data>
+  <data name="Uttag_från" xml:space="preserve">
+    <value>量を減らす</value>
+  </data>
+  <data name="Varje_dag" xml:space="preserve">
+    <value>毎日</value>
+  </data>
+  <data name="varje_månad" xml:space="preserve">
+    <value>毎月</value>
+  </data>
+  <data name="Var_vänlig_använd_ditt_valda_lösenord_för_att_logga_in_i_MCSS" xml:space="preserve">
+    <value>MCSSにログインするために、貴方の選んだパスワードを使ってください</value>
+  </data>
+  <data name="Var_vänlig_kontakta_support_om_detta_fel_uppstår_igen" xml:space="preserve">
+    <value>こういったトラブルがまた発生した時にはサポート部門に連絡してください</value>
+  </data>
+  <data name="Var_vänlig_kontrollera_att_användaren_finns_i_den_externa_katalogen_och_att_personnumret_matchar_de_i_MCSS" xml:space="preserve">
+    <value>外部カタログにウーザーが存在し、MCSSのマイナンバーに一致するかどうかチェックしてください</value>
+  </data>
+  <data name="vecka" xml:space="preserve">
+    <value>週</value>
+  </data>
+  <data name="Vecka {0} {1}" xml:space="preserve">
+    <value>週 {0} {1}</value>
+  </data>
+  <data name="Vid_behov" xml:space="preserve">
+    <value>必要時</value>
+  </data>
+  <data name="Vill_du_verkligen_ta_bort_den_här_delegeringen_" xml:space="preserve">
+    <value>この委任事項を本当に除去していいのですね</value>
+  </data>
+  <data name="Visa" xml:space="preserve">
+    <value>示す</value>
+  </data>
+  <data name="Visa_delegering_för_datum_" xml:space="preserve">
+    <value>日日のための委任事項を示してください</value>
+  </data>
+  <data name="Visa_detaljer" xml:space="preserve">
+    <value>仔細を示してください</value>
+  </data>
+  <data name="Visa_rapport_för_" xml:space="preserve">
+    <value>報告書を示してください</value>
+  </data>
+  <data name="Vi_har_skickat_ett_e_post_till__0____Klicka_på_länken_i_e_post_för_att_återställa_ditt_lösenord" xml:space="preserve">
+    <value>電子メールを送信しましたので、リンクをクリックして貴方のパスワードをリセットしてください</value>
+  </data>
+  <data name="Välj" xml:space="preserve">
+    <value>選択する</value>
+  </data>
+  <data name="Välj_" xml:space="preserve">
+    <value>選択する</value>
+  </data>
+  <data name="Välj_befintligt_saldo" xml:space="preserve">
+    <value>現存の残りから選択する</value>
+  </data>
+  <data name="Välj_dagar" xml:space="preserve">
+    <value>日数を選択する</value>
+  </data>
+  <data name="Välj_datum" xml:space="preserve">
+    <value>日日を選択する</value>
+  </data>
+  <data name="Välj_delegering_" xml:space="preserve">
+    <value>委任事項を選択する</value>
+  </data>
+  <data name="Välj_enhet_" xml:space="preserve">
+    <value>ユニットを選択する</value>
+  </data>
+  <data name="Välj_format" xml:space="preserve">
+    <value>形式を選択する</value>
+  </data>
+  <data name="Välj_frekvens_" xml:space="preserve">
+    <value>頻度を選択する</value>
+  </data>
+  <data name="Välj_lösenord" xml:space="preserve">
+    <value>パスワードを選択する</value>
+  </data>
+  <data name="Välj_saldo_" xml:space="preserve">
+    <value>残りを選択する</value>
+  </data>
+  <data name="Välj_typ_" xml:space="preserve">
+    <value>タイプを選択する</value>
+  </data>
+  <data name="Välj_{0}_" xml:space="preserve">
+    <value>選択する</value>
+  </data>
+  <data name="_0date___0time__med_status__1_" xml:space="preserve">
+    <value>{0:d MMMM yyyy} {0:HH:mm}時　ステータス {1}</value>
+    <comment>{0:d MMMM yyyy}, kl {0:HH:mm} med status '{1}'</comment>
+  </data>
+  <data name="{0:d MMM yyyy HH:mm}_till_{1:d MMM yyyy HH:mm}" xml:space="preserve">
+    <value />
+  </data>
+  <data name="{0:d MMM yyyy}_till_{1:d MMM yyyy}" xml:space="preserve">
+    <value />
+  </data>
+  <data name="{0:MMMM_yyyy}" xml:space="preserve">
+    <value>{0:yyyy}年 {0:MMMM}</value>
+  </data>
+  <data name="{0}_för_sent" xml:space="preserve">
+    <value>遅すぎる</value>
+  </data>
+  <data name="{0}_Vecka_{1}" xml:space="preserve">
+    <value>　週　　（１）</value>
+  </data>
+  <data name="{1:d MMM yyyy}_{0:HH:mm}_till_{1:HH:mm}" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Ändra" xml:space="preserve">
+    <value>変更</value>
+  </data>
+  <data name="Ändra_aktiviteten" xml:space="preserve">
+    <value>アクテイビテイの変更</value>
+  </data>
+  <data name="Ändra_boendeuppgifter" xml:space="preserve">
+    <value>入居者に関する情報の変更</value>
+  </data>
+  <data name="Ändra_delegering" xml:space="preserve">
+    <value>指示事項の変更</value>
+  </data>
+  <data name="Ändra_kunskapstester" xml:space="preserve">
+    <value>能力テストの変更</value>
+  </data>
+  <data name="Ändra_medarbetaruppgifter" xml:space="preserve">
+    <value>職員情報の変更</value>
+  </data>
+  <data name="Ändra_raden" xml:space="preserve">
+    <value>ライン　　　　　？</value>
+  </data>
+  <data name="Ändra_roll" xml:space="preserve">
+    <value>役割の変更</value>
+  </data>
+  <data name="Ändra_roller_och_behörigheter" xml:space="preserve">
+    <value>役割と資格の変更</value>
+  </data>
+  <data name="Ändra_saldo" xml:space="preserve">
+    <value>残りの変更</value>
+  </data>
+  <data name="Är_allmänt_känd_" xml:space="preserve">
+    <value>通常知られている</value>
+  </data>
+  <data name="År" xml:space="preserve">
+    <value>年　　</value>
+  </data>
+  <data name="Återställningslänken_har_gått_ut__vänligen_begär_en_ny" xml:space="preserve">
+    <value>リカバー用のリンクが時間ぎれなので、新しいリンクを要求してください</value>
+  </data>
+  <data name="Återställ_lösenord" xml:space="preserve">
+    <value>リカバー　　パスワード</value>
+  </data>
+  <data name="Åtgärdat_larm_" xml:space="preserve">
+    <value>対処ずみアラーム</value>
+  </data>
+  <data name="ÅÅÅÅMMDD_NNNN" xml:space="preserve">
+    <value>年　　月　　</value>
+  </data>
+  <data name="Översikt" xml:space="preserve">
+    <value>概要</value>
+  </data>
+</root>

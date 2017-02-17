@@ -46,7 +46,7 @@
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
-	<h1>Signeringslistor</h1>
+	<h1>@Localizer["Signeringslistor"]</h1>
     @Html.ActionLink(Permissions.Sequence.Print, Localizer["Skapa_pdf"].ToString(), "PrintPopUp", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })
     @Html.ActionLink(Permissions.Sequence.Create,  Localizer["Lägg_till"].ToString(), "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 </div>

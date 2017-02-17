@@ -26,7 +26,7 @@
             @using (Html.BeginForm("List", "Event", FormMethod.Get, new { }))
             {
                 <div class="h cal-h cf">
-                    <h2>@String.Format("{0:MMMM yyyy}", Model.Current).FirstToUpper()</h2>
+                    <h2>@Localizer["{0:MMMM_yyyy}", Model.Current]</h2>
                     <input type="hidden" name="date" value="@Model.Current" />
                     <input type="submit" name="prev" value="@String.Format("{1} {0}", Model.Previous.ToString("MMMM").FirstToUpper(), WebUtility.HtmlDecode("&larr;"))" class="prev" />
                     <input type="submit" name="next" value="@String.Format("{0:MMMM} {1}", Model.Next, WebUtility.HtmlDecode("&rarr;")).FirstToUpper()" class="next" />

@@ -75,15 +75,15 @@ namespace Appva.Mcss.Admin.Application.Common
                 {
                     this.main = new List<IMenuItem>()
                     {
-                        MenuItem.CreateNew("Översikt", "Index", "Dashboard", "Dashboard", null, null, Permissions.Dashboard.Read, null), 
-                        MenuItem.CreateNew("Boende", "List", "Patient", "Patient", null, null, Permissions.Patient.Read, this.Patient),
-                        MenuItem.CreateNew("Medarbetare", "List", "Accounts", "Practitioner", null, null, Permissions.Practitioner.Read, this.Account ),
-                        MenuItem.CreateNew("Roller och behörigheter", "List", "Roles", "Roles", null, null, Permissions.Role.Read, null),
+                        MenuItem.CreateNew(Resources.Language.Dashboard, "Index", "Dashboard", "Dashboard", null, null, Permissions.Dashboard.Read, null), 
+                        MenuItem.CreateNew(Resources.Language.Patient, "List", "Patient", "Patient", null, null, Permissions.Patient.Read, this.Patient),
+                        MenuItem.CreateNew(Resources.Language.Practitioner, "List", "Accounts", "Practitioner", null, null, Permissions.Practitioner.Read, this.Account ),
+                        MenuItem.CreateNew(Resources.Language.Roles, "List", "Roles", "Roles", null, null, Permissions.Role.Read, null),
                         MenuItem.CreateNew("Logg", "List", "Log", "Log", null, null, Permissions.Log.Read, this.Log),
                         MenuItem.CreateNew("Notiser", "List", "Notification", "Notification", null, null, Permissions.Notification.Read, null),
                         MenuItem.CreateNew("Area51", "Index", "Home", "Area51", null, null, Permissions.Area51.Read, null),
                         MenuItem.CreateNew("Administration", "List", "Delegation", "backoffice", null, null, Permissions.Backoffice.Read, null),
-                        MenuItem.CreateNew("Skriv ut sidan", string.Empty, string.Empty, string.Empty, "supp", "print", null, null)
+                        MenuItem.CreateNew(Resources.Language.Print, string.Empty, string.Empty, string.Empty, "supp", "print", null, null)
                     };
                 }
                 return this.main;
@@ -110,12 +110,12 @@ namespace Appva.Mcss.Admin.Application.Common
                 {
                     this.patient = new List<IMenuItem>()
                     {
-                         MenuItem.CreateNew("Signeringslistor", "List", "Schedule", "Patient", null, null, Permissions.Schedule.Read, this.Schedule),
-                         MenuItem.CreateNew("Signerade händelser", "Sign", "Schedule", "Patient", null, null, Permissions.Schedule.EventList, null),
-                         MenuItem.CreateNew("Larm", "List", "Alerts", "Patient", null, null, Permissions.Alert.Read, null),
-                         MenuItem.CreateNew("Rapport", "ScheduleReport", "Schedule", "Patient", null, null, Permissions.Schedule.Report, null),
-                         MenuItem.CreateNew("Kalender", "List", "Calendar", "Patient", null, null, Permissions.Calendar.Read, null),
-                         MenuItem.CreateNew("Saldon", "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null)
+                         MenuItem.CreateNew(Resources.Language.Lists, "List", "Schedule", "Patient", null, null, Permissions.Schedule.Read, this.Schedule),
+                         MenuItem.CreateNew(Resources.Language.History, "Sign", "Schedule", "Patient", null, null, Permissions.Schedule.EventList, null),
+                         MenuItem.CreateNew(Resources.Language.Alerts, "List", "Alerts", "Patient", null, null, Permissions.Alert.Read, null),
+                         MenuItem.CreateNew(Resources.Language.Report, "ScheduleReport", "Schedule", "Patient", null, null, Permissions.Schedule.Report, null),
+                         MenuItem.CreateNew(Resources.Language.Calendar, "List", "Calendar", "Patient", null, null, Permissions.Calendar.Read, null),
+                         MenuItem.CreateNew(Resources.Language.Inventory, "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null)
                     };
                 }
                 return this.patient;
@@ -142,11 +142,11 @@ namespace Appva.Mcss.Admin.Application.Common
                 {
                     this.account = new List<IMenuItem>()
                     {
-                        MenuItem.CreateNew("Aktuella delegeringar", "List", "Delegation", "Practitioner", null, null, Permissions.Delegation.Read, null),
-                        MenuItem.CreateNew("Alla mottagna delegeringar", "Revision", "Delegation", "Practitioner", null, null, Permissions.Delegation.Revision, null),
-                        MenuItem.CreateNew("Utställda delegeringar", "Issued", "Delegation", "Practitioner", null, null, Permissions.Delegation.Issued, null),
-                        MenuItem.CreateNew("Rapporter", "DelegationReport", "Delegation", "Practitioner", null, null, Permissions.Delegation.Report, null),
-                        MenuItem.CreateNew("Synkronisering", "GetSynchronizedAccount","Synchronization","Practitioner", null, null, Permissions.Synchronization.Read, null)
+                        MenuItem.CreateNew(Resources.Language.Delegations, "List", "Delegation", "Practitioner", null, null, Permissions.Delegation.Read, null),
+                        MenuItem.CreateNew(Resources.Language.AllDelegations, "Revision", "Delegation", "Practitioner", null, null, Permissions.Delegation.Revision, null),
+                        MenuItem.CreateNew(Resources.Language.IssuedDelegations, "Issued", "Delegation", "Practitioner", null, null, Permissions.Delegation.Issued, null),
+                        MenuItem.CreateNew(Resources.Language.Report, "DelegationReport", "Delegation", "Practitioner", null, null, Permissions.Delegation.Report, null),
+                        MenuItem.CreateNew(Resources.Language.Synchronization, "GetSynchronizedAccount","Synchronization","Practitioner", null, null, Permissions.Synchronization.Read, null)
                     };
                 }
                 return this.account;

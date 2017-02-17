@@ -84,7 +84,7 @@
 						<tr class="head">
 							<th scope="col">
 								@Html.ActionLink(
-									Localizer[isInventory ? "Gavs" : "Preparat"].ToString(),
+									Localizer[isInventory ? "Insats" : "Preparat"].ToString(),
 									"Sign",
 									new
 									{
@@ -203,14 +203,14 @@
 											@Localizer["Ej_signerad"]
 										} else {
 											if (task.OnNeedBasis) {
-												@:kl @String.Format("{0:HH:mm}", task.UpdatedAt)
+												@Localizer["kl_{0:HH:mm}", task.UpdatedAt]
 											} else {
-												@:kl @String.Format("{0:HH:mm}", task.CompletedDate.GetValueOrDefault())
+											    @Localizer["kl_{0:HH:mm}", task.CompletedDate.GetValueOrDefault()]
 											}
 										}
 									</td>
 									<td>
-                                        @TimeSpanDifference.ToShortDateTime(task.Scheduled, Localizer["Idag"].ToString(), Localizer["Igår"].ToString()) kl @String.Format("{0:HH:mm}", task.Scheduled) 
+                                        @TimeSpanDifference.ToShortDateTime(task.Scheduled, Localizer["Idag"].ToString(), Localizer["Igår"].ToString()) kl @String.Format("{0:HH:mm}", task.Scheduled)
 										@if (task.RangeInMinutesBefore.Equals(task.RangeInMinutesAfter)) {
 											@:±@task.RangeInMinutesBefore min
 										} else {

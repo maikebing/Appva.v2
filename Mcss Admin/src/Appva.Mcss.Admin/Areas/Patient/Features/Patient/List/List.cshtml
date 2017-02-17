@@ -4,7 +4,7 @@
     SetTitle(Localizer["Boende"].ToString()); 
 }
 <div id="subheader" class="cf">
-	<h1>Boende</h1>
+	<h1>@Localizer["Boende"]</h1>
     @Html.ActionLink(Permissions.Patient.Create, Localizer["Ny_boende"].ToString(), "Create", "Patient", null, new { @class = "btn lb-link" })
     <p class="filter">
         <strong>@Localizer["Visa"]</strong>

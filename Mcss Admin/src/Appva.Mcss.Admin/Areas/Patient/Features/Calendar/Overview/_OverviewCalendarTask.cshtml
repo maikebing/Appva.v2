@@ -20,7 +20,7 @@
     }
     else
     {
-        <td @((Model.StartTime.Date - DateTime.Now.Date).Days < 0 ? "class=urgent" : "")><span>Om @((Model.StartTime.Date - DateTime.Now.Date).Days) @Localizer["dagar"]</span></td>
+        <td @((Model.StartTime.Date - DateTime.Now.Date).Days < 0 ? "class=urgent" : "")><span>@Localizer["Om_{0}_dagar", (Model.StartTime.Date - DateTime.Now.Date).Days]</span></td>
 
     }
     <td class="check">

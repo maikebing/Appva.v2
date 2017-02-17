@@ -4,7 +4,7 @@
     SetTitle(Localizer["Medarbetare"].ToString()); 
 }
 <div id="subheader" class="cf">
-	<h1>Medarbetare</h1>
+	<h1>@Localizer["Medarbetare"]</h1>
 	@Html.ActionLink(Permissions.Practitioner.Create, Localizer["Ny_medarbetare"].ToString(), "Create", "Accounts", null, new { @class = "btn lb-link" })
 	@Html.Partial("_AccountSearch")
 </div>
@@ -14,7 +14,7 @@
 			@using (Html.BeginForm("List", "Accounts", FormMethod.Get, new { @class = "filter-form" }))
 			{
                 <div class="filter-row">
-                    <strong>Visa:</strong>
+                    <strong>@Localizer["Visa_"]</strong>
                     <ul>
                         <li>@Html.ActionLink(Localizer["Alla"].ToString(), "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false) && Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) && !Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false) && !Model.IsFilterByIsSynchronizedEnabled.HasValue) ? "div sel" : "div" })</li>
                         <li>@Html.ActionLink(Localizer["Mina_delegeringar"].ToString(), "List", new { FilterByCreatedBy = true }, new { @class = (Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>

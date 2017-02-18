@@ -38,7 +38,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// At least one of the roles that the member must be a member of
         /// </param>
         /// <returns>True if the user is a member of any of the specified roles</returns>
-        bool IsInRoles(Account account, params string[] roles);
+        bool IsInAnyRoles(Account account, params string[] roles);
 
         /// <summary>
         /// Returns the collection of <see cref="Role"/> by the user account.
@@ -112,7 +112,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public bool IsInRoles(Account account, params string[] roles)
+        public bool IsInAnyRoles(Account account, params string[] roles)
         {
             return this.persistenceContext.QueryOver<Role>()
                 .Where(x => x.IsActive)

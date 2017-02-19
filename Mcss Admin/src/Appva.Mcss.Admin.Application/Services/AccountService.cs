@@ -71,7 +71,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// At least one of the roles that the member must be a member of
         /// </param>
         /// <returns>True if the user is a member of any of the specified roles</returns>
-        bool IsInRoles(Account account, params string[] roles);
+        bool IsInAnyRoles(Account account, params string[] roles);
 
         /// <summary>
         /// Returns whether or not the user account is a member of at least one of the 
@@ -84,7 +84,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>
         /// True if the user is a member of any of the specified permissions
         /// </returns>
-        bool HasPermissions(Account account, params string[] permissions);
+        bool HasAnyPermissions(Account account, params string[] permissions);
 
         /// <summary>
         /// Returns the roles for the user account.
@@ -307,15 +307,15 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public bool IsInRoles(Account account, params string[] roles)
+        public bool IsInAnyRoles(Account account, params string[] roles)
         {
-            return this.roles.IsInRoles(account, roles);
+            return this.roles.IsInAnyRoles(account, roles);
         }
 
         /// <inheritdoc />
-        public bool HasPermissions(Account account, params string[] permissions)
+        public bool HasAnyPermissions(Account account, params string[] permissions)
         {
-            return this.permissions.HasPermissions(account, permissions);
+            return this.permissions.HasAnyPermissions(account, permissions);
         }
 
         /// <inheritdoc />

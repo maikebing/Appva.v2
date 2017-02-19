@@ -9,13 +9,15 @@ namespace Appva.Mcss.Admin.Application.Services
     #region Imports.
 
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Core.Exceptions;
     using Appva.Repository;
     using System;
     using System.Collections.Generic;
-using Appva.Mcss.Admin.Application.Security.Identity;
+    using System.IO;
+    using System.Linq;
+    using System.Web.Hosting;
 
     #endregion
 
@@ -43,6 +45,12 @@ using Appva.Mcss.Admin.Application.Security.Identity;
         /// </summary>
         /// <returns>A <see cref="PageableSet"/> of Notifications</returns>
         PageableSet<Notification> List(int page = 1, int pageSize = 10);
+
+        /// <summary>
+        /// Lists all installed and availabel templates
+        /// </summary>
+        /// <returns></returns>
+        IList<string> GetTemplates();
     }
 
     /// <summary>
@@ -112,6 +120,18 @@ using Appva.Mcss.Admin.Application.Security.Identity;
         {
             this.audit.Read("Användare {0} läste lista över notifieringar", this.identity.Principal.Identity.Name);
             return this.notifications.List((ulong)page, (ulong)pageSize);
+        }
+
+        /// <inheritdoc />
+        public IList<string> GetTemplates()
+        {
+            var path = string.Format("{0}Areas/Notification/Features/Notification/Partials/Templates/", HostingEnvironment.ApplicationPhysicalPath);
+            if (Directory.Exists(path))
+            {
+                return Directory.GetFiles(path).Select(x => x.Replace(path, "").Replace(".cshtml", "")).ToList();
+            }
+
+            return new List<string>();
         }
 
         #endregion

@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
     using System;
@@ -120,6 +121,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
+        /// The popup message when task signed as a deviation
+        /// </summary>
+        public ConfirmDeviationMessage DeviationMessage
+        {
+            get;
+            set;
+        }
+
+        /*/// <summary>
         /// Specify contacted nurse on/off
         /// </summary>
         [DisplayName("Ange kontaktad SSK vid avikande signering")]
@@ -137,7 +147,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         {
             get;
             set;
-        }
+        }*/
 
         /// <summary>
         /// Order refill on/off

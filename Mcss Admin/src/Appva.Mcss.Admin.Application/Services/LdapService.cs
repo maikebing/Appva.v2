@@ -263,7 +263,7 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 updates.Add("Kod för inloggning på mobil enhet:", account.DevicePassword);
             }
-            if (usernameUpdated && this.accountService.HasPermissions(account, Permissions.Admin.Login.Value))
+            if (usernameUpdated && this.accountService.HasAnyPermissions(account, Permissions.Admin.Login.Value))
             {
                 updates.Add("Användarnamn för inloggning i admin:", account.UserName);
             }

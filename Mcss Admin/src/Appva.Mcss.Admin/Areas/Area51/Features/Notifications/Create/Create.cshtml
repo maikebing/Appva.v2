@@ -1,0 +1,25 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Models.CreateNotificationModel
+@{
+    SetTitle("Area 51 - LDAP konfig");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <div class="form-tab form-tab-1">
+            <h3 class="section-title">Skapa notifiering för alla kunder</h3>
+            @Html.ValidationAlert("Ett fel inträffade", "Var vänlig korrigera markerade fält i formuläret och försök igen")
+            @Html.FormGroup(x => x.Name, "text large").Label().TextBox().Validate().Build()
+            <div class="dropdown">
+                @Html.LabelFor(x => x.Template)
+                @Html.DropDownListFor(x => x.Template, Model.Templates, "Välj template...")
+            </div>
+            @Html.FormGroup(x => x.StartDate, "").Label().Editor().Validate().Build()
+            @Html.FormGroup(x => x.EndDate, "").Label().Editor().Validate().Build()
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara")
+            @*Html.Cancel("Avbryt")*@
+        </div>
+    }
+</div>

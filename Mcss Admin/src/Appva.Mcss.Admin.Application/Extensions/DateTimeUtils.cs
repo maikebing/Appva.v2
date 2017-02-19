@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Application.Extensions
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
 
@@ -18,29 +19,76 @@ namespace Appva.Mcss.Admin.Application.Extensions
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class DateTimeUtils
+    public sealed class DateTimeUtils
     {
         /// <summary>
         /// Converts a comma separated string to a list of <c>DateTime</c>
         /// </summary>
         /// <param name="dates">The comma separated date string</param>
         /// <returns>A list of <see cref="DateTime"/></returns>
-        public static IList<DateTime> FromStringToDateTime(string dates)
+        public static IEnumerable<DateTime> Parse(string dates)
         {
-            var result = new List<DateTime>();
             if (string.IsNullOrWhiteSpace(dates))
             {
-                return result;
+                return new List<DateTime>();
             }
-            foreach (var dateString in dates.Split(','))
+            return DateTimeUtils.Parse(dates.Split(','));
+        }
+
+        /// <summary>
+        /// Parses a list of strings representing dates
+        /// </summary>
+        /// <param name="dateStrings">List of strings representing dates</param>
+        /// <returns>List of dates</returns>
+        public static IEnumerable<DateTime> Parse(IList<string> dateStrings)
+        {
+            if (dateStrings.IsNull())
             {
-                DateTime date;
-                if (DateTime.TryParse(dateString, out date))
+                return new List<DateTime>();
+            }
+            DateTime dateTime;
+            List<DateTime> dateTimes = new List<DateTime>();
+            foreach (var date in dateStrings)
+            {
+                if (DateTime.TryParse(date, out dateTime))
                 {
-                    result.Add(date);
+                    dateTimes.Add(dateTime);
                 }
             }
-            return result;
+            return dateTimes;
+        }
+
+        /// <summary>
+        /// Gets the earliest and latest date from a list of dates
+        /// </summary>
+        /// <param name="dates">List of <code>DateTime</code></param>
+        /// <param name="earliest">Out param for the earliest time in list</param>
+        /// <param name="latest">Out param for the latest time in list</param>
+        public static void GetEarliestAndLatestDateFrom(IList<DateTime> dates, out DateTime earliest, out DateTime? latest)
+        {
+            if (dates.IsNotNull() && dates.Count() > 0)
+            {
+                earliest = dates.Min();
+                latest = dates.Max();
+            }
+            else
+            {
+                earliest = DateTime.Now.Date;
+                latest = DateTime.Now.AddDays(1).Date;
+            }
+
+        }
+
+        /// <summary>
+        /// Gets the earliest and latest date from a list of strings representing dates 
+        /// </summary>
+        /// <param name="dateStrings">List of strings representing dates</param>
+        /// <param name="earliest">Out param for the earliest time in list</param>
+        /// <param name="latest">Out param for the latest time in list</param>
+        public static void GetEarliestAndLatestDateFrom(IList<string> dateStrings, out DateTime earliest, out DateTime? latest)
+        {
+            var dates = DateTimeUtils.Parse(dateStrings).ToList();
+            GetEarliestAndLatestDateFrom(dates, out earliest, out latest);
         }
 
         /// <summary>

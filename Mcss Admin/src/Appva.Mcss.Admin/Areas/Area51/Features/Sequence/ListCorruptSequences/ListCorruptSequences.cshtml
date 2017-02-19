@@ -1,0 +1,41 @@
+﻿@model Appva.Mcss.Admin.Areas.Area51.Models.ListSequenceModel
+@{
+    SetTitle("Area 51 - Sequence");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+    <h1>Ordinationer</h1>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        <table>
+            <tr>
+                <th>Patient</th>
+                <th>Sequence</th>
+                <th>Interval</th>
+                <th>Dates</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Uppdatera start och end (endast vid interval = 0)</th>
+            </tr>
+            @foreach (var s in Model.Sequences)
+            {
+                <tr>
+                    <td>@Html.ActionLink(s.Patient.FullName, "List", "Schedule", new { area = "patient" }, null )</td>
+                    <td>@s.Name</td>
+                    <td>@s.Interval</td>
+                    <td>@s.Dates</td>
+                    <td>@s.StartDate</td>
+                    <td>@s.EndDate</td>
+                    <td>
+                        @using (Html.Post("UpdateStartAndEndDate", "Sequence", new { area = "Area51", id = s.Id }, null, false))
+                        {
+                            @Html.Submit("Uppdatera", new { @class = "btn" })
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</div>

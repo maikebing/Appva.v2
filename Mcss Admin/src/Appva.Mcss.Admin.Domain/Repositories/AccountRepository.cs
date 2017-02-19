@@ -125,7 +125,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 return accounts[0];
             }
-            //// FIXME: should throw exception if we have several!
+            if (accounts.Count > 1)
+            {
+                throw new NonUniqueResultException(accounts.Count);
+            }
             return null;
         }
 

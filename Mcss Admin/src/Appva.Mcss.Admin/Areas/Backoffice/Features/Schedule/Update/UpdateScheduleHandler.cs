@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
@@ -71,9 +72,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 IsPausable                    = schedule.IsPausable,
                 Name                          = schedule.Name,
                 NurseConfirmDeviation         = schedule.NurseConfirmDeviation,
-                NurseConfirmDeviationMessage  = schedule.NurseConfirmDeviationMessage,
+                DeviationMessage              = new ConfirmDeviationMessage(schedule.NurseConfirmDeviationMessage, schedule.SpecificNurseConfirmDeviation),
                 OrderRefill                   = schedule.OrderRefill,
-                SpecificNurseConfirmDeviation = schedule.SpecificNurseConfirmDeviation,
                 Delegations                   = this.taxonomyService.Roots(TaxonomicSchema.Delegation).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList()
             };
         }

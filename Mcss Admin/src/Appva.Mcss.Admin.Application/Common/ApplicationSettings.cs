@@ -11,23 +11,19 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Appva.Mcss.Admin.Application.Security.Jwt;
-    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Ldap.Configuration;
+    using Appva.Mcss.Admin.Domain.VO;
+using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// TODO: Split up in different classes for each specific settings group, e.g. 
+    /// public static partial ApplicationSettings { ... }
     /// </summary>
     public static class ApplicationSettings
     {
-        #region Device.
-
-        //// TODO: Add more here.
-
-        #endregion
-
         #region Admin.
 
         /// <summary>
@@ -163,6 +159,16 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "The password configuration",
             SecurityPasswordConfiguration.CreateNew());
 
+        /// <summary>
+        /// The tenant authentication cookie expiration timespan.
+        /// </summary>
+        public static readonly ApplicationSettingIdentity<TimeSpan> CookieExpiration = ApplicationSettingIdentity<TimeSpan>.CreateNew(
+            "Mcss.Core.Security.Configuration.CookieExpiration",
+            "Cookie Expiration Configuration",
+            "Mcss.Core.Security.CookieExpiration",
+            "The authentication cookie expiration configuration",
+            TimeSpan.FromHours(1));
+
         #endregion
 
         #region External Auditing Logging.
@@ -230,6 +236,18 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
            "If an inventory is not reocunted in this number of days it will be listed on the overview",
            30);
 
+        /// <summary>
+        /// The different units available for inventories
+        /// </summary>
+        /// <remarks>The setting returns a List of <c>InventoryAmountListModel</c></remarks>
+        public static readonly ApplicationSettingIdentity<List<InventoryAmountListModel>> InventoryUnitsWithAmounts = ApplicationSettingIdentity<List<InventoryAmountListModel>>.CreateNew(
+            "MCSS.Core.Inventory.Units",
+            "The units available as for an inventory",
+            "MCSS.Core.Inventory",
+            "The units available for inventories, and their amount-lists",
+            InventoryDefaults.Units()
+            );
+
         #endregion
 
         #region LDAP.
@@ -285,13 +303,14 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <summary>
         /// If a reason should be specified on delegation removal
         /// </summary>
-        /// <remarks>The setting returns an <c>bool</c></remarks>
+        /// <remarks>The setting returns an <c>List</c></remarks>
         public static readonly ApplicationSettingIdentity<List<string>> DelegationRemovalReasons = ApplicationSettingIdentity<List<string>>.CreateNew(
            "MCSS.Core.Delegation.Delete.Reasons",
            "Reasons for delegation removal",
            "MCSS.Core.Delegation.Delete",
            "Reasons for delegation removal",
-           new List<string> { 
+           new List<string> 
+           { 
                "Delegering utgången, förnyas ej",
                "Medarbetare slutat"
            });
@@ -307,6 +326,16 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
            "If the delegation overview by default should be filtered by the issuer",
            false);
         
+        /// <summary>
+        /// After a change the delegation should be pending for a new activation
+        /// </summary>
+        /// <remarks>The setting returns an <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<bool> RequireDelegationActivationAfterChange = ApplicationSettingIdentity<bool>.CreateNew(
+           "MCSS.Core.Delegation.Setting.RequireActivationAfterChange",
+           "If a delegation should require a new activation after a change",
+           "MCSS.Core.Delegation.Setting",
+           "After a change the delegation should be pending for a new activation",
+           false);
 
         #endregion
 
@@ -345,11 +374,11 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         /// <param name="defaultValue">The default value</param>
         private ApplicationSettingIdentity(string key, string name, string @namespace, string description, T defaultValue)
         {
-            this.Key = key;
-            this.Name = name;
-            this.Namespace = @namespace;
+            this.Key         = key;
+            this.Name        = name;
+            this.Namespace   = @namespace;
             this.Description = description;
-            this.Default = defaultValue;
+            this.Default     = defaultValue;
         }
 
         #endregion

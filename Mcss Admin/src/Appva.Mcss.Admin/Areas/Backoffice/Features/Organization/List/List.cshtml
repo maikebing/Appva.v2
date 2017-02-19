@@ -1,0 +1,70 @@
+﻿@using Appva.Mcss.Admin.Areas.Backoffice.Models
+@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListOrganizationModel
+@{
+    SetTitle("Admin - Organisation");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Organisation</h1>
+</div>
+
+@helper BuildHierarchy(Node<Guid> node)
+{
+    <li>
+        <div class="ctrl cf">
+            <a class="title lb-link" href="@Url.Action("Update", new { node.Id })">@node.Name</a>
+            <div class="node-ctrl">
+                <a class="addnode lb-link" href="@Url.Action("Create", new { node.Id })">
+                    <img src="@Url.Image("bullet-add.png")" alt="Ny nod" />
+                </a>
+                @* Delete is not yet implemented
+                    <a class="delnode" href="@Url.Action("Delete", new { node.Id })">
+                    <img src="@Url.Image("bullet-delete.png")" alt="Ta bort nod" />
+                </a>*@
+            </div>
+        </div>
+        @if (node.Children.Any())
+        {
+            <ul>
+                @foreach (var child in node.Children)
+                {
+                    @BuildHierarchy(child);
+                }
+            </ul>
+        }
+    </li>
+}
+<div id="content" class="log">
+    <div id="content-1">
+        <div class="std-canvas">
+            <div class="std-panel">
+                <div class="content">
+                    <div class="org-hierarchy">
+                        @if (Model.Nodes != null)
+                        {
+                            <ul>
+                                <div class="ctrl cf">
+                                    <a id="org-root" class="title" href="#">@Model.Root.Name</a>
+                                    <div class="node-ctrl">
+                                        <a class="addnode lb-link" href="@Url.Action("Create", new { Model.Root.Id })">
+                                            <img src="@Url.Image("bullet-add.png")" alt="Ny nod" />
+                                        </a>
+                                    </div>
+                                </div>
+                                @if (Model.Nodes.Any())
+                                {
+                                    <ul>
+                                        @foreach (var node in Model.Nodes)
+                                        {
+                                            @BuildHierarchy(node);
+                                        }
+                                    </ul>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,7 +12,7 @@
     if(Localizer == null)
     {
         Localizer = (IViewLocalizer)DependencyResolver.Current.GetService(typeof(IViewLocalizer));
-    }
+}
 }
 
 <!DOCTYPE html>
@@ -164,320 +164,320 @@
         </script>
         
         <script type="text/javascript">
-    $(function () {
+            $(function () {
 
         $('.print').click(function () {
-            window.print();
-        });
-
-        $(".global-dropdown").change(dropdown);
-        $(".dropdown").change(dropdown);
-
-        $('.lb-link').bind('lightboxopen', function () {
-            disableDelegation($('.checkbox .nurse'));
-            $('.cancel').click(function () {
-                mcss.lightbox.closeAll();
-                $(".dropdown").unbind("change");
-            });
-            $(".dropdown").change(dropdown);
-            // NEW STUFF SEPT 2012
-            // Radio toggles
-            $('.std-form .toggle-group .radio .toggle').each(function () {
-                var t = $(this);
-                if (!t.attr('checked')) {
-                    $('.' + t.data('toggletarget')).hide();
-                } else {
-                    t.parent().addClass('toggled');
-                }
-                t.click(function () {
-                    var t = $(this);
-                    t.parent().parent().find('.toggled').removeClass('toggled');
-                    t.parent().addClass('toggled');
-                    $('.' + t.data('togglegroup')).hide();
-                    $('.' + t.data('toggletarget')).show();
+                    window.print();
                 });
-            });
 
-            //Form-tabs toggle
-            $('.lb-nav li a').each(function () {
-                var t = $(this);
+                $(".global-dropdown").change(dropdown);
+                $(".dropdown").change(dropdown);
+
+                $('.lb-link').bind('lightboxopen', function () {
+                    disableDelegation($('.checkbox .nurse'));
+                    $('.cancel').click(function () {
+                        mcss.lightbox.closeAll();
+                        $(".dropdown").unbind("change");
+                    });
+                    $(".dropdown").change(dropdown);
+                    // NEW STUFF SEPT 2012
+                    // Radio toggles
+                    $('.std-form .toggle-group .radio .toggle').each(function () {
+                        var t = $(this);
+                        if (!t.attr('checked')) {
+                            $('.' + t.data('toggletarget')).hide();
+                        } else {
+                            t.parent().addClass('toggled');
+                        }
+                        t.click(function () {
+                            var t = $(this);
+                            t.parent().parent().find('.toggled').removeClass('toggled');
+                            t.parent().addClass('toggled');
+                            $('.' + t.data('togglegroup')).hide();
+                            $('.' + t.data('toggletarget')).show();
+                        });
+                    });
+
+                    //Form-tabs toggle
+                    $('.lb-nav li a').each(function () {
+                        var t = $(this);
                 if (!t.parent().hasClass("sel")) {
-                    $("." + t.data('formtab')).hide();
-                }
-                t.click(function (e) {
-                    e.preventDefault;
-                    var t = $(this);
-                    $('.form-tab').hide();
-                    $('.' + t.data('formtab')).show();
-                    t.parents('.nav').find('.sel').removeClass('sel');
-                    t.parent().addClass('sel');
-                    return false;
-                });
-            });
+                            $("." + t.data('formtab')).hide();
+                        }
+                        t.click(function (e) {
+                            e.preventDefault;
+                            var t = $(this);
+                            $('.form-tab').hide();
+                            $('.' + t.data('formtab')).show();
+                            t.parents('.nav').find('.sel').removeClass('sel');
+                            t.parent().addClass('sel');
+                            return false;
+                        });
+                    });
 
-            // Checkbox toggles
-            $('.std-form .checkbox .toggle').each(function () {
-                var t = $(this);
-                if (!t.attr('checked')) {
-                    $('.' + t.data('toggletarget')).hide();
-                } else {
-                    t.parent().addClass('toggled');
-                }
-                t.click(function () {
-                    var t = $(this);
-                    $('.' + t.data('toggletarget')).slideToggle(100);
-                });
-            });
+                    // Checkbox toggles
+                    $('.std-form .checkbox .toggle').each(function () {
+                        var t = $(this);
+                        if (!t.attr('checked')) {
+                            $('.' + t.data('toggletarget')).hide();
+                        } else {
+                            t.parent().addClass('toggled');
+                        }
+                        t.click(function () {
+                            var t = $(this);
+                            $('.' + t.data('toggletarget')).slideToggle(100);
+                        });
+                    });
 
 
-            if ($('#AllDay').is(':checked')) {
-                $('.hour, #StartTime, #EndTime').hide();
-            }
+                    if ($('#AllDay').is(':checked')) {
+                        $('.hour, #StartTime, #EndTime').hide();
+                    }
 
             $('#AllDay').change(function () {
-                $('.hour, #StartTime, #EndTime').toggle();
-            });
+                        $('.hour, #StartTime, #EndTime').toggle();
+                    });
 
-            //Textbox toggles
-            if ($('#Category').val() != "new") {
-                $('#NewCat').hide();
-            }
+                    //Textbox toggles
+                    if ($('#Category').val() != "new") {
+                        $('#NewCat').hide();
+                    }
 
             $('#Category').change(function () {
                 if ($(this).val() == "new") {
-                    $('#NewCat').show();
-                }
-                else {
-                    $('#NewCat').hide();
-                }
-            });
+                            $('#NewCat').show();
+                        }
+                        else {
+                            $('#NewCat').hide();
+                        }
+                    });
 
-            //Autochange enddate for new activity
-            var endDateChanged = false;
+                    //Autochange enddate for new activity
+                    var endDateChanged = false;
 
             $('.cal-settings.new #StartDate').change(function () {
                 if (!endDateChanged) {
-                    var val = $(this).val();
-                    $('.cal-settings #EndDate').val(val);
-                }
-            });
+                            var val = $(this).val();
+                            $('.cal-settings #EndDate').val(val);
+                        }
+                    });
 
             $('.cal-settings.new #EndDate').change(function () {
-                endDateChanged = true;
-            });
+                        endDateChanged = true;
+                    });
 
-            // Calendar-stuff
-            $('#Category').change(function () {
-                var t = $(this);
-                if (CategorySettings[t.val()].Absent) {
-                    $('#Absent').val(true);
-                    $('#Absence').show();
-                }
-                else {
-                    $('#Absent').val(false);
-                    $('#Absence').hide();
-                }
+                    // Calendar-stuff
+                    $('#Category').change(function () {
+                        var t = $(this);
+                        if (CategorySettings[t.val()].Absent) {
+                            $('#Absent').val(true);
+                            $('#Absence').show();
+                        }
+                        else {
+                            $('#Absent').val(false);
+                            $('#Absence').hide();
+                        }
 
-            });
+                    });
 
-            $('#Interval').change(function () {
-                var t = $(this);
-                if (t.val() == 7) {
+                    $('#Interval').change(function () {
+                        var t = $(this);
+                        if (t.val() == 7) {
                     $('#intervalFactorText').html("@Localizer["vecka"].ToString()");
-                    $('.factors .date').hide();
-                    $('.factors').show();
-                }
-                else if (t.val() == 31) {
+                            $('.factors .date').hide();
+                            $('.factors').show();
+                        }
+                        else if (t.val() == 31) {
                     $('#intervalFactorText').html("@Localizer["månad"].ToString()");
-                    $('.factors .date').show();
-                    $('.factors').show();
-                }
-                else {
-                    $('.factors').hide();
-                }
-                SetSummary(t.val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
-            });
+                            $('.factors .date').show();
+                            $('.factors').show();
+                        }
+                        else {
+                            $('.factors').hide();
+                        }
+                        SetSummary(t.val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
 
-            $('#IntervalFactor').change(function () {
-                SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
-            });
+                    $('#IntervalFactor').change(function () {
+                        SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
 
-            $('input[name=SpecificDate]:radio').change(function () {
-                SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
-            });
+                    $('input[name=SpecificDate]:radio').change(function () {
+                        SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
 
-            $('#StartDate').change(function () {
-                SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
-            });
+                    $('#StartDate').change(function () {
+                        SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
 
-            $('.calendar-details :checkbox.cal-quittance').click(function () {
-                if ($(this).is(':checked')) {
-                    mcss.Calendar.quittance($(this));
-                }
-                else {
-                    mcss.Calendar.unQuittance($(this));
-                }
+                    $('.calendar-details :checkbox.cal-quittance').click(function () {
+                        if ($(this).is(':checked')) {
+                            mcss.Calendar.quittance($(this));
+                        }
+                        else {
+                            mcss.Calendar.unQuittance($(this));
+                        }
 
-            });
+                    });
 
-            $('#Interval').trigger('change');
-            $('#Category').trigger('change');
+                    $('#Interval').trigger('change');
+                    $('#Category').trigger('change');
 
-            // Disable/enable delegation on update/create ordination
-            $('.checkbox .nurse').change(function () {
-                var t = $(this);
-                if (t.is(':checked')) {
-                    $('.delegation').attr('disabled', 'disabled');
-                } else {
-                    $('.delegation').removeAttr('disabled');
-                }
-            });
+                    // Disable/enable delegation on update/create ordination
+                    $('.checkbox .nurse').change(function () {
+                        var t = $(this);
+                        if (t.is(':checked')) {
+                            $('.delegation').attr('disabled', 'disabled');
+                        } else {
+                            $('.delegation').removeAttr('disabled');
+                        }
+                    });
 
             $(".check-length").bind("change keyup", function (e) {
-                var elem = $(this);
-                if (elem.val().length > 30) {
+                        var elem = $(this);
+                        if (elem.val().length > 30) {
                     if (elem.next(".warning-length").length < 1) {
                         elem.after("<div class='warning-length'><span style='font-weight:bold;'>@Localizer["Observera"].ToString()!</span> @Localizer["För_långa_meningar_kan_oavsiktligt_förkortas_i_signeringsenhet_Kontrollera_att_texten_är_synlig_i_sin_helhet_på_signeringsenhet__eller_använd_instruktionsfältet_för_längre_kompletterande_text"].ToString()</div>");
-                    }
-                }
-                else {
-                    $('.warning-length').remove();
-                }
-            });
+                            }
+                        }
+                        else {
+                            $('.warning-length').remove();
+                        }
+                    });
 
-            $(".check-datetime-update, .check-datetime-update #StartDate").bind("change", function (e) {
-                ShowUpdateSequenceAlertWarning(e);
-            });
+                    $(".check-datetime-update, .check-datetime-update #StartDate").bind("change", function (e) {
+                        ShowSequenceReminderWarning(e);
+                    });
 
-            $(".check-datetime-update.btn").bind("click", function (e) {
-                ShowUpdateSequenceAlertWarning(e);
-            });
+                    $(".check-datetime-update.btn").bind("click", function (e) {
+                        ShowSequenceReminderWarning(e);
+                    });
 
-            $(".check-datetime-create #StartDate").bind("change", function (e) {
-                elem = $(this);
-                var now = new Date();
-                var start = new Date(elem.val());
+                    $(".check-datetime-create #StartDate").bind("change", function (e) {
+                        elem = $(this);
+                        var now = new Date();
+                        var start = new Date(elem.val());
 
-                if (now > start) {
-                    ShowCreateSequenceAlertWarning(e);
-                }
-                else {
-                    $(".warning-datetime").remove();
-                }
+                        if (now > start) {
+                            ShowSequenceReminderWarning(e);
+                        }
+                        else {
+                            $(".warning-datetime").remove();
+                        }
 
 
-            });
+                    });
 
-            $("a.btn.btn-mdatepick.check-datetime-create.dp-applied").bind("dpClosed", function (e) {
-                var vals = $("#activity-freq-days").val().split(',');
-                var now = new Date();
-                $.each(vals, function (index, elem) {
-                    var date = new Date(elem);
-                    if (now > date) {
-                        ShowCreateSequenceAlertWarning(e);
-                    }
+                    $("a.btn.btn-mdatepick.check-datetime-create.dp-applied").bind("dpClosed", function (e) {
+                        var vals = $("#activity-freq-days").val().split(',');
+                        var now = new Date();
+                        $.each(vals, function (index, elem) {
+                            var date = new Date(elem);
+                            if (now > date) {
+                                ShowSequenceReminderWarning(e);
+                            }
+                        });
+
+                    });
+
+                    $('.activity-edit .freq .btn-mdatepick').each(function () {
+                        if ($(this).prev().val() != '0') $(this).hide();
+                    });
+                    $('.activity-edit .freq-select').each(function () {
+                        var t = $(this);
+                        if (t.val() == '0') {
+                            t.parents('.std-form:first').find('.freq-hide').hide();
+                            t.parents('.std-form:first').find('.freq-show').show();
+                        } else {
+                            t.parents('.std-form:first').find('.freq-hide').show();
+                            t.parents('.std-form:first').find('.freq-show').hide();
+                        }
+                        t.change(function () {
+                            var t = $(this);
+                            if ($(this).val() == '0') {
+                                t.parents('.std-form:first').find('.freq-hide').hide();
+                                t.parents('.std-form:first').find('.freq-show').show();
+                            } else {
+                                t.parents('.std-form:first').find('.freq-hide').show();
+                                t.parents('.std-form:first').find('.freq-show').hide();
+                            }
+                        });
+                    });
                 });
 
-            });
-
-            $('.activity-edit .freq .btn-mdatepick').each(function () {
-                if ($(this).prev().val() != '0') $(this).hide();
-            });
-            $('.activity-edit .freq-select').each(function () {
-                var t = $(this);
-                if (t.val() == '0') {
-                    t.parents('.std-form:first').find('.freq-hide').hide();
-                    t.parents('.std-form:first').find('.freq-show').show();
-                } else {
-                    t.parents('.std-form:first').find('.freq-hide').show();
-                    t.parents('.std-form:first').find('.freq-show').hide();
-                }
-                t.change(function () {
-                    var t = $(this);
-                    if ($(this).val() == '0') {
-                        t.parents('.std-form:first').find('.freq-hide').hide();
-                        t.parents('.std-form:first').find('.freq-show').show();
-                    } else {
-                        t.parents('.std-form:first').find('.freq-hide').show();
-                        t.parents('.std-form:first').find('.freq-show').hide();
-                    }
-                });
-            });
-        });
-
-        function ShowUpdateSequenceAlertWarning(e) {
-            var save = $('.std-panel .submit input[type="submit"]')
-            if (save.prev(".warning-datetime").length < 1) {
-                save.before("<div class='warning-datetime'><span style='font-weight:bold;'>@Localizer["Observera"].ToString()!</span> @Localizer["Om_du_ändrat_tider_för_när_insatsen_skall_utföras_kommer_inga_larm_att_skapas_för_de_tider_som_inträffat_före_du_gjort_ändringen__Insatserna_kommer_att_kunna_signeras_men_kommer_inte_att_generera_några_larm"].ToString()</div>");
+                function ShowSequenceReminderWarning(e) {
+                    var save = $('.std-panel .submit input[type="submit"]')
+                    if (save.prev(".warning-datetime").length < 1) {
+                save.before("<div class='warning-datetime'><span style='font-weight:bold;'>@Localizer["Observera"].ToString()!</span> @Localizer["Påminnelser_genereras_inte_retroaktivt"].ToString()</div>");
                     }
                 }
 
                 function ShowCreateSequenceAlertWarning(e) {
                     var save = $('.std-panel .submit input[type="submit"]')
                     if (save.prev(".warning-datetime").length < 1) {
-                        save.before("<div class='warning-datetime'><span style='font-weight:bold;'>@Localizer["Observera"].ToString()!</span> @Localizer["Insatser_som_skulle_ha_utförts_före_insatsen_skapats_kommer_inte_markeras_som_avikelser_eller_skapa_några_larm__Insatserna_kommer_att_synas_och_kan_signeras_men_kommer_inte_att_generera_några_larm"].ToString()</div>");
-            }
-        }
+                        save.before("<div class='warning-datetime'><span style='font-weight:bold;'>@Localizer["Observera"].ToString()!</span> @Localizer["Påminnelser_genereras_inte_retroaktivt"].ToString()</div>");
+                    }
+                }
 
-        function disableDelegation(t) {
-            if (t.is(':checked')) {
-                $('.delegation').attr('disabled', 'disabled');
-            } else {
-                $('.delegation').removeAttr('disabled');
-            }
-        }
+                function disableDelegation(t) {
+                    if (t.is(':checked')) {
+                         $('.delegation').attr('disabled', 'disabled');
+                     } else {
+                         $('.delegation').removeAttr('disabled');
+                     }
+                }
 
-        function dropdown() {
-            var self = $(this), url = "@Url.Action("GetByParent", "Taxa", new { Area = string.Empty })";
-            if (self.parent().hasClass('custom-select-wrap')) {
-                self.parent().parent().nextAll('.select').unbind("change").unbind("onchange").remove();
-            } else {
-                self.parent().nextAll('.select').unbind("change").remove();
-            }
-            if (self.val() != null && self.val() != 'undefined' && self.val() != '-1' && self.val() != '') {
-                $('#Taxon').val(self.val());
+                function dropdown() {
+                    var self = $(this), url = "@Url.Action("GetByParent", "Taxa", new { Area = string.Empty })";
+                    if (self.parent().hasClass('custom-select-wrap')) {
+                        self.parent().parent().nextAll('.select').unbind("change").unbind("onchange").remove();
+                    } else {
+                        self.parent().nextAll('.select').unbind("change").remove();
+                    }
+                    if (self.val() != null && self.val() != 'undefined' && self.val() != '-1' && self.val() != '') {
+                        $('#Taxon').val(self.val());
                 $.getJSON(url, { "id": self.val() }, function (data) {
-                    var items = [];
-                    if (data.length > 0) {
+                            var items = [];
+                            if (data.length > 0) {
                         items.push('<option value="-1">@Localizer["Välj_"].ToString()</option>');
-                    }
-                    $.each(data, function (i, obj) {
-                        items.push('<option value="' + obj.key + '">' + obj.value + '</option>');
-                    });
-                    if (items.length > 0) {
-                        var select = $('#' + self.val());
-                        if (select.length) {
-                            select.find('option').remove().end().append(items.join(''));
-                        } else {
-                            var selectbox = $('<select />', {
-                                "class": self.cssClass,
-                                "name": self.val(),
-                                html: items.join('')
-                            }).bind("change", dropdown);
-                            if (self.parent().hasClass('custom-select-wrap')) {
-                                $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent().parent());
-                                mcss.customSelect($('.global-filter .select:last'));
-                            } else {
-                                $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent());
                             }
+                            $.each(data, function (i, obj) {
+                                items.push('<option value="' + obj.key + '">' + obj.value + '</option>');
+                            });
+                            if (items.length > 0) {
+                        var select = $('#' + self.val());
+                                if (select.length) {
+                                    select.find('option').remove().end().append(items.join(''));
+                                } else {
+                                    var selectbox = $('<select />', {
+                                        "class": self.cssClass,
+                                        "name": self.val(),
+                                        html: items.join('')
+                                    }).bind("change", dropdown);
+                            if (self.parent().hasClass('custom-select-wrap')) {
+                                        $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent().parent());
+                                        mcss.customSelect($('.global-filter .select:last'));
+                                    } else {
+                                        $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent());
+                                    }
 
-                        }
-                    }
-                });
-            } else {
-                var value = null;
+                                }
+                            }
+                        });
+                    } else {
+                        var value = null;
                 self.parent().prevAll('.select').each(function (i, v) {
-                    var val = $(v).find('.dropdown').val();
-                    if (val != null || val != 'undefined' || val != '-1') {
-                        value = val;
-                        return false;
+                            var val = $(v).find('.dropdown').val();
+                            if (val != null || val != 'undefined' || val != '-1') {
+                                value = val;
+                                return false;
+                            }
+                        });
+                        $('#Taxon').val(value);
                     }
-                });
-                $('#Taxon').val(value);
-            }
-        };
-    });
-</script>
+                };
+            });
+        </script>
     </head>
     <body>
         @if (ApplicationEnvironment.Is.Staging)
@@ -485,6 +485,21 @@
             <div class="environment">
                 <p>ENVIRONMENT @ApplicationEnvironment.Environment | VERSION @ApplicationEnvironment.Info.Version | SERVER @ApplicationEnvironment.OperatingSystem.MachineName</p>
             </div>
+        }
+        @if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
+        {
+            var expiration = Request.GetOwinContext().Get<DateTimeOffset?>("ExpiresUtc");
+            if (expiration.HasValue && User.Identity.IsAuthenticated)
+            {
+                <script type="text/javascript">
+                    mcss.auth.init(@expiration.Value.LocalDateTime.ToUnixEpochMilliseconds(),
+                        {
+                            loginUrl:                 '/auth/sign-in',
+                            redirectToLogin:           true,
+                            showCountdownAfterMinutes: 5
+                        });
+                </script>
+            }
         }
         <div class="global-filter">
             @Html.Action("TaxonFilter", "Taxa", new { Area = string.Empty })

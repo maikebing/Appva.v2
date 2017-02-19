@@ -10,14 +10,14 @@
 		    		<tr>
 		    			<th scope="col">@Localizer["Boende"]</th>
 		    			<th scope="col">@Localizer["Preparat"]</th>
-		    			<th scope="col">@Localizer["Dagar_kvar"]</th>
+		    			<th scope="col">@Localizer["_dagar_kvar"]</th>
 		    		</tr>
 		    	</thead>
                 <tbody>
                     @foreach (var item in Model.DelayedStockCounts) {
                         var daysLeft = item.LastRecount.GetValueOrDefault().Subtract(DateTime.Now.AddDays(-Model.StockControlIntervalInDays)).Days;
                         var daysLeftText = item.LastRecount.HasValue ?
-                            string.Format("{0} {1}", daysLeft, (daysLeft == 1 ? Localizer["day"].ToString() : Localizer["days"].ToString())) :
+                            string.Format("{0} {1}", daysLeft, (daysLeft == 1 ? Localizer["dag"].ToString() : Localizer["dagar"].ToString())) :
                             string.Format(Localizer["Aldrig_räknad"].ToString());
                         <tr class="urgent">
                             <td>

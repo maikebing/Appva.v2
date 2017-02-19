@@ -28,7 +28,7 @@
     	<strong>@Localizer["Titel_"]</strong>
     	<span>@Model.Title</span>
     </div>
-    @if (Model.Superior != null && Model.Superior != "")
+    @if (Model.Superior != null && Model.Superior != "" && Model.Superior != "Saknas")
     {
         <div class="i">
             <strong>@Localizer["Chef_"]</strong>

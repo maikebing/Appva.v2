@@ -25,23 +25,23 @@ namespace Appva.Mcss.Web.ViewModels {
         [Date]
         [DateLessThan(Target = "PrintEndDate")]
         [PlaceHolder("T.ex. 2012-12-21")]
-        [DisplayName("Från datum")]
+        [Display(Name = "Från_datum", ResourceType = typeof(Appva.Mcss.Admin.Resources.Language))]
         public DateTime PrintStartDate { get; set; }
 
         [Required]
         [Date]
         [DateGreaterThan(Target = "PrintStartDate")]
         [PlaceHolder("T.ex. 2012-12-21")]
-        [DisplayName("Till datum")]
+        [Display(Name = "Till_datum", ResourceType = typeof(Appva.Mcss.Admin.Resources.Language))]
         public DateTime PrintEndDate { get; set; }
 
         [Required]
         public SchedulePrintTemplate Template { get; set;}
 
-        [DisplayName("Inkludera vid-behov-läkemedel")]
+        [Display(Name = "Inkludera_vid_behov_läkemedel", ResourceType = typeof(Appva.Mcss.Admin.Resources.Language))]
         public bool OnNeedBasis { get; set; }
 
-        [DisplayName("Inkludera stående ordinationer")]
+        [Display(Name = "Inkludera_stående_ordinationer", ResourceType = typeof(Appva.Mcss.Admin.Resources.Language))]
         public bool StandardSequneces { get; set; }
 
     }

@@ -29,8 +29,8 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The patient first name.
         /// </summary>
-        [Required(ErrorMessage = "Förnamn måste fyllas i.")]
-        [DisplayName("Förnamn")]
+        [Required(ErrorMessageResourceName = "Förnamn_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Display(Name = "Förnamn", ResourceType = typeof(Resources.Language))]
         public string FirstName
         {
             get;
@@ -40,8 +40,8 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The patient last name.
         /// </summary>
-        [Required(ErrorMessage = "Efternamn måste fyllas i.")]
-        [DisplayName("Efternamn")]
+        [Required(ErrorMessageResourceName = "Efternamn_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Display(Name = "Efternamn", ResourceType = typeof(Resources.Language))]
         public string LastName
         {
             get;
@@ -51,10 +51,10 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The patient personal identity number.
         /// </summary>
-        [Required(ErrorMessage = "Personnummer måste fyllas i.")]
-        [Appva.Mvc.PersonalIdentityNumber(ErrorMessage = "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001.")]
-        [DisplayName("Personnummer")]
-        [Remote("VerifyUniquePatient", "Patient", AreaReference.UseCurrent, HttpMethod = "POST", ErrorMessage = "Personnumret finns redan tidigare redan i MCSS.")]
+        [Required(ErrorMessageResourceName = "Personnummer_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Appva.Mvc.PersonalIdentityNumber(ErrorMessageResourceName = "Personnummer_måste_fyllas_i_med_tolv_siffror_och_bindestreck__t__ex__19010101_0001", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Display(Name = "Personnummer", ResourceType = typeof(Resources.Language))]
+        [Remote("VerifyUniquePatient", "Patient", AreaReference.UseCurrent, HttpMethod = "POST", ErrorMessageResourceName = "Personnumret_finns_redan_tidigare_redan_i_MCSS", ErrorMessageResourceType = typeof(Resources.Language))]
         public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
@@ -64,7 +64,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The patient status.
         /// </summary>
-        [DisplayName("Avliden")]
+        [Display(Name = "Avliden", ResourceType = typeof(Resources.Language))]
         public bool IsDeceased
         {
             get;
@@ -74,8 +74,8 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The patient address.
         /// </summary>
-        [Required(ErrorMessage = "Address måste väljas.")]
-        [Remote("VerifyTaxon", "Taxa", AreaReference.UseRoot, HttpMethod = "POST", ErrorMessage = "Address måste väljas.")]
+        [Required(ErrorMessageResourceName = "Adress_måste_väljas", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Remote("VerifyTaxon", "Taxa", AreaReference.UseRoot, HttpMethod = "POST", ErrorMessageResourceName = "Adress_måste_väljas", ErrorMessageResourceType = typeof(Resources.Language))]
         public string Taxon
         {
             get;
@@ -85,7 +85,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The patient alternative identity.
         /// </summary>
-        [DisplayName("Tagg-id")]
+        [Display(Name = "Tagg_id", ResourceType = typeof(Resources.Language))]
         public string Tag
         {
             get;

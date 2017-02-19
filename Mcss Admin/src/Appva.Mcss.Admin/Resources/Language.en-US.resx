@@ -257,8 +257,8 @@
   <data name="Inga_pågående_larm" xml:space="preserve">
     <value>No current alerts</value>
   </data>
-  <data name="Inloggad_som" xml:space="preserve">
-    <value>Logged in:</value>
+  <data name="Inloggad_som_{0}" xml:space="preserve">
+    <value>&lt;span class='label'&gt;Logged in:&lt;/span&gt;{0}</value>
   </data>
   <data name="Insatser_som_skulle_ha_utförts_före_insatsen_skapats_kommer_inte_markeras_som_avikelser_eller_skapa_några_larm__Insatserna_kommer_att_synas_och_kan_signeras_men_kommer_inte_att_generera_några_larm" xml:space="preserve">
     <value />

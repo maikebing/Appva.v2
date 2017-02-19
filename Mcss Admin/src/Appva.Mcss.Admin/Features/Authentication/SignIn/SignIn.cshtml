@@ -10,7 +10,7 @@
     <span>@Tenant</span>
 </div>
 <div class="bd">
-    <div class="note">@Html.ActionLink(Localizer["Klicka_här"].ToString(), "SignInSiths")  @Localizer["för_att_logga_in_med_ditt_SITHS_eID"]</div>
+    <!--div class="note">@Html.ActionLink(Localizer["Klicka_här"].ToString(), "SignInSiths")  @Localizer["för_att_logga_in_med_ditt_SITHS_eID"]</div-->
     @using (Html.Post(null, new { ReturnUrl = Model.ReturnUrl }))
     {
         @Html.ValidationAlert(Localizer["Felaktigt_användarnamn_och_eller_lösenord"].ToString(), string.Empty, new { @class = "error-msg" })

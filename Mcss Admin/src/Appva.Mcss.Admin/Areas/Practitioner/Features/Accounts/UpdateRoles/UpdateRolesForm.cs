@@ -9,7 +9,7 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System.Collections.Generic;
-    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
 
     #endregion
@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The roles available.
         /// </summary>
-        [DisplayName("Roller")]
+        [Display(Name = "Roller", ResourceType = typeof(Resources.Language))]
         public IList<SelectListItem> Roles
         {
             get;

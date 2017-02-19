@@ -7,8 +7,8 @@
                 <a class="profile icon icon-profile">@User.Identity.Name</a>
                 <div class="profile">
                     <p>
-                        <span class="label">@Localizer["Inloggad_som"]</span>
-                        @User.Identity.Name
+                        @{ var text = new HtmlString(Localizer["Inloggad_som_{0}", User.Identity.Name].ToString()); }
+                        @text
                     </p>
                     <ul>
                         @if (! Principal.Claims.Any(x => x.Type == Appva.Core.Resources.ClaimTypes.SithsEnabled && x.Value == "Y"))

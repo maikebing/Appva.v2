@@ -25,7 +25,7 @@
             <div class="panel">
                 <div class="heading cf">
                     @Html.ActionLink(Permissions.Report.Read, Localizer["Fullständig_rapport_"].ToString(), "FullReport", "Report", new { Area = "Report" }, new { })
-                    <h2>Totalt resultat senaste veckan</h2>
+                    <h2>@Localizer["Totalt_resultat_senaste_veckan"]</h2>
                 </div>
                 <div id="report" class="cf">
                     <div id="chart" class="chart" style="height: 200px;"></div>

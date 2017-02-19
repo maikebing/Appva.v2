@@ -136,7 +136,7 @@
     <value>稼働された</value>
   </data>
   <data name="Aktivera_alla_delegeringar_för_{0}" xml:space="preserve">
-    <value>（０）　　のためのあらゆる委任事項を稼働させる</value>
+    <value>{0}　のためのあらゆる委任事項を稼働させる</value>
   </data>
   <data name="Aktivera_synkronisering" xml:space="preserve">
     <value>稼働させる　　シンクロナイズする</value>
@@ -148,7 +148,7 @@
     <value>現状</value>
   </data>
   <data name="Aktuella_delegeringar__{0}" xml:space="preserve">
-    <value>現状の委任事項　　　（０）</value>
+    <value>現状の委任事項 {0}</value>
   </data>
   <data name="Aktuellet_saldo" xml:space="preserve">
     <value>現状の残り</value>
@@ -172,7 +172,7 @@
     <value />
   </data>
   <data name="Alla_mottagna_delegeringar__{0}" xml:space="preserve">
-    <value>（０）受け取ったすべての委任事項</value>
+    <value>{0} 受け取ったすべての委任事項</value>
   </data>
   <data name="Andel_signerade_insatser" xml:space="preserve">
     <value>署名ずみ支援行為の割合</value>
@@ -412,7 +412,7 @@
     <value>決められた時間にされることは少ない</value>
   </data>
   <data name="Får_endast_ges_av_legitimerad_{0}" xml:space="preserve">
-    <value>有資格者によりのみ与えられる</value>
+    <value>有資格者によりのみ与えられる {0}</value>
   </data>
   <data name="Följande_aktiviteter_genomfördes_inte_i_tid_" xml:space="preserve">
     <value>以下のアクテイビテイが決められた時間に実施されていない</value>
@@ -585,11 +585,11 @@
   <data name="Ingen_användare_hittades" xml:space="preserve">
     <value>ユーザー名が見つからない</value>
   </data>
-  <data name="Inloggad_som" xml:space="preserve">
-    <value>　としてログインされている</value>
+  <data name="Inloggad_som_{0}" xml:space="preserve">
+    <value>{0}&lt;span class='label'&gt;としてログインされている&lt;/span&gt;</value>
   </data>
   <data name="Innehåller_{0}_fel" xml:space="preserve">
-    <value>　（０）間違いを含む</value>
+    <value>{0} 間違いを含む</value>
   </data>
   <data name="inom" xml:space="preserve">
     <value>内</value>
@@ -1322,7 +1322,7 @@
     <value>遅すぎる</value>
   </data>
   <data name="{0}_Vecka_{1}" xml:space="preserve">
-    <value>　週　　（１）</value>
+    <value>{0}　週　　{1}</value>
   </data>
   <data name="{1:d MMM yyyy}_{0:HH:mm}_till_{1:HH:mm}" xml:space="preserve">
     <value />
@@ -1377,5 +1377,14 @@
   </data>
   <data name="Översikt" xml:space="preserve">
     <value>概要</value>
+  </data>
+  <data name="Avliden" xml:space="preserve">
+    <value>死亡者</value>
+  </data>
+  <data name="vvisa_" xml:space="preserve">
+    <value>示す</value>
+  </data>
+  <data name="_dagar_kvar" xml:space="preserve">
+    <value>残りの日数</value>
   </data>
 </root>

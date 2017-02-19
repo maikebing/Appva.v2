@@ -14,7 +14,7 @@
 			@using (Html.BeginForm("List", "Accounts", FormMethod.Get, new { @class = "filter-form" }))
 			{
                 <div class="filter-row">
-                    <strong>@Localizer["Visa_"]</strong>
+                    <strong>@Localizer["vvisa_"]</strong>
                     <ul>
                         <li>@Html.ActionLink(Localizer["Alla"].ToString(), "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false) && Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) && !Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false) && !Model.IsFilterByIsSynchronizedEnabled.HasValue) ? "div sel" : "div" })</li>
                         <li>@Html.ActionLink(Localizer["Mina_delegeringar"].ToString(), "List", new { FilterByCreatedBy = true }, new { @class = (Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>

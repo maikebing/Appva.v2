@@ -61,6 +61,1494 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} för sent.
+        /// </summary>
+        public static string _0__för_sent {
+            get {
+                return ResourceManager.GetString("{0}_för_sent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Vecka {1}.
+        /// </summary>
+        public static string _0__Vecka__1_ {
+            get {
+                return ResourceManager.GetString("{0}_Vecka_{1}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:d MMM yyyy} till {1:d MMM yyyy}.
+        /// </summary>
+        public static string _0_d_MMM_yyyy__till__1_d_MMM_yyyy_ {
+            get {
+                return ResourceManager.GetString("{0:d MMM yyyy}_till_{1:d MMM yyyy}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:d MMM yyyy HH:mm} till {1:d MMM yyyy HH:mm}.
+        /// </summary>
+        public static string _0_d_MMM_yyyy_HH_mm__till__1_d_MMM_yyyy_HH_mm_ {
+            get {
+                return ResourceManager.GetString("{0:d MMM yyyy HH:mm}_till_{1:d MMM yyyy HH:mm}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:d MMMM yyyy}, kl {0:HH:mm} med status &apos;{1}&apos;.
+        /// </summary>
+        public static string _0date___0time__med_status__1_ {
+            get {
+                return ResourceManager.GetString("_0date___0time__med_status__1_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  {1:d MMM yyyy} {0:HH:mm} till {1:HH:mm}.
+        /// </summary>
+        public static string _1_d_MMM_yyyy___0_HH_mm__till__1_HH_mm_ {
+            get {
+                return ResourceManager.GetString("{1:d MMM yyyy}_{0:HH:mm}_till_{1:HH:mm}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Sparas i 10 år).
+        /// </summary>
+        public static string _Sparas_i_10_år_ {
+            get {
+                return ResourceManager.GetString("(Sparas_i_10_år)", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YYYYMMDD-NNNN.
+        /// </summary>
+        public static string ÅÅÅÅMMDD_NNNN {
+            get {
+                return ResourceManager.GetString("ÅÅÅÅMMDD_NNNN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adress.
+        /// </summary>
+        public static string Adress {
+            get {
+                return ResourceManager.GetString("Adress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adress:.
+        /// </summary>
+        public static string Adress_ {
+            get {
+                return ResourceManager.GetString("Adress_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adress:.
+        /// </summary>
+        public static string Adress_1 {
+            get {
+                return ResourceManager.GetString("Adress_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adress måste väljas..
+        /// </summary>
+        public static string Adress_måste_väljas {
+            get {
+                return ResourceManager.GetString("Adress_måste_väljas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adress måste väljas..
+        /// </summary>
+        public static string Adress_måste_väljas1 {
+            get {
+                return ResourceManager.GetString("Adress_måste_väljas1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktivera.
+        /// </summary>
+        public static string Aktivera {
+            get {
+                return ResourceManager.GetString("Aktivera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktivera alla delegeringar_för {0}.
+        /// </summary>
+        public static string Aktivera_alla_delegeringar_för__0_ {
+            get {
+                return ResourceManager.GetString("Aktivera_alla_delegeringar_för_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktivera synkronisering.
+        /// </summary>
+        public static string Aktivera_synkronisering {
+            get {
+                return ResourceManager.GetString("Aktivera_synkronisering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktiverad.
+        /// </summary>
+        public static string Aktiverad {
+            get {
+                return ResourceManager.GetString("Aktiverad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktivitet.
+        /// </summary>
+        public static string Aktivitet {
+            get {
+                return ResourceManager.GetString("Aktivitet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktuell delegering.
+        /// </summary>
+        public static string Aktuell_delegering {
+            get {
+                return ResourceManager.GetString("Aktuell_delegering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktuella.
+        /// </summary>
+        public static string Aktuella {
+            get {
+                return ResourceManager.GetString("Aktuella", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktuella delegeringar, {0}.
+        /// </summary>
+        public static string Aktuella_delegeringar___0_ {
+            get {
+                return ResourceManager.GetString("Aktuella_delegeringar__{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktuellet saldo.
+        /// </summary>
+        public static string Aktuellet_saldo {
+            get {
+                return ResourceManager.GetString("Aktuellet_saldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aldrig räknad.
+        /// </summary>
+        public static string Aldrig_räknad {
+            get {
+                return ResourceManager.GetString("Aldrig_räknad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alla.
+        /// </summary>
+        public static string Alla {
+            get {
+                return ResourceManager.GetString("Alla", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alla boende på:.
+        /// </summary>
+        public static string Alla_boende_på_ {
+            get {
+                return ResourceManager.GetString("Alla_boende_på_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alla delegeringar.
+        /// </summary>
+        public static string Alla_delegeringar {
+            get {
+                return ResourceManager.GetString("Alla_delegeringar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alla delegeringar....
+        /// </summary>
+        public static string Alla_delegeringar_ {
+            get {
+                return ResourceManager.GetString("Alla_delegeringar_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alla mottagna delegeringar, {0}.
+        /// </summary>
+        public static string Alla_mottagna_delegeringar___0_ {
+            get {
+                return ResourceManager.GetString("Alla_mottagna_delegeringar__{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Andel signerade insatser.
+        /// </summary>
+        public static string Andel_signerade_insatser {
+            get {
+                return ResourceManager.GetString("Andel_signerade_insatser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra.
+        /// </summary>
+        public static string Ändra {
+            get {
+                return ResourceManager.GetString("Ändra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra aktiviteten.
+        /// </summary>
+        public static string Ändra_aktiviteten {
+            get {
+                return ResourceManager.GetString("Ändra_aktiviteten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra boendeuppgifter.
+        /// </summary>
+        public static string Ändra_boendeuppgifter {
+            get {
+                return ResourceManager.GetString("Ändra_boendeuppgifter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra delegering.
+        /// </summary>
+        public static string Ändra_delegering {
+            get {
+                return ResourceManager.GetString("Ändra_delegering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra kunskapstester.
+        /// </summary>
+        public static string Ändra_kunskapstester {
+            get {
+                return ResourceManager.GetString("Ändra_kunskapstester", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra medarbetaruppgifter.
+        /// </summary>
+        public static string Ändra_medarbetaruppgifter {
+            get {
+                return ResourceManager.GetString("Ändra_medarbetaruppgifter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra raden.
+        /// </summary>
+        public static string Ändra_raden {
+            get {
+                return ResourceManager.GetString("Ändra_raden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra roll.
+        /// </summary>
+        public static string Ändra_roll {
+            get {
+                return ResourceManager.GetString("Ändra_roll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra roller och behörigheter.
+        /// </summary>
+        public static string Ändra_roller_och_behörigheter {
+            get {
+                return ResourceManager.GetString("Ändra_roller_och_behörigheter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ändra förbrukningsjournalen.
+        /// </summary>
+        public static string Ändra_saldo {
+            get {
+                return ResourceManager.GetString("Ändra_saldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ange när det ska ges.
+        /// </summary>
+        public static string Ange_när_det_ska_ges {
+            get {
+                return ResourceManager.GetString("Ange_när_det_ska_ges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ange förbrukningsjournal.
+        /// </summary>
+        public static string Ange_saldo {
+            get {
+                return ResourceManager.GetString("Ange_saldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ansvarig.
+        /// </summary>
+        public static string Ansvarig {
+            get {
+                return ResourceManager.GetString("Ansvarig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ansvarig kontaktperson:.
+        /// </summary>
+        public static string Ansvarig_kontaktperson_ {
+            get {
+                return ResourceManager.GetString("Ansvarig_kontaktperson_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ansvarig sjuksköterska:.
+        /// </summary>
+        public static string Ansvarig_sjuksköterska_ {
+            get {
+                return ResourceManager.GetString("Ansvarig_sjuksköterska_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ansvarig ssk:.
+        /// </summary>
+        public static string Ansvarig_ssk {
+            get {
+                return ResourceManager.GetString("Ansvarig_ssk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Antal.
+        /// </summary>
+        public static string Antal {
+            get {
+                return ResourceManager.GetString("Antal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anteckning eller instruktion.
+        /// </summary>
+        public static string Anteckning_eller_instruktion {
+            get {
+                return ResourceManager.GetString("Anteckning_eller_instruktion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anteckningar/instruktion:.
+        /// </summary>
+        public static string Anteckningar_instruktion_ {
+            get {
+                return ResourceManager.GetString("Anteckningar_instruktion_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Användaren är ej synkroniserad.
+        /// </summary>
+        public static string Användaren_är_ej_synkroniserad {
+            get {
+                return ResourceManager.GetString("Användaren_är_ej_synkroniserad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Användaren är synkroniserad.
+        /// </summary>
+        public static string Användaren_är_synkroniserad {
+            get {
+                return ResourceManager.GetString("Användaren_är_synkroniserad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Användaren har aldrig synkroniserats.
+        /// </summary>
+        public static string Användaren_har_aldrig_synkroniserats {
+            get {
+                return ResourceManager.GetString("Användaren_har_aldrig_synkroniserats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Användaren synkroniserades senast.
+        /// </summary>
+        public static string Användaren_synkroniserades_senast {
+            get {
+                return ResourceManager.GetString("Användaren_synkroniserades_senast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Användarnamn.
+        /// </summary>
+        public static string Användarnamn {
+            get {
+                return ResourceManager.GetString("Användarnamn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appva MCSS version.
+        /// </summary>
+        public static string Appva_MCSS_version {
+            get {
+                return ResourceManager.GetString("Appva_MCSS_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to År.
+        /// </summary>
+        public static string År {
+            get {
+                return ResourceManager.GetString("År", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Är allmänt känd?.
+        /// </summary>
+        public static string Är_allmänt_känd_ {
+            get {
+                return ResourceManager.GetString("Är_allmänt_känd_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Återställ lösenord.
+        /// </summary>
+        public static string Återställ_lösenord {
+            get {
+                return ResourceManager.GetString("Återställ_lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The recoverylink has expired, please request a new.
+        /// </summary>
+        public static string Återställningslänken_har_gått_ut__vänligen_begär_en_ny {
+            get {
+                return ResourceManager.GetString("Återställningslänken_har_gått_ut__vänligen_begär_en_ny", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Åtgärdat larm:.
+        /// </summary>
+        public static string Åtgärdat_larm_ {
+            get {
+                return ResourceManager.GetString("Åtgärdat_larm_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To do.
+        /// </summary>
+        public static string Att_ge {
+            get {
+                return ResourceManager.GetString("Att_ge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Av säkerhetsskäl rekommenderar vi att du även stänger din webbläsare.
+        /// </summary>
+        public static string Av_säkerhetsskäl_rekommenderar_vi_att_du_även_stänger_din_webbläsare {
+            get {
+                return ResourceManager.GetString("Av_säkerhetsskäl_rekommenderar_vi_att_du_även_stänger_din_webbläsare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avbryt.
+        /// </summary>
+        public static string Avbryt {
+            get {
+                return ResourceManager.GetString("Avbryt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avliden.
+        /// </summary>
+        public static string Avliden {
+            get {
+                return ResourceManager.GetString("Avliden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avlidna.
+        /// </summary>
+        public static string Avlidna {
+            get {
+                return ResourceManager.GetString("Avlidna", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avmarkera.
+        /// </summary>
+        public static string Avmarkera {
+            get {
+                return ResourceManager.GetString("Avmarkera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avvikelse:.
+        /// </summary>
+        public static string Avvikelse_ {
+            get {
+                return ResourceManager.GetString("Avvikelse_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begärdes av.
+        /// </summary>
+        public static string Begärdes_av {
+            get {
+                return ResourceManager.GetString("Begärdes_av", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beställd.
+        /// </summary>
+        public static string Beställd {
+            get {
+                return ResourceManager.GetString("Beställd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boende.
+        /// </summary>
+        public static string Boende {
+            get {
+                return ResourceManager.GetString("Boende", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Borttagna.
+        /// </summary>
+        public static string Borttagna {
+            get {
+                return ResourceManager.GetString("Borttagna", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Byt lösenord.
+        /// </summary>
+        public static string Byt_lösenord {
+            get {
+                return ResourceManager.GetString("Byt_lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chef:.
+        /// </summary>
+        public static string Chef_ {
+            get {
+                return ResourceManager.GetString("Chef_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dag.
+        /// </summary>
+        public static string Dag {
+            get {
+                return ResourceManager.GetString("Dag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dagar.
+        /// </summary>
+        public static string dagar {
+            get {
+                return ResourceManager.GetString("dagar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dagar kvar.
+        /// </summary>
+        public static string dagar_kvar {
+            get {
+                return ResourceManager.GetString("dagar_kvar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum.
+        /// </summary>
+        public static string Datum {
+            get {
+                return ResourceManager.GetString("Datum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.
+        /// </summary>
+        public static string Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012_12_21 {
+            get {
+                return ResourceManager.GetString("Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012-12-21", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delegerade hälso- och sjukvårdsuppgifter:.
+        /// </summary>
+        public static string Delegerade_hälso__och_sjukvårdsuppgifter_ {
+            get {
+                return ResourceManager.GetString("Delegerade_hälso-_och_sjukvårdsuppgifter_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delegering.
+        /// </summary>
+        public static string Delegering {
+            get {
+                return ResourceManager.GetString("Delegering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delegeringsbeslut.
+        /// </summary>
+        public static string Delegeringsbeslut {
+            get {
+                return ResourceManager.GetString("Delegeringsbeslut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter.
+        /// </summary>
+        public static string Delegeringsbeslut_av_sjuksköterskan_gällande_hälso__och_sjukvårdsuppgifter {
+            get {
+                return ResourceManager.GetString("Delegeringsbeslut_av_sjuksköterskan_gällande_hälso-_och_sjukvårdsuppgifter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delvis given.
+        /// </summary>
+        public static string Delvis_given {
+            get {
+                return ResourceManager.GetString("Delvis_given", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to den 1 torsdagen.
+        /// </summary>
+        public static string den_1_torsdagen {
+            get {
+                return ResourceManager.GetString("den_1_torsdagen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Den boende har inga saldon.
+        /// </summary>
+        public static string Den_boende_har_inga_saldon {
+            get {
+                return ResourceManager.GetString("Den_boende_har_inga_saldon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Det finns ingen synkronisering aktiverad.
+        /// </summary>
+        public static string Det_finns_ingen_synkronisering_aktiverad {
+            get {
+                return ResourceManager.GetString("Det_finns_ingen_synkronisering_aktiverad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ditt användarnamn.
+        /// </summary>
+        public static string Ditt_användarnamn {
+            get {
+                return ResourceManager.GetString("Ditt_användarnamn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ditt konto har tillfälligt blivit spärrat efter upprepade misslyckade försök att logga in, var vänlig försök igen senare.
+        /// </summary>
+        public static string Ditt_konto_har_tillfälligt_blivit_spärrat_efter_upprepade_misslyckade_försök_att_logga_in__var_vänlig_försök_igen_senare {
+            get {
+                return ResourceManager.GetString("Ditt_konto_har_tillfälligt_blivit_spärrat_efter_upprepade_misslyckade_försök_att_" +
+                        "logga_in__var_vänlig_försök_igen_senare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ditt lösenord.
+        /// </summary>
+        public static string Ditt_lösenord {
+            get {
+                return ResourceManager.GetString("Ditt_lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ditt lösenord är nu bytt.
+        /// </summary>
+        public static string Ditt_lösenord_är_nu_bytt {
+            get {
+                return ResourceManager.GetString("Ditt_lösenord_är_nu_bytt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ditt lösenord är sparat.
+        /// </summary>
+        public static string Ditt_lösenord_är_sparat {
+            get {
+                return ResourceManager.GetString("Ditt_lösenord_är_sparat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Du har nu blivit utloggad.
+        /// </summary>
+        public static string Du_har_nu_blivit_utloggad {
+            get {
+                return ResourceManager.GetString("Du_har_nu_blivit_utloggad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-postadress.
+        /// </summary>
+        public static string E_postadress {
+            get {
+                return ResourceManager.GetString("E_postadress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string E_postadress_måste_fyllas_i {
+            get {
+                return ResourceManager.GetString("E_postadress_måste_fyllas_i", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efternamn.
+        /// </summary>
+        public static string Efternamn {
+            get {
+                return ResourceManager.GetString("Efternamn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efternamn måste fyllas i..
+        /// </summary>
+        public static string Efternamn_måste_fyllas_i {
+            get {
+                return ResourceManager.GetString("Efternamn_måste_fyllas_i", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efternamn måste fyllas i..
+        /// </summary>
+        public static string Efternamn_måste_fyllas_i1 {
+            get {
+                return ResourceManager.GetString("Efternamn_måste_fyllas_i1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efternamn.
+        /// </summary>
+        public static string Efternamn1 {
+            get {
+                return ResourceManager.GetString("Efternamn1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ej aktiverad.
+        /// </summary>
+        public static string Ej_aktiverad {
+            get {
+                return ResourceManager.GetString("Ej_aktiverad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ej åtgärdat larm:.
+        /// </summary>
+        public static string Ej_åtgärdat_larm_ {
+            get {
+                return ResourceManager.GetString("Ej_åtgärdat_larm_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ej given.
+        /// </summary>
+        public static string Ej_given {
+            get {
+                return ResourceManager.GetString("Ej_given", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ej i tid.
+        /// </summary>
+        public static string Ej_i_tid {
+            get {
+                return ResourceManager.GetString("Ej_i_tid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ej kvitterad.
+        /// </summary>
+        public static string Ej_kvitterad {
+            get {
+                return ResourceManager.GetString("Ej_kvitterad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ej synkroniserade.
+        /// </summary>
+        public static string Ej_synkroniserade {
+            get {
+                return ResourceManager.GetString("Ej synkroniserade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string En_kod_måste_fyllas_i {
+            get {
+                return ResourceManager.GetString("En_kod_måste_fyllas_i", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to en rad. Markera sedan de dagar som iordningsställts.
+        /// </summary>
+        public static string en_rad__Markera_sedan_de_dagar_som_iordningsställts {
+            get {
+                return ResourceManager.GetString("en_rad__Markera_sedan_de_dagar_som_iordningsställts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string En_titel_måste_väljas {
+            get {
+                return ResourceManager.GetString("En_titel_måste_väljas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Endast avvikelser.
+        /// </summary>
+        public static string Endast_avvikelser {
+            get {
+                return ResourceManager.GetString("Endast_avvikelser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Endast mina.
+        /// </summary>
+        public static string Endast_mina {
+            get {
+                return ResourceManager.GetString("Endast_mina", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Endast vid behov.
+        /// </summary>
+        public static string Endast_vid_behov {
+            get {
+                return ResourceManager.GetString("Endast_vid_behov", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enhetschef:.
+        /// </summary>
+        public static string Enhetschef_ {
+            get {
+                return ResourceManager.GetString("Enhetschef_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ett fel har uppstått.
+        /// </summary>
+        public static string Ett_fel_har_uppstått {
+            get {
+                return ResourceManager.GetString("Ett_fel_har_uppstått", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ett fel inträffade.
+        /// </summary>
+        public static string Ett_fel_inträffade {
+            get {
+                return ResourceManager.GetString("Ett_fel_inträffade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exportera till Excel.
+        /// </summary>
+        public static string Exportera_till_Excel {
+            get {
+                return ResourceManager.GetString("Exportera_till_Excel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extern Katalog.
+        /// </summary>
+        public static string Extern_Katalog {
+            get {
+                return ResourceManager.GetString("Extern_Katalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Får endast ges av legitimerad_{0}.
+        /// </summary>
+        public static string Får_endast_ges_av_legitimerad__0_ {
+            get {
+                return ResourceManager.GetString("Får_endast_ges_av_legitimerad_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to färre i tid.
+        /// </summary>
+        public static string färre_i_tid {
+            get {
+                return ResourceManager.GetString("färre_i_tid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Felaktig e-postadress och eller personnummer.
+        /// </summary>
+        public static string Felaktig_e_postadress_och_eller_personnummer {
+            get {
+                return ResourceManager.GetString("Felaktig_e_postadress_och_eller_personnummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Felaktigt användarnamn och eller lösenord.
+        /// </summary>
+        public static string Felaktigt_användarnamn_och_eller_lösenord {
+            get {
+                return ResourceManager.GetString("Felaktigt_användarnamn_och_eller_lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filtrera på kategori:.
+        /// </summary>
+        public static string Filtrera_på_kategori_ {
+            get {
+                return ResourceManager.GetString("Filtrera_på_kategori_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fler i tid.
+        /// </summary>
+        public static string fler_i_tid {
+            get {
+                return ResourceManager.GetString("fler_i_tid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Följande aktiviteter genomfördes inte i tid:.
+        /// </summary>
+        public static string Följande_aktiviteter_genomfördes_inte_i_tid_ {
+            get {
+                return ResourceManager.GetString("Följande_aktiviteter_genomfördes_inte_i_tid_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to för att logga in med ditt SITHS eID.
+        /// </summary>
+        public static string för_att_logga_in_med_ditt_SITHS_eID {
+            get {
+                return ResourceManager.GetString("för_att_logga_in_med_ditt_SITHS_eID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to För boende.
+        /// </summary>
+        public static string För_boende {
+            get {
+                return ResourceManager.GetString("För_boende", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to För långa meningar kan oavsiktligt förkortas i signeringsenhet. Kontrollera att texten är synlig i sin helhet på signeringsenhet eller använd instruktionsfältet för längre kompletterande text.
+        /// </summary>
+        public static string För_långa_meningar_kan_oavsiktligt_förkortas_i_signeringsenhet_Kontrollera_att_texten_är_synlig_i_sin_helhet_på_signeringsenhet__eller_använd_instruktionsfältet_för_längre_kompletterande_text {
+            get {
+                return ResourceManager.GetString("För_långa_meningar_kan_oavsiktligt_förkortas_i_signeringsenhet_Kontrollera_att_te" +
+                        "xten_är_synlig_i_sin_helhet_på_signeringsenhet__eller_använd_instruktionsfältet_" +
+                        "för_längre_kompletterande_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förändring från föregående period.
+        /// </summary>
+        public static string Förändring_från_föregående_period {
+            get {
+                return ResourceManager.GetString("Förändring_från_föregående_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förbrukningsjournal.
+        /// </summary>
+        public static string Förbrukningsjournal {
+            get {
+                return ResourceManager.GetString("Förbrukningsjournal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Föregående.
+        /// </summary>
+        public static string Föregående {
+            get {
+                return ResourceManager.GetString("Föregående", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förnamn.
+        /// </summary>
+        public static string Förnamn {
+            get {
+                return ResourceManager.GetString("Förnamn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fornamn.efternamn@organisation.se.
+        /// </summary>
+        public static string fornamn_efternamn_organisation_se {
+            get {
+                return ResourceManager.GetString("fornamn_efternamn_organisation_se", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förnamn måste fyllas i..
+        /// </summary>
+        public static string Förnamn_måste_fyllas_i {
+            get {
+                return ResourceManager.GetString("Förnamn_måste_fyllas_i", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förnamn.
+        /// </summary>
+        public static string Förnamn1 {
+            get {
+                return ResourceManager.GetString("Förnamn1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förnya.
+        /// </summary>
+        public static string Förnya {
+            get {
+                return ResourceManager.GetString("Förnya", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förnya alla delegeringar:.
+        /// </summary>
+        public static string Förnya_alla_delegeringar_ {
+            get {
+                return ResourceManager.GetString("Förnya_alla_delegeringar_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förnya delegeringar.
+        /// </summary>
+        public static string Förnya_delegeringar {
+            get {
+                return ResourceManager.GetString("Förnya_delegeringar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förnya delegeringar för {0}.
+        /// </summary>
+        public static string Förnya_delegeringar_för__0_ {
+            get {
+                return ResourceManager.GetString("Förnya_delegeringar_för_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Försenade.
+        /// </summary>
+        public static string Försenade {
+            get {
+                return ResourceManager.GetString("Försenade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Försenade kontrollräkningar.
+        /// </summary>
+        public static string Försenade_kontrollräkningar {
+            get {
+                return ResourceManager.GetString("Försenade_kontrollräkningar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Från:.
+        /// </summary>
+        public static string Från_ {
+            get {
+                return ResourceManager.GetString("Från_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Från_datum {
+            get {
+                return ResourceManager.GetString("Från_datum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frånvaro?.
+        /// </summary>
+        public static string Frånvaro_ {
+            get {
+                return ResourceManager.GetString("Frånvaro_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fredag.
+        /// </summary>
+        public static string Fredag {
+            get {
+                return ResourceManager.GetString("Fredag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frekvens.
+        /// </summary>
+        public static string Frekvens {
+            get {
+                return ResourceManager.GetString("Frekvens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frivilligt.
+        /// </summary>
+        public static string Frivilligt {
+            get {
+                return ResourceManager.GetString("Frivilligt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fullständig rapport....
+        /// </summary>
+        public static string Fullständig_rapport_ {
+            get {
+                return ResourceManager.GetString("Fullständig_rapport_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fullständig resultatrapport.
+        /// </summary>
+        public static string Fullständig_resultatrapport {
+            get {
+                return ResourceManager.GetString("Fullständig_resultatrapport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gäller.
+        /// </summary>
+        public static string Gäller {
+            get {
+                return ResourceManager.GetString("Gäller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gäller (max 1 år).
+        /// </summary>
+        public static string Gäller__max_1_år_ {
+            get {
+                return ResourceManager.GetString("Gäller_(max_1_år)", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gäller för.
+        /// </summary>
+        public static string Gäller_för {
+            get {
+                return ResourceManager.GetString("Gäller_för", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gäller för:.
+        /// </summary>
+        public static string Gäller_för_ {
+            get {
+                return ResourceManager.GetString("Gäller_för_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gavs.
+        /// </summary>
+        public static string Gavs {
+            get {
+                return ResourceManager.GetString("Gavs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genomförd.
+        /// </summary>
+        public static string Genomförd {
+            get {
+                return ResourceManager.GetString("Genomförd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genomförd av.
+        /// </summary>
+        public static string Genomförd_av {
+            get {
+                return ResourceManager.GetString("Genomförd_av", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genomfördes.
+        /// </summary>
+        public static string Genomfördes {
+            get {
+                return ResourceManager.GetString("Genomfördes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to genomfördes:.
+        /// </summary>
+        public static string genomfördes_ {
+            get {
+                return ResourceManager.GetString("genomfördes_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genomgångna kunskapstester.
+        /// </summary>
+        public static string Genomgångna_kunskapstester {
+            get {
+                return ResourceManager.GetString("Genomgångna_kunskapstester", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genomsnittlig avvikelse i tid.
+        /// </summary>
+        public static string Genomsnittlig_avvikelse_i_tid {
+            get {
+                return ResourceManager.GetString("Genomsnittlig_avvikelse_i_tid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ges inom:.
+        /// </summary>
+        public static string Ges_inom_ {
+            get {
+                return ResourceManager.GetString("Ges_inom_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Given för sent.
+        /// </summary>
+        public static string Given_för_sent {
+            get {
+                return ResourceManager.GetString("Given_för_sent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Glömt lösenord.
+        /// </summary>
+        public static string Glömt_lösenord {
+            get {
+                return ResourceManager.GetString("Glömt_lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Glömt lösenord?.
+        /// </summary>
+        public static string Glömt_lösenord_ {
+            get {
+                return ResourceManager.GetString("Glömt_lösenord_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Händelsen behöver inte kvitteras.
+        /// </summary>
+        public static string Händelsen_behöver_inte_kvitteras {
+            get {
+                return ResourceManager.GetString("Händelsen_behöver_inte_kvitteras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Händelsen behöver inte signeras.
+        /// </summary>
+        public static string Händelsen_behöver_inte_signeras {
+            get {
+                return ResourceManager.GetString("Händelsen_behöver_inte_signeras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hanterat av.
+        /// </summary>
+        public static string Hanterat_av {
+            get {
+                return ResourceManager.GetString("Hanterat_av", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Har ej genomförts.
+        /// </summary>
+        public static string Har_ej_genomförts {
+            get {
+                return ResourceManager.GetString("Har_ej_genomförts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Har skyddade uppgifter?.
+        /// </summary>
+        public static string Har_skyddade_uppgifter_ {
+            get {
+                return ResourceManager.GetString("Har_skyddade_uppgifter_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hello1.
         /// </summary>
         public static string Hej {
@@ -70,11 +1558,2433 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hej.
+        /// </summary>
+        public static string Hej1 {
+            get {
+                return ResourceManager.GetString("Hej1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hela dagen.
+        /// </summary>
+        public static string Hela_dagen {
+            get {
+                return ResourceManager.GetString("Hela_dagen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hela dagen {1:d MMM yyyy}.
+        /// </summary>
+        public static string Hela_dagen__1_d_MMM_yyyy_ {
+            get {
+                return ResourceManager.GetString("Hela_dagen_{1:d MMM yyyy}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Historik.
+        /// </summary>
+        public static string Historik {
+            get {
+                return ResourceManager.GetString("Historik", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hjälp.
+        /// </summary>
+        public static string Hjälp {
+            get {
+                return ResourceManager.GetString("Hjälp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HSA.
+        /// </summary>
+        public static string HSA {
+            get {
+                return ResourceManager.GetString("HSA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HSA ID.
+        /// </summary>
+        public static string HSA_ID {
+            get {
+                return ResourceManager.GetString("HSA_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I tid.
+        /// </summary>
+        public static string I_tid {
+            get {
+                return ResourceManager.GetString("I_tid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to idag.
+        /// </summary>
+        public static string idag {
+            get {
+                return ResourceManager.GetString("idag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Idag {0:HH:mm}.
+        /// </summary>
+        public static string Idag__0_HH_mm_ {
+            get {
+                return ResourceManager.GetString("Idag_{0:HH:mm}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ifylld signeringslista.
+        /// </summary>
+        public static string Ifylld_signeringslista {
+            get {
+                return ResourceManager.GetString("Ifylld_signeringslista", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to igår.
+        /// </summary>
+        public static string igår {
+            get {
+                return ResourceManager.GetString("igår", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inaktivera.
+        /// </summary>
+        public static string Inaktivera {
+            get {
+                return ResourceManager.GetString("Inaktivera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inaktiverade.
+        /// </summary>
+        public static string Inaktiverade {
+            get {
+                return ResourceManager.GetString("Inaktiverade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inga försenade insatser just nu.
+        /// </summary>
+        public static string Inga_försenade_insatser_just_nu {
+            get {
+                return ResourceManager.GetString("Inga_försenade_insatser_just_nu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inga försenade kontrollräkningar.
+        /// </summary>
+        public static string Inga_försenade_kontrollräkningar {
+            get {
+                return ResourceManager.GetString("Inga_försenade_kontrollräkningar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inga händelser för angiven tidsperiod.
+        /// </summary>
+        public static string Inga_händelser_för_angiven__tidsperiod {
+            get {
+                return ResourceManager.GetString("Inga_händelser_för_angiven_ tidsperiod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inga kommande händelser.
+        /// </summary>
+        public static string Inga_kommande_händelser {
+            get {
+                return ResourceManager.GetString("Inga_kommande_händelser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inga påfyllningar begärda.
+        /// </summary>
+        public static string Inga_påfyllningar_begärda {
+            get {
+                return ResourceManager.GetString("Inga_påfyllningar_begärda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inga pågående larm.
+        /// </summary>
+        public static string Inga_pågående_larm {
+            get {
+                return ResourceManager.GetString("Inga_pågående_larm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inga signerade händelser för angiven tidsperiod.
+        /// </summary>
+        public static string Inga_signerade_händelser_för_angiven_tidsperiod {
+            get {
+                return ResourceManager.GetString("Inga_signerade_händelser_för_angiven_tidsperiod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inga utlöpande delegeringar.
+        /// </summary>
+        public static string Inga_utlöpande_delegeringar {
+            get {
+                return ResourceManager.GetString("Inga_utlöpande_delegeringar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ingen användare hittades.
+        /// </summary>
+        public static string Ingen_användare_hittades {
+            get {
+                return ResourceManager.GetString("Ingen_användare_hittades", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Inkludera_stående_ordinationer {
+            get {
+                return ResourceManager.GetString("Inkludera_stående_ordinationer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Inkludera_vid_behov_läkemedel {
+            get {
+                return ResourceManager.GetString("Inkludera_vid_behov_läkemedel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;span class=&apos;label&apos;&gt;Inloggad som:&lt;/span&gt;{0}.
+        /// </summary>
+        public static string Inloggad_som__0_ {
+            get {
+                return ResourceManager.GetString("Inloggad_som_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Innehåller {0} fel.
+        /// </summary>
+        public static string Innehåller__0__fel {
+            get {
+                return ResourceManager.GetString("Innehåller_{0}_fel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to inom.
+        /// </summary>
+        public static string inom {
+            get {
+                return ResourceManager.GetString("inom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insatsen är kopplad till en borttagen förbrukningsjournal.
+        /// </summary>
+        public static string Insatsen_är_kopplad_till_ett_borttaget__saldo {
+            get {
+                return ResourceManager.GetString("Insatsen_är_kopplad_till_ett_borttaget_ saldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insatser.
+        /// </summary>
+        public static string Insatser {
+            get {
+                return ResourceManager.GetString("Insatser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insatser som skulle ha utförts före insatsen skapats kommer inte markeras som avikelser eller skapa några larm. Insatserna kommer att synas och kan signeras men kommer inte att generera några larm.
+        /// </summary>
+        public static string Insatser_som_skulle_ha_utförts_före_insatsen_skapats_kommer_inte_markeras_som_avikelser_eller_skapa_några_larm__Insatserna_kommer_att_synas_och_kan_signeras_men_kommer_inte_att_generera_några_larm {
+            get {
+                return ResourceManager.GetString("Insatser_som_skulle_ha_utförts_före_insatsen_skapats_kommer_inte_markeras_som_avi" +
+                        "kelser_eller_skapa_några_larm__Insatserna_kommer_att_synas_och_kan_signeras_men_" +
+                        "kommer_inte_att_generera_några_larm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insatser under perioden.
+        /// </summary>
+        public static string Insatser_under_perioden {
+            get {
+                return ResourceManager.GetString("Insatser_under_perioden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instruktion.
+        /// </summary>
+        public static string Instruktion {
+            get {
+                return ResourceManager.GetString("Instruktion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inte signerad.
+        /// </summary>
+        public static string Inte_signerad {
+            get {
+                return ResourceManager.GetString("Inte_signerad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Iordningsställande.
+        /// </summary>
+        public static string Iordningsställande {
+            get {
+                return ResourceManager.GetString("Iordningsställande", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jag fick inte något e-postmeddelande.
+        /// </summary>
+        public static string Jag_fick_inte_något_e_postmeddelande {
+            get {
+                return ResourceManager.GetString("Jag_fick_inte_något_e_postmeddelande", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kalender.
+        /// </summary>
+        public static string Kalender {
+            get {
+                return ResourceManager.GetString("Kalender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kalender de närmaste 7 dagarna.
+        /// </summary>
+        public static string Kalender_de_närmaste_7_dagarna {
+            get {
+                return ResourceManager.GetString("Kalender_de_närmaste_7_dagarna", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kan ej ta.
+        /// </summary>
+        public static string Kan_ej_ta {
+            get {
+                return ResourceManager.GetString("Kan_ej_ta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kl {0}.
+        /// </summary>
+        public static string kl__0_ {
+            get {
+                return ResourceManager.GetString("kl_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kl {0:HH:mm}.
+        /// </summary>
+        public static string kl__0_HH_mm_ {
+            get {
+                return ResourceManager.GetString("kl_{0:HH:mm}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Klicka här.
+        /// </summary>
+        public static string Klicka_här {
+            get {
+                return ResourceManager.GetString("Klicka_här", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Klockan:.
+        /// </summary>
+        public static string Klockan_ {
+            get {
+                return ResourceManager.GetString("Klockan_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Klockslag:.
+        /// </summary>
+        public static string Klockslag_ {
+            get {
+                return ResourceManager.GetString("Klockslag_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Kod_för_signering {
+            get {
+                return ResourceManager.GetString("Kod_för_signering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Koden_får_högst_innehålla_7_siffror {
+            get {
+                return ResourceManager.GetString("Koden_får_högst_innehålla_7_siffror", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kommande.
+        /// </summary>
+        public static string Kommande {
+            get {
+                return ResourceManager.GetString("Kommande", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kontakta din administratör om att aktivera synkronisering av användare i MCSS.
+        /// </summary>
+        public static string Kontakta_din_administratör_om_att_aktivera_synkronisering_av_användare_i_MCSS {
+            get {
+                return ResourceManager.GetString("Kontakta_din_administratör_om_att_aktivera_synkronisering_av_användare_i_MCSS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kontollräknat saldo stämmer ej.
+        /// </summary>
+        public static string Kontollräknat_saldo_stämmer__ej {
+            get {
+                return ResourceManager.GetString("Kontollräknat_saldo_stämmer_ ej", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kontrollera din e-post.
+        /// </summary>
+        public static string Kontrollera_din_e_post {
+            get {
+                return ResourceManager.GetString("Kontrollera_din_e_post", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kontrollräkna.
+        /// </summary>
+        public static string Kontrollräkna {
+            get {
+                return ResourceManager.GetString("Kontrollräkna", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kontrollräkning narkotika.
+        /// </summary>
+        public static string Kontrollräkning_narkotika {
+            get {
+                return ResourceManager.GetString("Kontrollräkning_narkotika", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kontrollräkningar.
+        /// </summary>
+        public static string Kontrollräkningar {
+            get {
+                return ResourceManager.GetString("Kontrollräkningar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kunskapstester.
+        /// </summary>
+        public static string Kunskapstester {
+            get {
+                return ResourceManager.GetString("Kunskapstester", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvittera.
+        /// </summary>
+        public static string Kvittera {
+            get {
+                return ResourceManager.GetString("Kvittera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvittera alla larm.
+        /// </summary>
+        public static string Kvittera_alla_larm {
+            get {
+                return ResourceManager.GetString("Kvittera_alla_larm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvittera larm.
+        /// </summary>
+        public static string Kvittera_larm {
+            get {
+                return ResourceManager.GetString("Kvittera_larm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvitterad.
+        /// </summary>
+        public static string Kvitterad {
+            get {
+                return ResourceManager.GetString("Kvitterad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvitterad av:.
+        /// </summary>
+        public static string Kvitterad_av_ {
+            get {
+                return ResourceManager.GetString("Kvitterad_av_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvitterad av {0}.
+        /// </summary>
+        public static string Kvitterad_av__0_ {
+            get {
+                return ResourceManager.GetString("Kvitterad_av_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvitterade larm.
+        /// </summary>
+        public static string Kvitterade_larm {
+            get {
+                return ResourceManager.GetString("Kvitterade_larm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvittering.
+        /// </summary>
+        public static string Kvittering {
+            get {
+                return ResourceManager.GetString("Kvittering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lägg till.
+        /// </summary>
+        public static string Lägg_till {
+            get {
+                return ResourceManager.GetString("Lägg_till", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lägg till delegering.
+        /// </summary>
+        public static string Lägg_till_delegering {
+            get {
+                return ResourceManager.GetString("Lägg_till_delegering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lägg till kunskapstest.
+        /// </summary>
+        public static string Lägg_till_kunskapstest {
+            get {
+                return ResourceManager.GetString("Lägg_till_kunskapstest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lägg till rad.
+        /// </summary>
+        public static string Lägg_till_rad {
+            get {
+                return ResourceManager.GetString("Lägg_till_rad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Läkemedel.
+        /// </summary>
+        public static string Läkemedel {
+            get {
+                return ResourceManager.GetString("Läkemedel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Larm.
+        /// </summary>
+        public static string Larm {
+            get {
+                return ResourceManager.GetString("Larm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Larm!.
+        /// </summary>
+        public static string Larm_ {
+            get {
+                return ResourceManager.GetString("Larm_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Larm åtgärdat.
+        /// </summary>
+        public static string Larm_åtgärdat {
+            get {
+                return ResourceManager.GetString("Larm_åtgärdat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LDAP.
+        /// </summary>
+        public static string LDAP {
+            get {
+                return ResourceManager.GetString("LDAP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ldap-synkronisering måste aktiveras innan användaren kan synkroniseras.
+        /// </summary>
+        public static string Ldap_synkronisering_måste_aktiveras_innan_användaren_kan_synkroniseras {
+            get {
+                return ResourceManager.GetString("Ldap-synkronisering_måste_aktiveras_innan_användaren_kan_synkroniseras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logga in.
         /// </summary>
         public static string Logga_in {
             get {
                 return ResourceManager.GetString("Logga_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logga in på nytt för att använda MCSS.
+        /// </summary>
+        public static string Logga_in_på_nytt_för_att_använda_MCSS {
+            get {
+                return ResourceManager.GetString("Logga_in_på_nytt_för_att_använda_MCSS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logga in.
+        /// </summary>
+        public static string Logga_in1 {
+            get {
+                return ResourceManager.GetString("Logga_in1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logga in .
+        /// </summary>
+        public static string Logga_in11 {
+            get {
+                return ResourceManager.GetString("Logga_in11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logga ut.
+        /// </summary>
+        public static string Logga_ut {
+            get {
+                return ResourceManager.GetString("Logga_ut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Löper ut.
+        /// </summary>
+        public static string Löper_ut {
+            get {
+                return ResourceManager.GetString("Löper_ut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Löper ut inom 50 dagar.
+        /// </summary>
+        public static string Löper_ut_inom_50_dagar {
+            get {
+                return ResourceManager.GetString("Löper_ut_inom_50_dagar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lördag.
+        /// </summary>
+        public static string Lördag {
+            get {
+                return ResourceManager.GetString("Lördag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lösenord.
+        /// </summary>
+        public static string Lösenord {
+            get {
+                return ResourceManager.GetString("Lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lösenord måste stämma överens.
+        /// </summary>
+        public static string Lösenord_måste_stämma_överens {
+            get {
+                return ResourceManager.GetString("Lösenord_måste_stämma_överens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lösenordslänken har gått ut, vänligen begär en ny genom att klicka på knappen &quot;skicka ny återställningslänk&quot; nedan.
+        /// </summary>
+        public static string Lösenordslänken_har_gått_ut__vänligen_begär_en_ny_genom_att_klicka_på_knappen__skicka_ny_återställningslänk__nedan {
+            get {
+                return ResourceManager.GetString("Lösenordslänken_har_gått_ut__vänligen_begär_en_ny_genom_att_klicka_på_knappen__sk" +
+                        "icka_ny_återställningslänk__nedan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail.
+        /// </summary>
+        public static string Mail {
+            get {
+                return ResourceManager.GetString("Mail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to månad.
+        /// </summary>
+        public static string månad {
+            get {
+                return ResourceManager.GetString("månad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Måndag.
+        /// </summary>
+        public static string Måndag {
+            get {
+                return ResourceManager.GetString("Måndag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Markera.
+        /// </summary>
+        public static string Markera {
+            get {
+                return ResourceManager.GetString("Markera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max 1 år.
+        /// </summary>
+        public static string Max_1_år {
+            get {
+                return ResourceManager.GetString("Max_1_år", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MCSS.
+        /// </summary>
+        public static string MCSS {
+            get {
+                return ResourceManager.GetString("MCSS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Med delegering:.
+        /// </summary>
+        public static string Med_delegering_ {
+            get {
+                return ResourceManager.GetString("Med_delegering_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Med titel:.
+        /// </summary>
+        public static string Med_titel_ {
+            get {
+                return ResourceManager.GetString("Med_titel_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medarbetare.
+        /// </summary>
+        public static string Medarbetare {
+            get {
+                return ResourceManager.GetString("Medarbetare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medskickad.
+        /// </summary>
+        public static string Medskickad {
+            get {
+                return ResourceManager.GetString("Medskickad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min efter.
+        /// </summary>
+        public static string min_efter {
+            get {
+                return ResourceManager.GetString("min_efter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min innan.
+        /// </summary>
+        public static string min_innan {
+            get {
+                return ResourceManager.GetString("min_innan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mina.
+        /// </summary>
+        public static string Mina {
+            get {
+                return ResourceManager.GetString("Mina", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mina delegeringar.
+        /// </summary>
+        public static string Mina_delegeringar {
+            get {
+                return ResourceManager.GetString("Mina_delegeringar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minuter efter.
+        /// </summary>
+        public static string minuter_efter {
+            get {
+                return ResourceManager.GetString("minuter_efter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minuter innan.
+        /// </summary>
+        public static string minuter_innan {
+            get {
+                return ResourceManager.GetString("minuter_innan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mottagna delegeringar.
+        /// </summary>
+        public static string Mottagna_delegeringar {
+            get {
+                return ResourceManager.GetString("Mottagna_delegeringar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namn.
+        /// </summary>
+        public static string Namn {
+            get {
+                return ResourceManager.GetString("Namn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namn eller personnummer....
+        /// </summary>
+        public static string Namn_eller_personnummer_ {
+            get {
+                return ResourceManager.GetString("Namn_eller_personnummer_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namnunderskrift av den som tar emot delegeringen.
+        /// </summary>
+        public static string Namnunderskrift_av_den_som_tar_emot_delegeringen {
+            get {
+                return ResourceManager.GetString("Namnunderskrift_av_den_som_tar_emot_delegeringen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namnunderskrift delegerande sjuksköterska.
+        /// </summary>
+        public static string Namnunderskrift_delegerande_sjuksköterska {
+            get {
+                return ResourceManager.GetString("Namnunderskrift_delegerande_sjuksköterska", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nästa.
+        /// </summary>
+        public static string Nästa {
+            get {
+                return ResourceManager.GetString("Nästa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedåtgående.
+        /// </summary>
+        public static string Nedåtgående {
+            get {
+                return ResourceManager.GetString("Nedåtgående", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nej.
+        /// </summary>
+        public static string Nej {
+            get {
+                return ResourceManager.GetString("Nej", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notis.
+        /// </summary>
+        public static string Notis {
+            get {
+                return ResourceManager.GetString("Notis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notis:.
+        /// </summary>
+        public static string Notis_ {
+            get {
+                return ResourceManager.GetString("Notis_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nuvarande lösenord måste fyllas i.
+        /// </summary>
+        public static string Nuvarande_lösenord_måste_fyllas_i {
+            get {
+                return ResourceManager.GetString("Nuvarande_lösenord_måste_fyllas_i", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ny aktivitet.
+        /// </summary>
+        public static string Ny_aktivitet {
+            get {
+                return ResourceManager.GetString("Ny_aktivitet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ny boende.
+        /// </summary>
+        public static string Ny_boende {
+            get {
+                return ResourceManager.GetString("Ny_boende", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ny kategori.
+        /// </summary>
+        public static string Ny_kategori {
+            get {
+                return ResourceManager.GetString("Ny_kategori", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ny Lista.
+        /// </summary>
+        public static string Ny_Lista {
+            get {
+                return ResourceManager.GetString("Ny_Lista", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ny medarbetare.
+        /// </summary>
+        public static string Ny_medarbetare {
+            get {
+                return ResourceManager.GetString("Ny_medarbetare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ny signeringslista.
+        /// </summary>
+        public static string Ny_signeringslista {
+            get {
+                return ResourceManager.GetString("Ny_signeringslista", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nytt Lösenord.
+        /// </summary>
+        public static string Nytt_Lösenord {
+            get {
+                return ResourceManager.GetString("Nytt_Lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nytt lösenord måste fyllas i..
+        /// </summary>
+        public static string Nytt_lösenord_måste_fyllas_i {
+            get {
+                return ResourceManager.GetString("Nytt_lösenord_måste_fyllas_i", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nytt lösenord måste vara minst 8 tecken _långt.
+        /// </summary>
+        public static string Nytt_lösenord_måste_vara_minst_8_tecken_långt {
+            get {
+                return ResourceManager.GetString("Nytt_lösenord_måste_vara_minst_8_tecken_långt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Observera.
+        /// </summary>
+        public static string Observera {
+            get {
+                return ResourceManager.GetString("Observera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Observera att delegeringen börjar gälla först efter aktivering.
+        /// </summary>
+        public static string Observera_att_delegeringen_börjar_gälla_först_efter_aktivering {
+            get {
+                return ResourceManager.GetString("Observera_att_delegeringen_börjar_gälla_först_efter_aktivering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Om {0} dagar.
+        /// </summary>
+        public static string Om__0__dagar {
+            get {
+                return ResourceManager.GetString("Om_{0}_dagar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Om du ändrat tider för när insatsen skall utföras kommer inga larm att skapas för de tider som inträffat före du gjort ändringen. Insatserna kommer att kunna signeras men kommer inte att generera några larm.
+        /// </summary>
+        public static string Om_du_ändrat_tider_för_när_insatsen_skall_utföras_kommer_inga_larm_att_skapas_för_de_tider_som_inträffat_före_du_gjort_ändringen__Insatserna_kommer_att_kunna_signeras_men_kommer_inte_att_generera_några_larm {
+            get {
+                return ResourceManager.GetString("Om_du_ändrat_tider_för_när_insatsen_skall_utföras_kommer_inga_larm_att_skapas_för" +
+                        "_de_tider_som_inträffat_före_du_gjort_ändringen__Insatserna_kommer_att_kunna_sig" +
+                        "neras_men_kommer_inte_att_generera_några_larm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Om du inte hittar e-post, kontrollera andra platser där det kan hamnat så som din mapp för skräppost spam eller andra mappar.
+        /// </summary>
+        public static string Om_du_inte_hittar_e_post__kontrollera_andra_platser_där_det_kan_hamnat_så_som_din_mapp_för_skräppost_spam_eller_andra_mappar {
+            get {
+                return ResourceManager.GetString("Om_du_inte_hittar_e_post__kontrollera_andra_platser_där_det_kan_hamnat_så_som_din" +
+                        "_mapp_för_skräppost_spam_eller_andra_mappar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Onsdag.
+        /// </summary>
+        public static string Onsdag {
+            get {
+                return ResourceManager.GetString("Onsdag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ordinationer.
+        /// </summary>
+        public static string Ordinationer {
+            get {
+                return ResourceManager.GetString("Ordinationer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Översikt.
+        /// </summary>
+        public static string Översikt {
+            get {
+                return ResourceManager.GetString("Översikt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to På givet datum.
+        /// </summary>
+        public static string På_givet_datum {
+            get {
+                return ResourceManager.GetString("På_givet_datum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to På veckodag.
+        /// </summary>
+        public static string På_veckodag {
+            get {
+                return ResourceManager.GetString("På_veckodag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Påfyllning av läkemedel.
+        /// </summary>
+        public static string Påfyllning_av_läkemedel {
+            get {
+                return ResourceManager.GetString("Påfyllning_av_läkemedel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Påfyllning klar.
+        /// </summary>
+        public static string Påfyllning_klar {
+            get {
+                return ResourceManager.GetString("Påfyllning_klar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pågående.
+        /// </summary>
+        public static string Pågående {
+            get {
+                return ResourceManager.GetString("Pågående", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pågående insatser.
+        /// </summary>
+        public static string Pågående_insatser {
+            get {
+                return ResourceManager.GetString("Pågående_insatser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Påminnelse?.
+        /// </summary>
+        public static string Påminnelse_ {
+            get {
+                return ResourceManager.GetString("Påminnelse_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Person.
+        /// </summary>
+        public static string Person {
+            get {
+                return ResourceManager.GetString("Person", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personnummer.
+        /// </summary>
+        public static string Personnummer {
+            get {
+                return ResourceManager.GetString("Personnummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personnummer måste fyllas i..
+        /// </summary>
+        public static string Personnummer_måste_fyllas_i {
+            get {
+                return ResourceManager.GetString("Personnummer_måste_fyllas_i", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001.
+        /// </summary>
+        public static string Personnummer_måste_fyllas_i_med_tolv_siffror_och_bindestreck__t__ex__19010101_0001 {
+            get {
+                return ResourceManager.GetString("Personnummer_måste_fyllas_i_med_tolv_siffror_och_bindestreck__t__ex__19010101_000" +
+                        "1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personnumret finns sedan tidigare redan i MCSS.
+        /// </summary>
+        public static string Personnumret_finns_redan_tidigare_redan_i_MCSS {
+            get {
+                return ResourceManager.GetString("Personnumret_finns_redan_tidigare_redan_i_MCSS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personuppgifter.
+        /// </summary>
+        public static string Personuppgifter {
+            get {
+                return ResourceManager.GetString("Personuppgifter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pin.
+        /// </summary>
+        public static string Pin {
+            get {
+                return ResourceManager.GetString("Pin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparat.
+        /// </summary>
+        public static string Preparat {
+            get {
+                return ResourceManager.GetString("Preparat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profiluppgifter.
+        /// </summary>
+        public static string Profiluppgifter {
+            get {
+                return ResourceManager.GetString("Profiluppgifter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Räknad mängd stämmer ej med saldo.
+        /// </summary>
+        public static string Räknad_mängd_stämmer_ej_med_saldo {
+            get {
+                return ResourceManager.GetString("Räknad_mängd_stämmer_ej_med_saldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapport.
+        /// </summary>
+        public static string Rapport {
+            get {
+                return ResourceManager.GetString("Rapport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapport-{0}-{1}.xlsx.
+        /// </summary>
+        public static string Rapport__0___1__xlsx {
+            get {
+                return ResourceManager.GetString("Rapport-{0}-{1}.xlsx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapporter.
+        /// </summary>
+        public static string Rapporter {
+            get {
+                return ResourceManager.GetString("Rapporter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redigera.
+        /// </summary>
+        public static string Redigera {
+            get {
+                return ResourceManager.GetString("Redigera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redigera aktivitet.
+        /// </summary>
+        public static string Redigera_aktivitet {
+            get {
+                return ResourceManager.GetString("Redigera_aktivitet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förbrukningsjournal.
+        /// </summary>
+        public static string Saldo {
+            get {
+                return ResourceManager.GetString("Saldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saldo-status.
+        /// </summary>
+        public static string Saldo_status {
+            get {
+                return ResourceManager.GetString("Saldo-status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förbrukningsjournalens enhet.
+        /// </summary>
+        public static string Saldots_enhet {
+            get {
+                return ResourceManager.GetString("Saldots_enhet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sammanfattning:.
+        /// </summary>
+        public static string Sammanfattning_ {
+            get {
+                return ResourceManager.GetString("Sammanfattning_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Senaste kontrollräkning.
+        /// </summary>
+        public static string Senaste_kontrollräkning {
+            get {
+                return ResourceManager.GetString("Senaste_kontrollräkning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signerade händelser.
+        /// </summary>
+        public static string Signerade_händelser {
+            get {
+                return ResourceManager.GetString("Signerade_händelser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signerade-handelser-{0}-{1}.pdf.
+        /// </summary>
+        public static string Signerade_handelser__0___1__pdf {
+            get {
+                return ResourceManager.GetString("Signerade-handelser-{0}-{1}.pdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signerat av.
+        /// </summary>
+        public static string Signerat_av {
+            get {
+                return ResourceManager.GetString("Signerat_av", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signering.
+        /// </summary>
+        public static string Signering {
+            get {
+                return ResourceManager.GetString("Signering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signeringslista-{0}-{1}.pdf.
+        /// </summary>
+        public static string Signeringslista__0___1__pdf {
+            get {
+                return ResourceManager.GetString("Signeringslista-{0}-{1}.pdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signeringslistor.
+        /// </summary>
+        public static string Signeringslistor {
+            get {
+                return ResourceManager.GetString("Signeringslistor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skapa.
+        /// </summary>
+        public static string Skapa {
+            get {
+                return ResourceManager.GetString("Skapa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skapa ny.
+        /// </summary>
+        public static string Skapa_ny {
+            get {
+                return ResourceManager.GetString("Skapa_ny", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skapa ny aktivitet.
+        /// </summary>
+        public static string Skapa_ny_aktivitet {
+            get {
+                return ResourceManager.GetString("Skapa_ny_aktivitet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skapa ny förbrukningsjournal.
+        /// </summary>
+        public static string Skapa_nytt_saldo {
+            get {
+                return ResourceManager.GetString("Skapa_nytt_saldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skapa pdf.
+        /// </summary>
+        public static string Skapa_pdf {
+            get {
+                return ResourceManager.GetString("Skapa_pdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skicka återställningslänk.
+        /// </summary>
+        public static string Skicka_återställningslänk {
+            get {
+                return ResourceManager.GetString("Skicka_återställningslänk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skicka ny återställningslänk.
+        /// </summary>
+        public static string Skicka_ny_återställningslänk {
+            get {
+                return ResourceManager.GetString("Skicka_ny_återställningslänk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skriv in ditt nya lösenord.
+        /// </summary>
+        public static string Skriv_in_ditt_nya_lösenord {
+            get {
+                return ResourceManager.GetString("Skriv_in_ditt_nya_lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skriv ut delegeringsbeslut.
+        /// </summary>
+        public static string Skriv_ut_delegeringsbeslut {
+            get {
+                return ResourceManager.GetString("Skriv_ut_delegeringsbeslut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skriv ut PDF.
+        /// </summary>
+        public static string Skriv_ut_PDF {
+            get {
+                return ResourceManager.GetString("Skriv_ut_PDF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skulle genomföras.
+        /// </summary>
+        public static string Skulle_genomföras {
+            get {
+                return ResourceManager.GetString("Skulle_genomföras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skulle ges.
+        /// </summary>
+        public static string Skulle_ges {
+            get {
+                return ResourceManager.GetString("Skulle_ges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slutar.
+        /// </summary>
+        public static string Slutar {
+            get {
+                return ResourceManager.GetString("Slutar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slutdatum måste vara ett senare datum är startdatum..
+        /// </summary>
+        public static string Slutdatum_måste_vara_ett_senare_datum_är_startdatum {
+            get {
+                return ResourceManager.GetString("Slutdatum_måste_vara_ett_senare_datum_är_startdatum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sök boende:.
+        /// </summary>
+        public static string Sök_boende_ {
+            get {
+                return ResourceManager.GetString("Sök_boende_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sök medarbetare:.
+        /// </summary>
+        public static string Sök_medarbetare_ {
+            get {
+                return ResourceManager.GetString("Sök_medarbetare_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Söndag.
+        /// </summary>
+        public static string Söndag {
+            get {
+                return ResourceManager.GetString("Söndag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spara.
+        /// </summary>
+        public static string Spara {
+            get {
+                return ResourceManager.GetString("Spara", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stående.
+        /// </summary>
+        public static string Stående {
+            get {
+                return ResourceManager.GetString("Stående", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stäng listan.
+        /// </summary>
+        public static string Stäng_listan {
+            get {
+                return ResourceManager.GetString("Stäng_listan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starka lösenord inkluderar siffror bokstäver och skiljetecken. Lär dig mer om lösenord på.
+        /// </summary>
+        public static string Starka_lösenord_inkluderar_siffror_bokstäver_och_skiljetecken_Lär_dig_mer_om_lösenord_på {
+            get {
+                return ResourceManager.GetString("Starka_lösenord_inkluderar_siffror_bokstäver_och_skiljetecken_Lär_dig_mer_om_löse" +
+                        "nord_på", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startar.
+        /// </summary>
+        public static string Startar {
+            get {
+                return ResourceManager.GetString("Startar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startar om.
+        /// </summary>
+        public static string Startar_om {
+            get {
+                return ResourceManager.GetString("Startar_om", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startdatum måste vara ett tidigare datum än slutdatum..
+        /// </summary>
+        public static string Startdatum_måste_vara_ett_tidigare_datum_är_slutdatum {
+            get {
+                return ResourceManager.GetString("Startdatum_måste_vara_ett_tidigare_datum_är_slutdatum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status för.
+        /// </summary>
+        public static string Status_för {
+            get {
+                return ResourceManager.GetString("Status_för", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to support.
+        /// </summary>
+        public static string support {
+            get {
+                return ResourceManager.GetString("support", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://support.appva.se.
+        /// </summary>
+        public static string support_url {
+            get {
+                return ResourceManager.GetString("support_url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synkronisera.
+        /// </summary>
+        public static string Synkronisera {
+            get {
+                return ResourceManager.GetString("Synkronisera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synkroniserad:.
+        /// </summary>
+        public static string Synkroniserad_ {
+            get {
+                return ResourceManager.GetString("Synkroniserad_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synkroniserade.
+        /// </summary>
+        public static string Synkroniserade {
+            get {
+                return ResourceManager.GetString("Synkroniserade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synkroniserades {0}.
+        /// </summary>
+        public static string Synkroniserades__0_ {
+            get {
+                return ResourceManager.GetString("Synkroniserades_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synkronisering.
+        /// </summary>
+        public static string Synkronisering {
+            get {
+                return ResourceManager.GetString("Synkronisering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synkronisering är inte aktiverad.
+        /// </summary>
+        public static string Synkronisering_är_inte_aktiverad {
+            get {
+                return ResourceManager.GetString("Synkronisering_är_inte_aktiverad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synkronisering av {0}.
+        /// </summary>
+        public static string Synkronisering_av__0_ {
+            get {
+                return ResourceManager.GetString("Synkronisering_av_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T. ex. dosett.
+        /// </summary>
+        public static string T__ex__dosett {
+            get {
+                return ResourceManager.GetString("T__ex__dosett", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ta bort.
+        /// </summary>
+        public static string Ta_bort {
+            get {
+                return ResourceManager.GetString("Ta_bort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ta bort aktiviteten.
+        /// </summary>
+        public static string Ta_bort_aktiviteten {
+            get {
+                return ResourceManager.GetString("Ta_bort_aktiviteten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ta bort delegering.
+        /// </summary>
+        public static string Ta_bort_delegering {
+            get {
+                return ResourceManager.GetString("Ta_bort_delegering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ta bort läkemedlet.
+        /// </summary>
+        public static string Ta_bort_läkemedlet {
+            get {
+                return ResourceManager.GetString("Ta_bort_läkemedlet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ta bort listan.
+        /// </summary>
+        public static string Ta_bort_listan {
+            get {
+                return ResourceManager.GetString("Ta_bort_listan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ta bort synkronisering.
+        /// </summary>
+        public static string Ta_bort_synkronisering {
+            get {
+                return ResourceManager.GetString("Ta_bort_synkronisering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tabell.
+        /// </summary>
+        public static string Tabell {
+            get {
+                return ResourceManager.GetString("Tabell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tagg-id.
+        /// </summary>
+        public static string Tagg_id {
+            get {
+                return ResourceManager.GetString("Tagg_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        public static string Test {
+            get {
+                return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tid.
+        /// </summary>
+        public static string Tid {
+            get {
+                return ResourceManager.GetString("Tid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tid:.
+        /// </summary>
+        public static string Tid_ {
+            get {
+                return ResourceManager.GetString("Tid_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tider.
+        /// </summary>
+        public static string Tider {
+            get {
+                return ResourceManager.GetString("Tider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Till:.
+        /// </summary>
+        public static string Till_ {
+            get {
+                return ResourceManager.GetString("Till_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Till_datum {
+            get {
+                return ResourceManager.GetString("Till_datum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Till inloggning.
+        /// </summary>
+        public static string Till_inloggning {
+            get {
+                return ResourceManager.GetString("Till_inloggning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tillbaka.
+        /// </summary>
+        public static string Tillbaka {
+            get {
+                return ResourceManager.GetString("Tillbaka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tillbaka till inloggning.
+        /// </summary>
+        public static string Tillbaka_till_inloggning {
+            get {
+                return ResourceManager.GetString("Tillbaka_till_inloggning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tillfälligt spärrat konto.
+        /// </summary>
+        public static string Tillfälligt_spärrat_konto {
+            get {
+                return ResourceManager.GetString("Tillfälligt_spärrat_konto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tillför mängd.
+        /// </summary>
+        public static string Tillför_mängd {
+            get {
+                return ResourceManager.GetString("Tillför_mängd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tillför mängd till.
+        /// </summary>
+        public static string Tillför_mängd_till {
+            get {
+                return ResourceManager.GetString("Tillför_mängd_till", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tisdag.
+        /// </summary>
+        public static string Tisdag {
+            get {
+                return ResourceManager.GetString("Tisdag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Titel.
+        /// </summary>
+        public static string Titel {
+            get {
+                return ResourceManager.GetString("Titel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Titel:.
+        /// </summary>
+        public static string Titel_ {
+            get {
+                return ResourceManager.GetString("Titel_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Torsdag.
+        /// </summary>
+        public static string Torsdag {
+            get {
+                return ResourceManager.GetString("Torsdag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Totalt antal insatser.
+        /// </summary>
+        public static string Totalt_antal_insatser {
+            get {
+                return ResourceManager.GetString("Totalt_antal_insatser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaktion.
+        /// </summary>
+        public static string Transaktion {
+            get {
+                return ResourceManager.GetString("Transaktion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaktioner under perioden.
+        /// </summary>
+        public static string Transaktioner_under_perioden {
+            get {
+                return ResourceManager.GetString("Transaktioner_under_perioden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Typ:.
+        /// </summary>
+        public static string Typ_ {
+            get {
+                return ResourceManager.GetString("Typ_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Underskrift.
+        /// </summary>
+        public static string Underskrift {
+            get {
+                return ResourceManager.GetString("Underskrift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uppåtgående.
+        /// </summary>
+        public static string Uppåtgående {
+            get {
+                return ResourceManager.GetString("Uppåtgående", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upprepa ditt nya lösenord för att undvika eventuella misstag.
+        /// </summary>
+        public static string Upprepa_ditt_nya_lösenord_för_att_undvika_eventuella_misstag {
+            get {
+                return ResourceManager.GetString("Upprepa_ditt_nya_lösenord_för_att_undvika_eventuella_misstag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upprepa lösenord måste fyllas i.
+        /// </summary>
+        public static string Upprepa_lösenord_måste_fyllas_i {
+            get {
+                return ResourceManager.GetString("Upprepa_lösenord_måste_fyllas_i", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upprepa nytt lösenord.
+        /// </summary>
+        public static string Upprepa_nytt_lösenord {
+            get {
+                return ResourceManager.GetString("Upprepa_nytt_lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upprepas.
+        /// </summary>
+        public static string Upprepas {
+            get {
+                return ResourceManager.GetString("Upprepas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utfärdad av.
+        /// </summary>
+        public static string Utfärdad_av {
+            get {
+                return ResourceManager.GetString("Utfärdad_av", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utfärdades till.
+        /// </summary>
+        public static string Utfärdades_till {
+            get {
+                return ResourceManager.GetString("Utfärdades_till", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utfärdat av.
+        /// </summary>
+        public static string Utfärdat_av {
+            get {
+                return ResourceManager.GetString("Utfärdat_av", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utgången återställningslänk.
+        /// </summary>
+        public static string Utgången_återställningslänk {
+            get {
+                return ResourceManager.GetString("Utgången_återställningslänk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utgången lösenordslänk.
+        /// </summary>
+        public static string Utgången_lösenordslänk {
+            get {
+                return ResourceManager.GetString("Utgången_lösenordslänk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utloggad.
+        /// </summary>
+        public static string Utloggad {
+            get {
+                return ResourceManager.GetString("Utloggad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utlöpande delegeringar.
+        /// </summary>
+        public static string Utlöpande_delegeringar {
+            get {
+                return ResourceManager.GetString("Utlöpande_delegeringar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utställda delegeringar.
+        /// </summary>
+        public static string Utställda_delegeringar {
+            get {
+                return ResourceManager.GetString("Utställda_delegeringar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Utställda delegeringar, {0}.
+        /// </summary>
+        public static string Utställda_delegeringar___0_ {
+            get {
+                return ResourceManager.GetString("Utställda_delegeringar__{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uttag.
+        /// </summary>
+        public static string Uttag {
+            get {
+                return ResourceManager.GetString("Uttag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uttag från.
+        /// </summary>
+        public static string Uttag_från {
+            get {
+                return ResourceManager.GetString("Uttag_från", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj.
+        /// </summary>
+        public static string Välj {
+            get {
+                return ResourceManager.GetString("Välj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj....
+        /// </summary>
+        public static string Välj_ {
+            get {
+                return ResourceManager.GetString("Välj_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj {0}....
+        /// </summary>
+        public static string Välj__0__ {
+            get {
+                return ResourceManager.GetString("Välj_{0}_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj befintligt förbrukningsjournal.
+        /// </summary>
+        public static string Välj_befintligt_saldo {
+            get {
+                return ResourceManager.GetString("Välj_befintligt_saldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj dagar.
+        /// </summary>
+        public static string Välj_dagar {
+            get {
+                return ResourceManager.GetString("Välj_dagar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj datum.
+        /// </summary>
+        public static string Välj_datum {
+            get {
+                return ResourceManager.GetString("Välj_datum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj delegering:.
+        /// </summary>
+        public static string Välj_delegering_ {
+            get {
+                return ResourceManager.GetString("Välj_delegering_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj enhet....
+        /// </summary>
+        public static string Välj_enhet_ {
+            get {
+                return ResourceManager.GetString("Välj_enhet_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj format.
+        /// </summary>
+        public static string Välj_format {
+            get {
+                return ResourceManager.GetString("Välj_format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj frekvens....
+        /// </summary>
+        public static string Välj_frekvens_ {
+            get {
+                return ResourceManager.GetString("Välj_frekvens_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj lösenord.
+        /// </summary>
+        public static string Välj_lösenord {
+            get {
+                return ResourceManager.GetString("Välj_lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj förbrukningsjournal....
+        /// </summary>
+        public static string Välj_saldo_ {
+            get {
+                return ResourceManager.GetString("Välj_saldo_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Välj typ....
+        /// </summary>
+        public static string Välj_typ_ {
+            get {
+                return ResourceManager.GetString("Välj_typ_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var vänlig använd ditt valda lösenord för att logga in i MCSS.
+        /// </summary>
+        public static string Var_vänlig_använd_ditt_valda_lösenord_för_att_logga_in_i_MCSS {
+            get {
+                return ResourceManager.GetString("Var_vänlig_använd_ditt_valda_lösenord_för_att_logga_in_i_MCSS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var vänlig kontakta &lt;a href=&quot;http://support.appva.se/open.php&quot;&gt;support&lt;/a&gt; om detta fel uppstår igen.
+        /// </summary>
+        public static string Var_vänlig_kontakta_support_om_detta_fel_uppstår_igen {
+            get {
+                return ResourceManager.GetString("Var_vänlig_kontakta_support_om_detta_fel_uppstår_igen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var vänlig kontrollera att användaren finns i den externa katalogen och att personnumret matchar de i MCSS.
+        /// </summary>
+        public static string Var_vänlig_kontrollera_att_användaren_finns_i_den_externa_katalogen_och_att_personnumret_matchar_de_i_MCSS {
+            get {
+                return ResourceManager.GetString("Var_vänlig_kontrollera_att_användaren_finns_i_den_externa_katalogen_och_att_perso" +
+                        "nnumret_matchar_de_i_MCSS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to varje månad.
+        /// </summary>
+        public static string varje_månad {
+            get {
+                return ResourceManager.GetString("varje_månad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vecka.
+        /// </summary>
+        public static string vecka {
+            get {
+                return ResourceManager.GetString("vecka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vecka {0} {1}.
+        /// </summary>
+        public static string Vecka__0___1_ {
+            get {
+                return ResourceManager.GetString("Vecka {0} {1}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vi har skickat ett e-post till {0}. Klicka på länken i e-post för att återställa ditt lösenord.
+        /// </summary>
+        public static string Vi_har_skickat_ett_e_post_till__0____Klicka_på_länken_i_e_post_för_att_återställa_ditt_lösenord {
+            get {
+                return ResourceManager.GetString("Vi_har_skickat_ett_e_post_till__0____Klicka_på_länken_i_e_post_för_att_återställa" +
+                        "_ditt_lösenord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vid behov.
+        /// </summary>
+        public static string Vid_behov {
+            get {
+                return ResourceManager.GetString("Vid_behov", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vill du verkligen ta bort den här delegeringen?.
+        /// </summary>
+        public static string Vill_du_verkligen_ta_bort_den_här_delegeringen_ {
+            get {
+                return ResourceManager.GetString("Vill_du_verkligen_ta_bort_den_här_delegeringen_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visa.
+        /// </summary>
+        public static string Visa {
+            get {
+                return ResourceManager.GetString("Visa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visa delegering för datum:.
+        /// </summary>
+        public static string Visa_delegering_för_datum_ {
+            get {
+                return ResourceManager.GetString("Visa_delegering_för_datum_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visa detaljer.
+        /// </summary>
+        public static string Visa_detaljer {
+            get {
+                return ResourceManager.GetString("Visa_detaljer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visa rapport för:.
+        /// </summary>
+        public static string Visa_rapport_för_ {
+            get {
+                return ResourceManager.GetString("Visa_rapport_för_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visa:.
+        /// </summary>
+        public static string vvisa_ {
+            get {
+                return ResourceManager.GetString("vvisa_", resourceCulture);
             }
         }
     }

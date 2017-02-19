@@ -584,8 +584,8 @@
   <data name="Ingen_användare_hittades" xml:space="preserve">
     <value>Ingen användare hittades</value>
   </data>
-  <data name="Inloggad_som" xml:space="preserve">
-    <value>Inloggad som:</value>
+  <data name="Inloggad_som_{0}" xml:space="preserve">
+    <value>&lt;span class='label'&gt;Inloggad som:&lt;/span&gt;{0}</value>
   </data>
   <data name="Innehåller_{0}_fel" xml:space="preserve">
     <value>Innehåller {0} fel</value>
@@ -1367,5 +1367,8 @@
   </data>
   <data name="Översikt" xml:space="preserve">
     <value>Översikt</value>
+  </data>
+  <data name="Tagg_id" xml:space="preserve">
+    <value>Tagg-id</value>
   </data>
 </root>

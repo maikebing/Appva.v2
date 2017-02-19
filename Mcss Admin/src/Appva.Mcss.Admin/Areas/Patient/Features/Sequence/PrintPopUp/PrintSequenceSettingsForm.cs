@@ -45,20 +45,20 @@ namespace Appva.Mcss.Admin.Models
         [Date]
         [DateLessThan(Target = "EndDate")]
         [PlaceHolder("T.ex. 2012-12-21")]
-        [DisplayName("Från datum")]
+        [Display(Name = "Från_datum", ResourceType = typeof(Resources.Language))]
         public DateTime StartDate { get; set; }
 
         [Required]
         [Date]
         [DateGreaterThan(Target = "StartDate")]
         [PlaceHolder("T.ex. 2012-12-21")]
-        [DisplayName("Till datum")]
+        [Display(Name = "Till_datum", ResourceType = typeof(Resources.Language))]
         public DateTime EndDate { get; set; }
 
-        [DisplayName("Inkludera vid-behov-läkemedel")]
+        [Display(Name = "Inkludera_vid_behov_läkemedel", ResourceType = typeof(Resources.Language))]
         public bool OnNeedBasis { get; set; }
 
-        [DisplayName("Inkludera stående ordinationer")]
+        [Display(Name = "Inkludera_stående_ordinationer", ResourceType = typeof(Resources.Language))]
         public bool StandardSequneces { get; set;
         }
 

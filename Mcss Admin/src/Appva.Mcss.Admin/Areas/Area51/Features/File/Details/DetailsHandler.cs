@@ -23,6 +23,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.File.Details
     using NPOI.OpenXmlFormats.Spreadsheet;
     using Web;
     using Application.Common;
+    using OfficeOpenXml;
 
     #endregion
 
@@ -56,111 +57,44 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.File.Details
         public override DetailsModel Handle(Identity<DetailsModel> message)
         {
             var response = this.fileService.Find<XLS>(message.Id);
-            
-            var rows = GetData(response);
 
-            var temps = new List<string> { "  Importmall för medarbetare i MCSS", "Personnummer", "Förnamn", "Efternamn", "E-post", "Roll", "Organisationstillhörighet", "HSA-id", "(ex. 19010101-0001)", "(ex. Bertil)", "(ex. Svensson)", "(ex. bertil.svensson@boendet.se)", "(ex. Undersköterska)", "(ex. Solstrålen våning 1)", "(ex. TST1101100000-10R1001)" };
-
-            foreach (var row in rows)
-            {
-                foreach (var coll in row.Cells)
-                {
-                    if (temps.Contains(coll.Value))
-                    {
-                        coll.Value = string.Empty;
-                    }
-                }
-            }
-
-            var retval = new DetailsModel
+            return new DetailsModel
             {
                 FileName = response.Name,
+                Accounts = GetData(response),
                 Taxons = TaxonomyHelper.SelectList(this.taxonomyService.List(TaxonomicSchema.Organization)),
                 Titles = TitleHelper.SelectList(this.roleService.ListVisible())
             };
-
-            retval.Accounts = rows.Where(r => !r.IsEmpty()).ToList().Select(r => new Account
-            {
-                PersonalIdentityNumber = new PersonalIdentityNumber(r.Cells[0].Value),
-                FirstName = r.Cells[1].Value,
-                LastName = r.Cells[2].Value,
-                FullName = string.Format("{0} {1}", r.Cells[1].Value, r.Cells[2].Value),
-                EmailAddress = r.Cells[3].Value,
-                HsaId = r.Cells[6].Value
-            }).ToList();
-
-            
-            return retval;
         }
 
-        private List<A> GetData(XLS repsonse)
+        private IList<DetailsItemModel> GetData(XLS repsonse)
         {
-            XSSFWorkbook workbook = null;
+            ExcelPackage package = null;
 
             using (var ms = new MemoryStream())
             {
                 ms.Write(repsonse.Data, 0, repsonse.Data.Length);
                 ms.Position = 0;
-                workbook = new XSSFWorkbook(ms);
+                package = new ExcelPackage(ms);
             }
 
-            var rows = new List<List<string>>();
-            var testRows = new List<A>();
+            var workSheet = package.Workbook.Worksheets.First();
+            var end = workSheet.Dimension.End;
 
-            ISheet sheet = workbook.GetSheetAt(0);
+            var retval = new List<DetailsItemModel>();
 
-            MethodInfo methodInfo = sheet.GetType().GetMethod("GetCTWorksheet", BindingFlags.NonPublic | BindingFlags.Instance);
-            var ct = (CT_Worksheet)methodInfo.Invoke(sheet, new object[] { });
-            var dimen = ct.dimension.@ref.Split(':').Select(s => s.Remove(1)).ToList();
-
-            int colCount = char.ToUpper(Convert.ToChar(dimen[1])) - 64;
-
-            for (int i = 0; i < sheet.LastRowNum; i++)
+            for (int row = 5; row <= end.Row; row++)
             {
-                IRow row = sheet.GetRow(i);
-                rows.Add(new List<string>());
-                testRows.Add(new A { Row = i.ToString(), Cells = new List<B>() });
-
-                for (int j = 0; j < colCount; j++)
+                retval.Add(new DetailsItemModel
                 {
-                    if (row != null)
-                    {
-                        ICell cell = row.GetCell(j);
-                        if (cell != null)
-                        {
-                            rows[i].Add(string.IsNullOrWhiteSpace(cell.StringCellValue) ? string.Empty : cell.StringCellValue);
-                            testRows[i].Cells.Add(new B { Value = string.IsNullOrWhiteSpace(cell.StringCellValue) ? string.Empty : cell.StringCellValue });
-                        }
-                        else
-                        {
-                            rows[i].Add(string.Empty);
-                            testRows[i].Cells.Add(new B { Value = string.Empty });
-                        }
-                    }
-                    else
-                    {
-                        rows[i].Add(string.Empty);
-                        testRows[i].Cells.Add(new B { Value = string.Empty });
-                    }
-                }
+                    PersonalIdentityNumber = new PersonalIdentityNumber(workSheet.Cells[row, 1].Text),
+                    FirstName = workSheet.Cells[row, 2].Text,
+                    LastName = workSheet.Cells[row, 3].Text,
+                    EmailAddress = workSheet.Cells[row, 4].Text,
+                    HsaId = workSheet.Cells[row, 7].Text
+                });
             }
-            return testRows;
+            return retval;
         }
-    }
-
-    public class A
-    {
-        public string Row { get; set; }
-        public IList<B> Cells { get; set; }
-
-        public bool IsEmpty()
-        {
-            return this.Cells.All(c => c.Value == string.Empty);
-        }
-    }
-
-    public class B
-    {
-        public string Value { get; set; }
     }
 }

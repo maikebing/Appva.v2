@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.File.Details
             set;
         }
 
-        public IList<Account> Accounts
+        public IList<DetailsItemModel> Accounts
         {
             get;
             set;
@@ -50,5 +50,17 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.File.Details
             get;
             set;
         }
+
+        public void Validate()
+        {
+
+        }
+    }
+
+    public enum Status
+    {
+        OK,
+        SSNError,
+        EmailError
     }
 }

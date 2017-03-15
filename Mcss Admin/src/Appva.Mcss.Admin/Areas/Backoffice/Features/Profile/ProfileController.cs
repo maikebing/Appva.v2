@@ -58,7 +58,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
             return this.View();
         }
 
-        /*
         /// <summary>
         /// Update a profile assessment.
         /// </summary>
@@ -81,7 +80,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
         {
             return this.View();
         }
-        */
 
         #endregion
     }

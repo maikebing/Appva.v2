@@ -21,7 +21,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.List
 
     public class ProfileAssessment
     {
-        public int Id
+        public Guid Id
         {
             get; set;
         }

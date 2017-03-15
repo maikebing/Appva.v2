@@ -22,10 +22,10 @@
                     @foreach (var assessment in Model.Assessments)
                     {
                         <tr>
-                            <td style="width:100px;text-align:center;padding:0 15px"><img style="width:45px;padding:10px 0" src="@string.Format("/Assets/i/{0}", assessment.Type)" alt="Symbol" title="@assessment.Name" /></td>
-                            <td style="font-weight:bold;padding:0 15px">@assessment.Name</td>
-                            <td style="padding:0 15px">@assessment.Description</td>
-                            <td style="width:100px;text-align:center;padding:0 15px">@Html.ActionLink("Ändra", "Update", "Profile", new { id = assessment.Id }, new { @class = "lb-link btn" })</td>
+                            <td style="width:100px;text-align:center;padding:0 15px"><img style="width:45px;padding:10px 0" src="@string.Format("/Assets/i/{0}", assessment.Key.Type)" alt="Symbol" title="@assessment.Key.Name" /></td>
+                            <td style="font-weight:bold;padding:0 15px">@assessment.Key.Name</td>
+                            <td style="padding:0 15px">@assessment.Key.Description</td>
+                            <td style="width:100px;text-align:center;padding:0 15px">@Html.ActionLink("Ändra", "Update", "Profile", new { id = assessment.Key.Id }, new { @class = "lb-link btn" })</td>
                         </tr>
                     }
                 </tbody>

@@ -1,0 +1,18 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.UpdateProfileModel
+@{
+    SetTitle("Uppdatera profil");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post(new { }, new { Id = Model.Id }))
+    {
+        <div>
+            <h3 class="section-title">Uppdatera profiluppgift</h3>
+            @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.Description, "text large").Label().TextArea().Validate().Build()
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
+        </div>
+    }
+</div>

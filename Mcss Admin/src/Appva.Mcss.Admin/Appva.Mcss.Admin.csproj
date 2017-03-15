@@ -399,6 +399,12 @@
     <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitPublisher.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfile.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfileHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfileModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\ProfileController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\Update\UpdateProfileHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\Update\UpdateProfileModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateSchedulePublisher.cs" />
@@ -1306,6 +1312,8 @@
     <Content Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetails.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategory.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Profile\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Profile\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

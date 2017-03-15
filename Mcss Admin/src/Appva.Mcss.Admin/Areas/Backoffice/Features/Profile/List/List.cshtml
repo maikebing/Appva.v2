@@ -1,0 +1,35 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListProfileModel
+@{
+    SetTitle("Backoffice - Profiluppgifter");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Profiluppgifter</h1>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        <div id="signlist">
+            <table id="signed-events">
+                <thead class="head">
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Titel</th>
+                        <th>Beskrivning</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var assessment in Model.Assessments)
+                    {
+                        <tr>
+                            <td style="width:100px;text-align:center;padding:0 15px"><img style="width:45px;padding:10px 0" src="@string.Format("/Assets/i/{0}", assessment.Type)" alt="Symbol" title="@assessment.Name" /></td>
+                            <td style="font-weight:bold;padding:0 15px">@assessment.Name</td>
+                            <td style="padding:0 15px">@assessment.Description</td>
+                            <td style="width:100px;text-align:center;padding:0 15px">@Html.ActionLink("Ändra", "Update", "Profile", new { id = assessment.Id }, new { @class = "lb-link btn" })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

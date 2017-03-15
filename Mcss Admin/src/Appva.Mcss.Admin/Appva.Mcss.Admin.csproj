@@ -405,6 +405,7 @@
     <Compile Include="Areas\Backoffice\Features\Profile\ProfileController.cs" />
     <Compile Include="Areas\Backoffice\Features\Profile\Update\UpdateProfileHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Profile\Update\UpdateProfileModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\Update\UpdateProfilePublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateSchedulePublisher.cs" />

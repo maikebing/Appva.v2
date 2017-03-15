@@ -40,5 +40,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.List
         {
             get; set;
         }
+
+        public bool Active
+        {
+            get; set;
+        }
     }
 }

@@ -14,20 +14,22 @@
                 <table id="signed-events">
                     <thead class="head">
                         <tr>
-                            <th>Symbol</th>
-                            <th>Titel</th>
-                            <th>Beskrivning</th>
+                            <th class="prtd prpad">Symbol</th>
+                            <th class="prpad">Titel</th>
+                            <th class="prpad">Beskrivning</th>
+                            <th class="prtd prpad">Status</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var assessment in Model.Assessments)
                         {
-                            <tr>
-                                <td style="width:100px;text-align:center;padding:0 15px"><img style="width:45px;padding:10px 0" src="@string.Format("/Assets/i/{0}", assessment.Key.Type)" alt="Symbol" title="@assessment.Key.Name" /></td>
-                                <td style="font-weight:bold;padding:0 15px">@assessment.Key.Name</td>
-                                <td style="padding:0 15px">@assessment.Key.Description</td>
-                                <td style="width:100px;text-align:center;padding:0 15px">@Html.ActionLink("Ändra", "Update", "Profile", new { id = assessment.Key.Id }, new { @class = "lb-link btn" })</td>
+                            <tr>                      
+                                <td class="prtd"><img class="primg" src="@string.Format("/Assets/i/{0}", assessment.Type)" alt="Symbol" title="@assessment.Name" /></td>
+                                <td class="prpad"><b>@assessment.Name</b></td>
+                                <td class="prpad">@assessment.Description</td>
+                                <td class="prtd" style="background:@(assessment.Active ? "#F6FFFA" : "#FFF4F4")"><b>@(assessment.Active ? "Aktiv" : "Inaktiv")</b></td>
+                                <td class="prtd">@Html.ActionLink("Ändra", "Update", "Profile", new { id = assessment.Id }, new { @class = "lb-link btn" })</td>
                             </tr>
                         }
                     </tbody>

@@ -1,9 +1,13 @@
-﻿// <copyright file="UpdateDelegationPublisher.cs" company="Appva AB">
+﻿// <copyright file="ProfileController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
+// <author>
+//     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
+// </author>
+
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation.Update
 {
     #region Imports.

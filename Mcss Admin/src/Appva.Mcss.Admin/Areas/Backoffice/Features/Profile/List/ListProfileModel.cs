@@ -30,13 +30,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// List of assessments.
         /// </summary>
         /// 
-        public Dictionary<ITaxon, IList<ITaxon>> Assessments
+
+        public List<ProfileAssessment> Assessments
         {
             get;
             set;
         }
-
-        //public List<ProfileAssessment> Assessments { get; set; }
 
         #endregion
     }

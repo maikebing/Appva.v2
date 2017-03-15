@@ -1354,6 +1354,17 @@ td.rights {
 	display:block;
 	min-height:20px;
 }
+#signlist .primg {
+    width:45px;
+    padding:6px 0;
+}
+#signlist .prtd {
+    width:100px;
+    text-align:center;
+}
+#signlist .prpad {
+    padding:6px 10px!important;
+}
 
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,

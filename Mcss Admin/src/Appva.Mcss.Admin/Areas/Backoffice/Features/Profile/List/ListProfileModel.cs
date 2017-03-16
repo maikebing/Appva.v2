@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListProfileModel
+    public sealed class ListProfileModel : SearchViewModel<ProfileAssessment>
     {
         #region Properties
 
@@ -36,6 +36,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             get;
             set;
         }
+
+        public bool IsActive { get; set; }
+
+        //public List<ProfileAssessment> Assessments { get; set; }
 
         #endregion
     }

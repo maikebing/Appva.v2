@@ -17,14 +17,19 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using System.Collections.Generic;
+
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
+    // using Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.List;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Domain.Models;
+    using Infrastructure;
     using System;
     using System.Collections.Generic;
 
     #endregion
 
-    internal sealed class ListProfileHandler : RequestHandler<Parameterless<ListProfileModel>, ListProfileModel>
+    internal sealed class ListProfileHandler : RequestHandler<ProfileAssessment, ListProfileModel>
     {
         #region Fields.
 
@@ -35,29 +40,33 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #endregion
 
+        private readonly ITaxonFilterSessionHandler filter;
+        private readonly ITaxonFilterSessionHandler patientService;
+
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListProfileHandler"/> class.
         /// </summary>
         /// 
-        public ListProfileHandler()
-        {
 
-        }
-
-        public ListProfileHandler(ITaxonomyService taxonomyService)
+        public ListProfileHandler(ITaxonomyService taxonomyService, 
+                                    ITaxonFilterSessionHandler filter
+                                   )
         {
             this.taxonomyService = taxonomyService;
+            this.filter = filter;
         }
 
         #endregion
 
         /// <inheritdoc />
-        public override ListProfileModel Handle(Parameterless<ListProfileModel> models)
+        public override ListProfileModel Handle(ProfileAssessment message)                       //<ListProfileModel> models)
         {
-            var schemes = this.taxonomyService.List(TaxonomicSchema.RiskAssessment, null);
+            var schemes = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, message.Active);
             var assessments = new List<ProfileAssessment>();
+            
+
             foreach (var scheme in schemes)
             {
                 var assessment = new ProfileAssessment
@@ -67,15 +76,22 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     Description = scheme.Description,
                     Type = scheme.Type,
                     Active = this.taxonomyService.Get(scheme.Id).IsActive
+
+
                 };
 
+                
                 assessments.Add(assessment);
 
             }
 
+
+
             return new ListProfileModel
             {
                 Assessments = assessments
+
+
             };
         }
     }

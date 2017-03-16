@@ -52,8 +52,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
         /// <param name="request">Profile list</param>
         /// <returns>The list view as an ActionResult</returns>
         [Route("list")]
-        [HttpGet, Dispatch(typeof(Parameterless<ListProfileModel>))]
-        public ActionResult List()
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Backoffice.ReadValue)]
+        public ActionResult List(ProfileAssessment request)
         {
             return this.View();
         }

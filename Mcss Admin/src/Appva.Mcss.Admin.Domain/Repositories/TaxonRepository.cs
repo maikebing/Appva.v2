@@ -130,12 +130,14 @@ using Appva.Mcss.Admin.Domain.Entities;
                 context.Where(x => !x.IsActive);
             }
 
-            return context.OrderBy(x => x.Parent.Id).Asc
+            var retval = context.OrderBy(x => x.Parent.Id).Asc
                 .ThenBy(x => x.Weight).Asc
                 .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
                     .Where(x => x.IsActive)
                     .And(x => x.MachineName == identifier)
                 .List();
+
+            return retval;
         }
 
         /// <inheritdoc />

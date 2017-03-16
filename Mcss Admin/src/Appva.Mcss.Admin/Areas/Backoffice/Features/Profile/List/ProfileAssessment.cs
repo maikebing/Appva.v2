@@ -11,12 +11,10 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
+
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+
     #endregion
 
     public class ProfileAssessment : IRequest<ListProfileModel>

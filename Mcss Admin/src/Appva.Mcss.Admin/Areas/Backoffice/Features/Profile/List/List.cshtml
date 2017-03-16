@@ -7,9 +7,9 @@
     <h1>Profiluppgifter</h1>
     <p class="filter">
         <strong>Visa:</strong>
-        @Html.ActionLink("Alla", "List", "Profile", new { }, new { @class = (Model.IsActive) ? "sel div" : "div" })
-        @Html.ActionLink("Aktiva", "List", "Profile", new { Active = true }, new { @class = (!Model.IsActive) ? "sel div" : "div" })
-        @Html.ActionLink("Inaktiva", "List", "Profile", new { Active = false }, new { @class = (Model.IsActive) ? "sel div" : "div" })
+        @Html.ActionLink("Alla", "List", "Profile", new { }, new { @class = (Model.IsActive == null) ? "sel div" : "div" })
+        @Html.ActionLink("Aktiva", "List", "Profile", new { Active = true }, new { @class = (Model.IsActive == true) ? "sel div" : "div" })
+        @Html.ActionLink("Inaktiva", "List", "Profile", new { Active = false }, new { @class = (Model.IsActive == false) ? "sel div" : "div" })
     </p>
 </div>
 <div id="content" class="cf">
@@ -45,7 +45,7 @@
         else
         {
             <div class="note">
-                <h2>Inga profiluppgifter hittades.</h2>
+                <h2 style="padding:20px 0 0 20px">Inga @(Model.IsActive == null ? "" : Model.IsActive == true ? "aktiva " : "inaktiva ")uppgifter hittades.</h2>
             </div>
         }
     </div>

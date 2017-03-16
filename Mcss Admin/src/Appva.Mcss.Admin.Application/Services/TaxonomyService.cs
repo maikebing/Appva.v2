@@ -181,13 +181,13 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             if (schema == null)
             {
-                return new Taxa();
+                return null;
             }
          
-           // if (this.cache.Find<IList<ITaxon>>(schema.CacheKey) == null)
+            //if (this.cache.Find<IList<ITaxon>>(schema.CacheKey) == null)
             //{
                 CacheUtils.CacheList<ITaxon>(this.cache, schema.CacheKey, this.HierarchyConvert(this.repository.ListByFilter(schema.Id, showActive), null, null));
-           // }
+            //}
             return this.cache.Find<IList<ITaxon>>(schema.CacheKey);
         }
 

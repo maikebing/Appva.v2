@@ -14,18 +14,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Settings;
     using System.Collections.Generic;
-
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
-    // using Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.List;
-    using Appva.Mcss.Admin.Infrastructure.Models;
-    using Domain.Models;
-    using Infrastructure;
-    using System;
-    using System.Collections.Generic;
 
     #endregion
 
@@ -33,26 +24,19 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     {
         #region Fields.
 
-        /// <summary>
-        /// The <see cref="ITaxonomyService"/>
-        /// </summary>
         private readonly ITaxonomyService taxonomyService;
+        private readonly ITaxonFilterSessionHandler filter;
 
         #endregion
-
-        private readonly ITaxonFilterSessionHandler filter;
-        private readonly ITaxonFilterSessionHandler patientService;
 
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListProfileHandler"/> class.
         /// </summary>
-        /// 
-
-        public ListProfileHandler(ITaxonomyService taxonomyService, 
-                                    ITaxonFilterSessionHandler filter
-                                   )
+        public ListProfileHandler(
+            ITaxonomyService taxonomyService,
+            ITaxonFilterSessionHandler filter)
         {
             this.taxonomyService = taxonomyService;
             this.filter = filter;
@@ -61,38 +45,40 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         #endregion
 
         /// <inheritdoc />
-        public override ListProfileModel Handle(ProfileAssessment message)                       //<ListProfileModel> models)
+        public override ListProfileModel Handle(ProfileAssessment message)
         {
+            var profile = new ListProfileModel();
             var schemes = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, message.Active);
             var assessments = new List<ProfileAssessment>();
-            
 
-            foreach (var scheme in schemes)
+            if (schemes != null)
             {
-                var assessment = new ProfileAssessment
+                foreach (var scheme in schemes)
                 {
-                    Id = scheme.Id,
-                    Name = scheme.Name,
-                    Description = scheme.Description,
-                    Type = scheme.Type,
-                    Active = this.taxonomyService.Get(scheme.Id).IsActive
+                    var isActive = this.taxonomyService.Get(scheme.Id).IsActive;
+                    var assessment = new ProfileAssessment
+                    {
+                        Id = scheme.Id,
+                        Name = scheme.Name,
+                        Description = scheme.Description,
+                        Type = scheme.Type,
+                        Active = isActive
+                    };
 
-
-                };
-
-                
-                assessments.Add(assessment);
-
+                    if (message.Active != null && isActive == message.Active)
+                    {
+                        assessments.Add(assessment);
+                    }
+                    else if (message.Active == null)
+                    {
+                        assessments.Add(assessment);
+                    }
+                }
             }
 
-
-
-            return new ListProfileModel
-            {
-                Assessments = assessments
-
-
-            };
+            profile.IsActive = message.Active;
+            profile.Assessments = assessments;
+            return profile;
         }
     }
 }

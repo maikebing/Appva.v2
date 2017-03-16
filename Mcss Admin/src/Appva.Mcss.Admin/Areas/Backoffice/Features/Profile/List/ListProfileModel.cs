@@ -10,10 +10,8 @@
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
-    using Appva.Mcss.Admin.Application.Models;
     #region Imports.
 
-    using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Web.ViewModels;
     using System.Collections.Generic;
 
@@ -29,17 +27,19 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// List of assessments.
         /// </summary>
-        /// 
-
         public List<ProfileAssessment> Assessments
         {
             get;
             set;
         }
 
-        public bool IsActive { get; set; }
-
-        //public List<ProfileAssessment> Assessments { get; set; }
+        /// <summary>
+        ///
+        /// </summary>
+        public bool? IsActive
+        {
+            get; set;
+        }
 
         #endregion
     }

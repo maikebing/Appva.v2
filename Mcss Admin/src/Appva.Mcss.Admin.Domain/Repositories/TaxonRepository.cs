@@ -31,7 +31,14 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// </summary>
         /// <param name="taxonomy">The taxonomy identifier</param>
         /// <returns>A collection of <see cref="Taxon"/></returns>
-        IList<Taxon> List(string taxonomy, bool? showActive = true);
+        IList<Taxon> List(string taxonomy);
+
+        /// <summary>
+        /// Returns a collection of <see cref="Taxon"/> by <see cref="Taxonomy.Key"/>
+        /// </summary>
+        /// <param name="taxonomy">The taxonomy identifier</param>
+        /// <returns>A collection of <see cref="Taxon"/></returns>
+        IList<Taxon> ListByFilter(string taxonomy, bool? showActive = true);
 
         /// <summary>
         /// Returns a collection of <see cref="Taxon"/> by identifiers.
@@ -92,17 +99,32 @@ using Appva.Mcss.Admin.Domain.Entities;
         #region ITaxonRepository Members.
 
         /// <inheritdoc />
-        public IList<Taxon> List(string identifier, bool? showActive = true)
+        public IList<Taxon> List(string identifier)
+        {
+            //// Since we have a flat structure, it's better for post processing to
+            //// order by id, then roots will be sorted first, then by sort order.
+            return this.persistenceContext.QueryOver<Taxon>()
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.Parent.Id).Asc
+                .ThenBy(x => x.Weight).Asc
+                .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
+                    .Where(x => x.IsActive)
+                    .And(x => x.MachineName == identifier)
+                .List();
+        }
+
+        /// <inheritdoc />
+        public IList<Taxon> ListByFilter(string identifier, bool? showActive = true)
         {
             //// Since we have a flat structure, it's better for post processing to
             //// order by id, then roots will be sorted first, then by sort order.
             NHibernate.IQueryOver<Taxon, Taxon> context = this.persistenceContext.QueryOver<Taxon>();
 
-            if(showActive == true)
+            if (showActive == true)
             {
                 context.Where(x => x.IsActive);
             }
-            else if(showActive == false)
+            else if (showActive == false)
             {
                 // Show inactive results.
                 context.Where(x => !x.IsActive);

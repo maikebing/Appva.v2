@@ -52,7 +52,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="schema"></param>
         /// <returns></returns>
-        IList<ITaxon> List(TaxonomicSchema schema, bool? showActive = true);
+        IList<ITaxon> List(TaxonomicSchema schema);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        IList<ITaxon> ListByFilter(TaxonomicSchema schema, bool? showActive = true);
 
         /// <summary>
         /// 
@@ -156,7 +163,21 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IList<ITaxon> List(TaxonomicSchema schema, bool? showActive = true)
+        public IList<ITaxon> List(TaxonomicSchema schema)
+        {
+            if (schema == null)
+            {
+                return new Taxa();
+            }
+            if (this.cache.Find<IList<ITaxon>>(schema.CacheKey) == null)
+            {
+                CacheUtils.CacheList<ITaxon>(this.cache, schema.CacheKey, this.HierarchyConvert(this.repository.List(schema.Id), null, null));
+            }
+            return this.cache.Find<IList<ITaxon>>(schema.CacheKey);
+        }
+
+        /// <inheritdoc />
+        public IList<ITaxon> ListByFilter(TaxonomicSchema schema, bool? showActive = true)
         {
             if (schema == null)
             {

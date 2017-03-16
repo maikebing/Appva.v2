@@ -2874,8 +2874,8 @@ form .time {width:4em;}
 }
 .std-panel .prpanel-img {
     position:absolute;
-    top:0;
-    right:0;
+    top:90px;
+    right:20px;
 }
 .std-panel .prpanel-img img {width:45px;}
 .std-form .section-title,

@@ -187,6 +187,3 @@ FakesAssemblies/
 # Tools folder
 [Tt]ools/NhProf/*
 
-Mcss Admin/src/\.vs/config/applicationhost\.config
-
-Mcss Admin/src/Appva\.Mcss\.Admin/Configuration/MockedTenantWcfClient\.cs

@@ -399,7 +399,7 @@
     <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitPublisher.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfile.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\List\ProfileAssessment.cs" />
     <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfileHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfileModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Profile\ProfileController.cs" />

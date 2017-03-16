@@ -74,6 +74,14 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
+        /// Active state.
+        /// </summary>
+        bool IsActive
+        {
+            get;
+        }
+
+        /// <summary>
         /// The parent taxon id.
         /// </summary>
         Guid? ParentId
@@ -103,6 +111,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="Name"></param>
         /// <param name="description"></param>
         void Update(string name, string description);
+        void Update(string name, string description, bool isActive);
     }
 
     /// <summary>
@@ -203,6 +212,13 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <inheritdoc />
+        public bool IsActive
+        {
+            get;
+            private set;
+        }
+
+        /// <inheritdoc />
         public string Address
         {
             get
@@ -218,6 +234,13 @@ namespace Appva.Mcss.Admin.Application.Models
         {
             this.Name        = name;
             this.Description = description;
+        }
+
+        public void Update(string name, string description, bool isActive)
+        {
+            this.Name = name;
+            this.Description = description;
+            this.IsActive = isActive;
         }
 
         #endregion

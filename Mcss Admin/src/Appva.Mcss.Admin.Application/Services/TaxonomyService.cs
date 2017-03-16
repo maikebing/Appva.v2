@@ -52,7 +52,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="schema"></param>
         /// <returns></returns>
-        IList<ITaxon> List(TaxonomicSchema schema);
+        IList<ITaxon> List(TaxonomicSchema schema, bool? showActive = true);
 
         /// <summary>
         /// 
@@ -156,7 +156,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IList<ITaxon> List(TaxonomicSchema schema)
+        public IList<ITaxon> List(TaxonomicSchema schema, bool? showActive = true)
         {
             if (schema == null)
             {
@@ -164,7 +164,7 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             if (this.cache.Find<IList<ITaxon>>(schema.CacheKey) == null)
             {
-                CacheUtils.CacheList<ITaxon>(this.cache, schema.CacheKey, this.HierarchyConvert(this.repository.List(schema.Id), null, null));
+                CacheUtils.CacheList<ITaxon>(this.cache, schema.CacheKey, this.HierarchyConvert(this.repository.List(schema.Id, showActive), null, null));
             }
             return this.cache.Find<IList<ITaxon>>(schema.CacheKey);
         }
@@ -260,6 +260,7 @@ namespace Appva.Mcss.Admin.Application.Services
             t.Path = taxon.Path;
             t.Type = taxon.Type;
             t.Weight = taxon.Sort;
+            t.IsActive = taxon.IsActive;
             
             this.repository.Update(t);
             this.cache.Remove(schema.CacheKey);

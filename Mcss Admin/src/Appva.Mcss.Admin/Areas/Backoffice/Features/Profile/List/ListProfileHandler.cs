@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.List;
+    using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using System;
     using System.Collections.Generic;
@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override ListProfileModel Handle(Parameterless<ListProfileModel> models)
         {
-            var schemes = this.taxonomyService.Roots(TaxonomicSchema.RiskAssessment);
+            var schemes = this.taxonomyService.List(TaxonomicSchema.RiskAssessment, null);
             var assessments = new List<ProfileAssessment>();
             foreach (var scheme in schemes)
             {

@@ -58,7 +58,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation.Update
             {
                 return false;
             }
-            profile.Update(message.Name, message.Description);
+
+            profile.Update(message.Name, message.Description, message.Active);
             this.taxonomyService.Update(profile, TaxonomicSchema.RiskAssessment);
 
             return true;

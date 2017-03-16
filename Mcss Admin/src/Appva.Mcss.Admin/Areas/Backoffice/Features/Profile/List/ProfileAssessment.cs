@@ -8,7 +8,7 @@
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
 // </author>
 
-namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.List
+namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
     using Appva.Cqrs;

@@ -54,13 +54,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.Update
         /// <inheritdoc />
         public override UpdateProfileModel Handle(Identity<UpdateProfileModel> message)
         {
-            var profile = taxonomyService.Find(message.Id, TaxonomicSchema.RiskAssessment);
+            var profile = taxonomyService.Get(message.Id);
 
             return new UpdateProfileModel
             {
                 Id = message.Id,
                 Name = profile.Name,
-                Description = profile.Description
+                Description = profile.Description,
+                Type = profile.Type,
+                Active = profile.IsActive
             };
         }
 

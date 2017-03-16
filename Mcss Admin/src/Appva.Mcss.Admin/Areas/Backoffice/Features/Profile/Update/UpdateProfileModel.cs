@@ -33,7 +33,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// The name
+        /// Assessment name
         /// </summary>
         /// 
         [DisplayName("Titel")]
@@ -44,7 +44,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// The description
+        /// The assessment description
         /// </summary>
         [DisplayName("Beskrivning")]
         public string Description
@@ -54,10 +54,20 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// The type
+        /// Image file name
         /// </summary>
         [DisplayName("Symbol")]
         public string Type
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Sets the profile to active or inactive
+        /// </summary>
+        [DisplayName("Aktiv")]
+        public bool Active
         {
             get;
             set;

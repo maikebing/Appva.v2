@@ -13,7 +13,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     using Appva.Mcss.Admin.Application.Models;
     #region Imports.
 
-    using Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.List;
+    using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Web.ViewModels;
     using System.Collections.Generic;
 

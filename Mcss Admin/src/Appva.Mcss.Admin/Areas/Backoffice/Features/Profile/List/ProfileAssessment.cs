@@ -44,5 +44,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             get; set;
         }
 
+        public int UsedBy
+        {
+            get; set;
+        }
     }
 }

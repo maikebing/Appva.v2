@@ -38,7 +38,7 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// </summary>
         /// <param name="taxonomy">The taxonomy identifier</param>
         /// <returns>A collection of <see cref="Taxon"/></returns>
-        IList<Taxon> ListByFilter(string taxonomy, bool? showActive = true);
+        IList<Taxon> ListByFilter(string taxonomy, bool? showActive);
 
         /// <summary>
         /// Returns a collection of <see cref="Taxon"/> by identifiers.
@@ -114,10 +114,8 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         /// <inheritdoc />
-        public IList<Taxon> ListByFilter(string identifier, bool? showActive = true)
+        public IList<Taxon> ListByFilter(string identifier, bool? showActive)
         {
-            //// Since we have a flat structure, it's better for post processing to
-            //// order by id, then roots will be sorted first, then by sort order.
             NHibernate.IQueryOver<Taxon, Taxon> context = this.persistenceContext.QueryOver<Taxon>();
 
             if (showActive == true)
@@ -126,7 +124,6 @@ using Appva.Mcss.Admin.Domain.Entities;
             }
             else if (showActive == false)
             {
-                // Show inactive results.
                 context.Where(x => !x.IsActive);
             }
 

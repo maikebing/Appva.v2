@@ -34,7 +34,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        ///
+        /// Filter by.
         /// </summary>
         public bool? IsActive
         {

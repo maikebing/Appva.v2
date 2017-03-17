@@ -17,6 +17,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using System.Collections.Generic;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
 
     #endregion
 
@@ -26,7 +28,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         private readonly ITaxonomyService taxonomyService;
         private readonly ITaxonFilterSessionHandler filter;
-        public static bool? redirectActive;
+        private readonly IPersistenceContext persistenceContext;
+        public static bool? RedirectActive;
 
         #endregion
 
@@ -37,10 +40,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// </summary>
         public ListProfileHandler(
             ITaxonomyService taxonomyService,
-            ITaxonFilterSessionHandler filter)
+            ITaxonFilterSessionHandler filter, IPersistenceContext persistenceContext)
         {
             this.taxonomyService = taxonomyService;
             this.filter = filter;
+            this.persistenceContext = persistenceContext;
         }
 
         #endregion
@@ -52,12 +56,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             var schemes = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, message.Active);
             var assessments = new List<ProfileAssessment>();
 
-            redirectActive = message.Active;
-
             if (schemes != null)
             {
                 foreach (var scheme in schemes)
                 {
+                    int patientsWithAlert = this.persistenceContext.QueryOver<SeniorAlerts>()
+                        .Where(x => x.TaxonId == scheme.Id)
+                        .List().Count;
+
                     var isActive = this.taxonomyService.Get(scheme.Id).IsActive;
                     var assessment = new ProfileAssessment
                     {
@@ -65,7 +71,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         Name = scheme.Name,
                         Description = scheme.Description,
                         Type = scheme.Type,
-                        Active = isActive
+                        Active = isActive,
+                        UsedBy = patientsWithAlert
                     };
 
                     if (message.Active != null && isActive == message.Active)
@@ -79,6 +86,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 }
             }
 
+            RedirectActive = message.Active;
             profile.IsActive = message.Active;
             profile.Assessments = assessments;
             return profile;

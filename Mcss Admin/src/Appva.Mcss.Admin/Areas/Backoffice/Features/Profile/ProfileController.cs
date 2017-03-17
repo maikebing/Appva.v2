@@ -80,7 +80,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         public ActionResult Update(UpdateProfileModel request)
         {
-            return this.RedirectToAction("list", new { Active = ListProfileHandler.redirectActive });
+            return this.RedirectToAction("list", new { Active = ListProfileHandler.RedirectActive });
         }
 
         #endregion

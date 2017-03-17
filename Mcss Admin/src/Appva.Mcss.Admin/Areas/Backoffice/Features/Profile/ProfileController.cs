@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+    using Models.Handlers;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -76,10 +77,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
         /// <param name="request"></param>
         /// <returns></returns>
         [Route("{id:guid}/update")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "profile")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         public ActionResult Update(UpdateProfileModel request)
         {
-            return this.View();
+            return this.RedirectToAction("list", new { Active = ListProfileHandler.redirectActive });
         }
 
         #endregion

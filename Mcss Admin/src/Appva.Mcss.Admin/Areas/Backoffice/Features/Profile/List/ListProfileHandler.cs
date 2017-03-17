@@ -26,6 +26,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         private readonly ITaxonomyService taxonomyService;
         private readonly ITaxonFilterSessionHandler filter;
+        public static bool? redirectActive;
 
         #endregion
 
@@ -50,6 +51,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             var profile = new ListProfileModel();
             var schemes = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, message.Active);
             var assessments = new List<ProfileAssessment>();
+
+            redirectActive = message.Active;
 
             if (schemes != null)
             {

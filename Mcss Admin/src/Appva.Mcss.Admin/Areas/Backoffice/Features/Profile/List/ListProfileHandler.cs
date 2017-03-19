@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -40,7 +41,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// </summary>
         public ListProfileHandler(
             ITaxonomyService taxonomyService,
-            ITaxonFilterSessionHandler filter, IPersistenceContext persistenceContext)
+            ITaxonFilterSessionHandler filter,
+            IPersistenceContext persistenceContext)
         {
             this.taxonomyService = taxonomyService;
             this.filter = filter;
@@ -60,11 +62,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             {
                 foreach (var scheme in schemes)
                 {
-                    int patientsWithAlert = this.persistenceContext.QueryOver<SeniorAlerts>()
+                    var isActive = this.taxonomyService.Get(scheme.Id).IsActive;
+                    int? usedBy = null;
+
+                    if (isActive)
+                    {
+                        usedBy = this.persistenceContext.QueryOver<SeniorAlerts>()
                         .Where(x => x.TaxonId == scheme.Id)
                         .List().Count;
+                    }
 
-                    var isActive = this.taxonomyService.Get(scheme.Id).IsActive;
                     var assessment = new ProfileAssessment
                     {
                         Id = scheme.Id,
@@ -72,7 +79,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         Description = scheme.Description,
                         Type = scheme.Type,
                         Active = isActive,
-                        UsedBy = patientsWithAlert
+                        UsedBy = usedBy
                     };
 
                     if (message.Active != null && isActive == message.Active)

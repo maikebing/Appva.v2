@@ -35,7 +35,7 @@
                                 <td class="prtd"><img class="primg" src="@string.Format("/Assets/i/{0}", assessment.Type)" alt="Symbol" title="@assessment.Name" /></td>
                                 <td class="prpad"><b>@assessment.Name</b></td>
                                 <td class="prpad">@assessment.Description</td>
-                                <td class="prtd">@assessment.UsedBy st</td>
+                                <td class="prtd">@(assessment.UsedBy != null ? assessment.UsedBy + " st" : "–")</td>
                                 <td class="prtd" style="background:@(assessment.Active == true ? "#F6FFFA" : "#FFECEC")"><b>@(assessment.Active == true ? "Aktiverad" : "Inaktiverad")</b></td>
                                 <td class="prtd">@Html.ActionLink("Ändra", "Update", "Profile", new { id = assessment.Id }, new { @class = "lb-link btn" })</td>
                             </tr>

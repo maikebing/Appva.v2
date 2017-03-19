@@ -23,6 +23,5 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Guid? TaxonId { get; set; }
 
         #endregion
-
     }
 }

@@ -34,6 +34,13 @@ namespace Appva.Mcss.Admin.Application.Services
         ITaxon Find(Guid id, TaxonomicSchema schema);
 
         /// <summary>
+        /// Finds a taxonomy by id without caching.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ITaxon FindNoCache(Guid id, TaxonomicSchema schema);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="ids"></param>
@@ -151,6 +158,13 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
+        public ITaxon FindNoCache(Guid id, TaxonomicSchema schema)
+        {
+            return this.ListByFilter(schema, null)
+                .Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        /// <inheritdoc />
         public ITaxa Fetch(params Guid[] ids)
         {
             throw new NotImplementedException();
@@ -183,12 +197,8 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 return null;
             }
-         
-            //if (this.cache.Find<IList<ITaxon>>(schema.CacheKey) == null)
-            //{
-                CacheUtils.CacheList<ITaxon>(this.cache, schema.CacheKey, this.HierarchyConvert(this.repository.ListByFilter(schema.Id, showActive), null, null));
-            //}
-            return this.cache.Find<IList<ITaxon>>(schema.CacheKey);
+
+            return this.HierarchyConvert(this.repository.ListByFilter(schema.Id, showActive), null, null);
         }
 
         private IList<ITaxon> HierarchyConvert(IList<Taxon> list, Guid? parentId, ITaxon parent)

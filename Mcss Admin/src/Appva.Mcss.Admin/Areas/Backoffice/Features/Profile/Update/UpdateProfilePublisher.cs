@@ -53,7 +53,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation.Update
         /// <inheritdoc />
         public override bool Handle(UpdateProfileModel message)
         {
-            var profile = this.taxonomyService.Find(message.Id, TaxonomicSchema.RiskAssessment);
+            var profile = this.taxonomyService.FindNoCache(message.Id, TaxonomicSchema.RiskAssessment);
+
             if (profile == null)
             {
                 return false;

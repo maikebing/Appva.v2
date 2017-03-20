@@ -131,7 +131,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="type">The type</param>
         /// <param name="sort">Optional sorting order</param>
         /// <param name="parentId">Optional parent id. If null then it's a root node</param>
-        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null)
+        /// <param name="isActive">If the riskassesment is activated</param>
+        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null, bool isActive = false)
         {
             this.Id = id;
             this.Name = name;
@@ -139,6 +140,7 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Path = path;
             this.Type = type;
             this.Sort = sort;
+            this.IsActive = isActive;
             this.IsRoot = parent == null;
             this.ParentId = parent != null ? parent.Id : (Guid?) null;
             this.Parent = parent;

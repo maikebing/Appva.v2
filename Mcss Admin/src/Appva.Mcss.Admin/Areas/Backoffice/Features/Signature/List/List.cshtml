@@ -1,23 +1,35 @@
 ﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListSignatureModel
-@{
-    SetTitle("Backoffice - Signaturer");
-}
-@Html.Partial("_BackofficeMenuPartial")
-
-<div class="h cf">
-<table>
-    <tr class="head">
-        <th>Namn</th>
-        <th>Beskrivning</th>
-    </tr>
-@foreach (var item in Model.Options)
-{
-    <tr>
-        <td>@item.Name</td>
-        <td><img src="@String.Format("/Assets/i/{0}", item.Path)" /></td>
-    </tr>
-}
-
-</table>
+<div id="subheader" class="cf">
+    <h1>Delegeringar</h1>
+    @Html.ActionLink("Lägg till ny signering", "Create", "Signature", new { area = "Backoffice" }, new { @class = "lb-link btn" })
 </div>
 
+<div id="content" class="delegate-view log">
+    <div id="content-primary">
+        @if (Model.Options != null && Model.Options.Count > 0)
+        {
+            <table>
+                <tr class="head">
+                    <th>Bild</th>
+                    <th>Beskrivning</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.Options)
+                {
+                    <tr>
+                        <td><img src="@String.Format("/Assets/i/{0}", item.Path)" alt="@item.Name" title="@item.Name"/></td>
+                        <td>@item.Name</td>
+                        <td>@Html.ActionLink("Ändra", "Update", "Signature", new { id = item.Id }, new { @class = "lb-link btn" })</td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <div class="note">
+                <h2>Det finns inga signeringsalternativ.</h2>
+            </div>
+
+        }
+    </div>
+</div>

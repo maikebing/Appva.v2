@@ -1,6 +1,23 @@
-﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.SignatureModel
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListSignatureModel
 @{
     SetTitle("Backoffice - Signaturer");
 }
 @Html.Partial("_BackofficeMenuPartial")
-<h2>HEJ</h2>
+
+<div class="h cf">
+<table>
+    <tr class="head">
+        <th>Namn</th>
+        <th>Beskrivning</th>
+    </tr>
+@foreach (var item in Model.Options)
+{
+    <tr>
+        <td>@item.Name</td>
+        <td><img src="@String.Format("/Assets/i/{0}", item.Path)" /></td>
+    </tr>
+}
+
+</table>
+</div>
+

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Appva.Mcss.Admin.Areas.Backoffice.Models;
 using Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers;
+using Appva.Mcss.Admin.Infrastructure.Models;
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
 {
@@ -19,8 +20,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         // GET: Backoffice/Signature
 
         [Route("list")]
-        [HttpGet, Dispatch]
+        [HttpGet, Dispatch(typeof(Parameterless<ListSignatureModel>))]
         [PermissionsAttribute(Permissions.Backoffice.ReadValue)]
+
         public ActionResult List(ListSignatureModel request)
         {
             return this.View();

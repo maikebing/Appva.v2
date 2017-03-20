@@ -1,0 +1,18 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.EditSigningOptionsModel
+@{
+    SetTitle("Välj singeringsalternativ");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <div class="">
+            <h3 class="section-title">Välj signeringsaltenativ</h3>
+            @Html.FormGroup(x => x.Options, "text").Label("Alternativ").CheckboxList().Validate().Build()
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

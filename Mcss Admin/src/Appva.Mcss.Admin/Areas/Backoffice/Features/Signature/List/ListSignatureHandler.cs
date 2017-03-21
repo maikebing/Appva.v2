@@ -22,12 +22,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
     internal sealed class ListSignatureHandler : RequestHandler<Parameterless<ListSignatureModel>, ListSignatureModel>
     {
+        #region Properties.
         private ITaxonomyService taxonomyService;
+        #endregion
 
+        #region Constructor.
         public ListSignatureHandler(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
         }
+        #endregion
+
+        #region RequestHandlers Overrides.
 
         public override ListSignatureModel Handle(Parameterless<ListSignatureModel> message)
         {
@@ -38,5 +44,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 Options = signatureList
             };
         }
+        #endregion
     }
 }

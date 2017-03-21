@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mvc;
     using Appva.Mcss.Admin.Models;
+    using Create;
 
     #endregion
 
@@ -64,6 +65,26 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         public ActionResult EditSigningOptions(EditSignatureModel request)
         {
             return this.Redirect(this.Request.UrlReferrer.ToString());
+        }
+
+        #endregion
+
+        #region Create.
+
+        [Route("create")]
+        [HttpGet, Dispatch] 
+        public ActionResult Create(Identity<CreateSignatureModel> request)
+        {
+            return this.View();
+        }
+
+
+
+        [Route("create")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "signature")]
+        public ActionResult Create(CreateSignatureModel request)
+        {
+            return this.View();
         }
 
         #endregion

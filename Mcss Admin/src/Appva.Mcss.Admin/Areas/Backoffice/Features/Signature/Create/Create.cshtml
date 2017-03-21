@@ -4,11 +4,12 @@
 }
 
 <div class="std-panel std-form lb-panel-small lb-validate-form">
-    @using (Html.Post(new { }, new { CategoryId = Model.Id }))
-    {
+   @using (Html.Post(new { }))
+   {
         <div>
             <h3 class="section-title">Skapa Signatur</h3>
             @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
+            @Html.CheckBoxFor(x => x.IsRoot, "text")<a>Lägg till som standard</a><br />
 
            @foreach (var item in Model.Images)
            {
@@ -26,5 +27,5 @@
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })
         </div>
-    }
+   }
 </div>

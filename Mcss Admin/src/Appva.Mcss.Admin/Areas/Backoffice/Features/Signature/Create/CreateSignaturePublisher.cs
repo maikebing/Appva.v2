@@ -24,30 +24,19 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         public override bool Handle(CreateSignatureModel message)
         {
 
+            var taxon = new TaxonItem(Guid.Empty, message.Name, string.Empty, message.Path, string.Empty, message.IsRoot);
+        
 
+            if (message.Path != null)
+            {
+                this.taxonomyService.Save(taxon, TaxonomicSchema.SignStatus);
 
-            var taxon = new TaxonItem(Guid.Empty, message.Name, string.Empty, message.Path, string.Empty, 0, parent: null);
-
-            //if (message.IsRoot == true)
-            //{
-
-                //var tax = new Taxon
-                //{
-                //    Parent = null,
-                //    Path = message.Path,
-                //    Name = message.Name,
-                //    IsRoot = true
-
-                //};
-            //}
-
-
-
-
-
-            this.taxonomyService.Save(taxon, TaxonomicSchema.SignStatus);
-
-            return true;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
         }
     }

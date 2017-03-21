@@ -9,13 +9,22 @@
         <div>
             <h3 class="section-title">Skapa signatur</h3>
             @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
+            <p class="btm-pad">@Html.CheckBoxFor(x => x.IsRoot)<label class="lblcheckbox" for="IsRoot">Lägg till som standard</label></p>
             @{ int btnIndex = 1; }
             <label>Välj en bild</label>
             <ul id="sign-imglist">
             @foreach (var item in Model.Images)
             {
                 <li>
-                    @Html.RadioButtonFor(x => x.Images, btnIndex, new { id = item.Key })<label for="@item.Key"><img src="@String.Format("/Assets/i/{0}", item.Value)"></label>
+                @if(btnIndex == 1)
+                {
+                    @Html.RadioButtonFor(x => x.Images, btnIndex, new { id = item.Key, @checked = "checked" })
+                }
+                else
+                {
+                    @Html.RadioButtonFor(x => x.Images, btnIndex, new { id = item.Key })
+                }
+                <label for="@item.Key"><img src="@String.Format("/Assets/i/{0}", item.Value)"></label>
                 </li>
                 btnIndex++;
             }
@@ -23,6 +32,7 @@
         </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })
+            @Html.Cancel("Avbryt")
         </div>
    }
 </div>

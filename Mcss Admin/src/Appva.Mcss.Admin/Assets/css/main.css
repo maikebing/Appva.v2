@@ -2895,6 +2895,11 @@ form .time {width:4em;}
 #sign-imglist input[type="radio"]:checked + label {
     opacity:1;
 }
+#sign-imglist .checked {
+    opacity:1;
+}
+.btm-pad {padding-bottom:10px;}
+.lblcheckbox {font-weight:400!important;}
 .std-form .section-title,
 .content .section-title {margin:10px -20px;}
 

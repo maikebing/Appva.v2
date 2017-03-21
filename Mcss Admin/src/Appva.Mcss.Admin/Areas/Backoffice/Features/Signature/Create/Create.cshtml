@@ -1,28 +1,25 @@
 ﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.CreateSignatureModel
 @{
-    SetTitle("Skapa Signatur");
+    SetTitle("Skapa signatur");
 }
 
 <div class="std-panel std-form lb-panel-small lb-validate-form">
-   @using (Html.Post(new { }))
-   {
+    @using (Html.Post(new { }))
+    {
         <div>
-            <h3 class="section-title">Skapa Signatur</h3>
+            <h3 class="section-title">Skapa signatur</h3>
             @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
-            @Html.CheckBoxFor(x => x.IsRoot, "text")<a>Lägg till som standard</a><br />
-
-           @foreach (var item in Model.Images)
-           {
-               if (item.IsRoot == true)
-               {
-            @Html.RadioButtonFor(x => x.Id, "test")<label for="signture"><img src="@String.Format("/Assets/i/{0}", item.Path)"></label>
-               }
-           }
-
-
-
-            @Html.FormGroup(x => x.Path, "text large").Label().TextArea().Validate().Build()
-
+            @{ int btnIndex = 1; }
+            <label>Välj en bild</label>
+            <ul id="sign-imglist">
+            @foreach (var item in Model.Images)
+            {
+                <li>
+                    @Html.RadioButtonFor(x => x.Images, btnIndex, new { id = item.Key })<label for="@item.Key"><img src="@String.Format("/Assets/i/{0}", item.Value)"></label>
+                </li>
+                btnIndex++;
+            }
+            </ul>
         </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })

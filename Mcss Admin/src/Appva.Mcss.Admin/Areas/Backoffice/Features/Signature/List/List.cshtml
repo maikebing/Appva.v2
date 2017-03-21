@@ -1,7 +1,11 @@
 ﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListSignatureModel
+@{
+    SetTitle("Admin - Signeringar");
+}
+@Html.Partial("_BackofficeMenuPartial")
 <div id="subheader" class="cf">
-    <h1>Delegeringar</h1>
-    @Html.ActionLink("Lägg till ny signering", "Create", "Signature", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+    <h1>Signeringar</h1>
+    @Html.ActionLink("Lägg till signering", "Create", "Signature", new { area = "Backoffice" }, new { @class = "lb-link btn" })
 </div>
 
 <div id="content" class="cf">
@@ -20,7 +24,7 @@
                         <tr>
                             <td class="prtd"><img class="signimg" src="@String.Format("/Assets/i/{0}", item.Path)" alt="@item.Name" title="@item.Name" /></td>
                             <td class="prpad">@item.Name</td>
-                            <td class="prtd">@Html.ActionLink("Ändra", "Update", "Signature", new { id = item.Id }, new { @class = "lb-link btn" })</td>
+                            <td class="prtd">@Html.ActionLink("Ändra", "Edit", "Signature", new { id = item.Id }, new { @class = "lb-link btn" })</td>
                         </tr>
                     }
                 </table>

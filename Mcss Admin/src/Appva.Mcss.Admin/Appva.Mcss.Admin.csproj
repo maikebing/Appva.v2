@@ -1317,7 +1317,7 @@
     <Content Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Signature\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Signature\Create\Create.cshtml" />
-    <Content Include="Areas\Backoffice\Features\Signature\Edit\EditSignature.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Signature\Edit\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

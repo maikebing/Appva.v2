@@ -28,6 +28,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
     [Permissions(Permissions.Backoffice.ReadValue)]
     public class SignatureController : Controller
     {
+        #region List
+
         /// <summary>
         /// List all signing options
         /// </summary>
@@ -41,6 +43,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
             return this.View();
         }
 
+        #endregion
+
         #region Edit
 
         /// <summary>
@@ -48,9 +52,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("{id:guid}/editsignature")]
+        [Route("{id:guid}/edit")]
         [HttpGet, Hydrate, Dispatch]
-        public ActionResult EditSigningOptions(Identity<EditSignatureModel> request)
+        public ActionResult Edit(Identity<EditSignatureModel> request)
         {
             return this.View();
         }
@@ -60,16 +64,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("{id:guid}/editsignature")]
+        [Route("{id:guid}/edit")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
-        public ActionResult EditSigningOptions(EditSignatureModel request)
+        public ActionResult Edit(EditSignatureModel request)
         {
             return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         #endregion
 
-        #region Create.
+        #region Create
 
         [Route("create")]
         [HttpGet, Dispatch] 
@@ -77,8 +81,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         {
             return this.View();
         }
-
-
 
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "signature")]

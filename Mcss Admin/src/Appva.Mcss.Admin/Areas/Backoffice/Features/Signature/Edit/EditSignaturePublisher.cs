@@ -22,14 +22,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class EditSignaturePublisher : RequestHandler<EditSignatureModel, Identity<DetailsScheduleModel>>
+    internal sealed class EditSignaturePublisher : RequestHandler<EditSignatureModel, bool>
     {
-        #region Fields.
-
-        /// <summary>
-        /// The <see cref="IScheduleService"/>
-        /// </summary>
-        private readonly IScheduleService scheduleService;
+        #region Properties.
 
         /// <summary>
         /// The <see cref="ITaxonomyService"/>
@@ -43,9 +38,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="EditSigningOptionsPublisher"/> class.
         /// </summary>
-        public EditSignaturePublisher(IScheduleService scheduleService, ITaxonomyService taxonomyService)
+        public EditSignaturePublisher(ITaxonomyService taxonomyService)
         {
-            this.scheduleService = scheduleService;
             this.taxonomyService = taxonomyService;
         }
 
@@ -54,9 +48,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         #region RequestHandler overrides
 
         /// <inheritdoc />
-        public override Identity<DetailsScheduleModel> Handle(EditSignatureModel message)
+        public override bool Handle(EditSignatureModel message)
         {
-            return null;
+            return true;
         }
 
         #endregion

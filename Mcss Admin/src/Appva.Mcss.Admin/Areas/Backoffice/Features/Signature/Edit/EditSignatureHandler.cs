@@ -28,11 +28,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IScheduleService"/>
-        /// </summary>
-        private readonly IScheduleService scheduleService;
-
-        /// <summary>
         /// The <see cref="ITaxonomyService"/>
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
@@ -44,9 +39,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="EditSigningOptionsHandler"/> class.
         /// </summary>
-        public EditSignatureHandler(IScheduleService scheduleService, ITaxonomyService taxonomyService)
+        public EditSignatureHandler(ITaxonomyService taxonomyService)
         {
-            this.scheduleService = scheduleService;
             this.taxonomyService = taxonomyService;
         }
 
@@ -57,11 +51,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override EditSignatureModel Handle(Identity<EditSignatureModel> message)
         {
-            var schedule = this.scheduleService.GetScheduleSettings(message.Id);
-            var statuses = this.taxonomyService.List(TaxonomicSchema.SignStatus);
+            var signature = this.taxonomyService.Find(message.Id, TaxonomicSchema.SignStatus);
 
             return new EditSignatureModel
             {
+                Id = message.Id,
+                Name = signature.Name
             };
         }
 

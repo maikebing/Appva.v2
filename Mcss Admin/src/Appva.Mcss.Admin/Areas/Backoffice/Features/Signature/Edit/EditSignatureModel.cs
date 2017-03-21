@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     using Appva.Mvc;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
 
     #endregion
@@ -24,12 +25,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class EditSignatureModel : IRequest<Identity<DetailsScheduleModel>>
+    public sealed class EditSignatureModel : IRequest<bool>
     {
         #region Properties.
 
         /// <summary>
-        /// The schedulesettings id
+        /// The signing id
         /// </summary>
         public Guid Id
         {
@@ -38,9 +39,19 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// The options
+        /// The signing name
         /// </summary>
-        public IList<Tickable> Options
+        [DisplayName("Beskrivning")]
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The image path
+        /// </summary>
+        public string Path
         {
             get;
             set;

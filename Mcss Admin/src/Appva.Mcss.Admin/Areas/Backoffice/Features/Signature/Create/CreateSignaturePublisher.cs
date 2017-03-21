@@ -1,17 +1,25 @@
-﻿using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Common;
-using Appva.Mcss.Admin.Application.Models;
-using Appva.Mcss.Admin.Application.Services;
-using Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create;
-using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Admin.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// <copyright file="CreateSignaturePublisher.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
+// </author>
+// <author>
+//     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
+// </author>
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
+    #region Imports.
+
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Services;
+    using System;
+
+    #endregion
+
     internal sealed class CreateSignaturePublisher : RequestHandler<CreateSignatureModel, bool>
     {
         private readonly ITaxonomyService taxonomyService;

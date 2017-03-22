@@ -2876,10 +2876,18 @@ form .time {width:4em;}
 	font-size:1.2em;
 	background:#eaeff9;
 }
+#sign-op input[type="text"] {
+    font-size:13px;
+    padding:6px;
+    margin-top:4px;
+    width:100%;
+}
 #sign-imglist {
-    list-style-type:none;
-    padding:0 0 10px 0;
-    margin:0 0 10px 0;
+    list-style-type: none;
+    padding: 5px 10px 10px 15px;
+    margin: 4px 0 20px 0;
+    background: #E9EEF2;
+    border: 1px solid #D3E0EA;
 }
 #sign-imglist li {
     display:inline-block;

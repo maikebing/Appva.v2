@@ -6,7 +6,7 @@
 <div class="std-panel std-form lb-panel-small lb-validate-form">
     @using (Html.Post(new { }))
     {
-        <div>
+        <div id="sign-op">
             <h3 class="section-title">Redigera signering</h3>
             @Html.FormGroup(x => Model.Name, "text").Label().TextBox().Validate().Build()
             <p class="btm-pad">@Html.CheckBoxFor(x => Model.IsRoot)<label class="lblcheckbox" for="IsRoot">Lägg till som standard</label></p>

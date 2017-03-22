@@ -56,7 +56,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             return new EditSignatureModel
             {
                 Id = message.Id,
-                Name = signature.Name
+                Name = signature.Name,
+                Path = signature.Path
             };
         }
 

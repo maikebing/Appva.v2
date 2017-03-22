@@ -10,6 +10,7 @@
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
+    using Application.Common;
     #region Imports.
 
     using Appva.Cqrs;
@@ -50,7 +51,20 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override bool Handle(EditSignatureModel message)
         {
+
+            var signature = this.taxonomyService.Find(message.Id, TaxonomicSchema.SignStatus);
+
+            if(signature == null)
+            {
+                return false;
+            }
+
+            signature.Update(message.Name, message.Path);
+            this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus);
+
             return true;
+
+
         }
 
         #endregion

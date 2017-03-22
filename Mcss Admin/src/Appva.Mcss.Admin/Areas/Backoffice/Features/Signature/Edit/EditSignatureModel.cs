@@ -57,6 +57,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        public bool IsRoot
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<string, string> Images
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

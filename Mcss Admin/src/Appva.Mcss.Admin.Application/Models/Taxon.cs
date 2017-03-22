@@ -103,6 +103,13 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="Name"></param>
         /// <param name="description"></param>
         void Update(string name, string description);
+
+        /// <summary>
+        /// Updates the taxon with path and root
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="description"></param>
+        void Update(string name, string path, bool isRoot);
     }
 
     /// <summary>
@@ -242,6 +249,14 @@ namespace Appva.Mcss.Admin.Application.Models
         {
             this.Name        = name;
             this.Description = description;
+        }
+
+        /// <inheritdoc />
+        public void Update(string name, string path, bool isRoot)
+        {
+            this.Name        = name;
+            this.Path        = path;
+            this.IsRoot      = IsRoot;
         }
 
         #endregion

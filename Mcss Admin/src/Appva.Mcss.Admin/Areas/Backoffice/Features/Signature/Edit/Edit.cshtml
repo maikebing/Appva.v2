@@ -1,15 +1,15 @@
-﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.CreateSignatureModel
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.EditSignatureModel
 @{
     SetTitle("Redigera signering");
 }
 
 <div class="std-panel std-form lb-panel-small lb-validate-form">
-    @using (Html.Post(new { }, new { Id = Model.Id }))
+    @using (Html.Post(new { }))
     {
         <div>
             <h3 class="section-title">Redigera signering</h3>
-            @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
-            <p class="btm-pad">@Html.CheckBoxFor(x => x.IsRoot)<label class="lblcheckbox" for="IsRoot">Lägg till som standard</label></p>
+            @Html.FormGroup(x => Model.Name, "text").Label().TextBox().Validate().Build()
+            <p class="btm-pad">@Html.CheckBoxFor(x => Model.IsRoot)<label class="lblcheckbox" for="IsRoot">Lägg till som standard</label></p>
             @{ int btnIndex = 1; }
             <label>Välj en bild</label>
             <ul id="sign-imglist">

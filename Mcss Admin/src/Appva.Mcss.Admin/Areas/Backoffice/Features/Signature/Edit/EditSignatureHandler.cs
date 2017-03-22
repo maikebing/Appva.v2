@@ -53,7 +53,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override EditSignatureModel Handle(Identity<EditSignatureModel> message)
         {
-            var signature = this.taxonomyService.Find(message.Id, TaxonomicSchema.SignStatus);
+            var signature = this.taxonomyService.Find(message.Id);
             var list = this.taxonomyService.Roots(TaxonomicSchema.SignStatus);
             var editSignature = new EditSignatureModel();
             editSignature.Images = new Dictionary<string, string>();

@@ -142,7 +142,6 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Parent = parent;
         }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TaxonItem"/> class.
         /// </summary>
@@ -152,7 +151,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="path">The materialized path; dot separated</param>
         /// <param name="type">The type</param>
         /// <param name="sort">Optional sorting order</param>
-        /// <param name="isRoot">If its a root node or not</param>
+        /// <param name="isRoot">If it's a root node or not</param>
         public TaxonItem(Guid id, string name, string description, string path, string type, bool isRoot, int sort = 0)
         {
             this.Id = id;

@@ -34,6 +34,13 @@ namespace Appva.Mcss.Admin.Application.Services
         ITaxon Find(Guid id, TaxonomicSchema schema);
 
         /// <summary>
+        /// Finds a taxonomy by id without caching
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ITaxon Find(Guid id);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="ids"></param>
@@ -141,6 +148,20 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             return this.List(schema)
                 .Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        /// <inheritdoc />
+        public ITaxon Find(Guid id)
+        {
+            var item = this.repository.Find(id);
+            return new TaxonItem(
+                    item.Id,
+                    item.Name,
+                    item.Description,
+                    item.Path,
+                    item.Type,
+                    item.IsRoot
+                );
         }
 
         /// <inheritdoc />

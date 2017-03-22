@@ -22,8 +22,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
     internal sealed class CreateSignaturePublisher : RequestHandler<CreateSignatureModel, bool>
     {
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateSignaturePublisher"/> class.
+        /// </summary>
         public CreateSignaturePublisher(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;

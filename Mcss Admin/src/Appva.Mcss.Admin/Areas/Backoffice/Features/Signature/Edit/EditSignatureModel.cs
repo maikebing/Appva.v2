@@ -13,18 +13,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     #region Imports.
 
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mvc;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
 
     #endregion
 
-    /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
-    /// </summary>
     public sealed class EditSignatureModel : IRequest<bool>
     {
         #region Properties.
@@ -58,7 +52,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// Checks if it's a root node
+        /// Check if it's a root node
         /// </summary>
         public bool IsRoot
         {

@@ -10,19 +10,15 @@
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
-    using Application.Common;
     #region Imports.
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
-    using Appva.Mcss.Admin.Models;
+    using Application.Common;
 
     #endregion
 
-    /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
-    /// </summary>
     internal sealed class EditSignaturePublisher : RequestHandler<EditSignatureModel, bool>
     {
         #region Properties.
@@ -37,7 +33,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditSigningOptionsPublisher"/> class.
+        /// Initializes a new instance of the <see cref="EditSignaturePublisher"/> class.
         /// </summary>
         public EditSignaturePublisher(ITaxonomyService taxonomyService)
         {
@@ -68,6 +64,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
             if(message.Submit == "Ta bort")
             {
+                // Set to inactive.
                 signature.Update(false);
                 this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus, true);
                 return true;

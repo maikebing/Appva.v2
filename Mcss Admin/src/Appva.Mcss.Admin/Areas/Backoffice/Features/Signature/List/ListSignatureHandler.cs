@@ -24,12 +24,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     {
         #region Properties.
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
         private ITaxonomyService taxonomyService;
 
         #endregion
 
         #region Constructor.
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListSignatureHandler"/> class.
+        /// </summary>
         public ListSignatureHandler(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
@@ -39,13 +45,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #region RequestHandlers Overrides.
 
+        /// <inheritdoc />
         public override ListSignatureModel Handle(Parameterless<ListSignatureModel> message)
         {
             var signatureList = this.taxonomyService.List(TaxonomicSchema.SignStatus);
 
             return new ListSignatureModel
             {
-                Options = signatureList
+                Items = signatureList
             };
         }
 

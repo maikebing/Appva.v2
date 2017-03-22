@@ -22,9 +22,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
     #endregion
 
-    /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
-    /// </summary>
     internal sealed class EditSignatureHandler : RequestHandler<Identity<EditSignatureModel>, EditSignatureModel>
     {
         #region Fields.
@@ -39,7 +36,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditSigningOptionsHandler"/> class.
+        /// Initializes a new instance of the <see cref="EditSignatureHandler"/> class.
         /// </summary>
         public EditSignatureHandler(ITaxonomyService taxonomyService)
         {

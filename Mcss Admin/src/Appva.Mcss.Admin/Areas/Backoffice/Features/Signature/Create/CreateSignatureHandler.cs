@@ -24,13 +24,30 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
 
     internal sealed class CreateSignatureHandler : RequestHandler<Identity<CreateSignatureModel>, CreateSignatureModel>
     {
+        #region Properties.
+
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
         private ITaxonomyService taxonomyService;
 
+        #endregion
+
+        #region Constructors.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateSignatureHandler"/> class.
+        /// </summary>
         public CreateSignatureHandler(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
         }
 
+        #endregion
+        
+        #region RequestHandler Overrides.
+
+        /// <inheritdoc />
         public override CreateSignatureModel Handle(Identity<CreateSignatureModel> message)
         {
             var list = this.taxonomyService.Roots(TaxonomicSchema.SignStatus);
@@ -38,14 +55,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
             createSignature.Images = new Dictionary<string, string>();
             int btnIndex = 1;
 
+            // Add distinct images to the list.
             foreach (var item in list.GroupBy(x => x.Path).Select(x => x.FirstOrDefault()).OrderBy(x => x.Path))
             {
                 createSignature.Images.Add("radioBtn" + btnIndex, item.Path);
-
                 btnIndex++;
             }
 
             return createSignature;
         }
+
+        #endregion
     }
 }

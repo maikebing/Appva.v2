@@ -21,6 +21,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     public class CreateSignatureModel : IRequest<bool>
     {
+        /// <summary>
+        /// The signing name
+        /// </summary>
         [DisplayName("Beskrivning")]
         public string Name
         {
@@ -28,24 +31,36 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        /// <summary>
+        /// The image path
+        /// </summary>
         public string Path
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The signing id
+        /// </summary>
         public Guid Id
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Check it it's a root node
+        /// </summary>
         public bool IsRoot
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Id and path of images
+        /// </summary>
         public Dictionary<string, string> Images
         {
             get;

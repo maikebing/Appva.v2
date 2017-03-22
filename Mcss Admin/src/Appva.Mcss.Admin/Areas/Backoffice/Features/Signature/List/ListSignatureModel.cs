@@ -19,7 +19,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     public class ListSignatureModel
     {
-        public IList<ITaxon> Options
+        /// <summary>
+        /// The signing items
+        /// </summary>
+        public IList<ITaxon> Items
         {
             get; set;
         }

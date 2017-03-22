@@ -11,7 +11,7 @@
 <div id="content" class="cf">
     <div id="content-primary">
         <div id="signlist">
-            @if (Model.Options != null && Model.Options.Count > 0)
+            @if (Model.Items != null && Model.Items.Count > 0)
             {
                 <table id="signed-events">
                     <tr class="head">
@@ -19,7 +19,7 @@
                         <th>Beskrivning</th>
                         <th></th>
                     </tr>
-                    @foreach (var item in Model.Options)
+                    @foreach (var item in Model.Items)
                     {
                         <tr>
                             <td class="prtd"><img class="signimg" src="@String.Format("/Assets/i/{0}", item.Path)" alt="@item.Name" title="@item.Name" /></td>

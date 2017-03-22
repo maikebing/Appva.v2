@@ -38,7 +38,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
             createSignature.Images = new Dictionary<string, string>();
             int btnIndex = 1;
 
-            foreach (var item in list.GroupBy(x => x.Path).Select(x => x.FirstOrDefault()))
+            foreach (var item in list.GroupBy(x => x.Path).Select(x => x.FirstOrDefault()).OrderBy(x => x.Path))
             {
                 createSignature.Images.Add("radioBtn" + btnIndex, item.Path);
 

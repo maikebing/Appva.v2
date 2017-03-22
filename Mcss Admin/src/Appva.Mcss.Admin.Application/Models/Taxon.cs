@@ -90,7 +90,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// The complete address
+        /// The complete address.
         /// </summary>
         string Address
         {
@@ -98,14 +98,14 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// Updates the taxon
+        /// Updates the taxon.
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="description"></param>
         void Update(string name, string description);
 
         /// <summary>
-        /// Updates the taxon with path and root
+        /// Updates the taxon with path and root.
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="description"></param>
@@ -256,7 +256,7 @@ namespace Appva.Mcss.Admin.Application.Models
         {
             this.Name        = name;
             this.Path        = path;
-            this.IsRoot      = IsRoot;
+            this.IsRoot      = isRoot;
         }
 
         #endregion

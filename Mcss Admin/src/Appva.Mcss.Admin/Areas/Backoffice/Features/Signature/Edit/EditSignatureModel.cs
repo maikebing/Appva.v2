@@ -57,12 +57,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        /// <summary>
+        /// Checks if it's a root node
+        /// </summary>
         public bool IsRoot
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// The image id and path
+        /// </summary>
         public Dictionary<string, string> Images
         {
             get;

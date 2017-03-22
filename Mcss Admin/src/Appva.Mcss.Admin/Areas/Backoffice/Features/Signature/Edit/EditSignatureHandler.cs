@@ -59,7 +59,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             editSignature.Images = new Dictionary<string, string>();
             int btnIndex = 1;
 
-            foreach (var item in list.GroupBy(x => x.Path).Select(x => x.FirstOrDefault()))
+            foreach (var item in list.GroupBy(x => x.Path).Select(x => x.FirstOrDefault()).OrderBy(x => x.Path))
             {
                 editSignature.Images.Add("radioBtn" + btnIndex, item.Path);
 

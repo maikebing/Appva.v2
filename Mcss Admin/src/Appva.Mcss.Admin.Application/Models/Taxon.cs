@@ -66,6 +66,14 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
+        /// Check if the taxon is active or not.
+        /// </summary>
+        bool IsActive
+        {
+            get;
+        }
+
+        /// <summary>
         /// The sort order.
         /// </summary>
         int Sort
@@ -110,6 +118,13 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="Name"></param>
         /// <param name="description"></param>
         void Update(string name, string path, bool isRoot);
+
+        /// <summary>
+        /// Updates the taxon by id and sets the taxon to active or inactive.
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="description"></param>
+        void Update(bool isActive);
     }
 
     /// <summary>
@@ -152,7 +167,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="type">The type</param>
         /// <param name="sort">Optional sorting order</param>
         /// <param name="isRoot">If it's a root node or not</param>
-        public TaxonItem(Guid id, string name, string description, string path, string type, bool isRoot, int sort = 0)
+        /// <param name="isRoot">Check if the taxon is active</param>
+        public TaxonItem(Guid id, string name, string description, string path, string type, bool isRoot, bool isActive = true, int sort = 0)
         {
             this.Id = id;
             this.Name = name;
@@ -161,6 +177,7 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Type = type;
             this.Sort = sort;
             this.IsRoot = isRoot;
+            this.IsActive = isActive;
             this.ParentId = null;
             this.Parent = null;
         }
@@ -212,6 +229,13 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <inheritdoc />
+        public bool IsActive
+        {
+            get;
+            private set;
+        }
+
+        /// <inheritdoc />
         public int Sort
         {
             get;
@@ -256,6 +280,12 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Name        = name;
             this.Path        = path;
             this.IsRoot      = isRoot;
+        }
+
+        /// <inheritdoc />
+        public void Update(bool isActive)
+        {
+            this.IsActive = isActive;
         }
 
         #endregion

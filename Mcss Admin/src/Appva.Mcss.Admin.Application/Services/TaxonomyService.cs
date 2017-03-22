@@ -104,7 +104,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="taxon"></param>
         /// <param name="schema"></param>
-        void Update(ITaxon taxon, TaxonomicSchema schema);
+        void Update(ITaxon taxon, TaxonomicSchema schema, bool setActive = false);
     }
 
     /// <summary>
@@ -272,7 +272,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void Update(ITaxon taxon, TaxonomicSchema schema)
+        public void Update(ITaxon taxon, TaxonomicSchema schema, bool setActive = false)
         {
             var t = this.repository.Find(taxon.Id);
             t.Description = taxon.Description;
@@ -281,6 +281,11 @@ namespace Appva.Mcss.Admin.Application.Services
             t.Path = taxon.Path;
             t.Type = taxon.Type;
             t.Weight = taxon.Sort;
+
+            if(setActive)
+            {
+                t.IsActive = taxon.IsActive;
+            }
             
             this.repository.Update(t);
             this.cache.Remove(schema.CacheKey);

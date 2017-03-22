@@ -66,7 +66,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         /// <returns></returns>
         [Route("{id:guid}/edit")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
-        public ActionResult Edit(EditSignatureModel request)
+        public ActionResult Edit(EditSignatureModel request, string submitBtn)
         {
             return this.Redirect(this.Request.UrlReferrer.ToString());
         }

@@ -59,12 +59,21 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 return false;
             }
 
-            signature.Update(message.Name, message.Path, message.IsRoot);
-            this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus);
+            if (message.Submit == "Spara")
+            {
+                signature.Update(message.Name, message.Path, message.IsRoot);
+                this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus);
+                return true;
+            }
 
-            return true;
+            if(message.Submit == "Ta bort")
+            {
+                signature.Update(false);
+                this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus, true);
+                return true;
+            }
 
-
+            return false;
         }
 
         #endregion

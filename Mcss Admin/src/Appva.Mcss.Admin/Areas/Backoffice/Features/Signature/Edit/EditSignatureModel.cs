@@ -67,6 +67,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
+        /// Submit button value
+        /// </summary>
+        public string Submit
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The image id and path
         /// </summary>
         public Dictionary<string, string> Images

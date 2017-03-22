@@ -18,11 +18,11 @@
                 <li>
                 @if(btnIndex == 1)
                 {
-                    @Html.RadioButtonFor(x => x.Images, btnIndex, new { id = item.Key, @checked = "checked" })
+                    @Html.RadioButtonFor(x => Model.Path, item.Value, new { id = item.Key, @checked = "checked" })
                 }
                 else
                 {
-                    @Html.RadioButtonFor(x => x.Images, btnIndex, new { id = item.Key })
+                    @Html.RadioButtonFor(x => Model.Path, item.Value, new { id = item.Key })
                 }
                 <label for="@item.Key"><img src="@String.Format("/Assets/i/{0}", item.Value)"></label>
                 </li>

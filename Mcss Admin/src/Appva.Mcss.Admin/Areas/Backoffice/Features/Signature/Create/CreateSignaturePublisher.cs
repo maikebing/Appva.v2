@@ -33,19 +33,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         {
 
             var taxon = new TaxonItem(Guid.Empty, message.Name, string.Empty, message.Path, string.Empty, message.IsRoot);
-        
 
-            if (message.Path != null)
-            {
-                this.taxonomyService.Save(taxon, TaxonomicSchema.SignStatus);
-
-                return true;
-            }
-            else
+            if (message.Path == null)
             {
                 return false;
             }
 
+            this.taxonomyService.Save(taxon, TaxonomicSchema.SignStatus);
+            return true;
         }
     }
 }

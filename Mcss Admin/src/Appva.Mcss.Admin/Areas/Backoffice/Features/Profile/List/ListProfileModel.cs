@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     /// </summary>
     public sealed class ListProfileModel : SearchViewModel<ProfileAssessment>
     {
-        #region Properties
+        #region Properties.
 
         /// <summary>
         /// List of assessments.

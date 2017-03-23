@@ -6,9 +6,9 @@
 <div class="std-panel std-form lb-panel-small lb-validate-form">
     @using (Html.Post(new { }, new { Id = Model.Id }))
     {
-        <div>
+        <div id="pr-panel">
             <h3 class="section-title">Uppdatera profiluppgift</h3>
-            <div class="prpanel-img"><img src="@string.Format("/Assets/i/{0}", Model.Type)" alt="Symbol" title="Model.Name" /></div>
+            <div class="prpanel-img"><img src="@string.Format("/Assets/i/{0}", Model.Type)" alt="Symbol" title="@Model.Name" /></div>
             @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.Description, "text large").Label().TextArea().Validate().Build()
             @Html.FormGroup(x => x.Active, "text").Checkbox("Aktiverad", Model.Active).Validate().Build()

@@ -1,4 +1,4 @@
-﻿// <copyright file="ListProfileModel.cs" company="Appva AB">
+﻿// <copyright file="UpdateProfileHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -13,13 +13,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.Update
     #region Imports.
 
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 

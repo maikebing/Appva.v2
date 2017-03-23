@@ -19,7 +19,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
-    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -50,6 +49,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         }
 
         #endregion
+
+        #region RequestHandler overrides.
 
         /// <inheritdoc />
         public override ListProfileModel Handle(ProfileAssessment message)
@@ -98,5 +99,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             profile.Assessments = assessments;
             return profile;
         }
+
+        #endregion
     }
 }

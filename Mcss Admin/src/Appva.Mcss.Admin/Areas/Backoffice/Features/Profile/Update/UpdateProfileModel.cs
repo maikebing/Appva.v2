@@ -1,4 +1,4 @@
-﻿// <copyright file="ProfileController.cs" company="Appva AB">
+﻿// <copyright file="UpdateProfileModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -11,12 +11,11 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
+
     using Appva.Cqrs;
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
-    using System.Web;
+
     #endregion
 
     public class UpdateProfileModel : IRequest<bool>

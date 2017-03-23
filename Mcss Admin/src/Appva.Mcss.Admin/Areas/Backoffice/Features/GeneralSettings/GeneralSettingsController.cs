@@ -2,6 +2,8 @@
 using Appva.Mcss.Admin.Areas.Backoffice.Models;
 using Appva.Mcss.Admin.Infrastructure.Attributes;
 using Appva.Mcss.Admin.Infrastructure.Models;
+using Appva.Mcss.Admin.Models;
+using Appva.Mvc;
 using Appva.Mvc.Security;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
     [Permissions(Permissions.Backoffice.ReadValue)]
     public sealed class GeneralSettingsController : Controller
     {
+
+        #region List.
+        /// <summary>
+        /// Lists the settings
+        /// </summary>
+        /// <returns></returns>
+
         [Route("list")]
         [Dispatch(typeof(Parameterless<ListGeneralSettingsModel>))]
         public ActionResult List()
@@ -23,7 +32,34 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
             return this.View();
         }
+        #endregion
 
+        #region Edit.
+        /// <summary>
+        /// edits a setting
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("{id:guid}/edit")]
+        [HttpGet, Dispatch]
+        public ActionResult Edit(Identity<EditGeneralSettingsModel> request)
+        {
+            return this.View();
+        }
+
+
+        /// <summary>
+        /// creates a new setting
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("{id:guid}/edit")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
+        public ActionResult Edit(EditGeneralSettingsModel request)
+        {
+            return this.View();
+        }
+        #endregion
 
 
 

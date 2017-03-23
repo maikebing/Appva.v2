@@ -1,5 +1,42 @@
 ﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListGeneralSettingsModel
 @{
-    SetTitle("Admin - Generella Inställningar");
+    SetTitle("Admin - Generella inställningar");
 }
-<h2>HEJ</h2>
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Generella inställningar</h1>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        <div id="signlist">
+            @if (Model.List != null && Model.List.Count() > 0)
+            {
+                <table id="signed-events">
+                    <thead class="head">
+                        <tr>
+                            <th>Namn</th>
+                            <th>Beskrivning</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.List)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.Description</td>
+                                <td>@Html.ActionLink("Ändra", "Edit", "GeneralSettings", new { id = item.Id }, new { @class = "lb-link btn" })</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="note">
+                    <h2>Inga inställningar hittades.</h2>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -8,11 +8,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     public class ListGeneralSettingsModel
     {
-        public Guid Id { get; set; }
-
-        public string Name { get; set; }
-
         public IEnumerable<Setting> List { get; set; }
-
     }
 }

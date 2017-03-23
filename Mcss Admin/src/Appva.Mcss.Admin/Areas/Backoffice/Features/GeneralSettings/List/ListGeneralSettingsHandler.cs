@@ -16,17 +16,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         {
             this.settingService = settingService;
         }
+
         public override ListGeneralSettingsModel Handle(Parameterless<ListGeneralSettingsModel> message)
         {
             var settings = this.settingService.List();
-
             var setting = new ListGeneralSettingsModel();
 
             setting.List = settings;
-
             return setting;
-
-            
         }
     }
 }

@@ -9,7 +9,5 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     public class InstallProfilesModel : IRequest<TaxonIndex>
     {
-
-
     }
 }

@@ -102,6 +102,11 @@ namespace Appva.Mcss.Admin.Application.Common
             "Observera blodförtunnande",
             "ico-warning-antiglukos.png");
 
+        public static readonly ITaxon TestAssessment = CreateRiskAssement(
+            "Test",
+            "Observera test",
+            "test-warning.png");
+
         #endregion
 
         #region Private helpers

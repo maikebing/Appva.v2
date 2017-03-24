@@ -10,7 +10,7 @@
         @Html.ActionLink("Alla", "List", "Profile", new { }, new { @class = (Model.IsActive == null) ? "sel div" : "div" })
         @Html.ActionLink("Aktiva", "List", "Profile", new { Active = true }, new { @class = (Model.IsActive == true) ? "sel div" : "div" })
         @Html.ActionLink("Inaktiva", "List", "Profile", new { Active = false }, new { @class = (Model.IsActive == false) ? "sel div" : "div" })
-        @using (Html.Post("InstallProfile", "Taxon", null))
+        @using (Html.Post("InstallProfiles", "Profile", null))
         {
             @Html.Submit("Installera (3 nya)", new { @class = "lb-link btn floatr" })
         }

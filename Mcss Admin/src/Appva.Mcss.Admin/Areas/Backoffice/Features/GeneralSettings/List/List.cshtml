@@ -19,7 +19,7 @@
                         description = "<span>" + item.Description + "</span>";
                     }
                     <li>
-                        <a href="@Url.Action("Edit", "Generalsettings")">@item.Name@Html.Raw(description)</a>
+                        <a href="/Backoffice/GeneralSettings/@item.Id/Edit">@item.Name@Html.Raw(description)</a>
                     </li>
                 }
             </ul>

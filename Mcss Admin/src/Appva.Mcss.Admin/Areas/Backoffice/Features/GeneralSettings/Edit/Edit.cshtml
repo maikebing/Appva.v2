@@ -2,3 +2,34 @@
 @{
     SetTitle("Admin - Generella inställningar / Edit");
 }
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post(new { }, new { Id = Model.Id }))
+    {
+        <div>
+            <h3 class="section-title">Updatera delegering</h3>
+            @if (Model.intValue != null)
+            {
+                <p>@Model.intValue</p>
+            }
+
+            @if (Model.boolValue != null)
+            {
+                <p>@Model.boolValue</p>
+            }
+
+            @if (Model.stringValue != null)
+            {
+                <p>@Model.stringValue</p>
+            }
+
+            @if (Model.listValue != null)
+            { 
+                <p>@Model.listValue</p>
+            }
+
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
+        </div>
+    }
+</div>

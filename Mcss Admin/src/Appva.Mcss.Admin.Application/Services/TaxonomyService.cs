@@ -276,7 +276,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 Path = taxon.Path,
                 Taxonomy = this.repository.LoadTaxonomy(schema.Id),
                 Type = taxon.Type,
-                Weight = taxon.Sort
+                Weight = taxon.Sort,
+                IsActive = taxon.IsActive
             }, (schema == TaxonomicSchema.Delegation || schema == TaxonomicSchema.Organization));
 
             this.cache.Remove(schema.CacheKey);

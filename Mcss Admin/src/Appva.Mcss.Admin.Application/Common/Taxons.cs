@@ -44,7 +44,7 @@ namespace Appva.Mcss.Admin.Application.Common
         public static readonly ITaxon Pressure = CreateRiskAssement(
             "Liggsår",
             "Bedöms ha risk för liggsår",
-            "icn-health-fall.png");
+            "icn-health-pressure.png");
 
         /// <summary>
         /// The Health - Weight risk assesment

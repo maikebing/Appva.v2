@@ -8,35 +8,27 @@
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
-        <div id="signlist">
-            @if (Model.List != null && Model.List.Count() > 0)
-            {
-                <table id="signed-events">
-                    <thead class="head">
-                        <tr>
-                            <th>Namn</th>
-                            <th>Beskrivning</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.List)
-                        {
-                            <tr>
-                                <td>@item.Name</td>
-                                <td>@item.Description</td>
-                                <td>@Html.ActionLink("Ändra", "Edit", "GeneralSettings", new { id = item.Id }, new { @class = "lb-link btn" })</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <div class="note">
-                    <h2>Inga inställningar hittades.</h2>
-                </div>
-            }
-        </div>
+        @if (Model.List != null && Model.List.Count() > 0)
+        {
+            <ul id="setlist">
+                @foreach (var item in Model.List)
+                {
+                    string description = string.Empty;
+                    if(!string.IsNullOrWhiteSpace(item.Description))
+                    {
+                        description = "<span>" + item.Description + "</span>";
+                    }
+                    <li>
+                        <a href="@Url.Action("Edit", "Generalsettings")">@item.Name@Html.Raw(description)</a>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div class="note">
+                <h2>Inga inställningar hittades.</h2>
+            </div>
+        }
     </div>
 </div>

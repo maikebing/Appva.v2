@@ -2730,6 +2730,41 @@ form .time {width:4em;}
 	background:url(../i/btn-lb-close.png) no-repeat 0 100%;
 }
 
+#setlist {
+    list-style-type:none;
+    padding:20px;
+}
+#setlist li {
+    padding:0;
+    display:inline-block;
+}
+#setlist li a {
+    float:left;
+    width:200px;
+    height:120px;
+    display:inline-block;
+    background:url(../i/settings-medium.png) no-repeat 105px 25px;
+    background-color:#fff;
+    margin:0 10px 10px 0;
+    padding:15px;
+    border-bottom:2px solid #CBD9E3;
+    text-decoration:none;
+    color:#222;
+    font-weight:bold;
+    opacity:.7;
+    cursor:pointer;
+}
+#setlist li a:hover {
+    opacity:1;
+}
+#setlist span {
+    font-weight:normal;
+    color:#555;
+    display:inline-block;
+    border-top:1px solid #ddd;
+    padding:10px 0;
+    margin-top:10px;
+}
 #calendar a.del,
 #content-primary .signlist-collection a.item-delete {
 	display:none;

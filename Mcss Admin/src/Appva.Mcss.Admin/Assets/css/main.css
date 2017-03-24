@@ -239,6 +239,9 @@ a.pause-btn:active {
 	background:#893a29;
 }
 
+.floatr {float:right!important;}
+.floatl {float:left!important;}
+
 /* Sub header action buttons */
 #subheader a.btn,
 #status-filter a.btn {

@@ -638,14 +638,5 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
-  
-  <!-- SeniorAlerts -->
-  <class name="SeniorAlerts">
-    <id name="Id">
-      <generator class="guid.comb" />
-    </id>
-    <property name="PatientId" />
-    <property name="TaxonId" />
-  </class>
 
 </hibernate-mapping>

@@ -68,9 +68,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
                     if (isActive)
                     {
-                        usedBy = this.persistenceContext.QueryOver<SeniorAlerts>()
-                        .Where(x => x.TaxonId == scheme.Id)
-                        .List().Count;
+                        usedBy = this.persistenceContext.QueryOver<Patient>()
+                            .Where(x => !x.Deceased)
+                            .And(x => x.IsActive)
+                            .JoinQueryOver<Taxon>(x => x.SeniorAlerts)
+                            .Where(x => x.Id == scheme.Id)
+                            .RowCount();
                     }
 
                     var assessment = new ProfileAssessment

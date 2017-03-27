@@ -8,9 +8,9 @@
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
-        @if (Model.List != null && Model.List.Count() > 0)
+      @if (Model.List != null && Model.List.Count() > 0)
         {
-            <ul id="setlist">
+           @* <ul id="setlist">
                 @foreach (var item in Model.List)
                 {
                     string description = string.Empty;
@@ -19,14 +19,36 @@
                         description = "<span>" + item.Description + "</span>";
                     }
                     <li>
-                        @Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id}, new { @class = "lb-link btn"})
-                        @*<a href="/Backoffice/GeneralSettings/@item.Id/Edit">@item.Name@Html.Raw(description)</a>*@
+                       @Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link btn" })
                     </li>
                 }
             </ul>
-        }
-        else
-        {
+          *@
+        <div class="h cf">
+            <table class="dp-hover">
+                <tr class="head">
+                    <th>Inställning</th>
+                    <th>Key</th>
+                    <th>Beskrivning</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.List)
+                {
+
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.MachineName</td>
+                        <td>@item.Description</td>
+                        <td>@Html.ActionLink("Ändra", "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link btn" })</td>
+                    </tr>
+                }
+
+
+            </table>
+        </div>
+      }
+      else
+      {
             <div class="note">
                 <h2>Inga inställningar hittades.</h2>
             </div>

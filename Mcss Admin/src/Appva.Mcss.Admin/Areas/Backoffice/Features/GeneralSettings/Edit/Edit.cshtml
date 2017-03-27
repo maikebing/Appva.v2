@@ -7,8 +7,10 @@
     {
         <div>
             <h3 class="section-title">Uppdatera Inställning</h3>
+
             @if (Model.intValue != null)
             {
+
                 <h4>@Model.Name</h4><br />
                 @Html.Label("Värde")
                 @Html.FormGroup(x => x.intValue, "number").TextBox().Validate().Build()<br />
@@ -25,13 +27,14 @@
             {
                 <h4>@Model.Name</h4><br />
                 @Html.Label("Värde")
-                
+
                 @Html.FormGroup(x => x.stringValue, "text large").TextArea().Validate().Build()<br />
 
             }
 
         </div>
         <div class="submit">
+            
             @Html.Submit("Spara", new { @class = "btn" })
         </div>
     }

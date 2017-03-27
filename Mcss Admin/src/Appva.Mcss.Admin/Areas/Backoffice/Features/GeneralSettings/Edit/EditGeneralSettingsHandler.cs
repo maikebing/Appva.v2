@@ -1,22 +1,40 @@
-﻿using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Services.Settings;
-using Appva.Mcss.Admin.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
+﻿// <copyright file="EditGeneralSettingsHandler.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
+//      <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
+// </author>
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
+    #region Imports.
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    #endregion
+
     internal sealed class EditGeneralSettingsHandler : RequestHandler<Identity<EditGeneralSettingsModel>, EditGeneralSettingsModel>
     {
-        private readonly ISettingsService settingsService;
 
+        #region Properties.
+        private readonly ISettingsService settingsService;
+        #endregion
+
+        #region Constructor.
         public EditGeneralSettingsHandler(ISettingsService settingsService)
         {
             this.settingsService = settingsService;
 
         }
+        #endregion
+
+
+        #region RequestHandler Overrides.
+
         public override EditGeneralSettingsModel Handle(Identity<EditGeneralSettingsModel> message)
         {
 
@@ -50,13 +68,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     Name = setting.Name
                 };
 
-            if (setting.Type == typeof(IList<>))
-                return new EditGeneralSettingsModel
-                {
-                    Name = setting.Name,
-                    listValue = setting.Value.Split(',').Select(Int32.Parse).ToList()
-
-                };
             else
                 return new EditGeneralSettingsModel
                 {
@@ -66,5 +77,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 };
 
         }
+        #endregion
     }
 }

@@ -19,7 +19,8 @@
                         description = "<span>" + item.Description + "</span>";
                     }
                     <li>
-                        <a href="/Backoffice/GeneralSettings/@item.Id/Edit">@item.Name@Html.Raw(description)</a>
+                        @Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id}, new { @class = "lb-link btn"})
+                        @*<a href="/Backoffice/GeneralSettings/@item.Id/Edit">@item.Name@Html.Raw(description)</a>*@
                     </li>
                 }
             </ul>

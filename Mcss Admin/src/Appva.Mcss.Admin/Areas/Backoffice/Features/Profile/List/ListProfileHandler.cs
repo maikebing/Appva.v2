@@ -19,6 +19,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using System.Reflection;
+    using Appva.Mcss.Admin.Application.Models;
+    using System.Linq;
+    using Appva.Mcss.Admin.Domain.Models;
+    using System;
+    using NHibernate.Criterion;
 
     #endregion
 
@@ -58,9 +64,26 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             var profile = new ListProfileModel();
             var schemes = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, message.Active);
             var assessments = new List<ProfileAssessment>();
+            var props = typeof(Taxons).GetFields(BindingFlags.Public | BindingFlags.Static);
+            var propList = new List<ITaxon>();
+            int newItemsCount = 0;
+
+            foreach (var prop in props)
+            {
+                var property = (ITaxon)prop.GetValue(null);
+                propList.Add(property);
+
+                if(schemes.Where(x => x.Type == property.Type).FirstOrDefault() == null)
+                {
+                    newItemsCount++;
+                }
+            }
 
             if (schemes != null)
             {
+                Taxon sa = null;
+                Taxon org = null;
+
                 foreach (var scheme in schemes)
                 {
                     var isActive = this.taxonomyService.Get(scheme.Id).IsActive;
@@ -71,8 +94,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         usedBy = this.persistenceContext.QueryOver<Patient>()
                             .Where(x => !x.Deceased)
                             .And(x => x.IsActive)
-                            .JoinQueryOver<Taxon>(x => x.SeniorAlerts)
-                            .Where(x => x.Id == scheme.Id)
+                            .JoinAlias(x => x.SeniorAlerts, () => sa)
+                            .Where(() => sa.Id == scheme.Id)
+                            .JoinAlias(x => x.Taxon, () => org)
+                            .WhereRestrictionOn(() => org.Path).IsLike(filter.GetCurrentFilter().Path + "%")
                             .RowCount();
                     }
 
@@ -97,8 +122,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 }
             }
 
+            string newItems = newItemsCount > 0 ? (newItemsCount == 1 ? "(1 ny)" : "(" + newItemsCount + " nya)") : string.Empty;
+
             RedirectActive = message.Active;
             profile.IsActive = message.Active;
+            profile.NewAssessments = newItems;
             profile.Assessments = assessments;
             return profile;
         }

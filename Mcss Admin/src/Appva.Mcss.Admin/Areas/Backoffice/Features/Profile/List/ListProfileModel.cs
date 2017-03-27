@@ -41,6 +41,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             get; set;
         }
 
+        /// <summary>
+        /// Number of new assessments to install.
+        /// </summary>
+        public string NewAssessments
+        {
+            get; set;
+        }
+
         #endregion
     }
 }

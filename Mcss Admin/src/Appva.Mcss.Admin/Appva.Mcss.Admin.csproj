@@ -399,6 +399,8 @@
     <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitPublisher.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Areas\Backoffice\Features\Profile\InstallProfiles\InstallProfilesHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\InstallProfiles\InstallProfilesModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Profile\List\ProfileAssessment.cs" />
     <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfileHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfileModel.cs" />
@@ -871,6 +873,8 @@
     <Content Include="Assets\i\icn-sent%402x.png" />
     <Content Include="Assets\i\icn-sent.png" />
     <Content Include="Assets\i\icn-sleep.png" />
+    <Content Include="Assets\i\icn-test1.png" />
+    <Content Include="Assets\i\icn-test2.png" />
     <Content Include="Assets\i\icn-toggle.png" />
     <Content Include="Assets\i\icn-toolclock.png" />
     <Content Include="Assets\i\icn-toolneed.png" />

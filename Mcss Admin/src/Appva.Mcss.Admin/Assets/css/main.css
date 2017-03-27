@@ -1365,6 +1365,13 @@ td.rights {
     width:100px;
     text-align:center;
 }
+#signlist .prstatus span {
+    width:10px;
+    height:10px;
+    display:inline-block;
+    margin-right:8px;
+    border-radius:10px;
+}
 #signlist .prpad {
     padding:6px 10px!important;
 }

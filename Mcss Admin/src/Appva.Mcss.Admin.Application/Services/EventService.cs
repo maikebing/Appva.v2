@@ -386,12 +386,12 @@ namespace Appva.Mcss.Admin.Application.Services
                 .Where(x => x.ScheduleType == ScheduleType.Calendar)
                 .And(x => x.IsActive);
 
-            if (!forceGetAllCategories) 
+            if (!forceGetAllCategories)
             {
                 var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
                 categories.WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
             }
-            
+
             return categories.OrderBy(x => x.Name).Asc
                 .List();
         }
@@ -693,20 +693,17 @@ namespace Appva.Mcss.Admin.Application.Services
         public CalendarTask GetActivityInSequence(Guid sequence, DateTime date)
         {
             var task = this.taskService.List(new ListTaskModel {
-                SequenceId = sequence,
-                EndDate = date,
-                StartDate = date,
+                SequenceId           = sequence,
+                EndDate              = date,
+                StartDate            = date,
                 IncludeCalendarTasks = true
-            }).Entities.FirstOrDefault();
-            
+            }).Items.FirstOrDefault();
             if(task.IsNotNull())
             {
                 return EventTransformer.TasksToEvent(task);
             }
-
             var s = this.sequenceService.Find(sequence);
             var endDate = s.EndDate.GetValueOrDefault();
-
             while (endDate <= date)
             {
                 if (endDate.Date.Equals(date.Date))
@@ -715,7 +712,6 @@ namespace Appva.Mcss.Admin.Application.Services
                 }
                 endDate = s.GetNextDateInSequence(endDate);
             }
-
             throw new Exception("There is no event for this sequence on given date");
         }
 
@@ -841,6 +837,6 @@ namespace Appva.Mcss.Admin.Application.Services
             return null;
         }
 
-        #endregion    
+        #endregion 
     }
 }

@@ -97,7 +97,7 @@
                             </span>
                         }
                     </h2>
-                    @if (Model.Transactions != null && Model.Transactions.Count == 0) {
+                    @if (Model.Transactions != null && Model.Transactions.Count() == 0) {
                         <div id="alarm-status">
                             <h2 class="ok">Inga händelser för angiven tidsperiod.</h2>
                         </div>

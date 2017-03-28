@@ -56,11 +56,6 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
         /// </summary>
         private readonly IIdentityService identity;
 
-        /// <summary>
-        /// The implemented <see cref="IMenuRepository"/> instance.
-        /// </summary>
-        private readonly IMenuRepository repository;
-
         #endregion
 
         #region Constructor.
@@ -70,12 +65,10 @@ namespace Appva.Mcss.Admin.Application.Services.Menus
         /// </summary>
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
         /// <param name="identity">The <see cref="IIdentityService"/></param>
-        /// <param name="repository">The <see cref="IMenuRepository"/></param>
-        public MenuService(ITenantAwareMemoryCache cache, IIdentityService identity, IMenuRepository repository)
+        public MenuService(ITenantAwareMemoryCache cache, IIdentityService identity)
         {
             this.cache = cache;
             this.identity = identity;
-            this.repository = repository;
         }
 
         #endregion

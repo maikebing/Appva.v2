@@ -143,11 +143,11 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Services
         {
             return new List<Setting> 
             {
-                Setting.CreateNew("MCSS.Features.SeniorAlert.IsActive", "MCSS.SeniorAlert", "IsActive", null, "True", typeof(bool)),
-                Setting.CreateNew("MCSS.SeniorAlert.IsActive", "MCSS.SeniorAlert", "IsActive", null, "False", typeof(bool)),
-                Setting.CreateNew("MCSS.IsActive", "MCSS.SeniorAlert", "IsActive", null, "False", typeof(bool)),
-                Setting.CreateNew("MCSS.SeniorAlert", "MCSS.SeniorAlert", "IsActive", null, "False", typeof(bool)),
-                Setting.CreateNew("MCSS.SeniorAlert.IsEnabled", "MCSS.SeniorAlert", "IsActive", null, "False", typeof(bool)),
+                Setting.New("MCSS.Features.SeniorAlert.IsActive", "MCSS.SeniorAlert", "IsActive", null, "True", typeof(bool)),
+                Setting.New("MCSS.SeniorAlert.IsActive", "MCSS.SeniorAlert", "IsActive", null, "False", typeof(bool)),
+                Setting.New("MCSS.IsActive", "MCSS.SeniorAlert", "IsActive", null, "False", typeof(bool)),
+                Setting.New("MCSS.SeniorAlert", "MCSS.SeniorAlert", "IsActive", null, "False", typeof(bool)),
+                Setting.New("MCSS.SeniorAlert.IsEnabled", "MCSS.SeniorAlert", "IsActive", null, "False", typeof(bool)),
             };
         }
 

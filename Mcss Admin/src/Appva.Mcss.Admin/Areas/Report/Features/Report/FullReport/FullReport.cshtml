@@ -29,16 +29,6 @@
                 <div class="dates cf">
                     @Html.FormGroup(x => x.Start, "select").Label("Start").Editor(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")).Build()
 			        @Html.FormGroup(x => x.End, "select").Label("Slut").Editor(DateTime.Now.ToString("yyyy-MM-dd")).Build()
-                    @*
-                    <div class="select">
-                        @Html.LabelFor(m => m.Start)
-                        @Html.EditorFor(m => m.Start)
-			        </div>			        
-                    <div class="select">
-                        @Html.LabelFor(m => m.End)
-                        @Html.EditorFor(m => m.End)
-			        </div>
-                    *@
 		        </div>
                 <div class="dates submit">
                     @Html.HiddenFor(m => m.ScheduleSetting)

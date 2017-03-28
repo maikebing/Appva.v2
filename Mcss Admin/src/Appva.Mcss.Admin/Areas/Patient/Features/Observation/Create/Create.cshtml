@@ -1,0 +1,16 @@
+﻿@model Appva.Mcss.Admin.Models.CreateObservation
+@{
+    SetTitle("Lägg till observation");
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="InventoryCreateUpdate">
+    @using (Html.Post(new { Id = Model.Id }))
+    {
+        <h3 class="section-title">Lägg till observation</h3>
+        @Html.FormGroup(x => x.Name,        "text medium").Label("Namn",        new { @class = "col" }).TextBox().Validate().Build()
+        @Html.FormGroup(x => x.Description, "text medium").Label("Beskrivning", new { @class = "col" }).TextArea().Validate().Build()
+        <div class="input">
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

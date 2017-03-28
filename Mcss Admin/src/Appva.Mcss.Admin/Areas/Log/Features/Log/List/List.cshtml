@@ -21,7 +21,7 @@
         {
             <p>Visar log efter <b>@Model.Cursor</b>. @Html.ActionLink(Permissions.Log.Read,"Klicka här","List","Log") för att visa de senaste händelserna</p>
         }
-        <p>Rad @((Model.Page - 1) * Model.PageSize)-@((Model.Page - 1) * Model.PageSize + Model.Logs.Count) av @Model.TotalCount.ToString("N")</p>
+        <p>Rad @((Model.Page - 1) * Model.PageSize)-@((Model.Page - 1) * Model.PageSize + Model.Logs.Count()) av @Model.TotalCount.ToString("N")</p>
         <table>
             <thead>
                 <tr class="head">

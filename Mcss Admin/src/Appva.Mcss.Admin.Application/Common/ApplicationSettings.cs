@@ -146,7 +146,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Mail Configuration",
             "Mcss.Core.Security.Messaging",
             "The E-mail configuration for sending and signing",
-            SecurityMailerConfiguration.CreateNew());
+            SecurityMailerConfiguration.New());
 
         /// <summary>
         /// The password configuration.
@@ -157,7 +157,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Password Configuration",
             "Mcss.Core.Security.Password",
             "The password configuration",
-            SecurityPasswordConfiguration.CreateNew());
+            SecurityPasswordConfiguration.NewDefault());
 
         /// <summary>
         /// The tenant authentication cookie expiration timespan.
@@ -193,7 +193,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Audit logging configuration",
             "Mcss.Core.Security.Analytics.Audit",
             "The audit configuration settings",
-            AuditLoggingConfiguration.CreateNew(new List<Guid>()));
+            AuditLoggingConfiguration.New(new List<Guid>()));
 
         #endregion
 
@@ -208,7 +208,7 @@ using Appva.Mcss.Admin.Application.Models;
              "Pdf Generation Configuration",
              "Mcss.Core.Pdf",
              "The PDF configuration for look and feel",
-             PdfLookAndFeel.CreateDefault(null, "Appva AB"));
+             PdfLookAndFeel.NewDefault(null, "Appva AB"));
 
          /// <summary>
          /// PDF configuration for look and feel.

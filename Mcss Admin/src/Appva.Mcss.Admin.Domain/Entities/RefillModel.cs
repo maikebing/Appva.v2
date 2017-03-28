@@ -1,9 +1,6 @@
 ﻿// <copyright file="RefillModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,7 +8,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
@@ -20,7 +16,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class RefillModel : ValueObject<RefillModel>
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RefillModel"/> class.
@@ -89,14 +85,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        public override bool Equals(RefillModel other)
+        #region ValueObject Overrides.
+
+        // / <inheritdoc />
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            throw new NotImplementedException();
+            yield return Refill;
+            yield return RefillOrderedBy;
+            yield return RefillOrderedDate;
+            yield return Ordered;
+            yield return OrderedDate;
+            yield return OrderedBy;
         }
 
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

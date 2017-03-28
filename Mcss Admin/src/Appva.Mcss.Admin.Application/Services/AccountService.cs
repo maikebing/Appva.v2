@@ -153,7 +153,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="page">The page</param>
         /// <param name="pageSize">The page size</param>
         /// <returns>A <see cref="PageableSet"/> of <see cref="AccountModel"/></returns>
-        PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10);
+        IPaged<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10);
 
         /// <summary>
         /// Saves an account
@@ -300,7 +300,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Account Find(Guid id)
         {
-            return this.repository.Find(id);
+            return this.repository.Get(id);
         }
 
         /// <inheritdoc />
@@ -356,7 +356,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
+        public IPaged<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
             this.auditing.Read("läste medarbetarlista sida {0}", page);
             return this.repository.Search(model, page, pageSize);

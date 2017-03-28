@@ -1,9 +1,6 @@
 ﻿// <copyright file="Person.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,25 +8,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public abstract class Person<T> : AggregateRoot<T>
-        where T : class
+    public abstract class Person : AggregateRoot
     {
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Person"/> class.
         /// </summary>
-        /*protected Person(string firstName, string lastName, string personalIdentityNumber)
-        {
-        }*/
-
         protected Person()
         {
         }
@@ -65,6 +56,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        /// <summary>
+        /// The full name.
+        /// </summary>
         public virtual string FullName
         {
             get;

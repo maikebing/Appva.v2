@@ -671,7 +671,7 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Reactivate patient")]
             [Description("Permission to reactivate a patient")]
             public static readonly IPermission Reactivate = PermissionType.CreateNew(ReactivateValue);
-            
+
             /// <summary>
             /// Permission to inactivate a patient.
             /// </summary>

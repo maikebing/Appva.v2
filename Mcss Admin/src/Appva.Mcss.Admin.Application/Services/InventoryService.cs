@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using System.Linq;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Domain;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Repository;
@@ -57,7 +58,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="page">Current page</param>
         /// <param name="page">Current page siźe</param>
         /// <returns>List of <see cref="Inventory"/></returns>
-        PageableSet<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10);
+        IPaged<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10);
 
         /// <summary>
         /// Inactivates the inventory
@@ -135,13 +136,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Inventory Find(Guid id)
         {
-            return this.repository.Find(id);
+            return this.repository.Get(id);
         }
 
         /// <inheritdoc />
         public void Update(Guid id, string name, string unit, IList<double> amounts)
         {
-            var inventory         = this.repository.Find(id);
+            var inventory         = this.repository.Get(id);
             inventory.Description = name;
             inventory.Amounts     = amounts;
             inventory.Unit        = unit;
@@ -157,7 +158,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public PageableSet<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10)
+        public IPaged<InventoryTransactionItem> ListTransactionsFor(Guid inventory, DateTime? fromDate = null, DateTime? toDate = null, int page = 0, int pageSize = 10)
         {
             return this.repository.ListTransactionsFor(inventory, fromDate, toDate, page, pageSize);
         }

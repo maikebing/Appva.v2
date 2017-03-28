@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Repository;
+    using Appva.Mcss.Admin.Domain;
     #endregion
 
     /// <summary>
@@ -113,7 +114,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        PageableSet<PatientModel> Search(SearchPatientModel model, int page = 1, int pageSize = 10);
+        IPaged<PatientModel> Search(SearchPatientModel model, int page = 1, int pageSize = 10);
 
         /// <summary>
         /// Archives a patient.
@@ -330,10 +331,9 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public PageableSet<PatientModel> Search(SearchPatientModel model, int page = 1, int pageSize = 10)
+        public IPaged<PatientModel> Search(SearchPatientModel model, int page = 1, int pageSize = 10)
         {
             this.auditing.Read("genomförde en sökning i patientlistan på {0}.", model.SearchQuery);
-
             var schedulesettings = this.identity.SchedulePermissions().Select(x => new Guid(x.Value)).ToList();
             return this.repository.Search(model, schedulesettings, page, pageSize);
         }

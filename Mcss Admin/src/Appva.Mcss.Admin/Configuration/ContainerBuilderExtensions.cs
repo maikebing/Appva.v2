@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Security.Middleware.Cookie;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
@@ -236,8 +237,8 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterRepositories(this ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(IRepository).Assembly).Where(x => x.GetInterfaces()
-                .Any(y => y.IsAssignableFrom(typeof(IRepository)))).AsImplementedInterfaces().InstancePerRequest();
+            builder.RegisterAssemblyTypes(typeof(IRepository<>).Assembly)
+                .AsClosedTypesOf(typeof(IRepository<>)).AsImplementedInterfaces().InstancePerRequest();
         }
 
         /// <summary>

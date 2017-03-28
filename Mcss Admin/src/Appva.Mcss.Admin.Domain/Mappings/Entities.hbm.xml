@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Appva.Mcss.Admin.Domain" namespace="Appva.Mcss.Admin.Domain.Entities">
 
+  <!-- Type definitions. -->
+  <typedef class="Appva.Mcss.Admin.Domain.Common.JsonType, Appva.Mcss.Admin.Domain" name="json" />
+  
   <!-- System classes. -->
 
   <!-- Setting -->
@@ -305,6 +308,22 @@
     </bag>
   </class>
 
+  <!-- Provenance -->
+  <class name="Provenance" table="Provenances" mutable="false" lazy="false">
+    <composite-id>
+      <key-property name="Id"      />
+      <key-property name="Version" />
+    </composite-id>
+    <property name="CreatedAt" column="Created" update="false" />
+    <!--<property name="Version"   column="Version" update="false" />
+    <property name="EntityId"                                  />
+    <property name="EntityType"                                />-->
+    <property name="Data" type="json">
+      <column name="Type"                             />
+      <column name="Data"                             />
+    </property>
+  </class>
+  
   <!-- End System classes. -->
 
   <!-- Device -->
@@ -344,7 +363,7 @@
     <property name="Deceased" />
     <property name="IsArchived">
       <column name="IsArchived" not-null="true" default="'false'" />
-    </property>  
+    </property>
     <many-to-one name="Taxon" class="Taxon" />
     <property name="IsPersonOfPublicInterest">
       <column name="IsPersonOfPublicInterest" not-null="true" default="'false'" />
@@ -510,6 +529,86 @@
       <many-to-one name="OrderedBy"  class="Account" />
     </component>
 
+  </class>
+
+  <!-- Observation -->
+  <class name="Observation" table="Observations">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version  name="Version"                                       />
+    <property name="IsActive"     column="Active"                  />
+    <property name="CreatedAt"    column="Created"  update="false" />
+    <property name="UpdatedAt"    column="Modified"      />
+    <property name="Name"                                />
+    <property name="Description"                         />
+    <many-to-one name="Patient"   class="Patient"        />
+    <many-to-one name="Category"  class="Taxon"          />
+    <bag name="Items" cascade="save-update" inverse="true">
+      <key column="Observation" />
+      <one-to-many class="ObservationItem" />
+    </bag>
+  </class>
+  
+  <!-- Observation Item -->
+  <class name="ObservationItem" table="ObservationItems">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version  name="Version"                             />
+    <property name="IsActive"     column="Active"        />
+    <property name="CreatedAt"    column="Created"       />
+    <property name="UpdatedAt"    column="Modified"      />
+    <many-to-one name="Observation" class="Observation"  />
+    <component name="Measurement">
+      <property name="Value" column="Value"              />
+      <property name="Type"  column="Type"               />
+      <property name="Code"  column="Code"               />
+      <many-to-one name="Unit" class="Taxon"             />
+    </component>
+    <many-to-one name="Signature" class="Signature"      />
+    <many-to-one name="Comment"   class="Comment"        />
+  </class>
+
+  <!-- Signature -->
+  <class name="Signature" table="Signatures">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version  name="Version"                                       />
+    <property name="IsActive"     column="Active"   update="false" />
+    <property name="CreatedAt"    column="Created"  update="false" />
+    <property name="UpdatedAt"    column="Modified" update="false" />
+    <property name="Checksum"     column="Checksum" update="false" />
+    <many-to-one name="Type" class="Taxon"                         />
+    <many-to-one name="Who"  class="Account"                       />
+    <bag name="Data" cascade="save-update" inverse="false">
+      <key column="Signature" />
+      <one-to-many class="SignedData" />
+    </bag>
+  </class>
+
+  <!-- SignedData -->
+  <class name="SignedData" table="SignedDatas">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Data"                           update="false" />
+    <many-to-one name="Signature" class="Signature"                />
+  </class>
+
+  <!-- Comment -->
+  <class name="Comment" table="Comments">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="IsActive"     column="Active"   update="false" />
+    <property name="CreatedAt"    column="Created"  update="false" />
+    <property name="UpdatedAt"    column="Modified"                />
+    <property name="Content"                                       />
+    <many-to-one name="Signature" class="Signature"                />
+    <many-to-one name="CreatedBy" class="Account "                 />
+    <many-to-one name="Parent"    class="Comment "                 />
   </class>
   
   <!-- Transaction -->

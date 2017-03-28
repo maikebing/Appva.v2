@@ -10,21 +10,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     using System;
     using System.Collections.Generic;
-using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
-    using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
     #endregion
 
     /// <summary>
     /// The <see cref="Taxon"/> repository.
     /// </summary>
-    public interface ITaxonRepository : 
-        IIdentityRepository<Taxon>, 
+    public interface ITaxonRepository : IRepository<Taxon>, 
         IUpdateRepository<Taxon>,
-        ISaveRepository<Taxon>, 
-        IProxyRepository<Taxon>, 
-        IRepository
+        ISaveRepository<Taxon>
     {
         /// <summary>
         /// Returns a collection of <see cref="Taxon"/> by <see cref="Taxonomy.Key"/>
@@ -55,36 +51,17 @@ using Appva.Mcss.Admin.Domain.Entities;
         void Save(Taxon entity, bool setPath);
     }
 
-    public sealed class TaxonRepository : ITaxonRepository
+    public sealed class TaxonRepository : Repository<Taxon>, ITaxonRepository
     {
-        #region Variables.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/> instance.
-        /// </summary>
-        private readonly IPersistenceContext persistenceContext;
-
-        #endregion
-
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TaxonRepository"/> class.
         /// </summary>
-        /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
-        public TaxonRepository(IPersistenceContext persistenceContext)
+        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
+        public TaxonRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.persistenceContext = persistenceContext;
-        }
-
-        #endregion
-
-        #region IIdentityRepository<Taxon> Members.
-
-        /// <inheritdoc />
-        public Taxon Find(Guid id)
-        {
-            return this.persistenceContext.Get<Taxon>(id);
         }
 
         #endregion
@@ -96,23 +73,25 @@ using Appva.Mcss.Admin.Domain.Entities;
         {
             //// Since we have a flat structure, it's better for post processing to
             //// order by id, then roots will be sorted first, then by sort order.
-            return this.persistenceContext.QueryOver<Taxon>()
-                .Where(x => x.IsActive)
+            return this.Context
+                .QueryOver<Taxon>()
+                    .Where(x => x.IsActive)
                 .OrderBy(x => x.Parent.Id).Asc
-                .ThenBy(x => x.Weight).Asc
+                .ThenBy (x => x.Weight).Asc
                 .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
                     .Where(x => x.IsActive)
-                    .And(x => x.MachineName == identifier)
+                      .And(x => x.MachineName == identifier)
                 .List();
         }
 
         /// <inheritdoc />
         public IList<Taxon> Pick(params Guid[] ids)
         {
-            return this.persistenceContext.QueryOver<Taxon>()
-                .Where(x => x.IsActive)
-                .AndRestrictionOn(x => x.Id)
-                .IsIn(ids)
+            return this.Context
+                .QueryOver<Taxon>()
+                    .Where(x => x.IsActive)
+                      .AndRestrictionOn(x => x.Id)
+                    .IsIn(ids)
                 .OrderBy(x => x.Weight).Asc
                 .List();
         }
@@ -120,26 +99,14 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <inheritdoc />
         public Taxonomy LoadTaxonomy(string machineName)
         {
-            return this.persistenceContext.QueryOver<Taxonomy>()
-                .Where(x => x.MachineName == machineName)
+            return this.Context
+                .QueryOver<Taxonomy>()
+                    .Where(x => x.MachineName == machineName)
                 .SingleOrDefault();
         }
 
         #endregion
-
         
-        #region IProxyRepository<Taxon> Members.
-
-        /// <inheritdoc />
-        public Taxon Load(Guid id)
-        {
-            return this.persistenceContext.Session.Load<Taxon>(id);
-        }
-
-        #endregion
-
-        
-        #region ISaveRepository<Taxon> Members.
 
         /// <inheritdoc />
         public void Save(Taxon entity)
@@ -150,25 +117,20 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <inheritdoc />
         public void Save(Taxon entity, bool setPath)
         {
-            this.persistenceContext.Save<Taxon>(entity);
+            this.Context.Save<Taxon>(entity);
             if (setPath)
             {
                 entity.Path = entity.Parent != null ? string.Format("{0}.{1}", entity.Parent.Path, entity.Id) : entity.Id.ToString();
-                this.persistenceContext.Update<Taxon>(entity);
+                this.Context.Update<Taxon>(entity);
             }
         }
-
-        #endregion
-
-        #region IUpdateRepository members.
 
         /// <inheritdoc />
         public void Update(Taxon entity)
         {
             entity.UpdatedAt = DateTime.Now;
-            this.persistenceContext.Update<Taxon>(entity);
+            this.Context.Update<Taxon>(entity);
         }
 
-        #endregion
     }
 }

@@ -1,0 +1,48 @@
+﻿@using Appva.Core.Utilities;
+@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.ListObservations
+@{
+    SetTitle("Observationer");
+    var today = DateTimeUtilities.Now().Date;
+    var yesterday = DateTimeUtilities.Now().Date.AddDays(-1);
+}
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+<div id="subheader" class="cf">
+    <h1>Observationer</h1>
+    @Html.ActionLink(Permissions.Inventory.Create, "Lägg till", "Create", "Observation", null, new { @class = "btn lb-link" })
+</div>
+<div id="content">
+    @if (Model.Observations.Count > 0)
+    {
+        <div id="content-primary">
+            <div id="report" class="cf">
+                <div class="listing">
+                    <table>
+                        <tbody>
+                            @foreach (var observation in Model.Observations)
+                            {
+                            <tr>
+                                <td>
+                                    @observation.Name
+                                </td>
+                                <td>
+                                    @observation.Description
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else 
+    {
+        <div id="content-primary">
+            <div id="alarm-status">
+                <h2 class="ok">Den boende har inga observationer.</h2>
+            </div>
+        </div>
+    }
+</div>

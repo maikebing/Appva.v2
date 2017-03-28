@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
     using System.Linq;
     using System.Web;
     #endregion
+
     public class EditGeneralSettingsPublisher : RequestHandler<EditGeneralSettingsModel, bool>
     {
         #region Properties.

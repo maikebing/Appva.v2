@@ -32,7 +32,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         }
         #endregion
 
-
         #region RequestHandler Overrides.
 
         public override EditGeneralSettingsModel Handle(Identity<EditGeneralSettingsModel> message)
@@ -71,8 +70,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             else
                 return new EditGeneralSettingsModel
                 {
-                    Id = setting.Id,
-                    Name = setting.Name
 
                 };
 

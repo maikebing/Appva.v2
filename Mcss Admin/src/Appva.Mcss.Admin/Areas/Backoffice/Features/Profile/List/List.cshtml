@@ -38,7 +38,7 @@
                     <tbody>
                         @foreach (var assessment in Model.Assessments.OrderBy(x => x.Name))
                         {
-                            <tr>                      
+                            <tr class="tr-highlight">                      
                                 <td class="prtd"><img class="primg" src="@string.Format("/Assets/i/{0}", assessment.Type)" alt="Symbol" title="@assessment.Name" /></td>
                                 <td class="prpad"><b>@assessment.Name</b></td>
                                 <td class="prpad">@assessment.Description</td>

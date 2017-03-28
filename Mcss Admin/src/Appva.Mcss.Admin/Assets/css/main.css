@@ -1375,14 +1375,13 @@ td.rights {
 #signlist .prpad {
     padding:6px 10px!important;
 }
-
+#signlist .tr-highlight:hover { background:#f9f9f9; }
+#signlist .tr-highlight { transition:background .2s ease-in-out; }
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}
 #content-primary #signlist tbody td,
-#content-primary #signed-events tbody td {
-	padding:6px;
-}
+#content-primary #signed-events tbody td { padding:6px; }
 #content-primary .h h2 {float:left; margin:0;}
 #content-primary .h a {float:right;}
 #content-primary #signlist .time {

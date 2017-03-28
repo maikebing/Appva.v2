@@ -83,7 +83,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
             return this.RedirectToAction("list", new { Active = ListProfileHandler.RedirectActive });
         }
 
-        [Route("install/profiles")]
+        [Route("install")]
         [HttpPost, Validate, Dispatch]
         public ActionResult InstallProfiles(InstallProfilesModel request)
         {

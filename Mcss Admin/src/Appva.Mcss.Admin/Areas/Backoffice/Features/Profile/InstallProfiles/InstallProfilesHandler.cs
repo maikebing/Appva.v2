@@ -16,7 +16,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     {
         private readonly ITaxonomyService taxonomyService;
 
-
         public InstallProfilesHandler(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;

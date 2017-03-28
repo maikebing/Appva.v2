@@ -395,6 +395,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string UpdateRolesValue = Schema + "practitioner/update/role";
 
             /// <summary>
+            /// The update your own role value.
+            /// </summary>
+            public const string UpdatePrincipalRolesValue = Schema + "practitioner/update/role/principal";
+
+            /// <summary>
             /// The inactivate value.
             /// </summary>
             public const string InactivateValue = Schema + "practitioner/inactivate";
@@ -445,6 +450,14 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Update practitioner roles")]
             [Description("Permission to update/edit practitioner roles")]
             public static readonly IPermission UpdateRoles = PermissionType.CreateNew(UpdateRolesValue);
+
+            /// <summary>
+            /// Permission to update/edit the current principal role.
+            /// </summary>
+            [Sort(3)]
+            [Name("Update current principal roles")]
+            [Description("Permission to update/edit current principal roles")]
+            public static readonly IPermission UpdatePrincipalRoles = PermissionType.CreateNew(UpdatePrincipalRolesValue);
 
             /// <summary>
             /// Permission to inactivate a practitioner.

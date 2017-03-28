@@ -7,6 +7,6 @@ namespace Appva.Mcss.Web.ViewModels {
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
         public int TotalItemCount { get; set; }
-        public IList<T> Items { get; set; }
+        public IEnumerable<T> Items { get; set; }
     }
 }

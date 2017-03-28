@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
                 if(account != null)
                 {
                     account.IsSynchronized = true;
-                    this.accountService.Update(account);
+                    this.accountService.Update(account, null);
 
                     return new GetSynchronizedAccount { Id = message.Id };
                 }

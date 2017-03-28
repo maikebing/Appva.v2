@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Roles.Features.RolesSchedules.Update
+namespace Appva.Mcss.Admin.Areas.Roles.Models
 {
     #region Imports.
 

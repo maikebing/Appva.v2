@@ -25,24 +25,27 @@ using System.Linq;
 
         public static IList<DelegationViewModel> ToDelegationViewModel(IList<Delegation> delegations, IList<ITaxon> orgTaxons)
         {
-            return delegations.Select(x => DelegationTransformer.ToDelegationViewModel(x, orgTaxons)).ToList();
+            return delegations.Select(x => DelegationTransformer.ToDelegationViewModel(x, orgTaxons, true)).ToList();
         }
 
 
-        public static DelegationViewModel ToDelegationViewModel(Delegation delegation, IList<ITaxon> orgTaxons)
+        public static DelegationViewModel ToDelegationViewModel(Delegation delegation, IList<ITaxon> orgTaxons, bool isEditableForCurrentPrincipal)
         {
+            //// TODO: temp solution.
+            var path = delegation.CreatedBy.Locations.OrderByDescending(x => x.Sort).First().Taxon.Path;
             return new DelegationViewModel
             {
-                Id = delegation.Id,
-                Name = delegation.Name,
-                IsActivated = !delegation.Pending,
-                StartDate = delegation.StartDate,
-                EndDate = delegation.EndDate,
-                Patients = delegation.Patients.ToDictionary(x => x.Id, x => x.FullName),
-                Address = orgTaxons.FirstOrDefault(x => x.Id == delegation.OrganisationTaxon.Id).Address,
-                CreatedBy = new KeyValuePair<Guid,string>(delegation.CreatedBy.Id, delegation.CreatedBy.FullName),
+                Id           = delegation.Id,
+                Name         = delegation.Name,
+                IsActivated  = !delegation.Pending,
+                StartDate    = delegation.StartDate,
+                EndDate      = delegation.EndDate,
+                Patients     = delegation.Patients.ToDictionary(x => x.Id, x => x.FullName),
+                Address      = orgTaxons.FirstOrDefault(x => x.Id == delegation.OrganisationTaxon.Id).Address,
+                CreatedBy    = new Tuple<Guid, string, string>(delegation.CreatedBy.Id, delegation.CreatedBy.FullName, path),
                 DelegationId = delegation.Taxon.Id,
-                Category = DelegationTransformer.ToDelegationCategory(delegation.Taxon.Parent)
+                Category = DelegationTransformer.ToDelegationCategory(delegation.Taxon.Parent),
+                IsEditableForCurrentPrincipal = isEditableForCurrentPrincipal
             };
         }
 
@@ -55,7 +58,7 @@ using System.Linq;
         {
             return new DelegationCategoryModel
             {
-                Id = delegation.Id,
+                Id   = delegation.Id,
                 Name = delegation.Name
             };
         }

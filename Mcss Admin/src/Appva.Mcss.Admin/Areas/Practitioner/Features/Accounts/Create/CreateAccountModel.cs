@@ -128,6 +128,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The account address.
         /// </summary>
+        [Required(ErrorMessage = "En adress måste väljas")]
         public string Taxon
         {
             get;

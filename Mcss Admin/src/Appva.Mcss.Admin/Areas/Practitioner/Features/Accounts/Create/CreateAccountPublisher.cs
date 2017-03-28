@@ -125,19 +125,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override bool Handle(CreateAccountModel message)
         {
             var taxonId = message.Taxon.IsNotEmpty() ? message.Taxon.ToGuid() : this.taxonomies.Roots(TaxonomicSchema.Organization).Single().Id;
-            var roles   = message.TitleRole.IsNotEmpty() ? new List<Role>
-            {
-                this.roleService.Find(message.TitleRole.ToGuid())
-            } : new List<Role>();
-            var address  = this.taxonomies.Get(taxonId);
-            var account  = new Account();
+            var roles   = message.TitleRole.IsNotEmpty() ? new List<Role> { this.roleService.Find(message.TitleRole.ToGuid()) } : new List<Role>();
+            var address = this.taxonomies.Get(taxonId);
+            var account                    = new Account();
             account.FirstName              = message.FirstName.Trim().FirstToUpper();
             account.LastName               = message.LastName.Trim().FirstToUpper();
             account.FullName               = string.Format("{0} {1}", account.FirstName, account.LastName);
             account.PersonalIdentityNumber = message.PersonalIdentityNumber;
             account.EmailAddress           = message.Email;
             account.DevicePassword         = message.DevicePassword;
-            account.Taxon                  = address;
+            account.Taxon                  = address; //// Set the default to the preferred taxon.
             account.Roles                  = roles;
             account.HsaId                  = message.HsaId;
             account.SymmetricKey           = Hash.Random().ToBase64();
@@ -147,7 +144,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 account.DevicePassword = this.settings.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : message.DevicePassword;
             }
-            this.accountService.Save(account);
+            this.accountService.Save(account, Location.New(account, address));
             bool isAccountUpgradedForAdminAccess;
             bool isAccountUpgradedForDeviceAccess;
             this.accountService.UpdateRoles(account, roles, out isAccountUpgradedForAdminAccess, out isAccountUpgradedForDeviceAccess);

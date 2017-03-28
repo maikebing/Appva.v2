@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Models
     using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Domain;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Repository;
 
@@ -47,12 +48,7 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
-        /*public SearchViewModel<AccountViewModel> Search
-        {
-            get;
-            set;
-        }*/
-
+       
         /// <summary>
         /// Optional <c>Delegation</c> id to filter by.
         /// </summary>

@@ -14,7 +14,7 @@
     </p>
     @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientSearch.cshtml")
 </div>
-@if (Model.Items != null && Model.Items.Count > 0)
+@if (Model.Items != null && Model.Items.Count() > 0)
 {
 <ul class="people">
     @foreach (var item in Model.Items)

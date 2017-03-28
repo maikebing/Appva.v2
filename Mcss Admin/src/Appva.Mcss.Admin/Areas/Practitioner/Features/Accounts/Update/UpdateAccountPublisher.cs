@@ -78,15 +78,16 @@ namespace Appva.Mcss.Admin.Modles.Handlers
         public override bool Handle(UpdateAccount message)
         {
             var account       = this.accounts.Find(message.Id);
-            var taxonId       = message.Taxon.IsNotEmpty() ? message.Taxon.ToGuid() : this.taxonomies.Roots(TaxonomicSchema.Organization).Single().Id;
-            var taxon         = this.taxonomies.Get(taxonId);
+            var taxon         = this.taxonomies.Get(message.Taxon.ToGuid());
             var configuration = this.settings.MailMessagingConfiguration();
-            var isMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable);
-            var previousPassword = account.DevicePassword;
+            
             account.UpdatedAt = DateTime.Now;
             account.FirstName = message.FirstName.Trim().FirstToUpper();
-            account.LastName  = message.LastName.Trim().FirstToUpper();
+            account.LastName  = message.LastName .Trim().FirstToUpper();
             account.FullName  = string.Format("{0} {1}", account.FirstName, account.LastName);
+
+            var previousPassword               = account.DevicePassword;
+            var isMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable);
             if (isMobileDevicePasswordEditable)
             {
                 account.DevicePassword = message.DevicePassword;
@@ -101,18 +102,14 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             }
             if (message.PersonalIdentityNumber.IsNotNull())
             {
-                //// If PersonalIdentityNumber is changed, disabel sync
-                if(account.IsSynchronized)
+                //// If PersonalIdentityNumber is changed, disable sync.
+                if (account.IsSynchronized)
                 {
                     account.IsSynchronized = account.PersonalIdentityNumber == message.PersonalIdentityNumber;
                 }
                 account.PersonalIdentityNumber = message.PersonalIdentityNumber;
             }
-            if (taxon.IsNotNull())
-            {
-                account.Taxon = taxon;
-            }
-            this.accounts.Update(account);
+            this.accounts.Update(account, taxon);
             //// If the the new password is null or empty, or previous password is unaltered, then
             //// then no reason to re-send an e-mail.
             if (message.DevicePassword.IsEmpty() || (previousPassword.IsNotEmpty() &&  previousPassword.Equals(message.DevicePassword)))
@@ -128,7 +125,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                 .Template("UpdateUserMobileDeviceEmail")
                 .Model<RegistrationForDeviceEmail>(new RegistrationForDeviceEmail
                     {
-                        Name = account.FullName,
+                        Name     = account.FullName,
                         Password = account.DevicePassword
                     })
                 .To(account.EmailAddress)

@@ -640,6 +640,14 @@
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
     <Compile Include="Areas\Report\Features\Report\ReportController.cs" />
+    <Compile Include="Areas\Roles\Features\RolesDelegations\RolesDelegationsController.cs" />
+    <Compile Include="Areas\Roles\Features\RolesDelegations\Update\UpdateRoleDelegation.cs" />
+    <Compile Include="Areas\Roles\Features\RolesDelegations\Update\UpdateRoleDelegationHandler.cs" />
+    <Compile Include="Areas\Roles\Features\RolesDelegations\Update\UpdateRoleDelegationPublisher.cs" />
+    <Compile Include="Areas\Roles\Features\RolesRoles\RolesRolesController.cs" />
+    <Compile Include="Areas\Roles\Features\RolesRoles\Update\UpdateRoleRole.cs" />
+    <Compile Include="Areas\Roles\Features\RolesRoles\Update\UpdateRoleRoleHandler.cs" />
+    <Compile Include="Areas\Roles\Features\RolesRoles\Update\UpdateRoleRolePublisher.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\RolesSchedulesController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedule.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleScheduleHandler.cs" />
@@ -703,6 +711,7 @@
     <Compile Include="Infrastructure\PatientTransformer.cs" />
     <Compile Include="Infrastructure\PersistenceExceptionHandler.cs" />
     <Compile Include="Infrastructure\PersonalIdentityNumberModelBinder.cs" />
+    <Compile Include="Infrastructure\PipeUtils.cs" />
     <Compile Include="Infrastructure\PractitionerTransformer.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AddToStockViewModel.cs" />
@@ -1286,6 +1295,8 @@
     <Content Include="Areas\Backoffice\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\Update\Update.cshtml" />
+    <Content Include="Areas\Roles\Features\RolesDelegations\Update\Update.cshtml" />
+    <Content Include="Areas\Roles\Features\RolesRoles\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

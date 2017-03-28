@@ -123,6 +123,10 @@
     <property name="IsSynchronized" column="Synchronized"/>
     <property name="LastSynchronized" />
     <many-to-one name="Taxon" class="Taxon" />
+    <bag name="Locations" inverse="true">
+      <key column="Account" />
+      <one-to-many class="Location" />
+    </bag>
     <bag name="Roles" table="AccountRole" cascade="save-update">
       <key column="AccountId" />
       <many-to-many column="RoleId" class="Role" />
@@ -133,6 +137,17 @@
     </bag>
   </class>
 
+  <!-- Locations -->
+  <class name="Location" table="Locations">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="CreatedAt" column="CreatedAt" />
+    <property name="Sort" />
+    <many-to-one name="Account" class="Account" />
+    <many-to-one name="Taxon"   class="Taxon"   />
+  </class>
+  
   <!-- Role -->
   <class name="Role">
     <id name="Id">
@@ -160,40 +175,14 @@
       <key column="RoleId" />
       <many-to-many column="ScheduleSettingsId" class="ScheduleSettings" fetch="join" />
     </bag>
-  </class>
-
-  <!-- Menus. -->
-  <class name="Menu" table="Menus">
-    <id name="Id">
-      <generator class="guid.comb" />
-    </id>
-    <property name="Key">
-      <column name="UniqueKey" unique="true" index="IDX_Menus_UniqueKey"/>
-    </property>
-    <property name="Name" />
-    <property name="Description" />
-    <list name="MenuLinks" cascade="all-delete-orphan" >
-      <key column="Menu"/>
-      <index column="Sort"/>
-      <one-to-many class="MenuLink" />
-    </list>
-  </class>
-
-  <!-- Menu links. -->
-  <class name="MenuLink" table="MenuLinks">
-    <id name="Id">
-      <generator class="guid.comb" />
-    </id>
-    <property name="Label" />
-    <property name="Action" />
-    <property name="Controller" />
-    <property name="Area" />
-    <property name="Sort" />
-    <property name="ListItemCssClass" />
-    <property name="AnchorCssClass" />
-    <many-to-one name="Menu" class="Menu" index="IDX_MenuLinks_Menu" />
-    <many-to-one name="Parent" class="MenuLink" index="IDX_MenuLinks_Parent" />
-    <many-to-one name="Permission" class="Permission" index="IDX_MenuLinks_Permission" />
+    <bag name="Roles" table="RolesRoles" inverse="false">
+      <key column="RoleId" />
+      <many-to-many column="Role2Id" class="Role" fetch="join" />
+    </bag>
+    <bag name="Delegations" table="RolesTaxons" inverse="false">
+      <key column="RoleId" />
+      <many-to-many column="TaxonId" class="Taxon" fetch="join" />
+    </bag>
   </class>
 
   <!-- Permissions. -->
@@ -245,7 +234,7 @@
     <id name="Id">
       <generator class="guid.comb" />
     </id>
-    <version name="Version" />
+    <version  name="Version" />
     <property name="IsActive" column="Active" />
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
@@ -519,7 +508,7 @@
     </component>
 
   </class>
-
+  
   <!-- Transaction -->
   <class name="InventoryTransactionItem">
     <id name="Id">
@@ -638,6 +627,5 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
-
 
 </hibernate-mapping>

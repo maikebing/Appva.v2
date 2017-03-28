@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using Appva.Core.Extensions;
     using Appva.Cryptography;
@@ -20,7 +21,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Account : Person<Account>
     {
-        #region Private fields.
+        #region Variables.
 
         /// <summary>
         /// The title field
@@ -170,9 +171,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// The taxonomy <see cref="Taxon"/>.
+        /// A preferred taxon from <see cref="Locations"/> 
+        /// (a user personalization setting).
         /// </summary>
         public virtual Taxon Taxon
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The practitioners work locations.
+        /// </summary>
+        public virtual IList<Location> Locations
         {
             get;
             set;
@@ -231,7 +242,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
-
+ 
         #endregion
 
         #region Public Static Method.
@@ -262,10 +273,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             Delegations.Add(delegation);
         }
 
-        #endregion
-
-        #region Public Methods.
-
         /// <summary>
         /// Updates the password.
         /// </summary>
@@ -294,6 +301,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             this.FailedPasswordAttemptsCount = 0;
             this.LockoutUntilDate = null;
+        }
+
+        /// <summary>
+        /// Returns the roles access the user account has.
+        /// </summary>
+        /// <returns>A collection of roles the user account can create/view/delete/edit</returns>
+        public virtual IList<Role> GetRoleAccess()
+        {
+            return this.Roles.SelectMany(x => x.Roles).OrderBy(x => x.Weight).ThenBy(x => x.Name).ToList();
+        }
+
+        /// <summary>
+        /// Returns the delegation taxon acces
+        /// </summary>
+        /// <returns></returns>
+        public virtual IList<Taxon> GetRoleDelegationAccess()
+        {
+            return this.Roles.SelectMany(x => x.Delegations).OrderBy(x => x.Weight).ThenBy(x => x.Name).ToList();
         }
 
         #endregion

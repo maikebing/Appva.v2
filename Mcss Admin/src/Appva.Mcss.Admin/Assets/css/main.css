@@ -2896,6 +2896,10 @@ form .time {width:4em;}
 	font-weight:normal;
 }
 
+.std-form .checkbox-grid {
+    list-style-type: none;
+}
+
 .std-form .toggle-group {
 	padding-top:10px;
 	border-bottom:1px solid #D8DFE5;

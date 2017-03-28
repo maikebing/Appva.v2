@@ -52,7 +52,7 @@ namespace Appva.Mcss.Admin.Areas.Pratitioner.Handlers
             if (account != null)
             {
                 account.IsSynchronized = false;
-                this.accountService.Update(account);
+                this.accountService.Update(account, null);
 
                 return new GetSynchronizedAccount { Id = message.Id };
             }

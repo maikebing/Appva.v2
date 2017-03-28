@@ -106,7 +106,7 @@ using System.Web;
                 }
                 return this.taxaService.Find(new Guid(claim.Value), TaxonomicSchema.Organization);
             }
-            return this.taxaService.Find((Guid)id, TaxonomicSchema.Organization);
+            return this.taxaService.Find((Guid) id, TaxonomicSchema.Organization);
         }
 
         /// <inheritdoc />

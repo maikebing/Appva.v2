@@ -13,6 +13,6 @@ namespace Appva.Mcss.Web.ViewModels {
         public string Selected { get; set; }
         public string Label { get; set; }
         public string OptionLabel { get; set; }
-        public IEnumerable<SelectListItem> Taxons { get; set; }
+        public IList<SelectListItem> Taxons { get; set; }
     }
 }

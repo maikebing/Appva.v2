@@ -106,26 +106,34 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <inheritdoc />
         public override ListDelegationModel Handle(ListDelegation message)
         {
-            var user        = this.identity.PrincipalId;
-            var account     = this.accounts.Find(message.Id);
-            var isInvisible = account.Roles.Where(x => x.IsVisible).Count() == 0 && ! this.identity.IsInRole("_AA");
-            var delegations = this.delegations.List(byAccount: message.Id, isActive: true);
-            var taxons      = this.taxonomies.List(TaxonomicSchema.Organization);    
+            var user          = this.accounts.CurrentPrincipal();
+            var userLocation  = this.identity.Principal.LocationPath();
+            var account       = this.accounts.Find(message.Id);
+            var isInvisible   = account.Roles.Where(x => x.IsVisible).Count() == 0 && ! this.identity.IsInRole("_AA");
+            var delegations   = this.delegations.List(userLocation, byAccount: message.Id, isActive: true);
+            var taxons        = this.taxonomies.List(TaxonomicSchema.Organization);    
             var delegationMap = new Dictionary<string, IList<DelegationViewModel>>();
+            var available     = user.GetRoleDelegationAccess();
             foreach (var delegation in delegations)
             {
-                var name = this.taxonomies.Find(delegation.Taxon.Parent.Id,TaxonomicSchema.Delegation).Name;
-                if (name == null)
+                var taxon = this.taxonomies.Find(delegation.Taxon.Parent.Id, TaxonomicSchema.Delegation);
+                if (taxon == null)
                 {
                     continue;
                 }
-                if (delegationMap.ContainsKey(name))
+                if (! available.Where(x => x.Id == delegation.Taxon.Parent.Id).Any())
                 {
-                    delegationMap[name].Add(DelegationTransformer.ToDelegationViewModel(delegation, taxons));
+                    continue;
+                }
+                var organizationalTaxon      = this.taxonomies.Find(delegation.OrganisationTaxon.Id, TaxonomicSchema.Organization);
+                var isEditableForCurrentUser = organizationalTaxon.Path.StartsWith(userLocation);
+                if (delegationMap.ContainsKey(taxon.Name))
+                {
+                    delegationMap[taxon.Name].Add(DelegationTransformer.ToDelegationViewModel(delegation, taxons, isEditableForCurrentUser));
                 }
                 else
                 {
-                    delegationMap.Add(name, new List<DelegationViewModel>() { DelegationTransformer.ToDelegationViewModel(delegation, taxons) });
+                    delegationMap.Add(taxon.Name, new List<DelegationViewModel> { DelegationTransformer.ToDelegationViewModel(delegation, taxons, isEditableForCurrentUser) });
                 }
             }
             var knowledgeTestMap = new Dictionary<string, IList<KnowledgeTest>>();

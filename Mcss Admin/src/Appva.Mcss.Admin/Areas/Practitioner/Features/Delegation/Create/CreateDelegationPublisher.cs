@@ -85,7 +85,7 @@ namespace Appva.Mcss.Admin.Areas.Models
             var delegatingAccount = this.identity.PrincipalId;
             //// The accoutn which recives the delegation
             var delegatedAccount = this.accounts.Find(message.Id);
-
+            var user = this.accounts.Find(delegatingAccount);
             var patients = new List<Patient>();
             if (message.ValidForSpecificPatients)
             {
@@ -95,7 +95,7 @@ namespace Appva.Mcss.Admin.Areas.Models
                     if (Guid.TryParse(guid, out patientId))
                     {
                         var patient = this.patients.Get(patientId);
-                        if (!patients.Contains(patient))
+                        if (! patients.Contains(patient))
                         {
                             patients.Add(patient);
                         }
@@ -103,8 +103,11 @@ namespace Appva.Mcss.Admin.Areas.Models
                 }
             }
 
-            var orgTaxon = message.OrganizationTaxon.IsNotNull() ? this.taxonomies.Find(new Guid(message.OrganizationTaxon), TaxonomicSchema.Organization) : this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
-
+            var orgTaxon = message.OrganizationTaxon.IsNotNull() ? 
+                this.taxonomies.Find(new Guid(message.OrganizationTaxon), TaxonomicSchema.Organization) : 
+                this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
+            //// IF the org taxon is null then the root taxon will be choosen...
+            //// We should change it. 
             foreach (Guid delegation in message.Delegations)
             {
                 var taxon = this.taxonomies.Find(delegation, TaxonomicSchema.Delegation);
@@ -121,6 +124,10 @@ namespace Appva.Mcss.Admin.Areas.Models
                     CreatedBy = this.accounts.Load(delegatingAccount),
                     IsGlobal = (message.Patients.IsNotNull() && message.Patients.Count() > 0) ? false : true
                 };
+                if (del.IsGlobal)
+                {
+                    del.OrganisationTaxon = user.Locations.First().Taxon; 
+                }
                 this.delegations.Save(del);
             }
 

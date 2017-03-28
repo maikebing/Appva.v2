@@ -9,16 +9,17 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
     #region Imports.
 
     using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Auditing;
-using Appva.Mcss.Admin.Application.Security.Identity;
-using Appva.Mcss.Admin.Application.Services;
-using Appva.Mcss.Admin.Areas.Models;
-using Appva.Mcss.Admin.Areas.Practitioner.Models;
-using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Areas.Models;
+    using Appva.Mcss.Admin.Areas.Practitioner.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
@@ -27,7 +28,7 @@ using System.Linq;
     /// </summary>
     internal sealed class RenewDelegationPublisher : RequestHandler<RenewDelegationsModel, ListDelegation>
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IIdentityService"/>
@@ -84,13 +85,18 @@ using System.Linq;
         {
             var currentUser = this.accountService.Load(this.identityService.PrincipalId);
             var delegations = this.delegationService.List(
+                this.identityService.Principal.LocationPath(),
                 byAccount:  message.AccountId,
-                createdBy:  message.RenewAllDelegations ? (Guid?)null : this.identityService.PrincipalId, 
+                createdBy:  message.RenewAllDelegations ? (Guid?) null : this.identityService.PrincipalId, 
                 byCategory: message.DelegationCategoryId,
                 isActive:   true);
 
             foreach (var delegation in delegations)
             {
+                if (! delegation.OrganisationTaxon.Path.StartsWith(this.identityService.Principal.LocationPath()))
+                {
+                    continue;
+                }
                 this.persistence.Save(new ChangeSet
                 {
                     EntityId = delegation.Id,

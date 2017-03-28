@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     using System.Net;
     using System.Net.Http;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web;
@@ -34,17 +35,12 @@ namespace Appva.Mcss.Admin.Infrastructure
     /// </summary>
     internal sealed class AccountTransformer : IAccountTransformer
     {
-        #region Private Variables.
+        #region Variables.
 
         /// <summary>
-        /// The <see cref="IRoleService"/>.
+        /// The <see cref="IIdentityService"/>.
         /// </summary>
-        private readonly IRoleService roleService;
-
-        /// <summary>
-        /// The <see cref="ITaxonomyService"/>.
-        /// </summary>
-        private readonly ITaxonomyService taxonService;
+        private readonly IIdentityService identityService;
 
         #endregion
 
@@ -53,10 +49,9 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountTransformer"/> class.
         /// </summary>
-        public AccountTransformer(IRoleService roleService, ITaxonomyService taxonService)
+        public AccountTransformer(IIdentityService identityService)
         {
-            this.roleService = roleService;
-            this.taxonService = taxonService;
+            this.identityService = identityService;
         }
 
         #endregion
@@ -66,21 +61,17 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// <inheritdoc />
         public AccountViewModel ToAccount(Account account)
         {
-            //// FIXME: Is this ever used, or will be used?
-            var superiors = this.roleService.MembersOfRole("_superioraccount");
-            var taxon = this.taxonService.Find(account.Taxon.Id, TaxonomicSchema.Organization);
-            var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
-            var superior = superiorList.Count() > 0 ? superiorList.First() : null;
-            return new AccountViewModel()
+            var principalLocationPath = this.identityService.Principal.LocationPath();
+            var IsEditableForCurrentPrincipal = account.Locations.OrderByDescending(x => x.Sort).First().Taxon.Path.StartsWith(principalLocationPath);
+            return new AccountViewModel
             {
-                Id = account.Id,
-                Active = account.IsActive,
-                FullName = account.FullName,
-                UniqueIdentifier = account.PersonalIdentityNumber,
-                Title = account.Title,
-                Superior = superior != null ? superior.FullName : "Saknas",
-                Account = account,
-                IsPaused = account.IsPaused
+                Id                            = account.Id,
+                Active                        = account.IsActive,
+                FullName                      = account.FullName,
+                UniqueIdentifier              = account.PersonalIdentityNumber,
+                Title                         = account.Title,
+                IsPaused                      = account.IsPaused,
+                IsEditableForCurrentPrincipal = IsEditableForCurrentPrincipal
             };
         }
 

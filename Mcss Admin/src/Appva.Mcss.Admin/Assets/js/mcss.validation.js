@@ -19,6 +19,9 @@ mcss.validation = {
 		var id = params['id'];
         var uidUrl = params['uidUrl'], 
             taxonUrl = params['taxonUrl'];
+        $('.dropdown').focusout(function () {
+            $('#Taxon').valid();
+        });
         $('.lb-panel form').validate({
             'rules': {
                 'FirstName': 'required',
@@ -56,7 +59,7 @@ mcss.validation = {
                 },
                 'Taxon': "Adress måste väljas."
             },
-            'submitHandler': function(form) {
+            'submitHandler': function (form) {
 	            $(form).find('input[type=submit]').attr('disabled','disabled');
 	            form.submit();
             }
@@ -197,7 +200,6 @@ mcss.validation = {
         }
 
         $('.std-form form').validate({
-            ignore: [],
             'rules': {
                 'Name': 'required',
                 'Interval': {
@@ -545,6 +547,9 @@ mcss.validation = {
         var uidUrl = params['uidUrl'], 
             taxonUrl = params['taxonUrl'],
             pwdUrl = '';
+        $('.dropdown').focusout(function () {
+            $('#Taxon').valid();
+        });
         $('.std-form form').validate({
             'rules': {
                 'FirstName': 'required',
@@ -570,13 +575,6 @@ mcss.validation = {
                     'digits': true,
                     'minlength': 4,
                     'maxlength': 7
-                    /*'remote': {
-                        'url': pwdUrl,
-                        'type': "post",
-                        'data': {
-                            'password': $('#Password').val()
-                        }
-                    }*/
                 },
                 'TitleRole': 'required',
                 'Taxon': {
@@ -715,12 +713,7 @@ mcss.validation = {
                         }
                         return isRequired;
                     }
-                }/*,
-                'TestPatients': {
-                    'required': function () {
-                        return $('.person').length == 0;
-                    }
-                }*/
+                }
             },
             'messages': {
                 'Delegation': "Delegering måste väljas.",

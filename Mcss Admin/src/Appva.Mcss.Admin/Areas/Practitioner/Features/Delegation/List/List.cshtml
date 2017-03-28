@@ -1,4 +1,5 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
+@using Appva.Mcss.Admin.Infrastructure;
 @model Appva.Mcss.Admin.Areas.Models.ListDelegationModel
 @{ 
     SetTitle("Aktuella delegeringar, {0}", Model.Account.FullName); 
@@ -19,10 +20,13 @@
             {
 			    <div class="h cf">
                     <h2>@keyValue.Key</h2>
-                    @Html.ActionLink(Permissions.Delegation.Update, "Förnya delegeringar", "Renew",
-                         new { id = Model.Account.Id, DelegationCategoryId = keyValue.Value[0].DelegationId }, new { @class = "btn lb-link" })
-                    @Html.ActionLink(Permissions.Delegation.Update, string.Format("Aktivera alla delegeringar för {0}", keyValue.Key), "ActivateAll",
-                         new { accountId = Model.Account.Id, DelegationCategoryId = keyValue.Value[0].DelegationId }, new { @class = "btn" })
+                    @if (keyValue.Value.Any(x => x.IsEditableForCurrentPrincipal))
+                    {
+                        @Html.ActionLink(Permissions.Delegation.Update, "Förnya delegeringar", "Renew",
+                            new { id = Model.Account.Id, DelegationCategoryId = keyValue.Value[0].DelegationId }, new { @class = "btn lb-link" })
+                        @Html.ActionLink(Permissions.Delegation.Update, string.Format("Aktivera alla delegeringar för {0}", keyValue.Key), "ActivateAll",
+                            new { accountId = Model.Account.Id, DelegationCategoryId = keyValue.Value[0].DelegationId }, new { @class = "btn" })
+                    }
                 </div>
 	            <div id="signed-events">
 		            <table>
@@ -42,7 +46,9 @@
                                 @if (delegation.IsActivated)
                                 {
                                     <img src="@Url.Image("icn-ok.png")" alt="Ja" />
-                                } else {
+                                }
+                                else if (delegation.IsEditableForCurrentPrincipal)
+                                {
                                     @Html.ActionLink("Aktivera", "Activate",
                                         new { id = delegation.Id }, new { @class = "btn btn-activate" })
                                 }
@@ -55,14 +61,15 @@
                                             @foreach (var patient in delegation.Patients)
                                             {
 							                <li>
-                                                @if (Html.HasPermissionFor(Permissions.Schedule.Read))
+                                                @*if (Html.HasPermissionFor(Permissions.Schedule.Read))
                                                 {
-                                                        @Html.ActionLink(patient.Value, "List", "Schedule", new { id = patient.Key, Area = "Patient" }, new { @class = "link" })
+                                                    @Html.ActionLink(patient.Value, "List", "Schedule", new { id = patient.Key, Area = "Patient" }, new { @class = "link" })
                                                 }
                                                 else
                                                 {
-                                                        @patient.Value
-                                                }
+                                                    @patient.Value
+                                                }*@
+                                                @patient.Value
                                             </li>
                                         }
 						            </ul>
@@ -75,14 +82,26 @@
                                         </p>
                                     }
 					            </td>
-                                <td>@Html.ActionLink(delegation.CreatedBy.Value, "List", "Delegation", new { id = delegation.CreatedBy.Key }, new { @class = "link" })</td>
+                                <td>
+                                    @if (PipeUtils.IsAnywhereInPipe(User.LocationPath(), delegation.CreatedBy.Item3))
+                                    {
+                                        @* We are in the same pipe and the link can be shown *@
+                                        @Html.ActionLink(delegation.CreatedBy.Item2, "List", "Delegation", new { id = delegation.CreatedBy.Item1 }, new { @class = "link" })
+                                    }
+                                    else
+                                    {
+                                        @delegation.CreatedBy.Item2
+                                    }
+                                </td>
 					            <td class="@(delegation.EndDate.Subtract(DateTime.Now).Days < 30 ? "urgent" : "no-worries")">
                                     @String.Format("{0:yyyy-MM-dd}", delegation.StartDate) till @String.Format("{0:yyyy-MM-dd}", delegation.EndDate) <em>(@delegation.EndDate.Subtract(DateTime.Now).Days dagar kvar)</em>
                                 </td>
 					            <td class="btns">
-                                    @Html.ActionLink(Permissions.Delegation.Update, "Ändra", "Update", new { Id = delegation.Id }, new { @class = "btn lb-link" })
-                                    <!--<a class="btn btn-print" href="#">Skriv ut</a>-->
-                                    @Html.ActionLink(Permissions.Delegation.Delete, "Ta bort", "Delete", new { Id = delegation.Id }, new { @class = "btn btn-del lb-link" })
+                                    @if (delegation.IsEditableForCurrentPrincipal)
+                                    {
+                                        @Html.ActionLink(Permissions.Delegation.Update, "Ändra",   "Update", new { Id = delegation.Id }, new { @class = "btn lb-link" })
+                                        @Html.ActionLink(Permissions.Delegation.Delete, "Ta bort", "Delete", new { Id = delegation.Id }, new { @class = "btn btn-del lb-link" })
+                                    }
                                 </td>
 				            </tr>
                             }

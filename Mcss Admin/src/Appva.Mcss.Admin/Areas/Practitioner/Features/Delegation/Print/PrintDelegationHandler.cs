@@ -101,6 +101,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
             var user = this.accountService.Find(this.identity.PrincipalId);
             var account = this.accountService.Find(message.Id);
             var delegations = this.delegationService.List(
+                this.identity.Principal.LocationPath(),
                 byAccount: account.Id,
                 createdBy: this.identity.PrincipalId,
                 isActive: true);

@@ -87,7 +87,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <summary>
         /// CreatedBy
         /// </summary>
-        public KeyValuePair<Guid, string> CreatedBy
+        public Tuple<Guid, string, string> CreatedBy
         {
             get;
             set;
@@ -106,6 +106,15 @@ namespace Appva.Mcss.Admin.Application.Models
         /// The category this delegation belongs to
         /// </summary>
         public DelegationCategoryModel Category
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether or not the delegation is editable by the current principal.
+        /// </summary>
+        public bool IsEditableForCurrentPrincipal
         {
             get;
             set;

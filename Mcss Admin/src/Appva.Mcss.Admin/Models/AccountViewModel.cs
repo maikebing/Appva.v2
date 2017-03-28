@@ -17,18 +17,15 @@ namespace Appva.Mcss.Web.ViewModels {
 
         public string Title { get; set; }
 
-        public string Superior { get; set; }
-
-        public bool ShowAlertOnDaysLeft { get; set; }
-
-        public int? DaysLeft { get; set; }
-
         public bool Active { get; set; }
 
         public bool IsPaused { get; set; }
 
-        public Account Account { get; set; }
-
+        public bool IsEditableForCurrentPrincipal
+        {
+            get;
+            set;
+        }
     }
 
 }

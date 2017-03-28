@@ -10,7 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles
 
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Areas.Roles.Features.RolesSchedules.Update;
+    using Appva.Mcss.Admin.Areas.Roles.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;

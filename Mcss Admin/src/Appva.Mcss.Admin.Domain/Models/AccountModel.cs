@@ -141,6 +141,17 @@ namespace Appva.Mcss.Admin.Domain.Models
             set;
         }
 
+        /// <summary>
+        /// The locations.
+        /// </summary>
+        public bool IsEditableForCurrentUser
+        {
+            get;
+            set;
+        }
+
         #endregion
+
+        
     }
 }

@@ -51,21 +51,24 @@
                 @foreach (var item in Model.Accounts.Entities)
                 {
                     <li class="cf @((item.HasExpiringDelegation) ? "update" : "")">
-                        @if (item.IsActive)
+                        @if (item.IsEditableForCurrentUser)
                         {
-                            @Html.ActionLink(Permissions.Practitioner.Inactivate, "Ta bort", "Inactivate", "Accounts", new { Id = item.Id }, new { @class = "btn btn-del" })
-                        }
-                        @if (!item.IsActive && !item.IsPaused)
-                        {
-                            @Html.ActionLink(Permissions.Practitioner.Reactivate, "Aktivera", "Reactivate", "Accounts", new { Id = item.Id }, new { @class = "btn" })
-                        }
-                        @if (!item.IsPaused && item.IsActive)
-                        {
-                            @Html.ActionLink(Permissions.Practitioner.Pause, "Inaktivera", "Pause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
-                        }
-                        @if (item.IsPaused)
-                        {
-                            @Html.ActionLink(Permissions.Practitioner.Resume, "Aktivera", "UnPause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
+                            if (item.IsActive)
+                            {
+                                @Html.ActionLink(Permissions.Practitioner.Inactivate, "Ta bort", "Inactivate", "Accounts", new { Id = item.Id }, new { @class = "btn btn-del" })
+                            }
+                            if (!item.IsActive && !item.IsPaused)
+                            {
+                                @Html.ActionLink(Permissions.Practitioner.Reactivate, "Aktivera", "Reactivate", "Accounts", new { Id = item.Id }, new { @class = "btn" })
+                            }
+                            if (!item.IsPaused && item.IsActive)
+                            {
+                                @Html.ActionLink(Permissions.Practitioner.Pause, "Inaktivera", "Pause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
+                            }
+                            if (item.IsPaused)
+                            {
+                                @Html.ActionLink(Permissions.Practitioner.Resume, "Aktivera", "UnPause", "Accounts", new { Id = item.Id }, new { @class = "btn" })
+                            }
                         }
                         <div class="h">
                             <h2>
@@ -86,10 +89,6 @@
                             <strong>Titel:</strong>
                             <span>@item.Title</span>
                         </div>
-                        <div class="i">
-                            <strong>Chef:</strong>
-                            <span>@*item.Superior*@</span>
-                        </div>
                         @if (Html.HasPermissionFor(Permissions.Synchronization.Read))
                         {
                             <div class="i">
@@ -100,13 +99,13 @@
                     </li>
                 }
             </ul>
-            @Html.Pager((int)Model.Accounts.PageSize, (int)Model.Accounts.CurrentPage, (int)Model.Accounts.TotalCount).Options(o => o
+            @Html.Pager((int) Model.Accounts.PageSize, (int) Model.Accounts.CurrentPage, (int) Model.Accounts.TotalCount).Options(o => o
             .DisplayTemplate("Pagination")
             .MaxNrOfPages(15)
             .AlwaysAddFirstPageNumber()
             .AddRouteValue("IsActive", Model.IsFilterByIsActiveEnabled)
             .AddRouteValue("IsPaused", Model.IsFilterByIsPausedEnabled)
-             .AddRouteValue("IsSynchronized", Model.IsFilterByIsSynchronizedEnabled)
+            .AddRouteValue("IsSynchronized", Model.IsFilterByIsSynchronizedEnabled)
             .AddRouteValue("FilterByCreatedBy", Model.IsFilterByCreatedByEnabled)
             .AddRouteValue("DelegationFilterId", Model.DelegationFilterId)
             .AddRouteValue("RoleFilterId", Model.RoleFilterId))

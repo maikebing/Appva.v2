@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Infrastructure.Models;
@@ -24,6 +25,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
     internal sealed class CreatePatientHandler : RequestHandler<Parameterless<CreatePatient>, CreatePatient>
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
 
         /// <summary>
         /// The <see cref="ITaxonomyService"/>.
@@ -42,10 +53,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreatePatientHandler"/> class.
         /// </summary>
-        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation</param>
-        /// <param name="settingsService">The <see cref="ISettingsService"/> implementation</param>
-        public CreatePatientHandler(ITaxonomyService taxonomyService, ISettingsService settingsService)
+        /// <param name="identityService">The <see cref="IIdentityService"/>.</param>
+        /// <param name="accountService">The <see cref="IAccountService"/>.</param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/>.</param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
+        public CreatePatientHandler(IIdentityService identityService, IAccountService accountService, ITaxonomyService taxonomyService, ISettingsService settingsService)
         {
+            this.identityService = identityService;
+            this.accountService  = accountService;
             this.taxonomyService = taxonomyService;
             this.settingsService = settingsService;
         }
@@ -57,20 +72,22 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc /> 
         public override CreatePatient Handle(Parameterless<CreatePatient> message)
         {
-            var assessable = this.settingsService.HasSeniorAlert();
+            var id          = this.identityService.PrincipalId;
+            var user        = this.accountService.Find(id);
+            var assessable  = this.settingsService.HasSeniorAlert();
             var assessments = assessable ? this.taxonomyService.List(TaxonomicSchema.RiskAssessment)
                 .Select(x => new Assessment
                 {
-                    Id = x.Id,
-                    Label = x.Name,
+                    Id          = x.Id,
+                    Label       = x.Name,
                     Description = x.Description,
-                    ImagePath = x.Type
+                    ImagePath   = x.Type
                 }).ToList() : null;
-            var organizationalUnits = this.taxonomyService.List(TaxonomicSchema.Organization);
+            var organizations = this.taxonomyService.List(TaxonomicSchema.Organization);
             return new CreatePatient
             {
-                Taxons = TaxonomyHelper.SelectList(organizationalUnits),
-                Assessments = assessments,
+                Taxons                   = TaxonomyHelper.CreateItems(user, null, organizations),
+                Assessments              = assessments,
                 HasAlternativeIdentifier = this.settingsService.HasPatientTag()
             };
         }

@@ -26,22 +26,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     internal sealed class UpdateRolesHandler : RequestHandler<UpdateRoles, UpdateRolesForm>
     {
-        #region Private fields.
+        #region Variables.
 
         /// <summary>
-        /// The <see cref="IAccountService"/> implementation
+        /// The <see cref="IAccountService"/>.
         /// </summary>
         private readonly IAccountService service;
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/> implementation
-        /// </summary>
-        private readonly IPersistenceContext persistence;
-
-        /// <summary>
-        /// The <see cref="IIdentityService"/> implementation
-        /// </summary>
-        private readonly IIdentityService identities;
 
         #endregion
 
@@ -51,11 +41,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="UpdateRolesHandler"/> class.
         /// </summary>
         /// <param name="service"></param>
-        public UpdateRolesHandler(IPersistenceContext persistence, IAccountService service, IIdentityService identities)
+        public UpdateRolesHandler(IAccountService service)
         {
             this.service = service;
-            this.persistence = persistence;
-            this.identities = identities;
         }
 
         #endregion
@@ -65,23 +53,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override UpdateRolesForm Handle(UpdateRoles message)
         {
-
-            var account = this.persistence.Get<Account>(message.Id);
-            var query = this.persistence.QueryOver<Role>().Where(x => x.IsActive)
-                .OrderBy(x => x.Weight).Asc.ThenBy(x => x.Name).Asc;
-            if (! this.identities.IsInRole(RoleTypes.Appva))
-            {
-                query.Where(x => x.IsVisible == true);
-            }
-            var roles = query.List();
+            var user    = this.service.CurrentPrincipal();
+            var account = this.service.Find(message.Id);
+            var roles   = user.GetRoleAccess();
             return new UpdateRolesForm
             {
-                Roles = roles.Select(x => new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name,
-                    Selected = true
-                }).ToList(),
+                Roles         = roles.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),
                 SelectedRoles = account.Roles.Select(x => x.Id.ToString()).ToArray()
             };
         }

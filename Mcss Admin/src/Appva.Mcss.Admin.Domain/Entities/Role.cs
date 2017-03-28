@@ -1,9 +1,6 @@
 ﻿// <copyright file="Role.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -20,7 +17,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class Role : AggregateRoot<Role>
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Role"/> class.
@@ -111,9 +108,27 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        /// <summary>
+        /// The roles the role can access.
+        /// </summary>
+        public virtual IList<Role> Roles
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The delegations the role can access.
+        /// </summary>
+        public virtual IList<Taxon> Delegations
+        {
+            get;
+            set;
+        }
+
         #endregion
 
-        #region Public Static Functions.
+        #region Public Static Builders.
 
         /// <summary>
         /// Creates a new instance of the <see cref="Role"/> class.

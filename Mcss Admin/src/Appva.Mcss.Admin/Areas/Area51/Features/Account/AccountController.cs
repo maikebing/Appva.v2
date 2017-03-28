@@ -11,11 +11,8 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mvc.Security;
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Areas.Area51.Models;
 
@@ -61,7 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account
         /// <returns></returns>
         [Route("duplicates/{AccountToRemove:guid}/delete")]
         [HttpPost, Dispatch("ListDuplicates", "Account")]
-        public ActionResult DeleteDuplicate(Models.DeleteDuplicate request)
+        public ActionResult DeleteDuplicate(DeleteDuplicate request)
         { 
             return this.View();
         }

@@ -17,9 +17,10 @@
             @Html.FormGroup(x => x.CountInventory, "checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.OrderRefill, "checkbox").Checkbox("").Label().Validate().Build()
             <h3 class="section-title">Dialogruta vid avvikande signering</h3>
-            @Html.FormGroup(x => x.NurseConfirmDeviation, "checkbox").Checkbox("").Label().Validate().Build()
-            @Html.FormGroup(x => x.SpecificNurseConfirmDeviation, "checkbox").Checkbox("").Label().Validate().Build()
-            @Html.FormGroup(x => x.NurseConfirmDeviationMessage, "text large").Label().TextArea().Validate().Build()
+            @Html.FormGroup(x => x.NurseConfirmDeviation, "nurse-confirm-deviation checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.DeviationMessage.IncludeListOfNurses, "nurse-confirm-deviation-option checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.DeviationMessage.Header, "nurse-confirm-deviation-option text large").Label("Rubrik").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.DeviationMessage.Message, "nurse-confirm-deviation-option text large").Label("Meddelande").TextArea().Validate().Build()
             <h3 class="section-title">Delegering</h3>
             @Html.LabelFor(x => x.DelegationTaxon)
             @Html.DropDownListFor(x => x.DelegationTaxon, Model.Delegations, "Ingen delegering")
@@ -29,3 +30,21 @@
         </div>
     }
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        toggleMessageOptions($('.nurse-confirm-deviation input'))
+        $('.nurse-confirm-deviation input').change(function (e) {
+            toggleMessageOptions($(this));
+        });
+    });
+
+    function toggleMessageOptions(e) {
+        if (e.prop('checked')) {
+            $('.nurse-confirm-deviation-option input, .nurse-confirm-deviation-option textarea').prop('disabled', false)
+        }
+        else {
+            $('.nurse-confirm-deviation-option input, .nurse-confirm-deviation-option textarea').prop('disabled', true)
+        }
+    }
+</script>

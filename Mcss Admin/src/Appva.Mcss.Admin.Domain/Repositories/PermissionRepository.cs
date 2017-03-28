@@ -55,7 +55,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <returns>
         /// True if the user is a member of any of the specified permissions
         /// </returns>
-        bool HasPermissions(Account account, params string[] permissions);
+        bool HasAnyPermissions(Account account, params string[] permissions);
 
         /// <summary>
         /// Returns a filtered collection of <see cref="Permission"/> by specified 
@@ -123,7 +123,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public bool HasPermissions(Account account, params string[] permissions)
+        public bool HasAnyPermissions(Account account, params string[] permissions)
         {
             var roles = account.Roles.Select(x => x.Id).ToArray();
             return this.persistenceContext.QueryOver<Permission>()

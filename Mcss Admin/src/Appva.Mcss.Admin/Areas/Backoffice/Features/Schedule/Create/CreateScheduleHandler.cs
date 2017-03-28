@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Infrastructure.Models;
@@ -53,7 +54,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
         {
             return new CreateScheduleModel
             {
-                Delegations = this.taxonomyService.Roots(TaxonomicSchema.Delegation).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList()
+                Delegations = this.taxonomyService.Roots(TaxonomicSchema.Delegation).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList(),
+                DeviationMessage = new ConfirmDeviationMessage()
             };
         }
 

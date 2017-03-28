@@ -95,6 +95,89 @@ b,strong {font-weight:bold;}
 i,em {font-style:italic;}
 input,textarea,select {font-size:1em;}
 
+/* ORGANIZATIONAL HIERARCHY
+============================================================================================================================ */
+.org-hierarchy {
+	overflow:auto;
+}
+.org-hierarchy ul {
+	list-style:none;
+	margin:0;
+	padding:5px 0 5px 5px;
+}
+.org-hierarchy ul ul {
+	background:url(../i/dot-grey.png) repeat-y 20px 0;
+}
+.org-hierarchy ul ul li {
+	padding:5px 0 5px 40px;
+	background:url(../i/line-grey-h.png) no-repeat 15px 18px;
+}
+.org-hierarchy .title, .org-hierarchy .multi-title {
+	float:left;
+	margin:0;
+	padding:5px 10px;
+	color:#445068;
+	background:#eaeff9;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	text-decoration:none;
+}
+#org-root,
+.org-hierarchy .sel a {
+	color:#fff;
+	background:#313846;
+	font-weight:bold;
+}
+.org-hierarchy .ctrl {
+	padding:1px;
+	border:1px solid #fff;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+}
+.org-hierarchy .sel .ctrl,
+.org-hierarchy .ctrl:hover {
+	border-color:#d8dfe5;
+	background:#eaeff9;
+}
+.org-hierarchy .node-ctrl {
+	display:none;
+	float:left;
+	margin-left:10px;
+}
+.org-hierarchy .node-ctrl a {
+	float:left;
+	padding:4px;
+}
+.org-hierarchy .node-ctrl img {
+	float:left;
+	width:19px;
+	height:19px;
+}
+.org-hierarchy .ctrl:hover .node-ctrl {display:block;}
+
+.lb-panel .org-hierarchy {
+	max-height:400px;
+	padding:10px;
+}
+
+.std-list li .numbered-order {
+    float:left;
+    margin-right: 10px;
+    background: #313846;
+    color: #fff;
+    padding: 1.5px 10px;
+    font-weight:bold;
+    border-radius: 3px;
+}
+
+.org-hierarchy .ctrl .title {
+    background: url(../i/btn-edit.png) no-repeat 100% 0;
+    padding-right:30px;
+    background-size:27px;
+}
+
 
 /* GLOBAL CLASSES
 ============================================================================================================================ */

@@ -89,8 +89,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 return false;
             }
-            if (! this.accountService.IsInRoles(account, RoleTypes.Backend) &&
-                ! this.accountService.HasPermissions(account, Permissions.Admin.Login.Value))
+            if (! this.accountService.IsInAnyRoles(account, RoleTypes.Backend) &&
+                ! this.accountService.HasAnyPermissions(account, Permissions.Admin.Login.Value))
             {
                 return false;
             }

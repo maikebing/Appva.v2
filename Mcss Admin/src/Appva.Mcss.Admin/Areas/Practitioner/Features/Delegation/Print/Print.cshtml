@@ -2,9 +2,34 @@
 @{
     SetTitle("Delegeringsbeslut");
     Layout = "~/Areas/Patient/Features/Shared/_PrintLayout.cshtml";
+
+    var issuerTitle = Model.DelegationIssuer.Title != null ? Model.DelegationIssuer.Title : string.Empty;
 }
 <div id="header" class="cf">
-	<h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
+    @if (issuerTitle.Contains("Sjuksköterska"))
+    {
+        <h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else if (issuerTitle.Contains("Fysioterapeut"))
+    {
+        <h1>Delegeringsbeslut av fysioterapeut gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else if (issuerTitle.Contains("Arbetsterapeut"))
+    {
+        <h1>Delegeringsbeslut av arbetsterapeut gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else if (issuerTitle.Contains("Sjukgymnast"))
+    {
+        <h1>Delegeringsbeslut av sjukgymnast gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else if (issuerTitle.Contains("Dietist"))
+    {
+        <h1>Delegeringsbeslut av dietist gällande hälso- och sjukvårdsuppgifter</h1>
+    }
+    else
+    {
+        <h1>Delegeringsbeslut gällande hälso- och sjukvårdsuppgifter</h1>
+    }
 	<p>(Sparas i 10 år)</p>
 </div>
 
@@ -81,7 +106,30 @@
     }
 	<div class="signature cf">
 		<div class="col">
-			<strong>Namnunderskrift delegerande sjuksköterska;</strong>
+            @if (issuerTitle.Contains("Sjuksköterska"))
+            {
+                <strong>Namnunderskrift delegerande sjuksköterska;</strong>
+            }
+            else if (issuerTitle.Contains("Fysioterapeut"))
+            {
+                <strong>Namnunderskrift delegerande fysioterapeut;</strong>
+            }
+            else if (issuerTitle.Contains("Arbetsterapeut"))
+            {
+                <strong>Namnunderskrift delegerande arbetsterapeut;</strong>
+            }
+            else if (issuerTitle.Contains("Sjukgymnast"))
+            {
+                <strong>Namnunderskrift delegerande sjukgymnast;</strong>
+            }
+            else if (issuerTitle.Contains("Dietist"))
+            {
+                <strong>Namnunderskrift delegerande dietist;</strong>
+            }
+            else
+            {
+                <strong>Namnunderskrift av den som utfärdar delegeringen;</strong>
+            }
 			<p>Datum</p>
 			<p>Underskrift</p>
 			<p id="nameTitle">@Model.DelegationIssuer.FullName</p>

@@ -265,6 +265,27 @@ namespace Appva.Mcss.Admin.Application.Services
             this.cache.Remove(schema.CacheKey);
         }
 
+        //public void Delete(Guid id, TaxonomicSchema schema)
+        //{
+        //    var node = this.repository.Find(id);
+
+        //    if (node != null) {
+        //        try {
+        //            this.repository.Delete(node);
+
+        //            this.auditing.Update("raderade taxon {0} med namn {1}.", node.Id, node.Name);
+        //            this.cache.Remove(schema.CacheKey);
+        //        }
+        //        catch {
+        //            /* Here we should set IsActive = false.. But currently IsActive does not exist on ITaxon and i don't want to make all those changes, sust
+        //            this.auditing.Update("misslyckades med att radera -> inaktiverade taxon {0} med namn {1}.", node.Id, node.Name);
+        //            node.IsActive = false;                    
+        //            this.Update(node, schema);
+        //            */
+        //        }
+        //    }
+        //}
+
         #endregion
     }
 }

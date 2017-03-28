@@ -73,6 +73,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
+        /// If Archived.
+        /// </summary>
+        public virtual bool IsArchived
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// List of <see cref="Delegation"/> for this patient.
         /// </summary>
         public virtual IList<Delegation> Delegations

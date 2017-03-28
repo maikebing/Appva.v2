@@ -277,13 +277,13 @@ namespace Appva.Mcss.Admin.Application.Security
             if (this.settings.IsAccessControlListActivated())
             {
                 //// TODO: if (this.settings.IsAccessControlListActivated()) is temporary - this should not have to be checked later on.
-                if (! this.accounts.HasPermissions(account, Permissions.Admin.Login.Value))
+                if (! this.accounts.HasAnyPermissions(account, Permissions.Admin.Login.Value))
                 {
                     this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");
                     return AuthenticationResult.Failure;
                 }
             }
-            else if (! this.accounts.IsInRoles(account, Core.Resources.RoleTypes.Backend))
+            else if (! this.accounts.IsInAnyRoles(account, Core.Resources.RoleTypes.Backend))
             {
                 //// TODO: if (! this.accounts.IsInRoles(account, Core.Resources.RoleTypes.Backend)) is temporary - this should be removed.
                 this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");

@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,8 +56,8 @@
       <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Core.0.5.0\lib\net45\Appva.Core.dll</HintPath>
+    <Reference Include="Appva.Core, Version=0.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Core.0.6.1\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core.Messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -75,8 +76,8 @@
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Mvc, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Mvc.0.5.0\lib\net45\Appva.Mvc.dll</HintPath>
+    <Reference Include="Appva.Mvc, Version=0.6.0.17012, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Mvc.0.6.0\lib\net45\Appva.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Office, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -340,11 +341,25 @@
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\SyncLdap.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\LdapSyncHandler.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\LdapSyncModel.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddChristmas2016\AddChristmas2016Handler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\AddChristmas2016\AddChristmas2016Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNotice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNoticeHandler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddVersion162\AddVersion162NoticeHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Create\CreateNotificationPublisher.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Create\CreateNotificationHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Create\CreateNotificationModel.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\ListTemplates\ListTemplatesHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\ListTemplates\ListTemplatesModel.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\NotificationsController.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Preview\PreviewTemplateHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Preview\PreviewTemplateModel.cs" />
+    <Compile Include="Areas\Area51\Features\Notifications\Preview\PreviewTemplate.cs" />
+    <Compile Include="Areas\Area51\Features\Sequence\ListCorruptSequences\ListCorruptSequencesHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Sequence\ListCorruptSequences\ListSequenceModel.cs" />
+    <Compile Include="Areas\Area51\Features\Sequence\SequenceController.cs" />
+    <Compile Include="Areas\Area51\Features\Sequence\UpdateStartAndEndDate\UpdateStartAndEndDate.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Create\CreateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\Update\UpdateSetting.cs" />
     <Compile Include="Areas\Area51\Features\Settings\SettingsController.cs" />
@@ -357,6 +372,18 @@
     <Compile Include="Areas\Area51\Features\Token\Install\InstallToken.cs" />
     <Compile Include="Areas\Area51\Features\Token\Install\InstallTokenHandler.cs" />
     <Compile Include="Areas\Area51\Features\Token\TokenController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CalendarController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategoryPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategoryModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategoryHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\ListCategories\ListCategoriesHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\ListCategories\ListCategoriesModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\Shared\Models\CategoryModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategoryHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategoryModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategoryPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\CreateCategory\CreateDelegationCategoryHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\CreateCategory\CreateDelegationCategoryModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\CreateCategory\CreateDelegationCategoryPublisher.cs" />
@@ -372,6 +399,15 @@
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Delete\DeleteOrganizationalUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Delete\DeleteOrganizationalUnitPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Delete\DeleteOrganizationalUnitModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Update\UpdateOrganizationalUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Update\UpdateOrganizationalUnitModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\Update\UpdateOrganizationalUnitPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitPublisher.cs" />
@@ -395,10 +431,12 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\ScheduleController.cs" />
-    <Compile Include="Areas\Backoffice\Features\Schedule\Shared\Model\ConfirmDeviationMessage.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateSchedulePublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\List\ListOrganizationHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\List\ListOrganizationModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Organization\OrganizationController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
@@ -475,6 +513,8 @@
     <Compile Include="Areas\Patient\Features\Order\Undo\UndoOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\Undo\UndoOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\UndoRefill\UndoRefillOrderHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Archive\ArchivePatient.cs" />
+    <Compile Include="Areas\Patient\Features\Patient\Archive\ArchivePatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Reactivate\ReactivatePatient.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Reactivate\ReactivatePatientHandler.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Create\CreatePatientHandler.cs" />
@@ -808,12 +848,15 @@
     <Content Include="Assets\i\btn-lb-close.png" />
     <Content Include="Assets\i\bubble-tip-left.png" />
     <Content Include="Assets\i\bullet-action.png" />
+    <Content Include="Assets\i\bullet-add.png" />
+    <Content Include="Assets\i\bullet-delete.png" />
     <Content Include="Assets\i\ce-logo.png" />
     <Content Include="Assets\i\clock.png" />
     <Content Include="Assets\i\clock_red.png" />
     <Content Include="Assets\i\clock_stop.png" />
     <Content Include="Assets\i\dayslot-hover.png" />
     <Content Include="Assets\i\dayslot-unsel.png" />
+    <Content Include="Assets\i\dot-grey.png" />
     <Content Include="Assets\i\icn-change-password.png" />
     <Content Include="Assets\i\icn-dualstaffing.png" />
     <Content Include="Assets\i\icn-logout.png" />
@@ -883,6 +926,7 @@
     <Content Include="Assets\i\ipad-nextarrow.png" />
     <Content Include="Assets\i\ipad-now.png" />
     <Content Include="Assets\i\ipad-toggledarrow.png" />
+    <Content Include="Assets\i\line-grey-h.png" />
     <Content Include="Assets\i\list-arrow.png" />
     <Content Include="Assets\i\logo-about.png" />
     <Content Include="Assets\i\logo.png" />
@@ -1256,7 +1300,7 @@
     <Content Include="Features\Shared\EmailTemplates\RegisterSithsUserEmail.cshtml" />
     <Content Include="Features\Shared\EmailTemplates\UpdateUserMobileDeviceEmail.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\version1.6.2.cshtml" />
-    <Content Include="Areas\Area51\Features\Notifications\Index\Index.cshtml" />
+    <Content Include="Areas\Area51\Features\Notifications\ListTemplates\ListTemplates.cshtml" />
     <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
     <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
@@ -1290,11 +1334,23 @@
     <Content Include="Areas\Backoffice\Features\Schedule\Update\Update.cshtml" />
     <Content Include="Areas\Backoffice\Features\Schedule\Create\Create.cshtml" />
     <Content Include="Areas\Backoffice\Features\Schedule\EditSigningOptions\EditSigningOptions.cshtml" />
+    <Content Include="Areas\Area51\Features\Sequence\ListCorruptSequences\ListCorruptSequences.cshtml" />
     <Content Include="Areas\Area51\Features\Account\ListDuplicates\ListDuplicates.cshtml" />
     <Content Include="Areas\Backoffice\Features\Delegation\Settings\Settings.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Organization\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Organization\Create\Create.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Organization\Update\Update.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\Add\Add.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\Update\Update.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\christmas2016.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Calendar\ListCategories\ListCategories.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategory.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetails.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategory.cshtml" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\user-meetup2017.cshtml" />
+    <Content Include="Areas\Area51\Features\Notifications\Preview\Preview.cshtml" />
+    <Content Include="Areas\Area51\Features\Notifications\Create\Create.cshtml" />
     <Content Include="Areas\Roles\Features\RolesDelegations\Update\Update.cshtml" />
     <Content Include="Areas\Roles\Features\RolesRoles\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />

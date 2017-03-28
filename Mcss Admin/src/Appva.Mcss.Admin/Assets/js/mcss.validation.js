@@ -792,7 +792,7 @@ mcss.validation = {
 		$('.std-form form').validate({
             'rules': {
                 'Value': {
-                    'min':1,
+                    'min':0,
                     'max': 99999,
                     'required': true
                 }
@@ -800,7 +800,7 @@ mcss.validation = {
             'messages': {
                 'Value': {
                     'required': "Mängd måste fyllas i.",
-                    'min': "Mängd måste vara ett numeriskt värde och vara mindre än 1.",
+                    'min': "Mängd måste vara ett numeriskt värde och vara större än 0.",
                     'max': "Mängd får ej vara större än 99999."
                 }
             }
@@ -818,7 +818,7 @@ mcss.validation = {
             'messages': {
                 'Value': {
                     'required': "Mängd måste fyllas i.",
-                    'min': "Mängd måste vara ett numeriskt värde och vara mindre än 0.",
+                    'min': "Mängd måste vara ett numeriskt värde och vara större än 0.",
                     'max': "Mängd får ej vara större än 99999."
                 }
             }

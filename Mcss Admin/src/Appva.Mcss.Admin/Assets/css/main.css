@@ -1354,7 +1354,19 @@ td.rights {
 	display:block;
 	min-height:20px;
 }
-
+#signlist .prtd {
+    width:100px;
+    text-align:center;
+}
+#signlist .prpad { padding:6px 10px!important; }
+#signlist .trpad { padding:18px 10px!important; }
+#signlist .tr-highlight:hover { background:#f9f9f9; }
+#signlist .td-highlight {
+    background:#f9f9f9;
+    font-weight:bold;
+}
+#signlist .tr-highlight:hover .td-highlight { background:#f0f0f0; }
+#signlist .tr-highlight, #signlist .td-highlight { transition:background .2s ease-in-out; }
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}
@@ -2729,42 +2741,6 @@ form .time {width:4em;}
 #signlist a.close:active {
 	background:url(../i/btn-lb-close.png) no-repeat 0 100%;
 }
-
-#setlist {
-    list-style-type:none;
-    padding:20px;
-}
-#setlist li {
-    padding:0;
-    display:inline-block;
-}
-#setlist li a {
-    float:left;
-    width:200px;
-    height:120px;
-    display:inline-block;
-    background:url(../i/settings-medium.png) no-repeat 105px 25px;
-    background-color:#fff;
-    margin:0 10px 10px 0;
-    padding:15px;
-    border-bottom:2px solid #CBD9E3;
-    text-decoration:none;
-    color:#222;
-    font-weight:bold;
-    opacity:.7;
-    cursor:pointer;
-}
-#setlist li a:hover {
-    opacity:1;
-}
-#setlist span {
-    font-weight:normal;
-    color:#555;
-    display:inline-block;
-    border-top:1px solid #ddd;
-    padding:10px 0;
-    margin-top:10px;
-}
 #calendar a.del,
 #content-primary .signlist-collection a.item-delete {
 	display:none;
@@ -2908,7 +2884,36 @@ form .time {width:4em;}
 }
 
 .lb-panel .std-form {padding-top:0;}
-
+#pr-panel img {
+    position:absolute;
+    top:9px;
+    left:14px;
+    width:32px;
+    height:auto;
+}
+#pr-panel input[type="text"] {
+    padding:6px;
+    font-size:13px;
+    width:100%;
+}
+#pr-panel input[type="number"] {
+    margin-top:4px;
+    width:50%;
+    padding:6px;
+    font-size:13px;
+}
+#pr-panel textarea {
+    padding:6px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:13px;
+    resize:none;
+    width:100%;
+}
+#pr-panel label {margin-bottom:4px;}
+#pr-panel .checkbox-inline {
+    font-weight:400;
+    padding-bottom:2px;
+} 
 .std-form .checkbox-grid .wrap {
 	width:492px;
 	border:1px solid #D8DFE5;

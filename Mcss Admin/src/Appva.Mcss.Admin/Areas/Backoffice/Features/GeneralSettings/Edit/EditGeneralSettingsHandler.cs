@@ -38,13 +38,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         {
 
             var settings = this.settingsService.List();
-
-            var settingType = this.settingsService.List().Select(x => x.Type).ToList();
-
-
-
             var setting = settings.Where(x => x.Id == message.Id).SingleOrDefault();
-
 
             if (setting.Type == typeof(Boolean))
                 return new EditGeneralSettingsModel

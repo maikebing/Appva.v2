@@ -3,6 +3,7 @@
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
 // </author>
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
@@ -12,6 +13,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using static Application.Common.Permissions;
 
     #endregion
 
@@ -31,8 +33,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        public IList<Domain.Entities.Delegation> DelegatedTaxons { get; set; }
+
+        public IList<Domain.Entities.Delegation> ActiveDelegations { get; set; }
+
+        public List<Guid> FilteredAccounts { get; set; }
+
+
+
         #endregion
 
-        
+
     }
 }

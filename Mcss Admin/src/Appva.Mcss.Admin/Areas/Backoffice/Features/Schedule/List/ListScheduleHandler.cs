@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Persistence;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -31,6 +32,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// </summary>
         private readonly IScheduleService scheduleService;
 
+        private readonly IPersistenceContext persistenceContext;
+
+        private readonly ITaxonFilterSessionHandler filter;
         #endregion
 
         #region Constructor.
@@ -38,9 +42,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListScheduleHandler"/> class.
         /// </summary>
-        public ListScheduleHandler(IScheduleService scheduleService)
+        public ListScheduleHandler(IScheduleService scheduleService, IPersistenceContext persistenceContext, ITaxonFilterSessionHandler filter)
         {
             this.scheduleService = scheduleService;
+            this.persistenceContext = persistenceContext;
+            this.filter = filter;    
         }
 
         #endregion
@@ -50,9 +56,41 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override ListScheduleModel Handle(Parameterless<ListScheduleModel> message)
         {
+            Taxon org = null;
+
+
+            var schedulesUsed = this.persistenceContext.QueryOver<Schedule>().List();
+
+
+            var patientFilter = this.persistenceContext.QueryOver<Patient>()
+                                .JoinAlias(x => x.Taxon, () => org)
+                                .WhereRestrictionOn(() => org.Path).IsLike(filter.GetCurrentFilter().Path + "%")
+                                .List();
+
+
+            var patientFilterId = new List<Guid>();
+           
+            foreach (var item in patientFilter)
+            {
+                patientFilterId.Add(item.Id);
+            }
+
+
+
+
+                                                                    
+
+
+
+
+
+
+
             return new ListScheduleModel
             {
-                Schedules = this.scheduleService.GetSchedules().Where(x => x.ScheduleType == ScheduleType.Action).ToList()
+                Schedules = this.scheduleService.GetSchedules().Where(x => x.ScheduleType == ScheduleType.Action).ToList(),
+                SchedulesUsedBy = schedulesUsed,
+                PatientFilterIdList = patientFilterId
             };
         }
 

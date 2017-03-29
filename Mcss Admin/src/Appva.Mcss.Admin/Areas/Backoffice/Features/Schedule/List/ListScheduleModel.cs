@@ -32,6 +32,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        public IList<Schedule> SchedulesUsedBy { get; set; }
+
+        public List<Guid> PatientFilterIdList { get; set; }
+
         #endregion
     }
 }

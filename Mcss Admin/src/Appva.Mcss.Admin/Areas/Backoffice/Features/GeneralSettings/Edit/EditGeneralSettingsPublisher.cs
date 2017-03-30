@@ -10,13 +10,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
 {
 
     #region Imports.
+
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
+    using Newtonsoft.Json;
+
     #endregion
 
     public class EditGeneralSettingsPublisher : RequestHandler<EditGeneralSettingsModel, bool>
@@ -42,29 +43,30 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
 
 
 
-            if (message.intValue == null && message.stringValue == null)
+            if (message.IntValue == null && message.StringValue == null)
             {
-                setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, Convert.ToString(message.boolValue));
+                setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, Convert.ToString(message.BoolValue));
 
                 return true;
             }
 
-            if (message.intValue != null)
+            if (message.IntValue != null)
             {
-                setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, Convert.ToString(message.intValue));
+                setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, Convert.ToString(message.IntValue));
 
                 return true;
             }
 
-            if (message.stringValue != null)
+            if (message.StringValue != null)
             {
-                setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, Convert.ToString(message.stringValue));
+                setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, message.StringValue.ToString());
 
                 return true;
             }
 
             return false;
         }
+
         #endregion
     }
 }

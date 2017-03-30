@@ -5,31 +5,49 @@
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
 //      <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
+
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports.
+
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
+    using System.Collections.Generic;
+    using Newtonsoft.Json;
+    using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects;
+    using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects.Pdf;
+
     #endregion
 
     internal sealed class EditGeneralSettingsHandler : RequestHandler<Identity<EditGeneralSettingsModel>, EditGeneralSettingsModel>
     {
 
         #region Properties.
+
         private readonly ISettingsService settingsService;
+        private EditGeneralSettingsModel editSettings = new EditGeneralSettingsModel();
+        private readonly string[] machineNames = new string[] {
+            "MCSS.Core.Inventory.Units",
+            "Mcss.Core.Pdf",
+            "Mcss.Core.Security.Analytics.Audit.Configuration",
+            "Mcss.Core.Security.Jwt.Configuration.SecurityToken",
+            "Mcss.Core.Security.Messaging.Email",
+            "Mcss.Integration.Ldap.LdapConfiguration"
+        };
+
         #endregion
 
         #region Constructor.
+
         public EditGeneralSettingsHandler(ISettingsService settingsService)
         {
             this.settingsService = settingsService;
 
         }
+
         #endregion
 
         #region RequestHandler Overrides.
@@ -40,34 +58,60 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             var settings = this.settingsService.List();
             var setting = settings.Where(x => x.Id == message.Id).SingleOrDefault();
 
+            editSettings.Name = setting.Name;
+            editSettings.MachineName = setting.MachineName;
+            editSettings.BoolValue = null;
+            editSettings.IsJson = false;
+
             if (setting.Type == typeof(Boolean))
-                return new EditGeneralSettingsModel
-                {
-                    boolValue = Convert.ToBoolean(setting.Value),
-                    Name = setting.Name
-                };
+            {
+                editSettings.BoolValue = Convert.ToBoolean(setting.Value);
+            }
 
             if (setting.Type == typeof(String))
-                return new EditGeneralSettingsModel
+            {
+                editSettings.StringValue = "";
+
+                try
                 {
-                    stringValue = setting.Value,
-                    Name = setting.Name
-                };
+                    if (setting.MachineName == machineNames[0])
+                    {
+                        editSettings.InventoryObject = JsonConvert.DeserializeObject<List<InventoryObject>>(setting.Value);
+                    }
+                    else if (setting.MachineName == machineNames[1])
+                    {
+                        editSettings.PdfGenObject = JsonConvert.DeserializeObject<List<PdfGenObject>>(setting.Value);
+                    }
+
+                    editSettings.IsJson = true;
+                }
+                catch
+                {
+                    editSettings.StringValue = setting.Value;
+                }
+            }
 
             if (setting.Type == typeof(Int32))
-                return new EditGeneralSettingsModel
+            {
+                editSettings.IntValue = Convert.ToInt32(setting.Value);
+            }
+
+            if(setting.Type == typeof(IList<double>))
+            {
+                List<double> list = null;
+
+                try
                 {
-                    intValue = Convert.ToInt32(setting.Value),
-                    Name = setting.Name
-                };
+                    list = JsonConvert.DeserializeObject<List<double>>(setting.Value);
+                }
+                catch {}
 
-            else
-                return new EditGeneralSettingsModel
-                {
+                editSettings.ListValues = list;
+            }
 
-                };
-
+            return editSettings;
         }
+
         #endregion
     }
 }

@@ -2891,16 +2891,13 @@ form .time {width:4em;}
     width:32px;
     height:auto;
 }
-#pr-panel input[type="text"] {
+#pr-panel input[type="text"], #pr-panel input[type="number"] {
     padding:6px;
     font-size:13px;
     width:100%;
 }
 #pr-panel input[type="number"] {
     margin-top:4px;
-    width:50%;
-    padding:6px;
-    font-size:13px;
 }
 #pr-panel textarea {
     padding:6px;
@@ -2908,12 +2905,36 @@ form .time {width:4em;}
     font-size:13px;
     resize:none;
     width:100%;
+    height:100px;
 }
-#pr-panel label {margin-bottom:4px;}
+#pr-panel label { margin-bottom:4px; }
+#pr-panel .settings-section .settings-label {
+    padding-top:4px;
+    display:block;
+}
 #pr-panel .checkbox-inline {
     font-weight:400;
-    padding-bottom:2px;
-} 
+    padding:5px 0 0 0;
+    margin-bottom:0;
+}
+#pr-panel .settings-title {
+    border-bottom:1px solid #ccc;
+    margin:20px 0;
+    padding-bottom:10px;
+}
+#pr-panel .settings-section {
+    padding:10px 20px;
+    margin-bottom:20px;
+    background:#fff;
+    border:1px solid #ddd;
+}
+#pr-panel .settings-section .textblock {
+    background:#f9f9f9;
+    display:block;
+    padding:8px 10px;
+    margin-bottom:6px;
+    color:#555;
+}
 .std-form .checkbox-grid .wrap {
 	width:492px;
 	border:1px solid #D8DFE5;

@@ -390,6 +390,8 @@
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\EditGeneralSettingsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\EditGeneralSettingsModel.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\EditGeneralSettingsPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\JsonObjects\InventoryModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\JsonObjects\PdfGenModel.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\GeneralSettingsController.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsModel.cs" />
@@ -1336,11 +1338,10 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2090/</IISUrl>
+          <IISUrl>http://localhost:8082/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <CustomServerUrl>http://localhost:2090/</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

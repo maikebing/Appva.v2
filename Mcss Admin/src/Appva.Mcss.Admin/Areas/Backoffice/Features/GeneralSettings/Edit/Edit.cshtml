@@ -1,41 +1,71 @@
 ﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.EditGeneralSettingsModel
 @{
-    SetTitle("Admin - Generella inställningar / Edit");
+    SetTitle("Admin - Uppdatera inställning");
 }
-<div class="std-panel std-form lb-panel-small lb-validate-form">
+<div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
     @using (Html.Post(new { Id = Model.Id }))
     {
-        <div>
-            <h3 class="section-title">Uppdatera Inställning</h3>
+        <h3 class="section-title">Uppdatera inställning</h3>
+        if (Model.IntValue != null)
+        {
+            <p class="settings-title"><b>@Model.Name</b></p>
+            <div class="settings-section">
+                @Html.FormGroup(i => i.IntValue, "text").Label("Värde", new { @for = "setValue" }).TextBox(null, new { @id = "setValue", @type="number" }).Validate().Build()
+            </div>
+        }
 
-            @if (Model.intValue != null)
+        if (Model.BoolValue != null)
+        {
+            bool boolValue = (bool)Model.BoolValue;
+            <p class="settings-title"><b>@Model.Name</b> (nuvarande värde: <b>@Model.BoolValue</b>)</p>
+            <div class="settings-section">
+                @Html.FormGroup(x => boolValue, "text").Checkbox("Sätt som <b>True</b>").Validate().Build()
+            </div>
+        }
+
+        if (Model.StringValue != null)
+        {
+            <p class="settings-title"><b>@Model.Name</b></p>
+
+            if (Model.IsJson)
             {
+                if (Model.InventoryObject != null)
+                {
+                    int index = 0;
 
-                <h4>@Model.Name</h4><br />
-                @Html.Label("Värde")<br />
-                @Html.TextBoxFor(i => i.intValue, new { @type = "number" })<br /><br />
+                    foreach (var item in Model.InventoryObject)
+                    {
+                        <div class="settings-section">
+                            @Html.FormGroup(x => item.Name, "text").Label(null, new { @for = "name" + index }).TextBox(null, new { @id = "name" + index }).Validate().Build()
+                        
+                            <label class="settings-label">Id</label>
+                            <span class="textblock">@item.Id</span>
 
+                            @for(int i = 0; i < item.Amounts.Count; i++)
+                            {
+                                item.Amount += item.Amounts[i].ToString("0.0####").Replace(',', '.');
 
+                                if(i < item.Amounts.Count - 1)
+                                {
+                                    item.Amount += ", ";
+                                }
+                            }
+
+                            @Html.FormGroup(x => item.Amount, "text large").Label(null, new { @for = "amount" + index }).TextArea(null, new { @id = "amount" + index }).Validate().Build()
+                        </div>
+                        index++;
+                    }
+                }
             }
-
-            @if (Model.intValue == null && Model.stringValue == null)
+            else
             {
-                <h4>@Model.Name (Currently: @Model.boolValue)</h4>
-                @Html.FormGroup(x => x.boolValue, "checkbox").Checkbox("Bocka i för att ange som true").Label("").Validate().Build()
+                <div class="settings-section">
+                    @Html.Label("Värde")
+                    @Html.FormGroup(x => x.StringValue, "text large").TextArea().Validate().Build()
+                </div>
             }
-
-            @if (Model.stringValue != null)
-            {
-                <h4>@Model.Name</h4><br />
-                @Html.Label("Värde")
-
-                @Html.FormGroup(x => x.stringValue, "text large").TextArea().Validate().Build()<br />
-
-            }
-
-        </div>
+        }
         <div class="submit">
-
             @Html.Submit("Spara", new { @class = "btn" })
         </div>
     }

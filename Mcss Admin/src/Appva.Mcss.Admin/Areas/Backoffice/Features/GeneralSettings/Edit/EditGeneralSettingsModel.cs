@@ -8,33 +8,73 @@
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
-
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects;
+    using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects.Pdf;
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Web;
-    #endregion
+    using System.ComponentModel;
 
+    #endregion
 
     public class EditGeneralSettingsModel : IRequest<bool>
     {
-        public Guid Id { get; set; }
+        public Guid Id
+        {
+            get;
+            set;
+        }
 
-        public string MachineName { get; set; }
+        public string MachineName
+        {
+            get;
+            set;
+        }
 
-        public int? intValue { get; set; }
+        public int? IntValue
+        {
+            get;
+            set;
+        }
 
-        public string stringValue { get; set; }
+        public string StringValue
+        {
+            get;
+            set;
+        }
 
-        public bool boolValue { get; set; }
+        public bool? BoolValue
+        {
+            get;
+            set;
+        }
 
+        public string Name
+        {
+            get;
+            set;
+        }
 
-        public string Name { get; set; }
+        public IList<double> ListValues
+        {
+            get;
+            set;
+        }
 
+        public bool IsJson
+        {
+            get;
+            set;
+        }
 
+        public List<InventoryObject> InventoryObject
+        {
+            get;
+            set;
+        }
+
+        public List<PdfGenObject> PdfGenObject { get; set; }
     }
 }

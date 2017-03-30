@@ -48,7 +48,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// The taxonfiltered accounts
         /// </summary>
-        public List<Guid> FilteredAccounts { get; set; }
+        public List<Guid> FilteredDelegations { get; set; }
 
 
 

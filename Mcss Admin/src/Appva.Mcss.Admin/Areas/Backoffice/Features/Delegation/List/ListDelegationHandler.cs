@@ -69,23 +69,24 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
             var categories = this.taxonomyService.Roots(TaxonomicSchema.Delegation);
             var delegations = new Dictionary<ITaxon, IList<ITaxon>>();
 
-            var activeDelegations = this.delegationService.List().Where(x => x.StartDate.CompareTo(DateTime.Now) < 0).ToList()
-                                                                 .Where(x => x.EndDate.CompareTo(DateTime.Now) > 0).ToList();
-
-
-            var filteredAccounts = this.persistanceContext.QueryOver<Account>()
-                      .JoinAlias(x => x.Taxon, () => org)
-                      .WhereRestrictionOn(() => org.Path).IsLike(filter.GetCurrentFilter().Path + "%")
-                      .List();
+            var activeDelegations = this.delegationService.List()
+                       .Where(x => x.StartDate.CompareTo(DateTime.Now) < 0).ToList()
+                       .Where(x => x.EndDate.CompareTo(DateTime.Now) > 0).ToList();
 
 
 
-            var filteredAccountsId = new List<Guid>();
+            var filteredDelegations = this.persistanceContext.QueryOver<Delegation>()
+                .JoinAlias(x => x.OrganisationTaxon, () => org)
+                .WhereRestrictionOn(() => org.Path).IsLike(filter.GetCurrentFilter().Path + "%")
+                .List();
 
 
-            foreach (var item in filteredAccounts)
+            var filteredDelegationsId = new List<Guid>();
+
+
+            foreach (var item in filteredDelegations)
             {
-                filteredAccountsId.Add(item.Id);
+                filteredDelegationsId.Add(item.Id);
             }
 
 
@@ -99,7 +100,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
                 Delegations = delegations,
                 DelegatedTaxons = this.delegationService.List(),
                 ActiveDelegations = activeDelegations,
-                FilteredAccounts = filteredAccountsId
+                FilteredDelegations = filteredDelegationsId
             };
         }
 

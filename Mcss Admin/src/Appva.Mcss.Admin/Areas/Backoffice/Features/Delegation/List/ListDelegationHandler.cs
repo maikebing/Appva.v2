@@ -69,8 +69,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
             var categories = this.taxonomyService.Roots(TaxonomicSchema.Delegation);
             var delegations = new Dictionary<ITaxon, IList<ITaxon>>();
 
-            var delegationsUsedBy = this.delegationService.List();
-
             var activeDelegations = this.delegationService.List().Where(x => x.StartDate.CompareTo(DateTime.Now) < 0).ToList()
                                                                  .Where(x => x.EndDate.CompareTo(DateTime.Now) > 0).ToList();
 
@@ -99,7 +97,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
             return new ListDelegationModel
             {
                 Delegations = delegations,
-                DelegatedTaxons = delegationsUsedBy,
+                DelegatedTaxons = this.delegationService.List(),
                 ActiveDelegations = activeDelegations,
                 FilteredAccounts = filteredAccountsId
             };

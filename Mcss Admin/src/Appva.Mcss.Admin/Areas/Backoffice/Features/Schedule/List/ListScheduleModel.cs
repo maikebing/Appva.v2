@@ -3,6 +3,7 @@
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
 // </author>
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
@@ -35,6 +36,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         public IList<Schedule> SchedulesUsedBy { get; set; }
 
         public List<Guid> PatientFilterIdList { get; set; }
+
+        public IList<Sequence> SequenceList { get; set; }
+
 
         #endregion
     }

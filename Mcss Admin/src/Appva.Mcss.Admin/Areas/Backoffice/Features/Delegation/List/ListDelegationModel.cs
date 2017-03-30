@@ -33,10 +33,21 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        /// <summary>
+        /// The delegations that are delegated
+        /// </summary>
         public IList<Domain.Entities.Delegation> DelegatedTaxons { get; set; }
 
+
+        /// <summary>
+        /// The currently active delegations
+        /// </summary>
         public IList<Domain.Entities.Delegation> ActiveDelegations { get; set; }
 
+
+        /// <summary>
+        /// The taxonfiltered accounts
+        /// </summary>
         public List<Guid> FilteredAccounts { get; set; }
 
 

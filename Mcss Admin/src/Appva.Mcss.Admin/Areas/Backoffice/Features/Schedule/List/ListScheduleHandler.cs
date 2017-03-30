@@ -3,6 +3,7 @@
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
 // </author>
 namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
@@ -32,8 +33,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// </summary>
         private readonly IScheduleService scheduleService;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/> 
+        /// </summary>
         private readonly IPersistenceContext persistenceContext;
 
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/> 
+        /// </summary>
         private readonly ITaxonFilterSessionHandler filter;
         #endregion
 
@@ -58,10 +65,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         {
             Taxon org = null;
 
-
-            var schedulesUsed = this.persistenceContext.QueryOver<Schedule>().List();
-
-
             var patientFilter = this.persistenceContext.QueryOver<Patient>()
                                 .JoinAlias(x => x.Taxon, () => org)
                                 .WhereRestrictionOn(() => org.Path).IsLike(filter.GetCurrentFilter().Path + "%")
@@ -76,22 +79,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             }
 
 
-
-
-                                                                    
-
-
-
-
-
-
-
             return new ListScheduleModel
             {
                 Schedules = this.scheduleService.GetSchedules().Where(x => x.ScheduleType == ScheduleType.Action).ToList(),
-                SchedulesUsedBy = schedulesUsed,
-                PatientFilterIdList = patientFilterId
-            };
+                SchedulesUsedBy = this.persistenceContext.QueryOver<Schedule>().List(),
+                PatientFilterIdList = patientFilterId,
+                SequenceList = this.persistenceContext.QueryOver<Sequence>().List()
+        };
         }
 
         #endregion

@@ -3,6 +3,7 @@
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+//      < a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
 // </author>
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
 {
@@ -17,6 +18,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Domain.Entities;
+    using Persistence;
 
     #endregion
 
@@ -32,6 +35,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
+        private readonly IDelegationService delegationService;
+
+        private readonly IPersistenceContext persistanceContext;
+
+        private readonly ITaxonFilterSessionHandler filter;
+
+
         #endregion
 
         #region Constructor.
@@ -39,9 +49,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
         /// <summary>
         /// Initializes a new instance of the <see cref="ListDelegationHandler"/> class.
         /// </summary>
-        public ListDelegationHandler(ITaxonomyService taxonomyService)
+        public ListDelegationHandler(ITaxonomyService taxonomyService, IDelegationService delegationService, IPersistenceContext persistanceContext, ITaxonFilterSessionHandler filter)
         {
             this.taxonomyService = taxonomyService;
+            this.delegationService = delegationService;
+            this.persistanceContext = persistanceContext;
+            this.filter = filter;
         }
 
         #endregion
@@ -51,8 +64,31 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
         /// <inheritdoc />
         public override ListDelegationModel Handle(Parameterless<ListDelegationModel> message)
         {
+            Taxon org = null;
+            
             var categories = this.taxonomyService.Roots(TaxonomicSchema.Delegation);
             var delegations = new Dictionary<ITaxon, IList<ITaxon>>();
+
+            var activeDelegations = this.delegationService.List().Where(x => x.StartDate.CompareTo(DateTime.Now) < 0).ToList()
+                                                                 .Where(x => x.EndDate.CompareTo(DateTime.Now) > 0).ToList();
+
+
+            var filteredAccounts = this.persistanceContext.QueryOver<Account>()
+                      .JoinAlias(x => x.Taxon, () => org)
+                      .WhereRestrictionOn(() => org.Path).IsLike(filter.GetCurrentFilter().Path + "%")
+                      .List();
+
+
+
+            var filteredAccountsId = new List<Guid>();
+
+
+            foreach (var item in filteredAccounts)
+            {
+                filteredAccountsId.Add(item.Id);
+            }
+
+
             foreach (var cat in categories)
             {
                 delegations.Add(cat, this.taxonomyService.ListByParent(TaxonomicSchema.Delegation, cat));
@@ -60,7 +96,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
 
             return new ListDelegationModel
             {
-                Delegations = delegations
+                Delegations = delegations,
+                DelegatedTaxons = this.delegationService.List(),
+                ActiveDelegations = activeDelegations,
+                FilteredAccounts = filteredAccountsId
             };
         }
 

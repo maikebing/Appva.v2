@@ -26,15 +26,39 @@
                         <tr class="head">
                             <th>Namn</th>
                             <th>Beskrivning</th>
+                            <th>Delegerade till</th>
                             <th></th>
                         </tr>
                         @foreach (var del in cat.Value)
                         {
+                            int count = 0;
+                            int activeCount = 0;
                             <tr>
                                 <td>@del.Name</td>
                                 <td>@del.Description</td>
+
+                                @foreach (var item in Model.ActiveDelegations.Where(x => x.Taxon.Id == del.Id))
+                                {
+                                    if (Model.FilteredAccounts.Contains(item.Account.Id))
+                                    {
+                                        activeCount++;
+                                    }
+                                }
+
+                                @foreach (var item in Model.DelegatedTaxons.Where(x => x.Taxon.Id == del.Id))
+                                {
+                                    if (Model.FilteredAccounts.Contains(item.Account.Id))
+                                    {
+                                        count++;
+                                    }
+
+
+
+                                }
+                                <td>@count st ( @activeCount Aktiva)</td>
                                 <td>@Html.ActionLink("Ändra", "Update", "Delegation", new { id = del.Id }, new { @class = "lb-link btn" })</td>
                             </tr>
+
                         }
                     </table>
                 }

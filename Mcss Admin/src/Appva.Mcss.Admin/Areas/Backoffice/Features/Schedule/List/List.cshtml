@@ -15,12 +15,48 @@
             <ul class="people">
                 @foreach (var list in Model.Schedules)
                 {
+                    int count = 0;
+                    int instansCount = 0;
+
+
                     <li class="cf">
                         <div class="h">
                             <h2>
                                 @Html.ActionLink(list.Name, "Details", "Schedule", new { id = list.Id }, new { })
                             </h2>
                         </div>
+
+                        @foreach (var item in Model.SequenceList.Where(x => x.Schedule.ScheduleSettings.Id == list.Id))
+                        {
+                            if (Model.PatientFilterIdList.Contains(item.Patient.Id))
+                            {
+                                instansCount++;
+                            }
+
+                        }
+
+                        <div class="i">
+                            <strong>Instanser: @instansCount</strong>
+                            <span></span>
+                        </div>
+
+                            @foreach (var item in Model.SchedulesUsedBy.Where(x => x.ScheduleSettings.Id == list.Id))
+                            {
+                                if (Model.PatientFilterIdList.Contains(item.Patient.Id))
+                                {
+                                    count++;
+
+                                }
+                            }
+
+                        <div class="i">
+                            <strong>Används utav: @count</strong>
+                            <span></span>
+                        </div>
+
+                       
+
+
                         <div class="i">
                             <strong>Publicerad:</strong>
                             <span></span>

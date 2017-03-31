@@ -64,14 +64,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             var profile = new ListProfileModel();
             var schemes = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, message.Active);
             var assessments = new List<ProfileAssessment>();
-            var props = typeof(Taxons).GetFields(BindingFlags.Public | BindingFlags.Static);
-            var propList = new List<ITaxon>();
+            var properties = typeof(Taxons).GetFields(BindingFlags.Public | BindingFlags.Static);
             int newItemsCount = 0;
 
-            foreach (var prop in props)
+            foreach (var prop in properties)
             {
                 var property = (ITaxon)prop.GetValue(null);
-                propList.Add(property);
 
                 if(schemes.Where(x => x.Type == property.Type).FirstOrDefault() == null)
                 {
@@ -79,25 +77,23 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 }
             }
 
-            if (schemes != null)
-            {
-                Taxon sa = null;
-                Taxon org = null;
+                Taxon seniorAlerts = null;
+                Taxon organisation = null;
 
                 foreach (var scheme in schemes)
                 {
                     var isActive = this.taxonomyService.Get(scheme.Id).IsActive;
-                    int? usedBy = null;
+                    int? riskAssesmentsUsed = null;
 
                     if (isActive)
                     {
-                        usedBy = this.persistenceContext.QueryOver<Patient>()
-                            .Where(x => !x.Deceased)
+                        riskAssesmentsUsed = this.persistenceContext.QueryOver<Patient>()
+                            .Where(x => x.Deceased == false)
                             .And(x => x.IsActive)
-                            .JoinAlias(x => x.SeniorAlerts, () => sa)
-                            .Where(() => sa.Id == scheme.Id)
-                            .JoinAlias(x => x.Taxon, () => org)
-                            .WhereRestrictionOn(() => org.Path).IsLike(filter.GetCurrentFilter().Path + "%")
+                            .JoinAlias(x => x.SeniorAlerts, () => seniorAlerts)
+                            .Where(() => seniorAlerts.Id == scheme.Id)
+                            .JoinAlias(x => x.Taxon, () => organisation)
+                            .WhereRestrictionOn(() => organisation.Path).IsLike(filter.GetCurrentFilter().Path, MatchMode.Start)
                             .RowCount();
                     }
 
@@ -108,7 +104,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         Description = scheme.Description,
                         Type = scheme.Type,
                         Active = isActive,
-                        UsedBy = usedBy
+                        UsedBy = riskAssesmentsUsed
                     };
 
                     if (message.Active != null && isActive == message.Active)
@@ -120,7 +116,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         assessments.Add(assessment);
                     }
                 }
-            }
 
             string newItems = newItemsCount > 0 ? (newItemsCount == 1 ? "(1 ny)" : "(" + newItemsCount + " nya)") : string.Empty;
 

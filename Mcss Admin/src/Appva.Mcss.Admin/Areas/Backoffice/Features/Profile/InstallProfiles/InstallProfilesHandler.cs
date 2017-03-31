@@ -12,20 +12,26 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports.
 
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Areas.Area51.Models;
     using System.Linq;
     using System.Reflection;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Areas.Area51.Models;
 
     #endregion
 
+    /// <summary>
+    /// Installs all default profiles
+    /// </summary>
     public class InstallProfilesHandler : RequestHandler<InstallProfilesModel, TaxonIndex>
     {
         #region Fields.
 
+        /// <summary>
+        /// The Service for Taxonomy 
+        /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
         #endregion
@@ -34,6 +40,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallProfilesHandler"/> class.
+        /// <param name="taxonomyService">the Itaxonomyservice</param>
         /// </summary>
         public InstallProfilesHandler(ITaxonomyService taxonomyService)
         {
@@ -49,19 +56,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         {
              var installedItems = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, null);
 
-
             foreach (var prop in typeof(Taxons).GetFields(BindingFlags.Public | BindingFlags.Static))
             {
                 var getTaxon = (ITaxon)prop.GetValue(null);
                 var taxon = new TaxonItem(getTaxon.Id, getTaxon.Name, getTaxon.Description, getTaxon.Path, getTaxon.Type, 0, null, false) as ITaxon;
 
-                if (installedItems.Where(x => x.Type == taxon.Type).SingleOrDefault() == null)
+                if (installedItems.Where(x => x.Type == taxon.Type).Any())
                 {
-
-                    this.taxonomyService.Save(taxon, TaxonomicSchema.RiskAssessment);
-
-
+                    continue;
                 }
+
+                this.taxonomyService.Save(taxon, TaxonomicSchema.RiskAssessment);
             }
 
             return new TaxonIndex();

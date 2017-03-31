@@ -8,7 +8,10 @@ namespace Appva.Mcss.Admin.Domain.Models
 {
    public sealed class SearchProfileModel
     {
+
+        
         public bool? IsActive { get; set; }
+
 
         public string TaxonFilter
         {

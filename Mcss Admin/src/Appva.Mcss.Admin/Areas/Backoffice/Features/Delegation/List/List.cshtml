@@ -26,7 +26,7 @@
                         <tr class="head">
                             <th>Namn</th>
                             <th>Beskrivning</th>
-                            <th>Delegerade till</th>
+                            <th>Utställd till <strong class="active-color-head">(antal aktiva)</strong></th>
                             <th></th>
                         </tr>
                         @foreach (var del in cat.Value)
@@ -39,7 +39,7 @@
 
                                 @foreach (var item in Model.ActiveDelegations.Where(x => x.Taxon.Id == del.Id))
                                 {
-                                    if (Model.FilteredAccounts.Contains(item.Account.Id))
+                                    if (Model.FilteredDelegations.Contains(item.Id))
                                     {
                                         activeCount++;
                                     }
@@ -47,7 +47,7 @@
 
                                 @foreach (var item in Model.DelegatedTaxons.Where(x => x.Taxon.Id == del.Id))
                                 {
-                                    if (Model.FilteredAccounts.Contains(item.Account.Id))
+                                    if (Model.FilteredDelegations.Contains(item.Id))
                                     {
                                         count++;
                                     }
@@ -55,7 +55,7 @@
 
 
                                 }
-                                <td>@count st ( @activeCount Aktiva)</td>
+                                <td><strong>@count <strong class="active-color">(@activeCount)</strong> Medarbetare</strong> </td>
                                 <td>@Html.ActionLink("Ändra", "Update", "Delegation", new { id = del.Id }, new { @class = "lb-link btn" })</td>
                             </tr>
 

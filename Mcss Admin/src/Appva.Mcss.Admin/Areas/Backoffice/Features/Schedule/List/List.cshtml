@@ -17,6 +17,7 @@
                 {
                     int count = 0;
                     int instansCount = 0;
+                    int activeCount = 0;
 
 
                     <li class="cf">
@@ -31,30 +32,43 @@
                             if (Model.PatientFilterIdList.Contains(item.Patient.Id))
                             {
                                 instansCount++;
+
+
                             }
+
+
+
 
                         }
 
                         <div class="i">
-                            <strong>Instanser: @instansCount</strong>
+                            <strong>Insatser: @instansCount</strong>
                             <span></span>
                         </div>
 
-                            @foreach (var item in Model.SchedulesUsedBy.Where(x => x.ScheduleSettings.Id == list.Id))
+                        @foreach (var item in Model.SchedulesUsedBy.Where(x => x.ScheduleSettings.Id == list.Id))
+                        {
+                            if (Model.PatientFilterIdList.Contains(item.Patient.Id))
                             {
-                                if (Model.PatientFilterIdList.Contains(item.Patient.Id))
-                                {
-                                    count++;
+                                count++;
 
-                                }
                             }
+
+                            if (Model.PatientFilterIdList.Contains(item.Patient.Id) && item.IsActive == true)
+                            {
+                                activeCount++;
+                            }
+
+
+                        }
 
                         <div class="i">
                             <strong>Används utav: @count</strong>
+                            <strong class="active-color">(@activeCount aktiva)</strong>
                             <span></span>
                         </div>
 
-                       
+
 
 
                         <div class="i">

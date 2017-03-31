@@ -10,27 +10,20 @@
     <div id="content-primary">
       @if (Model.List != null && Model.List.Count() > 0)
       {
-        <div id="signlist">
-            <table id="signed-events">
-                <tr class="head">
-                    <th>Inställning</th>
-                    <th>Key</th>
-                    <th>Beskrivning</th>
-                    <th class="prtd">Värde</th>
-                    <th></th>
-                </tr>
-                @foreach (var item in Model.List.OrderBy(x => x.MachineName).ThenBy(x => x.Name))
-                {
-                    <tr class="tr-highlight">
-                        <td class="trpad"><b>@item.Name</b></td>
-                        <td class="trpad">@item.MachineName</td>
-                        <td class="trpad">@item.Description</td>
-                        <td class="trpad prtd td-highlight"><span title="@item.Value">@(item.Value.Length > 12 ? item.Value.Substring(0, 12) + "..." : item.Value)</span></td>
-                        <td class="trpad prtd">@Html.ActionLink("Ändra", "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link btn" })</td>
-                    </tr>
-                }
-            </table>
-        </div>
+          <ul id="setlist">
+              @foreach (var item in Model.List)
+              {
+                  <li>
+                      <h1 title="@item.MachineName" style="background:@item.ColorCode">@item.Category</h1>
+                      <h2>@item.Name</h2>
+                      @*Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link" })*@
+                      @if (item.Description != null && item.Description != string.Empty)
+                      {
+                        <p>@item.Description</p>
+                      }
+                  </li>
+              }
+          </ul>
       }
       else
       {

@@ -21,7 +21,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     internal sealed class ListGeneralSettingsHandler : RequestHandler<Parameterless<ListGeneralSettingsModel>, ListGeneralSettingsModel>
     {
         #region Properties.
-        ISettingsService settingService;
+
+        private readonly ISettingsService settingService;
+        private string[] colorCodes = {
+            "#64B5F6", "#81C784", "#7986CB", "#E57373",
+            "#4DB6AC", "#FFB74D", "#A1887F", "#90A4AE",
+            "#F06292", "#1E88E5", "#F57C00", "#7CB342",
+            "#4527A0", "#B71C1C", "#455A64", "#9E9E9E",
+            "#FBC02D", "#81C784", "#A1887F", "#64B5F6",
+            "#90A4AE", "#E57373", "#1E88E5", "#7986CB"
+        };
+
         #endregion
 
         #region Constructor.
@@ -37,10 +47,60 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         {
             var settings = this.settingService.List();
             var setting = new ListGeneralSettingsModel();
+            int colorIndex = 0;
 
-            setting.List = settings;
+            setting.List = new List<ListGeneralSettings>();
+
+            foreach (var item in settings.Select((s, i) => new { Set = s, Index = i }))
+            {
+                var settingItems = new ListGeneralSettings();
+                settingItems.Name = item.Set.Name;
+                settingItems.MachineName = item.Set.MachineName;
+                settingItems.Category = ToCategoryString(item.Set.MachineName, 35);
+                settingItems.Description = item.Set.Description;
+                settingItems.Value = item.Set.Value;
+                settingItems.Type = item.Set.Type;
+                settingItems.ColorCode = colorCodes[colorIndex];
+                setting.List.Add(settingItems);
+
+                if(item.Index < settings.Count() - 1 && settings.ElementAt(item.Index + 1).MachineName != item.Set.MachineName)
+                {
+                    colorIndex++;
+                }
+                
+                if(colorIndex > colorCodes.Length - 1)
+                {
+                    colorIndex = 0;
+                }
+            }
+
+            setting.List = setting.List;
             return setting;
         }
+
         #endregion
+
+        private string ToCategoryString(string s, int max)
+        {
+            var array = s.Split('.');
+            string category = "";
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i].ToLower() != "mcss")
+                {
+                    category += array[i] + (i > 0 && i < array.Length - 1 ? " / " : "");
+                }
+            }
+
+            if (category.Length > max)
+            {
+                category = category.Substring(category.Length - max).Trim();
+                int index = category.IndexOf(' ');
+                category = category.Contains("/") && category[0] != '/' ? "..." + category.Remove(0, index) : "... " + category;
+            }
+
+            return category;
+        }
     }
 }

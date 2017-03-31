@@ -18,9 +18,45 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     #endregion
 
-    public class ListGeneralSettingsModel
+    public class ListGeneralSettings
     {
-        public List<ListGeneralSettings> List
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        public string MachineName
+        {
+            get;
+            set;
+        }
+
+        public string Description
+        {
+            get;
+            set;
+        }
+
+        public string Value
+        {
+            get;
+            set;
+        }
+
+        public string Category
+        {
+            get;
+            set;
+        }
+
+        public Type Type
+        {
+            get;
+            set;
+        }
+
+        public string ColorCode
         {
             get;
             set;

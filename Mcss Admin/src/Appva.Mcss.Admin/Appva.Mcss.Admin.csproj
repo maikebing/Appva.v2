@@ -393,6 +393,7 @@
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\JsonObjects\InventoryModel.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\JsonObjects\PdfGenModel.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\GeneralSettingsController.cs" />
+    <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettings.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitHandler.cs" />
@@ -910,6 +911,7 @@
     <Content Include="Assets\i\profile-white.png" />
     <Content Include="Assets\i\reportchart.png" />
     <Content Include="Assets\i\select-arrow.png" />
+    <Content Include="Assets\i\settings-medium.png" />
     <Content Include="Assets\i\shade-blue.png" />
     <Content Include="Assets\i\shade-header.png" />
     <Content Include="Assets\i\shade-small.png" />

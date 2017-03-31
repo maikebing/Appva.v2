@@ -17,6 +17,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
     using System;
     using System.Linq;
     using Newtonsoft.Json;
+    using Application.Common;
+    using System.Drawing;
 
     #endregion
 
@@ -25,6 +27,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
         #region Properties.
 
         ISettingsService settingsService;
+
+        private static String RGBConverter(System.Drawing.Color c)
+        {
+            return c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString();
+        }
+
         #endregion
 
         #region Constructor.
@@ -34,13 +42,29 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
         }
         #endregion
 
+        
+
+      
+
+
+        
+
         #region RequestHandler Overrides.
+
+
+
 
         public override bool Handle(EditGeneralSettingsModel message)
         {
             var settings = this.settingsService.List();
             var setting = settings.Where(x => x.Id == message.Id).SingleOrDefault();
 
+
+            var color = System.Drawing.ColorTranslator.FromHtml(message.BackgroundColor);
+
+            var RGB = RGBConverter(color);
+
+            
 
 
             if (message.IntValue == null && message.StringValue == null)
@@ -59,6 +83,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
 
             if (message.StringValue != null)
             {
+
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, message.StringValue.ToString());
 
                 return true;

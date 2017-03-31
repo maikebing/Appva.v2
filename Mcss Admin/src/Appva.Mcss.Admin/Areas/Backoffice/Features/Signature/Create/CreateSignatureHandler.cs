@@ -17,8 +17,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     #endregion
 
@@ -50,15 +52,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
         /// <inheritdoc />
         public override CreateSignatureModel Handle(Identity<CreateSignatureModel> message)
         {
-            var list = this.taxonomyService.Roots(TaxonomicSchema.SignStatus);
+            var signatures = typeof(Signatures).GetFields(BindingFlags.Public | BindingFlags.Static);
             var createSignature = new CreateSignatureModel();
             createSignature.Images = new Dictionary<string, string>();
             int btnIndex = 1;
 
             // Add distinct images to the list.
-            foreach (var item in list.GroupBy(x => x.Path).Select(x => x.FirstOrDefault()).OrderBy(x => x.Path))
+            foreach (var item in signatures)
             {
-                createSignature.Images.Add("radioBtn" + btnIndex, item.Path);
+                createSignature.Images.Add("radioBtn" + btnIndex, Convert.ToString(item.GetValue(null)));
                 btnIndex++;
             }
 

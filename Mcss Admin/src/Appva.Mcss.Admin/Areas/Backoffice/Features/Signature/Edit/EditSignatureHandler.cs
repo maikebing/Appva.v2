@@ -18,6 +18,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
+    using System.Reflection;
+    using System;
     #endregion
 
     /// <summary>
@@ -53,17 +55,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         public override EditSignatureModel Handle(Identity<EditSignatureModel> message)
         {
             var signature = this.taxonomyService.Find(message.Id);
-            var list = this.taxonomyService.Roots(TaxonomicSchema.SignStatus);
+            var signatures = typeof(Signatures).GetFields(BindingFlags.Public | BindingFlags.Static);
             var editSignature = new EditSignatureModel();
             editSignature.Images = new Dictionary<string, string>();
-            int btnIndex = 1;
 
-            foreach (var item in list.GroupBy(x => x.Path).Select(x => x.FirstOrDefault()).OrderBy(x => x.Path))
+                int btnIndex = 1;
+
+            foreach (var item in signatures)
             {
-                editSignature.Images.Add("radioBtn" + btnIndex, item.Path);
-
+                editSignature.Images.Add("radioBtn" + btnIndex, Convert.ToString(item.GetValue(null)));
                 btnIndex++;
             }
+
 
             editSignature.Id = message.Id;
             editSignature.Name = signature.Name;

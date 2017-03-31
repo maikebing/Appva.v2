@@ -12,39 +12,60 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
     using System;
+    using Appva.Cqrs;
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public class ProfileAssessment : IRequest<ListProfileModel>
     {
+        /// <summary>
+        /// The assessment id.
+        /// </summary>
         public Guid Id
         {
             get; set;
         }
 
+        /// <summary>
+        /// The assessment name.
+        /// </summary>
         public string Name
         {
             get; set;
         }
 
+        /// <summary>
+        /// The assessment description.
+        /// </summary>
         public string Description
         {
             get; set;
         }
 
+        /// <summary>
+        /// The assessment type.
+        /// </summary>
         public string Type
         {
             get; set;
         }
 
-        public bool? Active
+        /// <summary>
+        /// Check if the assessment is active.
+        /// </summary>
+        public bool? IsActive
         {
             get; set;
         }
 
-        public int? UsedBy
+        /// <summary>
+        /// Number of assessment users.
+        /// </summary>
+        public int? UsedByPatientsCount
         {
             get; set;
         }

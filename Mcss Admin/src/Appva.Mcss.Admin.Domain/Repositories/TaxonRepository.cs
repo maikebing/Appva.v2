@@ -116,18 +116,14 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <inheritdoc />
         public IList<Taxon> ListByFilter(string identifier, bool? showActive)
         {
-            NHibernate.IQueryOver<Taxon, Taxon> context = this.persistenceContext.QueryOver<Taxon>();
+            var query = this.persistenceContext.QueryOver<Taxon>();
 
             if (showActive == true)
             {
-                context.Where(x => x.IsActive);
-            }
-            else if (showActive == false)
-            {
-                context.Where(x => !x.IsActive);
+                query.Where(x => x.IsActive);
             }
 
-            return context.OrderBy(x => x.Parent.Id).Asc
+            return query.OrderBy(x => x.Parent.Id).Asc
                 .ThenBy(x => x.Weight).Asc
                 .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
                     .Where(x => x.IsActive)
@@ -155,7 +151,6 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         #endregion
-
         
         #region IProxyRepository<Taxon> Members.
 
@@ -166,7 +161,6 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         #endregion
-
         
         #region ISaveRepository<Taxon> Members.
 

@@ -12,12 +12,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
     using System;
-    using System.ComponentModel;
+    using Appva.Cqrs;
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public class UpdateProfileModel : IRequest<bool>
     {
         #region Properties.
@@ -34,8 +36,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// Assessment name
         /// </summary>
-        /// 
-        [DisplayName("Titel")]
         public string Name
         {
             get;
@@ -45,7 +45,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// The assessment description
         /// </summary>
-        [DisplayName("Beskrivning")]
         public string Description
         {
             get;
@@ -55,7 +54,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// Image file name
         /// </summary>
-        [DisplayName("Symbol")]
         public string Type
         {
             get;
@@ -65,7 +63,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// Sets the profile to active or inactive
         /// </summary>
-        [DisplayName("Aktiv")]
         public bool Active
         {
             get;

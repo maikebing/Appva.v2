@@ -38,6 +38,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation.Update
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateProfilePublisher"/> class.
         /// </summary>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation</param>
         public UpdateProfilePublisher(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;

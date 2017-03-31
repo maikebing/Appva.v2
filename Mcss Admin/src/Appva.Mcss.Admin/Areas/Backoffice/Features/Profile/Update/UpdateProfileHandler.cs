@@ -38,6 +38,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.Update
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateProfileHandler"/> class.
         /// </summary>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation</param>
         public UpdateProfileHandler(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
@@ -50,7 +51,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile.Update
         /// <inheritdoc />
         public override UpdateProfileModel Handle(Identity<UpdateProfileModel> message)
         {
-            var profile = taxonomyService.Get(message.Id);
+            var profile = this.taxonomyService.Get(message.Id);
 
             return new UpdateProfileModel
             {

@@ -79,6 +79,7 @@ namespace Appva.Mcss.Admin.Application.Models
         bool IsActive
         {
             get;
+            set;
         }
 
         /// <summary>
@@ -217,7 +218,7 @@ namespace Appva.Mcss.Admin.Application.Models
         public bool IsActive
         {
             get;
-            private set;
+            set;
         }
 
         /// <inheritdoc />

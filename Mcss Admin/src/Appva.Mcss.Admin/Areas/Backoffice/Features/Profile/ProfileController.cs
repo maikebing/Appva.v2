@@ -10,7 +10,6 @@
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
 {
-
     #region Imports.
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
@@ -40,7 +39,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
         /// </summary>
         public ProfileController()
         {
-
         }
 
         #endregion
@@ -80,7 +78,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         public ActionResult Update(UpdateProfileModel request)
         {
-            return this.RedirectToAction("list", new { Active = ListProfileHandler.RedirectActive });
+            return this.RedirectToAction("list", new { IsActive = ListProfileHandler.RedirectActive });
         }
 
         [Route("install")]

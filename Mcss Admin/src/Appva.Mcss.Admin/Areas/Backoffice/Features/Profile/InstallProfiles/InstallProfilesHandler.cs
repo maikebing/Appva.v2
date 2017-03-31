@@ -23,14 +23,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     #endregion
 
     /// <summary>
-    /// Installs all default profiles
+    /// Install profiles.
     /// </summary>
     public class InstallProfilesHandler : RequestHandler<InstallProfilesModel, TaxonIndex>
     {
         #region Fields.
 
         /// <summary>
-        /// The Service for Taxonomy 
+        /// The taxonomyService. 
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
@@ -40,8 +40,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallProfilesHandler"/> class.
-        /// <param name="taxonomyService">the Itaxonomyservice</param>
         /// </summary>
+        /// <param name="taxonomyService">The taxonomyService</param>
         public InstallProfilesHandler(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
@@ -54,12 +54,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override TaxonIndex Handle(InstallProfilesModel message)
         {
-             var installedItems = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, null);
+            var installedItems = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, null);
 
-            foreach (var prop in typeof(Taxons).GetFields(BindingFlags.Public | BindingFlags.Static))
+            foreach (var property in typeof(Taxons).GetFields(BindingFlags.Public | BindingFlags.Static))
             {
-                var getTaxon = (ITaxon)prop.GetValue(null);
-                var taxon = new TaxonItem(getTaxon.Id, getTaxon.Name, getTaxon.Description, getTaxon.Path, getTaxon.Type, 0, null, false) as ITaxon;
+                var taxon = (ITaxon)property.GetValue(null);
+                taxon.IsActive = false;
 
                 if (installedItems.Where(x => x.Type == taxon.Type).Any())
                 {

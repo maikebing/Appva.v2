@@ -12,8 +12,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using Appva.Mcss.Web.ViewModels;
     using System.Collections.Generic;
+    using Appva.Mcss.Web.ViewModels;
 
     #endregion
 

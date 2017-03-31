@@ -17,14 +17,17 @@
                     <tr class="head">
                         <th class="prtd">Bild</th>
                         <th>Beskrivning</th>
-                        <th></th>
+                        <th class="prtd2"></th>
                     </tr>
                     @foreach (var item in Model.Items)
                     {
                         <tr>
                             <td class="prtd"><img class="signimg" src="@String.Format("/Assets/i/{0}", item.Path)" alt="@item.Name" title="@item.Name" /></td>
                             <td class="prpad">@item.Name</td>
-                            <td class="prtd">@Html.ActionLink("Ändra", "Edit", "Signature", new { id = item.Id }, new { @class = "lb-link btn" })</td>
+                            <td class="prtd2">
+                                @Html.ActionLink("Ändra", "Edit", "Signature", new { id = item.Id }, new { @class = "lb-link btn" })
+                                @Html.ActionLink("Ta Bort", "Inactivate", "Signature", new { id = item.Id }, new { @class = "btn btn-del" })
+                            </td>
                         </tr>
                     }
                 </table>

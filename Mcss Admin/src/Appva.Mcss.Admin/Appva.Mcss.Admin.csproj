@@ -419,6 +419,8 @@
     <Compile Include="Areas\Backoffice\Features\Signature\Edit\EditSignatureHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\Edit\EditSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\Edit\EditSignaturePublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\Inactivate\InactivateSignatureHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\Inactivate\InactivateSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />

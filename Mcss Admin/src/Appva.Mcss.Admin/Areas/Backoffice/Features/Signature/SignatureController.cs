@@ -90,5 +90,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         }
 
         #endregion
+
+        #region Inactivate
+        [Route("{id:guid}/inactivate")]
+        [HttpGet, Dispatch("list", "signature")]
+        public ActionResult Inactivate(InactivateSignatureModel request)
+        {
+            return this.View();
+        }
+
+
+        #endregion
     }
 }

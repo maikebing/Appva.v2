@@ -1370,6 +1370,11 @@ td.rights {
 #signlist .prpad {
     padding:6px 10px!important;
 }
+#signlist .prtd2 {
+    width: 160px;
+   text-align:center;
+    
+}
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}

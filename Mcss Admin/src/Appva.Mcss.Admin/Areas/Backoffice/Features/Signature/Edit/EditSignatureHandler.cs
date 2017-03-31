@@ -11,17 +11,18 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
-
+    using System.Collections.Generic;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
-    using System.Collections.Generic;
-    using System.Linq;
-
     #endregion
 
+    /// <summary>
+    /// Handles the edit request
+    /// </summary>
     internal sealed class EditSignatureHandler : RequestHandler<Identity<EditSignatureModel>, EditSignatureModel>
     {
         #region Fields.
@@ -37,6 +38,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditSignatureHandler"/> class.
+        /// <param name="taxonomyService"></param>
         /// </summary>
         public EditSignatureHandler(ITaxonomyService taxonomyService)
         {

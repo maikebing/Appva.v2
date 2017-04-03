@@ -11,17 +11,15 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
 {
     #region Imports.
-
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
     #endregion
 
     internal sealed class CreateSignatureHandler : RequestHandler<Identity<CreateSignatureModel>, CreateSignatureModel>
@@ -39,6 +37,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSignatureHandler"/> class.
+        /// <param name="taxonomyService">The Taxonomy Service</param>
         /// </summary>
         public CreateSignatureHandler(ITaxonomyService taxonomyService)
         {

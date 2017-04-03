@@ -11,15 +11,15 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
-    using System.Reflection;
-    using System;
     #endregion
 
     /// <summary>
@@ -66,7 +66,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 editSignature.Images.Add("radioBtn" + btnIndex, Convert.ToString(item.GetValue(null)));
                 btnIndex++;
             }
-
 
             editSignature.Id = message.Id;
             editSignature.Name = signature.Name;

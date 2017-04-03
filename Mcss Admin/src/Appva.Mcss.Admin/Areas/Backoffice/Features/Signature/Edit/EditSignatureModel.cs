@@ -11,12 +11,10 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
-
-    using Appva.Cqrs;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-
+    using Appva.Cqrs;
     #endregion
 
     public sealed class EditSignatureModel : IRequest<bool>

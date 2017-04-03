@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using Infrastructure.Models;
+    using Persistence;
 
     #endregion
 
@@ -40,7 +41,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         #endregion
 
         #region Constructor.
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ListSignatureHandler"/> class.
         /// </summary>
@@ -49,11 +49,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             this.taxonomyService = taxonomyService;
             this.persistenceContext = persistenceContext;
         }
-
         #endregion
 
         #region RequestHandlers Overrides.
-
         /// <inheritdoc />
         public override ListSignatureModel Handle(Parameterless<ListSignatureModel> message)
         {
@@ -80,7 +78,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
             return signingModel;
         }
-
         #endregion
     }
 }

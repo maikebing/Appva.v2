@@ -11,12 +11,10 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
-
+    using Application.Common;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
-    using Application.Common;
-
     #endregion
 
     internal sealed class EditSignaturePublisher : RequestHandler<EditSignatureModel, bool>
@@ -35,6 +33,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="EditSignaturePublisher"/> class.
         /// </summary>
+        /// <param name="taxonomyService"></param>
         public EditSignaturePublisher(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
@@ -47,10 +46,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override bool Handle(EditSignatureModel message)
         {
-
             var signature = this.taxonomyService.Find(message.Id, TaxonomicSchema.SignStatus);
 
-            if(signature == null)
+            if (signature == null)
             {
                 return false;
             }
@@ -59,7 +57,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus);
 
             return true;
-
         }
 
         #endregion

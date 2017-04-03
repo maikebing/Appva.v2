@@ -19,7 +19,66 @@
                       @*Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link" })*@
                       @if (item.Description != null && item.Description != string.Empty)
                       {
-                        <p>@item.Description</p>
+                          <p>@item.Description</p>
+                      }
+
+                      @if (item.IntValue != null)
+                      {
+                          <div class="settings-section">
+                              @Html.FormGroup(i => item.IntValue, "text").Label("Värde", new { @for = "setValue" }).TextBox(null, new { @id = "setValue", @type = "number" }).Validate().Build()
+                          </div>
+                      }
+
+                      @if (item.BoolValue != null)
+                      {
+                          bool isBool = (bool)item.BoolValue;
+                          <div class="settings-section">
+                              @Html.FormGroup(x => isBool, "text").Checkbox("Aktivera").Validate().Build()
+                          </div>
+                      }
+
+                      @if (item.StringValue != null)
+                      {
+                          @*
+                          <p class="settings-title"><b>@item.Name</b></p>
+
+                          if (item.IsJson)
+                          {
+                              if (item.InventoryObject != null)
+                              {
+                                  int index = 0;
+
+                                  foreach (var item in item.InventoryObject)
+                                  {
+                                      <div class="settings-section">
+                                          @Html.FormGroup(x => item.Name, "text").Label(null, new { @for = "name" + index }).TextBox(null, new { @id = "name" + index }).Validate().Build()
+
+                                          <label class="settings-label">Id</label>
+                                          <span class="textblock">@item.Id</span>
+
+                                          @for (int i = 0; i < item.Amounts.Count; i++)
+                                          {
+                                              item.Amount += item.Amounts[i].ToString("0.0####").Replace(',', '.');
+
+                                              if (i < item.Amounts.Count - 1)
+                                              {
+                                                  item.Amount += ", ";
+                                              }
+                                          }
+
+                                          @Html.FormGroup(x => item.Amount, "text large").Label(null, new { @for = "amount" + index }).TextArea(null, new { @id = "amount" + index }).Validate().Build()
+                                      </div>
+                                      index++;
+                                  }
+                              }
+                          }
+                          else
+                          {
+                          <div class="settings-section">
+                              @Html.Label("Värde")
+                              @Html.FormGroup(x => item.StringValue, "text large").TextArea().Validate().Build()
+                          </div>
+                              *@
                       }
                   </li>
               }

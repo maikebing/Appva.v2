@@ -10,11 +10,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Domain.Entities;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+    using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects;
+    using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects.Pdf;
 
     #endregion
 
@@ -57,6 +56,47 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         public string ColorCode
+        {
+            get;
+            set;
+        }
+        public int? IntValue
+        {
+            get;
+            set;
+        }
+
+        public string StringValue
+        {
+            get;
+            set;
+        }
+
+        public bool? BoolValue
+        {
+            get;
+            set;
+        }
+
+        public bool IsJson
+        {
+            get;
+            set;
+        }
+
+        public IList<double> ListValues
+        {
+            get;
+            set;
+        }
+
+        public List<InventoryObject> InventoryObject
+        {
+            get;
+            set;
+        }
+
+        public List<PdfGenObject> PdfGenObject
         {
             get;
             set;

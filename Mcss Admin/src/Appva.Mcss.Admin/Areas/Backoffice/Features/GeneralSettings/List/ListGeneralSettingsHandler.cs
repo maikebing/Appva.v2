@@ -20,9 +20,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
     internal sealed class ListGeneralSettingsHandler : RequestHandler<Parameterless<ListGeneralSettingsModel>, ListGeneralSettingsModel>
     {
-        #region Properties.
+        #region Fields.
 
         private readonly ISettingsService settingService;
+        private readonly string[] machineNames = new string[] {
+            "MCSS.Core.Inventory.Units",
+            "Mcss.Core.Pdf",
+            "Mcss.Core.Security.Analytics.Audit.Configuration",
+            "Mcss.Core.Security.Jwt.Configuration.SecurityToken",
+            "Mcss.Core.Security.Messaging.Email",
+            "Mcss.Integration.Ldap.LdapConfiguration"
+        };
         private string[] colorCodes = {
             "#64B5F6", "#81C784", "#7986CB", "#E57373",
             "#4DB6AC", "#FFB74D", "#A1887F", "#90A4AE",
@@ -56,6 +64,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 var settingItems = new ListGeneralSettings();
                 settingItems.Name = item.Set.Name;
                 settingItems.MachineName = item.Set.MachineName;
+                settingItems.BoolValue = null;
+                settingItems.IsJson = false;
                 settingItems.Category = ToCategoryString(item.Set.MachineName, 35);
                 settingItems.Description = item.Set.Description;
                 settingItems.Value = item.Set.Value;
@@ -63,7 +73,53 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.ColorCode = colorCodes[colorIndex];
                 setting.List.Add(settingItems);
 
-                if(item.Index < settings.Count() - 1 && settings.ElementAt(item.Index + 1).MachineName != item.Set.MachineName)
+                if (item.Set.Type == typeof(Boolean))
+                {
+                    settingItems.BoolValue = Convert.ToBoolean(item.Set.Value);
+                }
+
+                if (item.Set.Type == typeof(String))
+                {
+                    settingItems.StringValue = "";
+
+                    try
+                    {
+                        if (item.Set.MachineName == machineNames[0])
+                        {
+                            //settingItems.InventoryObject = JsonConvert.DeserializeObject<List<InventoryObject>>(setting.Value);
+                        }
+                        else if (item.Set.MachineName == machineNames[1])
+                        {
+                            //settingItems.PdfGenObject = JsonConvert.DeserializeObject<List<PdfGenObject>>(setting.Value);
+                        }
+
+                        settingItems.IsJson = true;
+                    }
+                    catch
+                    {
+                        settingItems.StringValue = item.Set.Value;
+                    }
+                }
+
+                if (item.Set.Type == typeof(Int32))
+                {
+                    settingItems.IntValue = Convert.ToInt32(item.Set.Value);
+                }
+
+                if (item.Set.Type == typeof(IList<double>))
+                {
+                    List<double> list = null;
+
+                    try
+                    {
+                        //list = JsonConvert.DeserializeObject<List<double>>(item.Set.Value);
+                    }
+                    catch { }
+
+                    settingItems.ListValues = list;
+                }
+
+                if (item.Index < settings.Count() - 1 && settings.ElementAt(item.Index + 1).MachineName != item.Set.MachineName)
                 {
                     colorIndex++;
                 }

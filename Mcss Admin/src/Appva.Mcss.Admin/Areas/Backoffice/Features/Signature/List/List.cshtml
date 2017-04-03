@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListSignatureModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListSignatureModel
 @{
     SetTitle("Admin - Signeringar");
 }
@@ -26,7 +27,7 @@
                             <td class="prpad">@item.Name</td>
                             <td class="prtd2">
                                 @Html.ActionLink("Ändra", "Edit", "Signature", new { id = item.Id }, new { @class = "lb-link btn" })
-                                @Html.ActionLink("Ta Bort", "Inactivate", "Signature", new { id = item.Id }, new { @class = "btn btn-del" })
+                                @Html.ActionLink("Ta bort", "Inactivate", "Signature", new { id = item.Id }, new { @class = (item.IsUsedByList ? "btn btn-del action-denied" : "btn btn-del") })
                             </td>
                         </tr>
                     }
@@ -37,7 +38,6 @@
                 <div class="note">
                     <h2>Det finns inga signeringsalternativ.</h2>
                 </div>
-
             }
         </div>
     </div>

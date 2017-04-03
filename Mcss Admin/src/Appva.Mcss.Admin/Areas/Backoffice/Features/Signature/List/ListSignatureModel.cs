@@ -12,7 +12,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Application.Models;
     using System.Collections.Generic;
 
     #endregion
@@ -22,7 +21,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// The signing items
         /// </summary>
-        public IList<ITaxon> Items
+        public List<ListSignature> Items
         {
             get; set;
         }

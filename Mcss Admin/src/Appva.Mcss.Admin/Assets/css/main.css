@@ -1367,13 +1367,13 @@ td.rights {
     width:100px;
     text-align:center;
 }
+#signlist .prtd2 {
+    width:160px;
+    text-align:center;
+}
+#signlist .prtd2 .btn-del { margin-left:6px; }
 #signlist .prpad {
     padding:6px 10px!important;
-}
-#signlist .prtd2 {
-    width: 160px;
-   text-align:center;
-    
 }
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
@@ -2904,6 +2904,7 @@ form .time {width:4em;}
 #sign-imglist label {
     opacity:.4;
     cursor:pointer;
+    transition:opacity .3s ease;
 }
 #sign-imglist input[type="radio"]:checked + label {
     opacity:1;

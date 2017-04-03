@@ -12,18 +12,20 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mvc.Security;
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
-    using Appva.Mvc;
     using Appva.Mcss.Admin.Models;
-    using Create;
+    using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     [RouteArea("backoffice"), RoutePrefix("signature")]
     [Permissions(Permissions.Backoffice.ReadValue)]
     public class SignatureController : Controller
@@ -31,13 +33,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         #region List
 
         /// <summary>
-        /// List all signing options
+        /// Returns a list of signing options.
         /// </summary>
-        /// <returns></returns>
         [Route("list")]
         [HttpGet, Dispatch(typeof(Parameterless<ListSignatureModel>))]
         [PermissionsAttribute(Permissions.Backoffice.ReadValue)]
-
         public ActionResult List(ListSignatureModel request)
         {
             return this.View();
@@ -48,10 +48,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         #region Edit
 
         /// <summary>
-        /// Edit signing options
+        /// Edit signing options.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         [Route("{id:guid}/edit")]
         [HttpGet, Hydrate, Dispatch]
         public ActionResult Edit(Identity<EditSignatureModel> request)
@@ -60,10 +58,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         }
 
         /// <summary>
-        /// Handles the edit signing request
+        /// Handles the edit signing option request.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         [Route("{id:guid}/edit")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         public ActionResult Edit(EditSignatureModel request, string submitBtn)
@@ -75,6 +71,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
 
         #region Create
 
+        /// <summary>
+        /// Creates a new signing option.
+        /// </summary>
         [Route("create")]
         [HttpGet, Dispatch] 
         public ActionResult Create(Identity<CreateSignatureModel> request)
@@ -82,6 +81,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
             return this.View();
         }
 
+        /// <summary>
+        /// Returns a list of signing options.
+        /// </summary>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "signature")]
         public ActionResult Create(CreateSignatureModel request)
@@ -91,6 +93,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
 
         #endregion
 
+        /// <summary>
+        /// Inactivates a signing option.
+        /// </summary>
         #region Inactivate
         [Route("{id:guid}/inactivate")]
         [HttpGet, Dispatch("list", "signature")]
@@ -98,7 +103,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         {
             return this.View();
         }
-
 
         #endregion
     }

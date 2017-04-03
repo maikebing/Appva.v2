@@ -18,16 +18,18 @@
                     <tr class="head">
                         <th class="prtd">Bild</th>
                         <th>Beskrivning</th>
+                        <th class="prtd">Används i lista</th>
                         <th class="prtd2"></th>
                     </tr>
                     @foreach (var item in Model.Items)
                     {
-                        <tr>
+                        <tr class="tr-highlight">
                             <td class="prtd"><img class="signimg" src="@String.Format("/Assets/i/{0}", item.Path)" alt="@item.Name" title="@item.Name" /></td>
                             <td class="prpad">@item.Name</td>
+                            <td class="prtd">@(item.IsUsedByList ? "Ja" : "Nej")</td>
                             <td class="prtd2">
                                 @Html.ActionLink("Ändra", "Edit", "Signature", new { id = item.Id }, new { @class = "lb-link btn" })
-                                @Html.ActionLink("Ta bort", "Inactivate", "Signature", new { id = item.Id }, new { @class = (item.IsUsedByList ? "btn btn-del action-denied" : "btn btn-del") })
+                                @Html.ActionLink("Ta bort", "Inactivate", "Signature", new { id = item.Id }, new { @class = (item.IsUsedByList ? "btn btn-del action-denied" : "btn btn-del"), @style = (item.IsUsedByList ? "opacity:.7" : "opacity:1") })
                             </td>
                         </tr>
                     }

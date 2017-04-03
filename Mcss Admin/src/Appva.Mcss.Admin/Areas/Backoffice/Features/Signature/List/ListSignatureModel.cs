@@ -16,7 +16,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     #endregion
 
-    public class ListSignatureModel
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public sealed class ListSignatureModel
     {
         /// <summary>
         /// The signing items

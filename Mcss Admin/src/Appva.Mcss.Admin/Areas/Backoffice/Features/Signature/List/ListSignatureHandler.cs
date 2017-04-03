@@ -23,6 +23,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
     #endregion
 
+    /// <summary>
+    /// Display signature options in a list.
+    /// </summary>
     internal sealed class ListSignatureHandler : RequestHandler<Parameterless<ListSignatureModel>, ListSignatureModel>
     {
         #region Fields.
@@ -44,6 +47,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListSignatureHandler"/> class.
         /// </summary>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
+        /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
         public ListSignatureHandler(ITaxonomyService taxonomyService, IPersistenceContext persistenceContext)
         {
             this.taxonomyService = taxonomyService;
@@ -65,7 +70,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             {
                 var signing = new ListSignature();
 
-                var itemInUseCount = this.persistenceContext.QueryOver<ScheduleSettings>()
+                int itemInUseCount = this.persistenceContext.QueryOver<ScheduleSettings>()
                     .JoinQueryOver<Taxon>(x => x.StatusTaxons)
                     .Where(x => x.Id == item.Id)
                     .RowCount();

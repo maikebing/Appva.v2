@@ -1,5 +1,4 @@
-﻿@*
-@model Appva.Mcss.Admin.Areas.Backoffice.Models.EditGeneralSettingsModel
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.EditGeneralSettingsModel
 @{
     SetTitle("Admin - Uppdatera inställning");
 }
@@ -9,31 +8,18 @@
         <h3 class="section-title">Uppdatera inställning</h3>
         if (Model.IntValue != null)
         {
-
-
             <script language="javascript">
                 function newBackgroundColor(color) {
                     var b = document.getElementById("BackgroundColor")
                     b.value = color;
                 }
-                //function processdata(c2) {
-                //    var ab = document.getElementById("h");
-                //    ab.style.color = a;
-                //}
             </script>
 
             <p>
                 Select Background Color
                 <input name="colorpicker" id="color1" type="color" onchange="newBackgroundColor(colorpicker.value);">
+                @Html.HiddenFor(x => x.BackgroundColor);
             </p>
-            <p>
-                Selected Color is:
-                @Html.FormGroup(x => x.BackgroundColor, "text").TextBox().Validate().Build()
-
-            </p>
-
-
-
             <p class="settings-title"><b>@Model.Name</b></p>
             <div class="settings-section">
                 @Html.FormGroup(i => i.IntValue, "text").Label("Värde", new { @for = "setValue" }).TextBox(null, new { @id = "setValue", @type="number" }).Validate().Build()
@@ -90,6 +76,23 @@
                         index++;
                     }
                 }
+
+                else if (Model.PdfGenObject != null)
+                {
+                    <script language="javascript">
+                function newBackgroundColor(color) {
+                    var b = document.getElementById("BackgroundColor")
+                    b.value = color;
+                }
+                    </script>
+
+                    <p>
+                        @Html.LabelFor(x => x.PdfGenObject.BackgroundColor)
+                        <input name="colorpicker" id="color1" type="color" value="@Model.PdfGenObject.BackgroundColor" onchange="newBackgroundColor(colorpicker.value);">
+                        @Html.HiddenFor(x => x.BackgroundColor)
+                    </p>
+                }
+
             }
             else
             {
@@ -104,4 +107,3 @@
         </div>
     }
 </div>
-*@

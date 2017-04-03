@@ -40,6 +40,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #endregion
 
+        private static String HexConverter(System.Drawing.Color c)
+        {
+            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+        }
+
         #region Constructor.
 
         public EditGeneralSettingsHandler(ISettingsService settingsService)
@@ -54,9 +59,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         public override EditGeneralSettingsModel Handle(Identity<EditGeneralSettingsModel> message)
         {
+           
+
 
             var settings = this.settingsService.List();
             var setting = settings.Where(x => x.Id == message.Id).SingleOrDefault();
+
+            PdfGenObject obj = JsonConvert.DeserializeObject<PdfGenObject>(setting.Value);
 
             editSettings.Name = setting.Name;
             editSettings.MachineName = setting.MachineName;
@@ -80,7 +89,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     }
                     else if (setting.MachineName == machineNames[1])
                     {
-                        editSettings.PdfGenObject = JsonConvert.DeserializeObject<List<PdfGenObject>>(setting.Value);
+                        editSettings.PdfGenObject = JsonConvert.DeserializeObject<PdfGenObject>(setting.Value);
+
                     }
 
                     editSettings.IsJson = true;

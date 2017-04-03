@@ -16,7 +16,7 @@
                   <li>
                       <h1 title="@item.MachineName" style="background:@item.ColorCode">@item.Category</h1>
                       <h2>@item.Name</h2>
-                      @*Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link" })*@
+                     @*@Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link" })*@
                       @if (item.Description != null && item.Description != string.Empty)
                       {
                           <p>@item.Description</p>
@@ -39,6 +39,43 @@
 
                       @if (item.StringValue != null)
                       {
+                          if (item.PdfGenObject != null)
+                          {
+                            <script language="javascript">
+                                function newBackgroundColor(color) {
+                                var a = document.getElementById("t1")
+                                a.value = color;
+                                //function newFontColor(color) {
+                                //    var c = document.getElementById("FontColor")
+                                //    c.value = color;
+                                
+                            }
+                            </script>
+
+                            <p> Background Color
+                                <input name="colorpicker" id="color1" type="color" value="@Model.Colors.BackgroundColor" onchange="newBackgroundColor(colorpicker.value);">
+                              @Html.HiddenFor(x => x.Colors.BackgroundColor)
+                            </p>
+
+                            <p>
+                                Font Color
+                                <input name="colorpicker2" id="color2" type="color" value="@Model.Colors.FontColor" onchange="newBackgroundColor(colorpicker2.value);">
+                                @Html.HiddenFor(x => x.Colors.FontColor)
+                            </p>
+                            <p>
+                                Table Header Color
+                                <input name="colorpicker3" id="color3" type="color" value="@Model.Colors.TableHeaderColor" onchange="newBackgroundColor(colorpicker3.value);">
+                                @Html.HiddenFor(x => x.Colors.TableHeaderColor)
+                            </p>
+                            <p>
+                                Table Border Color
+                                <input name="colorpicker4" id="color4" type="color" value="@Model.Colors.TableBorderColor" onchange="newBackgroundColor(colorpicker4.value);">
+                                @Html.HiddenFor(x => x.Colors.TableBorderColor)
+                            </p>
+                          }
+                      }
+
+
                           @*
                           <p class="settings-title"><b>@item.Name</b></p>
 

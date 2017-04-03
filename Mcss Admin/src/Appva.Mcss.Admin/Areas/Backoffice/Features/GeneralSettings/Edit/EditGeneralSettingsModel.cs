@@ -76,5 +76,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         public List<PdfGenObject> PdfGenObject { get; set; }
+
+
+        public string BackgroundColor { get; set; }
+
     }
 }

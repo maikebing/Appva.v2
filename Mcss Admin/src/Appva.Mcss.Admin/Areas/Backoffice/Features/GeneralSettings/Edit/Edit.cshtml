@@ -9,6 +9,31 @@
         <h3 class="section-title">Uppdatera inställning</h3>
         if (Model.IntValue != null)
         {
+
+
+            <script language="javascript">
+                function newBackgroundColor(color) {
+                    var b = document.getElementById("BackgroundColor")
+                    b.value = color;
+                }
+                //function processdata(c2) {
+                //    var ab = document.getElementById("h");
+                //    ab.style.color = a;
+                //}
+            </script>
+
+            <p>
+                Select Background Color
+                <input name="colorpicker" id="color1" type="color" onchange="newBackgroundColor(colorpicker.value);">
+            </p>
+            <p>
+                Selected Color is:
+                @Html.FormGroup(x => x.BackgroundColor, "text").TextBox().Validate().Build()
+
+            </p>
+
+
+
             <p class="settings-title"><b>@Model.Name</b></p>
             <div class="settings-section">
                 @Html.FormGroup(i => i.IntValue, "text").Label("Värde", new { @for = "setValue" }).TextBox(null, new { @id = "setValue", @type="number" }).Validate().Build()
@@ -26,33 +51,41 @@
 
         if (Model.StringValue != null)
         {
-            <p class="settings-title"><b>@Model.Name</b></p>
+           
+
+
+
+
+
 
             if (Model.IsJson)
-            {
-                if (Model.InventoryObject != null)
-                {
-                    int index = 0;
+                        {
+                            if (Model.InventoryObject != null)
+                            {
+                                int index = 0;
 
-                    foreach (var item in Model.InventoryObject)
-                    {
+                                foreach (var item in Model.InventoryObject)
+                                {
                         <div class="settings-section">
-                            @Html.FormGroup(x => item.Name, "text").Label(null, new { @for = "name" + index }).TextBox(null, new { @id = "name" + index }).Validate().Build()
-                        
+                            @Html.FormGroup(x => item.Name, "text").Label(null, new { @for = "name" + index
+        }).TextBox(null, new { @id = "name" + index
+    }).Validate().Build()
+
                             <label class="settings-label">Id</label>
                             <span class="textblock">@item.Id</span>
 
-                            @for(int i = 0; i < item.Amounts.Count; i++)
+                            @for(int i = 0; i<item.Amounts.Count; i++)
                             {
                                 item.Amount += item.Amounts[i].ToString("0.0####").Replace(',', '.');
 
-                                if(i < item.Amounts.Count - 1)
+                                if(i<item.Amounts.Count - 1)
                                 {
                                     item.Amount += ", ";
                                 }
                             }
 
                             @Html.FormGroup(x => item.Amount, "text large").Label(null, new { @for = "amount" + index }).TextArea(null, new { @id = "amount" + index }).Validate().Build()
+
                         </div>
                         index++;
                     }

@@ -18,6 +18,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
+    using Domain.Entities;
+    using Domain.Repositories;
+    using Persistence;
+    
     #endregion
 
     /// <summary>
@@ -30,9 +34,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// The Taxonomy Service
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
-
         #endregion
 
+        #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="InactivateSignatureHandler"/> 
         /// </summary>
@@ -41,7 +45,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         {
             this.taxonomyService = taxonomyService;
         }
+        #endregion
 
+        #region RequestHandler Overrides
         /// <summary>
         /// TODO: Add a descriptive summary to increase readability.
         /// <param name="message"></param>
@@ -57,5 +63,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
             return true;
         }
+        #endregion
     }
 }

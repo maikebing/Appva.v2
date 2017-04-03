@@ -24,8 +24,8 @@
 
                       @if (item.IntValue != null)
                       {
-                          <div class="settings-section">
-                              @Html.FormGroup(i => item.IntValue, "text").Label("Värde", new { @for = "setValue" }).TextBox(null, new { @id = "setValue", @type = "number" }).Validate().Build()
+                          <div class="value-section">
+                              @Html.FormGroup(i => item.IntValue, "text").Label("Värde", new { @for = "setValue", @class = "value-label" }).TextBox(null, new { @id = "setValue", @type = "number", @class = "value-input" }).Validate().Build()
                           </div>
                       }
 

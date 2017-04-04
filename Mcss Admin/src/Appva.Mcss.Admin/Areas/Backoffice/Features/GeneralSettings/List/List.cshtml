@@ -7,79 +7,87 @@
     <h1>Generella inställningar</h1>
 </div>
 <div id="content" class="cf">
+    <script>
+        function changeColor(color, id) {
+            document.getElementById(id).children[0].children[0].style.backgroundColor = color;
+        }
+    </script>
     <div id="content-primary">
       @if (Model.List != null && Model.List.Count() > 0)
       {
           <ul id="setlist">
               @foreach (var item in Model.List)
               {
-                  <li>
-                      <h1 title="@item.MachineName" style="background:@item.ColorCode">@item.Category</h1>
-                      <h2>@item.Name</h2>
-                      @*Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link" })*@
-                      @if (item.Description != null && item.Description != string.Empty)
-                      {
-                          <p>@item.Description</p>
-                      }
-
-                      @if (item.IntValue != null)
-                      {
-                          <div class="value-section">
-                              @Html.FormGroup(i => item.IntValue, "text").Label("Värde", new { @for = "setValue", @class = "value-label" }).TextBox(null, new { @id = "setValue", @type = "number", @class = "value-input" }).Validate().Build()
-                          </div>
-                      }
-
-                      @if (item.BoolValue != null)
-                      {
-                          bool isBool = (bool)item.BoolValue;
-                          <div class="settings-section">
-                              @Html.FormGroup(x => isBool, "text").Checkbox("Aktivera").Validate().Build()
-                          </div>
-                      }
-
-                      @if (item.StringValue != null)
-                      {
-                          @*
-                          <p class="settings-title"><b>@item.Name</b></p>
-
-                          if (item.IsJson)
+                  <li id="@item.ItemId" onmouseover="changeColor('@item.ItemColorCodes[1]', '@item.ItemId');" onmouseout="changeColor('@item.ItemColorCodes[0]', '@item.ItemId');">
+                      <div class="header">
+                          <h3 title="@item.MachineName" style="background:@item.ItemColorCodes[0]">@item.Category</h3>
+                          <h2>@item.Name</h2>
+                          @*Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link" })*@
+                          @if (item.Description != null && item.Description != string.Empty)
                           {
-                              if (item.InventoryObject != null)
+                              <p>@item.Description</p>
+                          }
+                      </div>
+                      <div class="content">
+                          @if (item.IntValue != null)
+                          {
+                              <div class="value-section">
+                                  @Html.FormGroup(i => item.IntValue, "text").Label("Värde", new { @for = "setValue", @class = "value-label" }).TextBox(null, new { @id = "setValue", @type = "number", @class = "value-input" }).Validate().Build()
+                              </div>
+                          }
+
+                          @if (item.BoolValue != null)
+                          {
+                              bool isBool = (bool)item.BoolValue;
+                              <div class="settings-section">
+                                  @Html.FormGroup(x => isBool, "text").Checkbox("Aktivera").Validate().Build()
+                              </div>
+                          }
+
+                          @if (item.StringValue != null)
+                          {
+                              @*
+                              <p class="settings-title"><b>@item.Name</b></p>
+
+                              if (item.IsJson)
                               {
-                                  int index = 0;
-
-                                  foreach (var item in item.InventoryObject)
+                                  if (item.InventoryObject != null)
                                   {
-                                      <div class="settings-section">
-                                          @Html.FormGroup(x => item.Name, "text").Label(null, new { @for = "name" + index }).TextBox(null, new { @id = "name" + index }).Validate().Build()
+                                      int index = 0;
 
-                                          <label class="settings-label">Id</label>
-                                          <span class="textblock">@item.Id</span>
+                                      foreach (var item in item.InventoryObject)
+                                      {
+                                          <div class="settings-section">
+                                              @Html.FormGroup(x => item.Name, "text").Label(null, new { @for = "name" + index }).TextBox(null, new { @id = "name" + index }).Validate().Build()
 
-                                          @for (int i = 0; i < item.Amounts.Count; i++)
-                                          {
-                                              item.Amount += item.Amounts[i].ToString("0.0####").Replace(',', '.');
+                                              <label class="settings-label">Id</label>
+                                              <span class="textblock">@item.Id</span>
 
-                                              if (i < item.Amounts.Count - 1)
+                                              @for (int i = 0; i < item.Amounts.Count; i++)
                                               {
-                                                  item.Amount += ", ";
-                                              }
-                                          }
+                                                  item.Amount += item.Amounts[i].ToString("0.0####").Replace(',', '.');
 
-                                          @Html.FormGroup(x => item.Amount, "text large").Label(null, new { @for = "amount" + index }).TextArea(null, new { @id = "amount" + index }).Validate().Build()
-                                      </div>
-                                      index++;
+                                                  if (i < item.Amounts.Count - 1)
+                                                  {
+                                                      item.Amount += ", ";
+                                                  }
+                                              }
+
+                                              @Html.FormGroup(x => item.Amount, "text large").Label(null, new { @for = "amount" + index }).TextArea(null, new { @id = "amount" + index }).Validate().Build()
+                                          </div>
+                                          index++;
+                                      }
                                   }
                               }
+                              else
+                              {
+                              <div class="settings-section">
+                                  @Html.Label("Värde")
+                                  @Html.FormGroup(x => item.StringValue, "text large").TextArea().Validate().Build()
+                              </div>
+                                  *@
                           }
-                          else
-                          {
-                          <div class="settings-section">
-                              @Html.Label("Värde")
-                              @Html.FormGroup(x => item.StringValue, "text large").TextArea().Validate().Build()
-                          </div>
-                              *@
-                      }
+                      </div>
                   </li>
               }
           </ul>

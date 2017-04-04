@@ -31,6 +31,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             "Mcss.Core.Security.Messaging.Email",
             "Mcss.Integration.Ldap.LdapConfiguration"
         };
+
         private string[] colorCodes = {
             "#64B5F6", "#81C784", "#7986CB", "#E57373",
             "#4DB6AC", "#FFB74D", "#A1887F", "#90A4AE",
@@ -70,8 +71,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.Description = item.Set.Description;
                 settingItems.Value = item.Set.Value;
                 settingItems.Type = item.Set.Type;
-                settingItems.ColorCode = colorCodes[colorIndex];
-                setting.List.Add(settingItems);
+                settingItems.CategoryColorCode = colorCodes[colorIndex];
+                settingItems.ItemColorCodes = new string[2];
+                settingItems.ItemId = "item" + item.Index;
 
                 if (item.Set.Type == typeof(Boolean))
                 {
@@ -119,6 +121,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     settingItems.ListValues = list;
                 }
 
+                if (item.Index % 2 == 0)
+                {
+                    settingItems.ItemColorCodes[0] = "#81C784";
+                    settingItems.ItemColorCodes[1] = "#66BB6A";
+                }
+                else
+                {
+                    settingItems.ItemColorCodes[0] = "#7986CB";
+                    settingItems.ItemColorCodes[1] = "#5C6BC0";
+                }
+
                 if (item.Index < settings.Count() - 1 && settings.ElementAt(item.Index + 1).MachineName != item.Set.MachineName)
                 {
                     colorIndex++;
@@ -128,6 +141,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 {
                     colorIndex = 0;
                 }
+
+                setting.List.Add(settingItems);
             }
 
             setting.List = setting.List;

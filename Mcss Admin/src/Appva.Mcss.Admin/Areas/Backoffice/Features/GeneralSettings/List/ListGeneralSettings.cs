@@ -19,6 +19,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     public class ListGeneralSettings
     {
+        public string ItemId
+        {
+            get;
+            set;
+        }
+
         public string Name
         {
             get;
@@ -55,11 +61,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public string ColorCode
+        public string CategoryColorCode
         {
             get;
             set;
         }
+
+        public string[] ItemColorCodes
+        {
+            get;
+            set;
+        }
+
         public int? IntValue
         {
             get;

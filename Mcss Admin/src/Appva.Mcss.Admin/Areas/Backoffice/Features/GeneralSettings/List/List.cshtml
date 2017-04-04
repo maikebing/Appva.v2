@@ -8,9 +8,6 @@
 </div>
 <div id="content" class="cf">
     <script>
-        function changeColor(color, id) {
-            document.getElementById(id).children[0].children[0].style.backgroundColor = color;
-        }
         function colorPicker(id1, id2) {
             document.getElementById(id1).value = document.getElementById(id2).value;
         }
@@ -21,9 +18,9 @@
           <ul id="setlist">
               @foreach (var item in Model.List)
               {
-                  <li id="@item.ItemId" onmouseover="changeColor('@item.ItemColorCodes[1]', '@item.ItemId');" onmouseout="changeColor('@item.ItemColorCodes[0]', '@item.ItemId');">
+                  <li>
                       <div class="header">
-                          <h3 title="@item.MachineName" style="background:@item.ItemColorCodes[0]">@item.Category</h3>
+                          <h3 title="@item.MachineName"><span style="background:@item.CategoryColorCode"></span>@item.Category</h3>
                           <h2>@item.Name</h2>
                           @*Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link" })*@
                           @if (item.Description != null && item.Description != string.Empty)
@@ -42,7 +39,7 @@
                           @if (item.BoolValue != null)
                           {
                               bool isBool = (bool)item.BoolValue;
-                              <div class="settings-section">
+                              <div class="settings-section t-center">
                                   @Html.FormGroup(x => isBool, "text").Checkbox("Aktivera").Validate().Build()
                               </div>
                           }
@@ -51,78 +48,39 @@
                           {
                                 if (item.PdfGenObject != null)
                                 {
-                                    @Html.ActionLink(item.PdfGenObject.FooterText, "Edit", "GeneralSettings", new { @class = "lb-link"})
-                                    @Html.LabelFor(i => item.PdfGenObject.IsCustomFooterTextEnabled)
-                                    @Html.FormGroup(i => item.PdfGenObject.IsCustomFooterTextEnabled).Checkbox("Aktivera").Validate().Build()
-                                    @Html.LabelFor(i => item.PdfGenObject.IsCustomLogotypeEnabled)
-                                    @Html.FormGroup(i => item.PdfGenObject.IsCustomLogotypeEnabled).Checkbox("Aktivera").Validate().Build()
+                                    <div class="settings-section t-right">
+                                        @Html.LabelFor(i => item.PdfGenObject.IsCustomFooterTextEnabled, new { @class = "section-label attr-item", @title = "IsCustomFooterTextEnabled" })
+                                        @Html.FormGroup(i => item.PdfGenObject.IsCustomFooterTextEnabled).Checkbox("Aktivera").Validate().Build()
+                                    </div>
+                                    <div class="settings-section t-right">
+                                        @Html.LabelFor(i => item.PdfGenObject.IsCustomLogotypeEnabled, new { @class = "section-label attr-item", @title = "IsCustomLogotypeEnabled" })
+                                        @Html.FormGroup(i => item.PdfGenObject.IsCustomLogotypeEnabled).Checkbox("Aktivera").Validate().Build()
+                                    </div>
                                     <div class="value-section">
-                                        <label class="value-label" for="colorInput1">Bakgrundsfärg</label>
-                                        @Html.FormGroup(x => x.Colors.BackgroundColor, "text").TextBox(null, new { @id = "colorInput1", onchange = "colorPicker('picker1', this.id);"}).Validate().Build()
+                                        <label class="value-label attr-item" for="colorInput1">Bakgrundsfärg</label>
+                                        @Html.FormGroup(x => x.Colors.BackgroundColor, "text").TextBox(null, new { @id = "colorInput1", @class = "p-left", onchange = "colorPicker('picker1', this.id);"}).Validate().Build()
                                         <input name="colorpicker" id="picker1" type="color" value="@Model.Colors.BackgroundColor" onchange="colorPicker('colorInput1', this.id);">
                                         @Html.HiddenFor(x => x.Colors.BackgroundColor)
                                     </div>
                                     <div class="value-section">
-                                        <label class="value-label" for="colorInput2">Teckensnittsfärg</label>
-                                        @Html.FormGroup(x => x.Colors.FontColor, "text").TextBox(null, new { @id = "colorInput2", onchange = "colorPicker('picker2', this.id);" }).Validate().Build()
+                                        <label class="value-label attr-item" for="colorInput2">Teckensnittsfärg</label>
+                                        @Html.FormGroup(x => x.Colors.FontColor, "text").TextBox(null, new { @id = "colorInput2", @class = "p-left", onchange = "colorPicker('picker2', this.id);" }).Validate().Build()
                                         <input name="colorpicker2" id="picker2" type="color" value="@Model.Colors.FontColor" onchange="colorPicker('colorInput2', this.id);">
                                         @Html.HiddenFor(x => x.Colors.FontColor)
                                     </div>
                                     <div class="value-section">
-                                    <label class="value-label" for="colorInput3">Rubrikfärg</label>
-                                        @Html.FormGroup(x => x.Colors.TableHeaderColor, "text").TextBox(null, new { @id = "colorInput3", onchange = "colorPicker('picker3', this.id);" }).Validate().Build()
+                                    <label class="value-label attr-item" for="colorInput3">Rubrikfärg</label>
+                                        @Html.FormGroup(x => x.Colors.TableHeaderColor, "text").TextBox(null, new { @id = "colorInput3", @class = "p-left", onchange = "colorPicker('picker3', this.id);" }).Validate().Build()
                                         <input name="colorpicker3" id="picker3" type="color" value="@Model.Colors.TableHeaderColor" onchange="colorPicker('colorInput3', this.id);">
                                         @Html.HiddenFor(x => x.Colors.TableHeaderColor)
                                     </div>
                                     <div class="value-section">
-                                        <label class="value-label" for="colorInput4">Kantlinjefärg</label>
-                                        @Html.FormGroup(x => x.Colors.TableBorderColor, "text").TextBox(null, new { @id = "colorInput4", onchange = "colorPicker('picker4', this.id);" }).Validate().Build()
+                                        <label class="value-label attr-item" for="colorInput4">Kantlinjefärg</label>
+                                        @Html.FormGroup(x => x.Colors.TableBorderColor, "text").TextBox(null, new { @id = "colorInput4", @class = "p-left", onchange = "colorPicker('picker4', this.id);" }).Validate().Build()
                                         <input name="colorpicker4" id="picker4" type="color" value="@Model.Colors.TableBorderColor" onchange="colorPicker('colorInput4', this.id);">
                                         @Html.HiddenFor(x => x.Colors.TableBorderColor)
                                     </div>
                                 }
-                          @*
-                          <p class="settings-title"><b>@item.Name</b></p>
-
-                          if (item.IsJson)
-                          {
-                              if (item.InventoryObject != null)
-                              {
-                                  if (item.InventoryObject != null)
-                                  {
-                                      int index = 0;
-
-                                      foreach (var item in item.InventoryObject)
-                                      {
-                                          <div class="settings-section">
-                                              @Html.FormGroup(x => item.Name, "text").Label(null, new { @for = "name" + index }).TextBox(null, new { @id = "name" + index }).Validate().Build()
-
-                                              <label class="settings-label">Id</label>
-                                              <span class="textblock">@item.Id</span>
-
-                                              @for (int i = 0; i < item.Amounts.Count; i++)
-                                              {
-                                                  item.Amount += item.Amounts[i].ToString("0.0####").Replace(',', '.');
-
-                                                  if (i < item.Amounts.Count - 1)
-                                                  {
-                                                      item.Amount += ", ";
-                                                  }
-                                              }
-
-                                              @Html.FormGroup(x => item.Amount, "text large").Label(null, new { @for = "amount" + index }).TextArea(null, new { @id = "amount" + index }).Validate().Build()
-                                          </div>
-                                          index++;
-                                      }
-                                  }
-                              }
-                              else
-                              {
-                              <div class="settings-section">
-                                  @Html.Label("Värde")
-                                  @Html.FormGroup(x => item.StringValue, "text large").TextArea().Validate().Build()
-                              </div>
-                                  *@
                           }
                       </div>
                   </li>

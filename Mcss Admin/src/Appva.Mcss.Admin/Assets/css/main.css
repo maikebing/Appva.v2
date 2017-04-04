@@ -1384,17 +1384,17 @@ td.rights {
     width:100%;
     min-height:220px;
     display:table;
-    background:url(../i/settings-medium.png) no-repeat -300px 90px;
+    background:url(../i/settings-medium.png) no-repeat center -320px;
     background-color:#fff;
     margin:0 0 20px 0;
     padding:0;
     color:#222;
-    box-shadow:0 2px 5px #c2d1db;
+    box-shadow:0 2px 4px #b5bdc2;
     transition:box-shadow .5s ease, background .5s ease;
     overflow:auto;
 }
 #setlist li:hover {
-    background:url(../i/settings-medium.png) no-repeat -150px 90px;
+    background:url(../i/settings-medium.png) no-repeat center -205px;
     background-color:#fff;
 }
 #setlist li a{
@@ -1411,16 +1411,25 @@ td.rights {
     text-transform:uppercase;
     letter-spacing:.05em;
     line-height:1.2em;
-    color:#fff;
-    padding:9px 15px;
+    color:#555;
+    padding:15px 15px 0 15px;
     overflow:hidden;
     transition:background 0.5s ease;
 }
+#setlist h3 span {
+    float:left;
+    display:inline-block;
+    width:11px;
+    height:11px;
+    margin-right:8px;
+}
 #setlist h2 {
-    font-size:15px;
+    font-size:16px;
     font-weight:bold;
+    line-height:1.6em;
     padding:15px;
     margin:0;
+    color:#222;
 }
 #setlist p {
     font-weight:normal;
@@ -3010,23 +3019,34 @@ form .time {width:4em;}
 }
 #setlist .value-section {
     position:relative;
-    padding:10px 0;
+    padding:0 0 10px 0;
     margin:0 15px;
 }
 #setlist .settings-section {
+    position:relative;
     background:rgba(255, 255, 255, 0.7);
     margin:10px 15px 15px 15px;
-    text-align:center;
     box-shadow:0 0 18px #e8e8e8 inset;
 }
-#setlist .value-label {
+#setlist .value-label, #setlist .section-label {
     position:absolute;
     z-index:1;
-    bottom:12px;
     padding:12px 15px 11px 15px;
     font-weight:bold;
-    text-align:center;
     border-right:1px solid #ddd;
+}
+#setlist .value-label { bottom:12px; }
+#setlist .section-label {
+    bottom:-4px;
+    left:0;
+}
+#setlist .t-center { text-align:center; }
+#setlist .t-right { text-align:right; }
+#setlist .p-left { padding-left:165px!important; }
+#setlist .attr-item {
+    width:120px;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 #setlist input[type="number"], #setlist input[type="text"] {
     background:rgba(255, 255, 255, 0.7);
@@ -3926,7 +3946,7 @@ ul.people li {
     color:#46ce46
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
     #setlist {
         -moz-column-count:2;
         -webkit-column-count:2;
@@ -3934,7 +3954,7 @@ ul.people li {
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 720px) {
     #setlist {
         -moz-column-count: 1;
         -webkit-column-count: 1;

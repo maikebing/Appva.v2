@@ -78,8 +78,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.Value = item.Set.Value;
                 settingItems.Type = item.Set.Type;
                 settingItems.CategoryColorCode = colorCodes[colorIndex];
-                settingItems.ItemColorCodes = new string[2];
-                settingItems.ItemId = "item" + item.Index;
 
                 if (item.Set.Type == typeof(Boolean))
                 {
@@ -134,17 +132,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     settingItems.ListValues = list;
                 }
 
-                if (item.Index % 2 == 0)
-                {
-                    settingItems.ItemColorCodes[0] = "#81C784";
-                    settingItems.ItemColorCodes[1] = "#66BB6A";
-                }
-                else
-                {
-                    settingItems.ItemColorCodes[0] = "#7986CB";
-                    settingItems.ItemColorCodes[1] = "#5C6BC0";
-                }
-
                 if (item.Index < settings.Count() - 1 && settings.ElementAt(item.Index + 1).MachineName != item.Set.MachineName)
                 {
                     colorIndex++;
@@ -181,7 +168,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             {
                 category = category.Substring(category.Length - max).Trim();
                 int index = category.IndexOf(' ');
-                category = category.Contains("/") && category[0] != '/' ? "..." + category.Remove(0, index) : "... " + category;
+                category = category.Contains("/") && category[0] != '/' ? category.Remove(0, index) : category;
             }
 
             return category;

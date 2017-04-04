@@ -85,8 +85,13 @@
                                         var c = document.getElementById("Colors_TableBorderColor")
                                         b.value = c.value;
                                     }
-
                             </script>
+                            @Html.ActionLink(item.PdfGenObject.FooterText, "Edit", "GeneralSettings", new { @class = "lb-link"})
+                            @Html.LabelFor(i => item.PdfGenObject.IsCustomFooterTextEnabled)
+                            @Html.FormGroup(i => item.PdfGenObject.IsCustomFooterTextEnabled).Checkbox("Aktivera").Validate().Build()
+                            @Html.LabelFor(i => item.PdfGenObject.IsCustomLogotypeEnabled)
+                            @Html.FormGroup(i => item.PdfGenObject.IsCustomLogotypeEnabled).Checkbox("Aktivera").Validate().Build()
+
                             <p> Background
                                 <div id="textboxResized">@Html.FormGroup(x => x.Colors.BackgroundColor, "text").TextBox(null, new { onchange = "newerBackgroundColor(Colors_BackgroundColor.value)"}).Validate().Build()</div>
                                 <input name="colorpicker" id="color1" type="color" value="@Model.Colors.BackgroundColor" onchange="newBackgroundColor(color1.value);">

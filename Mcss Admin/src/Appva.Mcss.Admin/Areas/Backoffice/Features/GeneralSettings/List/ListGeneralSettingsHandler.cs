@@ -63,11 +63,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         {
             var settings = this.settingService.List();
             var setting = new ListGeneralSettingsModel();
-            int colorIndex = 0;
-
-
-
             setting.List = new List<ListGeneralSettings>();
+            int colorIndex = 0;
 
             foreach (var item in settings.Select((s, i) => new { Set = s, Index = i }))
             {
@@ -101,8 +98,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         }
                         else if (item.Set.MachineName == machineNames[1])
                         {
-                           settingItems.PdfGenObject = JsonConvert.DeserializeObject<PdfGenObject>(item.Set.Value);
-
+                            settingItems.PdfGenObject = JsonConvert.DeserializeObject<PdfGenObject>(item.Set.Value);
                             setting.Colors = new PdfGenColors
                             {
                                 BackgroundColor = HexConverter(settingItems.PdfGenObject.BackgroundColor.R, settingItems.PdfGenObject.BackgroundColor.G, settingItems.PdfGenObject.BackgroundColor.B ),

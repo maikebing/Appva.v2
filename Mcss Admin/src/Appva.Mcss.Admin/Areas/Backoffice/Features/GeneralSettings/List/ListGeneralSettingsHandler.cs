@@ -8,6 +8,7 @@
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
+    using Admin.Models;
     #region Imports.
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
@@ -69,6 +70,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             foreach (var item in settings.Select((s, i) => new { Set = s, Index = i }))
             {
                 var settingItems = new ListGeneralSettings();
+                settingItems.Id = item.Set.Id;
                 settingItems.Name = item.Set.Name;
                 settingItems.MachineName = item.Set.MachineName;
                 settingItems.BoolValue = null;

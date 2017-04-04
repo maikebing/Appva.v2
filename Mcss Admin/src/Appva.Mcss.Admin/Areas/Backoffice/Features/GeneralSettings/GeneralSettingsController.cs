@@ -6,6 +6,7 @@
 //      <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
 
+using System.Web.Mvc;
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 {
     #region Imports.
@@ -40,6 +41,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         {
 
             return this.View();
+        }
+        #endregion
+
+        #region Save
+        [Route("list")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
+        public ActionResult List(ListGeneralSettingsModel request)
+        {
+            return View();
         }
         #endregion
 

@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Entities;
+    using Cqrs;
     using JsonObjects.Pdf;
     using System;
     using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     #endregion
 
-    public class ListGeneralSettingsModel
+    public class ListGeneralSettingsModel : IRequest<bool>
     {
         public List<ListGeneralSettings> List
         {

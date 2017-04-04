@@ -14,11 +14,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     using System.Collections.Generic;
     using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects;
     using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects.Pdf;
+    using Cqrs;
 
     #endregion
 
     public class ListGeneralSettings
     {
+        public Guid Id
+        {
+            get;
+            set;
+        }
+
         public string ItemId
         {
             get;

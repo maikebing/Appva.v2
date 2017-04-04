@@ -49,7 +49,97 @@
                               @*
                               <p class="settings-title"><b>@item.Name</b></p>
 
-                              if (item.IsJson)
+                      @if (item.StringValue != null)
+                      {
+                          if (item.PdfGenObject != null)
+                          {
+                            <script language="javascript">
+                                    function newBackgroundColor() {
+                                        var a = document.getElementById("Colors_BackgroundColor");
+                                        var b = document.getElementById("color1");
+                                        a.value = b.value;
+                                    }
+                                    function newerBackgroundColor() {
+                                        var b = document.getElementById("color1");
+                                        var c = document.getElementById("Colors_BackgroundColor")
+                                        b.value = c.value;
+                                    }
+
+                                    function newBackgroundColor2() {
+                                        var a = document.getElementById("Colors_FontColor");
+                                        var b = document.getElementById("color2");
+                                        a.value = b.value;
+                                    }
+                                    function newerBackgroundColor2() {
+                                        var b = document.getElementById("color2");
+                                        var c = document.getElementById("Colors_FontColor")
+                                        b.value = c.value;
+                                    }
+
+                                    function newBackgroundColor3() {
+                                        var a = document.getElementById("Colors_TableHeaderColor");
+                                        var b = document.getElementById("color3");
+                                        a.value = b.value;
+                                    }
+                                    function newerBackgroundColor3() {
+                                        var b = document.getElementById("color3");
+                                        var c = document.getElementById("Colors_TableHeaderColor")
+                                        b.value = c.value;
+                                    }
+
+                                    function newBackgroundColor4() {
+                                        var a = document.getElementById("Colors_TableBorderColor");
+                                        var b = document.getElementById("color4");
+                                        a.value = b.value;
+                                    }
+                                    function newerBackgroundColor4() {
+                                        var b = document.getElementById("color4");
+                                        var c = document.getElementById("Colors_TableBorderColor")
+                                        b.value = c.value;
+                                    }
+                            </script>
+                            @Html.ActionLink(item.PdfGenObject.FooterText, "Edit", "GeneralSettings", new { @class = "lb-link"})
+                            @Html.LabelFor(i => item.PdfGenObject.IsCustomFooterTextEnabled)
+                            @Html.FormGroup(i => item.PdfGenObject.IsCustomFooterTextEnabled).Checkbox("Aktivera").Validate().Build()
+                            @Html.LabelFor(i => item.PdfGenObject.IsCustomLogotypeEnabled)
+                            @Html.FormGroup(i => item.PdfGenObject.IsCustomLogotypeEnabled).Checkbox("Aktivera").Validate().Build()
+
+                            <p> Background
+                                <div id="textboxResized">@Html.FormGroup(x => x.Colors.BackgroundColor, "text").TextBox(null, new { onchange = "newerBackgroundColor(Colors_BackgroundColor.value)"}).Validate().Build()</div>
+                                <input name="colorpicker" id="color1" type="color" value="@Model.Colors.BackgroundColor" onchange="newBackgroundColor(color1.value);">
+                                @Html.HiddenFor(x => x.Colors.BackgroundColor)
+                                    </p>
+        
+
+                                    <p>
+                                        Font
+                                        <div id="textboxResized">@Html.FormGroup(x => x.Colors.FontColor, "text").TextBox(null, new { onchange = "newerBackgroundColor2(Colors_FontColor.value)" }).Validate().Build()</div>
+                                        <input name="colorpicker2" id="color2" type="color" value="@Model.Colors.FontColor" onchange="newBackgroundColor2(colorpicker2.value);">
+                                        @Html.HiddenFor(x => x.Colors.FontColor)
+                                    </p>
+        
+                                    <p>
+                                        Table Header
+                                        <div id="textboxResized">@Html.FormGroup(x => x.Colors.TableHeaderColor, "text").TextBox(null, new { onchange = "newerBackgroundColor3(Colors_TableHeaderColor.value)" }).Validate().Build()</div>
+                                <input name="colorpicker3" id="color3" type="color" value="@Model.Colors.TableHeaderColor" onchange="newBackgroundColor3(colorpicker3.value);">
+                                @Html.HiddenFor(x => x.Colors.TableHeaderColor)
+                            </p>
+                            <p>
+                                Table Border
+                                <div id="textboxResized">@Html.FormGroup(x => x.Colors.TableBorderColor, "text").TextBox(null, new { onchange = "newerBackgroundColor4(Colors_TableBorderColor.value)" }).Validate().Build()</div>
+                                <input name="colorpicker4" id="color4" type="color" value="@Model.Colors.TableBorderColor" onchange="newBackgroundColor4(colorpicker4.value);">
+                                @Html.HiddenFor(x => x.Colors.TableBorderColor)
+                            </p>
+                          }
+                                 }
+
+
+                          @*
+                          <p class="settings-title"><b>@item.Name</b></p>
+
+                          if (item.IsJson)
+                          {
+                              if (item.InventoryObject != null)
                               {
                                   if (item.InventoryObject != null)
                                   {

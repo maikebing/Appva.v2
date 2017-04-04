@@ -392,6 +392,7 @@
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\EditGeneralSettingsPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\GeneralSettingsController.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\JsonObjects\InventoryModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\JsonObjects\PdfGenColors.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\JsonObjects\PdfGenModel.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettings.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsHandler.cs" />

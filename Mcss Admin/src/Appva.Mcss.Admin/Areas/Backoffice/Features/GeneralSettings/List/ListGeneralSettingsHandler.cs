@@ -12,6 +12,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using JsonObjects.Pdf;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -43,6 +45,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #endregion
 
+        private static String HexConverter(int r, int g, int b)
+        {
+            return "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
+        }
+
         #region Constructor.
         public ListGeneralSettingsHandler(ISettingsService settingService)
         {
@@ -57,6 +64,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             var settings = this.settingService.List();
             var setting = new ListGeneralSettingsModel();
             int colorIndex = 0;
+
+
 
             setting.List = new List<ListGeneralSettings>();
 
@@ -92,7 +101,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         }
                         else if (item.Set.MachineName == machineNames[1])
                         {
-                            //settingItems.PdfGenObject = JsonConvert.DeserializeObject<List<PdfGenObject>>(setting.Value);
+                           settingItems.PdfGenObject = JsonConvert.DeserializeObject<PdfGenObject>(item.Set.Value);
+
+                            setting.Colors = new PdfGenColors
+                            {
+                                BackgroundColor = HexConverter(settingItems.PdfGenObject.BackgroundColor.R, settingItems.PdfGenObject.BackgroundColor.G, settingItems.PdfGenObject.BackgroundColor.B ),
+                                FontColor = HexConverter(settingItems.PdfGenObject.FontColor.R, settingItems.PdfGenObject.FontColor.G, settingItems.PdfGenObject.FontColor.B),
+                                TableBorderColor = HexConverter(settingItems.PdfGenObject.TableBorderColor.R, settingItems.PdfGenObject.TableBorderColor.G, settingItems.PdfGenObject.TableBorderColor.B),
+                                TableHeaderColor = HexConverter(settingItems.PdfGenObject.TableHeaderColor.R, settingItems.PdfGenObject.TableHeaderColor.G, settingItems.PdfGenObject.TableHeaderColor.B)
+                            };
                         }
 
                         settingItems.IsJson = true;

@@ -109,7 +109,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public List<PdfGenObject> PdfGenObject
+        public PdfGenObject PdfGenObject
         {
             get;
             set;

@@ -8,7 +8,6 @@
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
 {
-
     #region Imports.
 
     using Appva.Cqrs;
@@ -25,15 +24,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
     public class EditGeneralSettingsPublisher : RequestHandler<EditGeneralSettingsModel, bool>
     {
         #region Properties.
-
         ISettingsService settingsService;
+
+
+        #endregion
 
         private static String RGBConverter(System.Drawing.Color c)
         {
             return c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString();
         }
-
-        #endregion
 
         #region Constructor.
         public EditGeneralSettingsPublisher(ISettingsService settingsService)
@@ -42,28 +41,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings.Edit
         }
         #endregion
 
-        
-
-      
-
-
-        
-
         #region RequestHandler Overrides.
-
-
-
-
         public override bool Handle(EditGeneralSettingsModel message)
         {
             var settings = this.settingsService.List();
             var setting = settings.Where(x => x.Id == message.Id).SingleOrDefault();
-
-
             var color = System.Drawing.ColorTranslator.FromHtml(message.BackgroundColor);
 
-            var RGB = RGBConverter(color);
-
+            string[] RGB = RGBConverter(color).Split(',');
+            int R = Convert.ToInt32(RGB[0]);
+            int G = Convert.ToInt32(RGB[1]);
+            int B = Convert.ToInt32(RGB[2]);
             
 
 

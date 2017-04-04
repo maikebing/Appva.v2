@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Entities;
+    using JsonObjects.Pdf;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -25,5 +26,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             get;
             set;
         }
+
+        public PdfGenColors Colors { get; set; }
+
+        public string BackgroundColor { get; set; }
     }
 }

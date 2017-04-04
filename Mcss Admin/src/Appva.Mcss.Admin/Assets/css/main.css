@@ -3900,3 +3900,8 @@ ul.people li {
 .active-color-head{
     color:#46ce46
 }
+
+#textboxResized input[type=text]{
+     height: 10px;
+    width: 70px;
+}

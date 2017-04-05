@@ -14,7 +14,7 @@
 	<div id="content-primary" class="signlist-collection">
         <div id="signlist">
             <div class="h cf">
-				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.UpdatedAt)</h2>
+				<h2>@Localizer["{0}__Senast_ändrad_{1:yyyy-MM-dd}", Model.Schedule.ScheduleSettings.Name, Model.Schedule.UpdatedAt]</h2>
 				@Html.ActionLink(Localizer["Stäng_listan"].ToString(), "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
 			</div>
 			
@@ -25,7 +25,7 @@
             <div id="prepare-weeks">
 			    <div class="week-h">
 				    <h2>
-                        Vecka @Model.Week 
+                        @Localizer["Vecka_{0}", Model.Week] 
                         <span>
                             @Model.StartDate.Day.ToString() @(Model.StartDate.Month != Model.StartDate.AddDays(7).Month ? @Model.StartDate.ToString("MMMM") : "")
                             –@Model.StartDate.AddDays(6).Day.ToString() @Model.StartDate.AddDays(7).ToString("MMMM")</span></h2>
@@ -112,7 +112,7 @@
 				    </table>
 			    </div>
 			    <div class="week-a">
-                    @Html.ActionLink(Localizer["Lägg till"].ToString(), "Create", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+                    @Html.ActionLink(Localizer["Lägg_till"].ToString(), "Create", "Prepare", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
 				    @Localizer["en_rad__Markera_sedan_de_dagar_som_iordningsställts"]
 			    </div>
             </div>

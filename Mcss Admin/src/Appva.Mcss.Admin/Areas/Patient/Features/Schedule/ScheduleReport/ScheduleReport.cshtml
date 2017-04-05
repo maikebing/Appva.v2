@@ -4,17 +4,17 @@
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
     @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
-	<h1>Rapport</h1>
+	<h1>@Localizer["Rapport"]</h1>
 	    @using(Html.Post()) {
         <p class="filter">
             @Html.LabelFor(m => m.StartDate)
             @Html.EditorFor(m => m.StartDate)
             @Html.LabelFor(m => m.EndDate)
-            @Html.EditorFor(m => m.EndDate) 
+            @Html.EditorFor(m => m.EndDate)
             @Html.Submit(Localizer["Visa"].ToString())
         </p>
         }
-	<a class="btn print" href="#">Skriv ut</a>
+	<a class="btn print" href="#">@Localizer["Skriv_ut"]</a>
    @Html.ActionLink(Localizer["Exportera_till_Excel"].ToString(), "Excel", "Schedule", new { Id = Model.Patient.Id, ScheduleSettingsId = Model.Schedule, StartDate = Model.StartDate, EndDate = Model.EndDate }, new { @class = "export" })
 
 </div>

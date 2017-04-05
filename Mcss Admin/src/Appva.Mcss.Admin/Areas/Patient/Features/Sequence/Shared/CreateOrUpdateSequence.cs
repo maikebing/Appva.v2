@@ -29,20 +29,20 @@ namespace Appva.Mcss.Admin.Models
 
         private static readonly List<SelectListItem> AllIntervals = new List<SelectListItem>()
             {
-                new SelectListItem { Text = "Varje dag",        Value = "1" },
-                new SelectListItem { Text = "Varannan dag",     Value = "2" },
-                new SelectListItem { Text = "Var 3:e dag",      Value = "3" },
-                new SelectListItem { Text = "Var 4:e dag",      Value = "4" },
-                new SelectListItem { Text = "Var 5:e dag",      Value = "5" },
-                new SelectListItem { Text = "Var 6:e dag",      Value = "6" },
-                new SelectListItem { Text = "Varje vecka",      Value = "7" },
-                new SelectListItem { Text = "Varannan vecka",   Value = "14" },
-                new SelectListItem { Text = "Var tredje vecka", Value = "21" },
-                new SelectListItem { Text = "Var fjärde vecka", Value = "28" },
-                new SelectListItem { Text = "Var femte vecka",  Value = "35" },
-                new SelectListItem { Text = "Var åttonde vecka",  Value = "56" },
-                new SelectListItem { Text = "Var tolfte vecka",  Value = "84" },
-                new SelectListItem { Text = "Annan ...",        Value = "0" }
+                new SelectListItem { Text = Resources.Language.Varje_dag,        Value = "1" },
+                new SelectListItem { Text = Resources.Language.Varannan_dag,     Value = "2" },
+                new SelectListItem { Text = Resources.Language.Var_3_e_dag,      Value = "3" },
+                new SelectListItem { Text = Resources.Language.Var_4_e_dag,      Value = "4" },
+                new SelectListItem { Text = Resources.Language.Var_5_e_dag,      Value = "5" },
+                new SelectListItem { Text = Resources.Language.Var_6_e_dag,      Value = "6" },
+                new SelectListItem { Text = Resources.Language.Varje_vecka,      Value = "7" },
+                new SelectListItem { Text = Resources.Language.Varannan_vecka,   Value = "14" },
+                new SelectListItem { Text = Resources.Language.Var_tredje_vecka, Value = "21" },
+                new SelectListItem { Text = Resources.Language.Var_fjärde_vecka, Value = "28" },
+                new SelectListItem { Text = Resources.Language.Var_femte_vecka,  Value = "35" },
+                new SelectListItem { Text = Resources.Language.Var_åttonde_vecka, Value = "56" },
+                new SelectListItem { Text = Resources.Language.Var_tolfte_vecka, Value = "84" },
+                new SelectListItem { Text = Resources.Language.Annan___,         Value = "0" }
             };
 
         #endregion
@@ -106,8 +106,8 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The Sequence name
         /// </summary>
-        [Required(ErrorMessage="Insats måste anges")]
-        [DisplayName("Insats")]
+        [Required(ErrorMessageResourceName="Insats_måste_anges", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Display(Name = "Insats", ResourceType = typeof(Resources.Language))]
         public string Name 
         { 
             get; 
@@ -117,7 +117,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The sequence description
         /// </summary>
-        [DisplayName("Instruktion")]
+        [Display(Name = "Instruktion", ResourceType = typeof(Resources.Language))]
         public string Description 
         { 
             get;
@@ -145,7 +145,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// If sequence needs delegation, the delegation
         /// </summary>
-        [DisplayName("Kräver delegering för")]
+        [Display(Name = "Kräver_delegering_för", ResourceType = typeof(Resources.Language))]
         public Guid? Delegation 
         { 
             get;
@@ -164,7 +164,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The inventory
         /// </summary>
-        [RequiredIf(Target = "CreateNewInventory", Value = false, ErrorMessage = "Saldo måste väljas")]
+        [RequiredIf(Target = "CreateNewInventory", Value = false, ErrorMessageResourceName = "Förbrukningsjournal_måste_väljas", ErrorMessageResourceType = typeof(Resources.Language))]
         public Guid? Inventory
         {
             get;
@@ -174,7 +174,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The repeat interval
         /// </summary>
-        [DisplayName("Skall ges")]
+        [Display(Name = "Skall_ges", ResourceType = typeof(Resources.Language))]
         public int? Interval 
         { 
             get;
@@ -185,7 +185,7 @@ namespace Appva.Mcss.Admin.Models
         /// The startdate, if scheduled
         /// </summary>
         [Date]
-        [DisplayName("Fr.o.m.")]
+        [Display(Name = "Fr_o_m_", ResourceType = typeof(Resources.Language))]
         public virtual DateTime? StartDate 
         { 
             get; 
@@ -196,7 +196,7 @@ namespace Appva.Mcss.Admin.Models
         /// The enddate, if scheduled
         /// </summary>
         [Date]
-        [DisplayName("T.o.m.")]
+        [Display(Name ="T_o_m_", ResourceType = typeof(Resources.Language))]
         public DateTime? EndDate 
         {
             get;
@@ -215,7 +215,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The hours which the sequence shall occur
         /// </summary>
-        [DisplayName("Klockslag")]
+        [Display(Name = "Klockslag", ResourceType = typeof(Resources.Language))]
         public IEnumerable<CheckBoxViewModel> Times 
         { 
             get; 
@@ -226,7 +226,7 @@ namespace Appva.Mcss.Admin.Models
         /// The timespan before its ok to complete.
         /// In minutes.
         /// </summary>
-        [Range(0, 99999, ErrorMessage = "Måste vara mellan 0-99999")]
+        [Range(0, 99999, ErrorMessageResourceName = "Måste_vara_mellan_0_99999", ErrorMessageResourceType = typeof(Resources.Language))]
         public int RangeInMinutesBefore 
         { 
             get; 
@@ -237,7 +237,7 @@ namespace Appva.Mcss.Admin.Models
         /// The timespan after its ok to complete.
         /// In minutes.
         /// </summary>
-        [Range(0, 99999, ErrorMessage = "Måste vara mellan 0-99999")]
+        [Range(0, 99999, ErrorMessageResourceName = "Måste_vara_mellan_0_99999", ErrorMessageResourceType = typeof(Resources.Language))]
         public int RangeInMinutesAfter 
         { 
             get; 
@@ -256,7 +256,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// If the sequence should have a specific reminder
         /// </summary>
-        [DisplayName("Lägg till påminnelse")]
+        [Display(Name = "Lägg_till_påminnelse", ResourceType = typeof(Resources.Language))]
         public bool Reminder 
         {
             get;
@@ -266,9 +266,9 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// When the specific reminder shall be sent
         /// </summary>
-        [Range(0, 120, ErrorMessage = "Måste vara mellan 0-120")]
-        [RequiredIf(Target = "Reminder", Value = true, ErrorMessage = "Påminnelse måste väljas.")]
-        [DisplayName("Tid för påminnelse")]
+        [Range(0, 120, ErrorMessageResourceName = "Måste_vara_mellan_0-120", ErrorMessageResourceType = typeof(Resources.Language))]
+        [RequiredIf(Target = "Reminder", Value = true, ErrorMessageResourceName = "Påminnelse_måste_väljas", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Display(Name = "Tid_för_påminnelse", ResourceType = typeof(Resources.Language))]
         public int ReminderInMinutesBefore 
         { 
             get; 
@@ -278,10 +278,10 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The startdate, if needs-based
         /// </summary>
-        [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessage = "Datum måste fyllas i.")]
-        [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
-        [DateLessThan(Target = "OnNeedBasisEndDate", ErrorMessage = "Startdatum måste vara ett tidigare datum är slutdatum.")]
-        [DisplayName("Fr.o.m.")]
+        [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessageResourceName = "Datum_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Date(ErrorMessageResourceName = "Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012-12-21", ErrorMessageResourceType = typeof(Resources.Language))]
+        [DateLessThan(Target = "OnNeedBasisEndDate", ErrorMessageResourceName = "Startdatum_måste_vara_ett_tidigare_datum_är_slutdatum", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Display(Name = "Fr_o_m_", ResourceType = typeof(Resources.Language))]
         public DateTime? OnNeedBasisStartDate 
         {
             get;
@@ -291,10 +291,10 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The enddate, if needs-based
         /// </summary>
-        [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessage = "Datum måste fyllas i.")]
-        [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
-        [DateGreaterThan(Target = "OnNeedBasisStartDate", ErrorMessage = "Slutdatum måste vara ett senare datum är startdatum.")]
-        [DisplayName("T.o.m.")]
+        [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessageResourceName = "Datum_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Date(ErrorMessageResourceName = "Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012-12-21", ErrorMessageResourceType = typeof(Resources.Language))]
+        [DateGreaterThan(Target = "OnNeedBasisStartDate", ErrorMessageResourceName = "Slutdatum_måste_vara_ett_senare_datum_är_startdatum", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Display(Name = "T_o_m_", ResourceType = typeof(Resources.Language))]
         public DateTime? OnNeedBasisEndDate
         {
             get;

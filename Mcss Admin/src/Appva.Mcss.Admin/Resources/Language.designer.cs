@@ -430,6 +430,15 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Annan ....
+        /// </summary>
+        public static string Annan___ {
+            get {
+                return ResourceManager.GetString("Annan___", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ansvarig.
         /// </summary>
         public static string Ansvarig {
@@ -547,6 +556,15 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to April.
+        /// </summary>
+        public static string April {
+            get {
+                return ResourceManager.GetString("April", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to År.
         /// </summary>
         public static string År {
@@ -597,6 +615,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Att_ge {
             get {
                 return ResourceManager.GetString("Att_ge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Augusti.
+        /// </summary>
+        public static string Augusti {
+            get {
+                return ResourceManager.GetString("Augusti", resourceCulture);
             }
         }
         
@@ -745,11 +772,29 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Datum_måste_fyllas_i.
+        /// </summary>
+        public static string Datum_måste_fyllas_i {
+            get {
+                return ResourceManager.GetString("Datum_måste_fyllas_i", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.
         /// </summary>
         public static string Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012_12_21 {
             get {
                 return ResourceManager.GetString("Datum_måste_fyllas_i_med_åtta_siffror_och_bindestreck__t__ex__2012-12-21", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to December.
+        /// </summary>
+        public static string December {
+            get {
+                return ResourceManager.GetString("December", resourceCulture);
             }
         }
         
@@ -813,6 +858,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Den_boende_har_inga_saldon {
             get {
                 return ResourceManager.GetString("Den_boende_har_inga_saldon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denna lista finns sedan tidigare inlagd..
+        /// </summary>
+        public static string Denna_lista_finns_sedan_tidigare_inlagd {
+            get {
+                return ResourceManager.GetString("Denna_lista_finns_sedan_tidigare_inlagd", resourceCulture);
             }
         }
         
@@ -886,6 +940,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string E_postadress {
             get {
                 return ResourceManager.GetString("E_postadress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string E_postadress_måste_anges_i_korrekt_format__t__ex__namn_efternamn_foretag_se {
+            get {
+                return ResourceManager.GetString("E_postadress_måste_anges_i_korrekt_format__t__ex__namn_efternamn@foretag_se", resourceCulture);
             }
         }
         
@@ -998,6 +1061,15 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to En lista måste väljas..
+        /// </summary>
+        public static string En_lista_måste_väljas {
+            get {
+                return ResourceManager.GetString("En_lista_måste_väljas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to en rad. Markera sedan de dagar som iordningsställts.
         /// </summary>
         public static string en_rad__Markera_sedan_de_dagar_som_iordningsställts {
@@ -1106,6 +1178,15 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Februari.
+        /// </summary>
+        public static string Februari {
+            get {
+                return ResourceManager.GetString("Februari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Felaktig e-postadress och eller personnummer.
         /// </summary>
         public static string Felaktig_e_postadress_och_eller_personnummer {
@@ -1194,6 +1275,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Förbrukningsjournal {
             get {
                 return ResourceManager.GetString("Förbrukningsjournal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Förbrukningsjournal måste väljas.
+        /// </summary>
+        public static string Förbrukningsjournal_måste_väljas {
+            get {
+                return ResourceManager.GetString("Förbrukningsjournal_måste_väljas", resourceCulture);
             }
         }
         
@@ -1293,6 +1383,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Försenade_kontrollräkningar {
             get {
                 return ResourceManager.GetString("Försenade_kontrollräkningar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fr.o.m..
+        /// </summary>
+        public static string Fr_o_m_ {
+            get {
+                return ResourceManager.GetString("Fr_o_m_", resourceCulture);
             }
         }
         
@@ -1810,6 +1909,24 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insats.
+        /// </summary>
+        public static string Insats {
+            get {
+                return ResourceManager.GetString("Insats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insats måste anges.
+        /// </summary>
+        public static string Insats_måste_anges {
+            get {
+                return ResourceManager.GetString("Insats_måste_anges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insatsen är kopplad till en borttagen förbrukningsjournal.
         /// </summary>
         public static string Insatsen_är_kopplad_till_ett_borttaget__saldo {
@@ -1884,6 +2001,33 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Januari.
+        /// </summary>
+        public static string Januari {
+            get {
+                return ResourceManager.GetString("Januari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Juli.
+        /// </summary>
+        public static string Juli {
+            get {
+                return ResourceManager.GetString("Juli", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Juni.
+        /// </summary>
+        public static string Juni {
+            get {
+                return ResourceManager.GetString("Juni", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kalender.
         /// </summary>
         public static string Kalender {
@@ -1943,6 +2087,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Klockan_ {
             get {
                 return ResourceManager.GetString("Klockan_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Klockslag.
+        /// </summary>
+        public static string Klockslag {
+            get {
+                return ResourceManager.GetString("Klockslag", resourceCulture);
             }
         }
         
@@ -2033,6 +2186,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Kontrollräkningar {
             get {
                 return ResourceManager.GetString("Kontrollräkningar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kräver_delegering_för.
+        /// </summary>
+        public static string Kräver_delegering_för {
+            get {
+                return ResourceManager.GetString("Kräver_delegering_för", resourceCulture);
             }
         }
         
@@ -2141,6 +2303,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Lägg_till_kunskapstest {
             get {
                 return ResourceManager.GetString("Lägg_till_kunskapstest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lägg till påminnelse.
+        /// </summary>
+        public static string Lägg_till_påminnelse {
+            get {
+                return ResourceManager.GetString("Lägg_till_påminnelse", resourceCulture);
             }
         }
         
@@ -2317,6 +2488,15 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maj.
+        /// </summary>
+        public static string Maj {
+            get {
+                return ResourceManager.GetString("Maj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to månad.
         /// </summary>
         public static string månad {
@@ -2340,6 +2520,33 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Markera {
             get {
                 return ResourceManager.GetString("Markera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mars.
+        /// </summary>
+        public static string Mars {
+            get {
+                return ResourceManager.GetString("Mars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Måste vara mellan 0-120.
+        /// </summary>
+        public static string Måste_vara_mellan_0_120 {
+            get {
+                return ResourceManager.GetString("Måste_vara_mellan_0_120", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Måste vara mellan 0-99999.
+        /// </summary>
+        public static string Måste_vara_mellan_0_99999 {
+            get {
+                return ResourceManager.GetString("Måste_vara_mellan_0_99999", resourceCulture);
             }
         }
         
@@ -2542,6 +2749,15 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to November.
+        /// </summary>
+        public static string November {
+            get {
+                return ResourceManager.GetString("November", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nuvarande lösenord måste fyllas i.
         /// </summary>
         public static string Nuvarande_lösenord_måste_fyllas_i {
@@ -2655,6 +2871,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oktober.
+        /// </summary>
+        public static string Oktober {
+            get {
+                return ResourceManager.GetString("Oktober", resourceCulture);
             }
         }
         
@@ -2775,6 +3000,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Påminnelse_ {
             get {
                 return ResourceManager.GetString("Påminnelse_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Påminnelse måste väljas..
+        /// </summary>
+        public static string Påminnelse_måste_väljas {
+            get {
+                return ResourceManager.GetString("Påminnelse_måste_väljas", resourceCulture);
             }
         }
         
@@ -2960,6 +3194,15 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to September.
+        /// </summary>
+        public static string September {
+            get {
+                return ResourceManager.GetString("September", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Signerade händelser.
         /// </summary>
         public static string Signerade_händelser {
@@ -3010,6 +3253,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Signeringslistor {
             get {
                 return ResourceManager.GetString("Signeringslistor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skall ges.
+        /// </summary>
+        public static string Skall_ges {
+            get {
+                return ResourceManager.GetString("Skall_ges", resourceCulture);
             }
         }
         
@@ -3339,6 +3591,15 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to T.o.m..
+        /// </summary>
+        public static string T_o_m_ {
+            get {
+                return ResourceManager.GetString("T_o_m_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ta bort.
         /// </summary>
         public static string Ta_bort {
@@ -3434,6 +3695,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Tid_ {
             get {
                 return ResourceManager.GetString("Tid_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tid för påminnelse.
+        /// </summary>
+        public static string Tid_för_påminnelse {
+            get {
+                return ResourceManager.GetString("Tid_för_påminnelse", resourceCulture);
             }
         }
         
@@ -3587,6 +3857,15 @@ namespace Appva.Mcss.Admin.Resources {
         public static string Typ_ {
             get {
                 return ResourceManager.GetString("Typ_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Typ av lista.
+        /// </summary>
+        public static string Typ_av_lista {
+            get {
+                return ResourceManager.GetString("Typ_av_lista", resourceCulture);
             }
         }
         
@@ -3861,6 +4140,87 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Var 3:e dag.
+        /// </summary>
+        public static string Var_3_e_dag {
+            get {
+                return ResourceManager.GetString("Var_3_e_dag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var 4:e dag.
+        /// </summary>
+        public static string Var_4_e_dag {
+            get {
+                return ResourceManager.GetString("Var_4_e_dag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var 5:e dag.
+        /// </summary>
+        public static string Var_5_e_dag {
+            get {
+                return ResourceManager.GetString("Var_5_e_dag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var 6:e dag.
+        /// </summary>
+        public static string Var_6_e_dag {
+            get {
+                return ResourceManager.GetString("Var_6_e_dag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var åttonde vecka.
+        /// </summary>
+        public static string Var_åttonde_vecka {
+            get {
+                return ResourceManager.GetString("Var_åttonde_vecka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var femte vecka.
+        /// </summary>
+        public static string Var_femte_vecka {
+            get {
+                return ResourceManager.GetString("Var_femte_vecka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var fjärde vecka.
+        /// </summary>
+        public static string Var_fjärde_vecka {
+            get {
+                return ResourceManager.GetString("Var_fjärde_vecka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var tolfte vecka.
+        /// </summary>
+        public static string Var_tolfte_vecka {
+            get {
+                return ResourceManager.GetString("Var_tolfte_vecka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Var tredje vecka.
+        /// </summary>
+        public static string Var_tredje_vecka {
+            get {
+                return ResourceManager.GetString("Var_tredje_vecka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Var vänlig använd ditt valda lösenord för att logga in i MCSS.
         /// </summary>
         public static string Var_vänlig_använd_ditt_valda_lösenord_för_att_logga_in_i_MCSS {
@@ -3889,11 +4249,47 @@ namespace Appva.Mcss.Admin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Varannan dag.
+        /// </summary>
+        public static string Varannan_dag {
+            get {
+                return ResourceManager.GetString("Varannan_dag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Varannan vecka.
+        /// </summary>
+        public static string Varannan_vecka {
+            get {
+                return ResourceManager.GetString("Varannan_vecka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Varje dag.
+        /// </summary>
+        public static string Varje_dag {
+            get {
+                return ResourceManager.GetString("Varje_dag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to varje månad.
         /// </summary>
         public static string varje_månad {
             get {
                 return ResourceManager.GetString("varje_månad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Varje vecka.
+        /// </summary>
+        public static string Varje_vecka {
+            get {
+                return ResourceManager.GetString("Varje_vecka", resourceCulture);
             }
         }
         

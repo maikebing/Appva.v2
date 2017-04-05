@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Repository;
+    using Appva.Mvc.Localization;
     #endregion
 
     /// <summary>
@@ -149,6 +150,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IIdentityService identity;
 
+        /// <summary>
+        /// The <see cref="IHtmlLocalizer"/>
+        /// </summary>
+        private readonly IHtmlLocalizer localizer;
+
         #endregion
 
         #region Constructor.
@@ -156,12 +162,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="PatientService"/> class.
         /// </summary>
-        public PatientService(IAuditService auditing, IPatientRepository repository, IIdentityService identity, IPersistenceContext persistence)
+        public PatientService(IAuditService auditing, IPatientRepository repository, IIdentityService identity, IPersistenceContext persistence, IHtmlLocalizer localizer )
         {
-            this.auditing = auditing;
-            this.persistence = persistence;
-            this.repository = repository;
-            this.identity = identity;
+            this.auditing       = auditing;
+            this.persistence    = persistence;
+            this.repository     = repository;
+            this.identity       = identity;
+            this.localizer      = localizer;
         }
 
         #endregion
@@ -257,7 +264,7 @@ namespace Appva.Mcss.Admin.Application.Services
                     UpdatedAt                            = DateTime.Now,
                     FirstName                            = firstName.TrimEnd().TrimStart().FirstToUpper(),
                     LastName                             = lastName.TrimEnd().TrimStart().FirstToUpper(),
-                    FullName                             = string.Format("{0} {1}", firstName, lastName),
+                    FullName                             = this.localizer["FullnamePattern", firstName, lastName].ToString(),
                     PersonalIdentityNumber               = personalIdentityNumber,
                     Taxon                                = address,
                     Identifier                           = alternativeIdentity,
@@ -280,7 +287,7 @@ namespace Appva.Mcss.Admin.Application.Services
             var oldSA = patient.SeniorAlerts;
             patient.FirstName = firstName;
             patient.LastName = lastName;
-            patient.FullName = string.Format("{0} {1}", firstName, lastName);
+            patient.FullName = this.localizer["FullnamePattern", firstName, lastName].ToString();
             patient.PersonalIdentityNumber = personalIdentityNumber;
             patient.Taxon = address;
             patient.Deceased = isDeceased;

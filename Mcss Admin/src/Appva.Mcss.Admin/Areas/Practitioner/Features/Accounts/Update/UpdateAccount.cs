@@ -30,7 +30,7 @@ namespace Appva.Mcss.Admin.Models
         /// The account first name.
         /// </summary>
         [Required(ErrorMessage = "Förnamn måste fyllas i.")]
-        [DisplayName("Förnamn")]
+        [Display(Name = "Förnamn", ResourceType = typeof(Resources.Language))]
         public string FirstName
         {
             get;
@@ -41,7 +41,7 @@ namespace Appva.Mcss.Admin.Models
         /// The account last name.
         /// </summary>
         [Required(ErrorMessage = "Efternamn måste fyllas i.")]
-        [DisplayName("Efternamn")]
+        [Display(Name = "Efternamn", ResourceType = typeof(Resources.Language))]
         public string LastName
         {
             get;
@@ -53,7 +53,7 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         [Required(ErrorMessage = "Personnummer måste fyllas i.")]
         [Appva.Mvc.PersonalIdentityNumber(ErrorMessage = "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001.")]
-        [DisplayName("Personnummer")]
+        [Display(Name = "Personnummer", ResourceType = typeof(Resources.Language))]
         public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
@@ -65,7 +65,7 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         [Required(ErrorMessage = "E-postadress måste fyllas i.")]
         [Email(ErrorMessage = "E-postadress måste anges i korrekt format, t. ex. namn.efternamn@foretag.se.")]
-        [DisplayName("E-postadress")]
+        [Display(Name = "E_postadress", ResourceType = typeof(Resources.Language))]
         public string Email
         {
             get;
@@ -79,7 +79,7 @@ namespace Appva.Mcss.Admin.Models
         [StringLength(7, ErrorMessage = "Koden får högst innehålla 7 siffror.")]
         [DataType(DataType.Password)]
         [Numeric(ErrorMessage = "Koden får högst innehålla 7 siffror.")]
-        [DisplayName("Kod för signering")]
+        [Display(Name = "Kod_för_signering", ResourceType = typeof(Resources.Language))]
         public string DevicePassword
         {
             get;
@@ -89,7 +89,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// A unique user name.
         /// </summary>
-        [DisplayName("Användarnamn")]
+        [Display(Name = "Användarnamn", ResourceType = typeof(Resources.Language))]
         public string Username
         {
             get;

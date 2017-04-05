@@ -58,7 +58,7 @@
         <div id="signlist">
 			
             <div class="h cf">
-				<h2>@Model.Schedule.ScheduleSettings.Name - Senast ändrad @String.Format("{0:yyyy-MM-dd}", Model.Schedule.UpdatedAt)</h2>
+				<h2>@Localizer["{0}__Senast_ändrad_{1:yyyy-MM-dd}", Model.Schedule.ScheduleSettings.Name, Model.Schedule.UpdatedAt]</h2>
 				@Html.ActionLink(Localizer["Stäng_listan"].ToString(), "List", "Schedule", new { id = Model.Patient.Id }, new { @class = "close" })
 			</div>
 			

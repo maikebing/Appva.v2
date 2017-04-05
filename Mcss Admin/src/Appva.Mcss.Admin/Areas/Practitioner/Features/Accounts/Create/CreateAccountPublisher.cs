@@ -23,6 +23,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.VO;
+    using Appva.Mvc.Localization;
     
 
     #endregion
@@ -82,6 +83,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly HttpContextBase context;
 
+        /// <summary>
+        /// The <see cref="IHtmlLocalizer"/>
+        /// </summary>
+        private readonly IHtmlLocalizer localizer;
+
         #endregion
 
         #region Constructor.
@@ -105,16 +111,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IPermissionService permissions,
             IRazorMailService mailService,
             JwtSecureDataFormat jwtSecureDataFormat,
-            HttpContextBase context)
+            HttpContextBase context,
+            IHtmlLocalizer localizer)
         {
-            this.accountService = accountService;
-            this.settings = settings;
-            this.roleService = roleService;
-            this.taxonomies = taxonomies;
-            this.permissions = permissions;
-            this.mailService = mailService;
+            this.accountService      = accountService;
+            this.settings            = settings;
+            this.roleService         = roleService;
+            this.taxonomies          = taxonomies;
+            this.permissions         = permissions;
+            this.mailService         = mailService;
             this.jwtSecureDataFormat = jwtSecureDataFormat;
-            this.context = context;
+            this.context             = context;
+            this.localizer           = localizer;
         }
 
         #endregion
@@ -133,7 +141,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var account  = new Account();
             account.FirstName              = message.FirstName.Trim().FirstToUpper();
             account.LastName               = message.LastName.Trim().FirstToUpper();
-            account.FullName               = string.Format("{0} {1}", account.FirstName, account.LastName);
+            account.FullName               = this.localizer["FullnamePattern", account.FirstName, account.LastName].ToString();
             account.PersonalIdentityNumber = message.PersonalIdentityNumber;
             account.EmailAddress           = message.Email;
             account.DevicePassword         = message.DevicePassword;

@@ -1,11 +1,11 @@
-﻿@model Appva.Mcss.Web.ViewModels.PrepareAddSequenceViewModel
+﻿@model Appva.Mcss.Admin.Models.PrepareAddSequenceViewModel
 
 <div class="std-panel std-form lb-panel-small lb-panel lb-validate-form" data-valclass="PreparedSequenceCreate">
 	@using (Html.BeginForm())
  {
         <h3 class="section-title">@Localizer["Lägg_till_rad"]</h3>
         <div class="text medium">    
-            @Html.LabelFor(m => m.Name)
+            @Html.LabelFor(m => m.Name, Localizer["Ny_rad"].ToString())
             @Html.TextBoxFor(m => m.Name, new { @placeholder = Localizer["T__ex__dosett"].ToString() })
             @Html.ValidationMessageFor(m => m.Name)
         </div>

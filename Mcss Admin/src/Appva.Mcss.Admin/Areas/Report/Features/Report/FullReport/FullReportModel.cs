@@ -37,10 +37,12 @@ namespace Appva.Mcss.Admin.Areas.Models
 
         [PlaceHolder("T.ex. 2012-12-21")]
         [DataType(DataType.Date)]
+        [Display(Name = "Från_datum", ResourceType = typeof(Resources.Language))]
         public DateTime Start { get; set; }
 
         [PlaceHolder("T.ex. 2012-12-21")]
         [DataType(DataType.Date)]
+        [Display(Name = "Till_datum", ResourceType = typeof(Resources.Language))]
         public DateTime End { get; set; }
 
         public PageableSet<Task> Tasks { get; set; }

@@ -14,7 +14,7 @@ namespace Appva.Mcss.Web.ViewModels {
         [DateLessThan(Target = "EndDate", ErrorMessage = "Startdatum måste vara ett tidigare datum är slutdatum.")]
         [PlaceHolder("T.ex. 2012-12-21")]
         [DataType(DataType.Date)]
-        [DisplayName("Från")]
+        [Display(Name = "Från_", ResourceType = typeof(Appva.Mcss.Admin.Resources.Language))]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Datum måste fyllas i.")]
@@ -22,7 +22,7 @@ namespace Appva.Mcss.Web.ViewModels {
         [DateGreaterThan(Target = "StartDate", ErrorMessage = "Slutdatum måste vara ett senare datum är startdatum.")]
         [PlaceHolder("T.ex. 2012-12-21")]
         [DataType(DataType.Date)]
-        [DisplayName("Till")]
+        [Display(Name = "Till_", ResourceType = typeof(Appva.Mcss.Admin.Resources.Language))]
         public DateTime EndDate { get; set; }
 
     }

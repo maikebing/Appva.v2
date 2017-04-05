@@ -73,7 +73,7 @@ else {
         </td>
         <td>
             @if (task.Delayed && task.CompletedBy.IsNull()) {
-                @Localizer["Gavs"]Ej signerad
+                @Localizer["Ej_signerad"]
                                 }
             else {
                 @:kl @String.Format("{0:HH:mm}", task.CompletedDate)

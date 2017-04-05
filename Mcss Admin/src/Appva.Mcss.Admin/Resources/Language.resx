@@ -1425,4 +1425,136 @@
   <data name="Översikt" xml:space="preserve">
     <value>Översikt</value>
   </data>
+  <data name="Annan___" xml:space="preserve">
+    <value>Annan ...</value>
+  </data>
+  <data name="April" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="Augusti" xml:space="preserve">
+    <value>Augusti</value>
+  </data>
+  <data name="Datum_måste_fyllas_i" xml:space="preserve">
+    <value>Datum_måste_fyllas_i</value>
+  </data>
+  <data name="December" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="Denna_lista_finns_sedan_tidigare_inlagd" xml:space="preserve">
+    <value>Denna lista finns sedan tidigare inlagd.</value>
+  </data>
+  <data name="En_lista_måste_väljas" xml:space="preserve">
+    <value>En lista måste väljas.</value>
+  </data>
+  <data name="E_postadress_måste_anges_i_korrekt_format__t__ex__namn_efternamn@foretag_se" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Februari" xml:space="preserve">
+    <value>Februari</value>
+  </data>
+  <data name="Fr_o_m_" xml:space="preserve">
+    <value>Fr.o.m.</value>
+  </data>
+  <data name="Förbrukningsjournal_måste_väljas" xml:space="preserve">
+    <value>Förbrukningsjournal måste väljas</value>
+  </data>
+  <data name="Insats" xml:space="preserve">
+    <value>Insats</value>
+  </data>
+  <data name="Insats_måste_anges" xml:space="preserve">
+    <value>Insats måste anges</value>
+  </data>
+  <data name="Januari" xml:space="preserve">
+    <value>Januari</value>
+  </data>
+  <data name="Juli" xml:space="preserve">
+    <value>Juli</value>
+  </data>
+  <data name="Juni" xml:space="preserve">
+    <value>Juni</value>
+  </data>
+  <data name="Klockslag" xml:space="preserve">
+    <value>Klockslag</value>
+  </data>
+  <data name="Kräver_delegering_för" xml:space="preserve">
+    <value>Kräver_delegering_för</value>
+  </data>
+  <data name="Lägg_till_påminnelse" xml:space="preserve">
+    <value>Lägg till påminnelse</value>
+  </data>
+  <data name="Maj" xml:space="preserve">
+    <value>Maj</value>
+  </data>
+  <data name="Mars" xml:space="preserve">
+    <value>Mars</value>
+  </data>
+  <data name="Måste_vara_mellan_0_120" xml:space="preserve">
+    <value>Måste vara mellan 0-120</value>
+  </data>
+  <data name="Måste_vara_mellan_0_99999" xml:space="preserve">
+    <value>Måste vara mellan 0-99999</value>
+  </data>
+  <data name="November" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="Oktober" xml:space="preserve">
+    <value>Oktober</value>
+  </data>
+  <data name="Påminnelse_måste_väljas" xml:space="preserve">
+    <value>Påminnelse måste väljas.</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>September</value>
+  </data>
+  <data name="Skall_ges" xml:space="preserve">
+    <value>Skall ges</value>
+  </data>
+  <data name="Tid_för_påminnelse" xml:space="preserve">
+    <value>Tid för påminnelse</value>
+  </data>
+  <data name="Typ_av_lista" xml:space="preserve">
+    <value>Typ av lista</value>
+  </data>
+  <data name="T_o_m_" xml:space="preserve">
+    <value>T.o.m.</value>
+  </data>
+  <data name="Varannan_dag" xml:space="preserve">
+    <value>Varannan dag</value>
+  </data>
+  <data name="Varannan_vecka" xml:space="preserve">
+    <value>Varannan vecka</value>
+  </data>
+  <data name="Varje_dag" xml:space="preserve">
+    <value>Varje dag</value>
+  </data>
+  <data name="Varje_vecka" xml:space="preserve">
+    <value>Varje vecka</value>
+  </data>
+  <data name="Var_3_e_dag" xml:space="preserve">
+    <value>Var 3:e dag</value>
+  </data>
+  <data name="Var_4_e_dag" xml:space="preserve">
+    <value>Var 4:e dag</value>
+  </data>
+  <data name="Var_5_e_dag" xml:space="preserve">
+    <value>Var 5:e dag</value>
+  </data>
+  <data name="Var_6_e_dag" xml:space="preserve">
+    <value>Var 6:e dag</value>
+  </data>
+  <data name="Var_femte_vecka" xml:space="preserve">
+    <value>Var femte vecka</value>
+  </data>
+  <data name="Var_fjärde_vecka" xml:space="preserve">
+    <value>Var fjärde vecka</value>
+  </data>
+  <data name="Var_tolfte_vecka" xml:space="preserve">
+    <value>Var tolfte vecka</value>
+  </data>
+  <data name="Var_tredje_vecka" xml:space="preserve">
+    <value>Var tredje vecka</value>
+  </data>
+  <data name="Var_åttonde_vecka" xml:space="preserve">
+    <value>Var åttonde vecka</value>
+  </data>
 </root>

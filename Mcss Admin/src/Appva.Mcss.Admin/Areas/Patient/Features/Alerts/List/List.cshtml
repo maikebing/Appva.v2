@@ -12,7 +12,7 @@
         <p class="filter">
             <strong>@Localizer["Tid_"]</strong>
             @Html.DropDownList("year", Model.Years, Localizer["År"].ToString())
-            @Html.DropDownList("month", Model.Months, Localizer["Månad"].ToString())
+            @Html.DropDownList("month", Model.Months, Localizer["månad"].ToString().FirstToUpper())
             @Html.Submit(Localizer["Visa"].ToString())
         </p>
     }

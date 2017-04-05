@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
     using Appva.Core.Messaging.RazorMail;
+    using Appva.Mvc.Localization;
 
     #endregion
 
@@ -47,6 +48,11 @@ namespace Appva.Mcss.Admin.Modles.Handlers
         /// </summary>
         private readonly IRazorMailService mailer;
 
+        /// <summary>
+        /// The <see cref="IHtmlLocalizer"/>
+        /// </summary>
+        private readonly IHtmlLocalizer localizer;
+
         #endregion
 
         #region Constructor.
@@ -62,12 +68,14 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             IAccountService accounts,
             ISettingsService settings,
             ITaxonomyService taxonomies,
-            IRazorMailService mailer)
+            IRazorMailService mailer,
+            IHtmlLocalizer localizer)
         {
-            this.accounts = accounts;
-            this.settings = settings;
+            this.accounts   = accounts;
+            this.settings   = settings;
             this.taxonomies = taxonomies;
-            this.mailer = mailer;
+            this.mailer     = mailer;
+            this.localizer  = localizer;
         }
 
         #endregion
@@ -86,7 +94,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             account.UpdatedAt = DateTime.Now;
             account.FirstName = message.FirstName.Trim().FirstToUpper();
             account.LastName  = message.LastName.Trim().FirstToUpper();
-            account.FullName  = string.Format("{0} {1}", account.FirstName, account.LastName);
+            account.FullName  = this.localizer["FullnamePattern", account.FirstName, account.LastName].ToString();
             if (isMobileDevicePasswordEditable)
             {
                 account.DevicePassword = message.DevicePassword;

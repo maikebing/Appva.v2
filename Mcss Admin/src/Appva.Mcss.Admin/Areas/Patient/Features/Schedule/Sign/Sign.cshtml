@@ -22,7 +22,7 @@
 			@Html.Hidden("scheduleSettingsId", Request["scheduleSettingsId"])
 			@Html.Hidden("order", (int)Model.Order)
             @Html.DropDownListFor(x => x.Year, Model.Years, Localizer["År"].ToString())
-			@Html.DropDownList("month", Model.Months, Localizer["Månad"].ToString())
+			@Html.DropDownList("month", Model.Months, Localizer["månad"].ToString().FirstToUpper())
 			@Html.Submit(Localizer["Visa"].ToString())
 			<strong>@Localizer["Typ_"]</strong>
 			@Html.ActionLink(Localizer["Alla"].ToString(), "Sign",

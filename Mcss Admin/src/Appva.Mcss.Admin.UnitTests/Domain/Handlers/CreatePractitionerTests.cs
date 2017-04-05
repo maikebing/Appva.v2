@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
     using Appva.Persistence;
     using Appva.Persistence.Tests;
     using Xunit;
+    using Appva.Mvc.Localization;
 
     #endregion
 
@@ -87,7 +88,8 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
                 new PermissionService(permissionRepository),
                 MockedNoOpMailService.CreateNew(), 
                 null,
-                MockedHttpRequestBase.CreateNew());
+                MockedHttpRequestBase.CreateNew(),
+                new HtmlLocalizer(new ResourceManagerStringLocalizerFactory().Create("empty","empty")));
             context.BeginTransaction();
             handler.Handle(new Models.CreateAccountModel
             {
@@ -137,7 +139,8 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
                 new PermissionService(permissionRepository),
                 MockedNoOpMailService.CreateNew(),
                 null,
-                MockedHttpRequestBase.CreateNew());
+                MockedHttpRequestBase.CreateNew(),
+                new HtmlLocalizer(new ResourceManagerStringLocalizerFactory().Create("empty", "empty")));
             context.BeginTransaction();
             handler.Handle(new Models.CreateAccountModel
             {

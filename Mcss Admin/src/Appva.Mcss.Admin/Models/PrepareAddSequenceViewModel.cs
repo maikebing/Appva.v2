@@ -7,7 +7,7 @@ using System.ComponentModel;
 using Appva.Cqrs;
 using Appva.Mcss.Admin.Models;
 
-namespace Appva.Mcss.Web.ViewModels
+namespace Appva.Mcss.Admin.Models
 {
     public class PrepareAddSequenceViewModel : IRequest<SchemaPreparation>
     {
@@ -29,8 +29,8 @@ namespace Appva.Mcss.Web.ViewModels
             set;
         }
 
-        [Required(ErrorMessage="Namn på läkemedlet måste anges.")]
-        [DisplayName("Ny rad")]
+        //[Required(ErrorMessageResourceName = "Namn_på_läkemedlet_måste_anges", ErrorMessageResourceType = typeof(Resources.Language))]
+        //[Display(Name = "Ny_rad", ResourceType = typeof(Resources.Language))]
         public string Name { get; set; }
 
     }

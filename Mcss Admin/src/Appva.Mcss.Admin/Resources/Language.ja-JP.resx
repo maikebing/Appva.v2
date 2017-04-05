@@ -400,7 +400,7 @@
     <value>欠席</value>
   </data>
   <data name="Från_" xml:space="preserve">
-    <value>　から</value>
+    <value>から</value>
   </data>
   <data name="Fullständig_rapport_" xml:space="preserve">
     <value>完全な報告書</value>
@@ -412,7 +412,7 @@
     <value>決められた時間にされることは少ない</value>
   </data>
   <data name="Får_endast_ges_av_legitimerad_{0}" xml:space="preserve">
-    <value>有資格者によりのみ与えられる {0}</value>
+    <value>{0}によりのみ与えられる </value>
   </data>
   <data name="Följande_aktiviteter_genomfördes_inte_i_tid_" xml:space="preserve">
     <value>以下のアクテイビテイが決められた時間に実施されていない</value>
@@ -499,10 +499,10 @@
     <value>有効だ　（最高１年間）</value>
   </data>
   <data name="Gäller_för" xml:space="preserve">
-    <value>　に有効だ</value>
+    <value>に有効だ</value>
   </data>
   <data name="Gäller_för_" xml:space="preserve">
-    <value>　に有効だ</value>
+    <value>に有効だ</value>
   </data>
   <data name="Hanterat_av" xml:space="preserve">
     <value>対処者</value>
@@ -553,10 +553,10 @@
     <value>昨日</value>
   </data>
   <data name="Inaktivera" xml:space="preserve">
-    <value>稼働されていない</value>
+    <value>稼働している</value>
   </data>
   <data name="Inaktiverade" xml:space="preserve">
-    <value>稼働されていなかった</value>
+    <value>稼働していない</value>
   </data>
   <data name="Inga_försenade_insatser_just_nu" xml:space="preserve">
     <value>現時点では支援遅れはない</value>
@@ -733,7 +733,7 @@
     <value>能力テストに加える</value>
   </data>
   <data name="Lägg_till_rad" xml:space="preserve">
-    <value>ラインに加える</value>
+    <value>行を加える</value>
   </data>
   <data name="Läkemedel" xml:space="preserve">
     <value>医薬品</value>
@@ -787,10 +787,10 @@
     <value>私の委任事項</value>
   </data>
   <data name="minuter_efter" xml:space="preserve">
-    <value>　分後</value>
+    <value>分後</value>
   </data>
   <data name="minuter_innan" xml:space="preserve">
-    <value>　分前</value>
+    <value>分前</value>
   </data>
   <data name="min_efter" xml:space="preserve">
     <value>分後に</value>
@@ -997,7 +997,7 @@
     <value>新しい残りを作成する</value>
   </data>
   <data name="Skapa_ny_aktivitet" xml:space="preserve">
-    <value>新しいアクテイビテイを作成する</value>
+    <value>新しいアクテイビテイ</value>
   </data>
   <data name="Skapa_pdf" xml:space="preserve">
     <value>ｐｄｆを作成する</value>
@@ -1141,7 +1141,7 @@
     <value>量を増やす</value>
   </data>
   <data name="Till_" xml:space="preserve">
-    <value>　　に</value>
+    <value>まで</value>
   </data>
   <data name="Till_inloggning" xml:space="preserve">
     <value>ログインするに</value>
@@ -1171,7 +1171,7 @@
     <value>タイプ</value>
   </data>
   <data name="T__ex__dosett" xml:space="preserve">
-    <value>　個のドセット</value>
+    <value>例　ドセット</value>
   </data>
   <data name="Underskrift" xml:space="preserve">
     <value>署名</value>
@@ -1242,8 +1242,8 @@
   <data name="vecka" xml:space="preserve">
     <value>週</value>
   </data>
-  <data name="Vecka {0} {1}" xml:space="preserve">
-    <value>週 {0} {1}</value>
+  <data name="Vecka_{0}_{1}" xml:space="preserve">
+    <value>次　 {1}</value>
   </data>
   <data name="Vid_behov" xml:space="preserve">
     <value>必要時</value>
@@ -1279,7 +1279,7 @@
     <value>日数を選択する</value>
   </data>
   <data name="Välj_datum" xml:space="preserve">
-    <value>日日を選択する</value>
+    <value>日付を選択する</value>
   </data>
   <data name="Välj_delegering_" xml:space="preserve">
     <value>委任事項を選択する</value>
@@ -1322,7 +1322,7 @@
     <value>遅すぎる</value>
   </data>
   <data name="{0}_Vecka_{1}" xml:space="preserve">
-    <value>{0}　週　　{1}</value>
+    <value>{0}　前</value>
   </data>
   <data name="{1:d MMM yyyy}_{0:HH:mm}_till_{1:HH:mm}" xml:space="preserve">
     <value />
@@ -1386,5 +1386,199 @@
   </data>
   <data name="_dagar_kvar" xml:space="preserve">
     <value>残りの日数</value>
+  </data>
+  <data name="Alla_kategorier" xml:space="preserve">
+    <value>すべてのカテゴリー</value>
+  </data>
+  <data name="Annan" xml:space="preserve">
+    <value>別</value>
+  </data>
+  <data name="Annan___" xml:space="preserve">
+    <value>別</value>
+  </data>
+  <data name="April" xml:space="preserve">
+    <value>4月</value>
+  </data>
+  <data name="Augusti" xml:space="preserve">
+    <value>8月</value>
+  </data>
+  <data name="Datum_måste_fyllas_i" xml:space="preserve">
+    <value>日付を記入しなければなりません</value>
+  </data>
+  <data name="December" xml:space="preserve">
+    <value>12月</value>
+  </data>
+  <data name="Denna_lista_finns_sedan_tidigare_inlagd" xml:space="preserve">
+    <value>このリストはもう以前にインプットされています</value>
+  </data>
+  <data name="En_kod_måste_fyllas_i" xml:space="preserve">
+    <value>コードを記入しなければなりません</value>
+  </data>
+  <data name="En_lista_måste_väljas" xml:space="preserve">
+    <value>リストを選択しなければなりません</value>
+  </data>
+  <data name="En_titel_måste_väljas" xml:space="preserve">
+    <value>タイトルを選択しなければなりません</value>
+  </data>
+  <data name="E_postadress_måste_anges_i_korrekt_format__t__ex__namn_efternamn@foretag_se" xml:space="preserve">
+    <value>電子メールのアドレスは正確に記入しなければなりません。　例名前、生命＠企業名、 ?</value>
+  </data>
+  <data name="E_postadress_måste_fyllas_i" xml:space="preserve">
+    <value>電子メールのアドレスは記入しなければなりません</value>
+  </data>
+  <data name="Februari" xml:space="preserve">
+    <value>2月</value>
+  </data>
+  <data name="Fr_o_m_" xml:space="preserve">
+    <value>から</value>
+  </data>
+  <data name="Från_datum" xml:space="preserve">
+    <value>日付から</value>
+  </data>
+  <data name="FullnamePattern" xml:space="preserve">
+    <value>{1} {0}</value>
+    <comment>{0} = Firstname, {1} = Lastname</comment>
+  </data>
+  <data name="Förbrukningsjournal_måste_väljas" xml:space="preserve">
+    <value>消費カルテを選択しなければなりません</value>
+  </data>
+  <data name="Inkludera_stående_ordinationer" xml:space="preserve">
+    <value>現在処方されている指示事項を含む</value>
+  </data>
+  <data name="Inkludera_vid_behov_läkemedel" xml:space="preserve">
+    <value>必要時に処方する医薬品を含む</value>
+  </data>
+  <data name="Insats_måste_anges" xml:space="preserve">
+    <value>支援は指摘されなければならない</value>
+  </data>
+  <data name="Januari" xml:space="preserve">
+    <value>1月</value>
+  </data>
+  <data name="Juli" xml:space="preserve">
+    <value>7月</value>
+  </data>
+  <data name="Juni" xml:space="preserve">
+    <value>6月</value>
+  </data>
+  <data name="Klockslag" xml:space="preserve">
+    <value>時</value>
+  </data>
+  <data name="Koden_får_högst_innehålla_7_siffror" xml:space="preserve">
+    <value>コードは最高７数字まで</value>
+  </data>
+  <data name="Kod_för_signering" xml:space="preserve">
+    <value>署名するためのコード</value>
+  </data>
+  <data name="Kräver_delegering_för" xml:space="preserve">
+    <value>委任事項が必要とされる</value>
+  </data>
+  <data name="Lägg_till_påminnelse" xml:space="preserve">
+    <value>思い出させるように記録する</value>
+  </data>
+  <data name="Maj" xml:space="preserve">
+    <value>5月</value>
+  </data>
+  <data name="Mars" xml:space="preserve">
+    <value>3月</value>
+  </data>
+  <data name="Måste_vara_mellan_0_120" xml:space="preserve">
+    <value>１－１２０の間でなければならない</value>
+  </data>
+  <data name="Måste_vara_mellan_0_99999" xml:space="preserve">
+    <value>０－９９９９９の間でなければならない</value>
+  </data>
+  <data name="Namn_på_läkemedlet_måste_anges" xml:space="preserve">
+    <value>医薬品の名前を記入する</value>
+  </data>
+  <data name="November" xml:space="preserve">
+    <value>11月</value>
+  </data>
+  <data name="Ny_rad" xml:space="preserve">
+    <value>新しい行</value>
+  </data>
+  <data name="Oktober" xml:space="preserve">
+    <value>10月</value>
+  </data>
+  <data name="Påminnelse_måste_väljas" xml:space="preserve">
+    <value>思い出させる事項を選択しなければならない</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>9月</value>
+  </data>
+  <data name="Sjuksköteraska" xml:space="preserve">
+    <value>看護師</value>
+  </data>
+  <data name="Skall_ges" xml:space="preserve">
+    <value>与えなければならない</value>
+  </data>
+  <data name="Skriv_ut" xml:space="preserve">
+    <value>印刷する</value>
+  </data>
+  <data name="Tid_för_påminnelse" xml:space="preserve">
+    <value>思い出させる時間</value>
+  </data>
+  <data name="Till_datum" xml:space="preserve">
+    <value>日付まで</value>
+  </data>
+  <data name="Totalt_resultat_senaste_veckan" xml:space="preserve">
+    <value>先週の総計</value>
+  </data>
+  <data name="Typ_av_lista" xml:space="preserve">
+    <value>リストのタイプ</value>
+  </data>
+  <data name="T_o_m_" xml:space="preserve">
+    <value>まで</value>
+  </data>
+  <data name="Undersköterska" xml:space="preserve">
+    <value>准看護師</value>
+  </data>
+  <data name="Varannan_dag" xml:space="preserve">
+    <value>１日おきに</value>
+  </data>
+  <data name="Varannan_vecka" xml:space="preserve">
+    <value>１週間おきに</value>
+  </data>
+  <data name="Varje_vecka" xml:space="preserve">
+    <value>毎週</value>
+  </data>
+  <data name="Var_3_e_dag" xml:space="preserve">
+    <value>３日ごとに</value>
+  </data>
+  <data name="Var_4_e_dag" xml:space="preserve">
+    <value>４日ごとに</value>
+  </data>
+  <data name="Var_5_e_dag" xml:space="preserve">
+    <value>５日ごとに</value>
+  </data>
+  <data name="Var_6_e_dag" xml:space="preserve">
+    <value>６日ごとに</value>
+  </data>
+  <data name="Var_femte_vecka" xml:space="preserve">
+    <value>５週間ごとに</value>
+  </data>
+  <data name="Var_fjärde_vecka" xml:space="preserve">
+    <value>４週間ごとに</value>
+  </data>
+  <data name="Var_tolfte_vecka" xml:space="preserve">
+    <value>１２週間ごとに</value>
+  </data>
+  <data name="Var_tredje_vecka" xml:space="preserve">
+    <value>３週間ごとに</value>
+  </data>
+  <data name="Var_åttonde_vecka" xml:space="preserve">
+    <value>８週間ごとに</value>
+  </data>
+  <data name="Välj_titel_" xml:space="preserve">
+    <value>タイトルを選択</value>
+  </data>
+  <data name="{0}__Senast_ändrad_{1:yyyy-MM-dd}" xml:space="preserve">
+    <value>{0}　最後に変更した日　{1:yyyy-MM-dd}</value>
+    <comment>EX. {0} - Senast ändrad {1:yyyy-MM-dd}</comment>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Vecka_{0}" xml:space="preserve">
+    <value>週</value>
   </data>
 </root>

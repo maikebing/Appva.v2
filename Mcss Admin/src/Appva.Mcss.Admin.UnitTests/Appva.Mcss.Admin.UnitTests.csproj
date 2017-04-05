@@ -67,6 +67,10 @@
       <HintPath>..\..\..\Packages\Appva.Mvc.0.5.4\lib\net45\Appva.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Appva.Mvc.Localization, Version=0.1.0.17634, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Mvc.Localization.Nuget.0.1.0\lib\net45\Appva.Mvc.Localization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
       <Private>True</Private>

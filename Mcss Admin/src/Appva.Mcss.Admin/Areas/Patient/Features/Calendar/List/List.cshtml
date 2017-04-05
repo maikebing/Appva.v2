@@ -39,7 +39,7 @@
                             <span class="cal-all">
                                 @Html.CheckBox("cal-all", Model.FilterList.Count == Model.Categories.Count, new { @id = "select-all", @class = "select-all" })
                             </span>
-                            @Html.Label("cal-all", "Alla kategorier")
+                            @Html.Label("cal-all", Localizer["Alla_kategorier"].ToString())
                         </li>
                         @foreach (var cat in Model.Categories)
                         {

@@ -73,7 +73,7 @@ namespace Appva.Mcss.Admin.Models
         /// The E-mail address.
         /// </summary>
         [Required(ErrorMessageResourceName = "E_postadress_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
-        [Email(ErrorMessage = "E-postadress måste anges i korrekt format, t. ex. namn.efternamn@foretag.se.")]
+        [Email(ErrorMessageResourceName = "E_postadress_måste_anges_i_korrekt_format__t__ex__namn_efternamn@foretag_se", ErrorMessageResourceType = typeof(Resources.Language))]
         [Display(Name = "E_postadress", ResourceType = typeof(Resources.Language))]
         public string Email
         {
@@ -98,7 +98,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The role name, e.g. admin, nurse, etc.
         /// </summary>
-        [Required(ErrorMessage = "En_titel_måste_väljas", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Required(ErrorMessageResourceName = "En_titel_måste_väljas", ErrorMessageResourceType = typeof(Resources.Language))]
         [Display(Name = "Titel", ResourceType = typeof(Resources.Language))]
         public String TitleRole
         {

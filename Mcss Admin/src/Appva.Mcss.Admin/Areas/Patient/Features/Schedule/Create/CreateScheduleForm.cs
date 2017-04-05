@@ -41,9 +41,9 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
-        [Required(ErrorMessage = "En lista måste väljas.")]
-        [DisplayName("Typ av lista")]
-        [Remote("VerifyUnique", "Schedule", HttpMethod = "POST", ErrorMessage = "Denna lista finns sedan tidigare inlagd")]
+        [Required(ErrorMessageResourceName = "En_lista_måste_väljas", ErrorMessageResourceType = typeof(Resources.Language))]
+        [Display(Name = "Typ_av_lista", ResourceType = typeof(Resources.Language))]
+        [Remote("VerifyUnique", "Schedule", HttpMethod = "POST", ErrorMessageResourceName = "Denna_lista_finns_sedan_tidigare_inlagd", ErrorMessageResourceType = typeof(Resources.Language))]
         public virtual Guid ScheduleSetting
         {
             get;

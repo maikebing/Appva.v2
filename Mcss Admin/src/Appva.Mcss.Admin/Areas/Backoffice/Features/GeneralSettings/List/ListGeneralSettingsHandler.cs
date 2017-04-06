@@ -8,17 +8,17 @@
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
-    using Admin.Models;
     #region Imports.
+
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Infrastructure.Models;
-    using JsonObjects.Pdf;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
+
     #endregion
 
     internal sealed class ListGeneralSettingsHandler : RequestHandler<Parameterless<ListGeneralSettingsModel>, ListGeneralSettingsModel>
@@ -34,7 +34,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             "Mcss.Core.Security.Messaging.Email",
             "Mcss.Integration.Ldap.LdapConfiguration"
         };
-
         private string[] colorCodes = {
             "#64B5F6", "#81C784", "#7986CB", "#E57373",
             "#4DB6AC", "#FFB74D", "#A1887F", "#90A4AE",
@@ -45,11 +44,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         };
 
         #endregion
-
-        private static String HexConverter(int r, int g, int b)
-        {
-            return "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
-        }
 
         #region Constructor.
         public ListGeneralSettingsHandler(ISettingsService settingService)
@@ -75,7 +69,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.MachineName = item.Set.MachineName;
                 settingItems.BoolValue = null;
                 settingItems.IsJson = false;
-                settingItems.Category = ToCategoryString(item.Set.MachineName, 35);
+                settingItems.Category = ListGeneralSettings.ToCategoryString(item.Set.MachineName, 35);
                 settingItems.Description = item.Set.Description;
                 settingItems.Value = item.Set.Value;
                 settingItems.Type = item.Set.Type;
@@ -98,14 +92,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         }
                         else if (item.Set.MachineName == machineNames[1])
                         {
-                            settingItems.PdfGenObject = JsonConvert.DeserializeObject<PdfGenObject>(item.Set.Value);
-                            setting.Colors = new PdfGenColors
-                            {
-                                BackgroundColor = HexConverter(settingItems.PdfGenObject.BackgroundColor.R, settingItems.PdfGenObject.BackgroundColor.G, settingItems.PdfGenObject.BackgroundColor.B ),
-                                FontColor = HexConverter(settingItems.PdfGenObject.FontColor.R, settingItems.PdfGenObject.FontColor.G, settingItems.PdfGenObject.FontColor.B),
-                                TableBorderColor = HexConverter(settingItems.PdfGenObject.TableBorderColor.R, settingItems.PdfGenObject.TableBorderColor.G, settingItems.PdfGenObject.TableBorderColor.B),
-                                TableHeaderColor = HexConverter(settingItems.PdfGenObject.TableHeaderColor.R, settingItems.PdfGenObject.TableHeaderColor.G, settingItems.PdfGenObject.TableHeaderColor.B)
-                            };
+                            settingItems.PdfLookAndFeel = JsonConvert.DeserializeObject<PdfLookAndFeel>(item.Set.Value);
                         }
 
                         settingItems.IsJson = true;
@@ -152,28 +139,5 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         }
 
         #endregion
-
-        private string ToCategoryString(string s, int max)
-        {
-            var array = s.Split('.');
-            string category = "";
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array[i].ToLower() != "mcss")
-                {
-                    category += array[i] + (i > 0 && i < array.Length - 1 ? " / " : "");
-                }
-            }
-
-            if (category.Length > max)
-            {
-                category = category.Substring(category.Length - max).Trim();
-                int index = category.IndexOf(' ');
-                category = category.Contains("/") && category[0] != '/' ? category.Remove(0, index) : category;
-            }
-
-            return category;
-        }
     }
 }

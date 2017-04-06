@@ -8,8 +8,15 @@
 </div>
 <div id="content" class="cf">
     <script>
+        var jsonObject = null;
         function colorPicker(id1, id2) {
             document.getElementById(id1).value = document.getElementById(id2).value;
+        }
+        function rgbToHex(id1, id2, r, g, b) {
+            var bin = r << 16 | g << 8 | b;
+            var hex = "#" + (function (h) { return new Array(7 - h.length).join("0") + h })(bin.toString(16))
+            document.getElementById(id1).value = hex;
+            document.getElementById(id2).value = hex;
         }
     </script>
     <div id="content-primary">
@@ -46,40 +53,24 @@
 
                           @if (item.StringValue != null)
                           {
-                                if (item.PdfGenObject != null)
-                                {
+                              if (item.PdfLookAndFeel != null)
+                              {
                                     <div class="settings-section t-right">
-                                        @Html.LabelFor(i => item.PdfGenObject.IsCustomFooterTextEnabled, new { @class = "section-label attr-item", @title = "IsCustomFooterTextEnabled" })
-                                        @Html.FormGroup(i => item.PdfGenObject.IsCustomFooterTextEnabled).Checkbox("Aktivera").Validate().Build()
+                                        @Html.LabelFor(i => item.PdfLookAndFeel.IsCustomFooterTextEnabled, new { @class = "section-label attr-item", @title = "IsCustomFooterTextEnabled" })
+                                        @Html.FormGroup(i => item.PdfLookAndFeel.IsCustomFooterTextEnabled).Checkbox("Aktivera").Validate().Build()
                                     </div>
                                     <div class="settings-section t-right">
-                                        @Html.LabelFor(i => item.PdfGenObject.IsCustomLogotypeEnabled, new { @class = "section-label attr-item", @title = "IsCustomLogotypeEnabled" })
-                                        @Html.FormGroup(i => item.PdfGenObject.IsCustomLogotypeEnabled).Checkbox("Aktivera").Validate().Build()
+                                        @Html.LabelFor(i => item.PdfLookAndFeel.IsCustomLogotypeEnabled, new { @class = "section-label attr-item", @title = "IsCustomLogotypeEnabled" })
+                                        @Html.FormGroup(i => item.PdfLookAndFeel.IsCustomLogotypeEnabled).Checkbox("Aktivera").Validate().Build()
                                     </div>
-                                    <div class="value-section">
-                                        <label class="value-label attr-item" for="colorInput1">Bakgrundsfärg</label>
-                                        @Html.FormGroup(x => x.Colors.BackgroundColor, "text").TextBox(null, new { @id = "colorInput1", @class = "p-left", onchange = "colorPicker('picker1', this.id);"}).Validate().Build()
-                                        <input name="colorpicker" id="picker1" type="color" value="@Model.Colors.BackgroundColor" onchange="colorPicker('colorInput1', this.id);">
-                                        @Html.HiddenFor(x => x.Colors.BackgroundColor)
-                                    </div>
-                                    <div class="value-section">
-                                        <label class="value-label attr-item" for="colorInput2">Teckensnittsfärg</label>
-                                        @Html.FormGroup(x => x.Colors.FontColor, "text").TextBox(null, new { @id = "colorInput2", @class = "p-left", onchange = "colorPicker('picker2', this.id);" }).Validate().Build()
-                                        <input name="colorpicker2" id="picker2" type="color" value="@Model.Colors.FontColor" onchange="colorPicker('colorInput2', this.id);">
-                                        @Html.HiddenFor(x => x.Colors.FontColor)
-                                    </div>
-                                    <div class="value-section">
-                                    <label class="value-label attr-item" for="colorInput3">Rubrikfärg</label>
-                                        @Html.FormGroup(x => x.Colors.TableHeaderColor, "text").TextBox(null, new { @id = "colorInput3", @class = "p-left", onchange = "colorPicker('picker3', this.id);" }).Validate().Build()
-                                        <input name="colorpicker3" id="picker3" type="color" value="@Model.Colors.TableHeaderColor" onchange="colorPicker('colorInput3', this.id);">
-                                        @Html.HiddenFor(x => x.Colors.TableHeaderColor)
-                                    </div>
-                                    <div class="value-section">
-                                        <label class="value-label attr-item" for="colorInput4">Kantlinjefärg</label>
-                                        @Html.FormGroup(x => x.Colors.TableBorderColor, "text").TextBox(null, new { @id = "colorInput4", @class = "p-left", onchange = "colorPicker('picker4', this.id);" }).Validate().Build()
-                                        <input name="colorpicker4" id="picker4" type="color" value="@Model.Colors.TableBorderColor" onchange="colorPicker('colorInput4', this.id);">
-                                        @Html.HiddenFor(x => x.Colors.TableBorderColor)
-                                    </div>
+
+                                    var attributes = new string[] { "value-section", "value-label attr-item", "p-left" };
+                                    @Html.ColorInputGroup(x => item.PdfLookAndFeel.BackgroundColor, attributes, "colorPicker", item.PdfLookAndFeel.BackgroundColor)
+                                    @Html.ColorInputGroup(x => item.PdfLookAndFeel.FontColor, attributes, "colorPicker", item.PdfLookAndFeel.FontColor)
+                                    @Html.ColorInputGroup(x => item.PdfLookAndFeel.TableBorderColor, attributes, "colorPicker", item.PdfLookAndFeel.TableBorderColor)
+                                    @Html.ColorInputGroup(x => item.PdfLookAndFeel.TableHeaderColor, attributes, "colorPicker", item.PdfLookAndFeel.TableHeaderColor)
+                                  
+                                    @*@Html.FormGroup(x => item.PdfLookAndFeel.TableBorderColor, "value-section").Label("Kantlinjefärg", new { @for = "pdf-tbc4", @class = "value-label attr-item" }).TextBox(null, new { id = "pdf-tbc4", value = "#000000", @class = "p-left", onchange = Html.Raw("colorPicker('pdf-tbcp4', this.id);") }).TextBox(null, new { id = "pdf-tbcp4", value = "#000000", type = "color", onchange = Html.Raw("colorPicker('pdf-tbc4', this.id);") }).Validate().Build()*@
                                 }
                           }
                       </div>

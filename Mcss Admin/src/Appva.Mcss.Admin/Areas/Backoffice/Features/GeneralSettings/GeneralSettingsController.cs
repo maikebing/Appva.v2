@@ -44,6 +44,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         }
         #endregion
 
+        /*
         #region Save
         [Route("list")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
@@ -79,7 +80,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             return this.View();
         }
         #endregion
-
+        */
 
 
     }

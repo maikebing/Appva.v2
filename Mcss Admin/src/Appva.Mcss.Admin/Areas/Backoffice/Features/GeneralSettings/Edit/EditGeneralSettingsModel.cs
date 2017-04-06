@@ -6,6 +6,7 @@
 //      <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
 
+/*
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
@@ -82,3 +83,4 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     }
 }
+*/

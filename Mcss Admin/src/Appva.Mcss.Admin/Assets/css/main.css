@@ -1369,6 +1369,7 @@ td.rights {
 #signlist .tr-highlight, #signlist .td-highlight { transition:background .2s ease-in-out; }
 #setlist {
     list-style-type:none;
+    min-width:380px;
     padding:20px;
     -moz-column-count: 3;
     -moz-column-gap: 20px;
@@ -1394,7 +1395,7 @@ td.rights {
     overflow:auto;
 }
 #setlist li:hover {
-    background:url(../i/settings-medium.png) no-repeat center -205px;
+    background:url(../i/settings-medium.png) no-repeat center -200px;
     background-color:#fff;
 }
 #setlist li a{
@@ -1411,17 +1412,19 @@ td.rights {
     text-transform:uppercase;
     letter-spacing:.05em;
     line-height:1.2em;
-    color:#555;
-    padding:15px 15px 0 15px;
+    color:#222;
+    padding:12px 12px 10px 11px;
     overflow:hidden;
-    transition:background 0.5s ease;
+    white-space:nowrap;
+    border-bottom:1px solid #ddd;
 }
 #setlist h3 span {
     float:left;
     display:inline-block;
-    width:11px;
-    height:11px;
-    margin-right:8px;
+    width:12px;
+    height:12px;
+    margin:-2px 9px 0 0;
+    border:2px dotted #fff;
 }
 #setlist h2 {
     font-size:16px;
@@ -3026,7 +3029,6 @@ form .time {width:4em;}
     position:relative;
     background:rgba(255, 255, 255, 0.7);
     margin:10px 15px 15px 15px;
-    box-shadow:0 0 18px #e8e8e8 inset;
 }
 #setlist .value-label, #setlist .section-label {
     position:absolute;
@@ -3055,7 +3057,6 @@ form .time {width:4em;}
     font-size:13px;
     width:100%;
     border:1px solid #ddd;
-    box-shadow:0 0 18px #e8e8e8 inset;
     box-sizing:border-box;
 }
 #setlist input[type="color"] {

@@ -1,4 +1,5 @@
-﻿using Appva.Cqrs;
+﻿/*
+using Appva.Cqrs;
 using Appva.Mcss.Admin.Application.Services.Settings;
 using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects.Pdf;
 using Appva.Mcss.Admin.Areas.Backoffice.Models;
@@ -133,3 +134,4 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             }
         }
     }
+    */

@@ -391,13 +391,11 @@
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\EditGeneralSettingsModel.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\EditGeneralSettingsPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\GeneralSettingsController.cs" />
-    <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\JsonObjects\InventoryModel.cs" />
-    <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\JsonObjects\PdfGenColors.cs" />
-    <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\JsonObjects\PdfGenModel.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettings.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsModel.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\GeneralSettings\Utils\GeneralSettingsExtensions.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitPublisher.cs" />

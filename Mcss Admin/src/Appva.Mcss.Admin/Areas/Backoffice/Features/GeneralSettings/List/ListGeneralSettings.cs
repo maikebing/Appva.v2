@@ -12,9 +12,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     using System;
     using System.Collections.Generic;
-    using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects;
-    using Appva.Mcss.Admin.Areas.Backoffice.JsonObjects.Pdf;
-    using Cqrs;
+    using Appva.Mcss.Admin.Domain.VO;
 
     #endregion
 
@@ -98,16 +96,33 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public List<InventoryObject> InventoryObject
+        public PdfLookAndFeel PdfLookAndFeel
         {
             get;
             set;
         }
 
-        public PdfGenObject PdfGenObject
+        public static string ToCategoryString(string s, int max)
         {
-            get;
-            set;
+            var array = s.Split('.');
+            string category = "";
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i].ToLower() != "mcss")
+                {
+                    category += array[i] + (i > 0 && i < array.Length - 1 ? " / " : "");
+                }
+            }
+
+            if (category.Length > max)
+            {
+                category = category.Substring(category.Length - max).Trim();
+                int index = category.IndexOf(' ');
+                category = category.Contains("/") && category[0] != '/' ? category.Remove(0, index) : category;
+            }
+
+            return category;
         }
     }
 }

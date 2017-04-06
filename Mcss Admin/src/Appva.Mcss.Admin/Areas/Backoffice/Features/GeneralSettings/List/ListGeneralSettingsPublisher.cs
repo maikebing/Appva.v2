@@ -34,7 +34,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         public override bool Handle(ListGeneralSettingsModel message)
         {
             var settings = this.settingsService.List();
-            
 
             if (message.List != null)
             {

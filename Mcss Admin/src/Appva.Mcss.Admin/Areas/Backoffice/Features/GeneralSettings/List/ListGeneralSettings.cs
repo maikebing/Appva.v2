@@ -12,7 +12,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     using System;
     using System.Collections.Generic;
-    using Appva.Mcss.Admin.Domain.VO;
+    using Cqrs;
+    using Domain.VO;
+    using Ldap.Configuration;
 
     #endregion
 
@@ -102,7 +104,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public static string ToCategoryString(string s, int max)
+        public string[] machineNames { get; set; }
+          
+
+        public AuditLoggingConfiguration AuditLoggingConfig { get; set; }
+
+        public SecurityTokenConfiguration SecurityTokenConfig { get; set; }
+
+        public SecurityMailerConfiguration SecurityMailerConfig { get; set; }
+
+        public LdapConfiguration LdapConfig { get; set; }
+
+       public static string ToCategoryString(string s, int max)
         {
             var array = s.Split('.');
             string category = "";

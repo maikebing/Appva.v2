@@ -72,17 +72,119 @@
                                   
                                     @*@Html.FormGroup(x => item.PdfLookAndFeel.TableBorderColor, "value-section").Label("Kantlinjefärg", new { @for = "pdf-tbc4", @class = "value-label attr-item" }).TextBox(null, new { id = "pdf-tbc4", value = "#000000", @class = "p-left", onchange = Html.Raw("colorPicker('pdf-tbcp4', this.id);") }).TextBox(null, new { id = "pdf-tbcp4", value = "#000000", type = "color", onchange = Html.Raw("colorPicker('pdf-tbc4', this.id);") }).Validate().Build()*@
                                 }
-                          }
-                      </div>
-                  </li>
-              }
-          </ul>
-      }
-      else
-      {
-        <div class="note">
-            <h2>Inga inställningar hittades.</h2>
-        </div>
-      }
+
+                                if (item.SecurityTokenConfig != null)
+                                {    <div class="value-section">
+                                <a href="@item.SecurityTokenConfig.Audience">Schemas</a>
+                            </div>
+                                }
+
+                                if (item.SecurityMailerConfig != null)
+                                {
+                                    <div class="settings-section t-right">
+                                        @Html.LabelFor(i => item.SecurityMailerConfig.IsMailSigningEnabled, new { @class = "section-label attr-item" })
+                                        @Html.FormGroup(i => item.SecurityMailerConfig.IsMailSigningEnabled, "text").Checkbox("Aktivera").Validate().Build()
+                                    </div>
+                                        <div class="settings-section t-right">
+                                            @Html.LabelFor(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, new { @class = "section-label attr-item" })
+                                            @Html.FormGroup(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
+                                        </div>
+                                        <div class="settings-section t-right">
+                                            @Html.LabelFor(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, new { @class = "section-label attr-item" })
+                                            @Html.FormGroup(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
+                                        </div>
+                                        <div class="settings-section t-right">
+                                            @Html.LabelFor(i => item.SecurityMailerConfig.IsResetPasswordMailEnabled, new { @class = "section-label attr-item" })
+                                            @Html.FormGroup(i => item.SecurityMailerConfig.IsResetPasswordMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
+                                        </div>
+                                        <div class="settings-section t-right">
+                                            @Html.LabelFor(i => item.SecurityMailerConfig.IsSecurityEventMailEnabled, new { @class = "section-label attr-item" })
+                                            @Html.FormGroup(i => item.SecurityMailerConfig.IsSecurityEventMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
+                                        </div>
+                                }
+
+                                if (item.MachineName == item.machineNames[6])
+                                {
+                                    if (item.Name == "logout_timeout")
+                                    {
+                                        <div class="value-section">
+                                            @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(null, new { @type = "number", @class = "value-input" }).Validate().Build()
+                                        </div>
+                                    }
+
+                                    if (item.Name == "security_level")
+                                    {
+                                        <div class="value-section">
+                                            @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(null, new { @class = "value-input" }).Validate().Build()
+                                        </div>
+                                    }
+                                }
+
+                                if (item.MachineName == item.machineNames[7])
+                                {
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.FieldFirstName, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.FieldFirstName, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.FieldLastName, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.FieldLastName, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.FieldHsaId, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.FieldHsaId, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.FieldMail, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.FieldMail, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.FieldPin, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.FieldPin, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.FieldUniqueIdentifier, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.FieldUniqueIdentifier, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.FieldUsername, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.FieldUsername, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.LdapPassword, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.LdapPassword, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.LdapUser, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.LdapUser, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                    <div class="value-section">
+                                        @Html.LabelFor(i => item.LdapConfig.LdapString, new { @class = "value-label attr-item" })
+                                        @Html.FormGroup(i => item.LdapConfig.LdapString, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                    </div>
+                                }
+
+                                if (item.MachineName == item.machineNames[8])
+                                {
+                                    <div class="value-section">
+                                        @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(item.StringValue, new { @class = "value-input" }).Validate().Build()
+                                    </div>
+                                }
+
+
+
+
+
+                            }
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div class="note">
+                <h2>Inga inställningar hittades.</h2>
+            </div>
+        }
     </div>
 </div>

@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Ldap.Configuration;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
@@ -32,7 +33,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             "Mcss.Core.Security.Analytics.Audit.Configuration",
             "Mcss.Core.Security.Jwt.Configuration.SecurityToken",
             "Mcss.Core.Security.Messaging.Email",
-            "Mcss.Integration.Ldap.LdapConfiguration"
+            "Mcss.Integration.Ldap.LdapConfiguration",
+            "MCSS.Device.Security",
+            "Mcss.Integration.Ldap.LdapConfiguration",
+            "MCSS.Device.HelpPage"
         };
         private string[] colorCodes = {
             "#64B5F6", "#81C784", "#7986CB", "#E57373",
@@ -74,6 +78,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.Value = item.Set.Value;
                 settingItems.Type = item.Set.Type;
                 settingItems.CategoryColorCode = colorCodes[colorIndex];
+                settingItems.machineNames = machineNames;
 
                 if (item.Set.Type == typeof(Boolean))
                 {
@@ -94,6 +99,24 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         {
                             settingItems.PdfLookAndFeel = JsonConvert.DeserializeObject<PdfLookAndFeel>(item.Set.Value);
                         }
+                        else if (item.Set.MachineName == machineNames[3]) {
+
+                            settingItems.SecurityTokenConfig = JsonConvert.DeserializeObject<SecurityTokenConfiguration>(item.Set.Value);
+
+                        }
+                        else if (item.Set.MachineName == machineNames[4])
+                        {
+                            settingItems.SecurityMailerConfig = JsonConvert.DeserializeObject<SecurityMailerConfiguration>(item.Set.Value);
+                        }
+                        else if (item.Set.MachineName == machineNames[6])
+                        {
+                            settingItems.StringValue = item.Set.Value;
+                        }
+                        else if (item.Set.MachineName == machineNames[7])
+                        {
+                            settingItems.LdapConfig = JsonConvert.DeserializeObject<LdapConfiguration>(item.Set.Value);
+                        }
+
 
                         settingItems.IsJson = true;
                     }
@@ -101,6 +124,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     {
                         settingItems.StringValue = item.Set.Value;
                     }
+
+                    settingItems.StringValue = item.Set.Value;
                 }
 
                 if (item.Set.Type == typeof(Int32))

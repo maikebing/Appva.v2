@@ -35,7 +35,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             "Mcss.Core.Security.Messaging.Email",
             "Mcss.Integration.Ldap.LdapConfiguration",
             "MCSS.Device.Security",
-            "Mcss.Integration.Ldap.LdapConfiguration",
             "MCSS.Device.HelpPage"
         };
         private string[] colorCodes = {
@@ -112,7 +111,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         {
                             settingItems.StringValue = item.Set.Value;
                         }
-                        else if (item.Set.MachineName == machineNames[7])
+                        else if (item.Set.MachineName == machineNames[5])
                         {
                             settingItems.LdapConfig = JsonConvert.DeserializeObject<LdapConfiguration>(item.Set.Value);
                         }

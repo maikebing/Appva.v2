@@ -2892,8 +2892,8 @@ form .time {width:4em;}
     list-style-type: none;
     padding: 5px 10px 10px 15px;
     margin: 4px 0 20px 0;
-    background: #E9EEF2;
-    border: 1px solid #D3E0EA;
+    background: #e1edf2;
+    border: 1px solid #bdd4dd;
 }
 #sign-imglist li {
     display:inline-block;

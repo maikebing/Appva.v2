@@ -129,12 +129,12 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<TenantCookieAuthenticationMiddleware>().InstancePerRequest();
             builder.Register(x => new SecurityTokenOptions
             {
-                RegisterTokenPath        = new PathString("/account/register"),
+                RegisterTokenPath = new PathString("/account/register"),
                 RegisterTokenExpiredPath = new PathString("/account/register/expired"),
-                ResetTokenPath           = new PathString("/account/reset-password"),
-                ResetTokenExpiredPath    = new PathString("/account/reset-password/expired"),
-                TokenInvalidPath         = new PathString("/auth/sign-in"),
-                Provider                 = x.Resolve<JwtSecureDataFormat>()
+                ResetTokenPath = new PathString("/account/reset-password"),
+                ResetTokenExpiredPath = new PathString("/account/reset-password/expired"),
+                TokenInvalidPath = new PathString("/auth/sign-in"),
+                Provider = x.Resolve<JwtSecureDataFormat>()
             }).InstancePerRequest();
             builder.RegisterType<SecurityTokenMiddleware>().InstancePerRequest();
         }
@@ -208,7 +208,14 @@ namespace Appva.Mcss.Admin.Configuration
                 properties.Add("show_sql", "true");
             }
             builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/db/admin")).As<IRuntimeMemoryCache>().SingleInstance();
-            builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
+            if (ApplicationEnvironment.Is.Development)
+            {
+                builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
+            }
+            else
+            {
+                builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
+            }
             builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
             {
                 Assembly = "Appva.Mcss.Admin.Domain",

@@ -20,7 +20,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using Infrastructure.Models;
-    using Persistence;
 
     #endregion
 

@@ -110,8 +110,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public string[] machineNames { get; set; }
-          
+        public string[] MachineNames { get; set; }
+
+        public string[] IgnoredSettings { get; set; }
 
         public AuditLoggingConfiguration AuditLoggingConfig { get; set; }
 

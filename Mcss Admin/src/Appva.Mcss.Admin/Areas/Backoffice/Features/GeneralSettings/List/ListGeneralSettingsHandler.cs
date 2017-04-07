@@ -35,8 +35,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             "Mcss.Core.Security.Messaging.Email",
             "Mcss.Integration.Ldap.LdapConfiguration",
             "MCSS.Device.Security",
-            "MCSS.Device.HelpPage"
+            "MCSS.Secuity.Authorization.AdminAuthorizationMethod"
         };
+
+        private readonly string[] ignoredSettings = new string[]
+        {
+            "Mcss.Core.Security.Analytics.Audit.Configuration",
+            "Mcss.Integration.Ldap.LdapConfiguration",
+            "MCSS.Device.HelpPage",
+            "MCSS.Device.Beacon.UDID",
+            "Tenant.Client.LoginMethod"
+        };
+
         private string[] colorCodes = {
             "#64B5F6", "#81C784", "#7986CB", "#E57373",
             "#4DB6AC", "#FFB74D", "#A1887F", "#90A4AE",
@@ -77,7 +87,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.Value = item.Set.Value;
                 settingItems.Type = item.Set.Type;
                 settingItems.CategoryColorCode = colorCodes[colorIndex];
-                settingItems.machineNames = machineNames;
+                settingItems.MachineNames = machineNames;
+                settingItems.IgnoredSettings = ignoredSettings;
                 settingItems.Index = item.Index;
 
                 if (item.Set.Type == typeof(Boolean))
@@ -88,6 +99,19 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 if (item.Set.Type == typeof(String))
                 {
                     settingItems.StringValue = "";
+                    
+                    if (item.Set.MachineName == machineNames[6])
+                    {
+                        settingItems.StringValue = item.Set.Value;
+                        settingItems.IsJson = true;
+                    }
+
+                    if (item.Set.MachineName == machineNames[7])
+                    {
+                        settingItems.StringValue = item.Set.Value;
+                        settingItems.IsJson = true;
+                    }
+
 
                     try
                     {
@@ -98,34 +122,37 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         else if (item.Set.MachineName == machineNames[1])
                         {
                             settingItems.PdfLookAndFeel = JsonConvert.DeserializeObject<PdfLookAndFeel>(item.Set.Value);
+                            settingItems.IsJson = true;
                         }
                         else if (item.Set.MachineName == machineNames[3]) {
 
                             settingItems.SecurityTokenConfig = JsonConvert.DeserializeObject<SecurityTokenConfiguration>(item.Set.Value);
+                            settingItems.IsJson = true;
 
                         }
                         else if (item.Set.MachineName == machineNames[4])
                         {
                             settingItems.SecurityMailerConfig = JsonConvert.DeserializeObject<SecurityMailerConfiguration>(item.Set.Value);
+                            settingItems.IsJson = true;
                         }
+                        
                         else if (item.Set.MachineName == machineNames[5])
                         {
                             settingItems.LdapConfig = JsonConvert.DeserializeObject<LdapConfiguration>(item.Set.Value);
+                            settingItems.IsJson = true;
                         }
-                        else if (item.Set.MachineName == machineNames[6])
-                        {
-                            settingItems.StringValue = item.Set.Value;
-                        }
-
-
-                        settingItems.IsJson = true;
+                        
                     }
                     catch
                     {
                         settingItems.StringValue = item.Set.Value;
                     }
 
-                    settingItems.StringValue = item.Set.Value;
+                    if (settingItems.IsJson == false)
+                    {
+                        settingItems.StringValue = item.Set.Value;
+                    }
+
                 }
 
                 if (item.Set.Type == typeof(Int32))
@@ -156,7 +183,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     colorIndex = 0;
                 }
 
-                setting.List.Add(settingItems);
+                if (ignoredSettings.Contains(item.Set.MachineName) == false)
+                {
+                    setting.List.Add(settingItems);
+
+                }
             }
 
             setting.List = setting.List;

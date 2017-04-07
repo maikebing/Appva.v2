@@ -44,43 +44,54 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         }
         #endregion
 
-        /*
         #region Save
-        [Route("list")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
-        public ActionResult List(ListGeneralSettingsModel request)
+        [Route("list/save")]
+        [HttpPost]
+        public JsonResult Save(string request)
         {
-            return View();
+
+
+          return  Json("string");
+            //return Content("hej");
         }
         #endregion
 
-        #region Edit.
-        /// <summary>
-        /// edits a setting
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Route("{id:guid}/edit")]
-        [HttpGet, Dispatch]
-        public ActionResult Edit(Identity<EditGeneralSettingsModel> request)
-        {
-            return this.View();
-        }
+        //#region Save
+
+        ////[Route("list/save")]
+        ////[HttpGet, Dispatch("List", "GeneralSettings")]
+        ////public ActionResult SaveList(ListGeneralSettingsModel request)
+        ////{
+        ////    return this.View();
+        ////}
+        //#endregion
+
+        //#region Edit.
+        ///// <summary>
+        ///// edits a setting
+        ///// </summary>
+        ///// <param name="request"></param>
+        ///// <returns></returns>
+        //[Route("{id:guid}/edit")]
+        //[HttpGet, Dispatch]
+        //public ActionResult Edit(Identity<EditGeneralSettingsModel> request)
+        //{
+        //    return this.View();
+        //}
 
 
-        /// <summary>
-        /// updates a new setting
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Route("{id:guid}/edit")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
-        public ActionResult Edit(EditGeneralSettingsModel request)
-        {
-            return this.View();
-        }
-        #endregion
-        */
+        ///// <summary>
+        ///// updates a new setting
+        ///// </summary>
+        ///// <param name="request"></param>
+        ///// <returns></returns>
+        //[Route("{id:guid}/edit")]
+        //[HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
+        //public ActionResult Edit(EditGeneralSettingsModel request)
+        //{
+        //    return this.View();
+        //}
+        //#endregion
 
 
     }

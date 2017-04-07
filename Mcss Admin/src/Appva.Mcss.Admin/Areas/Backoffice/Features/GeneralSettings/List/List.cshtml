@@ -46,10 +46,10 @@
                                 var attributes = new string[] { "value-section", "value-label attr-item", "p-left" };
                                 @Checkbox("pdf-cust-footer", item.PdfLookAndFeel.IsCustomFooterTextEnabled, false, "IsCustomFooterTextEnabled")
                                 @Checkbox("pdf-cust-logotype", item.PdfLookAndFeel.IsCustomFooterTextEnabled, false, "IsCustomFooterTextEnabled")
-                                @Html.ColorInputGroup(x => item.PdfLookAndFeel.BackgroundColor, attributes, "colorPicker", item.PdfLookAndFeel.BackgroundColor)
-                                @Html.ColorInputGroup(x => item.PdfLookAndFeel.FontColor, attributes, "colorPicker", item.PdfLookAndFeel.FontColor)
-                                @Html.ColorInputGroup(x => item.PdfLookAndFeel.TableBorderColor, attributes, "colorPicker", item.PdfLookAndFeel.TableBorderColor)
-                                @Html.ColorInputGroup(x => item.PdfLookAndFeel.TableHeaderColor, attributes, "colorPicker", item.PdfLookAndFeel.TableHeaderColor)
+                                @ColorInput("Bakgrundsfärg", "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
+                                @ColorInput("Typsnittsfärg", "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
+                                @ColorInput("Kantlinjefärg", "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
+                                @ColorInput("Rubrikfärg", "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor)
                             }
                             else if (item.SecurityTokenConfig != null)
                             {
@@ -188,4 +188,21 @@
         <label class="value-label" for="@id">@labelName</label>
         <input type="number" id="@id" name="@id" value="@value" autocomplete="off" />
     </div>
+}
+@helper ColorInput(string labelName, string id, dynamic color)
+{
+    string pickerId = id + "picker";
+    string hex = @RgbToHex(color);
+    <div class="value-section">
+        <label class="value-label attr-item" for="@id">@labelName</label>
+        <input class="p-left" id="@id" name="@id" onchange="colorPicker('@pickerId', this.id)" type="text" value="@hex" />
+        <input id="@pickerId" onchange="colorPicker('@id', this.id)" type="color" value="@hex" />
+    </div>
+}
+@functions
+{
+    public string RgbToHex(dynamic color)
+    {
+        return "#" + (color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2")).ToLower();
+    }
 }

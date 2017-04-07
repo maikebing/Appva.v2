@@ -35,7 +35,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             "Mcss.Core.Security.Messaging.Email",
             "Mcss.Integration.Ldap.LdapConfiguration",
             "MCSS.Device.Security",
-            "MCSS.Secuity.Authorization.AdminAuthorizationMethod"
+            "MCSS.Secuity.Authorization.AdminAuthorizationMethod",
+            "MCSS.Device.Settings.Timeline.OverviewTimelineTaskTypes"
         };
 
         private readonly string[] ignoredSettings = new string[]
@@ -100,17 +101,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 {
                     settingItems.StringValue = "";
                     
-                    if (item.Set.MachineName == machineNames[6])
+                    if (item.Set.MachineName == machineNames[6] 
+                        || item.Set.MachineName == machineNames[7] 
+                        || item.Set.MachineName == machineNames[8])
                     {
                         settingItems.StringValue = item.Set.Value;
                         settingItems.IsJson = true;
                     }
-
-                    if (item.Set.MachineName == machineNames[7])
-                    {
-                        settingItems.StringValue = item.Set.Value;
-                        settingItems.IsJson = true;
-                    }
+                    
 
 
                     try

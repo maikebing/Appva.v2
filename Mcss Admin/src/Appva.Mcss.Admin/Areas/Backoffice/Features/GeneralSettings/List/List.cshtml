@@ -39,7 +39,7 @@
                         @if (item.IntValue.HasValue) { @NumericTextbox("Värde", "value" + item.Index, item.IntValue.Value) }
                         @if (item.BoolValue.HasValue) { @Checkbox("check" + item.Index, (bool)item.BoolValue) }
                         </div>
-                        @if (item.IsJson == true)
+                        @if (item.IsJson)
                         {
                             if (item.PdfLookAndFeel != null)
                             {
@@ -127,48 +127,14 @@
                                 </div>
                             }
 
-                            if (item.MachineName == item.MachineNames[5])
+                            if (item.MachineName == item.MachineNames[8])
                             {
-                                <div class="value-section">
-                                    @Html.LabelFor(i => item.LdapConfig.FieldFirstName, new { @class = "value-label attr-item" })
-                                    @Html.FormGroup(i => item.LdapConfig.FieldFirstName, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                <div class="settings-section t-left">
+                                    @Html.RadioButtonFor(i => item.StringValue, "", new { @class ="t-left" }) <strong>Ingen</strong><br />
+                                    @Html.RadioButtonFor(i => item.StringValue, "ordination") <strong>Ordination</strong><br />
+                                    @Html.RadioButtonFor(i => item.StringValue, "calendar") <strong>Calendar</strong><br />
+                                    @Html.RadioButtonFor(i => item.StringValue, "ordination;calendar") <strong>Ordination och Calendar</strong>
                                 </div>
-                                <div class="value-section">
-                                    @Html.LabelFor(i => item.LdapConfig.FieldLastName, new { @class = "value-label attr-item" })
-                                    @Html.FormGroup(i => item.LdapConfig.FieldLastName, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                </div>
-                                    <div class="value-section">
-                                        @Html.LabelFor(i => item.LdapConfig.FieldHsaId, new { @class = "value-label attr-item" })
-                                        @Html.FormGroup(i => item.LdapConfig.FieldHsaId, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                    </div>
-                                    <div class="value-section">
-                                        @Html.LabelFor(i => item.LdapConfig.FieldMail, new { @class = "value-label attr-item" })
-                                        @Html.FormGroup(i => item.LdapConfig.FieldMail, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                    </div>
-                                    <div class="value-section">
-                                        @Html.LabelFor(i => item.LdapConfig.FieldPin, new { @class = "value-label attr-item" })
-                                        @Html.FormGroup(i => item.LdapConfig.FieldPin, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                    </div>
-                                    <div class="value-section">
-                                        @Html.LabelFor(i => item.LdapConfig.FieldUniqueIdentifier, new { @class = "value-label attr-item" })
-                                        @Html.FormGroup(i => item.LdapConfig.FieldUniqueIdentifier, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                    </div>
-                                    <div class="value-section">
-                                        @Html.LabelFor(i => item.LdapConfig.FieldUsername, new { @class = "value-label attr-item" })
-                                        @Html.FormGroup(i => item.LdapConfig.FieldUsername, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                    </div>
-                                    <div class="value-section">
-                                        @Html.LabelFor(i => item.LdapConfig.LdapPassword, new { @class = "value-label attr-item" })
-                                        @Html.FormGroup(i => item.LdapConfig.LdapPassword, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                    </div>
-                                    <div class="value-section">
-                                        @Html.LabelFor(i => item.LdapConfig.LdapUser, new { @class = "value-label attr-item" })
-                                        @Html.FormGroup(i => item.LdapConfig.LdapUser, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                    </div>
-                                    <div class="value-section">
-                                        @Html.LabelFor(i => item.LdapConfig.LdapString, new { @class = "value-label attr-item" })
-                                        @Html.FormGroup(i => item.LdapConfig.LdapString, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                    </div>
                             }
                         }
                             @if (item.StringValue != null && item.IsJson == false)

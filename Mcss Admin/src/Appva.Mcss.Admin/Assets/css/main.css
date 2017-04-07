@@ -3008,7 +3008,7 @@ form .time {width:4em;}
     padding-bottom:10px;
 }
 #pr-panel .settings-section, #setlist .settings-section {
-    padding:10px 20px;
+    padding:10px 15px;
     margin-bottom:20px;
     background:#fff;
     border:1px solid #ddd;
@@ -3022,7 +3022,6 @@ form .time {width:4em;}
 }
 #setlist .value-section {
     position:relative;
-    padding:0 0 10px 0;
     margin:0 15px;
 }
 #setlist .settings-section {
@@ -3034,12 +3033,12 @@ form .time {width:4em;}
     position:absolute;
     z-index:1;
     padding:12px 15px 11px 15px;
+    margin:1px 0 1px 1px;
     font-weight:bold;
     border-right:1px solid #ddd;
 }
-#setlist .value-label { bottom:12px; }
 #setlist .section-label {
-    bottom:-4px;
+    bottom:-1px;
     left:0;
 }
 #setlist .t-center { text-align:center; }
@@ -3048,20 +3047,21 @@ form .time {width:4em;}
 #setlist .attr-item {
     width:120px;
     overflow:hidden;
+    white-space:nowrap;
     text-overflow:ellipsis;
 }
 #setlist input[type="number"], #setlist input[type="text"] {
     background:rgba(255, 255, 255, 0.7);
-    padding:13px 6px 12px 76px;
-    margin-bottom:5px;
+    padding:14px 6px 11px 76px;
     font-size:13px;
     width:100%;
-    border:1px solid #ddd;
+    border-style:solid;
+    border-color:#ddd;
     box-sizing:border-box;
+    outline:none;
 }
 #setlist input[type="color"] {
     position:absolute;
-    bottom:23px;
     right:8px;
 }
 .std-form .checkbox-grid .wrap {

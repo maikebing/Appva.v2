@@ -3,12 +3,12 @@
     SetTitle("Admin - Generella inställningar");
 }
 @Html.Partial("_BackofficeMenuPartial")
+
 <div id="subheader" class="cf">
     <h1>Generella inställningar</h1>
 </div>
 <div id="content" class="cf">
     <script>
-        var jsonObject = null;
         function colorPicker(id1, id2) {
             document.getElementById(id1).value = document.getElementById(id2).value;
         }
@@ -29,69 +29,43 @@
                     <div class="header">
                         <h3 title="@item.MachineName"><span style="background:@item.CategoryColorCode"></span>@item.Category</h3>
                         <h2>@item.Name</h2>
-                        @*Html.ActionLink(item.Name, "Edit", "GeneralSettings", new { Id = item.Id }, new { @class = "lb-link" })*@
+
                         @if (item.Description != null && item.Description != string.Empty)
                         {
                             <p>@item.Description</p>
                         }
                     </div>
                     <div class="content">
-                        @if (item.IntValue != null)
-                        {
-                            <div class="value-section">
-                                @Html.FormGroup(i => item.IntValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(null, new { @type = "number", @class = "value-input" }).Validate().Build()
-                            </div>
-                        }
-                        @if (item.BoolValue != null)
-                        {
-                            bool isBool = (bool)item.BoolValue;
-                            <div class="settings-section t-center">
-                                @Html.FormGroup(x => isBool, "text").Checkbox("Aktivera").Validate().Build()
-                            </div>
-                        }
-                        @if (item.StringValue != null)
+                        @if (item.IntValue.HasValue) { @NumericTextbox("Värde", "value" + item.Index, item.IntValue.Value) }
+                        @if (item.BoolValue.HasValue) { @Checkbox("check" + item.Index, (bool)item.BoolValue) }
+
+                        @if (item.IsJson == true)
                         {
                             if (item.PdfLookAndFeel != null)
                             {
-                                <div class="settings-section t-right">
-                                    @Html.LabelFor(i => item.PdfLookAndFeel.IsCustomFooterTextEnabled, new { @class = "section-label attr-item", @title = "IsCustomFooterTextEnabled" })
-                                    @Html.FormGroup(i => item.PdfLookAndFeel.IsCustomFooterTextEnabled).Checkbox("Aktivera").Validate().Build()
-                                </div>
-                                    <div class="settings-section t-right">
-                                        @Html.LabelFor(i => item.PdfLookAndFeel.IsCustomLogotypeEnabled, new { @class = "section-label attr-item", @title = "IsCustomLogotypeEnabled" })
-                                        @Html.FormGroup(i => item.PdfLookAndFeel.IsCustomLogotypeEnabled).Checkbox("Aktivera").Validate().Build()
-                                    </div>
-
                                 var attributes = new string[] { "value-section", "value-label attr-item", "p-left" };
+                                @Checkbox("pdf-cust-footer", item.PdfLookAndFeel.IsCustomFooterTextEnabled, false, "IsCustomFooterTextEnabled")
+                                @Checkbox("pdf-cust-logotype", item.PdfLookAndFeel.IsCustomFooterTextEnabled, false, "IsCustomFooterTextEnabled")
                                 @Html.ColorInputGroup(x => item.PdfLookAndFeel.BackgroundColor, attributes, "colorPicker", item.PdfLookAndFeel.BackgroundColor)
                                 @Html.ColorInputGroup(x => item.PdfLookAndFeel.FontColor, attributes, "colorPicker", item.PdfLookAndFeel.FontColor)
                                 @Html.ColorInputGroup(x => item.PdfLookAndFeel.TableBorderColor, attributes, "colorPicker", item.PdfLookAndFeel.TableBorderColor)
                                 @Html.ColorInputGroup(x => item.PdfLookAndFeel.TableHeaderColor, attributes, "colorPicker", item.PdfLookAndFeel.TableHeaderColor)
-
-                                @*@Html.FormGroup(x => item.PdfLookAndFeel.TableBorderColor, "value-section").Label("Kantlinjefärg", new { @for = "pdf-tbc4", @class = "value-label attr-item" }).TextBox(null, new { id = "pdf-tbc4", value = "#000000", @class = "p-left", onchange = Html.Raw("colorPicker('pdf-tbcp4', this.id);") }).TextBox(null, new { id = "pdf-tbcp4", value = "#000000", type = "color", onchange = Html.Raw("colorPicker('pdf-tbc4', this.id);") }).Validate().Build()*@
                             }
-
                             else if (item.SecurityTokenConfig != null)
-                            {       <div class="value-section">
-
+                            {
+                                <div class="value-section">
                                     @Html.LabelFor(i => item.SecurityTokenConfig.Audience):<h5>@item.SecurityTokenConfig.Audience</h5>
                                     @Html.LabelFor(i => item.SecurityTokenConfig.Issuer):<h5>@item.SecurityTokenConfig.Issuer</h5>
                                     @Html.LabelFor(i => item.SecurityTokenConfig.ResetTokenLifetime):<h5>@item.SecurityTokenConfig.ResetTokenLifetime</h5>
                                     @Html.LabelFor(i => item.SecurityTokenConfig.RegistrationTokenLifetime):<h5>@item.SecurityTokenConfig.RegistrationTokenLifetime</h5>
                                     @Html.LabelFor(i => item.SecurityTokenConfig.SigningKey):<h5>@item.SecurityTokenConfig.SigningKey</h5>
-                                    </div>
+                                </div>
                             }
-
                             else if (item.SecurityMailerConfig != null)
                             {
-                                <div class="settings-section t-right">
-                                    @Html.LabelFor(i => item.SecurityMailerConfig.IsMailSigningEnabled, new { @class = "section-label attr-item" })
-                                    @Html.FormGroup(i => item.SecurityMailerConfig.IsMailSigningEnabled, "text").Checkbox("Aktivera").Validate().Build()
-                                </div>
-                                    <div class="settings-section t-right">
-                                        @Html.LabelFor(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, new { @class = "section-label attr-item" })
-                                        @Html.FormGroup(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
-                                    </div>
+                                    @Html.FormGroup(i => item.SecurityMailerConfig.IsMailSigningEnabled, "settings-section t-right").Label(null, new { @class = "section-label attr-item", @for = "IsMailSigningEnabled" }).Checkbox("Aktivera").Validate().Build()
+                                         @Html.LabelFor(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, new { @class = "section-label attr-item" })
+                                        @Html.FormGroup(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "settings-section t-right").Checkbox("Aktivera").Validate().Build()
                                         <div class="settings-section t-right">
                                             @Html.LabelFor(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, new { @class = "section-label attr-item" })
                                             @Html.FormGroup(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
@@ -105,7 +79,6 @@
                                             @Html.FormGroup(i => item.SecurityMailerConfig.IsSecurityEventMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
                                         </div>
                             }
-
                             else if (item.MachineName == item.machineNames[6])
                             {
                                 if (item.Name == "logout_timeout")
@@ -122,7 +95,6 @@
                                     </div>
                                 }
                             }
-
                             else if (item.MachineName == item.machineNames[5])
                             {
                                 <div class="value-section">
@@ -166,7 +138,6 @@
                                         @Html.FormGroup(i => item.LdapConfig.LdapString, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
                                     </div>
                             }
-
                             else if (item.MachineName == item.machineNames[6])
                             {
                                 <div class="value-section">
@@ -179,11 +150,12 @@
                                     @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(item.StringValue, new { @class = "value-input" }).Validate().Build()
                                 </div>
                             }
-
-
-
+                        }
+                        else if(item.StringValue != null)
+                        {
 
                         }
+                    </div>
                 </li>
             }
         </ul>
@@ -196,3 +168,24 @@
         }
     </div>
 </div>
+
+@* Templates *@
+@helper Checkbox(string id, bool isChecked, bool isCentered = true, string description = null)
+{
+    <div class="settings-section @(isCentered ? "t-center" : "t-right")">
+        @if (description != null)
+        {
+            <label class="section-label attr-item" for="@id" title="@description">@description</label>
+        }
+        <label class="checkbox-inline" for="@id">
+            <input type="checkbox" id="@id" name="@id" @(isChecked ? "checked" : "") />Aktivera
+        </label>
+    </div>
+}
+@helper NumericTextbox(string labelName, string id, int value)
+{
+    <div class="value-section">
+        <label class="value-label" for="@id">@labelName</label>
+        <input type="number" id="@id" name="@id" value="@value" autocomplete="off" />
+    </div>
+}

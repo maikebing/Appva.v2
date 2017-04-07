@@ -78,6 +78,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.Type = item.Set.Type;
                 settingItems.CategoryColorCode = colorCodes[colorIndex];
                 settingItems.machineNames = machineNames;
+                settingItems.Index = item.Index;
 
                 if (item.Set.Type == typeof(Boolean))
                 {
@@ -107,13 +108,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         {
                             settingItems.SecurityMailerConfig = JsonConvert.DeserializeObject<SecurityMailerConfiguration>(item.Set.Value);
                         }
-                        else if (item.Set.MachineName == machineNames[6])
-                        {
-                            settingItems.StringValue = item.Set.Value;
-                        }
                         else if (item.Set.MachineName == machineNames[5])
                         {
                             settingItems.LdapConfig = JsonConvert.DeserializeObject<LdapConfiguration>(item.Set.Value);
+                        }
+                        else if (item.Set.MachineName == machineNames[6])
+                        {
+                            settingItems.StringValue = item.Set.Value;
                         }
 
 

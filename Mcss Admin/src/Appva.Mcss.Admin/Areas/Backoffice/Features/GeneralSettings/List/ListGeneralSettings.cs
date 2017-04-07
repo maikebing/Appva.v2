@@ -26,6 +26,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        public int Index
+        {
+            get;
+            set;
+        }
+
         public string Name
         {
             get;
@@ -115,7 +121,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
         public LdapConfiguration LdapConfig { get; set; }
 
-       public static string ToCategoryString(string s, int max)
+        public static string ToCategoryString(string s, int max)
         {
             var array = s.Split('.');
             string category = "";

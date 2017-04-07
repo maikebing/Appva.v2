@@ -1318,6 +1318,7 @@
     <Content Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\GeneralSettings\Edit\Edit.cshtml" />
     <Content Include="Areas\Backoffice\Features\GeneralSettings\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\GeneralSettings\Partials\_FormTemplates.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

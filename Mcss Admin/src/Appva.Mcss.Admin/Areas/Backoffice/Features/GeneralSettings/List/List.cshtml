@@ -38,11 +38,25 @@
                     <div class="content">
                         @if (item.IntValue.HasValue) { @NumericTextbox("Värde", "value" + item.Index, item.IntValue.Value) }
                         @if (item.BoolValue.HasValue) { @Checkbox("check" + item.Index, (bool)item.BoolValue) }
-
+                        </div>
                         @if (item.IsJson == true)
                         {
                             if (item.PdfLookAndFeel != null)
                             {
+                                <p>@item.Description</p>
+                            }
+
+                            if (item.PdfLookAndFeel != null)
+                            {
+                                <div class="settings-section t-right">
+                                    @Html.LabelFor(i => item.PdfLookAndFeel.IsCustomFooterTextEnabled, new { @class = "section-label attr-item", @title = "IsCustomFooterTextEnabled" })
+                                    @Html.FormGroup(i => item.PdfLookAndFeel.IsCustomFooterTextEnabled).Checkbox("Aktivera").Validate().Build()
+                                </div>
+                                <div class="settings-section t-right">
+                                    @Html.LabelFor(i => item.PdfLookAndFeel.IsCustomLogotypeEnabled, new { @class = "section-label attr-item", @title = "IsCustomLogotypeEnabled" })
+                                    @Html.FormGroup(i => item.PdfLookAndFeel.IsCustomLogotypeEnabled).Checkbox("Aktivera").Validate().Build()
+                                </div>
+
                                 var attributes = new string[] { "value-section", "value-label attr-item", "p-left" };
                                 @Checkbox("pdf-cust-footer", item.PdfLookAndFeel.IsCustomFooterTextEnabled, false, "IsCustomFooterTextEnabled")
                                 @Checkbox("pdf-cust-logotype", item.PdfLookAndFeel.IsCustomFooterTextEnabled, false, "IsCustomFooterTextEnabled")
@@ -51,35 +65,43 @@
                                 @Html.ColorInputGroup(x => item.PdfLookAndFeel.TableBorderColor, attributes, "colorPicker", item.PdfLookAndFeel.TableBorderColor)
                                 @Html.ColorInputGroup(x => item.PdfLookAndFeel.TableHeaderColor, attributes, "colorPicker", item.PdfLookAndFeel.TableHeaderColor)
                             }
-                            else if (item.SecurityTokenConfig != null)
-                            {
-                                <div class="value-section">
-                                    @Html.LabelFor(i => item.SecurityTokenConfig.Audience):<h5>@item.SecurityTokenConfig.Audience</h5>
-                                    @Html.LabelFor(i => item.SecurityTokenConfig.Issuer):<h5>@item.SecurityTokenConfig.Issuer</h5>
-                                    @Html.LabelFor(i => item.SecurityTokenConfig.ResetTokenLifetime):<h5>@item.SecurityTokenConfig.ResetTokenLifetime</h5>
-                                    @Html.LabelFor(i => item.SecurityTokenConfig.RegistrationTokenLifetime):<h5>@item.SecurityTokenConfig.RegistrationTokenLifetime</h5>
-                                    @Html.LabelFor(i => item.SecurityTokenConfig.SigningKey):<h5>@item.SecurityTokenConfig.SigningKey</h5>
-                                </div>
+
+                            if (item.SecurityTokenConfig != null)
+                            {       <div class="value-section">
+
+                            @Html.LabelFor(i => item.SecurityTokenConfig.Audience):<h5>@item.SecurityTokenConfig.Audience</h5>
+                            @Html.LabelFor(i => item.SecurityTokenConfig.Issuer):<h5>@item.SecurityTokenConfig.Issuer</h5>
+                            @Html.LabelFor(i => item.SecurityTokenConfig.ResetTokenLifetime):<h5>@item.SecurityTokenConfig.ResetTokenLifetime</h5>
+                            @Html.LabelFor(i => item.SecurityTokenConfig.RegistrationTokenLifetime):<h5>@item.SecurityTokenConfig.RegistrationTokenLifetime</h5>
+                            @Html.LabelFor(i => item.SecurityTokenConfig.SigningKey):<h5>@item.SecurityTokenConfig.SigningKey</h5>
+                        </div>
                             }
-                            else if (item.SecurityMailerConfig != null)
+
+                            if (item.SecurityMailerConfig != null)
                             {
-                                    @Html.FormGroup(i => item.SecurityMailerConfig.IsMailSigningEnabled, "settings-section t-right").Label(null, new { @class = "section-label attr-item", @for = "IsMailSigningEnabled" }).Checkbox("Aktivera").Validate().Build()
-                                         @Html.LabelFor(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, new { @class = "section-label attr-item" })
-                                        @Html.FormGroup(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "settings-section t-right").Checkbox("Aktivera").Validate().Build()
+                                <div class="settings-section t-right">
+                                    @Html.LabelFor(i => item.SecurityMailerConfig.IsMailSigningEnabled, new { @class = "section-label attr-item", @title = "IsMailSigningEnabled" })
+                                    @Html.FormGroup(i => item.SecurityMailerConfig.IsMailSigningEnabled, "text").Checkbox("Aktivera").Validate().Build()
+                                </div>
+                                <div class="settings-section t-right">
+                                    @Html.LabelFor(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, new { @class = "section-label attr-item", @title = "IsMobileDeviceRegristrationMailEnabled" })
+                                    @Html.FormGroup(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
+                                </div>
+                                    <div class="settings-section t-right">
+                                        @Html.LabelFor(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, new { @class = "section-label attr-item", @title = "IsRegristrationMailEnabled" })
+                                        @Html.FormGroup(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
+                                    </div>
                                         <div class="settings-section t-right">
-                                            @Html.LabelFor(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, new { @class = "section-label attr-item" })
-                                            @Html.FormGroup(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
-                                        </div>
-                                        <div class="settings-section t-right">
-                                            @Html.LabelFor(i => item.SecurityMailerConfig.IsResetPasswordMailEnabled, new { @class = "section-label attr-item" })
+                                            @Html.LabelFor(i => item.SecurityMailerConfig.IsResetPasswordMailEnabled, new { @class = "section-label attr-item", @title = "IsResetPasswordMailEnabled" })
                                             @Html.FormGroup(i => item.SecurityMailerConfig.IsResetPasswordMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
                                         </div>
                                         <div class="settings-section t-right">
-                                            @Html.LabelFor(i => item.SecurityMailerConfig.IsSecurityEventMailEnabled, new { @class = "section-label attr-item" })
+                                            @Html.LabelFor(i => item.SecurityMailerConfig.IsSecurityEventMailEnabled, new { @class = "section-label attr-item", @title = "IsSecurityEventMailEnabled" })
                                             @Html.FormGroup(i => item.SecurityMailerConfig.IsSecurityEventMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
                                         </div>
                             }
-                            else if (item.MachineName == item.machineNames[6])
+
+                            if (item.MachineName == item.MachineNames[6])
                             {
                                 if (item.Name == "logout_timeout")
                                 {
@@ -90,21 +112,31 @@
 
                                 if (item.Name == "security_level")
                                 {
-                                    <div class="value-section">
-                                        @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(null, new { @class = "value-input" }).Validate().Build()
+                                    <div class="value-section t-center">
+                                        @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).Validate().Build()
+                                        @Html.DropDownListFor(i => item.StringValue, new SelectList(new[] { item.StringValue == "High" || item.StringValue == "Medium" ? "Low" : "Medium", item.StringValue == "Low" || item.StringValue == "Medium" ? "High" : "Medium" }), item.StringValue)
                                     </div>
                                 }
                             }
-                            else if (item.MachineName == item.machineNames[5])
+
+                            if (item.MachineName == item.MachineNames[7])
+                            {
+                                <div class="value-section t-center">
+                                    @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).Validate().Build()
+                                    @Html.DropDownListFor(i => item.StringValue, new SelectList(new[] { item.StringValue == "form" ? "siths" : "form" }), item.StringValue)
+                                </div>
+                            }
+
+                            if (item.MachineName == item.MachineNames[5])
                             {
                                 <div class="value-section">
                                     @Html.LabelFor(i => item.LdapConfig.FieldFirstName, new { @class = "value-label attr-item" })
                                     @Html.FormGroup(i => item.LdapConfig.FieldFirstName, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
                                 </div>
-                                    <div class="value-section">
-                                        @Html.LabelFor(i => item.LdapConfig.FieldLastName, new { @class = "value-label attr-item" })
-                                        @Html.FormGroup(i => item.LdapConfig.FieldLastName, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
-                                    </div>
+                                <div class="value-section">
+                                    @Html.LabelFor(i => item.LdapConfig.FieldLastName, new { @class = "value-label attr-item" })
+                                    @Html.FormGroup(i => item.LdapConfig.FieldLastName, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
+                                </div>
                                     <div class="value-section">
                                         @Html.LabelFor(i => item.LdapConfig.FieldHsaId, new { @class = "value-label attr-item" })
                                         @Html.FormGroup(i => item.LdapConfig.FieldHsaId, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
@@ -138,30 +170,20 @@
                                         @Html.FormGroup(i => item.LdapConfig.LdapString, "text").TextBox(null, new { @class = "p-left" }).Validate().Build()
                                     </div>
                             }
-                            else if (item.MachineName == item.machineNames[6])
+                        }
+                            @if (item.StringValue != null && item.IsJson == false)
                             {
                                 <div class="value-section">
                                     @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(item.StringValue, new { @class = "value-input" }).Validate().Build()
                                 </div>
                             }
-                            else
-                            {
-                                <div class="value-section">
-                                    @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(item.StringValue, new { @class = "value-input" }).Validate().Build()
-                                </div>
-                            }
-                        }
-                        else if(item.StringValue != null)
-                        {
-
-                        }
-                    </div>
-                </li>
-            }
-        </ul>
-      }
-      else
-      {
+                        
+                    </li>
+                }
+            </ul>
+                    }
+                    else
+                    {
             <div class="note">
                 <h2>Inga inställningar hittades.</h2>
             </div>

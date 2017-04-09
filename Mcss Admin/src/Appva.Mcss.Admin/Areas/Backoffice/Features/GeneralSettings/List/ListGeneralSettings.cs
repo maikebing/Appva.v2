@@ -68,25 +68,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public string CategoryColorCode
-        {
-            get;
-            set;
-        }
-
-        public int? IntValue
-        {
-            get;
-            set;
-        }
-
-        public string StringValue
-        {
-            get;
-            set;
-        }
-
-        public bool? BoolValue
+        public string CategoryColor
         {
             get;
             set;
@@ -98,7 +80,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public IList<double> ListValues
+        public bool HasOptions
         {
             get;
             set;
@@ -110,39 +92,28 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public string[] MachineNames { get; set; }
-
-        public string[] IgnoredSettings { get; set; }
-
-        public AuditLoggingConfiguration AuditLoggingConfig { get; set; }
-
-        public SecurityTokenConfiguration SecurityTokenConfig { get; set; }
-
-        public SecurityMailerConfiguration SecurityMailerConfig { get; set; }
-
-        public LdapConfiguration LdapConfig { get; set; }
-
-        public static string ToCategoryString(string s, int max)
+        public AuditLoggingConfiguration AuditLoggingConfig
         {
-            var array = s.Split('.');
-            string category = "";
+            get;
+            set;
+        }
 
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array[i].ToLower() != "mcss")
-                {
-                    category += array[i] + (i > 0 && i < array.Length - 1 ? " / " : "");
-                }
-            }
+        public SecurityTokenConfiguration SecurityTokenConfig
+        {
+            get;
+            set;
+        }
 
-            if (category.Length > max)
-            {
-                category = category.Substring(category.Length - max).Trim();
-                int index = category.IndexOf(' ');
-                category = category.Contains("/") && category[0] != '/' ? category.Remove(0, index) : category;
-            }
+        public SecurityMailerConfiguration SecurityMailerConfig
+        {
+            get;
+            set;
+        }
 
-            return category;
+        public LdapConfiguration LdapConfig
+        {
+            get;
+            set;
         }
     }
 }

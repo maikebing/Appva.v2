@@ -10,7 +10,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     using System;
     using System.Collections.Generic;
-using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
@@ -46,6 +46,13 @@ using Appva.Mcss.Admin.Domain.Entities;
         /// <param name="ids">The taxon ID:s to fetch</param>
         /// <returns>A collection of <see cref="Taxon"/></returns>
         IList<Taxon> Pick(params Guid[] ids);
+
+        /// <summary>
+        /// Returns a single <see cref="Taxon"/> by id.
+        /// </summary>
+        /// <param name="ids">The taxon ID:s to fetch</param>
+        /// <returns></returns>
+        Taxon Get(Guid id);
 
         /// <summary>
         /// Loads an taxonomy by its id
@@ -140,6 +147,14 @@ using Appva.Mcss.Admin.Domain.Entities;
                 .IsIn(ids)
                 .OrderBy(x => x.Weight).Asc
                 .List();
+        }
+
+        /// <inheritdoc />
+        public Taxon Get(Guid id)
+        {
+            return this.persistenceContext.QueryOver<Taxon>()
+                .Where(x => x.Id == id)
+                .SingleOrDefault();
         }
 
         /// <inheritdoc />

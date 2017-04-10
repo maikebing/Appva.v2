@@ -14,8 +14,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation.Update
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
+    using Appva.Mcss.Admin.Domain.Repositories;
 
     #endregion
 
@@ -31,6 +33,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation.Update
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
+        /// <summary>
+        /// The <see cref="ITaxonRepository"/>
+        /// </summary>
+        private readonly ITaxonRepository taxonRepository;
+
         #endregion
 
         #region Constructor.
@@ -39,9 +46,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation.Update
         /// Initializes a new instance of the <see cref="UpdateProfilePublisher"/> class.
         /// </summary>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation</param>
-        public UpdateProfilePublisher(ITaxonomyService taxonomyService)
+        /// <param name="taxonRepository">The <see cref="ITaxonRepository"/> implementation</param>
+        public UpdateProfilePublisher(ITaxonomyService taxonomyService, ITaxonRepository taxonRepository)
         {
             this.taxonomyService = taxonomyService;
+            this.taxonRepository = taxonRepository;
         }
 
         #endregion
@@ -51,15 +60,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation.Update
         /// <inheritdoc />
         public override bool Handle(UpdateProfileModel message)
         {
-            var profile = this.taxonomyService.FindNoCache(message.Id, TaxonomicSchema.RiskAssessment);
+            var taxon = TaxonItem.FromTaxon(this.taxonRepository.Get(message.Id));
+            taxon.Name = message.Name;
+            taxon.Description = message.Description;
+            taxon.IsActive = message.IsActive;
 
-            if (profile == null)
+            if (taxon == null)
             {
                 return false;
             }
 
-            profile.Update(message.Name, message.Description, message.Active);
-            this.taxonomyService.Update(profile, TaxonomicSchema.RiskAssessment);
+            this.taxonomyService.Update(taxon, TaxonomicSchema.RiskAssessment);
 
             return true;
         }

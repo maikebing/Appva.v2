@@ -6,6 +6,7 @@
 // </author>
 namespace Appva.Mcss.Admin.Application.Models
 {
+    using Appva.Mcss.Admin.Domain.Entities;
     #region Imports.
 
     using System;
@@ -31,6 +32,7 @@ namespace Appva.Mcss.Admin.Application.Models
         string Name
         {
             get;
+            set;
         }
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace Appva.Mcss.Admin.Application.Models
         string Description
         {
             get;
+            set;
         }
 
         /// <summary>
@@ -110,9 +113,14 @@ namespace Appva.Mcss.Admin.Application.Models
         /// Updates the taxon
         /// </summary>
         /// <param name="Name"></param>
-        /// <param name="description"></param>
+        /// <param name="Description"></param>
         void Update(string name, string description);
-        void Update(string name, string description, bool isActive);
+
+        /// <summary>
+        /// Updates the taxon
+        /// </summary>
+        /// <param name="Taxon"></param>
+        void Update(ITaxon taxon);
     }
 
     /// <summary>
@@ -162,14 +170,14 @@ namespace Appva.Mcss.Admin.Application.Models
         public string Name
         {
             get;
-            private set;
+            set;
         }
 
         /// <inheritdoc />
         public string Description
         {
             get;
-            private set;
+            set;
         }
 
         /// <inheritdoc />
@@ -233,17 +241,31 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <inheritdoc />
+        public static ITaxon FromTaxon(Taxon taxon)
+        {
+            return new TaxonItem(
+                taxon.Id,
+                taxon.Name,
+                taxon.Description,
+                taxon.Path,
+                taxon.Type,
+                taxon.Weight
+                );
+        }
+
+        /// <inheritdoc />
         public void Update(string name, string description)
         {
             this.Name        = name;
             this.Description = description;
         }
 
-        public void Update(string name, string description, bool isActive)
+        /// <inheritdoc />
+        public void Update(ITaxon taxon)
         {
-            this.Name = name;
-            this.Description = description;
-            this.IsActive = isActive;
+            this.Name = taxon.Name;
+            this.Description = taxon.Description;
+            this.IsActive = taxon.IsActive;
         }
 
         #endregion

@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// Sets the profile to active or inactive
         /// </summary>
-        public bool Active
+        public bool IsActive
         {
             get;
             set;

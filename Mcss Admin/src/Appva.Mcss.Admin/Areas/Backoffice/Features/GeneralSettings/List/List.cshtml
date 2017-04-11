@@ -175,7 +175,7 @@ string labelId = id + "label";
 {
 string labelId = id + "label";
     <div class="value-section">
-        <label class="value-label attr-item border-r" id="@labelId" for="@id">@labelName</label>
+        <label class="value-label attr-item border-r" id="@labelId" for="@id" title="@labelName">@labelName</label>
         <input type="@(isNumber ? "number" : "text")" id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
     </div>
 }
@@ -183,7 +183,7 @@ string labelId = id + "label";
 {
 string pickerId = id + "picker", labelId = id + "label", hex = @RgbToHex(color);
     <div class="value-section" style="@(formGroup ? "padding-bottom:0" : "padding-bottom:15px")">
-        <label id="@(labelId)" class="value-label attr-item" for="@id">@labelName</label>
+        <label id="@(labelId)" class="value-label attr-item" for="@id" title="@labelName">@labelName</label>
         <input class="p-left" id="@id" name="@id" maxlength="7" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px")" onchange="colorPicker('@pickerId', this.id)" onkeypress="setButtonState(@("button" + index))" type="text" value="@hex" />
         <input id="@pickerId" style="@(formGroup ? "bottom:7px" : "bottom:23px")" onchange="colorPicker('@id', this.id);setButtonState(@("button" + index));" type="color" value="@hex" />
     </div>

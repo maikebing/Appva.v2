@@ -80,19 +80,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public bool HasOptions
-        {
-            get;
-            set;
-        }
-
         public PdfLookAndFeel PdfLookAndFeel
-        {
-            get;
-            set;
-        }
-
-        public AuditLoggingConfiguration AuditLoggingConfig
         {
             get;
             set;
@@ -105,12 +93,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         public SecurityMailerConfiguration SecurityMailerConfig
-        {
-            get;
-            set;
-        }
-
-        public LdapConfiguration LdapConfig
         {
             get;
             set;

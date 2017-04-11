@@ -12,11 +12,8 @@
         function colorPicker(id1, id2) {
             document.getElementById(id1).value = document.getElementById(id2).value;
         }
-        function setBackground(id1, id2, bgColor, color, inputBgColor) {
-            var el = document.getElementById(id1);
-            el.style.backgroundColor = bgColor;
-            el.style.color = color;
-            document.getElementById(id2).style.backgroundColor = inputBgColor;
+        function setButtonState(id) {
+            $(id).prop('disabled', false);
         }
     </script>
     <div id="content-primary">
@@ -38,36 +35,36 @@
                         @if (item.Type == typeof(int))
                         {
                             int value;
-                            @Textbox("Värde", "value" + item.Index, (int.TryParse(item.Value, out value) ? value : 0), false, true)
+                            @Textbox("Värde", item.Index, "value" + item.Index, (int.TryParse(item.Value, out value) ? value : 0), false, true)
                         }
                         else if (item.Type == typeof(Boolean))
                         { 
-                            @Checkbox("check" + item.Index, Convert.ToBoolean(item.Value)) 
+                            @Checkbox("check" + item.Index, item.Index, Convert.ToBoolean(item.Value)) 
                         }
                         else if (item.PdfLookAndFeel != null && item.IsJson)
                         {
-                            @Checkbox("pdf-custFooter", item.PdfLookAndFeel.IsCustomFooterTextEnabled, "Custom footer text", false, true)
-                            @Checkbox("pdf-custLogotype", item.PdfLookAndFeel.IsCustomLogotypeEnabled, "Custom logotype", false)
-                            @ColorInput("Background color", "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
-                            @ColorInput("Font color", "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
-                            @ColorInput("Table border color", "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
-                            @ColorInput("Table header color", "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
+                            @Checkbox("pdf-custFooter", item.Index, item.PdfLookAndFeel.IsCustomFooterTextEnabled, "Custom footer text", false, true)
+                            @Checkbox("pdf-custLogotype", item.Index, item.PdfLookAndFeel.IsCustomLogotypeEnabled, "Custom logotype", false)
+                            @ColorInput("Background color", item.Index, "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
+                            @ColorInput("Font color", item.Index, "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
+                            @ColorInput("Table border color", item.Index, "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
+                            @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
                         }
                         else if (item.SecurityTokenConfig != null && item.IsJson)
                         {
-                            @Textbox("Audience", "sec-tokenAudience", item.SecurityTokenConfig.Audience)
-                            @Textbox("Issuer", "sec-tokenIssuer", item.SecurityTokenConfig.Issuer)
-                            @Textbox("Reset lifetime", "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime)
-                            @Textbox("Registration lifetime", "sec-tokenRegLifetime", item.SecurityTokenConfig.RegistrationTokenLifetime)
-                            @Textbox("Signing key", "sec-tokenKey", item.SecurityTokenConfig.SigningKey, false)
+                            @Textbox("Audience", item.Index, "sec-tokenAudience", item.SecurityTokenConfig.Audience)
+                            @Textbox("Issuer", item.Index, "sec-tokenIssuer", item.SecurityTokenConfig.Issuer)
+                            @Textbox("Reset lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime)
+                            @Textbox("Registration lifetime", item.Index, "sec-tokenRegLifetime", item.SecurityTokenConfig.RegistrationTokenLifetime)
+                            @Textbox("Signing key", item.Index, "sec-tokenKey", item.SecurityTokenConfig.SigningKey, false)
                         }
                         else if (item.SecurityMailerConfig != null && item.IsJson)
                         {
-                            @Checkbox("secmailconf-signing", item.SecurityMailerConfig.IsMailSigningEnabled, "IsMailSigningEnabled", false, true)
-                            @Checkbox("secmailconf-deviceRegMail", item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "IsMobileDeviceRegistrationMailEnabled", false, true)
-                            @Checkbox("secmailconf-regMail", item.SecurityMailerConfig.IsRegistrationMailEnabled, "IsRegistrationMailEnabled", false, true)
-                            @Checkbox("secmailconf-resetPassMail", item.SecurityMailerConfig.IsResetPasswordMailEnabled, "IsResetPasswordMailEnabled", false, true)
-                            @Checkbox("secmailconf-eventMail", item.SecurityMailerConfig.IsSecurityEventMailEnabled, "IsSecurityEventMailEnabled", false)
+                            @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "IsMailSigningEnabled", false, true)
+                            @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "IsMobileDeviceRegistrationMailEnabled", false, true)
+                            @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "IsRegistrationMailEnabled", false, true)
+                            @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "IsResetPasswordMailEnabled", false, true)
+                            @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "IsSecurityEventMailEnabled", false)
                         }
                         else
                         {
@@ -76,22 +73,26 @@
                                 int value;
                                 if (int.TryParse(item.Value, out value))
                                 {
-                                    @Textbox("Värde", "value" + item.Index, value, false, true)
+                                    @Textbox("Värde", item.Index, "value" + item.Index, value, false, true)
                                 }
                                 else
                                 {
-                                    @Select("Välj", "select" + item.Index, item.Value, new string[] { "High", "Medium", "Low" })
+                                    @Select("Välj", item.Index, "select" + item.Index, item.Value, new string[] { "High", "Medium", "Low" })
                                 }
                             }
                             else if (item.MachineName == Model.SelectOptions[1])
                             {
-                                @Select("Välj", "select" + item.Index, item.Value, new string[] { "Form", "Siths" })
+                                @Select("Välj", item.Index, "select" + item.Index, item.Value, new string[] { "Form", "Siths" })
                             }
                             else
                             {
-                                @Textbox("Sträng", "strValue" + item.Index, item.Value, false)
+                                @Textbox("Sträng", item.Index, "strValue" + item.Index, item.Value, false)
                             }
                         }
+
+                        <div class="bottom">
+                            <button id="@("button" + item.Index)" disabled>Uppdatera</button>
+                        </div>
                     </div>
                 </li>
             }
@@ -107,7 +108,7 @@
 </div>
 
 @* Templates *@
-@helper Checkbox(string id, bool isChecked, string description = null, bool isCentered = true, bool formGroup = false)
+@helper Checkbox(string id, int index, bool isChecked, string description = null, bool isCentered = true, bool formGroup = false)
 {
     <div class="settings-section" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")">
         @if (description != null)
@@ -116,18 +117,18 @@
         }
         <div class="form-group @(isCentered ? "t-center" : "t-right")">
             <label class="checkbox-inline" for="@id">
-                <input type="checkbox" id="@id" name="@id" @(isChecked ? "checked" : "") />Aktivera
+                <input type="checkbox" id="@id" name="@id" onchange="setButtonState(@("button" + index))" @(isChecked ? "checked" : "") />Aktivera
             </label>
         </div>
     </div>
 }
-@helper Select(string labelName, string id, string value, string[] options)
+@helper Select(string labelName, int index, string id, string value, string[] options)
 {
     string labelId = id + "label";
     <div class="select-section" style="border-width:1px;margin-bottom:15px">
         <label class="section-label attr-item" id="@labelId" for="@id">@labelName</label>
         <div class="select-wrapper">
-            <select id="@id" name="@id" onfocus="@SetRowBackground(labelId, id, true)" onblur="@SetRowBackground(labelId, id, false)">
+            <select id="@id" name="@id" onchange="setButtonState(@("button" + index))">
             @foreach(var option in options)
             {
                 <option value="@option"@(option.ToLower() == value.ToLower() ? " selected" : "")>@option</option>
@@ -136,21 +137,21 @@
         </div>
     </div>
 }
-@helper Textbox(string labelName, string id, dynamic value, bool formGroup = true, bool isNumber = false)
+@helper Textbox(string labelName, int index, string id, dynamic value, bool formGroup = true, bool isNumber = false)
 {
     string labelId = id + "label";
     <div class="value-section">
         <label class="value-label attr-item border-r" id="@labelId" for="@id">@labelName</label>
-        <input type="@(isNumber ? "number" : "text")" id="@id" name="@id" maxlength="20" value="@value" autocomplete="off" onfocus="@SetRowBackground(labelId, id, true)" onblur="@SetRowBackground(labelId, id, false)" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
+        <input type="@(isNumber ? "number" : "text")" id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
     </div>
 }
-@helper ColorInput(string labelName, string id, dynamic color, bool formGroup = true)
+@helper ColorInput(string labelName, int index, string id, dynamic color, bool formGroup = true)
 {
     string pickerId = id + "picker", labelId = id + "label", hex = @RgbToHex(color);
     <div class="value-section" style="@(formGroup ? "padding-bottom:0" : "padding-bottom:15px")">
         <label id="@(labelId)" class="value-label attr-item" for="@id">@labelName</label>
-        <input class="p-left" id="@id" name="@id" maxlength="7" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px")" onfocus="@SetRowBackground(labelId, id, true)" onblur="@SetRowBackground(labelId, id, false)" onchange="colorPicker('@pickerId', this.id)" type="text" value="@hex" />
-        <input id="@pickerId" style="@(formGroup ? "bottom:7px" : "bottom:23px")" onfocus="@SetRowBackground(labelId, id, true)" onblur="@SetRowBackground(labelId, id, false)" onchange="colorPicker('@id', this.id)" type="color" value="@hex" />
+        <input class="p-left" id="@id" name="@id" maxlength="7" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px")" onchange="colorPicker('@pickerId', this.id)" onkeypress="setButtonState(@("button" + index))" type="text" value="@hex" />
+        <input id="@pickerId" style="@(formGroup ? "bottom:7px" : "bottom:23px")" onchange="colorPicker('@id', this.id);setButtonState(@("button" + index));" type="color" value="@hex" />
     </div>
 }
 @functions
@@ -158,10 +159,5 @@
     public string RgbToHex(dynamic color)
     {
         return "#" + (color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2")).ToLower();
-    }
-
-    public string SetRowBackground(string labelId, string inputId, bool hasFocus)
-    {
-        return "setBackground('" + labelId + "', '" + inputId + "', " + (hasFocus ? "'#4d90fe', '#fff', '#f5f5f5'" : "'transparent', '#222', 'transparent'") + ")";
     }
 }

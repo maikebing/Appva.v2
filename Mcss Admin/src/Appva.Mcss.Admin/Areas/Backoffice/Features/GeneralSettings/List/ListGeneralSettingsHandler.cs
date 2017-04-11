@@ -125,14 +125,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             {
                 if (array[i].ToLower() != "mcss")
                 {
-                    category += array[i] + (i > 0 && i < array.Length - 1 ? " / " : "");
+                    category += array[i] + (i > 0 && i < array.Length - 1 ? "/" : "");
                 }
             }
 
             if (category.Length > max)
             {
                 category = category.Substring(category.Length - max).Trim();
-                int index = category.IndexOf(' ');
+                int index = category.IndexOf('/');
                 category = category.Contains("/") && category[0] != '/' ? category.Remove(0, index) : category;
             }
 

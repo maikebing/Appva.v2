@@ -395,7 +395,6 @@
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsModel.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsPublisher.cs" />
-    <Compile Include="Areas\Backoffice\Features\GeneralSettings\Utils\GeneralSettingsExtensions.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitPublisher.cs" />
@@ -1318,7 +1317,6 @@
     <Content Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\GeneralSettings\Edit\Edit.cshtml" />
     <Content Include="Areas\Backoffice\Features\GeneralSettings\List\List.cshtml" />
-    <Content Include="Areas\Backoffice\Features\GeneralSettings\Partials\_FormTemplates.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

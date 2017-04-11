@@ -12,17 +12,8 @@
         function colorPicker(id1, id2) {
             document.getElementById(id1).value = document.getElementById(id2).value;
         }
-        function setBackground(id1, id2, bgColor, color, inputBgColor) {
-            var el = document.getElementById(id1);
-            el.style.backgroundColor = bgColor;
-            el.style.color = color;
-            document.getElementById(id2).style.backgroundColor = inputBgColor;
-        }
-        function rgbToHex(id1, id2, r, g, b) {
-            var bin = r << 16 | g << 8 | b;
-            var hex = "#" + (function (h) { return new Array(7 - h.length).join("0") + h })(bin.toString(16))
-            document.getElementById(id1).value = hex;
-            document.getElementById(id2).value = hex;
+        function setButtonState(id) {
+            $(id).prop('disabled', false);
         }
     </script>
     <script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
@@ -58,7 +49,7 @@
             {
                 <li>
                     <div class="header">
-                        <h3 title="@item.MachineName"><span style="background:@item.CategoryColorCode"></span>@item.Category</h3>
+                        <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.Category</h3>
                         <h2>@item.Name</h2>
                         @if (string.IsNullOrEmpty(item.Description) == false)
                         {
@@ -66,103 +57,70 @@
                         }
                     </div>
                     <div class="content">
-                        @if (item.IntValue.HasValue) { @NumericTextbox("Värde", "value" + item.Index, item.IntValue.Value) }
-                        @if (item.BoolValue.HasValue) { @Checkbox("check" + item.Index, (bool)item.BoolValue) }
-                    </div>
-                    @if (item.IsJson == true)
-                    {
-                        if (item.PdfLookAndFeel != null)
+                        @if (item.Type == typeof(int))
                         {
-                            @Checkbox("pdf-cust-footer", item.PdfLookAndFeel.IsCustomFooterTextEnabled, "Custom footer text", false)
-                            @Checkbox("pdf-cust-logotype", item.PdfLookAndFeel.IsCustomLogotypeEnabled, "Custom logotype", false)
-                            @ColorInput("Background color", "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
-                            @ColorInput("Font color", "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
-                            @ColorInput("Table border color", "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
-                            @ColorInput("Table header color", "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
+                            int value;
+                            @Textbox("Värde", item.Index, "value" + item.Index, (int.TryParse(item.Value, out value) ? value : 0), false, true)
                         }
-
-                        if (item.SecurityTokenConfig != null)
-                        {
-                            <div class="value-section">
-                                @Html.LabelFor(i => item.SecurityTokenConfig.Audience):<h5>@item.SecurityTokenConfig.Audience</h5>
-                                @Html.LabelFor(i => item.SecurityTokenConfig.Issuer):<h5>@item.SecurityTokenConfig.Issuer</h5>
-                                @Html.LabelFor(i => item.SecurityTokenConfig.ResetTokenLifetime):<h5>@item.SecurityTokenConfig.ResetTokenLifetime</h5>
-                                @Html.LabelFor(i => item.SecurityTokenConfig.RegistrationTokenLifetime):<h5>@item.SecurityTokenConfig.RegistrationTokenLifetime</h5>
-                                @Html.LabelFor(i => item.SecurityTokenConfig.SigningKey):<h5>@item.SecurityTokenConfig.SigningKey</h5>
-                            </div>
+                        else if (item.Type == typeof(Boolean))
+                        { 
+                            @Checkbox("check" + item.Index, item.Index, Convert.ToBoolean(item.Value)) 
                         }
-
-                        if (item.SecurityMailerConfig != null)
+                        else if (item.PdfLookAndFeel != null && item.IsJson)
                         {
-                            <div class="settings-section t-right">
-                                @Html.LabelFor(i => item.SecurityMailerConfig.IsMailSigningEnabled, new { @class = "section-label attr-item", @title = "IsMailSigningEnabled" })
-                                @Html.FormGroup(i => item.SecurityMailerConfig.IsMailSigningEnabled, "text").Checkbox("Aktivera").Validate().Build()
-                            </div>
-                            <div class="settings-section t-right">
-                                @Html.LabelFor(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, new { @class = "section-label attr-item", @title = "IsMobileDeviceRegristrationMailEnabled" })
-                                @Html.FormGroup(i => item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
-                            </div>
-                                <div class="settings-section t-right">
-                                    @Html.LabelFor(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, new { @class = "section-label attr-item", @title = "IsRegristrationMailEnabled" })
-                                    @Html.FormGroup(i => item.SecurityMailerConfig.IsRegistrationMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
-                                </div>
-                                    <div class="settings-section t-right">
-                                        @Html.LabelFor(i => item.SecurityMailerConfig.IsResetPasswordMailEnabled, new { @class = "section-label attr-item", @title = "IsResetPasswordMailEnabled" })
-                                        @Html.FormGroup(i => item.SecurityMailerConfig.IsResetPasswordMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
-                                    </div>
-                                    <div class="settings-section t-right">
-                                        @Html.LabelFor(i => item.SecurityMailerConfig.IsSecurityEventMailEnabled, new { @class = "section-label attr-item", @title = "IsSecurityEventMailEnabled" })
-                                        @Html.FormGroup(i => item.SecurityMailerConfig.IsSecurityEventMailEnabled, "text").Checkbox("Aktivera").Validate().Build()
-                            }
-
-                            if (item.MachineName == item.MachineNames[6])
+                            @Checkbox("pdf-custFooter", item.Index, item.PdfLookAndFeel.IsCustomFooterTextEnabled, "Custom footer text", false, true)
+                            @Checkbox("pdf-custLogotype", item.Index, item.PdfLookAndFeel.IsCustomLogotypeEnabled, "Custom logotype", false)
+                            @ColorInput("Background color", item.Index, "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
+                            @ColorInput("Font color", item.Index, "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
+                            @ColorInput("Table border color", item.Index, "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
+                            @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
+                        }
+                        else if (item.SecurityTokenConfig != null && item.IsJson)
+                        {
+                            @Textbox("Audience", item.Index, "sec-tokenAudience", item.SecurityTokenConfig.Audience)
+                            @Textbox("Issuer", item.Index, "sec-tokenIssuer", item.SecurityTokenConfig.Issuer)
+                            @Textbox("Reset lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime)
+                            @Textbox("Registration lifetime", item.Index, "sec-tokenRegLifetime", item.SecurityTokenConfig.RegistrationTokenLifetime)
+                            @Textbox("Signing key", item.Index, "sec-tokenKey", item.SecurityTokenConfig.SigningKey, false)
+                        }
+                        else if (item.SecurityMailerConfig != null && item.IsJson)
+                        {
+                            @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "IsMailSigningEnabled", false, true)
+                            @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "IsMobileDeviceRegistrationMailEnabled", false, true)
+                            @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "IsRegistrationMailEnabled", false, true)
+                            @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "IsResetPasswordMailEnabled", false, true)
+                            @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "IsSecurityEventMailEnabled", false)
+                        }
+                        else
+                        {
+                            if (item.MachineName == Model.SelectOptions[0])
                             {
-                                if (item.Name == "logout_timeout")
+                                int value;
+                                if (int.TryParse(item.Value, out value))
                                 {
-                                    using (Html.BeginForm(null, null, FormMethod.Post, new { id = "boolSetting" }))
-
-                                    {
-                                        <div id="result"></div>
-                                    <div class="value-section">
-                                        <input type="submit" value="OK" />
-                                        @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(null, new { @type = "number", @class = "value-input" }).Validate().Build()
-                                    </div>
-                        }
-
-                        if (item.MachineName == item.MachineNames[6])
-                        {
-                            if (item.Name == "logout_timeout")
-                            {
-                                <div class="value-section">
-                                    @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(null, new { @type = "number", @class = "value-input" }).Validate().Build()
-                                </div>
+                                    @Textbox("Värde", item.Index, "value" + item.Index, value, false, true)
+                                }
+                                else
+                                {
+                                    @Select("Välj", item.Index, "select" + item.Index, item.Value, new string[] { "High", "Medium", "Low" })
+                                }
                             }
-
-                            if (item.Name == "security_level")
+                            else if (item.MachineName == Model.SelectOptions[1])
                             {
-                                <div class="value-section t-center">
-                                    @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).Validate().Build()
-                                    @Html.DropDownListFor(i => item.StringValue, new SelectList(new[] { item.StringValue == "High" || item.StringValue == "Medium" ? "Low" : "Medium", item.StringValue == "Low" || item.StringValue == "Medium" ? "High" : "Medium" }), item.StringValue)
-                                </div>
+                                @Select("Välj", item.Index, "select" + item.Index, item.Value, new string[] { "Form", "Siths" })
+                            }
+                            else
+                            {
+                                @Textbox("Sträng", item.Index, "strValue" + item.Index, item.Value, false)
                             }
                         }
 
-                        if (item.MachineName == item.MachineNames[7])
-                        {
-                            <div class="value-section t-center">
-                                @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).Validate().Build()
-                                @Html.DropDownListFor(i => item.StringValue, new SelectList(new[] { item.StringValue == "form" ? "siths" : "form" }), item.StringValue)
-                            </div>
-                        }
-                    }
-                    @if (item.StringValue != null && item.IsJson == false)
-                    {
-                        <div class="value-section">
-                            @Html.FormGroup(i => item.StringValue, "text").Label("Värde", new { @class = "value-label" }).TextBox(item.StringValue, new { @class = "value-input" }).Validate().Build()
+                        <div class="bottom">
+                            <button id="@("button" + item.Index)" disabled>Uppdatera</button>
                         </div>
-                    }
-                    </li>
-                }
+                    </div>
+                </li>
+            }
         </ul>
     }
     else
@@ -175,36 +133,50 @@
 </div>
 
 @* Templates *@
-@helper Checkbox(string id, bool isChecked, string description = null, bool isCentered = true)
+@helper Checkbox(string id, int index, bool isChecked, string description = null, bool isCentered = true, bool formGroup = false)
 {
-    <div class="settings-section">
+    <div class="settings-section" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")">
         @if (description != null)
         {
-            <label class="section-label attr-item" for="@id" title="@description">@description.Trim()</label>
+            <label class="section-label" for="@id" title="@description">@description</label>
         }
         <div class="form-group @(isCentered ? "t-center" : "t-right")">
             <label class="checkbox-inline" for="@id">
-                <input type="checkbox" id="@id" name="@id" @(isChecked ? "checked" : "") />Enable
+                <input type="checkbox" id="@id" name="@id" onchange="setButtonState(@("button" + index))" @(isChecked ? "checked" : "") />Aktivera
             </label>
         </div>
     </div>
 }
-@helper NumericTextbox(string labelName, string id, int value)
+@helper Select(string labelName, int index, string id, string value, string[] options)
 {
-    <div class="value-section">
-        <label class="value-label" for="@id">@labelName</label>
-        <input type="number" id="@id" name="@id" value="@value" autocomplete="off" />
+    string labelId = id + "label";
+    <div class="select-section" style="border-width:1px;margin-bottom:15px">
+        <label class="section-label attr-item" id="@labelId" for="@id">@labelName</label>
+        <div class="select-wrapper">
+            <select id="@id" name="@id" onchange="setButtonState(@("button" + index))">
+            @foreach(var option in options)
+            {
+                <option value="@option"@(option.ToLower() == value.ToLower() ? " selected" : "")>@option</option>
+            }
+            </select>
+        </div>
     </div>
 }
-@helper ColorInput(string labelName, string id, dynamic color, bool formGroup = true)
+@helper Textbox(string labelName, int index, string id, dynamic value, bool formGroup = true, bool isNumber = false)
+{
+    string labelId = id + "label";
+    <div class="value-section">
+        <label class="value-label attr-item border-r" id="@labelId" for="@id">@labelName</label>
+        <input type="@(isNumber ? "number" : "text")" id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
+    </div>
+}
+@helper ColorInput(string labelName, int index, string id, dynamic color, bool formGroup = true)
 {
     string pickerId = id + "picker", labelId = id + "label", hex = @RgbToHex(color);
-    string onFocus = "setBackground('" + labelId + "', '" + id + "', '#4d90fe', '#fff', '#e9f1ff')";
-    string onBlur = "setBackground('" + labelId + "', '" + id + "', 'transparent', '#222', 'transparent')";
     <div class="value-section" style="@(formGroup ? "padding-bottom:0" : "padding-bottom:15px")">
         <label id="@(labelId)" class="value-label attr-item" for="@id">@labelName</label>
-        <input class="p-left" id="@id" name="@id" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px")" onfocus="@onFocus" onblur="@onBlur" onchange="colorPicker('@pickerId', this.id)" type="text" value="@hex" />
-        <input id="@pickerId" style="@(formGroup ? "bottom:7px" : "bottom:23px")" onfocus="@onFocus" onblur="@onBlur" onchange="colorPicker('@id', this.id)" type="color" value="@hex" />
+        <input class="p-left" id="@id" name="@id" maxlength="7" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px")" onchange="colorPicker('@pickerId', this.id)" onkeypress="setButtonState(@("button" + index))" type="text" value="@hex" />
+        <input id="@pickerId" style="@(formGroup ? "bottom:7px" : "bottom:23px")" onchange="colorPicker('@id', this.id);setButtonState(@("button" + index));" type="color" value="@hex" />
     </div>
 }
 @functions

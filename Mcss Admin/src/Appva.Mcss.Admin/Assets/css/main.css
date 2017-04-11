@@ -1383,20 +1383,15 @@ td.rights {
     -webkit-column-break-inside: avoid;
     page-break-inside: avoid;
     width:100%;
-    min-height:220px;
+    min-height:170px;
     display:table;
-    background:url(../i/settings-medium.png) no-repeat center -320px;
     background-color:#fff;
     margin:0 0 20px 0;
     padding:0;
     color:#222;
-    box-shadow:0 2px 4px #b5bdc2;
-    transition:box-shadow .5s ease, background .5s ease;
+    box-shadow:0 0 6px #a5bac8;
+    transition:box-shadow .5s ease;
     overflow:auto;
-}
-#setlist li:hover {
-    background:url(../i/settings-medium.png) no-repeat center -200px;
-    background-color:#fff;
 }
 #setlist li a{
     text-decoration:none;
@@ -1407,7 +1402,8 @@ td.rights {
 }
 #setlist .content { display:table-row; }
 #setlist h3 {
-    font-size:10px;
+    font-family:monospace;
+    font-size:12px;
     font-weight:bold;
     text-transform:uppercase;
     letter-spacing:.05em;
@@ -1421,13 +1417,13 @@ td.rights {
 #setlist h3 span {
     float:left;
     display:inline-block;
-    width:12px;
-    height:12px;
-    margin:-2px 9px 0 0;
+    width:16px;
+    height:8px;
+    margin:1px 9px 0 0;
     border:2px dotted #fff;
 }
 #setlist h2 {
-    font-size:16px;
+    font-size:18px;
     font-weight:bold;
     line-height:1.6em;
     padding:15px;
@@ -3007,11 +3003,12 @@ form .time {width:4em;}
     margin:20px 0;
     padding-bottom:10px;
 }
-#pr-panel .settings-section, #setlist .settings-section {
+#pr-panel .settings-section, #setlist .settings-section, #setlist .select-section {
     padding:10px 15px;
     margin-bottom:20px;
     background:#fff;
-    border:1px solid #ddd;
+    border-style:solid;
+    border-color:#ddd;
 }
 #pr-panel .settings-section .textblock, #setlist .settings-section .textblock {
     background:#f9f9f9;
@@ -3022,12 +3019,15 @@ form .time {width:4em;}
 }
 #setlist .value-section {
     position:relative;
+    margin-left:15px;
+    margin-right:15px;
+}
+#setlist .settings-section, #setlist .select-section {
+    position:relative;
     margin:0 15px;
 }
-#setlist .settings-section {
-    position:relative;
-    background:rgba(255, 255, 255, 0.7);
-    margin:10px 15px 15px 15px;
+#setlist .select-section {
+    height:20px;
 }
 #setlist .value-label, #setlist .section-label {
     position:absolute;
@@ -3035,24 +3035,30 @@ form .time {width:4em;}
     padding:12px 15px 11px 15px;
     margin:1px 0 1px 1px;
     font-weight:bold;
-    border-right:1px solid #ddd;
+    background:#fff;
 }
 #setlist .section-label {
+    max-width:200px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
     bottom:-1px;
-    left:0;
+    left:-1px;
 }
 #setlist .t-center { text-align:center; }
 #setlist .t-right { text-align:right; }
 #setlist .p-left { padding-left:165px!important; }
+#setlist .border-r { border-right:1px solid #ddd; }
 #setlist .attr-item {
     width:120px;
+    border-right:1px solid #ddd;
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
 }
 #setlist input[type="number"], #setlist input[type="text"] {
     background:rgba(255, 255, 255, 0.7);
-    padding:14px 6px 11px 76px;
+    padding:13px 14px 12px 165px;
     font-size:13px;
     width:100%;
     border-style:solid;
@@ -3060,9 +3066,41 @@ form .time {width:4em;}
     box-sizing:border-box;
     outline:none;
 }
+#setlist input[type="number"]:focus, #setlist input[type="text"]:focus, #setlist select:focus {
+    background:#fafafa;
+}
 #setlist input[type="color"] {
     position:absolute;
     right:8px;
+}
+#setlist .select-wrapper {
+    position:absolute;
+    right:0;
+    left:151px;
+    bottom:0;
+}
+#setlist select {
+    width:100%;
+    padding:11px 14px;
+    outline:none;
+    border:none;
+}
+#setlist .bottom  { padding:0 15px 15px 15px; }
+#setlist button {
+    width:100%;
+    font-size:13px;
+    font-weight:bold;
+    color:#fff;
+    background:#66bb6a;
+    border:none;
+    padding:13px 15px;
+    box-sizing:border-box;
+    transition:background .3s ease;
+}
+#setlist button:hover { background:#4Caf50; }
+#setlist button:disabled, #setlist button[disabled] {
+    color:#ddd;
+    background:#f5f5f5;
 }
 .std-form .checkbox-grid .wrap {
 	width:492px;

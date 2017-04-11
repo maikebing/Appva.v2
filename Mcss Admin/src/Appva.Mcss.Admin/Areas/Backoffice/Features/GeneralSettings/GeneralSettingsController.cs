@@ -82,6 +82,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         [HttpPost]
         public ActionResult Update(FormCollection request)
         {
+            foreach (var item in request.Keys)
+            {
+                var test = item;
+            }
+
             return Json("Hello");
         }
 

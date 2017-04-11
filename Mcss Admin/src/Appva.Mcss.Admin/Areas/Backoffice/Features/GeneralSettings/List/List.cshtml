@@ -11,6 +11,14 @@
         function colorPicker(id1, id2) {
             document.getElementById(id1).value = document.getElementById(id2).value;
         }
+        function setCheckboxState(id1, id2) {
+            var checkbox = document.getElementById(id2);
+            if (document.getElementById(id1).checked) {
+                checkbox.value = true;
+            } else {
+                checkbox.value = false;
+            }
+        }
         function setButtonState(id) {
             $(id).prop('disabled', false);
         }
@@ -90,8 +98,6 @@
                                     else if (item.MachineName == Model.SelectOptions[0])
                                     {
                                         @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "High", "" }, { "Medium", "" }, { "Low", "" } })
-                                        <input type="submit" value="OK" />
-                                        <div id="result"></div>
                                     }
                                     else if (item.MachineName == Model.SelectOptions[1])
                                     {
@@ -133,8 +139,9 @@
         }
         <div class="form-group @(isCentered ? "t-center" : "t-right")">
             <label class="checkbox-inline" for="@id">
-                <input type="checkbox" id="@id" name="@id" onchange="setButtonState(@("button" + index))" @(isChecked ? "checked" : "") />Aktivera
+                <input type="checkbox" id="@id" name="@id" onchange="setButtonState(@("button" + index));setCheckboxState(this.id , '@("hidden" + index)')" @(isChecked ? "checked" : "") />Aktivera
             </label>
+            <input type="hidden" id="@("hidden" + index)" name="@id" value="@isChecked" />
         </div>
     </div>
 }

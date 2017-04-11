@@ -35,17 +35,17 @@
                 @foreach (var item in Model.List)
                 {
                     <li>
-                        <form id="@("form" + item.Index)" method="post">
-                            <div class="header">
-                                <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.SubCategory</h3>
-                                <h2>@item.Name</h2>
-                                @if (string.IsNullOrEmpty(item.Description) == false)
-                                {
-                                    <p>@item.Description</p>
-                                }
-                            </div>
+                        <div class="header">
+                            <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.SubCategory</h3>
+                            <h2>@item.Name</h2>
+                            @if (string.IsNullOrEmpty(item.Description) == false)
+                            {
+                                <p>@item.Description</p>
+                            }
+                        </div>
 
-                            <div class="content">
+                        <div class="content">
+                            <form id="@("form" + item.Index)" method="post">
                                 @if (item.Type == typeof(int))
                                 {
                                     int value;
@@ -109,8 +109,8 @@
                                 <div class="bottom">
                                     <button type="submit" id="@("button" + item.Index)" onmouseup="update(@("form" + item.Index))" disabled>Uppdatera</button>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </li>
                 }
             </ul>

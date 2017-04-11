@@ -62,6 +62,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        public string SubCategory
+        {
+            get;
+            set;
+        }
+
         public Type Type
         {
             get;

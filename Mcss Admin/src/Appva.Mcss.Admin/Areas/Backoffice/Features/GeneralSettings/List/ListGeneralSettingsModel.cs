@@ -28,7 +28,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         };
 
         private readonly string[] jsonSettings = new string[] {
-            "MCSS.Core.Inventory.Units",
             "Mcss.Core.Pdf",
             "Mcss.Core.Security.Jwt.Configuration.SecurityToken",
             "Mcss.Core.Security.Messaging.Email"
@@ -36,6 +35,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
         private readonly string[] ignoredSettings = new string[]
         {
+            "MCSS.Core.Inventory.Units",
             "Mcss.Core.Security.Analytics.Audit.Configuration",
             "Mcss.Integration.Ldap.LdapConfiguration",
             "MCSS.Device.HelpPage",

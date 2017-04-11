@@ -14,7 +14,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Infrastructure.Models;
-    using Ldap.Configuration;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
@@ -60,11 +59,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.Index = item.Index;
                 settingItems.Name = item.Set.Name;
                 settingItems.MachineName = item.Set.MachineName;
-                settingItems.Category = ToCategoryString(item.Set.Namespace, 35);
                 settingItems.Description = item.Set.Description;
                 settingItems.Value = item.Set.Value;
                 settingItems.Type = item.Set.Type;
                 settingItems.CategoryColor = model.Colors[colorIndex];
+                SetCategoryName(settingItems, item.Set.Namespace);
 
                 if (model.JsonSettings.Contains(item.Set.MachineName))
                 {
@@ -74,17 +73,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     {
                         if (item.Set.MachineName == model.JsonSettings[0])
                         {
-                            //settingItems.InventoryObject = JsonConvert.DeserializeObject<List<InventoryObject>>(setting.Value);
+                            settingItems.PdfLookAndFeel = JsonConvert.DeserializeObject<PdfLookAndFeel>(item.Set.Value);
                         }
                         else if (item.Set.MachineName == model.JsonSettings[1])
                         {
-                            settingItems.PdfLookAndFeel = JsonConvert.DeserializeObject<PdfLookAndFeel>(item.Set.Value);
-                        }
-                        else if (item.Set.MachineName == model.JsonSettings[2])
-                        {
                             settingItems.SecurityTokenConfig = JsonConvert.DeserializeObject<SecurityTokenConfiguration>(item.Set.Value);
                         }
-                        else if (item.Set.MachineName == model.JsonSettings[3])
+                        else if (item.Set.MachineName == model.JsonSettings[2])
                         {
                             settingItems.SecurityMailerConfig = JsonConvert.DeserializeObject<SecurityMailerConfiguration>(item.Set.Value);
                         }
@@ -95,12 +90,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     }
                 }
 
-                if (item.Index < settings.Count() - 1 && settings.ElementAt(item.Index + 1).MachineName != item.Set.MachineName)
+                if (item.Index < settings.Count() - 1 && settings.ElementAt(item.Index + 1).Namespace != item.Set.Namespace)
                 {
                     colorIndex++;
                 }
                 
-                if(colorIndex > model.JsonSettings.Length - 1)
+                if(colorIndex > item.Index)
                 {
                     colorIndex = 0;
                 }
@@ -115,27 +110,34 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #region Methods.
 
-        public static string ToCategoryString(string s, int max)
+        private void SetCategoryName(ListGeneralSettings item, string text)
         {
-            var array = s.Split('.');
-            string category = "";
+            text = text.ToLower().Replace("mcss.", "");
+            var array = text.Split('.');
+            string category = "", subCategory = "";
 
-            for (int i = 0; i < array.Length; i++)
+            if(array.Length > 0)
+                category = array[0];
+
+            if (array.Length > 1)
             {
-                if (array[i].ToLower() != "mcss")
-                {
-                    category += array[i] + (i > 0 && i < array.Length - 1 ? "/" : "");
-                }
+                var newArray = array.Skip(1).ToArray();
+                subCategory = string.Join("/", newArray);
             }
 
-            if (category.Length > max)
+            if (subCategory.Length - 1 == '/')
             {
-                category = category.Substring(category.Length - max).Trim();
-                int index = category.IndexOf('/');
-                category = category.Contains("/") && category[0] != '/' ? category.Remove(0, index) : category;
+                subCategory = subCategory.Substring(0, subCategory.Length - 1);
             }
 
-            return category;
+            if(subCategory == string.Empty)
+            {
+                int index = item.MachineName.LastIndexOf('.');
+                subCategory = item.MachineName.Substring(index + 1);
+            }
+
+            item.Category = category;
+            item.SubCategory = subCategory;
         }
 
         #endregion

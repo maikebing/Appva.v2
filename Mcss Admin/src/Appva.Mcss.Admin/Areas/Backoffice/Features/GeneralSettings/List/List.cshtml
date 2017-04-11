@@ -14,34 +14,19 @@
         function setButtonState(id) {
             $(id).prop('disabled', false);
         }
-    </script>
-    <script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/index.js")" type="text/javascript"></script>
-    <script>
-        //$(document).ready(function () {
-        //    var boolValue = {};
-        //})
-        if (form.valid()) {
-            var data = form.serialize();
-        }
-
-        $(function () {
-            $('#boolSetting').submit(function () {
-                if ($(this).valid()) {
-                    $.ajax({
-                        url: "list/save",
-                        type: "POST",
-                        data: $(this).serialize(),
-                        //data: $(this).serialize(),
-                        success: function (result) {
-                            $('#result').html(result);
-                        }
-                    });
-                }
-                return false;
+        function update(id) {
+            $(id).submit(function(e) {
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: "list/update",
+                    type: "POST",
+                    data: formData,
+                    success: function (result) {
+                        alert("Hello");
+                    }
+                });
             });
-        });
+        }
     </script>
     <div id="content-primary">
         @if (Model.List != null && Model.List.Count() > 0)
@@ -50,85 +35,82 @@
                 @foreach (var item in Model.List)
                 {
                     <li>
-                        <div class="header">
-                            <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.Category</h3>
-                            <h2>@item.Name</h2>
-                            @if (string.IsNullOrEmpty(item.Description) == false)
-                            {
-                                <p>@item.Description</p>
-                            }
-                        </div>
-                        <div class="content">
-                            @if (item.Type == typeof(int))
-                            {
-                                int value;
-                                @Textbox("Värde", item.Index, "value" + item.Index, (int.TryParse(item.Value, out value) ? value : 0), false, true)
-                            }
-                            else if (item.Type == typeof(Boolean))
-                            {
-                                @Checkbox("check" + item.Index, item.Index, Convert.ToBoolean(item.Value))
-                            }
-                            else if (item.PdfLookAndFeel != null && item.IsJson)
-                            {
-                                @Checkbox("pdf-custFooter", item.Index, item.PdfLookAndFeel.IsCustomFooterTextEnabled, "Custom footer text", false, true)
-                                @Checkbox("pdf-custLogotype", item.Index, item.PdfLookAndFeel.IsCustomLogotypeEnabled, "Custom logotype", false)
-                                @ColorInput("Background color", item.Index, "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
-                                @ColorInput("Font color", item.Index, "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
-                                @ColorInput("Table border color", item.Index, "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
-                                @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
-                            }
-                            else if (item.SecurityTokenConfig != null && item.IsJson)
-                            {
-                                @Textbox("Audience", item.Index, "sec-tokenAudience", item.SecurityTokenConfig.Audience)
-                                @Textbox("Issuer", item.Index, "sec-tokenIssuer", item.SecurityTokenConfig.Issuer)
-                                @Textbox("Reset lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime)
-                                @Textbox("Registration lifetime", item.Index, "sec-tokenRegLifetime", item.SecurityTokenConfig.RegistrationTokenLifetime)
-                                @Textbox("Signing key", item.Index, "sec-tokenKey", item.SecurityTokenConfig.SigningKey, false)
-                            }
-                            else if (item.SecurityMailerConfig != null && item.IsJson)
-                            {
-                                @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "IsMailSigningEnabled", false, true)
-                                @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "IsMobileDeviceRegistrationMailEnabled", false, true)
-                                @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "IsRegistrationMailEnabled", false, true)
-                                @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "IsResetPasswordMailEnabled", false, true)
-                                @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "IsSecurityEventMailEnabled", false)
-                            }
-                            else
-                            {
-                                if (item.MachineName == Model.SelectOptions[0])
+                        <form id="@("form" + item.Index)" method="post">
+                            <div class="header">
+                                <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.SubCategory</h3>
+                                <h2>@item.Name</h2>
+                                @if (string.IsNullOrEmpty(item.Description) == false)
+                                {
+                                    <p>@item.Description</p>
+                                }
+                            </div>
+
+                            <div class="content">
+                                @if (item.Type == typeof(int))
                                 {
                                     int value;
-                                    if (int.TryParse(item.Value, out value))
-                                    {
-                                        @Textbox("Värde", item.Index, "value" + item.Index, value, false, true)
-                                    }
-                                    else
-                                    {
-                                        using (Html.BeginForm(null, null, FormMethod.Post, new { id = "boolSetting" }))
-                                        {
-                                            @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "High", "" }, { "Medium", "" }, { "Low", "" } })
-                                            <input type="submit" value="OK" />
-                                            <div id="result"></div>
-                                        }
-                                    }
+                                    @Textbox("Värde", item.Index, "value" + item.Index, (int.TryParse(item.Value, out value) ? value : 0), false, true)
                                 }
-                                else if (item.MachineName == Model.SelectOptions[1])
+                                else if (item.Type == typeof(Boolean))
                                 {
-                                    @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "Form", "" }, { "Siths", "" } })
+                                    @Checkbox("check" + item.Index, item.Index, Convert.ToBoolean(item.Value))
                                 }
-                                else if (item.MachineName == Model.SelectOptions[2])
+                                else if (item.PdfLookAndFeel != null && item.IsJson)
                                 {
-                                    @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "", "Inga" }, { "ordination", "Ordination" }, { "calendar", "Calendar" }, { "ordination;calendar", "Ordination och Calendar" } })
+                                    @Checkbox("pdf-custFooter", item.Index, item.PdfLookAndFeel.IsCustomFooterTextEnabled, "Custom footer text", false, true)
+                                    @Checkbox("pdf-custLogotype", item.Index, item.PdfLookAndFeel.IsCustomLogotypeEnabled, "Custom logotype", false)
+                                    @ColorInput("Background color", item.Index, "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
+                                    @ColorInput("Font color", item.Index, "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
+                                    @ColorInput("Table border color", item.Index, "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
+                                    @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
+                                }
+                                else if (item.SecurityTokenConfig != null && item.IsJson)
+                                {
+                                    @Textbox("Audience", item.Index, "sec-tokenAudience", item.SecurityTokenConfig.Audience)
+                                    @Textbox("Issuer", item.Index, "sec-tokenIssuer", item.SecurityTokenConfig.Issuer)
+                                    @Textbox("Reset lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime)
+                                    @Textbox("Registration lifetime", item.Index, "sec-tokenRegLifetime", item.SecurityTokenConfig.RegistrationTokenLifetime)
+                                    @Textbox("Signing key", item.Index, "sec-tokenKey", item.SecurityTokenConfig.SigningKey, false)
+                                }
+                                else if (item.SecurityMailerConfig != null && item.IsJson)
+                                {
+                                    @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "IsMailSigningEnabled", false, true)
+                                    @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "IsMobileDeviceRegistrationMailEnabled", false, true)
+                                    @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "IsRegistrationMailEnabled", false, true)
+                                    @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "IsResetPasswordMailEnabled", false, true)
+                                    @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "IsSecurityEventMailEnabled", false)
                                 }
                                 else
                                 {
-                                    @Textbox("Sträng", item.Index, "strValue" + item.Index, item.Value, false)
+                                    int value;
+                                    if (item.MachineName == Model.SelectOptions[0] && int.TryParse(item.Value, out value))
+                                    {
+                                        @Textbox("Värde", item.Index, "value" + item.Index, value, false, true)
+                                    }
+                                    else if (item.MachineName == Model.SelectOptions[0])
+                                    {
+                                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "High", "" }, { "Medium", "" }, { "Low", "" } })
+                                        <input type="submit" value="OK" />
+                                        <div id="result"></div>
+                                    }
+                                    else if (item.MachineName == Model.SelectOptions[1])
+                                    {
+                                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "Form", "" }, { "Siths", "" } })
+                                    }
+                                    else if (item.MachineName == Model.SelectOptions[2])
+                                    {
+                                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "", "None" }, { "ordination", "Ordination" }, { "calendar", "Calendar" }, { "ordination;calendar", "Ordination and calendar" } })
+                                    }
+                                    else
+                                    {
+                                        @Textbox("Sträng", item.Index, "strValue" + item.Index, item.Value, false)
+                                    }
                                 }
-                            }
-                            <div class="bottom">
-                                <button id="@("button" + item.Index)" disabled>Uppdatera</button>
+                                <div class="bottom">
+                                    <button type="submit" id="@("button" + item.Index)" onmouseup="update(@("form" + item.Index))" disabled>Uppdatera</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </li>
                 }
             </ul>

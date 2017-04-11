@@ -44,14 +44,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         }
         #endregion
 
-        #region Save
+        #region Save.
 
         
         [Route("list/save")]
         [HttpPost]
         public JsonResult Save(ListGeneralSettingsModel request)
         {
-
           return  Json("string");
         }
         #endregion
@@ -71,19 +70,21 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         }
         */
 
+        #region Update.
+
         /// <summary>
-        /// updates a new setting
+        /// Updates a setting
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        
-        //[Route("update")]
-        //[HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
-        //public ActionResult Edit(ListGeneralSettings request)
-        //{
-        //    return this.View();
-        //}
 
-        //#endregion
+        [Route("list/update")]
+        [HttpPost]
+        public ActionResult Update(FormCollection request)
+        {
+            return Json("Hello");
+        }
+
+        #endregion
     }
 }

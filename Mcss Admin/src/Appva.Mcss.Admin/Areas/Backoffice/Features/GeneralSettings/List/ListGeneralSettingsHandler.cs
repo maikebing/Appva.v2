@@ -60,11 +60,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.Index = item.Index;
                 settingItems.Name = item.Set.Name;
                 settingItems.MachineName = item.Set.MachineName;
-                settingItems.Category = ToCategoryString(item.Set.MachineName, 35);
+                settingItems.Category = ToCategoryString(item.Set.Namespace, 35);
                 settingItems.Description = item.Set.Description;
                 settingItems.Value = item.Set.Value;
                 settingItems.Type = item.Set.Type;
-                settingItems.HasOptions = model.SelectOptions.Contains(item.Set.MachineName) ? true : false;
                 settingItems.CategoryColor = model.Colors[colorIndex];
 
                 if (model.JsonSettings.Contains(item.Set.MachineName))

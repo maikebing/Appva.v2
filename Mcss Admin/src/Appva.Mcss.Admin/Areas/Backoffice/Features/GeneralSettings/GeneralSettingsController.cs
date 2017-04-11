@@ -46,18 +46,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
         #region Save
 
-        /*
-        [Route("list")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
-        public ActionResult List(ListGeneralSettingsModel request)
+        
+        [Route("list/save")]
+        [HttpPost]
+        public JsonResult Save(ListGeneralSettingsModel request)
         {
 
-
           return  Json("string");
-            //return Content("hej");
         }
         #endregion
 
+        /*
         #region Edit.
         /// <summary>
         /// edits a setting
@@ -77,13 +76,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("update")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
-        public ActionResult Edit(ListGeneralSettings request)
-        {
-            return this.View();
-        }
+        
+        //[Route("update")]
+        //[HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "generalsettings")]
+        //public ActionResult Edit(ListGeneralSettings request)
+        //{
+        //    return this.View();
+        //}
 
-        #endregion
+        //#endregion
     }
 }

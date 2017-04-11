@@ -22,7 +22,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         private readonly string[] selectOption = new string[]
         {
             "MCSS.Device.Security",
-            "MCSS.Secuity.Authorization.AdminAuthorizationMethod"
+            "MCSS.Secuity.Authorization.AdminAuthorizationMethod",
+            "MCSS.Device.Settings.Timeline.OverviewTimelineTaskTypes"
+
         };
 
         private readonly string[] jsonSettings = new string[] {

@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
     using Appva.Mvc;
     using Appva.Mvc.Security;
     using Domain.VO;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -72,8 +73,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 var borderColor = request["pdf-bordercolor"];
                 var headerColor = request["pdf-headercolor"];
 
-                
-
 
 
             }
@@ -85,23 +84,45 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
             if (request.AllKeys.Contains("item.SecurityMailerConfig"))
             {
-                var signing = request["secmailconf-signing"];
-                if (signing == "")
+               var mailSigning =    request["secmailconf-signing"];
+               var deviceRegMail =  request["secmailconf-deviceRegMail"];
+               var regMail =        request["secmailconf-regMail"];
+               var resetPassMail =  request["secmailconf-resetPassMail"];
+               var eventMail =      request["secmailconf-eventMail"];
+
+                if (mailSigning.Contains("on"))
                 {
-                    Convert.ToBoolean(signing = "false");
+                    mailSigning = "true";
+                }
+                if (deviceRegMail.Contains("on"))
+                {
+                    deviceRegMail = "true";
+                }
+                if (regMail.Contains("on"))
+                {
+                    regMail = "true";
+                }
+                if (resetPassMail.Contains("on"))
+                {
+                    resetPassMail = "true";
+                }
+                if (eventMail.Contains("on"))
+                {
+                    eventMail = "true";
                 }
 
-
-
-
                 var securityMailerConfig = SecurityMailerConfiguration.CreateNew(
-                        Convert.ToBoolean(request["secmailconf-signing"]),
-                        Convert.ToBoolean(request["secmailconf-deviceRegMail"]),
-                        Convert.ToBoolean(request["secmailconf-regMail"]),
-                        Convert.ToBoolean(request["secmailconf-resetPassMail"]),
-                        Convert.ToBoolean(request["secmailconf-eventMail"])
-
+                        Convert.ToBoolean(eventMail),
+                        Convert.ToBoolean(regMail),
+                        Convert.ToBoolean(resetPassMail),
+                        Convert.ToBoolean(deviceRegMail),
+                        Convert.ToBoolean(mailSigning)
                      );
+
+                theSettingValue = JsonConvert.SerializeObject(securityMailerConfig);
+
+                var setting = settings.Where(x => x.Id == id).SingleOrDefault();
+                setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
             }
 
 
@@ -111,6 +132,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 if (item.ToString().Contains("select") || item.ToString().Contains("value") || item.ToString().Contains("check"))
                 {
                     theSettingValue = request[item.ToString()];
+
+                    if (theSettingValue.Contains("on"))
+                    {
+                        theSettingValue = "true";
+                    }
 
                     var setting = settings.Where(x => x.Id == id).SingleOrDefault();
 

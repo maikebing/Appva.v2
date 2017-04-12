@@ -103,22 +103,27 @@
                                     if (item.MachineName == Model.SelectOptions[0] && int.TryParse(item.Value, out value))
                                     {
                                         @Textbox("Värde", item.Index, "value" + item.Index, value, false, true)
+                                        @Html.HiddenFor(i => item.Id)
                                     }
                                     else if (item.MachineName == Model.SelectOptions[0])
                                     {
                                         @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "High", "" }, { "Medium", "" }, { "Low", "" } })
+                                        @Html.HiddenFor(i => item.Id)
                                     }
                                     else if (item.MachineName == Model.SelectOptions[1])
                                     {
                                         @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "Form", "" }, { "Siths", "" } })
+                                        @Html.HiddenFor(i => item.Id)
                                     }
                                     else if (item.MachineName == Model.SelectOptions[2])
                                     {
                                         @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "", "None" }, { "ordination", "Ordination" }, { "calendar", "Calendar" }, { "ordination;calendar", "Ordination and calendar" } })
+                                        @Html.HiddenFor(i => item.Id)
                                     }
                                     else
                                     {
                                         @Textbox("Sträng", item.Index, "strValue" + item.Index, item.Value, false)
+                                        @Html.HiddenFor(i => item.Id)
                                     }
                                 }
                                 <div class="bottom">
@@ -150,7 +155,7 @@
             <label class="checkbox-inline" for="@id">
                 <input type="checkbox" id="@id" name="@id" onchange="setButtonState(@("button" + index));setCheckboxState(this.id , '@(id + "hidden" + index)')" @(isChecked ? "checked" : "") />Aktivera
             </label>
-            <input type="hidden" id="@(id + "hidden" + index)" name="@id" value="@isChecked" />
+            <input type="hidden" id="@(id + "hidden" + index)" name="@id" value="@isChecked.ToString()" />
         </div>
     </div>
 }

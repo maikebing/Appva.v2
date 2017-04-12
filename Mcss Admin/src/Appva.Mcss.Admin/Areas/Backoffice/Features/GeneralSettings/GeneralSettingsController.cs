@@ -9,6 +9,7 @@
 using System.Web.Mvc;
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 {
+    using Application.Services.Settings;
     #region Imports.
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
@@ -17,6 +18,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+    using Domain.VO;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -28,6 +30,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
     [Permissions(Permissions.Backoffice.ReadValue)]
     public sealed class GeneralSettingsController : Controller
     {
+        private readonly ISettingsService settingsService;
+
+        public GeneralSettingsController(ISettingsService settingService)
+        {
+            this.settingsService = settingService;
+        }
 
         #region List.
         /// <summary>
@@ -47,10 +55,69 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         #region Save.
 
         
-        [Route("list/save")]
+        [Route("list/update")]
         [HttpPost]
-        public JsonResult Save(ListGeneralSettingsModel request)
+        public JsonResult Update(FormCollection request)
         {
+            var settings = this.settingsService.List();
+            var theSettingValue = "";
+            Guid id = new Guid(request["item.Id"]);
+
+            if (request.AllKeys.Contains("item.PdfLookAndFeel"))
+            {
+                var isCustomLogotype = request["pdf-custFooter"];
+                var isCustomFooter = request["pdf-custLogotype"];
+                var backgroundColor = request["pdf-bgcolor"];
+                var fontColor = request["pdf-fontcolor"];
+                var borderColor = request["pdf-bordercolor"];
+                var headerColor = request["pdf-headercolor"];
+
+                
+
+
+
+            }
+
+            if (request.AllKeys.Contains("item.SecurityTokenConfig"))
+            {
+
+            }
+
+            if (request.AllKeys.Contains("item.SecurityMailerConfig"))
+            {
+                var signing = request["secmailconf-signing"];
+                if (signing == "")
+                {
+                    Convert.ToBoolean(signing = "false");
+                }
+
+
+
+
+                var securityMailerConfig = SecurityMailerConfiguration.CreateNew(
+                        Convert.ToBoolean(request["secmailconf-signing"]),
+                        Convert.ToBoolean(request["secmailconf-deviceRegMail"]),
+                        Convert.ToBoolean(request["secmailconf-regMail"]),
+                        Convert.ToBoolean(request["secmailconf-resetPassMail"]),
+                        Convert.ToBoolean(request["secmailconf-eventMail"])
+
+                     );
+            }
+
+
+            foreach (var item in request.Keys)
+            {
+                // select = string, value = int, check = bool
+                if (item.ToString().Contains("select") || item.ToString().Contains("value") || item.ToString().Contains("check"))
+                {
+                    theSettingValue = request[item.ToString()];
+
+                    var setting = settings.Where(x => x.Id == id).SingleOrDefault();
+
+                    setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
+                }
+            }
+
           return  Json("string");
         }
         #endregion
@@ -78,17 +145,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         /// <param name="request"></param>
         /// <returns></returns>
 
-        [Route("list/update")]
-        [HttpPost]
-        public ActionResult Update(FormCollection request)
-        {
-            foreach (var item in request.Keys)
-            {
-                var test = item;
-            }
-
-            return Json("Hello");
-        }
+        
 
         #endregion
     }

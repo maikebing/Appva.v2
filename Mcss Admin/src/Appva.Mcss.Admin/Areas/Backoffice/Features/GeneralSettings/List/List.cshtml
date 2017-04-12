@@ -25,6 +25,7 @@
         function update(id) {
             $(id).submit(function(e) {
                 var formData = $(this).serialize();
+                e.preventDefault();
                 $.ajax({
                     url: "list/update",
                     type: "POST",
@@ -57,10 +58,12 @@
                                 @if (item.Type == typeof(int))
                                 {
                                     int value;
+                                    @Html.HiddenFor(i => item.Id)
                                     @Textbox("Värde", item.Index, "value" + item.Index, (int.TryParse(item.Value, out value) ? value : 0), false, true)
                                 }
                                 else if (item.Type == typeof(Boolean))
                                 {
+                                    @Html.HiddenFor(i => item.Id)
                                     @Checkbox("check" + item.Index, item.Index, Convert.ToBoolean(item.Value))
                                 }
                                 else if (item.PdfLookAndFeel != null && item.IsJson)
@@ -71,6 +74,8 @@
                                     @ColorInput("Font color", item.Index, "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
                                     @ColorInput("Table border color", item.Index, "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
                                     @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
+                                    @Html.HiddenFor(i => item.PdfLookAndFeel)
+                                    @Html.HiddenFor(i => item.Id)
                                 }
                                 else if (item.SecurityTokenConfig != null && item.IsJson)
                                 {
@@ -79,6 +84,8 @@
                                     @Textbox("Reset lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime)
                                     @Textbox("Registration lifetime", item.Index, "sec-tokenRegLifetime", item.SecurityTokenConfig.RegistrationTokenLifetime)
                                     @Textbox("Signing key", item.Index, "sec-tokenKey", item.SecurityTokenConfig.SigningKey, false)
+                                    @Html.HiddenFor(i => item.SecurityTokenConfig)
+                                    @Html.HiddenFor(i => item.Id)
                                 }
                                 else if (item.SecurityMailerConfig != null && item.IsJson)
                                 {
@@ -87,6 +94,8 @@
                                     @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "IsRegistrationMailEnabled", false, true)
                                     @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "IsResetPasswordMailEnabled", false, true)
                                     @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "IsSecurityEventMailEnabled", false)
+                                    @Html.HiddenFor(i => item.SecurityMailerConfig)
+                                    @Html.HiddenFor(i => item.Id)
                                 }
                                 else
                                 {
@@ -139,9 +148,9 @@
         }
         <div class="form-group @(isCentered ? "t-center" : "t-right")">
             <label class="checkbox-inline" for="@id">
-                <input type="checkbox" id="@id" name="@id" onchange="setButtonState(@("button" + index));setCheckboxState(this.id , '@("hidden" + index)')" @(isChecked ? "checked" : "") />Aktivera
+                <input type="checkbox" id="@id" name="@id" onchange="setButtonState(@("button" + index));setCheckboxState(this.id , '@(id + "hidden" + index)')" @(isChecked ? "checked" : "") />Aktivera
             </label>
-            <input type="hidden" id="@("hidden" + index)" name="@id" value="@isChecked" />
+            <input type="hidden" id="@(id + "hidden" + index)" name="@id" value="@isChecked" />
         </div>
     </div>
 }

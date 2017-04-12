@@ -66,12 +66,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
             if (request.AllKeys.Contains("item.PdfLookAndFeel"))
             {
-                var isCustomLogotype = request["pdf-custFooter"];
-                var isCustomFooter = request["pdf-custLogotype"];
-                var backgroundColor = request["pdf-bgcolor"];
-                var fontColor = request["pdf-fontcolor"];
-                var borderColor = request["pdf-bordercolor"];
-                var headerColor = request["pdf-headercolor"];
+                var isCustomLogotype =  request["pdf-custFooter"];
+                var isCustomFooter =    request["pdf-custLogotype"];
+                var backgroundColor =   request["pdf-bgcolor"];
+                var fontColor =         request["pdf-fontcolor"];
+                var borderColor =       request["pdf-bordercolor"];
+                var headerColor =       request["pdf-headercolor"];
 
 
 
@@ -84,39 +84,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
             if (request.AllKeys.Contains("item.SecurityMailerConfig"))
             {
-               var mailSigning =    request["secmailconf-signing"];
-               var deviceRegMail =  request["secmailconf-deviceRegMail"];
-               var regMail =        request["secmailconf-regMail"];
-               var resetPassMail =  request["secmailconf-resetPassMail"];
-               var eventMail =      request["secmailconf-eventMail"];
-
-                if (mailSigning.Contains("on"))
-                {
-                    mailSigning = "true";
-                }
-                if (deviceRegMail.Contains("on"))
-                {
-                    deviceRegMail = "true";
-                }
-                if (regMail.Contains("on"))
-                {
-                    regMail = "true";
-                }
-                if (resetPassMail.Contains("on"))
-                {
-                    resetPassMail = "true";
-                }
-                if (eventMail.Contains("on"))
-                {
-                    eventMail = "true";
-                }
-
                 var securityMailerConfig = SecurityMailerConfiguration.CreateNew(
-                        Convert.ToBoolean(eventMail),
-                        Convert.ToBoolean(regMail),
-                        Convert.ToBoolean(resetPassMail),
-                        Convert.ToBoolean(deviceRegMail),
-                        Convert.ToBoolean(mailSigning)
+                        removeOn(request["secmailconf-eventMail"]),
+                        removeOn(request["secmailconf-regMail"]),
+                        removeOn(request["secmailconf-resetPassMail"]),
+                        removeOn(request["secmailconf-deviceRegMail"]),
+                        removeOn(request["secmailconf-signing"])
                      );
 
                 theSettingValue = JsonConvert.SerializeObject(securityMailerConfig);
@@ -145,6 +118,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             }
 
           return  Json("string");
+        }
+
+        private bool removeOn(string requestId)
+        {
+            if (requestId.Contains("on"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         #endregion
 

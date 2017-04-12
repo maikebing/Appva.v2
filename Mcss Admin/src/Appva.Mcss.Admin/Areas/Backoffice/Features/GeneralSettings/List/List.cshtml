@@ -117,7 +117,7 @@
                                     }
                                     else if (item.MachineName == Model.SelectOptions[2])
                                     {
-                                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "", "None" }, { "ordination", "Ordination" }, { "calendar", "Calendar" }, { "ordination;calendar", "Ordination and calendar" } })
+                                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "", "Ingen" }, { "ordination", "Ordination" }, { "calendar", "Calendar" }, { "ordination;calendar", "Ordination and Calendar" } })
                                         @Html.HiddenFor(i => item.Id)
                                     }
                                     else

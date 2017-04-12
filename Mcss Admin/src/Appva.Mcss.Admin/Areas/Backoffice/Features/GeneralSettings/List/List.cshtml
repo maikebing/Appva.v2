@@ -25,7 +25,6 @@
         function update(formId, buttonId, index, color) {
             $(formId).submit(function (e) {
                 var formData = $(this).serialize();
-                e.preventDefault();
                 $.ajax({
                     url: "list/update",
                     type: "POST",
@@ -84,6 +83,8 @@
                                     @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
                                     @Html.HiddenFor(i => item.PdfLookAndFeel)
                                     @Html.HiddenFor(i => item.Id)
+                                    @Html.HiddenFor(i => item.PdfLookAndFeel.FooterText)
+                                    @Html.HiddenFor(i => item.PdfLookAndFeel.LogotypePath)
                                 }
                                 else if (item.SecurityTokenConfig != null && item.IsJson)
                                 {
@@ -125,7 +126,7 @@
                                     }
                                     else if (item.MachineName == Model.SelectOptions[2])
                                     {
-                                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "", "None" }, { "ordination", "Ordination" }, { "calendar", "Calendar" }, { "ordination;calendar", "Ordination and calendar" } })
+                                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "", "Ingen" }, { "ordination", "Ordination" }, { "calendar", "Calendar" }, { "ordination;calendar", "Ordination and Calendar" } })
                                         @Html.HiddenFor(i => item.Id)
                                     }
                                     else

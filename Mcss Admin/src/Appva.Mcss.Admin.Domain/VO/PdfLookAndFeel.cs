@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         public bool IsCustomLogotypeEnabled
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         public bool IsCustomFooterTextEnabled
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>

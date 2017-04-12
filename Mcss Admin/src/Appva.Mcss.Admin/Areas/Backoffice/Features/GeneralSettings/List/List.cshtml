@@ -23,9 +23,8 @@
             $(id).prop('disabled', false);
         }
         function update(id) {
-            $(id).submit(function(e) {
+            $(id).submit(function (e) {
                 var formData = $(this).serialize();
-                e.preventDefault();
                 $.ajax({
                     url: "list/update",
                     type: "POST",
@@ -34,6 +33,7 @@
                         alert("Hello");
                     }
                 });
+                return false;
             });
         }
     </script>
@@ -76,6 +76,8 @@
                                     @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
                                     @Html.HiddenFor(i => item.PdfLookAndFeel)
                                     @Html.HiddenFor(i => item.Id)
+                                    @Html.HiddenFor(i => item.PdfLookAndFeel.FooterText)
+                                    @Html.HiddenFor(i => item.PdfLookAndFeel.LogotypePath)
                                 }
                                 else if (item.SecurityTokenConfig != null && item.IsJson)
                                 {

@@ -66,15 +66,28 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
             if (request.AllKeys.Contains("item.PdfLookAndFeel"))
             {
-                var isCustomLogotype =  request["pdf-custFooter"];
-                var isCustomFooter =    request["pdf-custLogotype"];
-                var backgroundColor =   request["pdf-bgcolor"];
-                var fontColor =         request["pdf-fontcolor"];
-                var borderColor =       request["pdf-bordercolor"];
-                var headerColor =       request["pdf-headercolor"];
+                var backgroundcolor =   RGBConverter(System.Drawing.ColorTranslator.FromHtml(request["pdf-bgcolor"])).Split(',');
+                var fontcolor =         RGBConverter(System.Drawing.ColorTranslator.FromHtml(request["pdf-fontcolor"])).Split(',');
+                var bordercolor =       RGBConverter(System.Drawing.ColorTranslator.FromHtml(request["pdf-bordercolor"])).Split(',');
+                var headercolor =       RGBConverter(System.Drawing.ColorTranslator.FromHtml(request["pdf-headercolor"])).Split(',');
 
+                var pdfLookAndFeel = PdfLookAndFeel.CreateNew(
+                    request["item.PdfLookAndFeel.LogotypePath"],
+                    request["item.PdfLookAndFeel.FooterText"],
+                    PdfColor.CreateNew(Convert.ToByte(backgroundcolor[0]), Convert.ToByte(backgroundcolor[1]), Convert.ToByte(backgroundcolor[2])),
+                    PdfColor.CreateNew(Convert.ToByte(fontcolor[0]), Convert.ToByte(fontcolor[1]), Convert.ToByte(fontcolor[2])),
+                    PdfColor.CreateNew(Convert.ToByte(headercolor[0]), Convert.ToByte(headercolor[1]), Convert.ToByte(headercolor[2])),
+                    PdfColor.CreateNew(Convert.ToByte(bordercolor[0]), Convert.ToByte(bordercolor[1]), Convert.ToByte(bordercolor[2]))
 
+                    );
 
+                pdfLookAndFeel.IsCustomFooterTextEnabled = Convert.ToBoolean(removeOn(request["pdf-custFooter"]));
+                pdfLookAndFeel.IsCustomLogotypeEnabled = Convert.ToBoolean(removeOn(request["pdf-custLogotype"]));
+
+                theSettingValue = JsonConvert.SerializeObject(pdfLookAndFeel);
+
+                var setting = settings.Where(x => x.Id == id).SingleOrDefault();
+                setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
             }
 
             if (request.AllKeys.Contains("item.SecurityTokenConfig"))
@@ -120,6 +133,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
           return  Json("string");
         }
 
+        /// <summary>
+        /// Sets the request value to true if it contains the characters "on"
+        /// </summary>
+        /// <param name="requestId"></param>
+        /// <returns></returns>
         private bool removeOn(string requestId)
         {
             if (requestId.Contains("on"))
@@ -130,6 +148,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             {
                 return false;
             }
+        }
+
+        private static String RGBConverter(System.Drawing.Color c)
+       {
+            return c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString();
         }
         #endregion
 
@@ -156,7 +179,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         /// <param name="request"></param>
         /// <returns></returns>
 
-        
+
 
         #endregion
     }

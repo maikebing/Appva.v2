@@ -25,6 +25,7 @@
         function update(formId, buttonId, index, color) {
             $(formId).submit(function (e) {
                 var formData = $(this).serialize();
+                e.preventDefault();
                 $.ajax({
                     url: "list/update",
                     type: "POST",

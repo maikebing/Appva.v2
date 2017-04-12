@@ -1379,6 +1379,7 @@ td.rights {
     column-gap: 20px;
 }
 #setlist li {
+    position:relative;
     break-inside: avoid;
     -webkit-column-break-inside: avoid;
     page-break-inside: avoid;
@@ -1395,6 +1396,28 @@ td.rights {
 }
 #setlist li a{
     text-decoration:none;
+}
+#setlist #setlist-overlay {
+    visibility:hidden;
+    display:flex;
+    justify-content:center;
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:rgba(255, 255, 255, .8);
+    z-index:2;
+}
+#setlist .success-message {
+    align-self:center;
+    text-align:center;
+    margin:auto;
+    width:230px;
+    font-size:14px;
+    font-weight:bold;
+    color:#fff;
+    padding:14px 6px;
 }
 #setlist .header {
     display:table-row;
@@ -3095,9 +3118,11 @@ form .time {width:4em;}
     border:none;
     padding:13px 15px;
     box-sizing:border-box;
+    outline:none;
     transition:background .3s ease;
 }
 #setlist button:hover { background:#4Caf50; }
+#setlist button:focus { background:#43a047; }
 #setlist button:disabled, #setlist button[disabled] {
     color:#ddd;
     background:#f5f5f5;

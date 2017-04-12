@@ -22,8 +22,8 @@
         function setButtonState(id) {
             $(id).prop('disabled', false);
         }
-        function update(id) {
-            $(id).submit(function(e) {
+        function update(formId, buttonId, index, color) {
+            $(formId).submit(function (e) {
                 var formData = $(this).serialize();
                 e.preventDefault();
                 $.ajax({
@@ -31,9 +31,14 @@
                     type: "POST",
                     data: formData,
                     success: function (result) {
-                        alert("Hello");
+                        $('#' + buttonId).prop('disabled', true);
+                        $('#setlist-overlay .success-message').css('background-color', color);
+                        $('#setlist-overlay .success-message').text('Inställningen uppdaterades');
+                        $('#item' + index + ' #setlist-overlay').css('visibility', 'visible').hide();
+                        $('#item' + index + ' #setlist-overlay').fadeIn('fast').delay(1500).fadeOut('fast');
                     }
                 });
+                $(this).off();
             });
         }
     </script>
@@ -43,7 +48,10 @@
             <ul id="setlist">
                 @foreach (var item in Model.List)
                 {
-                    <li>
+                    <li id="@("item" + item.Index)">
+                        <div id="setlist-overlay">
+                            <div class="success-message"></div>
+                        </div>
                         <div class="header">
                             <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.SubCategory</h3>
                             <h2>@item.Name</h2>
@@ -127,7 +135,7 @@
                                     }
                                 }
                                 <div class="bottom">
-                                    <button type="submit" id="@("button" + item.Index)" onmouseup="update(@("form" + item.Index))" disabled>Uppdatera</button>
+                                    <button type="submit" id="@("button" + item.Index)" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')" disabled>Uppdatera</button>
                                 </div>
                             </form>
                         </div>

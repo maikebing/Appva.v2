@@ -68,15 +68,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #endregion
 
-        #region Properties.
-
-        /// <summary>
-        /// Keeps track of the selected filtering option.
-        /// </summary>
-        public static bool? RedirectActive { get; set; }
-
-        #endregion
-
         #region RequestHandler overrides.
 
         /// <inheritdoc />
@@ -131,7 +122,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             newItemsCount = properties.Length - newItemsCount;
             string newItems = newItemsCount > 0 ? (newItemsCount == 1 ? "(1 ny)" : "(" + newItemsCount + " nya)") : string.Empty;
 
-            RedirectActive = message.IsActive;
             profile.IsActive = message.IsActive;
             profile.NewAssessments = newItems;
             profile.Assessments = assessments;

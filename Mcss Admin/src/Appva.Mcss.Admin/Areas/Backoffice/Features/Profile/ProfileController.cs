@@ -78,14 +78,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Profile
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         public ActionResult Update(UpdateProfileModel request)
         {
-            return this.RedirectToAction("list", new { IsActive = ListProfileHandler.RedirectActive });
+            return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         [Route("install")]
-        [HttpPost, Validate, Dispatch]
+        [HttpPost, Validate, Dispatch("list", "profile")]
         public ActionResult InstallProfiles(InstallProfilesModel request)
         {
-            return this.RedirectToAction("list");
+            return this.View();
         }
 
         #endregion

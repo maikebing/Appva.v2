@@ -37,24 +37,16 @@
                                 <td>@del.Name</td>
                                 <td>@del.Description</td>
 
-                                @foreach (var item in Model.ActiveDelegations.Where(x => x.Taxon.Id == del.Id))
+                                @foreach (var item in Model.FilteredDelegations.Where(x => x.Taxon.Id == del.Id))
                                 {
-                                    if (Model.FilteredDelegations.Contains(item.Id))
+                                    count++;
+
+                                    if (Model.ActiveDelegations.Contains(item))
                                     {
                                         activeCount++;
                                     }
                                 }
 
-                                @foreach (var item in Model.DelegatedTaxons.Where(x => x.Taxon.Id == del.Id))
-                                {
-                                    if (Model.FilteredDelegations.Contains(item.Id))
-                                    {
-                                        count++;
-                                    }
-
-
-
-                                }
                                 <td><strong>@count <strong class="active-color">(@activeCount)</strong> Medarbetare</strong> </td>
                                 <td>@Html.ActionLink("Ändra", "Update", "Delegation", new { id = del.Id }, new { @class = "lb-link btn" })</td>
                             </tr>

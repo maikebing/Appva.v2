@@ -8,13 +8,11 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
-
-    using Appva.Mcss.Admin.Domain.Entities;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-
+    using Appva.Mcss.Admin.Domain.Entities;
     #endregion
 
     /// <summary>
@@ -23,7 +21,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     public sealed class ListScheduleModel
     {
         #region Properties.
-
         /// <summary>
         /// The schedulesettings
         /// </summary>
@@ -33,13 +30,20 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
-        public IList<Schedule> SchedulesUsedBy { get; set; }
+        /// <summary>
+        /// All the Schedules 
+        /// </summary>
+        public IList<Schedule> AllSchedules { get; set; }
 
-        public List<Guid> PatientFilterIdList { get; set; }
+        /// <summary>
+        /// Patients filtered by taxon
+        /// </summary>
+        public IList<Patient> PatientFilterList { get; set; }
 
+        /// <summary>
+        /// List of sequences
+        /// </summary>
         public IList<Sequence> SequenceList { get; set; }
-
-
         #endregion
     }
 }

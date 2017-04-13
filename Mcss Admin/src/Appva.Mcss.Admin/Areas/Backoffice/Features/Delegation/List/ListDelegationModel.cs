@@ -8,13 +8,11 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
-
-    using Appva.Mcss.Admin.Application.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Mcss.Admin.Application.Models;
     using static Application.Common.Permissions;
-
     #endregion
 
     /// <summary>
@@ -34,26 +32,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// The delegations that are delegated
-        /// </summary>
-        public IList<Domain.Entities.Delegation> DelegatedTaxons { get; set; }
-
-
-        /// <summary>
         /// The currently active delegations
         /// </summary>
         public IList<Domain.Entities.Delegation> ActiveDelegations { get; set; }
 
-
         /// <summary>
-        /// The taxonfiltered accounts
+        /// Taxon filtered delegations
         /// </summary>
-        public List<Guid> FilteredDelegations { get; set; }
-
-
-
+        public IList<Domain.Entities.Delegation> FilteredDelegations { get; set; }
         #endregion
-
-
     }
 }

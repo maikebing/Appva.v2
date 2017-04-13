@@ -29,16 +29,11 @@
 
                         @foreach (var item in Model.SequenceList.Where(x => x.Schedule.ScheduleSettings.Id == list.Id))
                         {
-                            if (Model.PatientFilterIdList.Contains(item.Patient.Id))
+                            if (Model.PatientFilterList.Contains(item.Patient))
                             {
                                 instansCount++;
 
-
                             }
-
-
-
-
                         }
 
                         <div class="i">
@@ -46,20 +41,18 @@
                             <span></span>
                         </div>
 
-                        @foreach (var item in Model.SchedulesUsedBy.Where(x => x.ScheduleSettings.Id == list.Id))
+                        @foreach (var item in Model.AllSchedules.Where(x => x.ScheduleSettings.Id == list.Id))
                         {
-                            if (Model.PatientFilterIdList.Contains(item.Patient.Id))
+                            if (Model.PatientFilterList.Contains(item.Patient))
                             {
                                 count++;
 
                             }
 
-                            if (Model.PatientFilterIdList.Contains(item.Patient.Id) && item.IsActive == true)
+                            if (Model.PatientFilterList.Contains(item.Patient) && item.IsActive == true)
                             {
                                 activeCount++;
                             }
-
-
                         }
 
                         <div class="i">

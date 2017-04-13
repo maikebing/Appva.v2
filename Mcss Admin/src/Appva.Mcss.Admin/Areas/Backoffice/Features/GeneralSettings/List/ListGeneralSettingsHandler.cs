@@ -43,45 +43,47 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         public override ListGeneralSettingsModel Handle(Parameterless<ListGeneralSettingsModel> message)
         {
             int colorIndex = 0;
+            int index = 0;
             var settings = this.settingService.List();
             var model = new ListGeneralSettingsModel();
             model.List = new List<ListGeneralSettings>();
 
-            foreach (var item in settings.Select((s, i) => new { Set = s, Index = i }))
+            foreach (var item in settings)
             {
-                if (model.IgnoredSettings.Contains(item.Set.MachineName))
+                if (model.IgnoredSettings.Contains(item.MachineName))
                 {
+                    index = index > 0 ? index-- : index;
                     continue;
                 }
 
                 var settingItems = new ListGeneralSettings();
-                settingItems.Id = item.Set.Id;
-                settingItems.Index = item.Index;
-                settingItems.Name = item.Set.Name;
-                settingItems.MachineName = item.Set.MachineName;
-                settingItems.Description = item.Set.Description;
-                settingItems.Value = item.Set.Value;
-                settingItems.Type = item.Set.Type;
+                settingItems.Id = item.Id;
+                settingItems.Index = index;
+                settingItems.Name = item.Name;
+                settingItems.MachineName = item.MachineName;
+                settingItems.Description = item.Description;
+                settingItems.Value = item.Value;
+                settingItems.Type = item.Type;
                 settingItems.CategoryColor = model.Colors[colorIndex];
-                SetCategoryName(settingItems, item.Set.Namespace);
+                SetCategoryName(settingItems, item.Namespace, "mcss.");
 
-                if (model.JsonSettings.Contains(item.Set.MachineName))
+                if (model.JsonSettings.Contains(item.MachineName))
                 {
                     settingItems.IsJson = true;
 
                     try
                     {
-                        if (item.Set.MachineName == model.JsonSettings[0])
+                        if (item.MachineName == model.JsonSettings[0])
                         {
-                            settingItems.PdfLookAndFeel = JsonConvert.DeserializeObject<PdfLookAndFeel>(item.Set.Value);
+                            settingItems.PdfLookAndFeel = JsonConvert.DeserializeObject<PdfLookAndFeel>(item.Value);
                         }
-                        else if (item.Set.MachineName == model.JsonSettings[1])
+                        else if (item.MachineName == model.JsonSettings[1])
                         {
-                            settingItems.SecurityTokenConfig = JsonConvert.DeserializeObject<SecurityTokenConfiguration>(item.Set.Value);
+                            settingItems.SecurityTokenConfig = JsonConvert.DeserializeObject<SecurityTokenConfiguration>(item.Value);
                         }
-                        else if (item.Set.MachineName == model.JsonSettings[2])
+                        else if (item.MachineName == model.JsonSettings[2])
                         {
-                            settingItems.SecurityMailerConfig = JsonConvert.DeserializeObject<SecurityMailerConfiguration>(item.Set.Value);
+                            settingItems.SecurityMailerConfig = JsonConvert.DeserializeObject<SecurityMailerConfiguration>(item.Value);
                         }
                     }
                     catch
@@ -90,15 +92,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     }
                 }
 
-                if (item.Index < settings.Count() - 1 && settings.ElementAt(item.Index + 1).Namespace != item.Set.Namespace)
+                if (index < settings.Count() - 1 && settings.ElementAt(index + 1).Namespace != item.Namespace)
                 {
                     colorIndex++;
                 }
                 
-                if(colorIndex > item.Index)
+                if(colorIndex > index)
                 {
                     colorIndex = 0;
                 }
+
+                index++;
 
                 model.List.Add(settingItems);
             }
@@ -110,9 +114,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #region Methods.
 
-        private void SetCategoryName(ListGeneralSettings item, string text)
+        private void SetCategoryName(ListGeneralSettings settingItem, string text, string replacedText)
         {
-            text = text.ToLower().Replace("mcss.", "");
+            text = text.ToLower().Replace(replacedText.ToLower(), "");
             var array = text.Split('.');
             string category = "", subCategory = "";
 
@@ -132,12 +136,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
             if(subCategory == string.Empty)
             {
-                int index = item.MachineName.LastIndexOf('.');
-                subCategory = item.MachineName.Substring(index + 1);
+                int index = settingItem.MachineName.LastIndexOf('.');
+                subCategory = settingItem.MachineName.Substring(index + 1);
             }
 
-            item.Category = category;
-            item.SubCategory = subCategory;
+            settingItem.Category = category[0].ToString().ToUpper() + category.Substring(1);
+            settingItem.SubCategory = subCategory;
         }
 
         #endregion

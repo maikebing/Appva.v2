@@ -11,58 +11,74 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
-    using Domain.Entities;
-    using Domain.Repositories;
-    using Persistence;
-    
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
+
     #endregion
 
     /// <summary>
-    /// Inactivates a signature
+    /// Inactivates a signature.
     /// </summary>
     public class InactivateSignatureHandler : RequestHandler<InactivateSignatureModel, bool>
     {
         #region Fields
+
         /// <summary>
         /// The Taxonomy Service
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
+
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>
+        /// </summary>
+        private IPersistenceContext persistenceContext;
+
         #endregion
 
         #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="InactivateSignatureHandler"/> 
         /// </summary>
         /// <param name="taxonomyService">Initializes the taxonomy service</param>
-        public InactivateSignatureHandler(ITaxonomyService taxonomyService)
+        /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
+        public InactivateSignatureHandler(ITaxonomyService taxonomyService, IPersistenceContext persistenceContext)
         {
             this.taxonomyService = taxonomyService;
+            this.persistenceContext = persistenceContext;
         }
+
         #endregion
 
         #region RequestHandler Overrides
+
         /// <summary>
         /// TODO: Add a descriptive summary to increase readability.
         /// <param name="message"></param>
-        /// <returns>true or false</returns>
+        /// <returns></returns>
         /// </summary>
         public override bool Handle(InactivateSignatureModel message)
         {
-            var signature = this.taxonomyService.Find(message.Id, TaxonomicSchema.SignStatus);
+            int usedByListsCount = this.persistenceContext.QueryOver<ScheduleSettings>()
+                    .JoinQueryOver<Taxon>(x => x.StatusTaxons)
+                    .Where(x => x.Id == message.Id)
+                    .RowCount();
 
-            // Set to inactive.
+            if (usedByListsCount > 0)
+                return false;
+
+            var signature = this.taxonomyService.Find(message.Id, TaxonomicSchema.SignStatus);
             signature.Update(false);
+
             this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus, true);
 
             return true;
         }
+
         #endregion
     }
 }

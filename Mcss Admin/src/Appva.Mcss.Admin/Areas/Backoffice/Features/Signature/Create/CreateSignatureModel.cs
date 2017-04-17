@@ -11,12 +11,17 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
+
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using Appva.Cqrs;
+
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public class CreateSignatureModel : IRequest<bool>
     {
         /// <summary>

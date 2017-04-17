@@ -11,17 +11,21 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
 {
     #region Imports.
+
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
+
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     internal sealed class CreateSignatureHandler : RequestHandler<Identity<CreateSignatureModel>, CreateSignatureModel>
     {
         #region Properties.
@@ -37,8 +41,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSignatureHandler"/> class.
-        /// <param name="taxonomyService">The Taxonomy Service</param>
         /// </summary>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation</param>
         public CreateSignatureHandler(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
@@ -54,13 +58,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
             var signatures = typeof(Signatures).GetFields(BindingFlags.Public | BindingFlags.Static);
             var createSignature = new CreateSignatureModel();
             createSignature.Images = new Dictionary<string, string>();
-            int btnIndex = 1;
 
-            // Add distinct images to the list.
-            foreach (var item in signatures)
+            for (int i = 0; i < signatures.Length; i++)
             {
-                createSignature.Images.Add("radioBtn" + btnIndex, Convert.ToString(item.GetValue(null)));
-                btnIndex++;
+                createSignature.Images.Add("radioBtn" + i, Convert.ToString(signatures[i].GetValue(null)));
             }
 
             return createSignature;

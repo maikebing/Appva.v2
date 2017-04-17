@@ -61,10 +61,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         /// Handles the edit signing option request.
         /// </summary>
         [Route("{id:guid}/edit")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
-        public ActionResult Edit(EditSignatureModel request, string submitBtn)
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "signature")]
+        public ActionResult Edit(EditSignatureModel request)
         {
-            return this.Redirect(this.Request.UrlReferrer.ToString());
+            return this.View();
         }
 
         #endregion
@@ -82,7 +82,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
         }
 
         /// <summary>
-        /// Returns a list of signing options.
+        /// Handles the new signing option request.
         /// </summary>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "signature")]
@@ -93,10 +93,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
 
         #endregion
 
+        #region Inactivate.
+
         /// <summary>
         /// Inactivates a signing option.
         /// </summary>
-        #region Inactivate
         [Route("{id:guid}/inactivate")]
         [HttpGet, Dispatch("list", "signature")]
         public ActionResult Inactivate(InactivateSignatureModel request)

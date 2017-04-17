@@ -49,7 +49,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// Return true if the signing option is in use.
+        /// Returns true if the signing option is in use.
         /// </summary>
         public bool IsUsedByList
         {

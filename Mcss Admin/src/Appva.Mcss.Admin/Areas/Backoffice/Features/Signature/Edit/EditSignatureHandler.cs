@@ -11,15 +11,16 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
+
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
+
     #endregion
 
     /// <summary>
@@ -40,8 +41,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditSignatureHandler"/> class.
-        /// <param name="taxonomyService"></param>
         /// </summary>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation</param>
         public EditSignatureHandler(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
@@ -59,18 +60,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             var editSignature = new EditSignatureModel();
             editSignature.Images = new Dictionary<string, string>();
 
-                int btnIndex = 1;
-
-            foreach (var item in signatures)
+            for (int i = 0; i < signatures.Length; i++)
             {
-                editSignature.Images.Add("radioBtn" + btnIndex, Convert.ToString(item.GetValue(null)));
-                btnIndex++;
+                editSignature.Images.Add("radioBtn" + i, Convert.ToString(signatures[i].GetValue(null)));
             }
 
             editSignature.Id = message.Id;
             editSignature.Name = signature.Name;
             editSignature.Path = signature.Path;
             editSignature.IsRoot = signature.IsRoot;
+
             return editSignature;
         }
 

@@ -43,6 +43,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         #endregion
 
         #region Constructor.
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ListSignatureHandler"/> class.
         /// </summary>
@@ -53,9 +54,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             this.taxonomyService = taxonomyService;
             this.persistenceContext = persistenceContext;
         }
+
         #endregion
 
         #region RequestHandlers Overrides.
+
         /// <inheritdoc />
         public override ListSignatureModel Handle(Parameterless<ListSignatureModel> message)
         {
@@ -67,7 +70,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             {
                 var signing = new ListSignature();
 
-                int itemInUseCount = this.persistenceContext.QueryOver<ScheduleSettings>()
+                int usedByListCount = this.persistenceContext.QueryOver<ScheduleSettings>()
                     .JoinQueryOver<Taxon>(x => x.StatusTaxons)
                     .Where(x => x.Id == item.Id)
                     .RowCount();
@@ -75,13 +78,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 signing.Id = item.Id;
                 signing.Name = item.Name;
                 signing.Path = item.Path;
-                signing.IsUsedByList = itemInUseCount > 0 ? true : false;
+                signing.IsUsedByList = usedByListCount > 0 ? true : false;
 
                 signingModel.Items.Add(signing);
             }
 
             return signingModel;
         }
+
         #endregion
     }
 }

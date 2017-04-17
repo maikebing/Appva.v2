@@ -10,23 +10,14 @@
             <h3 class="section-title">Lägg till signering</h3>
             @Html.FormGroup(x => x.Name, "text").Label().TextBox().Validate().Build()
             <p class="btm-pad">@Html.CheckBoxFor(x => x.IsRoot)<label class="lblcheckbox" for="IsRoot">Lägg till som standard</label></p>
-            @{ int btnIndex = 1; }
             <label>Välj en bild</label>
             <ul id="sign-imglist">
             @foreach (var item in Model.Images)
             {
                 <li>
-                @if(btnIndex == 1)
-                {
-                    @Html.RadioButtonFor(x => Model.Path, item.Value, new { id = item.Key, @checked = "checked" })
-                }
-                else
-                {
-                    @Html.RadioButtonFor(x => Model.Path, item.Value, new { id = item.Key })
-                }
+                @Html.RadioButtonFor(x => Model.Path, item.Value, new { id = item.Key })
                 <label for="@item.Key"><img src="@String.Format("/Assets/i/{0}", item.Value)"></label>
                 </li>
-                btnIndex++;
             }
             </ul>
         </div>

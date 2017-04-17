@@ -11,21 +11,24 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
+
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Appva.Cqrs;
+
     #endregion
 
     /// <summary>
-    /// Inactivate Model
+    /// Inactivate model.
     /// </summary>
     public sealed class InactivateSignatureModel : IRequest<bool>
     {
         /// <summary>
         /// The signature Id
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id
+        {
+            get;
+            set;
+        }
     }
 }

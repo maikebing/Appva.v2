@@ -11,12 +11,17 @@
 namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
+
     using Application.Common;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
+
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     internal sealed class EditSignaturePublisher : RequestHandler<EditSignatureModel, bool>
     {
         #region Properties.
@@ -33,7 +38,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="EditSignaturePublisher"/> class.
         /// </summary>
-        /// <param name="taxonomyService"></param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation</param>
         public EditSignaturePublisher(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;

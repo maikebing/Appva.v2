@@ -1,5 +1,4 @@
-﻿@using Appva.Mcss.Admin.Application.Common
-@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListSignatureModel
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListSignatureModel
 @{
     SetTitle("Admin - Signeringar");
 }
@@ -29,7 +28,7 @@
                             <td class="prtd">@(item.IsUsedByList ? "Ja" : "Nej")</td>
                             <td class="prtd2">
                                 @Html.ActionLink("Ändra", "Edit", "Signature", new { id = item.Id }, new { @class = "lb-link btn" })
-                                @Html.ActionLink("Ta bort", "Inactivate", "Signature", new { id = item.Id }, new { @class = (item.IsUsedByList ? "btn btn-del action-denied" : "btn btn-del"), @style = (item.IsUsedByList ? "opacity:.7" : "opacity:1") })
+                                @Html.ActionLink("Ta bort", "Inactivate", "Signature", new { Id = item.Id }, new { @class = (item.IsUsedByList ? "btn btn-del action-denied" : "btn btn-del"), @style = (item.IsUsedByList ? "opacity:.7" : "opacity:1") })
                             </td>
                         </tr>
                     }

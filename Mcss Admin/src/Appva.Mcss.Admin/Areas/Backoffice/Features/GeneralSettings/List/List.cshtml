@@ -23,8 +23,9 @@
         function setButtonState(id) {
             $(id).prop('disabled', false);
         }
-        function update(formId, buttonId, index, color) {
+        function update(formId, buttonId, index, color, disable, message) {
             $(formId).submit(function (e) {
+                $("#submitValue" + index).val($('#' + buttonId).val());
                 var formData = $(this).serialize();
                 e.preventDefault();
                 $.ajax({
@@ -32,14 +33,18 @@
                     type: "POST",
                     data: formData,
                     success: function (result) {
-                        $('#' + buttonId).prop('disabled', true);
+                        if (disable) {
+                            $('#' + buttonId).prop('disabled', true);
+                        } else {
+                            $('#sec-newSigningKey').val(result);
+                        }
                         $('#setlist-overlay .success-message').css('background-color', color);
-                        $('#setlist-overlay .success-message').text('Inställningen uppdaterades');
+                        $('#setlist-overlay .success-message').text(message);
                         $('#item' + index + ' #setlist-overlay').css('visibility', 'visible').hide();
                         $('#item' + index + ' #setlist-overlay').fadeIn('fast').delay(1500).fadeOut('fast');
                     }
                 });
-                $(this).off();
+                $(this).unbind();
             });
         }
     </script>
@@ -107,7 +112,7 @@
                 }
                 else if (item.SecurityTokenConfig != null && item.IsJson)
                 {
-                    <button type="submit" id="@("buttonKey" + item.Index)" class="item-button" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')">Generate new key</button>
+                    <button type="submit" id="signingKeyButton" name="signingKeyButton" value="signingKeyButton" class="item-button" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', false, 'Genererade en ny nyckel')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', false, 'Genererade en ny nyckel')">Generate new key</button>
                     <div style="clear:both"></div>
                     @Textbox("Signing key", item.Index, "sec-newSigningKey", item.SecurityTokenConfig.SigningKey, true, false, false, false)
                     @Textbox("Reset token lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, false, false, true)
@@ -164,7 +169,8 @@
                     }
                 }
                 <div class="bottom">
-                    <button type="submit" id="@("button" + item.Index)" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')" disabled>Uppdatera</button>
+                    <button type="submit" id="@("button" + item.Index)" value="update" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', true, 'Inställningen uppdaterades')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', true, 'Inställningen uppdaterades')" disabled>Uppdatera</button>
+                    <input type="hidden" id="@("submitValue" + item.Index)" name="submitValue" />
                 </div>
             </form>
 

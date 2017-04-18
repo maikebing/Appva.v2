@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         #region Update.
         [Route("list/update")]
         [HttpPost]
-        public void Update(FormCollection request)
+        public JsonResult Update(FormCollection request)
         {
             var settings = this.settingsService.List();
             var theSettingValue = "";
@@ -91,7 +91,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
-                return;
             }
             #endregion
 
@@ -110,26 +109,22 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 }
 
                 var securityTokenConfig = SecurityTokenConfiguration.CreateNew(
-                        request["item.SecurityTokenConfig.Issuer"],
-                        request["item.SecurityTokenConfig.Audience"],
-                        regLifetime,
-                        resetLifetime
-                 );
+                    request["item.SecurityTokenConfig.Issuer"],
+                    request["item.SecurityTokenConfig.Audience"],
+                    regLifetime,
+                    resetLifetime
+                );
 
-                        if (request["newSigningKey"] != null)
-                        {
-                            securityTokenConfig.SigningKey = Hash.Random().ToBase64();
-                        }
-                        else
-                        {
-                            securityTokenConfig.SigningKey = request["item.SecurityTokenConfig.SigningKey"];
-                        }
+                if (request["submitValue"] == "update")
+                {
+                    securityTokenConfig.SigningKey = request["item.SecurityTokenConfig.SigningKey"];
+                }
 
                 theSettingValue = JsonConvert.SerializeObject(securityTokenConfig);
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
-                return;
+                return Json(securityTokenConfig.SigningKey);
             }
             #endregion
 
@@ -148,7 +143,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
-                return;
             }
             #endregion
 
@@ -169,6 +163,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                     setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
                 }
             }
+
+            return Json(null);
         }
 
         #region Methods

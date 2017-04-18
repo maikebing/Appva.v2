@@ -104,20 +104,19 @@
                     @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
                     @Html.HiddenFor(i => item.PdfLookAndFeel)
                     @Html.HiddenFor(i => item.Id)
-                    @Html.HiddenFor(i => item.PdfLookAndFeel.FooterText)
-                    @Html.HiddenFor(i => item.PdfLookAndFeel.LogotypePath)
                 }
                 else if (item.SecurityTokenConfig != null && item.IsJson)
                 {
                     <button type="submit" id="@("buttonKey" + item.Index)" class="item-button" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')">Generate new key</button>
                     <div style="clear:both"></div>
                     @Textbox("Signing key", item.Index, "sec-newSigningKey", item.SecurityTokenConfig.SigningKey, true, false, false, false)
-                    @Textbox("Reset token lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, true, false, true)
-                    @Textbox("Days", item.Index, "regDays", item.SecurityTokenConfig.RegistrationTokenLifetime.Days, false, true)
+                    @Textbox("Reset token lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, false, false, true)
                     @Textbox("Registration token lifetime", item.Index, "sec-tokenRegLifetime",
                     new TimeSpan(item.SecurityTokenConfig.RegistrationTokenLifetime.Hours,
                                    item.SecurityTokenConfig.RegistrationTokenLifetime.Minutes,
-                                     item.SecurityTokenConfig.RegistrationTokenLifetime.Seconds), false, false, true)
+                                     item.SecurityTokenConfig.RegistrationTokenLifetime.Seconds), true, false, true)
+                    @Textbox("Days", item.Index, "regDays", item.SecurityTokenConfig.RegistrationTokenLifetime.Days, false, true)
+
 
                     @Html.HiddenFor(i => item.SecurityTokenConfig.Audience)
                     @Html.HiddenFor(i => item.SecurityTokenConfig.Issuer)
@@ -127,11 +126,11 @@
                 }
                 else if (item.SecurityMailerConfig != null && item.IsJson)
                 {
-                    @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "Mail Signing", false, true)
-                    @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "Mobile Device Registration Mail", false, true)
-                    @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "Registration Mail", false, true)
-                    @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "Reset Password Mail", false, true)
-                    @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "Security Event Mail", false)
+                    @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "Mail Signing", false, true, "If mail signing is enabled, then the e-mail will be signed by the certificate specified by the <c>CertificateThumbPrint</c>.")
+                    @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "Mobile Device Registration Mail", false, true, "If mobile device registration mail is enabled, then an e-mail will be sent when a new user account has been registered.")
+                    @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "Registration Mail", false, true, "If registration mail is enabled, then an e-mail will be sent when a new user account has been registered.")
+                    @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "Reset Password Mail", false, true, "If reset password is enabled, then an e-mail will be sent when a current user account has requested for a password reset.")
+                    @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "Security Event Mail", false, true, "If security event mail is enabled, then any alterations on the account will be reported by an e-mail.")
                     @Html.HiddenFor(i => item.SecurityMailerConfig)
                     @Html.HiddenFor(i => item.Id)
                 }

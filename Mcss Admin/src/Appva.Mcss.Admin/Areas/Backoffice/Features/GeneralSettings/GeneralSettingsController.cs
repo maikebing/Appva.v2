@@ -76,8 +76,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 var headercolor =       RGBConverter(System.Drawing.ColorTranslator.FromHtml(request["pdf-headercolor"])).Split(',');
 
                 var pdfLookAndFeel = PdfLookAndFeel.CreateNew(
-                    request["item.PdfLookAndFeel.LogotypePath"],
-                    request["item.PdfLookAndFeel.FooterText"],
+                    request["pdf-logopath"],
+                    request["pdf-footertext"],
                     PdfColor.CreateNew(Convert.ToByte(backgroundcolor[0]), Convert.ToByte(backgroundcolor[1]), Convert.ToByte(backgroundcolor[2])),
                     PdfColor.CreateNew(Convert.ToByte(fontcolor[0]), Convert.ToByte(fontcolor[1]), Convert.ToByte(fontcolor[2])),
                     PdfColor.CreateNew(Convert.ToByte(headercolor[0]), Convert.ToByte(headercolor[1]), Convert.ToByte(headercolor[2])),
@@ -91,10 +91,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
+                return;
             }
             #endregion
 
-            #region JSON SecurityTokenConfig
+            #region JSON SecurityTokenConfiguration
             if (request.AllKeys.Contains("item.SecurityTokenConfig"))
             {
                 var regLifeTimeDays = TimeSpan.Parse(request["regDays"]);
@@ -128,10 +129,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
+                return;
             }
             #endregion
 
-            #region JSON SecurityMailerConfig
+            #region JSON SecurityMailerConfiguration
             if (request.AllKeys.Contains("item.SecurityMailerConfig"))
             {
                 var securityMailerConfig = SecurityMailerConfiguration.CreateNew(
@@ -146,6 +148,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
+                return;
             }
             #endregion
 

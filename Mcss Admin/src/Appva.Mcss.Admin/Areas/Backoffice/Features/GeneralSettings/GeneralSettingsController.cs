@@ -67,6 +67,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             var theSettingValue = "";
             Guid id = new Guid(request["item.Id"]);
 
+            #region JSON PdfLookAndFeel
             if (request.AllKeys.Contains("item.PdfLookAndFeel"))
             {
                 var backgroundcolor =   RGBConverter(System.Drawing.ColorTranslator.FromHtml(request["pdf-bgcolor"])).Split(',');
@@ -83,21 +84,29 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                     PdfColor.CreateNew(Convert.ToByte(bordercolor[0]), Convert.ToByte(bordercolor[1]), Convert.ToByte(bordercolor[2]))
                     );
 
-                    pdfLookAndFeel.IsCustomFooterTextEnabled = setTrueIfOn(request["pdf-custFooter"]);
-                    pdfLookAndFeel.IsCustomLogotypeEnabled = setTrueIfOn(request["pdf-custLogotype"]);
+                    pdfLookAndFeel.IsCustomFooterTextEnabled = toBool(request["pdf-custFooter"]);
+                    pdfLookAndFeel.IsCustomLogotypeEnabled = toBool(request["pdf-custLogotype"]);
 
                 theSettingValue = JsonConvert.SerializeObject(pdfLookAndFeel);
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
             }
+            #endregion
 
+            #region JSON SecurityTokenConfig
             if (request.AllKeys.Contains("item.SecurityTokenConfig"))
             {
+                var regLifeTimeDays = TimeSpan.Parse(request["regDays"]);
                 TimeSpan regLifetime;
                 TimeSpan resetLifetime;
                 TimeSpan.TryParse(request["sec-tokenRegLifeTime"], out regLifetime);
                 TimeSpan.TryParse(request["sec-tokenResetLifetime"], out resetLifetime);
+
+                if (regLifeTimeDays.Days > 0)
+                {
+                   regLifetime = regLifeTimeDays + regLifetime;
+                }
 
                 var securityTokenConfig = SecurityTokenConfiguration.CreateNew(
                         request["item.SecurityTokenConfig.Issuer"],
@@ -120,15 +129,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
             }
+            #endregion
 
+            #region JSON SecurityMailerConfig
             if (request.AllKeys.Contains("item.SecurityMailerConfig"))
             {
                 var securityMailerConfig = SecurityMailerConfiguration.CreateNew(
-                        setTrueIfOn(request["secmailconf-eventMail"]),
-                        setTrueIfOn(request["secmailconf-regMail"]),
-                        setTrueIfOn(request["secmailconf-resetPassMail"]),
-                        setTrueIfOn(request["secmailconf-deviceRegMail"]),
-                        setTrueIfOn(request["secmailconf-signing"])
+                        toBool(request["secmailconf-eventMail"]),
+                        toBool(request["secmailconf-regMail"]),
+                        toBool(request["secmailconf-resetPassMail"]),
+                        toBool(request["secmailconf-deviceRegMail"]),
+                        toBool(request["secmailconf-signing"])
                      );
 
                 theSettingValue = JsonConvert.SerializeObject(securityMailerConfig);
@@ -136,6 +147,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
             }
+            #endregion
 
             foreach (var item in request.Keys)
             {
@@ -162,7 +174,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         /// </summary>
         /// <param name="requestValue"></param>
         /// <returns>true or false</returns>
-        private bool setTrueIfOn(string requestValue)
+        private bool toBool(string requestValue)
         {
             if (requestValue.Contains("on"))
             {

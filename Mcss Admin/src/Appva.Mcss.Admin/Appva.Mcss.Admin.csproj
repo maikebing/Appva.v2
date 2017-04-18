@@ -387,9 +387,6 @@
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationPublisher.cs" />
-    <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\EditGeneralSettingsHandler.cs" />
-    <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\EditGeneralSettingsModel.cs" />
-    <Compile Include="Areas\Backoffice\Features\GeneralSettings\Edit\EditGeneralSettingsPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\GeneralSettingsController.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettings.cs" />
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsHandler.cs" />
@@ -1315,7 +1312,6 @@
     <Content Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetails.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategory.cshtml" />
-    <Content Include="Areas\Backoffice\Features\GeneralSettings\Edit\Edit.cshtml" />
     <Content Include="Areas\Backoffice\Features\GeneralSettings\List\List.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />

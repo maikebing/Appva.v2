@@ -94,26 +94,31 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
             if (request.AllKeys.Contains("item.SecurityTokenConfig"))
             {
+                TimeSpan regLifetime;
+                TimeSpan resetLifetime;
+                TimeSpan.TryParse(request["sec-tokenRegLifeTime"], out regLifetime);
+                TimeSpan.TryParse(request["sec-tokenResetLifetime"], out resetLifetime);
+
                 var securityTokenConfig = SecurityTokenConfiguration.CreateNew(
-                request["item.SecurityTokenConfig.Issuer"],
-                request["item.SecurityTokenConfig.Audience"],
-                TimeSpan.Parse(request["sec-tokenRegLifeTime"]),
-                TimeSpan.Parse(request["sec-tokenResetLifetime"])
+                        request["item.SecurityTokenConfig.Issuer"],
+                        request["item.SecurityTokenConfig.Audience"],
+                        regLifetime,
+                        resetLifetime
                  );
 
-                if (request["newSigningKey"] != null)
-                {
-                    securityTokenConfig.SigningKey = Hash.Random().ToBase64();
-                }
-                else
-                {
-                    securityTokenConfig.SigningKey = request["item.SecurityTokenConfig.SigningKey"];
-                }
+                        if (request["newSigningKey"] != null)
+                        {
+                            securityTokenConfig.SigningKey = Hash.Random().ToBase64();
+                        }
+                        else
+                        {
+                            securityTokenConfig.SigningKey = request["item.SecurityTokenConfig.SigningKey"];
+                        }
 
-               theSettingValue = JsonConvert.SerializeObject(securityTokenConfig);
+                theSettingValue = JsonConvert.SerializeObject(securityTokenConfig);
 
-               var setting = settings.Where(x => x.Id == id).SingleOrDefault();
-               setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
+                var setting = settings.Where(x => x.Id == id).SingleOrDefault();
+                setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
             }
 
             if (request.AllKeys.Contains("item.SecurityMailerConfig"))

@@ -107,21 +107,25 @@
                 }
                 else if (item.SecurityTokenConfig != null && item.IsJson)
                 {
-                    @Textbox("Audience", item.Index, "sec-tokenAudience", item.SecurityTokenConfig.Audience)
-                    @Textbox("Issuer", item.Index, "sec-tokenIssuer", item.SecurityTokenConfig.Issuer)
-                    @Textbox("Reset lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime)
-                    @Textbox("Registration lifetime", item.Index, "sec-tokenRegLifetime", item.SecurityTokenConfig.RegistrationTokenLifetime)
-                    @Textbox("Signing key", item.Index, "sec-tokenKey", item.SecurityTokenConfig.SigningKey, false)
+                    @Html.HiddenFor(i => item.SecurityTokenConfig.Audience)
+                    @Html.HiddenFor(i => item.SecurityTokenConfig.Issuer)
+                    @Html.LabelFor(i => item.SecurityTokenConfig.ResetTokenLifetime)
+                    <input type="time" step="1" id="sec-tokenResetLifetime" name = "sec-tokenResetLifetime" value="@item.SecurityTokenConfig.ResetTokenLifetime" onchange="setButtonState(@("button" + item.Index))"/> <br />
+                    @Html.LabelFor(i => item.SecurityTokenConfig.RegistrationTokenLifetime)
+                    <input type="time" id="sec-tokenRegLifeTime" name="sec-tokenRegLifeTime" step="1" value="@item.SecurityTokenConfig.RegistrationTokenLifetime" onchange="setButtonState(@("button" + item.Index))"/> <br />
+                    @Html.Label("Generate new signing key")
+                    <input type="checkbox" name="newSigningKey" id="newSigningKey" onchange="setButtonState(@("button" + item.Index))"/>
+                    @Html.HiddenFor(i => item.SecurityTokenConfig.SigningKey)
                     @Html.HiddenFor(i => item.SecurityTokenConfig)
                     @Html.HiddenFor(i => item.Id)
                 }
                 else if (item.SecurityMailerConfig != null && item.IsJson)
                 {
-                    @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "IsMailSigningEnabled", false, true)
-                    @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "IsMobileDeviceRegistrationMailEnabled", false, true)
-                    @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "IsRegistrationMailEnabled", false, true)
-                    @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "IsResetPasswordMailEnabled", false, true)
-                    @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "IsSecurityEventMailEnabled", false)
+                    @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "Mail Signing", false, true)
+                    @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "Mobile Device Registration Mail", false, true)
+                    @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "Registration Mail", false, true)
+                    @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "Reset Password Mail", false, true)
+                    @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "Security Event Mail", false)
                     @Html.HiddenFor(i => item.SecurityMailerConfig)
                     @Html.HiddenFor(i => item.Id)
                 }
@@ -161,12 +165,16 @@
         </div>
     </li>
 }
-@helper Checkbox(string id, int index, bool isChecked, string description = null, bool isCentered = true, bool formGroup = false)
+@helper Checkbox(string id, int index, bool isChecked, string description = null, bool isCentered = true, bool formGroup = false, string title = null)
 {
     <div class="settings-section" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")">
         @if (description != null)
         {
-            <label class="section-label" for="@id" title="@description">@description</label>
+            <label class="section-label" for="@id" title="@description" >@description</label>
+        }
+        @if (title != null && description != null)
+        {
+            <label class="section-label" for="@id" title="@(description + ". " + title)">@description</label>
         }
         <div class="form-group @(isCentered ? "t-center" : "t-right")">
             <label class="checkbox-inline" for="@id">

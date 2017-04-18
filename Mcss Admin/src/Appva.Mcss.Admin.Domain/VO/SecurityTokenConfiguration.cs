@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         public string SigningKey
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>

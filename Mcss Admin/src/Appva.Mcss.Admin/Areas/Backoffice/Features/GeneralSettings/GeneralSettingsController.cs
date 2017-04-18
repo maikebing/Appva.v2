@@ -18,6 +18,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+    using Core.Extensions;
+    using Cryptography;
     using Domain.VO;
     using Newtonsoft.Json;
     using System;
@@ -31,19 +33,22 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
     [Permissions(Permissions.Backoffice.ReadValue)]
     public sealed class GeneralSettingsController : Controller
     {
+        #region Properties
         private readonly ISettingsService settingsService;
+        #endregion
 
+        #region Constructor
         public GeneralSettingsController(ISettingsService settingService)
         {
             this.settingsService = settingService;
         }
+        #endregion
 
         #region List.
         /// <summary>
         /// Lists the settings
         /// </summary>
         /// <returns></returns>
-
         [Route("list")]
         [Dispatch(typeof(Parameterless<ListGeneralSettingsModel>))]
         public ActionResult List()
@@ -53,9 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         }
         #endregion
 
-        #region Save.
-
-        
+        #region Update
         [Route("list/update")]
         [HttpPost]
         public JsonResult Update(FormCollection request)
@@ -78,11 +81,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                     PdfColor.CreateNew(Convert.ToByte(fontcolor[0]), Convert.ToByte(fontcolor[1]), Convert.ToByte(fontcolor[2])),
                     PdfColor.CreateNew(Convert.ToByte(headercolor[0]), Convert.ToByte(headercolor[1]), Convert.ToByte(headercolor[2])),
                     PdfColor.CreateNew(Convert.ToByte(bordercolor[0]), Convert.ToByte(bordercolor[1]), Convert.ToByte(bordercolor[2]))
-
                     );
 
-                pdfLookAndFeel.IsCustomFooterTextEnabled = Convert.ToBoolean(removeOn(request["pdf-custFooter"]));
-                pdfLookAndFeel.IsCustomLogotypeEnabled = Convert.ToBoolean(removeOn(request["pdf-custLogotype"]));
+                    pdfLookAndFeel.IsCustomFooterTextEnabled = setTrueIfOn(request["pdf-custFooter"]);
+                    pdfLookAndFeel.IsCustomLogotypeEnabled = setTrueIfOn(request["pdf-custLogotype"]);
 
                 theSettingValue = JsonConvert.SerializeObject(pdfLookAndFeel);
 
@@ -92,17 +94,36 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
             if (request.AllKeys.Contains("item.SecurityTokenConfig"))
             {
+                var securityTokenConfig = SecurityTokenConfiguration.CreateNew(
+                request["item.SecurityTokenConfig.Issuer"],
+                request["item.SecurityTokenConfig.Audience"],
+                TimeSpan.Parse(request["sec-tokenRegLifeTime"]),
+                TimeSpan.Parse(request["sec-tokenResetLifetime"])
+                 );
 
+                if (request["newSigningKey"] != null)
+                {
+                    securityTokenConfig.SigningKey = Hash.Random().ToBase64();
+                }
+                else
+                {
+                    securityTokenConfig.SigningKey = request["item.SecurityTokenConfig.SigningKey"];
+                }
+
+               theSettingValue = JsonConvert.SerializeObject(securityTokenConfig);
+
+               var setting = settings.Where(x => x.Id == id).SingleOrDefault();
+               setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
             }
 
             if (request.AllKeys.Contains("item.SecurityMailerConfig"))
             {
                 var securityMailerConfig = SecurityMailerConfiguration.CreateNew(
-                        removeOn(request["secmailconf-eventMail"]),
-                        removeOn(request["secmailconf-regMail"]),
-                        removeOn(request["secmailconf-resetPassMail"]),
-                        removeOn(request["secmailconf-deviceRegMail"]),
-                        removeOn(request["secmailconf-signing"])
+                        setTrueIfOn(request["secmailconf-eventMail"]),
+                        setTrueIfOn(request["secmailconf-regMail"]),
+                        setTrueIfOn(request["secmailconf-resetPassMail"]),
+                        setTrueIfOn(request["secmailconf-deviceRegMail"]),
+                        setTrueIfOn(request["secmailconf-signing"])
                      );
 
                 theSettingValue = JsonConvert.SerializeObject(securityMailerConfig);
@@ -110,7 +131,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
             }
-
 
             foreach (var item in request.Keys)
             {
@@ -133,14 +153,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
           return  Json("string");
         }
 
+        #region Methods
         /// <summary>
-        /// Sets the request value to true if it contains the characters "on"
+        /// Sets the request value to true if it contains the characters "on".
         /// </summary>
-        /// <param name="requestId"></param>
-        /// <returns></returns>
-        private bool removeOn(string requestId)
+        /// <param name="requestValue"></param>
+        /// <returns>true or false</returns>
+        private bool setTrueIfOn(string requestValue)
         {
-            if (requestId.Contains("on"))
+            if (requestValue.Contains("on"))
             {
                 return true;
             }
@@ -150,36 +171,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             }
         }
 
+        /// <summary>
+        /// Converts HEX to RGB
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns>RGB values</returns>
         private static String RGBConverter(System.Drawing.Color c)
        {
             return c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString();
-        }
+       }
         #endregion
-
-        /*
-        #region Edit.
-        /// <summary>
-        /// edits a setting
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Route("{id:guid}/edit")]
-        [HttpGet, Dispatch]
-        public ActionResult Edit(Identity<EditGeneralSettingsModel> request)
-        {
-            return this.View();
-        }
-        */
-
-        #region Update.
-
-        /// <summary>
-        /// Updates a setting
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-
-
 
         #endregion
     }

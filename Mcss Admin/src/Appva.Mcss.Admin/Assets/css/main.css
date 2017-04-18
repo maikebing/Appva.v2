@@ -1380,12 +1380,13 @@ td.rights {
     font-size:18px;
     font-weight:bold;
 }
-#setlist-content h1 span {
+#setlist h3 span {
     float:left;
     display:inline-block;
-    width:14px;
-    height:14px;
-    margin:2px 10px 0 0;
+    width:16px;
+    height:9px;
+    margin:1px 10px 0 0;
+    border:2px dotted #fff;
 }
 #setlist {
     display:flex;

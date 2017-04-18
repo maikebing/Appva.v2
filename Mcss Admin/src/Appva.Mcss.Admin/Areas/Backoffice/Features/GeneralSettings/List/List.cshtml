@@ -48,7 +48,7 @@
         {
             foreach(var item in Model.List)
             {
-                @(item.Index == 0 || item.Index > 0 && Model.List.ElementAt(item.Index - 1).Category != item.Category ? Html.Raw("<div id=\"setlist-content\">\r\n<h1><span style=\"background:" + item.CategoryColor + "\"></span>" + item.Category + "</h1><ul id=\"setlist\">\r\n") : Html.Raw(""))
+                @(item.Index == 0 || item.Index > 0 && Model.List.ElementAt(item.Index - 1).Category != item.Category ? Html.Raw("<div id=\"setlist-content\">\r\n<h1>" + item.Category + "</h1><ul id=\"setlist\">\r\n") : Html.Raw(""))
                 @List(item);
                 @(item.Index < Model.List.Count() - 1 && Model.List.ElementAt(item.Index + 1).Category != item.Category ? Html.Raw("</ul>\r\n</div>\r\n") : Html.Raw(""))
             }
@@ -71,7 +71,7 @@
         <div class="header">
             @if (item.Category != item.SubCategory)
             {
-                <h3 title="@item.MachineName">@item.SubCategory</h3>
+                <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.SubCategory</h3>
             }
             <h2>@item.Name</h2>
             @if (string.IsNullOrEmpty(item.Description) == false)

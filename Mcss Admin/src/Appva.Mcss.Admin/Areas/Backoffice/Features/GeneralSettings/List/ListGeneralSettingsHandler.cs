@@ -93,17 +93,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 }
 
                 if (index < settings.Count() - 1 && settings.ElementAt(index + 1).Namespace != item.Namespace)
-                {
                     colorIndex++;
-                }
                 
                 if(colorIndex > index)
-                {
                     colorIndex = 0;
-                }
 
                 index++;
-
                 model.List.Add(settingItems);
             }
 
@@ -116,23 +111,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         private void SetCategoryName(ListGeneralSettings settingItem, string text, string replacedText)
         {
-            text = text.ToLower().Replace(replacedText.ToLower(), "");
-            var array = text.Split('.');
+            var array = text.ToLower().Replace(replacedText.ToLower(), "").Split('.');
             string category = "", subCategory = "";
+            category = array.Length > 0 ? array[0] : "";
+            subCategory = array.Length > 1 ? string.Join("/", array.Skip(1).ToArray()) : "";
 
-            if(array.Length > 0)
-                category = array[0];
-
-            if (array.Length > 1)
-            {
-                var newArray = array.Skip(1).ToArray();
-                subCategory = string.Join("/", newArray);
-            }
-
-            if (subCategory.Length - 1 == '/')
-            {
+            if (subCategory != string.Empty && subCategory[subCategory.Length - 1] == '/')
                 subCategory = subCategory.Substring(0, subCategory.Length - 1);
-            }
 
             if(subCategory == string.Empty)
             {

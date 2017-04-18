@@ -40,6 +40,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             "Mcss.Integration.Ldap.LdapConfiguration",
             "MCSS.Device.HelpPage",
             "MCSS.Device.Beacon.UDID",
+            "Mcss.Temporary.Global.Inventory.Amounts.Override",
             "Tenant.Client.LoginMethod"
         };
 

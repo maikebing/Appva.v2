@@ -3092,9 +3092,10 @@ form .time {width:4em;}
     white-space:nowrap;
     text-overflow:ellipsis;
 }
-#setlist input[type="number"], #setlist input[type="text"] {
+#setlist input[type="number"], #setlist input[type="text"] { padding:13px 14px 12px 165px; }
+#setlist input[type="time"] { padding:11px 14px 10px 165px; }
+#setlist input[type="number"], #setlist input[type="text"], #setlist input[type="time"] {
     background:rgba(255, 255, 255, 0.7);
-    padding:13px 14px 12px 165px;
     font-size:13px;
     width:100%;
     border-style:solid;
@@ -3102,7 +3103,9 @@ form .time {width:4em;}
     box-sizing:border-box;
     outline:none;
 }
-#setlist input[type="number"]:focus, #setlist input[type="text"]:focus, #setlist select:focus {
+#setlist input[type="text"]:disabled { color:#bbb; }
+#setlist input[type="number"]:focus, #setlist input[type="text"]:focus,
+#setlist input[type="time"]:focus, #setlist select:focus {
     background:#fafafa;
 }
 #setlist input[type="color"] {
@@ -3140,6 +3143,18 @@ form .time {width:4em;}
     color:#ddd;
     background:#f5f5f5;
 }
+#setlist .item-button {
+    float:right;
+    width:auto;
+    background:#fff;
+    color:#1658c4;
+    padding:6px 8px;
+    font-weight:normal;
+    margin:0 15px 4px 0;
+    text-decoration:underline;
+    cursor:pointer;
+}
+#setlist .item-button:hover, #setlist .item-button:focus { background:#f8f8f8; }
 .std-form .checkbox-grid .wrap {
 	width:492px;
 	border:1px solid #D8DFE5;

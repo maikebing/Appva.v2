@@ -96,6 +96,8 @@
                 {
                     @Checkbox("pdf-custFooter", item.Index, item.PdfLookAndFeel.IsCustomFooterTextEnabled, "Custom footer text", false, true)
                     @Checkbox("pdf-custLogotype", item.Index, item.PdfLookAndFeel.IsCustomLogotypeEnabled, "Custom logotype", false)
+                    @Textbox("Footer text", item.Index, "pdf-footertext", item.PdfLookAndFeel.FooterText)
+                    @Textbox("Logotype path", item.Index, "pdf-logopath", item.PdfLookAndFeel.LogotypePath, false)
                     @ColorInput("Background color", item.Index, "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
                     @ColorInput("Font color", item.Index, "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
                     @ColorInput("Table border color", item.Index, "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
@@ -107,14 +109,13 @@
                 }
                 else if (item.SecurityTokenConfig != null && item.IsJson)
                 {
+                    <button type="submit" id="@("buttonKey" + item.Index)" class="item-button" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)')">Generate new key</button>
+                    <div style="clear:both"></div>
+                    @Textbox("Signing key", item.Index, "sec-newSigningKey", item.SecurityTokenConfig.SigningKey, true, false, false, false)
+                    @Textbox("Reset token lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, true, false, true)
+                    @Textbox("Registration token lifetime", item.Index, "sec-tokenRegLifetime", item.SecurityTokenConfig.RegistrationTokenLifetime, false, false, true)
                     @Html.HiddenFor(i => item.SecurityTokenConfig.Audience)
                     @Html.HiddenFor(i => item.SecurityTokenConfig.Issuer)
-                    @Html.LabelFor(i => item.SecurityTokenConfig.ResetTokenLifetime)
-                    <input type="time" step="1" id="sec-tokenResetLifetime" name = "sec-tokenResetLifetime" value="@item.SecurityTokenConfig.ResetTokenLifetime" onchange="setButtonState(@("button" + item.Index))"/> <br />
-                    @Html.LabelFor(i => item.SecurityTokenConfig.RegistrationTokenLifetime)
-                    <input type="time" id="sec-tokenRegLifeTime" name="sec-tokenRegLifeTime" step="1" value="@item.SecurityTokenConfig.RegistrationTokenLifetime" onchange="setButtonState(@("button" + item.Index))"/> <br />
-                    @Html.Label("Generate new signing key")
-                    <input type="checkbox" name="newSigningKey" id="newSigningKey" onchange="setButtonState(@("button" + item.Index))"/>
                     @Html.HiddenFor(i => item.SecurityTokenConfig.SigningKey)
                     @Html.HiddenFor(i => item.SecurityTokenConfig)
                     @Html.HiddenFor(i => item.Id)
@@ -186,7 +187,7 @@
 }
 @helper Select(string labelName, int index, string id, string value, Dictionary<string, string> options)
 {
-string labelId = id + "label";
+    string labelId = id + "label";
     <div class="select-section" style="border-width:1px;margin-bottom:15px">
         <label class="section-label attr-item" id="@labelId" for="@id">@labelName</label>
         <div class="select-wrapper">
@@ -199,17 +200,17 @@ string labelId = id + "label";
         </div>
     </div>
 }
-@helper Textbox(string labelName, int index, string id, dynamic value, bool formGroup = true, bool isNumber = false)
+@helper Textbox(string labelName, int index, string id, dynamic value, bool formGroup = true, bool isNumber = false, bool isTime = false, bool isEnabled = true)
 {
-string labelId = id + "label";
+    string labelId = id + "label";
     <div class="value-section">
         <label class="value-label attr-item border-r" id="@labelId" for="@id" title="@labelName">@labelName</label>
-        <input type="@(isNumber ? "number" : "text")" id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
+        <input type="@(isTime ? "time" : (isNumber ? "number" : "text"))"@(isTime ? Html.Raw(" step='1' required='required'") : Html.Raw(""))@(isEnabled == false ? " disabled" : "") id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
     </div>
 }
 @helper ColorInput(string labelName, int index, string id, dynamic color, bool formGroup = true)
 {
-string pickerId = id + "picker", labelId = id + "label", hex = @RgbToHex(color);
+    string pickerId = id + "picker", labelId = id + "label", hex = @RgbToHex(color);
     <div class="value-section" style="@(formGroup ? "padding-bottom:0" : "padding-bottom:15px")">
         <label id="@(labelId)" class="value-label attr-item" for="@id" title="@labelName">@labelName</label>
         <input class="p-left" id="@id" name="@id" maxlength="7" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px")" onchange="colorPicker('@pickerId', this.id)" onkeypress="setButtonState(@("button" + index))" type="text" value="@hex" />

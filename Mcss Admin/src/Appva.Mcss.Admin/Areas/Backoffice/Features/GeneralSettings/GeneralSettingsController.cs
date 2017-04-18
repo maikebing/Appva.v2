@@ -33,11 +33,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
     [Permissions(Permissions.Backoffice.ReadValue)]
     public sealed class GeneralSettingsController : Controller
     {
-        #region Properties
+        #region Properties.
         private readonly ISettingsService settingsService;
         #endregion
 
-        #region Constructor
+        #region Constructor.
         public GeneralSettingsController(ISettingsService settingService)
         {
             this.settingsService = settingService;
@@ -58,10 +58,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
         }
         #endregion
 
-        #region Update
+        #region Update.
         [Route("list/update")]
         [HttpPost]
-        public JsonResult Update(FormCollection request)
+        public void Update(FormCollection request)
         {
             var settings = this.settingsService.List();
             var theSettingValue = "";
@@ -149,8 +149,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                     setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
                 }
             }
-
-          return  Json("string");
         }
 
         #region Methods

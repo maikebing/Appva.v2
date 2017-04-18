@@ -1369,17 +1369,33 @@ td.rights {
 #signlist .tr-highlight, #signlist .td-highlight { transition:background .2s ease-in-out; }
 #setlist-content {
     background:#cfd6e5;
+    min-width:420px;
     margin:20px;
+}
+#setlist-content h1 {
+    background:#445068;
+    color:#fff;
+    display:block;
+    padding:14px 20px;
+    font-size:18px;
+    font-weight:bold;
+}
+#setlist-content h1 span {
+    float:left;
+    display:inline-block;
+    width:14px;
+    height:14px;
+    margin:2px 10px 0 0;
 }
 #setlist {
     display:flex;
     flex-wrap:wrap;
     list-style-type:none;
-    min-width:380px;
     padding:20px 0 0 20px;
     height:100%;
 }
 #setlist li {
+    justify-content:flex-start;
     position:relative;
     break-inside: avoid;
     -webkit-column-break-inside: avoid;
@@ -1440,14 +1456,6 @@ td.rights {
     white-space:nowrap;
     border-bottom:1px solid #ddd;
     cursor:default;
-}
-#setlist h3 span {
-    float:left;
-    display:inline-block;
-    width:16px;
-    height:8px;
-    margin:1px 9px 0 0;
-    border:2px dotted #fff;
 }
 #setlist h2 {
     font-size:18px;

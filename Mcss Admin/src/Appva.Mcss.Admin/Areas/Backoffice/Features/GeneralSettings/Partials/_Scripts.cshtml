@@ -34,12 +34,29 @@
                         $('#sec-newSigningKey').val(result);
                         $('#sec-newSigningKeyHidden').val(result);
                     }
+                    else if (submittedButton.val() == 'defaultTimesBtn') {
+                        var array = result.split(',');
+                        var regTime = array[0];
+                        var resetTime = array[1];
+                        var regTimes = regTime.split('.');
+                        var days = regTimes[0];
+
+                        $('#sec-tokenResetLifetime').val(resetTime);
+                        $('#regDays').val(days);
+                        $('#sec-tokenRegLifetime').val(regTimes[1]);
+                    }
+                    
                 }
             });
         });
         $('button[type=submit]').bind('keypress click', function (e) {
             submittedButton = $(this);
-            $(this).next().val($(this).val());
+            if (submittedButton.val() == 'update') {
+                $(this).next().val($(this).val());
+            }
+            if (submittedButton.val() == 'defaultTimesBtn') {
+                $('#defaultTimesBtn').val('default');
+            }
         });
     });
 </script>

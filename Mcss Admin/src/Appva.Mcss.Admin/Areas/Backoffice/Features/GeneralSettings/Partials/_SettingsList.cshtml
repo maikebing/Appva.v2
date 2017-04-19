@@ -46,6 +46,7 @@
                 <button type="submit" id="signingKeyButton" name="signingKeyButton" value="signingKeyButton" class="item-button">Generate new key</button>
                 <div style="clear:both"></div>
                 @Textbox("Signing key", item.Index, "sec-newSigningKey", item.SecurityTokenConfig.SigningKey, false, false, false, false)
+                <button type="submit" id="defaultTimesButton" name="defaultTimesButton" value="defaultTimesBtn" class="item-button">Use default time settings</button> <br /><br />
                 <h4>Reset Token Lifetime</h4>
                 @Textbox("hh:mm:ss", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, false, false, true)
                 <h4>Registration Token Lifetime</h4>
@@ -58,6 +59,7 @@
                 @Html.HiddenFor(i => item.SecurityTokenConfig.Issuer)
                 @Html.HiddenFor(i => item.SecurityTokenConfig)
                 @Html.Hidden("sec-newSigningKeyHidden", item.SecurityTokenConfig.SigningKey)
+                @Html.Hidden("defaultTimesBtn");
 
             }
             else if (item.SecurityMailerConfig != null && item.IsJson)

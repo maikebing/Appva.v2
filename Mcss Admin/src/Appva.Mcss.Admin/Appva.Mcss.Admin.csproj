@@ -1313,6 +1313,7 @@
     <Content Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetails.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\GeneralSettings\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\GeneralSettings\Partials\_SettingsList.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

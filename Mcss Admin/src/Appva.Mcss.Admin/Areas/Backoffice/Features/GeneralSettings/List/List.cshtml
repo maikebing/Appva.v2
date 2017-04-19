@@ -1,5 +1,4 @@
-﻿@using Appva.Mcss.Admin.Areas.Backoffice.Models
-@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListGeneralSettingsModel
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListGeneralSettingsModel
 @{
     SetTitle("Admin - Generella inställningar");
 }
@@ -49,6 +48,7 @@
             });
             $('button[type=submit]').bind('keypress click', function (e) {
                 submittedButton = $(this);
+                $(this).next().val($(this).val());
             });
         });
     </script>

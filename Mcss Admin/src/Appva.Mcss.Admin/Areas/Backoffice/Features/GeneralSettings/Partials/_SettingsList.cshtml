@@ -43,7 +43,7 @@
             }
             else if (item.SecurityTokenConfig != null && item.IsJson)
             {
-                <button type="submit" id="signingKeyButton" name="signingKeyButton" value="signingKeyButton" class="item-button" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', false, 'Genererade en ny nyckel')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', false, 'Genererade en ny nyckel')">Generate new key</button>
+                <button type="submit" id="signingKeyButton" name="signingKeyButton" value="signingKeyButton" class="item-button">Generate new key</button>
                 <div style="clear:both"></div>
                     @Textbox("Signing key", item.Index, "sec-newSigningKey", item.SecurityTokenConfig.SigningKey, true, false, false, false)
                     @Textbox("Reset token lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, false, false, true)
@@ -92,7 +92,7 @@
             }
             <div class="bottom">
                 <button type="submit" id="@("button" + item.Index)" value="update" disabled>Uppdatera</button>
-                <input type="hidden" id="formIndex" name="formIndex" value="@item.Index" />
+                <input type="hidden" id="@("submitValue" + item.Index)" name="submitValue" />
                 @Html.HiddenFor(i => item.Id)
             </div>
         </form>

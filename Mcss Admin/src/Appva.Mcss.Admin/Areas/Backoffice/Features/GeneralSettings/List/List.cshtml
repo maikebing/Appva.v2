@@ -3,55 +3,11 @@
     SetTitle("Admin - Generella inställningar");
 }
 @Html.Partial("_BackofficeMenuPartial")
+@Html.Partial("~/Areas/Backoffice/Features/GeneralSettings/Partials/_Scripts.cshtml")
 <div id="subheader" class="cf">
     <h1>Generella inställningar</h1>
 </div>
 <div id="content" class="cf">
-    <script>
-        var submittedButton;
-        function colorPicker(id1, id2) {
-            document.getElementById(id1).value = document.getElementById(id2).value;
-        }
-        function setCheckboxState(id1, id2) {
-            var checkbox = document.getElementById(id2);
-            if (document.getElementById(id1).checked) {
-                checkbox.value = true;
-            } else {
-                checkbox.value = false;
-            }
-        }
-        function setButtonState(id) {
-            $(id).prop('disabled', false);
-        }
-        $(document).ready(function () {
-            $('form').submit(function (e) {
-                var listId = $(this).closest('li').attr('id');;
-                var formData = $(this).serialize();
-                e.preventDefault();
-                $.ajax({
-                    url: "list/update",
-                    type: 'POST',
-                    data: formData,
-                    success: function (result) {
-                        if (submittedButton.val() == 'update') {
-                            $(submittedButton).prop('disabled', true);
-                            $('#' + listId + ' #setlist-overlay .success-message').css('background-color', '#333');
-                            $('#' + listId + ' #setlist-overlay .success-message').text('Inställningen uppdaterades');
-                            $('#' + listId + ' #setlist-overlay').css('visibility', 'visible').hide();
-                            $('#' + listId + ' #setlist-overlay').fadeIn('fast').delay(1400).fadeOut('fast');
-                        } else if (submittedButton.val() == 'signingKeyButton') {
-                            $('#sec-newSigningKey').val(result);
-                            $('#sec-newSigningKeyHidden').val(result);
-                        }
-                    }
-                });
-            });
-            $('button[type=submit]').bind('keypress click', function (e) {
-                submittedButton = $(this);
-                $(this).next().val($(this).val());
-            });
-        });
-    </script>
     <div id="content-primary">
         @if (Model.List != null && Model.List.Count() > 0)
         {

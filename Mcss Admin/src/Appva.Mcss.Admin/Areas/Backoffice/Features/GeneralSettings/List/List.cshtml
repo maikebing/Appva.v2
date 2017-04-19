@@ -42,6 +42,7 @@
                             $('#' + listId + ' #setlist-overlay').fadeIn('fast').delay(1400).fadeOut('fast');
                         } else if (submittedButton.val() == 'signingKeyButton') {
                             $('#sec-newSigningKey').val(result);
+                            $('#sec-newSigningKeyHidden').val(result);
                         }
                     }
                 });

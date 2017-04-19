@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             var theSettingValue = "";
             Guid id = new Guid(request["item.Id"]);
 
-            #region JSON PdfLookAndFeel
+            // JSON object PdfLookAndFeel
             if (request.AllKeys.Contains("item.PdfLookAndFeel"))
             {
                 var backgroundcolor =   RGBConverter(System.Drawing.ColorTranslator.FromHtml(request["pdf-bgcolor"])).Split(',');
@@ -91,10 +91,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
+                return Json(null);
             }
-            #endregion
 
-            #region JSON SecurityTokenConfiguration
+            // JSON Object SecurityTokenConfiguration
             if (request.AllKeys.Contains("item.SecurityTokenConfig"))
             {
                 var regLifeTimeDays = TimeSpan.Parse(request["regDays"]);
@@ -126,9 +126,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
                 return Json(securityTokenConfig.SigningKey);
             }
-            #endregion
 
-            #region JSON SecurityMailerConfiguration
+            // JSON Object SecurityMailerConfiguration
             if (request.AllKeys.Contains("item.SecurityMailerConfig"))
             {
                 var securityMailerConfig = SecurityMailerConfiguration.CreateNew(
@@ -143,33 +142,37 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
+                return Json(null);
             }
-            #endregion
 
             foreach (var item in request.Keys)
             {
                 // select = string, value = int, check = bool
-                if (item.ToString().Contains("select") || item.ToString().Contains("value") || item.ToString().Contains("check"))
+                if (item.ToString().Contains("select") || item.ToString().Contains("value"))
                 {
                     theSettingValue = request[item.ToString()];
-
-                    if (theSettingValue.Contains("on"))
-                    {
-                        theSettingValue = "true";
-                    }
 
                     var setting = settings.Where(x => x.Id == id).SingleOrDefault();
 
                     setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
                 }
-            }
 
+                if (item.ToString().Contains("check"))
+                {
+                    theSettingValue = request[item.ToString()];
+
+                    var setting = settings.Where(x => x.Id == id).SingleOrDefault();
+
+                    setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, Convert.ToString(toBool(theSettingValue)));
+                }
+            }
             return Json(null);
         }
 
         #region Methods
         /// <summary>
-        /// Sets the request value to true if it contains the characters "on".
+        /// Sets the request value to true if it contains the characters "on". 
+        /// A fix because a checkbox value returns null or "on" when using formcollection.
         /// </summary>
         /// <param name="requestValue"></param>
         /// <returns>true or false</returns>

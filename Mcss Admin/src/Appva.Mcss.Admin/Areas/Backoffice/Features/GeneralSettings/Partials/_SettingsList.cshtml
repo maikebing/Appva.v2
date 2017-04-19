@@ -139,7 +139,7 @@ string labelId = id + "label";
 string labelId = id + "label";
     <div class="value-section">
         <label class="value-label attr-item border-r" id="@labelId" for="@id" title="@labelName">@labelName</label>
-        <input type="@(isTime ? "time" : (isNumber ? "number" : "text"))" @(isTime ? Html.Raw(" step='1' required='required'") : Html.Raw("")) @(isEnabled == false ? " disabled" : "") id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
+        <input type="@(isTime ? "time" : (isNumber ? "number" : "text"))" @(isTime ? Html.Raw(" step='1' required='required'") : Html.Raw("")) @(isEnabled == false ? " disabled" : "") id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" min="0" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
     </div>
 }
 @helper ColorInput(string labelName, int index, string id, dynamic color, bool formGroup = true)

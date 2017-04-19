@@ -37,6 +37,7 @@
                             $('#' + buttonId).prop('disabled', true);
                         } else {
                             $('#sec-newSigningKey').val(result);
+                            $('#sec-newSigningKeyHidden').val(result);
                         }
                         $('#setlist-overlay .success-message').css('background-color', color);
                         $('#setlist-overlay .success-message').text(message);

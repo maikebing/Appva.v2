@@ -117,7 +117,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                 if (request["submitValue"] == "update")
                 {
-                    securityTokenConfig.SigningKey = request["item.SecurityTokenConfig.SigningKey"];
+                    securityTokenConfig.SigningKey = request["sec-newSigningKeyHidden"];
                 }
 
                 theSettingValue = JsonConvert.SerializeObject(securityTokenConfig);

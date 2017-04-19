@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Domain.Entities;
     using Persistence;
+    using NHibernate.Criterion;
 
     #endregion
 
@@ -87,7 +88,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
 
             var filteredDelegations = this.persistanceContext.QueryOver<Delegation>()
                 .JoinAlias(x => x.OrganisationTaxon, () => org)
-                .WhereRestrictionOn(() => org.Path).IsLike(this.filter.GetCurrentFilter().Path + "%")
+                .WhereRestrictionOn(() => org.Path).IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path))
                 .List();
 
             foreach (var cat in categories)

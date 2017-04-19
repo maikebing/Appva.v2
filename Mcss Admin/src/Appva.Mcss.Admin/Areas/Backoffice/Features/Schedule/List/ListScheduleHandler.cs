@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Persistence;
+    using NHibernate.Criterion;
     #endregion
 
     /// <summary>
@@ -68,7 +69,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
             var patientFilter = this.persistenceContext.QueryOver<Patient>()
                                 .JoinAlias(x => x.Taxon, () => organization)
-                                .WhereRestrictionOn(() => organization.Path).IsLike(this.filter.GetCurrentFilter().Path + "%")
+                                .WhereRestrictionOn(() => organization.Path).IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path))
                                 .List();
 
             return new ListScheduleModel

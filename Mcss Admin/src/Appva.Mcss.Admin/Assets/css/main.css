@@ -3073,6 +3073,20 @@ form .time {width:4em;}
     font-weight:bold;
     background:#fff;
 }
+#setlist h4{
+    color: #3b3b3b;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 15px;
+    margin-bottom: 0px;
+    margin-right: 15px;
+    text-align: center;
+    border: 1px solid #d8dfe5;
+    border-bottom: 0px;
+    background: #fff;
+    padding:12px 15px 11px 15px;
+}
+
 #setlist .section-label {
     max-width:200px;
     overflow:hidden;

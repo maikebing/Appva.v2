@@ -80,6 +80,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        public string CategoryStartHtml
+        {
+            get;
+            set;
+        }
+
+        public string CategoryEndHtml
+        {
+            get;
+            set;
+        }
+
         public bool IsJson
         {
             get;

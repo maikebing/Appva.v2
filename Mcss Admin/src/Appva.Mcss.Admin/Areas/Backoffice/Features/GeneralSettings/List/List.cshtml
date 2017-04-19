@@ -9,6 +9,7 @@
 </div>
 <div id="content" class="cf">
     <script>
+        var submittedButton;
         function colorPicker(id1, id2) {
             document.getElementById(id1).value = document.getElementById(id2).value;
         }
@@ -23,39 +24,41 @@
         function setButtonState(id) {
             $(id).prop('disabled', false);
         }
-        function update(formId, buttonId, index, color, disable, message) {
-            $(formId).submit(function (e) {
-                $("#submitValue" + index).val($('#' + buttonId).val());
+        $(document).ready(function () {
+            $('form').submit(function (e) {
+                var listId = $(this).closest('li').attr('id');;
                 var formData = $(this).serialize();
                 e.preventDefault();
                 $.ajax({
                     url: "list/update",
-                    type: "POST",
+                    type: 'POST',
                     data: formData,
                     success: function (result) {
-                        if (disable) {
-                            $('#' + buttonId).prop('disabled', true);
-                        } else {
+                        if (submittedButton.val() == 'update') {
+                            $(submittedButton).prop('disabled', true);
+                            $('#' + listId + ' #setlist-overlay .success-message').css('background-color', '#333');
+                            $('#' + listId + ' #setlist-overlay .success-message').text('Inställningen uppdaterades');
+                            $('#' + listId + ' #setlist-overlay').css('visibility', 'visible').hide();
+                            $('#' + listId + ' #setlist-overlay').fadeIn('fast').delay(1400).fadeOut('fast');
+                        } else if (submittedButton.val() == 'signingKeyButton') {
                             $('#sec-newSigningKey').val(result);
                         }
-                        $('#setlist-overlay .success-message').css('background-color', color);
-                        $('#setlist-overlay .success-message').text(message);
-                        $('#item' + index + ' #setlist-overlay').css('visibility', 'visible').hide();
-                        $('#item' + index + ' #setlist-overlay').fadeIn('fast').delay(1500).fadeOut('fast');
                     }
                 });
-                $(this).unbind();
             });
-        }
+            $('button[type=submit]').bind('keypress click', function (e) {
+                submittedButton = $(this);
+            });
+        });
     </script>
     <div id="content-primary">
         @if (Model.List != null && Model.List.Count() > 0)
         {
             foreach(var item in Model.List)
             {
-                @(item.Index == 0 || item.Index > 0 && Model.List.ElementAt(item.Index - 1).Category != item.Category ? Html.Raw("<div id=\"setlist-content\">\r\n<h1>" + item.Category + "</h1><ul id=\"setlist\">\r\n") : Html.Raw(""))
+                @Html.Raw(item.CategoryStartHtml)
                 @Html.Partial("~/Areas/Backoffice/Features/GeneralSettings/Partials/_SettingsList.cshtml", Model, new ViewDataDictionary { { "item", item } })
-                @(item.Index < Model.List.Count() - 1 && Model.List.ElementAt(item.Index + 1).Category != item.Category ? Html.Raw("</ul>\r\n</div>\r\n") : Html.Raw(""))
+                @Html.Raw(item.CategoryEndHtml)
             }
         }
         else

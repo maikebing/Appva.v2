@@ -43,19 +43,19 @@
             }
             else if (item.SecurityTokenConfig != null && item.IsJson)
             {
-                <button type="submit" id="signingKeyButton" name="signingKeyButton" value="signingKeyButton" class="item-button" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', false, 'Genererade en ny nyckel')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', false, 'Genererade en ny nyckel')">Generate new key</button>
-                    <div style="clear:both"></div>
-                    @Textbox("Signing key", item.Index, "sec-newSigningKey", item.SecurityTokenConfig.SigningKey, true, false, false, false)
-                    @Textbox("Reset token lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, false, false, true)
-                    @Textbox("Registration token lifetime", item.Index, "sec-tokenRegLifetime",
-                    new TimeSpan(item.SecurityTokenConfig.RegistrationTokenLifetime.Hours,
-                                   item.SecurityTokenConfig.RegistrationTokenLifetime.Minutes,
-                                     item.SecurityTokenConfig.RegistrationTokenLifetime.Seconds), true, false, true)
-                    @Textbox("Days", item.Index, "regDays", item.SecurityTokenConfig.RegistrationTokenLifetime.Days, false, true)
-                    @Html.HiddenFor(i => item.SecurityTokenConfig.Audience)
-                    @Html.HiddenFor(i => item.SecurityTokenConfig.Issuer)
-                    @Html.HiddenFor(i => item.SecurityTokenConfig.SigningKey)
-                    @Html.HiddenFor(i => item.SecurityTokenConfig)
+                <button type="submit" id="signingKeyButton" name="signingKeyButton" value="signingKeyButton" class="item-button">Generate new key</button>
+                <div style="clear:both"></div>
+                @Textbox("Signing key", item.Index, "sec-newSigningKey", item.SecurityTokenConfig.SigningKey, true, false, false, false)
+                @Textbox("Reset token lifetime", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, false, false, true)
+                @Textbox("Registration token lifetime", item.Index, "sec-tokenRegLifetime",
+                new TimeSpan(item.SecurityTokenConfig.RegistrationTokenLifetime.Hours,
+                                item.SecurityTokenConfig.RegistrationTokenLifetime.Minutes,
+                                    item.SecurityTokenConfig.RegistrationTokenLifetime.Seconds), true, false, true)
+                @Textbox("Days", item.Index, "regDays", item.SecurityTokenConfig.RegistrationTokenLifetime.Days, false, true)
+                @Html.HiddenFor(i => item.SecurityTokenConfig.Audience)
+                @Html.HiddenFor(i => item.SecurityTokenConfig.Issuer)
+                @Html.HiddenFor(i => item.SecurityTokenConfig.SigningKey)
+                @Html.HiddenFor(i => item.SecurityTokenConfig)
             }
             else if (item.SecurityMailerConfig != null && item.IsJson)
             {
@@ -91,15 +91,13 @@
                 }
             }
             <div class="bottom">
-                <button type="submit" id="@("button" + item.Index)" value="update" onmouseup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', true, 'Inställningen uppdaterades')" onkeyup="update(@("form" + item.Index), this.id, @(item.Index), '@(item.CategoryColor)', true, 'Inställningen uppdaterades')" disabled>Uppdatera</button>
+                <button type="submit" id="@("button" + item.Index)" value="update" disabled>Uppdatera</button>
+                <input type="hidden" id="formIndex" name="formIndex" value="@item.Index" />
                 @Html.HiddenFor(i => item.Id)
-                <input type="hidden" id="@("submitValue" + item.Index)" name="submitValue" />
             </div>
         </form>
     </div>
 </li>
-
-@* Templates *@
 @helper Checkbox(string id, int index, bool isChecked, string description = null, bool isCentered = true, bool formGroup = false, string title = null)
 {
     <div class="settings-section" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")">
@@ -139,7 +137,7 @@ string labelId = id + "label";
 string labelId = id + "label";
     <div class="value-section">
         <label class="value-label attr-item border-r" id="@labelId" for="@id" title="@labelName">@labelName</label>
-        <input type="@(isTime ? "time" : (isNumber ? "number" : "text"))" @(isTime ? Html.Raw(" step='1' required='required'") : Html.Raw("")) @(isEnabled == false ? " disabled" : "") id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" min="0" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
+        <input type="@(isTime ? "time" : (isNumber ? "number" : "text"))"@(isTime ? Html.Raw(" step='1' required='required'") : Html.Raw(""))@(isNumber ? Html.Raw(" min='0'") : Html.Raw(""))@(isEnabled == false ? " disabled" : "") id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
     </div>
 }
 @helper ColorInput(string labelName, int index, string id, dynamic color, bool formGroup = true)

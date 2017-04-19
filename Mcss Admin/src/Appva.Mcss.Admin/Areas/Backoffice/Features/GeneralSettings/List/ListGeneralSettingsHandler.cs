@@ -43,7 +43,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         public override ListGeneralSettingsModel Handle(Parameterless<ListGeneralSettingsModel> message)
         {
             int colorIndex = 0;
-            int index = 0;
+            int index = 0, settingsIndex = 0;
             var settings = this.settingService.List();
             var model = new ListGeneralSettingsModel();
             model.List = new List<ListGeneralSettings>();
@@ -53,6 +53,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 if (model.IgnoredSettings.Contains(item.MachineName))
                 {
                     index = index > 0 ? index-- : index;
+                    settingsIndex++;
                     continue;
                 }
 
@@ -65,7 +66,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 settingItems.Value = item.Value;
                 settingItems.Type = item.Type;
                 settingItems.CategoryColor = model.Colors[colorIndex];
-                SetCategoryName(settingItems, item.Namespace, "mcss.");
+                settingItems.CategoryStartHtml = "";
+                settingItems.CategoryEndHtml = "";
+                SetCategoryNames(settingItems, item.Namespace, "mcss.");
 
                 if (model.JsonSettings.Contains(item.MachineName))
                 {
@@ -98,7 +101,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 if(colorIndex > index)
                     colorIndex = 0;
 
+                if(index == 0 || (index > 0 && model.List.ElementAt(index - 1).Category != settingItems.Category))
+                    settingItems.CategoryStartHtml = "<div id=\"setlist-content\">\r\n<h1>" + settingItems.Category + "</h1><ul id=\"setlist\">\r\n";
+
+                if(settingsIndex < settings.Count() - 1 && SplitNamespaceString(settings.ElementAt(settingsIndex + 1).Namespace, "mcss.")[0].ToLower() != settingItems.Category.ToLower())
+                    settingItems.CategoryEndHtml = "</ul>\r\n</div>\r\n";
+
                 index++;
+                settingsIndex++;
                 model.List.Add(settingItems);
             }
 
@@ -109,10 +119,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #region Methods.
 
-        private void SetCategoryName(ListGeneralSettings settingItem, string text, string replacedText)
+        private void SetCategoryNames(ListGeneralSettings settingItem, string text, string replacedText)
         {
-            var array = text.ToLower().Replace(replacedText.ToLower(), "").Split('.');
             string category = "", subCategory = "";
+            var array = SplitNamespaceString(text, replacedText);
             category = array.Length > 0 ? array[0] : "";
             subCategory = array.Length > 1 ? string.Join("/", array.Skip(1).ToArray()) : "";
 
@@ -127,6 +137,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
             settingItem.Category = category[0].ToString().ToUpper() + category.Substring(1);
             settingItem.SubCategory = subCategory;
+        }
+
+        private string[] SplitNamespaceString(string text, string replacedText)
+        {
+            return text.ToLower().Replace(replacedText.ToLower(), "").Split('.');
         }
 
         #endregion

@@ -3,6 +3,8 @@
 // </copyright>
 // <author>
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
+// </author>
+// <author>
 //      <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
 
@@ -15,25 +17,37 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public class ListGeneralSettingsModel : IRequest<bool>
     {
         #region Fields.
 
-        private readonly string[] selectOption = new string[]
+        /// <summary>
+        /// Settings with a select list.
+        /// </summary>
+        private readonly string[] selectOption =
         {
             "MCSS.Device.Security",
             "MCSS.Secuity.Authorization.AdminAuthorizationMethod",
             "MCSS.Device.Settings.Timeline.OverviewTimelineTaskTypes"
-
         };
 
-        private readonly string[] jsonSettings = new string[] {
+        /// <summary>
+        /// JSON settings.
+        /// </summary>
+        private readonly string[] jsonSettings =
+        {
             "Mcss.Core.Pdf",
             "Mcss.Core.Security.Jwt.Configuration.SecurityToken",
             "Mcss.Core.Security.Messaging.Email"
         };
 
-        private readonly string[] ignoredSettings = new string[]
+        /// <summary>
+        /// Ignored settings.
+        /// </summary>
+        private readonly string[] ignoredSettings =
         {
             "MCSS.Core.Inventory.Units",
             "Mcss.Core.Security.Analytics.Audit.Configuration",
@@ -44,40 +58,59 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             "Tenant.Client.LoginMethod"
         };
 
-        private string[] colors = {
+        /// <summary>
+        /// Color codes.
+        /// </summary>
+        private string[] colors =
+        {
             "#64B5F6", "#81C784", "#7986CB", "#E57373", "#4DB6AC", "#FFB74D", "#A1887F", "#90A4AE",
             "#F06292", "#1E88E5", "#F57C00", "#7CB342", "#4527A0", "#B71C1C", "#455A64", "#9E9E9E",
             "#FBC02D", "#81C784", "#A1887F", "#64B5F6", "#90A4AE", "#E57373", "#1E88E5", "#7986CB"
         };
 
         #endregion
-        
+
         #region Properties.
 
+        /// <summary>
+        /// The settings list.
+        /// </summary>
         public List<ListGeneralSettings> List
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Items that uses a dropdown list.
+        /// </summary>
         public string[] SelectOptions
         {
-            get { return selectOption; }
+            get { return this.selectOption; }
         }
 
+        /// <summary>
+        /// The JSON settings.
+        /// </summary>
         public string[] JsonSettings
         {
-            get { return jsonSettings; }
+            get { return this.jsonSettings; }
         }
 
+        /// <summary>
+        /// Settings to exclude from the list.
+        /// </summary>
         public string[] IgnoredSettings
         {
-            get { return ignoredSettings; }
+            get { return this.ignoredSettings; }
         }
 
+        /// <summary>
+        /// Contains a list of color codes.
+        /// </summary>
         public string[] Colors
         {
-            get { return colors; }
+            get { return this.colors; }
         }
 
         #endregion

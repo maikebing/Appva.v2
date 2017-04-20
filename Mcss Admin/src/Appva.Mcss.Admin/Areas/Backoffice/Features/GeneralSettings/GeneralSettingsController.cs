@@ -3,68 +3,86 @@
 // </copyright>
 // <author>
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
+// </author>
+// <author>
 //      <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
 
-using System.Web.Mvc;
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 {
-    using Application.Services.Settings;
     #region Imports.
+
+    using System;
+    using System.Linq;
+    using System.Web.Mvc;
+    using Application.Services.Settings;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
-    using Appva.Mcss.Admin.Models;
-    using Appva.Mvc;
     using Appva.Mvc.Security;
-    using Core.Extensions;
-    using Cryptography;
     using Domain.VO;
     using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
+
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     [RouteArea("backoffice"), RoutePrefix("generalsettings")]
     [Permissions(Permissions.Backoffice.ReadValue)]
     public sealed class GeneralSettingsController : Controller
     {
-        #region Properties.
+        #region Fields.
+
+        /// <summary>
+        /// The <see cref="ISettingsService"/>
+        /// </summary>
         private readonly ISettingsService settingsService;
+
         #endregion
 
         #region Constructor.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeneralSettingsController"/> class.
+        /// </summary>
+        /// <param name="settingService">The <see cref="ISettingsService"/> implementations</param>
         public GeneralSettingsController(ISettingsService settingService)
         {
             this.settingsService = settingService;
         }
+
         #endregion
 
         #region List.
+
         /// <summary>
-        /// Lists the settings
+        /// Lists the settings.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>ViewResult</returns>
         [Route("list")]
         [Dispatch(typeof(Parameterless<ListGeneralSettingsModel>))]
         public ActionResult List()
         {
-
             return this.View();
         }
+
         #endregion
 
         #region Update.
+
+        /// <summary>
+        /// Updates the settings.
+        /// </summary>
+        /// <param name="request">The <see cref="FormCollection"/></param>
+        /// <returns>JsonResult</returns>
         [Route("list/update")]
         [HttpPost]
         public JsonResult Update(FormCollection request)
         {
             var settings = this.settingsService.List();
-            var theSettingValue = "";
+            var theSettingValue = string.Empty;
             Guid id = new Guid(request["item.Id"]);
 
             // JSON object PdfLookAndFeel
@@ -81,17 +99,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                     PdfColor.CreateNew(Convert.ToByte(backgroundcolor[0]), Convert.ToByte(backgroundcolor[1]), Convert.ToByte(backgroundcolor[2])),
                     PdfColor.CreateNew(Convert.ToByte(fontcolor[0]), Convert.ToByte(fontcolor[1]), Convert.ToByte(fontcolor[2])),
                     PdfColor.CreateNew(Convert.ToByte(headercolor[0]), Convert.ToByte(headercolor[1]), Convert.ToByte(headercolor[2])),
-                    PdfColor.CreateNew(Convert.ToByte(bordercolor[0]), Convert.ToByte(bordercolor[1]), Convert.ToByte(bordercolor[2]))
-                    );
+                    PdfColor.CreateNew(Convert.ToByte(bordercolor[0]), Convert.ToByte(bordercolor[1]), Convert.ToByte(bordercolor[2])));
 
-                    pdfLookAndFeel.IsCustomFooterTextEnabled = toBool(request["pdf-custFooter"]);
-                    pdfLookAndFeel.IsCustomLogotypeEnabled = toBool(request["pdf-custLogotype"]);
+                pdfLookAndFeel.IsCustomFooterTextEnabled = this.ToBool(request["pdf-custFooter"]);
+                pdfLookAndFeel.IsCustomLogotypeEnabled = this.ToBool(request["pdf-custLogotype"]);
 
                 theSettingValue = JsonConvert.SerializeObject(pdfLookAndFeel);
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
-                return Json(null);
+                return this.Json(null);
             }
 
             // JSON Object SecurityTokenConfiguration
@@ -113,8 +130,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 {
                     securityTokenConfig = SecurityTokenConfiguration.CreateNew(
                         request["item.SecurityTokenConfig.Issuer"],
-                        request["item.SecurityTokenConfig.Audience"]
-                        );
+                        request["item.SecurityTokenConfig.Audience"]);
                 }
                 else
                 {
@@ -122,8 +138,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                         request["item.SecurityTokenConfig.Issuer"],
                         request["item.SecurityTokenConfig.Audience"],
                         regLifetime,
-                        resetLifetime
-                    );
+                        resetLifetime);
                 }
 
                 if (request["submitValue"] == "update")
@@ -139,11 +154,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 if (request["submitValue"] == "defaultTimes")
                 {
                     var times = Convert.ToString(securityTokenConfig.RegistrationTokenLifetime + "," + securityTokenConfig.ResetTokenLifetime);
-                    return Json(times);
+                    return this.Json(times);
                 }
                 else
                 {
-                    return Json(securityTokenConfig.SigningKey);
+                    return this.Json(securityTokenConfig.SigningKey);
                 }
             }
 
@@ -151,23 +166,21 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             if (request.AllKeys.Contains("item.SecurityMailerConfig"))
             {
                 var securityMailerConfig = SecurityMailerConfiguration.CreateNew(
-                        toBool(request["secmailconf-eventMail"]),
-                        toBool(request["secmailconf-regMail"]),
-                        toBool(request["secmailconf-resetPassMail"]),
-                        toBool(request["secmailconf-deviceRegMail"]),
-                        toBool(request["secmailconf-signing"])
-                     );
+                        this.ToBool(request["secmailconf-eventMail"]),
+                        this.ToBool(request["secmailconf-regMail"]),
+                        this.ToBool(request["secmailconf-resetPassMail"]),
+                        this.ToBool(request["secmailconf-deviceRegMail"]),
+                        this.ToBool(request["secmailconf-signing"]));
 
                 theSettingValue = JsonConvert.SerializeObject(securityMailerConfig);
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
-                return Json(null);
+                return this.Json(null);
             }
 
             foreach (var item in request.Keys)
             {
-                // select = string, value = int, check = bool
                 if (item.ToString().Contains("select") || item.ToString().Contains("value"))
                 {
                     theSettingValue = request[item.ToString()];
@@ -183,20 +196,31 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                     var setting = settings.Where(x => x.Id == id).SingleOrDefault();
 
-                    setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, Convert.ToString(toBool(theSettingValue)));
+                    setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, Convert.ToString(this.ToBool(theSettingValue)));
                 }
             }
-            return Json(null);
+            return this.Json(null);
         }
 
         #region Methods
+
         /// <summary>
-        /// Sets the request value to true if it contains the characters "on". 
+        /// Converts HEX to RGB
+        /// </summary>
+        /// <param name="color">The color</param>
+        /// <returns>RGB values</returns>
+        private static String RGBConverter(System.Drawing.Color color)
+        {
+            return color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString();
+        }
+
+        /// <summary>
+        /// Sets the request value to true if it contains the string "on". 
         /// A fix because a checkbox value returns null or "on" when using formcollection.
         /// </summary>
-        /// <param name="requestValue"></param>
-        /// <returns>true or false</returns>
-        private bool toBool(string requestValue)
+        /// <param name="requestValue">The request value</param>
+        /// <returns>Bool</returns>
+        private bool ToBool(string requestValue)
         {
             if (requestValue.Contains("on"))
             {
@@ -208,15 +232,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             }
         }
 
-        /// <summary>
-        /// Converts HEX to RGB
-        /// </summary>
-        /// <param name="c"></param>
-        /// <returns>RGB values</returns>
-        private static String RGBConverter(System.Drawing.Color c)
-       {
-            return c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString();
-       }
         #endregion
 
         #endregion

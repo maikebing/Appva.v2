@@ -391,8 +391,13 @@
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettings.cs" />
-    <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsHandler.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Areas\Backoffice\Features\GeneralSettings\List\ListGeneralSettingsModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\AddReason\AddReasonHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\AddReason\AddReasonModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\AddReason\AddReasonPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitPublisher.cs" />
@@ -1316,6 +1321,7 @@
     <Content Include="Areas\Backoffice\Features\GeneralSettings\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\GeneralSettings\Partials\_SettingsList.cshtml" />
     <Content Include="Areas\Backoffice\Features\GeneralSettings\Partials\_Scripts.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Inventory\AddReason\AddReason.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

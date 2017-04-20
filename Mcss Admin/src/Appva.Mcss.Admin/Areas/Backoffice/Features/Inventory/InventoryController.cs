@@ -122,6 +122,30 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Inventory
 
         #endregion
 
+        #region AddReason
+        /// <summary>
+        /// Add new withdrawal reason
+        /// </summary>
+        /// <returns></returns>
+        [Route("addreason")]
+        [HttpGet, Dispatch(typeof(Parameterless<AddReasonModel>))]
+        public ActionResult AddReason()
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Post new withdrawal reason
+        /// </summary>
+        /// <returns></returns>
+        [Route("addreason")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "inventory")]
+        public ActionResult AddReason(AddReasonModel request)
+        {
+            return this.View();
+        }
+        #endregion
+
         #endregion
     }
 }

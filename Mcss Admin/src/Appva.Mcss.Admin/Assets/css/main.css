@@ -1526,6 +1526,18 @@ td.rights {
 	text-shadow:0 1px 0 #fff;
 	color:#445068;
 }
+#content-primary #signlist td.edit-alt {
+    width:80px;
+	background:#fafafa;
+}
+#content-primary #signlist td.name-column {
+    font-weight:bold;
+    min-width:60px;
+}
+#content-primary #signlist td.area {
+    max-width:500px;
+    word-wrap:break-word;
+}
 #content-primary #signlist td.nedit {
 	width:180px;
 }
@@ -1549,14 +1561,15 @@ td.rights {
 	border-color:#63708b;
 	color:#fff;
 }
-a.edit,
+a.edit, a.edit-alt,
 a.delete {padding:2px 0 2px 16px;}
-a.edit {background:url(../i/icn-pen.png) no-repeat 0 50%;}
+a.edit, a.edit-alt {background:url(../i/icn-pen.png) no-repeat 0 50%;}
 a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
 #content-primary #signlist a.edit {margin-right:5px;}
 #content-primary #add-sign .btn {float:left;}
 
-#signlist td.edit a.delete {
+#signlist td.edit a.delete,
+#signlist td.edit-alt a.delete {
 	float:left;
 	width:34px;
 	height:34px;
@@ -1571,7 +1584,8 @@ a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
 	-moz-border-radius:5px;
 	border-radius:5px;
 }
-#signlist td.edit a.edit {
+#signlist td.edit a.edit,
+#signlist td.edit-alt a.edit {
 	float:left;
 	width:34px;
 	height:34px;

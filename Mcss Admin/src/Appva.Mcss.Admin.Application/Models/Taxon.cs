@@ -212,7 +212,7 @@ namespace Appva.Mcss.Admin.Application.Models
                     string.Format("{0} {1}", this.Parent.Address, this.Name);
             }
         }
-
+        
         /// <inheritdoc />
         public void Update(string name, string description)
         {

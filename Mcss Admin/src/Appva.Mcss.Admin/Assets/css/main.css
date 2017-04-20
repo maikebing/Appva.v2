@@ -1528,7 +1528,6 @@ td.rights {
 }
 #content-primary #signlist td.edit-alt {
     width:80px;
-	background:#fafafa;
 }
 #content-primary #signlist td.name-column {
     font-weight:bold;
@@ -1538,6 +1537,21 @@ td.rights {
     max-width:500px;
     word-wrap:break-word;
 }
+#content-primary #signlist .add-btn {
+    float:right;
+    font-weight:bold;
+    padding:10px 16px;
+    margin:11px 0 10px 0;
+    background:#66bb6a;
+    color:#fff;
+    text-decoration:none;
+    border-radius:4px;
+}
+#content-primary #signlist .header {
+    margin-top:16px;
+    float:left;
+}
+#content-primary #signlist .add-btn:hover { background:#4Caf50;}
 #content-primary #signlist td.nedit {
 	width:180px;
 }

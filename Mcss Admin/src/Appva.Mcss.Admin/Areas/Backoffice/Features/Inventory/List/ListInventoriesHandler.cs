@@ -51,12 +51,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override ListInventoriesModel Handle(Parameterless<ListInventoriesModel> models)
         {
-            var withdrawals = this.taxonomyService.List(TaxonomicSchema.Withdrawal);
-
-
             return new ListInventoriesModel
             {
-                Withdrawals = withdrawals,
+                Withdrawals = this.taxonomyService.List(TaxonomicSchema.Withdrawal),
                 Units = this.settings.GetIventoryAmountLists()
             };
         }

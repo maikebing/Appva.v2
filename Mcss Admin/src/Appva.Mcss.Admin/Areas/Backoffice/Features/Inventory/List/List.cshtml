@@ -5,12 +5,13 @@
 @Html.Partial("_BackofficeMenuPartial")
 <div id="subheader" class="cf">
 	<h1>Förbrukningsjournal</h1>
-    @Html.ActionLink("Lägg till enhet", "Add", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link btn" })
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
         <div id="signlist">
             @Html.Alert()
+            <h3 class="header">Enheter</h3>
+            @Html.ActionLink("Ny enhet", "Add", "Inventory", new { area = "Backoffice" }, new { @class = "add-btn" })
             <table id="signed-events">
                 <thead class="head">
                     <tr>
@@ -22,12 +23,34 @@
                 <tbody>
                     @foreach (var unit in Model.Units)
                     {
-                        <tr>
+                        <tr class="tr-highlight">
                             <td class="prpad  name-column">@unit.Name</td>
                             <td class="area prpad">@Html.Serialize(unit.Amounts)</td>
                             <td class="prpad prtd edit-alt">
                                 @Html.ActionLink("Ändra", "Update", "Inventory", new { unit.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
                                 @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <h3 class="header">Orsaker</h3>
+            @Html.ActionLink("Ny orsak", "Add", "Withdrawal", new { area = "Backoffice" }, new { @class = "add-btn" })
+            <table id="signed-events">
+                <thead class="head">
+                    <tr>
+                        <th class="prpad">Namn</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var withdrawal in Model.Withdrawals)
+                    {
+                        <tr class="tr-highlight">
+                            <td class="prpad  name-column">@withdrawal.Name</td>
+                            <td class="prpad prtd edit-alt">
+                                @Html.ActionLink("Ändra", "Update", "Withdrawal", new { withdrawal.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                                @Html.ActionLink("Ta bort", "Delete", "Withdrawal", new { withdrawal.Id }, new { @class = "delete", @title = "Ta bort raden" })
                             </td>
                         </tr>
                     }

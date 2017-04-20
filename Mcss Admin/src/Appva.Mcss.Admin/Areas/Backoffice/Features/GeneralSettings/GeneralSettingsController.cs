@@ -97,6 +97,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             // JSON Object SecurityTokenConfiguration
             if (request.AllKeys.Contains("item.SecurityTokenConfig"))
             {
+                SecurityTokenConfiguration securityTokenConfig;
                 var regLifeTimeDays = TimeSpan.Parse(request["regDays"]);
                 TimeSpan regLifetime;
                 TimeSpan resetLifetime;
@@ -107,13 +108,22 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 {
                    regLifetime = regLifeTimeDays + regLifetime;
                 }
-
-                var securityTokenConfig = SecurityTokenConfiguration.CreateNew(
-                    request["item.SecurityTokenConfig.Issuer"],
-                    request["item.SecurityTokenConfig.Audience"],
-                    regLifetime,
-                    resetLifetime
-                );
+                if (request["defaultTimesBtn"] == "default")
+                {
+                    securityTokenConfig = SecurityTokenConfiguration.CreateNew(
+                        request["item.SecurityTokenConfig.Issuer"],
+                        request["item.SecurityTokenConfig.Audience"]
+                        );
+                }
+                else
+                {
+                    securityTokenConfig = SecurityTokenConfiguration.CreateNew(
+                        request["item.SecurityTokenConfig.Issuer"],
+                        request["item.SecurityTokenConfig.Audience"],
+                        regLifetime,
+                        resetLifetime
+                    );
+                }
 
                 if (request["submitValue"] == "update")
                 {
@@ -124,7 +134,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
 
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
-                return Json(securityTokenConfig.SigningKey);
+
+                if (request["defaultTimesBtn"] == "default")
+                {
+                    var times = Convert.ToString(securityTokenConfig.RegistrationTokenLifetime + "," + securityTokenConfig.ResetTokenLifetime);
+                    return Json(times);
+                }
+                else
+                {
+                    return Json(securityTokenConfig.SigningKey);
+                }
             }
 
             // JSON Object SecurityMailerConfiguration

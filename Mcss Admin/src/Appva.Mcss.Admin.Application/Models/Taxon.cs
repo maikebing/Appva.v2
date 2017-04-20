@@ -98,6 +98,14 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
+        /// If taxon is active or not.
+        /// </summary>
+        bool Active
+        {
+            get; set;
+        }
+
+        /// <summary>
         /// Updates the taxon
         /// </summary>
         /// <param name="Name"></param>
@@ -122,7 +130,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="type">The type</param>
         /// <param name="sort">Optional sorting order</param>
         /// <param name="parentId">Optional parent id. If null then it's a root node</param>
-        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null)
+        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null, bool isActive = true)
         {
             this.Id = id;
             this.Name = name;
@@ -133,6 +141,7 @@ namespace Appva.Mcss.Admin.Application.Models
             this.IsRoot = parent == null;
             this.ParentId = parent != null ? parent.Id : (Guid?) null;
             this.Parent = parent;
+            this.Active = isActive;
         }
 
         #endregion
@@ -211,6 +220,12 @@ namespace Appva.Mcss.Admin.Application.Models
                     this.Name : 
                     string.Format("{0} {1}", this.Parent.Address, this.Name);
             }
+        }
+
+        /// <inheritdoc />
+        public bool Active
+        {
+            get; set;
         }
 
         /// <inheritdoc />

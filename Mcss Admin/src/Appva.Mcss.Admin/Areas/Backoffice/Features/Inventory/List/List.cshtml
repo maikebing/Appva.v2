@@ -44,13 +44,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var withdrawal in Model.Withdrawals)
+                    @foreach (var withdrawal in Model.Withdrawals.Where(x => x.Active == true))
                     {
                         <tr class="tr-highlight">
                             <td class="prpad  name-column">@withdrawal.Name</td>
                             <td class="prpad prtd edit-alt">
                                 @Html.ActionLink("Ändra", "EditReason", "Inventory", new { withdrawal.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
-                                @Html.ActionLink("Ta bort", "Delete", "Withdrawal", new { withdrawal.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                                @Html.ActionLink("Ta bort", "RemoveReason", "Inventory", new { withdrawal.Id }, new { @class = "delete", @title = "Ta bort raden" })
                             </td>
                         </tr>
                     }

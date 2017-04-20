@@ -260,6 +260,7 @@ namespace Appva.Mcss.Admin.Application.Services
             t.Path = taxon.Path;
             t.Type = taxon.Type;
             t.Weight = taxon.Sort;
+            t.IsActive = taxon.Active;
             
             this.repository.Update(t);
             this.cache.Remove(schema.CacheKey);

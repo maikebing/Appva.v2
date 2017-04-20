@@ -408,6 +408,8 @@
     <Compile Include="Areas\Backoffice\Features\Inventory\InventoryController.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\List\ListInventoriesHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\List\ListInventoriesModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\RemoveReason\RemoveReasonHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\RemoveReason\RemoveReasonModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitPublisher.cs">

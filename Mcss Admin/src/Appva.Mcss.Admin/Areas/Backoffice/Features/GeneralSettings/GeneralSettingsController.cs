@@ -202,6 +202,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
             return this.Json(null);
         }
 
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -231,8 +233,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 return false;
             }
         }
-
-        #endregion
 
         #endregion
     }

@@ -3,13 +3,15 @@
 // </copyright>
 // <author>
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
+// </author>
+// <author>
 //      <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports.
-    using System;
+
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Cqrs;
@@ -17,13 +19,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Newtonsoft.Json;
+
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     internal sealed class ListGeneralSettingsHandler : RequestHandler<Parameterless<ListGeneralSettingsModel>, ListGeneralSettingsModel>
     {
         #region Fields.
+
         /// <summary>
-        /// The SettingService
+        /// The <see cref="ISettingsService"/>
         /// </summary>
         private readonly ISettingsService settingService;
 
@@ -42,10 +49,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         #endregion
 
         #region RequestHandler Overrides.
+
         /// <summary>
-        /// Handles the message request
+        /// Handles the message request.
         /// </summary>
-        /// <param name="message"> Message </param>
+        /// <param name="message">Message</param>
         /// <returns>A <see cref="ListGeneralSettingsModel"/></returns>
         public override ListGeneralSettingsModel Handle(Parameterless<ListGeneralSettingsModel> message)
         {
@@ -133,12 +141,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         #endregion
 
         #region Methods.
+
         /// <summary>
         /// Sets the category names
         /// </summary>
-        /// <param name="settingItem">The Setting</param>
-        /// <param name="text">Text</param>
-        /// <param name="replacedText">ReplacedText</param>
+        /// <param name="settingItem">The <see cref="ListGeneralSettings"/> item</param>
+        /// <param name="text">The input <see cref="string"/></param>
+        /// <param name="replacedText">The <see cref="string"/> to replace</param>
         private void SetCategoryNames(ListGeneralSettings settingItem, string text, string replacedText)
         {
             string category = string.Empty, subCategory = string.Empty;
@@ -162,11 +171,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         }
 
         /// <summary>
-        /// Splits the namespace strings
+        /// Splits a namespace into categories and subcategories.
         /// </summary>
-        /// <param name="text">The text</param>
-        /// <param name="replacedText">The replaced text</param>
-        /// <returns>String array with namespace names</returns>
+        /// <param name="text">The input <see cref="string"/></param>
+        /// <param name="replacedText">The <see cref="string"/> to replace</param>
+        /// <returns>String array</returns>
         private string[] SplitNamespaceString(string text, string replacedText)
         {
             return text.ToLower().Replace(replacedText.ToLower(), string.Empty).Split('.');

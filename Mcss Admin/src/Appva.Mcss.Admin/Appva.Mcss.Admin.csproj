@@ -402,6 +402,9 @@
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Add\AddInventoryUnitPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\Delete\DeleteInventoryUnitHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\EditReason\EditReasonHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\EditReason\EditReasonModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Inventory\EditReason\EditReasonPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\InventoryController.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\List\ListInventoriesHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Inventory\List\ListInventoriesModel.cs" />
@@ -1322,6 +1325,7 @@
     <Content Include="Areas\Backoffice\Features\GeneralSettings\Partials\_SettingsList.cshtml" />
     <Content Include="Areas\Backoffice\Features\GeneralSettings\Partials\_Scripts.cshtml" />
     <Content Include="Areas\Backoffice\Features\Inventory\AddReason\AddReason.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Inventory\EditReason\EditReason.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

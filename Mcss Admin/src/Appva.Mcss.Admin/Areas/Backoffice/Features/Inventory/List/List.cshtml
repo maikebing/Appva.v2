@@ -49,15 +49,13 @@
                         <tr class="tr-highlight">
                             <td class="prpad  name-column">@withdrawal.Name</td>
                             <td class="prpad prtd edit-alt">
-                                @Html.ActionLink("Ändra", "Update", "Withdrawal", new { withdrawal.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                                @Html.ActionLink("Ändra", "EditReason", "Inventory", new { withdrawal.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
                                 @Html.ActionLink("Ta bort", "Delete", "Withdrawal", new { withdrawal.Id }, new { @class = "delete", @title = "Ta bort raden" })
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-            @Html.ActionLink("Skapa ny orsak", "AddReason", "Inventory", new { @class = "lb-link btn" })
-
         </div>
     </div>
 </div>

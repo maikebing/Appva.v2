@@ -89,7 +89,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Inventory
         #endregion
 
         #region Update
-
+        /// <summary>
+        /// Update unit
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Route("{id:guid}/update")]
         [HttpGet, Hydrate, Dispatch]
         public ActionResult Update(Identity<UpdateInventoryUnitModel> request)
@@ -141,6 +145,32 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Inventory
         [Route("addreason")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "inventory")]
         public ActionResult AddReason(AddReasonModel request)
+        {
+            return this.View();
+        }
+        #endregion
+
+        #region EditReason
+        /// <summary>
+        /// Get for edit reason
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("{id:guid}/editreason")]
+        [HttpGet, Hydrate, Dispatch]
+        public ActionResult EditReason(Identity<EditReasonModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Post for edit reason
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("{id:guid}/editreason")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "inventory")]
+        public ActionResult EditReason(EditReasonModel request)
         {
             return this.View();
         }

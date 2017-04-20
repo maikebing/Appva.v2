@@ -6,6 +6,8 @@
 // </author>
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
+    using Application.Common;
+    using Application.Services;
     #region Imports.
 
     using Appva.Cqrs;
@@ -26,6 +28,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// </summary>
         private readonly ISettingsService settings;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
         #endregion
 
         #region Constructor.
@@ -33,8 +40,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListInventoriesHandler"/> class.
         /// </summary>
-        public ListInventoriesHandler(ISettingsService settings)
+        public ListInventoriesHandler(ISettingsService settings, ITaxonomyService taxonomyService)
         {
+            this.taxonomyService = taxonomyService;
             this.settings = settings;
         }
 
@@ -43,8 +51,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override ListInventoriesModel Handle(Parameterless<ListInventoriesModel> models)
         {
+            var withdrawals = this.taxonomyService.List(TaxonomicSchema.Withdrawal);
+
+
             return new ListInventoriesModel
             {
+                Withdrawals = withdrawals,
                 Units = this.settings.GetIventoryAmountLists()
             };
         }

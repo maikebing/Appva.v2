@@ -1,4 +1,4 @@
-﻿// <copyright file="AddReasonPublisher.cs" company="Appva AB">
+﻿// <copyright file="EditReasonModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -15,8 +15,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     using Appva.Cqrs;
     #endregion
 
-    public sealed class AddReasonModel : IRequest<bool>
+    public sealed class EditReasonModel : IRequest<bool>
     {
+        /// <summary>
+        /// The reason Id
+        /// </summary>
+        public Guid Id
+        {
+            get; set;
+        }
+
         /// <summary>
         /// The reason name
         /// </summary>

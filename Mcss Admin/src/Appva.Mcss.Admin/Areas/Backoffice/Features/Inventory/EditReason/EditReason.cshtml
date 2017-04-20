@@ -1,0 +1,14 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.EditReasonModel
+@{ 
+    SetTitle("Uppdatera orsak");
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <h3 class="section-title">Uppdatera orsak</h3>
+        @Html.FormGroup(x => x.Name, "text large").Label("Namn").TextBox().Validate().Build()
+        <div class="submit">
+            @Html.Submit("Spara")
+	    </div>
+    }
+</div>

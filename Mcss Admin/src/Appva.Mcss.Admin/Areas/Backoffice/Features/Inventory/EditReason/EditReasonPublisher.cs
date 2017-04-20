@@ -1,4 +1,4 @@
-﻿// <copyright file="AddReasonPublisher.cs" company="Appva AB">
+﻿// <copyright file="EditReasonPublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     #endregion
 
-    internal class AddReasonPublisher : RequestHandler<AddReasonModel, bool>
+    internal class EditReasonPublisher : RequestHandler<EditReasonModel, bool>
     {
         #region Fields
         /// <summary>
@@ -28,27 +28,30 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         private readonly ITaxonomyService taxonomyService;
         #endregion
 
+        #region Constructor
         /// <summary>
         /// Initialized an instance of <see cref="AddReasonModel"/> class.
         /// </summary>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
-        public AddReasonPublisher(ITaxonomyService taxonomyService)
+        public EditReasonPublisher(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
         }
+        #endregion
 
+        #region RequestHandler Overrides
         /// <summary>
         /// Adds the new taxon to database
         /// </summary>
         /// <param name="message">The Model</param>
         /// <returns>true or false</returns>
-        public override bool Handle(AddReasonModel message)
+        public override bool Handle(EditReasonModel message)
         {
             if (message.Name != null)
             {
-                var taxon = new TaxonItem(Guid.Empty, message.Name, string.Empty, string.Empty, string.Empty, 0, null);
+                var taxon = new TaxonItem(message.Id, message.Name, string.Empty, string.Empty, string.Empty, 0, null);
 
-                this.taxonomyService.Save(taxon, TaxonomicSchema.Withdrawal);
+                this.taxonomyService.Update(taxon, TaxonomicSchema.Withdrawal);
 
                 return true;
             }
@@ -57,5 +60,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
                 return false;
             }
         }
+        #endregion
     }
 }

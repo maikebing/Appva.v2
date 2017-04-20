@@ -3,6 +3,15 @@
 	SetTitle("Backoffice - Förbrukningsjournal");
 }
 @Html.Partial("_BackofficeMenuPartial")
+<script>
+    $(document).ready(function () {
+        $('#signed-events tr').hover(function () {
+            $(this).find('.row-links').fadeIn('fast');
+        }, function () {
+            $(this).find('.row-links').fadeOut('fast').hide();
+        });
+    });
+</script>
 <div id="subheader" class="cf">
 	<h1>Förbrukningsjournal</h1>
 </div>
@@ -11,46 +20,56 @@
         <div id="signlist">
             @Html.Alert()
             <h3 class="header">Enheter</h3>
-            @Html.ActionLink("Ny enhet", "Add", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link add-btn" })
+            @Html.ActionLink("Lägg till ny enhet", "Add", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link add-btn" })
             <table id="signed-events">
                 <thead class="head">
                     <tr>
                         <th class="prpad">Namn</th>
                         <th class="prpad">Värden</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var unit in Model.Units)
                     {
                         <tr class="tr-highlight">
-                            <td class="prpad  name-column">@unit.Name</td>
-                            <td class="area prpad">@Html.Serialize(unit.Amounts)</td>
-                            <td class="prpad prtd edit-alt">
-                                @Html.ActionLink("Ändra", "Update", "Inventory", new { unit.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
-                                @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                            <td class="name">@unit.Name</td>
+                            <td class="area cell relative">
+                                @Html.Serialize(unit.Amounts)
+                                <div class="row-links">
+                                    <div class="row-links-container">
+                                        <ul class="tr-menu">
+                                            <li>@Html.ActionLink("Ändra", "Update", "Inventory", new { unit.Id }, new { @class = "lb-link" })</li>
+                                            <li>@Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id })</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
             <h3 class="header">Orsaker</h3>
-            @Html.ActionLink("Ny orsak", "AddReason", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link add-btn" })
+            @Html.ActionLink("Lägg till ny orsak", "AddReason", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link add-btn" })
             <table id="signed-events">
                 <thead class="head">
                     <tr>
                         <th class="prpad">Namn</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var withdrawal in Model.Withdrawals)
                     {
                         <tr class="tr-highlight">
-                            <td class="prpad  name-column">@withdrawal.Name</td>
-                            <td class="prpad prtd edit-alt">
-                                @Html.ActionLink("Ändra", "EditReason", "Inventory", new { withdrawal.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
-                                @Html.ActionLink("Ta bort", "Delete", "Withdrawal", new { withdrawal.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                            <td class="name relative">
+                                @withdrawal.Name
+                                <div class="row-links">
+                                    <div class="row-links-container">
+                                        <ul class="tr-menu">
+                                            <li>@Html.ActionLink("Ändra", "EditReason", "Inventory", new { withdrawal.Id }, new { @class = "lb-link" })</li>
+                                            <li>@Html.ActionLink("Ta bort", "Delete", "Withdrawal", new { withdrawal.Id })</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     }

@@ -29,6 +29,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        /// <summary>
+        /// The withdrawals.
+        /// </summary>
+        public IList<ITaxon> Withdrawals
+        {
+            get; set;
+        }
+
         #endregion
     }
 }

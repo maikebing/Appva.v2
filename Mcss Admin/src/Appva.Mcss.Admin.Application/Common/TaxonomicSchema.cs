@@ -40,6 +40,11 @@ namespace Appva.Mcss.Admin.Application.Common
         /// </summary>
         public static readonly TaxonomicSchema SignStatus = new TaxonomicSchema("SST", "sign-status");
 
+        /// <summary>
+        /// The taxonomic scheme identifiter for withdrawal taxa.
+        /// </summary>
+        public static readonly TaxonomicSchema Withdrawal = new TaxonomicSchema("WITHDRAWALOPTIONS", "withdrawal");
+
         #endregion
 
         #region Constructor.

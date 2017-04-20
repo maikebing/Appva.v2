@@ -33,14 +33,12 @@
                     } else if (submittedButton.val() == 'signingKeyButton') {
                         $('#sec-newSigningKey').val(result);
                         $('#sec-newSigningKeyHidden').val(result);
-                    }
-                    else if (submittedButton.val() == 'defaultTimesBtn') {
+                    } else if (submittedButton.val() == 'defaultTimes') {
                         var array = result.split(',');
                         var regTime = array[0];
                         var resetTime = array[1];
                         var regTimes = regTime.split('.');
                         var days = regTimes[0];
-
                         $('#sec-tokenResetLifetime').val(resetTime);
                         $('#regDays').val(days);
                         $('#sec-tokenRegLifetime').val(regTimes[1]);
@@ -53,9 +51,10 @@
             submittedButton = $(this);
             if (submittedButton.val() == 'update') {
                 $(this).next().val($(this).val());
-            }
-            if (submittedButton.val() == 'defaultTimesBtn') {
-                $('#defaultTimesBtn').val('default');
+            } else if (submittedButton.val() == 'signingKeyButton') {
+                $(this).closest('div').find('.submitValue').val('');
+            } else {
+                $(this).closest('div').find('.submitValue').val($(this).val());
             }
         });
     });

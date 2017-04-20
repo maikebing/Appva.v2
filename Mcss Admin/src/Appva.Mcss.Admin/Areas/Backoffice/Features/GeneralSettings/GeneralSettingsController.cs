@@ -108,7 +108,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 {
                    regLifetime = regLifeTimeDays + regLifetime;
                 }
-                if (request["defaultTimesBtn"] == "default")
+
+                if (request["submitValue"] == "defaultTimes")
                 {
                     securityTokenConfig = SecurityTokenConfiguration.CreateNew(
                         request["item.SecurityTokenConfig.Issuer"],
@@ -135,7 +136,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.GeneralSettings
                 var setting = settings.Where(x => x.Id == id).SingleOrDefault();
                 setting.Update(setting.MachineName, setting.Namespace, setting.Name, setting.Description, theSettingValue);
 
-                if (request["defaultTimesBtn"] == "default")
+                if (request["submitValue"] == "defaultTimes")
                 {
                     var times = Convert.ToString(securityTokenConfig.RegistrationTokenLifetime + "," + securityTokenConfig.ResetTokenLifetime);
                     return Json(times);

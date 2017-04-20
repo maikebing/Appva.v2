@@ -8,10 +8,7 @@
         <div class="success-message"></div>
     </div>
     <div class="header">
-        @if (item.Category != item.SubCategory)
-            {
-            <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.SubCategory</h3>
-        }
+        <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.SubCategory</h3>
         <h2>@item.Name</h2>
         @if (string.IsNullOrEmpty(item.Description) == false)
             {
@@ -99,7 +96,6 @@
                 @Html.HiddenFor(i => item.Id)
             </div>
         </form>
-
     </div>
 </li>
 @helper Checkbox(string id, int index, bool isChecked, string description = null, bool isCentered = true, bool formGroup = false, string title = null)
@@ -107,11 +103,7 @@
     <div class="settings-section" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")">
         @if (description != null)
         {
-            <label class="section-label" for="@id" title="@description">@description</label>
-        }
-        @if (title != null && description != null)
-        {
-            <label class="section-label" for="@id" title="@(description + ". " + title)">@description</label>
+            <label class="section-label" for="@id" title="@description@(title != null ? Html.Raw(" &ndash; " + title) : Html.Raw(""))">@description</label>
         }
         <div class="form-group @(isCentered ? "t-center" : "t-right")">
             <label class="checkbox-inline" for="@id">
@@ -123,7 +115,7 @@
 }
 @helper Select(string labelName, int index, string id, string value, Dictionary<string, string> options)
 {
-string labelId = id + "label";
+    string labelId = id + "label";
     <div class="select-section" style="border-width:1px;margin-bottom:15px">
         <label class="section-label attr-item" id="@labelId" for="@id">@labelName</label>
         <div class="select-wrapper">
@@ -138,7 +130,7 @@ string labelId = id + "label";
 }
 @helper Textbox(string labelName, int index, string id, dynamic value, bool formGroup = true, bool isNumber = false, bool isTime = false, bool isEnabled = true)
 {
-string labelId = id + "label";
+    string labelId = id + "label";
     <div class="value-section">
         <label class="value-label attr-item border-r" id="@labelId" for="@id" title="@labelName">@labelName</label>
         <input type="@(isTime ? "time" : (isNumber ? "number" : "text"))"@(isTime ? Html.Raw(" step='1' required='required'") : Html.Raw(""))@(isNumber ? Html.Raw(" min='0'") : Html.Raw(""))@(isEnabled == false ? " disabled" : "") id="@id" name="@id" value="@value" autocomplete="off" onchange="setButtonState(@("button" + index))" onkeypress="setButtonState(@("button" + index))" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px;margin-bottom:15px")" />
@@ -146,7 +138,7 @@ string labelId = id + "label";
 }
 @helper ColorInput(string labelName, int index, string id, dynamic color, bool formGroup = true)
 {
-string pickerId = id + "picker", labelId = id + "label", hex = @RgbToHex(color);
+    string pickerId = id + "picker", labelId = id + "label", hex = @RgbToHex(color);
     <div class="value-section" style="@(formGroup ? "padding-bottom:0" : "padding-bottom:15px")">
         <label id="@(labelId)" class="value-label attr-item" for="@id" title="@labelName">@labelName</label>
         <input class="p-left" id="@id" name="@id" maxlength="7" style="@(formGroup ? "border-width:1px 1px 0 1px" : "border-width:1px")" onchange="colorPicker('@pickerId', this.id)" onkeypress="setButtonState(@("button" + index))" type="text" value="@hex" />

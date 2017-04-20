@@ -39,7 +39,9 @@
         });
         $('button[type=submit]').bind('keypress click', function (e) {
             submittedButton = $(this);
-            $(this).next().val($(this).val());
+            if (submittedButton.val() == 'update') {
+                $(this).next().val($(this).val());
+            }
         });
     });
 </script>

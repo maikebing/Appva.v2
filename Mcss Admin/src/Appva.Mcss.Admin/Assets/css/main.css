@@ -1380,14 +1380,6 @@ td.rights {
     font-size:18px;
     font-weight:bold;
 }
-#setlist h3 span {
-    float:left;
-    display:inline-block;
-    width:16px;
-    height:9px;
-    margin:1px 10px 0 0;
-    border:2px dotted #fff;
-}
 #setlist {
     display:flex;
     flex-wrap:wrap;
@@ -1410,7 +1402,7 @@ td.rights {
     margin:0 20px 20px 0;
     padding:0;
     color:#222;
-    box-shadow:0 0 6px #a5bac8;
+    box-shadow:0 0 6px #95aab8;
     transition:box-shadow .5s ease;
     overflow:auto;
 }
@@ -1444,20 +1436,6 @@ td.rights {
     height:100%;
 }
 #setlist .content { display:table-row; }
-#setlist h3 {
-    font-family:monospace;
-    font-size:12px;
-    font-weight:bold;
-    text-transform:uppercase;
-    letter-spacing:.05em;
-    line-height:1.2em;
-    color:#222;
-    padding:12px 12px 10px 11px;
-    overflow:hidden;
-    white-space:nowrap;
-    border-bottom:1px solid #ddd;
-    cursor:default;
-}
 #setlist h2 {
     font-size:18px;
     font-weight:bold;
@@ -1465,6 +1443,38 @@ td.rights {
     padding:15px;
     margin:0;
     color:#222;
+}
+#setlist h3 {
+    font-family:monospace;
+    font-size:13px;
+    font-weight:bold;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    line-height:1.2em;
+    color:#222;
+    padding:13px 12px 8px 11px;
+    overflow:hidden;
+    white-space:nowrap;
+    border-bottom:1px solid #ddd;
+    cursor:default;
+}
+#setlist h3 span {
+    float:left;
+    display:inline-block;
+    width:12px;
+    height:3px;
+    margin:-4px 10px 0 0;
+    border:10px double #fff;
+}
+#setlist h4{
+    color:#222;
+    background:#fafafa;
+    font-size:13px;
+    font-weight:bold;
+    margin:0 15px;
+    border:1px solid #ddd;
+    border-bottom:0px;
+    padding:12px 15px 11px 15px;
 }
 #setlist p {
     font-weight:normal;
@@ -3073,18 +3083,6 @@ form .time {width:4em;}
     font-weight:bold;
     background:#fff;
 }
-#setlist h4{
-    color:#222;
-    background:#fff;
-    font-size:13px;
-    font-weight:bold;
-    margin:0 15px;
-    text-align:center;
-    border:1px solid #ddd;
-    border-bottom:0px;
-    padding:12px 15px 11px 15px;
-}
-
 #setlist .section-label {
     max-width:200px;
     overflow:hidden;

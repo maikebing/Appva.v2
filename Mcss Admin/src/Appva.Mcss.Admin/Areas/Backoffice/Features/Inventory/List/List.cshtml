@@ -44,7 +44,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var withdrawal in Model.Withdrawals.Where(x => x.Active == true))
+                    @foreach (var withdrawal in Model.Withdrawals)
                     {
                         <tr class="tr-highlight">
                             <td class="prpad  name-column">@withdrawal.Name</td>

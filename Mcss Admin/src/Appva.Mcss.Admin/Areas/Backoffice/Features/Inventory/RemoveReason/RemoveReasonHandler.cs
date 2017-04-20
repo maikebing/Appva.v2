@@ -17,6 +17,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Domain.Repositories;
+    using Persistence;
+    using Domain.Entities;
     #endregion
 
     internal sealed class RemoveReasonHandler : RequestHandler<RemoveReasonModel, bool>
@@ -26,6 +29,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// The taxonomy service
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
+
+        private readonly IPersistenceContext persistenceContext;
         #endregion
 
         #region Constructor
@@ -33,9 +38,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// Initializes a new instance of the <see cref="RemoveReasonHandler"/> class.
         /// </summary>
         /// <param name="taxonomyService">The taxonomyservice</param>
-        public RemoveReasonHandler(ITaxonomyService taxonomyService)
+        public RemoveReasonHandler(ITaxonomyService taxonomyService, IPersistenceContext persistenceContext )
         {
             this.taxonomyService = taxonomyService;
+            this.persistenceContext = persistenceContext;
+            
         }
         #endregion
 
@@ -47,13 +54,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <returns>true</returns>
         public override bool Handle(RemoveReasonModel message)
         {
-            var taxon = taxonomyService.Get(message.Id);
+            var taxon = this.taxonomyService.Find(message.Id, TaxonomicSchema.Withdrawal);
 
             if (taxon != null)
             {
-                var newTaxon = new TaxonItem(taxon.Id, taxon.Name, taxon.Description, taxon.Path, taxon.Type, 0, null, false);
-                this.taxonomyService.Update(newTaxon, TaxonomicSchema.Withdrawal);
-
+                this.taxonomyService.Delete(taxon, TaxonomicSchema.Withdrawal);
                 return true;
             }
             else

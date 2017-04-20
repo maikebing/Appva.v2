@@ -98,6 +98,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="taxon"></param>
         /// <param name="schema"></param>
         void Update(ITaxon taxon, TaxonomicSchema schema);
+
+        /// <summary>
+        /// Deletes the taxon in database and cache
+        /// </summary>
+        /// <param name="taxon"></param>
+        /// <param name="schema"></param>
+        void Delete(ITaxon taxon, TaxonomicSchema schema);
     }
 
     /// <summary>
@@ -117,6 +124,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly ITaxonRepository repository;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/> instance.
+        /// </summary>
+        private readonly IPersistenceContext persistanceContext;
+
         #endregion
 
         #region Constructor.
@@ -126,10 +138,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
         /// <param name="repository">The <see cref="ITaxonRepository"/> instance</param>
-        public TaxonomyService(ITenantAwareMemoryCache cache, ITaxonRepository repository)
+        /// <param name="persistanceContext">The <see cref="IPersistenceContext"/> instance</param>
+        public TaxonomyService(ITenantAwareMemoryCache cache, ITaxonRepository repository, IPersistenceContext persistanceContext)
         {
             this.cache = cache;
             this.repository = repository;
+            this.persistanceContext = persistanceContext;
         }
 
         #endregion
@@ -260,9 +274,15 @@ namespace Appva.Mcss.Admin.Application.Services
             t.Path = taxon.Path;
             t.Type = taxon.Type;
             t.Weight = taxon.Sort;
-            t.IsActive = taxon.Active;
             
             this.repository.Update(t);
+            this.cache.Remove(schema.CacheKey);
+        }
+
+        public void Delete(ITaxon taxon, TaxonomicSchema schema)
+        {
+            var t = this.repository.Load(taxon.Id);
+            this.persistanceContext.Delete(t);
             this.cache.Remove(schema.CacheKey);
         }
 

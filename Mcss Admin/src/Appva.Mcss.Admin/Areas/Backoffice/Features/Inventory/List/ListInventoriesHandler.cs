@@ -6,10 +6,10 @@
 // </author>
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
-    using Application.Common;
-    using Application.Services;
     #region Imports.
 
+    using Application.Common;
+    using Application.Services;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Infrastructure.Models;
@@ -21,7 +21,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     /// </summary>
     internal sealed class ListInventoriesHandler : RequestHandler<Parameterless<ListInventoriesModel>, ListInventoriesModel>
     {
-        #region Variables
+        #region Variables.
 
         /// <summary>
         /// The <see cref="ISettingsService"/>
@@ -40,6 +40,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListInventoriesHandler"/> class.
         /// </summary>
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
         public ListInventoriesHandler(ISettingsService settings, ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;

@@ -4,10 +4,13 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
+
 namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
 
+    using System.Collections.Generic;
+    using System.Linq;
     using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
@@ -15,9 +18,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Models;
     using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -40,6 +40,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateInventoryUnitHandler"/> class.
         /// </summary>
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
         public UpdateInventoryUnitHandler(ISettingsService settings)
         {
             this.settings = settings;
@@ -54,12 +55,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         {
             var setting = this.settings.Find<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts)
                 .SingleOrDefault(x => x.Id == message.Id);
-            if(setting.IsNull())
+
+            if (setting.IsNull())
             {
                 return new UpdateInventoryUnitModel();
             }
-            return new UpdateInventoryUnitModel() {
-                Amounts = JsonConvert.SerializeObject(setting.Amounts).Replace("[", "").Replace("]", ""),
+
+            return new UpdateInventoryUnitModel()
+            {
+                Amounts = JsonConvert.SerializeObject(setting.Amounts).Replace("[", string.Empty).Replace("]", string.Empty),
                 Name    = setting.Name,
                 Id      = setting.Id
             };

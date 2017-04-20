@@ -1529,9 +1529,6 @@ td.rights {
 	text-shadow:0 1px 0 #fff;
 	color:#445068;
 }
-#content-primary #signlist td.edit-alt {
-    width:80px;
-}
 #content-primary #signlist td.name,
 #content-primary #signlist td.cell { padding:16px 10px; }
 #content-primary #signlist td.name {
@@ -1632,15 +1629,14 @@ td.rights {
 	border-color:#63708b;
 	color:#fff;
 }
-a.edit, a.edit-alt,
+a.edit,
 a.delete {padding:2px 0 2px 16px;}
-a.edit, a.edit-alt {background:url(../i/icn-pen.png) no-repeat 0 50%;}
+a.edit {background:url(../i/icn-pen.png) no-repeat 0 50%;}
 a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
 #content-primary #signlist a.edit {margin-right:5px;}
 #content-primary #add-sign .btn {float:left;}
 
-#signlist td.edit a.delete,
-#signlist td.edit-alt a.delete {
+#signlist td.edit a.delete {
 	float:left;
 	width:34px;
 	height:34px;
@@ -1655,8 +1651,7 @@ a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
 	-moz-border-radius:5px;
 	border-radius:5px;
 }
-#signlist td.edit a.edit,
-#signlist td.edit-alt a.edit {
+#signlist td.edit a.edit {
 	float:left;
 	width:34px;
 	height:34px;

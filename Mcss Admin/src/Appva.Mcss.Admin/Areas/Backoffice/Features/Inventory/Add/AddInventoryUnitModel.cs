@@ -1,4 +1,4 @@
-﻿// <copyright file="AddInventoryModel.cs" company="Appva AB">
+﻿// <copyright file="AddInventoryUnitModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -19,8 +19,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     /// </summary>
     public sealed class AddInventoryUnitModel : IRequest<bool>
     {
-        #region Properties
+        #region Properties.
 
+        /// <summary>
+        /// The name property.
+        /// </summary>
         [DisplayName("Namn")]
         [Required]
         public string Name
@@ -29,6 +32,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        /// <summary>
+        /// The unit amount property.
+        /// </summary>
         [DisplayName("Enheter")]
         [Required]
         public string Amounts

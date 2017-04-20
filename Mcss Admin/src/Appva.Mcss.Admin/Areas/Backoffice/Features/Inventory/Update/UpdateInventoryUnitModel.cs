@@ -8,13 +8,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Infrastructure.Models;
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Infrastructure.Models;
 
     #endregion
 
@@ -23,7 +21,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     /// </summary>
     public sealed class UpdateInventoryUnitModel : IRequest<Parameterless<ListInventoriesModel>>
     {
-        #region Properties
+        #region Properties.
 
         /// <summary>
         /// The setting id

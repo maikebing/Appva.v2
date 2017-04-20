@@ -131,7 +131,18 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaxonomyService"/> class.
+        /// </summary>
+        /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
+        /// <param name="repository">The <see cref="ITaxonRepository"/> instance</param>
+        public TaxonomyService(ITenantAwareMemoryCache cache, ITaxonRepository repository)
+        {
+            this.cache = cache;
+            this.repository = repository;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TaxonomyService"/> class.

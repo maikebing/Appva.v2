@@ -4,6 +4,7 @@
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
 // </author>
+
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
@@ -18,7 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     /// </summary>
     public sealed class ListInventoriesModel
     {
-        #region Properties
+        #region Properties.
 
         /// <summary>
         /// The units.

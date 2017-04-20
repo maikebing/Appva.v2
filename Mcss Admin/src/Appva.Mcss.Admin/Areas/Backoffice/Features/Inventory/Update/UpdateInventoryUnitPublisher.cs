@@ -8,15 +8,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
 
+    using System.Collections.Generic;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     #endregion
 
@@ -39,6 +38,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateInventoryUnitPublisher"/> class.
         /// </summary>
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
         public UpdateInventoryUnitPublisher(ISettingsService settings)
         {
             this.settings = settings;
@@ -46,7 +46,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
         #endregion
 
-        #region RequestHandler Overrides
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
         public override Parameterless<ListInventoriesModel> Handle(UpdateInventoryUnitModel message)
@@ -55,7 +55,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             var setting  = settings.SingleOrDefault(x => x.Id == message.Id);
             
             setting.Name    = message.Name;
-            setting.Amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", "")));
+            setting.Amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", string.Empty)));
 
             this.settings.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, settings);
 

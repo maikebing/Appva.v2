@@ -3,33 +3,39 @@
 // </copyright>
 // <author>
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
+// </author>
+// <author>
 //     <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
+
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
-    #region Fields
+    #region Imports.
+
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Areas.Backoffice.Models;
+
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     internal class AddReasonPublisher : RequestHandler<AddReasonModel, bool>
     {
-        #region Fields
+        #region Fields.
+
         /// <summary>
-        /// The taxonomy service
+        /// The <see cref="ITaxonomyService"/>
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
+
         #endregion
 
         /// <summary>
-        /// Initialized an instance of <see cref="AddReasonModel"/> class.
+        /// Initializes a new instance of the <see cref="AddReasonPublisher"/> class.
         /// </summary>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
         public AddReasonPublisher(ITaxonomyService taxonomyService)
@@ -44,12 +50,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <returns>true or false</returns>
         public override bool Handle(AddReasonModel message)
         {
-            if (message.Name != null)
+            if (string.IsNullOrEmpty(message.Name) == false)
             {
                 var taxon = new TaxonItem(Guid.Empty, message.Name, string.Empty, string.Empty, string.Empty, 0, null);
-
                 this.taxonomyService.Save(taxon, TaxonomicSchema.Withdrawal);
-
                 return true;
             }
             else

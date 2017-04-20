@@ -3,43 +3,51 @@
 // </copyright>
 // <author>
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
+// </author>
+// <author>
 //     <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
+
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
-    #region Fields
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Areas.Backoffice.Models;
-    using Appva.Mcss.Admin.Infrastructure.Models;
+    #region Imports.
+
     using Admin.Models;
     using Application.Services;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Areas.Backoffice.Models;
+
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     internal sealed class EditReasonHandler : RequestHandler<Identity<EditReasonModel>, EditReasonModel>
     {
-        #region  Fields
+        #region Fields.
+
         /// <summary>
-        /// The Taxonomy service
+        /// The <see cref="ITaxonomyService"/>
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
+
         #endregion
 
-        #region Constructor
+        #region Constructors.
+
         /// <summary>
-        /// Initializes a new instance of <see cref="EditReasonModel"/> class.
+        /// Initializes a new instance of the <see cref="EditReasonHandler"/> class.
         /// </summary>
-        /// <param name="taxonomyService"></param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
         public EditReasonHandler(ITaxonomyService taxonomyService)
         {
             this.taxonomyService = taxonomyService;
         }
+
         #endregion
 
-        #region RequestHandler Overrides
+        #region RequestHandler Overrides.
+
         /// <summary>
         /// Handles the EditReasonModel
         /// </summary>
@@ -55,6 +63,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 Name = taxon.Name
             };
         }
+
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="AddInventoryHandler.cs" company="Appva AB">
+﻿// <copyright file="AddInventoryUnitHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -26,7 +26,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         {
             return new AddInventoryUnitModel
             {
-                Amounts = JsonConvert.SerializeObject(InventoryDefaults.AmountList).Replace("[","").Replace("]","")
+                Amounts = JsonConvert.SerializeObject(InventoryDefaults.AmountList).Replace("[", string.Empty).Replace("]", string.Empty)
             };
         }
     }

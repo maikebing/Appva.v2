@@ -1,4 +1,4 @@
-﻿// <copyright file="AddInventoryPublisher.cs" company="Appva AB">
+﻿// <copyright file="AddInventoryUnitPublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,15 +8,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Areas.Area51.Models;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Persistence;
-    using Newtonsoft.Json;
-    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Application.Models;
-    using System;
+    using Appva.Mcss.Admin.Application.Services.Settings;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -39,7 +36,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="AddInventoryUnitPublisher"/> class.
         /// </summary>
-        /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
         public AddInventoryUnitPublisher(ISettingsService settings)
         {
             this.settings = settings;
@@ -51,7 +48,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         public override bool Handle(AddInventoryUnitModel message)
         {
             var name    = message.Name;
-            var amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ","")));
+            var amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", string.Empty)));
 
             var units = this.settings.Find<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts);
             units.Add(new InventoryAmountListModel

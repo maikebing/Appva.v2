@@ -4,98 +4,100 @@
     var item = ViewData["item"] as ListGeneralSettings;
 }
 <li id="@("item" + item.Index)">
-    <div id="setlist-overlay">
-        <div class="success-message"></div>
-    </div>
-    <div class="header">
-        <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.SubCategory</h3>
-        <h2>@item.Name</h2>
-        @if (string.IsNullOrEmpty(item.Description) == false)
+    <div class="item-view">
+        <div id="setlist-overlay">
+            <div class="success-message"></div>
+        </div>
+        <div class="header">
+            <h3 title="@item.MachineName"><span style="background:@item.CategoryColor"></span>@item.SubCategory</h3>
+            <h2>@item.Name</h2>
+            @if (string.IsNullOrEmpty(item.Description) == false)
             {
-            <p>@item.Description</p>
-        }
-    </div>
-    <div class="content">
-        <form id="@("form" + item.Index)" method="post">
-            @if (item.Type == typeof(int))
-            {
-                int value;
-                @Textbox("Värde", item.Index, "value" + item.Index, (int.TryParse(item.Value, out value) ? value : 0), false, true)
+                <p>@item.Description</p>
             }
-            else if (item.Type == typeof(Boolean))
-            {
-                @Checkbox("check" + item.Index, item.Index, Convert.ToBoolean(item.Value))
-            }
-            else if (item.PdfLookAndFeel != null && item.IsJson)
-            {
-                @Checkbox("pdf-custFooter", item.Index, item.PdfLookAndFeel.IsCustomFooterTextEnabled, "Custom footer text", false, true)
-                @Checkbox("pdf-custLogotype", item.Index, item.PdfLookAndFeel.IsCustomLogotypeEnabled, "Custom logotype", false)
-                @Textbox("Footer text", item.Index, "pdf-footertext", item.PdfLookAndFeel.FooterText)
-                @Textbox("Logotype path", item.Index, "pdf-logopath", item.PdfLookAndFeel.LogotypePath, false)
-                @ColorInput("Background color", item.Index, "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
-                @ColorInput("Font color", item.Index, "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
-                @ColorInput("Table border color", item.Index, "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
-                @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
-                @Html.HiddenFor(i => item.PdfLookAndFeel)
-            }
-            else if (item.SecurityTokenConfig != null && item.IsJson)
-            {
-                <button type="submit" id="signingKeyButton" name="signingKeyButton" value="signingKeyButton" class="item-button">Generate new key</button>
-                <div style="clear:both"></div>
-                @Textbox("Signing key", item.Index, "sec-newSigningKey", item.SecurityTokenConfig.SigningKey, false, false, false, false)
-                <button type="submit" id="defaultTimesButton" name="defaultTimesButton" value="defaultTimes" class="item-button">Use default time settings</button> <br /><br />
-                <h4>Reset Token Lifetime</h4>
-                @Textbox("hh:mm:ss", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, false, false, true)
-                <h4>Registration Token Lifetime</h4>
-                @Textbox("days", item.Index, "regDays", item.SecurityTokenConfig.RegistrationTokenLifetime.Days, true, true)
-                @Textbox("hh:mm:ss", item.Index, "sec-tokenRegLifetime",
-                    new TimeSpan(item.SecurityTokenConfig.RegistrationTokenLifetime.Hours,
-                                   item.SecurityTokenConfig.RegistrationTokenLifetime.Minutes,
-                                     item.SecurityTokenConfig.RegistrationTokenLifetime.Seconds), false, false, true)
-                @Html.HiddenFor(i => item.SecurityTokenConfig.Audience)
-                @Html.HiddenFor(i => item.SecurityTokenConfig.Issuer)
-                @Html.HiddenFor(i => item.SecurityTokenConfig)
-                @Html.Hidden("sec-newSigningKeyHidden", item.SecurityTokenConfig.SigningKey)
-            }
-            else if (item.SecurityMailerConfig != null && item.IsJson)
-            {
-                @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "Mail Signing", false, true, "If mail signing is enabled, then the e-mail will be signed by the certificate specified by the <c>CertificateThumbPrint</c>.")
-                @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "Mobile Device Registration Mail", false, true, "If mobile device registration mail is enabled, then an e-mail will be sent when a new user account has been registered.")
-                @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "Registration Mail", false, true, "If registration mail is enabled, then an e-mail will be sent when a new user account has been registered.")
-                @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "Reset Password Mail", false, true, "If reset password is enabled, then an e-mail will be sent when a current user account has requested for a password reset.")
-                @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "Security Event Mail", false, false, "If security event mail is enabled, then any alterations on the account will be reported by an e-mail.")
-                @Html.HiddenFor(i => item.SecurityMailerConfig)
-            }
-            else
-            {
-                int value;
-                if (item.MachineName == Model.SelectOptions[0] && int.TryParse(item.Value, out value))
+        </div>
+        <div class="content">
+            <form id="@("form" + item.Index)" method="post">
+                @if (item.Type == typeof(int))
                 {
-                    @Textbox("Värde", item.Index, "value" + item.Index, value, false, true)
+                    int value;
+                    @Textbox("Värde", item.Index, "value" + item.Index, (int.TryParse(item.Value, out value) ? value : 0), false, true)
                 }
-                else if (item.MachineName == Model.SelectOptions[0])
+                else if (item.Type == typeof(Boolean))
                 {
-                    @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "High", "" }, { "Medium", "" }, { "Low", "" } })
+                    @Checkbox("check" + item.Index, item.Index, Convert.ToBoolean(item.Value))
                 }
-                else if (item.MachineName == Model.SelectOptions[1])
+                else if (item.PdfLookAndFeel != null && item.IsJson)
                 {
-                    @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "Form", "" }, { "Siths", "" } })
+                    @Checkbox("pdf-custFooter", item.Index, item.PdfLookAndFeel.IsCustomFooterTextEnabled, "Custom footer text", false, true)
+                    @Checkbox("pdf-custLogotype", item.Index, item.PdfLookAndFeel.IsCustomLogotypeEnabled, "Custom logotype", false)
+                    @Textbox("Footer text", item.Index, "pdf-footertext", item.PdfLookAndFeel.FooterText)
+                    @Textbox("Logotype path", item.Index, "pdf-logopath", item.PdfLookAndFeel.LogotypePath, false)
+                    @ColorInput("Background color", item.Index, "pdf-bgcolor", item.PdfLookAndFeel.BackgroundColor)
+                    @ColorInput("Font color", item.Index, "pdf-fontcolor", item.PdfLookAndFeel.FontColor)
+                    @ColorInput("Table border color", item.Index, "pdf-bordercolor", item.PdfLookAndFeel.TableBorderColor)
+                    @ColorInput("Table header color", item.Index, "pdf-headercolor", item.PdfLookAndFeel.TableHeaderColor, false)
+                    @Html.HiddenFor(i => item.PdfLookAndFeel)
                 }
-                else if (item.MachineName == Model.SelectOptions[2])
+                else if (item.SecurityTokenConfig != null && item.IsJson)
                 {
-                    @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "", "Ingen" }, { "ordination", "Ordination" }, { "calendar", "Calendar" }, { "ordination;calendar", "Ordination and Calendar" } })
+                    <button type="submit" id="signingKeyButton" name="signingKeyButton" value="signingKeyButton" class="item-button">Generate new key</button>
+                    <div style="clear:both"></div>
+                    @Textbox("Signing key", item.Index, "sec-newSigningKey", item.SecurityTokenConfig.SigningKey, false, false, false, false)
+                    <button type="submit" id="defaultTimesButton" name="defaultTimesButton" value="defaultTimes" class="item-button">Use default time settings</button> <br /><br />
+                    <h4>Reset Token Lifetime</h4>
+                    @Textbox("hh:mm:ss", item.Index, "sec-tokenResetLifetime", item.SecurityTokenConfig.ResetTokenLifetime, false, false, true)
+                    <h4>Registration Token Lifetime</h4>
+                    @Textbox("Days", item.Index, "regDays", item.SecurityTokenConfig.RegistrationTokenLifetime.Days, true, true)
+                    @Textbox("hh:mm:ss", item.Index, "sec-tokenRegLifetime",
+                        new TimeSpan(item.SecurityTokenConfig.RegistrationTokenLifetime.Hours,
+                                       item.SecurityTokenConfig.RegistrationTokenLifetime.Minutes,
+                                         item.SecurityTokenConfig.RegistrationTokenLifetime.Seconds), false, false, true)
+                    @Html.HiddenFor(i => item.SecurityTokenConfig.Audience)
+                    @Html.HiddenFor(i => item.SecurityTokenConfig.Issuer)
+                    @Html.HiddenFor(i => item.SecurityTokenConfig)
+                    @Html.Hidden("sec-newSigningKeyHidden", item.SecurityTokenConfig.SigningKey)
+                }
+                else if (item.SecurityMailerConfig != null && item.IsJson)
+                {
+                    @Checkbox("secmailconf-signing", item.Index, item.SecurityMailerConfig.IsMailSigningEnabled, "Mail signing", false, true, "If mail signing is enabled, then the e-mail will be signed by the certificate specified by the <c>CertificateThumbPrint</c>.")
+                    @Checkbox("secmailconf-deviceRegMail", item.Index, item.SecurityMailerConfig.IsMobileDeviceRegistrationMailEnabled, "Mobile device registration mail", false, true, "If mobile device registration mail is enabled, then an e-mail will be sent when a new user account has been registered.")
+                    @Checkbox("secmailconf-regMail", item.Index, item.SecurityMailerConfig.IsRegistrationMailEnabled, "Registration mail", false, true, "If registration mail is enabled, then an e-mail will be sent when a new user account has been registered.")
+                    @Checkbox("secmailconf-resetPassMail", item.Index, item.SecurityMailerConfig.IsResetPasswordMailEnabled, "Reset password mail", false, true, "If reset password is enabled, then an e-mail will be sent when a current user account has requested for a password reset.")
+                    @Checkbox("secmailconf-eventMail", item.Index, item.SecurityMailerConfig.IsSecurityEventMailEnabled, "Security event mail", false, false, "If security event mail is enabled, then any alterations on the account will be reported by an e-mail.")
+                    @Html.HiddenFor(i => item.SecurityMailerConfig)
                 }
                 else
                 {
-                    @Textbox("Sträng", item.Index, "strValue" + item.Index, item.Value, false)
+                    int value;
+                    if (item.MachineName == Model.SelectOptions[0] && int.TryParse(item.Value, out value))
+                    {
+                        @Textbox("Värde", item.Index, "value" + item.Index, value, false, true)
+                    }
+                    else if (item.MachineName == Model.SelectOptions[0])
+                    {
+                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "High", "" }, { "Medium", "" }, { "Low", "" } })
+                    }
+                    else if (item.MachineName == Model.SelectOptions[1])
+                    {
+                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "Form", "" }, { "Siths", "" } })
+                    }
+                    else if (item.MachineName == Model.SelectOptions[2])
+                    {
+                        @Select("Välj", item.Index, "select" + item.Index, item.Value, new Dictionary<string, string> { { "", "Ingen" }, { "ordination", "Ordination" }, { "calendar", "Calendar" }, { "ordination;calendar", "Ordination and Calendar" } })
+                    }
+                    else
+                    {
+                        @Textbox("Sträng", item.Index, "strValue" + item.Index, item.Value, false)
+                    }
                 }
-            }
-            <div class="bottom">
-                <button type="submit" id="@("button" + item.Index)" value="update" disabled>Uppdatera</button>
-                <input type="hidden" id="@("submitValue" + item.Index)" class="submitValue" name="submitValue" />
-                @Html.HiddenFor(i => item.Id)
-            </div>
-        </form>
+                <div class="bottom">
+                    <button type="submit" id="@("button" + item.Index)" value="update" disabled>Uppdatera</button>
+                    <input type="hidden" id="@("submitValue" + item.Index)" class="submitValue" name="submitValue" />
+                    @Html.HiddenFor(i => item.Id)
+                </div>
+            </form>
+        </div>
     </div>
 </li>
 @helper Checkbox(string id, int index, bool isChecked, string description = null, bool isCentered = true, bool formGroup = false, string title = null)

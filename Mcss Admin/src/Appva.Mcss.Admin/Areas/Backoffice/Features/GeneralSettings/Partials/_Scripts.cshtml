@@ -26,7 +26,6 @@
                 success: function (result) {
                     if (submittedButton.val() == 'update') {
                         $(submittedButton).prop('disabled', true);
-                        $('#' + listId + ' #setlist-overlay .success-message').css('background-color', '#333');
                         $('#' + listId + ' #setlist-overlay .success-message').text('Inställningen uppdaterades');
                         $('#' + listId + ' #setlist-overlay').css('visibility', 'visible').hide();
                         $('#' + listId + ' #setlist-overlay').fadeIn('fast').delay(1400).fadeOut('fast');

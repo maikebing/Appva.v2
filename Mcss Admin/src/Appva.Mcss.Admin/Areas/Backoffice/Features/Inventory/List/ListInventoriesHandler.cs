@@ -39,6 +39,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListInventoriesHandler"/> class.
+        /// <param name="settings">The <see cref="ISettingsService"/></param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
         /// </summary>
         /// <param name="settings">The <see cref="ISettingsService"/></param>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>

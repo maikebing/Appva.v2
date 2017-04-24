@@ -176,15 +176,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Inventory
         }
         #endregion
 
-        #region RemoveReason
+        #region DeleteReason
         /// <summary>
-        /// Get for remove reason
+        /// Get for delete reason
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [Route("{id:guid}/removereason")]
         [HttpGet, Dispatch("list", "inventory")]
-        public ActionResult RemoveReason(RemoveReasonModel request)
+        public ActionResult DeleteReason(DeleteReasonModel request)
         {
             return this.View();
         }

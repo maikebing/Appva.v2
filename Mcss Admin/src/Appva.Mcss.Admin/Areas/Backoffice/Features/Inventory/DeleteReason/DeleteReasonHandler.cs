@@ -1,66 +1,64 @@
-﻿// <copyright file="RemoveReasonHandler.cs" company="Appva AB">
+﻿// <copyright file="DeleteReasonHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
-// </author>
-// <author>
 //     <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
 // </author>
 
 namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
-    #region Imports.
-
+    #region Fields
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Domain.Entities;
+    using Domain.Repositories;
     using Persistence;
-
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// TODO: Add a description to increase readability
     /// </summary>
-    internal sealed class RemoveReasonHandler : RequestHandler<RemoveReasonModel, bool>
+    internal sealed class DeleteReasonHandler : RequestHandler<DeleteReasonModel, bool>
     {
-        #region Fields.
-
+        #region Fields
         /// <summary>
-        /// The<see cref="ITaxonomyService"/>
+        /// The taxonomy service
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>
+        /// The PersistanceContext
         /// </summary>
         private readonly IPersistenceContext persistenceContext;
-
         #endregion
 
-        #region Constructor.
-
+        #region Constructor
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemoveReasonHandler"/> class.
+        /// Initializes a new instance of the <see cref="DeleteReasonHandler"/> class.
         /// </summary>
-        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
-        /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
-        public RemoveReasonHandler(ITaxonomyService taxonomyService, IPersistenceContext persistenceContext )
+        /// <param name="taxonomyService">The taxonomyservice</param>
+        /// <param name="persistenceContext">The persistenceContext</param>
+        public DeleteReasonHandler(ITaxonomyService taxonomyService, IPersistenceContext persistenceContext )
         {
             this.taxonomyService = taxonomyService;
             this.persistenceContext = persistenceContext;
         }
-
         #endregion
 
-        #region RequestHandler Overrides.
-
+        #region RequestHandler Overrides
         /// <summary>
         /// Handles the RemoveReason request
         /// </summary>
-        /// <param name="message">The <see cref="RemoveReasonModel"/></param>
-        /// <returns>Bool</returns>
-        public override bool Handle(RemoveReasonModel message)
+        /// <param name="message">The model</param>
+        /// <returns>true</returns>
+        public override bool Handle(DeleteReasonModel message)
         {
             var taxon = this.taxonomyService.Find(message.Id, TaxonomicSchema.Withdrawal);
 
@@ -74,7 +72,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 return false;
             }
         }
-
         #endregion
     }
 }

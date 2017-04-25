@@ -47,7 +47,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// Adds the new taxon to database
         /// </summary>
         /// <param name="message">The Model</param>
-        /// <returns>true or false</returns>
+        /// <returns>Bool</returns>
         public override bool Handle(AddReasonModel message)
         {
             if (string.IsNullOrEmpty(message.Name) == false)

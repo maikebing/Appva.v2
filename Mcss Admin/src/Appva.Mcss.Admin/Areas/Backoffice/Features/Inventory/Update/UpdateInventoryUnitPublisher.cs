@@ -57,12 +57,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
             try
             {
-                JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", string.Empty)));
+                amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", string.Empty)));
             }
             catch{}
             
-            setting.Name    = message.Name;
-            setting.Amounts = amounts;
+            setting.Name    = string.IsNullOrEmpty(message.Name) ? setting.Name : message.Name;
+            setting.Amounts = amounts != null ? amounts : setting.Amounts;
 
             this.settings.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, settings);
 

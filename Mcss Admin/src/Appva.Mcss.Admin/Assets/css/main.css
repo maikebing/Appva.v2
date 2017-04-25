@@ -1363,6 +1363,14 @@ td.rights {
 }
 #signlist .prpad { padding:6px 10px!important; }
 #signlist .trpad { padding:18px 10px!important; }
+#signlist .dlpad { padding:10px!important; }
+#signlist .active-cell { 
+    width:170px;
+    white-space:nowrap;
+    overflow:hidden;
+}
+#signlist .active-cell span { color: #43a047; }
+#signlist .dlcell-width { width:auto; }
 #signlist .tr-highlight:hover { background:#f9f9f9; }
 #signlist .td-highlight {
     background:#f9f9f9;
@@ -4140,12 +4148,4 @@ ul.people li {
 #logo {display:none;}
 
 
-}
-
-.active-color {
-    color:green
-}
-
-.active-color-head{
-    color: #88C364;
 }

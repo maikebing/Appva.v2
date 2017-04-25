@@ -10,35 +10,35 @@
     @Html.ActionLink("Inställningar", "Settings", "Delegation", new { area = "Backoffice" }, new { @class = "lb-link btn" })
 </div>
 
-<div id="content" class="delegate-view log">
+<div id="content" class="cf">
     <div id="content-primary">
         @if (Model.Delegations != null && Model.Delegations.Count > 0)
         {
             foreach (var cat in Model.Delegations)
             {
-                <div class="h cf">
-                    <h2>@cat.Key.Name</h2>
-                    @Html.ActionLink("Lägg till delegering", "Create", "Delegation", new { Id = cat.Key.Id }, new { @class = "lb-link btn" })
-                </div>
                 if (cat.Value != null && cat.Value.Count > 0)
                 {
-                    <table>
-                        <tr class="head">
-                            <th>Namn</th>
-                            <th>Beskrivning</th>
-                            <th>Utställd till <strong class="active-color-head">(antal aktiva)</strong></th>
-                            <th></th>
-                        </tr>
-                        @foreach (var del in cat.Value)
-                        {
-                            <tr>
-                                <td>@del.Value.Name</td>
-                                <td>@del.Value.Description</td>
-                                <td><strong>@del.Key.TotalDelegationsCount <strong class="active-color">(@del.Key.ActiveDelegationsCount)</strong> Medarbetare</strong> </td>
-                                <td>@Html.ActionLink("Ändra", "Update", "Delegation", new { id = del.Value.Id }, new { @class = "lb-link btn" })</td>
+                    <div id="signlist">
+                        <h3 class="header">@cat.Key.Name</h3>
+                        @Html.ActionLink("Lägg till delegering", "Create", "Delegation", new { Id = cat.Key.Id }, new { @class = "lb-link add-btn" })
+                        <table id="signed-events">
+                            <tr class="head">
+                                <th class="prpad">Namn</th>
+                                <th class="prpad">Beskrivning</th>
+                                <th class="prpad">Utställd till</th>
+                                <th></th>
                             </tr>
-                        }
-                    </table>
+                            @foreach (var del in cat.Value)
+                            {
+                                <tr class="tr-highlight">
+                                    <td class="dlpad dlcell-width">@del.Value.Name</td>
+                                    <td class="dlpad dlcell-width">@del.Value.Description</td>
+                                    <td class="dlpad active-cell">@del.Key.TotalDelegationsCount medarbetare, <span class="active-color">(@del.Key.ActiveDelegationsCount @(del.Key.ActiveDelegationsCount == 1 ? "aktiv" : "aktiva"))</span></td>
+                                    <td class="prtd">@Html.ActionLink("Ändra", "Update", "Delegation", new { id = del.Value.Id }, new { @class = "lb-link btn" })</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
                 }
                 else
                 {

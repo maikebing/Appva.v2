@@ -92,21 +92,21 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
                 var delegationList = this.taxonomyService.ListByParent(TaxonomicSchema.Delegation, cat);
                 var delegationItems = new Dictionary<ListDelegation, ITaxon>();
 
-                foreach (var item in delegationList)
+                foreach (var taxon in delegationList)
                 {
-                    var delegationItem = new ListDelegation();
+                    var delegation = new ListDelegation();
                     var query = this.persistanceContext.QueryOver<Delegation>()
-                        .Where(x => x.Taxon.Id == item.Id)
+                        .Where(x => x.Taxon.Id == taxon.Id)
                             .JoinAlias(x => x.OrganisationTaxon, () => organization)
                                 .WhereRestrictionOn(() => organization.Path).IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path));
 
-                    delegationItem.TotalDelegationsCount = query.RowCount();
-                    delegationItem.ActiveDelegationsCount = query
+                    delegation.TotalDelegationsCount = query.RowCount();
+                    delegation.ActiveDelegationsCount = query
                         .Where(x => x.StartDate <= DateTime.Now)
                             .And(x => x.EndDate > DateTime.Now)
                                 .RowCount();
 
-                    delegationItems.Add(delegationItem, item);
+                    delegationItems.Add(delegation, taxon);
                 }
 
                 delegations.Add(cat, delegationItems);

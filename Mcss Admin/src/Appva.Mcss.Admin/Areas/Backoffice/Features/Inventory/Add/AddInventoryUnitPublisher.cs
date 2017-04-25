@@ -47,8 +47,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(AddInventoryUnitModel message)
         {
-            var name    = message.Name;
-            var amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", string.Empty)));
+            var name = message.Name;
+            List<double> amounts = null;
+
+            try
+            {
+                amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", string.Empty)));
+            }
+            catch
+            {
+                return false;
+            }
 
             var units = this.settings.Find<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts);
             units.Add(new InventoryAmountListModel

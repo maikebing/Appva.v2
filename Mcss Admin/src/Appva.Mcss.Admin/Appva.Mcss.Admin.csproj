@@ -379,6 +379,7 @@
     <Compile Include="Areas\Backoffice\Features\Delegation\Create\CreateDelegationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Create\CreateDelegationPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\DelegationController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Delegation\List\ListDelegation.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\List\ListDelegationHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\List\ListDelegationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Settings\DelegationSettingsHandler.cs" />

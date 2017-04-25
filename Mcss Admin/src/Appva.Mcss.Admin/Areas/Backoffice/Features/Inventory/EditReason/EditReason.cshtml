@@ -6,7 +6,7 @@
     @using (Html.Post())
     {
         <h3 class="section-title">Uppdatera orsak</h3>
-        @Html.FormGroup(x => x.Name, "text large").Label("Namn").TextBox().Validate().Build()
+        @Html.FormGroup(x => x.Name, "text large").Label("Namn").TextBox(null, new { required = "Du måste skriva in ett namn" }).Validate().Build()
         <div class="submit">
             @Html.Submit("Spara")
 	    </div>

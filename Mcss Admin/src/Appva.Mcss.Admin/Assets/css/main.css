@@ -1419,6 +1419,7 @@ a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
 #content-primary #signlist a.edit {margin-right:5px;}
 #content-primary #add-sign .btn {float:left;}
 
+
 #signlist td.edit a.delete {
 	float:left;
 	width:34px;
@@ -1448,6 +1449,12 @@ a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
 	-webkit-border-radius:5px;
 	-moz-border-radius:5px;
 	border-radius:5px;
+}
+
+#signlist .sortbtn{
+    text-align: center;
+    color: white;
+    font-style: normal;
 }
 
 #content-primary #signlist .addrow td {

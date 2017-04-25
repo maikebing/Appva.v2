@@ -25,5 +25,10 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
             get;
             set;
         }
+
+        public string OrderBy
+        {
+            get; set;
+        }
     }
 }

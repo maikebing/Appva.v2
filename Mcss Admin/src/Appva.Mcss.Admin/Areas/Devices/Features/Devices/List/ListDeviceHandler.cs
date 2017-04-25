@@ -6,6 +6,7 @@
 // </author>
 namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
 {
+    using Admin.Models;
     #region Imports.
 
     using Application.Services;
@@ -65,11 +66,42 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
                 }, 
                 pageIndex, 
                 pageSize);
+
+           var items = this.transformer.ToDeviceList(result.Entities);
+           IList<DeviceViewModel> itemsList = items;
             
+            switch (message.OrderBy)
+            {
+                case "regristration":
+                  items = itemsList.OrderBy(x => x.Description).OrderByDescending(x => x.CreatedAt).ToList();
+                    break;
+
+                case "description":
+                    items = itemsList.OrderBy(x => x.Description).OrderByDescending(x => x.Description).ToList();
+                    break;
+
+                case "os":
+                    items = itemsList.OrderBy(x => x.Description).OrderByDescending(x => x.OS).ToList();
+                    break;
+
+                case "osversion":
+                    items = itemsList.OrderBy(x => x.Description).OrderByDescending(x => x.OSVersion).ToList();
+                    break;
+
+                case "bundleid":
+                    items = itemsList.OrderBy(x => x.Description).OrderByDescending(x => x.AppBundle).ToList();
+                    break;
+
+                case "appversion":
+                    items = itemsList.OrderBy(x => x.Description).OrderByDescending(x => x.AppVersion).ToList();
+                    break;
+            }
+
+
             return new ListDeviceModel
             {
                 IsActive = isActive,
-                Items = this.transformer.ToDeviceList(result.Entities),
+                Items = items,
                 PageNumber = (int)result.CurrentPage,
                 PageSize = (int)result.PageSize,
                 TotalItemCount = (int)result.TotalCount

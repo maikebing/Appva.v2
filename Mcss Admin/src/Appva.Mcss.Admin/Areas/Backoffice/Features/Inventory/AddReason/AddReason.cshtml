@@ -3,10 +3,10 @@
     SetTitle("Ny orsak");
 }
 <div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
-    @using (Html.Post())
+    @using (Html.Post( new { @onsubmit = "return validateForm()", id = "form" }))
     {
         <h3 class="section-title">Ny orsak</h3>
-        @Html.FormGroup(x => x.Name, "text large").Label("Namn").TextBox().Validate().Build()
+        @Html.FormGroup(x => x.Name, "text large").Label("Namn").TextBox(null, new { required = "Du måste skriva in ett namn" }).Validate().Build()
         <div class="submit">
             @Html.Submit("Spara")
 	    </div>

@@ -22,6 +22,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
     using Appva.Mvc;
     using Inactivate;
     using ReActivate;
+    using System;
+    using System.Web;
 
     #endregion
 
@@ -50,6 +52,21 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
         [HttpGet, Dispatch]
         public ActionResult List(ListDevice request)
         {
+            if (request.OrderBy != null)
+            {
+                string longurl = Request.UrlReferrer.ToString();
+
+                if (longurl.Contains("isActive=True") || longurl.Contains("isActive=False"))
+                {
+                    var uriBuilder = new UriBuilder(longurl);
+                    var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+                    query["OrderBy"] = request.OrderBy;
+                    uriBuilder.Query = query.ToString();
+                    longurl = uriBuilder.ToString();
+                    return Redirect(longurl);
+                }
+            }
+
             return this.View();
         }
 

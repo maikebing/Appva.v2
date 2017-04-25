@@ -2,20 +2,26 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
+//     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
+// </author>
+// <author>
+//     <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
+// </author>
+// <author>
 //     <a href="mailto:kalle.jigfors@appva.se">Kalle Jigfors</a>
 // </author>
+
 namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
 {
     #region Imports.
 
+    using System.Web.Mvc;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Areas.Devices.Features.Devices.List;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using ReActivate;
+    using Appva.Mcss.Admin.Models;
+    using Appva.Mvc;
     using Inactivate;
+    using ReActivate;
 
     #endregion
 
@@ -65,6 +71,33 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
         [Route("{id:guid}/reactivate")]
         [HttpGet, Dispatch("List", "Devices")]
         public ActionResult Reactivate(ReactivateDevice request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Edit
+
+        /// <summary>
+        /// Edit a device
+        /// </summary>
+        /// <returns></returns>
+        [Route("{id:guid}/edit")]
+        [HttpGet, Dispatch]
+        public ActionResult Edit(Identity<EditDeviceModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Edit a device
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("{id:guid}/edit")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Devices")]
+        public ActionResult Edit(EditDeviceModel request)
         {
             return this.View();
         }

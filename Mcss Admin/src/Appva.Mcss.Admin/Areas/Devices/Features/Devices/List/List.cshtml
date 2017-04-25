@@ -45,6 +45,7 @@
                         <td>@item.AppVersion</td>
                         <td>@item.AppBundle</td>
                         <td style="text-align: center">
+                            @Html.ActionLink("Ändra", "Edit", "Devices", new { id = item.Id }, new { @class = "lb-link btn" })
                             @if (item.IsActive)
                             {
                                 @Html.ActionLink("Inaktivera", "Inactivate", new { Id = item.Id, IsActive = Model.IsActive, Page = Model.PageNumber }, new { @class = "btn" })

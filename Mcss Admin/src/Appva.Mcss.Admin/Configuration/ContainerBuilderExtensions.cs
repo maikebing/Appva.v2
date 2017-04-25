@@ -208,7 +208,7 @@ namespace Appva.Mcss.Admin.Configuration
                 properties.Add("show_sql", "true");
             }
             builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/db/admin")).As<IRuntimeMemoryCache>().SingleInstance();
-            builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
+            builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
             builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
             {
                 Assembly = "Appva.Mcss.Admin.Domain",

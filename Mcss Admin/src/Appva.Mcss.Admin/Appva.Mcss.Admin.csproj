@@ -389,6 +389,9 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateSchedulePublisher.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Devices\Features\Devices\DevicesController.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Edit\EditDeviceHandler.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Edit\EditDeviceModel.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Edit\EditDevicePublisher.cs" />
     <Compile Include="Areas\Devices\Features\Devices\Inactivate\InactivateDevice.cs" />
     <Compile Include="Areas\Devices\Features\Devices\Inactivate\InactivateDeviceHandler.cs" />
     <Compile Include="Areas\Devices\Features\Devices\List\ListDevice.cs" />
@@ -660,6 +663,7 @@
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
+    <Compile Include="Configuration\MockedTenantWcfClient.cs" />
     <Compile Include="Features\Account\AccountController.cs" />
     <Compile Include="Features\Account\Forgot\Forgot.cs" />
     <Compile Include="Features\Account\Forgot\ForgotEmail.cs" />
@@ -1286,6 +1290,7 @@
     <Content Include="Areas\Devices\Features\_ViewStart.cshtml" />
     <Content Include="Areas\Devices\Features\Devices\List\List.cshtml" />
     <Content Include="Areas\Devices\Features\Devices\Partials\_DeviceSearch.cshtml" />
+    <Content Include="Areas\Devices\Features\Devices\Edit\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

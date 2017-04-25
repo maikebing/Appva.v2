@@ -470,7 +470,9 @@
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
     <property name="Name" />
-    <property name="Description" />
+    <property name="Description" type="StringClob">
+      <column name="Description" sql-type="NVARCHAR(MAX)"/>
+    </property>
     <property name="StartDate" />
     <property name="EndDate" />
     <property name="RangeInMinutesBefore" />

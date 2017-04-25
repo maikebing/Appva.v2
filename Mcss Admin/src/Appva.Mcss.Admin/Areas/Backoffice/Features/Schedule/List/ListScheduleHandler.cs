@@ -66,18 +66,25 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         public override ListScheduleModel Handle(Parameterless<ListScheduleModel> message)
         {
             Taxon organization = null;
+            Patient patient = null;
 
-            var patientFilter = this.persistenceContext.QueryOver<Patient>()
-                                .JoinAlias(x => x.Taxon, () => organization)
-                                .WhereRestrictionOn(() => organization.Path).IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path))
-                                .List();
+            var allScheduels = this.persistenceContext.QueryOver<Schedule>()
+                .JoinAlias(x => x.Patient, () => patient)
+                .JoinAlias(p => patient.Taxon, () => organization)
+                .WhereRestrictionOn(() => organization.Path)
+                .IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path)).List();
+
+            var sequences = this.persistenceContext.QueryOver<Sequence>()
+                .JoinAlias(x => x.Patient, () => patient)
+                .JoinAlias(p => patient.Taxon, () => organization)
+                .WhereRestrictionOn(() => organization.Path)
+                .IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path)).List();
 
             return new ListScheduleModel
             {
-                Schedules = this.scheduleService.GetSchedules().Where(x => x.ScheduleType == ScheduleType.Action).ToList(),
-                AllSchedules = this.persistenceContext.QueryOver<Schedule>().List(),
-                PatientFilterList = patientFilter,
-                SequenceList = this.persistenceContext.QueryOver<Sequence>().List()
+                ScheduleSettings = this.scheduleService.GetSchedules().Where(x => x.ScheduleType == ScheduleType.Action).ToList(),
+                Schedules = allScheduels,
+                SequenceList = sequences
             };
         }
 

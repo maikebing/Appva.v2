@@ -10,10 +10,10 @@
 
 <div id="content">
     <div id="content-primary">
-        @if (Model.Schedules != null && Model.Schedules.Count > 0)
+        @if (Model.ScheduleSettings != null && Model.ScheduleSettings.Count > 0)
         {
             <ul class="people">
-                @foreach (var list in Model.Schedules)
+                @foreach (var list in Model.ScheduleSettings)
                 {
                     int count = 0;
                     int instansCount = 0;
@@ -29,11 +29,7 @@
 
                         @foreach (var item in Model.SequenceList.Where(x => x.Schedule.ScheduleSettings.Id == list.Id))
                         {
-                            if (Model.PatientFilterList.Contains(item.Patient))
-                            {
                                 instansCount++;
-
-                            }
                         }
 
                         <div class="i">
@@ -41,15 +37,11 @@
                             <span></span>
                         </div>
 
-                        @foreach (var item in Model.AllSchedules.Where(x => x.ScheduleSettings.Id == list.Id))
+                        @foreach (var item in Model.Schedules.Where(x => x.ScheduleSettings.Id == list.Id))
                         {
-                            if (Model.PatientFilterList.Contains(item.Patient))
-                            {
-                                count++;
+                            count++;
 
-                            }
-
-                            if (Model.PatientFilterList.Contains(item.Patient) && item.IsActive == true)
+                            if (item.IsActive)
                             {
                                 activeCount++;
                             }

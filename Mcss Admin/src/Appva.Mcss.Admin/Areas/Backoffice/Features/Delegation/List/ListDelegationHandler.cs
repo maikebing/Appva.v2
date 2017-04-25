@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
         /// <inheritdoc />
         public override ListDelegationModel Handle(Parameterless<ListDelegationModel> message)
         {
-            Taxon org = null;
+            Taxon organization = null;
             
             var categories = this.taxonomyService.Roots(TaxonomicSchema.Delegation);
             var delegations = new Dictionary<ITaxon, IList<ITaxon>>();
@@ -87,8 +87,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
                        .Where(x => x.EndDate.CompareTo(DateTime.Now) > 0).ToList();
 
             var filteredDelegations = this.persistanceContext.QueryOver<Delegation>()
-                .JoinAlias(x => x.OrganisationTaxon, () => org)
-                .WhereRestrictionOn(() => org.Path).IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path))
+                .JoinAlias(x => x.OrganisationTaxon, () => organization)
+                .WhereRestrictionOn(() => organization.Path).IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path))
                 .List();
 
             foreach (var cat in categories)

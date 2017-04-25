@@ -24,7 +24,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// The schedulesettings
         /// </summary>
-        public IList<ScheduleSettings> Schedules
+        public IList<ScheduleSettings> ScheduleSettings
         {
             get;
             set;
@@ -33,12 +33,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// All the Schedules 
         /// </summary>
-        public IList<Schedule> AllSchedules { get; set; }
-
-        /// <summary>
-        /// Patients filtered by taxon
-        /// </summary>
-        public IList<Patient> PatientFilterList { get; set; }
+        public IList<Schedule> Schedules { get; set; }
 
         /// <summary>
         /// List of sequences

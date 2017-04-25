@@ -16,9 +16,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
-    using Appva.Persistence;
 
     #endregion
 
@@ -32,7 +30,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// <summary>
         /// The <see cref="IPersistenceContext"/>
         /// </summary>
-        private readonly IPersistenceContext persistenceContext;
+        private readonly IDeviceService deviceService;
 
         /// <summary>
         /// The <see cref="ITaxonomyService"/>
@@ -46,11 +44,11 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// <summary>
         /// Initializes a new instance of the <see cref="EditDeviceHandler"/> class.
         /// </summary>
-        /// <param name="persistenceContext">The <see cref="IPersistenceContext"/> implementation.</param>
+        /// <param name="deviceService">The <see cref="IDeviceService"/> implementation.</param>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation.</param>
-        public EditDeviceHandler(IPersistenceContext persistenceContext, ITaxonomyService taxonomyService)
+        public EditDeviceHandler(IDeviceService deviceService, ITaxonomyService taxonomyService)
         {
-            this.persistenceContext = persistenceContext;
+            this.deviceService = deviceService;
             this.taxonomyService = taxonomyService;
         }
 
@@ -63,11 +61,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         {
             var deviceModel = new EditDeviceModel();
             var organizationList = new List<SelectListItem>();
-
-            var query = this.persistenceContext.QueryOver<Device>()
-                .Where(x => x.Id == message.Id)
-                    .SingleOrDefault();
-
+            var device = this.deviceService.Find(message.Id);
             var organizations = this.taxonomyService.List(Application.Common.TaxonomicSchema.Organization);
 
             foreach (var organization in organizations)
@@ -76,11 +70,11 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
                 {
                     Text = organization.Name,
                     Value = organization.Id.ToString(),
-                    Selected = (query.Taxon.Path == organization.Path ? true : false)
+                    Selected = (device.Taxon.Id == organization.Id ? true : false)
                 });
             }
 
-            deviceModel.Description = query.Description;
+            deviceModel.Description = device.Description;
             deviceModel.Organizations = organizationList;
             return deviceModel;
         }

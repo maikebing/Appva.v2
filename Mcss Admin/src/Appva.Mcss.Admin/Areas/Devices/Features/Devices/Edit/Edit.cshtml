@@ -2,13 +2,14 @@
     SetTitle("Redigera enhet");
 }
 
-<div class="std-panel std-form lb-panel-small lb-validate-form">
+<div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
     @using (Html.Post(new { }, new { Id = Model.Id }))
     {
         <div>
             <h3 class="section-title">Redigera enhet</h3>
             @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
-            @Html.DropDownListFor(x => x.Organizations, Model.Organizations)
+            @Html.LabelFor(x => x.Organizations, "Organisation")
+            @Html.DropDownListFor(x => x.SelectedOrganization, Model.Organizations)
         </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })

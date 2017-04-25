@@ -54,6 +54,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="id"></param>
         /// <returns></returns>
         Device Find(Guid id);
+
+        /// <summary>
+        /// Updates the device <see cref="Device"/>
+        /// </summary>
+        /// <param name="device"></param>
+        void Update(Device device);
     }
 
     /// <summary>
@@ -129,6 +135,14 @@ namespace Appva.Mcss.Admin.Application.Services
         public Device Find(Guid id)
         {
             return this.repository.Find(id);
+        }
+
+        /// <inheritdoc />
+        public void Update(Device device)
+        {
+            device.UpdatedAt = DateTime.Now;
+            this.repository.Update(device);
+            this.auditService.Update("uppdaterade enheten {0} (REF: {1})", device.Description, device.Id);
         }
 
         #endregion

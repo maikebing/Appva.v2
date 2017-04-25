@@ -1,9 +1,6 @@
-﻿// <copyright file="ListDelegationModel.cs" company="Appva AB">
+﻿// <copyright file="ListDelegation.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
-// </author>
 // <author>
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
 // </author>
@@ -15,7 +12,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using System.Collections.Generic;
     using Appva.Mcss.Admin.Application.Models;
 
     #endregion
@@ -23,16 +19,25 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListDelegationModel
+    public class ListDelegation
     {
         #region Properties.
 
         /// <summary>
-        /// The delegations
+        /// The total amount of delegations.
         /// </summary>
-        public Dictionary<ITaxon, Dictionary<ListDelegation, ITaxon>> Delegations 
-        { 
-            get; 
+        public int TotalDelegationsCount
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The number of active delegations.
+        /// </summary>
+        public int ActiveDelegationsCount
+        {
+            get;
             set;
         }
 

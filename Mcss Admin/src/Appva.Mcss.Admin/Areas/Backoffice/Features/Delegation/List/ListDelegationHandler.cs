@@ -3,15 +3,20 @@
 // </copyright>
 // <author>
 //     <a href="mailto:richard.henriksson@appva.se">Richard Henriksson</a>
+// </author>
+// <author>
 //     <a href="mailto:ziemanncarl@gmail.com">Carl Ziemann</a>
 // </author>
+// <author>
+//     <a href="mailto:h4nsson@gmail.com">Emmanuel Hansson</a>
+// </author>
+
 namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
@@ -80,27 +85,36 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
             Taxon organization = null;
             
             var categories = this.taxonomyService.Roots(TaxonomicSchema.Delegation);
-            var delegations = new Dictionary<ITaxon, IList<ITaxon>>();
-
-            var activeDelegations = this.delegationService.List()
-                       .Where(x => x.StartDate.CompareTo(DateTime.Now) < 0).ToList()
-                       .Where(x => x.EndDate.CompareTo(DateTime.Now) > 0).ToList();
-
-            var filteredDelegations = this.persistanceContext.QueryOver<Delegation>()
-                .JoinAlias(x => x.OrganisationTaxon, () => organization)
-                .WhereRestrictionOn(() => organization.Path).IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path))
-                .List();
+            var delegations = new Dictionary<ITaxon, Dictionary<ListDelegation, ITaxon>>();
 
             foreach (var cat in categories)
             {
-                delegations.Add(cat, this.taxonomyService.ListByParent(TaxonomicSchema.Delegation, cat));
+                var delegationList = this.taxonomyService.ListByParent(TaxonomicSchema.Delegation, cat);
+                var delegationItems = new Dictionary<ListDelegation, ITaxon>();
+
+                foreach (var item in delegationList)
+                {
+                    var delegationItem = new ListDelegation();
+                    var query = this.persistanceContext.QueryOver<Delegation>()
+                        .Where(x => x.Taxon.Id == item.Id)
+                            .JoinAlias(x => x.OrganisationTaxon, () => organization)
+                                .WhereRestrictionOn(() => organization.Path).IsLike(MatchMode.Start.ToMatchString(this.filter.GetCurrentFilter().Path));
+
+                    delegationItem.TotalDelegationsCount = query.RowCount();
+                    delegationItem.ActiveDelegationsCount = query
+                        .Where(x => x.StartDate <= DateTime.Now)
+                            .And(x => x.EndDate > DateTime.Now)
+                                .RowCount();
+
+                    delegationItems.Add(delegationItem, item);
+                }
+
+                delegations.Add(cat, delegationItems);
             }
 
             return new ListDelegationModel
             {
-                Delegations = delegations,
-                ActiveDelegations = activeDelegations,
-                FilteredDelegations = filteredDelegations
+                Delegations = delegations
             };
         }
 

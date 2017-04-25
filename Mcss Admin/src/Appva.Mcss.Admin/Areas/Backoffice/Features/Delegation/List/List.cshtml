@@ -31,26 +31,12 @@
                         </tr>
                         @foreach (var del in cat.Value)
                         {
-                            int count = 0;
-                            int activeCount = 0;
                             <tr>
-                                <td>@del.Name</td>
-                                <td>@del.Description</td>
-
-                                @foreach (var item in Model.FilteredDelegations.Where(x => x.Taxon.Id == del.Id))
-                                {
-                                    count++;
-
-                                    if (Model.ActiveDelegations.Contains(item))
-                                    {
-                                        activeCount++;
-                                    }
-                                }
-
-                                <td><strong>@count <strong class="active-color">(@activeCount)</strong> Medarbetare</strong> </td>
-                                <td>@Html.ActionLink("Ändra", "Update", "Delegation", new { id = del.Id }, new { @class = "lb-link btn" })</td>
+                                <td>@del.Value.Name</td>
+                                <td>@del.Value.Description</td>
+                                <td><strong>@del.Key.TotalDelegationsCount <strong class="active-color">(@del.Key.ActiveDelegationsCount)</strong> Medarbetare</strong> </td>
+                                <td>@Html.ActionLink("Ändra", "Update", "Delegation", new { id = del.Value.Id }, new { @class = "lb-link btn" })</td>
                             </tr>
-
                         }
                     </table>
                 }
@@ -59,7 +45,6 @@
                     <div class="note">
                         <h2>Kategorin innehåller inga delegeringar ännu</h2>
                     </div>
-                    
                 }
             }
         }
@@ -68,9 +53,7 @@
             <div class="note">
                 <h2>Det finns inga delegeringar ännu</h2>
             </div>
-            
         }
-
     </div>
 </div>
 

@@ -12,7 +12,10 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
 {
     #region Imports.
 
+    using System.Collections.Generic;
+    using System.Web.Mvc;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
     using Appva.Persistence;
@@ -31,6 +34,11 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// </summary>
         private readonly IPersistenceContext persistenceContext;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
         #endregion
 
         #region Constructor.
@@ -38,9 +46,12 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// <summary>
         /// Initializes a new instance of the <see cref="EditDeviceHandler"/> class.
         /// </summary>
-        public EditDeviceHandler(IPersistenceContext persistenceContext)
+        /// <param name="persistenceContext">The <see cref="IPersistenceContext"/> implementation.</param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation.</param>
+        public EditDeviceHandler(IPersistenceContext persistenceContext, ITaxonomyService taxonomyService)
         {
             this.persistenceContext = persistenceContext;
+            this.taxonomyService = taxonomyService;
         }
 
         #endregion
@@ -50,14 +61,28 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// <inheritdoc />
         public override EditDeviceModel Handle(Identity<EditDeviceModel> message)
         {
+            var deviceModel = new EditDeviceModel();
+            var organizationList = new List<SelectListItem>();
+
             var query = this.persistenceContext.QueryOver<Device>()
                 .Where(x => x.Id == message.Id)
                     .SingleOrDefault();
 
-            return new EditDeviceModel
+            var organizations = this.taxonomyService.List(Application.Common.TaxonomicSchema.Organization);
+
+            foreach (var organization in organizations)
             {
-                Description = query.Description
-            };
+                organizationList.Add(new SelectListItem()
+                {
+                    Text = organization.Name,
+                    Value = organization.Id.ToString(),
+                    Selected = (query.Taxon.Path == organization.Path ? true : false)
+                });
+            }
+
+            deviceModel.Description = query.Description;
+            deviceModel.Organizations = organizationList;
+            return deviceModel;
         }
 
         #endregion

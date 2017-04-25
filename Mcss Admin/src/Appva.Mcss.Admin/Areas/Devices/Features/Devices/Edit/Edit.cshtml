@@ -8,6 +8,7 @@
         <div>
             <h3 class="section-title">Redigera enhet</h3>
             @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
+            @Html.DropDownListFor(x => x.Organizations, Model.Organizations)
         </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })

@@ -13,6 +13,8 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
 
     #endregion
 
@@ -36,6 +38,15 @@ namespace Appva.Mcss.Admin.Models
         /// The device name.
         /// </summary>
         public string Description
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The organization.
+        /// </summary>
+        public IEnumerable<SelectListItem> Organizations
         {
             get;
             set;

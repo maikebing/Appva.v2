@@ -1359,7 +1359,7 @@ td.rights {
 }
 #signlist .device-table a.btn { 
     display:inline-block;
-    margin:1px;
+    margin:0 1px;
 }
 
 #content-primary #add-sign {padding:0 0 12px;}

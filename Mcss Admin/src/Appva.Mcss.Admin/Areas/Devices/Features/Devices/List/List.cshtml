@@ -24,13 +24,13 @@
             <table>
                 <thead>
                     <tr class="head">
-                        <th scope="col">@Html.ActionLink("Regristrerad", "List", new { OrderBy = "regristration" }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("Beskrivning", "List", new { OrderBy = "description" }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("Hårdvara", "List", new { OrderBy = "hardware" }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("OS", "List", new { OrderBy = "os" }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("OS version", "List", new { OrderBy = "osversion" }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("App version", "List", new { OrderBy = "appversion" }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("Bundle id", "List", new { OrderBy = "bundleid" }, new { @class = "sortbtn" })</th>
+                        <th scope="col">@Html.ActionLink("Regristrerad", "List", new { OrderBy = "regristration", isActive = Model.IsActive}, new { @class = "sortbtn" })</th>
+                        <th scope="col">@Html.ActionLink("Beskrivning", "List", new { OrderBy = "description", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
+                        <th scope="col">@Html.ActionLink("Hårdvara", "List", new { OrderBy = "hardware", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
+                        <th scope="col">@Html.ActionLink("OS", "List", new { OrderBy = "os", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
+                        <th scope="col">@Html.ActionLink("OS version", "List", new { OrderBy = "osversion", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
+                        <th scope="col">@Html.ActionLink("App version", "List", new { OrderBy = "appversion", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
+                        <th scope="col">@Html.ActionLink("Bundle id", "List", new { OrderBy = "bundleid", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
                         <th></th>
                     </tr>
                 </thead>

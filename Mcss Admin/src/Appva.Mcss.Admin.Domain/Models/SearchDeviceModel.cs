@@ -33,13 +33,18 @@ namespace Appva.Mcss.Admin.Domain.Models
             set;
         }
 
-        /// <summary>
-        /// What the devices should be ordered by
-        /// </summary>
         public string OrderBy
         {
-            get; set;
+            get;
+            set;
         }
+
+        public bool IsAscending
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

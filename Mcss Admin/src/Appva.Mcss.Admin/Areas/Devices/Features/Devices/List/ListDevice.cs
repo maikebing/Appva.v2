@@ -41,5 +41,11 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
         {
             get; set;
         }
+
+        public bool IsAscending
+        {
+            get;
+            set;
+        }
     }
 }

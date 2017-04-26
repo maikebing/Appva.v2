@@ -100,7 +100,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
             if (model.OrderBy != null)
             {
-                query.OrderBy(Projections.Property(model.OrderBy)).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                if (model.IsAscending)
+                {
+                    query.OrderBy(Projections.Property(model.OrderBy)).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                }
+                else
+                {
+                    query.OrderBy(Projections.Property(model.OrderBy)).Asc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                }
             }
             else
             {

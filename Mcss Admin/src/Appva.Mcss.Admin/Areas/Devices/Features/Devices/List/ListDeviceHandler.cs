@@ -58,11 +58,13 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
             var isActive = message.IsActive;
             var pageSize = 10;
             var pageIndex = message.Page ?? 1;
+            var isAscending = message.IsAscending;
             var result = this.service.Search(
                 new Domain.Models.SearchDeviceModel
                 {
                     OrderBy = message.OrderBy,
                     IsActive = isActive,
+                    IsAscending = isAscending,
                     SearchQuery = message.SearchQuery                    
                 }, 
                 pageIndex, 
@@ -71,6 +73,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
             return new ListDeviceModel
             {
                 OrderBy = message.OrderBy,
+                IsAscending = isAscending,
                 IsActive = isActive,
                 Items = this.transformer.ToDeviceList(result.Entities),
                 PageNumber = (int)result.CurrentPage,

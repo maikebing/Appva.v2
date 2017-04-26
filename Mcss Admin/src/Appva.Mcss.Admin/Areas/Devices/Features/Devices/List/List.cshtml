@@ -24,13 +24,13 @@
             <table class="device-table">
                 <thead>
                     <tr class="head">
-                        <th scope="col">@Html.ActionLink("Beskrivning", "List", new { OrderBy = "Description", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("Description", "Sorterad efter enhetsbeskrivning")</th>
-                        <th scope="col">@Html.ActionLink("Hårdvara", "List", new { OrderBy = "Hardware", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("Hardware", "Sorterad efter enhetsbeskrivning")</th>
-                        <th scope="col">@Html.ActionLink("OS", "List", new { OrderBy = "OS", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("OS", "Sorterad efter OS")</th>
-                        <th scope="col">@Html.ActionLink("OS-version", "List", new { OrderBy = "OSVersion", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("OSVersion", "Sorterad efter OS-version")</th>
-                        <th scope="col">@Html.ActionLink("App-version", "List", new { OrderBy = "AppVersion", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("AppVersion", "Sorterad efter App-version")</th>
-                        <th scope="col">@Html.ActionLink("Bundle id", "List", new { OrderBy = "AppBundle", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("AppBundle", "Sorterad efter bundle id")</th>
-                        <th scope="col">@Html.ActionLink("Registrerad", "List", new { OrderBy = "CreatedAt", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("CreatedAt", "Sorterad efter registreringsdatum")</th>
+                        <th scope="col">@Html.ActionLink("Beskrivning", "List", new { OrderBy = "Description", IsAscending = (Model.IsAscending ? false : true), isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("Description", "Sorterad efter enhetsbeskrivning")</th>
+                        <th scope="col">@Html.ActionLink("Hårdvara", "List", new { OrderBy = "Hardware", IsAscending = (Model.IsAscending ? false : true), isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("Hardware", "Sorterad efter enhetsbeskrivning")</th>
+                        <th scope="col">@Html.ActionLink("OS", "List", new { OrderBy = "OS", IsAscending = (Model.IsAscending ? false : true), isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("OS", "Sorterad efter OS")</th>
+                        <th scope="col">@Html.ActionLink("OS-version", "List", new { OrderBy = "OSVersion", IsAscending = (Model.IsAscending ? false : true), isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("OSVersion", "Sorterad efter OS-version")</th>
+                        <th scope="col">@Html.ActionLink("App-version", "List", new { OrderBy = "AppVersion", IsAscending = (Model.IsAscending ? false : true), isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("AppVersion", "Sorterad efter App-version")</th>
+                        <th scope="col">@Html.ActionLink("Bundle id", "List", new { OrderBy = "AppBundle", IsAscending = (Model.IsAscending ? false : true), isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("AppBundle", "Sorterad efter bundle id")</th>
+                        <th scope="col">@Html.ActionLink("Registrerad", "List", new { OrderBy = "CreatedAt", IsAscending = (Model.IsAscending ? false : true), isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("CreatedAt", "Sorterad efter registreringsdatum")</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -65,6 +65,7 @@
         @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(x => x
         .DisplayTemplate("Pagination")
         .AddRouteValue("OrderBy", Model.OrderBy)
+        .AddRouteValue("IsAscending", Model.IsAscending)
         .AddRouteValue("IsActive", Model.IsActive)
         .MaxNrOfPages(15)
         .AlwaysAddFirstPageNumber())

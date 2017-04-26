@@ -38,13 +38,13 @@
                     @foreach (var item in Model.Items)
                     {
                     <tr @(item.IsActive ? string.Empty : "style=background-color:#ebf0f8")>
-                        <td>@item.CreatedAt</td>
                         <td>@item.Description</td>
                         <td>@item.Hardware</td>
                         <td>@item.OS</td>
                         <td>@item.OSVersion</td>
                         <td>@item.AppVersion</td>
                         <td>@item.AppBundle</td>
+                        <td>@item.CreatedAt</td>
                         <td style="text-align: center">
                             @Html.ActionLink("Ändra", "Edit", "Devices", new { id = item.Id }, new { @class = "lb-link btn" })
                             @if (item.IsActive)

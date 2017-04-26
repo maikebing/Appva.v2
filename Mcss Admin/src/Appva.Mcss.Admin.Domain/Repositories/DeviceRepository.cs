@@ -97,7 +97,42 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .Add(Projections.Property<Device>(x => x.OSVersion).WithAlias(() => dto.OSVersion))
                 .Add(Projections.Property<Device>(x => x.Hardware).WithAlias(() => dto.Hardware))
                 .Add(Projections.Property<Device>(x => x.IsActive).WithAlias(() => dto.IsActive)));
-            query.OrderByAlias(() => dto.CreatedAt).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+
+            if (model.OrderBy == null)
+            {
+                query.OrderByAlias(() => dto.CreatedAt).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+            }
+
+            switch (model.OrderBy)
+            {
+                case "regristration":
+                    query.OrderByAlias(() => dto.CreatedAt).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                    break;
+
+                case "description":
+                    query.OrderByAlias(() => dto.Description).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                    break;
+
+                case "hardware":
+                    query.OrderByAlias(() => dto.Hardware).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                    break;
+
+                case "os":
+                    query.OrderByAlias(() => dto.OS).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                    break;
+
+                case "osversion":
+                    query.OrderByAlias(() => dto.OSVersion).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                    break;
+
+                case "bundleid":
+                    query.OrderByAlias(() => dto.AppBundle).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                    break;
+
+                case "appversion":
+                    query.OrderByAlias(() => dto.AppVersion).Desc.TransformUsing(Transformers.AliasToBean<DeviceModel>());
+                    break;
+            }
 
             var start = page < 1 ? 1 : page;
             var first = (start - 1) * pageSize;

@@ -24,7 +24,7 @@
             <table>
                 <thead>
                     <tr class="head">
-                        <th scope="col">@Html.ActionLink("Regristrerad", "List", new { OrderBy = "regristration", isActive = Model.IsActive}, new { @class = "sortbtn" })</th>
+                        <th scope="col">@Html.ActionLink("Regristrerad", "List", new { OrderBy = "regristration", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
                         <th scope="col">@Html.ActionLink("Beskrivning", "List", new { OrderBy = "description", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
                         <th scope="col">@Html.ActionLink("Hårdvara", "List", new { OrderBy = "hardware", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
                         <th scope="col">@Html.ActionLink("OS", "List", new { OrderBy = "os", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
@@ -64,6 +64,7 @@
         </div>
         @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(x => x
         .DisplayTemplate("Pagination")
+        .AddRouteValue("OrderBy", Model.OrderBy)
         .AddRouteValue("IsActive", Model.IsActive)
         .MaxNrOfPages(15)
         .AlwaysAddFirstPageNumber())

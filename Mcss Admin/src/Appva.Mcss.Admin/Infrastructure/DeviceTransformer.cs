@@ -47,7 +47,7 @@ namespace Appva.Mcss.Admin.Infrastructure
                 OS = d.OS,
                 OSVersion = d.OSVersion,
                 Hardware = d.Hardware,
-                IsActive = d.IsActive
+                IsActive = d.IsActive,
             }).ToList();
         }
     }

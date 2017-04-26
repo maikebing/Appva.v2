@@ -90,12 +90,22 @@ namespace Appva.Mcss.Admin.Domain.Models
             set;
         }
 
+        /// <summary>
+        /// If device is active
+        /// </summary>
         public bool IsActive
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// What the list should be ordered by
+        /// </summary>
+        public string OrderBy
+        {
+            get; set;
+        }
         #endregion
     }
 }

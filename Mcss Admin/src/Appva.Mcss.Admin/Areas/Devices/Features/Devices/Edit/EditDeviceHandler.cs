@@ -74,6 +74,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
                 });
             }
 
+            deviceModel.Id = device.Id;
             deviceModel.Description = device.Description;
             deviceModel.Organizations = organizationList;
             return deviceModel;

@@ -12,9 +12,13 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
 {
     #region Imports.
 
+    using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -62,7 +66,9 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             if (device == null)
                 return false;
 
-            device.Description = string.IsNullOrEmpty(device.Description) ? device.Description : message.Description;
+            var taxon = message.SelectedOrganizationId == Guid.Empty ? null : this.taxonomyService.Get(message.SelectedOrganizationId);
+            device.Description = message.Description;
+            device.Taxon = taxon;
             this.deviceService.Update(device);
             return true;
         }

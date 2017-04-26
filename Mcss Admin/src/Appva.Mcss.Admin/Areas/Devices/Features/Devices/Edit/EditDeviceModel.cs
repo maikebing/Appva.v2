@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
     using Appva.Cqrs;
 
@@ -38,6 +39,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The device name.
         /// </summary>
+        [Required(ErrorMessage = "Enhetsbeskrivningen måste fyllas i.")]
         public string Description
         {
             get;
@@ -56,7 +58,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Selected organization node.
         /// </summary>
-        public SelectListItem SelectedOrganization
+        public Guid SelectedOrganizationId
         {
             get;
             set;

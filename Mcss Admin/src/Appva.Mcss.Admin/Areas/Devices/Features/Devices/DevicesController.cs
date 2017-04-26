@@ -98,7 +98,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
         /// <param name="request"></param>
         /// <returns></returns>
         [Route("{id:guid}/edit")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Devices")]
+        [HttpPost, Dispatch("List", "Devices")]
         public ActionResult Edit(EditDeviceModel request)
         {
             return this.View();

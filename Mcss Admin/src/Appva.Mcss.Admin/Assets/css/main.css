@@ -1354,6 +1354,13 @@ td.rights {
 	display:block;
 	min-height:20px;
 }
+#signlist .sort-icon {
+    margin-left:4px;
+}
+#signlist .eqwidth-table a.btn { 
+    display:inline-block;
+    margin:1px;
+}
 
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,

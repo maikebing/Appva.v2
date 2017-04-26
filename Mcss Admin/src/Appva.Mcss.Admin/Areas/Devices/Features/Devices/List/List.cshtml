@@ -21,22 +21,22 @@
 {
     <div id="content" class="log cf">
         <div id="signlist">
-            <table>
+            <table class="eqwidth-table">
                 <thead>
                     <tr class="head">
-                        <th scope="col">@Html.ActionLink("Regristrerad", "List", new { OrderBy = "regristration", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("Beskrivning", "List", new { OrderBy = "description", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("Hårdvara", "List", new { OrderBy = "hardware", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("OS", "List", new { OrderBy = "os", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("OS version", "List", new { OrderBy = "osversion", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("App version", "List", new { OrderBy = "appversion", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
-                        <th scope="col">@Html.ActionLink("Bundle id", "List", new { OrderBy = "bundleid", isActive = Model.IsActive }, new { @class = "sortbtn" })</th>
+                        <th scope="col">@Html.ActionLink("Registrerad", "List", new { OrderBy = "regristration", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("regristration", "Sorterad efter registreringsdatum")</th>
+                        <th scope="col">@Html.ActionLink("Beskrivning", "List", new { OrderBy = "description", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("description", "Sorterad efter enhetsbeskrivning")</th>
+                        <th scope="col">@Html.ActionLink("Hårdvara", "List", new { OrderBy = "hardware", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("hardware", "Sorterad efter enhetsbeskrivning")</th>
+                        <th scope="col">@Html.ActionLink("OS", "List", new { OrderBy = "os", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("os", "Sorterad efter OS")</th>
+                        <th scope="col">@Html.ActionLink("OS-version", "List", new { OrderBy = "osversion", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("osversion", "Sorterad efter OS-version")</th>
+                        <th scope="col">@Html.ActionLink("App-version", "List", new { OrderBy = "appversion", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("appversion", "Sorterad efter App-version")</th>
+                        <th scope="col">@Html.ActionLink("Bundle id", "List", new { OrderBy = "bundleid", isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("bundleid", "Sorterad efter bundle id")</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Items)
-                {
+                    {
                     <tr @(item.IsActive ? string.Empty : "style=background-color:#ebf0f8")>
                         <td>@item.CreatedAt</td>
                         <td>@item.Description</td>
@@ -69,4 +69,8 @@
         .MaxNrOfPages(15)
         .AlwaysAddFirstPageNumber())
     </div>
+}
+@helper SortIcon(string param, string description)
+{
+    @(Request["OrderBy"] == param ? Html.Raw("<img class='sort-icon' src='/Assets/i/sort-icon.png' alt='" + description + "' width='9' height='10'>") : Html.Raw(""))
 }

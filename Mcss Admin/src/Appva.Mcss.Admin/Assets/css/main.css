@@ -1455,6 +1455,7 @@ a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
     text-align: center;
     color: white;
     font-style: normal;
+    text-decoration:none;
 }
 
 #content-primary #signlist .addrow td {
@@ -2880,6 +2881,39 @@ form .time {width:4em;}
 }
 
 .lb-panel .std-form {padding-top:0;}
+
+#pr-panel img {
+    position:absolute;
+    top:9px;
+    left:14px;
+    width:32px;
+    height:auto;
+}
+#pr-panel input[type="text"] {
+    padding:6px;
+    font-size:13px;
+    width:100%;
+}
+#pr-panel textarea {
+    padding:6px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:13px;
+    resize:none;
+    width:100%;
+}
+#pr-panel label {
+    display:block;
+    margin-bottom:4px;
+}
+#pr-panel .checkbox-inline {
+    font-weight:400;
+    padding-bottom:2px;
+} 
+#pr-panel select {
+    padding:6px;
+    margin-bottom:10px;
+    width:100%;
+}
 
 .std-form .checkbox-grid .wrap {
 	width:492px;

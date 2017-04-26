@@ -15,13 +15,14 @@ namespace Appva.Mcss.Admin.Models
     using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
+    using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class EditDeviceModel
+    public class EditDeviceModel : IRequest<bool>
     {
         #region Properties.
 
@@ -44,9 +45,18 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The organization.
+        /// Organization nodes.
         /// </summary>
         public IEnumerable<SelectListItem> Organizations
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Selected organization node.
+        /// </summary>
+        public SelectListItem SelectedOrganization
         {
             get;
             set;

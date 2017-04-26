@@ -895,6 +895,7 @@
     <Content Include="Assets\i\shade-top.png" />
     <Content Include="Assets\i\shade-white.png" />
     <Content Include="Assets\i\sort-arrow.png" />
+    <Content Include="Assets\i\sort-icon.png" />
     <Content Include="Assets\i\statusicons-tiles%402x.png" />
     <Content Include="Assets\i\trenddn.png" />
     <Content Include="Assets\i\trendup.png" />

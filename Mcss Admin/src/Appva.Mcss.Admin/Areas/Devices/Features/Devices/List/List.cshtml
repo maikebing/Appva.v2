@@ -27,13 +27,13 @@
             <table class="device-table">
                 <thead>
                     <tr class="head">
-                        <th scope="col">@Html.ActionLink("Beskrivning", "List", new { OrderBy = "Description", IsAscending = sortOrder, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("Description", "Sorterad efter enhetsbeskrivning")</th>
-                        <th scope="col">@Html.ActionLink("Hårdvara", "List", new { OrderBy = "Hardware", IsAscending = sortOrder, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("Hardware", "Sorterad efter enhetsbeskrivning")</th>
-                        <th scope="col">@Html.ActionLink("OS", "List", new { OrderBy = "OS", IsAscending = sortOrder, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("OS", "Sorterad efter OS")</th>
-                        <th scope="col">@Html.ActionLink("OS-version", "List", new { OrderBy = "OSVersion", IsAscending = sortOrder, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("OSVersion", "Sorterad efter OS-version")</th>
-                        <th scope="col">@Html.ActionLink("App-version", "List", new { OrderBy = "AppVersion", IsAscending = sortOrder, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("AppVersion", "Sorterad efter App-version")</th>
-                        <th scope="col">@Html.ActionLink("Bundle id", "List", new { OrderBy = "AppBundle", IsAscending = sortOrder, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("AppBundle", "Sorterad efter bundle id")</th>
-                        <th scope="col">@Html.ActionLink("Registrerad", "List", new { OrderBy = "CreatedAt", IsAscending = sortOrder, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("CreatedAt", "Sorterad efter registreringsdatum")</th>
+                        <th scope="col">@Html.ActionLink("Beskrivning", "List", new { OrderBy = "Description", IsAscending = sortOrder, IsCurrentNode = Model.IsCurrentNode, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("Description", "Sorterad efter enhetsbeskrivning")</th>
+                        <th scope="col">@Html.ActionLink("Hårdvara", "List", new { OrderBy = "Hardware", IsAscending = sortOrder, IsCurrentNode = Model.IsCurrentNode, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("Hardware", "Sorterad efter enhetsbeskrivning")</th>
+                        <th scope="col">@Html.ActionLink("OS", "List", new { OrderBy = "OS", IsAscending = sortOrder, IsCurrentNode = Model.IsCurrentNode, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("OS", "Sorterad efter OS")</th>
+                        <th scope="col">@Html.ActionLink("OS-version", "List", new { OrderBy = "OSVersion", IsAscending = sortOrder, IsCurrentNode = Model.IsCurrentNode, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("OSVersion", "Sorterad efter OS-version")</th>
+                        <th scope="col">@Html.ActionLink("App-version", "List", new { OrderBy = "AppVersion", IsAscending = sortOrder, IsCurrentNode = Model.IsCurrentNode, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("AppVersion", "Sorterad efter App-version")</th>
+                        <th scope="col">@Html.ActionLink("Bundle id", "List", new { OrderBy = "AppBundle", IsAscending = sortOrder, IsCurrentNode = Model.IsCurrentNode, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("AppBundle", "Sorterad efter bundle id")</th>
+                        <th scope="col">@Html.ActionLink("Registrerad", "List", new { OrderBy = "CreatedAt", IsAscending = sortOrder, IsCurrentNode = Model.IsCurrentNode, isActive = Model.IsActive }, new { @class = "sortbtn" })@SortIcon("CreatedAt", "Sorterad efter registreringsdatum")</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -70,7 +70,6 @@
         .AddRouteValue("IsAscending", Model.IsAscending)
         .AddRouteValue("IsCurrentNode", Model.IsCurrentNode)
         .AddRouteValue("IsActive", Model.IsActive)
-        .AddRouteValue("IsCurrentNode", Model.IsCurrentNode)
         .MaxNrOfPages(15)
         .AlwaysAddFirstPageNumber())
         }

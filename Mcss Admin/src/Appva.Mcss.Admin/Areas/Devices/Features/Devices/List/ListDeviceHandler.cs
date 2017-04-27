@@ -35,6 +35,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
         /// </summary>
         private readonly IDeviceTransformer transformer;
 
+        private readonly ITaxonFilterSessionHandler filter;
+
         #endregion
 
         #region Constructors
@@ -42,8 +44,9 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
         /// <summary>
         /// Initializes a new instance of the <see cref="ListDeviceHandler"/> class.
         /// </summary>
-        public ListDeviceHandler(IDeviceService service, IDeviceTransformer transformer)
+        public ListDeviceHandler(IDeviceService service, IDeviceTransformer transformer, ITaxonFilterSessionHandler filter)
         {
+            this.filter = filter;
             this.service = service;
             this.transformer = transformer;
         }
@@ -55,6 +58,9 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
         /// <inheritdoc /> 
         public override ListDeviceModel Handle(ListDevice message)
         {
+            
+
+
             var isActive = message.IsActive;
             var isCurrentNode = message.IsCurrentNode;
             var pageSize = 10;
@@ -64,6 +70,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
             var result = this.service.Search(
                 new Domain.Models.SearchDeviceModel
                 {
+                    IsCurrentNode = message.IsCurrentNode,
+                    TaxonFilter = this.filter.GetCurrentFilter().Path,
                     OrderBy = orderBy,
                     IsActive = isActive,
                     IsAscending = isAscending,

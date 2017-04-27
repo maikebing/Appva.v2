@@ -74,7 +74,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public PageableSet<DeviceModel> Search(SearchDeviceModel model, int page = 1, int pageSize = 10)
         {
             Device device = null;
+            Taxon organization = null;
             var query = this.context.QueryOver<Device>(() => device);
+
+            if (model.IsCurrentNode)
+            {
+                query.JoinAlias(x => x.Taxon, () => organization)
+                .WhereRestrictionOn(() => organization.Path).IsLike(model.TaxonFilter, MatchMode.Start);
+            }
+
             if (model.IsActive.HasValue)
             {
                 query.Where(x => x.IsActive == model.IsActive.Value);

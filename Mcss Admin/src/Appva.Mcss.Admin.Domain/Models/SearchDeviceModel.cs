@@ -45,6 +45,10 @@ namespace Appva.Mcss.Admin.Domain.Models
             set;
         }
 
+        public string TaxonFilter { get; set; }
+
+        public bool IsCurrentNode { get; set; }
+
         #endregion
     }
 }

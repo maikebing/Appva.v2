@@ -16,7 +16,7 @@
         @Html.ActionLink("Ja", "List", new { IsCurrentNode = true, IsActive = Model.IsActive }, new { @class = (Model.IsCurrentNode ? "sel div" : "div") })
         @Html.ActionLink("Nej", "List", new { IsCurrentNode = false, IsActive = Model.IsActive }, new { @class = (!Model.IsCurrentNode ? "sel div" : "div") })
     </p>
-    <div class="row-count"><span class="bold">@Model.TotalItemCount.ToString()</span> rader hittades</div>
+    <div class="row-count"><span class="bold">@Model.TotalItemCount.ToString()</span> @(Model.TotalItemCount == 1 ? "rad" : "rader") hittades</div>
 </div>
 
 <div id="content" class="log cf">

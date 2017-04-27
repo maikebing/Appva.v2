@@ -20,7 +20,6 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
     public sealed class ListDevice : IRequest<ListDeviceModel>
     {
         private bool isAscending = true;
-        private bool isCurrentNode = true;
 
         public string SearchQuery
         {
@@ -53,8 +52,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
 
         public bool IsCurrentNode
         {
-            get { return isCurrentNode; }
-            set { isCurrentNode = value; }
+            get;
+            set;
         }
     }
 }

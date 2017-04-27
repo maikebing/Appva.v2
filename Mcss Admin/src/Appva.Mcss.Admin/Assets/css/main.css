@@ -777,6 +777,10 @@ a.pause-btn:active {
 #subheader .filter select {
 	width:160px;
 }
+#subheader .row-count {
+    float:right;
+    padding:6px 8px;
+}
 
 #subheader .printp, #subheader .alarm-stop-all {float:right;}
 .delegate-view #subheader p.filter {margin:0; float:right;}

@@ -142,7 +142,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             device.UpdatedAt = DateTime.Now;
             this.repository.Update(device);
-            this.auditService.Update("uppdaterade enheten {0} (REF: {1})", device.Description, device.Id);
+            this.auditService.Update("uppdaterade enheten {0} (REF: {1})",device.Taxon, device.Description, device.Id);
         }
 
         #endregion

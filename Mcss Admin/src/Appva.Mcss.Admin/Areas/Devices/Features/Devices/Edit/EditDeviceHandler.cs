@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
+    using System;
 
     #endregion
 
@@ -63,6 +64,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var organizationList = new List<SelectListItem>();
             var device = this.deviceService.Find(message.Id);
             var organizations = this.taxonomyService.List(Application.Common.TaxonomicSchema.Organization);
+            deviceModel.TaxonId = device.Taxon != null ? device.Taxon.Id : Guid.Empty;
 
             foreach (var organization in organizations)
             {
@@ -70,11 +72,14 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
                 {
                     Text = organization.Name,
                     Value = organization.Id.ToString(),
-                    Selected = (device.Taxon.Id == organization.Id ? true : false)
                 });
             }
-
+            
             deviceModel.Id = device.Id;
+            if (device.Taxon != null)
+            {
+                deviceModel.TaxonId = device.Taxon.Id;
+            }
             deviceModel.Description = device.Description;
             deviceModel.Organizations = organizationList;
             return deviceModel;

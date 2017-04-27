@@ -66,7 +66,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             if (device == null)
                 return false;
 
-            var taxon = message.SelectedOrganizationId == Guid.Empty ? null : this.taxonomyService.Get(message.SelectedOrganizationId);
+            var taxon = message.TaxonId == Guid.Empty ? null : this.taxonomyService.Get(message.TaxonId);
             device.Description = message.Description;
             device.Taxon = taxon;
             this.deviceService.Update(device);

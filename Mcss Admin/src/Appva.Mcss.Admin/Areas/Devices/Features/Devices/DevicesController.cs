@@ -86,7 +86,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
         /// </summary>
         /// <returns></returns>
         [Route("{id:guid}/edit")]
-        [HttpGet, Dispatch]
+        [HttpGet, Hydrate, Dispatch]
         public ActionResult Edit(Identity<EditDeviceModel> request)
         {
             return this.View();
@@ -98,10 +98,10 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
         /// <param name="request"></param>
         /// <returns></returns>
         [Route("{id:guid}/edit")]
-        [HttpPost, Dispatch("List", "Devices")]
+        [HttpPost, Dispatch]
         public ActionResult Edit(EditDeviceModel request)
         {
-            return this.View();
+            return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         #endregion

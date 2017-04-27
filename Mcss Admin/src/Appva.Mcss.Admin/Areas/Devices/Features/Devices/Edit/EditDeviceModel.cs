@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Models
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Domain.Entities;
 
     #endregion
 
@@ -63,6 +64,8 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+
+        public Guid TaxonId { get; set; }
 
         #endregion
     }

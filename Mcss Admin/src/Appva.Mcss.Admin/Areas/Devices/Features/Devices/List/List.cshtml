@@ -19,11 +19,11 @@
     <div class="row-count"><span class="bold">@Model.TotalItemCount.ToString()</span> rader hittades</div>
 </div>
 
-@if (Model.Items != null && Model.Items.Count > 0)
-{
-    bool sortOrder = (Model.IsAscending ? false : true);
-    <div id="content" class="log cf">
-        <div id="signlist">
+<div id="content" class="log cf">
+    <div id="signlist">
+        @if (Model.Items != null && Model.Items.Count > 0)
+        {
+            bool sortOrder = (Model.IsAscending ? false : true);
             <table class="device-table">
                 <thead>
                     <tr class="head">
@@ -40,31 +40,30 @@
                 <tbody>
                     @foreach (var item in Model.Items)
                     {
-                    <tr @(item.IsActive ? string.Empty : "style=background-color:#ebf0f8")>
-                        <td>@item.Description</td>
-                        <td>@item.Hardware</td>
-                        <td>@item.OS</td>
-                        <td>@item.OSVersion</td>
-                        <td>@item.AppVersion</td>
-                        <td>@item.AppBundle</td>
-                        <td>@item.CreatedAt</td>
-                        <td style="text-align: center">
-                            @Html.ActionLink("Ändra", "Edit", "Devices", new { Id = item.Id }, new { @class = "lb-link btn" })
-                            @if (item.IsActive)
-                            {
-                                @Html.ActionLink("Inaktivera", "Inactivate", new { Id = item.Id, IsActive = Model.IsActive, Page = Model.PageNumber }, new { @class = "btn" })
-                            }
-                            else
-                            {
-                                @Html.ActionLink("Aktivera", "Reactivate", new { Id = item.Id, IsActive = Model.IsActive, Page = Model.PageNumber }, new { @class = "btn" })
-                            }
+                        <tr @(item.IsActive ? string.Empty : "style=background-color:#ebf0f8")>
+                            <td>@item.Description</td>
+                            <td>@item.Hardware</td>
+                            <td>@item.OS</td>
+                            <td>@item.OSVersion</td>
+                            <td>@item.AppVersion</td>
+                            <td>@item.AppBundle</td>
+                            <td>@item.CreatedAt</td>
+                            <td style="text-align: center">
+                                @Html.ActionLink("Ändra", "Edit", "Devices", new { Id = item.Id }, new { @class = "lb-link btn" })
+                                @if (item.IsActive)
+                                {
+                                    @Html.ActionLink("Inaktivera", "Inactivate", new { Id = item.Id, IsActive = Model.IsActive, Page = Model.PageNumber }, new { @class = "btn" })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Aktivera", "Reactivate", new { Id = item.Id, IsActive = Model.IsActive, Page = Model.PageNumber }, new { @class = "btn" })
+                                }
 
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-        </div>
         @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(x => x
         .DisplayTemplate("Pagination")
         .AddRouteValue("OrderBy", Model.OrderBy)
@@ -73,8 +72,13 @@
         .AddRouteValue("IsActive", Model.IsActive)
         .MaxNrOfPages(15)
         .AlwaysAddFirstPageNumber())
+        }
+        else
+        {
+            <h3>Inga enheter hittades.</h3>
+        }
     </div>
-}
+</div>
 @helper SortIcon(string param, string description)
 {
     @(Model.OrderBy == param ? Html.Raw("<img class='sort-icon' src='/Assets/i/sort-icon.png' alt='" + description + "' width='9' height='10'>") : Html.Raw(""))

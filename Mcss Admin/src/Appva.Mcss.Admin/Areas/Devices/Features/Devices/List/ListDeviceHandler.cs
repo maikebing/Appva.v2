@@ -59,10 +59,11 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
             var pageSize = 10;
             var pageIndex = message.Page ?? 1;
             var isAscending = message.IsAscending;
+            var orderBy = string.IsNullOrEmpty(message.OrderBy) ? "CreatedAt" : message.OrderBy;
             var result = this.service.Search(
                 new Domain.Models.SearchDeviceModel
                 {
-                    OrderBy = message.OrderBy,
+                    OrderBy = orderBy,
                     IsActive = isActive,
                     IsAscending = isAscending,
                     SearchQuery = message.SearchQuery                    
@@ -72,7 +73,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
 
             return new ListDeviceModel
             {
-                OrderBy = message.OrderBy,
+                OrderBy = orderBy,
                 IsAscending = isAscending,
                 IsActive = isActive,
                 Items = this.transformer.ToDeviceList(result.Entities),

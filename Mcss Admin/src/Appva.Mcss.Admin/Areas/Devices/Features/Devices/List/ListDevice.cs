@@ -19,6 +19,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
     /// </summary>
     public sealed class ListDevice : IRequest<ListDeviceModel>
     {
+        private bool isAscending = true;
+
         public string SearchQuery
         {
             get;
@@ -44,8 +46,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
 
         public bool IsAscending
         {
-            get;
-            set;
+            get { return isAscending; }
+            set { isAscending = value; }
         }
     }
 }

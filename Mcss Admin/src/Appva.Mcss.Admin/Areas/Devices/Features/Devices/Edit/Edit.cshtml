@@ -8,7 +8,7 @@
         <div>
             <h3 class="section-title">Redigera enhet</h3>
             @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
-            @Html.LabelFor(x => x.Organizations, "Organisation")
+            @Html.LabelFor(x => x.Organizations, "Organisationsnod")
             @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen" )
         </div>
         <div class="submit">

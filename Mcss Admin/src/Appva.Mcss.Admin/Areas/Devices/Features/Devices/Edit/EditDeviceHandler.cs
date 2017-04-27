@@ -12,12 +12,12 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
-    using System;
 
     #endregion
 
@@ -70,16 +70,13 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             {
                 organizationList.Add(new SelectListItem()
                 {
-                    Text = organization.Name,
+                    Text = string.Format("{0}: {1}", organization.Type, organization.Name),
                     Value = organization.Id.ToString(),
                 });
             }
             
             deviceModel.Id = device.Id;
-            if (device.Taxon != null)
-            {
-                deviceModel.TaxonId = device.Taxon.Id;
-            }
+            deviceModel.TaxonId = device.Taxon == null ? Guid.Empty : device.Taxon.Id;
             deviceModel.Description = device.Description;
             deviceModel.Organizations = organizationList;
             return deviceModel;

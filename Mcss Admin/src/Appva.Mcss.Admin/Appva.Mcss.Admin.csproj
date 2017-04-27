@@ -389,7 +389,9 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateSchedulePublisher.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Devices\Features\Devices\DevicesController.cs" />
-    <Compile Include="Areas\Devices\Features\Devices\Edit\EditDeviceHandler.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Edit\EditDeviceHandler.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Areas\Devices\Features\Devices\Edit\EditDeviceModel.cs" />
     <Compile Include="Areas\Devices\Features\Devices\Edit\EditDevicePublisher.cs" />
     <Compile Include="Areas\Devices\Features\Devices\Inactivate\InactivateDevice.cs" />

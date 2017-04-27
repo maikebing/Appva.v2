@@ -16,9 +16,6 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mcss.Admin.Application.Models;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -30,7 +27,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>
+        /// The <see cref="IDeviceService"/>
         /// </summary>
         private readonly IDeviceService deviceService;
 
@@ -44,7 +41,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditDeviceHandler"/> class.
+        /// Initializes a new instance of the <see cref="EditDevicePublisher"/> class.
         /// </summary>
         /// <param name="deviceService">The <see cref="IDeviceService"/> implementation.</param>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation.</param>
@@ -64,7 +61,9 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var device = this.deviceService.Find(message.Id);
 
             if (device == null)
+            {
                 return false;
+            }
 
             var taxon = message.TaxonId == Guid.Empty ? null : this.taxonomyService.Get(message.TaxonId);
             device.Description = message.Description;

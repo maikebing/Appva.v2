@@ -14,10 +14,8 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
     using Appva.Cqrs;
-    using Domain.Entities;
 
     #endregion
 
@@ -40,8 +38,16 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The device name.
         /// </summary>
-        [Required(ErrorMessage = "Enhetsbeskrivningen måste fyllas i.")]
         public string Description
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The taxon id of the connected organization node.
+        /// </summary>
+        public Guid TaxonId
         {
             get;
             set;
@@ -64,8 +70,6 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
-
-        public Guid TaxonId { get; set; }
 
         #endregion
     }

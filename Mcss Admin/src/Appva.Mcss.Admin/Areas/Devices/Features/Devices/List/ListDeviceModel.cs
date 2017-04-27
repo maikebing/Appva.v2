@@ -36,5 +36,11 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
             get;
             set;
         }
+
+        public bool IsCurrentNode
+        {
+            get;
+            set;
+        }
     }
 }

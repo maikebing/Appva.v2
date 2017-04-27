@@ -56,6 +56,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
         public override ListDeviceModel Handle(ListDevice message)
         {
             var isActive = message.IsActive;
+            var isCurrentNode = message.IsCurrentNode;
             var pageSize = 10;
             var pageIndex = message.Page ?? 1;
             var isAscending = message.IsAscending;
@@ -76,6 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
                 OrderBy = orderBy,
                 IsAscending = isAscending,
                 IsActive = isActive,
+                IsCurrentNode = isCurrentNode,
                 Items = this.transformer.ToDeviceList(result.Entities),
                 PageNumber = (int)result.CurrentPage,
                 PageSize = (int)result.PageSize,

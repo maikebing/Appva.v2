@@ -15,6 +15,11 @@
         <span>Totalt antal rader</span><br />
         <span class="bold">@Model.TotalItemCount.ToString("N")</span>
     </div>
+    <div class="filter" style="float:right;margin-right:20px">
+        <span>Visa från vald nod</span>
+        @Html.ActionLink("Ja", "List", new { IsCurrentNode = true }, new { @class = (Model.IsCurrentNode ? "sel div" : "div") })
+        @Html.ActionLink("Neh", "List", new { IsCurrentNode = false }, new { @class = (!Model.IsCurrentNode ? "sel div" : "div") })
+    </div>
 </div>
 
 @if (Model.Items != null && Model.Items.Count > 0)

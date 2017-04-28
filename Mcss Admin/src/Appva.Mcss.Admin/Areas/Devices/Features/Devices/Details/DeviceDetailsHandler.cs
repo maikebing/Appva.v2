@@ -11,13 +11,13 @@
 namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Models;
+    using Application.Services;
     #endregion
 
     public class DeviceDetailsHandler : RequestHandler<Identity<DeviceViewModel>, DeviceViewModel>
@@ -29,17 +29,30 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public DeviceDetailsHandler(IDeviceService service)
         {
-            this.service = service;
+            this.deviceService = deviceService;
         }
 
         public override DeviceViewModel Handle(Identity<DeviceViewModel> message)
         {
-            var device = this.service.Find(message.Id);
+            var device = this.deviceService.Find(message.Id);
+
             return new DeviceViewModel
             {
+                Id = device.Id,
+                OS = device.OS,
+                OSVersion = device.OSVersion,
+                AppBundle = device.AppBundle,
+                CreatedAt = device.CreatedAt,
+                Hardware = device.Hardware,
+                UDID = device.UDID,
+                Version = device.Version,
+                LastPingedDate = device.LastPingedDate,
                 Description = device.Description,
-                CreatedAt = device.CreatedAt
+                AppVersion = device.AppVersion,
+                IsActive = device.IsActive,
             };
+
+
         }
     }
 }

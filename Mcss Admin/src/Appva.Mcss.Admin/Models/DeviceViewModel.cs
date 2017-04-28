@@ -19,10 +19,29 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        public int Version
+        {
+            get; set;
+        }
+
         public DateTime CreatedAt
         {
             get;
             set;
+        }
+        public DateTime Modified
+        {
+            get; set;
+        }
+
+        public DateTime? LastPingedDate
+        {
+            get; set;
+        }
+
+        public DateTime LastUsedDate
+        {
+            get; set;
         }
 
         public string Description
@@ -60,5 +79,36 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+
+        public string AzurePushId
+        {
+            get; set;
+        }
+
+        public string UDID
+        {
+            get; set;
+        }
+
+
+        public string Uuid
+        {
+            get; set;
+        }
+
+        
+
+        public string PushUuid
+        {
+            get; set;
+        }
+
+        public string Name
+        {
+            get; set;
+        }
+
+
+
     }
 }

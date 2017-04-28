@@ -11,19 +11,48 @@
 namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Models;
+    using Application.Services;
     #endregion
 
-    public class DeviceDetailsHandler : RequestHandler<Identity<DeviceDetails>, DeviceDetails>
+    public class DeviceDetailsHandler : RequestHandler<Identity<DeviceViewModel>, DeviceViewModel>
     {
-        public override DeviceDetails Handle(Identity<DeviceDetails> message)
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>
+        /// </summary>
+        private readonly IDeviceService deviceService;
+
+        public DeviceDetailsHandler(IDeviceService deviceService)
         {
-            throw new NotImplementedException();
+            this.deviceService = deviceService;
+        }
+
+        public override DeviceViewModel Handle(Identity<DeviceViewModel> message)
+        {
+            var device = this.deviceService.Find(message.Id);
+
+            return new DeviceViewModel
+            {
+                Id = device.Id,
+                OS = device.OS,
+                OSVersion = device.OSVersion,
+                AppBundle = device.AppBundle,
+                CreatedAt = device.CreatedAt,
+                Hardware = device.Hardware,
+                UDID = device.UDID,
+                Version = device.Version,
+                LastPingedDate = device.LastPingedDate,
+                Description = device.Description,
+                AppVersion = device.AppVersion,
+                IsActive = device.IsActive,
+            };
+
+
         }
     }
 }

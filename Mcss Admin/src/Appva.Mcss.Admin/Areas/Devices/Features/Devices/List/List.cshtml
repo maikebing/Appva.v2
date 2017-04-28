@@ -49,6 +49,7 @@
                             <td>@item.AppBundle</td>
                             <td>@item.CreatedAt</td>
                             <td style="text-align: center">
+                                @Html.ActionLink("Egenskaper", "Details", "Devices", new { Id = item.Id }, new { @class = "lb-link btn" })
                                 @Html.ActionLink("Ändra", "Edit", "Devices", new { Id = item.Id }, new { @class = "lb-link btn" })
                                 @if (item.IsActive)
                                 {

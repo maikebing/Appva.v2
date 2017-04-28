@@ -388,6 +388,8 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Update\UpdateSchedulePublisher.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Details\DeviceDetails.cs" />
+    <Compile Include="Areas\Devices\Features\Devices\Details\DeviceDetailsHandler.cs" />
     <Compile Include="Areas\Devices\Features\Devices\DevicesController.cs" />
     <Compile Include="Areas\Devices\Features\Devices\Edit\EditDeviceHandler.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -1294,6 +1296,7 @@
     <Content Include="Areas\Devices\Features\Devices\List\List.cshtml" />
     <Content Include="Areas\Devices\Features\Devices\Partials\_DeviceSearch.cshtml" />
     <Content Include="Areas\Devices\Features\Devices\Edit\Edit.cshtml" />
+    <Content Include="Areas\Devices\Features\Devices\Details\Details.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

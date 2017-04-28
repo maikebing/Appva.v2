@@ -8,11 +8,67 @@
         <ul class="details-list">
             <li>
                 <label>Beskrivning</label>
-                <p>@Model.Description</p>
+                <p>@(Model.Description == null ? "NULL" : Model.Description.ToString())</p>
             </li>
             <li>
                 <label>Registrerad</label>
                 <p>@Model.CreatedAt</p>
+            </li>
+            <li>
+                <label>Last Pinged Date</label>
+               <p>@(Model.LastPingedDate == null ? "NULL" : Model.LastPingedDate.ToString())</p>
+            </li>
+            <li>
+                <label>Aktiv</label>
+                <p>@Model.IsActive</p>
+            </li>
+            <li>
+                <label>OS</label>
+                <p>@(Model.OS == null ? "NULL" : Model.OS.ToString())</p>
+            </li>
+            <li>
+                <label>OS Version</label>
+                <p>@(Model.OSVersion == null ? "NULL" : Model.OSVersion.ToString())</p>
+            </li>
+            <li>
+                <label>Version</label>
+                <p>@(Model.Version == 0 ? "0" : Model.Version.ToString())</p>
+            </li>
+            <li>
+                <label>Hårdvara</label>
+                <p>@(Model.Hardware == null ? "NULL" : Model.Hardware.ToString())</p>
+            </li>
+            <li>
+                <label>App Bundle</label>
+                <p>@(Model.AppBundle == null ? "NULL" : Model.AppBundle.ToString())</p>
+            </li>
+            <li>
+                <label>App Version</label>
+                <p>@(Model.AppVersion == null ? "NULL" : Model.AppVersion.ToString())</p>
+            </li>
+            <li>
+                <label>Azure Push Id</label>
+                <p>@(Model.AzurePushId == null ? "NULL" : Model.AzurePushId.ToString())</p>
+            </li>
+            <li>
+                <label>Namn</label>
+                <p>@(Model.Name == null ? "NULL" : Model.Name.ToString())</p>
+            </li>
+            <li>
+                <label>Modifierad</label>
+                <p>@(Model.Modified == null ? "NULL" : Model.Modified.ToString())</p>
+            </li>
+            <li>
+                <label>Senast använd</label>
+                <p>@(Model.LastUsedDate == null ? "NULL" : Model.LastUsedDate.ToString())</p>
+            </li>
+            <li>
+                <label>Uuid</label>
+                <p>@(Model.Uuid == null ? "NULL" : Model.Uuid.ToString())</p>
+            </li>
+            <li>
+                <label>Push Uuid</label>
+                <p>@(Model.PushUuid == null ? "NULL" : Model.PushUuid.ToString())</p>
             </li>
         </ul>
     </div>

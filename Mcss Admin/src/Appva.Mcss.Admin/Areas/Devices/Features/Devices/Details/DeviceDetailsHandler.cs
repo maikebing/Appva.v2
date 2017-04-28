@@ -25,9 +25,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IDeviceService"/>
         /// </summary>
-        private readonly IDeviceService service;
+        private readonly IDeviceService deviceService;
 
-        public DeviceDetailsHandler(IDeviceService service)
+        public DeviceDetailsHandler(IDeviceService deviceService)
         {
             this.deviceService = deviceService;
         }
@@ -50,9 +50,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Description = device.Description,
                 AppVersion = device.AppVersion,
                 IsActive = device.IsActive,
+                AzurePushId = device.AzurePushId,
+                LastUsedDate = device.LastUsedDate,
+                Modified = device.UpdatedAt,
+                Name = device.Name,
+                PushUuid = device.PushUuid,
+                Uuid = device.Uuid
             };
-
-
         }
     }
 }

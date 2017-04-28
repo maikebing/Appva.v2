@@ -331,11 +331,16 @@
     <property name="UDID" />
     <property name="LastPingedDate" />
     <many-to-one name="Taxon" class="Taxon" />
-    <property name="OS" />
+    <property name="OS"/>
     <property name="OSVersion" />
     <property name="AppBundle" />
     <property name="AppVersion" />
     <property name="Hardware" />
+    <property name="LastUsedDate"/>
+    <property name="AzurePushId" />
+    <property name="Name" />
+    <property name="PushUuid" />
+    <property name="Uuid" />
   </class>
 
   <!-- Patient -->

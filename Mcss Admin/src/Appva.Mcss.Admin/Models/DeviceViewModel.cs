@@ -29,6 +29,7 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+
         public DateTime Modified
         {
             get; set;
@@ -39,7 +40,7 @@ namespace Appva.Mcss.Admin.Models
             get; set;
         }
 
-        public DateTime LastUsedDate
+        public DateTime? LastUsedDate
         {
             get; set;
         }

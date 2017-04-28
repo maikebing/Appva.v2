@@ -51,6 +51,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        public virtual DateTime? Modified
+        {
+            get; set;
+        }
+
         /// <summary>
         /// Last pinged date.
         /// </summary>
@@ -58,6 +63,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Last used date
+        /// </summary>
+        public virtual DateTime? LastUsedDate
+        {
+            get; set;
         }
 
         /// <summary>
@@ -113,6 +126,39 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
+
+        /// <summary>
+        /// The AzurePushId
+        /// </summary>
+        public virtual string AzurePushId
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Device name
+        /// </summary>
+        public virtual string Name
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// The Uuid
+        /// </summary>
+        public virtual string Uuid
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// The Push Uuid
+        /// </summary>
+        public virtual string PushUuid
+        {
+            get; set;
+        }
+
 
         #endregion
     }

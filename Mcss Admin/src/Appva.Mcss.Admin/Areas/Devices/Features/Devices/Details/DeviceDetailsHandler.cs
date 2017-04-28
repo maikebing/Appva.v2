@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
     using System;
     using System.Collections.Generic;
@@ -19,11 +20,26 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Web;
     #endregion
 
-    public class DeviceDetailsHandler : RequestHandler<Identity<DeviceDetails>, DeviceDetails>
+    public class DeviceDetailsHandler : RequestHandler<Identity<DeviceViewModel>, DeviceViewModel>
     {
-        public override DeviceDetails Handle(Identity<DeviceDetails> message)
+        /// <summary>
+        /// The <see cref="IDeviceService"/>
+        /// </summary>
+        private readonly IDeviceService service;
+
+        public DeviceDetailsHandler(IDeviceService service)
         {
-            throw new NotImplementedException();
+            this.service = service;
+        }
+
+        public override DeviceViewModel Handle(Identity<DeviceViewModel> message)
+        {
+            var device = this.service.Find(message.Id);
+            return new DeviceViewModel
+            {
+                Description = device.Description,
+                CreatedAt = device.CreatedAt
+            };
         }
     }
 }

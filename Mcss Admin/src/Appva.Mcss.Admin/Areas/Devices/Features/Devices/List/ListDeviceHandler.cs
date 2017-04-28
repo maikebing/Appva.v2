@@ -35,11 +35,14 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
         /// </summary>
         private readonly IDeviceTransformer transformer;
 
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>
+        /// </summary>
         private readonly ITaxonFilterSessionHandler filter;
 
         #endregion
 
-        #region Constructors
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListDeviceHandler"/> class.
@@ -58,9 +61,6 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
         /// <inheritdoc /> 
         public override ListDeviceModel Handle(ListDevice message)
         {
-            
-
-
             var isActive = message.IsActive;
             var isCurrentNode = message.IsCurrentNode;
             var pageSize = 10;

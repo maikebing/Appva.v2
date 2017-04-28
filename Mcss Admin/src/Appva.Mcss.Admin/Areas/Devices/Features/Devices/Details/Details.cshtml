@@ -1,7 +1,19 @@
-﻿@model Appva.Mcss.Admin.Models.DeviceDetails
-    SetTitle("Enhets Detailer");
+﻿@model Appva.Mcss.Admin.Models.DeviceViewModel
+    SetTitle("Enhetsinformation");
 }
 
 <div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
- 
+    <div>
+        <h3 class="section-title">Enhetsinformation</h3>
+        <ul class="details-list">
+            <li>
+                <label>Beskrivning</label>
+                <p>@Model.Description</p>
+            </li>
+            <li>
+                <label>Registrerad</label>
+                <p>@Model.CreatedAt</p>
+            </li>
+        </ul>
+    </div>
 </div>

@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Models
     using System.Collections.Generic;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Domain.Entities;
 
     #endregion
 
@@ -63,13 +64,23 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Selected organization node.
+        /// The devicealert
         /// </summary>
-        public Guid SelectedOrganizationId
+        public Guid CurrentEscalationLevelId
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// The escalationlevels
+        /// </summary>
+        public IEnumerable<EscalationLevel> EscalationLevels
+        {
+            get;
+            set;
+        }
+
 
         #endregion
     }

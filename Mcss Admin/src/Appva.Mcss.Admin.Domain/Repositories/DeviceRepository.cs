@@ -46,7 +46,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        IList<DeviceAlert> GetAlerts(Guid id);
+        DeviceAlert GetAlert(Guid id);
 
         /// <summary>
         /// Get a list of all escalation levels.
@@ -149,9 +149,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public IList<DeviceAlert> GetAlerts(Guid id)
+        public DeviceAlert GetAlert(Guid id)
         {
-            return this.context.QueryOver<DeviceAlert>().Where(x => x.Id == id).List();
+            return this.context.QueryOver<DeviceAlert>().Where(x => x.Device.Id == id).SingleOrDefault();
         }
 
         /// <inheritdoc />

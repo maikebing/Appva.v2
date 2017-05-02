@@ -59,7 +59,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Get all alerts connected to the device.
         /// </summary>
         /// <returns></returns>
-        IList<DeviceAlert> GetAlerts(Guid id);
+        DeviceAlert GetAlert(Guid id);
+
+        /// <summary>
+        /// Gets all the escalationlevels.
+        /// </summary>
+        /// <returns></returns>
+        IList<EscalationLevel> GetEscalationLevels();
 
         /// <summary>
         /// Updates the device <see cref="Device"/>
@@ -138,9 +144,9 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.Find(id);
         }
 
-        public IList<DeviceAlert> GetAlerts(Guid id)
+        public DeviceAlert GetAlert(Guid id)
         {
-            return this.repository.GetAlerts(id);
+            return this.repository.GetAlert(id);
         }
 
         public IList<EscalationLevel> GetEscalationLevels()

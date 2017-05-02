@@ -18,6 +18,9 @@
                 <option value="2">Testnivå</option>
             </select>
         </div>
+        <div>
+            @Html.DropDownListFor(x => x.CurrentEscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"), "Ingen")
+        </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })
         </div>

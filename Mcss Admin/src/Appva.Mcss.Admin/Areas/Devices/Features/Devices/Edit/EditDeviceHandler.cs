@@ -18,6 +18,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
+    using Persistence;
+    using Domain.Entities;
 
     #endregion
 
@@ -64,7 +66,6 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var organizationList = new List<SelectListItem>();
             var device = this.deviceService.Find(message.Id);
             var organizations = this.taxonomyService.List(Application.Common.TaxonomicSchema.Organization);
-            deviceModel.TaxonId = device.Taxon != null ? device.Taxon.Id : Guid.Empty;
 
             foreach (var organization in organizations)
             {
@@ -79,6 +80,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             deviceModel.TaxonId = device.Taxon == null ? Guid.Empty : device.Taxon.Id;
             deviceModel.Description = device.Description;
             deviceModel.Organizations = organizationList;
+            deviceModel.EscalationLevels = this.deviceService.GetEscalationLevels();
+            deviceModel.CurrentEscalationLevelId = this.deviceService.GetAlert(device.Id) == null ? Guid.Empty : this.deviceService.GetAlert(device.Id).EscalationLevel.Id;
             return deviceModel;
         }
 

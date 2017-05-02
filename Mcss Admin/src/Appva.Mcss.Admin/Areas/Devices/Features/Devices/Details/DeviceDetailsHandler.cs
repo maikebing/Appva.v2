@@ -20,6 +20,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Application.Services;
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public class DeviceDetailsHandler : RequestHandler<Identity<DeviceViewModel>, DeviceViewModel>
     {
         /// <summary>
@@ -40,6 +43,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 Id = device.Id,
                 OS = device.OS,
+                Name = device.Name,
                 OSVersion = device.OSVersion,
                 AppBundle = device.AppBundle,
                 CreatedAt = device.CreatedAt,
@@ -53,7 +57,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 AzurePushId = device.AzurePushId,
                 LastUsedDate = device.LastUsedDate,
                 Modified = device.UpdatedAt,
-                Name = device.Name,
                 PushUuid = device.PushUuid,
                 Uuid = device.Uuid
             };

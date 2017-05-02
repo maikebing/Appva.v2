@@ -316,6 +316,21 @@
     </bag>
   </class>
 
+  <!-- DeviceAlert -->
+  <class name="DeviceAlert">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <many-to-one name="Device" class="Device" />
+    <many-to-one name="EscalationLevel" class="EscalationLevel" />
+    <bag name="Taxons" table="DeviceLevelTaxon" cascade="save-update">
+      <key column="DeviceAlertId" />
+      <many-to-many column="TaxonId" class="Taxon" />
+    </bag>
+  </class>
+
   <!-- End System classes. -->
 
   <!-- Device -->

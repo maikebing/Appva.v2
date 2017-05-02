@@ -2900,6 +2900,7 @@ form .time {width:4em;}
     width:32px;
     height:auto;
 }
+#pr-panel input { margin-bottom:5px; }
 #pr-panel input[type="text"] {
     padding:6px;
     font-size:13px;
@@ -2922,9 +2923,24 @@ form .time {width:4em;}
 } 
 #pr-panel select {
     padding:6px;
-    margin-bottom:10px;
+    margin-bottom:15px;
     width:100%;
 }
+#pr-panel .details-list {
+    list-style-type:none;
+    margin:0;
+    max-height:350px;
+    overflow:auto;
+}
+#pr-panel .details-list li {
+    padding:10px 0;
+    border-bottom:1px solid #d1dee3;
+}
+#pr-panel .details-list li:last-child {
+    padding:10px 0 0 0;
+    border-bottom:none;
+}
+#pr-panel .details-list p { margin:0; }
 
 .std-form .checkbox-grid .wrap {
 	width:492px;

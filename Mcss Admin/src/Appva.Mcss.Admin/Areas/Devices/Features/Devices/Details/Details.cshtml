@@ -1,14 +1,24 @@
 ﻿@model Appva.Mcss.Admin.Models.DeviceViewModel
     SetTitle("Enhetsinformation");
 }
-
+@{ 
+    string message = "Ej tillgänglig";
+}
 <div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
     <div>
         <h3 class="section-title">Enhetsinformation</h3>
         <ul class="details-list">
             <li>
+                <label>Name</label>
+                <p>@Model.Name</p>
+            </li>
+            <li>
+                <label>Id</label>
+                <p>@Model.Id</p>
+            </li>
+            <li>
                 <label>Beskrivning</label>
-                <p>@(Model.Description == null ? "NULL" : Model.Description.ToString())</p>
+                <p>@(Model.Description == null ? message : Model.Description)</p>
             </li>
             <li>
                 <label>Registrerad</label>
@@ -16,7 +26,7 @@
             </li>
             <li>
                 <label>Last Pinged Date</label>
-               <p>@(Model.LastPingedDate == null ? "NULL" : Model.LastPingedDate.ToString())</p>
+               <p>@(Model.LastPingedDate == null ? message : Model.LastPingedDate.ToString())</p>
             </li>
             <li>
                 <label>Aktiv</label>
@@ -24,51 +34,51 @@
             </li>
             <li>
                 <label>OS</label>
-                <p>@(Model.OS == null ? "NULL" : Model.OS.ToString())</p>
+                <p>@(Model.OS == null ? message : Model.OS)</p>
             </li>
             <li>
                 <label>OS Version</label>
-                <p>@(Model.OSVersion == null ? "NULL" : Model.OSVersion.ToString())</p>
+                <p>@(Model.OSVersion == null ? message : Model.OSVersion)</p>
             </li>
             <li>
                 <label>Version</label>
-                <p>@(Model.Version == 0 ? "0" : Model.Version.ToString())</p>
+                <p>@Model.Version</p>
             </li>
             <li>
                 <label>Hårdvara</label>
-                <p>@(Model.Hardware == null ? "NULL" : Model.Hardware.ToString())</p>
+                <p>@(Model.Hardware == null ? message : Model.Hardware)</p>
             </li>
             <li>
                 <label>App Bundle</label>
-                <p>@(Model.AppBundle == null ? "NULL" : Model.AppBundle.ToString())</p>
+                <p>@(Model.AppBundle == null ? message : Model.AppBundle)</p>
             </li>
             <li>
                 <label>App Version</label>
-                <p>@(Model.AppVersion == null ? "NULL" : Model.AppVersion.ToString())</p>
+                <p>@(Model.AppVersion == null ? message : Model.AppVersion)</p>
             </li>
             <li>
                 <label>Azure Push Id</label>
-                <p>@(Model.AzurePushId == null ? "NULL" : Model.AzurePushId.ToString())</p>
+                <p>@(Model.AzurePushId == null ? message : Model.AzurePushId)</p>
             </li>
             <li>
                 <label>Namn</label>
-                <p>@(Model.Name == null ? "NULL" : Model.Name.ToString())</p>
+                <p>@(Model.Name == null ? message : Model.Name)</p>
             </li>
             <li>
                 <label>Modifierad</label>
-                <p>@(Model.Modified == null ? "NULL" : Model.Modified.ToString())</p>
+                <p>@(Model.Modified == null ? message : Model.Modified.ToString())</p>
             </li>
             <li>
                 <label>Senast använd</label>
-                <p>@(Model.LastUsedDate == null ? "NULL" : Model.LastUsedDate.ToString())</p>
+                <p>@(Model.LastUsedDate == null ? message : Model.LastUsedDate.ToString())</p>
             </li>
             <li>
                 <label>Uuid</label>
-                <p>@(Model.Uuid == null ? "NULL" : Model.Uuid.ToString())</p>
+                <p>@(Model.Uuid == null ? message : Model.Uuid)</p>
             </li>
             <li>
                 <label>Push Uuid</label>
-                <p>@(Model.PushUuid == null ? "NULL" : Model.PushUuid.ToString())</p>
+                <p>@(Model.PushUuid == null ? message : Model.PushUuid)</p>
             </li>
         </ul>
     </div>

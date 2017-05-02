@@ -40,6 +40,19 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="pageSize"></param>
         /// <returns></returns>
         PageableSet<DeviceModel> Search(SearchDeviceModel model, int page = 1, int pageSize = 10);
+
+        /// <summary>
+        /// Get a list of device alerts.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        IList<DeviceAlert> GetAlerts(Guid id);
+
+        /// <summary>
+        /// Get a list of all escalation levels.
+        /// </summary>
+        /// <returns></returns>
+        IList<EscalationLevel> GetEscalationLevels();
     }
 
     /// <summary>
@@ -133,6 +146,18 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 TotalCount = (long)query.RowCount(),
                 Entities = items
             };
+        }
+
+        /// <inheritdoc />
+        public IList<DeviceAlert> GetAlerts(Guid id)
+        {
+            return this.context.QueryOver<DeviceAlert>().Where(x => x.Id == id).List();
+        }
+
+        /// <inheritdoc />
+        public IList<EscalationLevel> GetEscalationLevels()
+        {
+            return this.context.QueryOver<EscalationLevel>().List();
         }
 
         #endregion

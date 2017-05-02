@@ -56,6 +56,12 @@ namespace Appva.Mcss.Admin.Application.Services
         Device Find(Guid id);
 
         /// <summary>
+        /// Get all alerts connected to the device.
+        /// </summary>
+        /// <returns></returns>
+        IList<DeviceAlert> GetAlerts(Guid id);
+
+        /// <summary>
         /// Updates the device <see cref="Device"/>
         /// </summary>
         /// <param name="device"></param>
@@ -78,11 +84,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// The <see cref="IAuditService"/>
         /// </summary>
         private readonly IAuditService auditService;
-
-        /// <summary>
-        /// The <see cref="IIdentityService"/>
-        /// </summary>
-        private readonly IIdentityService identityService;
 
         #endregion
 
@@ -135,6 +136,16 @@ namespace Appva.Mcss.Admin.Application.Services
         public Device Find(Guid id)
         {
             return this.repository.Find(id);
+        }
+
+        public IList<DeviceAlert> GetAlerts(Guid id)
+        {
+            return this.repository.GetAlerts(id);
+        }
+
+        public IList<EscalationLevel> GetEscalationLevels()
+        {
+            return this.repository.GetEscalationLevels();
         }
 
         /// <inheritdoc />

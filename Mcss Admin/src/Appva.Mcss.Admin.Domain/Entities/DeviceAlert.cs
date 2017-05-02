@@ -20,7 +20,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    class DeviceAlert : AggregateRoot<DeviceAlert>
+    public class DeviceAlert : AggregateRoot<DeviceAlert>
     {
         /// <summary>
         /// The device.

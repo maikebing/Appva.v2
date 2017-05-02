@@ -40,28 +40,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 Device = device
             };
-
-            //return new DeviceViewModel
-            //{
-            //    Id = device.Id,
-            //    OS = device.OS,
-            //    OSVersion = device.OSVersion,
-            //    AppBundle = device.AppBundle,
-            //    CreatedAt = device.CreatedAt,
-            //    Hardware = device.Hardware,
-            //    UDID = device.UDID,
-            //    Version = device.Version,
-            //    LastPingedDate = device.LastPingedDate,
-            //    Description = device.Description,
-            //    AppVersion = device.AppVersion,
-            //    IsActive = device.IsActive,
-            //    AzurePushId = device.AzurePushId,
-            //    LastUsedDate = device.LastUsedDate,
-            //    Modified = device.UpdatedAt,
-            //    Name = device.Name,
-            //    PushUuid = device.PushUuid,
-            //    Uuid = device.Uuid
-            //};
         }
     }
 }

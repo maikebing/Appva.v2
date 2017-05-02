@@ -9,8 +9,14 @@
             <h3 class="section-title">Redigera enhet</h3>
             @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
             @Html.LabelFor(x => x.TaxonId, "Organisationsnod")
-            <p>Koppla enheten till en avdelning.</p>
+            <p>Koppla enheten till en eller flera avdelningar.</p>
             @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen" )
+            <label for="levelId">Larmkonfiguration</label>
+            <p>Lägg till avdelningar för den valda eskaleringsnivån.</p>
+            <select>
+                <option value="1" selected>Defcon 1</option>
+                <option value="2">Testnivå</option>
+            </select>
         </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })

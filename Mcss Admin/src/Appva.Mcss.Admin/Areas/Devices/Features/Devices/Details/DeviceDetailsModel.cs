@@ -10,14 +10,16 @@
 
 namespace Appva.Mcss.Admin.Models
 {
-    #region Imports
+    #region Imports.
+
     using Appva.Mcss.Admin.Domain.Entities;
+
     #endregion
 
     public class DeviceDetailsModel
     {
         /// <summary>
-        /// The device
+        /// The device.
         /// </summary>
         public Device Device
         {

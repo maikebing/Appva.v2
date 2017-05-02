@@ -20,10 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Application.Services;
     #endregion
 
-    /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
-    /// </summary>
-    public class DeviceDetailsHandler : RequestHandler<Identity<DeviceViewModel>, DeviceViewModel>
+    public class DeviceDetailsHandler : RequestHandler<Identity<DeviceDetailsModel>, DeviceDetailsModel>
     {
         /// <summary>
         /// The <see cref="IDeviceService"/>
@@ -35,31 +32,36 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.deviceService = deviceService;
         }
 
-        public override DeviceViewModel Handle(Identity<DeviceViewModel> message)
+        public override DeviceDetailsModel Handle(Identity<DeviceDetailsModel> message)
         {
             var device = this.deviceService.Find(message.Id);
 
-            return new DeviceViewModel
+            return new DeviceDetailsModel
             {
-                Id = device.Id,
-                OS = device.OS,
-                Name = device.Name,
-                OSVersion = device.OSVersion,
-                AppBundle = device.AppBundle,
-                CreatedAt = device.CreatedAt,
-                Hardware = device.Hardware,
-                UDID = device.UDID,
-                Version = device.Version,
-                LastPingedDate = device.LastPingedDate,
-                Description = device.Description,
-                AppVersion = device.AppVersion,
-                IsActive = device.IsActive,
-                AzurePushId = device.AzurePushId,
-                LastUsedDate = device.LastUsedDate,
-                Modified = device.UpdatedAt,
-                PushUuid = device.PushUuid,
-                Uuid = device.Uuid
+                Device = device
             };
+
+            //return new DeviceViewModel
+            //{
+            //    Id = device.Id,
+            //    OS = device.OS,
+            //    OSVersion = device.OSVersion,
+            //    AppBundle = device.AppBundle,
+            //    CreatedAt = device.CreatedAt,
+            //    Hardware = device.Hardware,
+            //    UDID = device.UDID,
+            //    Version = device.Version,
+            //    LastPingedDate = device.LastPingedDate,
+            //    Description = device.Description,
+            //    AppVersion = device.AppVersion,
+            //    IsActive = device.IsActive,
+            //    AzurePushId = device.AzurePushId,
+            //    LastUsedDate = device.LastUsedDate,
+            //    Modified = device.UpdatedAt,
+            //    Name = device.Name,
+            //    PushUuid = device.PushUuid,
+            //    Uuid = device.Uuid
+            //};
         }
     }
 }

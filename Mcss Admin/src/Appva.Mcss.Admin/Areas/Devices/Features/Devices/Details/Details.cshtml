@@ -1,4 +1,4 @@
-﻿@model Appva.Mcss.Admin.Models.DeviceViewModel
+﻿@model Appva.Mcss.Admin.Models.DeviceDetailsModel
     SetTitle("Enhetsinformation");
 }
 @{ 
@@ -9,76 +9,68 @@
         <h3 class="section-title">Enhetsinformation</h3>
         <ul class="details-list">
             <li>
-                <label>Name</label>
-                <p>@Model.Name</p>
-            </li>
-            <li>
-                <label>Id</label>
-                <p>@Model.Id</p>
+                <label>Namn</label>
+                <p>@(Model.Device.Name == null ? "NULL" : Model.Device.Name.ToString())</p>
             </li>
             <li>
                 <label>Beskrivning</label>
-                <p>@(Model.Description == null ? message : Model.Description)</p>
+                <p>@(Model.Device.Description == null ? "NULL" : Model.Device.Description.ToString())</p>
             </li>
             <li>
                 <label>Registrerad</label>
-                <p>@Model.CreatedAt</p>
-            </li>
-            <li>
-                <label>Last Pinged Date</label>
-               <p>@(Model.LastPingedDate == null ? message : Model.LastPingedDate.ToString())</p>
-            </li>
-            <li>
-                <label>Aktiv</label>
-                <p>@Model.IsActive</p>
-            </li>
-            <li>
-                <label>OS</label>
-                <p>@(Model.OS == null ? message : Model.OS)</p>
-            </li>
-            <li>
-                <label>OS Version</label>
-                <p>@(Model.OSVersion == null ? message : Model.OSVersion)</p>
-            </li>
-            <li>
-                <label>Version</label>
-                <p>@Model.Version</p>
-            </li>
-            <li>
-                <label>Hårdvara</label>
-                <p>@(Model.Hardware == null ? message : Model.Hardware)</p>
-            </li>
-            <li>
-                <label>App Bundle</label>
-                <p>@(Model.AppBundle == null ? message : Model.AppBundle)</p>
-            </li>
-            <li>
-                <label>App Version</label>
-                <p>@(Model.AppVersion == null ? message : Model.AppVersion)</p>
-            </li>
-            <li>
-                <label>Azure Push Id</label>
-                <p>@(Model.AzurePushId == null ? message : Model.AzurePushId)</p>
-            </li>
-            <li>
-                <label>Namn</label>
-                <p>@(Model.Name == null ? message : Model.Name)</p>
+                <p>@Model.Device.CreatedAt</p>
             </li>
             <li>
                 <label>Modifierad</label>
-                <p>@(Model.Modified == null ? message : Model.Modified.ToString())</p>
+                <p>@(Model.Device.Modified == null ? "NULL" : Model.Device.Modified.ToString())</p>
             </li>
             <li>
                 <label>Senast använd</label>
-                <p>@(Model.LastUsedDate == null ? message : Model.LastUsedDate.ToString())</p>
+                <p>@(Model.Device.LastUsedDate == null ? "NULL" : Model.Device.LastUsedDate.ToString())</p>
+            </li>
+            <li>
+                <label>Last Pinged Date</label>
+               <p>@(Model.Device.LastPingedDate == null ? "NULL" : Model.Device.LastPingedDate.ToString())</p>
+            </li>
+            <li>
+                <label>Aktiv</label>
+                <p>@Model.Device.IsActive</p>
+            </li>
+            <li>
+                <label>OS</label>
+                <p>@(Model.Device.OS == null ? "NULL" : Model.Device.OS.ToString())</p>
+            </li>
+            <li>
+                <label>OS Version</label>
+                <p>@(Model.Device.OSVersion == null ? "NULL" : Model.Device.OSVersion.ToString())</p>
+            </li>
+            <li>
+                <label>Version</label>
+                <p>@(Model.Device.Version == 0 ? "0" : Model.Device.Version.ToString())</p>
+            </li>
+            <li>
+                <label>Hårdvara</label>
+                <p>@(Model.Device.Hardware == null ? "NULL" : Model.Device.Hardware.ToString())</p>
+            </li>
+            <li>
+                <label>App Bundle</label>
+                <p>@(Model.Device.AppBundle == null ? "NULL" : Model.Device.AppBundle.ToString())</p>
+            </li>
+            <li>
+                <label>App Version</label>
+                <p>@(Model.Device.AppVersion == null ? "NULL" : Model.Device.AppVersion.ToString())</p>
+            </li>
+            <li>
+                <label>Azure Push Id</label>
+                <p>@(Model.Device.AzurePushId == null ? "NULL" : Model.Device.AzurePushId.ToString())</p>
             </li>
             <li>
                 <label>Uuid</label>
-                <p>@(Model.Uuid == null ? message : Model.Uuid)</p>
+                <p>@(Model.Device.Uuid == null ? "NULL" : Model.Device.Uuid.ToString())</p>
             </li>
             <li>
                 <label>Push Uuid</label>
-                <p>@(Model.PushUuid == null ? message : Model.PushUuid)</p>
+                <p>@(Model.Device.PushUuid == null ? "NULL" : Model.Device.PushUuid.ToString())</p>
             </li>
         </ul>
     </div>

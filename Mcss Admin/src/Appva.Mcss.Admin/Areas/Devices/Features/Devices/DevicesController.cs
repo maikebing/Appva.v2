@@ -110,7 +110,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
 
         [Route("{id:guid}/details")]
         [HttpGet, Dispatch]
-        public ActionResult Details(Identity<DeviceViewModel> request)
+        public ActionResult Details(Identity<DeviceDetailsModel> request)
         {
             return this.View();
         }

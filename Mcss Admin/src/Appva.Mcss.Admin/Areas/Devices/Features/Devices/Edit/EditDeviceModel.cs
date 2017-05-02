@@ -54,6 +54,15 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// The escalation level id.
+        /// </summary>
+        public Guid EscalationLevelId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Organization nodes.
         /// </summary>
         public IEnumerable<SelectListItem> Organizations
@@ -63,9 +72,9 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Selected organization node.
+        /// List of escalation levels.
         /// </summary>
-        public Guid SelectedOrganizationId
+        public IEnumerable<SelectListItem> EscalationLevels
         {
             get;
             set;

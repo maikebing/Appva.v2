@@ -64,6 +64,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         {
             var deviceModel = new EditDeviceModel();
             var organizationList = new List<SelectListItem>();
+            var escalationLevelList = new List<SelectListItem>();
             var device = this.deviceService.Find(message.Id);
             var organizations = this.taxonomyService.List(Application.Common.TaxonomicSchema.Organization);
 
@@ -73,6 +74,15 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
                 {
                     Text = string.Format("{0}: {1}", organization.Type, organization.Name),
                     Value = organization.Id.ToString(),
+                });
+            }
+
+            foreach (var escalationLevel in escalationLevels)
+            {
+                escalationLevelList.Add(new SelectListItem()
+                {
+                    Text = escalationLevel.Name,
+                    Value = escalationLevel.Id.ToString()
                 });
             }
             

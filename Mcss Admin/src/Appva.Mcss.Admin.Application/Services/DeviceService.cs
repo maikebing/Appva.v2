@@ -56,16 +56,23 @@ namespace Appva.Mcss.Admin.Application.Services
         Device Find(Guid id);
 
         /// <summary>
-        /// Get all alerts connected to the device.
+        /// Find an alert connected to the device.
         /// </summary>
         /// <returns></returns>
         DeviceAlert GetAlert(Guid id);
 
         /// <summary>
-        /// Gets all the escalationlevels.
+        /// Lists all escalation levels.
         /// </summary>
         /// <returns></returns>
         IList<EscalationLevel> GetEscalationLevels();
+
+        /// <summary>
+        /// Returns a filtered collection of <see cref="Taxon"/> by specified ID:s.
+        /// </summary>
+        /// <param name="ids">The ID:s to retrieve</param>
+        /// <returns>A filtered collection of <see cref="Taxon"/></returns>
+        IList<Taxon> ListAllIn(params Guid[] ids);
 
         /// <summary>
         /// Updates the device <see cref="Device"/>
@@ -144,14 +151,22 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.Find(id);
         }
 
+        /// <inheritdoc />
         public DeviceAlert GetAlert(Guid id)
         {
             return this.repository.GetAlert(id);
         }
 
+        /// <inheritdoc />
         public IList<EscalationLevel> GetEscalationLevels()
         {
             return this.repository.GetEscalationLevels();
+        }
+
+        /// <inheritdoc />
+        public IList<Taxon> ListAllIn(params Guid[] ids)
+        {
+            return null;
         }
 
         /// <inheritdoc />

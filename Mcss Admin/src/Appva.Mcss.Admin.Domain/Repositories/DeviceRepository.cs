@@ -42,17 +42,24 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         PageableSet<DeviceModel> Search(SearchDeviceModel model, int page = 1, int pageSize = 10);
 
         /// <summary>
-        /// Get a list of device alerts.
+        /// Get the device alert.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         DeviceAlert GetAlert(Guid id);
 
         /// <summary>
-        /// Get a list of all escalation levels.
+        /// Lists all escalation levels.
         /// </summary>
         /// <returns></returns>
         IList<EscalationLevel> GetEscalationLevels();
+
+        /// <summary>
+        /// Returns a filtered collection of <see cref="Taxon"/> by specified ID:s.
+        /// </summary>
+        /// <param name="ids">The ID:s to retrieve</param>
+        /// <returns>A filtered collection of <see cref="Taxon"/></returns>
+        IList<Taxon> ListAllIn(params Guid[] ids);
     }
 
     /// <summary>
@@ -151,13 +158,24 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public DeviceAlert GetAlert(Guid id)
         {
-            return this.context.QueryOver<DeviceAlert>().Where(x => x.Device.Id == id).SingleOrDefault();
+            return this.context.QueryOver<DeviceAlert>()
+                .Where(x => x.Device.Id == id)
+                    .SingleOrDefault();
         }
 
         /// <inheritdoc />
         public IList<EscalationLevel> GetEscalationLevels()
         {
             return this.context.QueryOver<EscalationLevel>().List();
+        }
+
+        /// <inheritdoc />
+        public IList<Taxon> ListAllIn(params Guid[] ids)
+        {
+            return this.context.QueryOver<Taxon>()
+                .AndRestrictionOn(x => x.Id)
+                    .IsIn(ids)
+                        .List();
         }
 
         #endregion

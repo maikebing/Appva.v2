@@ -1,7 +1,6 @@
 ﻿@model Appva.Mcss.Admin.Models.EditDeviceModel
     SetTitle("Redigera enhet");
 }
-
 <div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
     @using (Html.Post(new { }, new { Id = Model.Id }))
     {
@@ -11,12 +10,9 @@
             @Html.LabelFor(x => x.TaxonId, "Organisationsnod")
             <p>Koppla enheten till en eller flera avdelningar.</p>
             @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen" )
-            <label for="levelId">Larmkonfiguration</label>
-            <p>Lägg till avdelningar för den valda eskaleringsnivån.</p>
-            <select>
-                <option value="1" selected>Defcon 1</option>
-                <option value="2">Testnivå</option>
-            </select>
+            @Html.LabelFor(x => x.EscalationLevelId, "Larmkonfiguration")
+            <p>Lägg till avdelningar för den valda nivån.</p>
+            @Html.DropDownListFor(x => x.EscalationLevelId, Model.EscalationLevels)
         </div>
         <div>
             @Html.DropDownListFor(x => x.CurrentEscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"), "Ingen")

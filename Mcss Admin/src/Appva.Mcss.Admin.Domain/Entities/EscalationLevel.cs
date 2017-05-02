@@ -38,6 +38,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
+        public new virtual DateTime? UpdatedAt
+        {
+            get;
+            set;
+        }
         public virtual string Description
         {
             get;

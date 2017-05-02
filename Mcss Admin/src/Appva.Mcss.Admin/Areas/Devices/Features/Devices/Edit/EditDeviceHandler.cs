@@ -76,22 +76,13 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
                     Value = organization.Id.ToString(),
                 });
             }
-
-            foreach (var escalationLevel in escalationLevels)
-            {
-                escalationLevelList.Add(new SelectListItem()
-                {
-                    Text = escalationLevel.Name,
-                    Value = escalationLevel.Id.ToString()
-                });
-            }
             
             deviceModel.Id = device.Id;
             deviceModel.TaxonId = device.Taxon == null ? Guid.Empty : device.Taxon.Id;
             deviceModel.Description = device.Description;
             deviceModel.Organizations = organizationList;
             deviceModel.EscalationLevels = this.deviceService.GetEscalationLevels();
-            deviceModel.CurrentEscalationLevelId = this.deviceService.GetAlert(device.Id) == null ? Guid.Empty : this.deviceService.GetAlert(device.Id).EscalationLevel.Id;
+            deviceModel.EscalationLevelId = this.deviceService.GetAlert(device.Id) == null ? Guid.Empty : this.deviceService.GetAlert(device.Id).EscalationLevel.Id;
             return deviceModel;
         }
 

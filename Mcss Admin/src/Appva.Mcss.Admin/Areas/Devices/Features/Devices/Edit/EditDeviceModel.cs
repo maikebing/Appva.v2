@@ -16,7 +16,8 @@ namespace Appva.Mcss.Admin.Models
     using System.Collections.Generic;
     using System.Web.Mvc;
     using Appva.Cqrs;
-    using Domain.Entities;
+    using Appva.Mvc;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -73,16 +74,7 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The devicealert
-        /// </summary>
-        public Guid CurrentEscalationLevelId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The escalationlevels
+        /// List of escalation levels.
         /// </summary>
         public IEnumerable<EscalationLevel> EscalationLevels
         {
@@ -90,6 +82,14 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        /// <summary>
+        /// List of organization taxons.
+        /// </summary>
+        public IList<Tickable> DeviceLevelTaxons
+        {
+            get;
+            set;
+        }
 
         #endregion
     }

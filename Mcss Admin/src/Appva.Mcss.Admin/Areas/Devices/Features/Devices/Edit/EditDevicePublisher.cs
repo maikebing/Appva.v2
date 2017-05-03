@@ -76,9 +76,12 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             device.Taxon = taxon;
             this.deviceService.Update(device);
 
-            alert.Taxons = this.alertService.ListAllIn(selectedOrganizations);
-            alert.EscalationLevel = this.alertService.GetEscalationLevel(message.EscalationLevelId);
-            this.alertService.Update(alert);
+            if (alert != null)
+            {
+                alert.Taxons = this.alertService.ListAllIn(selectedOrganizations);
+                alert.EscalationLevel = this.alertService.GetEscalationLevel(message.EscalationLevelId);
+                this.alertService.Update(alert);
+            }
 
             return true;
         }

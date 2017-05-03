@@ -14,12 +14,9 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using System.Collections.Generic;
-    using Domain.Models;
-    using Repository;
     using Domain.Repositories;
     using Auditing;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Core.Extensions;
 
     #endregion
 
@@ -55,7 +52,13 @@ namespace Appva.Mcss.Admin.Application.Services
         IList<Taxon> ListAllIn(params Guid[] ids);
 
         /// <summary>
-        /// Updates the device alert <see cref="DeviceAlert"/>
+        /// Saves a device alert to database.
+        /// </summary>
+        /// <param name="deviceAlert"></param>
+        void Save(DeviceAlert deviceAlert);
+
+        /// <summary>
+        /// Updates the device alert <see cref="DeviceAlert"/>.
         /// </summary>
         /// <param name="deviceAlert"></param>
         void Update(DeviceAlert deviceAlert);
@@ -117,6 +120,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<Taxon> ListAllIn(params Guid[] ids)
         {
             return null;
+        }
+
+        /// <inheritdoc />
+        public void Save(DeviceAlert deviceAlert)
+        {
+            this.repository.Save(deviceAlert);
         }
 
         /// <inheritdoc />

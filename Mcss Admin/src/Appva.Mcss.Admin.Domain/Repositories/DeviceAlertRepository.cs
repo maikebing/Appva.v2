@@ -25,7 +25,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public interface IDeviceAlertRepository :
         IRepository,
-        IUpdateRepository<DeviceAlert>
+        IUpdateRepository<DeviceAlert>,
+        ISaveRepository<DeviceAlert>
     {
         /// <summary>
         /// Find a device alert by id.
@@ -86,7 +87,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public DeviceAlert Find(Guid id)
         {
             return this.context.QueryOver<DeviceAlert>()
-                .Where(x => x.Id == id)
+                .Where(x => x.Device.Id == id)
                     .SingleOrDefault();
         }
 
@@ -125,6 +126,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             this.context.Update<DeviceAlert>(entity);
         }
 
+        #endregion
+
+        #region ISaveRepository Members.
+        
+        /// <inheritdoc />
+        public void Save(DeviceAlert entity)
+        {
+            this.context.Save(entity);
+        }
+        
         #endregion
     }
 }

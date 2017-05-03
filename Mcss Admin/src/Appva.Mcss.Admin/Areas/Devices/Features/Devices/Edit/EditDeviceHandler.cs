@@ -99,8 +99,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var organizations = items.Select(x => new Tickable
             {
                 Id = x.Id,
-                Label = x.Name,
-                HelpText = x.Description
+                Label = string.IsNullOrEmpty(x.Description) ? x.Name : string.Format("{0}: {1}", x.Description, x.Name)
             }).ToList();
 
             if (selected != null)

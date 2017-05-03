@@ -1,40 +1,23 @@
 ﻿@model Appva.Mcss.Admin.Models.EditDeviceModel
     SetTitle("Redigera enhet");
 }
-
-<script>
-$(function () {
-    $('form').submit(function () {
-        if ($(this).valid()) {
-            $.ajax({
-                url: '@Url.Action("Edit", "Devices")',
-                type: 'POST',
-                data: $(this).serialize(),
-                success: function (result) {
-                    $('#result').html(result);
-                }
-            });
-        }
-        return false;
-    });
-});
-</script>
-
 <div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
-    <div id="result">
-    </div>
-    @using (Html.BeginForm("Edit", "Devices", new { Id = Model.Id }))
+    @using (Html.Post(new { }, new { Id = Model.Id }))
     {
         <div>
             <h3 class="section-title">Redigera enhet</h3>
-            @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
-            @Html.LabelFor(x => x.TaxonId, "Avdelningar")
-            <p>Koppla enheten till en eller flera avdelningar.</p>
-            @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen" )
-            @Html.LabelFor(x => x.EscalationLevelId, "Larmkonfiguration")
-            <p>Lägg till avdelningar för den valda nivån.</p>
-            @Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))
-            @Html.FormGroup(x => x.DeviceLevelTaxons, "text").Label("Avdelningar").CheckboxList().Validate().Build()
+            <div class="container">
+                @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
+                @Html.LabelFor(x => x.TaxonId, "Avdelningar")
+                <p>Koppla enheten till en eller flera avdelningar.</p>
+                @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen" )
+                @Html.LabelFor(x => x.EscalationLevelId, "Larmkonfiguration")
+                <p>Lägg till avdelningar för den valda nivån.</p>
+                <div class="checkbox-container">
+                    @Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))
+                    @Html.FormGroup(x => x.DeviceLevelTaxons, "text").CheckboxList().Validate().Build()
+                </div>
+            </div>
         </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })

@@ -2893,6 +2893,12 @@ form .time {width:4em;}
 
 .lb-panel .std-form {padding-top:0;}
 
+#pr-panel .container {
+    max-height:410px;
+    overflow:auto;
+    padding-right:15px;
+    margin-bottom:15px;
+}
 #pr-panel img {
     position:absolute;
     top:9px;
@@ -2926,10 +2932,26 @@ form .time {width:4em;}
     margin-bottom:15px;
     width:100%;
 }
+#pr-panel .checkbox-container {
+    background:#ecf3f5;
+    margin-bottom:15px;
+    padding:15px 15px 5px 15px;
+    border:1px solid #d1dce0;
+}
+#pr-panel .checkbox-grid { 
+    list-style-type:none; 
+    margin:0;
+    padding:0;
+}
+#pr-panel .checkbox-grid li { 
+    display:inline-block;
+    width:50%;
+}
+#pr-panel .checkbox-grid label { color:#222; }
 #pr-panel .details-list {
     list-style-type:none;
     margin:0;
-    max-height:350px;
+    max-height:410px;
     overflow:auto;
 }
 #pr-panel .details-list li {

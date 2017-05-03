@@ -29,6 +29,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         IUpdateRepository<DeviceAlert>
     {
         /// <summary>
+        /// Get a single escalation level.
+        /// </summary>
+        /// <returns></returns>
+        EscalationLevel GetEscalationLevel(Guid id);
+
+        /// <summary>
         /// Lists all escalation levels.
         /// </summary>
         /// <returns></returns>
@@ -69,6 +75,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #endregion
 
         #region IDeviceAlertRepository Members.
+
+        /// <inheritdoc />
+        public EscalationLevel GetEscalationLevel(Guid id)
+        {
+            return this.context.QueryOver<EscalationLevel>()
+                .Where(x => x.Id == id)
+                    .SingleOrDefault();
+        }
 
         /// <inheritdoc />
         public IList<EscalationLevel> GetEscalationLevels()

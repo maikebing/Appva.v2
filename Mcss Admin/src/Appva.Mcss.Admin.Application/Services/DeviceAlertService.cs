@@ -96,6 +96,12 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
+        public EscalationLevel GetEscalationLevel(Guid id)
+        {
+            return this.repository.GetEscalationLevel(id);
+        }
+
+        /// <inheritdoc />
         public IList<EscalationLevel> GetEscalationLevels()
         {
             return this.repository.GetEscalationLevels();

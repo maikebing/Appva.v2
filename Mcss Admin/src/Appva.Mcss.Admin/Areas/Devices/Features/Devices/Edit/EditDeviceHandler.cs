@@ -14,12 +14,14 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
-    using Persistence;
-    using Domain.Entities;
+    using Appva.Mvc;
 
     #endregion
 
@@ -67,6 +69,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var escalationLevelList = new List<SelectListItem>();
             var device = this.deviceService.Find(message.Id);
             var organizations = this.taxonomyService.List(Application.Common.TaxonomicSchema.Organization);
+            var deviceAlert = deviceService.GetAlert(device.Id);
 
             foreach (var organization in organizations)
             {
@@ -83,7 +86,37 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             deviceModel.Organizations = organizationList;
             deviceModel.EscalationLevels = this.deviceService.GetEscalationLevels();
             deviceModel.EscalationLevelId = this.deviceService.GetAlert(device.Id) == null ? Guid.Empty : this.deviceService.GetAlert(device.Id).EscalationLevel.Id;
+            deviceModel.DeviceLevelTaxons = this.Merge(organizations, deviceAlert == null ? null : deviceAlert.Taxons);
             return deviceModel;
+        }
+
+        #endregion
+
+        #region Methods.
+        
+        private IList<Tickable> Merge(IList<ITaxon> items, IList<Taxon> selected)
+        {
+            var organizations = items.Select(x => new Tickable
+            {
+                Id = x.Id,
+                Label = x.Name,
+                HelpText = x.Description
+            }).ToList();
+
+            if (selected != null)
+            {
+                var selections = selected.Select(x => x.Id).ToList();
+
+                foreach (var organization in organizations)
+                {
+                    if (selections.Contains(organization.Id))
+                    {
+                        organization.IsSelected = true;
+                    }
+                }
+            }
+
+            return organizations;
         }
 
         #endregion

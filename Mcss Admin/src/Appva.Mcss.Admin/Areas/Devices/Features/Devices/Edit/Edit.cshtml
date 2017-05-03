@@ -13,6 +13,7 @@
             @Html.LabelFor(x => x.EscalationLevelId, "Larmkonfiguration")
             <p>Lägg till avdelningar för den valda nivån.</p>
             @Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))
+            @Html.FormGroup(x => x.DeviceLevelTaxons, "text").Label("Avdelningar").CheckboxList().Validate().Build()
         </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })

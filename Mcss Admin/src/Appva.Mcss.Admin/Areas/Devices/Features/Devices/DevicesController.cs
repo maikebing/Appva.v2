@@ -101,7 +101,18 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
         [HttpPost, Dispatch]
         public ActionResult Edit(EditDeviceModel request)
         {
-            return Content("Thanks", "text/html");
+            return this.Redirect(this.Request.UrlReferrer.ToString());
+        }
+
+        #endregion
+
+        #region Update
+
+        [Route("update")]
+        [HttpPost, Dispatch("Edit", "Devices")]
+        public JsonResult Update(EditDeviceModel request)
+        {
+            return Json(request);
         }
 
         #endregion

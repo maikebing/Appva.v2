@@ -38,6 +38,11 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         private readonly IDeviceService deviceService;
 
         /// <summary>
+        /// The <see cref="IDeviceAlertService"/>
+        /// </summary>
+        private readonly IDeviceAlertService alertService;
+
+        /// <summary>
         /// The <see cref="ITaxonomyService"/>
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
@@ -50,10 +55,12 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// Initializes a new instance of the <see cref="EditDeviceHandler"/> class.
         /// </summary>
         /// <param name="deviceService">The <see cref="IDeviceService"/> implementation.</param>
+        /// <param name="alertService">The <see cref="IDeviceAlertService"/> implementation.</param>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation.</param>
-        public EditDeviceHandler(IDeviceService deviceService, ITaxonomyService taxonomyService)
+        public EditDeviceHandler(IDeviceService deviceService, IDeviceAlertService alertService, ITaxonomyService taxonomyService)
         {
             this.deviceService = deviceService;
+            this.alertService = alertService;
             this.taxonomyService = taxonomyService;
         }
 
@@ -69,7 +76,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var escalationLevelList = new List<SelectListItem>();
             var device = this.deviceService.Find(message.Id);
             var organizations = this.taxonomyService.List(Application.Common.TaxonomicSchema.Organization);
-            var deviceAlert = deviceService.GetAlert(device.Id);
+            var deviceAlert = alertService.Find(device.Id);
 
             foreach (var organization in organizations)
             {
@@ -84,8 +91,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             deviceModel.TaxonId = device.Taxon == null ? Guid.Empty : device.Taxon.Id;
             deviceModel.Description = device.Description;
             deviceModel.Organizations = organizationList;
-            deviceModel.EscalationLevels = this.deviceService.GetEscalationLevels();
-            deviceModel.EscalationLevelId = this.deviceService.GetAlert(device.Id) == null ? Guid.Empty : this.deviceService.GetAlert(device.Id).EscalationLevel.Id;
+            deviceModel.EscalationLevels = this.alertService.GetEscalationLevels();
+            deviceModel.EscalationLevelId = this.alertService.Find(device.Id) == null ? Guid.Empty : this.alertService.Find(device.Id).EscalationLevel.Id;
             deviceModel.DeviceLevelTaxons = this.Merge(organizations, deviceAlert == null ? null : deviceAlert.Taxons);
             return deviceModel;
         }

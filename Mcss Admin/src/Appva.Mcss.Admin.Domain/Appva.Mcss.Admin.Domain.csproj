@@ -125,6 +125,7 @@
     <Compile Include="Models\SearchDeviceModel.cs" />
     <Compile Include="Models\SearchPatientModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
+    <Compile Include="Repositories\DeviceAlertRepository.cs" />
     <Compile Include="Repositories\DeviceRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />

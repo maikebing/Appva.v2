@@ -1,8 +1,29 @@
 ﻿@model Appva.Mcss.Admin.Models.EditDeviceModel
     SetTitle("Redigera enhet");
 }
+
+<script>
+$(function () {
+    $('form').submit(function () {
+        if ($(this).valid()) {
+            $.ajax({
+                url: '@Url.Action("Edit", "Devices")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (result) {
+                    $('#result').html(result);
+                }
+            });
+        }
+        return false;
+    });
+});
+</script>
+
 <div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
-    @using (Html.Post(new { }, new { Id = Model.Id }))
+    <div id="result">
+    </div>
+    @using (Html.BeginForm("Edit", "Devices", new { Id = Model.Id }))
     {
         <div>
             <h3 class="section-title">Redigera enhet</h3>

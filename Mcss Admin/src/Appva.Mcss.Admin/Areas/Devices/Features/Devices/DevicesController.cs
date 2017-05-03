@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
         [HttpPost, Dispatch]
         public ActionResult Edit(EditDeviceModel request)
         {
-            return this.Redirect(this.Request.UrlReferrer.ToString());
+            return Content("Thanks", "text/html");
         }
 
         #endregion

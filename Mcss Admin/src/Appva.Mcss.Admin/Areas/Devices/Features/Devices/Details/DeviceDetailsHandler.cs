@@ -10,14 +10,12 @@
 
 namespace Appva.Mcss.Admin.Models.Handlers
 {
-    #region Imports
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+    #region Imports.
+
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Models;
     using Application.Services;
+
     #endregion
 
     public class DeviceDetailsHandler : RequestHandler<Identity<DeviceDetailsModel>, DeviceDetailsModel>

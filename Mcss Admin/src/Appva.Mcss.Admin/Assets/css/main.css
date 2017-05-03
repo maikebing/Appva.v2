@@ -2923,6 +2923,14 @@ form .time {width:4em;}
     display:block;
     margin-bottom:4px;
 }
+#pr-panel .checkbox-label { 
+    font-weight:normal!important;
+    display:inline; 
+}
+#pr-panel .alert-checkbox {
+    margin:5px 5px 0 0;
+    padding:0;
+}
 #pr-panel .checkbox-inline {
     font-weight:400;
     padding-bottom:2px;
@@ -2934,7 +2942,7 @@ form .time {width:4em;}
 }
 #pr-panel .checkbox-container {
     background:#ecf3f5;
-    margin-bottom:15px;
+    margin-top:15px;
     padding:15px 15px 5px 15px;
     border:1px solid #d1dce0;
 }

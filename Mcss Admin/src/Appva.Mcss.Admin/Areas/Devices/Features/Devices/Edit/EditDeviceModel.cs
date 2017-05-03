@@ -92,9 +92,9 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The device alert
+        /// Checks if the device is connected to an alert.
         /// </summary>
-        public Guid DeviceAlertId
+        public bool HasDeviceAlert
         {
             get;
             set;

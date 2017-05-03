@@ -71,7 +71,6 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// <inheritdoc />
         public override EditDeviceModel Handle(Identity<EditDeviceModel> message)
         {
-            var deviceModel = new EditDeviceModel();
             var organizationList = new List<SelectListItem>();
             var escalationLevelList = new List<SelectListItem>();
             var device = this.deviceService.Find(message.Id);
@@ -86,16 +85,18 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
                     Value = organization.Id.ToString(),
                 });
             }
-            
-            deviceModel.Id = device.Id;
-            deviceModel.TaxonId = device.Taxon == null ? Guid.Empty : device.Taxon.Id;
-            deviceModel.Description = device.Description;
-            deviceModel.Organizations = organizationList;
-            deviceModel.DeviceAlertId = deviceAlert == null ? Guid.Empty : deviceAlert.Id;
-            deviceModel.EscalationLevels = this.alertService.GetEscalationLevels();
-            deviceModel.EscalationLevelId = this.alertService.Find(device.Id) == null ? Guid.Empty : this.alertService.Find(device.Id).EscalationLevel.Id;
-            deviceModel.DeviceLevelTaxons = this.Merge(organizations, deviceAlert == null ? null : deviceAlert.Taxons);
-            return deviceModel;
+
+            return new EditDeviceModel
+            {
+                Id = device.Id,
+                TaxonId = device.Taxon == null ? Guid.Empty : device.Taxon.Id,
+                Description = device.Description,
+                Organizations = organizationList,
+                HasDeviceAlert = deviceAlert == null ? false : true,
+                EscalationLevels = this.alertService.GetEscalationLevels(),
+                EscalationLevelId = this.alertService.Find(device.Id) == null ? Guid.Empty : this.alertService.Find(device.Id).EscalationLevel.Id,
+                DeviceLevelTaxons = this.Merge(organizations, deviceAlert == null ? null : deviceAlert.Taxons)
+            };
         }
 
         #endregion

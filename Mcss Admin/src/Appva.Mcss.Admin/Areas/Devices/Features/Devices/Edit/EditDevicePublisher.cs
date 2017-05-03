@@ -64,7 +64,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         {
             var device = this.deviceService.Find(message.Id);
             var alert = this.alertService.Find(message.Id);
-            var selectedOrganizations = message.DeviceLevelTaxons.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
+            var selected = message.DeviceLevelTaxons.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
 
             if (device == null)
             {
@@ -78,7 +78,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
 
             if (alert != null)
             {
-                alert.Taxons = this.alertService.ListAllIn(selectedOrganizations);
+                alert.Taxons = this.alertService.ListAllIn(selected);
                 alert.EscalationLevel = this.alertService.GetEscalationLevel(message.EscalationLevelId);
                 this.alertService.Update(alert);
             }

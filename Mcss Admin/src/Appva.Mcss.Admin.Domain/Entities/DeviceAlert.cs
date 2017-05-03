@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using Appva.Common.Domain;
 
@@ -30,6 +31,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
+
+        public new virtual DateTime? UpdatedAt { get; set; }
 
         /// <summary>
         /// The escalation level.

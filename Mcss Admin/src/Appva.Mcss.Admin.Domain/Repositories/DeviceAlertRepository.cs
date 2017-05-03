@@ -25,9 +25,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public interface IDeviceAlertRepository :
         IRepository,
-        IIdentityRepository<DeviceAlert>,
         IUpdateRepository<DeviceAlert>
     {
+        /// <summary>
+        /// Find a device alert by id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        DeviceAlert Find(Guid id);
+
         /// <summary>
         /// Get a single escalation level.
         /// </summary>
@@ -77,6 +83,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IDeviceAlertRepository Members.
 
         /// <inheritdoc />
+        public DeviceAlert Find(Guid id)
+        {
+            return this.context.QueryOver<DeviceAlert>()
+                .Where(x => x.Id == id)
+                    .SingleOrDefault();
+        }
+
+        /// <inheritdoc />
         public EscalationLevel GetEscalationLevel(Guid id)
         {
             return this.context.QueryOver<EscalationLevel>()
@@ -97,16 +111,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .AndRestrictionOn(x => x.Id)
                     .IsIn(ids)
                         .List();
-        }
-
-        #endregion
-
-        #region IIdentityRepository Members.
-
-        /// <inheritdoc />
-        public DeviceAlert Find(Guid id)
-        {
-            return this.context.Get<DeviceAlert>(id);
         }
 
         #endregion

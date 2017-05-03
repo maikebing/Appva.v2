@@ -36,6 +36,12 @@ namespace Appva.Mcss.Admin.Application.Services
         DeviceAlert Find(Guid id);
 
         /// <summary>
+        /// Get a single escalation level.
+        /// </summary>
+        /// <returns></returns>
+        EscalationLevel GetEscalationLevel(Guid id);
+
+        /// <summary>
         /// Lists all escalation levels.
         /// </summary>
         /// <returns></returns>

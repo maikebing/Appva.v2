@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
+    using System.Linq;
 
     #endregion
 
@@ -36,6 +37,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
+        private readonly IDeviceAlertService alertService;
+
         #endregion
 
         #region Constructor.
@@ -45,8 +48,9 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// </summary>
         /// <param name="deviceService">The <see cref="IDeviceService"/> implementation.</param>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation.</param>
-        public EditDevicePublisher(IDeviceService deviceService, ITaxonomyService taxonomyService)
+        public EditDevicePublisher(IDeviceService deviceService, ITaxonomyService taxonomyService, IDeviceAlertService alertService)
         {
+            this.alertService = alertService;
             this.deviceService = deviceService;
             this.taxonomyService = taxonomyService;
         }
@@ -59,6 +63,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         public override bool Handle(EditDeviceModel message)
         {
             var device = this.deviceService.Find(message.Id);
+            var alert = this.alertService.Find(message.Id);
+            var selectedOrganizations = message.DeviceLevelTaxons.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
 
             if (device == null)
             {
@@ -69,6 +75,11 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             device.Description = message.Description;
             device.Taxon = taxon;
             this.deviceService.Update(device);
+
+            alert.Taxons = this.alertService.ListAllIn(selectedOrganizations);
+            alert.EscalationLevel = this.alertService.GetEscalationLevel(message.EscalationLevelId);
+            this.alertService.Update(alert);
+
             return true;
         }
 

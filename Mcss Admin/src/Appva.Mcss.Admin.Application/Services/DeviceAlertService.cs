@@ -119,7 +119,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public IList<Taxon> ListAllIn(params Guid[] ids)
         {
-            return null;
+            return this.repository.ListAllIn(ids);
         }
 
         /// <inheritdoc />

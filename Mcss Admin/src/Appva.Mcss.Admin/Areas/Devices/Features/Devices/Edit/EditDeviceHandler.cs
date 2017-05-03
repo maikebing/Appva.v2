@@ -91,6 +91,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             deviceModel.TaxonId = device.Taxon == null ? Guid.Empty : device.Taxon.Id;
             deviceModel.Description = device.Description;
             deviceModel.Organizations = organizationList;
+            deviceModel.DeviceAlertId = deviceAlert == null ? Guid.Empty : deviceAlert.Id;
             deviceModel.EscalationLevels = this.alertService.GetEscalationLevels();
             deviceModel.EscalationLevelId = this.alertService.Find(device.Id) == null ? Guid.Empty : this.alertService.Find(device.Id).EscalationLevel.Id;
             deviceModel.DeviceLevelTaxons = this.Merge(organizations, deviceAlert == null ? null : deviceAlert.Taxons);

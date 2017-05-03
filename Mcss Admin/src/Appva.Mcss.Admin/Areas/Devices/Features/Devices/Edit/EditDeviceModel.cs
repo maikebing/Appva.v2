@@ -91,6 +91,15 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        /// <summary>
+        /// The device alert
+        /// </summary>
+        public Guid DeviceAlertId
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

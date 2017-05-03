@@ -11,6 +11,7 @@
 //     <a href="mailto:kalle.jigfors@appva.se">Kalle Jigfors</a>
 // </author>
 
+using System.Web.Mvc;
 namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
 {
     #region Imports.
@@ -24,6 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
     using ReActivate;
     using System;
     using System.Web;
+    using Models;
 
     #endregion
 
@@ -103,7 +105,6 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
         {
             return this.Redirect(this.Request.UrlReferrer.ToString());
         }
-
         #endregion
 
         #region Update

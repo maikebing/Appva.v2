@@ -1,38 +1,6 @@
 ﻿@model Appva.Mcss.Admin.Models.EditDeviceModel
     SetTitle("Redigera enhet");
 }
-<script>
-
-$(function () {
-    @*
-    $('form').submit(function () {
-        if ($(this).valid()) {
-            $.ajax({
-                url: '@Url.Action("Edit", "Devices")',
-                type: 'POST',
-                data: $(this).serialize(),
-                success: function (result) {
-                    $('#result').html(result);
-                }
-            });
-        }
-        return false;
-    });
-    *@
-    $('select').bind('change', function (e) {
-        var formData = $(this).serialize();
-        e.preventDefault();
-        $.ajax({
-            url: '@Url.Action("Edit", "Devices")',
-            type: 'POST',
-            data: formData,
-            success: function (result) {
-                $('#result').html(result);
-            }
-        });
-    });
-});
-</script> 
 <div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
     <div id="result" style="color:red;font-size:30px;">
     </div> 
@@ -50,6 +18,7 @@ $(function () {
                 <div class="checkbox-container">
                     @Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))
                     @Html.FormGroup(x => x.DeviceLevelTaxons, "text").CheckboxList().Validate().Build()
+                    @Html.HiddenFor(x => x.DeviceAlertId)
                 </div>
             </div>
         </div>

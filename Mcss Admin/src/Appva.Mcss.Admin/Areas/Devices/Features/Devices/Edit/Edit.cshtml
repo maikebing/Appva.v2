@@ -8,7 +8,18 @@
                 $('.alert-box').show();
             } else {
                 $('.alert-box').hide();
+                $('.alert-box-message').hide();
             }
+        });
+        $('.check-all').bind('click', function () {
+            $('.checkbox-grid').find('input[type="checkbox"]').each(function (i, e) {
+                $(e).prop('checked', true);
+            });
+        });
+        $('.uncheck-all').bind('click', function () {
+            $('.checkbox-grid').find('input[type="checkbox"]').each(function (i, e) {
+                $(e).prop('checked', false);
+            });
         });
         $('form').submit(function (e) {
             if ($('.checkbox-grid').find('input[type="checkbox"]:checked').length < 1 && $('.alert-checkbox').is(':checked')) {
@@ -27,22 +38,23 @@
             <div class="container">
                 @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
                 @Html.LabelFor(x => x.TaxonId, "Avdelningar")
-                <p>Koppla enheten till en eller flera avdelningar.</p>
+                <p>Koppla enheten till en avdelning.</p>
                 @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen" )
                 <label>Larmkonfiguration</label>
                 @Html.CheckBoxFor(x => x.HasDeviceAlert, new { @class = "alert-checkbox" })
                 @Html.LabelFor(x => x.HasDeviceAlert, "Aktivera larm för den här enheten", new { @class = "checkbox-label" })
                 <div class="alert-box" @(Model.HasDeviceAlert ? Html.Raw("") : Html.Raw("style='display:none'"))>
                     <div class="checkbox-container">
-                        <p class="alert-box-message"></p>
                         <p>Lägg till avdelningar för den valda nivån.</p>
                         @Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))
+                        <p><a href="javascript:;" class="check-all">Markera alla</a> | <a href="javascript:;" class="uncheck-all">Avmarkera alla</a></p>
                         @Html.FormGroup(x => x.DeviceLevelTaxons, "text").CheckboxList().Validate().Build()
                     </div>
                 </div>
             </div>
         </div>
         <div class="submit">
+            <p class="alert-box-message"></p>
             @Html.Submit("Spara", new { @class = "btn" })
             @Html.Cancel("Avbryt")
         </div>

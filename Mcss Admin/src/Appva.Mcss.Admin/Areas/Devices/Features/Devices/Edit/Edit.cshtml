@@ -11,7 +11,7 @@
             }
         });
         $('form').submit(function (e) {
-            if ($('.checkbox-grid').find('input[type="checkbox"]:checked').length < 1) {
+            if ($('.checkbox-grid').find('input[type="checkbox"]:checked').length < 1 && $('.alert-checkbox').is(':checked')) {
                 e.preventDefault();
                 $('.alert-box-message').html('Inget larm kopplades till enheten.').show();
                 return false;

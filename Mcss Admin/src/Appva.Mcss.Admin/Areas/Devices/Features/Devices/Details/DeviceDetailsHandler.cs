@@ -30,16 +30,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IDeviceService deviceService;
 
-        #endregion
-
-        #region Constructors.
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeviceDetailsHandler"/> class.
+        /// The <see cref="IDeviceAlertService"/>
         /// </summary>
-        /// <param name="deviceService">The <see cref="IDeviceService"/> implementation.</param>
-        public DeviceDetailsHandler(IDeviceService deviceService)
+        private readonly IDeviceAlertService alertService;
+
+        /// <summary> 
+        /// Initializes a new instance of the <see cref="DeviceDetailsHandler"/> class. 
+        /// </summary> 
+        /// <param name="deviceService">The <see cref="IDeviceService"/> implementation.</param> 
+        /// <param name="alertService">The <see cref="IDeviceAlertService"/> implementation.</param>
+        public DeviceDetailsHandler(IDeviceService deviceService, IDeviceAlertService alertService)
         {
+            this.alertService = alertService;
             this.deviceService = deviceService;
         }
 
@@ -51,10 +54,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override DeviceDetailsModel Handle(Identity<DeviceDetailsModel> message)
         {
             var device = this.deviceService.Find(message.Id);
+            var alert = this.alertService.Find(message.Id);
 
             return new DeviceDetailsModel
             {
-                Device = device
+                Device = device,
+                HasAlert = alert == null ? false : true
             };
         }
 

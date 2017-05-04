@@ -28,5 +28,13 @@ namespace Appva.Mcss.Admin.Models
         {
             get; set;
         }
+
+        /// <summary>
+        /// If the device has an alert
+        /// </summary>
+        public bool HasAlert
+        {
+            get; set;
+        }
     }
 }

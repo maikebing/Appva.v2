@@ -1,17 +1,16 @@
 ﻿@model Appva.Mcss.Admin.Models.DeviceDetailsModel
-    SetTitle("Enhetsinformation");
-}
-@{ 
+@{
+    SetTitle("Enhetsinformation: " + Model.Device.Name);
     string message = "Ej tillgänglig";
 }
-<div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
-    <div>
-        <h3 class="section-title">Enhetsinformation</h3>
+<div id="subheader" class="cf">
+    <h1>Enheter</h1>
+</div>
+
+<div id="content" class="log cf">
+    <div id="signlist">
+        <h3 class="section-title">Enhetsinformation: @Model.Device.Name</h3>
         <ul class="details-list">
-            <li>
-                <label>Namn</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.Name) ? message : Model.Device.Name)</p>
-            </li>
             <li>
                 <label>Beskrivning</label>
                 <p>@(string.IsNullOrEmpty(Model.Device.Description) ? message : Model.Device.Description)</p>
@@ -34,7 +33,7 @@
             </li>
             <li>
                 <label>Last Pinged Date</label>
-               <p>@(Model.Device.LastPingedDate == null ? message : Model.Device.LastPingedDate.ToString())</p>
+                <p>@(Model.Device.LastPingedDate == null ? message : Model.Device.LastPingedDate.ToString())</p>
             </li>
             <li>
                 <label>Aktiv</label>

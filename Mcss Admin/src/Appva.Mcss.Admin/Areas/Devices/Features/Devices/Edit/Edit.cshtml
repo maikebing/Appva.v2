@@ -26,6 +26,8 @@
             <h3 class="section-title">Redigera enhet</h3>
             <div class="container">
                 @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
+                @Html.Label("Autentisering metod")
+                @Html.DropDownListFor(x => x.AuthenticationMethod, new SelectList(new List<string> { "Pin", "Siths" }))
                 @Html.LabelFor(x => x.TaxonId, "Avdelningar")
                 <p>Koppla enheten till en eller flera avdelningar.</p>
                 @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen" )

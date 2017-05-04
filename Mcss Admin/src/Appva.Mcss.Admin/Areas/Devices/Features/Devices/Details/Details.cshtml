@@ -37,6 +37,10 @@
                 <p>@(Model.Device.IsActive ? "Ja" : "Nej")</p>
             </li>
             <li>
+                <label>Autentisering metod</label>
+                <p>@(Model.Device.AuthenticationMethod)</p>
+            </li>
+            <li>
                 <label>OS</label>
                 <p>@(string.IsNullOrEmpty(Model.Device.OS) ? message : Model.Device.OS)</p>
             </li>

@@ -75,6 +75,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var taxon = message.TaxonId == Guid.Empty ? null : this.taxonomyService.Get(message.TaxonId);
             device.Description = message.Description;
             device.Taxon = taxon;
+            device.AuthenticationMethod = message.AuthenticationMethod;
             this.deviceService.Update(device);
 
             if (alert != null && message.HasDeviceAlert)

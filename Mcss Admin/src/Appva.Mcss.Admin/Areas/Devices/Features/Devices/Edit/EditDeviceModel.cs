@@ -47,6 +47,15 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// The device authentication method
+        /// </summary>
+        public AuthenticationMethod AuthenticationMethod
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The taxon id of the connected organization node.
         /// </summary>
         public Guid TaxonId
@@ -102,4 +111,5 @@ namespace Appva.Mcss.Admin.Models
 
         #endregion
     }
+
 }

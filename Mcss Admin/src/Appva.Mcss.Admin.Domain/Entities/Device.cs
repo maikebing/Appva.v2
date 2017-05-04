@@ -159,7 +159,27 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get; set;
         }
 
+        /// <summary>
+        /// The device authenticationmethod
+        /// </summary>
+        public virtual AuthenticationMethod AuthenticationMethod
+        {
+            get;
+            set;
+        }
 
         #endregion
     }
+
+    #region Enums
+
+    /// <summary>
+    /// Defines the authentication-type
+    /// </summary>
+    public enum AuthenticationMethod
+    {
+        Pin, Siths
+    }
+
+    #endregion
 }

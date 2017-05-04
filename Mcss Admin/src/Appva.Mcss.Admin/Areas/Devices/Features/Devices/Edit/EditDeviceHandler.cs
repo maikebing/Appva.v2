@@ -91,6 +91,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
                 Id = device.Id,
                 TaxonId = device.Taxon == null ? Guid.Empty : device.Taxon.Id,
                 Description = device.Description,
+                AuthenticationMethod = device.AuthenticationMethod,
                 Organizations = organizationList,
                 HasDeviceAlert = deviceAlert == null ? false : true,
                 EscalationLevels = this.alertService.GetEscalationLevels(),

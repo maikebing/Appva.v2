@@ -13,14 +13,24 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Entities;
+    using Cqrs;
+    using Mvc;
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class DeviceDetailsModel
+    public class DeviceDetailsModel : IRequest<bool>
     {
+        /// <summary>
+        /// The device id
+        /// </summary>
+        public Guid Id { get; set; }
+
         /// <summary>
         /// The device.
         /// </summary>
@@ -35,6 +45,42 @@ namespace Appva.Mcss.Admin.Models
         public bool HasAlert
         {
             get; set;
+        }
+
+        /// <summary>
+        /// The escalation level id.
+        /// </summary>
+        public Guid EscalationLevelId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Organization nodes.
+        /// </summary>
+        public IEnumerable<SelectListItem> Organizations
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// List of escalation levels.
+        /// </summary>
+        public IEnumerable<EscalationLevel> EscalationLevels
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// List of organization taxons.
+        /// </summary>
+        public IList<Tickable> DeviceLevelTaxons
+        {
+            get;
+            set;
         }
     }
 }

@@ -29,6 +29,10 @@
                 <p>@(Model.Device.LastUsedDate == null ? message : Model.Device.LastUsedDate.ToString())</p>
             </li>
             <li>
+                <label>Har larmkonfiguration</label>
+                <p>@(Model.HasAlert == true ? "Ja" : "Nej")</p>
+            </li>
+            <li>
                 <label>Last Pinged Date</label>
                <p>@(Model.Device.LastPingedDate == null ? message : Model.Device.LastPingedDate.ToString())</p>
             </li>

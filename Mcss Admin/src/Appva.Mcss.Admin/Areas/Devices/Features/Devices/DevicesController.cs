@@ -127,6 +127,13 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
             return this.View();
         }
 
+        [Route("{id:guid}/details")]
+        [HttpPost, Dispatch]
+        public ActionResult Details(DeviceDetailsModel request)
+        {
+            return this.View();
+        }
+
         #endregion
 
         #endregion

@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
     using System.Linq;
+    using Domain.Entities;
 
     #endregion
 
@@ -66,7 +67,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var alert = this.alertService.Find(message.Id);
             var selected = message.DeviceLevelTaxons.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
 
-            if (device == null)
+            if (device == null || selected.Length == 0)
             {
                 return false;
             }
@@ -76,11 +77,26 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             device.Taxon = taxon;
             this.deviceService.Update(device);
 
-            if (alert != null)
+            if (alert != null && message.HasDeviceAlert)
             {
                 alert.Taxons = this.alertService.ListAllIn(selected);
                 alert.EscalationLevel = this.alertService.GetEscalationLevel(message.EscalationLevelId);
                 this.alertService.Update(alert);
+            }
+            else if (alert == null && message.HasDeviceAlert)
+            {
+                var newAlert = new DeviceAlert
+                {
+                    Taxons = this.alertService.ListAllIn(selected),
+                    EscalationLevel = this.alertService.GetEscalationLevel(message.EscalationLevelId),
+                    Device = device,
+                };
+
+                this.alertService.Save(newAlert);
+            }
+            else if (alert != null && message.HasDeviceAlert == false)
+            {
+                this.alertService.Delete(alert);
             }
 
             return true;

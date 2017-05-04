@@ -53,6 +53,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="ids">The ID:s to retrieve</param>
         /// <returns>A filtered collection of <see cref="Taxon"/></returns>
         IList<Taxon> ListAllIn(params Guid[] ids);
+
+        /// <summary>
+        /// Deletes a device alert.
+        /// </summary>
+        /// <param name="entity"></param>
+        void Delete(DeviceAlert entity);
     }
 
     /// <summary>
@@ -112,6 +118,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .AndRestrictionOn(x => x.Id)
                     .IsIn(ids)
                         .List();
+        }
+
+        /// <inheritdoc />
+        public void Delete(DeviceAlert entity)
+        {
+            this.context.Delete<DeviceAlert>(entity);
         }
 
         #endregion

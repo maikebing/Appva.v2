@@ -54,14 +54,20 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Saves a device alert to database.
         /// </summary>
-        /// <param name="deviceAlert"></param>
-        void Save(DeviceAlert deviceAlert);
+        /// <param name="entity"></param>
+        void Save(DeviceAlert entity);
 
         /// <summary>
-        /// Updates the device alert <see cref="DeviceAlert"/>.
+        /// Updates a device alert.
         /// </summary>
-        /// <param name="deviceAlert"></param>
-        void Update(DeviceAlert deviceAlert);
+        /// <param name="entity"></param>
+        void Update(DeviceAlert entity);
+
+        /// <summary>
+        /// Deletes a device alert.
+        /// </summary>
+        /// <param name="entity"></param>
+        void Delete(DeviceAlert entity);
     }
 
     /// <summary>
@@ -123,17 +129,22 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void Save(DeviceAlert deviceAlert)
+        public void Save(DeviceAlert entity)
         {
-            this.repository.Save(deviceAlert);
+            this.repository.Save(entity);
         }
 
         /// <inheritdoc />
-        public void Update(DeviceAlert deviceAlert)
+        public void Update(DeviceAlert entity)
         {
-            deviceAlert.UpdatedAt = DateTime.Now;
-            this.repository.Update(deviceAlert);
-            this.auditService.Update("uppdaterade enhetens larmkonfiguration (REF: {0})", deviceAlert.Id);
+            entity.UpdatedAt = DateTime.Now;
+            this.repository.Update(entity);
+            this.auditService.Update("uppdaterade enhetens larmkonfiguration (REF: {0})", entity.Id);
+        }
+
+        public void Delete(DeviceAlert entity)
+        {
+            this.repository.Delete(entity);
         }
 
         #endregion

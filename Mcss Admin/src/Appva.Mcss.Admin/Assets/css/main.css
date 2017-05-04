@@ -2894,8 +2894,6 @@ form .time {width:4em;}
 .lb-panel .std-form {padding-top:0;}
 
 #pr-panel .container {
-    max-height:410px;
-    overflow:auto;
     padding-right:15px;
     margin:20px 0;
 }
@@ -2966,8 +2964,6 @@ form .time {width:4em;}
 #pr-panel .details-list {
     list-style-type:none;
     margin:0;
-    max-height:410px;
-    overflow:auto;
 }
 #pr-panel .details-list li {
     padding:10px 0;

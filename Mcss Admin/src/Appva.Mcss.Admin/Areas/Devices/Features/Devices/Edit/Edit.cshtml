@@ -10,6 +10,13 @@
                 $('.alert-box').hide();
             }
         });
+        $('form').submit(function (e) {
+            if ($('.checkbox-grid').find('input[type="checkbox"]:checked').length < 1) {
+                e.preventDefault();
+                $('.alert-box-message').html('Inget larm kopplades till enheten.').show();
+                return false;
+            }
+        });
     });
 </script>
 <div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
@@ -27,6 +34,7 @@
                 @Html.LabelFor(x => x.HasDeviceAlert, "Aktivera larm för den här enheten", new { @class = "checkbox-label" })
                 <div class="alert-box" @(Model.HasDeviceAlert ? Html.Raw("") : Html.Raw("style='display:none'"))>
                     <div class="checkbox-container">
+                        <p class="alert-box-message"></p>
                         <p>Lägg till avdelningar för den valda nivån.</p>
                         @Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))
                         @Html.FormGroup(x => x.DeviceLevelTaxons, "text").CheckboxList().Validate().Build()

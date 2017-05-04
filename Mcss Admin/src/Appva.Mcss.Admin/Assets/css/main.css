@@ -2927,6 +2927,13 @@ form .time {width:4em;}
     font-weight:normal!important;
     display:inline; 
 }
+#pr-panel .alert-box-message {
+    display:none;
+    background:#fff2f1;
+    border:1px solid #fe8484;
+    color:#222;
+    padding:6px 14px;
+}
 #pr-panel .alert-checkbox {
     margin:5px 5px 0 0;
     padding:0;

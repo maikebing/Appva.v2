@@ -9,76 +9,78 @@
 
 <div id="content" class="log cf">
     <div id="signlist">
-        <h3 class="section-title">Enhetsinformation: @Model.Device.Name</h3>
-        <ul class="details-list">
-            <li>
-                <label>Beskrivning</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.Description) ? message : Model.Device.Description)</p>
-            </li>
-            <li>
-                <label>Registrerad</label>
-                <p>@(Model.Device.CreatedAt == null ? message : Model.Device.CreatedAt.ToString())</p>
-            </li>
-            <li>
-                <label>Modifierad</label>
-                <p>@(Model.Device.Modified == null ? message : Model.Device.Modified.ToString())</p>
-            </li>
-            <li>
-                <label>Senast använd</label>
-                <p>@(Model.Device.LastUsedDate == null ? message : Model.Device.LastUsedDate.ToString())</p>
-            </li>
-            <li>
-                <label>Har larmkonfiguration</label>
-                <p>@(Model.HasAlert == true ? "Ja" : "Nej")</p>
-            </li>
-            <li>
-                <label>Last Pinged Date</label>
-                <p>@(Model.Device.LastPingedDate == null ? message : Model.Device.LastPingedDate.ToString())</p>
-            </li>
-            <li>
-                <label>Aktiv</label>
-                <p>@(Model.Device.IsActive ? "Ja" : "Nej")</p>
-            </li>
-            <li>
-                <label>Autentiseringsmetod</label>
-                <p>@(Model.Device.AuthenticationMethod)</p>
-            </li>
-            <li>
-                <label>OS</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.OS) ? message : Model.Device.OS)</p>
-            </li>
-            <li>
-                <label>OS Version</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.OSVersion) ? message : Model.Device.OSVersion)</p>
-            </li>
-            <li>
-                <label>Version</label>
-                <p>@Model.Device.Version</p>
-            </li>
-            <li>
-                <label>Hårdvara</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.Hardware) ? message : Model.Device.Hardware)</p>
-            </li>
-            <li>
-                <label>App Bundle</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.AppBundle) ? message : Model.Device.AppBundle)</p>
-            </li>
-            <li>
-                <label>App Version</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.AppVersion) ? message : Model.Device.AppVersion)</p>
-            </li>
-            <li>
-                <label>Azure Push Id</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.AzurePushId) ? message : Model.Device.AzurePushId)</p>
-            </li>
-            <li>
-                <label>Uuid</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.Uuid) ? message : Model.Device.Uuid.ToString())</p>
-            </li>
-            <li>
-                <label>Push Uuid</label>
-                <p>@(string.IsNullOrEmpty(Model.Device.PushUuid) ? message : Model.Device.PushUuid.ToString())</p>
-            </li>
-        </ul>
+        <h3 class="section-title">@Model.Device.Name enhetsinformation</h3>
+        <table class="device-table">
+            <tbody>
+                <tr>
+                    <td>Beskrivning</td>
+                    <td>@(string.IsNullOrEmpty(Model.Device.Description) ? message : Model.Device.Description)</td>
+                </tr>
+                <tr>
+                    <td>Registrerad</td>
+                    <td>@(Model.Device.CreatedAt == null ? message : Model.Device.CreatedAt.ToString())</td>
+                </tr>
+                <tr>
+                    <td>Modifierad</td>
+                    <td>@(Model.Device.Modified == null ? message : Model.Device.Modified.ToString())</td>
+                </tr>
+                <tr>
+                    <td>Senast använd</td>
+                    <td>@(Model.Device.LastUsedDate == null ? message : Model.Device.LastUsedDate.ToString())</td>
+                </tr>
+                <tr>
+                    <td>Larmkonfiguration</td>
+                    <td>@(Model.HasAlert == true ? "Aktiv" : "Inaktiv")</td>
+                </tr>
+                <tr>
+                    <td>Aktiv</td>
+                    <td>@(Model.Device.IsActive ? "Ja" : "Nej")</td>
+                </tr>
+                <tr>
+                    <td>Autentiseringsmetod</td>
+                    <td>@(Model.Device.AuthenticationMethod)</td>
+                </tr>
+                <tr>
+                    <td>OS</td>
+                    <td>@(string.IsNullOrEmpty(Model.Device.OS) ? message : Model.Device.OS)</td>
+                </tr>
+                <tr>
+                    <td>OS Version</td>
+                    <td>@(string.IsNullOrEmpty(Model.Device.OSVersion) ? message : Model.Device.OSVersion)</td>
+                </tr>
+                <tr>
+                    <td>Version</td>
+                    <td>@Model.Device.Version</td>
+                </tr>
+                <tr>
+                    <td>Hårdvara</td>
+                    <td>@(string.IsNullOrEmpty(Model.Device.Hardware) ? message : Model.Device.Hardware)</td>
+                </tr>
+                <tr>
+                    <td>Last Pinged Date</td>
+                    <td>@(Model.Device.LastPingedDate == null ? message : Model.Device.LastPingedDate.ToString())</td>
+                </tr>
+                <tr>
+                    <td>App Bundle</td>
+                    <td>@(string.IsNullOrEmpty(Model.Device.AppBundle) ? message : Model.Device.AppBundle)</td>
+                </tr>
+                <tr>
+                    <td>App Version</td>
+                    <td>@(string.IsNullOrEmpty(Model.Device.AppVersion) ? message : Model.Device.AppVersion)</td>
+                </tr>
+                <tr>
+                    <td>Azure Push Id</td>
+                    <td>@(string.IsNullOrEmpty(Model.Device.AzurePushId) ? message : Model.Device.AzurePushId)</td>
+                </tr>
+                <tr>
+                    <td>Uuid</td>
+                    <td>@(string.IsNullOrEmpty(Model.Device.Uuid) ? message : Model.Device.Uuid.ToString())</td>
+                </tr>
+                <tr>
+                    <td>Push Uuid</td>
+                    <td>@(string.IsNullOrEmpty(Model.Device.PushUuid) ? message : Model.Device.PushUuid.ToString())</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

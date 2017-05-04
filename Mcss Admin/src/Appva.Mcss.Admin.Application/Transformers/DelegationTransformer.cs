@@ -32,7 +32,9 @@ using System.Linq;
         public static DelegationViewModel ToDelegationViewModel(Delegation delegation, IList<ITaxon> orgTaxons, bool isEditableForCurrentPrincipal)
         {
             //// TODO: temp solution.
-            var path = delegation.CreatedBy.Locations.OrderByDescending(x => x.Sort).First().Taxon.Path;
+            var path = delegation.CreatedBy.Locations.Count > 0 ? 
+                delegation.CreatedBy.Locations.OrderByDescending(x => x.Sort).First().Taxon.Path : 
+                orgTaxons.First(x => x.IsRoot).Path;
             return new DelegationViewModel
             {
                 Id           = delegation.Id,

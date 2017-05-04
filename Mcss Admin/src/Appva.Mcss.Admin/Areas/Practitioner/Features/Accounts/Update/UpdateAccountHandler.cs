@@ -77,7 +77,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var account      = this.accountService.Find(message.Id);
             var ldapIsActive = this.settings.Find<bool>(ApplicationSettings.IsLdapConnectionEnabled);
             var ldapConfig   = this.settings.Find<LdapConfiguration>(ApplicationSettings.LdapConfiguration);
-            var selected     = this.taxonomies.Find(account.Locations.First().Taxon.Id, TaxonomicSchema.Organization);
+            var selected     = account.Locations.Count > 0 ? 
+                this.taxonomies.Find(account.Locations.First().Taxon.Id, TaxonomicSchema.Organization) :
+                this.taxonomies.Roots(TaxonomicSchema.Organization).First();
             return new UpdateAccount
             {
                 IsHsaIdFieldVisible                = (account.IsSynchronized && ldapIsActive) ? string.IsNullOrEmpty(ldapConfig.FieldHsaId) : this.settings.IsSithsAuthorizationEnabled() || this.settings.Find(ApplicationSettings.IsHsaIdVisible),
@@ -96,7 +98,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 HsaId                              = account.HsaId,
                 IsFirstNameFieldVisible            = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldFirstName) : true,
                 IsLastNameFieldVisible             = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldLastName) : true,
-                IsMailFieldVisible                 = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldMail) : true
+                IsMailFieldVisible                 = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldMail) : true,
+                RestrictUserToOrganizationTaxon    = account.Locations.Count > 0 && selected.Id == account.Taxon.Id,
+                RestrictUserToOrganizationTaxonIsVisible = id == message.Id
             };
         }
 

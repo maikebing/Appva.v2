@@ -17,9 +17,11 @@ namespace Appva.Mcss.Web {
             var retval = new List<TaxonViewModel>();
             var view   = new TaxonViewModel();
             retval.Add(view);
-            foreach (var location in account.Locations.OrderByDescending(x => x.Sort))
+            var locations = account.Locations.Count > 0 ?
+                account.Locations.OrderByDescending(x => x.Sort).Select(x => organization.SingleOrDefault(y => y.Id == x.Id)).ToList() :
+                organization.Where(x => x.IsRoot).ToList();
+            foreach (var taxon in locations)
             {
-                var taxon      = organization.Where(x => x.Id == location.Taxon.Id).SingleOrDefault();
                 var isSelected = selected == null ? false : (taxon.Id == selected.Id || selected.Path.ToLowerInvariant().Contains(taxon.Id.ToString().ToLowerInvariant()));
                 view.Taxons.Add(new SelectListItem
                 {

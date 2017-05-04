@@ -301,6 +301,10 @@
     <Compile Include="Areas\Area51\Features\Acl\AddNewsPermissions\UpdatePermissionsHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18Handler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegationHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRole.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRoleHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Audit\AuditController.cs" />

@@ -15,6 +15,8 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Mvc;
     using Appva.Mvc.Security;
     using Appva.Mcss.Admin.Areas.Area51.Features.Acl.AddNewsPermissions;
+    using Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole;
+    using Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToDelegation;
 
     #endregion
 
@@ -127,6 +129,40 @@ namespace Appva.Mcss.Admin.Controllers
         public ActionResult Hotfix18()
         {
             this.mediator.Publish(new Hotfix18());
+            return this.RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Add Role-To-Role
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Route("roletorole")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Rollmappning installerad")]
+        public ActionResult InstallRoleToRole()
+        {
+            this.mediator.Publish(new InstallRoleToRole());
+            return this.RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Add Role-To-Delegation
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Route("roletodelegation")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Delegerings-behörigheter installerade!")]
+        public ActionResult InstallRoleToDelegation()
+        {
+            this.mediator.Publish(new InstallRoleToDelegation());
             return this.RedirectToAction("Index");
         }
 

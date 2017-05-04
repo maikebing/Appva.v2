@@ -72,10 +72,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         public override EditDeviceModel Handle(Identity<EditDeviceModel> message)
         {
             var organizationList = new List<SelectListItem>();
-            var escalationLevelList = new List<SelectListItem>();
             var device = this.deviceService.Find(message.Id);
             var organizations = this.taxonomyService.List(Application.Common.TaxonomicSchema.Organization);
-            var deviceAlert = this.alertService.Find(device.Id);
 
             foreach (var organization in organizations)
             {
@@ -93,40 +91,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
                 Description = device.Description,
                 AuthenticationMethod = device.AuthenticationMethod,
                 Organizations = organizationList,
-                HasDeviceAlert = deviceAlert == null ? false : true,
-                EscalationLevels = this.alertService.GetEscalationLevels(),
-                EscalationLevelId = this.alertService.Find(device.Id) == null ? Guid.Empty : this.alertService.Find(device.Id).EscalationLevel.Id,
-                DeviceLevelTaxons = this.Merge(organizations, deviceAlert == null ? null : deviceAlert.Taxons)
             };
-        }
-
-        #endregion
-
-        #region Methods.
-
-        /// <inheritdoc />
-        private IList<Tickable> Merge(IList<ITaxon> items, IList<Taxon> selected)
-        {
-            var organizations = items.Select(x => new Tickable
-            {
-                Id = x.Id,
-                Label = string.IsNullOrEmpty(x.Description) ? x.Name : string.Format("{0}: {1}", x.Description, x.Name)
-            }).ToList();
-
-            if (selected != null)
-            {
-                var selections = selected.Select(x => x.Id).ToList();
-
-                foreach (var organization in organizations)
-                {
-                    if (selections.Contains(organization.Id))
-                    {
-                        organization.IsSelected = true;
-                    }
-                }
-            }
-
-            return organizations;
         }
 
         #endregion

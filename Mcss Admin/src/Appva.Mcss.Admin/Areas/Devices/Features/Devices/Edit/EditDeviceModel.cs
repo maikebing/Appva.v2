@@ -65,45 +65,9 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The escalation level id.
-        /// </summary>
-        public Guid EscalationLevelId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Organization nodes.
         /// </summary>
         public IEnumerable<SelectListItem> Organizations
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// List of escalation levels.
-        /// </summary>
-        public IEnumerable<EscalationLevel> EscalationLevels
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// List of organization taxons.
-        /// </summary>
-        public IList<Tickable> DeviceLevelTaxons
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Checks if the device is connected to an alert.
-        /// </summary>
-        public bool HasDeviceAlert
         {
             get;
             set;

@@ -68,41 +68,18 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         public override bool Handle(EditDeviceModel message)
         {
             var device = this.deviceService.Find(message.Id);
-            var alert = this.alertService.Find(message.Id);
-            var selected = message.DeviceLevelTaxons.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
 
-            if (device == null || (selected.Length == 0 && message.HasDeviceAlert))
+            if (device == null)
             {
                 return false;
             }
 
             var taxon = message.TaxonId == Guid.Empty ? null : this.taxonomyService.Get(message.TaxonId);
+
             device.Description = message.Description;
             device.Taxon = taxon;
             device.AuthenticationMethod = message.AuthenticationMethod;
             this.deviceService.Update(device);
-
-            if (alert != null && message.HasDeviceAlert)
-            {
-                alert.Taxons = this.alertService.ListAllIn(selected);
-                alert.EscalationLevel = this.alertService.GetEscalationLevel(message.EscalationLevelId);
-                this.alertService.Update(alert);
-            }
-            else if (alert == null && message.HasDeviceAlert)
-            {
-                var newAlert = new DeviceAlert
-                {
-                    Taxons = this.alertService.ListAllIn(selected),
-                    EscalationLevel = this.alertService.GetEscalationLevel(message.EscalationLevelId),
-                    Device = device,
-                };
-
-                this.alertService.Save(newAlert);
-            }
-            else if (alert != null && message.HasDeviceAlert == false)
-            {
-                this.alertService.Delete(alert);
-            }
 
             return true;
         }

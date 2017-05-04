@@ -1,35 +1,6 @@
 ﻿@model Appva.Mcss.Admin.Models.EditDeviceModel
     SetTitle("Redigera enhet");
 }
-<script>
-    $(document).ready(function () {
-        $('.alert-checkbox').change(function () {
-            if (this.checked) {
-                $('.alert-box').show();
-            } else {
-                $('.alert-box').hide();
-                $('.alert-box-message').hide();
-            }
-        });
-        $('.check-all').bind('click', function () {
-            $('.checkbox-grid').find('input[type="checkbox"]').each(function (i, e) {
-                $(e).prop('checked', true);
-            });
-        });
-        $('.uncheck-all').bind('click', function () {
-            $('.checkbox-grid').find('input[type="checkbox"]').each(function (i, e) {
-                $(e).prop('checked', false);
-            });
-        });
-        $('form').submit(function (e) {
-            if ($('.checkbox-grid').find('input[type="checkbox"]:checked').length < 1 && $('.alert-checkbox').is(':checked')) {
-                e.preventDefault();
-                $('.alert-box-message').html('Inget larm kopplades till enheten.').show();
-                return false;
-            }
-        });
-    });
-</script>
 <div id="pr-panel" class="std-panel std-form lb-panel-small lb-validate-form">
     @using (Html.Post(new { }, new { Id = Model.Id })) 
     {

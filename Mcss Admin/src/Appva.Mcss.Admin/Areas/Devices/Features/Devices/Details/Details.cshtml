@@ -1,18 +1,47 @@
 ﻿@model Appva.Mcss.Admin.Models.DeviceDetailsModel
 @{
-    SetTitle("Enhetsinformation: " + Model.Device.Name);
+    SetTitle(Model.Device.Name + "");
     string message = "Ej tillgänglig";
 }
+<script>
+    $(document).ready(function () {
+        $('.alert-checkbox').change(function () {
+            if (this.checked) {
+                $('#alert-box').show();
+            } else {
+                $('#alert-box').hide();
+                $('.alert-box-message').hide();
+            }
+        });
+        $('.check-all').bind('click', function () {
+            $('.checkbox-grid').find('input[type="checkbox"]').each(function (i, e) {
+                $(e).prop('checked', true);
+            });
+        });
+        $('.uncheck-all').bind('click', function () {
+            $('.checkbox-grid').find('input[type="checkbox"]').each(function (i, e) {
+                $(e).prop('checked', false);
+            });
+        });
+        $('form').submit(function (e) {
+            if ($('.checkbox-grid').find('input[type="checkbox"]:checked').length < 1 && $('.alert-checkbox').is(':checked')) {
+                e.preventDefault();
+                $('.alert-box-message').html('Inget larm kopplades till enheten.').show();
+                return false;
+            }
+        });
+    });
+</script>
 <div id="subheader" class="cf">
     <h1>Enhetsinformation</h1>
     @Html.ActionLink("Redigera", "Edit", "Devices", new { Id = Model.Device.Id }, new { @class = "btn lb-link" })
-    @Html.ActionLink("Larmkonfiguration", "", "", null, new { @class = "btn" })
+    <a href="#alert-config" class="btn">Larmkonfiguration</a>
 </div>
 
 <div id="content" class="log cf">
     <div id="signlist">
         <h3 class="section-title">@Model.Device.Name</h3>
-        <table class="device-table">
+        <table class="device-table device-details">
             <tbody>
                 <tr>
                     <td>Beskrivning</td>
@@ -84,17 +113,40 @@
                 </tr>
             </tbody>
         </table>
-        <p class="alert-box-message"></p>
-        <label>Larmkonfiguration</label>
-        @Html.CheckBoxFor(x => x.HasAlert, new { @class = "alert-checkbox" })
-        @Html.LabelFor(x => x.HasAlert, "Aktivera larm för den här enheten", new { @class = "checkbox-label" })
-        <div class="alert-box" @(Model.HasAlert ? Html.Raw("") : Html.Raw("style='display:none'"))>
-            <div class="checkbox-container">
-                <p>Lägg till avdelningar för den valda nivån.</p>
-                @Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))
-                <p><a href="javascript:;" class="check-all">Markera alla</a> | <a href="javascript:;" class="uncheck-all">Avmarkera alla</a></p>
-                @Html.FormGroup(x => x.DeviceLevelTaxons, "text").CheckboxList().Validate().Build()
+        <h3 id="alert-config" class="section-title">Larmkonfiguration</h3>
+        @using (Html.Post(new { }, new { Id = Model.Device.Id }))
+        {
+            <p class="alert-box-message"></p>
+            @Html.Submit("Spara", new { @class = "btn" })
+            <table class="device-table">
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(x => x.HasAlert, new { @class = "alert-checkbox" })
+                            @Html.LabelFor(x => x.HasAlert, "Aktivera larm för den här enheten", new { @class = "checkbox-label" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="alert-box" @(Model.HasAlert ? Html.Raw("") : Html.Raw("style='display:none'"))>
+                <table class="device-table device-details">
+                    <tbody>
+                        <tr>
+                            <td>Välj en larmnivå</td>
+                            <td>@Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="device-table device-details">
+                    <tbody>
+                        <tr>
+                            <td>Lägg till avdelningar för vald nivå</td>
+                            <td>@Html.FormGroup(x => x.DeviceLevelTaxons, "text").CheckboxList().Validate().Build()</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="checkbox-options"><a href="javascript:;" class="check-all">Markera alla</a> | <a href="javascript:;" class="uncheck-all">Avmarkera alla</a></div>
             </div>
-        </div>
+        }
     </div>
 </div>

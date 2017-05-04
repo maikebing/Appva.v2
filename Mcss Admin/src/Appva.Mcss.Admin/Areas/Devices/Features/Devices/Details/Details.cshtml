@@ -4,12 +4,14 @@
     string message = "Ej tillgänglig";
 }
 <div id="subheader" class="cf">
-    <h1>Enheter</h1>
+    <h1>Enhetsinformation</h1>
+    @Html.ActionLink("Redigera", "Edit", "Devices", new { Id = Model.Device.Id }, new { @class = "btn lb-link" })
+    @Html.ActionLink("Larmkonfiguration", "", "", null, new { @class = "btn" })
 </div>
 
 <div id="content" class="log cf">
     <div id="signlist">
-        <h3 class="section-title">@Model.Device.Name enhetsinformation</h3>
+        <h3 class="section-title">@Model.Device.Name</h3>
         <table class="device-table">
             <tbody>
                 <tr>
@@ -82,5 +84,17 @@
                 </tr>
             </tbody>
         </table>
+        <p class="alert-box-message"></p>
+        <label>Larmkonfiguration</label>
+        @Html.CheckBoxFor(x => x.HasAlert, new { @class = "alert-checkbox" })
+        @Html.LabelFor(x => x.HasAlert, "Aktivera larm för den här enheten", new { @class = "checkbox-label" })
+        <div class="alert-box" @(Model.HasAlert ? Html.Raw("") : Html.Raw("style='display:none'"))>
+            <div class="checkbox-container">
+                <p>Lägg till avdelningar för den valda nivån.</p>
+                @Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))
+                <p><a href="javascript:;" class="check-all">Markera alla</a> | <a href="javascript:;" class="uncheck-all">Avmarkera alla</a></p>
+                @Html.FormGroup(x => x.DeviceLevelTaxons, "text").CheckboxList().Validate().Build()
+            </div>
+        </div>
     </div>
 </div>

@@ -42,17 +42,6 @@
                 @Html.LabelFor(x => x.TaxonId, "Avdelningar")
                 <p>Koppla enheten till en avdelning.</p>
                 @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen")
-                <label>Larmkonfiguration</label>
-                @Html.CheckBoxFor(x => x.HasDeviceAlert, new { @class = "alert-checkbox" })
-                @Html.LabelFor(x => x.HasDeviceAlert, "Aktivera larm för den här enheten", new { @class = "checkbox-label" })
-                <div class="alert-box" @(Model.HasDeviceAlert ? Html.Raw("") : Html.Raw("style='display:none'"))>
-                    <div class="checkbox-container">
-                        <p>Lägg till avdelningar för den valda nivån.</p>
-                        @Html.DropDownListFor(x => x.EscalationLevelId, new SelectList(Model.EscalationLevels, "Id", "Name"))
-                        <p><a href="javascript:;" class="check-all">Markera alla</a> | <a href="javascript:;" class="uncheck-all">Avmarkera alla</a></p>
-                        @Html.FormGroup(x => x.DeviceLevelTaxons, "text").CheckboxList().Validate().Build()
-                    </div>
-                </div>
             </div>
         </div>
         <div class="submit">

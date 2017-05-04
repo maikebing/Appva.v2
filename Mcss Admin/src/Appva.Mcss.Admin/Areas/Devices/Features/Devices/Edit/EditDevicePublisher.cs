@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var alert = this.alertService.Find(message.Id);
             var selected = message.DeviceLevelTaxons.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
 
-            if (device == null || selected.Length == 0)
+            if (device == null || (selected.Length == 0 && message.HasDeviceAlert))
             {
                 return false;
             }

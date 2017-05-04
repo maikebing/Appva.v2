@@ -37,11 +37,11 @@
             <h3 class="section-title">Redigera enhet</h3>
             <div class="container">
                 @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
-                @Html.Label("Autentisering metod")
+                @Html.LabelFor(x => x.AuthenticationMethod, "Autentiseringsmetod")
                 @Html.DropDownListFor(x => x.AuthenticationMethod, new SelectList(new List<string> { "Pin", "Siths" }))
                 @Html.LabelFor(x => x.TaxonId, "Avdelningar")
                 <p>Koppla enheten till en avdelning.</p>
-                @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen" )
+                @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen")
                 <label>Larmkonfiguration</label>
                 @Html.CheckBoxFor(x => x.HasDeviceAlert, new { @class = "alert-checkbox" })
                 @Html.LabelFor(x => x.HasDeviceAlert, "Aktivera larm för den här enheten", new { @class = "checkbox-label" })

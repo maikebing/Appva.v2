@@ -16,8 +16,8 @@ namespace Appva.Mcss.Admin.Models
     using System.Collections.Generic;
     using System.Web.Mvc;
     using Appva.Cqrs;
-    using Appva.Mvc;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mvc;
 
     #endregion
 
@@ -111,5 +111,4 @@ namespace Appva.Mcss.Admin.Models
 
         #endregion
     }
-
 }

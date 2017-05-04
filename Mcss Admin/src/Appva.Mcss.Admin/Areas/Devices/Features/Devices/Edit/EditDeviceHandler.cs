@@ -75,7 +75,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             var escalationLevelList = new List<SelectListItem>();
             var device = this.deviceService.Find(message.Id);
             var organizations = this.taxonomyService.List(Application.Common.TaxonomicSchema.Organization);
-            var deviceAlert = alertService.Find(device.Id);
+            var deviceAlert = this.alertService.Find(device.Id);
 
             foreach (var organization in organizations)
             {
@@ -103,7 +103,8 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         #endregion
 
         #region Methods.
-        
+
+        /// <inheritdoc />
         private IList<Tickable> Merge(IList<ITaxon> items, IList<Taxon> selected)
         {
             var organizations = items.Select(x => new Tickable

@@ -19,7 +19,16 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
     /// </summary>
     public sealed class ListDevice : IRequest<ListDeviceModel>
     {
+        #region Fields.
+
+        /// <summary>
+        /// Set default sort mode.
+        /// </summary>
         private bool isAscending = true;
+
+        #endregion
+
+        #region Properties.
 
         public string SearchQuery
         {
@@ -55,5 +64,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.List
             get;
             set;
         }
+
+        #endregion
     }
 }

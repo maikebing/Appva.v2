@@ -16,6 +16,9 @@ namespace Appva.Mcss.Admin.Models
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public class DeviceDetailsModel
     {
         /// <summary>

@@ -13,10 +13,10 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
     #region Imports.
 
     using System;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
-    using System.Linq;
     using Domain.Entities;
 
     #endregion
@@ -38,6 +38,9 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
+        /// <summary>
+        /// The <see cref="IDeviceAlertService"/>
+        /// </summary>
         private readonly IDeviceAlertService alertService;
 
         #endregion
@@ -48,11 +51,12 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
         /// Initializes a new instance of the <see cref="EditDevicePublisher"/> class.
         /// </summary>
         /// <param name="deviceService">The <see cref="IDeviceService"/> implementation.</param>
+        /// <param name="alertService">The <see cref="IDeviceAlertService"/> implementation.</param>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/> implementation.</param>
-        public EditDevicePublisher(IDeviceService deviceService, ITaxonomyService taxonomyService, IDeviceAlertService alertService)
+        public EditDevicePublisher(IDeviceService deviceService, IDeviceAlertService alertService, ITaxonomyService taxonomyService)
         {
-            this.alertService = alertService;
             this.deviceService = deviceService;
+            this.alertService = alertService;
             this.taxonomyService = taxonomyService;
         }
 

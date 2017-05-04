@@ -167,7 +167,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="account">The <see cref="Account"/></param>
         /// <param name="location">The new location.</param>
-        void Update(Account account, Taxon location);
+        /// <param name="updatePreferrdAddressLocation">If only the preferred address should be updated</param>
+        void Update(Account account, Taxon location, bool updatePreferrdAddressLocation = false);
 
         /// <summary>
         /// Updates the roles for a user account.
@@ -454,12 +455,18 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void Update(Account account, Taxon location)
+        public void Update(Account account, Taxon location, bool updatePreferrdAddressLocation = false)
         {
             var user = this.CurrentPrincipal();
             //// If the user updates its own user account, let it 
             //// only update the preferred address location.
-            if (user.Id == account.Id)
+            if (user.Id == account.Id )
+            {
+                account.Taxon = location;
+            }
+            //// If only the preffered address location should be updated,
+            //// only update the preferred address location
+            else if ( updatePreferrdAddressLocation == true )
             {
                 account.Taxon = location;
             }

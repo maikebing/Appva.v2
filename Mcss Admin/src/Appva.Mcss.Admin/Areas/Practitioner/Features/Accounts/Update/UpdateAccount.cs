@@ -116,6 +116,24 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// If the account should be locked to the given taxon
+        /// </summary>
+        public bool RestrictUserToOrganizationTaxon
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If the user can lock current account to a taxon
+        /// </summary>
+        public bool RestrictUserToOrganizationTaxonIsVisible
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The address taxons.
         /// </summary>
         public IEnumerable<TaxonViewModel> Taxons

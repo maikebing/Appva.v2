@@ -74,7 +74,10 @@
                     <td>@(Model.Device.AuthenticationMethod)</td>
                 </tr>
                 <tr>
-                    <td>Kopplad till avdelning</td>
+                    <td>Används av @(Model.Device.Taxon == null ? 
+                            string.Empty : Model.Device.Taxon.Description == null ? 
+                                Model.Device.Taxon.Type == null ? 
+                                    string.Empty : Model.Device.Taxon.Type.ToLower() : Model.Device.Taxon.Description.ToLower())</td>
                     <td>@(Model.Device.Taxon == null ? message : Model.Device.Taxon.Name)</td>
                 </tr>
                 <tr>

@@ -41,7 +41,7 @@
                     @foreach (var item in Model.Items)
                     {
                         <tr @(item.IsActive ? string.Empty : "style=background-color:#ebf0f8")>
-                            <td>@Html.ActionLink(item.Description, "Details", "Devices", new { Id = item.Id }, null)</td>
+                            <td>@Html.ActionLink(string.IsNullOrEmpty(item.Description) ? "Enhet" : item.Description, "Details", "Devices", new { Id = item.Id }, null)</td>
                             <td>@item.Hardware</td>
                             <td>@item.OS</td>
                             <td>@item.OSVersion</td>

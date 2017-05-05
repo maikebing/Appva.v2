@@ -79,7 +79,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices.Edit
             {
                 organizationList.Add(new SelectListItem()
                 {
-                    Text = string.Format("{0}: {1}", organization.Type, organization.Name),
+                    Text = string.Format("{0}: {1}", organization.Description == null ? organization.Type : organization.Description, organization.Name),
                     Value = organization.Id.ToString(),
                 });
             }

@@ -10,18 +10,18 @@
 
 namespace Appva.Mcss.Admin.Models.Handlers
 {
-    using Application.Models;
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+    using Application.Models;
     using Application.Services;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Models;
     using Domain.Entities;
     using Mvc;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
 
     #endregion
 
@@ -122,6 +122,5 @@ namespace Appva.Mcss.Admin.Models.Handlers
         }
 
         #endregion
-
     }
 }

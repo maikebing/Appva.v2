@@ -10,16 +10,18 @@
 
 namespace Appva.Mcss.Admin.Models.Handlers
 {
+    #region Imports.
+
+    using System.Linq;
     using Application.Services;
-    #region Imports
     using Appva.Cqrs;
     using Domain.Entities;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public sealed class DeviceDetailsPublisher : RequestHandler<DeviceDetailsModel, bool>
     {
         #region Fields.
@@ -44,7 +46,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditDevicePublisher"/> class.
+        /// Initializes a new instance of the <see cref="DeviceDetailsPublisher"/> class.
         /// </summary>
         /// <param name="deviceService">The <see cref="IDeviceService"/> implementation.</param>
         /// <param name="alertService">The <see cref="IDeviceAlertService"/> implementation.</param>
@@ -58,6 +60,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
+        /// <inheritdoc />
         public override bool Handle(DeviceDetailsModel message)
         {
             var device = this.deviceService.Find(message.Id);
@@ -77,14 +80,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             else if (alert == null && message.HasAlert)
             {
-                var newAlert = new DeviceAlert
+                this.alertService.Save(new DeviceAlert
                 {
                     Taxons = this.alertService.ListAllIn(selected),
                     EscalationLevel = this.alertService.GetEscalationLevel(message.EscalationLevelId),
                     Device = device,
-                };
-
-                this.alertService.Save(newAlert);
+                });
             }
             else if (alert != null && message.HasAlert == false)
             {

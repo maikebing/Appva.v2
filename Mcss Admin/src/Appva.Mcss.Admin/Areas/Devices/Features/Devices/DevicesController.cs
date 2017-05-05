@@ -131,7 +131,7 @@ namespace Appva.Mcss.Admin.Areas.Devices.Features.Devices
         [HttpPost, Dispatch]
         public ActionResult Details(DeviceDetailsModel request)
         {
-            return this.View();
+            return this.RedirectToAction("Details");
         }
 
         #endregion

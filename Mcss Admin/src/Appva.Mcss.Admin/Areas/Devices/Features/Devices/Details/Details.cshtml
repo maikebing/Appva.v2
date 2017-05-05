@@ -2,12 +2,14 @@
 @{
     SetTitle(Model.Device.Name + "");
     string message = "Ej tillgänglig";
+    string buttonStyle = Model.HasAlert ? string.Empty : "display:none";
 }
 <script>
     $(document).ready(function () {
         $('.alert-checkbox').change(function () {
             if (this.checked) {
                 $('#alert-box').show();
+                $('#alert-save-btn').show();
             } else {
                 $('#alert-box').hide();
                 $('.alert-box-message').hide();
@@ -26,7 +28,7 @@
         $('form').submit(function (e) {
             if ($('.checkbox-grid').find('input[type="checkbox"]:checked').length < 1 && $('.alert-checkbox').is(':checked')) {
                 e.preventDefault();
-                $('.alert-box-message').html('Inget larm kopplades till enheten.').show();
+                $('.alert-box-message').html('Det gick inte att spara. Inget larm har kopplats till enheten.').show();
                 return false;
             }
         });
@@ -121,7 +123,6 @@
         @using (Html.Post(new { }, new { Id = Model.Device.Id }))
         {
             <p class="alert-box-message"></p>
-            @Html.Submit("Spara", new { @class = "btn" })
             <table class="device-table">
                 <tbody>
                     <tr>
@@ -151,6 +152,7 @@
                 </table>
                 <div class="checkbox-options"><a href="javascript:;" class="check-all">Markera alla</a> | <a href="javascript:;" class="uncheck-all">Avmarkera alla</a></div>
             </div>
+            @Html.Submit("Spara", new { @class = "btn", id = "alert-save-btn", style = buttonStyle })
         }
     </div>
 </div>

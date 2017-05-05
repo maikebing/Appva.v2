@@ -12,7 +12,7 @@
         @Html.ActionLink("Inaktiverade", "List", new { isActive = false, IsCurrentNode = Model.IsCurrentNode }, new { @class = (!Model.IsActive.GetValueOrDefault(true)) ? "sel div" : "div" })
     </p>
     <p class="filter">
-        <strong>Visa från vald nod:</strong>
+        <strong>Visa från vald avdelning:</strong>
         @Html.ActionLink("Ja", "List", new { IsCurrentNode = true, IsActive = Model.IsActive }, new { @class = (Model.IsCurrentNode ? "sel div" : "div") })
         @Html.ActionLink("Nej", "List", new { IsCurrentNode = false, IsActive = Model.IsActive }, new { @class = (!Model.IsCurrentNode ? "sel div" : "div") })
     </p>

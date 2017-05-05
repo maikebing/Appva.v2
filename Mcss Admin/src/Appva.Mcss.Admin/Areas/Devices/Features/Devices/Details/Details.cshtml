@@ -1,6 +1,6 @@
 ﻿@model Appva.Mcss.Admin.Models.DeviceDetailsModel
 @{
-    SetTitle(Model.Device.Name + "");
+    SetTitle(Model.Device.Name + " enhetsinformation");
     string message = "Ej tillgänglig";
     string buttonStyle = Model.HasAlert ? string.Empty : "display:none";
 }
@@ -62,19 +62,19 @@
                     <td>@(Model.Device.LastUsedDate == null ? message : Model.Device.LastUsedDate.ToString())</td>
                 </tr>
                 <tr>
-                    <td>Larmkonfiguration</td>
-                    <td>@(Model.HasAlert == true ? "Aktiv" : "Inaktiv")</td>
+                    <td>Enhetsstatus</td>
+                    <td>@(Model.Device.IsActive ? "Aktiv" : "Inaktiv")</td>
                 </tr>
                 <tr>
-                    <td>Aktiv</td>
-                    <td>@(Model.Device.IsActive ? "Ja" : "Nej")</td>
+                    <td>Larmkonfiguration</td>
+                    <td>@(Model.HasAlert == true ? "Aktiv" : "Inaktiv")</td>
                 </tr>
                 <tr>
                     <td>Autentiseringsmetod</td>
                     <td>@(Model.Device.AuthenticationMethod)</td>
                 </tr>
                 <tr>
-                    <td>Används av @(Model.Device.Taxon == null ? 
+                    <td>Ansluten till @(Model.Device.Taxon == null ? 
                             string.Empty : Model.Device.Taxon.Description == null ? 
                                 Model.Device.Taxon.Type == null ? 
                                     string.Empty : Model.Device.Taxon.Type.ToLower() : Model.Device.Taxon.Description.ToLower())</td>

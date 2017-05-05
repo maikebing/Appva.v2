@@ -10,8 +10,7 @@
                 @Html.FormGroup(x => x.Description, "text").Label("Beskrivning").TextBox().Validate().Build()
                 @Html.LabelFor(x => x.AuthenticationMethod, "Autentiseringsmetod")
                 @Html.DropDownListFor(x => x.AuthenticationMethod, new SelectList(new List<string> { "Pin", "Siths" }))
-                @Html.LabelFor(x => x.TaxonId, "Avdelningar")
-                <p>Koppla enheten till en avdelning.</p>
+                @Html.LabelFor(x => x.TaxonId, "Ansluten till avdelning")
                 @Html.DropDownListFor(x => x.TaxonId, Model.Organizations, "Ingen")
             </div>
         </div>

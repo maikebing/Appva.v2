@@ -864,7 +864,7 @@ a.pause-btn:active {
 	width:160px;
 }
 
-#subheader .printp, #subheader .alarm-stop-all {float:right;}
+#subheader .printp, #subheader .alarm-stop-all, .sign-delbtn {float:right;}
 .delegate-view #subheader p.filter {margin:0; float:right;}
 .delegate-view #subheader p.left {
 	margin-left:20px;
@@ -1440,14 +1440,7 @@ td.rights {
 	display:block;
 	min-height:20px;
 }
-#signlist .primg {
-    width:45px;
-    padding:6px 0;
-}
-#signlist .prtd {
-    width:100px;
-    text-align:center;
-}
+
 #signlist .prstatus span {
     width:10px;
     height:10px;
@@ -1460,6 +1453,28 @@ td.rights {
 }
 #signlist .tr-highlight:hover { background:#f9f9f9; }
 #signlist .tr-highlight { transition:background .2s ease-in-out; }
+#signlist .primg {
+    width:45px;
+    padding:6px 0;
+}
+#signlist .signimg {
+    width:32px;
+    height:auto;
+    padding:8px 0;
+}
+#signlist .prtd {
+    width:100px;
+    text-align:center;
+}
+#signlist .prtd2 {
+    width:160px;
+    text-align:center;
+}
+#signlist .prtd2 .btn-del { margin-left:6px; }
+#signlist .prpad {
+    padding:6px 10px!important;
+}
+#signlist .tr-highlight:hover { background:#f9f9f9; }
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}
@@ -2965,6 +2980,39 @@ form .time {width:4em;}
 	background:#eaeff9;
 }
 .std-panel .prpanel-img img {width:45px;}
+#sign-op input[type="text"] {
+    font-size:13px;
+    padding:6px;
+    margin-top:4px;
+    width:100%;
+}
+#sign-imglist {
+    list-style-type: none;
+    padding: 5px 10px 10px 15px;
+    margin: 4px 0 20px 0;
+    background: #e1edf2;
+    border: 1px solid #bdd4dd;
+}
+#sign-imglist li {
+    display:inline-block;
+    padding:10px 10px 0 0;
+}
+#sign-imglist input[type="radio"] {
+    display:none;
+}
+#sign-imglist label {
+    opacity:.4;
+    cursor:pointer;
+    transition:opacity .3s ease;
+}
+#sign-imglist input[type="radio"]:checked + label {
+    opacity:1;
+}
+#sign-imglist .checked {
+    opacity:1;
+}
+.btm-pad {padding-bottom:10px;}
+.lblcheckbox {font-weight:400!important;}
 .std-form .section-title,
 .content .section-title {margin:10px -20px;}
 .std-form .form-section .section-title {

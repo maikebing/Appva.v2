@@ -446,6 +446,20 @@
     <Compile Include="Areas\Backoffice\Features\Organization\List\ListOrganizationHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\List\ListOrganizationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\OrganizationController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\Create\CreateSignatureHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\Create\CreateSignatureModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\Create\CreateSignaturePublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\Edit\EditSignatureHandler.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Areas\Backoffice\Features\Signature\Edit\EditSignatureModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\Edit\EditSignaturePublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\Inactivate\InactivateSignatureHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\Inactivate\InactivateSignatureModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignature.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
@@ -1351,6 +1365,9 @@
     <Content Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetails.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategory.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Signature\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Signature\Create\Create.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Signature\Edit\Edit.cshtml" />
     <Content Include="Areas\Backoffice\Features\Profile\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Profile\Update\Update.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\user-meetup2017.cshtml" />

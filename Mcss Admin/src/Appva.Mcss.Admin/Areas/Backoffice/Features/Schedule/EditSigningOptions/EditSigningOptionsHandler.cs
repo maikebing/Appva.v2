@@ -60,6 +60,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             var schedule = this.scheduleService.GetScheduleSettings(message.Id);
             var statuses = this.taxonomyService.List(TaxonomicSchema.SignStatus);
 
+            
+
             return new EditSigningOptionsModel
             {
                 Options = statuses.Select(x => new Tickable 

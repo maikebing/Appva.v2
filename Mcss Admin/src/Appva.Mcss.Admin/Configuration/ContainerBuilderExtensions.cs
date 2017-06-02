@@ -129,12 +129,12 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<TenantCookieAuthenticationMiddleware>().InstancePerRequest();
             builder.Register(x => new SecurityTokenOptions
             {
-                RegisterTokenPath        = new PathString("/account/register"),
+                RegisterTokenPath = new PathString("/account/register"),
                 RegisterTokenExpiredPath = new PathString("/account/register/expired"),
-                ResetTokenPath           = new PathString("/account/reset-password"),
-                ResetTokenExpiredPath    = new PathString("/account/reset-password/expired"),
-                TokenInvalidPath         = new PathString("/auth/sign-in"),
-                Provider                 = x.Resolve<JwtSecureDataFormat>()
+                ResetTokenPath = new PathString("/account/reset-password"),
+                ResetTokenExpiredPath = new PathString("/account/reset-password/expired"),
+                TokenInvalidPath = new PathString("/auth/sign-in"),
+                Provider = x.Resolve<JwtSecureDataFormat>()
             }).InstancePerRequest();
             builder.RegisterType<SecurityTokenMiddleware>().InstancePerRequest();
         }

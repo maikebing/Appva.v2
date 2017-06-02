@@ -6,6 +6,7 @@
 // </author>
 namespace Appva.Mcss.Admin.Application.Models
 {
+    using Appva.Mcss.Admin.Domain.Entities;
     #region Imports.
 
     using System;
@@ -31,6 +32,7 @@ namespace Appva.Mcss.Admin.Application.Models
         string Name
         {
             get;
+            set;
         }
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace Appva.Mcss.Admin.Application.Models
         string Description
         {
             get;
+            set;
         }
 
         /// <summary>
@@ -74,6 +77,15 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
+        /// Active state.
+        /// </summary>
+        bool IsActive
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The parent taxon id.
         /// </summary>
         Guid? ParentId
@@ -101,8 +113,14 @@ namespace Appva.Mcss.Admin.Application.Models
         /// Updates the taxon
         /// </summary>
         /// <param name="Name"></param>
-        /// <param name="description"></param>
+        /// <param name="Description"></param>
         void Update(string name, string description);
+
+        /// <summary>
+        /// Updates the taxon
+        /// </summary>
+        /// <param name="Taxon"></param>
+        void Update(ITaxon taxon);
 
         /// <summary>
         /// Updates the taxon
@@ -130,7 +148,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="type">The type</param>
         /// <param name="sort">Optional sorting order</param>
         /// <param name="parentId">Optional parent id. If null then it's a root node</param>
-        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null)
+        /// <param name="isActive">If the riskassesment is activated</param>
+        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null, bool isActive = false)
         {
             this.Id = id;
             this.Name = name;
@@ -138,6 +157,7 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Path = path;
             this.Type = type;
             this.Sort = sort;
+            this.IsActive = isActive;
             this.IsRoot = parent == null;
             this.ParentId = parent != null ? parent.Id : (Guid?) null;
             this.Parent = parent;
@@ -158,14 +178,14 @@ namespace Appva.Mcss.Admin.Application.Models
         public string Name
         {
             get;
-            private set;
+            set;
         }
 
         /// <inheritdoc />
         public string Description
         {
             get;
-            private set;
+            set;
         }
 
         /// <inheritdoc />
@@ -211,6 +231,13 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <inheritdoc />
+        public bool IsActive
+        {
+            get;
+            set;
+        }
+
+        /// <inheritdoc />
         public string Address
         {
             get
@@ -219,6 +246,19 @@ namespace Appva.Mcss.Admin.Application.Models
                     this.Name : 
                     string.Format("{0} {1}", this.Parent.Address, this.Name);
             }
+        }
+
+        /// <inheritdoc />
+        public static ITaxon FromTaxon(Taxon taxon)
+        {
+            return new TaxonItem(
+                taxon.Id,
+                taxon.Name,
+                taxon.Description,
+                taxon.Path,
+                taxon.Type,
+                taxon.Weight
+                );
         }
 
         /// <inheritdoc />
@@ -233,6 +273,14 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Name = name;
             this.Description = description;
             this.Sort = sort;
+        }
+
+        /// <inheritdoc />
+        public void Update(ITaxon taxon)
+        {
+            this.Name = taxon.Name;
+            this.Description = taxon.Description;
+            this.IsActive = taxon.IsActive;
         }
 
         #endregion

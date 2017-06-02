@@ -420,6 +420,15 @@
     <Compile Include="Areas\Backoffice\Features\Inventory\Update\UpdateInventoryUnitPublisher.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Areas\Backoffice\Features\Profile\InstallProfiles\InstallProfilesHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\InstallProfiles\InstallProfilesModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\List\ProfileAssessment.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfileHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\List\ListProfileModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\ProfileController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\Update\UpdateProfileHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\Update\UpdateProfileModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Profile\Update\UpdateProfilePublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\Create\CreateSchedulePublisher.cs" />
@@ -704,6 +713,7 @@
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
+    <Compile Include="Configuration\MockedTenantWcfClient.cs" />
     <Compile Include="Features\Account\AccountController.cs" />
     <Compile Include="Features\Account\Forgot\Forgot.cs" />
     <Compile Include="Features\Account\Forgot\ForgotEmail.cs" />
@@ -892,6 +902,8 @@
     <Content Include="Assets\i\icn-sent%402x.png" />
     <Content Include="Assets\i\icn-sent.png" />
     <Content Include="Assets\i\icn-sleep.png" />
+    <Content Include="Assets\i\icn-test1.png" />
+    <Content Include="Assets\i\icn-test2.png" />
     <Content Include="Assets\i\icn-toggle.png" />
     <Content Include="Assets\i\icn-toolclock.png" />
     <Content Include="Assets\i\icn-toolneed.png" />
@@ -1339,6 +1351,8 @@
     <Content Include="Areas\Backoffice\Features\Calendar\CreateCategory\CreateCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetails.cshtml" />
     <Content Include="Areas\Backoffice\Features\Calendar\UpdateCategory\UpdateCategory.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Profile\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Profile\Update\Update.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\user-meetup2017.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Preview\Preview.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Create\Create.cshtml" />

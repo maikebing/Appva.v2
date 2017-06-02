@@ -7,8 +7,8 @@
             @if (Model.SeniorAlerts.IsNotNull())
             {
                 foreach (var sa in Model.SeniorAlerts)
-                { 
-                    <img src="@String.Format("/Assets/i/{0}", sa.Type)" alt="Senior alert" title="@sa.Name"/>
+                {
+                    <img src="@String.Format("/Assets/i/{0}", sa.Type)" alt="Senior alert" title="@sa.Name" />
                 }
             }
     	</h2>

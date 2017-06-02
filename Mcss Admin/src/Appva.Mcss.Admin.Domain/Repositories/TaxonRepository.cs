@@ -10,7 +10,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     using System;
     using System.Collections.Generic;
-using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
@@ -34,11 +34,25 @@ using Appva.Mcss.Admin.Domain.Entities;
         IList<Taxon> List(string taxonomy);
 
         /// <summary>
+        /// Returns a collection of <see cref="Taxon"/> by <see cref="Taxonomy.Key"/>
+        /// </summary>
+        /// <param name="taxonomy">The taxonomy identifier</param>
+        /// <returns>A collection of <see cref="Taxon"/></returns>
+        IList<Taxon> ListByFilter(string taxonomy, bool? showActive);
+
+        /// <summary>
         /// Returns a collection of <see cref="Taxon"/> by identifiers.
         /// </summary>
         /// <param name="ids">The taxon ID:s to fetch</param>
         /// <returns>A collection of <see cref="Taxon"/></returns>
         IList<Taxon> Pick(params Guid[] ids);
+
+        /// <summary>
+        /// Returns a single <see cref="Taxon"/> by id.
+        /// </summary>
+        /// <param name="ids">The taxon ID:s to fetch</param>
+        /// <returns></returns>
+        Taxon Get(Guid id);
 
         /// <summary>
         /// Loads an taxonomy by its id
@@ -107,6 +121,24 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         /// <inheritdoc />
+        public IList<Taxon> ListByFilter(string identifier, bool? showActive)
+        {
+            var query = this.persistenceContext.QueryOver<Taxon>();
+
+            if (showActive == true)
+            {
+                query.Where(x => x.IsActive);
+            }
+
+            return query.OrderBy(x => x.Parent.Id).Asc
+                .ThenBy(x => x.Weight).Asc
+                .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
+                    .Where(x => x.IsActive)
+                    .And(x => x.MachineName == identifier)
+                .List();
+        }
+
+        /// <inheritdoc />
         public IList<Taxon> Pick(params Guid[] ids)
         {
             return this.persistenceContext.QueryOver<Taxon>()
@@ -118,6 +150,14 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         /// <inheritdoc />
+        public Taxon Get(Guid id)
+        {
+            return this.persistenceContext.QueryOver<Taxon>()
+                .Where(x => x.Id == id)
+                .SingleOrDefault();
+        }
+
+        /// <inheritdoc />
         public Taxonomy LoadTaxonomy(string machineName)
         {
             return this.persistenceContext.QueryOver<Taxonomy>()
@@ -126,7 +166,6 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         #endregion
-
         
         #region IProxyRepository<Taxon> Members.
 
@@ -137,7 +176,6 @@ using Appva.Mcss.Admin.Domain.Entities;
         }
 
         #endregion
-
         
         #region ISaveRepository<Taxon> Members.
 

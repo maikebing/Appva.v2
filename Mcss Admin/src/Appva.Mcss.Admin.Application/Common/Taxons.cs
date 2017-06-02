@@ -44,7 +44,7 @@ namespace Appva.Mcss.Admin.Application.Common
         public static readonly ITaxon Pressure = CreateRiskAssement(
             "Liggsår",
             "Bedöms ha risk för liggsår",
-            "icn-health-fall.png");
+            "icn-health-pressure.png");
 
         /// <summary>
         /// The Health - Weight risk assesment
@@ -101,6 +101,30 @@ namespace Appva.Mcss.Admin.Application.Common
             "Blodförtunnande",
             "Observera blodförtunnande",
             "ico-warning-antiglukos.png");
+
+        /// <summary>
+        /// Waran risk assesment
+        /// </summary>
+        public static readonly ITaxon Waran = CreateRiskAssement(
+            "Waran",
+            "Observera waran",
+            "icn-warning-waran.png");
+
+        /// <summary>
+        /// Test assesment 1
+        /// </summary>
+        public static readonly ITaxon Test = CreateRiskAssement(
+            "Test 1",
+            "Observera test 1",
+            "icn-test1.png");
+
+        /// <summary>
+        /// Test assesment 2
+        /// </summary>
+        public static readonly ITaxon Test2 = CreateRiskAssement(
+            "Test 2",
+            "Observera test 2",
+            "icn-test2.png");
 
         #endregion
 

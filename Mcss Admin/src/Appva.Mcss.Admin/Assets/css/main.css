@@ -322,6 +322,9 @@ a.pause-btn:active {
 	background:#893a29;
 }
 
+.floatr {float:right!important;}
+.floatl {float:left!important;}
+
 /* Sub header action buttons */
 #subheader a.btn,
 #status-filter a.btn {
@@ -1437,14 +1440,31 @@ td.rights {
 	display:block;
 	min-height:20px;
 }
-
+#signlist .primg {
+    width:45px;
+    padding:6px 0;
+}
+#signlist .prtd {
+    width:100px;
+    text-align:center;
+}
+#signlist .prstatus span {
+    width:10px;
+    height:10px;
+    display:inline-block;
+    margin-right:8px;
+    border-radius:10px;
+}
+#signlist .prpad {
+    padding:6px 10px!important;
+}
+#signlist .tr-highlight:hover { background:#f9f9f9; }
+#signlist .tr-highlight { transition:background .2s ease-in-out; }
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}
 #content-primary #signlist tbody td,
-#content-primary #signed-events tbody td {
-	padding:6px;
-}
+#content-primary #signed-events tbody td { padding:6px; }
 #content-primary .h h2 {float:left; margin:0;}
 #content-primary .h a {float:right;}
 #content-primary #signlist .time {
@@ -2944,9 +2964,9 @@ form .time {width:4em;}
 	font-size:1.2em;
 	background:#eaeff9;
 }
+.std-panel .prpanel-img img {width:45px;}
 .std-form .section-title,
 .content .section-title {margin:10px -20px;}
-
 .std-form .form-section .section-title {
 	margin:0 -5px 10px;
 	padding:3px 5px;
@@ -2954,9 +2974,31 @@ form .time {width:4em;}
 	-moz-border-radius:3px;
 	border-radius:3px;
 }
-
 .lb-panel .std-form {padding-top:0;}
-
+#pr-panel img {
+    position:absolute;
+    top:9px;
+    left:14px;
+    width:32px;
+    height:auto;
+}
+#pr-panel input[type="text"] {
+    padding:6px;
+    font-size:13px;
+    width:100%;
+}
+#pr-panel textarea {
+    padding:6px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:13px;
+    resize:none;
+    width:100%;
+}
+#pr-panel label {margin-bottom:4px;}
+#pr-panel .checkbox-inline {
+    font-weight:400;
+    padding-bottom:2px;
+} 
 .std-form .checkbox-grid .wrap {
 	width:492px;
 	border:1px solid #D8DFE5;

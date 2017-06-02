@@ -1,0 +1,61 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListProfileModel
+@{
+    SetTitle("Backoffice - Profiluppgifter");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Profiluppgifter</h1>
+    <p class="filter">
+        <strong>Visa:</strong>
+        @Html.ActionLink("Alla", "List", "Profile", new { }, new { @class = (Model.IsActive == null) ? "sel div" : "div" })
+        @Html.ActionLink("Aktiva", "List", "Profile", new { IsActive = true }, new { @class = (Model.IsActive == true) ? "sel div" : "div" })
+        @Html.ActionLink("Inaktiva", "List", "Profile", new { IsActive = false }, new { @class = (Model.IsActive == false) ? "sel div" : "div" })
+    </p>
+    @if (Model.NewAssessments != string.Empty)
+    {
+        using (Html.Post("InstallProfiles", "Profile", null))
+        {
+            @Html.Submit("Installera " + Model.NewAssessments, new { @class = "lb-link btn floatr" })
+        }
+    }
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        @if (Model.Assessments != null && Model.Assessments.Count > 0)
+        {
+            <div id="signlist">
+                <table id="signed-events">
+                    <thead class="head">
+                        <tr>
+                            <th class="prtd prpad">Symbol</th>
+                            <th class="prpad">Titel</th>
+                            <th class="prpad">Beskrivning</th>
+                            <th class="prtd prpad">Används av</th>
+                            <th class="prtd prpad">Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var assessment in Model.Assessments.OrderBy(x => x.Name))
+                        {
+                            <tr class="tr-highlight">                      
+                                <td class="prtd"><img class="primg" src="@string.Format("/Assets/i/{0}", assessment.Type)" alt="Symbol" title="@assessment.Name" /></td>
+                                <td class="prpad"><b>@assessment.Name</b></td>
+                                <td class="prpad">@assessment.Description</td>
+                                <td class="prtd">@(assessment.UsedByPatientsCount != null ? assessment.UsedByPatientsCount + " boende" : "—")</td>
+                                <td class="prtd prstatus"><span style="background:@(assessment.IsActive == true ? "#3ddc81" : "#f15646")"></span>@(assessment.IsActive == true ? "På" : "Av")</td>
+                                <td class="prtd">@Html.ActionLink("Ändra", "Update", "Profile", new { id = assessment.Id }, new { @class = "lb-link btn" })</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="note">
+                <h2 style="padding:20px 0 0 20px">Inga @(Model.IsActive == null ? "" : Model.IsActive == true ? "aktiva " : "inaktiva ")uppgifter hittades.</h2>
+            </div>
+        }
+    </div>
+</div>

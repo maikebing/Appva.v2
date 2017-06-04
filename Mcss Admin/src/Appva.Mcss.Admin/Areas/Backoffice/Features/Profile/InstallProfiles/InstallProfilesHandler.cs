@@ -59,7 +59,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             foreach (var property in typeof(Taxons).GetFields(BindingFlags.Public | BindingFlags.Static))
             {
                 var taxon = (ITaxon)property.GetValue(null);
-                taxon.IsActive = false;
+                taxon.InActivate();
 
                 if (installedItems.Where(x => x.Type == taxon.Type).Any())
                 {

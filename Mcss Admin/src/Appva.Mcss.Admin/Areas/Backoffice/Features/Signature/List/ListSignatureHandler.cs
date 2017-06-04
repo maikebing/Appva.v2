@@ -66,6 +66,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             var signingModel = new ListSignatureModel();
             signingModel.Items = new List<ListSignature>();
 
+
+
             foreach (var item in signingList)
             {
                 var signing = new ListSignature();

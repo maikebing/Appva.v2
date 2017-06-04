@@ -85,15 +85,6 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// Active state.
-        /// </summary>
-        bool IsActive
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The parent taxon id.
         /// </summary>
         Guid? ParentId
@@ -116,14 +107,7 @@ namespace Appva.Mcss.Admin.Application.Models
         {
             get;
         }
-
-        /// <summary>
-        /// Updates the taxon.
-        /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="Description"></param>
-        void Update(string name, string description);
-
+ 
         /// <summary>
         /// Updates the taxon
         /// </summary>
@@ -131,26 +115,23 @@ namespace Appva.Mcss.Admin.Application.Models
         void Update(ITaxon taxon);
 
         /// <summary>
-        /// Updates the taxon
-        /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="description"></param>
-        /// <param name="sort"></param>
-        void Update(string name, string description, int sort);
-
-        /// <summary>
         /// Updates the taxon with path and root.
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="description"></param>
-        void Update(string name, string path, bool isRoot);
+        void Update(string name, string path, int? sort = null, bool? isRoot = null);
 
         /// <summary>
-        /// Updates the taxon by id and sets the taxon to active or inactive.
+        /// Inactivates the taxon
         /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="description"></param>
-        void Update(bool isActive);
+        /// <returns>The inactivated taxon</returns>
+        ITaxon InActivate();
+
+        /// <summary>
+        /// Activates a taxon
+        /// </summary>
+        /// <returns>The activated taxon</returns>
+        ITaxon Activate();
     }
 
     /// <summary>
@@ -285,13 +266,6 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <inheritdoc />
-        public bool IsActive
-        {
-            get;
-            set;
-        }
-
-        /// <inheritdoc />
         public string Address
         {
             get
@@ -315,18 +289,18 @@ namespace Appva.Mcss.Admin.Application.Models
                 );
         }
 
-        /// <inheritdoc />
-        public void Update(string name, string description)
-        {
-            this.Name        = name;
-            this.Description = description;
-        }
-
-        public void Update(string name, string description, int sort)
+        public void Update(string name, string description, int? sort = null,  bool? isRoot = null)
         {
             this.Name = name;
             this.Description = description;
-            this.Sort = sort;
+            if (sort.HasValue)
+            {
+                this.Sort = sort.GetValueOrDefault();
+            }
+            if (isRoot.HasValue)
+            {
+                this.IsRoot = isRoot.GetValueOrDefault();
+            }
         }
 
         /// <inheritdoc />
@@ -338,17 +312,17 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <inheritdoc />
-        public void Update(string name, string path, bool isRoot)
+        public ITaxon InActivate()
         {
-            this.Name        = name;
-            this.Path        = path;
-            this.IsRoot      = isRoot;
+            this.IsActive = false;
+            return this;
         }
 
         /// <inheritdoc />
-        public void Update(bool isActive)
+        public ITaxon Activate()
         {
-            this.IsActive = isActive;
+            this.IsActive = true;
+            return this;
         }
 
         #endregion

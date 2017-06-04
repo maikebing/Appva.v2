@@ -72,7 +72,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 return false;
 
             var signature = this.taxonomyService.Find(message.Id, TaxonomicSchema.SignStatus);
-            signature.Update(false);
+            signature.InActivate();
 
             this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus, true);
 

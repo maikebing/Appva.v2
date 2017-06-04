@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 return false;
             }
 
-            signature.Update(message.Name, message.Path, message.IsRoot);
+            signature.Update(message.Name, message.Path, isRoot: message.IsRoot);
             this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus);
 
             return true;

@@ -63,7 +63,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Delegation.Update
             var taxon = TaxonItem.FromTaxon(this.taxonRepository.Get(message.Id));
             taxon.Name = message.Name;
             taxon.Description = message.Description;
-            taxon.IsActive = message.IsActive;
+
+            if (taxon.IsActive != message.IsActive)
+            {
+                if (message.IsActive)
+                {
+                    taxon.Activate();
+                }
+                else
+                {
+                    taxon.InActivate();
+                }
+            }
 
             if (taxon == null)
             {

@@ -194,6 +194,10 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Appva.Core\Appva.Core.csproj">
+      <Project>{56d99634-8d47-4b88-a057-ee24bcce546a}</Project>
+      <Name>Appva.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Cryptography\Appva.Cryptography.csproj">
       <Project>{d3b336cc-9a4a-4cad-8ab5-32a92e028726}</Project>
       <Name>Appva.Cryptography</Name>

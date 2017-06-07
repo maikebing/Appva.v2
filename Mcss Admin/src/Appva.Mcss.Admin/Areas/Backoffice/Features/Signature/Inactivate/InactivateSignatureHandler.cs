@@ -69,12 +69,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     .RowCount();
 
             if (usedByListsCount > 0)
+            {
                 return false;
-
+            }
+                
             var signature = this.taxonomyService.Find(message.Id, TaxonomicSchema.SignStatus);
             signature.InActivate();
 
-            this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus, true);
+            this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus);
 
             return true;
         }

@@ -33,12 +33,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns></returns>
         ITaxon Find(Guid id, TaxonomicSchema schema);
 
-        /// <summary>
-        /// Finds a taxonomy by id without caching.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        ITaxon FindNoCache(Guid id, TaxonomicSchema schema);
 
         /// <summary>
         /// Finds a taxonomy by id without caching
@@ -118,7 +112,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="taxon"></param>
         /// <param name="schema"></param>
-        void Update(ITaxon taxon, TaxonomicSchema schema, bool setActive = false);
+        void Update(ITaxon taxon, TaxonomicSchema schema);
     }
 
     /// <summary>
@@ -174,15 +168,9 @@ namespace Appva.Mcss.Admin.Application.Services
                     item.Description,
                     item.Path,
                     item.Type,
-                    item.IsRoot
+                    item.IsRoot,
+                    isActive: item.IsActive
                 );
-        }
-
-        /// <inheritdoc />
-        public ITaxon FindNoCache(Guid id, TaxonomicSchema schema)
-        {
-            return this.ListByFilter(schema, null)
-                .Where(x => x.Id == id).FirstOrDefault();
         }
 
         /// <inheritdoc />
@@ -237,7 +225,8 @@ namespace Appva.Mcss.Admin.Application.Services
                         item.Path,
                         item.Type,
                         item.Weight,
-                        parent);
+                        parent,
+                        item.IsActive);
                 retval.Add(taxon);
                 list.Remove(item);
                 retval.AddRange(HierarchyConvert(list, taxon.Id, taxon));
@@ -305,7 +294,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void Update(ITaxon taxon, TaxonomicSchema schema, bool setActive = false)
+        public void Update(ITaxon taxon, TaxonomicSchema schema)
         {
             var t = this.repository.Find(taxon.Id);
             t.Description = taxon.Description;
@@ -315,11 +304,6 @@ namespace Appva.Mcss.Admin.Application.Services
             t.Type = taxon.Type;
             t.Weight = taxon.Sort;
             t.IsActive = taxon.IsActive;
-            
-            if(setActive)
-            {
-                t.IsActive = taxon.IsActive;
-            }
             
             this.repository.Update(t);
             this.cache.Remove(schema.CacheKey);

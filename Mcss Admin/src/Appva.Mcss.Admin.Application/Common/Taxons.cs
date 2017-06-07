@@ -111,20 +111,36 @@ namespace Appva.Mcss.Admin.Application.Common
             "icn-warning-waran.png");
 
         /// <summary>
-        /// Test assesment 1
+        /// 0HLR risk assesment
         /// </summary>
-        public static readonly ITaxon Test = CreateRiskAssement(
-            "Test 1",
-            "Observera test 1",
-            "icn-test1.png");
+        public static readonly ITaxon NoHLR = CreateRiskAssement(
+            "0HLR",
+            "Ingen hjärt- lungräddning",
+            "icn-warning-0hlr.png");
 
         /// <summary>
-        /// Test assesment 2
+        /// Epilepsy risk assesment
         /// </summary>
-        public static readonly ITaxon Test2 = CreateRiskAssement(
-            "Test 2",
-            "Observera test 2",
-            "icn-test2.png");
+        public static readonly ITaxon Epilepsy = CreateRiskAssement(
+            "Epilepsi",
+            "Observera epilepsi",
+            "ico-warning-epilepsy.png");
+
+        /// <summary>
+        /// Epilepsy risk assesment
+        /// </summary>
+        public static readonly ITaxon EscapeInclined = CreateRiskAssement(
+            "Rymningsbenägen",
+            "Observera rymningsbenägen",
+            "ico-escape.png");
+
+        /// <summary>
+        /// Problem to swallow risk assesment
+        /// </summary>
+        public static readonly ITaxon HardToSwallow = CreateRiskAssement(
+            "Sväljsvårigheter",
+            "Observera sväljsvårigheter",
+            "ico-warning-swallow.png");
 
         #endregion
 

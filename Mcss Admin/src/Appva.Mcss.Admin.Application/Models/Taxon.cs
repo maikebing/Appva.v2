@@ -152,7 +152,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="sort">Optional sorting order</param>
         /// <param name="parentId">Optional parent id. If null then it's a root node</param>
         /// <param name="isActive">If the riskassesment is activated</param>
-        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null, bool isActive = false)
+        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null, bool isActive = true)
         {
             this.Id = id;
             this.Name = name;
@@ -178,17 +178,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="isRoot">If it's a root node or not</param>
         /// <param name="isRoot">Check if the taxon is active</param>
         public TaxonItem(Guid id, string name, string description, string path, string type, bool isRoot, bool isActive = true, int sort = 0)
+            : this(id,name,description,path,type,sort: sort, parent: null, isActive: isActive)
         {
-            this.Id = id;
-            this.Name = name;
-            this.Description = description;
-            this.Path = path;
-            this.Type = type;
-            this.Sort = sort;
-            this.IsRoot = isRoot;
-            this.IsActive = isActive;
-            this.ParentId = null;
-            this.Parent = null;
         }
 
         #endregion

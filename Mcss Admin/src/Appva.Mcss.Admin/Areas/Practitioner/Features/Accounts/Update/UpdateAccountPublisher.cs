@@ -132,7 +132,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
             {
                 return true;
             }
-            this.mailer.Send(MailMessage.CreateNew()
+            /*this.mailer.Send(MailMessage.CreateNew()
                 .Template("UpdateUserMobileDeviceEmail")
                 .Model<RegistrationForDeviceEmail>(new RegistrationForDeviceEmail
                     {
@@ -141,7 +141,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                     })
                 .To(account.EmailAddress)
                 .Subject("Ditt MCSS konto har uppdaterats")
-                .Build());
+                .Build());*/
             return true;
         }
 

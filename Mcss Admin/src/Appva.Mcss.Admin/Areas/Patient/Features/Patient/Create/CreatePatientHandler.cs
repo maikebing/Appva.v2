@@ -71,7 +71,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 Taxons = TaxonomyHelper.SelectList(organizationalUnits),
                 Assessments = assessments,
-                HasAlternativeIdentifier = this.settingsService.HasPatientTag()
+                HasAlternativeIdentifier = this.settingsService.HasPatientTag(),
+
+                //// TODO: Must use setting
+                IsUsingGeneratedUid = true
             };
         }
 

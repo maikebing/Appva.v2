@@ -85,7 +85,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 HsaId                              = account.HsaId,
                 IsFirstNameFieldVisible            = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldFirstName) : true,
                 IsLastNameFieldVisible             = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldLastName) : true,
-                IsMailFieldVisible                 = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldMail) : true
+                IsMailFieldVisible                 = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldMail) : true,
+
+                //// TODO: Must use setting:
+                IsUsingGeneratedUid                = true
             };
         }
 

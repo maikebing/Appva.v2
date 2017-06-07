@@ -51,8 +51,8 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The account personal identity number.
         /// </summary>
-        [Required(ErrorMessage = "Personnummer måste fyllas i.")]
-        [Appva.Mvc.PersonalIdentityNumber(ErrorMessage = "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001.")]
+        [RequiredIf(Target = "IsUsingGeneratedUid", Value = false, ErrorMessageResourceName = "Personnummer_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
+        //[Appva.Mvc.PersonalIdentityNumber(ErrorMessage = "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001.")]
         [Display(Name = "Personnummer", ResourceType = typeof(Resources.Language))]
         public PersonalIdentityNumber PersonalIdentityNumber
         {
@@ -181,6 +181,15 @@ namespace Appva.Mcss.Admin.Models
         /// Whether or not the HSA ID is visible as input.
         /// </summary>
         public bool IsHsaIdFieldVisible
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If the tenant is using gnerated identifier
+        /// </summary>
+        public bool IsUsingGeneratedUid
         {
             get;
             set;

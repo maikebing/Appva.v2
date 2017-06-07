@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mvc.Localization;
+    using System;
     
 
     #endregion
@@ -142,7 +143,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             account.FirstName              = message.FirstName.Trim().FirstToUpper();
             account.LastName               = message.LastName.Trim().FirstToUpper();
             account.FullName               = this.localizer["FullnamePattern", account.FirstName, account.LastName].ToString();
-            account.PersonalIdentityNumber = message.PersonalIdentityNumber;
+            account.PersonalIdentityNumber = GetPersonalIdentityNumber(message.PersonalIdentityNumber);
             account.EmailAddress           = message.Email;
             account.DevicePassword         = message.DevicePassword;
             account.Taxon                  = address;
@@ -161,7 +162,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.accountService.UpdateRoles(account, roles, out isAccountUpgradedForAdminAccess, out isAccountUpgradedForDeviceAccess);
             var configuration = this.settings.MailMessagingConfiguration();
             this.SendRegistrationMail(account, configuration, permissions);
-            this.SendRegistrationMailForDevice(account, configuration, permissions);
+            //this.SendRegistrationMailForDevice(account, configuration, permissions);
             return true;
         }
 
@@ -248,6 +249,36 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 .Subject("Ny MCSS behörighet")
                 .Build());
             
+        }
+
+        /// <summary>
+        /// Temporary to create user-ids
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private PersonalIdentityNumber GetPersonalIdentityNumber(PersonalIdentityNumber number)
+        {
+            if (number.IsNull() || number.Value.IsEmpty())
+            {
+                var uid = new PersonalIdentityNumber(GetRandomNumber());
+                while (this.accountService.FindByPersonalIdentityNumber(uid) != null)
+                {
+                    uid = new PersonalIdentityNumber(GetRandomNumber());
+                }
+                return uid;
+            }
+
+            return number;
+        }
+
+        /// <summary>
+        /// Temporary to gnererate numbers for user-ids
+        /// </summary>
+        /// <returns></returns>
+        private string GetRandomNumber()
+        {
+            var rand = new Random();
+            return string.Format("{0}{1}{2}{3}", rand.Next(0, 9), rand.Next(0, 9), rand.Next(0, 9), rand.Next(0, 9));
         }
 
         #endregion

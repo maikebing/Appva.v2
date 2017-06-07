@@ -20,6 +20,7 @@
 	}
     @Html.ActionLink(Permissions.Practitioner.Update, Localizer["Ändra"].ToString(), "Update", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
     @Html.ActionLink(Permissions.Practitioner.UpdateRoles, Localizer["Ändra_roller_och_behörigheter"].ToString(), "UpdateRoles", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.Practitioner.Create, Localizer["Visa_inloggningsuppgifter"].ToString(), "ShowCredentials", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
 	<div class="h">
     	<h2>@Model.FullName</h2>
     	<span class="pnr">@Model.UniqueIdentifier</span>

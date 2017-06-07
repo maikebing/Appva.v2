@@ -9,7 +9,8 @@
             <h3 class="section-title">@Localizer["Ny_medarbetare"]</h3>
             @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
-            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
+            @*Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()*@
+            @Html.HiddenFor(x => x.IsUsingGeneratedUid)
             @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()
             @if (Model.IsMobileDevicePasswordFieldVisible)
             {

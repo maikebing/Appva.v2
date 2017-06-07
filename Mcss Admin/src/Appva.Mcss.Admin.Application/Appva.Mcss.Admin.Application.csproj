@@ -39,8 +39,8 @@
       <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Core.0.5.0\lib\net45\Appva.Core.dll</HintPath>
+    <Reference Include="Appva.Core, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Core.0.7.0\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core.Messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -194,6 +194,7 @@
     <Compile Include="Common\Permissions.cs" />
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Common\Taxons.cs" />
+    <Compile Include="Extensions\ApplicationEnvironmentExtensions.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
     <Compile Include="Models\CalendarDay.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Security\AuthenticationType.cs" />
     <Compile Include="Security\Identity\DemoTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\DevelopmentTenantIdentificationStrategy.cs" />
+    <Compile Include="Security\Identity\NoCertificateProductionTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\StagingTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Identity\ProductionTenantIdentificationStrategy.cs" />
     <Compile Include="Security\Jwt\JwtSecureDataFormat.cs" />

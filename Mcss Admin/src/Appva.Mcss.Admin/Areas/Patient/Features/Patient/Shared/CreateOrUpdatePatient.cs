@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Models
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
+    using Appva.Mvc;
 
     #endregion
 
@@ -51,10 +52,10 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The patient personal identity number.
         /// </summary>
-        [Required(ErrorMessageResourceName = "Personnummer_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
-        [Appva.Mvc.PersonalIdentityNumber(ErrorMessageResourceName = "Personnummer_måste_fyllas_i_med_tolv_siffror_och_bindestreck__t__ex__19010101_0001", ErrorMessageResourceType = typeof(Resources.Language))]
+        [RequiredIf(Target = "IsUsingGeneratedUid", Value = false, ErrorMessageResourceName = "Personnummer_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
+        //[Appva.Mvc.PersonalIdentityNumber(ErrorMessageResourceName = "Personnummer_måste_fyllas_i_med_tolv_siffror_och_bindestreck__t__ex__19010101_0001", ErrorMessageResourceType = typeof(Resources.Language))]
         [Display(Name = "Personnummer", ResourceType = typeof(Resources.Language))]
-        [Remote("VerifyUniquePatient", "Patient", AreaReference.UseCurrent, HttpMethod = "POST", ErrorMessageResourceName = "Personnumret_finns_redan_tidigare_redan_i_MCSS", ErrorMessageResourceType = typeof(Resources.Language))]
+        //[Remote("VerifyUniquePatient", "Patient", AreaReference.UseCurrent, HttpMethod = "POST", ErrorMessageResourceName = "Personnumret_finns_redan_tidigare_redan_i_MCSS", ErrorMessageResourceType = typeof(Resources.Language))]
         public PersonalIdentityNumber PersonalIdentityNumber
         {
             get;
@@ -134,6 +135,15 @@ namespace Appva.Mcss.Admin.Models
         /// sensitivity.
         /// </summary>
         public bool IsPersonWithHightenedSensitivity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If the tenant is using gnerated identifier
+        /// </summary>
+        public bool IsUsingGeneratedUid
         {
             get;
             set;

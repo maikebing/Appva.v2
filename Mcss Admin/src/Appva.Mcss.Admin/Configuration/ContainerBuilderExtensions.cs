@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Core.Environment;
     using Appva.Core.Messaging.RazorMail;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Caching;
     using Appva.Mcss.Admin.Application.Security;
     using Appva.Mcss.Admin.Application.Security.Identity;
@@ -151,7 +152,7 @@ namespace Appva.Mcss.Admin.Configuration
             {
                 TemplateManager = new CshtmlTemplateManager("Features/Shared/EmailTemplates")
             }).As<ITemplateServiceConfiguration>().SingleInstance();
-            if (ApplicationEnvironment.Is.Production || ApplicationEnvironment.Is.Demo || ApplicationEnvironment.Is.Staging)
+            if (ApplicationEnvironment.Is.Production || ApplicationEnvironment.Is.ProductionWithoutClientCertificate || ApplicationEnvironment.Is.Demo || ApplicationEnvironment.Is.Staging)
             {
                 builder.RegisterType<MailService>().As<IRazorMailService>().SingleInstance();
             }
@@ -195,6 +196,10 @@ namespace Appva.Mcss.Admin.Configuration
             {
                 builder.RegisterType<ProductionTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
             }
+            if (ApplicationEnvironment.Is.ProductionWithoutClientCertificate)
+            {
+                builder.RegisterType<NoCertificateProductionTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+            }
             if (ApplicationEnvironment.Is.Demo)
             {
                 builder.RegisterType<DemoTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
@@ -210,14 +215,14 @@ namespace Appva.Mcss.Admin.Configuration
                 properties.Add("show_sql", "true");
             }
             builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/db/admin")).As<IRuntimeMemoryCache>().SingleInstance();
-            if (ApplicationEnvironment.Is.Development)
-            {
-                builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
-            }
-            else
-            {
+            //if (ApplicationEnvironment.Is.Development)
+            //{
+            //    builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
+            //}
+            //else
+            //{
                 builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
-            }
+            //}
             builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
             {
                 Assembly = "Appva.Mcss.Admin.Domain",

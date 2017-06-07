@@ -98,7 +98,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 HasAlternativeIdentifier = this.settingsService.HasPatientTag(),
                 Tag = patient.Identifier,
                 IsPersonOfPublicInterestOrVip = patient.IsPersonOfPublicInterest,
-                IsPersonWithHightenedSensitivity = patient.IsAllDemographicInformationSensitive
+                IsPersonWithHightenedSensitivity = patient.IsAllDemographicInformationSensitive,
+
+                //// TODO: Must use setting
+                IsUsingGeneratedUid = true
             };
         }
 

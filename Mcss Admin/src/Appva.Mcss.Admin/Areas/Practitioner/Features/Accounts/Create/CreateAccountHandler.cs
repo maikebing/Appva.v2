@@ -82,7 +82,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 IsMobileDevicePasswordFieldVisible = this.settingsService.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice) == false,
                 IsUsernameVisible                  = this.settingsService.Find<bool>(ApplicationSettings.IsUsernameVisible),
                 Taxons                             = TaxonomyHelper.SelectList(this.taxonomyService.List(TaxonomicSchema.Organization)),
-                Titles                             = TitleHelper.SelectList(this.roleService.ListVisible())
+                Titles                             = TitleHelper.SelectList(this.roleService.ListVisible()),
+
+                //// TODO: Should be done by settings
+                IsUsingGeneratedUid                = true
             };
         }
 

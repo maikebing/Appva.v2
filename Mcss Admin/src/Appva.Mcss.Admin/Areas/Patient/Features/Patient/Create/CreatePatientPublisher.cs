@@ -85,9 +85,44 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }
             }
             Patient patient = null;
-            return this.patientService.Create(message.FirstName, message.LastName, message.PersonalIdentityNumber, message.Tag, taxon, assessments, message.IsPersonOfPublicInterestOrVip, message.IsPersonWithHightenedSensitivity, out patient);
+            var uid = GetPersonalIdentityNumber(message.PersonalIdentityNumber);
+            return this.patientService.Create(message.FirstName, message.LastName, uid, message.Tag, taxon, assessments, message.IsPersonOfPublicInterestOrVip, message.IsPersonWithHightenedSensitivity, out patient);
         }
 
         #endregion
-    }
+
+        #region Private members.
+
+        /// <summary>
+        /// Temporary to create user-ids
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private PersonalIdentityNumber GetPersonalIdentityNumber(PersonalIdentityNumber number)
+        {
+            if (number.IsNull() || number.Value.IsEmpty())
+            {
+                var uid = new PersonalIdentityNumber(GetRandomNumber());
+                while (this.patientService.FindByPersonalIdentityNumber(uid) != null)
+                {
+                    uid = new PersonalIdentityNumber(GetRandomNumber());
+                }
+                return uid;
+            }
+
+            return number;
+        }
+
+        /// <summary>
+        /// Temporary to gnererate numbers for user-ids
+        /// </summary>
+        /// <returns></returns>
+        private string GetRandomNumber()
+        {
+            var rand = new Random();
+            return string.Format("{0}{1}{2}{3}", rand.Next(0, 9), rand.Next(0, 9), rand.Next(0, 9), rand.Next(0, 9));
+        }
+
+        #endregion
+    }    
 }

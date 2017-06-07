@@ -23,7 +23,7 @@
             {
                 @Html.HiddenFor(x => x.LastName, "text large")
             }
-            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox(htmlAttributes: new { disabled = "disabled" }).Validate().Build()
             @if (Model.IsMailFieldVisible)
             {
                 @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()

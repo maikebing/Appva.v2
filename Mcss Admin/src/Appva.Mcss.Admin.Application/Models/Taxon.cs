@@ -178,8 +178,15 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="isRoot">If it's a root node or not</param>
         /// <param name="isRoot">Check if the taxon is active</param>
         public TaxonItem(Guid id, string name, string description, string path, string type, bool isRoot, bool isActive = true, int sort = 0)
-            : this(id,name,description,path,type,sort: sort, parent: null, isActive: isActive)
         {
+            this.Id = id;
+            this.Name = name;
+            this.Description = description;
+            this.Path = path;
+            this.Type = type;
+            this.Sort = sort;
+            this.IsActive = isActive;
+            this.IsRoot = isRoot;
         }
 
         #endregion

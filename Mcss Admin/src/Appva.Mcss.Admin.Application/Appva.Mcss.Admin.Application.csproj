@@ -159,6 +159,7 @@
     <Compile Include="Common\Menus.cs" />
     <Compile Include="Common\PermissionMeta.cs" />
     <Compile Include="Common\Permissions.cs" />
+    <Compile Include="Common\Signatures.cs" />
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Common\Taxons.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />

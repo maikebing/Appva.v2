@@ -51,7 +51,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Organization.Update
             {
                 return false;
             }
-            organizationalUnit.Update(message.Name, message.Description, message.Weight);
+            organizationalUnit.Update(message.Name, message.Description, message.Weight, null);
             this.taxonomyService.Update(organizationalUnit, TaxonomicSchema.Organization);
 
             return true;

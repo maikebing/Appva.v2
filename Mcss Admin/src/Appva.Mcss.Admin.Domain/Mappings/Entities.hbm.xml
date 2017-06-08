@@ -642,5 +642,4 @@
     <many-to-one name="Schedule" class="Schedule" />
   </class>
 
-
 </hibernate-mapping>

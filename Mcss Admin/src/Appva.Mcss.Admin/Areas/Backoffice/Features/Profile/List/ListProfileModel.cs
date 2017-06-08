@@ -44,7 +44,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// Number of new assessments to install.
         /// </summary>
-        public string NewAssessments
+        public int NotInstalledAssesments
         {
             get; set;
         }

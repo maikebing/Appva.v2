@@ -11,11 +11,11 @@
         @Html.ActionLink("Aktiva", "List", "Profile", new { IsActive = true }, new { @class = (Model.IsActive == true) ? "sel div" : "div" })
         @Html.ActionLink("Inaktiva", "List", "Profile", new { IsActive = false }, new { @class = (Model.IsActive == false) ? "sel div" : "div" })
     </p>
-    @if (Model.NewAssessments != string.Empty)
+    @if (Model.NotInstalledAssesments > 0)
     {
         using (Html.Post("InstallProfiles", "Profile", null))
         {
-            @Html.Submit("Installera " + Model.NewAssessments, new { @class = "lb-link btn floatr" })
+            @Html.Submit(string.Format("Installera ({0})", Model.NotInstalledAssesments), new { @class = "lb-link btn floatr" })
         }
     }
 </div>

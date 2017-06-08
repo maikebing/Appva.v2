@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     #region Imports.
 
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
@@ -21,6 +22,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using NHibernate.Criterion;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -73,15 +75,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override ListProfileModel Handle(ProfileAssessment message)
         {
-            var profile = new ListProfileModel();
             var schemes = this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, message.IsActive);
             var assessments = new List<ProfileAssessment>();
-            var properties = typeof(Taxons).GetFields(BindingFlags.Public | BindingFlags.Static);
-
-            int newItemsCount = this.persistenceContext.QueryOver<Taxon>()
-                .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
-                .Where(x => x.MachineName == TaxonomicSchema.RiskAssessment.Id)
-                .RowCount();
+            var allAvailableRiskAssesments = typeof(Taxons).GetFields(BindingFlags.Public | BindingFlags.Static);
 
             Taxon seniorAlerts = null;
             Taxon organization = null;
@@ -119,13 +115,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 }
             }
 
-            newItemsCount = properties.Length - newItemsCount;
-            string newItems = newItemsCount > 0 ? (newItemsCount == 1 ? "(1 ny)" : "(" + newItemsCount + " nya)") : string.Empty;
-
-            profile.IsActive = message.IsActive;
-            profile.NewAssessments = newItems;
-            profile.Assessments = assessments;
-            return profile;
+            var notInstalledCount = allAvailableRiskAssesments.Select(x => ((ITaxon)x.GetValue(null)).Type).Count(x => !schemes.Select<ITaxon, string>(y => y.Type).Contains(x));
+            
+            return new ListProfileModel() 
+            {
+                IsActive = message.IsActive,
+                NotInstalledAssesments = notInstalledCount,
+                Assessments = assessments,
+            };
         }
 
         #endregion

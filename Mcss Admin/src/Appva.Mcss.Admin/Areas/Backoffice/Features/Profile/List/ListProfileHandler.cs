@@ -115,7 +115,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 }
             }
 
-            var notInstalledCount = allAvailableRiskAssesments.Select(x => ((ITaxon)x.GetValue(null)).Type).Count(x => !schemes.Select<ITaxon, string>(y => y.Type).Contains(x));
+            //// TODO: 
+            var notInstalledCount = allAvailableRiskAssesments.Select(x => ((ITaxon)x.GetValue(null)).Type)
+                .Count(x => !this.taxonomyService.ListByFilter(TaxonomicSchema.RiskAssessment, null)
+                        .Select<ITaxon, string>(y => y.Type).Contains(x));
             
             return new ListProfileModel() 
             {

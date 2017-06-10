@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     using Appva.Core.Logging;
     using Appva.Mcss.Admin.Configuration;
     using Appva.Core.Messaging.RazorMail;
+    using Appva.Mcss.Admin.Application.Utils.i18n;
 
     #endregion
 
@@ -101,7 +102,7 @@ namespace Appva.Mcss.Admin.Infrastructure
         {
             Log.DebugJson(model);
             var subject = string.Format("MCSS Admin Exception {0} - {1} - {2} - {3} - {4:yyyy-MM-dd HH:mm:ss}", title, this.environment.Environment.AsUserFriendlyText(), this.environment.Info.Version, this.environment.OperatingSystem.MachineName, DateTime.Now);
-            this.mail.Send(MailMessage.CreateNew().Template("ExceptionEmail").Model(model).To("johansalllarsson@appva.se,richard.henriksson@appva.se").Subject(subject).Build());
+            this.mail.Send(MailMessage.CreateNew().Template(I18nUtils.GetEmailTemplatePath("ExceptionEmail")).Model(model).To("it@appva.se").Subject(subject).Build());
         }
 
         #region Abstract.

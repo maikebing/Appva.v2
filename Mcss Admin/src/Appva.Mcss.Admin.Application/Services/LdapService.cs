@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Application.Utils.i18n;
     using Appva.Mcss.Admin.Domain.Entities;
     using System;
     using System.Collections.Generic;
@@ -270,7 +271,7 @@ namespace Appva.Mcss.Admin.Application.Services
             if (updates.Count > 0)
             {
                 this.mailer.Send(MailMessage.CreateNew()
-                    .Template("SynchronizationEmail")
+                    .Template(I18nUtils.GetEmailTemplatePath("SynchronizationEmail"))
                     .Model<SynchronizationEmailData>(new SynchronizationEmailData
                     {
                         Name = account.FullName,

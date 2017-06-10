@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mvc.Localization;
     using System;
+    using Appva.Mcss.Admin.Application.Utils.i18n;
     
 
     #endregion
@@ -194,14 +195,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if (this.settings.IsSithsAuthorizationEnabled() || account.HsaId.IsNotEmpty())
             {
                 this.mailService.Send(MailMessage.CreateNew()
-                    .Template("RegisterSithsUserEmail")
+                    .Template(I18nUtils.GetEmailTemplatePath("RegisterSithsUserEmail"))
                     .Model<RegistrationSithsEmail>(new RegistrationSithsEmail
                     {
                         Name = account.FullName,
                         TenantLink = tenantLink
                     })
                     .To(account.EmailAddress)
-                    .Subject("Ny MCSS behörighet")
+                    .Subject(this.localizer["Ny_MCSS_behörighet"].Value)
                     .Build());
                 return;
             }
@@ -209,7 +210,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var token      = this.jwtSecureDataFormat.CreateNewRegistrationToken(account.Id, account.SymmetricKey);
             var tokenLink  = helper.Action("Register", "Account", new RouteValueDictionary { { "Area", string.Empty }, { "token", token } }, this.context.Request.Url.Scheme);
             this.mailService.Send(MailMessage.CreateNew()
-                .Template("RegisterUserEmail")
+                .Template(I18nUtils.GetEmailTemplatePath("RegisterUserEmail"))
                 .Model<RegistrationEmail>(new RegistrationEmail
                     {
                         Name       = account.FullName,
@@ -218,7 +219,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         TenantLink = tenantLink
                     })
                 .To(account.EmailAddress)
-                .Subject("Ny MCSS behörighet")
+                .Subject(this.localizer["Ny_MCSS_behörighet"].Value)
                 .Build());
         }
 
@@ -239,14 +240,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 return;
             }
             this.mailService.Send(MailMessage.CreateNew()
-                .Template("RegisterUserMobileDeviceEmail")
+                .Template(I18nUtils.GetEmailTemplatePath("RegisterUserMobileDeviceEmail"))
                 .Model<RegistrationForDeviceEmail>(new RegistrationForDeviceEmail
                     {
                         Name = account.FullName,
                         Password = account.DevicePassword
                     })
                 .To(account.EmailAddress)
-                .Subject("Ny MCSS behörighet")
+                .Subject(this.localizer["Ny_MCSS_behörighet"].Value)
                 .Build());
             
         }

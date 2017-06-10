@@ -21,6 +21,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Utils.i18n;
+    using Appva.Mvc.Localization;
 
     #endregion
 
@@ -56,6 +58,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly HttpContextBase context;
 
+        /// <summary>
+        /// The <see cref="IHtmlLocalizer"/>.
+        /// </summary>
+        private IHtmlLocalizer localizer;
+
 		#endregion
 
 		#region Constructor.
@@ -68,13 +75,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="auditService">The <see cref="IAuditService"/>.</param>
         /// <param name="mailService">The <see cref="IRazorMailService"/>.</param>
         /// <param name="context">The <see cref="HttpContextBase"/>.</param>
-        public ForgotHandler(JwtSecureDataFormat jwtSecureDataFormat, IAccountService accountService, IAuditService auditService, IRazorMailService mailService, HttpContextBase context)
+        public ForgotHandler(JwtSecureDataFormat jwtSecureDataFormat, IAccountService accountService, IAuditService auditService, IRazorMailService mailService, HttpContextBase context, IHtmlLocalizer localizer)
 		{
             this.jwtSecureDataFormat = jwtSecureDataFormat;
             this.accountService      = accountService;
             this.auditService        = auditService;
             this.mailService         = mailService;
             this.context             = context;
+            this.localizer           = localizer;
 		}
 
 		#endregion
@@ -98,11 +106,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var token  = this.jwtSecureDataFormat.CreateNewResetPasswordToken(account.Id, account.SymmetricKey);
             var helper = new UrlHelper(this.context.Request.RequestContext);
             var link   = helper.Action("Reset", "Account", new RouteValueDictionary { { "token", token } }, this.context.Request.Url.Scheme);
-            this.mailService.Send(MailMessage.CreateNew().Template("ResetPasswordEmail").Model(new ForgotEmail
+            this.mailService.Send(MailMessage.CreateNew().Template(I18nUtils.GetEmailTemplatePath("ResetPasswordEmail")).Model(new ForgotEmail
             {
                 Name      = account.FullName,
                 TokenLink = link
-            }).To(account.EmailAddress).Subject("Återställningslänk till Appva MCSS").Build());
+            }).To(account.EmailAddress).Subject(this.localizer["Återställningslänk_till_Appva_MCSS"].Value).Build());
             return true;
         }
 

@@ -302,6 +302,7 @@
     <Compile Include="Services\TenantService.cs" />
     <Compile Include="Transformers\DelegationTransformer.cs" />
     <Compile Include="Transformers\EventTransformer.cs" />
+    <Compile Include="Utils\i18n\I18nUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appva.Mcss.Admin.Domain\Appva.Mcss.Admin.Domain.csproj">
@@ -331,6 +332,7 @@
       <LastGenOutput>Language1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

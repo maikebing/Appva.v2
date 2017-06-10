@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Features.Accounts
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+using Appva.Mcss.Admin.Areas.Practitioner.Models;
 
     #endregion
 
@@ -315,7 +316,35 @@ namespace Appva.Mcss.Admin.Features.Accounts
         }
 
         #endregion
-        
+
+        #region Show user credentials
+
+        /// <summary>
+        /// Shows the credentials for a user
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/credentials")]
+        [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Practitioner.ReadCredentialsValue)]
+        public ActionResult ShowCredentials(Identity<UserCredentialsModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Creates a document with all users credentials
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("credentials")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Practitioner.ReadCredentialsValue)]
+        public ActionResult GetCredentials(UserCredentialsFile request)
+        {
+            return this.ExcelFile();
+        }
+
+        #endregion
+
         #endregion
     }
 }

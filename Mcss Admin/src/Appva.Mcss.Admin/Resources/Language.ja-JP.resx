@@ -892,7 +892,7 @@
     <value>人</value>
   </data>
   <data name="Personnummer" xml:space="preserve">
-    <value>マイナンバー</value>
+    <value>User-id</value>
   </data>
   <data name="Personnummer_måste_fyllas_i" xml:space="preserve">
     <value>マイナンバーを記入しなければなりません</value>
@@ -1060,7 +1060,7 @@
     <value>サポートする</value>
   </data>
   <data name="support_url" xml:space="preserve">
-    <value>サポートする　url</value>
+    <value>https://support.appva.jp</value>
   </data>
   <data name="Synkronisera" xml:space="preserve">
     <value>シンクロナイズする</value>
@@ -1580,5 +1580,26 @@
   </data>
   <data name="Vecka_{0}" xml:space="preserve">
     <value>週</value>
+  </data>
+  <data name="fornamn.efternamn@organisation.se" xml:space="preserve">
+    <value>user@organization.com</value>
+  </data>
+  <data name="Ladda_ner_inloggingsuppgifter" xml:space="preserve">
+    <value>ログインする時の情報をダウンロードする</value>
+  </data>
+  <data name="Ny_MCSS_behörighet" xml:space="preserve">
+    <value>New permission for MCSS</value>
+  </data>
+  <data name="support_link_classes" xml:space="preserve">
+    <value>lb-link</value>
+  </data>
+  <data name="Visa_inloggningsuppgifter" xml:space="preserve">
+    <value>ログインする時の情報を示す</value>
+  </data>
+  <data name="Återställningslänk_till_Appva_MCSS" xml:space="preserve">
+    <value>Password reset for Appva MCSS</value>
+  </data>
+  <data name="ÅÅÅÅMMDD-NNNN" xml:space="preserve">
+    <value>User-id</value>
   </data>
 </root>

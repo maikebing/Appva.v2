@@ -415,6 +415,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string ResumeValue = Schema + "practitioner/resume";
 
             /// <summary>
+            /// The resume value.
+            /// </summary>
+            public const string ReadCredentialsValue = Schema + "practitioner/credentials/read";
+
+            /// <summary>
             /// Permission to create a practitioner.
             /// </summary>
             [Sort(1)]
@@ -477,6 +482,14 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Resume paused practitioner")]
             [Description("Permission to resume paused practitioner")]
             public static readonly IPermission Resume = PermissionType.CreateNew(ResumeValue);
+
+            /// <summary>
+            /// Permission to read credentials of a user.
+            /// </summary>
+            [Sort(8)]
+            [Name("Read credentials for practitioner")]
+            [Description("Permission to read credentials for practioners")]
+            public static readonly IPermission ReadCredentials = PermissionType.CreateNew(ReadCredentialsValue);
         }
 
         #endregion

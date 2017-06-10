@@ -6,7 +6,7 @@
 <div id="subheader" class="cf">
 	<h1>@Localizer["Medarbetare"]</h1>
 	@Html.ActionLink(Permissions.Practitioner.Create, Localizer["Ny_medarbetare"].ToString(), "Create", "Accounts", null, new { @class = "btn lb-link" })
-	@Html.ActionLink(Permissions.Practitioner.Create, Localizer["Ladda_ner_inloggingsuppgifter"].ToString(), "GetUserCredentials", "Accounts", null, new { @class = "btn lb-link" })
+	@Html.ActionLink(Permissions.Practitioner.ReadCredentials, Localizer["Ladda_ner_inloggingsuppgifter"].ToString(), "GetCredentials", "Accounts", null, new { @class = "btn" })
     @Html.Partial("_AccountSearch")
 </div>
 <div class="col-wrap cols-2-1 cf">

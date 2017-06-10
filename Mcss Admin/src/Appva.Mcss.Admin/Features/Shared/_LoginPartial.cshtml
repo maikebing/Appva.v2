@@ -2,7 +2,7 @@
 <div id="logged-info">
     <div id="nav-main">
         <ul class="cf">
-            <li class="support-info">@Html.CreateSupportLink(Localizer["support_url"].ToString(), Localizer["Hjälp"].ToString(), new { @class = "icon icon-help" })</li>
+            <li class="support-info">@Html.CreateSupportLink(Localizer["support_url"].ToString(), Localizer["Hjälp"].ToString(), new { @class = string.Format("icon icon-help {0}", Localizer["support_link_classes"]) })</li>
             <li class="user-info">
                 <a class="profile icon icon-profile">@User.Identity.Name</a>
                 <div class="profile">

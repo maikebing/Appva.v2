@@ -133,7 +133,7 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                 return true;
             }
             /*this.mailer.Send(MailMessage.CreateNew()
-                .Template("UpdateUserMobileDeviceEmail")
+                .Template(I18nUtils.GetEmailTemplatePath("UpdateUserMobileDeviceEmail"))
                 .Model<RegistrationForDeviceEmail>(new RegistrationForDeviceEmail
                     {
                         Name = account.FullName,

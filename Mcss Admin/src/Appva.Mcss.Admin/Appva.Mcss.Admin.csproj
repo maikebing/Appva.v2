@@ -609,6 +609,10 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationEmail.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationForDeviceEmail.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationSithsEmail.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\GetCredentials\GetCredentialsHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\GetCredentials\UserCredentialsFile.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\ShowCredentials\UserCredentialsHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\ShowCredentials\UserCredentialsModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRoles.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesForm.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRolesFormHandler.cs" />
@@ -1371,9 +1375,13 @@
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\user-meetup2017.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Preview\Preview.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Create\Create.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Accounts\ShowCredentials\ShowCredentials.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\ja-JP\RegisterUserEmail.cshtml" />
+    <Content Include="Features\Shared\EmailTemplates\ja-JP\ResetPasswordEmail.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />
+    <Content Include="Templates\user-credentials-template.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language.resx">

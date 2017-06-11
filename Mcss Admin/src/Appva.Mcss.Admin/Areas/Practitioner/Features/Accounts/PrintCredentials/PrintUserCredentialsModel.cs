@@ -1,4 +1,4 @@
-﻿// <copyright file="UserCredentialsModel.cs" company="Appva AB">
+﻿// <copyright file="PrintUserCredentialsModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -19,15 +19,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class UserCredentialsModel : Credentials
+    public sealed class PrintUserCredentialsModel : Credentials
     {
-        /// <summary>
-        /// The account id
-        /// </summary>
-        public Guid Id
-        {
-            get;
-            set;
-        }   
+        
     }
 }

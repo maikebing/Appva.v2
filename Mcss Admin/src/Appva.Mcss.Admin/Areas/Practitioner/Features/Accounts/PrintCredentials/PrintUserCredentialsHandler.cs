@@ -1,10 +1,10 @@
-﻿// <copyright file="UserCredentialsHandler.cs" company="Appva AB">
+﻿// <copyright file="PrintUserCredentialsHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:$emailAddress$">$developer$</a>
 // </author>
-namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.ShowCredentials
+namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
 {
     #region Imports.
 
@@ -23,9 +23,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.ShowCredentials
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class UserCredentialsHandler : RequestHandler<Identity<UserCredentialsModel>, UserCredentialsModel>
+    internal sealed class PrintUserCredentialsHandler : RequestHandler<Identity<PrintUserCredentialsModel>, PrintUserCredentialsModel>
     {
-        #region Fields.
+        #region Fields
 
         /// <summary>
         /// The <see cref="IAccountService"/>.
@@ -33,7 +33,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.ShowCredentials
         private readonly IAccountService accountService;
 
         /// <summary>
-        /// The <see cref="IAuditingService"/>.
+        /// The <see cref="IAuditService"/>
         /// </summary>
         private readonly IAuditService auditing;
 
@@ -42,9 +42,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.ShowCredentials
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserCredentialsHandler"/> class.
+        /// Initializes a new instance of the <see cref="PrintUserCredentialsHandler"/> class.
         /// </summary>
-        public UserCredentialsHandler(
+        public PrintUserCredentialsHandler(
             IAccountService accountService,
             IAuditService auditing)
         {
@@ -54,15 +54,15 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.ShowCredentials
 
         #endregion
 
-        #region RequestHandler Members.
+        #region RequestHandler overrides.
 
-        /// <inheritdoc />
-        public override UserCredentialsModel Handle(Identity<UserCredentialsModel> message)
+        /// <ingeritdoc />
+        public override PrintUserCredentialsModel Handle(Identity<PrintUserCredentialsModel> message)
         {
             var account = this.accountService.Find(message.Id);
-            this.auditing.Read("did read user credentials for practitioner {0}", account.Id);
-            return new UserCredentialsModel { 
-                Id           = account.Id,
+            this.auditing.Read("printed authentication credentials for practioner {0}", account.Id);
+            return new PrintUserCredentialsModel
+            {
                 UserFullName = account.FullName,
                 UserId       = account.PersonalIdentityNumber != null ? account.PersonalIdentityNumber.Value : string.Empty,
                 Password     = account.DevicePassword

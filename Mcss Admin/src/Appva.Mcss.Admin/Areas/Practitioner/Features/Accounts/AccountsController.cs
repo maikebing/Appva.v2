@@ -332,6 +332,18 @@ using Appva.Mcss.Admin.Areas.Practitioner.Models;
         }
 
         /// <summary>
+        /// Shows the credentials for a user
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{id:guid}/credentials/print")]
+        [HttpPost, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.Practitioner.ReadCredentialsValue)]
+        public ActionResult PrintCredentials(Identity<PrintUserCredentialsModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
         /// Creates a document with all users credentials
         /// </summary>
         /// <returns><see cref="ActionResult"/></returns>

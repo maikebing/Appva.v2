@@ -415,9 +415,14 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string ResumeValue = Schema + "practitioner/resume";
 
             /// <summary>
-            /// The resume value.
+            /// The read credentials value.
             /// </summary>
             public const string ReadCredentialsValue = Schema + "practitioner/credentials/read";
+
+            /// <summary>
+            /// The update user id value.
+            /// </summary>
+            public const string UpdateUserIdValue = Schema + "practitioner/credentials/updateuserid";
 
             /// <summary>
             /// Permission to create a practitioner.
@@ -490,6 +495,14 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Read credentials for practitioner")]
             [Description("Permission to read credentials for practioners")]
             public static readonly IPermission ReadCredentials = PermissionType.CreateNew(ReadCredentialsValue);
+
+            /// <summary>
+            /// Permission to read credentials of a user.
+            /// </summary>
+            [Sort(8)]
+            [Name("OBS SPECIAL! Update user-id for practitioner")]
+            [Description("Permission to read credentials for practioners")]
+            public static readonly IPermission UpdateUserId = PermissionType.CreateNew(UpdateUserIdValue);
         }
 
         #endregion

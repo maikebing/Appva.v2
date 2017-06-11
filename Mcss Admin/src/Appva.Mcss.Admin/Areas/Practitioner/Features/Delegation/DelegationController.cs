@@ -500,9 +500,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [PermissionsAttribute(Permissions.Delegation.ReadValue)]
         [Dispatch]
         public ActionResult Print(Identity<PrintDelegationModel> request)
-                {
+        {
             return this.View();
-            }
+        }
 
         #endregion
 

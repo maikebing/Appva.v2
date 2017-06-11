@@ -121,7 +121,7 @@ mcss.lightbox = {
                 method: 'get',
                 success: function (data) {
                     var content = $(data);
-                    if (content.has("div.lb-content"))
+                    if (content.has("div.lb-content").length != 0)
                     {
                         content = content.find("div.lb-content");
                     }

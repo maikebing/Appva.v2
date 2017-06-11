@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.GetCredentials
 
     using Appva.Core.IO;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Practitioner.Models;
     using Appva.Mcss.Admin.Domain.Entities;
@@ -45,6 +46,11 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.GetCredentials
         /// </summary>
         private readonly ITaxonFilterSessionHandler taxonFilter;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -53,13 +59,15 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.GetCredentials
         /// Initializes a new instance of the <see cref="GetCredentialsHandler"/> class.
         /// </summary>
         public GetCredentialsHandler(
-            IAccountService accountService, 
+            IAccountService accountService,
+            IAuditService auditing,
             IHtmlLocalizer localizer,
             ITaxonFilterSessionHandler taxonFilter)
         {
             this.accountService = accountService;
             this.localizer      = localizer;
             this.taxonFilter    = taxonFilter;
+            this.auditing       = auditing;
         }
 
         #endregion
@@ -74,7 +82,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Accounts.GetCredentials
                 .Where(x => x.IsActive == true && x.IsPaused == false)
                 .Where(x => x.Taxon.Path.Contains(path) || path.Contains(x.Taxon.Path)).ToList();
 
-            //this.auditing.Read("skapade excellista för perioden {0} t o m {1}.", message.StartDate, message.EndDate);
+            this.auditing.Read("downloaded user credentials for taxon {0}", this.taxonFilter.GetCurrentFilter().Id);
 
             var templatePath = PathResolver.ResolveAppRelativePath("Templates\\user-credentials-template.xlsx");
             var bytes = ExcelWriter.CreateNew<Account, Credentials>(

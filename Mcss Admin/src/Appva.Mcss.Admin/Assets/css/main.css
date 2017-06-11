@@ -3758,6 +3758,56 @@ span.custom-select {
     background:url(/Assets/i/icn-help.png) no-repeat 0 50%;
 }
 
+/* User Credentials */
+.user-credentials p {
+    background:#ffffff;
+    border:1px solid #bbc9d5;
+    border-radius: 5px;
+    padding:7px;
+    color:#445068;
+}
+
+/* User credentials print */
+.print-user-credentials {
+    padding:20px;
+}
+
+.print-user-credentials h2 {
+    border-bottom:1px solid #a0a0a0;
+}
+
+.print-user-credentials h2 img {
+    margin:10px;
+    vertical-align:middle;
+}
+
+.print-user-credentials div.credentials,
+.print-user-credentials div.info {
+    border:none;
+    padding:20px;
+    margin-bottom:10px;
+    margin-top:10px;
+    background:#e2e9f6;
+    color:#445068;
+}
+
+.print-user-credentials table {
+    border:none;
+}
+
+.print-user-credentials td {
+    border:none;
+    font-weight:bold;
+}
+
+.print-user-credentials td.label {
+    font-weight:normal;
+    text-align:right;
+    width:70px;
+}
+
+
+
 /* END @media screen, projection */
 }
 
@@ -3829,5 +3879,65 @@ ul.people li {
 #header {background:none;}
 #logo {display:none;}
 
+@page {
+    size:auto;
+    margin: 0px;
+}
 
+html, body {
+    background:#ffffff;
+}
+
+/* User credentials print */
+.print-user-credentials {
+    padding:50px 100px;
+    font-family:Helvetica, Arial, sans-serif;
+    color:#445068;
+}
+
+.print-user-credentials h2 {
+    border-bottom:1px solid #a0a0a0;
+    font-weight:normal;
+    font-family:Helvetica, Arial, sans-serif
+}
+
+.print-user-credentials h4 {
+    font-family:Helvetica, Arial, sans-serif
+}
+
+.print-user-credentials p {
+    font-family:Helvetica, Arial, sans-serif
+}
+
+.print-user-credentials h2 img {
+    margin:20px;
+    vertical-align:middle;
+}
+
+.print-user-credentials div.credentials,
+.print-user-credentials div.info {
+    border:none;
+    padding:10px 20px;
+    margin-bottom:10px;
+    margin-top:10px;
+    background-color:#ebf0f8 !important; 
+    border:1px #ebf0f8 solid;
+    border-radius:3px;
+    color:#445068;
+}
+
+.print-user-credentials table {
+    border:none;
+}
+
+.print-user-credentials td {
+    border:none;
+    font-weight:bold;
+}
+
+.print-user-credentials td.label {
+    font-weight:normal;
+    text-align:right;
+    width:70px;
+}
 }

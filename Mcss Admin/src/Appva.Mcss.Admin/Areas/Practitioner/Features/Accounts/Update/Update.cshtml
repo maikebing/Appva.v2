@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Admin.Models.UpdateAccount
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.UpdateAccount
 @{
     SetTitle(Localizer["Ändra_medarbetaruppgifter"].ToString());
 }
@@ -23,7 +24,14 @@
             {
                 @Html.HiddenFor(x => x.LastName, "text large")
             }
-            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox(htmlAttributes: new { disabled = "disabled" }).Validate().Build()
+            @if (Html.HasPermissionFor(Permissions.Practitioner.UpdateUserId))
+            {
+                @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
+            }
+            else
+            {
+                @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox(htmlAttributes: new { disabled = "disabled" }).Validate().Build()
+            }
             @if (Model.IsMailFieldVisible)
             {
                 @Html.FormGroup(x => x.Email, "text large").Label().TextBox().Validate().Build()

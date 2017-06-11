@@ -611,6 +611,8 @@
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\RegistrationSithsEmail.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\GetCredentials\GetCredentialsHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\GetCredentials\UserCredentialsFile.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\PrintCredentials\PrintUserCredentialsHandler.cs" />
+    <Compile Include="Areas\Practitioner\Features\Accounts\PrintCredentials\PrintUserCredentialsModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ShowCredentials\UserCredentialsHandler.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ShowCredentials\UserCredentialsModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\UpdateRoles\UpdateRoles.cs" />
@@ -1378,6 +1380,7 @@
     <Content Include="Areas\Practitioner\Features\Accounts\ShowCredentials\ShowCredentials.cshtml" />
     <Content Include="Features\Shared\EmailTemplates\ja-JP\RegisterUserEmail.cshtml" />
     <Content Include="Features\Shared\EmailTemplates\ja-JP\ResetPasswordEmail.cshtml" />
+    <Content Include="Areas\Practitioner\Features\Accounts\PrintCredentials\PrintCredentials.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

@@ -85,6 +85,10 @@ namespace Appva.Mcss.Admin.Modles.Handlers
         /// <inheritdoc />
         public override bool Handle(UpdateAccount message)
         {
+            if (message.PersonalIdentityNumber == null)
+            {
+                throw new Exception("Cannot uppdate practioner with null value to unique identifer");
+            }
             var account       = this.accounts.Find(message.Id);
             var taxonId       = message.Taxon.IsNotEmpty() ? message.Taxon.ToGuid() : this.taxonomies.Roots(TaxonomicSchema.Organization).Single().Id;
             var taxon         = this.taxonomies.Get(taxonId);
@@ -115,6 +119,10 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                     account.IsSynchronized = account.PersonalIdentityNumber == message.PersonalIdentityNumber;
                 }
                 account.PersonalIdentityNumber = message.PersonalIdentityNumber;
+                if (this.settings.Find<bool>(ApplicationSettings.GenerateUniqueIdentifierForAccount))
+                {
+                    account.UserName = message.PersonalIdentityNumber.Value;
+                }
             }
             if (taxon.IsNotNull())
             {

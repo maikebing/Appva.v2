@@ -14,10 +14,10 @@ $(document).ready(function () {
     });
     $('.alarm-list .view .alarm-view').hide();
     $('.alarm-list .btn').toggle(function () {
-        $(this).html('Dölj');
+        $(this).html(language.general.hideLabel);
         $(this).parent().parent().next().find('.alarm-view').slideDown(100);
     }, function () {
-        $(this).html('Visa');
+        $(this).html(anguage.general.showLabel);
         $(this).parent().parent().next().find('.alarm-view').slideUp(100);
     });
     /*$('.delegate-view #signed-events a.btn-del').click(function () {
@@ -50,10 +50,10 @@ $(document).ready(function () {
     });
 
     $('a.alarm-stop').click(function () {
-        alert('Kontrollera om avvikelsen ska journalföras.');
+        alert(language.general.checkIfDeviationShouldBeReported);
     });
     $('a.alarm-stop-all').click(function (e) {
-        if (confirm('Alla avvikelser för patienten kommer att kvitteras. Kontrollera om någon avvikelse ska journalföras.')) {
+        if (confirm(language.general.checkIfAllDeviationsShouldBeReported)) {
 
         }
         else {
@@ -64,9 +64,9 @@ $(document).ready(function () {
     });
 
     $('#calendar a.del').click(function () {
-        var conftext = 'Vill du fortsätta ta bort aktiviteten?';
+        var conftext = language.general.removeActivity;
         if ($(this).parent().hasClass('pause'))
-            conftext = 'Pausade ordinationer kommer att återupptas. Vill du fortsätta ta bort frånvaron?';
+            conftext = language.general.removeActivityWithAbsence;
         if (confirm(conftext)) {
             $(this).parent().slideUp(100);
         } else {
@@ -91,7 +91,7 @@ $(document).ready(function () {
     $('.delegdialog .multisel select').change(function () {
         if ($(this).val() != '') {
             if ($('.patients').val() != $(this).val()) {
-                $(this).parent().append('<span class="person">' + $(this).find(':selected').text() + ' <a href="#" title="Ta bort">Ta bort</a><input class="patients" type="hidden" name="patients" value="' + $(this).find(':selected').val() + '"/></span>');
+                $(this).parent().append('<span class="person">' + $(this).find(':selected').text() + ' <a href="#" title="' + language.general.removeLabel + '">' + language.general.removeLabel + '</a><input class="patients" type="hidden" name="patients" value="' + $(this).find(':selected').val() + '"/></span>');
             }
         }
     });

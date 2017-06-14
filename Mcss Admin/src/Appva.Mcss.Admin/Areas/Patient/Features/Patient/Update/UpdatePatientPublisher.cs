@@ -72,6 +72,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc /> 
         public override Identity<Guid> Handle(UpdatePatient message)
         {
+            if(message.PersonalIdentityNumber == null)
+            {
+                throw new Exception("Cannot update patient to unique identifier = null");
+            }
             var address = this.taxonomyService.Get(message.Taxon.ToGuid());
             var selectedIds = message.Assessments.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
             IList<Taxon> assessments = new List<Taxon>();

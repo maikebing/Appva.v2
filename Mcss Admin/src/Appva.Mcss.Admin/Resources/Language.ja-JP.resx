@@ -1602,4 +1602,7 @@
   <data name="ÅÅÅÅMMDD-NNNN" xml:space="preserve">
     <value>User-id</value>
   </data>
+  <data name="Ej_signerad" xml:space="preserve">
+    <value>与えられていない</value>
+  </data>
 </root>

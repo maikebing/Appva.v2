@@ -72,7 +72,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The E-mail address.
         /// </summary>
-        [Required(ErrorMessageResourceName = "E_postadress_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
+        //[Required(ErrorMessageResourceName = "E_postadress_måste_fyllas_i", ErrorMessageResourceType = typeof(Resources.Language))]
         [Email(ErrorMessageResourceName = "E_postadress_måste_anges_i_korrekt_format__t__ex__namn_efternamn@foretag_se", ErrorMessageResourceType = typeof(Resources.Language))]
         [Display(Name = "E_postadress", ResourceType = typeof(Resources.Language))]
         public string Email

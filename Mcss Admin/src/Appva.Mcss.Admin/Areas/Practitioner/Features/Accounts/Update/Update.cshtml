@@ -30,7 +30,7 @@
             }
             else
             {
-                @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox(htmlAttributes: new { disabled = "disabled" }).Validate().Build()
+                @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox(htmlAttributes: new { @readonly = "readonly" }).Validate().Build()
             }
             @if (Model.IsMailFieldVisible)
             {

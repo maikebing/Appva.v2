@@ -434,9 +434,13 @@ namespace Appva.Mcss.Admin.Application.Services
 
         /// <inheritdoc />
         public string CreateUniqueUserNameFor(Account account)
+        {
+            if (this.settingsService.Find<bool>(ApplicationSettings.GenerateUniqueIdentifierForAccount))
             {
-            return this.CreateUserName(account.FirstName, account.LastName, this.ListAllUserNames());
+                return account.PersonalIdentityNumber.Value;
             }
+            return this.CreateUserName(account.FirstName, account.LastName, this.ListAllUserNames());
+        }
 
         /// <inheritdoc />
         public void Update(Account account)

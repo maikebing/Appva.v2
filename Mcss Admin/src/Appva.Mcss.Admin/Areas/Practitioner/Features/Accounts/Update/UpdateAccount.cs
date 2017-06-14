@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The E-mail address.
         /// </summary>
-        [Required(ErrorMessage = "E-postadress måste fyllas i.")]
+        //[Required(ErrorMessage = "E-postadress måste fyllas i.")]
         [Email(ErrorMessage = "E-postadress måste anges i korrekt format, t. ex. namn.efternamn@foretag.se.")]
         [Display(Name = "E_postadress", ResourceType = typeof(Resources.Language))]
         public string Email

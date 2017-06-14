@@ -53,6 +53,17 @@ using Appva.Mcss.Admin.Application.Models;
         #region Account
 
         /// <summary>
+        /// Auto-generates the unique identifier for account
+        /// </summary>
+        /// <remarks>The setting returns a <c>bool</c></remarks>
+        public static readonly ApplicationSettingIdentity<bool> GenerateUniqueIdentifierForAccount = ApplicationSettingIdentity<bool>.CreateNew(
+            "MCSS.Core.Account.GenerateUniqueIdentifierForAccount",
+            "Generate user id (unique identifier)",
+            "MCSS.Core.Account",
+            "Generates a user-id (unique identifier, personal identity number) for account on ceation",
+            true);
+
+        /// <summary>
         /// Auto-generates the mobile device password.
         /// </summary>
         /// <remarks>The setting returns a <c>bool</c></remarks>

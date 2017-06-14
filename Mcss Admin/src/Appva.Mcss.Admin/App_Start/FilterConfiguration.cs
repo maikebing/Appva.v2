@@ -28,7 +28,7 @@ namespace Appva.Mcss.Admin
         {
             filters.Add(new HandleErrorAttribute());
             //// FIXME: These should be added by IIS.         
-            filters.Add(new ContentSecurityPolicyAttribute("default-src 'self' style-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' support.appva.jp;"));
+            filters.Add(new ContentSecurityPolicyAttribute("default-src 'self' style-src 'self' 'unsafe-eval' 'unsafe-inline' connect-src 'self' support.appva.jp;"));
             filters.Add(new ContentTypeOptionsAttribute());
             filters.Add(new StrictTransportSecurityAttribute());
             //// Remove the ability to go back into the web application after a user is signed out by pressing back.

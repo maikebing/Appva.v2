@@ -6,7 +6,7 @@ mcss.validation = {
             },
             'messages': {
                 'Name': {
-                    'required': "Namn måste fyllas i."
+                    'required': validation.nameRequired
                 }
             },
             'submitHandler': function (form) {
@@ -23,7 +23,7 @@ mcss.validation = {
             'rules': {
                 'FirstName': 'required',
                 'LastName': 'required',
-                'PersonalIdentityNumber': {
+                /*'PersonalIdentityNumber': {
                     'required': true,
                     'socialsecuritynumber': 'socialsecuritynumber',
                     'remote': {
@@ -34,7 +34,7 @@ mcss.validation = {
                             'uniqueIdentifier': $('#PersonalIdentityNumber').val()
                         }
                     }
-                },
+                },*/
                 'Taxon': {
                     'required': true,
                     'remote': {
@@ -47,14 +47,14 @@ mcss.validation = {
                 }
             },
             'messages': {
-                'FirstName': "Förnamn måste fyllas i.",
-                'LastName': "Efternamn måste fyllas i.",
+                'FirstName': validation.firstNameRequired,
+                'LastName': validation.lastNameRequired,
                 'PersonalIdentityNumber': {
                     'required': "Personnummer måste fyllas i.",
                     'remote': "Personnumret finns redan tidigare redan i MCSS.",
                     'socialsecuritynumber': "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001."
                 },
-                'Taxon': "Adress måste väljas."
+                'Taxon': validation.addressRequired
             },
             'submitHandler': function(form) {
 	            $(form).find('input[type=submit]').attr('disabled','disabled');
@@ -81,8 +81,8 @@ mcss.validation = {
             },
             'messages': {
                 'ScheduleSetting': {
-                    'required': "Typ av lista måste fyllas i.",
-                    'remote': "Denna lista finns sedan tidigare redan inlagd."
+                    'required': validation.scheduleRequired,
+                    'remote': validation.scheduleRemote
                 }
             },
             'submitHandler': function (form) {
@@ -110,14 +110,14 @@ mcss.validation = {
             },
             'messages': {
                 'StartDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'datelessthan': validation.dateLessThan
                 },
                 'EndDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'dategreaterthan': validation.dateGreaterThan
                 }
             },
             'submitHandler': function(form) {
@@ -145,14 +145,14 @@ mcss.validation = {
             },
             'messages': {
                 'StartDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'datelessthan': validation.dateLessThan
                 },
                 'EndDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'dategreaterthan': validation.dateLessThan
                 }
             },
             'submitHandler': function(form) {
@@ -266,27 +266,27 @@ mcss.validation = {
                 }
             },
             'messages': {
-                'Name': "Insats måste fyllas i.",
-                'Interval': "En frekvens måste anges.",
+                'Name': validation.taskNameRequired,
+                'Interval': validation.taskIntervalRequired,
                 'StartDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'datelessthan': validation.dateLessThan
                 },
                 'EndDate': {
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'date': validation.dateFormat,
+                    'dategreaterthan': validation.dateGreaterThan
                 },
-                'TestTimes': "Klockslag måste anges.",
+                'TestTimes': validation.taskTimesRequired,
                 'RangeInMinutesBefore': {
-                    'required': "Ges inom måste fyllas i.",
-                    'min': "Måste vara mellan 0-99999.",
-                    'max': "Måste vara mellan 0-99999."
+                    'required': validation.taskRangeRequired,
+                    'min': validation.betweenZeroAndHoundredThousand,
+                    'max': validation.betweenZeroAndHoundredThousand
                 },
                 'RangeInMinutesAfter': {
-                    'required': "Ges inom måste fyllas i.",
-                    'min': "Måste vara mellan 0-99999.",
-                    'max': "Måste vara mellan 0-99999."
+                    'required': validation.taskRangeRequired,
+                    'min': validation.betweenZeroAndHoundredThousand,
+                    'max': validation.betweenZeroAndHoundredThousand
                 },
                 'ReminderInMinutesBefore': {
                     'required': "Tid för påminnelse måste fyllas i.",
@@ -300,12 +300,12 @@ mcss.validation = {
                     'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
                 },
                 'OnNeedBasisEndDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'dategreaterthan': validation.dateGreaterThan
                 },
                 'Inventory': {
-                    'required': "Saldo måste väljas",
+            'required': validation.taskInventoryRequired,
                  }
             },
             'submitHandler': function(form) {
@@ -417,28 +417,28 @@ mcss.validation = {
                 }
             },
             'messages': {
-                'Name': "Insats måste fyllas i.",
-                'Inventory': "Saldo måste väljas.",
-                'Interval': "En frekvens måste anges.",
+                'Name': validation.taskNameRequired,
+                'Inventory': validation.taskInventoryRequired,
+                'Interval': validation.taskIntervalRequired,
                 'StartDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'datelessthan': validation.dateLessThan
                 },
                 'EndDate': {
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'date': validation.dateFormat,
+                    'dategreaterthan': validation.dateGreaterThan
                 },
-                'TestTimes': "Klockslag måste anges.",
+                'TestTimes': validation.taskTimesRequired,
                 'RangeInMinutesBefore': {
-                    'required': "Ges inom måste fyllas i.",
-                    'min': "Måste vara mellan 0-59.",
-                    'max': "Måste vara mellan 0-59."
+                    'required': validation.taskRangeRequired,
+                    'min': validation.betweenZeroAndHoundredThousand,
+                    'max': validation.betweenZeroAndHoundredThousand
                 },
                 'RangeInMinutesAfter': {
-                    'required': "Ges inom måste fyllas i.",
-                    'min': "Måste vara mellan 0-59.",
-                    'max': "Måste vara mellan 0-59."
+                    'required': validation.taskRangeRequired,
+                    'min': validation.betweenZeroAndHoundredThousand,
+                    'max': validation.betweenZeroAndHoundredThousand
                 },
                 'ReminderInMinutesBefore': {
                     'required': "Tid för påminnelse måste fyllas i.",
@@ -511,27 +511,27 @@ mcss.validation = {
                 }
             },
             'messages': {
-                'Interval' : "Upprepnings-intervallet kan inte vara kortare än aktiviten",
-                'Category' : "Kategori måste väljas",
-                'NewCategory' : "Namn måste anges på ny kategori",
-                'Description': "Aktiviteten måste ha en beskrivning.",
+                'Interval' : validation.calendarIntervalToShort,
+                'Category' : validation.calendarCategoryRequired,
+                'NewCategory': validation.calendarNewCategoryNameRequired,
+                'Description': validation.calendarDescriptionRequired,
                 'StartDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthanorequal': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'required': validation.dateRequired,
+                    'date': validaton.dateFormat,
+                    'datelessthanorequal': validation.dateLessThanOrEqual
                 },
                 'EndDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthanorequal': "Slutdatum måste vara ett senare datum är startdatum."
+                    'required': validation.dateRequired,
+                    'date': validaton.dateFormat,
+                    'dategreaterthanorequal': validation.dateGreaterThanOrEqual
                 },
                 'StartTime': {
-                    'required': "Tid måste fyllas i.",
-                    'time': "Tid måste fyllas i med fyra siffror och kolon, t.ex. 14:30."
+                    'required': validation.timeRequired,
+                    'time': validation.timeFormat
                 },
                 'EndTime': {
-                    'required': "Tid måste fyllas i.",
-                    'time': "Tid måste fyllas i med fyra siffror och kolon, t.ex. 14:30."
+                    'required': validation.timeRequired,
+                    'time': validation.timeFormat
                 }
             },
             'submitHandler': function(form) {
@@ -549,7 +549,7 @@ mcss.validation = {
             'rules': {
                 'FirstName': 'required',
                 'LastName': 'required',
-                'PersonalIdentityNumber': {
+                /*'PersonalIdentityNumber': {
                     'required': true,
                     'socialsecuritynumber': 'socialsecuritynumber',
                     'remote': {
@@ -560,9 +560,9 @@ mcss.validation = {
                             'uniqueIdentifier': $('#UniqueIdentifier').val()
                         }
                     }
-                },
+                },*/
                 'Email': {
-                    'required': true,
+                    //'required': true,
                     'email': true
                 },
                 'Password': {
@@ -591,26 +591,26 @@ mcss.validation = {
                 }
             },
             'messages': {
-                'FirstName': "Förnamn måste fyllas i.",
-                'LastName': "Efternamn måste fyllas i.",
+                'FirstName': validation.firstNameRequired,
+                'LastName': validation.lastNameRequired,
                 'PersonalIdentityNumber': {
-                    'required': "Personnummer måste fyllas i.",
-                    'remote': "Personnumret finns sedan tidigare redan i MCSS.",
-                    'socialsecuritynumber': "Personnummer måste fyllas i med tolv siffror och bindestreck, t. ex. 19010101-0001."
+                    'required': validation.socialSecurityNumberRequired,
+                    'remote': validation.socialSecuityNumberDuplicate,
+                    'socialsecuritynumber': validation.socialSecurityFormat
                 },
                 'Email': {
-                    'required': "E-postadress måste fyllas i.",
-                    'email': "E-postadress måste anges i korrekt format, t. ex. namn.efternamn@foretag.se."
+                    //'required': validation.mailRequired,
+                    'email': validation.mailFormat
                 },
                 'Password': {
-                    'required': "Ett Lösenord måste fyllas i.",
-                    'digits': "Ange ett fyrsiffrigt lösenord.",
-                    'maxlength': "Maximalt antal tecken är 7 siffror.",
-                    'minlength': "Minimilängden är fyra siffror.",
-                    'remote': "Lösenordet används redan av en annan medarbetare."
+                    'required': validation.passwordRequired,
+                    'digits': validation.passwordFormat,
+                    'maxlength': validation.passwordMaxLength,
+                    'minlength': validation.passwordMinLength,
+                    'remote': validation.passwordRemote
                 },
-                'TitleRole': "En titel måste väljas.",
-                'Taxon': "Adress måste väljas.",
+                'TitleRole': validation.titleRequired,
+                'Taxon': validation.addressRequired,
             },
             'submitHandler': function(form) {
 	            $(form).find('input[type=submit]').attr('disabled','disabled');
@@ -636,14 +636,14 @@ mcss.validation = {
             },
             'messages': {
                 'StartDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'datelessthan': validation.dateLessThan
                 },
                 'EndDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'dategreaterthan': validation.dateGreaterThan
                 }
             },
             'submitHandler': function(form) {
@@ -723,20 +723,20 @@ mcss.validation = {
                 }*/
             },
             'messages': {
-                'Delegation': "Delegering måste väljas.",
-                'DelegationType': "Delegeringstyp måste väljas.",
+                'Delegation': validation.delegationRequired,
+                'DelegationType': validation.delegationTypeRequired,
                 'StartDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'datelessthan': validation.dateLessThan
                 },
                 'EndDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'dategreaterthan': validation.dateGreaterThan
                 },
-                'TestDelegations': "Delegering måste väljas.",
-                'TestPatients': "Boende måste väljas."
+                'TestDelegations': validation.delegationRequired,
+                'TestPatients': validation.patientRequired
             },
             'submitHandler': function(form) {
 	            $(form).find('input[type=submit]').attr('disabled','disabled');
@@ -778,16 +778,16 @@ mcss.validation = {
             },
             'messages': {
                 'StartDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'datelessthan': validation.dateLessThan
                 },
                 'EndDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat,
+                    'dategreaterthan': validation.dateGreaterThan
                 },
-                'TestPatients': "Boende måste väljas."
+                'TestPatients': validation.patientRequired
             },
             'submitHandler': function(form) {
 	            $(form).find('input[type=submit]').attr('disabled','disabled');
@@ -806,9 +806,9 @@ mcss.validation = {
             },
             'messages': {
                 'Value': {
-                    'required': "Mängd måste fyllas i.",
-                    'min': "Mängd måste vara ett numeriskt värde och vara större än 0.",
-                    'max': "Mängd får ej vara större än 99999."
+                    'required': validation.valueRequired,
+                    'min': validation.minValueGreaterThanZero,
+                    'max': validation.maxValueLessThanHoundredThousand
                 }
             }
         });
@@ -824,9 +824,9 @@ mcss.validation = {
             },
             'messages': {
                 'Value': {
-                    'required': "Mängd måste fyllas i.",
-                    'min': "Mängd måste vara ett numeriskt värde och vara större än 0.",
-                    'max': "Mängd får ej vara större än 99999."
+                    'required': validation.valueRequired,
+                    'min': validation.minValueGreaterThanZero,
+                    'max': validation.maxValueLessThanHoundredThousand
                 }
             }
         });
@@ -851,11 +851,11 @@ mcss.validation = {
             },
             'messages': {
                 'Name': {
-                    'required': "Kunskapstest måste fyllas i."
+                    'required': validation.knowledgeTestRequired
                 },
                 'CompletedDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21."
+                    'required': validation.dateRequired,
+                    'date': validation.dateFormat
                 }
             }
         });
@@ -867,7 +867,7 @@ mcss.validation = {
             },
             'messages': {
                 'Name': {
-                    'required': "Namn måste fyllas i."
+                    'required': validation.nameRequired
                 }
             },
             'submitHandler': function (form) {

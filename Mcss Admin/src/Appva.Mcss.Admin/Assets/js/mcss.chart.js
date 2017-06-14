@@ -6,10 +6,10 @@
             parameters = opts.parameters,
             min = opts.min,
             max = opts.max;
-        $(selector).addClass('loading').append('<div class="loader">Laddar data.</div>');
+        $(selector).addClass('loading').append('<div class="loader">' + language.chart.loading + '</div>');
         $.getJSON(url, parameters)
             .success(function (data) { self.Create(selector, data, min, max); })
-            .error(function () { $(selector).addClass('error'); $(selector).empty(); $(selector).append('<div class="loader">Ett fel inträffade!</div>') })
+            .error(function () { $(selector).addClass('error'); $(selector).empty(); $(selector).append('<div class="loader">' + language.chart.problemOccured + '</div>') })
             .complete(function () { $(selector).removeClass('loading'); });
     },
     'Create': function (selector, data, min, max) {
@@ -30,7 +30,7 @@
                     $('#tooltip').remove();
                     var x = item.datapoint[0], y = item.datapoint[1];
                     var d = new Date(x);
-                    self.ShowToolTip(item.pageX, item.pageY, 'I tid ' + Math.round(y) + '% <br/> ' + d.asString());
+                    self.ShowToolTip(item.pageX, item.pageY, language.chart.iTid + Math.round(y) + '% <br/> ' + d.asString());
                 }
             } else {
                 $('#tooltip').remove();

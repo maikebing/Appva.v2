@@ -25,7 +25,7 @@
             <h3 class="section-title">@Localizer["Ändra_boendeuppgifter"]</h3>
             @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
-            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox(htmlAttributes: new { disabled = "disabled" }).Validate().Build()
+            @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox(htmlAttributes: new { @readonly = "readonly" }).Validate().Build()
             @if (Model.HasAlternativeIdentifier)
             {
                 @Html.FormGroup(x => x.Tag, "text small").Label().TextBox().Validate().Build()

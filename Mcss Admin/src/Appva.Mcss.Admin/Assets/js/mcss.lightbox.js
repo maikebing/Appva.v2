@@ -115,21 +115,25 @@ mcss.lightbox = {
         $('a.lb-link').click(function (e) {
             var clicked = $(this);
             var actionUri = clicked.attr('href');
-            $.ajax({
-                url: actionUri,
-                dataType: 'html',
-                method: 'get',
-                success: function (data) {
-                    var content = $(data);
-                    if (content.has("div.lb-content").length != 0)
-                    {
-                        content = content.find("div.lb-content");
+            if (actionUri.startsWith('http'))
+            {
+                var content = $('<div><iframe scrolling="no" style="height:600px;width:100%;border:none;overflow:hidden;" src="' + actionUri + '"></iframe><div>')
+                content.addClass('lb-panel-small');
+                mcss.lightbox.openBox(content, clicked, 'std-lb');
+                clicked.trigger("lightboxopen");
+            } else {
+                $.ajax({
+                    url: actionUri,
+                    dataType: 'html',
+                    method: 'get',
+                    success: function (data) {
+                        var content = $(data); 
+                        content.addClass('lb-panel');
+                        mcss.lightbox.openBox(content, clicked, 'std-lb');
+                        clicked.trigger("lightboxopen");
                     }
-                    content.addClass('lb-panel');
-                    mcss.lightbox.openBox(content, clicked, 'std-lb');
-                    clicked.trigger("lightboxopen");
-                }
-            });
+                });
+            }
             e.preventDefault();
             e.stopPropagation();
 

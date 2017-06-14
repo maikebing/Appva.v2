@@ -1,5 +1,6 @@
 ﻿{
-  "ConnectionString": "Server=localhost;Database=AuthServer;Trusted_Connection=False;User ID=McssTest;Password=foo1!BAR",
+"SkipMultiTenant": "true",
+"ConnectionString": "Server=RICHARDHENRIKSS\\RICHARD;Database=oauth;Trusted_Connection=False;User ID=McssTest;Password=foo1!BAR",
   "Properties": { "generate_statistics" : "true" },
   "Assembly": "Appva.Mcss.AuthorizationServer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 }

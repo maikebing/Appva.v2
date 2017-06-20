@@ -119,7 +119,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="description"></param>
-        void Update(string name, string path, int? sort = null, bool? isRoot = null);
+        void Update(string name, string description, int? sort = null, bool? isRoot = null);
 
         /// <summary>
         /// Inactivates the taxon
@@ -287,6 +287,7 @@ namespace Appva.Mcss.Admin.Application.Models
                 );
         }
 
+        /// <inheritdoc />
         public void Update(string name, string description, int? sort = null,  bool? isRoot = null)
         {
             this.Name = name;
@@ -304,9 +305,15 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <inheritdoc />
         public void Update(ITaxon taxon)
         {
-            this.Name = taxon.Name;
+            this.Name        = taxon.Name;
             this.Description = taxon.Description;
-            this.IsActive = taxon.IsActive;
+            this.Path        = taxon.Path;
+            this.Sort        = taxon.Sort;
+            this.IsRoot      = taxon.IsRoot;
+            this.Type        = taxon.Type;
+            this.ParentId    = taxon.ParentId;
+            this.Parent      = taxon.Parent;
+            this.IsActive    = taxon.IsActive;
         }
 
         /// <inheritdoc />

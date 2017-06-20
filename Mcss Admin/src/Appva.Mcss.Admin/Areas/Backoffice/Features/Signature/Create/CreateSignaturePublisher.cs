@@ -13,10 +13,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     #region Imports.
 
     using System;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using System.Reflection;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -56,12 +59,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <returns>true or false</returns>
         public override bool Handle(CreateSignatureModel message)
         {
-            var taxon = new TaxonItem(Guid.Empty, message.Name, string.Empty, message.Path, string.Empty, message.IsRoot);
-
-            if (message.Path == null)
+            var signature = typeof(Signatures).GetFields(BindingFlags.Public | BindingFlags.Static).Select(x => x.GetValue(null) as SignatureImage).First(x => x.Image == message.Path);
+            if (signature == null)
             {
-                return false;
+                throw new ArgumentException("Could not find signature image with path {0} to set correct weight");
             }
+
+            var taxon = new TaxonItem(Guid.Empty, message.Name, string.Empty, signature.Image, signature.CssClass, message.IsRoot, sort: signature.Sort);
 
             this.taxonomyService.Save(taxon, TaxonomicSchema.SignStatus);
             return true;

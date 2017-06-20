@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
@@ -56,21 +57,19 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         public override EditSignatureModel Handle(Identity<EditSignatureModel> message)
         {
             var signature = this.taxonomyService.Find(message.Id);
-            var signatures = typeof(Signatures).GetFields(BindingFlags.Public | BindingFlags.Static);
-            var editSignature = new EditSignatureModel();
-            editSignature.Images = new Dictionary<string, string>();
+            var signatures = typeof(Signatures).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .OrderBy(x => ((SignatureImage)x.GetValue(null)).Sort)
+                .Select(x => ((SignatureImage)x.GetValue(null)).Image)
+                .ToDictionary<string, string>(x => x.Split('.').First());
 
-            for (int i = 0; i < signatures.Length; i++)
+            return new EditSignatureModel 
             {
-                editSignature.Images.Add("radioBtn" + i, Convert.ToString(signatures[i].GetValue(null)));
-            }
-
-            editSignature.Id = message.Id;
-            editSignature.Name = signature.Name;
-            editSignature.Path = signature.Path;
-            editSignature.IsRoot = signature.IsRoot;
-
-            return editSignature;
+                Id      = message.Id,
+                Name    = signature.Name,
+                Path    = signature.Path,
+                IsRoot  = signature.IsRoot,
+                Images  = signatures
+            };
         }
 
         #endregion

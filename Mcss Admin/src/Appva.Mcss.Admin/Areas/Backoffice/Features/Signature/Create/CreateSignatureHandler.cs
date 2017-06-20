@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
@@ -55,16 +56,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature.Create
         /// <inheritdoc />
         public override CreateSignatureModel Handle(Identity<CreateSignatureModel> message)
         {
-            var signatures = typeof(Signatures).GetFields(BindingFlags.Public | BindingFlags.Static);
-            var createSignature = new CreateSignatureModel();
-            createSignature.Images = new Dictionary<string, string>();
+            var signatures = typeof(Signatures).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .OrderBy(x => ((SignatureImage)x.GetValue(null)).Sort)
+                .Select(x => ((SignatureImage)x.GetValue(null)).Image)
+                .ToDictionary<string, string>(x => x.Split('.').First());
 
-            for (int i = 0; i < signatures.Length; i++)
+            return new CreateSignatureModel
             {
-                createSignature.Images.Add("radioBtn" + i, Convert.ToString(signatures[i].GetValue(null)));
-            }
-
-            return createSignature;
+                Images = signatures
+            };
         }
 
         #endregion

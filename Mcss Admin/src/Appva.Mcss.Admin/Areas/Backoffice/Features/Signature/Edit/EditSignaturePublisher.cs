@@ -14,8 +14,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
     using Application.Common;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
+    using System;
+    using System.Linq;
+    using System.Reflection;
 
     #endregion
 
@@ -52,13 +56,18 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         public override bool Handle(EditSignatureModel message)
         {
             var signature = this.taxonomyService.Find(message.Id, TaxonomicSchema.SignStatus);
-
             if (signature == null)
             {
                 return false;
             }
 
-            signature.Update(message.Name, message.Path, isRoot: message.IsRoot);
+            var signatureImage = typeof(Signatures).GetFields(BindingFlags.Public | BindingFlags.Static).Select(x => x.GetValue(null) as SignatureImage).First(x => x.Image == message.Path);
+            if (signatureImage == null)
+            {
+                throw new ArgumentException("Could not find signature image with path {0} to set correct weight");
+            }
+            
+            signature.Update(new TaxonItem(Guid.Empty, message.Name, string.Empty, signatureImage.Image, signatureImage.CssClass, message.IsRoot, sort: signatureImage.Sort));
             this.taxonomyService.Update(signature, TaxonomicSchema.SignStatus);
 
             return true;

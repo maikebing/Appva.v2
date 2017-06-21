@@ -703,6 +703,10 @@
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
     <Compile Include="Areas\Report\Features\Report\ReportController.cs" />
+    <Compile Include="Areas\Roles\Features\RolesResourcePermissions\RolesResourcePermissionsController.cs" />
+    <Compile Include="Areas\Roles\Features\RolesResourcePermissions\Update\UpdateRoleResourcePermissionsHandler.cs" />
+    <Compile Include="Areas\Roles\Features\RolesResourcePermissions\Update\UpdateRoleResourcePermissions.cs" />
+    <Compile Include="Areas\Roles\Features\RolesResourcePermissions\Update\UpdateRoleResourcePermissionsPublisher.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\RolesSchedulesController.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleSchedule.cs" />
     <Compile Include="Areas\Roles\Features\RolesSchedules\Update\UpdateRoleScheduleHandler.cs" />
@@ -1377,6 +1381,7 @@
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\user-meetup2017.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Preview\Preview.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Create\Create.cshtml" />
+    <Content Include="Areas\Roles\Features\RolesResourcePermissions\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

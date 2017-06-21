@@ -1388,61 +1388,96 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #region Backoffice.
 
+    /// <summary>
+    /// The Backoffice permissions.
+    /// </summary>
+    public static class Backoffice
+    {
         /// <summary>
-        /// The Backoffice permissions.
+        /// The read value.
         /// </summary>
-        public static class Backoffice
-        {
-            /// <summary>
-            /// The read value.
-            /// </summary>
-            public const string ReadValue = Schema + "backoffice/read";
+        public const string ReadValue = Schema + "backoffice/read";
 
-            /// <summary>
-            /// Permission to read/view backoffice.
-            /// </summary>
-            [Sort(100000)]
-            [Name("Read backoffice")]
-            [Description("Permission to read/view backoffice")]
-            [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
-        }
+        /// <summary>
+        /// Permission to read/view backoffice.
+        /// </summary>
+        [Sort(100000)]
+        [Name("Read backoffice")]
+        [Description("Permission to read/view backoffice")]
+        [Visibility(Visibility.Hidden)]
+        public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+    }
 
-        #endregion
+    #endregion
 
         #endregion
 
         #region Resource
 
-        #region Constants.
-
-        /// <summary>
-        /// The permission schema for mobile.
-        /// </summary>
-        private const string DeviceSchema = "https://schemas.appva.se/permission/device";
-
-        #endregion
-
-        #region NFC.
-
-        public static class NFC
-        {
-            /// <summary>
-            /// The register NFC value.
-            /// </summary>
-            public const string RegisterValue = Schema + "/nfc/register";
+        
+            #region Constants.
 
             /// <summary>
-            /// Permission to register a NFC tag by mobile device
+            /// The permission schema for mobile.
             /// </summary>
-            [Sort(10000)]
-            [Name("Register nfc from mobile device")]
-            [Description("Permission to register a NFC tag by a mobiledevice")]
-            public static readonly IPermission SignIn = PermissionType.CreateNew(RegisterValue);
-        }
+            public const string DeviceSchema = "https://schemas.appva.se/permission/device";
 
-        #endregion
+            #endregion
 
+            #region NFC.
+
+            public static class NFC
+            {
+                /// <summary>
+                /// The register NFC value.
+                /// </summary>
+                public const string RegisterValue = DeviceSchema + "/nfc/register";
+
+                /// <summary>
+                /// Permission to register a NFC tag by mobile device
+                /// </summary>
+                [Sort(10000)]
+                [Name("Register nfc from mobile device")]
+                [Description("Permission to register a NFC tag by a mobiledevice")]
+                public static readonly IPermission SignIn = PermissionType.CreateNew(RegisterValue);
+            }
+
+            #endregion
+
+            #region Delegations.
+
+            public static class Delegations
+            {
+                /// <summary>
+                /// The delegation read value value.
+                /// </summary>
+                public const string ReadValue = DeviceSchema + "/account/delegations/read";
+
+                /// <summary>
+                /// The delegation read value value.
+                /// </summary>
+                public const string ReadKnowledgeTestValue = DeviceSchema + "/account/delegations/knowledgetest/read";
+
+                /// <summary>
+                /// Permission to read delegations in mobile device
+                /// </summary>
+                [Sort(20000)]
+                [Name("Read delegations in mobile device")]
+                [Description("Permission to read delegations in the mobile device")]
+                public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+                /// <summary>
+                /// Permission to read delegations in mobile device
+                /// </summary>
+                [Sort(20100)]
+                [Name("Read knowledgetest in mobile device")]
+                [Description("Permission to read knowledgetst in the mobile device")]
+                public static readonly IPermission ReadKnowledgeTest = PermissionType.CreateNew(ReadKnowledgeTestValue);
+            }
+
+            #endregion
+       
+        
         #endregion
     }
 

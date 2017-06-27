@@ -1441,6 +1441,8 @@ namespace Appva.Mcss.Admin.Application.Common
             public static readonly IPermission SignIn = PermissionType.CreateNew(RegisterValue);
         }
 
+        #endregion
+
         #region Article
 
         /// <summary>
@@ -1451,18 +1453,29 @@ namespace Appva.Mcss.Admin.Application.Common
             /// <summary>
             /// The order refill value.
             /// </summary>
-            public const string OrderRefillValue = DeviceSchema + "/article/order";
+            public const string RefillValue = DeviceSchema + "/article/refill";
 
             /// <summary>
-            /// Permission to set the article as refilled.
+            /// The order refill value.
+            /// </summary>
+            public const string OrderValue = DeviceSchema + "/article/order";
+
+            /// <summary>
+            /// Permission to refill an article.
             /// </summary>
             [Sort(10000)]
-            [Name("Set article as refilled")]
-            [Description("Permission to set an article as refilled.")]
-            public static readonly IPermission OrderRefill = PermissionType.CreateNew(OrderRefillValue);
-        }
+            [Name("Refill an article")]
+            [Description("Permission to refill an article.")]
+            public static readonly IPermission Refill = PermissionType.CreateNew(RefillValue);
 
-        #endregion
+            /// <summary>
+            /// Permission to order an article.
+            /// </summary>
+            [Sort(10000)]
+            [Name("Order an article")]
+            [Description("Permission to order an article.")]
+            public static readonly IPermission Order = PermissionType.CreateNew(OrderValue);
+        }
 
         #endregion
 

@@ -133,6 +133,41 @@
     </bag>
   </class>
 
+  <!-- Article -->
+  <class name="Article">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <property name="Name" />
+    <property name="Description" />
+    <property name="Refill" />
+    <property name="RefillOrderDate" />
+    <property name="Ordered" />
+    <property name="OrderDate" />
+    <property name="Status" />
+    <many-to-one name="OrderedBy" class="Account" />
+    <many-to-one name="RefillOrderedBy" class="Account" />
+    <many-to-one name="ArticleCategory" class="ArticleCategory" />
+    <many-to-one name="Patient" class="Patient" />
+  </class>
+
+  <!-- ArticleCategory -->
+  <class name="ArticleCategory">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <property name="Name" />
+    <property name="Description" />
+  </class>
+
   <!-- Role -->
   <class name="Role">
     <id name="Id">

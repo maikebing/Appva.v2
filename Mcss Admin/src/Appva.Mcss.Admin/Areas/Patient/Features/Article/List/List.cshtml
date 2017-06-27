@@ -1,0 +1,96 @@
+﻿@model ListArticleModel
+@{
+    SetTitle("Beställningslista");
+}
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+<div class="section section--hspace section--vspace">
+    <div class="distributor distributor--justified">
+        <div>
+            <h2>Begärd påfyllning</h2>
+        </div>
+        <div>
+            <div class="control-container control-container--inline">
+                @Html.ActionLink("Lägg till artikel", "Add", "Article", null, null, "add-article", null, new { @class = "button button--ui open-in-dialog" })
+            </div>
+        </div>
+    </div>
+    @if (Model.OrderedArticles.Count > 0)
+    {
+        using (Html.BeginForm())
+        {
+            <table class="table-general">
+                <thead>
+                    <tr>
+                        <th scope="col">Namn</th>
+                        <th scope="col">Beskrivning</th>
+                        <th scope="col">Kategori</th>
+                        <th scope="col">Begärdes av</th>
+                        <th scope="col">Begärdes när</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int i = 0; }
+                    @foreach (var article in Model.OrderedArticles)
+                    {
+                        string orderItem = "orderitem" + i;
+                        string target = "submit-" + orderItem;
+                        <tr>
+                            <td>@article.Name</td>
+                            <td>@article.Description</td>
+                            <td>@article.Category.Name</td>
+                            <td>@(article.OrderedBy.FirstName + " " + article.OrderedBy.LastName)</td>
+                            <td><time datetime="@article.OrderDate">@(article.OrderDate.Value.Date == DateTime.Now.Date ? "idag" : article.OrderDate.Value.ToString("d MMM yyyy"))</time></td>
+                            <td class="inliner">
+                                <div class="control-container control-container--select control-container--no-margin">
+                                    @Html.LabelFor(x => orderItem, "Status", new { @class = "visually-hidden" })
+                                    @Html.DropDownListFor(x => orderItem, article.OrderOptions, new { id = orderItem, @class = "toggle-target select-style", @data_toggle_targets = "[\"" + target + "\"]" })
+                                </div>
+                                <div id="@target" class="control-container control-container--no-margin" data-toggle-by-input="disable" data-toggle-values="[&quot;@(article.SelectedOrderOption)&quot;]">
+                                    @Html.HiddenFor(x => article.Id, new { id = "article-id-" + i })
+                                    @Html.Submit("Uppdatera", new { @class = "button button--ui" })
+                                </div>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        }
+    }
+    else
+    {
+        <div id="alarm-status">
+            <h2 class="wa">Inga artiklar hittades.</h2>
+        </div>
+    }
+    <h2>Artiklar</h2>
+    @if (Model.RefilledArticles.Count > 0)
+    {
+        <table class="table-general">
+            <thead>
+                <tr>
+                    <th scope="col">Namn</th>
+                    <th scope="col">Beskrivning</th>
+                    <th scope="col">Kategori</th>
+                    <th scope="col">Åtgärder</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var article in Model.RefilledArticles)
+                {
+                    <tr>
+                        <td>@article.Name</td>
+                        <td>@(article.Description == null ? string.Empty : article.Description)</td>
+                        <td>@(string.IsNullOrEmpty(article.ArticleCategory.Name) ? "Saknas" : article.ArticleCategory.Name)</td>
+                        <td>
+                            @Html.ActionLink("Ändra", "Edit", "Article", null, null, "edit-article", new { Article = article.Id }, new { @class = "button button--ui open-in-dialog" })
+                            @Html.ActionLink("Ta bort", "Delete", "Article", new { Article = article.Id }, new { @class = "button button--negative" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

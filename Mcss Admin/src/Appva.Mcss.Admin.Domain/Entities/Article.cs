@@ -134,7 +134,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The patient.
         /// </summary>
-        public Patient Patient
+        public virtual Patient Patient
         {
             get;
             set;

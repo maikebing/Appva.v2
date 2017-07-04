@@ -40,18 +40,17 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
 
         #endregion
 
-        #region Order.
+        #region Status.
 
         /// <summary>
-        /// Handles the order refill request.
+        /// Handles the article order status request.
         /// </summary>
-        /// <param name="request">The article <see cref="Guid"/>.</param>
+        /// <param name="request">The <see cref="ArticleStatusModel"/>.</param>
         /// <returns></returns>
         [Route("list")]
         [HttpPost, Dispatch("list", "article")]
-        public ActionResult Order(Guid articleId)
+        public ActionResult Status(ArticleStatusModel request)
         {
-            var test = articleId;
             return this.View();
         }
 

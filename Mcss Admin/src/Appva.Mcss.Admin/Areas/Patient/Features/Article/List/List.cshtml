@@ -19,6 +19,7 @@
     {
         using (Html.BeginForm())
         {
+            <input type="hidden" value="@Model.Patient.Id" />
             <table class="table-general">
                 <thead>
                     <tr>
@@ -48,7 +49,7 @@
                                     @Html.DropDownListFor(x => orderItem, article.OrderOptions, new { id = orderItem, @class = "toggle-target select-style", @data_toggle_targets = "[\"" + target + "\"]" })
                                 </div>
                                 <div id="@target" class="control-container control-container--no-margin" data-toggle-by-input="disable" data-toggle-values="[&quot;@(article.SelectedOrderOption)&quot;]">
-                                    @Html.HiddenFor(x => article.Id, new { id = "article-id-" + i })
+                                    <input type="hidden" value="@article.Id" name="ArticleId" />
                                     @Html.Submit("Uppdatera", new { @class = "button button--ui" })
                                 </div>
                             </td>

@@ -67,8 +67,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var articleModelList = new List<ArticleModel>();
             var orderedArticles = this.articleRepository.ListByOrderedArticles(message.Id);
             var orderOptions = new Dictionary<string, string> {
-                { "not-started", "Ej påbörjad" },
-                { "ordered-from-supplier", "Beställd från leverantör" },
+                { "not-started", "Påfyllning begärd" },
+                { "ordered-from-supplier", "Beställd" },
                 { "refilled", "Påfylld" } };
 
             foreach (var article in orderedArticles)

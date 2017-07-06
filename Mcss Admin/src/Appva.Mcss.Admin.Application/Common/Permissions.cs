@@ -1476,9 +1476,28 @@ namespace Appva.Mcss.Admin.Application.Common
             }
 
             #endregion
-       
-        
-        #endregion
+
+            #region Article
+
+            public static class Article
+            {
+                /// <summary>
+                /// The refill article value
+                /// </summary>
+                public const string SetRefilledValue = DeviceSchema + "/article/refill";
+
+                /// <summary>
+                /// Permission to set the article as refilled.
+                /// </summary>
+                [Sort(10000)]
+                [Name("Refill an atricle from mobile device")]
+                [Description("Permission to set an article to refilled from a mobile device")]
+                public static readonly IPermission SetRefilled = PermissionType.CreateNew(SetRefilledValue);
+            }
+
+            #endregion
+
+            #endregion
     }
 
     /// <summary>

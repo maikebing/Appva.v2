@@ -9,10 +9,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using System;
 
     #endregion
 
@@ -53,20 +54,25 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListArticle Handle(ArticleStatusModel message)
         {
-            var article = this.articleRepository.Get(message.ArticleId);
-            var account = this.accountRepository.Find(message.UserId);
+            //var selectedArticle = message.OrderedArticles.Where(x => x.Id != Guid.Empty).FirstOrDefault();
 
-            if(article != null && account != null)
+            foreach (var orderedArticle in message.OrderedArticles)
             {
-                bool isRefilled = message.OrderItem == "refilled";
-                article.Refill = isRefilled ? false : true;
-                article.RefillOrderDate = isRefilled ? (DateTime?)null : article.RefillOrderDate;
-                article.RefillOrderedBy = isRefilled ? null : article.RefillOrderedBy;
-                article.Ordered = isRefilled ? true : false;
-                article.OrderDate = isRefilled ? DateTime.Now : article.OrderDate;
-                article.OrderedBy = isRefilled ? account : null;
-                article.Status = isRefilled ? "refilled" : message.OrderItem;
-                this.articleRepository.Update(article);
+                var article = this.articleRepository.Get(orderedArticle.Id);
+                var account = this.accountRepository.Find(message.UserId);
+
+                if (article != null && account != null)
+                {
+                    bool isRefilled = orderedArticle.SelectedOrderOptionKey == "refilled";
+                    article.Refill = isRefilled ? false : true;
+                    article.RefillOrderDate = isRefilled ? (DateTime?)null : article.RefillOrderDate;
+                    article.RefillOrderedBy = isRefilled ? null : article.RefillOrderedBy;
+                    article.Ordered = isRefilled ? true : false;
+                    article.OrderDate = isRefilled ? DateTime.Now : article.OrderDate;
+                    article.OrderedBy = isRefilled ? account : null;
+                    article.Status = isRefilled ? "refilled" : orderedArticle.SelectedOrderOptionKey;
+                    this.articleRepository.Update(article);
+                }
             }
 
             return new ListArticle

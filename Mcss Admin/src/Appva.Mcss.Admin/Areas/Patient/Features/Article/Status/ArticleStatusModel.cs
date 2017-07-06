@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.Web;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Models;
@@ -43,24 +44,6 @@ namespace Appva.Mcss.Admin.Areas.Models
         }
 
         /// <summary>
-        /// The article id.
-        /// </summary>
-        public Guid ArticleId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The article order status.
-        /// </summary>
-        public string OrderItem
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The current user id.
         /// </summary>
         public Guid UserId
@@ -69,6 +52,15 @@ namespace Appva.Mcss.Admin.Areas.Models
             {
                 return this.user;
             }
+        }
+
+        /// <summary>
+        /// A collection of articles.
+        /// </summary>
+        public IList<ArticleModel> OrderedArticles
+        {
+            get;
+            set;
         }
 
         #endregion

@@ -114,15 +114,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Last update.
-        /// </summary>
-        public new virtual DateTime? UpdatedAt
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The refill order status.
         /// </summary>
         public virtual string Status

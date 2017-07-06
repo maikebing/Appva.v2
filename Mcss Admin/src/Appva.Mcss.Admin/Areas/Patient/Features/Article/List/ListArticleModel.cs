@@ -40,6 +40,15 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// Check if any refilled and ordered articles exists.
+        /// </summary>
+        public bool HasArticles
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The patient view model.
         /// </summary>
         public PatientViewModel Patient

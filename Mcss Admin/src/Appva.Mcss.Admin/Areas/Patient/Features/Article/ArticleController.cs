@@ -9,11 +9,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
 {
     #region Imports.
 
-    using System;
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -33,6 +34,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns>A <see cref="ListArticleModel"/>.</returns>
         [Route("list")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.OrderList.ReadValue)]
         public ActionResult List(ListArticle request)
         {
             return this.View();
@@ -49,6 +51,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns></returns>
         [Route("list")]
         [HttpPost, Dispatch("list", "article")]
+        [PermissionsAttribute(Permissions.OrderList.UpdateValue)]
         public ActionResult Status(ArticleStatusModel request)
         {
             return this.View();
@@ -65,6 +68,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns>An <see cref="AddArticleModel"/>.</returns>
         [Route("add")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.OrderList.CreateValue)]
         public ActionResult Add(Identity<AddArticleModel> request)
         {
             return this.View();
@@ -77,6 +81,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns>A <see cref="bool"/>.</returns>
         [Route("add")]
         [HttpPost, Dispatch("list", "article")]
+        [PermissionsAttribute(Permissions.OrderList.CreateValue)]
         public ActionResult Add(AddArticleModel request)
         {
             return this.View();
@@ -93,6 +98,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns>A <see cref="EditArticleModel"/>.</returns>
         [Route("edit/{article:guid}")]
         [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.OrderList.UpdateValue)]
         public ActionResult Edit(EditArticle request)
         {
             return this.View();
@@ -105,6 +111,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns>An <see cref="EditArticle"/>.</returns>
         [Route("edit/{article:guid}")]
         [HttpPost, Dispatch("list", "article")]
+        [PermissionsAttribute(Permissions.OrderList.UpdateValue)]
         public ActionResult Edit(EditArticleModel request)
         {
             return this.View();
@@ -121,6 +128,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns>A <see cref="ListArticle"/>.</returns>
         [Route("delete/{article:guid}")]
         [HttpGet, Dispatch("list", "article")]
+        [PermissionsAttribute(Permissions.OrderList.DeleteValue)]
         public ActionResult Delete(InactivateArticle request)
         {
             return this.View();

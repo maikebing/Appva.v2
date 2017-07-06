@@ -1296,6 +1296,65 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
+        #region Order list.
+
+        public static class OrderList
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/orderlist/read";
+
+            /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "patient/orderlist/create";
+
+            /// <summary>
+            /// The update value.
+            /// </summary>
+            public const string UpdateValue = Schema + "patient/orderlist/update";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "patient/orderlist/delete";
+
+            /// <summary>
+            /// Permission to read/view the article order list.
+            /// </summary>
+            [Sort(60)]
+            [Name("Read the article order list")]
+            [Description("Permission to read/view the article order list")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+            /// <summary>
+            /// Permission to create new articles.
+            /// </summary>
+            [Sort(61)]
+            [Name("Create articles")]
+            [Description("Permission to create articles")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
+
+            /// <summary>
+            /// Permission to update articles.
+            /// </summary>
+            [Sort(62)]
+            [Name("Update articles")]
+            [Description("Permission update articles")]
+            public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
+
+            /// <summary>
+            /// Permission to delete articles.
+            /// </summary>
+            [Sort(63)]
+            [Name("Delete articles")]
+            [Description("Permission to delete articles")]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
+        }
+
+        #endregion
+
         #region Log
 
         /// <summary>

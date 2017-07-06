@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
@@ -65,7 +66,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListArticleModel Handle(ListArticle message)
         {
             var articleModelList = new List<ArticleModel>();
-            var orderedArticles = this.articleRepository.ListByOrderedArticles(message.Id);
+            var orderedArticles = this.articleRepository.ListByOrderedArticles(message.Id).OrderByDescending(x => x.RefillOrderDate);
+            var refilledArticles = this.articleRepository.ListByRefilledArticles(message.Id).OrderByDescending(x => x.CreatedAt).ToList();
             var orderOptions = new Dictionary<string, string> {
                 { "not-started", "Påfyllning begärd" },
                 { "ordered-from-supplier", "Beställd" },
@@ -82,16 +84,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Category = article.ArticleCategory,
                     OrderedBy = article.RefillOrderedBy,
                     OrderDate = article.RefillOrderDate,
-                    SelectedOrderOption = article.Status == null ? "not-started" : article.Status
+                    SelectedOrderOptionKey = article.Status == null ? "not-started" : article.Status
                 };
 
                 foreach (var option in orderOptions)
                 {
+                    if(articleModel.SelectedOrderOptionKey == option.Key)
+                    {
+                        articleModel.SelectedOrderOptionValue = option.Value;
+                    }
+
                     options.Add(new SelectListItem
                     {
                         Text = option.Value,
                         Value = option.Key,
-                        Selected = option.Key == articleModel.SelectedOrderOption ? true : false
+                        Selected = option.Key == articleModel.SelectedOrderOptionKey ? true : false
                     });
                 }
 
@@ -102,7 +109,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new ListArticleModel
             {
                 OrderedArticles = articleModelList,
-                RefilledArticles = this.articleRepository.ListByRefilledArticles(message.Id),
+                RefilledArticles = refilledArticles,
+                HasArticles = articleModelList.Count > 0 || refilledArticles.Count > 0 ? true : false,
                 Patient = this.transformer.ToPatient(this.patientService.Get(message.Id))
             };
         }

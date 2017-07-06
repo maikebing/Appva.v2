@@ -50,15 +50,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
-        /// <summary>
-        /// Last update.
-        /// </summary>
-        public new virtual DateTime? UpdatedAt
-        {
-            get;
-            set;
-        }
-
         #endregion
     }
 }

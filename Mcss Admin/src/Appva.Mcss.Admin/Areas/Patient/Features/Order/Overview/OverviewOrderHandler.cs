@@ -77,28 +77,22 @@ using NHibernate.Transform;
         public override OrderOverviewViewModel Handle(OverviewOrder message)
         {
             var account = this.persistence.Get<Account>(this.identityService.PrincipalId);
-            var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
             var filterTaxon = this.filtering.GetCurrentFilter();
-            Schedule scheduleAlias = null;
-            ScheduleSettings scheduleSettingsAlias = null;
-            var orders = this.persistence.QueryOver<Sequence>()
+            var orders = this.persistence.QueryOver<Article>()
                 .Where(x => x.IsActive)
-                  .And(x => x.RefillInfo.Refill)
-                .Fetch(x => x.RefillInfo.RefillOrderedBy).Eager
-                .JoinAlias(x => x.Schedule, () => scheduleAlias)
-                    .Where(() => scheduleAlias.IsActive)
-                    .JoinAlias(x => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
-                        .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(scheduleList.Select(x => x.Id).ToArray())
-                .TransformUsing(new DistinctRootEntityResultTransformer());
+                    .And(x => x.Refill == true)
+                        .Fetch(x => x.RefillOrderedBy).Eager;
+
             orders.JoinQueryOver<Patient>(x => x.Patient)
                 .Where(x => x.IsActive)
-                  .And(x => !x.Deceased)
-                .JoinQueryOver<Taxon>(x => x.Taxon)
-                    .Where(Restrictions.On<Taxon>(x => x.Path)
-                        .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));
+                    .And(x => x.Deceased == false)
+                        .JoinQueryOver<Taxon>(x => x.Taxon)
+                            .Where(Restrictions.On<Taxon>(x => x.Path)
+                                .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));
+
             return new OrderOverviewViewModel
             {
-                Orders = orders.OrderBy(x => x.RefillInfo.RefillOrderedDate).Asc.List()
+                Orders = orders.OrderBy(x => x.RefillOrderDate).Asc.List()
             };
         }
 

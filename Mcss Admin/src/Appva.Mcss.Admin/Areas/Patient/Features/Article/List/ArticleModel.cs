@@ -76,9 +76,18 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The selected order option.
+        /// The selected order option key.
         /// </summary>
-        public string SelectedOrderOption
+        public string SelectedOrderOptionKey
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The selected order option value.
+        /// </summary>
+        public string SelectedOrderOptionValue
         {
             get;
             set;

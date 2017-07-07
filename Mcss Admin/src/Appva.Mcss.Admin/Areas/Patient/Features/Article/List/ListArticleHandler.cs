@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
@@ -84,6 +85,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Category = article.ArticleCategory,
                     OrderedBy = article.RefillOrderedBy,
                     OrderDate = article.RefillOrderDate,
+                    FormattedOrderDate = article.RefillOrderDate.Value.Day == DateTime.Now.Day ? "idag" : (article.RefillOrderDate.Value.Day == DateTime.Now.Day - 1 ? "igår" : article.RefillOrderDate.Value.ToString("d MMM yyyy")),
                     SelectedOrderOptionKey = article.Status == null ? "not-started" : article.Status
                 };
 

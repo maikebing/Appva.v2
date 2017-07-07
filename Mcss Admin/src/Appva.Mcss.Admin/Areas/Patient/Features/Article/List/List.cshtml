@@ -49,7 +49,7 @@
                             <td>@Model.OrderedArticles[i].Description</td>
                             <td>@Model.OrderedArticles[i].Category.Name</td>
                             <td>@(Model.OrderedArticles[i].OrderedBy.FirstName + " " + Model.OrderedArticles[i].OrderedBy.LastName)</td>
-                            <td><time datetime="@Model.OrderedArticles[i].OrderDate">@(Model.OrderedArticles[i].OrderDate.Value.Date == DateTime.Now.Date ? "idag" : Model.OrderedArticles[i].OrderDate.Value.ToString("d MMM yyyy"))</time></td>
+                            <td><time datetime="@Model.OrderedArticles[i].OrderDate">@(Model.OrderedArticles[i].FormattedOrderDate)</time></td>
                             @if (Html.HasPermissionFor(Permissions.OrderList.Update))
                             {
                                 <td class="inliner">

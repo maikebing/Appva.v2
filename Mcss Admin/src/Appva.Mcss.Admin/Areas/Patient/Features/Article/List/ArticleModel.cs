@@ -101,5 +101,14 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+
+        /// <summary>
+        /// Displays a formatted order date.
+        /// </summary>
+        public string FormattedOrderDate
+        {
+            get;
+            set;
+        }
     }
 }

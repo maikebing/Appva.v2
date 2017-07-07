@@ -297,8 +297,8 @@
     <Compile Include="Areas\Area51\Features\Acl\AclController.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Activate\ActivateAclHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\AddNewsPermissions\UpdatePermissionsAcl.cs" />
-    <Compile Include="Areas\Area51\Features\Acl\AddNewsPermissions\UpdatePermissionsHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\UpdatePermissions\UpdatePermissionsAcl.cs" />
+    <Compile Include="Areas\Area51\Features\Acl\UpdatePermissions\UpdatePermissionsHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Hotfix18\Hotfix18Handler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
@@ -1382,6 +1382,7 @@
     <Content Include="Areas\Area51\Features\Notifications\Preview\Preview.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\Create\Create.cshtml" />
     <Content Include="Areas\Roles\Features\RolesResourcePermissions\Update\Update.cshtml" />
+    <Content Include="Areas\Area51\Features\Acl\UpdatePermissions\UpdatePermissions.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

@@ -18,8 +18,15 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.AddNewsPermissions
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class UpdatePermissionsAcl : INotification
+    public sealed class UpdatePermissionsAcl : IRequest<Dictionary<string, string>>
     {
-       
+        /// <summary>
+        /// If permissions should be updated globally
+        /// </summary>
+        public bool UpdateGlobal
+        {
+            get;
+            set;
+        }
     }
 }

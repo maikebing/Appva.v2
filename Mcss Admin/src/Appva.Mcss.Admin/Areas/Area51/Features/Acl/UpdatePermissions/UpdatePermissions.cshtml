@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Dictionary<string, string>
+@{
 	SetTitle("Area 51 - Roller och behörigheter");
 }
 @Html.Partial("_Area51MenuPartial")
@@ -25,5 +26,12 @@
 <div id="content" class="cf">
 	<div id="content-primary">
 		@Html.Alert()
+        @if (Model != null)
+        {
+            foreach (var tenant in Model)
+            {
+                <p>Installerade @tenant.Value för @tenant.Key</p>
+            }
+        }
 	</div>
 </div>

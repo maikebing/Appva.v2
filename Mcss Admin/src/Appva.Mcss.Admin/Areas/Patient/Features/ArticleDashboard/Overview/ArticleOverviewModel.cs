@@ -1,17 +1,15 @@
-﻿// <copyright file="ArticleModel.cs" company="Appva AB">
+﻿// <copyright file="ArticleOverviewModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
 
-namespace Appva.Mcss.Admin.Models
+/*namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Web.Mvc;
     using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
@@ -19,7 +17,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ArticleModel
+    public sealed class ArticleOverviewModel
     {
         /// <summary>
         /// The article id.
@@ -40,25 +38,16 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The article description.
+        /// The patient.
         /// </summary>
-        public string Description
+        public Patient Patient
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The article category.
-        /// </summary>
-        public ArticleCategory Category
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The user that ordered the refill.
+        /// The account of the orderer.
         /// </summary>
         public Account OrderedBy
         {
@@ -67,7 +56,7 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The refill order date.
+        /// The order date.
         /// </summary>
         public DateTime? OrderDate
         {
@@ -92,23 +81,5 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
-
-        /// <summary>
-        /// A list of order options.
-        /// </summary>
-        public IEnumerable<SelectListItem> OrderOptions
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Displays a formatted order date.
-        /// </summary>
-        public string FormattedOrderDate
-        {
-            get;
-            set;
-        }
     }
-}
+}*/

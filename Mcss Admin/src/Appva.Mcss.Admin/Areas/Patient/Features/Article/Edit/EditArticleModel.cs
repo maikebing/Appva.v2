@@ -13,7 +13,6 @@ namespace Appva.Mcss.Admin.Areas.Models
     using System.Collections.Generic;
     using System.Web.Mvc;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Models;
 
     #endregion
 

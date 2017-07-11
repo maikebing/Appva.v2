@@ -48,6 +48,7 @@ namespace Appva.Mcss.Admin
             builder.RegisterNhibernateProfiler();
             builder.RegisterRepositories();
             builder.RegisterServices();
+            builder.RegisterTransformers();
             builder.RegisterTenantServices();
             builder.RegisterOwinContext();
             builder.RegisterIdentityServices();

@@ -50,6 +50,10 @@
             {
                 Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Order", widgetArea = "Patient", header = "Påfyllning av läkemedel" });
             }
+            @if (Html.HasPermissionFor(Permissions.Dashboard.ReadArticleOrder))
+            {
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "ArticleDashboard", widgetArea = "Patient", header = "Påfyllning av artiklar" });
+            }
             @if (Model.HasCalendarOverview && Html.HasPermissionFor(Permissions.Dashboard.ReadCalendar))
             {
                 Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Calendar", widgetArea = "Patient", header = "Kalender de närmaste 7 dagarna" });

@@ -54,8 +54,8 @@
                             {
                                 <td class="inliner">
                                     <div class="control-container control-container--select control-container--no-margin">
-                                        @Html.LabelFor(x => Model.OrderedArticles[i].OrderOptions, "Status", new { @class = "visually-hidden" })
-                                        @Html.DropDownListFor(x => Model.OrderedArticles[i].SelectedOrderOptionKey, Model.OrderedArticles[i].OrderOptions, new { @class = "select-style" })
+                                        @Html.LabelFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, "Status", new { @class = "visually-hidden" })
+                                        @Html.DropDownListFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].SelectedOrderOptionKey), new { @class = "select-style" })
                                     </div>
                                     <div class="control-container control-container--no-margin">
                                         @Html.HiddenFor(x => x.OrderedArticles[i].Id)

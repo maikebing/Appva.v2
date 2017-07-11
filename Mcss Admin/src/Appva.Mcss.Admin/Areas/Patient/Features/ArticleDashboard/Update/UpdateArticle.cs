@@ -1,19 +1,17 @@
-﻿// <copyright file="ArticleStatusModel.cs" company="Appva AB">
+﻿// <copyright file="UpdateArticle.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
 
-namespace Appva.Mcss.Admin.Areas.Models
+namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
     using System.Web;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Application.Models;
     using Microsoft.AspNet.Identity;
 
@@ -22,7 +20,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ArticleStatusModel : IRequest<ListArticle>
+    public sealed class UpdateArticle : Identity<bool>
     {
         #region Fields.
 

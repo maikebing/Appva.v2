@@ -1,7 +1,7 @@
 ﻿@model Appva.Mcss.Web.ViewModels.OrderOverviewViewModel
 @using Appva.Mcss.Admin.Application.Common;
 <div>
-    <div class="heading cf"><h2>Påfyllning av artiklar</h2></div>
+    <div class="heading cf"><h2>Påfyllning av läkemedel</h2></div>
     <div class="panel-c">
         @if (Model.Orders == null || Model.Orders.Count == 0)
         {
@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var order in Model.Orders) 
+                    @foreach (var order in Model.Orders)
                     {
                         <tr>
                             <td>
@@ -59,27 +59,27 @@
                             <td>
                                 @if (Html.HasPermissionFor(Permissions.Practitioner.Read))
                                 {
-                                    @Html.ActionLink(order.RefillOrderedBy.FullName, "List", "Delegation", new { id = order.RefillOrderedBy.Id }, new { }) 
-                                } 
+                                    @Html.ActionLink(order.RefillInfo.RefillOrderedBy.FullName, "List", "Delegation", new { id = order.RefillInfo.RefillOrderedBy.Id }, new { })
+                                }
                                 else
                                 {
-                                    @order.RefillOrderedBy.FullName 
+                                    @order.RefillInfo.RefillOrderedBy.FullName
                                 }
-                                <p class="orderTime">@TimeSpanDifference.ToReadableFromToday(order.RefillOrderDate.GetValueOrDefault())</p>
+                                <p class="orderTime">@TimeSpanDifference.ToReadableFromToday(order.RefillInfo.RefillOrderedDate.GetValueOrDefault())</p>
                             </td>
                             <td class="check">
                                 <p class="order-check">
-                                    <input type="checkbox" name="pre-order" class="pre-order-checkbox" value="@order.Id.ToString()" @(order.Ordered ? "checked" : "") />
+                                    <input type="checkbox" name="pre-order" class="pre-order-checkbox" value="@order.Id.ToString()" @(order.RefillInfo.Ordered ? "checked" : "") />
                                 </p>
                             </td>
                             <td class="check">
                                 <p class="order-check">
                                     <input type="checkbox" name="order-checkbox" class="order-checkbox" value="@order.Id.ToString()" />
-                                    @if (order.Ordered) 
+                                    @if (order.RefillInfo.Ordered)
                                     {
                                         <span class="order-status ordered">Beställd</span>
                                     }
-                                    else 
+                                    else
                                     {
                                         <span id="orderStatus"></span>
                                     }

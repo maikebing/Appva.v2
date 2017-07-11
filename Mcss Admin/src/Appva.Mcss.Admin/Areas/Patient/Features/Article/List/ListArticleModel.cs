@@ -10,8 +10,8 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System.Collections.Generic;
-    using System.Web.Mvc;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Application.Models;
     using Appva.Mcss.Web.ViewModels;
 
     #endregion
@@ -34,6 +34,15 @@ namespace Appva.Mcss.Admin.Models
         /// A list of refilled articles.
         /// </summary>
         public IList<Article> RefilledArticles
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A list of article order options.
+        /// </summary>
+        public IDictionary<string, string> OrderOptions
         {
             get;
             set;

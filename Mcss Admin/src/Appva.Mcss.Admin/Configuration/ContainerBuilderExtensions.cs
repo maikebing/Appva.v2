@@ -249,5 +249,15 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterAssemblyTypes(typeof(IService).Assembly).Where(x => x.GetInterfaces()
                 .Any(y => y.IsAssignableFrom(typeof(IService)))).AsImplementedInterfaces().InstancePerRequest();
         }
+
+        /// <summary>
+        /// Registers all transformers.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/>.</param>
+        public static void RegisterTransformers(this ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(typeof(ITransformer).Assembly).Where(x => x.GetInterfaces()
+                .Any(y => y.IsAssignableFrom(typeof(ITransformer)))).AsImplementedInterfaces().InstancePerRequest();
+        }
     }
 }

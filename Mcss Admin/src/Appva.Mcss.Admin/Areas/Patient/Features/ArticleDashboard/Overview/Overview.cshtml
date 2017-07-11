@@ -1,0 +1,75 @@
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model Appva.Mcss.Web.ViewModels.ArticleOverviewViewModel
+<div>
+    @using (Ajax.BeginForm("update", "articledashboard", new AjaxOptions { HttpMethod = "post" }))
+    {
+        <div class="heading cf">
+            <h2>Påfyllning av artiklar</h2>
+            @if(Html.HasPermissionFor(Permissions.OrderList.Update))
+            {
+                @Html.Submit("Uppdatera alla", new { style = "float:right" })
+            }
+        </div>
+        <div class="panel-c">
+            @if (Model.OrderedArticles == null || Model.OrderedArticles.Count == 0)
+            {
+                <div class="no-data">
+                    <h3>Inga påfyllningar begärda</h3>
+                </div>
+            }
+            else
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Boende</th>
+                            <th scope="col">Artikel</th>
+                            <th scope="col">Begärdes av</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.OrderedArticles.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @if (Html.HasPermissionFor(Permissions.OrderList.Read))
+                                    {
+                                        @Html.ActionLink(Model.OrderedArticles[i].Patient.FullName, "List", "Article", new { id = Model.OrderedArticles[i].Patient.Id, Area = "Patient" }, null)
+                                    }
+                                    else
+                                    {
+                                        @Model.OrderedArticles[i].Patient.FullName
+                                    }
+                                </td>
+                                <td>@Model.OrderedArticles[i].Name</td>
+                                <td>
+                                    @Model.OrderedArticles[i].OrderedBy.FullName
+                                    <p class="orderTime">@TimeSpanDifference.ToReadableFromToday(Model.OrderedArticles[i].OrderDate.GetValueOrDefault())</p>
+                                </td>
+                                @if (Html.HasPermissionFor(Permissions.OrderList.Update))
+                                {
+                                <td class="inliner">
+                                    <div class="control-container control-container--select control-container--no-margin">
+                                        @Html.DropDownListFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].SelectedOrderOptionKey))
+                                    </div>
+                                    <div class="control-container control-container--no-margin">
+                                        @Html.HiddenFor(x => x.OrderedArticles[i].Id)
+                                    </div>
+                                </td>
+                                }
+                                else
+                                {
+                                    <td>@Model.OrderedArticles[i].SelectedOrderOptionValue</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    }
+    <script type="text/javascript">
+        mcss.Order.init();
+    </script>
+</div>

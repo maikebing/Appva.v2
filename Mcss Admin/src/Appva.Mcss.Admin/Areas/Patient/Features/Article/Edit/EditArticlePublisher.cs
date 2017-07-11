@@ -10,13 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Linq;
-    using Appva.Core.Extensions;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Models;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
 
     #endregion

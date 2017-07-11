@@ -9,7 +9,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
@@ -17,6 +16,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Application.Models;
+    using Appva.Mcss.Admin.Application.Transformers;
 
     #endregion
 
@@ -33,6 +34,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IArticleRepository articleRepository;
 
         /// <summary>
+        /// The <see cref="IArticleTransformer"/>.
+        /// </summary>
+        private readonly IArticleTransformer articleTransformer;
+
+        /// <summary>
+        /// The <see cref="IArticleService"/>.
+        /// </summary>
+        private readonly IArticleService articleService;
+
+        /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
@@ -40,23 +51,26 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IPatientTransformer"/>.
         /// </summary>
-        private readonly IPatientTransformer transformer;
+        private readonly IPatientTransformer patientTransformer;
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListArticleHandler"/> class.
         /// </summary>
-        /// <param name="articleService">The <see cref="IArticleRepository"/></param>
+        /// <param name="articleRepository">The <see cref="IArticleRepository"/></param>
+        /// <param name="articleTransformer">The <see cref="IArticleTransformer"/></param>
         /// <param name="patientService">The <see cref="IPatientService"/></param>
-        /// <param name="transformer">The <see cref="IPatientTransformer"/></param>
-        public ListArticleHandler(IArticleRepository articleRepository, IPatientService patientService, IPatientTransformer transformer)
+        /// <param name="patientTransformer">The <see cref="IPatientTransformer"/></param>
+        public ListArticleHandler(IArticleRepository articleRepository, IArticleTransformer articleTransformer, IArticleService articleService, IPatientService patientService, IPatientTransformer patientTransformer)
         {
             this.articleRepository = articleRepository;
+            this.articleTransformer = articleTransformer;
+            this.articleService = articleService;
             this.patientService = patientService;
-            this.transformer = transformer;
+            this.patientTransformer = patientTransformer;
         }
 
         #endregion
@@ -66,46 +80,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListArticleModel Handle(ListArticle message)
         {
+            var listArticleModel = new ListArticleModel();
             var articleModelList = new List<ArticleModel>();
             var orderedArticles = this.articleRepository.ListByOrderedArticles(message.Id).OrderByDescending(x => x.RefillOrderDate);
             var refilledArticles = this.articleRepository.ListByRefilledArticles(message.Id).OrderByDescending(x => x.CreatedAt).ToList();
-            var orderOptions = new Dictionary<string, string> {
-                { "not-started", "Påfyllning begärd" },
-                { "ordered-from-supplier", "Beställd" },
-                { "refilled", "Påfylld" } };
 
             foreach (var article in orderedArticles)
             {
                 var options = new List<SelectListItem>();
-                var articleModel = new ArticleModel
-                {
-                    Id = article.Id,
-                    Name = article.Name,
-                    Description = article.Description,
-                    Category = article.ArticleCategory,
-                    OrderedBy = article.RefillOrderedBy,
-                    OrderDate = article.RefillOrderDate,
-                    FormattedOrderDate = article.RefillOrderDate.Value.Day == DateTime.Now.Day ? "idag" : (article.RefillOrderDate.Value.Day == DateTime.Now.Day - 1 ? "igår" : article.RefillOrderDate.Value.ToString("d MMM yyyy")),
-                    SelectedOrderOptionKey = article.Status == null ? "not-started" : article.Status
-                };
-
-                foreach (var option in orderOptions)
-                {
-                    if(articleModel.SelectedOrderOptionKey == option.Key)
-                    {
-                        articleModel.SelectedOrderOptionValue = option.Value;
-                    }
-
-                    options.Add(new SelectListItem
-                    {
-                        Text = option.Value,
-                        Value = option.Key,
-                        Selected = option.Key == articleModel.SelectedOrderOptionKey ? true : false
-                    });
-                }
-
-                articleModel.OrderOptions = options;
-                articleModelList.Add(articleModel);
+                articleModelList.Add(articleTransformer.ToArticleModel(article));
             }
 
             return new ListArticleModel
@@ -113,7 +96,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 OrderedArticles = articleModelList,
                 RefilledArticles = refilledArticles,
                 HasArticles = articleModelList.Count > 0 || refilledArticles.Count > 0 ? true : false,
-                Patient = this.transformer.ToPatient(this.patientService.Get(message.Id))
+                Patient = this.patientTransformer.ToPatient(this.patientService.Get(message.Id)),
+                OrderOptions = this.articleService.GetOrderOptions()
             };
         }
 

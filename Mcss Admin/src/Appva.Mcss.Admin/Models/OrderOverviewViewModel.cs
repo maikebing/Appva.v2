@@ -5,6 +5,6 @@ namespace Appva.Mcss.Web.ViewModels
 {
     public class OrderOverviewViewModel
     {
-        public IList<Article> Orders { get; set; }
+        public IList<Sequence> Orders { get; set; }
     }
 }

@@ -269,6 +269,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string ReadOrderRefillValue = Schema + "dashboard/order/refill/read";
 
             /// <summary>
+            /// The read article order value.
+            /// </summary>
+            public const string ReadArticleOrderValue = Schema + "dashboard/article/order/read";
+
+            /// <summary>
             /// The read calendar value.
             /// </summary>
             public const string ReadCalendarValue = Schema + "dashboard/calendar/read";
@@ -321,6 +326,15 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Read order refill dashboard")]
             [Description("Permission to read/view order refill widget on the dashboard")]
             public static readonly IPermission ReadOrderRefill = PermissionType.CreateNew(ReadOrderRefillValue);
+
+            /// <summary>
+            /// Permission to read/view article order.
+            /// </summary>
+            [New]
+            [Sort(0)]
+            [Name("Read article order dashboard")]
+            [Description("Permission to read/view article order widget on the dashboard")]
+            public static readonly IPermission ReadArticleOrder = PermissionType.CreateNew(ReadArticleOrderValue);
 
             /// <summary>
             /// Permission to read/view calender.

@@ -8,21 +8,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Core.Extensions;
-    using Appva.Core.Utilities;
-    using Appva.Mcss.Admin.Commands;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure;
-using Appva.Mcss.Web.Controllers;
-using NHibernate.Criterion;
-using NHibernate.Transform;
+    using NHibernate.Criterion;
+    using NHibernate.Transform;
     using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
@@ -60,7 +54,7 @@ using NHibernate.Transform;
         /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
         /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/></param>
         public OverviewOrderHandler(
-            IIdentityService identityService, 
+            IIdentityService identityService,
             IPersistenceContext persistence,
             ITaxonFilterSessionHandler filtering)
         {
@@ -77,22 +71,28 @@ using NHibernate.Transform;
         public override OrderOverviewViewModel Handle(OverviewOrder message)
         {
             var account = this.persistence.Get<Account>(this.identityService.PrincipalId);
+            var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
             var filterTaxon = this.filtering.GetCurrentFilter();
-            var orders = this.persistence.QueryOver<Article>()
+            Schedule scheduleAlias = null;
+            ScheduleSettings scheduleSettingsAlias = null;
+            var orders = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
-                    .And(x => x.Refill == true)
-                        .Fetch(x => x.RefillOrderedBy).Eager;
-
+                  .And(x => x.RefillInfo.Refill)
+                .Fetch(x => x.RefillInfo.RefillOrderedBy).Eager
+                .JoinAlias(x => x.Schedule, () => scheduleAlias)
+                    .Where(() => scheduleAlias.IsActive)
+                    .JoinAlias(x => scheduleAlias.ScheduleSettings, () => scheduleSettingsAlias)
+                        .WhereRestrictionOn(() => scheduleSettingsAlias.Id).IsIn(scheduleList.Select(x => x.Id).ToArray())
+                .TransformUsing(new DistinctRootEntityResultTransformer());
             orders.JoinQueryOver<Patient>(x => x.Patient)
                 .Where(x => x.IsActive)
-                    .And(x => x.Deceased == false)
-                        .JoinQueryOver<Taxon>(x => x.Taxon)
-                            .Where(Restrictions.On<Taxon>(x => x.Path)
-                                .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));
-
+                  .And(x => !x.Deceased)
+                .JoinQueryOver<Taxon>(x => x.Taxon)
+                    .Where(Restrictions.On<Taxon>(x => x.Path)
+                        .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));
             return new OrderOverviewViewModel
             {
-                Orders = orders.OrderBy(x => x.RefillOrderDate).Asc.List()
+                Orders = orders.OrderBy(x => x.RefillInfo.RefillOrderedDate).Asc.List()
             };
         }
 

@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Application.Models;
 
     #endregion
 
@@ -69,7 +70,8 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                 Name = message.Name,
                 Description = message.Description,
                 ArticleCategory = category,
-                Patient = patient
+                Patient = patient,
+                Status = ArticleStatus.Refilled.ToString()
             };
 
             this.articleRepository.Save(article);

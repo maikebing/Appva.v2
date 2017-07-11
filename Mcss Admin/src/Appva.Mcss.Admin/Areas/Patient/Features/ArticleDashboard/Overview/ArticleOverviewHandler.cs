@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
     using NHibernate.Criterion;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -54,6 +55,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ITaxonFilterSessionHandler filtering;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructors.
@@ -66,13 +72,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="articleTransformer">The <see cref="IArticleTransformer"/>.</param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
         /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/>.</param>
-        public ArticleOverviewHandler(IIdentityService identityService, IArticleService articleService, IArticleTransformer articleTransformer, IPersistenceContext persistence, ITaxonFilterSessionHandler filtering)
+        /// <param name="auditing">The <see cref="IAuditService"/>.</param>
+        public ArticleOverviewHandler(IIdentityService identityService, IArticleService articleService, IArticleTransformer articleTransformer, IPersistenceContext persistence, ITaxonFilterSessionHandler filtering, IAuditService auditing)
         {
             this.identityService = identityService;
             this.articleService = articleService;
             this.articleTransformer = articleTransformer;
             this.persistence = persistence;
             this.filtering = filtering;
+            this.auditing = auditing;
         }
 
         #endregion
@@ -101,6 +109,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 orderedArticles.Add(this.articleTransformer.ToArticleModel(article));
             }
+
+            this.auditing.Read("läste beställningslistan från översiktsvyn");
 
             return new ArticleOverviewViewModel
             {

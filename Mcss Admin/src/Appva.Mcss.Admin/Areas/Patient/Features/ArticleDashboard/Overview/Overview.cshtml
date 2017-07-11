@@ -1,13 +1,31 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
 @model Appva.Mcss.Web.ViewModels.ArticleOverviewViewModel
-<div>
-    @using (Ajax.BeginForm("update", "articledashboard", new AjaxOptions { HttpMethod = "post" }))
+<script>
+        $(document).ready(function () {
+            $('.select-style').change(function () {
+                $('#article-update-button').attr('disabled', false);
+            });
+            $("#article-update-button").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("update", "articledashboard")',
+                    data: $('form').serialize(),
+                    success: function () {
+                        $('#article-update-button').attr('disabled', true);
+                    }
+                });
+            });
+        });
+</script>
+<div id="article-update">
+    @using (Html.BeginForm())
     {
         <div class="heading cf">
             <h2>Påfyllning av artiklar</h2>
             @if(Html.HasPermissionFor(Permissions.OrderList.Update))
             {
-                @Html.Submit("Uppdatera alla", new { style = "float:right" })
+                @Html.Button("Uppdatera alla", new { id = "article-update-button", disabled = "disabled", style = "float:right" })
             }
         </div>
         <div class="panel-c">
@@ -51,7 +69,7 @@
                                 {
                                 <td class="inliner">
                                     <div class="control-container control-container--select control-container--no-margin">
-                                        @Html.DropDownListFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].SelectedOrderOptionKey))
+                                        @Html.DropDownListFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].SelectedOrderOptionKey), new { @class = "select-style" })
                                     </div>
                                     <div class="control-container control-container--no-margin">
                                         @Html.HiddenFor(x => x.OrderedArticles[i].Id)
@@ -69,7 +87,4 @@
             }
         </div>
     }
-    <script type="text/javascript">
-        mcss.Order.init();
-    </script>
 </div>

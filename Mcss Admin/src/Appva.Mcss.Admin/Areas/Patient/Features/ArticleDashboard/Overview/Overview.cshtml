@@ -7,12 +7,16 @@
             });
             $("#article-update-button").click(function (e) {
                 e.preventDefault();
+                $('.article-loading-status, .article-loading-status img').css({ 'display': 'inline-block' });
                 $.ajax({
                     type: 'POST',
                     url: '@Url.Action("update", "articledashboard")',
                     data: $('form').serialize(),
                     success: function () {
                         $('#article-update-button').attr('disabled', true);
+                        $('.article-loading-status img').delay(500).fadeOut('fast', function () {
+                            $('.article-loading-status span').css({ 'display': 'inline-block' }).delay(1000).fadeOut(100);
+                        });
                     }
                 });
             });
@@ -26,6 +30,7 @@
             @if(Html.HasPermissionFor(Permissions.OrderList.Update))
             {
                 @Html.Button("Uppdatera alla", new { id = "article-update-button", disabled = "disabled", style = "float:right" })
+                <span class="article-loading-status"><span>Okej!</span><img src="@Url.Image("ajax-load.gif")" width="18" alt="Laddar" /></span>
             }
         </div>
         <div class="panel-c">

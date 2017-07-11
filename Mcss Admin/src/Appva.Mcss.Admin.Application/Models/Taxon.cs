@@ -111,6 +111,14 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="description"></param>
         /// <param name="sort"></param>
         void Update(string name, string description, int sort);
+
+        /// <summary>
+        /// Returns true if self is parent of the given taxon.
+        /// Does also return true if taxons are the same (eg. have the exactly same path)
+        /// </summary>
+        /// <param name="taxon"></param>
+        /// <returns></returns>
+        bool IsParentOf(ITaxon taxon);
     }
 
     /// <summary>
@@ -228,11 +236,18 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Description = description;
         }
 
+        /// <inheritdoc />
         public void Update(string name, string description, int sort)
         {
             this.Name = name;
             this.Description = description;
             this.Sort = sort;
+        }
+
+        /// <inheritdoc />
+        public bool IsParentOf(ITaxon taxon)
+        {
+            return taxon.Path.StartsWith(this.Path);
         }
 
         #endregion

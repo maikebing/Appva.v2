@@ -124,7 +124,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(CreateAccountModel message)
         {
-            var taxonId = message.Taxon.IsNotEmpty() ? message.Taxon.ToGuid() : this.taxonomies.Roots(TaxonomicSchema.Organization).Single().Id;
+            var user = this.accountService.CurrentPrincipal();
+            var orgRoot = user.Locations.Count > 0 ? 
+                this.taxonomies.Find(user.Locations.First().Taxon.Id, TaxonomicSchema.Organization) :
+                this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
+            var taxonId = message.Taxon.IsNotEmpty() ? message.Taxon.ToGuid() : orgRoot.Id;
             var roles   = message.TitleRole.IsNotEmpty() ? new List<Role> { this.roleService.Find(message.TitleRole.ToGuid()) } : new List<Role>();
             var address = this.taxonomies.Get(taxonId);
             var account                    = new Account();
@@ -144,7 +148,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 account.DevicePassword = this.settings.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : message.DevicePassword;
             }
-            this.accountService.Save(account, Location.New(account, address));
+
+            var permissionAddress = message.UseTaxonAsRootAddress ? address : taxonomies.Load(orgRoot.Id);
+            this.accountService.Save(account, Location.New(account, permissionAddress));
+            
             bool isAccountUpgradedForAdminAccess;
             bool isAccountUpgradedForDeviceAccess;
             this.accountService.UpdateRoles(account, roles, out isAccountUpgradedForAdminAccess, out isAccountUpgradedForDeviceAccess);

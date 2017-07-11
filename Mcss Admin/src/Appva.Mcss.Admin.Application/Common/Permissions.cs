@@ -395,6 +395,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string UpdateRolesValue = Schema + "practitioner/update/role";
 
             /// <summary>
+            /// The update organisation-permission value.
+            /// </summary>
+            public const string UpdateOrganizationPermissionValue = Schema + "practitioner/update/role/organization";
+
+            /// <summary>
             /// The update your own role value.
             /// </summary>
             public const string UpdatePrincipalRolesValue = Schema + "practitioner/update/role/principal";
@@ -450,6 +455,14 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Update practitioner roles")]
             [Description("Permission to update/edit practitioner roles")]
             public static readonly IPermission UpdateRoles = PermissionType.CreateNew(UpdateRolesValue);
+
+            /// <summary>
+            /// Permission to update/edit a practitioner.
+            /// </summary>
+            [Sort(3)]
+            [Name("Update practitioner organization permissions")]
+            [Description("Permission to set permission to organization for practitioner")]
+            public static readonly IPermission UpdateOrganizationPermission = PermissionType.CreateNew(UpdateOrganizationPermissionValue);
 
             /// <summary>
             /// Permission to update/edit the current principal role.

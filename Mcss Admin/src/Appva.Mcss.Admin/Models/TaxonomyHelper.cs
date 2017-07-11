@@ -18,7 +18,7 @@ namespace Appva.Mcss.Web {
             var view   = new TaxonViewModel();
             retval.Add(view);
             var locations = account.Locations.Count > 0 ?
-                account.Locations.OrderByDescending(x => x.Sort).Select(x => organization.SingleOrDefault(y => y.Id == x.Id)).ToList() :
+                account.Locations.OrderByDescending(x => x.Sort).Select(x => organization.FirstOrDefault(y => y.Id == x.Taxon.Id)).ToList() :
                 organization.Where(x => x.IsRoot).ToList();
             foreach (var taxon in locations)
             {

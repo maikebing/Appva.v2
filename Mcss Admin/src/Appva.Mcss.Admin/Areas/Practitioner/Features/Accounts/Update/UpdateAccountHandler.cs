@@ -77,30 +77,29 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var account      = this.accountService.Find(message.Id);
             var ldapIsActive = this.settings.Find<bool>(ApplicationSettings.IsLdapConnectionEnabled);
             var ldapConfig   = this.settings.Find<LdapConfiguration>(ApplicationSettings.LdapConfiguration);
-            var selected     = account.Locations.Count > 0 ? 
-                this.taxonomies.Find(account.Locations.First().Taxon.Id, TaxonomicSchema.Organization) :
-                this.taxonomies.Roots(TaxonomicSchema.Organization).First();
+            var selected     = this.taxonomies.Find(account.Taxon.Id, TaxonomicSchema.Organization);
+            
             return new UpdateAccount
             {
                 IsHsaIdFieldVisible                = (account.IsSynchronized && ldapIsActive) ? string.IsNullOrEmpty(ldapConfig.FieldHsaId) : this.settings.IsSithsAuthorizationEnabled() || this.settings.Find(ApplicationSettings.IsHsaIdVisible),
                 IsMobileDevicePasswordEditable     = (account.IsSynchronized && ldapIsActive) ? string.IsNullOrEmpty(ldapConfig.FieldPin) && this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable) : this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
                 IsMobileDevicePasswordFieldVisible = (account.IsSynchronized && ldapIsActive) ? string.IsNullOrEmpty(ldapConfig.FieldPin) && this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable) : this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable),
                 IsUsernameVisible                  = this.settings.Find<bool>(ApplicationSettings.IsUsernameVisible),
-                Taxons                             = TaxonomyHelper.CreateItems(user, selected, this.taxonomies.List(TaxonomicSchema.Organization)),
+                Taxons                             = TaxonomyHelper.CreateItems(account, selected, this.taxonomies.List(TaxonomicSchema.Organization)),
                 Id                                 = account.Id,
                 DevicePassword                     = account.DevicePassword,
                 Email                              = account.EmailAddress,
                 FirstName                          = account.FirstName,
                 LastName                           = account.LastName,
                 PersonalIdentityNumber             = account.PersonalIdentityNumber,
-                Taxon                              = selected.Id.ToString(),
+                Taxon                              = account.Taxon.Id.ToString(),
                 Username                           = account.UserName,
                 HsaId                              = account.HsaId,
                 IsFirstNameFieldVisible            = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldFirstName) : true,
                 IsLastNameFieldVisible             = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldLastName) : true,
-                IsMailFieldVisible                 = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldMail) : true,
-                RestrictUserToOrganizationTaxon    = account.Locations.Count > 0 && selected.Id == account.Taxon.Id,
-                RestrictUserToOrganizationTaxonIsVisible = id == message.Id
+                IsMailFieldVisible                 = account.IsSynchronized && ldapIsActive ? string.IsNullOrEmpty(ldapConfig.FieldMail) : true
+                //RestrictUserToOrganizationTaxon    = account.Locations.Count > 0 && selected.Id == account.Taxon.Id,
+                //RestrictUserToOrganizationTaxonIsVisible = id == message.Id
             };
         }
 

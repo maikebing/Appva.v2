@@ -72,10 +72,6 @@
                 @Html.HiddenFor(m => m.Taxon)
                 @Html.ValidationMessageFor(m => m.Taxon)
             </div>
-            @if (Model.RestrictUserToOrganizationTaxonIsVisible)
-            {
-                @Html.FormGroup(x => x.RestrictUserToOrganizationTaxon).Checkbox("Lås användaren till att komma åt endast vald organisation").Validate().Build()
-            }
         </div>
         <div class="submit">
             @Html.Submit("Spara")

@@ -166,9 +166,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Updates an account
         /// </summary>
         /// <param name="account">The <see cref="Account"/></param>
-        /// <param name="location">The new location.</param>
-        /// <param name="updatePreferrdAddressLocation">If only the preferred address should be updated</param>
-        void Update(Account account, Taxon location, bool updatePreferrdAddressLocation = false);
+        void Update(Account account);
 
         /// <summary>
         /// Updates the roles for a user account.
@@ -177,7 +175,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="roles">The list of roles to be added</param>
         /// <param name="isAccountUpgradedForAdminAccess">If true then the user has got new roles which permits them to access admin</param>
         /// <param name="isAccountUpgradedForDeviceAccess">If true then the user has got new roles which permits them to access device</param>
-        void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess);
+        void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess, Taxon location = null);
 
         /// <summary>
         /// Lists all accounts with expiring
@@ -373,7 +371,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
         
         /// <inheritdoc />
-        public void UpdateRoles(Account account, IList<Role> newRoles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess)
+        public void UpdateRoles(Account account, IList<Role> newRoles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess, Taxon location = null)
         {
             var user            = this.CurrentPrincipal();
             var userAccessRoles = user.GetRoleAccess();
@@ -444,35 +442,10 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             //// Overwrite the new roles - no need to remove any roles per definition (device/backend).
             account.Roles = difference;
-            this.repository.Update(account);
-            this.auditing.Update("uppdaterade roller för {0} (REF: {1}).", account.FullName, account.Id);
-        }
 
-        /// <inheritdoc />
-        public string CreateUniqueUserNameFor(Account account)
-        {
-            return this.CreateUserName(account.FirstName, account.LastName, this.ListAllUserNames());
-        }
-
-        /// <inheritdoc />
-        public void Update(Account account, Taxon location, bool updatePreferrdAddressLocation = false)
-        {
-            var user = this.CurrentPrincipal();
-            //// If the user updates its own user account, let it 
-            //// only update the preferred address location.
-            if (user.Id == account.Id )
+            if (this.HasAnyPermissions(user, Common.Permissions.Practitioner.UpdateOrganizationPermissionValue) && location != null)
             {
-                account.Taxon = location;
-            }
-            //// If only the preffered address location should be updated,
-            //// only update the preferred address location
-            else if ( updatePreferrdAddressLocation == true )
-            {
-                account.Taxon = location;
-            }
-            else
-            {
-                var remove = account.Locations.Select(x => x).ToList();
+                 var remove = account.Locations.Select(x => x).ToList();
                 //// Remove any previous locations since it's stil 1-1.
                 foreach (var previous in remove)
                 {
@@ -484,12 +457,26 @@ namespace Appva.Mcss.Admin.Application.Services
                 //// make sure it updates too.
                 if (account.Taxon != null)
                 {
-                    if (! account.Taxon.Path.ToLowerInvariant().Contains(location.Id.ToString()))
+                    if (! account.Taxon.Path.ToLowerInvariant().Contains(location.Id.ToString().ToLowerInvariant()))
                     {
                         account.Taxon = location;
                     }
                 }
+                this.auditing.Update("uppdaterade organisations-behörighet för {0} till {1} (REF: {2}", account.Id, location.Name, location.Id);
             }
+            this.repository.Update(account);
+            this.auditing.Update("uppdaterade roller för {0}", account.Id);
+        }
+
+        /// <inheritdoc />
+        public string CreateUniqueUserNameFor(Account account)
+        {
+            return this.CreateUserName(account.FirstName, account.LastName, this.ListAllUserNames());
+        }
+
+        /// <inheritdoc />
+        public void Update(Account account)
+        {
             this.repository.Update(account);
             this.auditing.Update("uppdaterade kontot för {0} (REF: {1}).", account.FullName, account.Id);
         }

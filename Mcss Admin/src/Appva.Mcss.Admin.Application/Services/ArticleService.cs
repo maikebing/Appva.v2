@@ -11,12 +11,16 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Application.Models;
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public interface IArticleService : IService
     {
         /// <summary>
@@ -24,7 +28,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="list">A collection of <see cref="ArticleModel"/>.</param>
         /// <param name="userId">The user <see cref="Guid"/>.</param>
-        /// <returns><see cref="void"/></returns>
         void UpdateStatus(IList<ArticleModel> list, Guid userId);
 
         /// <summary>
@@ -85,9 +88,11 @@ namespace Appva.Mcss.Admin.Application.Services
                 var article = this.articleRepository.Get(orderedArticle.Id);
                 var account = this.accountRepository.Find(userId);
 
-                if (article != null && account != null)
+                if (article != null && account != null && article.Status != orderedArticle.SelectedOrderOptionKey)
                 {
                     bool isRefilled = orderedArticle.SelectedOrderOptionKey == ArticleStatus.Refilled.ToString();
+                    string selectedOrderOption = this.GetOrderOptions().FirstOrDefault(x => x.Key == orderedArticle.SelectedOrderOptionKey).Value;
+
                     article.Refill = isRefilled ? false : true;
                     article.RefillOrderDate = isRefilled ? (DateTime?)null : article.RefillOrderDate;
                     article.RefillOrderedBy = isRefilled ? null : article.RefillOrderedBy;
@@ -96,7 +101,15 @@ namespace Appva.Mcss.Admin.Application.Services
                     article.OrderedBy = isRefilled ? account : null;
                     article.Status = isRefilled ? ArticleStatus.Refilled.ToString() : orderedArticle.SelectedOrderOptionKey;
                     this.articleRepository.Update(article);
-                    this.auditing.Update(article.Patient, "fyllde på {0} ({1})", article.Name, article.Id);
+
+                    if (isRefilled)
+                    {
+                        this.auditing.Update(article.Patient, "fyllde på {0} ({1})", article.Name, article.Id);
+                    }
+                    else
+                    {
+                        this.auditing.Update(article.Patient, "ändrade orderstatus för {0} ({1}) till {2}", article.Name, article.Id, selectedOrderOption.ToLower());
+                    }
                 }
             }
         }

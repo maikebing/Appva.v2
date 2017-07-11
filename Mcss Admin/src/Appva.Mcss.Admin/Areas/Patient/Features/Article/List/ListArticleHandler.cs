@@ -9,15 +9,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Transformers;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Application.Models;
-    using Appva.Mcss.Admin.Application.Transformers;
 
     #endregion
 
@@ -53,6 +55,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPatientTransformer patientTransformer;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructors.
@@ -64,13 +71,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="articleTransformer">The <see cref="IArticleTransformer"/></param>
         /// <param name="patientService">The <see cref="IPatientService"/></param>
         /// <param name="patientTransformer">The <see cref="IPatientTransformer"/></param>
-        public ListArticleHandler(IArticleRepository articleRepository, IArticleTransformer articleTransformer, IArticleService articleService, IPatientService patientService, IPatientTransformer patientTransformer)
+        /// <param name="articleService">The <see cref="IAuditService"/>.</param>
+        public ListArticleHandler(IArticleRepository articleRepository, IArticleTransformer articleTransformer, IArticleService articleService, IPatientService patientService, IPatientTransformer patientTransformer, IAuditService auditing)
         {
             this.articleRepository = articleRepository;
             this.articleTransformer = articleTransformer;
             this.articleService = articleService;
             this.patientService = patientService;
             this.patientTransformer = patientTransformer;
+            this.auditing = auditing;
         }
 
         #endregion
@@ -84,6 +93,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var articleModelList = new List<ArticleModel>();
             var orderedArticles = this.articleRepository.ListByOrderedArticles(message.Id).OrderByDescending(x => x.RefillOrderDate);
             var refilledArticles = this.articleRepository.ListByRefilledArticles(message.Id).OrderByDescending(x => x.CreatedAt).ToList();
+            var patient = this.patientService.Get(message.Id);
+            var patientViewModel = this.patientTransformer.ToPatient(patient);
 
             foreach (var article in orderedArticles)
             {
@@ -91,12 +102,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 articleModelList.Add(articleTransformer.ToArticleModel(article));
             }
 
+            this.auditing.Read(patient, "läste beställningslistan");
+
             return new ListArticleModel
             {
                 OrderedArticles = articleModelList,
                 RefilledArticles = refilledArticles,
                 HasArticles = articleModelList.Count > 0 || refilledArticles.Count > 0 ? true : false,
-                Patient = this.patientTransformer.ToPatient(this.patientService.Get(message.Id)),
+                Patient = patientViewModel,
                 OrderOptions = this.articleService.GetOrderOptions()
             };
         }

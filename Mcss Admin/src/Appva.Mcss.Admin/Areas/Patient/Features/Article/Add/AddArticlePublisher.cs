@@ -11,9 +11,10 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
 
     using System;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Application.Models;
 
     #endregion
@@ -35,6 +36,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// </summary>
         private readonly IPatientService patientService;
 
+        /// <summary>
+        /// The
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructors.
@@ -44,10 +50,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <param name="articleRepository">The <see cref="IArticleRepository"/>.</param>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// </summary>
-        public AddArticlePublisher(IArticleRepository articleRepository, IPatientService patientService)
+        public AddArticlePublisher(IArticleRepository articleRepository, IPatientService patientService, IAuditService auditing)
         {
             this.articleRepository = articleRepository;
             this.patientService = patientService;
+            this.auditing = auditing;
         }
 
         #endregion
@@ -75,6 +82,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             };
 
             this.articleRepository.Save(article);
+            this.auditing.Create(patient, "skapade {0} ({1})", article.Name, article.Id);
 
             return true;
         }

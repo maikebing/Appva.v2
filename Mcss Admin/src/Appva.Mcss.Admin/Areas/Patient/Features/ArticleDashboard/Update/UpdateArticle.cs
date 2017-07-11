@@ -34,15 +34,6 @@ namespace Appva.Mcss.Admin.Models
         #region Properties.
 
         /// <summary>
-        /// The patient id.
-        /// </summary>
-        public Guid PatientId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The current user id.
         /// </summary>
         public Guid UserId

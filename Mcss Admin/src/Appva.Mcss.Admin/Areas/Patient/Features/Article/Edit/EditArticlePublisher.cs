@@ -11,6 +11,8 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
 
     using System;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Repositories;
 
     #endregion
@@ -27,6 +29,16 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// </summary>
         private readonly IArticleRepository articleRepository;
 
+        /// <summary>
+        /// The <see cref="IPatientService"/>.
+        /// </summary>
+        private readonly IPatientService patientService;
+
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructors.
@@ -35,9 +47,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// Initializes a new instance of the <see cref="EditArticlePublisher"/> class.
         /// <param name="articleRepository">The <see cref="IArticleRepository"/>.</param>
         /// </summary>
-        public EditArticlePublisher(IArticleRepository articleRepository)
+        public EditArticlePublisher(IArticleRepository articleRepository, IPatientService patientService, IAuditService auditing)
         {
             this.articleRepository = articleRepository;
+            this.patientService = patientService;
+            this.auditing = auditing;
         }
 
         #endregion
@@ -48,6 +62,8 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         public override bool Handle(EditArticleModel message)
         {
             var article = this.articleRepository.Get(message.Article);
+            var currentArticleName = article.Name;
+            var patient = this.patientService.Get(message.Id);
 
             if(article == null || string.IsNullOrEmpty(message.Name))
             {
@@ -61,6 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             article.Version += 1;
             article.UpdatedAt = DateTime.Now;
             this.articleRepository.Update(article);
+            this.auditing.Update(patient, "redigerade {0} ({1})", currentArticleName, article.Id);
 
             return true;
         }

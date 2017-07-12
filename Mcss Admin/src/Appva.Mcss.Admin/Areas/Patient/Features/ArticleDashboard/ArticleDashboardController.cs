@@ -47,10 +47,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <summary>
         /// Updates selected articles.
         /// </summary>
-        /// <param name="sequence">The sequence id</param>
-        /// <returns><see cref="JsonResult"/></returns>
+        /// <param name="request">The <see cref="UpdateArticle"/>.</param>
+        /// <returns><see cref="DispatchJsonResult"/></returns>
         [Route("update")]
-        [HttpPost, Dispatch]
+        [HttpPost, Dispatch("overview", "articledashboard")]
+        [PermissionsAttribute(Permissions.OrderList.UpdateValue)]
         public DispatchJsonResult Update(UpdateArticle request)
         {
             return this.JsonPost();

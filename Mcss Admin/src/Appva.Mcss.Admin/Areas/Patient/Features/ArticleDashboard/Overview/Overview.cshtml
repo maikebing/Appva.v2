@@ -2,20 +2,25 @@
 @model Appva.Mcss.Web.ViewModels.ArticleOverviewViewModel
 <script>
         $(document).ready(function () {
-            $('.select-style').change(function () {
+            $('.article-option').change(function () {
                 $('#article-update-button').attr('disabled', false);
             });
-            $("#article-update-button").click(function (e) {
+            $('#article-update-button').click(function (e) {
                 e.preventDefault();
-                $('.article-loading-status, .article-loading-status img').css({ 'display': 'inline-block' });
+                $('#article-update-button').attr('disabled', true);
+                $('.article-loading-status').css({ 'display': 'inline-block' });
                 $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("update", "articledashboard")',
-                    data: $('form').serialize(),
-                    success: function () {
-                        $('#article-update-button').attr('disabled', true);
-                        $('.article-loading-status img').delay(500).fadeOut('fast', function () {
-                            $('.article-loading-status span').css({ 'display': 'inline-block' }).delay(1200).fadeOut(100);
+                    type: 'POST', url: '@Url.Action("update", "articledashboard")', data: $('form').serialize(),
+                    success: function (result) {
+                        $('.article-row').each(function () {
+                            var row = $(this);
+                            var option = row.find('.article-option');
+                            if (option.val() == 'Refilled') {
+                                row.fadeOut(300);
+                            }
+                        });
+                        $('.article-loading-status img').delay(300).fadeOut('fast', function () {
+                            $('#article-update').html(result);
                         });
                     }
                 });
@@ -30,7 +35,7 @@
             @if(Html.HasPermissionFor(Permissions.OrderList.Update))
             {
                 @Html.Button("Uppdatera alla", new { id = "article-update-button", disabled = "disabled", style = "float:right" })
-                <span class="article-loading-status"><span>Sparad!</span><img src="@Url.Image("ajax-load.gif")" width="18" alt="Laddar" /></span>
+                <span class="article-loading-status"><img src="@Url.Image("ajax-load.gif")" width="18" alt="Laddar" /></span>
             }
         </div>
         <div class="panel-c">
@@ -54,7 +59,7 @@
                     <tbody>
                         @for (int i = 0; i < Model.OrderedArticles.Count; i++)
                         {
-                            <tr>
+                            <tr class="article-row">
                                 <td>
                                     @if (Html.HasPermissionFor(Permissions.OrderList.Read))
                                     {
@@ -72,14 +77,14 @@
                                 </td>
                                 @if (Html.HasPermissionFor(Permissions.OrderList.Update))
                                 {
-                                <td class="inliner">
-                                    <div class="control-container control-container--select control-container--no-margin">
-                                        @Html.DropDownListFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].SelectedOrderOptionKey), new { @class = "select-style" })
-                                    </div>
-                                    <div class="control-container control-container--no-margin">
-                                        @Html.HiddenFor(x => x.OrderedArticles[i].Id)
-                                    </div>
-                                </td>
+                                    <td class="inliner">
+                                        <div class="control-container control-container--select control-container--no-margin">
+                                            @Html.DropDownListFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].SelectedOrderOptionKey), new { @class = "article-option" })
+                                        </div>
+                                        <div class="control-container control-container--no-margin">
+                                            @Html.HiddenFor(x => x.OrderedArticles[i].Id)
+                                        </div>
+                                    </td>
                                 }
                                 else
                                 {

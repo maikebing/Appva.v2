@@ -2204,16 +2204,14 @@ form .time {width:4em;}
 .article-loading-status { 
     display:none;
     float:right;
-    padding:3px 8px 0 0;
+    padding:2px 8px 0 0;
     position:relative;
 }
-
 .article-loading-status img { 
     position:absolute; 
     top:1px;
     right:8px;
 }
-
 .article-loading-status span { display:none; }
 
 /* Calendar view */

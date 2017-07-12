@@ -321,12 +321,6 @@
     <Compile Include="Areas\Area51\Features\Cache\DeleteAll\DeleteAllCacheHandler.cs" />
     <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCache.cs" />
     <Compile Include="Areas\Area51\Features\Cache\Delete\DeleteCacheHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Calendar\CalendarController.cs" />
-    <Compile Include="Areas\Area51\Features\Calendar\Index\CalendarIndex.cs" />
-    <Compile Include="Areas\Area51\Features\Calendar\Index\CalendarIndexModel.cs" />
-    <Compile Include="Areas\Area51\Features\Calendar\Index\CalenderIndexHandler.cs" />
-    <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColors.cs" />
-    <Compile Include="Areas\Area51\Features\Calendar\InstallColors\InstallColorsPublisher.cs" />
     <Compile Include="Areas\Area51\Features\Delegation\AddOrganisation\AddOrganisation.cs" />
     <Compile Include="Areas\Area51\Features\Delegation\AddOrganisation\AddOrganisationHandler.cs" />
     <Compile Include="Areas\Area51\Features\Delegation\DelegationController.cs" />
@@ -1340,7 +1334,6 @@
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\version1.6.2.cshtml" />
     <Content Include="Areas\Area51\Features\Notifications\ListTemplates\ListTemplates.cshtml" />
     <Content Include="Areas\Patient\Features\Calendar\Details\Details.cshtml" />
-    <Content Include="Areas\Area51\Features\Calendar\Index\Index.cshtml" />
     <Content Include="Areas\Area51\Features\Taxon\Index\Index.cshtml" />
     <Content Include="Areas\Patient\Features\Calendar\Overview\_OverviewCalendarTask.cshtml" />
     <Content Include="Areas\Patient\Features\Inventory\Update\Update.cshtml" />

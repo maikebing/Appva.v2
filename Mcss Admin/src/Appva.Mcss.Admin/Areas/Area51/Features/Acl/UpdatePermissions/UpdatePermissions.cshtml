@@ -16,11 +16,11 @@
 	}
     @using (Html.Post("UpdatePermissions", "Acl", null))
     {
-        @Html.Submit("Upgradera behörigheter denna kund", new { @class = "btn" })
+        @Html.Submit("Upgradera behörigheter", new { @class = "btn" })
     }
     @using (Html.Post("UpdatePermissionsGlobal", "Acl", null))
     {
-        @Html.Submit("Upgradera behörigheter för alla kunder", new { @class = "btn" })
+        @Html.Submit("Upgradera behörigheter (Globalt)", new { @class = "btn" })
     }
 </div>
 <div id="content" class="cf">

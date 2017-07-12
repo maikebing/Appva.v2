@@ -112,8 +112,8 @@ namespace Appva.Mcss.Admin.Controllers
         [AlertSuccess("Uppgradering klar!")]
         public ActionResult UpdatePermissions()
         {
-            this.mediator.Send(new UpdatePermissionsAcl { UpdateGlobal = false });
-            return this.View();
+            var model = this.mediator.Send(new UpdatePermissionsAcl { UpdateGlobal = false });
+            return this.View(model);
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace Appva.Mcss.Admin.Controllers
         [AlertSuccess("Uppgradering för alla kunder klar!")]
         public ActionResult UpdatePermissionsGlobal()
         {
-            this.mediator.Send(new UpdatePermissionsAcl { UpdateGlobal = true });
-            return this.View("UpdatePermissions");
+            var model = this.mediator.Send(new UpdatePermissionsAcl { UpdateGlobal = true });
+            return this.View("UpdatePermissions", model);
         }
 
         #endregion

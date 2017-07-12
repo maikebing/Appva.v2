@@ -72,6 +72,14 @@
       <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Appva.GrandId, Version=0.1.4.17896, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.4\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Appva.Http, Version=0.1.0.17181, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Http.0.1.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Appva.Ldap, Version=0.0.1.25447, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
       <Private>True</Private>
@@ -98,10 +106,6 @@
     </Reference>
     <Reference Include="Appva.Repository, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Repository.0.3.0\lib\net45\Appva.Repository.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Appva.Siths, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Siths.0.4.0\lib\net45\Appva.Siths.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Tenant, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -737,6 +741,7 @@
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
+    <Compile Include="Configuration\GrandIdConfiguration.cs" />
     <Compile Include="Configuration\MockedTenantWcfClient.cs" />
     <Compile Include="Features\Account\AccountController.cs" />
     <Compile Include="Features\Account\Forgot\Forgot.cs" />
@@ -969,6 +974,7 @@
     <Content Include="Assets\i\popover2.png" />
     <Content Include="Assets\i\profile-blue%402x.png" />
     <Content Include="Assets\i\profile-blue.png" />
+    <Content Include="Assets\i\profile-icon.png" />
     <Content Include="Assets\i\profile-white.png" />
     <Content Include="Assets\i\reportchart.png" />
     <Content Include="Assets\i\select-arrow.png" />
@@ -1033,7 +1039,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Features\_ViewStart.cshtml" />
-    <Content Include="Features\Shared\Error.cshtml" />
+    <Content Include="Error.cshtml" />
     <Content Include="Features\Shared\_Layout.cshtml" />
     <Content Include="Features\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
@@ -1391,6 +1397,9 @@
     <Content Include="Areas\Area51\Features\Acl\UpdatePermissions\UpdatePermissions.cshtml" />
     <Content Include="Areas\Roles\Features\RolesDelegations\Update\Update.cshtml" />
     <Content Include="Areas\Roles\Features\RolesRoles\Update\Update.cshtml" />
+    <Content Include="Features\Shared\SignInSithsFailed.cshtml" />
+    <Content Include="Features\Shared\_LoginHeaderLogo.cshtml" />
+    <Content Include="Features\Shared\_SignInFormPartial.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />
@@ -1423,6 +1432,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\..\..\Packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\Packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\Packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\Packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

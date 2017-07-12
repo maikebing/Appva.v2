@@ -1,25 +1,23 @@
 ﻿@{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
-    SetTitle("Utgången lösenordslänk");
-    SetBodyCssClass("page-reset-password");
+    SetTitle("Inloggning misslyckades");
 }
+
 <div class="hd org">
     @Html.Partial("_LoginHeaderLogo")
-    <h1>Utgången lösenordslänk</h1>
+    <h1>Inloggning misslyckades</h1>
 </div>
+
 <div class="row">
     <div class="col">
-        <div class="profile">
-            <img src="@Url.Content("~/Assets/i/profile-icon.png")" />
-        </div>
         <div class="bd">
             <div class="alert alert-danger error-msg">
                 <span class="title">
-                    Lösenordslänken har gått ut, vänligen begär en ny genom att klicka på knappen "skicka ny återställningslänk" nedan.
+                    Inloggning med SITHS misslyckades. Ingen användare hittades för detta SITHS-kort.
                 </span>
             </div>
             <div class="controls">
-                @Html.ActionLink("Skicka ny återställningslänk", "Forgot", "Account", null, new { @class = "btn full" })
+                @Html.ActionLink("Försök igen", "SignInSiths", "Authentication", null, new { @class = "btn full" })
                 @Html.ActionLink("Tillbaka till inloggning", "SignIn", "Authentication", null, new { @class = "cancel" })
             </div>
         </div>

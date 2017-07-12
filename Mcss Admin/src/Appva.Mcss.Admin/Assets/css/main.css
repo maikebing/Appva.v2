@@ -475,13 +475,17 @@ a.pause-btn:active {
 #logged-info ul li a:hover{
     cursor:pointer;
 }
+#logged-info ul li.user-info:hover{
 
-#logged-info ul li.user-info:hover, #logged-info ul li.sel {
+}
+#logged-info ul li.user-info:hover a{}
+
+#logged-info ul li.sel {
     color:#445068;
 	background:#fff url(../i/header-tab.png) repeat-x;
 	text-shadow:0 1px 0 #fff;
 }
-#logged-info ul li.user-info:hover a, #logged-info ul li.sel a {
+#logged-info ul li.sel a {
     color:#445068;
 	text-shadow:0 1px 0 #fff;
 }
@@ -492,9 +496,9 @@ a.pause-btn:active {
 
 #logged-info ul li .icon, #logged-info ul li.sel .icon { padding-left:40px; background-size:16px; }
 #logged-info ul li .icon-profile { background:url(/Assets/i/profile-white.png) no-repeat 16px 50%; background-size:16px; }
-#logged-info ul li:hover .icon-profile, #logged-info ul li.sel .icon-profile { background:url(/Assets/i/profile-blue.png) no-repeat 16px 50%; background-size:16px; }
+#logged-info ul li.sel .icon-profile { background:url(/Assets/i/profile-blue.png) no-repeat 16px 50%; background-size:16px; }
 #logged-info ul li .icon-help { background:url(/Assets/i/icn-help.png) no-repeat 16px 50%; }
-#logged-info #nav-main ul li.user-info:hover a, #logged-info #nav-main ul li.sel a { border:none; }
+#logged-info #nav-main ul li.sel a { border:none; }
 
 #logged-info ul li a.profile {
     /*background:url(/Assets/i/profile-white.png) no-repeat 0 50%;
@@ -574,7 +578,6 @@ a.pause-btn:active {
     background:#eaeff9;
 }
 
-#logged-info ul li:hover div.profile,
 #logged-info ul li.sel div.profile {
     display:block;
 } 

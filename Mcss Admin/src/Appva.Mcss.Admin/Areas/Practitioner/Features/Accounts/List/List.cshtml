@@ -51,7 +51,7 @@
                 @foreach (var item in Model.Accounts.Entities)
                 {
                     <li class="cf @((item.HasExpiringDelegation) ? "update" : "")">
-                        @if (item.IsEditableForCurrentUser)
+                        @if (item.IsEditableForUser(Model.CurrentUser))
                         {
                             if (item.IsActive)
                             {

@@ -142,12 +142,56 @@ namespace Appva.Mcss.Admin.Domain.Models
         }
 
         /// <summary>
-        /// The locations.
+        /// The users locations
         /// </summary>
-        public bool IsEditableForCurrentUser
+        public IList<Location> Locations
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// The locations.
+        /// </summary>
+        public bool IsEditableForUser(Account user)
+        {
+            //// User has no location set == root and can edit everyone
+            if (user.Locations == null || user.Locations.Count() == 0)
+            {
+                return true;
+            }
+            //// User has root-location, can edit everyone
+            if (user.Locations.First().Taxon.IsRoot)
+            {
+                return true;
+            }
+
+            //// From previous user is not root but account is
+            //// User can not edit
+            //// Account has no location == root
+            if (this.Locations == null || this.Locations.Count() == 0)
+            {
+                return false;
+            }
+            //// Account has root-location
+            if (this.Locations.First().Taxon.IsRoot)
+            {
+                return false;
+            }
+
+            //// Else check if users location is parent of account
+            //// TODO: Check for all of accounts locations.
+            return user.Locations.Any(x => this.Locations.First().Taxon.Path.Contains(x.Taxon.Path));
+        }
+
+        /// <summary>
+        /// TODO: Temp for control if user can edit account
+        /// </summary>
+        /// <param name="taxon"></param>
+        /// <returns></returns>
+        public bool IsEditableForUserWithLocation(Taxon taxon)
+        {
+            return this.Locations.First().Taxon.Path.Contains(taxon.Path);
         }
 
         #endregion

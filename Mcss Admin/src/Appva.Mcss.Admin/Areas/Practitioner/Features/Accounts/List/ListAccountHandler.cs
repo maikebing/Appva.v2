@@ -109,7 +109,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 IsFilterByCreatedByEnabled      = message.filterByCreatedBy,
                 IsFilterByIsActiveEnabled       = message.isActive.GetValueOrDefault(true),
                 IsFilterByIsPausedEnabled       = message.isPaused.GetValueOrDefault(false),
-                IsFilterByIsSynchronizedEnabled = message.isSynchronized
+                IsFilterByIsSynchronizedEnabled = message.isSynchronized,
+                CurrentUser                     = user
             };
         }
 

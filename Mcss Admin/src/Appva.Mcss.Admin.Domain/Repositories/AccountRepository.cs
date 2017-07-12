@@ -310,6 +310,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                         Projections.Constant(true), 
                         Projections.Constant(false))).Take(1);
 
+
+            //query = query.Fetch(x => x.Locations).Eager;
+
             //// Merges queries and selects needed columns and order rows for main query
             AccountModel accountModel = null;
             var mainQuery = query.Clone().Select(
@@ -330,6 +333,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             //// Ordering and transforming
             mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
                 .ThenByAlias(() => accountModel.LastName).Asc
+                .Fetch(x => accountModel.Locations).Eager
                 .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
             //// Checks that page is greater then 0
             if (page < 1)

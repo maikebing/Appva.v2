@@ -165,7 +165,7 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterNhibernateProfiler(this ContainerBuilder builder)
         {
-            if (ApplicationEnvironment.Is.Staging)
+            if (ApplicationEnvironment.Is.Staging || ApplicationEnvironment.Is.Development)
             {
                 NHibernateProfiler.Initialize();
             }

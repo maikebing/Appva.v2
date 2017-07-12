@@ -122,6 +122,7 @@
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\SearchPatientModel.cs" />
+    <Compile Include="Models\SearchProfileModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />

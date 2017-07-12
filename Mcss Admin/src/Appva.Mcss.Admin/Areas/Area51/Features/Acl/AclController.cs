@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Mvc;
     using Appva.Mvc.Security;
     using Appva.Mcss.Admin.Areas.Area51.Features.Acl.AddNewsPermissions;
+    using System.Collections.Generic;
     using Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole;
     using Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToDelegation;
 
@@ -111,8 +112,21 @@ namespace Appva.Mcss.Admin.Controllers
         [AlertSuccess("Uppgradering klar!")]
         public ActionResult UpdatePermissions()
         {
-            this.mediator.Publish(new UpdatePermissionsAcl());
-            return this.RedirectToAction("Index");
+            this.mediator.Send(new UpdatePermissionsAcl { UpdateGlobal = false });
+            return this.View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Route("update/global")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Uppgradering för alla kunder klar!")]
+        public ActionResult UpdatePermissionsGlobal()
+        {
+            this.mediator.Send(new UpdatePermissionsAcl { UpdateGlobal = true });
+            return this.View("UpdatePermissions");
         }
 
         #endregion

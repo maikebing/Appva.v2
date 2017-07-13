@@ -254,6 +254,7 @@
     <Compile Include="Transformers\ArticleTransformer.cs" />
     <Compile Include="Transformers\DelegationTransformer.cs" />
     <Compile Include="Transformers\EventTransformer.cs" />
+    <Compile Include="Transformers\ITransformer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appva.Mcss.Admin.Domain\Appva.Mcss.Admin.Domain.csproj">

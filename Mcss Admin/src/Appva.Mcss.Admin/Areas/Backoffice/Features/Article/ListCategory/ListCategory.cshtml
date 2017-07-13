@@ -1,4 +1,4 @@
-﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ArticleListModel
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ArticleCategoryListModel
 @{
     SetTitle("Backoffice - Beställningslista");
 }
@@ -12,7 +12,7 @@
         {
             <div id="signlist">
                 <h4 class="list-header">Artikelkategorier</h4>
-                @Html.ActionLink("Ny kategori", "AddCategory", "Article", null, new { @class = "section-list-btn" })
+                @Html.ActionLink("Ny kategori", "AddCategory", "Article", null, new { @class = "lb-link section-list-btn" })
                 <table id="signed-events">
                     <thead class="head">
                         <tr>
@@ -24,13 +24,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var category in Model.CategoryList.OrderBy(x => x.CreatedAt))
+                        @foreach (var category in Model.CategoryList.OrderByDescending(x => x.UpdatedAt))
                         {
                             <tr class="tr-highlight">
                                 <td>@category.Name</td>
                                 <td>@category.Description</td>
                                 <td class="prtd">@(category.ArticleCount == 0 ? Html.Raw("&ndash;") : Html.Raw(category.ArticleCount + " st"))</td>
-                                <td class="prtd-wide">@category.UpdatedAt</td>
+                                <td class="prtd-wide">@category.UpdatedAt.ToString("yyyy-MM-dd, HH:mm:ss")</td>
                                 <td class="btnpad prtd2">
                                     @Html.ActionLink("Ändra", "UpdateCategory", "Article", new { id = category.Id }, new { @class = "lb-link btn" })
                                     @Html.ActionLink("Ta bort", "DeleteCategory", "Article", new { Id = category.Id }, new { @class = (category.HasArticles ? "btn btn-del action-denied" : "btn btn-del"), @style = (category.HasArticles ? "opacity:.7" : "opacity:1") })

@@ -57,18 +57,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// The date the category was created.
-        /// </summary>
-        public DateTime CreatedAt
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Date and time when the category was updated.
         /// </summary>
-        public string UpdatedAt
+        public DateTime UpdatedAt
         {
             get;
             set;

@@ -1,4 +1,4 @@
-﻿// <copyright file="ArticleListModel.cs" company="Appva AB">
+﻿// <copyright file="ArticleCategoryListModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ArticleListModel
+    public sealed class ArticleCategoryListModel
     {
         #region Properties.
 

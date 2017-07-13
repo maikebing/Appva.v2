@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Article
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mvc;
     using Appva.Mvc.Security;
 
     #endregion
@@ -39,18 +40,48 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Article
 
         #region Routes.
 
+        #region Categories.
+
         #region List.
 
         /// <summary>
-        /// The article list.
+        /// The article category list.
         /// </summary>
         /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("list")]
-        [Dispatch(typeof(Parameterless<ArticleListModel>))]
-        public ActionResult List()
+        [Route("listcategory")]
+        [HttpGet, Dispatch(typeof(Parameterless<ArticleCategoryListModel>))]
+        public ActionResult ListCategory()
         {
             return this.View();
         }
+
+        #endregion
+
+        #region Add.
+
+        /// <summary>
+        /// The add article category view.
+        /// </summary>
+        /// <returns></returns>
+        [Route("addcategory")]
+        [HttpGet, Dispatch(typeof(Parameterless<AddArticleCategoryModel>))]
+        public ActionResult AddCategory()
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Add a new article category.
+        /// </summary>
+        /// <returns></returns>
+        [Route("addcategory")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("listcategory", "article")]
+        public ActionResult AddCategory(AddArticleCategoryModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
 
         #endregion
 

@@ -10,7 +10,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     #region Imports.
 
     using System.Collections.Generic;
-    using System.Globalization;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Domain.Entities;
@@ -23,7 +22,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ArticleListHandler : RequestHandler<Parameterless<ArticleListModel>, ArticleListModel>
+    public sealed class ArticleCategoryListHandler : RequestHandler<Parameterless<ArticleCategoryListModel>, ArticleCategoryListModel>
     {
         #region Fields.
 
@@ -45,7 +44,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// Initializes a new instance of the <see cref="ArticleListHandler"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="IArticleRepository"/>.</param>
-        public ArticleListHandler(IArticleRepository repository, IPersistenceContext persistence)
+        public ArticleCategoryListHandler(IArticleRepository repository, IPersistenceContext persistence)
         {
             this.repository = repository;
             this.persistence = persistence;
@@ -56,7 +55,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override ArticleListModel Handle(Parameterless<ArticleListModel> message)
+        public override ArticleCategoryListModel Handle(Parameterless<ArticleCategoryListModel> message)
         {
             var categories = this.repository.GetCategories();
             var categoryList = new List<ArticleCategoryList>();
@@ -74,13 +73,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     Name = category.Name,
                     Description = category.Description,
                     ArticleCount = articleCount,
-                    CreatedAt = category.CreatedAt,
-                    UpdatedAt = category.UpdatedAt.ToString("yyyy-MM-dd, HH:mm:ss"),
+                    UpdatedAt = category.UpdatedAt,
                     HasArticles = articleCount > 0 ? true : false
                 });
             }
 
-            return new ArticleListModel
+            return new ArticleCategoryListModel
             {
                 CategoryList = categoryList
             };

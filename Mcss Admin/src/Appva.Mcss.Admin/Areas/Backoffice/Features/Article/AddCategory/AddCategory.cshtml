@@ -1,0 +1,20 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.AddArticleCategoryModel
+@{
+    SetTitle("Ny kategori");
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <div id="articlecat-op">
+            <h3 class="section-title">Ny kategori</h3>
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name)
+            @Html.LabelFor(x => x.Description)
+            @Html.TextBoxFor(x => x.Description)
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

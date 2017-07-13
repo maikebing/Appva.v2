@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Article
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
 
@@ -77,6 +78,21 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Article
         [Route("addcategory")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("listcategory", "article")]
         public ActionResult AddCategory(AddArticleCategoryModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Delete.
+
+        /// <summary>
+        /// Inactivates an article category.
+        /// </summary>
+        /// <returns></returns>
+        [Route("deletecategory")]
+        [HttpGet, Dispatch("listcategory", "article")]
+        public ActionResult DeleteCategory(DeleteArticleCategoryModel request)
         {
             return this.View();
         }

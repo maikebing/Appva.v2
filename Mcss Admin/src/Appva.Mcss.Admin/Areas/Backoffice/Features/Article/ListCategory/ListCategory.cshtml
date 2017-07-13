@@ -10,9 +10,9 @@
     <div id="content-primary">
         @if (Model.CategoryList.Count > 0)
         {
-            <div id="signlist">
+            <div id="signlist" class="articlecategory">
                 <h4 class="list-header">Artikelkategorier</h4>
-                @Html.ActionLink("Ny kategori", "AddCategory", "Article", null, new { @class = "lb-link section-list-btn" })
+                <a href="@Url.Action("AddCategory", "Article")" class="lb-link section-list-btn"><span>+</span>Ny kategori</a>
                 <table id="signed-events">
                     <thead class="head">
                         <tr>
@@ -33,7 +33,7 @@
                                 <td class="prtd-wide">@category.UpdatedAt.ToString("yyyy-MM-dd, HH:mm:ss")</td>
                                 <td class="btnpad prtd2">
                                     @Html.ActionLink("Ändra", "UpdateCategory", "Article", new { id = category.Id }, new { @class = "lb-link btn" })
-                                    @Html.ActionLink("Ta bort", "DeleteCategory", "Article", new { Id = category.Id }, new { @class = (category.HasArticles ? "btn btn-del action-denied" : "btn btn-del"), @style = (category.HasArticles ? "opacity:.7" : "opacity:1") })
+                                    @Html.ActionLink("Ta bort", "DeleteCategory", "Article", new { id = category.Id }, new { @class = (category.HasArticles ? "btn btn-del action-denied" : "btn btn-del"), @style = (category.HasArticles ? "opacity:.7" : "opacity:1") })
                                 </td>
                             </tr>
                         }

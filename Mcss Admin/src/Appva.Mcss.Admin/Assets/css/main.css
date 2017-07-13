@@ -1476,20 +1476,29 @@ td.rights {
 
 #content-primary .section-list-btn {
     float:right;
+    position:relative;
     background:#f2f2f2;
     color:#333;
     font-weight:bold;
     border-radius:3px;
-    padding:8px 16px;
+    padding:8px 34px 8px 16px;
     margin:12px 0;
     text-decoration:none;
     border:1px solid #ccc;
     text-shadow: 0 1px 0 #fff;
+    box-shadow: 0 0 1px #fff inset;
     transition:background .2s ease-in-out, border .2s ease-in-out;
 }
 #content-primary .section-list-btn:hover {
     background:#eee;
     border:1px solid #bbb;
+}
+#content-primary .section-list-btn span {
+    position:absolute;
+    top:-1px;
+    right:10px;
+    font-size:24px;
+    font-weight:normal;
 }
 
 #content-primary #add-sign {padding:0 0 12px;}

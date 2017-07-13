@@ -497,10 +497,11 @@
     <Compile Include="Areas\Patient\Features\Article\Edit\EditArticlePublisher.cs" />
     <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticle.cs" />
     <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticleHandler.cs" />
-    <Compile Include="Areas\Patient\Features\Article\List\ArticleModel.cs" />
     <Compile Include="Areas\Patient\Features\Article\List\ListArticle.cs" />
     <Compile Include="Areas\Patient\Features\Article\List\ListArticleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Article\List\ListArticleModel.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Status\ArticleStatusHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Status\ArticleStatusModel.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventModel.cs" />

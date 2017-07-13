@@ -170,6 +170,7 @@
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Common\Taxons.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
+    <Compile Include="Models\ArticleModel.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
     <Compile Include="Models\CalendarDay.cs" />
     <Compile Include="Models\CalendarTask.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />
     <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\AbstractTaskService.cs" />
+    <Compile Include="Services\ArticleService.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\EventService.cs" />
@@ -249,6 +251,7 @@
     <Compile Include="Services\TaxonFilterSessionHandler.cs" />
     <Compile Include="Services\TaxonomyService.cs" />
     <Compile Include="Services\TenantService.cs" />
+    <Compile Include="Transformers\ArticleTransformer.cs" />
     <Compile Include="Transformers\DelegationTransformer.cs" />
     <Compile Include="Transformers\EventTransformer.cs" />
   </ItemGroup>

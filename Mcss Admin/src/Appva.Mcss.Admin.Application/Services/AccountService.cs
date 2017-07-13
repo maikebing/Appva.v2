@@ -26,6 +26,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Core.Extensions;
     using Appva.Cryptography;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Domain;
 
     #endregion
 
@@ -34,6 +35,12 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface IAccountService : IService
     {
+        /// <summary>
+        /// Returns the authenticated current principal.
+        /// </summary>
+        /// <returns>The current authenticated user.</returns>
+        Account CurrentPrincipal();
+
         /// <summary>
         /// Locates a user account by its unique identifier.
         /// </summary>
@@ -71,7 +78,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// At least one of the roles that the member must be a member of
         /// </param>
         /// <returns>True if the user is a member of any of the specified roles</returns>
-        bool IsInRoles(Account account, params string[] roles);
+        bool IsInAnyRoles(Account account, params string[] roles);
 
         /// <summary>
         /// Returns whether or not the user account is a member of at least one of the 
@@ -84,7 +91,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>
         /// True if the user is a member of any of the specified permissions
         /// </returns>
-        bool HasPermissions(Account account, params string[] permissions);
+        bool HasAnyPermissions(Account account, params string[] permissions);
 
         /// <summary>
         /// Returns the roles for the user account.
@@ -152,7 +159,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Saves an account
         /// </summary>
         /// <param name="account">The <see cref="Account"/></param>
-        void Save(Account account);
+        /// <param name="location">The account location.</param>
+        void Save(Account account, Location location);
 
         /// <summary>
         /// Updates an account
@@ -167,7 +175,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="roles">The list of roles to be added</param>
         /// <param name="isAccountUpgradedForAdminAccess">If true then the user has got new roles which permits them to access admin</param>
         /// <param name="isAccountUpgradedForDeviceAccess">If true then the user has got new roles which permits them to access device</param>
-        void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess);
+        void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess, Taxon location = null);
 
         /// <summary>
         /// Lists all accounts with expiring
@@ -189,6 +197,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <returns></returns>
         IList<Account> List();
+
+        /// <summary>
+        /// Returns locations for an account, never null
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        IList<Location> LocationsFor(Account account);
     }
 
     /// <summary>
@@ -246,6 +261,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IIdentityService identityService;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomies;
+
         #endregion
 
         #region Constructor.
@@ -267,20 +287,28 @@ namespace Appva.Mcss.Admin.Application.Services
             IPersistenceContext persitence,
             ISettingsService settingsService, 
             IAuditService auditing,
-            IIdentityService identityService)
+            IIdentityService identityService,
+            ITaxonomyService taxonomies)
         {
-            this.repository = repository;
-            this.roles = roles;
-            this.permissions = permissions;
-            this.persistence = persitence;
+            this.repository      = repository;
+            this.roles           = roles;
+            this.permissions     = permissions;
+            this.persistence     = persitence;
             this.settingsService = settingsService;
-            this.auditing = auditing;
+            this.auditing        = auditing;
             this.identityService = identityService;
+            this.taxonomies      = taxonomies;
         }
 
         #endregion
 
         #region IAccountService Members.
+
+        /// <inheritdoc />
+        public Account CurrentPrincipal()
+        {
+            return this.Find(this.identityService.PrincipalId);
+        }
 
         /// <inheritdoc />
         public Account Find(Guid id)
@@ -307,15 +335,15 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public bool IsInRoles(Account account, params string[] roles)
+        public bool IsInAnyRoles(Account account, params string[] roles)
         {
-            return this.roles.IsInRoles(account, roles);
+            return this.roles.IsInAnyRoles(account, roles);
         }
 
         /// <inheritdoc />
-        public bool HasPermissions(Account account, params string[] permissions)
+        public bool HasAnyPermissions(Account account, params string[] permissions)
         {
-            return this.permissions.HasPermissions(account, permissions);
+            return this.permissions.HasAnyPermissions(account, permissions);
         }
 
         /// <inheritdoc />
@@ -344,44 +372,44 @@ namespace Appva.Mcss.Admin.Application.Services
         public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
             this.auditing.Read("läste medarbetarlista sida {0}", page);
-            return this.repository.Search(model, page, pageSize);
+            var retval = this.repository.Search(model, page, pageSize);
+
+            //// Fix to get locations in account model
+            //// TODO: Add to main query
+            var accounts  = retval.Entities.Select(x => x.Id).ToArray();
+            var locations = this.persistence.QueryOver<Location>()
+                .WhereRestrictionOn(x => x.Account.Id).IsIn(accounts)
+                .List().GroupBy(x => x.Account.Id).ToDictionary(x => x.Key, g => g.ToList());
+
+            foreach (var account in retval.Entities.Where(x => locations.ContainsKey(x.Id)))
+            {
+                account.Locations = locations[account.Id];
+            }
+
+            return retval;
+
         }
 
         /// <inheritdoc />
-        public void Save(Account account)
+        public void Save(Account account, Location location)
         {
             this.persistence.Save(account);
             this.auditing.Create("skapade ett konto för {0} (REF: {1}).", account.FullName, account.Id);
+            this.persistence.Save(location);
         }
 
+        
         /// <inheritdoc />
-        public void UpdateRoles(Account account, IList<Role> newRoles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess)
+        public void UpdateRoles(Account account, IList<Role> newRoles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess, Taxon location = null)
         {
+            var user            = this.CurrentPrincipal();
+            var userAccessRoles = user.GetRoleAccess();
+            
             isAccountUpgradedForAdminAccess = false;
             isAccountUpgradedForDeviceAccess = false;
             var roles = newRoles ?? new List<Role>();
-            if (this.identityService.Principal != null && ! this.identityService.Principal.IsInRole(RoleTypes.Appva))
-            {
-                Log.Debug("The user is not of type {0} role", RoleTypes.Appva);
-                //// If the current user is NOT an Appva role then make sure hidden roles are not removable 
-                //// by adding the hidden roles to the 'new selected roles'.
-                //// We do NOT add the static device or backend role simply because that is controlled by it's 
-                //// permissions; e.g. Appva admin role will never be removed even if a non admin updates the 
-                //// roles.
-                var hiddenRoles = account.Roles.Where(x => x.IsVisible == false
-                    && x.MachineName != RoleTypes.Device && x.MachineName != RoleTypes.Backend)
-                    .Select(x => x).ToList();
-                foreach (var hiddenRole in hiddenRoles)
-                {
-                    if (! roles.Contains(hiddenRole))
-                    {
-                        Log.Debug("Added hidden role {0}", hiddenRole.Name);
-                        roles.Add(hiddenRole);
-                    }
-                }
-            }
             //// Extract the permissions for the new roles (or combined).
-            var permissions = this.permissions.ByRoles(roles);
+            var permissions         = this.permissions.ByRoles(roles);
             var previousPermissions = this.permissions.ByRoles(account.Roles);
             if (permissions.Any(x => x.Resource.Equals(Common.Permissions.Device.Login.Value)))
             {
@@ -426,21 +454,58 @@ namespace Appva.Mcss.Admin.Application.Services
                     isAccountUpgradedForAdminAccess = true;
                 }
             }
+            var difference = new List<Role>();
+            foreach (var accountRole in account.Roles)
+            {
+                if (! userAccessRoles.Contains(accountRole))
+                {
+                    difference.Add(accountRole);
+                }
+            }
+            foreach (var role in roles)
+            {
+                if (! difference.Contains(role))
+                {
+                    difference.Add(role);
+                }
+            }
             //// Overwrite the new roles - no need to remove any roles per definition (device/backend).
-            account.Roles = roles;
+            account.Roles = difference;
+
+            if (this.HasAnyPermissions(user, Common.Permissions.Practitioner.UpdateOrganizationPermissionValue) && location != null)
+            {
+                 var remove = account.Locations.Select(x => x).ToList();
+                //// Remove any previous locations since it's stil 1-1.
+                foreach (var previous in remove)
+                {
+                    this.persistence.Delete(previous);
+                }
+                //// Add the new location.
+                this.persistence.Save(Location.New(account, location, 0));
+                //// If the preferred taxon is set to something which outside of the new location
+                //// make sure it updates too.
+                if (account.Taxon != null)
+                {
+                    if (! account.Taxon.Path.ToLowerInvariant().Contains(location.Id.ToString().ToLowerInvariant()))
+                    {
+                        account.Taxon = location;
+                    }
+                }
+                this.auditing.Update("uppdaterade organisations-behörighet för {0} till {1} (REF: {2}", account.Id, location.Name, location.Id);
+            }
             this.repository.Update(account);
-            this.auditing.Update("uppdaterade roller för {0} (REF: {1}).", account.FullName, account.Id);
+            this.auditing.Update("uppdaterade roller för {0}", account.Id);
         }
 
         /// <inheritdoc />
         public string CreateUniqueUserNameFor(Account account)
-            {
+        {
             return this.CreateUserName(account.FirstName, account.LastName, this.ListAllUserNames());
-            }
+        }
 
         /// <inheritdoc />
         public void Update(Account account)
-            {
+        {
             this.repository.Update(account);
             this.auditing.Update("uppdaterade kontot för {0} (REF: {1}).", account.FullName, account.Id);
         }
@@ -496,7 +561,21 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public IList<AccountModel> ListByExpiringDelegation(ITaxon taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null)
         {
-            return this.repository.ListByExpiringDelegation(taxonFilter.Path, expiringDate, filterByIssuerId);
+            var user = this.CurrentPrincipal();
+            return this.repository.ListByExpiringDelegation(user, taxonFilter.Path, expiringDate, filterByIssuerId);
+        }
+
+        public IList<Location> LocationsFor(Account account)
+        {
+            if (account.Locations == null || account.Locations.Count() == 0)
+            {
+                var root = this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
+                var location = new Location(account, this.taxonomies.Load(root.Id));
+                account.Locations = new List<Location> { location };
+                this.persistence.Save<Location>(location);
+                this.Update(account);
+            }
+            return account.Locations;
         }
 
         #endregion

@@ -22,14 +22,14 @@
         <div class="form-tab form-tab-1">
             <h3 class="section-title">Ny boende</h3>
             @Html.FormGroup(x => x.FirstName, "text large").Label().TextBox().Validate().Build()
-            @Html.FormGroup(x => x.LastName, "text large").Label().TextBox().Validate().Build()
+            @Html.FormGroup(x => x.LastName,  "text large").Label().TextBox().Validate().Build()
             @Html.FormGroup(x => x.PersonalIdentityNumber, "text").Label().TextBox().Validate().Build()
             @if (Model.HasAlternativeIdentifier)
             {
                 @Html.FormGroup(x => x.Tag, "text small").Label().TextBox().Validate().Build()
             }
 	        <div class="select selectgroup cf">
-		        <strong>Adress:</strong>
+		        <strong>Adress *</strong>
                 @if (Model.Taxons.IsNotNull())
                 {
                     foreach (var taxon in Model.Taxons)

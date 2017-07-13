@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
@@ -59,10 +60,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <summary>
         /// Lists all accounts with delegations expiring in given number of days
         /// </summary>
+        /// <param name="user">The current user.</param>
         /// <param name="expiringDate">The expiring date</param>
         /// <param name="taxonFilter">The path to filter</param>
         /// <returns>List of <see cref="Account"/></returns>
-        IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null);
+        IList<AccountModel> ListByExpiringDelegation(Account user, string taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null);
 
         /// <summary>
         /// Search for accounts to given search-criteria
@@ -164,36 +166,42 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public IList<AccountModel> ListByExpiringDelegation(string taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null)
+        public IList<AccountModel> ListByExpiringDelegation(Account user, string taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null)
         {
             Account accountAlias = null;
             Delegation delegationAlias = null;
             Taxon taxonAlias = null;
+            Taxon delegationtaxonAlias = null;
             Role roleAlias = null;
             AccountModel accountModel = null;
             Expression<Func<bool>> delegationFilter;
             if (filterByIssuerId.HasValue && filterByIssuerId.GetValueOrDefault() != Guid.Empty)
             {
-                delegationFilter = () => delegationAlias.IsActive == true && 
-                                        delegationAlias.Pending == false && 
-                                        delegationAlias.EndDate <= expiringDate && 
-                                        delegationAlias.CreatedBy.Id == filterByIssuerId.GetValueOrDefault();
+                delegationFilter = () => delegationAlias.IsActive == true &&
+                                         delegationAlias.Pending == false &&
+                                         delegationAlias.EndDate <= expiringDate &&
+                                         delegationAlias.CreatedBy.Id == filterByIssuerId.GetValueOrDefault();
             }
             else
             {
-                delegationFilter = () => delegationAlias.IsActive == true && 
-                                        delegationAlias.Pending == false && 
-                                        delegationAlias.EndDate <= expiringDate;
+                delegationFilter = () => delegationAlias.IsActive == true &&
+                                         delegationAlias.Pending == false &&
+                                         delegationAlias.EndDate <= expiringDate;
             }
-           
+            var ids = user.GetRoleDelegationAccess().Select(x => x.Id).ToArray();
             var query = this.persistenceContext.QueryOver<Account>(() => accountAlias)
                 .Where(x => x.IsActive)
-                .And(x => x.IsPaused == false)
+                  .And(x => x.IsPaused == false)
                 .Inner.JoinAlias(x => x.Roles, () => roleAlias)
                     .Where(() => roleAlias.IsActive)
-                    .And(() => roleAlias.IsVisible)
+                      .And(() => roleAlias.IsVisible)
                 .Inner.JoinAlias(x => x.Delegations, () => delegationAlias, delegationFilter)
+                    .Inner.JoinAlias(() => delegationAlias.Taxon, () => delegationtaxonAlias)
+                        .WhereRestrictionOn(() => delegationtaxonAlias.Parent.Id).IsIn(ids)
                     .Inner.JoinAlias(() => delegationAlias.OrganisationTaxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, taxonFilter))
+                /*.JoinQueryOver<Location>(x => x.Locations)
+                    .JoinQueryOver<Taxon>(x => x.Taxon)
+                        .WhereRestrictionOn(x => x.Path).IsLike(taxonFilter, MatchMode.Start)*/
                 .Select(
                     Projections.ProjectionList()
                         .Add(Projections.Group<Account>(x => x.Id).WithAlias(() => accountModel.Id))
@@ -213,7 +221,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             //// Ordering and transforming
             query.OrderByAlias(() => accountModel.DelegationDaysLeft).Desc
                 .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
-
             return query.List<AccountModel>();
         }
 
@@ -303,6 +310,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                         Projections.Constant(true), 
                         Projections.Constant(false))).Take(1);
 
+
+            //query = query.Fetch(x => x.Locations).Eager;
+
             //// Merges queries and selects needed columns and order rows for main query
             AccountModel accountModel = null;
             var mainQuery = query.Clone().Select(
@@ -323,6 +333,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             //// Ordering and transforming
             mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
                 .ThenByAlias(() => accountModel.LastName).Asc
+                .Fetch(x => accountModel.Locations).Eager
                 .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
             //// Checks that page is greater then 0
             if (page < 1)

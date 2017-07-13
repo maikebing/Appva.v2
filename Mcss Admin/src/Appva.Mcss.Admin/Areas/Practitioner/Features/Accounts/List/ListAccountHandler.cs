@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using Appva.Caching.Providers;
@@ -17,6 +18,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
 
@@ -30,34 +32,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ICacheService"/>.
+        /// The <see cref="IAccountService"/>.
         /// </summary>
-        private readonly IRuntimeMemoryCache cache;
-
-        /// <summary>
-        /// The <see cref="ISettingsService"/>.
-        /// </summary>
-        private readonly ISettingsService settings;
-
-        /// <summary>
-        /// The <see cref="IIdentityService"/>.
-        /// </summary>
-        private readonly IIdentityService identities;
-
-        /// <summary>
-        /// The <see cref="ITaxonomyService"/>.
-        /// </summary>
-        private readonly ITaxonomyService taxonomies;
-
-        /// <summary>
-        /// The <see cref="IRoleService"/>.
-        /// </summary>
-        private readonly IRoleService roles;
-
-        /// <summary>
-        /// The <see cref="IAccountRepository"/>.
-        /// </summary>
-        private readonly IAccountService accounts;
+        private readonly IAccountService accountService;
 
         /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>.
@@ -69,6 +46,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IDelegationService delegations;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
         #endregion
 
         #region Constructor.
@@ -76,31 +58,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListAccountHandler"/> class.
         /// </summary>
-        /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
-        /// <param name="settings">The <see cref="ISettingsService"/></param>
-        /// <param name="identities">The <see cref="IIdentityService"/></param>
-        /// <param name="taxonomies">The <see cref="ITaxonomyService"/></param>
-        /// <param name="roles">The <see cref="IRoleService"/></param>
-        /// <param name="accounts">The <see cref="IAccountService"/></param>
-        /// <param name="delegations">The <see cref="IDelegationService"/></param>
+        /// <param name="accountService">The <see cref="IAccountService"/>.</param>
+        /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/>.</param>
+        /// <param name="delegations">The <see cref="IDelegationService"/>.</param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/>.</param>
         public ListAccountHandler(
-            IRuntimeMemoryCache cache,
-            ISettingsService settings,
-            IIdentityService identities,
-            ITaxonomyService taxonomies,
-            IRoleService roles,
-            IAccountService accounts,
+            IAccountService accountService,
             ITaxonFilterSessionHandler filtering,
-            IDelegationService delegations)
+            IDelegationService delegations,
+            ITaxonomyService taxonomyService)
         {
-            this.cache = cache;
-            this.settings = settings;
-            this.identities = identities;
-            this.taxonomies = taxonomies;
-            this.roles = roles;
-            this.accounts = accounts;
-            this.filtering = filtering;
-            this.delegations = delegations;
+            this.accountService    = accountService;
+            this.filtering         = filtering;
+            this.delegations       = delegations;
+            this.taxonomyService   = taxonomyService;
         }
 
         #endregion
@@ -110,7 +81,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListAccountModel Handle(ListAccount message)
         {
-            var accounts = this.accounts.Search(
+            var user      = this.accountService.CurrentPrincipal();
+            var taxonPath = this.accountService.LocationsFor(user).FirstOrDefault().Taxon.Path;
+            var roles     = user.GetRoleAccess();
+            var accounts  = this.accountService.Search(
                 new SearchAccountModel
                 {
                     IsFilterByIsActiveEnabled       = message.isActive.GetValueOrDefault(true),
@@ -120,37 +94,23 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     DelegationFilterId              = message.DelegationFilterId,
                     RoleFilterId                    = message.RoleFilterId,
                     OrganisationFilterTaxonPath     = this.filtering.GetCurrentFilter().Path,
-                    CurrentUserId                   = this.identities.PrincipalId,
-                    SearchQuery                     = message.q
+                    CurrentUserId                   = user.Id,
+                    SearchQuery                     = message.q,
+                    CurrentUserLocationPath         = taxonPath //// TODO: Grab from Principal object.
                 },
-                page: message.page.GetValueOrDefault(1));
-
+                message.page.GetValueOrDefault(1));
             return new ListAccountModel
             {
-                Accounts = accounts,
-                Roles = this.roles.ListVisible()
-                    .Select(
-                        x => new SelectListItem()
-                        {
-                            Value = x.Id.ToString(),
-                            Text = x.Name
-                        })
-                    .ToList()
-                    ,
-                Delegations = this.delegations.ListDelegationTaxons(includeRoots: false)
-                    .Select(
-                        x => new SelectListItem()
-                        {
-                            Value = x.Id.ToString(),
-                            Text = x.Name
-                        })
-                    .ToList<SelectListItem>(),
-                RoleFilterId = message.RoleFilterId,
-                DelegationFilterId = message.DelegationFilterId,
-                IsFilterByCreatedByEnabled = message.filterByCreatedBy,
-                IsFilterByIsActiveEnabled = message.isActive.GetValueOrDefault(true),
-                IsFilterByIsPausedEnabled = message.isPaused.GetValueOrDefault(false),
-                IsFilterByIsSynchronizedEnabled = message.isSynchronized
+                Accounts                        = accounts,
+                Roles                           = roles.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),
+                Delegations                     = this.delegations.ListDelegationTaxons(includeRoots: false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList<SelectListItem>(),
+                RoleFilterId                    = message.RoleFilterId,
+                DelegationFilterId              = message.DelegationFilterId,
+                IsFilterByCreatedByEnabled      = message.filterByCreatedBy,
+                IsFilterByIsActiveEnabled       = message.isActive.GetValueOrDefault(true),
+                IsFilterByIsPausedEnabled       = message.isPaused.GetValueOrDefault(false),
+                IsFilterByIsSynchronizedEnabled = message.isSynchronized,
+                CurrentUser                     = user
             };
         }
 

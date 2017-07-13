@@ -2,24 +2,27 @@
 @model Appva.Mcss.Web.ViewModels.AccountViewModel
            
 <div class="people people-item cf">
-    @if (Model.Active) 
+    @if (Model.IsEditableForCurrentPrincipal)
     {
-        @Html.ActionLink(Permissions.Practitioner.Inactivate, "Ta bort", "Inactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn btn-del" })
-	} 
-	@if (! Model.Active && ! Model.IsPaused) 
-    {
-        @Html.ActionLink(Permissions.Practitioner.Reactivate, "Aktivera", "Reactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
-	}
-	@if (! Model.IsPaused && Model.Active)
-    {
-        @Html.ActionLink(Permissions.Practitioner.Pause, "Inaktivera", "Pause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
-	}
-	@if (Model.IsPaused ) 
-    {
-        @Html.ActionLink(Permissions.Practitioner.Resume, "Aktivera", "UnPause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
-	}
-    @Html.ActionLink(Permissions.Practitioner.Update, "Ändra", "Update", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
-    @Html.ActionLink(Permissions.Practitioner.UpdateRoles, "Ändra roller och behörigheter", "UpdateRoles", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
+        if (Model.Active) 
+        {
+            @Html.ActionLink(Permissions.Practitioner.Inactivate, "Ta bort", "Inactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn btn-del" })
+	    } 
+	    if (! Model.Active && ! Model.IsPaused) 
+        {
+            @Html.ActionLink(Permissions.Practitioner.Reactivate, "Aktivera", "Reactivate", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
+	    }
+	    if (! Model.IsPaused && Model.Active)
+        {
+            @Html.ActionLink(Permissions.Practitioner.Pause, "Inaktivera", "Pause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
+	    }
+	    if (Model.IsPaused) 
+        {
+            @Html.ActionLink(Permissions.Practitioner.Resume, "Aktivera", "UnPause", "Accounts", new { Id = Model.Id }, new { @class = "btn" })
+	    }
+        @Html.ActionLink(Permissions.Practitioner.Update, "Ändra", "Update", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
+        @Html.ActionLink(User.Id() == Model.Id ? Permissions.Practitioner.UpdatePrincipalRoles : Permissions.Practitioner.UpdateRoles, "Ändra roller och behörigheter", "UpdateRoles", "Accounts", new { id = Model.Id }, new { @class = "btn lb-link" })
+    }
 	<div class="h">
     	<h2>@Model.FullName</h2>
     	<span class="pnr">@Model.UniqueIdentifier</span>
@@ -27,9 +30,5 @@
     <div class="i">
     	<strong>Titel:</strong>
     	<span>@Model.Title</span>
-    </div>
-    <div class="i">
-    	<strong>Chef:</strong>
-		<span>@Model.Superior</span>
     </div>
 </div>

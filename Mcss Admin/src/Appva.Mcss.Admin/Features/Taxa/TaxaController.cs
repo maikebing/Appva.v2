@@ -17,7 +17,6 @@ namespace Appva.Mcss.Admin.Features.Taxa
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Features.Taxa.Filter;
     using Appva.Mcss.Web;
     using Appva.Mvc.Security;
 
@@ -31,11 +30,25 @@ namespace Appva.Mcss.Admin.Features.Taxa
     {
         #region Variables.
 
-        private readonly ITaxonFilterSessionHandler handler;
+        /// <summary>
+        /// The <see cref="ITaxonFilterSessionHandler"/>.
+        /// </summary>
+        private readonly ITaxonFilterSessionHandler taxonFilterSessionHandler;
 
-        private readonly IIdentityService identity;
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
         private readonly ITaxonomyService taxonService;
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
 
         #endregion
 
@@ -44,11 +57,19 @@ namespace Appva.Mcss.Admin.Features.Taxa
         /// <summary>
         /// Initializes a new instance of the <see cref="TaxaController"/> class.
         /// </summary>
-        public TaxaController(IIdentityService identity, ITaxonFilterSessionHandler handler, ITaxonomyService taxonService)
+        /// <param name="taxonFilterSessionHandler">The session filter handler.</param>
+        /// <param name="identityService">The identity service.</param>
+        /// <param name="taxonService">The taxon service.</param>
+        public TaxaController(
+            ITaxonFilterSessionHandler taxonFilterSessionHandler, 
+            IIdentityService identityService, 
+            ITaxonomyService taxonService,
+            IAccountService  accountService)
         {
-            this.identity = identity;
-            this.handler = handler;
-            this.taxonService = taxonService;
+            this.taxonFilterSessionHandler = taxonFilterSessionHandler;
+            this.identityService           = identityService;
+            this.taxonService              = taxonService;
+            this.accountService            = accountService;
         }
 
         #endregion
@@ -63,20 +84,19 @@ namespace Appva.Mcss.Admin.Features.Taxa
         [PermissionsAttribute(Permissions.Admin.LoginValue)]
         public PartialViewResult TaxonFilter()
         {
-            if (!identity.Principal.Identity.IsAuthenticated)
+            if (! identityService.Principal.Identity.IsAuthenticated)
             {
                 return null;
             }
-
-            var selected = this.handler.GetCurrentFilter();
-            var root = this.taxonService.Roots(TaxonomicSchema.Organization).First();
-            var taxons = this.taxonService.List(TaxonomicSchema.Organization);
-            return PartialView(new TaxonFilter
-            {
-                RootId = root.Id,
-                RootName = root.Name,
-                Items = SelectList((selected == null) ? root : selected, taxons)
-            });
+            var id       = this.identityService.PrincipalId;
+            var account  = this.accountService.Find(id);
+            //account.Locations
+            var selected = this.taxonFilterSessionHandler.GetCurrentFilter();
+            var root     = this.taxonService.Roots(TaxonomicSchema.Organization).First();
+            var taxons   = this.taxonService.List (TaxonomicSchema.Organization);
+            return PartialView(
+                TaxonomyHelper.CreateItems(account, selected, taxons) //SelectList((selected == null) ? root : selected, taxons)
+            );
         }
 
         [HttpPost, Route("TaxonFilter")]
@@ -85,7 +105,7 @@ namespace Appva.Mcss.Admin.Features.Taxa
             var guids = TaxonomyHelper.GetGuid(collection);
             if (guids.Count > 0)
             {
-                this.handler.SetCurrentFilter(guids.First());
+                this.taxonFilterSessionHandler.SetCurrentFilter(guids.First());
             }
             if (collection.Get("global-filter") != null)
             {
@@ -96,42 +116,19 @@ namespace Appva.Mcss.Admin.Features.Taxa
 
         #endregion
 
-        public static List<TaxonViewModel> SelectList(ITaxon selected, IList<ITaxon> taxa)
+        private IList<ITaxon> GetTaxonsFromOrganization(Domain.Entities.Account account, IList<ITaxon> organization)
         {
-            var retval = new List<TaxonViewModel>();
-            var paths = selected.Path.Split('.').Reverse().ToList();
-            var selectedXXX = selected.Id.ToString();
-            foreach (var value in paths)
+            var result = new List<ITaxon>();
+            foreach (var location in account.Locations.OrderByDescending(x => x.Sort))
             {
-                var label = string.Empty;
-                var items = new List<SelectListItem>();
-                foreach (var taxon in taxa)
+                var taxon = organization.Where(x => x.Id == location.Id).SingleOrDefault();
+                if (taxon == null)
                 {
-                    if (taxon.ParentId.HasValue && taxon.ParentId.ToString().Equals(value))
-                    {
-                        label = string.IsNullOrEmpty(taxon.Type) ? taxon.Type : string.Empty;
-                        items.Add(new SelectListItem
-                        {
-                            Text = taxon.Name,
-                            Value = taxon.Id.ToString()
-                        });
-                    }
+                    continue;
                 }
-                if (items.Count > 0)
-                {
-                    retval.Add(new TaxonViewModel
-                    {
-                        Id = value,
-                        Selected = selectedXXX,
-                        Label = label,
-                        OptionLabel = !string.IsNullOrEmpty(label) ? label.ToLower() : string.Empty,
-                        Taxons = items
-                    });
-                }
-                selectedXXX = value;
+                result.Add(taxon);
             }
-            retval.Reverse();
-            return retval;
+            return result;
         }
 
         #region Json
@@ -166,7 +163,7 @@ namespace Appva.Mcss.Admin.Features.Taxa
             var taxons = this.taxonService.ListByParent(guid);
             return this.Json(taxons.Select(x => new
             {
-                key = x.Id,
+                key   = x.Id,
                 value = x.Name
             }), JsonRequestBehavior.AllowGet);
         }
@@ -184,12 +181,12 @@ namespace Appva.Mcss.Admin.Features.Taxa
         [HttpPost, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public JsonResult VerifyTaxon(string taxon)
         {
-            var retval = false;
-            var guid = Guid.Empty;
-            if (Guid.TryParse(taxon, out guid))
+            var id = Guid.Empty;
+            if (! Guid.TryParse(taxon, out id))
             {
-                retval = this.taxonService.ListByParent(guid).Count == 0;
+                return Json(false, JsonRequestBehavior.DenyGet);
             }
+            var retval = this.taxonService.Find(id, TaxonomicSchema.Organization) != null;
             return Json(retval, JsonRequestBehavior.DenyGet);
         }
 
@@ -203,13 +200,8 @@ namespace Appva.Mcss.Admin.Features.Taxa
         [HttpPost, OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public JsonResult VerifyTaxonLazy(string taxon)
         {
-            var retval = false;
-            var guid = Guid.Empty;
-            if (Guid.TryParse(taxon, out guid))
-            {
-                retval = true;
-            }
-            return Json(retval, JsonRequestBehavior.DenyGet);
+            var id = Guid.Empty;
+            return Json(Guid.TryParse(taxon, out id), JsonRequestBehavior.DenyGet);
         }
 
         #endregion

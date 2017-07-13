@@ -20,6 +20,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -31,9 +34,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ICacheService"/>.
+        /// The <see cref="IIdentityService"/>.
         /// </summary>
-        private readonly IRuntimeMemoryCache cache;
+        private readonly IIdentityService identityService;
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
 
         /// <summary>
         /// The <see cref="ISettingsService"/>.
@@ -57,13 +65,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateAccountViewHandler"/> class.
         /// </summary>
-        /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
+        /// <param name="identityService">The <see cref="IIdentityService"/></param>
+        /// <param name="accountService">The <see cref="IAccountService"/></param>
         /// <param name="settingsService">The <see cref="ISettingsService"/></param>
         /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
         /// <param name="roleService">The <see cref="IRoleService"/></param>
-        public CreateAccountHandler(IRuntimeMemoryCache cache, ISettingsService settingsService, ITaxonomyService taxonomyService, IRoleService roleService)
+        public CreateAccountHandler(IIdentityService identityService, IAccountService accountService, ISettingsService settingsService, ITaxonomyService taxonomyService, IRoleService roleService)
         {
-            this.cache           = cache;
+            this.identityService = identityService;
+            this.accountService  = accountService;
             this.settingsService = settingsService;
             this.taxonomyService = taxonomyService;
             this.roleService     = roleService;
@@ -75,14 +85,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public override CreateAccountModel Handle(Parameterless<CreateAccountModel> message)
         {
+            var id      = this.identityService.PrincipalId;
+            var user    = this.accountService.Find(id);
             return new CreateAccountModel 
             {
                 IsHsaIdFieldVisible                = this.settingsService.IsSithsAuthorizationEnabled() || this.settingsService.Find(ApplicationSettings.IsHsaIdVisible),
                 IsMobileDevicePasswordEditable     = this.settingsService.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice) == false,
                 IsMobileDevicePasswordFieldVisible = this.settingsService.Find<bool>(ApplicationSettings.AutogeneratePasswordForMobileDevice) == false,
                 IsUsernameVisible                  = this.settingsService.Find<bool>(ApplicationSettings.IsUsernameVisible),
-                Taxons                             = TaxonomyHelper.SelectList(this.taxonomyService.List(TaxonomicSchema.Organization)),
-                Titles                             = TitleHelper.SelectList(this.roleService.ListVisible())
+                Taxons                             = TaxonomyHelper.CreateItems(user, null, this.taxonomyService.List(TaxonomicSchema.Organization)),
+                Titles                             = TitleHelper.SelectList(user.GetRoleAccess())
             };
         }
 

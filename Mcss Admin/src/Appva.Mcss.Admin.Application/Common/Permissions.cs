@@ -409,6 +409,16 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string UpdateRolesValue = Schema + "practitioner/update/role";
 
             /// <summary>
+            /// The update organisation-permission value.
+            /// </summary>
+            public const string UpdateOrganizationPermissionValue = Schema + "practitioner/update/role/organization";
+
+            /// <summary>
+            /// The update your own role value.
+            /// </summary>
+            public const string UpdatePrincipalRolesValue = Schema + "practitioner/update/role/principal";
+
+            /// <summary>
             /// The inactivate value.
             /// </summary>
             public const string InactivateValue = Schema + "practitioner/inactivate";
@@ -459,6 +469,22 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Update practitioner roles")]
             [Description("Permission to update/edit practitioner roles")]
             public static readonly IPermission UpdateRoles = PermissionType.CreateNew(UpdateRolesValue);
+
+            /// <summary>
+            /// Permission to update/edit a practitioner.
+            /// </summary>
+            [Sort(3)]
+            [Name("Update practitioner organization permissions")]
+            [Description("Permission to set permission to organization for practitioner")]
+            public static readonly IPermission UpdateOrganizationPermission = PermissionType.CreateNew(UpdateOrganizationPermissionValue);
+
+            /// <summary>
+            /// Permission to update/edit the current principal role.
+            /// </summary>
+            [Sort(3)]
+            [Name("Update current principal roles")]
+            [Description("Permission to update/edit current principal roles")]
+            public static readonly IPermission UpdatePrincipalRoles = PermissionType.CreateNew(UpdatePrincipalRolesValue);
 
             /// <summary>
             /// Permission to inactivate a practitioner.
@@ -1461,62 +1487,116 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #region Backoffice.
 
+    /// <summary>
+    /// The Backoffice permissions.
+    /// </summary>
+    public static class Backoffice
+    {
         /// <summary>
-        /// The Backoffice permissions.
+        /// The read value.
         /// </summary>
-        public static class Backoffice
-        {
-            /// <summary>
-            /// The read value.
-            /// </summary>
-            public const string ReadValue = Schema + "backoffice/read";
+        public const string ReadValue = Schema + "backoffice/read";
 
-            /// <summary>
-            /// Permission to read/view backoffice.
-            /// </summary>
-            [Sort(100000)]
-            [Name("Read backoffice")]
-            [Description("Permission to read/view backoffice")]
-            [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
-        }
+        /// <summary>
+        /// Permission to read/view backoffice.
+        /// </summary>
+        [Sort(100000)]
+        [Name("Read backoffice")]
+        [Description("Permission to read/view backoffice")]
+        [Visibility(Visibility.Hidden)]
+        public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+    }
 
-        #endregion
+    #endregion
 
         #endregion
 
         #region Resource
 
-        #region Constants.
-
-        /// <summary>
-        /// The permission schema for mobile.
-        /// </summary>
-        private const string DeviceSchema = "https://schemas.appva.se/permission/device";
-
-        #endregion
-
-        #region NFC.
-
-        public static class NFC
-        {
-            /// <summary>
-            /// The register NFC value.
-            /// </summary>
-            public const string RegisterValue = Schema + "/nfc/register";
+        
+            #region Constants.
 
             /// <summary>
-            /// Permission to register a NFC tag by mobile device
+            /// The permission schema for mobile.
             /// </summary>
-            [Sort(10000)]
-            [Name("Register nfc from mobile device")]
-            [Description("Permission to register a NFC tag by a mobiledevice")]
-            public static readonly IPermission SignIn = PermissionType.CreateNew(RegisterValue);
-        }
+            public const string DeviceSchema = "https://schemas.appva.se/permission/device";
 
-        #endregion
+            #endregion
 
-        #endregion
+            #region NFC.
+
+            public static class NFC
+            {
+                /// <summary>
+                /// The register NFC value.
+                /// </summary>
+                public const string RegisterValue = DeviceSchema + "/nfc/register";
+
+                /// <summary>
+                /// Permission to register a NFC tag by mobile device
+                /// </summary>
+                [Sort(10000)]
+                [Name("Register nfc from mobile device")]
+                [Description("Permission to register a NFC tag by a mobiledevice")]
+                public static readonly IPermission SignIn = PermissionType.CreateNew(RegisterValue);
+            }
+
+            #endregion
+
+            #region Delegations.
+
+            public static class Delegations
+            {
+                /// <summary>
+                /// The delegation read value value.
+                /// </summary>
+                public const string ReadValue = DeviceSchema + "/account/delegations/read";
+
+                /// <summary>
+                /// The delegation read value value.
+                /// </summary>
+                public const string ReadKnowledgeTestValue = DeviceSchema + "/account/delegations/knowledgetest/read";
+
+                /// <summary>
+                /// Permission to read delegations in mobile device
+                /// </summary>
+                [Sort(20000)]
+                [Name("Read delegations in mobile device")]
+                [Description("Permission to read delegations in the mobile device")]
+                public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+                /// <summary>
+                /// Permission to read delegations in mobile device
+                /// </summary>
+                [Sort(20100)]
+                [Name("Read knowledgetest in mobile device")]
+                [Description("Permission to read knowledgetst in the mobile device")]
+                public static readonly IPermission ReadKnowledgeTest = PermissionType.CreateNew(ReadKnowledgeTestValue);
+            }
+
+            #endregion
+
+            #region Article
+
+            public static class Article
+            {
+                /// <summary>
+                /// The refill article value
+                /// </summary>
+                public const string SetRefilledValue = DeviceSchema + "/article/refill";
+
+                /// <summary>
+                /// Permission to set the article as refilled.
+                /// </summary>
+                [Sort(10000)]
+                [Name("Refill an atricle from mobile device")]
+                [Description("Permission to set an article to refilled from a mobile device")]
+                public static readonly IPermission SetRefilled = PermissionType.CreateNew(SetRefilledValue);
+            }
+
+            #endregion
+
+            #endregion
     }
 
     /// <summary>

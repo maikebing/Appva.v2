@@ -76,24 +76,21 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <inheritdoc />
         public override CreateDelegationModel Handle(CreateDelegation message)
         {
-            var filterITaxon = this.filtering.GetCurrentFilter();
-            var filterTaxon = this.taxonomies.Load(filterITaxon.Id);
-            filterTaxon.Path = filterITaxon.Path;
-            var account = this.accounts.Find(message.Id);
-            var patients = this.patients.FindByTaxon(filterTaxon.Id, false);
-            var taxons = this.delegations.ListDelegationTaxons().OrderByDescending<ITaxon, bool>(x => x.IsRoot).ToList();
-            var patientTaxons = this.delegations.List(byAccount: account.Id, isActive: true, isGlobal: true);
-            var delegationTypes = new List<SelectListItem>();
-            var map = new Dictionary<ITaxon, IList<ITaxon>>();
+            var user         = this.accounts.CurrentPrincipal();
+            var filterTaxon  = this.filtering.GetCurrentFilter();
+            var patients     = this.patients.FindByTaxon(filterTaxon.Id, false);
+            var taxons       = this.delegations.ListDelegationTaxons().OrderByDescending<ITaxon, bool>(x => x.IsRoot).ToList();
+            var map          = new Dictionary<ITaxon, IList<ITaxon>>();
+            var available    = user.GetRoleDelegationAccess();
             foreach (var taxon in taxons)
             {
+
                 if (taxon.IsRoot)
                 {
-                    delegationTypes.Add(new SelectListItem
+                    if (! available.Where(x => x.Id == taxon.Id).Any())
                     {
-                        Text = taxon.Name,
-                        Value = taxon.Id.ToString()
-                    });
+                        continue;
+                    }
                     map.Add(taxon, new List<ITaxon>());
                 }
                 else
@@ -106,20 +103,19 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                 }
             }
             map = map.ToDictionary(x => x.Key, x => x.Value);
-
             return new CreateDelegationModel
             {
-                Id = message.Id,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(DateTime.IsLeapYear(DateTime.Now.Year) ? 366 : 365),
+                Id                 = message.Id,
+                StartDate          = DateTime.Now,
+                EndDate            = DateTime.Now.AddDays(DateTime.IsLeapYear(DateTime.Now.Year) ? 366 : 365),
                 DelegationTemplate = map,
-                PatientItems = patients.Select(p => new SelectListItem
+                PatientItems       = patients.Select(p => new SelectListItem
                 {
-                    Text = p.FullName,
+                    Text  = p.FullName,
                     Value = p.Id.ToString()
                 }).ToList(),
-                OrganizationTaxon = filterITaxon.Id.ToString(),
-                OrganizationTaxons = TaxonomyHelper.SelectList(filterTaxon,this.taxonomies.List(TaxonomicSchema.Organization))
+                OrganizationTaxon  = filterTaxon.Id.ToString(),
+                OrganizationTaxons = TaxonomyHelper.CreateItems(user, filterTaxon, this.taxonomies.List(TaxonomicSchema.Organization))
             };
         }
 

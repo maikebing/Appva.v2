@@ -8,17 +8,19 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
 {
     #region Imports.
 
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Auditing;
-using Appva.Mcss.Admin.Application.Security.Identity;
-using Appva.Mcss.Admin.Application.Services;
-using Appva.Mcss.Admin.Areas.Models;
-using Appva.Mcss.Admin.Areas.Practitioner.Models;
-using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Areas.Models;
+    using Appva.Mcss.Admin.Areas.Practitioner.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
@@ -27,7 +29,7 @@ using System.Linq;
     /// </summary>
     internal sealed class RenewDelegationPublisher : RequestHandler<RenewDelegationsModel, ListDelegation>
     {
-        #region Fields.
+        #region Variables.
 
         /// <summary>
         /// The <see cref="IIdentityService"/>
@@ -54,6 +56,11 @@ using System.Linq;
         /// </summary>
         private readonly IAuditService auditService;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
+        private readonly ITaxonomyService taxonomies;
+
         #endregion
 
         #region Constructor.
@@ -66,13 +73,15 @@ using System.Linq;
             IAccountService accountService, 
             IAuditService auditService,  
             IPersistenceContext persistence,
-            IDelegationService delegationService)
+            IDelegationService delegationService,
+            ITaxonomyService taxonomies)
         {
             this.identityService    = identityService;
             this.accountService     = accountService;
             this.auditService       = auditService;
             this.persistence        = persistence;
             this.delegationService  = delegationService;
+            this.taxonomies         = taxonomies;
         }
 
         #endregion
@@ -83,14 +92,22 @@ using System.Linq;
         public override ListDelegation Handle(RenewDelegationsModel message)
         {
             var currentUser = this.accountService.Load(this.identityService.PrincipalId);
+            var userLocationPath = this.identityService.Principal.LocationPath().IsEmpty() ? 
+                                    this.taxonomies.Roots(TaxonomicSchema.Organization).First().Path:
+                                    this.identityService.Principal.LocationPath();
             var delegations = this.delegationService.List(
+                userLocationPath,
                 byAccount:  message.AccountId,
-                createdBy:  message.RenewAllDelegations ? (Guid?)null : this.identityService.PrincipalId, 
+                createdBy:  message.RenewAllDelegations ? (Guid?) null : this.identityService.PrincipalId, 
                 byCategory: message.DelegationCategoryId,
                 isActive:   true);
 
             foreach (var delegation in delegations)
             {
+                if (!delegation.OrganisationTaxon.Path.StartsWith(userLocationPath))
+                {
+                    continue;
+                }
                 this.persistence.Save(new ChangeSet
                 {
                     EntityId = delegation.Id,

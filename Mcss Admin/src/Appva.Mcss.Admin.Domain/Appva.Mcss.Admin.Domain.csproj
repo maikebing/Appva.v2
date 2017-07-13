@@ -111,6 +111,7 @@
     <Compile Include="Entities\InventoryOld.cs" />
     <Compile Include="Entities\InventoryTransactionItem.cs" />
     <Compile Include="Entities\KnowledgeTest.cs" />
+    <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Log.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\MenuLink.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\SearchPatientModel.cs" />
     <Compile Include="Repositories\ArticleRepository.cs" />
+    <Compile Include="Models\SearchProfileModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />

@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
 {
     #region Imports.
 
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
@@ -99,8 +100,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
         public override PrintDelegationModel Handle(Identity<PrintDelegationModel> message)
         {
             var user = this.accountService.Find(this.identity.PrincipalId);
+            var userLocationPath = this.identity.Principal.LocationPath().IsEmpty() ?
+                                    this.taxonomyService.Roots(TaxonomicSchema.Organization).First().Path :
+                                    this.identity.Principal.LocationPath();
             var account = this.accountService.Find(message.Id);
             var delegations = this.delegationService.List(
+                userLocationPath,
                 byAccount: account.Id,
                 createdBy: this.identity.PrincipalId,
                 isActive: true);

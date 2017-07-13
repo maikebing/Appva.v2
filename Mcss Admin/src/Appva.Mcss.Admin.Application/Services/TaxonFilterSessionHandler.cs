@@ -102,11 +102,12 @@ using System.Web;
                 var claim = this.identityService.Principal.FindFirst(Core.Resources.ClaimTypes.Taxon);
                 if (claim == null)
                 {
-                    return null;
+                    //// TODO: Review this, maybe generate an error or return null instead.
+                    return this.taxaService.Roots(TaxonomicSchema.Organization).First();
                 }
                 return this.taxaService.Find(new Guid(claim.Value), TaxonomicSchema.Organization);
             }
-            return this.taxaService.Find((Guid)id, TaxonomicSchema.Organization);
+            return this.taxaService.Find((Guid) id, TaxonomicSchema.Organization);
         }
 
         /// <inheritdoc />

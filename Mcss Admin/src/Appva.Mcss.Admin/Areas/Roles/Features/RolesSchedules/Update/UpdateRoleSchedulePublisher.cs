@@ -14,7 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Areas.Roles.Features.RolesSchedules.Update;
+    using Appva.Mcss.Admin.Areas.Roles.Models;
     using Appva.Mcss.Admin.Areas.Roles.Roles.Create;
     using Appva.Mcss.Admin.Areas.Roles.Roles.Update;
     using Appva.Mcss.Admin.Domain.Entities;

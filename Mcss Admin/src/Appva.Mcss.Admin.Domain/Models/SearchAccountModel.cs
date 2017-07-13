@@ -32,6 +32,15 @@ namespace Appva.Mcss.Admin.Domain.Models
         }
 
         /// <summary>
+        /// The current user location (taxon) path.
+        /// </summary>
+        public string CurrentUserLocationPath
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The search-query
         /// </summary>
         public string SearchQuery

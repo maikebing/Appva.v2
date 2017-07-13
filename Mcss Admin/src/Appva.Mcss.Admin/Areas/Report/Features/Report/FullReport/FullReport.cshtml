@@ -24,16 +24,21 @@
 	<div id="content-primary">
         <div id="status-filter" class="cf">
             <h2>Visa rapport för:</h2>
+            
             @using (Html.BeginForm("Index", "Report", FormMethod.Get)) {
                 <div class="dates cf">
-			        <div class="select">
+                    @Html.FormGroup(x => x.Start, "select").Label("Start").Editor(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")).Build()
+			        @Html.FormGroup(x => x.End, "select").Label("Slut").Editor(DateTime.Now.ToString("yyyy-MM-dd")).Build()
+                    @*
+                    <div class="select">
                         @Html.LabelFor(m => m.Start)
                         @Html.EditorFor(m => m.Start)
-			        </div>
-			        <div class="select">
+			        </div>			        
+                    <div class="select">
                         @Html.LabelFor(m => m.End)
                         @Html.EditorFor(m => m.End)
 			        </div>
+                    *@
 		        </div>
                 <div class="dates submit">
                     @Html.HiddenFor(m => m.ScheduleSetting)
@@ -61,7 +66,8 @@
 					    </tr>
 				    </thead>
 				    <tbody>
-                        @foreach (var task in Model.Tasks.Entities) {
+                        @foreach (var task in Model.Tasks.Entities)
+                        {
 
     <tr class="@(!task.IsActive ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5)) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false) ? "alarm" : "")">
         <td>@task.Name</td>
@@ -181,7 +187,7 @@
 				    </tbody>
 			    </table>
 		    </div>
-            @Html.Pager((int)Model.Tasks.PageSize, (int)Model.Tasks.CurrentPage, (int)Model.Tasks.TotalCount).Options(o => o
+            @Html.Pager((int)Model.Tasks.PageSize, (int)Model.Tasks.CurrentPage, (int) Model.Tasks.TotalCount).Options(o => o
                 .DisplayTemplate("Pagination")
                 .MaxNrOfPages(15)
                 .AlwaysAddFirstPageNumber()

@@ -1,17 +1,22 @@
-﻿@{
+﻿@model SignInForm
+@{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
     SetTitle("Ditt lösenord är nu bytt");
     SetBodyCssClass("page-forgot-password");
 }
-<div class="hd">
-	Ditt lösenord är nu bytt.
-</div>
 <div class="hd org">
-    <img src="@Url.Content("~/Assets/i/appva-logo-icon.png")" alt="Appva MCSS" />
-	<span>@Tenant</span>
+    @Html.Partial("_LoginHeaderLogo")
+    <h1>Ditt lösenord är nu bytt</h1>
 </div>
-<div class="bd">
-    Logga in på nytt för att använda MCSS.
-    <div class="hr"></div>
-	@Html.ActionLink("Logga in", "SignIn", "Authentication", null, new { @class = "btn" })
+
+<div class="row">
+    <div class="col">
+        <div class="profile">
+            <img src="@Url.Content("~/Assets/i/profile-icon.png")" />
+        </div>
+        <div class="bd">
+            <h2>Logga in på nytt för att använda MCSS.</h2>
+            @Html.Partial("_SignInFormPartial", Model)
+        </div>
+    </div>
 </div>

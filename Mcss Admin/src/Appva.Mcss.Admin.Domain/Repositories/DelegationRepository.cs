@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.NHibernateUtils.Restrictions;
 
     #endregion
 
@@ -27,11 +28,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <summary>
         /// List all delegation by given paramters
         /// </summary>
+        /// <param param name="taxonFilter">The taxon path filter.</param>
         /// <param name="byAccount">An account</param>
         /// <param name="isPending"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        IList<Delegation> List(Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null);
+        IList<Delegation> List(string taxonFilter, Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null);
 
         /// <summary>
         /// Updates a delegation and saves the changes
@@ -70,10 +72,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IDelegationRepository members.
 
         /// <inheritdoc />
-        public IList<Delegation> List(Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null)
+        public IList<Delegation> List(string taxonFilter, Guid? byAccount = null, Guid? createdBy = null, Guid? byCategory = null, bool? isPending = null, bool? isGlobal = null, bool? isActive = null)
         {
+            if (string.IsNullOrWhiteSpace(taxonFilter))
+            {
+                throw new ArgumentException("A Taxon filter must be set", "taxonFilter");
+            }
             var query = this.persistence.QueryOver<Delegation>();
-
             if (byAccount.HasValue && byAccount.Value.IsNotEmpty())
             {
                 query.Where(x => x.Account.Id == byAccount.Value);
@@ -94,12 +99,19 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 query.Where(x => x.IsGlobal == isGlobal.Value);
             }
+            Taxon taxonAlias = null;
             if (byCategory.HasValue && byCategory.Value.IsNotEmpty())
             {
+                query
+                    .Inner.JoinAlias(x => x.OrganisationTaxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, taxonFilter));
                 query.JoinQueryOver<Taxon>(x => x.Taxon)
                     .Where(x => x.Parent.Id == byCategory.Value);
             }
-
+            else
+            {
+                query
+                    .Inner.JoinAlias(x => x.OrganisationTaxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, taxonFilter));
+            }
             return query.List();
         }
 

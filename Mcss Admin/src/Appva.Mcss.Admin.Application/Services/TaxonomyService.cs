@@ -33,6 +33,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns></returns>
         ITaxon Find(Guid id, TaxonomicSchema schema);
 
+
+        /// <summary>
+        /// Finds a taxonomy by id without caching
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ITaxon Find(Guid id);
+
         /// <summary>
         /// 
         /// </summary>
@@ -53,6 +61,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="schema"></param>
         /// <returns></returns>
         IList<ITaxon> List(TaxonomicSchema schema);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        IList<ITaxon> ListByFilter(TaxonomicSchema schema, bool? showActive = true);
 
         /// <summary>
         /// 
@@ -144,6 +159,21 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
+        public ITaxon Find(Guid id)
+        {
+            var item = this.repository.Find(id);
+            return new TaxonItem(
+                    item.Id,
+                    item.Name,
+                    item.Description,
+                    item.Path,
+                    item.Type,
+                    item.IsRoot,
+                    isActive: item.IsActive
+                );
+        }
+
+        /// <inheritdoc />
         public ITaxa Fetch(params Guid[] ids)
         {
             throw new NotImplementedException();
@@ -169,6 +199,17 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.cache.Find<IList<ITaxon>>(schema.CacheKey);
         }
 
+        /// <inheritdoc />
+        public IList<ITaxon> ListByFilter(TaxonomicSchema schema, bool? showActive = true)
+        {
+            if (schema == null)
+            {
+                return null;
+            }
+
+            return this.HierarchyConvert(this.repository.ListByFilter(schema.Id, showActive), null, null);
+        }
+
         private IList<ITaxon> HierarchyConvert(IList<Taxon> list, Guid? parentId, ITaxon parent)
         {
             var retval = new List<ITaxon>();
@@ -184,7 +225,8 @@ namespace Appva.Mcss.Admin.Application.Services
                         item.Path,
                         item.Type,
                         item.Weight,
-                        parent);
+                        parent,
+                        item.IsActive);
                 retval.Add(taxon);
                 list.Remove(item);
                 retval.AddRange(HierarchyConvert(list, taxon.Id, taxon));
@@ -244,7 +286,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 Path = taxon.Path,
                 Taxonomy = this.repository.LoadTaxonomy(schema.Id),
                 Type = taxon.Type,
-                Weight = taxon.Sort
+                Weight = taxon.Sort,
+                IsActive = taxon.IsActive
             }, (schema == TaxonomicSchema.Delegation || schema == TaxonomicSchema.Organization));
 
             this.cache.Remove(schema.CacheKey);
@@ -260,6 +303,7 @@ namespace Appva.Mcss.Admin.Application.Services
             t.Path = taxon.Path;
             t.Type = taxon.Type;
             t.Weight = taxon.Sort;
+            t.IsActive = taxon.IsActive;
             
             this.repository.Update(t);
             this.cache.Remove(schema.CacheKey);

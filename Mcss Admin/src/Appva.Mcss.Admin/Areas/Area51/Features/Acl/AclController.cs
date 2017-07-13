@@ -15,6 +15,9 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Mvc;
     using Appva.Mvc.Security;
     using Appva.Mcss.Admin.Areas.Area51.Features.Acl.AddNewsPermissions;
+    using System.Collections.Generic;
+    using Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole;
+    using Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToDelegation;
 
     #endregion
 
@@ -109,8 +112,21 @@ namespace Appva.Mcss.Admin.Controllers
         [AlertSuccess("Uppgradering klar!")]
         public ActionResult UpdatePermissions()
         {
-            this.mediator.Publish(new UpdatePermissionsAcl());
-            return this.RedirectToAction("Index");
+            var model = this.mediator.Send(new UpdatePermissionsAcl { UpdateGlobal = false });
+            return this.View(model);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Route("update/global")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Uppgradering för alla kunder klar!")]
+        public ActionResult UpdatePermissionsGlobal()
+        {
+            var model = this.mediator.Send(new UpdatePermissionsAcl { UpdateGlobal = true });
+            return this.View("UpdatePermissions", model);
         }
 
         #endregion
@@ -128,6 +144,40 @@ namespace Appva.Mcss.Admin.Controllers
         {
             this.mediator.Publish(new Hotfix18());
             return this.RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Add Role-To-Role
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Route("roletorole")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Rollmappning installerad")]
+        public ActionResult InstallRoleToRole(InstallRoleToRole request)
+        {
+            var model = this.mediator.Send(request);
+            return this.View(model);
+        }
+
+        #endregion
+
+        #region Add Role-To-Delegation
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Route("roletodelegation")]
+        [HttpPost, Validate, ValidateAntiForgeryToken]
+        [AlertSuccess("Delegerings-behörigheter installerade!")]
+        public ActionResult InstallRoleToDelegation(InstallRoleToDelegation request)
+        {
+            var model = this.mediator.Send(request);
+            return this.View(model);
         }
 
         #endregion

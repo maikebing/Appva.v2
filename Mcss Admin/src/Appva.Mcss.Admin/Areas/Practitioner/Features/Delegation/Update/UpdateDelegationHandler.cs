@@ -30,7 +30,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
     /// </summary>
     internal sealed class UpdateDelegationHandler : RequestHandler<Identity<UpdateDelegationModel>, UpdateDelegationModel>
     {
-        #region Fields.
+        #region Variables.
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
 
         /// <summary>
         /// The <see cref="ITaxonomyService"/>.
@@ -60,11 +65,13 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
         /// Initializes a new instance of the <see cref="UpdateDelegationHandler"/> class.
         /// </summary>
         public UpdateDelegationHandler(
+            IAccountService accountService,
             ITaxonomyService taxonomyService,
             IPatientService patientService,
             IPersistenceContext persistence, 
             ITaxonFilterSessionHandler filtering)
         {
+            this.accountService  = accountService;
             this.taxonomyService = taxonomyService;
             this.patientService  = patientService;
             this.persistence     = persistence;
@@ -78,25 +85,27 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
         /// <inheritdoc />
         public override UpdateDelegationModel Handle(Identity<UpdateDelegationModel> message)
         {
-            var filter = this.filtering.GetCurrentFilter();
+            var user       = this.accountService.CurrentPrincipal();
+            var filter     = this.filtering.GetCurrentFilter();
             var delegation = this.persistence.Get<Delegation>(message.Id);
-            var patients = this.patientService.FindByTaxon(filter.Id, false)
+            var patients   = this.patientService.FindByTaxon(filter.Id, false)
                 .Select(x => new SelectListItem
                 {
                     Text = string.Format("{0} {1}", x.FirstName, x.LastName),
                     Value = x.Id.ToString()
                 }).ToList();
+            var selected = delegation.OrganisationTaxon == null ? filter : this.taxonomyService.Find(delegation.OrganisationTaxon.Id, TaxonomicSchema.Organization);
             return new UpdateDelegationModel
             {
-                Id = delegation.Id,
-                StartDate = delegation.StartDate,
-                EndDate = delegation.EndDate,
-                ConnectedPatients = delegation.Patients.ToList(),
-                PatientItems = patients,
-                OrganizationTaxons = TaxonomyHelper.SelectList(delegation.OrganisationTaxon, this.taxonomyService.List(TaxonomicSchema.Organization)),
-                OrganizationTaxon = delegation.OrganisationTaxon.IsNull() ? filter.Id.ToString() : delegation.OrganisationTaxon.Id.ToString(),
+                Id                       = delegation.Id,
+                StartDate                = delegation.StartDate,
+                EndDate                  = delegation.EndDate,
+                ConnectedPatients        = delegation.Patients.ToList(),
+                PatientItems             = patients,
+                OrganizationTaxons       = TaxonomyHelper.CreateItems(user, selected, this.taxonomyService.List(TaxonomicSchema.Organization)),
+                OrganizationTaxon        = selected.Id.ToString(),
                 ValidForSpecificPatients = delegation.Patients.Count() != 0,
-                AccountId = delegation.Account.Id
+                AccountId                = delegation.Account.Id
             };
         }
 

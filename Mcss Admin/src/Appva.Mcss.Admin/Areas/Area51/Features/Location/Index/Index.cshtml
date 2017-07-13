@@ -1,0 +1,25 @@
+﻿@{
+	SetTitle("Area 51 - Flera adresser");
+}
+@Html.Partial("_Area51MenuPartial")
+<div id="subheader" class="cf">
+	<h1>Installera adresser roller och delegeringar för samtliga tenants</h1>
+	
+	@using (Html.Post("InstallLocations", "Location", null))
+	{
+		@Html.Submit("Installera adresser", new { @class = "btn" })
+	}
+    @using (Html.Post("InstallDelegations", "Location", null))
+	{
+		@Html.Submit("Installera delegeringar", new { @class = "btn" })
+	}
+    @using (Html.Post("InstallRoles", "Location", null))
+	{
+		@Html.Submit("Installera roller", new { @class = "btn" })
+	}
+</div>
+<div id="content" class="cf">
+	<div id="content-primary">
+		@Html.Alert(new { @class = "success-msg" })
+	</div>
+</div>

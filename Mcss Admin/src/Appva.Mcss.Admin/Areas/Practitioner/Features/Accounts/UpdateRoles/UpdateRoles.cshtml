@@ -1,4 +1,5 @@
-﻿@model UpdateRolesForm
+﻿@using Appva.Mcss.Admin.Application.Common
+@model UpdateRolesForm
 @{ SetTitle("Ändra roll"); }
 <div class="std-panel std-form lb-panel-small lb-validate-form">
     @using (Html.BeginForm())
@@ -8,6 +9,39 @@
             <div class="text">
                 @Html.CheckBoxListFor(x => x.SelectedRoles, Model.Roles)
             </div>
+            @if (Html.HasPermissionFor(Permissions.Practitioner.UpdateOrganizationPermission))
+            {
+                <h3 class="section-title">Organisations-behörighet</h3>
+                if (Model.CanUpdateTaxonPermission)
+                {
+                    <div class="select selectgroup cf">
+                        <strong>Adress *</strong>
+                        @if (Model.Taxons.IsNotNull())
+                        {
+                            foreach (var taxon in Model.Taxons)
+                            {
+                                <div class="select">
+                                    <label class="structural">@taxon.Label</label>
+                                    @Html.DropDownList(taxon.Id,
+                                    new SelectList(taxon.Taxons, "Value", "Text", taxon.Selected),
+                                    string.Format("Välj {0}...", taxon.OptionLabel),
+                                    new { @class = "dropdown" }
+                                )
+                                </div>
+                            }
+                        }
+                        @Html.HiddenFor(m => m.Taxon)
+                        @Html.ValidationMessageFor(m => m.Taxon)
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <p>Du har inte behörighet att ändra organisations-behörighet för denna användare.</p>
+                    </div>
+                }
+            }
+            
         </div>
         <div class="submit">
             @Html.AntiForgeryToken()

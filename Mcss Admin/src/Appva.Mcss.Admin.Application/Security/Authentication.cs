@@ -23,6 +23,9 @@ namespace Appva.Mcss.Admin.Application.Security
     using Microsoft.Owin.Security;
     using Validation;
     using Appva.Core.Environment;
+    using Newtonsoft.Json;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Domain;
 
     #endregion
 
@@ -205,9 +208,18 @@ namespace Appva.Mcss.Admin.Application.Security
                 new Claim(ClaimTypes.Name, account.FullName),
                 new Claim(ClaimTypes.AuthenticationMethod, method.Value),
                 new Claim(ClaimTypes.AuthenticationInstant, DateTime.UtcNow.ToString("s")),
-                new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString()),
                 new Claim(ClaimTypes.Version, ApplicationEnvironment.Info.Version)
             };
+            if (account.Taxon != null)
+            {
+                retval.Add(new Claim(Core.Resources.ClaimTypes.Taxon,            account.Taxon.Id.ToString()));
+            }
+            if (account.Locations.Count > 0)
+            {
+                var location = account.Locations.OrderByDescending(x => x.Sort).FirstOrDefault();
+                retval.Add(new Claim(PrincipalExtensions.LocationsClaimType,     location.Taxon.Id.ToString()));
+                retval.Add(new Claim(PrincipalExtensions.LocationPathsClaimType, location.Taxon.Path));
+            }
             if (this.settings.IsAccessControlListInstalled() && this.settings.IsAccessControlListActivated())
             {
                 retval.Add(new Claim(Core.Resources.ClaimTypes.AclEnabled, "Y"));
@@ -265,13 +277,13 @@ namespace Appva.Mcss.Admin.Application.Security
             if (this.settings.IsAccessControlListActivated())
             {
                 //// TODO: if (this.settings.IsAccessControlListActivated()) is temporary - this should not have to be checked later on.
-                if (! this.accounts.HasPermissions(account, Permissions.Admin.Login.Value))
+                if (! this.accounts.HasAnyPermissions(account, Permissions.Admin.Login.Value))
                 {
                     this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");
                     return AuthenticationResult.Failure;
                 }
             }
-            else if (! this.accounts.IsInRoles(account, Core.Resources.RoleTypes.Backend))
+            else if (! this.accounts.IsInAnyRoles(account, Core.Resources.RoleTypes.Backend))
             {
                 //// TODO: if (! this.accounts.IsInRoles(account, Core.Resources.RoleTypes.Backend)) is temporary - this should be removed.
                 this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");

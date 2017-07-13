@@ -37,16 +37,6 @@ using Appva.Mcss.Admin.Infrastructure;
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ICacheService"/>.
-        /// </summary>
-        private readonly IRuntimeMemoryCache cache;
-
-        /// <summary>
-        /// The <see cref="ISettingsService"/>.
-        /// </summary>
-        private readonly ISettingsService settings;
-
-        /// <summary>
         /// The <see cref="IIdentityService"/>.
         /// </summary>
         private readonly IIdentityService identities;
@@ -54,7 +44,7 @@ using Appva.Mcss.Admin.Infrastructure;
         /// <summary>
         /// The <see cref="IAccountRepository"/>.
         /// </summary>
-        private readonly IAccountService accounts;
+        private readonly IAccountService accountService;
 
         /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>.
@@ -68,22 +58,16 @@ using Appva.Mcss.Admin.Infrastructure;
         /// <summary>
         /// Initializes a new instance of the <see cref="ListAccountHandler"/> class.
         /// </summary>
-        /// <param name="cache">The <see cref="IRuntimeMemoryCache"/></param>
-        /// <param name="settings">The <see cref="ISettingsService"/></param>
         /// <param name="identities">The <see cref="IIdentityService"/></param>
-        /// <param name="accounts">The <see cref="IAccountService"/></param>
+        /// <param name="accountService">The <see cref="IAccountService"/></param>
         public QuickSearchAccountHandler(
-            IRuntimeMemoryCache cache,
-            ISettingsService settings,
             IIdentityService identities,
-            IAccountService accounts,
+            IAccountService accountService,
             ITaxonFilterSessionHandler filtering)
         {
-            this.cache = cache;
-            this.settings = settings;
             this.identities = identities;
-            this.accounts = accounts;
-            this.filtering = filtering;
+            this.accountService = accountService;
+            this.filtering  = filtering;
         }
 
         #endregion
@@ -93,20 +77,21 @@ using Appva.Mcss.Admin.Infrastructure;
         /// <inheritdoc />
         public override IEnumerable<object> Handle(QuickSearchAccount message)
         {
-            var accounts = this.accounts.Search(
+            var user     = this.accountService.CurrentPrincipal();
+            var accounts = this.accountService.Search(
                 new SearchAccountModel
                 {
-                    IsFilterByIsActiveEnabled = message.IsFilterByIsActiveEnabled,
-                    IsFilterByIsPausedEnabled = message.IsFilterByIsPausedEnabled,
-                    IsFilterByCreatedByEnabled = message.IsFilterByCreatedByEnabled,
-                    DelegationFilterId = message.DelegationFilterId,
-                    RoleFilterId = message.RoleFilterId,
+                    IsFilterByIsActiveEnabled   = message.IsFilterByIsActiveEnabled,
+                    IsFilterByIsPausedEnabled   = message.IsFilterByIsPausedEnabled,
+                    IsFilterByCreatedByEnabled  = message.IsFilterByCreatedByEnabled,
+                    DelegationFilterId          = message.DelegationFilterId,
+                    RoleFilterId                = message.RoleFilterId,
                     OrganisationFilterTaxonPath = filtering.GetCurrentFilter().Path,
-                    CurrentUserId = this.identities.PrincipalId,
-                    SearchQuery = message.Term
+                    CurrentUserId               = this.identities.PrincipalId,
+                    SearchQuery                 = message.Term,
+                    CurrentUserLocationPath     = user.Locations.First().Taxon.Path //// TODO: Grab from Principal object.
                 },
                 pageSize: 30);
-
             return accounts.Entities.Select(x => x.FullName).ToList();
         }
 

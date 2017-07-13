@@ -11,11 +11,12 @@ namespace Appva.Mcss.Admin.Areas.Models
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mvc;
-    using Appva.Repository;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using Appva.Mcss.Admin.Domain;
+    using Appva.Repository;
 
     #endregion
 
@@ -35,11 +36,9 @@ namespace Appva.Mcss.Admin.Areas.Models
 
         #endregion
 
-        [PlaceHolder("T.ex. 2012-12-21")]
         [DataType(DataType.Date)]
         public DateTime Start { get; set; }
 
-        [PlaceHolder("T.ex. 2012-12-21")]
         [DataType(DataType.Date)]
         public DateTime End { get; set; }
 

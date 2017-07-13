@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -24,7 +25,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
     /// </summary>
     internal sealed class ActivateAllDelegationsHandler : RequestHandler<ActivateAllDelegations, ListDelegation>
     {
-        #region Fields
+        #region Varibles.
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>
+        /// </summary>
+        private readonly IIdentityService identityService;
 
         /// <summary>
         /// The <see cref="IDelegationService"/>.
@@ -38,13 +44,14 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivateAllDelegationsHandler"/> class.
         /// </summary>
-        public ActivateAllDelegationsHandler(IDelegationService delegationService, ITaxonomyService taxonomyService)
+        public ActivateAllDelegationsHandler(IIdentityService identityService, IDelegationService delegationService, ITaxonomyService taxonomyService)
         {
+            this.identityService   = identityService;
             this.delegationService = delegationService;
             this.taxonomyService   = taxonomyService;
         }
@@ -57,22 +64,23 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
         public override ListDelegation Handle(ActivateAllDelegations message)
         {
             var category = this.taxonomyService.Find(message.DelegationCategoryId, TaxonomicSchema.Delegation);
-            while (!category.IsRoot)
+            while (! category.IsRoot)
             {
                 category = category.Parent;
             }
             var delegations = this.delegationService.List(
+                this.identityService.Principal.LocationPath(),
                 byAccount:  message.AccountId,
                 byCategory: category.Id,
                 isActive:   true,
-                isPending:  true
-                );
-
+                isPending:  true);
             foreach (var delegation in delegations)
             {
-                this.delegationService.Activate(delegation);
+                if (delegation.OrganisationTaxon.Path.StartsWith(this.identityService.Principal.LocationPath()))
+                {
+                    this.delegationService.Activate(delegation);
+                }
             }
-
             return new ListDelegation { Id = message.AccountId };
         }
 

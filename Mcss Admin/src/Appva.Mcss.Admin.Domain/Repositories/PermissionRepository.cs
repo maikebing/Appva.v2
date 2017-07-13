@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using NHibernate.Transform;
+    using NHibernate.Criterion;
 
     #endregion
 
@@ -55,7 +56,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <returns>
         /// True if the user is a member of any of the specified permissions
         /// </returns>
-        bool HasPermissions(Account account, params string[] permissions);
+        bool HasAnyPermissions(Account account, params string[] permissions);
 
         /// <summary>
         /// Returns a filtered collection of <see cref="Permission"/> by specified 
@@ -64,6 +65,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="ids">The ID:s to retrieve</param>
         /// <returns>A filtered collection of <see cref="Permission"/></returns>
         IList<Permission> ListAllIn(params Guid[] ids);
+
+        /// <summary>
+        /// Returns all persmissions matching a schema.
+        /// </summary>
+        /// <param name="bySchema">The schema</param>
+        /// <returns>A list of <see cref="Permission"/></returns>
+        IList<Permission> Search(string bySchema);
     }
 
     /// <summary>
@@ -123,7 +131,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public bool HasPermissions(Account account, params string[] permissions)
+        public bool HasAnyPermissions(Account account, params string[] permissions)
         {
             var roles = account.Roles.Select(x => x.Id).ToArray();
             return this.persistenceContext.QueryOver<Permission>()
@@ -144,6 +152,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .AndRestrictionOn(x => x.Id)
                 .IsIn(ids)
                 .List();
+        }
+
+        /// <inheritdoc />
+        public IList<Permission> Search(string bySchema)
+        {
+            return this.persistenceContext.QueryOver<Permission>()
+                .WhereRestrictionOn(x => x.Resource)
+                    .IsLike(bySchema, MatchMode.Start)
+                .OrderBy(x => x.Sort).Asc.List();
         }
 
         #endregion

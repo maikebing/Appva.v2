@@ -91,7 +91,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
         public override ListDelegation Handle(UpdateDelegationModel message)
         {
             var currentUser = this.accountService.Load(this.identity.PrincipalId);
-            var rootId = this.taxonomyService.Roots(TaxonomicSchema.Organization).First().Id;
+            var root = this.accountService.LocationsFor(currentUser).FirstOrDefault().Taxon;
 
             var updateDelegation = new Application.Models.DelegationUpdateModel
             {
@@ -115,12 +115,12 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Handlers
                         }
                     }
                 }
-                updateDelegation.OrganisationTaxon = this.taxonomyService.Load(rootId);
+                updateDelegation.OrganisationTaxon = root;
             }
             else
             {
                 updateDelegation.Patients = new List<Patient>();
-                updateDelegation.OrganisationTaxon = message.OrganizationTaxon.IsNotNull() ? this.taxonomyService.Load(new Guid(message.OrganizationTaxon)) : this.taxonomyService.Load(rootId);
+                updateDelegation.OrganisationTaxon = message.OrganizationTaxon.IsNotNull() ? this.taxonomyService.Load(new Guid(message.OrganizationTaxon)) : root;
             }
 
             this.delegationService.Update(message.Id, updateDelegation);

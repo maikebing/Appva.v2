@@ -28,6 +28,7 @@
                 'cache': false
             });
             $.validator.setDefaults({
+                'ignore': '',
                 'errorElement': 'p',
                 'errorClass': 'error-msg',
                 'highlight': function (element, errorClass) {
@@ -418,7 +419,8 @@
                 }
 
                 function dropdown() {
-                    var self = $(this), url = "@Url.Action("GetByParent", "Taxa", new { Area = string.Empty })";
+                    var self = $(this), 
+                        url = "@Url.Action("GetByParent", "Taxa", new { Area = string.Empty })";
                     if (self.parent().hasClass('custom-select-wrap')) {
                         self.parent().parent().nextAll('.select').unbind("change").unbind("onchange").remove();
                     } else {

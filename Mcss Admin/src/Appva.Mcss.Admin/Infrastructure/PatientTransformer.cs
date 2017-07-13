@@ -27,8 +27,8 @@ namespace Appva.Mcss.Admin.Infrastructure
     public interface IPatientTransformer
     {
         PatientViewModel ToPatient(Patient patient);
-        IList<PatientViewModel> ToPatientList(IList<Patient> patients);
-        IList<PatientViewModel> ToPatientList(IList<PatientModel> patients);
+        IList<PatientViewModel> ToPatientList(IEnumerable<Patient> patients);
+        IList<PatientViewModel> ToPatientList(IEnumerable<PatientModel> patients);
     }
 
     /// <summary>
@@ -86,33 +86,37 @@ namespace Appva.Mcss.Admin.Infrastructure
             return this.ToPatientList(new List<Patient> { patient }).FirstOrDefault();
         }
 
-        public IList<PatientViewModel> ToPatientList(IList<Patient> patients)
+        public IList<PatientViewModel> ToPatientList(IEnumerable<Patient> patients)
         {
             var taxons = this.taxonService.List(TaxonomicSchema.Organization);
-            var superiors = this.roleService.MembersOfRole("_superioraccount");
-            var overseers = this.roleService.MembersOfRole("_overseeingaccount");
-            var firstLineContacts = this.roleService.MembersOfRole("_firstlinecontactccount");
+            ////var superiors = this.roleService.MembersOfRole("_superioraccount");
+            ////var overseers = this.roleService.MembersOfRole("_overseeingaccount");
+            ////var firstLineContacts = this.roleService.MembersOfRole("_firstlinecontactccount");
             var retval = new List<PatientViewModel>();
-            var taxonMap = new Dictionary<string, ITaxon>(taxons.ToDictionary(x => x.Id.ToString(), x => x));
+            var taxonMap = new Dictionary<string, ITaxon>(taxons.ToDictionary(x => x.Id.ToString().ToLowerInvariant(), x => x));
             var tenantHasSeniorAlert = this.settingsService.HasSeniorAlert();
             foreach (var patient in patients)
             {
                 var address = string.Empty;
                 var taxon = taxonMap[patient.Taxon.Id.ToString()];
-                var paths = taxon.Path.Split('.');
+                var paths = taxon.Path.ToLowerInvariant().Split('.');
                 foreach (var path in paths)
                 {
-                    if (!taxonMap[path].IsRoot)
+                    if (! taxonMap.ContainsKey(path))
+                    {
+                        continue;
+                    }
+                    if (! taxonMap[path].IsRoot)
                     {
                         address += taxonMap[path].Name + " ";
                     }
                 }
-                var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
-                var superior = (superiorList.Count() > 0) ? superiorList.First() : null;
-                var overseerList = overseers.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
-                var overseer = (overseerList.Count() > 0) ? overseerList.First() : null;
-                var firstlineContactList = firstLineContacts.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
-                var firstlineContact = (firstlineContactList.Count() > 0) ? firstlineContactList.First() : null;
+                ////var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
+                ////var superior = (superiorList.Count() > 0) ? superiorList.First() : null;
+                ////var overseerList = overseers.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
+                ////var overseer = (overseerList.Count() > 0) ? overseerList.First() : null;
+                ////var firstlineContactList = firstLineContacts.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
+                ////var firstlineContact = (firstlineContactList.Count() > 0) ? firstlineContactList.First() : null;
                 retval.Add(new PatientViewModel()
                 {
                     Id = patient.Id,
@@ -120,25 +124,25 @@ namespace Appva.Mcss.Admin.Infrastructure
                     FullName = patient.FullName,
                     UniqueIdentifier = patient.PersonalIdentityNumber.ToString(),
                     Address = address,
-                    Superior = (superior.IsNotNull()) ? superior.FullName : null,
-                    Overseeing = (overseer.IsNotNull()) ? overseer.FullName : null,
-                    FirstLineContact = (firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
+                    Superior = null, ////(superior.IsNotNull()) ? superior.FullName : null,
+                    Overseeing = null, ////(overseer.IsNotNull()) ? overseer.FullName : null,
+                    FirstLineContact = null, ///(firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
                     HasUnattendedTasks = false,
-                    SeniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.ToList().Select(x => new TaxonItem(x.Id, x.Name, x.Description, x.Path, x.Type, x.Weight)).ToList<ITaxon>() : null
+                    SeniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.Where(x => x.IsActive).ToList().Select(x => new TaxonItem(x.Id, x.Name, x.Description, x.Path, x.Type, x.Weight, null, x.IsActive)).ToList<ITaxon>() : null
                 });
             }
             return retval;
         }
 
-        public IList<PatientViewModel> ToPatientList(IList<PatientModel> patients)
+        public IList<PatientViewModel> ToPatientList(IEnumerable<PatientModel> patients)
         {
             var seniorAlerts = this.taxonService.List(TaxonomicSchema.RiskAssessment);
             var taxons = this.taxonService.List(TaxonomicSchema.Organization);
-            var superiors = this.roleService.MembersOfRole("_superioraccount");
-            var overseers = this.roleService.MembersOfRole("_overseeingaccount");
-            var firstLineContacts = this.roleService.MembersOfRole("_firstlinecontactccount");
+            ////var superiors = this.roleService.MembersOfRole("_superioraccount");
+            ////var overseers = this.roleService.MembersOfRole("_overseeingaccount");
+            ////var firstLineContacts = this.roleService.MembersOfRole("_firstlinecontactccount");
             var retval = new List<PatientViewModel>();
-            var taxonMap = new Dictionary<string, ITaxon>(taxons.ToDictionary(x => x.Id.ToString(), x => x));
+            var taxonMap = new Dictionary<string, ITaxon>(taxons.ToDictionary(x => x.Id.ToString().ToLowerInvariant(), x => x));
             var tenantHasSeniorAlert = this.settingsService.HasSeniorAlert();
             IDictionary<string, ITaxon> seniorAlertMap = null;
             if (tenantHasSeniorAlert && seniorAlerts.IsNotNull())
@@ -149,9 +153,13 @@ namespace Appva.Mcss.Admin.Infrastructure
             {
                 var address = string.Empty;
                 var taxon = taxonMap[patient.Taxon.Id.ToString()];
-                var paths = taxon.Path.Split('.');
+                var paths = taxon.Path.ToLowerInvariant().Split('.');
                 foreach (var path in paths)
                 {
+                    if (!taxonMap.ContainsKey(path))
+                    {
+                        continue;
+                    }
                     if (!taxonMap[path].IsRoot)
                     {
                         address += taxonMap[path].Name + " ";
@@ -168,12 +176,12 @@ namespace Appva.Mcss.Admin.Infrastructure
                         }
                     }
                 }
-                var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
-                var superior = (superiorList.Count() > 0) ? superiorList.First() : null;
-                var overseerList = overseers.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
-                var overseer = (overseerList.Count() > 0) ? overseerList.First() : null;
-                var firstlineContactList = firstLineContacts.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
-                var firstlineContact = (firstlineContactList.Count() > 0) ? firstlineContactList.First() : null;
+                ////var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
+                ////var superior = (superiorList.Count() > 0) ? superiorList.First() : null;
+                ////var overseerList = overseers.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
+                ////var overseer = (overseerList.Count() > 0) ? overseerList.First() : null;
+                ////var firstlineContactList = firstLineContacts.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
+                ////var firstlineContact = (firstlineContactList.Count() > 0) ? firstlineContactList.First() : null;
                 retval.Add(new PatientViewModel
                 {
                     Id = patient.Id,
@@ -181,9 +189,9 @@ namespace Appva.Mcss.Admin.Infrastructure
                     FullName = patient.FullName,
                     UniqueIdentifier = patient.PersonalIdentityNumber.ToString(),
                     Address = address,
-                    Superior = (superior.IsNotNull()) ? superior.FullName : null,
-                    Overseeing = (overseer.IsNotNull()) ? overseer.FullName : null,
-                    FirstLineContact = (firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
+                    Superior = null, ////(superior.IsNotNull()) ? superior.FullName : null,
+                    Overseeing = null, ////(overseer.IsNotNull()) ? overseer.FullName : null,
+                    FirstLineContact = null, ////(firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
                     HasUnattendedTasks = patient.HasUnattendedTasks,
                     SeniorAlerts = seniorAlertTaxons
                 });

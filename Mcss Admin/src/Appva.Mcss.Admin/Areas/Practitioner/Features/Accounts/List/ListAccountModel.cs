@@ -11,8 +11,10 @@ namespace Appva.Mcss.Admin.Models
     using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
+    using Appva.Mcss.Admin.Domain;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Repository;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -21,6 +23,15 @@ namespace Appva.Mcss.Admin.Models
     /// </summary>
     public class ListAccountModel
     {
+        /// <summary>
+        /// TODO: Remove and when add locations to principal
+        /// Temp current user to be able to check location
+        /// </summary>
+        public Account CurrentUser
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// The roles filters.
         /// </summary>
@@ -47,12 +58,7 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
-        /*public SearchViewModel<AccountViewModel> Search
-        {
-            get;
-            set;
-        }*/
-
+       
         /// <summary>
         /// Optional <c>Delegation</c> id to filter by.
         /// </summary>

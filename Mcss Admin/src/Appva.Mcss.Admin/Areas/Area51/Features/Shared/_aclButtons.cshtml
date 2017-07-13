@@ -1,0 +1,32 @@
+﻿@using (Html.Post("Install", "Acl", null))
+{
+    @Html.Submit("Installera roller och behörigheter", new { @class = "btn" })
+}
+@using (Html.Post("Activate", "Acl", null))
+{
+    @Html.Submit("Aktivera roller och behörigheter", new { @class = "btn" })
+}
+@using (Html.Post("UpdatePermissions", "Acl", null))
+{
+    @Html.Submit("Upgradera behörigheter", new { @class = "btn" })
+}
+@using (Html.Post("UpdatePermissionsGlobal", "Acl", null))
+{
+    @Html.Submit("Upgradera behörigheter (Global)", new { @class = "btn" })
+}
+@using (Html.Post("InstallRoleToDelegation", "Acl", null))
+{
+    <div>
+        <input type="checkbox" name="InstallGlobal" value="true" />
+        <label for="InstallGlobal">Globalt</label>
+        @Html.Submit("Intallera delegering", new { @class = "btn" })
+    </div>
+}
+@using (Html.Post("InstallRoleToRole", "Acl", null))
+{
+    <div>
+        <input type="checkbox" name="InstallGlobal" value="true" />
+        <label for="InstallGlobal">Globalt</label>
+        @Html.Submit("Installera roll -> roll", new { @class = "btn" })
+    </div>
+}

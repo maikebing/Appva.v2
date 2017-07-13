@@ -57,32 +57,37 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         private readonly IMediator mediator;
 
         /// <summary>
-        /// The <see cref="ITaxonomyService"/> dispatcher.
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
         /// <summary>
-        /// The <see cref="IIdentityService"/> dispatcher.
+        /// The <see cref="IIdentityService"/>.
         /// </summary>
         private readonly IIdentityService identityService;
 
         /// <summary>
-        /// The <see cref="ILogService"/> dispatcher.
+        /// The <see cref="ILogService"/>.
         /// </summary>
         private readonly IAuditService auditing;
 
         /// <summary>
-        /// The <see cref="IReportService"/> dispatcher.
+        /// The <see cref="IReportService"/>.
         /// </summary>
         private readonly IReportService reports;
 
         /// <summary>
-        /// The <see cref="ITaskService"/> dispatcher.
+        /// The <see cref="ITaskService"/>.
         /// </summary>
         private readonly ITaskService tasks;
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/> dispatcher.
+        /// The <see cref="IPersistenceContext"/>.
         /// </summary>
         private readonly IPersistenceContext persistence;
 
@@ -109,11 +114,13 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         /// Initializes a new instance of the <see cref="DelegationController"/> class.
         /// </summary>
         public DelegationController(IMediator mediator, IIdentityService identityService, 
+            IAccountService accountService, 
             ITaxonomyService taxonomyService, IAuditService auditing, IPersistenceContext persistence,
             ITaxonFilterSessionHandler filtering, ITenantService tenantService,
             IAccountTransformer transformer,  IReportService reports, ITaskService tasks)
         {
             this.mediator = mediator;
+            this.accountService = accountService;
             this.identityService = identityService;
             this.taxonomyService = taxonomyService;
             this.reports = reports;
@@ -202,37 +209,38 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
         [PermissionsAttribute(Permissions.Delegation.ReportValue)]
         public ActionResult DelegationReport(Guid id, Guid? tId, Guid? sId, DateTime? startDate, DateTime? endDate, int? page = 1)
         {
+            var user    = this.accountService.CurrentPrincipal();
             var account = this.persistence.Get<Account>(id);
-            var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(account);
-            var taxons = this.taxonomyService.List(TaxonomicSchema.Organization);
-            startDate = (startDate.HasValue) ? startDate.Value : DateTimeUtilities.Now().AddDays(-DateTimeUtilities.Now().DaysInMonth());
-            endDate = (endDate.HasValue) ? endDate.Value.LastInstantOfDay() : DateTimeUtilities.Now().LastInstantOfDay();
-            var previousPeriodStart = startDate.GetValueOrDefault().AddDays(-endDate.Value.Subtract(startDate.Value).Days);
-            var previousPeriodEnd = startDate.GetValueOrDefault().AddDays(-1);
+            var scheduleSettings = TaskService.GetAllRoleScheduleSettingsList(user);
+            startDate   = (startDate.HasValue) ? startDate.Value : DateTimeUtilities.Now().AddDays(-DateTimeUtilities.Now().DaysInMonth());
+            endDate     = (endDate.HasValue) ? endDate.Value.LastInstantOfDay() : DateTimeUtilities.Now().LastInstantOfDay();
+
+            var available = user.GetRoleDelegationAccess().Select(x => x.Id).ToArray();
+            var children  = this.taxonomyService.ListChildren(TaxonomicSchema.Delegation).Where(x => x.Parent != null && available.Contains(x.Parent.Id)).ToList();
             return View(new DelegationReportViewModel
             {
                 StartDate = startDate.Value.Date,
-                EndDate = endDate.Value.Date,
+                EndDate   = endDate.Value.Date,
                 AccountId = account.Id,
-                Account = MapToPatientViewModel(taxons, account),
-                Report = this.reports.GetReportData(new ChartDataFilter
+                Account   = this.transformer.ToAccount(account),
+                Report    = this.reports.GetReportData(new ChartDataFilter
                 {
-                    Account = account.Id,
-                    StartDate = startDate.GetValueOrDefault(),
-                    EndDate = endDate.GetValueOrDefault(),
+                    Account         = account.Id,
+                    StartDate       = startDate.GetValueOrDefault(),
+                    EndDate         = endDate.GetValueOrDefault(),
                     ScheduleSetting = sId,
-                    Organisation = this.filtering.GetCurrentFilter().Id
+                    Organisation    = this.filtering.GetCurrentFilter().Id
                 }),
                 Tasks = this.tasks.List(new ListTaskModel 
                 {
-                    StartDate = startDate.GetValueOrDefault(),
-                    EndDate = endDate.GetValueOrDefault(),
-                    AccountId = account.Id,
+                    StartDate         = startDate.GetValueOrDefault(),
+                    EndDate           = endDate.GetValueOrDefault(),
+                    AccountId         = account.Id,
                     ScheduleSettingId = sId,
-                    TaxonId = this.filtering.GetCurrentFilter().Id
+                    TaxonId           = this.filtering.GetCurrentFilter().Id
                 }, page.GetValueOrDefault(1), 30),
                 DelegationId = tId,
-                Delegations = this.taxonomyService.ListChildren(TaxonomicSchema.Delegation).Select(x => new SelectListItem
+                Delegations  = children.Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
@@ -281,21 +289,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                     EndDate           = endDate.LastInstantOfDay(),
                     TaxonId           = this.filtering.GetCurrentFilter().Id
                 }, 1, 30);
-            /*var query = this.persistence.QueryOver<Task>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.OnNeedBasis == false)
-                .And(x => x.UpdatedAt >= startDate)
-                .And(x => x.UpdatedAt <= endDate.LastInstantOfDay())
-                .Fetch(x => x.Patient).Eager
-                .TransformUsing(new DistinctRootEntityResultTransformer())
-                .OrderBy(x => x.UpdatedAt).Desc;
-            new DelegationReportFilter
-            {
-                AccountId = account,
-                TaxonId = taxon,
-                ScheduleSettingsId = sId
-            }.Filter(query);
-            var tasks = query.List();*/
             var bytes = ExcelWriter.CreateNew<Task, ExcelTaskModel>(
                 PathResolver.ResolveAppRelativePath("Templates\\Template.xlsx"),
                 x => new ExcelTaskModel
@@ -714,46 +707,5 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                 Delegation = delegation
             });
         }
-
-        /// <summary>
-        /// Mapper for patient view.
-        /// </summary>
-        /// <param name="taxons">A list of taxons</param>
-        /// <param name="account">The account</param>
-        /// <returns><see cref="AccountViewModel"/></returns>
-        private AccountViewModel MapToPatientViewModel(IList<ITaxon> taxons, Account account)
-        {
-            var retval = new List<AccountViewModel>();
-            var superiors = GetSuperiors();
-            var taxonMap = new Dictionary<string, ITaxon>(taxons.ToDictionary(x => x.Id.ToString(), x => x));
-            var taxon = taxonMap[account.Taxon.Id.ToString()];
-            var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
-            var superior = (superiorList.Count() > 0) ? superiorList.First() : null;
-            return new AccountViewModel
-            {
-                Id = account.Id,
-                Active = account.IsActive,
-                FullName = account.FullName,
-                UniqueIdentifier = account.PersonalIdentityNumber,
-                Title = account.Title,
-                Superior = (superior.IsNotNull()) ? superior.FullName : "Saknas",
-                Account = account
-            };
-        }
-
-        /// <summary>
-        /// Returns the accounts which have a superior role.
-        /// </summary>
-        /// <returns><see cref="IList{Account}"/></returns>
-        private IList<Account> GetSuperiors()
-        {
-            return this.persistence.QueryOver<Account>()
-                .Where(x => x.IsActive == true)
-                .JoinQueryOver<Role>(x => x.Roles)
-                .Where(x => x.MachineName == "_superioraccount")
-                .List();
-        }
-
-        
     }
 }

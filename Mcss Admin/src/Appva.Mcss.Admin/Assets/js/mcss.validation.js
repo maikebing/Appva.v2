@@ -19,6 +19,9 @@ mcss.validation = {
 		var id = params['id'];
         var uidUrl = params['uidUrl'], 
             taxonUrl = params['taxonUrl'];
+        $('.dropdown').focusout(function () {
+            $('#Taxon').valid();
+        });
         $('.lb-panel form').validate({
             'rules': {
                 'FirstName': 'required',
@@ -56,7 +59,7 @@ mcss.validation = {
                 },
                 'Taxon': "Adress måste väljas."
             },
-            'submitHandler': function(form) {
+            'submitHandler': function (form) {
 	            $(form).find('input[type=submit]').attr('disabled','disabled');
 	            form.submit();
             }
@@ -197,7 +200,6 @@ mcss.validation = {
         }
 
         $('.std-form form').validate({
-            ignore: [],
             'rules': {
                 'Name': 'required',
                 'Interval': {
@@ -545,6 +547,9 @@ mcss.validation = {
         var uidUrl = params['uidUrl'], 
             taxonUrl = params['taxonUrl'],
             pwdUrl = '';
+        $('.dropdown').focusout(function () {
+            $('#Taxon').valid();
+        });
         $('.std-form form').validate({
             'rules': {
                 'FirstName': 'required',
@@ -570,13 +575,6 @@ mcss.validation = {
                     'digits': true,
                     'minlength': 4,
                     'maxlength': 7
-                    /*'remote': {
-                        'url': pwdUrl,
-                        'type': "post",
-                        'data': {
-                            'password': $('#Password').val()
-                        }
-                    }*/
                 },
                 'TitleRole': 'required',
                 'Taxon': {
@@ -618,7 +616,13 @@ mcss.validation = {
             }
         });
 	},
-	DelegationUpdate : function(params) {
+	DelegationUpdate: function (params) {
+	    $('.delegdialog .multisel select').change(function () {
+	        if ($(this).val() != '') {
+	            $(this).parent().append('<span class="person">' + $(this).find(':selected').text() + ' <a href="#" title="Ta bort">Ta bort</a><input type="hidden" name="Patients" value="' + $(this).find(':selected').val() + '"/></span>');
+	            $('#TestPatients').valid();
+	        }
+	    });
 		Date.format = 'yyyy-mm-dd';
         $('.datepick').datePicker({ clickInput: true });
         $('.std-form form').validate({
@@ -715,12 +719,7 @@ mcss.validation = {
                         }
                         return isRequired;
                     }
-                }/*,
-                'TestPatients': {
-                    'required': function () {
-                        return $('.person').length == 0;
-                    }
-                }*/
+                }
             },
             'messages': {
                 'Delegation': "Delegering måste väljas.",
@@ -741,75 +740,6 @@ mcss.validation = {
             'submitHandler': function(form) {
 	            $(form).find('input[type=submit]').attr('disabled','disabled');
 	            form.submit();
-            }
-        });
-	},
-	DelegationEdit : function(params) {
-		$('.delegdialog .multisel select').change(function () {
-            if ($(this).val() != '') {
-                $(this).parent().append('<span class="person">' + $(this).find(':selected').text() + ' <a href="#" title="Ta bort">Ta bort</a><input type="hidden" name="Patients" value="' + $(this).find(':selected').val() + '"/></span>');
-                $('#TestPatients').valid();
-            }
-        });
-        $('.delegdialog .multisel .person a').live('click', function () {
-            $(this).parent().slideUp(100).remove();
-            return false;
-        });
-
-        Date.format = 'yyyy-mm-dd';
-        $('.datepick').datePicker({ clickInput: true });
-        $('.std-form form').validate({
-            'rules': {
-                'StartDate': {
-                    'date': true,
-                    'required': true,
-                    'datelessthan': [$('#EndDate')]
-                },
-                'EndDate': {
-                    'date': true,
-                    'required': true,
-                    'dategreaterthan': [$('#StartDate')]
-                },
-                'TestPatients': {
-                    'required': function () {
-                        return $('.person').length == 0;
-                    }
-                }
-            },
-            'messages': {
-                'StartDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
-                },
-                'EndDate': {
-                    'required': "Datum måste fyllas i.",
-                    'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
-                },
-                'TestPatients': "Boende måste väljas."
-            },
-            'submitHandler': function(form) {
-	            $(form).find('input[type=submit]').attr('disabled','disabled');
-	            form.submit();
-            }
-        });
-	},
-	AddToStock: function (params) {
-		$('.std-form form').validate({
-            'rules': {
-                'Value': {
-                    'min':0,
-                    'max': 99999,
-                    'required': true
-                }
-            },
-            'messages': {
-                'Value': {
-                    'required': "Mängd måste fyllas i.",
-                    'min': "Mängd måste vara ett numeriskt värde och vara större än 0.",
-                    'max': "Mängd får ej vara större än 99999."
-                }
             }
         });
 	},

@@ -31,13 +31,10 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Persistence;
     using Appva.Persistence.Autofac;
     using Appva.Persistence.MultiTenant;
-    using Appva.Siths;
-    using Appva.Siths.Security;
     using Appva.Tenant.Identity;
     using Appva.Tenant.Interoperability.Client;
     using Autofac;
     using Autofac.Integration.Mvc;
-    using HibernatingRhinos.Profiler.Appender.NHibernate;
     using Microsoft.Owin;
     using Microsoft.Owin.Infrastructure;
     using Microsoft.Owin.Security.Cookies;
@@ -45,6 +42,11 @@ namespace Appva.Mcss.Admin.Configuration
     using Microsoft.Owin.Security.DataProtection;
     using Owin;
     using RazorEngine.Configuration;
+    using Appva.GrandId;
+    using Appva.Http;
+    using Appva.Http.ModelBinding;
+    using System.Reflection;
+    using System;
 
     #endregion
 
@@ -129,12 +131,12 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<TenantCookieAuthenticationMiddleware>().InstancePerRequest();
             builder.Register(x => new SecurityTokenOptions
             {
-                RegisterTokenPath        = new PathString("/account/register"),
+                RegisterTokenPath = new PathString("/account/register"),
                 RegisterTokenExpiredPath = new PathString("/account/register/expired"),
-                ResetTokenPath           = new PathString("/account/reset-password"),
-                ResetTokenExpiredPath    = new PathString("/account/reset-password/expired"),
-                TokenInvalidPath         = new PathString("/auth/sign-in"),
-                Provider                 = x.Resolve<JwtSecureDataFormat>()
+                ResetTokenPath = new PathString("/account/reset-password"),
+                ResetTokenExpiredPath = new PathString("/account/reset-password/expired"),
+                TokenInvalidPath = new PathString("/auth/sign-in"),
+                Provider = x.Resolve<JwtSecureDataFormat>()
             }).InstancePerRequest();
             builder.RegisterType<SecurityTokenMiddleware>().InstancePerRequest();
         }
@@ -165,9 +167,9 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterNhibernateProfiler(this ContainerBuilder builder)
         {
-            if (ApplicationEnvironment.Is.Staging)
+            if (ApplicationEnvironment.Is.Staging || ApplicationEnvironment.Is.Development)
             {
-                NHibernateProfiler.Initialize();
+                //// NHibernateProfiler.Initialize();
             }
         }
 
@@ -200,7 +202,6 @@ namespace Appva.Mcss.Admin.Configuration
             if (ApplicationEnvironment.Is.Staging)
             {
                 builder.RegisterType<StagingTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
-                properties.Add("dialect", "NHibernate.Dialect.MsSql2008Dialect");
             }
             if (ApplicationEnvironment.Is.Development)
             {
@@ -208,7 +209,14 @@ namespace Appva.Mcss.Admin.Configuration
                 properties.Add("show_sql", "true");
             }
             builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/db/admin")).As<IRuntimeMemoryCache>().SingleInstance();
+            //if (ApplicationEnvironment.Is.Development)
+            //{
+            //    builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
+            //}
+            //else
+            //{
             builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
+            //}
             builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
             {
                 Assembly = "Appva.Mcss.Admin.Domain",
@@ -225,9 +233,12 @@ namespace Appva.Mcss.Admin.Configuration
         /// Registers the authify client.
         /// </summary>
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
-        public static void RegisterAuthify(this ContainerBuilder builder)
+        public static void RegisterGrandId(this ContainerBuilder builder)
         {
-            builder.Register<SithsClient>(x => new SithsClient(new AuthifyWtfTokenizer())).As<ISithsClient>().SingleInstance();
+            var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+            var options     = RestOptions.CreateNew(null, modelBinder);
+            builder.Register(x => new GrandIdClient      (options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
+            builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
         }
 
         /// <summary>

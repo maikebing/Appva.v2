@@ -6,6 +6,7 @@
 // </author>
 namespace Appva.Mcss.Admin.Application.Models
 {
+    using Appva.Mcss.Admin.Domain.Entities;
     #region Imports.
 
     using System;
@@ -31,6 +32,7 @@ namespace Appva.Mcss.Admin.Application.Models
         string Name
         {
             get;
+            set;
         }
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace Appva.Mcss.Admin.Application.Models
         string Description
         {
             get;
+            set;
         }
 
         /// <summary>
@@ -61,6 +64,14 @@ namespace Appva.Mcss.Admin.Application.Models
         /// Whether or not it is a root node or not.
         /// </summary>
         bool IsRoot
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Check if the taxon is active or not.
+        /// </summary>
+        bool IsActive
         {
             get;
         }
@@ -90,7 +101,7 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <summary>
-        /// The complete address
+        /// The complete address.
         /// </summary>
         string Address
         {
@@ -100,17 +111,36 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <summary>
         /// Updates the taxon
         /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="description"></param>
-        void Update(string name, string description);
+        /// <param name="Taxon"></param>
+        void Update(ITaxon taxon);
 
         /// <summary>
-        /// Updates the taxon
+        /// Updates the taxon with path and root.
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="description"></param>
-        /// <param name="sort"></param>
-        void Update(string name, string description, int sort);
+        void Update(string name, string description, int? sort = null, bool? isRoot = null);
+
+        /// <summary>
+        /// Inactivates the taxon
+        /// </summary>
+        /// <returns>The inactivated taxon</returns>
+        ITaxon InActivate();
+
+        /// <summary>
+        /// Activates a taxon
+        /// </summary>
+        /// <returns>The activated taxon</returns>
+        ITaxon Activate();
+    
+
+        /// <summary>
+        /// Returns true if self is parent of the given taxon.
+        /// Does also return true if taxons are the same (eg. have the exactly same path)
+        /// </summary>
+        /// <param name="taxon"></param>
+        /// <returns></returns>
+        bool IsParentOf(ITaxon taxon);
     }
 
     /// <summary>
@@ -130,7 +160,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <param name="type">The type</param>
         /// <param name="sort">Optional sorting order</param>
         /// <param name="parentId">Optional parent id. If null then it's a root node</param>
-        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null)
+        /// <param name="isActive">If the riskassesment is activated</param>
+        public TaxonItem(Guid id, string name, string description, string path, string type, int sort = 0, ITaxon parent = null, bool isActive = true)
         {
             this.Id = id;
             this.Name = name;
@@ -138,9 +169,33 @@ namespace Appva.Mcss.Admin.Application.Models
             this.Path = path;
             this.Type = type;
             this.Sort = sort;
+            this.IsActive = isActive;
             this.IsRoot = parent == null;
             this.ParentId = parent != null ? parent.Id : (Guid?) null;
             this.Parent = parent;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaxonItem"/> class.
+        /// </summary>
+        /// <param name="id">The identifier</param>
+        /// <param name="name">The name</param>
+        /// <param name="description">The description</param>
+        /// <param name="path">The materialized path; dot separated</param>
+        /// <param name="type">The type</param>
+        /// <param name="sort">Optional sorting order</param>
+        /// <param name="isRoot">If it's a root node or not</param>
+        /// <param name="isRoot">Check if the taxon is active</param>
+        public TaxonItem(Guid id, string name, string description, string path, string type, bool isRoot, bool isActive = true, int sort = 0)
+        {
+            this.Id = id;
+            this.Name = name;
+            this.Description = description;
+            this.Path = path;
+            this.Type = type;
+            this.Sort = sort;
+            this.IsActive = isActive;
+            this.IsRoot = isRoot;
         }
 
         #endregion
@@ -158,14 +213,14 @@ namespace Appva.Mcss.Admin.Application.Models
         public string Name
         {
             get;
-            private set;
+            set;
         }
 
         /// <inheritdoc />
         public string Description
         {
             get;
-            private set;
+            set;
         }
 
         /// <inheritdoc />
@@ -184,6 +239,13 @@ namespace Appva.Mcss.Admin.Application.Models
 
         /// <inheritdoc />
         public bool IsRoot
+        {
+            get;
+            private set;
+        }
+
+        /// <inheritdoc />
+        public bool IsActive
         {
             get;
             private set;
@@ -222,17 +284,65 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         /// <inheritdoc />
-        public void Update(string name, string description)
+        public static ITaxon FromTaxon(Taxon taxon)
         {
-            this.Name        = name;
-            this.Description = description;
+            return new TaxonItem(
+                taxon.Id,
+                taxon.Name,
+                taxon.Description,
+                taxon.Path,
+                taxon.Type,
+                taxon.Weight
+                );
         }
 
-        public void Update(string name, string description, int sort)
+        /// <inheritdoc />
+        public void Update(string name, string description, int? sort = null,  bool? isRoot = null)
         {
             this.Name = name;
             this.Description = description;
-            this.Sort = sort;
+            if (sort.HasValue)
+            {
+                this.Sort = sort.GetValueOrDefault();
+            }
+            if (isRoot.HasValue)
+            {
+                this.IsRoot = isRoot.GetValueOrDefault();
+            }
+        }
+
+        /// <inheritdoc />
+        public void Update(ITaxon taxon)
+        {
+            this.Name        = taxon.Name;
+            this.Description = taxon.Description;
+            this.Path        = taxon.Path;
+            this.Sort        = taxon.Sort;
+            this.IsRoot      = taxon.IsRoot;
+            this.Type        = taxon.Type;
+            this.ParentId    = taxon.ParentId;
+            this.Parent      = taxon.Parent;
+            this.IsActive    = taxon.IsActive;
+        }
+
+        /// <inheritdoc />
+        public ITaxon InActivate()
+        {
+            this.IsActive = false;
+            return this;
+        }
+
+        /// <inheritdoc />
+        public ITaxon Activate()
+        {
+            this.IsActive = true;
+            return this;
+        }
+
+        /// <inheritdoc />
+        public bool IsParentOf(ITaxon taxon)
+        {
+            return taxon.Path.StartsWith(this.Path);
         }
 
         #endregion

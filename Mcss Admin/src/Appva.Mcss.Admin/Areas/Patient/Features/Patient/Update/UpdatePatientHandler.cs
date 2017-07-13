@@ -23,6 +23,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Core.Extensions;
     using System.Linq;
     using Appva.Mvc;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -32,6 +33,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
     internal sealed class UpdatePatientHandler : RequestHandler<Identity<UpdatePatient>, UpdatePatient>
     {
         #region Variables.
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
+
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
 
         /// <summary>
         /// The <see cref="IPatientService"/>.
@@ -55,12 +66,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdatePatientHandler"/> class.
         /// </summary>
-        /// <param name="patientService">The <see cref="ITaxonomyService"/></param>
-        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/></param>
-        /// <param name="settingsService">The <see cref="ISettingsService"/></param>
-        public UpdatePatientHandler(IPatientService patientService, ITaxonomyService taxonomyService, ISettingsService settingsService)
+        /// <param name="identityService">The <see cref="IIdentityService"/>.</param>
+        /// <param name="accountService">The <see cref="IAccountService"/>.</param>
+        /// <param name="patientService">The <see cref="ITaxonomyService"/>.</param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/>.</param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
+        public UpdatePatientHandler(IIdentityService identityService, IAccountService accountService, IPatientService patientService, ITaxonomyService taxonomyService, ISettingsService settingsService)
         {
-            this.patientService = patientService;
+            this.identityService = identityService;
+            this.accountService  = accountService;
+            this.patientService  = patientService;
             this.taxonomyService = taxonomyService;
             this.settingsService = settingsService;
         }
@@ -72,32 +87,35 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc /> 
         public override UpdatePatient Handle(Identity<UpdatePatient> message)
         {
+            var id          = this.identityService.PrincipalId;
+            var user        = this.accountService.Find(id);
             var alternateId = this.settingsService.HasPatientTag();
-            var assessable = this.settingsService.HasSeniorAlert();
-            var patient = this.patientService.Get(message.Id);
+            var assessable  = this.settingsService.HasSeniorAlert();
+            var patient     = this.patientService.Get(message.Id);
             var assessments = assessable ? this.taxonomyService.List(TaxonomicSchema.RiskAssessment)
                 .Select(x => new Assessment 
                     { 
-                        Id = x.Id, 
-                        Label = x.Name, 
+                        Id          = x.Id, 
+                        Label       = x.Name, 
                         Description = x.Description, 
-                        ImagePath = x.Type 
+                        ImagePath   = x.Type 
                     }).ToList() : null;
             this.SetSelectedAssessments(assessable, patient, assessments);
-            var taxons = this.taxonomyService.List(TaxonomicSchema.Organization);
+            var taxons   = this.taxonomyService.List(TaxonomicSchema.Organization);
+            var selected = this.taxonomyService.Find(patient.Taxon.Id, TaxonomicSchema.Organization);
             return new UpdatePatient
             {
-                Id = patient.Id,
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                Taxon = patient.Taxon.Id.ToString(),
-                Taxons = TaxonomyHelper.SelectList(patient.Taxon, taxons),
-                PersonalIdentityNumber = patient.PersonalIdentityNumber,
-                IsDeceased = patient.Deceased,
-                Assessments = assessments,
-                HasAlternativeIdentifier = this.settingsService.HasPatientTag(),
-                Tag = patient.Identifier,
-                IsPersonOfPublicInterestOrVip = patient.IsPersonOfPublicInterest,
+                Id                               = patient.Id,
+                FirstName                        = patient.FirstName,
+                LastName                         = patient.LastName,
+                Taxon                            = patient.Taxon.Id.ToString(),
+                Taxons                           = TaxonomyHelper.CreateItems(user, selected, taxons),
+                PersonalIdentityNumber           = patient.PersonalIdentityNumber,
+                IsDeceased                       = patient.Deceased,
+                Assessments                      = assessments,
+                HasAlternativeIdentifier         = this.settingsService.HasPatientTag(),
+                Tag                              = patient.Identifier,
+                IsPersonOfPublicInterestOrVip    = patient.IsPersonOfPublicInterest,
                 IsPersonWithHightenedSensitivity = patient.IsAllDemographicInformationSensitive
             };
         }

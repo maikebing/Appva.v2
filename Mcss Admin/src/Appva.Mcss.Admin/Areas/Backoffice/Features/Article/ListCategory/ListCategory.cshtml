@@ -19,7 +19,7 @@
                             <th>Namn</th>
                             <th>Beskrivning</th>
                             <th class="prtd">Antal artiklar</th>
-                            <th class="prtd-wide">Ändrades</th>
+                            <th class="prtd-140">Ändrades</th>
                             <th class="prtd">Åtgärder</th>
                         </tr>
                     </thead>
@@ -30,9 +30,9 @@
                                 <td>@category.Name</td>
                                 <td>@category.Description</td>
                                 <td class="prtd">@(category.ArticleCount == 0 ? Html.Raw("&ndash;") : Html.Raw(category.ArticleCount + " st"))</td>
-                                <td class="prtd-wide">@category.UpdatedAt.ToString("yyyy-MM-dd, HH:mm:ss")</td>
+                                <td class="prtd-140">@category.UpdatedAt.ToString("yyyy-MM-dd, HH:mm:ss")</td>
                                 <td class="btnpad prtd2">
-                                    @Html.ActionLink("Ändra", "UpdateCategory", "Article", new { id = category.Id }, new { @class = "lb-link btn" })
+                                    @Html.ActionLink("Ändra", "EditCategory", "Article", new { id = category.Id }, new { @class = "lb-link btn" })
                                     @Html.ActionLink("Ta bort", "DeleteCategory", "Article", new { id = category.Id }, new { @class = (category.HasArticles ? "btn btn-del action-denied" : "btn btn-del"), @style = (category.HasArticles ? "opacity:.7" : "opacity:1") })
                                 </td>
                             </tr>

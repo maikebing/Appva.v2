@@ -84,6 +84,32 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Article
 
         #endregion
 
+        #region Edit.
+
+        /// <summary>
+        /// The edit article category view.
+        /// </summary>
+        /// <returns></returns>
+        [Route("{id:guid}/editcategory")]
+        [HttpGet, Dispatch]
+        public ActionResult EditCategory(Identity<EditArticleCategoryModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Edit an article category.
+        /// </summary>
+        /// <returns></returns>
+        [Route("{id:guid}/editcategory")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("listcategory", "article")]
+        public ActionResult Edit(EditArticleCategoryModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
         #region Delete.
 
         /// <summary>

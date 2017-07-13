@@ -19,6 +19,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     /// </summary>
     internal sealed class AddArticleCategoryHandler : RequestHandler<Parameterless<AddArticleCategoryModel>, AddArticleCategoryModel>
     {
+        #region RequestHandler overrides.
+
         /// <inheritdoc />
         public override AddArticleCategoryModel Handle(Parameterless<AddArticleCategoryModel> message)
         {
@@ -27,5 +29,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 
             };
         }
+
+        #endregion
     }
 }

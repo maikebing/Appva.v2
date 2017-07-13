@@ -1,4 +1,4 @@
-﻿// <copyright file="AddArticleCategoryPublisher.cs" company="Appva AB">
+﻿// <copyright file="EditArticleCategoryPublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Persistence;
 
     #endregion
@@ -18,9 +19,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class AddArticleCategoryPublisher : RequestHandler<AddArticleCategoryModel, bool>
+    internal sealed class EditArticleCategoryPublisher : RequestHandler<EditArticleCategoryModel, bool>
     {
         #region Fields.
+
+        /// <summary>
+        /// The <see cref="IArticleRepository"/>.
+        /// </summary>
+        private readonly IArticleRepository repository;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -32,11 +38,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddArticleCategoryPublisher"/> class.
+        /// Initializes a new instance of the <see cref="EditArticleCategoryPublisher"/> class.
         /// </summary>
+        /// <param name="repository">The <see cref="IArticleRepository"/>.</param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
-        public AddArticleCategoryPublisher(IPersistenceContext persistence)
+        public EditArticleCategoryPublisher(IArticleRepository repository, IPersistenceContext persistence)
         {
+            this.repository = repository;
             this.persistence = persistence;
         }
 
@@ -45,17 +53,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override bool Handle(AddArticleCategoryModel message)
+        public override bool Handle(EditArticleCategoryModel message)
         {
-            if(string.IsNullOrEmpty(message.Name))
+            if (string.IsNullOrEmpty(message.Name))
             {
                 return false;
             }
 
-            var category = new ArticleCategory();
+            var category = this.repository.GetCategory(message.Id);
             category.Name = message.Name;
             category.Description = message.Description;
-            this.persistence.Save(category);
+            this.persistence.Update(category);
 
             return true;
         }

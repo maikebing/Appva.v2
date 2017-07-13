@@ -197,6 +197,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <returns></returns>
         IList<Account> List();
+
+        /// <summary>
+        /// Returns locations for an account, never null
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        IList<Location> LocationsFor(Account account);
     }
 
     /// <summary>
@@ -254,6 +261,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IIdentityService identityService;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomies;
+
         #endregion
 
         #region Constructor.
@@ -275,15 +287,17 @@ namespace Appva.Mcss.Admin.Application.Services
             IPersistenceContext persitence,
             ISettingsService settingsService, 
             IAuditService auditing,
-            IIdentityService identityService)
+            IIdentityService identityService,
+            ITaxonomyService taxonomies)
         {
-            this.repository = repository;
-            this.roles = roles;
-            this.permissions = permissions;
-            this.persistence = persitence;
+            this.repository      = repository;
+            this.roles           = roles;
+            this.permissions     = permissions;
+            this.persistence     = persitence;
             this.settingsService = settingsService;
-            this.auditing = auditing;
+            this.auditing        = auditing;
             this.identityService = identityService;
+            this.taxonomies      = taxonomies;
         }
 
         #endregion
@@ -549,6 +563,19 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var user = this.CurrentPrincipal();
             return this.repository.ListByExpiringDelegation(user, taxonFilter.Path, expiringDate, filterByIssuerId);
+        }
+
+        public IList<Location> LocationsFor(Account account)
+        {
+            if (account.Locations == null || account.Locations.Count() == 0)
+            {
+                var root = this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
+                var location = new Location(account, this.taxonomies.Load(root.Id));
+                account.Locations = new List<Location> { location };
+                this.persistence.Save<Location>(location);
+                this.Update(account);
+            }
+            return account.Locations;
         }
 
         #endregion

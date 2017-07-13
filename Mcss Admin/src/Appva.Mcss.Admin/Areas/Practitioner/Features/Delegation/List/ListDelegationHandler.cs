@@ -127,7 +127,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                     continue;
                 }
                 var organizationalTaxon      = this.taxonomies.Find(delegation.OrganisationTaxon.Id, TaxonomicSchema.Organization);
-                var isEditableForCurrentUser = organizationalTaxon.Path.StartsWith(userLocation);
+                var isEditableForCurrentUser = organizationalTaxon.Path.StartsWith(userLocation) || delegation.CreatedBy.Id == user.Id;
                 if (delegationMap.ContainsKey(taxon.Name))
                 {
                     delegationMap[taxon.Name].Add(DelegationTransformer.ToDelegationViewModel(delegation, taxons, isEditableForCurrentUser));

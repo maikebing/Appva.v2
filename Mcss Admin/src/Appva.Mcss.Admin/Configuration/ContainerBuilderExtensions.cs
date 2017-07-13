@@ -35,7 +35,6 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Tenant.Interoperability.Client;
     using Autofac;
     using Autofac.Integration.Mvc;
-    using HibernatingRhinos.Profiler.Appender.NHibernate;
     using Microsoft.Owin;
     using Microsoft.Owin.Infrastructure;
     using Microsoft.Owin.Security.Cookies;
@@ -43,11 +42,11 @@ namespace Appva.Mcss.Admin.Configuration
     using Microsoft.Owin.Security.DataProtection;
     using Owin;
     using RazorEngine.Configuration;
-    using Appva.Core.Messaging.RazorMail;
     using Appva.GrandId;
     using Appva.Http;
     using Appva.Http.ModelBinding;
     using System.Reflection;
+    using System;
 
     #endregion
 

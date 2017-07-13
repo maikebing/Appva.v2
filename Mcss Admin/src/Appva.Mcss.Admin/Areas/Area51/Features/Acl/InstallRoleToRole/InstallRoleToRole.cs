@@ -18,8 +18,15 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class InstallRoleToRole : INotification
+    public sealed class InstallRoleToRole : IRequest<Dictionary<string, IList<string>>>
     {
-       
+        /// <summary>
+        /// If should install for all tenants
+        /// </summary>
+        public bool InstallGlobal
+        {
+            get;
+            set;
+        }
     }
 }

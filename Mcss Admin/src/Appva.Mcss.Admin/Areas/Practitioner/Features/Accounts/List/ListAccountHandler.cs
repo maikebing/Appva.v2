@@ -82,7 +82,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListAccountModel Handle(ListAccount message)
         {
             var user      = this.accountService.CurrentPrincipal();
-            var taxonPath = user.Locations.Count > 0 ? user.Locations.First().Taxon.Path : this.taxonomyService.Roots(TaxonomicSchema.Organization).First().Path;
+            var taxonPath = this.accountService.LocationsFor(user).FirstOrDefault().Taxon.Path;
             var roles     = user.GetRoleAccess();
             var accounts  = this.accountService.Search(
                 new SearchAccountModel

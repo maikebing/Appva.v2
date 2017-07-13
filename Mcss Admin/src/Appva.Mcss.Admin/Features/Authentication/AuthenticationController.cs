@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         /// <returns>A redirect to authorized return url or authorized menu</returns>
         [Route("sign-in")]
-        [AllowAnonymous, HttpPost, Validate(UseReferalRoute:true), ValidateAntiForgeryToken]
+        [AllowAnonymous, HttpPost, Validate(UseReferralRoute: true), ValidateAntiForgeryToken]
         public ActionResult SignIn(SignInForm request)
         {
             IAuthenticationResult result;

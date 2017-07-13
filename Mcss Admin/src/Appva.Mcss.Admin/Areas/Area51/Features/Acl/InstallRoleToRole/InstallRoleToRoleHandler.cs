@@ -9,6 +9,8 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
     #region Imports.
 
     using Appva.Core.Contracts.Permissions;
+    using Appva.Core.Resources;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
@@ -16,17 +18,20 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
     using Appva.Persistence;
+    using NHibernate;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Appva.Caching.Providers;
+    using Appva.Tenant.Identity;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class InstallRoleToRoleHandler : NotificationHandler<InstallRoleToRole>
+    public sealed class InstallRoleToRoleHandler : RequestHandler<InstallRoleToRole, Dictionary<string, IList<string>>>
     {
         #region Variables.
 
@@ -45,6 +50,11 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="IRuntimeMemoryCache"/>.
+        /// </summary>
+        private readonly IRuntimeMemoryCache cache;
+
         #endregion
 
         #region Constructor.
@@ -52,11 +62,12 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallRoleToRoleHandler"/> class.
         /// </summary>
-        public InstallRoleToRoleHandler(IRoleService roleService, ISettingsService settings, IPersistenceContext persistence)
+        public InstallRoleToRoleHandler(IRoleService roleService, ISettingsService settings, IPersistenceContext persistence, IRuntimeMemoryCache cache)
         {
             this.roleService = roleService;
             this.settings = settings;
             this.persistence = persistence;
+            this.cache = cache;
         }
 
         #endregion
@@ -64,11 +75,42 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
         #region NotificationHandler Overrides.
 
         /// <inheritdoc />
-        public override void Handle(InstallRoleToRole notification)
+        public override Dictionary<string, IList<string>> Handle(InstallRoleToRole notification)
         {
-            var currentPermissions = this.persistence.QueryOver<Permission>().Select(x => x.Resource).List<string>();
-            this.UpdatePermissions(currentPermissions);
-            return;
+            var retval = new Dictionary<string, IList<string>>();
+            //// Run for all tenants in  cache
+            if (notification.InstallGlobal)
+            {
+                var entries = this.cache.List().Where(x => x.Key.ToString().StartsWith(CacheTypes.Persistence.FormatWith(string.Empty))).ToList();
+
+                foreach (var entry in entries)
+                {
+                    var factory = entry.Value as ISessionFactory;
+
+                    using (var context = factory.OpenSession())
+                    using (var transaction = context.BeginTransaction())
+                    {
+                        var aclIsActiveSetting = context.QueryOver<Setting>().Where(x => x.MachineName == "Mcss.Core.Security.Acl.IsInstalled").SingleOrDefault();
+                        if (aclIsActiveSetting != null && aclIsActiveSetting.Value == "true")
+                        {
+                            var tenant = this.cache.Find<ITenantIdentity>(entry.Key.ToString().Replace(CacheTypes.Persistence.FormatWith(string.Empty), CacheTypes.Tenant.FormatWith(string.Empty)));
+
+                            var installed = this.Install(context);
+                            transaction.Commit();
+                            retval.Add(tenant.Name, installed);
+                        }
+
+                    }
+                }
+            }
+            //// Do only current tenant
+            else
+            {
+                var currentPermissions = this.persistence.QueryOver<Permission>().Select(x => x.Resource).List<string>();
+                var installed = this.Install(this.persistence.Session);
+                retval.Add("Denna kund", installed);
+            }
+            return retval;
         }
 
         #endregion
@@ -76,41 +118,34 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
         #region Private Methods.
 
         /// <summary>
-        /// Update permissions.
+        /// Roles that should not get the permissions
+        /// </summary>
+        private static readonly string[] excludedRoles = { "_ADMIN_D", "_BA", "_DA" };
+
+        /// <summary>
+        /// Install roles.
         /// </summary>
         /// <returns></returns>
-        private void UpdatePermissions(IList<string> permissions)
+        private IList<string> Install(ISession context)
         {
-            foreach (var type in typeof(Permissions).GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
+            
+
+            var roles = context.QueryOver<Role>()
+                .WhereRestrictionOn(x => x.MachineName).Not.IsIn(excludedRoles)
+                .List();
+            var allRoles = context.QueryOver<Role>()
+                .Where(x => x.IsVisible)
+                .List();
+
+            var retval = new List<string>();
+            foreach (var role in roles)
             {
-                foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
-                {
-                    if (field.FieldType != typeof(IPermission))
-                    {
-                        continue;
-                    }
-                    var keyAttr = field.GetCustomAttributes(typeof(KeyAttribute), false).SingleOrDefault() as KeyAttribute;
-                    var nameAttr = field.GetCustomAttributes(typeof(NameAttribute), false).SingleOrDefault() as NameAttribute;
-                    var descAttr = field.GetCustomAttributes(typeof(DescriptionAttribute), false).SingleOrDefault() as DescriptionAttribute;
-                    var sortAttr = field.GetCustomAttributes(typeof(SortAttribute), false).SingleOrDefault() as SortAttribute;
-                    var visiAttr = field.GetCustomAttributes(typeof(VisibilityAttribute), false).SingleOrDefault() as VisibilityAttribute;
-                    var name = nameAttr.Value;
-                    var description = descAttr.Value;
-                    var sort = sortAttr != null ? sortAttr.Value : 0;
-                    var isVisible = visiAttr != null ? visiAttr.Value == Visibility.Visible : true;
-                    var permission = (IPermission)field.GetValue(null);
-                    if (!permissions.Contains(permission.Value))
-                    {
-                        //// This i a new permission, lets add it
-                        this.persistence.Save(new Permission(name, description, permission.Value, sort, isVisible));
-                    }
-                    else
-                    {
-                        //// This is an existing permission
-                        //// TODO: Check if it needs to be updated
-                    }
-                }
+                role.Roles = allRoles;
+                context.Update(role);
+                retval.Add(role.Name);
             }
+
+            return retval;
         }
 
         #endregion

@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Web.Mvc;
     using Appva.Mcss.Web;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -62,14 +63,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateRolesForm Handle(UpdateRoles message)
         {
             var user    = this.service.CurrentPrincipal();
-            var userLocation    = user.Locations.Count > 0 ?
-                this.taxonomies.Find(user.Locations.First().Taxon.Id, TaxonomicSchema.Organization) :
-                this.taxonomies.Roots(TaxonomicSchema.Organization).First();
+            var userLocation = TaxonItem.FromTaxon(this.service.LocationsFor(user).FirstOrDefault().Taxon);
             var account = this.service.Find(message.Id);
             var roles   = user.GetRoleAccess();
-            var selected = account.Locations.Count > 0 ?
-               this.taxonomies.Find(account.Locations.First().Taxon.Id, TaxonomicSchema.Organization) :
-               this.taxonomies.Roots(TaxonomicSchema.Organization).First();
+            var selected = TaxonItem.FromTaxon(this.service.LocationsFor(account).FirstOrDefault().Taxon);
             return new UpdateRolesForm
             {
                 Roles         = roles.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),

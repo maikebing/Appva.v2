@@ -125,9 +125,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override bool Handle(CreateAccountModel message)
         {
             var user = this.accountService.CurrentPrincipal();
-            var orgRoot = user.Locations.Count > 0 ? 
-                this.taxonomies.Find(user.Locations.First().Taxon.Id, TaxonomicSchema.Organization) :
-                this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
+            var orgRoot = this.accountService.LocationsFor(user).FirstOrDefault().Taxon;
             var taxonId = message.Taxon.IsNotEmpty() ? message.Taxon.ToGuid() : orgRoot.Id;
             var roles   = message.TitleRole.IsNotEmpty() ? new List<Role> { this.roleService.Find(message.TitleRole.ToGuid()) } : new List<Role>();
             var address = this.taxonomies.Get(taxonId);
@@ -149,7 +147,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 account.DevicePassword = this.settings.AutogeneratePasswordForMobileDevice() ? Password.Random(4, PasswordFormat) : message.DevicePassword;
             }
 
-            var permissionAddress = message.UseTaxonAsRootAddress ? address : taxonomies.Load(orgRoot.Id);
+            var permissionAddress = message.UseTaxonAsRootAddress ? address : orgRoot;
             this.accountService.Save(account, Location.New(account, permissionAddress));
             
             bool isAccountUpgradedForAdminAccess;

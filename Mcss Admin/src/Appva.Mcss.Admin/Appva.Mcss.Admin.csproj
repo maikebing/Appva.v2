@@ -882,6 +882,7 @@
     <Content Include="Assets\i\bullet-add.png" />
     <Content Include="Assets\i\bullet-delete.png" />
     <Content Include="Assets\i\ce-logo.png" />
+    <Content Include="Assets\i\check-icon.png" />
     <Content Include="Assets\i\clock.png" />
     <Content Include="Assets\i\clock_red.png" />
     <Content Include="Assets\i\clock_stop.png" />
@@ -965,6 +966,7 @@
     <Content Include="Assets\i\ipad-toggledarrow.png" />
     <Content Include="Assets\i\line-grey-h.png" />
     <Content Include="Assets\i\list-arrow.png" />
+    <Content Include="Assets\i\loginpage-logo.png" />
     <Content Include="Assets\i\logo-about.png" />
     <Content Include="Assets\i\logo.png" />
     <Content Include="Assets\i\minichart.jpg" />
@@ -983,6 +985,7 @@
     <Content Include="Assets\i\shade-small.png" />
     <Content Include="Assets\i\shade-top.png" />
     <Content Include="Assets\i\shade-white.png" />
+    <Content Include="Assets\i\siths-icon.png" />
     <Content Include="Assets\i\sort-arrow.png" />
     <Content Include="Assets\i\statusicons-tiles%402x.png" />
     <Content Include="Assets\i\trenddn.png" />
@@ -1400,6 +1403,9 @@
     <Content Include="Features\Shared\SignInSithsFailed.cshtml" />
     <Content Include="Features\Shared\_LoginHeaderLogo.cshtml" />
     <Content Include="Features\Shared\_SignInFormPartial.cshtml" />
+    <Content Include="Areas\Area51\Features\Shared\_aclButtons.cshtml" />
+    <Content Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRole.cshtml" />
+    <Content Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

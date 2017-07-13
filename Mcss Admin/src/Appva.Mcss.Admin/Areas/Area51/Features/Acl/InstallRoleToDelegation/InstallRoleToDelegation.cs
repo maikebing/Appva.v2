@@ -18,8 +18,15 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToDelegation
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class InstallRoleToDelegation : INotification
+    public sealed class InstallRoleToDelegation : IRequest<Dictionary<string, IList<string>>>
     {
-       
+        /// <summary>
+        /// If installation should be done for all tenants
+        /// </summary>
+        public bool InstallGlobal
+        {
+            get;
+            set;
+        }
     }
 }

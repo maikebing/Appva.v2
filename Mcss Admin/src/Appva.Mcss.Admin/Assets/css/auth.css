@@ -75,6 +75,7 @@ h3 { font-size: 14px; font-weight:bold; margin-bottom:0; padding-bottom:0;  }
 .btn.green {
     background-color:#67ad3d; 
     border-color:#48911c; 
+    line-height:normal;
 }
 .btn:hover{background-color:#374154;}
 .btn.green:hover{background-color:#48911c;}
@@ -171,9 +172,11 @@ input[type="radio"][disabled],input[type="checkbox"][disabled],input[type="radio
 .page-reset-password .container{max-width:500px;}
 .page-reset-password .container .col .bd{text-align:center;}
 .page-sign-in .container img.siths-icon, .page-sign-in .container p.siths-text{display:block; max-width:211px; margin:0 auto 16px;}
-.page-sign-in .bd .form {padding-top:20px;}
+.page-sign-in.page .container .bd form {padding-top:20px;padding-bottom:60px;position:static;}
 .page-sign-in .container .bd {height:100%;}
-.page-sign-in .bd .form .forgot {margin-bottom:52px;}
+/*.page-sign-in .bd .form .forgot {margin-bottom:52px;}*/
+.page-sign-in .col.bd {min-height:300px;position:relative;}
+.page-sign-in .col.bd .controls {bottom:25px; left:25px; right:25px; position:absolute; height:50px;}
 
 
 

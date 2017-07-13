@@ -157,10 +157,10 @@ namespace Appva.Mcss.Admin.Controllers
         [Route("roletorole")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
         [AlertSuccess("Rollmappning installerad")]
-        public ActionResult InstallRoleToRole()
+        public ActionResult InstallRoleToRole(InstallRoleToRole request)
         {
-            this.mediator.Publish(new InstallRoleToRole());
-            return this.RedirectToAction("Index");
+            var model = this.mediator.Send(request);
+            return this.View(model);
         }
 
         #endregion
@@ -174,10 +174,10 @@ namespace Appva.Mcss.Admin.Controllers
         [Route("roletodelegation")]
         [HttpPost, Validate, ValidateAntiForgeryToken]
         [AlertSuccess("Delegerings-behörigheter installerade!")]
-        public ActionResult InstallRoleToDelegation()
+        public ActionResult InstallRoleToDelegation(InstallRoleToDelegation request)
         {
-            this.mediator.Publish(new InstallRoleToDelegation());
-            return this.RedirectToAction("Index");
+            var model = this.mediator.Send(request);
+            return this.View(model);
         }
 
         #endregion

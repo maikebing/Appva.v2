@@ -1,0 +1,51 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ArticleCategoryListModel
+@{
+    SetTitle("Backoffice - Beställningslista");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Beställningslista</h1>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        @if (Model.CategoryList.Count > 0)
+        {
+            <div id="signlist" class="articlecategory">
+                <h4 class="list-header">Artikelkategorier</h4>
+                <a href="@Url.Action("AddCategory", "Article")" class="lb-link section-list-btn"><span>+</span>Ny kategori</a>
+                <table id="signed-events">
+                    <thead class="head">
+                        <tr>
+                            <th>Namn</th>
+                            <th>Beskrivning</th>
+                            <th class="prtd">Antal artiklar</th>
+                            <th class="prtd-140">Ändrades</th>
+                            <th class="prtd">Åtgärder</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var category in Model.CategoryList.OrderByDescending(x => x.UpdatedAt))
+                        {
+                            <tr class="tr-highlight">
+                                <td>@category.Name</td>
+                                <td>@category.Description</td>
+                                <td class="prtd">@(category.ArticleCount == 0 ? Html.Raw("&ndash;") : Html.Raw(category.ArticleCount + " st"))</td>
+                                <td class="prtd-140">@category.UpdatedAt.ToString("yyyy-MM-dd, HH:mm:ss")</td>
+                                <td class="btnpad prtd2">
+                                    @Html.ActionLink("Ändra", "EditCategory", "Article", new { id = category.Id }, new { @class = "lb-link btn" })
+                                    @Html.ActionLink("Ta bort", "DeleteCategory", "Article", new { id = category.Id }, new { @class = (category.HasArticles ? "btn btn-del action-denied" : "btn btn-del"), @style = (category.HasArticles ? "opacity:.7" : "opacity:1") })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="note">
+                <h2 style="padding:20px 0 0 20px">Inga kategorier hittades.</h2>
+            </div>
+        }
+    </div>
+</div>

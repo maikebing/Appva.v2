@@ -1402,6 +1402,11 @@ td.rights {
 	text-shadow:0 1px 0 #fff;
 	border-bottom:1px solid #c6d0e2;
 }
+#signlist .list-header { 
+    float:left;
+    padding-top:19px; 
+    font-weight:bold;
+}
 #signlist .h a {margin-top:7px;}
 
 #signlist ul.nav li {
@@ -1444,6 +1449,37 @@ td.rights {
 	min-height:20px;
 }
 
+#signlist .primg {
+    width:45px;
+    padding:6px 0;
+}
+#signlist .prtd {
+    width:100px;
+    text-align:center;
+}
+#signlist .prtd2 {
+    width:160px;
+    text-align:center;
+}
+#signlist .prtd2 .btn-del { margin-left:6px; }
+#signlist .prtd-140 {
+    width:140px;
+    text-align:center;
+}
+#signlist .prstatus span {
+    width:10px;
+    height:10px;
+    display:inline-block;
+    margin-right:8px;
+    border-radius:10px;
+}
+#signlist .prpad {
+    padding:6px 10px!important;
+}
+#signlist .btnpad { padding:12px 10px!important; }
+#signlist .tr-highlight:hover { background:#f9f9f9; }
+#signlist .tr-highlight { transition:background .2s ease-in-out; }
+
 #signlist .prstatus span {
     width:10px;
     height:10px;
@@ -1478,6 +1514,33 @@ td.rights {
     padding:6px 10px!important;
 }
 #signlist .tr-highlight:hover { background:#f9f9f9; }
+#content-primary .section-list-btn {
+    float:right;
+    position:relative;
+    background:#f2f2f2;
+    color:#333;
+    font-weight:bold;
+    border-radius:3px;
+    padding:8px 34px 8px 16px;
+    margin:12px 0;
+    text-decoration:none;
+    border:1px solid #ccc;
+    text-shadow: 0 1px 0 #fff;
+    box-shadow: 0 0 1px #fff inset;
+    transition:background .2s ease-in-out, border .2s ease-in-out;
+}
+#content-primary .section-list-btn:hover {
+    background:#eee;
+    border:1px solid #bbb;
+}
+#content-primary .section-list-btn span {
+    position:absolute;
+    top:-1px;
+    right:10px;
+    font-size:24px;
+    font-weight:normal;
+}
+
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}
@@ -3030,6 +3093,19 @@ form .time {width:4em;}
 .lblcheckbox {font-weight:400!important;}
 .std-form .section-title,
 .content .section-title {margin:10px -20px;}
+
+#sign-op input[type="text"], #articlecat-op input[type="text"] {
+    font-size:13px;
+    padding:6px;
+    margin-top:4px;
+    width:100%;
+}
+#articlecat-op input[type="text"] {
+    box-sizing:border-box;
+    margin-bottom:10px;
+}
+#articlecat-op { margin-bottom:13px; }
+
 .std-form .form-section .section-title {
 	margin:0 -5px 10px;
 	padding:3px 5px;

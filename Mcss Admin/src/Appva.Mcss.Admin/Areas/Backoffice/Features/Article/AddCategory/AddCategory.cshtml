@@ -5,12 +5,10 @@
 <div class="std-panel std-form lb-panel-small lb-validate-form">
     @using (Html.Post())
     {
-        <div id="articlecat-op">
+        <div id="pr-panel">
             <h3 class="section-title">Ny kategori</h3>
-            @Html.LabelFor(x => x.Name)
-            @Html.TextBoxFor(x => x.Name)
-            @Html.LabelFor(x => x.Description)
-            @Html.TextBoxFor(x => x.Description)
+            @Html.FormGroup(x => x.Name, "text").Label("Namn").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.Description, "text large").Label("Beskrivning").TextArea().Validate().Build()
         </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })

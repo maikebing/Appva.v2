@@ -1535,7 +1535,7 @@ td.rights {
 }
 #content-primary .section-list-btn span {
     position:absolute;
-    top:-1px;
+    top:0;
     right:10px;
     font-size:24px;
     font-weight:normal;
@@ -3094,17 +3094,12 @@ form .time {width:4em;}
 .std-form .section-title,
 .content .section-title {margin:10px -20px;}
 
-#sign-op input[type="text"], #articlecat-op input[type="text"] {
+#sign-op input[type="text"] {
     font-size:13px;
     padding:6px;
     margin-top:4px;
     width:100%;
 }
-#articlecat-op input[type="text"] {
-    box-sizing:border-box;
-    margin-bottom:10px;
-}
-#articlecat-op { margin-bottom:13px; }
 
 .std-form .form-section .section-title {
 	margin:0 -5px 10px;

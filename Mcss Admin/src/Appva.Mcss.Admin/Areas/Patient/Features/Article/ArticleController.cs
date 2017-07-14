@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Areas.Models;
+    using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc.Security;
@@ -132,6 +133,39 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         public ActionResult Delete(InactivateArticle request)
         {
             return this.View();
+        }
+
+        #endregion
+
+        #region Overview widget.
+
+        /// <summary>
+        /// Returns the dashboard widget.
+        /// </summary>
+        /// <returns><see cref="PartialViewResult"/>.</returns>
+        [Route("~/article/overview")]
+        [HttpGet, Dispatch(typeof(ArticleOverview))]
+        [PermissionsAttribute(Permissions.Dashboard.ReadArticleOrderValue)]
+        public PartialViewResult Overview()
+        {
+            return this.PartialView();
+        }
+
+        #endregion
+
+        #region OverviewUpdate.
+
+        /// <summary>
+        /// Updates selected articles from the dashboard.
+        /// </summary>
+        /// <param name="request">The <see cref="UpdateArticle"/>.</param>
+        /// <returns><see cref="DispatchJsonResult"/>.</returns>
+        [Route("~/article/overviewupdate")]
+        [HttpPost, Dispatch("overview", "article")]
+        [PermissionsAttribute(Permissions.OrderList.UpdateValue)]
+        public DispatchJsonResult OverviewUpdate(OverviewUpdateArticle request)
+        {
+            return this.JsonPost();
         }
 
         #endregion

@@ -512,6 +512,10 @@
     <Compile Include="Areas\Patient\Features\Article\List\ListArticle.cs" />
     <Compile Include="Areas\Patient\Features\Article\List\ListArticleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Article\List\ListArticleModel.cs" />
+    <Compile Include="Areas\Patient\Features\Article\OverviewUpdate\OverviewUpdateArticle.cs" />
+    <Compile Include="Areas\Patient\Features\Article\OverviewUpdate\OverviewUpdateArticleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Overview\ArticleOverview.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Overview\ArticleOverviewHandler.cs" />
     <Compile Include="Areas\Patient\Features\Article\Status\ArticleStatusHandler.cs" />
     <Compile Include="Areas\Patient\Features\Article\Status\ArticleStatusModel.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
@@ -816,6 +820,7 @@
     <Compile Include="Areas\Dashboard\Features\Dashboard\Load\LoadWidget.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\List\ListAlertModel.cs" />
     <Compile Include="Areas\Patient\Features\Alerts\Overview\AlertOverviewViewModel.cs" />
+    <Compile Include="Models\ArticleOverviewViewModel.cs" />
     <Compile Include="Models\ChartDataPointViewModel.cs" />
     <Compile Include="Models\CheckBoxViewModel.cs" />
     <Compile Include="Models\DateSpanViewModel.cs" />
@@ -1526,6 +1531,7 @@
     <Content Include="Areas\Backoffice\Features\Article\AddCategory\AddCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Article\EditCategory\EditCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Article\ListCategory\ListCategory.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\Overview\Overview.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

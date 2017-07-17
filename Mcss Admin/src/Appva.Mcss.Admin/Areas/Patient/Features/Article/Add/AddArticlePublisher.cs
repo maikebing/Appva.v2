@@ -64,6 +64,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(AddArticleModel message)
         {
+            if(string.IsNullOrEmpty(message.SelectedCategory))
+            {
+                return false;
+            }
+
             var category = this.articleRepository.GetCategory(new Guid(message.SelectedCategory));
             var patient = this.patientService.Get(message.Id);
 

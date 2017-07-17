@@ -13,7 +13,7 @@
                 </div>
                 <div class="control-container ">
                     @Html.LabelFor(x => x.Name, "Namn")
-                    @Html.TextBoxFor(x => x.Name)
+                    @Html.TextBoxFor(x => x.Name, new { @data_rule_required = "true" })
                 </div>
                 <div class="control-container control-container--text">
                     @Html.LabelFor(x => x.Description, "Beskrivning")

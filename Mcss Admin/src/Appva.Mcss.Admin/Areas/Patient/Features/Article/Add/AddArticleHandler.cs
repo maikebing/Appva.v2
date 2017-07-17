@@ -51,6 +51,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var categories = this.articleRepository.GetCategories();
             var categoryList = new List<SelectListItem>();
+            categoryList.Add(new SelectListItem
+            {
+                Text = "Välj en kategori",
+                Value = string.Empty,
+                Selected = true,
+                Disabled = true
+            });
 
             foreach (var category in categories)
             {

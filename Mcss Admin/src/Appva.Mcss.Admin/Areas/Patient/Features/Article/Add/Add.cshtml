@@ -9,11 +9,11 @@
             <div class="width-limiter width-limiter--xs">
                 <div class="control-container control-container--select">
                     @Html.LabelFor(x => x.SelectedCategory, "Kategori")
-                    @Html.DropDownListFor(x => x.SelectedCategory, Model.Categories, new { @class = "select-style" })
+                    @Html.DropDownListFor(x => x.SelectedCategory, Model.Categories, new { @class = "select-style required" })
                 </div>
                 <div class="control-container ">
                     @Html.LabelFor(x => x.Name, "Namn")
-                    @Html.TextBoxFor(x => x.Name)
+                    @Html.TextBoxFor(x => x.Name, new { @data_rule_required = "true" })
                 </div>
                 <div class="control-container control-container--text">
                     @Html.LabelFor(x => x.Description, "Beskrivning")

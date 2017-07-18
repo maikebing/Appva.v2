@@ -311,6 +311,13 @@
     <Compile Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRoleHandler.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Article\ArticleController.cs" />
+    <Compile Include="Areas\Area51\Features\Article\List\ArticleOption.cs" />
+    <Compile Include="Areas\Area51\Features\Article\List\ArticleOptionListHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Article\MigrateArticles\MigrateArticles.cs" />
+    <Compile Include="Areas\Area51\Features\Article\MigrateArticles\MigrateArticlesHandler.cs" />
+    <Compile Include="Areas\Area51\Features\Article\MigrateCategories\MigrateCategories.cs" />
+    <Compile Include="Areas\Area51\Features\Article\MigrateCategories\MigrateCategoriesHandler.cs" />
     <Compile Include="Areas\Area51\Features\Audit\AuditController.cs" />
     <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfigurationCreateHandler.cs" />
     <Compile Include="Areas\Area51\Features\Audit\Configuration\AuditConfigurationHandler.cs" />
@@ -1532,6 +1539,7 @@
     <Content Include="Areas\Backoffice\Features\Article\EditCategory\EditCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Article\ListCategory\ListCategory.cshtml" />
     <Content Include="Areas\Patient\Features\Article\Overview\Overview.cshtml" />
+    <Content Include="Areas\Area51\Features\Article\List\List.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

@@ -48,6 +48,27 @@ using Appva.Mcss.Admin.Application.Models;
             "Whether or not risk assessment information, such as 'Senior' alert is visible",
             false);
 
+        /// <summary>
+        /// Indicates if article categories has been migrated.
+        /// </summary>
+        public static readonly ApplicationSettingIdentity<bool> HasCreatedCategories = ApplicationSettingIdentity<bool>.CreateNew(
+            "MCSS.OrderList.HasCreatedCategories",
+            "Categories has been created",
+            "MCSS.OrderList",
+            "Refillable items from Schedulesettings has been migrated to ArticleCategories",
+            false
+            );
+
+        /// <summary>
+        /// Indicates if articles has been migrated.
+        /// </summary>
+        public static readonly ApplicationSettingIdentity<bool> HasMigratedArticles = ApplicationSettingIdentity<bool>.CreateNew(
+            "MCSS.OrderList.HasMigratedArticles",
+            "Article migration completed",
+            "MCSS.OrderList",
+            "Items from the Sequence table has been copied to the Article and ArticleCategory tables",
+            false);
+
         #endregion
 
         #region Account

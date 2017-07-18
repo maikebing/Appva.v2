@@ -468,6 +468,7 @@
     <property name="NurseConfirmDeviationMessage" />
     <many-to-one name="DelegationTaxon" class="Taxon" />
     <many-to-one name="CombineWith" class="ScheduleSettings" />
+    <many-to-one name="ArticleCategory" class="ArticleCategory" />
     <property name="ScheduleType" />
     <property name="Absence" />
     <property name="Color" />

@@ -24,6 +24,8 @@ namespace Appva.Mcss.Admin
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.UseCdn = true;
+            BundleTable.EnableOptimizations = true;
+
             bundles.Add(new ScriptBundle("~/Assets/js/bundle").Include(
                 "~/Assets/js/jquery/jquery-1.6.3.js", "~/Assets/js/jquery/jquery-ui-{version}.custom.js",
                 "~/Assets/js/jquery/plugins/date.js", "~/Assets/js/jquery/plugins/jquery.datepicker.js",

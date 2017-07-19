@@ -78,7 +78,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account
         /// <returns></returns>
         [Route("migratearticles")]
         [HttpGet, Dispatch("list", "article")]
-        public ActionResult MigrateArticles()
+        public ActionResult MigrateArticles(MigrateArticles request)
         {
             return this.View();
         }

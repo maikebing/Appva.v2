@@ -9,11 +9,13 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
 {
     #region Imports.
 
-    using System.Linq;
+    using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Features.Area51.ArticleOption;
+    using Appva.Mcss.Application.Models;
     using Appva.Persistence;
+    using NHibernate;
 
     #endregion
 
@@ -49,40 +51,88 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override bool Handle(MigrateArticles message)
         {
-            //var s = new System.Diagnostics.Stopwatch();
-            //s.Start();
+            var s = new System.Diagnostics.Stopwatch();
+            s.Start();
 
-            /*
-            foreach (var setting in scheduleSettings)
+            IQueryOver<Sequence, ScheduleSettings> query = null;
+            int rowCount = 0;
+            do
             {
-                using (var transaction = persistence.BeginTransaction())
+                var session = this.persistence.Session.SessionFactory.OpenSession();
+                using (var transaction = session.BeginTransaction())
                 {
-                    var category = new ArticleCategory();
-                    category.Name = setting.Name;
-                    this.persistence.Save(category);
+                    query = session.QueryOver<Sequence>()
+                        .Where(x => x.Article == null)
+                            .JoinQueryOver(x => x.Schedule)
+                                .JoinQueryOver(x => x.ScheduleSettings)
+                                    .Where(x => x.OrderRefill == true)
+                                        .And(x => x.ArticleCategory != null);
 
-                    var schedules = this.persistence.QueryOver<Schedule>()
-                        .Where(x => x.ScheduleSettings == setting)
-                            .List();
-
-                    foreach (var schedule in schedules)
+                    rowCount = query.RowCount();
+                    if (rowCount > 0)
                     {
-                        if (schedule.ArticleCategory == null)
+                        var list = query.Take(10000).List();
+                        foreach (var sequence in list)
                         {
-                            schedule.ArticleCategory = category;
-                            this.persistence.Update(schedule);
+                            var article = this.CreateArticle(sequence);
+                            session.Save(article);
+                            sequence.Article = article;
+                            session.Update(sequence);
                         }
-                    }
 
-                    transaction.Commit();
+                        transaction.Commit();
+                    }
                 }
             }
-            */
+            while (rowCount > 0);
 
-            //s.Stop();
-            //var result = string.Format("Time elapsed: {0}:{1}, memory usage: {2} KB", System.Math.Floor(s.Elapsed.TotalMinutes), s.Elapsed.ToString("ss\\.ff"), System.GC.GetTotalMemory(false) / 1024);
+            s.Stop();
+            var result = string.Format("Time elapsed: {0}:{1} (m:s)", System.Math.Floor(s.Elapsed.TotalMinutes), s.Elapsed.ToString("ss\\.ff"));
 
             return false;
+        }
+
+        #endregion
+
+        #region Private methods.
+
+        /// <inheritdoc />
+        private Article CreateArticle(Sequence sequence)
+        {
+            bool refillIsNull = sequence.RefillInfo == null ? true : false;
+            var article = new Article
+            {
+                Name = sequence.Name,
+                Description = sequence.Description,
+                Refill = false,
+                RefillOrderDate = null,
+                RefillOrderedBy = null,
+                Ordered = true,
+                OrderDate = null,
+                OrderedBy = null,
+                Status = ArticleStatus.Refilled.ToString(),
+                Patient = sequence.Patient,
+                ArticleCategory = sequence.Schedule.ScheduleSettings.ArticleCategory
+            };
+
+            if (refillIsNull == false)
+            {
+                if (sequence.RefillInfo.Refill == true)
+                {
+                    article.Refill = true;
+                    article.Ordered = false;
+                    article.Status = ArticleStatus.NotStarted.ToString();
+                    article.RefillOrderedBy = sequence.RefillInfo.RefillOrderedBy;
+                    article.RefillOrderDate = sequence.RefillInfo.RefillOrderedDate;
+                }
+                else if (sequence.RefillInfo.Ordered == true)
+                {
+                    article.OrderedBy = sequence.RefillInfo.OrderedBy;
+                    article.OrderDate = sequence.RefillInfo.OrderedDate;
+                }
+            }
+
+            return article;
         }
 
         #endregion

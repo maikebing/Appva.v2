@@ -338,7 +338,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get;
             set;
-        } 
+        }
+
+        /// <summary>
+        /// The article
+        /// </summary>
+        public virtual Article Article
+        {
+            get;
+            set;
+        }
 
         #endregion
 

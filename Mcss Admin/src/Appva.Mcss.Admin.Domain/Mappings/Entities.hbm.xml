@@ -543,6 +543,7 @@
     <many-to-one name="Taxon" class="Taxon" />
     <many-to-one name="Role"  class="Role" />
     <many-to-one name="Inventory"  class="Inventory" />
+    <many-to-one name="Article" class="Article" />
     <component name="RefillInfo" class="RefillModel">
       <property name="Refill" />
       <property name="RefillOrderedDate" />

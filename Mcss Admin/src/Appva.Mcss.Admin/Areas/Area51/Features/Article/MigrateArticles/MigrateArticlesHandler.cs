@@ -9,8 +9,8 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
 {
     #region Imports.
 
-    using System;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Features.Area51.ArticleOption;
     using Appva.Mcss.Application.Models;
@@ -31,6 +31,11 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService service;
+
         #endregion
 
         #region Constructors.
@@ -39,9 +44,11 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// Initializes a new instance of the <see cref="MigrateArticlesHandler"/> class.
         /// </summary>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
-        public MigrateArticlesHandler(IPersistenceContext persistence)
+        /// <param name="service">The <see cref="ISettingsService"/>.</param>
+        public MigrateArticlesHandler(IPersistenceContext persistence, ISettingsService service)
         {
             this.persistence = persistence;
+            this.service = service;
         }
 
         #endregion
@@ -51,9 +58,6 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override bool Handle(MigrateArticles message)
         {
-            var s = new System.Diagnostics.Stopwatch();
-            s.Start();
-
             IQueryOver<Sequence, ScheduleSettings> query = null;
             int rowCount = 0;
             do
@@ -86,8 +90,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             }
             while (rowCount > 0);
 
-            s.Stop();
-            var result = string.Format("Time elapsed: {0}:{1} (m:s)", System.Math.Floor(s.Elapsed.TotalMinutes), s.Elapsed.ToString("ss\\.ff"));
+            this.service.Upsert(ApplicationSettings.HasMigratedArticles, true);
 
             return false;
         }

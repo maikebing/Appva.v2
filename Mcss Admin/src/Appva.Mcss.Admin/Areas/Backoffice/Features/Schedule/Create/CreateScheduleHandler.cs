@@ -8,16 +8,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
 {
     #region Imports.
 
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
+    using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Infrastructure.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
 
     #endregion
 
@@ -33,6 +34,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
+        private readonly IArticleRepository articleRepository;
+
         #endregion
 
         #region Constructor.
@@ -40,9 +48,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateScheduleHandler"/> class.
         /// </summary>
-        public CreateScheduleHandler(ITaxonomyService taxonomyService)
+        public CreateScheduleHandler(ITaxonomyService taxonomyService, ISettingsService settingsService, IArticleRepository articleRepository)
         {
             this.taxonomyService = taxonomyService;
+            this.settingsService = settingsService;
+            this.articleRepository = articleRepository;
         }
 
         #endregion
@@ -52,10 +62,36 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
         /// <inheritdoc />
         public override CreateScheduleModel Handle(Parameterless<CreateScheduleModel> message)
         {
+            bool hasMigratedArticles = this.settingsService.Find(ApplicationSettings.HasMigratedArticles);
+            List<SelectListItem> categorySelectList = null;
+
+            if (hasMigratedArticles)
+            {
+                var categories = this.articleRepository.GetCategories();
+                categorySelectList = new List<SelectListItem>();
+                categorySelectList.Add(new SelectListItem
+                {
+                    Text = "Välj",
+                    Value = string.Empty,
+                    Selected = true
+                });
+
+                foreach (var category in categories)
+                {
+                    categorySelectList.Add(new SelectListItem
+                    {
+                        Text = category.Name,
+                        Value = category.Id.ToString()
+                    });
+                }
+            }
+
             return new CreateScheduleModel
             {
                 Delegations = this.taxonomyService.Roots(TaxonomicSchema.Delegation).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList(),
-                DeviationMessage = new ConfirmDeviationMessage()
+                DeviationMessage = new ConfirmDeviationMessage(),
+                HasMigratedArticles = hasMigratedArticles,
+                Categories = categorySelectList
             };
         }
 

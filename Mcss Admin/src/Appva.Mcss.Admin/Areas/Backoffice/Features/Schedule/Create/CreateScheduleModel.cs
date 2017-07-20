@@ -169,6 +169,33 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        /// <summary>
+        /// The selected category id.
+        /// </summary>
+        public string SelectedCategory
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A list of article categories.
+        /// </summary>
+        public IEnumerable<SelectListItem> Categories
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Check if the article data migration has been completed.
+        /// </summary>
+        public bool HasMigratedArticles
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

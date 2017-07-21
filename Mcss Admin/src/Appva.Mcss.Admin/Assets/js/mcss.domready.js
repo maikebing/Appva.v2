@@ -91,6 +91,20 @@ $(function () {
         return false;
     });
 
+    $('.orderlist .article-del').click(function () {
+        var clicked = $(this);
+        var content = $('<div class="lb-panel lb-panel-small"><div class="std-panel"><div class="prompt"></div></div></div>');
+        content.find('.prompt').append('<p class="warning">Vill du verkligen ta bort artikeln?</p>');
+        content.find('.prompt').append('<a class="btn btn-del" href="' + clicked.attr('href') + '">Ta bort artikeln</a><a class="cancel" href="#">Avbryt</a>');
+        mcss.lightbox.openBox(content, clicked, 'lb-warning', function (content) {
+            $('.lb-panel a.cancel').click(function () {
+                $('.lb-blackout, .lb-wrap').remove();
+                return false;
+            });
+        });
+        return false;
+    });
+
     $('.tests .btn-del').click(function () {
         var clicked = $(this);
         var content = $('<div class="lb-panel lb-panel-small"><div class="std-panel"><div class="prompt"></div></div></div>');

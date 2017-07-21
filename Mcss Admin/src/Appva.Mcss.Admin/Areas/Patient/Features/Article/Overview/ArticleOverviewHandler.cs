@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System.Collections.Generic;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
@@ -105,7 +106,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                             .Where(Restrictions.On<Taxon>(x => x.Path)
                                 .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));
 
-            foreach (var article in orders.List())
+            foreach (var article in orders.List().OrderBy(x => x.RefillOrderDate))
             {
                 orderedArticles.Add(this.articleTransformer.ToArticleModel(article));
             }

@@ -1356,6 +1356,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string UpdateValue = Schema + "patient/orderlist/update";
 
             /// <summary>
+            /// The edit value.
+            /// </summary>
+            public const string EditValue = Schema + "patient/orderlist/edit";
+
+            /// <summary>
             /// The delete value.
             /// </summary>
             public const string DeleteValue = Schema + "patient/orderlist/delete";
@@ -1381,13 +1386,21 @@ namespace Appva.Mcss.Admin.Application.Common
             /// </summary>
             [Sort(62)]
             [Name("Update articles")]
-            [Description("Permission update articles")]
+            [Description("Permission update the order status of an article")]
             public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
+
+            /// <summary>
+            /// Permission to edit articles.
+            /// </summary>
+            [Sort(63)]
+            [Name("Edit articles")]
+            [Description("Permission to edit articles")]
+            public static readonly IPermission Edit = PermissionType.CreateNew(EditValue);
 
             /// <summary>
             /// Permission to delete articles.
             /// </summary>
-            [Sort(63)]
+            [Sort(64)]
             [Name("Delete articles")]
             [Description("Permission to delete articles")]
             public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);

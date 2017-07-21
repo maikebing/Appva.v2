@@ -98,7 +98,7 @@
                     <th scope="col">Namn</th>
                     <th scope="col">Beskrivning</th>
                     <th scope="col">Kategori</th>
-                    @if (Html.HasPermissionFor(Permissions.OrderList.Update) || Html.HasPermissionFor(Permissions.OrderList.Delete))
+                    @if (Html.HasPermissionFor(Permissions.OrderList.Edit) || Html.HasPermissionFor(Permissions.OrderList.Delete))
                     {
                         <th scope="col">Åtgärder</th>
                     }
@@ -111,10 +111,10 @@
                         <td>@article.Name</td>
                         <td>@(article.Description == null ? string.Empty : article.Description)</td>
                         <td>@(string.IsNullOrEmpty(article.ArticleCategory.Name) ? "Saknas" : article.ArticleCategory.Name)</td>
-                        @if (Html.HasPermissionFor(Permissions.OrderList.Update) || Html.HasPermissionFor(Permissions.OrderList.Delete))
+                        @if (Html.HasPermissionFor(Permissions.OrderList.Edit) || Html.HasPermissionFor(Permissions.OrderList.Delete))
                         {
                             <td>
-                                @if (Html.HasPermissionFor(Permissions.OrderList.Update))
+                                @if (Html.HasPermissionFor(Permissions.OrderList.Edit))
                                 {
                                     @Html.ActionLink("Ändra", "Edit", "Article", null, null, "edit-article", new { Article = article.Id }, new { @class = "button button--inline open-in-dialog" })
                                 }

@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             article.Version += 1;
             article.UpdatedAt = DateTime.Now;
             this.articleRepository.Update(article);
-            this.auditing.Update(patient, "redigerade {0} ({1})", currentArticleName, article.Id);
+            this.auditing.Update(patient, "redigerade artikeln {0} ({1})", currentArticleName, article.Id);
 
             return true;
         }

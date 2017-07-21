@@ -87,7 +87,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             };
 
             this.articleRepository.Save(article);
-            this.auditing.Create(patient, "skapade {0} ({1})", article.Name, article.Id);
+            this.auditing.Create(patient, "skapade artikeln {0} ({1})", article.Name, article.Id);
 
             return true;
         }

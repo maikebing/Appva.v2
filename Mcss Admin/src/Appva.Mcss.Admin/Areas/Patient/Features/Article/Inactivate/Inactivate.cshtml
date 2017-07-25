@@ -1,0 +1,20 @@
+﻿@using Appva.Mcss.Admin.Areas.Models
+@model InactivateArticleModel
+@{ SetTitle("Ta bort en artikel"); }
+<div class="section section--hspace">
+    <h2>Ta bort artikel</h2>
+    <div id="remove-item">
+        @using (Html.Post())
+        {
+            <div class="width-limiter width-limiter--xs">
+                <p>Är du säker på att du vill ta bort artikeln?</p>
+                <div class="form-controls form-controls--align-end form-controls--no-margin">
+                    <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
+                    @Html.HiddenFor(x => x.Id)
+                    @Html.HiddenFor(x => x.Article)
+                    @Html.Submit("Ta bort artikel", new { @class = "button button--negative" })
+                </div>
+            </div>
+        }
+    </div>
+</div>

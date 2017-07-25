@@ -126,11 +126,24 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// Inactivates an article.
         /// </summary>
         /// <param name="request">The <see cref="InactivateArticle"/>.</param>
-        /// <returns>A <see cref="ListArticle"/>.</returns>
+        /// <returns>A <see cref="InactivateArticleModel"/>.</returns>
         [Route("delete/{article:guid}")]
-        [HttpGet, Dispatch("list", "article")]
+        [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.OrderList.DeleteValue)]
-        public ActionResult Delete(InactivateArticle request)
+        public ActionResult Inactivate(InactivateArticle request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Handles the inactivation request.
+        /// </summary>
+        /// <param name="request">The <see cref="InactivateArticleModel"/>.</param>
+        /// <returns>A <see cref="bool"/>.</returns>
+        [Route("delete/{article:guid}")]
+        [HttpPost, Dispatch("list", "article")]
+        [PermissionsAttribute(Permissions.OrderList.DeleteValue)]
+        public ActionResult Delete(InactivateArticleModel request)
         {
             return this.View();
         }

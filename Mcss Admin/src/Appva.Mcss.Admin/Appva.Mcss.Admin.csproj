@@ -516,6 +516,8 @@
     <Compile Include="Areas\Patient\Features\Article\Edit\EditArticlePublisher.cs" />
     <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticle.cs" />
     <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticleModel.cs" />
+    <Compile Include="Areas\Patient\Features\Article\Inactivate\InactivateArticlePublisher.cs" />
     <Compile Include="Areas\Patient\Features\Article\List\ListArticle.cs" />
     <Compile Include="Areas\Patient\Features\Article\List\ListArticleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Article\List\ListArticleModel.cs" />
@@ -1540,6 +1542,7 @@
     <Content Include="Areas\Backoffice\Features\Article\ListCategory\ListCategory.cshtml" />
     <Content Include="Areas\Patient\Features\Article\Overview\Overview.cshtml" />
     <Content Include="Areas\Area51\Features\Article\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\Inactivate\Inactivate.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

@@ -77,10 +77,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         public override UpdateScheduleModel Handle(Identity<UpdateScheduleModel> message)
         {
             var schedule = this.scheduleService.GetScheduleSettings(message.Id);
-            bool hasMigratedArticles = this.settingsService.Find(ApplicationSettings.HasMigratedArticles);
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
             List<SelectListItem> categorySelectList = null;
 
-            if (hasMigratedArticles)
+            if (orderListConfiguration.HasMigratedArticles)
             {
                 var categories = this.articleRepository.GetCategories();
                 categorySelectList = new List<SelectListItem>();
@@ -118,7 +118,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 OrderRefill                   = schedule.OrderRefill,
                 Delegations                   = this.taxonomyService.Roots(TaxonomicSchema.Delegation).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList(),
                 Categories                    = categorySelectList,
-                HasMigratedArticles           = hasMigratedArticles
+                HasMigratedArticles           = orderListConfiguration.HasMigratedArticles
             };
         }
 

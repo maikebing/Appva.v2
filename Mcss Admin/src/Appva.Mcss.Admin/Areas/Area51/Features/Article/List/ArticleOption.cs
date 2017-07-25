@@ -9,6 +9,8 @@ namespace Appva.Mcss.Admin.Features.Area51.ArticleOption
 {
     #region Imports.
 
+    using Appva.Mcss.Admin.Domain.VO;
+
     #endregion
 
     /// <summary>
@@ -17,18 +19,9 @@ namespace Appva.Mcss.Admin.Features.Area51.ArticleOption
     public class ArticleOption
     {
         /// <summary>
-        /// Check if article categories has been created.
+        /// The order list configuration.
         /// </summary>
-        public bool HasCreatedCategories
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The article migration status.
-        /// </summary>
-        public bool HasMigratedArticles
+        public OrderListConfiguration OrderListConfiguration
         {
             get;
             set;

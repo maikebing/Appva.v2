@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Features.Area51.ArticleOption;
     using Appva.Mcss.Application.Models;
     using Appva.Persistence;
@@ -90,7 +91,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             }
             while (rowCount > 0);
 
-            this.service.Upsert(ApplicationSettings.HasMigratedArticles, true);
+            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(true, true));
 
             return false;
         }

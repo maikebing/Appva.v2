@@ -62,10 +62,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
         /// <inheritdoc />
         public override CreateScheduleModel Handle(Parameterless<CreateScheduleModel> message)
         {
-            bool hasMigratedArticles = this.settingsService.Find(ApplicationSettings.HasMigratedArticles);
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
             List<SelectListItem> categorySelectList = null;
 
-            if (hasMigratedArticles)
+            if (orderListConfiguration.HasMigratedArticles)
             {
                 var categories = this.articleRepository.GetCategories();
                 categorySelectList = new List<SelectListItem>();
@@ -90,7 +90,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
             {
                 Delegations = this.taxonomyService.Roots(TaxonomicSchema.Delegation).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList(),
                 DeviationMessage = new ConfirmDeviationMessage(),
-                HasMigratedArticles = hasMigratedArticles,
+                HasMigratedArticles = orderListConfiguration.HasMigratedArticles,
                 Categories = categorySelectList
             };
         }

@@ -13,7 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Diagnostics.CodeAnalysis;
     using Appva.Ldap.Configuration;
     using Appva.Mcss.Admin.Domain.VO;
-using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Common;
 
     #endregion
@@ -49,25 +49,15 @@ using Appva.Mcss.Admin.Application.Models;
             false);
 
         /// <summary>
-        /// Indicates if article categories has been migrated.
+        /// The order list configuration.
         /// </summary>
-        public static readonly ApplicationSettingIdentity<bool> HasCreatedCategories = ApplicationSettingIdentity<bool>.CreateNew(
-            "MCSS.OrderList.HasCreatedCategories",
-            "Categories has been created",
+        public static readonly ApplicationSettingIdentity<OrderListConfiguration> OrderListConfiguration = ApplicationSettingIdentity<OrderListConfiguration>.CreateNew(
             "MCSS.OrderList",
-            "Refillable items from Schedulesettings has been migrated to ArticleCategories",
-            false
+            "Order list configuration",
+            "MCSS.OrderList",
+            "Order list migration and activation configuration.",
+            Domain.VO.OrderListConfiguration.CreateNew()
             );
-
-        /// <summary>
-        /// Indicates if articles has been migrated.
-        /// </summary>
-        public static readonly ApplicationSettingIdentity<bool> HasMigratedArticles = ApplicationSettingIdentity<bool>.CreateNew(
-            "MCSS.OrderList.HasMigratedArticles",
-            "Article migration completed",
-            "MCSS.OrderList",
-            "Items from the Sequence table has been copied to the Article and ArticleCategory tables",
-            false);
 
         #endregion
 

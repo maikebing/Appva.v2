@@ -50,13 +50,11 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override ArticleOption Handle(Parameterless<ArticleOption> message)
         {
-            var categorySetting = this.service.Find(ApplicationSettings.HasCreatedCategories);
-            var articleSetting = this.service.Find(ApplicationSettings.HasMigratedArticles);
+            var orderListConfiguration = this.service.Find(ApplicationSettings.OrderListConfiguration);
 
             return new ArticleOption
             {
-                HasCreatedCategories = categorySetting,
-                HasMigratedArticles = articleSetting
+                OrderListConfiguration = orderListConfiguration
             };
         }
 

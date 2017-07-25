@@ -9,10 +9,10 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
 {
     #region Imports.
 
-    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Features.Area51.ArticleOption;
     using Appva.Persistence;
 
@@ -56,6 +56,8 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override bool Handle(MigrateCategories message)
         {
+            var orderListConfiguration = this.service.Find(ApplicationSettings.OrderListConfiguration);
+
             var scheduleSettings = this.persistence.QueryOver<ScheduleSettings>()
                 .Where(x => x.OrderRefill == true)
                     .And(x => x.ArticleCategory == null)
@@ -71,7 +73,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
                 this.persistence.Update(setting);
             }
 
-            this.service.Upsert(ApplicationSettings.HasCreatedCategories, true);
+            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(true, orderListConfiguration.HasMigratedArticles));
 
             return true;
         }

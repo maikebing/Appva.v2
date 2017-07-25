@@ -312,6 +312,8 @@
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Article\ArticleController.cs" />
+    <Compile Include="Areas\Area51\Features\Article\Enable\EnableOrderList.cs" />
+    <Compile Include="Areas\Area51\Features\Article\Enable\EnableOrderListHandler.cs" />
     <Compile Include="Areas\Area51\Features\Article\List\ArticleOption.cs" />
     <Compile Include="Areas\Area51\Features\Article\List\ArticleOptionListHandler.cs" />
     <Compile Include="Areas\Area51\Features\Article\MigrateArticles\MigrateArticles.cs" />
@@ -390,9 +392,9 @@
     <Compile Include="Areas\Backoffice\Features\Article\EditCategory\EditArticleCategoryHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Article\EditCategory\EditArticleCategoryModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Article\EditCategory\EditArticleCategoryPublisher.cs" />
-    <Compile Include="Areas\Backoffice\Features\Article\ListCategory\ArticleCategoryList.cs" />
-    <Compile Include="Areas\Backoffice\Features\Article\ListCategory\ArticleCategoryListHandler.cs" />
-    <Compile Include="Areas\Backoffice\Features\Article\ListCategory\ArticleCategoryListModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\List\ArticleCategoryList.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\List\ArticleListHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Article\List\ArticleListModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CalendarController.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Calendar\CategoryDetails\CategoryDetailsModel.cs" />
@@ -1539,7 +1541,7 @@
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cshtml" />
     <Content Include="Areas\Backoffice\Features\Article\AddCategory\AddCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Article\EditCategory\EditCategory.cshtml" />
-    <Content Include="Areas\Backoffice\Features\Article\ListCategory\ListCategory.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Article\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Article\Overview\Overview.cshtml" />
     <Content Include="Areas\Area51\Features\Article\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Article\Inactivate\Inactivate.cshtml" />

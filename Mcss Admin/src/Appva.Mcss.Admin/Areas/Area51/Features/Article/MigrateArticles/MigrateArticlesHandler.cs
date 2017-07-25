@@ -93,7 +93,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
 
             this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(true, true));
 
-            return false;
+            return true;
         }
 
         #endregion

@@ -188,9 +188,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// Check if the article data migration has been completed.
+        /// If the order list has been enabled.
         /// </summary>
-        public bool HasMigratedArticles
+        public bool IsOrderListEnabled
         {
             get;
             set;

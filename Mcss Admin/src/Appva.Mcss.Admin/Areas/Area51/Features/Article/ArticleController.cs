@@ -9,14 +9,13 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account
 {
     #region Imports.
 
-    using System.Collections.Generic;
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Areas.Area51.Models;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mvc.Security;
     using Appva.Mcss.Admin.Features.Area51.ArticleOption;
+    using Appva.Mvc;
 
     #endregion
 
@@ -63,6 +62,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account
         /// <returns></returns>
         [Route("migratecategories")]
         [HttpGet, Dispatch("list", "article")]
+        [AlertSuccess("Utförde migrering av kategorier!")]
         public ActionResult MigrateCategories(MigrateCategories request)
         {
             return this.View();
@@ -77,8 +77,25 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account
         /// </summary>
         /// <returns></returns>
         [Route("migratearticles")]
+        [AlertSuccess("Utförde migrering av artiklar!")]
         [HttpGet, Dispatch("list", "article")]
         public ActionResult MigrateArticles(MigrateArticles request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Enable order list.
+
+        /// <summary>
+        /// Runs the category migration script.
+        /// </summary>
+        /// <returns></returns>
+        [Route("enable")]
+        [AlertSuccess("Beställningslistan aktiverades!")]
+        [HttpGet, Dispatch("list", "article")]
+        public ActionResult Enable(EnableOrderList request)
         {
             return this.View();
         }

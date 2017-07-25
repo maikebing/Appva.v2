@@ -1,4 +1,4 @@
-﻿// <copyright file="ArticleOptionListHandler.cs" company="Appva AB">
+﻿// <copyright file="EnableOrderListHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -11,15 +11,15 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Features.Area51.ArticleOption;
-    using Appva.Mcss.Admin.Infrastructure.Models;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ArticleOptionListHandler : RequestHandler<Parameterless<ArticleOption>, ArticleOption>
+    public class EnableOrderListHandler : RequestHandler<EnableOrderList, bool>
     {
         #region Fields.
 
@@ -33,10 +33,10 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArticleOptionListHandler"/> class.
+        /// Initializes a new instance of the <see cref="EnableOrderListHandler"/> class.
         /// </summary>
         /// <param name="service">The <see cref="ISettingsService"/>.</param>
-        public ArticleOptionListHandler(ISettingsService service)
+        public EnableOrderListHandler(ISettingsService service)
         {
             this.service = service;
         }
@@ -46,14 +46,11 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
-        public override ArticleOption Handle(Parameterless<ArticleOption> message)
+        public override bool Handle(EnableOrderList message)
         {
-            var orderListConfiguration = this.service.Find(ApplicationSettings.OrderListConfiguration);
-
-            return new ArticleOption
-            {
-                OrderListConfiguration = orderListConfiguration
-            };
+            var setting = this.service.Find(ApplicationSettings.OrderListConfiguration);
+            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(setting.HasCreatedCategories, setting.HasMigratedArticles, true));
+            return true;
         }
 
         #endregion

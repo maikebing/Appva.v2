@@ -41,22 +41,22 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Article
 
         #region Routes.
 
-        #region Categories.
-
         #region List.
 
         /// <summary>
         /// The article category list.
         /// </summary>
         /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("listcategory")]
-        [HttpGet, Dispatch(typeof(Parameterless<ArticleCategoryListModel>))]
-        public ActionResult ListCategory()
+        [Route("list")]
+        [HttpGet, Dispatch(typeof(Parameterless<ArticleListModel>))]
+        public ActionResult List()
         {
             return this.View();
         }
 
         #endregion
+
+        #region Categories.
 
         #region Add.
 
@@ -76,7 +76,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Article
         /// </summary>
         /// <returns></returns>
         [Route("addcategory")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("listcategory", "article")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "article")]
         public ActionResult AddCategory(AddArticleCategoryModel request)
         {
             return this.View();
@@ -102,7 +102,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Article
         /// </summary>
         /// <returns></returns>
         [Route("{id:guid}/editcategory")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("listcategory", "article")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "article")]
         public ActionResult Edit(EditArticleCategoryModel request)
         {
             return this.View();
@@ -117,7 +117,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Article
         /// </summary>
         /// <returns></returns>
         [Route("deletecategory")]
-        [HttpGet, Dispatch("listcategory", "article")]
+        [HttpGet, Dispatch("list", "article")]
         public ActionResult DeleteCategory(DeleteArticleCategoryModel request)
         {
             return this.View();

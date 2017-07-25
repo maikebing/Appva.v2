@@ -15,7 +15,7 @@
             @Html.FormGroup(x => x.HasSetupDrugsPanel, "checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.HasInventory, "checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.CountInventory, "checkbox").Checkbox("").Label().Validate().Build()
-            @if (Model.HasMigratedArticles)
+            @if (Model.IsOrderListEnabled)
             {
                 <div class="text">
                     @Html.LabelFor(x => x.SelectedCategory, "Artikelkategori")
@@ -36,7 +36,7 @@
             @Html.DropDownListFor(x => x.DelegationTaxon, Model.Delegations, "Ingen delegering")
         </div>
         <div class="submit">
-            @Html.HiddenFor(x => x.HasMigratedArticles)
+            @Html.HiddenFor(x => x.IsOrderListEnabled)
             @Html.Submit("Spara", new { @class = "btn" })
         </div>
     }

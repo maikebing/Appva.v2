@@ -5,6 +5,7 @@
 @Html.Partial("_Area51MenuPartial")
 <div id="subheader" class="cf">
     <h1>Beställningslista</h1>
+    <div style="float:right;font-weight:bold;color:mediumseagreen;padding-top:7px">@Html.Alert()</div>
 </div>
 <div id="content" class="cf">
     <div id="content-primary">
@@ -22,13 +23,27 @@
                     <tr>
                         <td>1</td>
                         <td>Skapa artikelkategorier för listor med beställningsfunktion.</td>
-                        <td class="prtd">@(Model.OrderListConfiguration.HasCreatedCategories ? "Har exekverats" : "Ej exekverad")</td>
+                        @if(Model.OrderListConfiguration.HasCreatedCategories)
+                        {
+                            <td class="prtd" style="background:#F1FFF7">Har exekverats</td>
+                        }
+                        else
+                        {
+                            <td class="prtd">Ej exekverad</td>
+                        }
                         <td class="prtd-140 btnpad">@Html.ActionLink("Kör skript", "migratecategories", "article", new { @class = "btn" })</td>
                     </tr>
-                    <tr>
+                    <tr @(Model.OrderListConfiguration.HasCreatedCategories ? Html.Raw("") : Html.Raw("style=\"opacity:.3\""))>
                         <td>2</td>
                         <td>Påbörja migrering från <b>Sequence</b> till <b>Article</b> och <b>ArticleCategory</b>.</td>
-                        <td class="prtd">@(Model.OrderListConfiguration.HasMigratedArticles ? "Har exekverats" : "Ej exekverad")</td>
+                        @if (Model.OrderListConfiguration.HasMigratedArticles)
+                        {
+                            <td class="prtd" style="background:#F1FFF7">Har exekverats</td>
+                        }
+                        else
+                        {
+                            <td class="prtd">Ej exekverad</td>
+                        }
                         <td class="prtd-140 btnpad">
                             @if (Model.OrderListConfiguration.HasCreatedCategories)
                             {
@@ -36,7 +51,29 @@
                             }
                             else
                             {
-                                <a href="javascript:;" class="btn" style="opacity:.5">Kör skript</a>
+                                <a href="javascript:;" class="btn">Kör skript</a>
+                            }
+                        </td>
+                    </tr>
+                    <tr @(Model.OrderListConfiguration.HasMigratedArticles ? Html.Raw("") : Html.Raw("style=\"opacity:.3\""))>
+                        <td>3</td>
+                        <td>Aktivera beställningslistan</td>
+                        @if (Model.OrderListConfiguration.IsEnabled)
+                        {
+                            <td class="prtd" style="background:#F1FFF7">Aktiverad</td>
+                        }
+                        else
+                        {
+                            <td class="prtd">Ej aktiverad</td>
+                        }
+                        <td class="prtd-140 btnpad">
+                            @if (Model.OrderListConfiguration.HasMigratedArticles)
+                            {
+                                @Html.ActionLink("Aktivera", "enable", "article", new { @class = "btn" })
+                            }
+                            else
+                            {
+                                <a href="javascript:;" class="btn">Aktivera</a>
                             }
                         </td>
                     </tr>

@@ -1,4 +1,4 @@
-﻿// <copyright file="ArticleCategoryListHandler.cs" company="Appva AB">
+﻿// <copyright file="ArticleListHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ArticleCategoryListHandler : RequestHandler<Parameterless<ArticleCategoryListModel>, ArticleCategoryListModel>
+    public sealed class ArticleListHandler : RequestHandler<Parameterless<ArticleListModel>, ArticleListModel>
     {
         #region Fields.
 
@@ -44,7 +44,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// Initializes a new instance of the <see cref="ArticleListHandler"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="IArticleRepository"/>.</param>
-        public ArticleCategoryListHandler(IArticleRepository repository, IPersistenceContext persistence)
+        /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
+        public ArticleListHandler(IArticleRepository repository, IPersistenceContext persistence)
         {
             this.repository = repository;
             this.persistence = persistence;
@@ -55,7 +56,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override ArticleCategoryListModel Handle(Parameterless<ArticleCategoryListModel> message)
+        public override ArticleListModel Handle(Parameterless<ArticleListModel> message)
         {
             var categories = this.repository.GetCategories();
             var categoryList = new List<ArticleCategoryList>();
@@ -78,7 +79,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 });
             }
 
-            return new ArticleCategoryListModel
+            return new ArticleListModel
             {
                 CategoryList = categoryList
             };

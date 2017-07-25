@@ -93,7 +93,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 Name = message.Name,
                 NurseConfirmDeviation = message.NurseConfirmDeviation,
                 NurseConfirmDeviationMessage = message.DeviationMessage.ToHtmlString(),
-                OrderRefill = message.HasMigratedArticles ? (string.IsNullOrEmpty(message.SelectedCategory) ? false : true) : message.OrderRefill,
+                OrderRefill = message.IsOrderListEnabled ? (string.IsNullOrEmpty(message.SelectedCategory) ? false : true) : message.OrderRefill,
                 ScheduleType = ScheduleType.Action,
                 SpecificNurseConfirmDeviation = message.DeviationMessage.IncludeListOfNurses,
                 ArticleCategory = articleCategory

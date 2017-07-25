@@ -27,10 +27,11 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// <param name="hasCreatedCategories">If article categories has been migrated.</param>
         /// <param name="hasMigratedArticles">If articles has been migrated.</param>
         [JsonConstructor]
-        private OrderListConfiguration(bool hasCreatedCategories, bool hasMigratedArticles)
+        private OrderListConfiguration(bool hasCreatedCategories, bool hasMigratedArticles, bool isEnabled)
         {
             this.HasCreatedCategories = hasCreatedCategories;
             this.HasMigratedArticles = hasMigratedArticles;
+            this.IsEnabled = isEnabled;
         }
 
         #endregion
@@ -49,13 +50,22 @@ namespace Appva.Mcss.Admin.Domain.VO
 
         /// <summary>
         /// If articles has been migrated.
-        /// account has been registered.
         /// </summary>
         [JsonProperty]
         public bool HasMigratedArticles
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// If the order list has been enabled.
+        /// </summary>
+        [JsonProperty]
+        public bool IsEnabled
+        {
+            get;
+            set;
         }
 
         #endregion
@@ -66,9 +76,9 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// Creates a new instance of the <see cref="OrderListConfiguration"/> class.
         /// </summary>
         /// <returns>A new <see cref="OrderListConfiguration"/> instance.</returns>
-        public static OrderListConfiguration CreateNew(bool hasCreatedCategories = false, bool hasMigratedArticles = false)
+        public static OrderListConfiguration CreateNew(bool hasCreatedCategories = false, bool hasMigratedArticles = false, bool isEnabled = false)
         {
-            return new OrderListConfiguration(hasCreatedCategories, hasMigratedArticles);
+            return new OrderListConfiguration(hasCreatedCategories, hasMigratedArticles, isEnabled);
         }
 
         #endregion
@@ -79,7 +89,8 @@ namespace Appva.Mcss.Admin.Domain.VO
         public override int GetHashCode()
         {
             return this.HasCreatedCategories.GetHashCode() +
-                   this.HasMigratedArticles.GetHashCode();
+                   this.HasMigratedArticles.GetHashCode() +
+                   this.IsEnabled.GetHashCode();
         }
 
         /// <inheritdoc />
@@ -87,7 +98,8 @@ namespace Appva.Mcss.Admin.Domain.VO
         {
             return other != null
                 && this.HasCreatedCategories.Equals(other.HasCreatedCategories)
-                && this.HasMigratedArticles.Equals(other.HasMigratedArticles);
+                && this.HasMigratedArticles.Equals(other.HasMigratedArticles)
+                &&  this.IsEnabled.Equals(other.IsEnabled);
         }
 
         #endregion

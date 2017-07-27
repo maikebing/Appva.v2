@@ -10,6 +10,11 @@
 <div id="content" class="cf">
     <div id="content-primary">
         <div id="signlist" class="articlecategory">
+            <p style="margin-top:10px;font-weight:bold">Migreringsstatus: 
+                <span style="display:inline-block;background:@(Model.OrderListConfiguration.IsEnableable ? Html.Raw("#F1FFF7;border:1px solid #D8F9E6") : Html.Raw("#FFF5F5;border:1px solid #F9E1E1"));padding:4px 8px;font-weight:normal">
+                    @(Model.OrderListConfiguration.IsEnableable ? "All data har migrerats!" : "Det finns data som behöver migreras.")
+                </span>
+            </p>
             <table id="signed-events">
                 <thead class="head">
                     <tr>
@@ -35,7 +40,7 @@
                     </tr>
                     <tr @(Model.OrderListConfiguration.HasCreatedCategories ? Html.Raw("") : Html.Raw("style=\"opacity:.3\""))>
                         <td>2</td>
-                        <td>Påbörja migrering från <b>Sequence</b> till <b>Article</b> och <b>ArticleCategory</b>.</td>
+                        <td>Påbörja migrering från <i>Sequence</i> till <i>Article</i> och <i>ArticleCategory</i>.</td>
                         @if (Model.OrderListConfiguration.HasMigratedArticles)
                         {
                             <td class="prtd" style="background:#F1FFF7">Har exekverats</td>

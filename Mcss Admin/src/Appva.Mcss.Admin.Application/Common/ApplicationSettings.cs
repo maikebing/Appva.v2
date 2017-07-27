@@ -55,7 +55,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "MCSS.OrderList",
             "Order list configuration",
             "MCSS.OrderList",
-            "Order list migration and activation configuration.",
+            "Order list migration and activation settings.",
             Domain.VO.OrderListConfiguration.CreateNew()
             );
 

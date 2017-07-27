@@ -15,7 +15,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Linq;
     using System.Runtime.Caching;
     using Appva.Caching.Policies;
-    using Appva.Caching.Providers;
     using Appva.Core.Extensions;
     using Appva.Core.Logging;
     using Appva.Core.Resources;
@@ -27,6 +26,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Persistence;
     using Newtonsoft.Json;
+    using NHibernate;
     using Validation;
 
     #endregion
@@ -177,6 +177,29 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         TimeSpan GetCookieExpiration();
     }
 
+    public interface IOrderListConfiguration
+    {
+        /// <summary>
+        /// Returns whether or not the order list function is enableable.
+        /// </summary>
+        /// <returns>True if enableable; otherwise false.</returns>
+        bool IsOrderListEnableable();
+
+        /// <summary>
+        /// Finds migratable items from <see cref="Sequence"/>.
+        /// </summary>
+        /// <param name="session">The <see cref="ISession"/>.</param>
+        /// <returns>The query.</returns>
+        IQueryOver<Sequence, ScheduleSettings> GetOrderListItemsFromSequence(ISession session);
+
+        /// <summary>
+        /// Finds migratable items from <see cref="ScheduleSettings"/>.
+        /// </summary>
+        /// <param name="session">The <see cref="ISession"/>.</param>
+        /// <returns>The query.</returns>
+        IQueryOver<ScheduleSettings, ScheduleSettings> GetOrderListItemsFromScheduleSettings(ISession session);
+    }
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
@@ -189,6 +212,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         IAuditConfiguration,
         ILdapSettings,
         ICookieExpiration,
+        IOrderListConfiguration,
         IService
     {
         /// <summary>
@@ -753,6 +777,36 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         public TimeSpan GetCookieExpiration()
         {
             return this.Find<TimeSpan>(ApplicationSettings.CookieExpiration);
+        }
+
+        #endregion
+
+        #region IOrderListConfiguration Members.
+
+        /// <inheritdoc />
+        public bool IsOrderListEnableable()
+        {
+            return this.GetOrderListItemsFromScheduleSettings(this.persistence.Session).RowCount() == 0 
+                && this.GetOrderListItemsFromSequence(this.persistence.Session).RowCount() == 0;
+        }
+
+        /// <inheritdoc />
+        public IQueryOver<Sequence, ScheduleSettings> GetOrderListItemsFromSequence(ISession session)
+        {
+            return session.QueryOver<Sequence>()
+                .Where(x => x.Article == null)
+                    .JoinQueryOver(x => x.Schedule)
+                        .JoinQueryOver(x => x.ScheduleSettings)
+                            .Where(x => x.OrderRefill == true)
+                                .And(x => x.ArticleCategory != null);
+        }
+
+        /// <inheritdoc />
+        public IQueryOver<ScheduleSettings, ScheduleSettings> GetOrderListItemsFromScheduleSettings(ISession session)
+        {
+            return session.QueryOver<ScheduleSettings>()
+                .Where(x => x.OrderRefill == true)
+                    .And(x => x.ArticleCategory == null);
         }
 
         #endregion

@@ -66,13 +66,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
                 var session = this.persistence.Session.SessionFactory.OpenSession();
                 using (var transaction = session.BeginTransaction())
                 {
-                    query = session.QueryOver<Sequence>()
-                        .Where(x => x.Article == null)
-                            .JoinQueryOver(x => x.Schedule)
-                                .JoinQueryOver(x => x.ScheduleSettings)
-                                    .Where(x => x.OrderRefill == true)
-                                        .And(x => x.ArticleCategory != null);
-
+                    query = this.service.GetOrderListItemsFromSequence(session);
                     rowCount = query.RowCount();
                     if (rowCount > 0)
                     {
@@ -91,7 +85,8 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             }
             while (rowCount > 0);
 
-            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(true, true));
+            var settings = this.service.Find(ApplicationSettings.OrderListConfiguration);
+            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(true, true, settings.IsEnabled, settings.IsEnableable));
 
             return true;
         }

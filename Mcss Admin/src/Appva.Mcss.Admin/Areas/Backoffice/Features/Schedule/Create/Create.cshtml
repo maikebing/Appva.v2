@@ -36,7 +36,6 @@
             @Html.DropDownListFor(x => x.DelegationTaxon, Model.Delegations, "Ingen delegering")
         </div>
         <div class="submit">
-            @Html.HiddenFor(x => x.IsOrderListEnabled)
             @Html.Submit("Spara", new { @class = "btn" })
         </div>
     }

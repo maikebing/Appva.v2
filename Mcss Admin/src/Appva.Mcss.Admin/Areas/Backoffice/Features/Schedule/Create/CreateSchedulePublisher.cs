@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
@@ -35,6 +36,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         private readonly IScheduleService scheduleService;
 
         /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
+        /// <summary>
         /// The <see cref="ITaxonomyService"/>
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
@@ -51,10 +57,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSchedulePublisher"/> class.
         /// </summary>
-        public CreateSchedulePublisher(IScheduleService scheduleService, ITaxonomyService taxonomyService, IArticleRepository articleRepository)
+        public CreateSchedulePublisher(IScheduleService scheduleService, ISettingsService settingsService, ITaxonomyService taxonomyService, IArticleRepository articleRepository)
         {
             this.taxonomyService = taxonomyService;
             this.scheduleService = scheduleService;
+            this.settingsService = settingsService;
             this.articleRepository = articleRepository;
         }
 
@@ -66,6 +73,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         public override Identity<DetailsScheduleModel> Handle(CreateScheduleModel message)
         {
             ArticleCategory articleCategory = null;
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
 
             if (message.DeviationMessage.IsNull())
             {
@@ -93,11 +101,19 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 Name = message.Name,
                 NurseConfirmDeviation = message.NurseConfirmDeviation,
                 NurseConfirmDeviationMessage = message.DeviationMessage.ToHtmlString(),
-                OrderRefill = message.IsOrderListEnabled ? (string.IsNullOrEmpty(message.SelectedCategory) ? false : true) : message.OrderRefill,
+                OrderRefill = orderListConfiguration.IsEnabled ? (string.IsNullOrEmpty(message.SelectedCategory) ? false : true) : message.OrderRefill,
                 ScheduleType = ScheduleType.Action,
                 SpecificNurseConfirmDeviation = message.DeviationMessage.IncludeListOfNurses,
                 ArticleCategory = articleCategory
             };
+
+            /*if(orderListConfiguration.IsEnabled)
+            {
+                var articleCategory = new ArticleCategory
+                {
+
+                };
+            }*/
 
             this.scheduleService.SaveScheduleSetting(schedule);
 

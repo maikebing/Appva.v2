@@ -9,11 +9,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports.
 
+    using System.Linq;
     using System.Collections.Generic;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Persistence;
 
@@ -36,6 +39,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
         #endregion
 
         #region Constructors.
@@ -45,10 +53,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// </summary>
         /// <param name="repository">The <see cref="IArticleRepository"/>.</param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
-        public ArticleListHandler(IArticleRepository repository, IPersistenceContext persistence)
+        /// <param name="settingService">The <see cref="ISettingsService"/>.</param>
+        public ArticleListHandler(IArticleRepository repository, IPersistenceContext persistence, ISettingsService settingsService)
         {
             this.repository = repository;
             this.persistence = persistence;
+            this.settingsService = settingsService;
         }
 
         #endregion
@@ -58,10 +68,38 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override ArticleListModel Handle(Parameterless<ArticleListModel> message)
         {
-            var categories = this.repository.GetCategories();
+            bool isOrderListEnableable = true;
+            var setting = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
+
+            if (setting.IsEnabled == false)
+            {
+                isOrderListEnableable = this.settingsService.IsOrderListEnableable();
+                this.settingsService.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(
+                    setting.HasCreatedCategories,
+                    setting.HasMigratedArticles,
+                    setting.IsEnabled,
+                    isOrderListEnableable)
+                );
+            }
+
+            return new ArticleListModel
+            {
+                IsOrderListEnabled = (this.settingsService.Find(ApplicationSettings.OrderListConfiguration)).IsEnabled,
+                IsOrderListEnableable = isOrderListEnableable,
+                CategoryList = this.GetArticleCategoryList()
+            };
+        }
+
+        #endregion
+
+        #region Private methods.
+
+        /// <inheritdoc />
+        private IList<ArticleCategoryList> GetArticleCategoryList()
+        {
             var categoryList = new List<ArticleCategoryList>();
 
-            foreach (var category in categories)
+            foreach (var category in this.repository.GetCategories())
             {
                 int articleCount = this.persistence.QueryOver<Article>()
                     .Where(x => x.IsActive == true)
@@ -79,10 +117,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 });
             }
 
-            return new ArticleListModel
-            {
-                CategoryList = categoryList
-            };
+            return categoryList;
         }
 
         #endregion

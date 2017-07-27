@@ -9,43 +9,59 @@
 <div id="content" class="cf">
     <div id="content-primary">
         <div id="signlist" class="articlecategory">
-            <h4 class="list-header">Artikelkategorier</h4>
-            <a href="@Url.Action("AddCategory", "Article")" class="lb-link section-list-btn"><span>+</span>Ny kategori</a>
-            <table id="signed-events">
-                <thead class="head">
-                    <tr>
-                        <th>Namn</th>
-                        <th>Beskrivning</th>
-                        <th class="prtd">Antal artiklar</th>
-                        <th class="prtd-140">Ändrades</th>
-                        <th class="prtd">Åtgärder</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.CategoryList.Count > 0)
-                    {
-                        foreach (var category in Model.CategoryList.OrderByDescending(x => x.UpdatedAt))
+            @if (Model.IsOrderListEnabled)
+            {
+                <h4 class="list-header">Artikelkategorier</h4>
+                <a href="@Url.Action("AddCategory", "Article")" class="lb-link section-list-btn"><span>+</span>Ny kategori</a>
+                <table id="signed-events">
+                    <thead class="head">
+                        <tr>
+                            <th>Namn</th>
+                            <th>Beskrivning</th>
+                            <th class="prtd">Antal artiklar</th>
+                            <th class="prtd-140">Ändrades</th>
+                            <th class="prtd">Åtgärder</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.CategoryList.Count > 0)
                         {
-                            <tr class="tr-highlight">
-                                <td>@category.Name</td>
-                                <td>@category.Description</td>
-                                <td class="prtd">@(category.ArticleCount == 0 ? Html.Raw("&mdash;") : Html.Raw(category.ArticleCount + " st"))</td>
-                                <td class="prtd-140">@category.UpdatedAt.ToString("yyyy-MM-dd (HH:mm:ss)")</td>
-                                <td class="btnpad prtd2">
-                                    @Html.ActionLink("Ändra", "EditCategory", "Article", new { id = category.Id }, new { @class = "lb-link btn" })
-                                    @Html.ActionLink("Ta bort", "DeleteCategory", "Article", new { id = category.Id }, new { @class = (category.HasArticles ? "btn btn-del action-denied" : "btn btn-del"), @style = (category.HasArticles ? "opacity:.7" : "opacity:1") })
-                                </td>
+                            foreach (var category in Model.CategoryList.OrderByDescending(x => x.UpdatedAt))
+                            {
+                                <tr class="tr-highlight">
+                                    <td>@category.Name</td>
+                                    <td>@category.Description</td>
+                                    <td class="prtd">@(category.ArticleCount == 0 ? Html.Raw("&mdash;") : Html.Raw(category.ArticleCount + " st"))</td>
+                                    <td class="prtd-140">@category.UpdatedAt.ToString("yyyy-MM-dd (HH:mm:ss)")</td>
+                                    <td class="btnpad prtd2">
+                                        @Html.ActionLink("Ändra", "EditCategory", "Article", new { id = category.Id }, new { @class = "lb-link btn" })
+                                        @Html.ActionLink("Ta bort", "DeleteCategory", "Article", new { id = category.Id }, new { @class = (category.HasArticles ? "btn btn-del action-denied" : "btn btn-del"), @style = (category.HasArticles ? "opacity:.7" : "opacity:1") })
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5">Inga kategorier hittades.</td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="5">Inga kategorier hittades.</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            }
+            else if (Model.IsOrderListEnabled == false && Model.IsOrderListEnableable)
+            {
+                <h4 class="list-header">Aktivering</h4>
+                <div style="clear:both"></div>
+                <p style="height:60px">Den här funktionen har inte aktiverats än, vill du göra det nu?</p>
+                <a href="@Url.Action("Enable", "Article")" class="section-list-btn" style="float:none!important;padding:8px 16px!important;bottom:5px;cursor:pointer">Aktivera</a>
+            }
+            else if (Model.IsOrderListEnabled == false && Model.IsOrderListEnableable == false)
+            {
+                <h4 class="list-header">Aktivering</h4>
+                <div style="clear:both"></div>
+                <p style="padding-bottom:5px">Det går inte att aktivera den här funktionen just nu, vänligen kontakta en utvecklare.</p>
+            }
         </div>
     </div>
 </div>

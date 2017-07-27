@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Features.Area51.ArticleOption;
     using Appva.Mcss.Admin.Infrastructure.Models;
 
@@ -48,11 +49,19 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override ArticleOption Handle(Parameterless<ArticleOption> message)
         {
-            var orderListConfiguration = this.service.Find(ApplicationSettings.OrderListConfiguration);
+            var isOrderListEnableable = this.service.IsOrderListEnableable();
+            var settings = this.service.Find(ApplicationSettings.OrderListConfiguration);
+            settings.IsEnableable = isOrderListEnableable;
+            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(
+                settings.HasCreatedCategories,
+                settings.HasMigratedArticles,
+                settings.IsEnabled,
+                settings.IsEnableable)
+            );
 
             return new ArticleOption
             {
-                OrderListConfiguration = orderListConfiguration
+                OrderListConfiguration = settings
             };
         }
 

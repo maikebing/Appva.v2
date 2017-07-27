@@ -102,7 +102,7 @@
                     <tr class="@(i % 2 != 0 ? Html.Raw("table-general--even") : Html.Raw(""))">
                         <td>@Model.RefilledArticles[i].Name</td>
                         <td>@(Model.RefilledArticles[i].Description == null ? string.Empty : Model.RefilledArticles[i].Description)</td>
-                        <td>@(string.IsNullOrEmpty(Model.RefilledArticles[i].ArticleCategory.Name) ? "Saknas" : Model.RefilledArticles[i].ArticleCategory.Name)</td>
+                        <td>@(Model.RefilledArticles[i].ArticleCategory == null ? "Saknas" : Model.RefilledArticles[i].ArticleCategory.Name)</td>
                         @if (Html.HasPermissionFor(Permissions.OrderList.Edit) || Html.HasPermissionFor(Permissions.OrderList.Delete))
                         {
                             <td>

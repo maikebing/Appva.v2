@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Application.Models;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
     using Appva.Core.Extensions;
@@ -86,6 +87,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override DetailsSchedule Handle(CreateSequenceForm message)
         {
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
             Taxon delegation = null;
             if (message.Delegation.HasValue && ! message.Nurse)
@@ -93,6 +95,30 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
             var sequence = this.CreateOrUpdate(message, schedule, delegation);
+
+            if (orderListConfiguration.IsEnabled && sequence.Schedule.ScheduleSettings.ArticleCategory != null)
+            {
+                var article = new Article
+                {
+                    Name = sequence.Name,
+                    Description = sequence.Description,
+                    Refill = false,
+                    RefillOrderDate = null,
+                    RefillOrderedBy = null,
+                    Ordered = true,
+                    OrderDate = null,
+                    OrderedBy = null,
+                    Status = ArticleStatus.Refilled.ToString(),
+                    Patient = sequence.Patient,
+                    ArticleCategory = sequence.Schedule.ScheduleSettings.ArticleCategory
+                };
+
+                this.context.Save(article);
+                this.auditing.Create(sequence.Patient, "skapade artikeln {0} ({1})", article.Name, article.Id);
+
+                sequence.Article = article;
+            }
+
             this.context.Save(sequence);
 
             this.auditing.Create(
@@ -104,6 +130,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 sequence.Schedule.Id);
             schedule.UpdatedAt = DateTime.Now;
             this.context.Update(schedule);
+
             return new DetailsSchedule
                 {
                     Id = message.Id,

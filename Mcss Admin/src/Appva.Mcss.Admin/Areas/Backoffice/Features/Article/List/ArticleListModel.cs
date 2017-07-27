@@ -20,7 +20,32 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     {
         #region Properties.
 
-        public IList<ArticleCategoryList> CategoryList { get; set; }
+        /// <summary>
+        /// If the order list has been activated.
+        /// </summary>
+        public bool IsOrderListEnabled
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If the order list function is enableable.
+        /// </summary>
+        public bool IsOrderListEnableable
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A list of <see cref="ArticleCategoryList"/>.
+        /// </summary>
+        public IList<ArticleCategoryList> CategoryList
+        {
+            get;
+            set;
+        }
 
         #endregion
     }

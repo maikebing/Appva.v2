@@ -48,8 +48,14 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override bool Handle(EnableOrderList message)
         {
-            var setting = this.service.Find(ApplicationSettings.OrderListConfiguration);
-            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(setting.HasCreatedCategories, setting.HasMigratedArticles, true));
+            var settings = this.service.Find(ApplicationSettings.OrderListConfiguration);
+            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(
+                settings.HasCreatedCategories, 
+                settings.HasMigratedArticles, 
+                true, 
+                settings.IsEnableable)
+            );
+
             return true;
         }
 

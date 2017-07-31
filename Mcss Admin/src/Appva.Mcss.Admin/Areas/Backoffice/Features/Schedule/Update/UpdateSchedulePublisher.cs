@@ -90,7 +90,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             schedule.IsPausable = message.IsPausable;
             schedule.NurseConfirmDeviation = message.NurseConfirmDeviation;
             schedule.NurseConfirmDeviationMessage = message.DeviationMessage.ToHtmlString();
-            schedule.OrderRefill = message.IsOrderListEnabled ? (string.IsNullOrEmpty(message.SelectedCategory) ? false : true) : message.OrderRefill;
+            schedule.OrderRefill = message.HasMigratedArticles ? (string.IsNullOrEmpty(message.SelectedCategory) ? false : true) : message.OrderRefill;
             schedule.SpecificNurseConfirmDeviation = message.DeviationMessage.IncludeListOfNurses;
             schedule.DelegationTaxon = message.DelegationTaxon.HasValue ? this.taxonomyService.Load(message.DelegationTaxon.Value) : null;
             schedule.ArticleCategory = articleCategory;

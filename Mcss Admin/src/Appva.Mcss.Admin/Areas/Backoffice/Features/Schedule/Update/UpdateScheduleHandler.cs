@@ -118,7 +118,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 OrderRefill                   = schedule.OrderRefill,
                 Delegations                   = this.taxonomyService.Roots(TaxonomicSchema.Delegation).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList(),
                 Categories                    = categorySelectList,
-                IsOrderListEnabled            = orderListConfiguration.IsEnabled
+                HasMigratedArticles           = orderListConfiguration.HasMigratedArticles
             };
         }
 

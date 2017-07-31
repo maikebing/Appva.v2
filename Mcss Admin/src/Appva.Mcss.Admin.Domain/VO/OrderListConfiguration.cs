@@ -26,15 +26,13 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="hasCreatedCategories">If article categories has been migrated.</param>
         /// <param name="hasMigratedArticles">If articles has been migrated.</param>
-        /// <param name="isEnabled">If the function has been enabled.</param>
-        /// <param name="isEnableable">If the function is enableable.</param>
+        /// <param name="hasMigratableItems">If there are any migratable items.</param>
         [JsonConstructor]
-        private OrderListConfiguration(bool hasCreatedCategories, bool hasMigratedArticles, bool isEnabled, bool isEnableable)
+        private OrderListConfiguration(bool hasCreatedCategories, bool hasMigratedArticles, bool hasMigratableItems)
         {
             this.HasCreatedCategories = hasCreatedCategories;
             this.HasMigratedArticles = hasMigratedArticles;
-            this.IsEnabled = isEnabled;
-            this.IsEnableable = IsEnableable;
+            this.HasMigratableItems = hasMigratableItems;
         }
 
         #endregion
@@ -62,20 +60,10 @@ namespace Appva.Mcss.Admin.Domain.VO
         }
 
         /// <summary>
-        /// If the function has been enabled.
+        /// If there are any migratable items.
         /// </summary>
         [JsonProperty]
-        public bool IsEnabled
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// If the function is enableable.
-        /// </summary>
-        [JsonProperty]
-        public bool IsEnableable
+        public bool HasMigratableItems
         {
             get;
             set;
@@ -88,14 +76,16 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// <summary>
         /// Creates a new instance of the <see cref="OrderListConfiguration"/> class.
         /// </summary>
+        /// <param name="hasCreatedCategories">If article categories has been migrated.</param>
+        /// <param name="hasMigratedArticles">If articles has been migrated.</param>
+        /// <param name="hasMigratableItems">If there are any migratable items.</param>
         /// <returns>A new <see cref="OrderListConfiguration"/> instance.</returns>
         public static OrderListConfiguration CreateNew(
             bool hasCreatedCategories = false, 
             bool hasMigratedArticles = false, 
-            bool isEnabled = false, 
-            bool isEnableable = true)
+            bool hasMigratableItems = false)
         {
-            return new OrderListConfiguration(hasCreatedCategories, hasMigratedArticles, isEnabled, isEnableable);
+            return new OrderListConfiguration(hasCreatedCategories, hasMigratedArticles, hasMigratableItems);
         }
 
         #endregion
@@ -107,8 +97,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         {
             return this.HasCreatedCategories.GetHashCode() +
                    this.HasMigratedArticles.GetHashCode() +
-                   this.IsEnabled.GetHashCode() + 
-                   this.IsEnableable.GetHashCode();
+                   this.HasMigratableItems.GetHashCode();
         }
 
         /// <inheritdoc />
@@ -117,8 +106,7 @@ namespace Appva.Mcss.Admin.Domain.VO
             return other != null
                 && this.HasCreatedCategories.Equals(other.HasCreatedCategories)
                 && this.HasMigratedArticles.Equals(other.HasMigratedArticles)
-                && this.IsEnabled.Equals(other.IsEnabled)
-                && this.IsEnableable.Equals(other.IsEnableable);
+                && this.HasMigratableItems.Equals(other.HasMigratableItems);
         }
 
         #endregion

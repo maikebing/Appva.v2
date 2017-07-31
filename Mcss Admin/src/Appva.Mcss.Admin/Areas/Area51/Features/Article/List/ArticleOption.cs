@@ -19,9 +19,27 @@ namespace Appva.Mcss.Admin.Features.Area51.ArticleOption
     public class ArticleOption
     {
         /// <summary>
-        /// The order list configuration.
+        /// If categories has been migrated.
         /// </summary>
-        public OrderListConfiguration OrderListConfiguration
+        public bool HasCreatedCategories
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If articles has been migrated.
+        /// </summary>
+        public bool HasMigratedArticles
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If there are any migratable items.
+        /// </summary>
+        public bool HasMigratableItems
         {
             get;
             set;

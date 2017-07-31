@@ -48,7 +48,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// The amount of active articles in the current category.
+        /// The number of lists connected to the current category.
+        /// </summary>
+        public int ListCount
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The number of active articles in the current category.
         /// </summary>
         public int ArticleCount
         {
@@ -66,7 +75,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// Check if the category has any articles.
+        /// If the category has any lists.
+        /// </summary>
+        public bool HasLists
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If the category has any articles.
         /// </summary>
         public bool HasArticles
         {

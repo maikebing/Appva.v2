@@ -96,7 +96,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var sequence = this.CreateOrUpdate(message, schedule, delegation);
 
-            if (orderListConfiguration.IsEnabled && sequence.Schedule.ScheduleSettings.ArticleCategory != null)
+            if (message.IsOrderable)
             {
                 var article = new Article
                 {

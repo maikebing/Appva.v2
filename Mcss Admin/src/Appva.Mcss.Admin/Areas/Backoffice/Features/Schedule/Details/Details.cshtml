@@ -57,7 +57,7 @@
             </tr>
             <tr>
                 <td class="label">Kategori</td>
-                <td>@(Model.Schedule.ArticleCategory == null ? "Ingen" : Model.Schedule.ArticleCategory.Name)</td>
+                <td>@(Model.Schedule.ArticleCategory == null || Model.Schedule.ArticleCategory.IsActive == false ? "Ingen" : Model.Schedule.ArticleCategory.Name)</td>
             </tr>
             <tr>
                 <td class="label"><span>Delegering</span></td>

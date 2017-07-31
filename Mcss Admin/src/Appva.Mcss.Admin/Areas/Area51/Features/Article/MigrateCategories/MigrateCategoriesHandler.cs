@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override bool Handle(MigrateCategories message)
         {
-            var scheduleSettings = this.service.GetOrderListItemsFromScheduleSettings(this.persistence.Session).List();
+            var scheduleSettings = this.service.GetOrderListItemsFromScheduleSettings().List();
 
             foreach (var setting in scheduleSettings)
             {
@@ -72,8 +72,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(
                 true,
                 orderListConfiguration.HasMigratedArticles,
-                orderListConfiguration.IsEnabled,
-                orderListConfiguration.IsEnableable)
+                orderListConfiguration.HasMigratableItems)
             );
 
             return true;

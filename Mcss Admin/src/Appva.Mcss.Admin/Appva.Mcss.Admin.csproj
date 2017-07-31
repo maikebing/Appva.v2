@@ -312,8 +312,6 @@
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAcl.cs" />
     <Compile Include="Areas\Area51\Features\Acl\Install\InstallAclHandler.cs" />
     <Compile Include="Areas\Area51\Features\Article\ArticleController.cs" />
-    <Compile Include="Areas\Area51\Features\Article\Enable\EnableOrderList.cs" />
-    <Compile Include="Areas\Area51\Features\Article\Enable\EnableOrderListHandler.cs" />
     <Compile Include="Areas\Area51\Features\Article\List\ArticleOption.cs" />
     <Compile Include="Areas\Area51\Features\Article\List\ArticleOptionListHandler.cs" />
     <Compile Include="Areas\Area51\Features\Article\MigrateArticles\MigrateArticles.cs" />

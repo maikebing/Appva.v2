@@ -80,7 +80,7 @@ $(function () {
     $('.articlecategory .action-denied').click(function () {
         var clicked = $(this);
         var content = $('<div class="lb-panel lb-panel-small"><div class="std-panel"><div class="prompt"></div></div></div>');
-        content.find('.prompt').append('<p class="warning">Kategorin kan inte tas bort eftersom den anv&auml;nds av en eller flera artiklar.</p>');
+        content.find('.prompt').append('<p class="warning">Kategorin kan inte tas bort eftersom den anv&auml;nds av en lista eller artikel.</p>');
         content.find('.prompt').append('<a class="cancel" href="#">St&auml;ng</a>');
         mcss.lightbox.openBox(content, clicked, 'lb-warning', function (content) {
             $('.lb-panel a.cancel').click(function () {

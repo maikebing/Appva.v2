@@ -68,24 +68,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override ArticleListModel Handle(Parameterless<ArticleListModel> message)
         {
-            bool isOrderListEnableable = true;
+            var hasMigratableItems = this.settingsService.HasMigratableItems();
             var setting = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
-
-            if (setting.IsEnabled == false)
-            {
-                isOrderListEnableable = this.settingsService.IsOrderListEnableable();
-                this.settingsService.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(
-                    setting.HasCreatedCategories,
-                    setting.HasMigratedArticles,
-                    setting.IsEnabled,
-                    isOrderListEnableable)
-                );
-            }
+            this.settingsService.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(
+                setting.HasCreatedCategories,
+                setting.HasMigratedArticles,
+                hasMigratableItems)
+            );
 
             return new ArticleListModel
             {
-                IsOrderListEnabled = (this.settingsService.Find(ApplicationSettings.OrderListConfiguration)).IsEnabled,
-                IsOrderListEnableable = isOrderListEnableable,
+                HasMigratableItems = hasMigratableItems,
                 CategoryList = this.GetArticleCategoryList()
             };
         }
@@ -101,6 +94,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
             foreach (var category in this.repository.GetCategories())
             {
+                int listCount = this.persistence.QueryOver<ScheduleSettings>()
+                    .Where(x => x.OrderRefill == true)
+                        .And(x => x.ArticleCategory != null)
+                            .And(x => x.ArticleCategory == category)
+                                .JoinQueryOver(x => x.ArticleCategory)
+                                    .Where(x => x.IsActive == true)
+                                        .RowCount();
+
                 int articleCount = this.persistence.QueryOver<Article>()
                     .Where(x => x.IsActive == true)
                         .And(x => x.ArticleCategory == category)
@@ -111,9 +112,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     Id = category.Id,
                     Name = category.Name,
                     Description = category.Description,
+                    ListCount = listCount,
                     ArticleCount = articleCount,
                     UpdatedAt = category.UpdatedAt,
-                    HasArticles = articleCount > 0 ? true : false
+                    HasLists = listCount > 0,
+                    HasArticles = articleCount > 0
                 });
             }
 

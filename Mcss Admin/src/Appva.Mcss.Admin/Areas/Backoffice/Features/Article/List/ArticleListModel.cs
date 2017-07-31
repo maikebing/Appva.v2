@@ -21,18 +21,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         #region Properties.
 
         /// <summary>
-        /// If the order list has been activated.
+        /// If there are any migratable items.
         /// </summary>
-        public bool IsOrderListEnabled
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// If the order list function is enableable.
-        /// </summary>
-        public bool IsOrderListEnableable
+        public bool HasMigratableItems
         {
             get;
             set;

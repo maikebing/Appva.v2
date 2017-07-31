@@ -49,19 +49,19 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override ArticleOption Handle(Parameterless<ArticleOption> message)
         {
-            var isOrderListEnableable = this.service.IsOrderListEnableable();
+            var hasMigratableItems = this.service.HasMigratableItems();
             var settings = this.service.Find(ApplicationSettings.OrderListConfiguration);
-            settings.IsEnableable = isOrderListEnableable;
             this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(
                 settings.HasCreatedCategories,
                 settings.HasMigratedArticles,
-                settings.IsEnabled,
-                settings.IsEnableable)
+                hasMigratableItems)
             );
 
             return new ArticleOption
             {
-                OrderListConfiguration = settings
+                HasCreatedCategories = settings.HasCreatedCategories,
+                HasMigratedArticles = settings.HasMigratedArticles,
+                HasMigratableItems = hasMigratableItems
             };
         }
 

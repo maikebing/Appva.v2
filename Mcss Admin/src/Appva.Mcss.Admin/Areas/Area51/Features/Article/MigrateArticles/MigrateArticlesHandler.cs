@@ -86,7 +86,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             while (rowCount > 0);
 
             var settings = this.service.Find(ApplicationSettings.OrderListConfiguration);
-            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(true, true, settings.IsEnabled, settings.IsEnableable));
+            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(true, true, settings.HasMigratableItems));
 
             return true;
         }

@@ -9,6 +9,10 @@
                 <h3 class="section-title">Ange insats</h3>
                     @Html.FormGroup(x => x.Name, "text large").Label().TextBox(null, new { @class = "wide check-length" }).Validate().Build()
                     @Html.FormGroup(x => x.Description, "text large").Label().TextArea(null, new { @rows = "24", @cols = "80", @class = "wide" }).Validate().Build()
+                    @if (Model.IsOrderableArticleEnabled)
+                    {
+                        @Html.FormGroup(x => x.IsOrderable, "checkbox").Checkbox("Är beställningsbar").Validate().Build()
+                    }
                     @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox("Får endast ges av legitimerad " + Model.RequiredRoleText, new { @class = "nurse" }).Validate().Build()
                     @if (Model.Delegations.Count() > 0)
                     {

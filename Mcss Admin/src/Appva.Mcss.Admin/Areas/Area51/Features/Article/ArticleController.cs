@@ -86,22 +86,6 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Account
 
         #endregion
 
-        #region Enable order list.
-
-        /// <summary>
-        /// Runs the category migration script.
-        /// </summary>
-        /// <returns></returns>
-        [Route("enable")]
-        [AlertSuccess("Beställningslistan aktiverades!")]
-        [HttpGet, Dispatch("list", "article")]
-        public ActionResult Enable(EnableOrderList request)
-        {
-            return this.View();
-        }
-
-        #endregion
-
         #endregion
     }
 }

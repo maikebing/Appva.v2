@@ -10,14 +10,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using System.Linq;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Core.Extensions;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
     using NHibernate.Criterion;
     using NHibernate.Transform;
-    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -32,6 +33,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// The <see cref="IIdentityService"/>.
         /// </summary>
         private readonly IIdentityService identityService;
+
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -51,14 +57,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="OverviewOrderHandler"/> class.
         /// </summary>
         /// <param name="identityService">The <see cref="IIdentityService"/></param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/></param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/></param>
         /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/></param>
         public OverviewOrderHandler(
             IIdentityService identityService,
+            ISettingsService settingsService,
             IPersistenceContext persistence,
             ITaxonFilterSessionHandler filtering)
         {
             this.identityService = identityService;
+            this.settingsService = settingsService;
             this.persistence = persistence;
             this.filtering = filtering;
         }
@@ -70,6 +79,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override OrderOverviewViewModel Handle(OverviewOrder message)
         {
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
             var account = this.persistence.Get<Account>(this.identityService.PrincipalId);
             var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
             var filterTaxon = this.filtering.GetCurrentFilter();
@@ -92,7 +102,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));
             return new OrderOverviewViewModel
             {
-                Orders = orders.OrderBy(x => x.RefillInfo.RefillOrderedDate).Asc.List()
+                Orders = orders.OrderBy(x => x.RefillInfo.RefillOrderedDate).Asc.List(),
+                HasMigratedArticles = orderListConfiguration.HasMigratedArticles,
+                SequencesWithoutArticlesCount = orders.Where(x => x.Article == null).RowCount()
             };
         }
 

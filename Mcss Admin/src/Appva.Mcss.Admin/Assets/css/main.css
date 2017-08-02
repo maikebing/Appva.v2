@@ -3928,3 +3928,8 @@ ul.people li {
 
 
 }
+
+/* Overriding jQuery generated class tickLabel */
+.tickLabel {
+    left: 0px !important;
+}

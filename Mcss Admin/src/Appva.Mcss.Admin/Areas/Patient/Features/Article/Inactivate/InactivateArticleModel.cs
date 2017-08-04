@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Models
 
     using System;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -24,7 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// <summary>
         /// The article id.
         /// </summary>
-        public Guid Article
+        public Guid ArticleId
         {
             get;
             set;
@@ -33,7 +34,34 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// <summary>
         /// The patient id.
         /// </summary>
-        public Guid Id
+        public Guid PatientId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The sequence.
+        /// </summary>
+        public Guid SequenceId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The sequence name.
+        /// </summary>
+        public string SequenceName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The schedule list name.
+        /// </summary>
+        public string ScheduleListName
         {
             get;
             set;

@@ -30,6 +30,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IArticleRepository articleRepository;
 
         /// <summary>
+        /// The <see cref="ISequenceService"/>.
+        /// </summary>
+        private readonly ISequenceService sequenceService;
+
+        /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
@@ -47,11 +52,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="InactivateArticlePublisher"/> class.
         /// </summary>
         /// <param name="articleRepository">The <see cref="IArticleRepository"/>.</param>
+        /// <param name="sequenceService">The <see cref="ISequenceService"/>.</param>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// <param name="auditing">The <see cref="IAuditService"/>.</param>
-        public InactivateArticlePublisher(IArticleRepository articleRepository, IPatientService patientService, IAuditService auditing)
+        public InactivateArticlePublisher(IArticleRepository articleRepository, ISequenceService sequenceService, IPatientService patientService, IAuditService auditing)
         {
             this.articleRepository = articleRepository;
+            this.sequenceService = sequenceService;
             this.patientService = patientService;
             this.auditing = auditing;
         }
@@ -63,12 +70,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(InactivateArticleModel message)
         {
-            var patient = this.patientService.Get(message.Id);
-            var article = this.articleRepository.Get(message.Article);
+            var patient = this.patientService.Get(message.PatientId);
+            var article = this.articleRepository.Get(message.ArticleId);
+            var sequence = this.sequenceService.Find(message.SequenceId);
 
-            if(article == null || patient == null)
+            if (article == null || patient == null)
             {
                 return false;
+            }
+
+            if(sequence != null && sequence.Article.Id == article.Id)
+            {
+                sequence.Article = null;
+                this.sequenceService.Update(sequence);
             }
 
             article.IsActive = false;

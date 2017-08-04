@@ -4,14 +4,12 @@
 <div class="section section--hspace">
     <h2>Ta bort artikel</h2>
     <div id="remove-item">
-        @using (Html.Post())
+        @using (Html.Post(null, new { PatientId = Model.PatientId, ArticleId = Model.ArticleId, SequenceId = Model.SequenceId }))
         {
             <div class="width-limiter width-limiter--xs">
-                <p>Är du säker på att du vill ta bort artikeln?</p>
+                <p>@(Model.SequenceId != Guid.Empty ? Html.Raw("Artikeln används av insatsen <i>" + Model.SequenceName + "</i> i listan " + Model.ScheduleListName + ". ") : Html.Raw(string.Empty))Är du säker på att du vill ta bort artikeln?</p>
                 <div class="form-controls form-controls--align-end form-controls--no-margin">
                     <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
-                    @Html.HiddenFor(x => x.Id)
-                    @Html.HiddenFor(x => x.Article)
                     @Html.Submit("Ta bort artikel", new { @class = "button button--negative" })
                 </div>
             </div>

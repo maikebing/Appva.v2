@@ -9,8 +9,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Areas.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
 
     #endregion
 
@@ -19,14 +22,24 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     public sealed class InactivateArticleHandler : RequestHandler<InactivateArticle, InactivateArticleModel>
     {
+        #region Fields.
+
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>.
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
+        #endregion
+
         #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InactivateArticleHandler"/> class.
         /// </summary>
-        public InactivateArticleHandler()
+        /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
+        public InactivateArticleHandler(IPersistenceContext persistence)
         {
-
+            this.persistence = persistence;
         }
 
         #endregion
@@ -36,10 +49,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override InactivateArticleModel Handle(InactivateArticle message)
         {
+            var sequence = this.persistence.QueryOver<Sequence>()
+                .JoinQueryOver(x => x.Article)
+                    .Where(x => x.Id == message.Article)
+                        .SingleOrDefault();
+
             return new InactivateArticleModel
             {
-                Id = message.Id,
-                Article = message.Article
+                PatientId = message.Id,
+                ArticleId = message.Article,
+                SequenceId = sequence == null ? Guid.Empty : sequence.Id,
+                SequenceName = sequence == null ? string.Empty : sequence.Name,
+                ScheduleListName = sequence == null ? string.Empty : sequence.Schedule.ScheduleSettings.Name
             };
         }
 

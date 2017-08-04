@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Application.Models;
 
     #endregion
 
@@ -59,6 +60,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ISettingsService settingsService;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructor.
@@ -66,18 +72,25 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceFormHandler"/> class.
         /// </summary>
-        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService)
+        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
+        /// <param name="sequenceService">The <see cref="ISequenceService"/>.</param>
+        /// <param name="roleService">The <see cref="IRoleService"/>.</param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
+        /// <param name="inventoryService">The <see cref="IInventoryService"/>.</param>
+        /// <param name="auditing">The <see cref="IAuditService"/>.</param>
+        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService, IAuditService auditing)
         {
             this.context            = context;
             this.roleService        = roleService;
             this.sequenceService    = sequenceService;
             this.inventoryService   = inventoryService;
             this.settingsService    = settingsService;
+            this.auditing           = auditing;
         }
 
         #endregion
 
-        #region UpdateSequenceNotificationHandler Overrides.
+        #region UpdateSequenceFormHandler Overrides.
 
         /// <inheritdoc />
         public override DetailsSchedule Handle(UpdateSequenceForm message)
@@ -89,6 +102,26 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
+
+            if (message.IsOrderable)
+            {
+                var article = Article.CreateNew(
+                    sequence.Name,
+                    sequence.Description,
+                    sequence.Patient,
+                    sequence.Schedule.ScheduleSettings.ArticleCategory,
+                    ArticleStatus.Refilled.ToString()
+                );
+
+                this.context.Save(article);
+                this.auditing.Create(sequence.Patient, "skapade artikeln {0} ({1})", article.Name, article.Id);
+                sequence.Article = article;
+            }
+            else
+            {
+                sequence.Article = null;
+            }
+
             this.CreateOrUpdate(message, sequence, schedule, delegation, null);
             this.sequenceService.Update(sequence);
             

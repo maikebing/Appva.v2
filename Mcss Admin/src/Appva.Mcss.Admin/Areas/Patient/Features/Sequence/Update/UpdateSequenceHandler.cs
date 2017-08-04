@@ -84,6 +84,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var schedule     = this.context.Get<Schedule>(sequence.Schedule.Id);
             //// Temporary mapping
             Role requiredRole = null;
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
             var temp  = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
             if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
             {
@@ -117,7 +118,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Nurse                       = sequence.Role != null,
                 Inventory                   = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
                 Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
-                RequiredRoleText            = requiredRole.Name.ToLower()
+                RequiredRoleText            = requiredRole.Name.ToLower(),
+                IsOrderable                 = sequence.Article != null,
+                IsOrderableArticleEnabled   = orderListConfiguration.HasMigratedArticles
             };
         }
 

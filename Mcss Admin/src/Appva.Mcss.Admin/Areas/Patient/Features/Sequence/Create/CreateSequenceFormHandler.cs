@@ -70,6 +70,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="context"></param>
         /// <param name="inventories"></param>
         /// <param name="roleService"></param>
+        /// <param name="settingsService"></param>
         /// <param name="auditing"></param>
         public CreateSequenceFormHandler(IPersistenceContext context, IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IAuditService auditing)
         {
@@ -87,7 +88,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override DetailsSchedule Handle(CreateSequenceForm message)
         {
-            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
             Taxon delegation = null;
             if (message.Delegation.HasValue && ! message.Nurse)
@@ -98,24 +98,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             if (message.IsOrderable)
             {
-                var article = new Article
-                {
-                    Name = sequence.Name,
-                    Description = sequence.Description,
-                    Refill = false,
-                    RefillOrderDate = null,
-                    RefillOrderedBy = null,
-                    Ordered = true,
-                    OrderDate = null,
-                    OrderedBy = null,
-                    Status = ArticleStatus.Refilled.ToString(),
-                    Patient = sequence.Patient,
-                    ArticleCategory = sequence.Schedule.ScheduleSettings.ArticleCategory
-                };
+                var article = Article.CreateNew(
+                    sequence.Name, 
+                    sequence.Description, 
+                    sequence.Patient, 
+                    sequence.Schedule.ScheduleSettings.ArticleCategory, 
+                    ArticleStatus.Refilled.ToString()
+                );
 
                 this.context.Save(article);
                 this.auditing.Create(sequence.Patient, "skapade artikeln {0} ({1})", article.Name, article.Id);
-
                 sequence.Article = article;
             }
 
@@ -132,10 +124,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.context.Update(schedule);
 
             return new DetailsSchedule
-                {
-                    Id = message.Id,
-                    ScheduleId = message.ScheduleId
-                };
+            {
+                Id = message.Id,
+                ScheduleId = message.ScheduleId
+            };
         }
 
         #endregion
@@ -231,8 +223,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Inventory = inventory
             };
         }
-
-   
 
         #endregion
     }

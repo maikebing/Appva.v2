@@ -132,5 +132,36 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
+
+        #region Public static methods.
+
+        /// <summary>
+        /// Creates a new <see cref="Article"/>.
+        /// </summary>
+        /// <param name="name">The article name.</param>
+        /// <param name="description">The article description.</param>
+        /// <param name="patient">The <see cref="Patient"/>.</param>
+        /// <param name="category">The <see cref="ArticleCategory"/>.</param>
+        /// <param name="orderStatus">The article order status.</param>
+        /// <returns>A new <see cref="Article"/>.</returns>
+        public static Article CreateNew(string name, string description, Patient patient, ArticleCategory category, string orderStatus)
+        {
+            return new Article
+            {
+                Name = name,
+                Description = description,
+                Refill = false,
+                RefillOrderDate = null,
+                RefillOrderedBy = null,
+                Ordered = true,
+                OrderDate = null,
+                OrderedBy = null,
+                Status = orderStatus,
+                Patient = patient,
+                ArticleCategory = category
+            };
+        }
+
+        #endregion
     }
 }

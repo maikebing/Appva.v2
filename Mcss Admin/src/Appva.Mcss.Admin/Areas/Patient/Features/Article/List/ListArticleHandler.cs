@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Transformers;
     using Appva.Mcss.Admin.Domain.Repositories;
@@ -46,6 +47,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IArticleService articleService;
 
         /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
+        /// <summary>
+        /// The <see cref="IIdentityService"/>.
+        /// </summary>
+        private readonly IIdentityService identityService;
+
+        /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
@@ -69,14 +80,26 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="articleRepository">The <see cref="IArticleRepository"/></param>
         /// <param name="articleTransformer">The <see cref="IArticleTransformer"/></param>
+        /// <param name="accountService">The <see cref="IAccountService"/>.</param>
+        /// <param name="identityService">The <see cref="IIdentityService"/>.</param>
         /// <param name="patientService">The <see cref="IPatientService"/></param>
         /// <param name="patientTransformer">The <see cref="IPatientTransformer"/></param>
         /// <param name="articleService">The <see cref="IAuditService"/>.</param>
-        public ListArticleHandler(IArticleRepository articleRepository, IArticleTransformer articleTransformer, IArticleService articleService, IPatientService patientService, IPatientTransformer patientTransformer, IAuditService auditing)
+        public ListArticleHandler(
+            IArticleRepository articleRepository, 
+            IArticleTransformer articleTransformer, 
+            IArticleService articleService,
+            IAccountService accountService,
+            IIdentityService identityService, 
+            IPatientService patientService, 
+            IPatientTransformer patientTransformer, 
+            IAuditService auditing)
         {
             this.articleRepository = articleRepository;
             this.articleTransformer = articleTransformer;
             this.articleService = articleService;
+            this.accountService = accountService;
+            this.identityService = identityService;
             this.patientService = patientService;
             this.patientTransformer = patientTransformer;
             this.auditing = auditing;
@@ -91,8 +114,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var listArticleModel = new ListArticleModel();
             var articleModelList = new List<ArticleModel>();
-            var orderedArticles = this.articleRepository.ListByOrderedArticles(message.Id).OrderByDescending(x => x.RefillOrderDate);
-            var refilledArticles = this.articleRepository.ListByRefilledArticles(message.Id).OrderByDescending(x => x.CreatedAt).ToList();
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var categories = this.articleService.GetRoleArticleCategoryList(account);
+            var orderedArticles = this.articleRepository.ListByOrderedArticles(message.Id, categories).OrderByDescending(x => x.RefillOrderDate);
+            var refilledArticles = this.articleRepository.ListByRefilledArticles(message.Id, categories).OrderByDescending(x => x.CreatedAt).ToList();
             var patient = this.patientService.Get(message.Id);
             var patientViewModel = this.patientTransformer.ToPatient(patient);
 

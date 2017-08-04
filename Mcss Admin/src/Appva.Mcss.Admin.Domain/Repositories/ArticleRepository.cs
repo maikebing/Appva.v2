@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
@@ -45,15 +46,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// Returns a collection of ordered <see cref="Article"/>.
         /// </summary>
         /// <param name="patientId">The patient <see cref="Guid"/>.</param>
+        /// <param name="categories">A collection of <see cref="ArticleCategory"/>.</param>
         /// <returns>A collection of ordered <see cref="Article"/>.</returns>
-        IList<Article> ListByOrderedArticles(Guid patientId);
+        IList<Article> ListByOrderedArticles(Guid patientId, IList<ArticleCategory> categories = null);
 
         /// <summary>
         /// Returns a collection of refilled <see cref="Article"/>.
         /// </summary>
         /// <param name="patientId">The patient <see cref="Guid"/>.</param>
+        /// <param name="categories">A collection of <see cref="ArticleCategory"/>.</param>
         /// <returns>A collection of refilled <see cref="Article"/>.</returns>
-        IList<Article> ListByRefilledArticles(Guid patientId);
+        IList<Article> ListByRefilledArticles(Guid patientId, IList<ArticleCategory> categories = null);
 
         /// <summary>
         /// Updates an <see cref="Article"/>.
@@ -124,23 +127,39 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public IList<Article> ListByOrderedArticles(Guid patientId)
+        public IList<Article> ListByOrderedArticles(Guid patientId, IList<ArticleCategory> categories = null)
         {
-            return this.persistenceContext.QueryOver<Article>()
+            var query = this.persistenceContext.QueryOver<Article>()
                 .Where(x => x.Patient.Id == patientId)
                     .And(x => x.Refill == true)
-                        .And(x => x.IsActive == true)
-                            .List();
+                        .And(x => x.IsActive == true);
+
+            if(categories != null)
+            {
+                query.JoinQueryOver(x => x.ArticleCategory)
+                    .WhereRestrictionOn(x => x.Id)
+                        .IsIn(categories.Select(x => x.Id).ToArray());
+            }
+
+            return query.List();
         }
 
         /// <inheritdoc />
-        public IList<Article> ListByRefilledArticles(Guid patientId)
+        public IList<Article> ListByRefilledArticles(Guid patientId, IList<ArticleCategory> categories = null)
         {
-            return this.persistenceContext.QueryOver<Article>()
+            var query = this.persistenceContext.QueryOver<Article>()
                 .Where(x => x.Patient.Id == patientId)
                     .And(x => x.Refill == false)
-                        .And(x => x.IsActive == true)
-                            .List();
+                        .And(x => x.IsActive == true);
+
+            if (categories != null)
+            {
+                query.JoinQueryOver(x => x.ArticleCategory)
+                    .WhereRestrictionOn(x => x.Id)
+                        .IsIn(categories.Select(x => x.Id).ToArray());
+            }
+
+            return query.List();
         }
 
         /// <inheritdoc />

@@ -222,6 +222,10 @@
       <key column="RoleId" />
       <many-to-many column="TaxonId" class="Taxon" fetch="join" />
     </bag>
+    <bag name="ArticleCategories" table="RolesArticleCategories">
+      <key column="RoleId" />
+      <many-to-many column="ArticleCategoryId" class="ArticleCategory" fetch="join" />
+    </bag>
   </class>
 
   <!-- Permissions. -->

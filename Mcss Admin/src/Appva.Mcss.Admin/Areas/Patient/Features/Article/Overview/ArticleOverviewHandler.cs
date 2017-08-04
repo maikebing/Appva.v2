@@ -37,6 +37,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IIdentityService identityService;
 
         /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
+        /// <summary>
         /// The <see cref="IArticleService"/>.
         /// </summary>
         private readonly IArticleService articleService;
@@ -69,14 +74,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="ArticleOverviewHandler"/> class.
         /// </summary>
         /// <param name="identityService">The <see cref="IIdentityService"/>.</param>
+        /// <param name="accountService">The <see cref="IAccountService"/>.</param>
         /// <param name="articleService">The <see cref="IArticleService"/>.</param>
         /// <param name="articleTransformer">The <see cref="IArticleTransformer"/>.</param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
         /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/>.</param>
         /// <param name="auditing">The <see cref="IAuditService"/>.</param>
-        public ArticleOverviewHandler(IIdentityService identityService, IArticleService articleService, IArticleTransformer articleTransformer, IPersistenceContext persistence, ITaxonFilterSessionHandler filtering, IAuditService auditing)
+        public ArticleOverviewHandler(IIdentityService identityService, IAccountService accountService, IArticleService articleService, IArticleTransformer articleTransformer, IPersistenceContext persistence, ITaxonFilterSessionHandler filtering, IAuditService auditing)
         {
             this.identityService = identityService;
+            this.accountService = accountService;
             this.articleService = articleService;
             this.articleTransformer = articleTransformer;
             this.persistence = persistence;
@@ -93,11 +100,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var userId = this.identityService.PrincipalId;
             var orderedArticles = new List<ArticleModel>();
+            var account = this.accountService.Find(userId);
+            var categories = this.articleService.GetRoleArticleCategoryList(account);
             var filterTaxon = this.filtering.GetCurrentFilter();
+            ArticleCategory articleCategory = null;
+
             var orders = this.persistence.QueryOver<Article>()
                 .Where(x => x.IsActive)
                     .And(x => x.Refill == true)
-                        .Fetch(x => x.RefillOrderedBy).Eager;
+                        .Fetch(x => x.RefillOrderedBy).Eager
+                            .JoinAlias(x => x.ArticleCategory, () => articleCategory)
+                                .WhereRestrictionOn(() => articleCategory.Id)
+                                    .IsIn(categories.Select(x => x.Id).ToArray());
 
             orders.JoinQueryOver<Patient>(x => x.Patient)
                 .Where(x => x.IsActive)

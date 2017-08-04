@@ -126,6 +126,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        /// <summary>
+        /// The article categories the role can access.
+        /// </summary>
+        public virtual IList<ArticleCategory> ArticleCategories
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Public Static Builders.

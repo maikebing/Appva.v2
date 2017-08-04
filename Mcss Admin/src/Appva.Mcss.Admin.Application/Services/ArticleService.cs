@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Application.Models;
 
@@ -35,6 +36,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <returns>An <see cref="IDictionary{string, string}"/>.</returns>
         IDictionary<string, string> GetOrderOptions();
+
+        /// <summary>
+        /// Returns a collection of <see cref="ArticleCategory"/> filtered by role permissions.
+        /// </summary>
+        /// <param name="account">The <see cref="Account"/>.</param>
+        /// <returns>A collection of <see cref="ArticleCategory"/>.</returns>
+        IList<ArticleCategory> GetRoleArticleCategoryList(Account account);
     }
 
     /// <summary>
@@ -123,6 +131,24 @@ namespace Appva.Mcss.Admin.Application.Services
                 { ArticleStatus.OrderedFromSupplier.ToString(), "Beställd" },
                 { ArticleStatus.Refilled.ToString(), "Påfylld" }
             };
+        }
+
+        /// <inheritdoc />
+        public IList<ArticleCategory> GetRoleArticleCategoryList(Account account)
+        {
+            var categories = new List<ArticleCategory>();
+            foreach (var role in account.Roles)
+            {
+                foreach (var category in role.ArticleCategories)
+                {
+                    if (!categories.Contains(category))
+                    {
+                        categories.Add(category);
+                    }
+                }
+            }
+
+            return categories;
         }
 
         #endregion

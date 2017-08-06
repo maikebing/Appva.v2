@@ -108,7 +108,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
                 CreateNewInventory  = true,
                 RequiredRoleText    = requiredRole.Name.ToLower(),
-                IsOrderableArticleEnabled = orderListConfiguration.HasMigratedArticles
+                IsOrderableArticleEnabled = orderListConfiguration.HasMigratedArticles && schedule.ScheduleSettings.ArticleCategory != null
             };
         }
 

@@ -50,9 +50,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override InactivateArticleModel Handle(InactivateArticle message)
         {
             var sequence = this.persistence.QueryOver<Sequence>()
-                .JoinQueryOver(x => x.Article)
-                    .Where(x => x.Id == message.Article)
-                        .SingleOrDefault();
+                .Where(x => x.IsActive)
+                    .And(x => x.IsOrderable)
+                        .JoinQueryOver(x => x.Article)
+                            .Where(x => x.Id == message.Article)
+                                .SingleOrDefault();
 
             return new InactivateArticleModel
             {

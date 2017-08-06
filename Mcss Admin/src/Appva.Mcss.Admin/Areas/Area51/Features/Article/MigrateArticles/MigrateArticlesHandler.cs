@@ -76,6 +76,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
                             var article = this.CreateArticle(sequence);
                             session.Save(article);
                             sequence.Article = article;
+                            sequence.IsOrderable = true;
                             session.Update(sequence);
                         }
 

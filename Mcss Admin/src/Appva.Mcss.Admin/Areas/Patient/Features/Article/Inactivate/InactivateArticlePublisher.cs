@@ -81,7 +81,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             if(sequence != null && sequence.Article.Id == article.Id)
             {
-                sequence.Article = null;
+                sequence.IsOrderable = false;
                 this.sequenceService.Update(sequence);
             }
 

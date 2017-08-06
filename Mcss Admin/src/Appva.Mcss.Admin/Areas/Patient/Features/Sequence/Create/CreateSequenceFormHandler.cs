@@ -220,7 +220,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Schedule = schedule,
                 Taxon = delegation,
                 Role = requiredRole,
-                Inventory = inventory
+                Inventory = inventory,
+                IsOrderable = message.IsOrderable
             };
         }
 

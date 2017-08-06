@@ -217,6 +217,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.Schedule = schedule;
             sequence.Taxon = delegation;
             sequence.Role = requiredRole;
+            sequence.IsOrderable = model.IsOrderable;
             return sequence;
         }
 

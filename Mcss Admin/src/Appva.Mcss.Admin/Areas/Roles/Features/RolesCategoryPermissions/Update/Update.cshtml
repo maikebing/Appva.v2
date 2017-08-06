@@ -21,6 +21,16 @@
                 c.prop('checked', false);
             }
         });
+        $('.ac-role-col').click(function () {
+            var c = $(this);
+            if (c.siblings('td').find('.admin-ac-role').is(':checked') && c.siblings('td').find('.device-ac-role').is(':checked')) {
+                c.siblings('td').find('.admin-ac-role').prop('checked', false);
+                c.siblings('td').find('.device-ac-role').prop('checked', false);
+            } else {
+                c.siblings('td').find('.admin-ac-role').prop('checked', true);
+                c.siblings('td').find('.device-ac-role').prop('checked', true);
+            }
+        });
     });
 </script>
 <div class="std-panel std-form lb-panel-big lb-validate-form">
@@ -40,7 +50,7 @@
                     @for (int i = 0; i < Model.Categories.Count; i++)
                     {
                         <tr>
-                            <td>@Model.Categories[i].Label</td>
+                            <td class="ac-role-col">@Model.Categories[i].Label</td>
                             <td>
                                 @Html.CheckBoxFor(x => x.Categories[i].IsSelected, new { @class = "admin-ac-role" })
                                 @Html.HiddenFor(x => x.Categories[i].Id)

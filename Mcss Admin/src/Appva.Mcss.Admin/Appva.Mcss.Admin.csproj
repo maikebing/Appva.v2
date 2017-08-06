@@ -745,10 +745,10 @@
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportHandler.cs" />
     <Compile Include="Areas\Report\Features\Report\FullReport\FullReportModel.cs" />
     <Compile Include="Areas\Report\Features\Report\ReportController.cs" />
-    <Compile Include="Areas\Roles\Features\RolesCategoriesPermissions\RolesCategoriesPermissionsController.cs" />
-    <Compile Include="Areas\Roles\Features\RolesCategoriesPermissions\Update\UpdateRolesCategoriesPermissions.cs" />
-    <Compile Include="Areas\Roles\Features\RolesCategoriesPermissions\Update\UpdateRolesCategoriesPermissionsHandler.cs" />
-    <Compile Include="Areas\Roles\Features\RolesCategoriesPermissions\Update\UpdateRolesCategoriesPermissionsPublisher.cs" />
+    <Compile Include="Areas\Roles\Features\RolesCategoryPermissions\RolesCategoryPermissionsController.cs" />
+    <Compile Include="Areas\Roles\Features\RolesCategoryPermissions\Update\UpdateRoleCategoryPermissions.cs" />
+    <Compile Include="Areas\Roles\Features\RolesCategoryPermissions\Update\UpdateRoleCategoryPermissionsHandler.cs" />
+    <Compile Include="Areas\Roles\Features\RolesCategoryPermissions\Update\UpdateRoleCategoryPermissionsPublisher.cs" />
     <Compile Include="Areas\Roles\Features\RolesDelegations\RolesDelegationsController.cs" />
     <Compile Include="Areas\Roles\Features\RolesDelegations\Update\UpdateRoleDelegation.cs" />
     <Compile Include="Areas\Roles\Features\RolesDelegations\Update\UpdateRoleDelegationHandler.cs" />
@@ -1547,7 +1547,7 @@
     <Content Include="Areas\Patient\Features\Article\Overview\Overview.cshtml" />
     <Content Include="Areas\Area51\Features\Article\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Article\Inactivate\Inactivate.cshtml" />
-    <Content Include="Areas\Roles\Features\RolesCategoriesPermissions\Update\Update.cshtml" />
+    <Content Include="Areas\Roles\Features\RolesCategoryPermissions\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

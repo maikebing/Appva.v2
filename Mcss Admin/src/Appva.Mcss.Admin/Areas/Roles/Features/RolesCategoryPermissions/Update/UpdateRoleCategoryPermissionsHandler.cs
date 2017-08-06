@@ -1,4 +1,4 @@
-﻿// <copyright file="UpdateRolesCategoriesPermissionsHandler.cs" company="Appva AB">
+﻿// <copyright file="UpdateRoleCategoryPermissionsHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -24,7 +24,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class UpdateRolesCategoriesPermissionsHandler : RequestHandler<Identity<UpdateRolesCategoriesPermissions>, UpdateRolesCategoriesPermissions>
+    internal sealed class UpdateRoleCategoryPermissionsHandler : RequestHandler<Identity<UpdateRoleCategoryPermissions>, UpdateRoleCategoryPermissions>
     {
         #region Fields.
 
@@ -40,14 +40,14 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateRolesCategoriesPermissionsHandler"/> class.
+        /// Initializes a new instance of the <see cref="UpdateRoleCategoryPermissionsHandler"/> class.
         /// </summary>
         /// <param name="roleService">The <see cref="IRoleService"/>.</param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
-        public UpdateRolesCategoriesPermissionsHandler(IRoleService roleService, IPersistenceContext persistence)
+        public UpdateRoleCategoryPermissionsHandler(IRoleService roleService, IPersistenceContext persistence)
         {
             this.roleService = roleService;
             this.persistence = persistence;
@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override UpdateRolesCategoriesPermissions Handle(Identity<UpdateRolesCategoriesPermissions> message)
+        public override UpdateRoleCategoryPermissions Handle(Identity<UpdateRoleCategoryPermissions> message)
         {
             var role = this.roleService.Find(message.Id);
             var categories = this.persistence.QueryOver<ArticleCategory>()
@@ -66,10 +66,11 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
                     .OrderBy(x => x.Name).Asc
                         .List();
 
-            return new UpdateRolesCategoriesPermissions
+            return new UpdateRoleCategoryPermissions
             {
                 Id = message.Id,
-                Categories = this.Merge(categories, role.ArticleCategories)
+                Categories = this.Merge(categories, role.ArticleCategories),
+                DeviceCategories = this.Merge(categories, role.DeviceArticleCategories)
             };
         }
 

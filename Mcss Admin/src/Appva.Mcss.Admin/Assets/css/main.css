@@ -1705,6 +1705,8 @@ a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
     padding:0;
 }
 
+#ac-roles-table tbody tr:hover { background:#ebf0f2; }
+
 /* Prepared weeks */
 #prepare-weeks {
 	border:1px solid #bbc9d5;

@@ -127,9 +127,18 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// The article categories the role can access.
+        /// The article categories the role can access from admin.
         /// </summary>
         public virtual IList<ArticleCategory> ArticleCategories
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The article categories the role can access from a device.
+        /// </summary>
+        public virtual IList<ArticleCategory> DeviceArticleCategories
         {
             get;
             set;

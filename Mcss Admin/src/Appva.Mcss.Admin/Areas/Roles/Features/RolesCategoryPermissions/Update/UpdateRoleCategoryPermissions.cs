@@ -1,4 +1,4 @@
-﻿// <copyright file="UpdateRolesCategoriesPermissions.cs" company="Appva AB">
+﻿// <copyright file="UpdateRoleCategoryPermissions.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -13,8 +13,6 @@ namespace Appva.Mcss.Admin.Areas.Roles.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mvc;
 
     #endregion
@@ -22,19 +20,32 @@ namespace Appva.Mcss.Admin.Areas.Roles.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class UpdateRolesCategoriesPermissions : IRequest<bool>
+    public sealed class UpdateRoleCategoryPermissions : IRequest<bool>
     {
         #region Properties.
 
-        [Required]
+        /// <summary>
+        /// The role <see cref="Guid"/>.
+        /// </summary>
         public Guid Id
         {
             get;
             set;
         }
 
-        [Required(ErrorMessage = "Kategorilistan får ej vara tom.")]
+        /// <summary>
+        /// A list of categories the role can view in admin.
+        /// </summary>
         public IList<Tickable> Categories
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A list of categories the role can view in a device.
+        /// </summary>
+        public IList<Tickable> DeviceCategories
         {
             get;
             set;

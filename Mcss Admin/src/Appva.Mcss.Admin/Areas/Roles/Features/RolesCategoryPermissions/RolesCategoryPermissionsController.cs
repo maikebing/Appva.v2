@@ -1,4 +1,4 @@
-﻿// <copyright file="RolesCategoriesPermissionsController.cs" company="Appva AB">
+﻿// <copyright file="RolesCategoryPermissionsController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -22,12 +22,12 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [RouteArea("roles"), RoutePrefix("categories")]
-    public sealed class RolesCategoriesPermissionsController : Controller
+    [RouteArea("roles"), RoutePrefix("category")]
+    public sealed class RolesCategoryPermissionsController : Controller
     {
         #region Routes.
 
-        #region Update Role Schedules.
+        #region Update role article categories.
 
         /// <summary>
         /// Update article category permissions.
@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles
         [Route("update/{id:guid}")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Role.CreateValue)]
-        public ActionResult Update(Identity<UpdateRolesCategoriesPermissions> request)
+        public ActionResult Update(Identity<UpdateRoleCategoryPermissions> request)
         {
             return this.View();
         }
@@ -51,7 +51,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Roles")]
         [AlertSuccess("Behörighet för artikelkategorier har uppdaterats!")]
         [PermissionsAttribute(Permissions.Role.CreateValue)]
-        public ActionResult Update(UpdateRolesCategoriesPermissions request)
+        public ActionResult Update(UpdateRoleCategoryPermissions request)
         {
             return this.View();
         }

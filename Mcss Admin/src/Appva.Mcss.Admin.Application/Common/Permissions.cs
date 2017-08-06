@@ -1602,7 +1602,7 @@ namespace Appva.Mcss.Admin.Application.Common
                 /// Permission to set the article as refilled.
                 /// </summary>
                 [Sort(10000)]
-                [Name("Refill an atricle from mobile device")]
+                [Name("Refill an article from mobile device")]
                 [Description("Permission to set an article to refilled from a mobile device")]
                 public static readonly IPermission SetRefilled = PermissionType.CreateNew(SetRefilledValue);
             }

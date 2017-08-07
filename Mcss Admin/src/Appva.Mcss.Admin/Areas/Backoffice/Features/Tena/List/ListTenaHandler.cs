@@ -9,8 +9,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports.
 
+    using System;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Persistence;
@@ -58,12 +58,55 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         public override ListTenaModel Handle(Parameterless<ListTenaModel> message)
         {
             var tenaSettings = this.settingsService.Find(ApplicationSettings.TenaSettings);
-            this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(null, null, true));
 
             return new ListTenaModel
             {
+                ClientId = tenaSettings.ClientId,
+                ClientSecret = tenaSettings.ClientSecret,
+                ClientIdMask = Mask("RREQ5944-9IRW-1033-O482-44U321F19M31"),
+                ClientSecretMask = Mask(tenaSettings.ClientSecret),
                 IsInstalled = tenaSettings.IsInstalled
             };
+        }
+
+        #endregion
+
+        #region Private methods.
+
+        /// <inheritdoc />
+        private string Mask(string text)
+        {
+            var mask = string.Empty;
+
+            if (string.IsNullOrEmpty(text))
+            {
+                return null;
+            }
+
+            var foundDash = false;
+
+            for (int i = text.Length - 1; i > 0; i--)
+            {
+                if(text[i] == '-')
+                {
+                    mask += '-';
+                    foundDash = true;
+                }
+
+                if(foundDash && text[i] != '-')
+                {
+                    mask += "X";
+                }
+                else if(foundDash == false && text[i] != '-')
+                {
+                    mask += text[i];
+                }
+            }
+
+            var array = mask.ToCharArray();
+            Array.Reverse(array);
+
+            return new string(array);
         }
 
         #endregion

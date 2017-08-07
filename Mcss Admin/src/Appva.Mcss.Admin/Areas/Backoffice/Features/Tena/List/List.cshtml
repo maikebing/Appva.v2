@@ -10,16 +10,35 @@
     <div id="content-primary">
         <div id="signlist" class="articlecategory">
             <h4 class="list-header">Inställningar</h4>
+            @if (Model.IsInstalled)
+            {
+                <a href="@Url.Action("Update", "Tena")" class="lb-link section-list-btn" style="padding-right:16px!important">Spara</a>
+            }
             <div style="clear:both"></div>
             @if (Model.IsInstalled)
             {
-                <a href="@Url.Action("Update", "Tena")" class="lb-link section-list-btn">Spara</a>
                 <table id="signed-events">
                     <thead class="head">
-                        <tr></tr>
+                        <tr>
+                            <th>ClientId</th>
+                            <th>ClientSecret</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr></tr>
+                        <tr>
+                            <td class="display-code">@(string.IsNullOrEmpty(Model.ClientIdMask) ? "Saknas" : Model.ClientIdMask)</td>
+                            <td class="display-code">@(string.IsNullOrEmpty(Model.ClientSecretMask) ? "Saknas" : Model.ClientSecretMask)</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label style="display:block;font-weight:bold" for="clientIdInput">Ange nytt ClientId</label>
+                                <input type="password" id="clientIdInput" />
+                            </td>
+                            <td>
+                                <label style="display:block;font-weight:bold" for="clientSecretInput">Ange nytt ClientSecret</label>
+                                <input type="password" id="clientSecretInput" />
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             }

@@ -21,8 +21,8 @@ mcss.lightbox = {
             }
         });
 
-        var panel = $('<div class="lb-wrap' + addClass + '" />');
-        var blackout = $('<div class="lb-blackout" />').hide();
+        var panel = $('<div class="oldstyle lb-wrap' + addClass + '" />');
+        var blackout = $('<div class="oldstyle lb-blackout" />').hide();
         content.addClass('lb-panel').show().prepend($('<a class="btn-close" href="#">Stäng</a>').click(function (e) {
             mcss.lightbox.closeAll();
             e.preventDefault();

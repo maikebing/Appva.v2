@@ -338,6 +338,7 @@
     <property name="FirstName" />
     <property name="LastName" />
     <property name="FullName" />
+    <property name="TenaId" />
     <component name="PersonalIdentityNumber">
       <property name="Value" column="UniqueIdentifier" unique="true" access="nosetter.camelcase" />
     </component>

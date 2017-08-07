@@ -462,6 +462,9 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\List\ListTenaHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\List\ListTenaModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\TenaController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
@@ -1081,7 +1084,6 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Backoffice\Features\Tena\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
     <Folder Include="Areas\Patient\Features\Tena\Create\" />
     <Folder Include="Areas\Patient\Features\Tena\Delete\" />
@@ -1420,6 +1422,7 @@
     <Content Include="Areas\Patient\Features\Tena\_ViewStart.cshtml" />
     <Content Include="Features\Shared\_NewStyleLayout.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Tena\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\Activate\Activate.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />

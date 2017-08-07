@@ -1,0 +1,32 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListTenaModel
+@{
+    SetTitle("Backoffice - Tena Identifi");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Tena Identifi</h1>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        <div id="signlist" class="articlecategory">
+            <h4 class="list-header">Inställningar</h4>
+            <div style="clear:both"></div>
+            @if (Model.IsInstalled)
+            {
+                <a href="@Url.Action("Update", "Tena")" class="lb-link section-list-btn">Spara</a>
+                <table id="signed-events">
+                    <thead class="head">
+                        <tr></tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Tena Identify har inte installerats. Klicka <a href="#">här</a> för att installera funktionen.</p>
+            }
+        </div>
+    </div>
+</div>

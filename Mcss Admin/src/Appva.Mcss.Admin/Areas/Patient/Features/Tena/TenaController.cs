@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("{id: guid}/activate")]
+        [Route("{id:guid}/activate")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Patient.UpdateValue)]
         public ActionResult Activate(Identity<UpdatePatient> request)
@@ -80,7 +80,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("{id: guid}/activate")]
+        [Route("{id:guid}/activate")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         [PermissionsAttribute(Permissions.Patient.UpdateValue)]
         public ActionResult Activate(UpdatePatient request)

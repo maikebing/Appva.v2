@@ -168,6 +168,7 @@
     <Compile Include="VO\SecurityMailerConfiguration.cs" />
     <Compile Include="VO\SecurityPasswordConfiguration.cs" />
     <Compile Include="VO\SecurityTokenConfiguration.cs" />
+    <Compile Include="VO\TenaConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\Entities.hbm.xml" />

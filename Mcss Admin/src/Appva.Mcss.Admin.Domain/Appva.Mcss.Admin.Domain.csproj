@@ -118,6 +118,9 @@
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Person.cs" />
+    <Compile Include="Entities\TenaObservervation.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\PatientModel.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="Repositories\PatientRepository.cs" />
     <Compile Include="Repositories\SequenceRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
+    <Compile Include="Repositories\TenaRepository.cs" />
     <Compile Include="VO\AuditLoggingConfiguration.cs" />
     <Compile Include="VO\HsaId.cs" />
     <Compile Include="VO\PdfLookAndFeel.cs" />
@@ -170,7 +174,9 @@
     <Compile Include="VO\SecurityTokenConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\Entities.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Entities.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

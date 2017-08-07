@@ -622,6 +622,10 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Activate\TenaActivateHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\List\ListTena.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\List\ListTenaHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\List\ListTenaModel.cs" />
     <Compile Include="Areas\Patient\Features\Tena\TenaController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
@@ -1416,6 +1420,7 @@
     <Content Include="Areas\Patient\Features\Tena\_ViewStart.cshtml" />
     <Content Include="Features\Shared\_NewStyleLayout.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Activate\Activate.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

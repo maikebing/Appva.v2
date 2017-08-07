@@ -2,13 +2,8 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
-
-
-
-
 namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 {
     #region Imports;
@@ -53,7 +48,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         [Route("list")]        
         [HttpGet, Dispatch]
-        [PermissionsAttribute(Permissions.Patient.ReadValue)]
+        [PermissionsAttribute(Permissions.Tena.ReadValue)]
         public ActionResult List()
         {
             return this.View();
@@ -67,9 +62,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("{id: guid}/activate")]
+        [Route("{id:guid}/activate")]
         [HttpGet, Hydrate, Dispatch]
-        [PermissionsAttribute(Permissions.Patient.UpdateValue)]
+        [PermissionsAttribute(Permissions.Tena.ActivateValue)]
         public ActionResult Activate(Identity<UpdatePatient> request)
         {
             return this.View();
@@ -80,9 +75,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("{id: guid}/activate")]
+        [Route("{id:guid}/activate")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
-        [PermissionsAttribute(Permissions.Patient.UpdateValue)]
+        [PermissionsAttribute(Permissions.Tena.ActivateValue)]
         public ActionResult Activate(UpdatePatient request)
         {
             return this.Redirect(this.Request.UrlReferrer.ToString());

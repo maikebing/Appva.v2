@@ -365,6 +365,10 @@
       <key column="Patient" />
       <one-to-many class="Task" />
     </bag>
+    <bag name="TenaObservations" cascade="save-update" table="TenaObservation">
+      <key column="PatientId" />
+      <one-to-many class="TenaObservation" />
+    </bag>
     <property name="Identifier" />
   </class>
 
@@ -633,5 +637,20 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
-
+  
+  <!-- TenaObserver -->
+  <class name="TenaObservation">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="TenaId" />
+    <property name="Value" />
+    <property name="CreatedBy" />
+    <property name="TimeSpanStart" />
+    <property name="TimeSpanEnd" />
+  </class>
 </hibernate-mapping>

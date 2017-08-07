@@ -249,6 +249,7 @@
     <Compile Include="Services\TaxonFilterSessionHandler.cs" />
     <Compile Include="Services\TaxonomyService.cs" />
     <Compile Include="Services\TenantService.cs" />
+    <Compile Include="Services\TenaService.cs" />
     <Compile Include="Transformers\DelegationTransformer.cs" />
     <Compile Include="Transformers\EventTransformer.cs" />
   </ItemGroup>

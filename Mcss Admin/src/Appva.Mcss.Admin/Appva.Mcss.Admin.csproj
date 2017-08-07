@@ -622,6 +622,7 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\TenaController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
@@ -1078,6 +1079,10 @@
   <ItemGroup>
     <Folder Include="Areas\Backoffice\Features\Tena\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
+    <Folder Include="Areas\Patient\Features\Tena\Create\" />
+    <Folder Include="Areas\Patient\Features\Tena\Delete\" />
+    <Folder Include="Areas\Patient\Features\Tena\Update\" />
+    <Folder Include="Areas\Patient\Views\Tena\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -1409,7 +1414,8 @@
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRole.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\_ViewStart.cshtml" />
-    <Content Include="Areas\Patient\Features\Shared\_NewStyleLayout.cshtml" />
+    <Content Include="Features\Shared\_NewStyleLayout.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\List\List.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

@@ -116,7 +116,7 @@ namespace Appva.Mcss.Admin.Application.Common
                          MenuItem.CreateNew("Rapport", "ScheduleReport", "Schedule", "Patient", null, null, Permissions.Schedule.Report, null),
                          MenuItem.CreateNew("Kalender", "List", "Calendar", "Patient", null, null, Permissions.Calendar.Read, null),
                          MenuItem.CreateNew("Saldon", "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null),
-                         MenuItem.CreateNew("Tena", "List", "Tena", "Tena", null, null, Permissions.Patient.Read, null) // temp Tena patient
+                         MenuItem.CreateNew("Tena Identifi", "List", "Tena", "Tena", null, null, Permissions.Patient.Read, null) // temp Tena patient
                     };
                 }
                 return this.patient;

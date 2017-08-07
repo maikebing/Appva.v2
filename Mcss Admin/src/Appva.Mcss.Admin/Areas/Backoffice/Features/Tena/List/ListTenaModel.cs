@@ -9,14 +9,52 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
+    using Appva.Cqrs;
+
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListTenaModel
+    public sealed class ListTenaModel : IRequest<bool>
     {
         #region Properties.
+
+        /// <summary>
+        /// The client id.
+        /// </summary>
+        public string ClientId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The client secret.
+        /// </summary>
+        public string ClientSecret
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The masked client id.
+        /// </summary>
+        public string ClientIdMask
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The masked client secret.
+        /// </summary>
+        public string ClientSecretMask
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// If the Tena function has been installed.

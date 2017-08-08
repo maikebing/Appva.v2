@@ -47,11 +47,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public override ListTenaModel Handle(ListTena message)
         {
-            return new ListTenaModel
-            {
-                Id = this.patientService.Get(message.Id).Id,
-                TenaId = this.patientService.Get(message.Id).TenaId
-            };
+            var patientId = this.patientService.Get(message.Id).Id;
+            var tenaId = this.patientService.Get(message.Id).TenaId;
+            var tenaViewModel = new ListTenaModel();
+
+            if (string.IsNullOrEmpty(tenaId)) {
+                // activate TenaModel
+            }
+            else {
+                // serve Data List
+            }
+            return tenaViewModel;           
         }
 
         #endregion

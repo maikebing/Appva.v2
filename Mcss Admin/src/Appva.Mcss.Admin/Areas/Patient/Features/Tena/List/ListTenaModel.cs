@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Models
     using System.Web;
     using Appva.Cqrs;
     using Appva.Mcss.Web.ViewModels;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -25,14 +26,7 @@ namespace Appva.Mcss.Admin.Models
 
     public class ListTenaModel
     {
-        /// <summary>
-        /// Tena Id
-        /// </summary>
-        public string TenaId
-        {
-            get;
-            set;
-        }
+        //Patient
 
         /// <summary>
         /// Patient Id
@@ -42,5 +36,30 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+
+        /// <summary>
+        /// [TenaObservationPeriod]
+        /// Tena Id
+        /// StartDate
+        /// EndDate
+        /// List<TenaObservation>
+        /// </summary>
+        public string TenaId
+        {
+            get;
+            set;
+        }
+
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public IList<TenaObservation> TenaObservationList { get; set; }
+
+        /// <summary>
+        /// [TenaObservation]
+        /// TenaObservationId
+        /// Created
+        /// Value
+        /// CreatedBy
+        /// </summary>
     }
 }

@@ -52,7 +52,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #endregion
 
         #region ITenarepository members
+        public IList<TenaObservationPeriod> FindTenaObservationPeriods(string tenaId)
+        {
+            // fetch a list of TenaObservationPeriods and return to caller
+            return new List<TenaObservationPeriod> {
 
+            };
+        }
         #endregion
     }
 }

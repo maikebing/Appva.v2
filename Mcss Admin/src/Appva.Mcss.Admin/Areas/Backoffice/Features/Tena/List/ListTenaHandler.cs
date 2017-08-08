@@ -58,6 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         public override ListTenaModel Handle(Parameterless<ListTenaModel> message)
         {
             var tenaSettings = this.settingsService.Find(ApplicationSettings.TenaSettings);
+            this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(null, null, true));
 
             return new ListTenaModel
             {

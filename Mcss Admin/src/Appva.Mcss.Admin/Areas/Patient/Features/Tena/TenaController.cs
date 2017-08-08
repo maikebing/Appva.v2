@@ -76,7 +76,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// <param name="request"></param>
         /// <returns></returns>
         [Route("{id:guid}/activate")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "tena")]
         [PermissionsAttribute(Permissions.Tena.ActivateValue)]
         public ActionResult Activate(UpdatePatient request)
         {

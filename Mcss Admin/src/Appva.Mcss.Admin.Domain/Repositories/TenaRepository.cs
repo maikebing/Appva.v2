@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     public interface ITenaRepository :  
         IRepository
     {
-
+        IList<TenaObservationPeriod> FindTenaObservationPeriods(string tenaid);
     }
 
     /// <summary>
@@ -54,10 +54,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region ITenarepository members
         public IList<TenaObservationPeriod> FindTenaObservationPeriods(string tenaId)
         {
-            // fetch a list of TenaObservationPeriods and return to caller
-            return new List<TenaObservationPeriod> {
-
-            };
+            var tenaObservationPeriods = this.context.QueryOver<TenaObservationPeriod>()
+                .Where(i => i.TenaId == tenaId)
+                .List();
+            return tenaObservationPeriods;
         }
         #endregion
     }

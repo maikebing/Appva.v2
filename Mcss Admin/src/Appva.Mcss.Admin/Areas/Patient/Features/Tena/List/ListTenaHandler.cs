@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables
 
         private IPatientService patientService;
+        private ITenaService tenaService;
 
         #endregion
 
@@ -36,9 +37,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="message"></param>
         /// <returns></returns>
 
-        public ListTenaHandler(IPatientService patientService)
+        public ListTenaHandler(IPatientService patientService, ITenaService tenaService)
         {
             this.patientService = patientService;
+            this.tenaService = tenaService;
         }
 
         #endregion
@@ -56,6 +58,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             else {
                 // serve Data List
+                var tenaObservationList = tenaService.GetTenaObservationPeriods(tenaId);
             }
             return tenaViewModel;           
         }

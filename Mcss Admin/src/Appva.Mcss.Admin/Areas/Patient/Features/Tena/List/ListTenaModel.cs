@@ -50,9 +50,9 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
         public IList<TenaObservation> TenaObservationList { get; set; }
+        public IList<TenaObservationPeriod> TenaObservationPeriodsList { get; set; }
+
 
         /// <summary>
         /// [TenaObservation]

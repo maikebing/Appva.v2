@@ -14,7 +14,9 @@ namespace Appva.Mcss.Admin.Application.Services
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using System.Collections.Generic;
+    using System;
 
     #endregion
 
@@ -23,23 +25,14 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface ITenaService : IService
     {
-        /// <summary>
-        /// Get the client id.
-        /// </summary>
-        /// <returns></returns>
-        string GetClientId();
+
 
         /// <summary>
-        /// Get the client secret.
+        /// Get TenaObservationPeriods List based on tenaId
         /// </summary>
+        /// <param name="tenaId"></param>
         /// <returns></returns>
-        string GetClientSecret();
-
-        /// <summary>
-        /// If TENA Identify is installed.
-        /// </summary>
-        /// <returns></returns>
-        bool IsInstalled();
+        IList<TenaObservationPeriod> GetTenaObservationPeriods(string tenaId);
     }
 
     /// <summary>
@@ -54,11 +47,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly ITenaRepository repository;
 
-        /// <summary>
-        /// The <see cref="ISettingsService"/>.
-        /// </summary>
-        private readonly ISettingsService settingsService;
-
         #endregion
 
         #region Constructor.
@@ -68,33 +56,19 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        public TenaService(ITenaRepository repository, ISettingsService settingsService)
+        public TenaService(ITenaRepository repository)
         {
             this.repository = repository;
-            this.settingsService = settingsService;
-        }
+         }
 
         #endregion
 
         #region ITenaService members.
 
-        /// <inheritdoc />
-        public string GetClientId()
+        public IList<TenaObservationPeriod> GetTenaObservationPeriods(string tenaId)
         {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings).ClientId;
+            return this.repository.FindTenaObservationPeriods(tenaId);
         }
-
-        /// <inheritdoc />
-        public string GetClientSecret()
-        {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings).ClientSecret;
-        }
-
-        public bool IsInstalled()
-        {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings).IsInstalled;
-        }
-        
         #endregion
     }
 }

@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports
     using Appva.Common.Domain;
     using System;
+    using System.Collections.Generic;
     #endregion
 
     /// <summary>
@@ -57,6 +58,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        public virtual IList<TenaObservation> TenaObservations { get; set; }
         #endregion
     }
 }

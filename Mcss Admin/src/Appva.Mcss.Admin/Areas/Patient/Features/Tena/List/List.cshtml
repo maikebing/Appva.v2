@@ -1,6 +1,20 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
-@model Appva.Mcss.Web.ViewModels.PatientViewModel
+@model Appva.Mcss.Admin.Models.ListTenaModel
 @{
     SetTitle("TENA Identifi");
 }
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.patientViewModel)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.patientViewModel)
 
+@if(Model.patient.TenaId.IsNull())
+{
+    @Html.Partial("~/Areas/Patient/Features/Tena/List/Partials/_ActivateTenaIdPartial.cshtml", Model)
+}
+else if (Model.patient.TenaObservationPeriods.IsNull())
+{
+    @Html.Partial("~/Areas/Patient/Features/Tena/List/Partials/_CreateFirstTenaPeriodPartial.cshtml", Model)
+}
+else
+{
+    @Html.Partial("~/Areas/Patient/Features/Tena/List/Partials/_ListTenaValuesPartial.cshtml", Model)
+}

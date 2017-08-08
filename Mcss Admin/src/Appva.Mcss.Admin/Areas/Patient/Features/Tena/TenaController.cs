@@ -33,7 +33,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
 
-    [RouteArea("tena")]
+    //[RouteArea("tena")]
+    [RouteArea("patient"), RoutePrefix("{id:guid}/tena")]
     public sealed class TenaController : Controller
     {
         #region Routes
@@ -46,10 +47,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// <returns></returns>
         // GET: Patient/Tena
 
-        [Route("list")]        
+        [Route("list")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ReadValue)]
-        public ActionResult List()
+        public ActionResult List(ListTena request)
         {
             return this.View();
         }
@@ -62,7 +63,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("{id:guid}/activate")]
+        [Route("activate")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ActivateValue)]
         public ActionResult Activate(Identity<UpdatePatient> request)
@@ -75,7 +76,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("{id:guid}/activate")]
+        [Route("activate")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "tena")]
         [PermissionsAttribute(Permissions.Tena.ActivateValue)]
         public ActionResult Activate(UpdatePatient request)

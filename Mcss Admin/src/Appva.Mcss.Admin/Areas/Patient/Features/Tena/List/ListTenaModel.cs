@@ -29,37 +29,9 @@ namespace Appva.Mcss.Admin.Models
         //Patient
 
         /// <summary>
-        /// Patient Id
+        /// Patient
         /// </summary>
-        public Guid Id
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// [TenaObservationPeriod]
-        /// Tena Id
-        /// StartDate
-        /// EndDate
-        /// List<TenaObservation>
-        /// </summary>
-        public string TenaId
-        {
-            get;
-            set;
-        }
-
-        public IList<TenaObservation> TenaObservationList { get; set; }
-        public IList<TenaObservationPeriod> TenaObservationPeriodsList { get; set; }
-
-
-        /// <summary>
-        /// [TenaObservation]
-        /// TenaObservationId
-        /// Created
-        /// Value
-        /// CreatedBy
-        /// </summary>
+        public PatientViewModel patientViewModel { get; set; }
+        public Patient patient { get; set; }
     }
 }

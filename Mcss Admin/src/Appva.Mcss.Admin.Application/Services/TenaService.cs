@@ -55,7 +55,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="TenaService"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
-        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
         public TenaService(ITenaRepository repository)
         {
             this.repository = repository;

@@ -57,7 +57,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
-
+        /// <summary>
+        /// TenaObservations
+        /// </summary>
         public virtual IList<TenaObservation> TenaObservations { get; set; }
         #endregion
     }

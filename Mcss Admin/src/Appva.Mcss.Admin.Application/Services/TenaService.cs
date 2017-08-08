@@ -34,6 +34,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <returns></returns>
         string GetClientSecret();
+
+        /// <summary>
+        /// If TENA Identify is installed.
+        /// </summary>
+        /// <returns></returns>
+        bool IsInstalled();
     }
 
     /// <summary>
@@ -82,6 +88,11 @@ namespace Appva.Mcss.Admin.Application.Services
         public string GetClientSecret()
         {
             return this.settingsService.Find(ApplicationSettings.TenaSettings).ClientSecret;
+        }
+
+        public bool IsInstalled()
+        {
+            return this.settingsService.Find(ApplicationSettings.TenaSettings).IsInstalled;
         }
         
         #endregion

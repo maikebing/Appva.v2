@@ -42,6 +42,40 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Signature
 
         #endregion
 
+        #region Update.
+
+        /// <summary>
+        /// Handles the update request.
+        /// </summary>
+        /// <param name="request">The <see cref="ListTenaModel"/>.</param>
+        /// <returns></returns>
+        [Route("update")]
+        [HttpPost, Dispatch("list", "tena")]
+        [PermissionsAttribute(Permissions.Backoffice.ReadValue)]
+        public ActionResult Update(ListTenaModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
+        #region Install.
+
+        /// <summary>
+        /// Handles the install request.
+        /// </summary>
+        /// <param name="request">The <see cref="InstallTena"/>.</param>
+        /// <returns></returns>
+        [Route("install")]
+        [HttpGet, Dispatch("list", "tena")]
+        [PermissionsAttribute(Permissions.Backoffice.ReadValue)]
+        public ActionResult Install(InstallTena request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
         #endregion
     }
 }

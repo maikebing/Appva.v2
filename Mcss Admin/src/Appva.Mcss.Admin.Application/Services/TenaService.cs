@@ -23,23 +23,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface ITenaService : IService
     {
-        /// <summary>
-        /// Get the client id.
-        /// </summary>
-        /// <returns></returns>
-        string GetClientId();
 
-        /// <summary>
-        /// Get the client secret.
-        /// </summary>
-        /// <returns></returns>
-        string GetClientSecret();
-
-        /// <summary>
-        /// If TENA Identify is installed.
-        /// </summary>
-        /// <returns></returns>
-        bool IsInstalled();
     }
 
     /// <summary>
@@ -54,11 +38,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly ITenaRepository repository;
 
-        /// <summary>
-        /// The <see cref="ISettingsService"/>.
-        /// </summary>
-        private readonly ISettingsService settingsService;
-
         #endregion
 
         #region Constructor.
@@ -67,33 +46,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="TenaService"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
-        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        public TenaService(ITenaRepository repository, ISettingsService settingsService)
+        public TenaService(ITenaRepository repository)
         {
             this.repository = repository;
-            this.settingsService = settingsService;
         }
 
         #endregion
 
         #region ITenaService members.
-
-        /// <inheritdoc />
-        public string GetClientId()
-        {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings).ClientId;
-        }
-
-        /// <inheritdoc />
-        public string GetClientSecret()
-        {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings).ClientSecret;
-        }
-
-        public bool IsInstalled()
-        {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings).IsInstalled;
-        }
         
         #endregion
     }

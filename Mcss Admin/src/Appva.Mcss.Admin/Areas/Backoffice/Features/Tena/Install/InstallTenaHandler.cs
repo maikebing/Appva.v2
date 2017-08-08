@@ -9,7 +9,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -20,6 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using NHibernate.Criterion;
 
     #endregion
 
@@ -62,6 +62,26 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(InstallTena message)
         {
+            var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
+            var permissions = this.persistence.QueryOver<Permission>()
+                .WhereRestrictionOn(x => x.Resource)
+                    .IsLike("tena", MatchMode.Anywhere)
+                        .List();
+
+            if(permissions.Count > 0)
+            {
+                return false;
+            }
+
+            Install();
+
+            settings.IsInstalled = true;
+            this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(
+                settings.ClientId, 
+                settings.ClientSecret, 
+                settings.IsInstalled
+            ));
+
             return true;
         }
 
@@ -72,13 +92,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         private bool Install()
         {
-            /*
             var permissions = new Dictionary<IPermission, Permission>();
+            var hasFoundPermission = false;
 
             foreach (var type in typeof(Permissions).GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
             {
                 if (type.UnderlyingSystemType.Name == "Tena")
                 {
+                    hasFoundPermission = true;
+
                     foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
                     {
                         if (field.FieldType != typeof(IPermission))
@@ -97,6 +119,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                         var permission = (IPermission)field.GetValue(null);
                         permissions.Add(permission, new Permission(name, description, permission.Value, sort, isVisible));
                     }
+
+                    if(hasFoundPermission)
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -104,7 +131,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             {
                 this.persistence.Save(permission.Value);
             }
-            */
+
             return true;
         }
 

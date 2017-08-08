@@ -61,9 +61,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
             return new ListTenaModel
             {
-                ClientId = tenaSettings.ClientId,
-                ClientSecret = tenaSettings.ClientSecret,
-                ClientIdMask = Mask("RREQ5944-9IRW-1033-O482-44U321F19M31"),
+                ClientIdMask = Mask(tenaSettings.ClientId),
                 ClientSecretMask = Mask(tenaSettings.ClientSecret),
                 IsInstalled = tenaSettings.IsInstalled
             };
@@ -85,7 +83,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
             var foundDash = false;
 
-            for (int i = text.Length - 1; i > 0; i--)
+            for (int i = text.Length - 1; i >= 0; i--)
             {
                 if(text[i] == '-')
                 {

@@ -9,14 +9,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Models;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class InstallTena : IRequest<bool>
+    public sealed class InstallTena : Identity<bool>
     {
     }
 }

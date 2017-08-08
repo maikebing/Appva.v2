@@ -462,9 +462,12 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\Install\InstallTena.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\Install\InstallTenaHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Tena\List\ListTenaHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Tena\List\ListTenaModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Tena\TenaController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\Update\UpdateTenaHandler.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />

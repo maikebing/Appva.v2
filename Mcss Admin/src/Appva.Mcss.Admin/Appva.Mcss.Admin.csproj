@@ -1091,7 +1091,6 @@
     <Folder Include="Areas\Patient\Features\Tena\Create\" />
     <Folder Include="Areas\Patient\Features\Tena\Delete\" />
     <Folder Include="Areas\Patient\Features\Tena\Update\" />
-    <Folder Include="Areas\Patient\Views\Tena\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -1427,6 +1426,9 @@
     <Content Include="Areas\Patient\Features\Tena\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Tena\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\Activate\Activate.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\List\Partials\_ActivateTenaIdPartial.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\List\Partials\_CreateFirstTenaPeriod.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\List\Partials\_ListTenaValuesPartial.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

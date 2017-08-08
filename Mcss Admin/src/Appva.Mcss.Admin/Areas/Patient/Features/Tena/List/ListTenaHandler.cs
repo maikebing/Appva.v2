@@ -25,8 +25,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Variables
 
         private IPatientService patientService;
-        private ITenaService tenaService;
-
+        private IPatientTransformer patientTransformer;
+        
         #endregion
 
         #region Constructor
@@ -37,10 +37,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="message"></param>
         /// <returns></returns>
 
-        public ListTenaHandler(IPatientService patientService, ITenaService tenaService)
+        public ListTenaHandler(IPatientService patientService, IPatientTransformer patientTransformer)
         {
             this.patientService = patientService;
-            this.tenaService = tenaService;
+            this.patientTransformer = patientTransformer;
         }
 
         #endregion
@@ -48,19 +48,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         public override ListTenaModel Handle(ListTena message)
-        {
-            var patientId = this.patientService.Get(message.Id).Id;
-            var tenaId = this.patientService.Get(message.Id).TenaId;
-            var tenaViewModel = new ListTenaModel();
-
-            if (string.IsNullOrEmpty(tenaId)) {
-                // activate TenaModel
-            }
-            else {
-                // serve Data List
-                var tenaObservationList = tenaService.GetTenaObservationPeriods(tenaId);
-            }
-            return tenaViewModel;           
+        {            
+            return new ListTenaModel
+            {
+                patientViewModel = this.patientTransformer.ToPatient(this.patientService.Get(message.Id)),
+                patient = this.patientService.Get(message.Id)
+            };
         }
 
         #endregion

@@ -4,31 +4,36 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
+// <author>
+//     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
+// </author>
 
 
 namespace Appva.Mcss.Admin.Application.Services
 {
-    #region Imports
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Appva.Core.Extensions;
-    using Appva.Mcss.Admin.Application.Auditing;
-    using Appva.Mcss.Admin.Application.Models;
-    using Appva.Mcss.Admin.Domain.Models;
+    #region Imports.
+
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Repository;
-    using Appva.Tenant.Identity;
-    using Microsoft.Owin;
-    using Appva.Persistence;
+    using Appva.Mcss.Admin.Application.Services.Settings;
+
     #endregion
 
+    /// <summary>
+    /// The <see cref="ITenaService"/>.
+    /// </summary>
     public interface ITenaService : IService
     {
+        /// <summary>
+        /// Get the client id.
+        /// </summary>
+        /// <returns></returns>
+        string GetClientId();
 
+        /// <summary>
+        /// Get the client secret.
+        /// </summary>
+        /// <returns></returns>
+        string GetClientSecret();
     }
 
     /// <summary>
@@ -39,25 +44,45 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ITenaRepository"/>
+        /// The <see cref="ITenaRepository"/>.
         /// </summary>
         private readonly ITenaRepository repository;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
         #endregion
 
-        #region Constructor
+        #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TenaService"/> class.
         /// </summary>
-        public TenaService(ITenaRepository repository)
+        /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
+        public TenaService(ITenaRepository repository, ISettingsService settingsService)
         {
             this.repository = repository;
+            this.settingsService = settingsService;
         }
 
         #endregion
 
-        #region ITenaService members
+        #region ITenaService members.
+
+        /// <inheritdoc />
+        public string GetClientId()
+        {
+            return this.settingsService.Find(ApplicationSettings.TenaSettings).ClientId;
+        }
+
+        /// <inheritdoc />
+        public string GetClientSecret()
+        {
+            return this.settingsService.Find(ApplicationSettings.TenaSettings).ClientSecret;
+        }
         
         #endregion
     }

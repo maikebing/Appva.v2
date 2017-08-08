@@ -365,9 +365,9 @@
       <key column="Patient" />
       <one-to-many class="Task" />
     </bag>
-    <bag name="TenaObservations" cascade="save-update" table="TenaObservation">
-      <key column="PatientId" />
-      <one-to-many class="TenaObservation" />
+    <bag name="TenaObservationPeriods" cascade="save-update" table="TenaObservationPeriod">
+      <key column="TenaId" />
+      <one-to-many class="TenaObservationPeriod" />
     </bag>
     <property name="Identifier" />
   </class>
@@ -638,7 +638,7 @@
     <many-to-one name="Schedule" class="Schedule" />
   </class>
   
-  <!-- TenaObserver -->
+  <!-- TenaObservervation -->
   <class name="TenaObservation">
     <id name="Id">
       <generator class="guid.comb" />
@@ -647,10 +647,25 @@
     <property name="IsActive" column="Active" />
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
-    <property name="TenaId" />
+    <property name="TenaObservationPeriodId" />
     <property name="Value" />
     <property name="CreatedBy" />
-    <property name="TimeSpanStart" />
-    <property name="TimeSpanEnd" />
+  </class>
+
+  <!-- TenaObservationPeriod-->
+  <class name="TenaObservationPeriod">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="TenaId" />
+    <property name="StartDate" />
+    <property name="EndDate" />
+    <bag name="TenaObservations" cascade="save-update" table="TenaObservation">
+      <key column="TenaObservationPeriodId" />
+      <one-to-many class="TenaObservation" />
+    </bag>
   </class>
 </hibernate-mapping>

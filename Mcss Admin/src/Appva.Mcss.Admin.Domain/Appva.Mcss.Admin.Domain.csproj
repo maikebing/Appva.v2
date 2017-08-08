@@ -118,6 +118,7 @@
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Person.cs" />
+    <Compile Include="Entities\TenaObservationPeriod.cs" />
     <Compile Include="Entities\TenaObservervation.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>

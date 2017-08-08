@@ -1,4 +1,4 @@
-﻿// <copyright file="TenaObservervation.cs" company="Appva AB">
+﻿// <copyright file="TenaObservervationPeriod.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,57 +8,57 @@
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports
-
     using Appva.Common.Domain;
     using System;
-
+    using System.Collections.Generic;
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class TenaObservation : AggregateRoot<TenaObservation>
+    public class TenaObservationPeriod : AggregateRoot<TenaObservationPeriod>
     {
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TenaObservation"/> class.
+        /// Initializes a new instance of the <see cref="TenaObservationPeriod"/> class.
         /// </summary>
-        public TenaObservation()
+        public TenaObservationPeriod()
         {
         }
-        
+
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// TenaId
+        /// TenaId, Connection to TenaId in Patient
         /// </summary>
-        public virtual Guid TenaObservationPeriodId
+        public virtual string TenaId
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Measured value
+        /// Date at start of period
         /// </summary>
-        public virtual string Value
+        public virtual DateTime StartDate
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Registered by
+        /// Date at end of period
         /// </summary>
-        public virtual string CreatedBy
+        public virtual DateTime EndDate
         {
             get;
             set;
         }
 
+        public virtual IList<TenaObservation> TenaObservations { get; set; }
         #endregion
     }
 }

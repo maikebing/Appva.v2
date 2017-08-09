@@ -1,31 +1,20 @@
-﻿// <copyright file="PatientController.cs" company="Appva AB">
+﻿// <copyright file="TenaController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
+
 namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 {
-    #region Imports;
+    #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
-    using System.Web.UI;
-    using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
-    using Appva.Mcss.Admin.Infrastructure.Controllers;
-    using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mvc;
     using Appva.Mvc.Security;
-    using Appva.Mcss.Admin.Areas.Patient.Models;
 
     #endregion
 
@@ -37,16 +26,14 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     [RouteArea("patient"), RoutePrefix("{id:guid}/tena")]
     public sealed class TenaController : Controller
     {
-        #region Routes
+        #region Routes.
 
-        #region List Tena
+        #region List Tena.
 
         /// <summary>
-        /// 
+        /// Displays the observations list or the activation view.
         /// </summary>
         /// <returns></returns>
-        // GET: Patient/Tena
-
         [Route("list")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ReadValue)]
@@ -56,7 +43,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         }
         #endregion
 
-        #region Activate Tena
+        #region Activate Tena.
 
         /// <summary>
         /// Handles the activation request.
@@ -66,14 +53,13 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         [Route("activate")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ActivateValue)]
-        public ActionResult Activate(ActivateTena request)
+        public DispatchJsonResult Activate(ActivateTena request)
         {
-            return this.View();
+            return this.JsonGet();
         }
 
         #endregion
 
         #endregion
     }
-
 }

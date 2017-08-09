@@ -1,35 +1,31 @@
-﻿
+﻿// <copyright file="ActivateTenaHandler.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+// </author>
+// <author>
+//     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
+// </author>
 
 namespace Appva.Mcss.Admin.Models.Handlers
 {
-    #region imports
+    #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Models;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Appva.Mcss.Web.ViewModels;
-    using System.Web.Mvc;
-    using Appva.Mcss.Admin.Application.Services.Settings;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Newtonsoft.Json;
-    using System.Net;
-    using Newtonsoft.Json.Linq;
+    using System.Net.Http.Headers;
 
     #endregion
 
     /// <summary>
-    /// 
+    /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-
-    internal sealed class ActivateTenaHandler : RequestHandler<ActivateTena, JsonResult>
+    internal sealed class ActivateTenaHandler : RequestHandler<ActivateTena, HttpResponseMessage>
     {
-        #region Variables
+        #region Fields.
 
         /// <summary>
         /// The <see cref="IPatientService"/>.
@@ -43,7 +39,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region Constructor
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivateTenaHandler"/> class.
@@ -58,26 +54,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region RequestHandler Overrides.
+        #region RequestHandler overrides.
 
-        public override JsonResult Handle(ActivateTena message)
+        /// <inheritdoc />
+        public override HttpResponseMessage Handle(ActivateTena message)
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.tenaService.GetCredentials());
-                HttpResponseMessage response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri())).Result;
-                var token = string.Empty;
-
-                if (response.Headers.Contains("Token"))
-                {
-                    token = response.Headers.GetValues("Token").First();
-                }
-
-                return null;
+                var response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + "xAo5ZK0x")).Result;
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
             }
         }
 
         #endregion
-
     }
 }

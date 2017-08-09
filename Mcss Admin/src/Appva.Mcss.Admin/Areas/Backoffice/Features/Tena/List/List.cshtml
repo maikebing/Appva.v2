@@ -24,9 +24,12 @@
                         </thead>
                         <tbody>
                             <tr>
+                                <td class="display-code">@(string.IsNullOrEmpty(Model.RequestUri) ? "Saknas" : Model.RequestUri)</td>
+                            </tr>
+                            <tr>
                                 <td>
-                                    @Html.LabelFor(x => x.RequestUri, "Ange endpoint-URL", new { style = "display:block;padding-bottom:5px;font-weight:bold" })
-                                    @Html.TextBoxFor(x => x.RequestUri, new { style = "padding:4px;width:100%;box-sizing:border-box" })
+                                    @Html.LabelFor(x => x.RequestUri, "Ändra URL", new { style = "display:block;padding-bottom:5px;font-weight:bold" })
+                                    @Html.TextBoxFor(x => x.RequestUri, new { Value = "", style = "padding:4px;width:100%;box-sizing:border-box" })
                                 </td>
                             </tr>
                         </tbody>

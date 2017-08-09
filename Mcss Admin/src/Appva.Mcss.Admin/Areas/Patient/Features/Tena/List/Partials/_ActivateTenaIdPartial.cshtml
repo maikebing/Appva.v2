@@ -10,7 +10,7 @@
                 $.ajax({
                     type: 'GET', url: '@Url.Action("activate", "tena")',
                     success: function (result) {
-                        $('#test456').html(result);
+                        console.log(result);
                     }
                 });
             });

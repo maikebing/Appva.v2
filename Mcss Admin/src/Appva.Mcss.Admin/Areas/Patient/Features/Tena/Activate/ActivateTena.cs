@@ -1,4 +1,4 @@
-﻿// <copyright file="ListTena.cs" company="Appva AB">
+﻿// <copyright file="ActivateTena.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -7,23 +7,24 @@
 
 namespace Appva.Mcss.Admin.Models
 {
-    #region imports
+    #region Imports.
 
-    using Appva.Cqrs;
-    using System.Threading.Tasks;
-    using System.Web.Mvc;
+    using System.Net.Http;
 
     #endregion
 
     /// <summary>
     /// TODO: 
     /// </summary>
-
-    public sealed class ActivateTena : Identity<JsonResult>
+    public sealed class ActivateTena : Identity<HttpResponseMessage>
     {
         /// <summary>
         /// The external tena id.
         /// </summary>
-        public string ExternalId { get; set; }
+        public string ExternalId
+        {
+            get;
+            set;
+        }
     }
 }

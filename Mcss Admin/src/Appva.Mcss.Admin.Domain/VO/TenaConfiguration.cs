@@ -33,6 +33,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         {
             this.ClientId = clientId;
             this.ClientSecret = clientSecret;
+            this.RequestUri = requestUri;
             this.IsInstalled = isInstalled;
         }
 

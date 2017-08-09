@@ -33,5 +33,6 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         public PatientViewModel patientViewModel { get; set; }
         public Patient patient { get; set; }
+        public string ExternalId { get; set; }
     }
 }

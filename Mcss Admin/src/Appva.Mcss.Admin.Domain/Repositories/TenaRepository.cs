@@ -28,7 +28,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class TenaRepository : IRepository
+    public sealed class TenaRepository : ITenaRepository
     {
         #region Variables
 

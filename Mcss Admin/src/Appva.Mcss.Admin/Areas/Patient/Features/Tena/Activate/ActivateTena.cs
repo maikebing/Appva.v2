@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Models
     #region imports
 
     using Appva.Cqrs;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
 
     #endregion
@@ -18,7 +19,7 @@ namespace Appva.Mcss.Admin.Models
     /// TODO: 
     /// </summary>
 
-    public sealed class ActivateTena : Identity<JsonResult>
+    public sealed class ActivateTena : Identity<Task<JsonResult>>
     {
         /// <summary>
         /// The external tena id.

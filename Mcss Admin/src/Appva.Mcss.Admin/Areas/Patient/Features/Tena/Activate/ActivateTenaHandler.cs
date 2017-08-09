@@ -15,6 +15,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Web.ViewModels;
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using Newtonsoft.Json;
+    using System.Net;
+    using Newtonsoft.Json.Linq;
 
     #endregion
 
@@ -22,7 +27,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// 
     /// </summary>
 
-    internal sealed class ActivateTenaHandler : RequestHandler<ActivateTena, JsonResult>
+    internal sealed class ActivateTenaHandler : RequestHandler<ActivateTena, Task<JsonResult>>
     {
         #region Variables
 
@@ -62,12 +67,33 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler Overrides.
 
-        public override JsonResult Handle(ActivateTena message)
+        public async override Task<JsonResult> Handle(ActivateTena message)
         {
             var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
             var credentials = this.tenaService.Base64Encode(settings.ClientId, settings.ClientSecret);
 
-            // Skicka till TENA API.
+            using (var client = new HttpClient())
+            {
+                var url = "https://tenaidentifistage.sca.com/api/resident/" + message.ExternalId;
+                //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", credentials);
+                //client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "key=\"" + credentials + "\"");
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", string.Format("Basic {0}", credentials));
+                var result = await client.GetAsync(url);
+                var data = result.Content.ReadAsStringAsync();
+
+                var token = data.Id.ToString();
+
+                var requestData = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(url),
+                };
+
+                requestData.Headers.TryAddWithoutValidation("Authorization", String.Format("Bearer {0}", token));
+
+                var results = await client.SendAsync(requestData);
+                var test = await results.Content.ReadAsStringAsync();
+            }
 
             return null;
         }

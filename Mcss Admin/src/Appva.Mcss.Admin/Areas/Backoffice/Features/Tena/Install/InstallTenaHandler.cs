@@ -68,14 +68,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                     .IsLike("tena", MatchMode.Anywhere)
                         .List();
 
-            if(permissions.Count > 0)
+            if(permissions.Count == 0)
             {
-                return false;
+                Install();
             }
 
-            Install();
-
             settings.IsInstalled = true;
+
             this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(
                 settings.ClientId, 
                 settings.ClientSecret, 

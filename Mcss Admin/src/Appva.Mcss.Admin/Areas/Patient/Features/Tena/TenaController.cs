@@ -59,29 +59,16 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         #region Activate Tena
 
         /// <summary>
-        /// Returns the Activate Tena Identifi form
+        /// Handles the activation request.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">The <see cref="ActivateTena"/>.</param>
+        /// <returns>A <see cref="JsonResult"/>.</returns>
         [Route("activate")]
-        [HttpGet, Hydrate, Dispatch]
+        [HttpPost, Dispatch("list", "tena")]
         [PermissionsAttribute(Permissions.Tena.ActivateValue)]
-        public ActionResult Activate(Identity<UpdatePatient> request)
+        public DispatchJsonResult Activate(ActivateTena request)
         {
-            return this.View();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Route("activate")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "tena")]
-        [PermissionsAttribute(Permissions.Tena.ActivateValue)]
-        public ActionResult Activate(UpdatePatient request)
-        {
-            return this.Redirect(this.Request.UrlReferrer.ToString());
+            return this.JsonPost();
         }
 
         #endregion

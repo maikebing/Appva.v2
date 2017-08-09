@@ -13,10 +13,8 @@ namespace Appva.Mcss.Admin.Application.Services
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using System.Collections.Generic;
     using System;
+    using Appva.Mcss.Admin.Domain.Repositories;
 
     #endregion
 
@@ -25,7 +23,13 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface ITenaService : IService
     {
-
+        /// <summary>
+        /// Encode credentials to base64.
+        /// </summary>
+        /// <param name="id">The client id.</param>
+        /// <param name="secret">The client secret.</param>
+        /// <returns></returns>
+        string Base64Encode(string clientId, string clientSecret);
     }
 
     /// <summary>
@@ -56,6 +60,13 @@ namespace Appva.Mcss.Admin.Application.Services
         #endregion
 
         #region ITenaService members.
+
+        /// <inheritdoc />
+        public string Base64Encode(string clientId, string clientSecret)
+        {
+            var credentials = System.Text.Encoding.UTF8.GetBytes(clientId + ":" + clientSecret);
+            return Convert.ToBase64String(credentials);
+        }
         
         #endregion
     }

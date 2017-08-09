@@ -628,7 +628,8 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
-    <Compile Include="Areas\Patient\Features\Tena\Activate\TenaActivateHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTena.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTenaHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTena.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTenaHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTenaModel.cs" />
@@ -1425,7 +1426,6 @@
     <Content Include="Features\Shared\_NewStyleLayout.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Tena\List\List.cshtml" />
-    <Content Include="Areas\Patient\Features\Tena\Activate\Activate.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_ActivateTenaIdPartial.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_CreateFirstTenaPeriod.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_ListTenaValuesPartial.cshtml" />

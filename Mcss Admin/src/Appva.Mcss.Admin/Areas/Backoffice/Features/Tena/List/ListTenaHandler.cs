@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListTenaHandler"/> class.
@@ -52,13 +52,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #endregion
 
-        #region RequestHandlers Overrides.
+        #region RequestHandlers overrides.
 
         /// <inheritdoc />
         public override ListTenaModel Handle(Parameterless<ListTenaModel> message)
         {
             var tenaSettings = this.settingsService.Find(ApplicationSettings.TenaSettings);
-            this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(null, null, true));
 
             return new ListTenaModel
             {

@@ -50,16 +50,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #endregion
 
-        #region RequestHandlers Overrides.
+        #region RequestHandlers overrides.
 
         /// <inheritdoc />
         public override bool Handle(ListTenaModel message)
         {
-            this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(
-                message.ClientId,
-                message.ClientSecret,
-                true
-            ));
+            var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
+            var clientId = string.IsNullOrEmpty(message.ClientId) ? settings.ClientId : message.ClientId;
+            var clientSecret = string.IsNullOrEmpty(message.ClientSecret) ? settings.ClientSecret : message.ClientSecret;
+
+            this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(clientId, clientSecret, settings.IsInstalled));
 
             return true;
         }

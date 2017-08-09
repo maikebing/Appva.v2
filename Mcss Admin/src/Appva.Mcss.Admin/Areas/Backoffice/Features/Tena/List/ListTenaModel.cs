@@ -57,6 +57,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
+        /// The request URI.
+        /// </summary>
+        public string RequestUri
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// If the Tena function has been installed.
         /// </summary>
         public bool IsInstalled

@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -24,12 +25,16 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface ITenaService : IService
     {
         /// <summary>
-        /// Encode credentials to base64.
+        /// Get credentials.
         /// </summary>
-        /// <param name="id">The client id.</param>
-        /// <param name="secret">The client secret.</param>
-        /// <returns></returns>
-        string Base64Encode(string clientId, string clientSecret);
+        /// <returns>The credentials.</returns>
+        string GetCredentials();
+
+        /// <summary>
+        /// Get the request URI.
+        /// </summary>
+        /// <returns>The request URI.</returns>
+        string GetRequestUri();
     }
 
     /// <summary>
@@ -44,6 +49,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly ITenaRepository repository;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
         #endregion
 
         #region Constructor.
@@ -52,9 +62,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="TenaService"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
-        public TenaService(ITenaRepository repository)
+        public TenaService(ITenaRepository repository, ISettingsService settingsService)
         {
             this.repository = repository;
+            this.settingsService = settingsService;
         }
 
         #endregion
@@ -62,10 +73,17 @@ namespace Appva.Mcss.Admin.Application.Services
         #region ITenaService members.
 
         /// <inheritdoc />
-        public string Base64Encode(string clientId, string clientSecret)
+        public string GetCredentials()
         {
-            var credentials = System.Text.Encoding.UTF8.GetBytes(clientId + ":" + clientSecret);
+            var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
+            var credentials = System.Text.Encoding.UTF8.GetBytes(settings.ClientId + ":" + settings.ClientSecret);
             return Convert.ToBase64String(credentials);
+        }
+
+        /// <inheritdoc />
+        public string GetRequestUri()
+        {
+            return this.settingsService.Find(ApplicationSettings.TenaSettings).RequestUri;
         }
         
         #endregion

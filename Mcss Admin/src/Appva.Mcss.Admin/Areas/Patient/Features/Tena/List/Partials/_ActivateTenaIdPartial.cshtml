@@ -3,7 +3,19 @@
 @{
     Layout = null;
 }
-
+<script>
+        $(document).ready(function () {
+            $('.test123').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'GET', url: '@Url.Action("activate", "tena")',
+                    success: function (result) {
+                        $('#test456').html(result);
+                    }
+                });
+            });
+        });
+</script>
 <div>
     <p>Patient: @Model.patient.FirstName (@Model.patient.Id)
     </p>
@@ -22,14 +34,9 @@
                     </svg>
                     <a href="#" class="read-more-link">Var du hittar TENA Identifi ID</a>
                 </p>
-
+                <div id="test456"></div>
                 <div class="form-controls inliner inliner--align-center">
-
-                    @using (Html.BeginForm("activate", "tena"))
-                    {
-                        @Html.TextBoxFor(x => x.ExternalId)
-                        @Html.Submit("KLICKA HÄR!!!")
-                    }
+                    @Html.ActionLink("ÖÖÖÖÖÖÖÖ", "activate", "tena", null, new { @class = "test123" })
                     <label for="id591c30b17c96d">Identifi ID <span class="required-indicator">*</span>&nbsp;</label>
                     <input id="id591c30b17c96d"
                            name="id591c30b17c96d"

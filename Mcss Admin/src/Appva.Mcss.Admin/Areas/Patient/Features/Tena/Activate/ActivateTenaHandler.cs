@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// 
     /// </summary>
 
-    internal sealed class ActivateTenaHandler : RequestHandler<ActivateTena, Task<JsonResult>>
+    internal sealed class ActivateTenaHandler : RequestHandler<ActivateTena, JsonResult>
     {
         #region Variables
 
@@ -35,11 +35,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
-
-        /// <summary>
-        /// The <see cref="ISettingsService"/>.
-        /// </summary>
-        private readonly ISettingsService settingsService;
 
         /// <summary>
         /// The <see cref="ITenaService"/>.
@@ -54,12 +49,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="ActivateTenaHandler"/> class.
         /// </summary>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
-        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
         /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
-        public ActivateTenaHandler(IPatientService patientService, ISettingsService settingsService, ITenaService tenaService)
+        public ActivateTenaHandler(IPatientService patientService, ITenaService tenaService)
         {
             this.patientService = patientService;
-            this.settingsService = settingsService;
             this.tenaService = tenaService;
         }
 
@@ -67,35 +60,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler Overrides.
 
-        public async override Task<JsonResult> Handle(ActivateTena message)
+        public override JsonResult Handle(ActivateTena message)
         {
-            var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
-            var credentials = this.tenaService.Base64Encode(settings.ClientId, settings.ClientSecret);
-
             using (var client = new HttpClient())
             {
-                var url = "https://tenaidentifistage.sca.com/api/resident/" + message.ExternalId;
-                //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", credentials);
-                //client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "key=\"" + credentials + "\"");
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", string.Format("Basic {0}", credentials));
-                var result = await client.GetAsync(url);
-                var data = result.Content.ReadAsStringAsync();
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.tenaService.GetCredentials());
+                HttpResponseMessage response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri())).Result;
+                var token = string.Empty;
 
-                var token = data.Id.ToString();
-
-                var requestData = new HttpRequestMessage
+                if (response.Headers.Contains("Token"))
                 {
-                    Method = HttpMethod.Get,
-                    RequestUri = new Uri(url),
-                };
+                    token = response.Headers.GetValues("Token").First();
+                }
 
-                requestData.Headers.TryAddWithoutValidation("Authorization", String.Format("Bearer {0}", token));
-
-                var results = await client.SendAsync(requestData);
-                var test = await results.Content.ReadAsStringAsync();
+                return null;
             }
-
-            return null;
         }
 
         #endregion

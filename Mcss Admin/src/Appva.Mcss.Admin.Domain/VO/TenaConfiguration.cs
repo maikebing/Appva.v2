@@ -26,9 +26,10 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="clientId">The client id.</param>
         /// <param name="clientSecret">The client secret.</param>
+        /// <param name="requestUri">The request URI.</param>
         /// <param name="isInstalled">If the Tena permissions has been installed.</param>
         [JsonConstructor]
-        private TenaConfiguration(string clientId, string clientSecret, bool isInstalled)
+        private TenaConfiguration(string clientId, string clientSecret, string requestUri, bool isInstalled)
         {
             this.ClientId = clientId;
             this.ClientSecret = clientSecret;
@@ -60,6 +61,16 @@ namespace Appva.Mcss.Admin.Domain.VO
         }
 
         /// <summary>
+        /// The request URI.
+        /// </summary>
+        [JsonProperty]
+        public string RequestUri
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// If the Tena permissions has been installed.
         /// </summary>
         [JsonProperty]
@@ -78,11 +89,12 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="clientId">The client id.</param>
         /// <param name="clientSecret">The client secret.</param>
+        /// <param name="requestUri">The request URI.</param>
         /// <param name="isInstalled">If the Tena permissions has been installed.</param>
         /// <returns>A new <see cref="TenaConfiguration"/> instance.</returns>
-        public static TenaConfiguration CreateNew(string clientId = null, string clientSecret = null, bool isInstalled = false)
+        public static TenaConfiguration CreateNew(string clientId = null, string clientSecret = null, string requestUri = null, bool isInstalled = false)
         {
-            return new TenaConfiguration(clientId, clientSecret, isInstalled);
+            return new TenaConfiguration(clientId, clientSecret, requestUri, isInstalled);
         }
 
         #endregion
@@ -94,6 +106,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         {
             return this.ClientId.GetHashCode() +
                    this.ClientSecret.GetHashCode() +
+                   this.RequestUri.GetHashCode() +
                    this.IsInstalled.GetHashCode();
         }
 
@@ -103,6 +116,7 @@ namespace Appva.Mcss.Admin.Domain.VO
             return other != null
                 && this.ClientId.Equals(other.ClientId)
                 && this.ClientSecret.Equals(other.ClientSecret)
+                && this.RequestUri.Equals(other.RequestUri)
                 && this.IsInstalled.Equals(other.IsInstalled);
         }
 

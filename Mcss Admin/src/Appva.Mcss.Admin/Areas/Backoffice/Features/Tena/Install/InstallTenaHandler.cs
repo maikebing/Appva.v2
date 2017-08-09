@@ -42,7 +42,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallTenaHandler"/> class.
@@ -57,7 +57,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
         #endregion
 
-        #region RequestHandlers Overrides.
+        #region RequestHandlers overrides.
 
         /// <inheritdoc />
         public override bool Handle(InstallTena message)
@@ -77,7 +77,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
             this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(
                 settings.ClientId, 
-                settings.ClientSecret, 
+                settings.ClientSecret,
+                settings.RequestUri,
                 settings.IsInstalled
             ));
 

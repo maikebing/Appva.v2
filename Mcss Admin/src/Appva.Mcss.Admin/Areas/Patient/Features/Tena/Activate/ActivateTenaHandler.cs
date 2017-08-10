@@ -62,9 +62,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.tenaService.GetCredentials());
-                var response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + message.ExternalId)).Result;
-                var content = response.Content.ReadAsStringAsync().Result;
-                return content;
+                var response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + "xAo5ZK0x")).Result;
+                return response.Content.ReadAsStringAsync().Result;
             }
         }
 

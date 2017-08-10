@@ -1,4 +1,4 @@
-﻿// <copyright file="ActivateTenaHandler.cs" company="Appva AB">
+﻿// <copyright file="FindTenaIdHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -19,13 +19,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Net.Http.Headers;
     using System;
     using Newtonsoft.Json;
+    using System.Net;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ActivateTenaHandler : RequestHandler<ActivateTena, string>
+    internal sealed class FindTenaIdHandler : RequestHandler<FindTenaId, string>
     {
         #region Fields.
 
@@ -44,11 +45,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ActivateTenaHandler"/> class.
+        /// Initializes a new instance of the <see cref="FindTenaIdHandler"/> class.
         /// </summary>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
-        public ActivateTenaHandler(IPatientService patientService, ITenaService tenaService)
+        public FindTenaIdHandler(IPatientService patientService, ITenaService tenaService)
         {
             this.patientService = patientService;
             this.tenaService = tenaService;
@@ -59,16 +60,33 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override string Handle(ActivateTena message)
+        public override string Handle(FindTenaId message)
         {
             using (var client = new HttpClient())
             {
-                HttpResponseMessage response = new HttpResponseMessage();
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.tenaService.GetCredentials());
                 var response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + message.ExternalId)).Result;
                 var content = response.StatusCode.ToString() == "OK" ? response.Content.ReadAsStringAsync().Result : string.Empty;
-                string[] dataList = new string[2] { content, response.StatusCode.ToString() };
-                return JsonConvert.SerializeObject(dataList);
+                var status = string.Empty;
+
+                if(response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    status = "Inga boende kunde hittas med angivet Identifi ID.";
+                }
+                else if(response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    status = "Tjänsten har inte konfigurerats, kontakta Appvas support (kod: " + (int)HttpStatusCode.Unauthorized + ").";
+                }
+                else if(response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    status = "Ett fel har inträffat, försök igen om en stund. Om felet kvarstår, kontakta Appvas support (kod: " + (int)HttpStatusCode.InternalServerError + ").";
+                }
+                else
+                {
+                    status = "";
+                }
+
+                return JsonConvert.SerializeObject(new { Content = content, StatusMessage = status, StatusCode = (int)response.StatusCode });
             }
         }
 

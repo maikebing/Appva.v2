@@ -3,97 +3,50 @@
     Layout = null;
 }
 <script>
-
-
     $(document).ready(function () {
         $("#ExternalId").on("input", function () {
-            $('.button--secondary').prop('disabled', false);
             if (this.value.length == 8) {
-                var externalId = this.value;
                 $.ajax({
-                    url: '@Url.Action("activate","tena")',
+                    url: '@Url.Action("find","tena")',
                     type: 'GET',
-                    data: { 'ExternalId': externalId },
+                    data: { 'ExternalId': this.value },
                     success: function (result) {
                         var message = JSON.parse(result);
-                        if (message[1] == "OK") {
-                            $(".tena-response-facility").html(JSON.parse(message[0]).facilityName);
-                            $(".tena-response-room").html(JSON.parse(message[0]).roomNumber);
-                            $("#target>div").show();
-                            $(".button--secondary").prop("disabled", false).click(function (e) {
+                        if (message.StatusCode == 200) {
+                            resetError();
+                            $('.tena-response-facility').html(JSON.parse(message.Content).facilityName);
+                            $('.tena-response-room').html(JSON.parse(message.Content).roomNumber);
+                            $('#tena-response').show();
+                            $('.button--primary').prop('disabled', false);
+                            $('.button--secondary').prop('disabled', false).click(function (e) {
                                 e.preventDefault();
-                                $("#ExternalId").val("");
+                                $('#ExternalId').val('');
+                                reset();
                             });
-                            $(".button--primary").prop("disabled", false);
-
-                        } else if (message[1] == "NotFound") {
-                            onsole.log("Användaren existerar inte. Felkod: 404.");
-                        } else if (message[1] == "Unauthorized") {
-                            console.log("Tjänsten är ej korrekt installerad. Felkod: 401.");
+                            $('.button--primary').prop('disabled', false);
                         } else {
-                            console.log("Något gick fel. Om felet kvarstår kontakta support. Felkod: 500.");
+                            $('.tena-error-message').html(message.StatusMessage);
+                            $('#tena-error').show();
                         }
                     }
                 });
-
             } else {
-                $(".button--primary").prop("disabled", true);
-                $(".button--secondary").prop("disabled", true);
+                reset();
+                resetError();
             }
         });
+        function reset() {
+            $('.button--primary').prop('disabled', true);
+            $('.button--secondary').prop('disabled', true);
+            $('#tena-response').css('display', 'none');
+            $('.tena-response-facility').html('');
+            $('.tena-response-room').html('');
+        }
+        function resetError() {
+            $('#tena-error').css('display', 'none');
+            $('.tena-error-message').html('');
+        }
     });
-
-    function log(data) {
-        console.log(data);
-    }
-
-
-
-    @*$(document).ready(function () {
-        $("#ExternalId").on("input", function () {
-            if (this.value.length == 8) {
-                var externalId = this.value;
-                $.ajax({
-                    url: '@Url.Action("activate", "tena")',
-                    type: 'GET',
-                    data: { "ExternalId": externalId },
-                    success: function (result) {
-                        var message = JSON.parse(result);
-                        console.log(message);
-
-                        if (message[1] == "OK") {
-                            console.log("OK");
-                            $(".tena-response-facility").html(JSON.parse(message[0]).facilityName);
-                            $(".tena-response-room").html(JSON.parse(message[0]).roomNumber);
-                            $("#target>div").show();
-
-                            $(".button--secondary").prop("disabled", false).click(function (e) {
-                                e.preventDefault();
-                                $("#ExternalId").val("");
-                                console.log($("#ExternalId").val());
-                            }
-                                }
-
-
-
-    //                        $(".button--primary").prop("disabled", false).click(function (e) {
-    //                            console.log(JSON.parse(message[0]).externalId);
-    //                        });
-    //                    } else if (message[1] == "NotFound") {
-    //                        console.log("Användaren existerar inte. Felkod: 404.");
-    //                    } else if (message[1] == "Unauthorized") {
-    //                        console.log("Tjänsten är ej korrekt installerad. Felkod: 401.");
-    //                    } else {
-    //                        console.log("Något gick fel. Om felet kvarstår kontakta support. Felkod: 500.");
-    //                    }
-    //            });
-    //        } else {
-    //            $(".button--primary").prop("disabled", true);
-    //            $(".button--secondary").prop("disabled", true);
-    //        }
-    //    });
-    //});*@
-
 </script>
 <div class="main" id="main" role="main">
     <div class="section section--hspace section--vspace section--lightblue">
@@ -116,6 +69,9 @@
                     @Html.TextBoxFor(x => x.ExternalId, new { size = "8", required = "required" })
                 </div>
                 <div id="target">
+                    <div id="tena-error" class="section section--narrow section--blue section--bubble section--hspace section--vspace inliner" style="display:none;">
+                        <p class="tena-error-message"></p>
+                    </div>
                     <div id="tena-response" class="section section--narrow section--blue section--bubble section--hspace section--vspace inliner" style="display:none;padding-bottom:20px;">
                         <dl style="text-align:left; width:100px; margin-right:30px;">
                             <dt>Plats:</dt>
@@ -127,8 +83,8 @@
                         </dl>
                     </div>
                     <div class="form-controls form-controls--align-end">
-                        <button class="activate-undo button button--secondary" disabled>Ångra</button>
-                        <button class="activate-tena button button--primary" disabled>Aktivera</button>
+                        <button class="button button--secondary" type="reset" disabled>Ångra</button>
+                        <button class="button button--primary" type="submit" disabled>Aktivera</button>
                     </div>
                 </div>
             </div>

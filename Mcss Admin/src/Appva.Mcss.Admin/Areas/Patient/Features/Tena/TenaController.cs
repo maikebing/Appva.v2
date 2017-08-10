@@ -4,6 +4,9 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
+// <author>
+//     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
+// </author>
 
 namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 {
@@ -21,8 +24,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-
-    //[RouteArea("tena")]
     [RouteArea("patient"), RoutePrefix("{id:guid}/tena")]
     public sealed class TenaController : Controller
     {
@@ -41,21 +42,39 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         {
             return this.View();
         }
+
         #endregion
 
-        #region Activate Tena.
+        #region Find.
 
         /// <summary>
-        /// Handles the activation request.
+        /// Search for a patient by the external id.
         /// </summary>
-        /// <param name="request">The <see cref="ActivateTena"/>.</param>
+        /// <param name="request">The <see cref="FindTenaId"/>.</param>
         /// <returns>A <see cref="JsonResult"/>.</returns>
-        [Route("activate")]
+        [Route("find")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ActivateValue)]
-        public DispatchJsonResult Activate(ActivateTena request)
+        public DispatchJsonResult Find(FindTenaId request)
         {
             return this.JsonGet();
+        }
+
+        #endregion
+
+        #region Activate.
+
+        /// <summary>
+        /// Activates TENA for a patient.
+        /// </summary>
+        /// <param name="request">The <see cref="ActivateTenaId"/>.</param>
+        /// <returns>A <see cref="ListTena"/>.</returns>
+        [Route("activate")]
+        [HttpPost, Dispatch("list", "tena")]
+        [PermissionsAttribute(Permissions.Tena.ActivateValue)]
+        public ActionResult Activate(ActivateTenaId request)
+        {
+            return this.View();
         }
 
         #endregion

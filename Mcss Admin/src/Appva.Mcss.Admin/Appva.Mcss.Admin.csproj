@@ -628,8 +628,10 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
-    <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTena.cs" />
-    <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTenaHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTenaId.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTenaIdHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Find\FindTenaId.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Find\FindTenaIdHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTena.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTenaHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTenaModel.cs" />

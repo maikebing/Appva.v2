@@ -1,8 +1,8 @@
-﻿// <copyright file="ActivateTena.cs" company="Appva AB">
+﻿// <copyright file="ActivateTenaId.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+//     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
 
 namespace Appva.Mcss.Admin.Models
@@ -12,9 +12,9 @@ namespace Appva.Mcss.Admin.Models
     #endregion
 
     /// <summary>
-    /// TODO: 
+    /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ActivateTena : Identity<string>
+    public sealed class ActivateTenaId : Identity<ListTena>
     {
         /// <summary>
         /// The external tena id.

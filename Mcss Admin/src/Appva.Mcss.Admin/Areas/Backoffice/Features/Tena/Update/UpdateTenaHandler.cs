@@ -58,7 +58,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
             var clientId = string.IsNullOrEmpty(message.ClientId) ? settings.ClientId : message.ClientId;
             var clientSecret = string.IsNullOrEmpty(message.ClientSecret) ? settings.ClientSecret : message.ClientSecret;
-            //var requestUri = string.IsNullOrEmpty(message.RequestUri) ? settings.RequestUri : message.RequestUri;
 
             this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(
                 clientId, 

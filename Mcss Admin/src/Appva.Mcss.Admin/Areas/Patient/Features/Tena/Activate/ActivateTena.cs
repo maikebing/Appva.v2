@@ -9,8 +9,6 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System.Net.Http;
-
     #endregion
 
     /// <summary>

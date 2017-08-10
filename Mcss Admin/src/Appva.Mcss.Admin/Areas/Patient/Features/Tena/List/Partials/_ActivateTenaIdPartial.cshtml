@@ -1,5 +1,4 @@
-﻿@using Appva.Mcss.Admin.Application.Common
-@model Appva.Mcss.Admin.Models.ListTenaModel
+﻿@model Appva.Mcss.Admin.Models.ListTenaModel
 @{
     Layout = null;
 }
@@ -8,6 +7,7 @@
 
     $(document).ready(function () {
         $("#ExternalId").on("input", function () {
+            $('.button--secondary').prop('disabled', false);
             if (this.value.length == 8) {
                 var externalId = this.value;
                 $.ajax({
@@ -116,7 +116,7 @@
                     @Html.TextBoxFor(x => x.ExternalId, new { size = "8", required = "required" })
                 </div>
                 <div id="target">
-                    <div class="section section--narrow section--blue section--bubble section--hspace section--vspace inliner" style="display:none;padding-bottom:20px;">
+                    <div id="tena-response" class="section section--narrow section--blue section--bubble section--hspace section--vspace inliner" style="display:none;padding-bottom:20px;">
                         <dl style="text-align:left; width:100px; margin-right:30px;">
                             <dt>Plats:</dt>
                             <dd class="tena-response-facility"></dd>

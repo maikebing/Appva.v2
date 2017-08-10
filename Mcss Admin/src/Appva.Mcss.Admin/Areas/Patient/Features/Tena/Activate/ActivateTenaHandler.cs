@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Net.Http.Headers;
-    using System.Linq;
+    using System;
     using Newtonsoft.Json;
 
     #endregion
@@ -65,27 +65,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 HttpResponseMessage response = new HttpResponseMessage();
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.tenaService.GetCredentials());
-                response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + message.ExternalId)).Result;
-                //string token = GetTokenValue(response);
-                string[] dataList = new string[2] { response.Content.ReadAsStringAsync().Result, response.StatusCode.ToString() };
+                var response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + message.ExternalId)).Result;
+                var content = response.StatusCode.ToString() == "OK" ? response.Content.ReadAsStringAsync().Result : string.Empty;
+                string[] dataList = new string[2] { content, response.StatusCode.ToString() };
                 return JsonConvert.SerializeObject(dataList);
             }
-        }
-
-        private string GetTokenValue(HttpResponseMessage message)
-        {
-            string token; 
-
-            if (message.Headers.Contains("Token"))
-            {
-                token = message.Headers.GetValues("Token").First();
-            }
-            else
-            {
-                token = null;
-            }
-
-            return token;
         }
 
         #endregion

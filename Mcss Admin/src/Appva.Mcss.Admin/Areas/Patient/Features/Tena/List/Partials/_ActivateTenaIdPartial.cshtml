@@ -5,15 +5,20 @@
 }
 <script>
     $(document).ready(function () {
+        $("#ExternalId").on("input", function () {
+            if (this.value.length == 8) {
+                $.ajax({
+                    type: 'POST', url: '@Url.Action("activate", "tena")',
+                    success: function (result) {
+                        $("#target>div").show();
+                        $(".tena-response-facility").html((JSON.parse(result)).facilityName);
+                        $(".tena-response-room").html((JSON.parse(result)).roomNumber);
+                    }
+                });
+            }
+        });
         $('.activate-tena').click(function (e) {
             e.preventDefault();
-            $.ajax({
-                type: 'POST', url: '@Url.Action("activate", "tena")',
-                success: function (result) {
-                    console.log(result);
-                }
-                        $("#target").append(result);
-            });
         });
     });
 </script>

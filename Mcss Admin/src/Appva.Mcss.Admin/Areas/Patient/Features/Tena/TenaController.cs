@@ -51,7 +51,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// <param name="request">The <see cref="ActivateTena"/>.</param>
         /// <returns>A <see cref="JsonResult"/>.</returns>
         [Route("activate")]
-        [HttpPost, Dispatch]
+        [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ActivateValue)]
         public DispatchJsonResult Activate(ActivateTena request)
         {

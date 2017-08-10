@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Threading.Tasks;
     using System.Net.Http.Headers;
     using System.Linq;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -62,12 +63,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             using (var client = new HttpClient())
             {
+                HttpResponseMessage response = new HttpResponseMessage();
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.tenaService.GetCredentials());
-                var response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + "xAo5ZK0x")).Result; //   // message.ExternalId
-                //response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + message.ExternalId)).Result;
                 //string token = GetTokenValue(response);
-
-                return response.Content.ReadAsStringAsync().Result;
+                string[] dataList = new string[2] { response.Content.ReadAsStringAsync().Result, response.StatusCode.ToString() };
+                return JsonConvert.SerializeObject(dataList);
             }
         }
 

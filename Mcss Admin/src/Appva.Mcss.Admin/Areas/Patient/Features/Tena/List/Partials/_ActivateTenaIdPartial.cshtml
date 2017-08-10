@@ -4,23 +4,96 @@
     Layout = null;
 }
 <script>
+
+
     $(document).ready(function () {
         $("#ExternalId").on("input", function () {
             if (this.value.length == 8) {
+                var externalId = this.value;
                 $.ajax({
-                    type: 'POST', url: '@Url.Action("activate", "tena")',
+                    url: '@Url.Action("activate","tena")',
+                    type: 'GET',
+                    data: { 'ExternalId': externalId },
                     success: function (result) {
-                        $("#target>div").show();
-                        $(".tena-response-facility").html((JSON.parse(result)).facilityName);
-                        $(".tena-response-room").html((JSON.parse(result)).roomNumber);
+                        var message = JSON.parse(result);
+                        if (message[1] == "OK") {
+                            $(".tena-response-facility").html(JSON.parse(message[0]).facilityName);
+                            $(".tena-response-room").html(JSON.parse(message[0]).roomNumber);
+                            $("#target>div").show();
+                            $(".button--secondary").prop("disabled", false).click(function (e) {
+                                e.preventDefault();
+                                $("#ExternalId").val("");
+                            });
+                            $(".button--primary").prop("disabled", false);
+
+                        } else if (message[1] == "NotFound") {
+                            onsole.log("Användaren existerar inte. Felkod: 404.");
+                        } else if (message[1] == "Unauthorized") {
+                            console.log("Tjänsten är ej korrekt installerad. Felkod: 401.");
+                        } else {
+                            console.log("Något gick fel. Om felet kvarstår kontakta support. Felkod: 500.");
+                        }
                     }
                 });
+
+            } else {
+                $(".button--primary").prop("disabled", true);
+                $(".button--secondary").prop("disabled", true);
             }
         });
-        $('.activate-tena').click(function (e) {
-            e.preventDefault();
-        });
     });
+
+    function log(data) {
+        console.log(data);
+    }
+
+
+
+    @*$(document).ready(function () {
+        $("#ExternalId").on("input", function () {
+            if (this.value.length == 8) {
+                var externalId = this.value;
+                $.ajax({
+                    url: '@Url.Action("activate", "tena")',
+                    type: 'GET',
+                    data: { "ExternalId": externalId },
+                    success: function (result) {
+                        var message = JSON.parse(result);
+                        console.log(message);
+
+                        if (message[1] == "OK") {
+                            console.log("OK");
+                            $(".tena-response-facility").html(JSON.parse(message[0]).facilityName);
+                            $(".tena-response-room").html(JSON.parse(message[0]).roomNumber);
+                            $("#target>div").show();
+
+                            $(".button--secondary").prop("disabled", false).click(function (e) {
+                                e.preventDefault();
+                                $("#ExternalId").val("");
+                                console.log($("#ExternalId").val());
+                            }
+                                }
+
+
+
+    //                        $(".button--primary").prop("disabled", false).click(function (e) {
+    //                            console.log(JSON.parse(message[0]).externalId);
+    //                        });
+    //                    } else if (message[1] == "NotFound") {
+    //                        console.log("Användaren existerar inte. Felkod: 404.");
+    //                    } else if (message[1] == "Unauthorized") {
+    //                        console.log("Tjänsten är ej korrekt installerad. Felkod: 401.");
+    //                    } else {
+    //                        console.log("Något gick fel. Om felet kvarstår kontakta support. Felkod: 500.");
+    //                    }
+    //            });
+    //        } else {
+    //            $(".button--primary").prop("disabled", true);
+    //            $(".button--secondary").prop("disabled", true);
+    //        }
+    //    });
+    //});*@
+
 </script>
 <div class="main" id="main" role="main">
     <div class="section section--hspace section--vspace section--lightblue">
@@ -55,7 +128,7 @@
                     </div>
                     <div class="form-controls form-controls--align-end">
                         <button class="activate-undo button button--secondary" disabled>Ångra</button>
-                        <button class="activate-tena button button--primary">Aktivera</button>
+                        <button class="activate-tena button button--primary" disabled>Aktivera</button>
                     </div>
                 </div>
             </div>

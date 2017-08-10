@@ -17,13 +17,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Net.Http.Headers;
+    using System.Linq;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ActivateTenaHandler : RequestHandler<ActivateTena, HttpResponseMessage>
+    internal sealed class ActivateTenaHandler : RequestHandler<ActivateTena, string>
     {
         #region Fields.
 
@@ -57,15 +58,33 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override HttpResponseMessage Handle(ActivateTena message)
+        public override string Handle(ActivateTena message)
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.tenaService.GetCredentials());
-                var response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + "xAo5ZK0x")).Result;
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                return response;
+                var response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + "xAo5ZK0x")).Result; //   // message.ExternalId
+                //response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                //string token = GetTokenValue(response);
+
+                return response.Content.ReadAsStringAsync().Result;
             }
+        }
+
+        private string GetTokenValue(HttpResponseMessage message)
+        {
+            string token; 
+
+            if (message.Headers.Contains("Token"))
+            {
+                token = message.Headers.GetValues("Token").First();
+            }
+            else
+            {
+                token = null;
+            }
+
+            return token;
         }
 
         #endregion

@@ -8,57 +8,49 @@
             $('.test123').click(function (e) {
                 e.preventDefault();
                 $.ajax({
-                    type: 'GET', url: '@Url.Action("activate", "tena")',
+                    type: 'POST', url: '@Url.Action("activate", "tena")',
                     success: function (result) {
+                        $("#target").append(result);
                         console.log(result);
                     }
                 });
             });
         });
 </script>
-<div>
-    <p>Patient: @Model.patient.FirstName (@Model.patient.Id)
-    </p>
-</div>
+<div class="main" id="main" role="main">
+    <div class="section section--hspace section--vspace section--lightblue">
+        <h2 style="text-align:center;">Börja använda TENA Identifi</h2>
+        <div class="section section--hspace section--vspace section--white width-limiter width-limiter--xs">
+            <!-- <form action="/pages/tena-identifi/patient-tena-measurements-list.html" data-update-section="/pages/tena-identifi/patient-tena-register-response.html#target" class="validate"> -->
+                @using (Html.BeginForm("activate", "tena", FormMethod.Post, new { @class="validate"}))
+                {
+                    <p>För att kunna använda TENA Identifi tillsammans med MCSS måste du först ange den boendes motsvarande ID i Identifi här.</p>
 
-<div class="section section--hspace section--vspace section--lightblue">
-    <h2 style="text-align:center;">Börja använda TENA Identifi</h2>
-    <div class="section section--hspace section--vspace section--white width-limiter width-limiter--xs">
-        <!--<form action="/pages/tena-identifi/patient-tena-measurements-list.html" data-update-section="/pages/tena-identifi/patient-tena-register-response.html#target" class="validate">-->
-            <p>För att kunna använda TENA Identifi tillsammans med MCSS måste du först ange den boendes motsvarande ID i Identifi här.</p>
+                    <div class="text-align--center">
+                        <p>
+                            <svg class="icon icon--round icon--info" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/Assets/images/icons/icon.sprite.svg#questionmark-icon"></use>
+                            </svg>
+                            <a href="#" class="read-more-link">Var du hittar TENA Identifi ID</a>
+                        </p>
 
-            <div class="text-align--center">
-                <p>
-                    <svg class="icon icon--round icon--info" aria-hidden="true">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/project/images/icons/icon.sprite.svg#questionmark-icon"></use>
-                    </svg>
-                    <a href="#" class="read-more-link">Var du hittar TENA Identifi ID</a>
-                </p>
-                <div id="test456"></div>
-                <div class="form-controls inliner inliner--align-center">
-                    @Html.ActionLink("ÖÖÖÖÖÖÖÖ", "activate", "tena", null, new { @class = "test123" })
-                    <label for="id591c30b17c96d">Identifi ID <span class="required-indicator">*</span>&nbsp;</label>
-                    <input id="id591c30b17c96d"
-                           name="id591c30b17c96d"
-                           required="required"
-                           data-rule-remote="/utilities/validation/_examples/validation-email-response-valid.json"
-                           data-rule-maxlength="8"
-                           data-rule-number="true"
-                           data-msg-maxlength="ID för långt, ska vara precis {0} tecken!"
-                           data-msg-minlength="ID för kort, ska vara precis {0} tecken!"
-                           data-post-single-input-length="8"
-                           data-update-section-target="target"
-                           size="8"
-                           placeholder="XXXXXXXX" />
-                </div>
-                <div id="target">
+                        <div class="form-controls inliner inliner--align-center">
+                            @Html.LabelFor(x => x.ExternalId, "Identifi ID")<span class="required-indicator">&nbsp;*&nbsp;</span>
+                            @Html.TextBoxFor(x => x.ExternalId, new { placeholder = "", size = "8" })
+                        </div>
 
-                    <div class="form-controls form-controls--align-end">
-                        <button class="button button--secondary" disabled>Ångra</button>
-                        <button class="button button--primary" type="submit" disabled>Aktivera</button>
+                        <div id="target">
+
+                            <div class="form-controls form-controls--align-end">
+                                <button class="button button--secondary" disabled>Ångra</button>
+                                <button class="button button--primary" type="submit">Aktivera</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                }
+
+            <!--</form> -->
+
+        </div>
     </div>
 </div>
-

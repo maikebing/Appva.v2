@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: 
     /// </summary>
-    public sealed class ActivateTena : Identity<HttpResponseMessage>
+    public sealed class ActivateTena : Identity<string>
     {
         /// <summary>
         /// The external tena id.

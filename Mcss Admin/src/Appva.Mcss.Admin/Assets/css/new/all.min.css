@@ -1523,7 +1523,11 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: -.1em
 }
 
-.icon--s {
+.text-align--center {
+    text-align: center;
+}
+
+reset.css:4 * .icon--s {
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg)
 }
@@ -1562,9 +1566,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .icon--info {
-    background-color: #36e;
-    background-image: radial-gradient(circle farthest-side at 50% 30%,#36e,#23a);
-    color: #fff
+    background-color: #dbe0ec;
+    background-color: var(--c-bluetone-sel);
+    background-image: radial-gradient(#dbe0ec);
+    background-image: radial-gradient(var(--c-bluetone-sel));
+    color: #fff;
 }
 
 .icon--positive {
@@ -1598,14 +1604,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .inliner--align-center {
-    font-size: 0;
-    text-align: center
+	font-size:0; /* Remove space between items */
+	text-align:center;
 }
-
-    .inliner--align-center > * {
-        font-size: 1rem;
-        font-size: initial
-    }
+.inliner--align-center > * {
+	font-size:1rem;
+	font-size:initial; /* Reset font size */
+}
 
 .js .js-hidden {
     display: none
@@ -2986,6 +2991,11 @@ label.input-button-combo__label {
     margin: 0;
     padding: 0;
     list-style: none
+}
+
+.read-more-link {
+    font-style: italic;
+    font-size: 0.75em;
 }
 
 .search-result {

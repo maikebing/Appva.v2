@@ -24,14 +24,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
+        /// The <see cref="ITenaService"/>.
         /// </summary>
-        private readonly IPersistenceContext persistence;
+        private readonly ITenaService tenaService;
 
         /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
+
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>.
+        /// </summary>
+        private readonly IPersistenceContext persistence;
 
         /// <summary>
         /// The <see cref="IAuditService"/>.
@@ -45,13 +50,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivateTenaIdHandler"/> class.
         /// </summary>
-        /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
+        /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
+        /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
         /// <param name="auditing">The <see cref="IAuditService"/>.</param>
-        public ActivateTenaIdHandler(IPersistenceContext persistence, IPatientService patientService, IAuditService auditing)
+        public ActivateTenaIdHandler(ITenaService tenaService, IPatientService patientService, IPersistenceContext persistence, IAuditService auditing)
         {
-            this.persistence = persistence;
+            this.tenaService = tenaService;
             this.patientService = patientService;
+            this.persistence = persistence;
             this.auditing = auditing;
         }
 
@@ -64,11 +71,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var patient = this.patientService.Get(message.Id);
 
-            if(patient != null)
+            if (this.tenaService.GetDataFromTena(message.ExternalId).Key.StatusCode == System.Net.HttpStatusCode.OK
+                && this.tenaService.HasUniqueExternalId(message.ExternalId))
             {
                 patient.TenaId = message.ExternalId;
                 this.persistence.Update(patient);
-                this.auditing.Update(patient, "aktiverade TENA Identifi (id: {0})", patient.TenaId);
+                this.auditing.Update(patient, "aktiverade TENA Identifi");
             }
 
             return new ListTena

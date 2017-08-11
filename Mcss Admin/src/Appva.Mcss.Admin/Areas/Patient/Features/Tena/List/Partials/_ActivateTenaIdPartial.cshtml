@@ -52,7 +52,7 @@
     <div class="section section--hspace section--vspace section--lightblue">
         <h2 style="text-align:center;">Börja använda TENA Identifi</h2>
         <div class="section section--hspace section--vspace section--white width-limiter width-limiter--xs">
-        @using (Html.BeginForm("activate", "tena", FormMethod.Post, new { @class = "validate" }))
+        @using (Html.BeginForm("activate", "tena"))
         {
             <p>För att kunna använda TENA Identifi tillsammans med MCSS måste du först ange den boendes motsvarande ID i Identifi här.</p>
 
@@ -66,7 +66,7 @@
                 <div class="form-controls inliner inliner--align-center">
                     @Html.LabelFor(x => x.ExternalId, "Identifi ID")
                     <span class="required-indicator" style="padding:0 10px 0 5px">*</span>
-                    @Html.TextBoxFor(x => x.ExternalId, new { size = "8", required = "required" })
+                    @Html.TextBoxFor(x => x.ExternalId, new { size = "8" })
                 </div>
                 <div id="target">
                     <div id="tena-error" class="section section--narrow section--blue section--bubble section--hspace section--vspace inliner" style="display:none;">

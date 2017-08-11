@@ -15,6 +15,10 @@ namespace Appva.Mcss.Admin.Application.Services
     using System;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System.Net.Http;
+    using System.Net;
 
     #endregion
 
@@ -24,16 +28,24 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface ITenaService : IService
     {
         /// <summary>
-        /// Get credentials.
-        /// </summary>
-        /// <returns>The credentials.</returns>
-        string GetCredentials();
-
-        /// <summary>
         /// Get the request URI.
         /// </summary>
         /// <returns>The request URI.</returns>
         string GetRequestUri();
+
+        /// <summary>
+        /// If the provided external id is unique.
+        /// </summary>
+        /// <param name="externalId">The external tena id.</param>
+        /// <returns>Returns a <see cref="bool"/>.</returns>
+        bool HasUniqueExternalId(string externalId);
+
+        /// <summary>
+        /// Get data from the TENA API.
+        /// </summary>
+        /// <param name="externalId">The external tena id.</param>
+        /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
+        KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId);
     }
 
     /// <summary>
@@ -73,17 +85,43 @@ namespace Appva.Mcss.Admin.Application.Services
         #region ITenaService members.
 
         /// <inheritdoc />
-        public string GetCredentials()
+        public string GetRequestUri()
+        {
+            return this.settingsService.Find(ApplicationSettings.TenaSettings).RequestUri;
+        }
+
+        /// <inheritdoc />
+        public bool HasUniqueExternalId(string externalId)
+        {
+            return this.repository.HasUniqueExternalId(externalId);
+        }
+
+        /// <inheritdoc />
+        public KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId)
+        {
+            HttpResponseMessage response = null;
+            string content = string.Empty;
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.GetCredentials());
+                response = Task.Run(() => client.GetAsync(this.GetRequestUri() + externalId)).Result;
+                content = response.StatusCode == HttpStatusCode.OK ? response.Content.ReadAsStringAsync().Result : string.Empty;
+            }
+
+            return new KeyValuePair<HttpResponseMessage, string>(response, content);
+        }
+
+        #endregion
+
+        #region Private methods.
+
+        /// <inheritdoc />
+        private string GetCredentials()
         {
             var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
             var credentials = System.Text.Encoding.UTF8.GetBytes(settings.ClientId + ":" + settings.ClientSecret);
             return Convert.ToBase64String(credentials);
-        }
-
-        /// <inheritdoc />
-        public string GetRequestUri()
-        {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings).RequestUri;
         }
 
         #endregion

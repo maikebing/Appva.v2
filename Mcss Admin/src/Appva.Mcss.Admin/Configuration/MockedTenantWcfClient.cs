@@ -104,7 +104,9 @@ namespace Appva.Mcss.Admin.Configuration
                 HostName = "development",
                 Identifier = "development",
                 Name = "Test",
-                ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\AppvaDb\\Test.mdf;Integrated Security=True;Connect Timeout=30"
+                //ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\AppvaDb\\Test.mdf;Integrated Security=True;Connect Timeout=30"  // Standard connectionString
+                //ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\AppvaDev\\DB\\Test.mdf;Integrated Security=True;Connect Timeout=30" // Fredriks connectionString (OBS RÖR EJ!!!)
+                ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\AppvaDev\\DB\\Test.mdf;Integrated Security=True;Connect Timeout=30"
             };
         }
     }

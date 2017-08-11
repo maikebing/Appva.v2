@@ -62,32 +62,29 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override string Handle(FindTenaId message)
         {
-            using (var client = new HttpClient())
+            var response = this.tenaService.GetDataFromTena(message.ExternalId);
+            var status = string.Empty;
+
+            response.Key.StatusCode = this.tenaService.HasUniqueExternalId(message.ExternalId) == false ? HttpStatusCode.Conflict : response.Key.StatusCode;
+
+            if (response.Key.StatusCode == HttpStatusCode.Conflict)
             {
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.tenaService.GetCredentials());
-                var response = Task.Run(() => client.GetAsync(this.tenaService.GetRequestUri() + message.ExternalId)).Result;
-                var content = response.StatusCode.ToString() == "OK" ? response.Content.ReadAsStringAsync().Result : string.Empty;
-                var status = string.Empty;
-
-                if(response.StatusCode == HttpStatusCode.NotFound)
-                {
-                    status = "Inga boende kunde hittas med angivet Identifi ID.";
-                }
-                else if(response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    status = "Tjänsten har inte konfigurerats, kontakta Appvas support (kod: " + (int)HttpStatusCode.Unauthorized + ").";
-                }
-                else if(response.StatusCode == HttpStatusCode.InternalServerError)
-                {
-                    status = "Ett fel har inträffat, försök igen om en stund. Om felet kvarstår, kontakta Appvas support (kod: " + (int)HttpStatusCode.InternalServerError + ").";
-                }
-                else
-                {
-                    status = "";
-                }
-
-                return JsonConvert.SerializeObject(new { Content = content, StatusMessage = status, StatusCode = (int)response.StatusCode });
+                status = "Detta Identifi ID används redan.";
             }
+            else if(response.Key.StatusCode == HttpStatusCode.NotFound)
+            {
+                status = "Inga boende hittades med angivet Identifi ID.";
+            }
+            else if(response.Key.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                status = "Tjänsten har inte konfigurerats, kontakta Appvas support (kod: " + (int)HttpStatusCode.Unauthorized + ").";
+            }
+            else if(response.Key.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                status = "Ett fel har inträffat, försök igen om en stund. Om felet kvarstår, kontakta Appvas support (kod: " + (int)HttpStatusCode.InternalServerError + ").";
+            }
+
+            return JsonConvert.SerializeObject(new { Content = response.Value, StatusMessage = status, StatusCode = (int)response.Key.StatusCode });
         }
 
         #endregion

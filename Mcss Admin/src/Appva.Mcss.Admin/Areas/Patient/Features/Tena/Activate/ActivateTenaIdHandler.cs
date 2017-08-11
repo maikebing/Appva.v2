@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Persistence;
 
@@ -32,6 +33,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IPatientService patientService;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService auditing;
+
         #endregion
 
         #region Constructors.
@@ -41,10 +47,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
-        public ActivateTenaIdHandler(IPersistenceContext persistence, IPatientService patientService)
+        /// <param name="auditing">The <see cref="IAuditService"/>.</param>
+        public ActivateTenaIdHandler(IPersistenceContext persistence, IPatientService patientService, IAuditService auditing)
         {
             this.persistence = persistence;
             this.patientService = patientService;
+            this.auditing = auditing;
         }
 
         #endregion
@@ -60,6 +68,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 patient.TenaId = message.ExternalId;
                 this.persistence.Update(patient);
+                this.auditing.Update(patient, "aktiverade TENA Identifi (id: {0})", patient.TenaId);
             }
 
             return new ListTena

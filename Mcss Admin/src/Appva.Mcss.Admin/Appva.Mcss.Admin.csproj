@@ -1435,6 +1435,7 @@
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_ActivateTenaIdPartial.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_CreateFirstTenaPeriodPartial.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_ListTenaValuesPartial.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Create\Create.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

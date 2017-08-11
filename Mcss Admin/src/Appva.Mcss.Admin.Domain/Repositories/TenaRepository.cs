@@ -21,13 +21,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     public interface ITenaRepository : IRepository
     {
         /// <summary>
-        /// Find observation dates.
-        /// </summary>
-        /// <param name="externalId">The external tena id.</param>
-        /// <returns>A collection of <see cref="TenaObservationPeriod"/>.</returns>
-        IList<TenaObservationPeriod> FindTenaObservationPeriods(string externalId);
-
-        /// <summary>
         /// If the provided external id is unique.
         /// </summary>
         /// <param name="externalId">The external tena id.</param>
@@ -63,15 +56,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #endregion
 
         #region ITenarepository members.
-
-        /// <inheritdoc />
-        public IList<TenaObservationPeriod> FindTenaObservationPeriods(string tenaId)
-        {
-            var tenaObservationPeriods = this.persistence.QueryOver<TenaObservationPeriod>()
-                .Where(i => i.TenaId == tenaId)
-                .List();
-            return tenaObservationPeriods;
-        }
 
         /// <inheritdoc />
         public bool HasUniqueExternalId(string externalId)

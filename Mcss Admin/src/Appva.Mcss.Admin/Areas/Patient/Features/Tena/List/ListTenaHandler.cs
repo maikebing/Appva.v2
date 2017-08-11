@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Web.ViewModels;
+    using Appva.Mcss.Admin.Application.Services.Settings;
 
     #endregion
 
@@ -26,6 +27,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         private IPatientService patientService;
         private IPatientTransformer patientTransformer;
+        private ISettingsService settingsService;
         
         #endregion
 
@@ -37,10 +39,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="message"></param>
         /// <returns></returns>
 
-        public ListTenaHandler(IPatientService patientService, IPatientTransformer patientTransformer)
+        public ListTenaHandler(IPatientService patientService, IPatientTransformer patientTransformer, ISettingsService settingsService)
         {
             this.patientService = patientService;
             this.patientTransformer = patientTransformer;
+            this.settingsService = settingsService;
         }
 
         #endregion
@@ -48,11 +51,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler Overrides.
 
         public override ListTenaModel Handle(ListTena message)
-        {            
+        {
             return new ListTenaModel
             {
                 patientViewModel = this.patientTransformer.ToPatient(this.patientService.Get(message.Id)),
-                patient = this.patientService.Get(message.Id)
+                patient = this.patientService.Get(message.Id),
+                isInstalled = this.settingsService.Find(ApplicationSettings.TenaSettings).IsInstalled
             };
         }
 

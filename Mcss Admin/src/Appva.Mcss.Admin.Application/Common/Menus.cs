@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Application.Common
     #region Imports.
 
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using System;
     using System.Collections.Generic;
@@ -50,8 +51,11 @@ namespace Appva.Mcss.Admin.Application.Common
         /// <summary>
         /// Initializes a new instance of <see cref="Menus"/>
         /// </summary>
+        /// 
         private Menus()
-        { }
+        {
+
+        }
 
         #endregion
 
@@ -115,8 +119,8 @@ namespace Appva.Mcss.Admin.Application.Common
                          MenuItem.CreateNew("Larm", "List", "Alerts", "Patient", null, null, Permissions.Alert.Read, null),
                          MenuItem.CreateNew("Rapport", "ScheduleReport", "Schedule", "Patient", null, null, Permissions.Schedule.Report, null),
                          MenuItem.CreateNew("Kalender", "List", "Calendar", "Patient", null, null, Permissions.Calendar.Read, null),
-                         MenuItem.CreateNew("Saldon", "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null),
-                         MenuItem.CreateNew("TENA Identifi", "List", "Tena", "Patient", null, null, Permissions.Tena.Read, null) // temp Tena patient
+                         MenuItem.CreateNew("Saldon", "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null),                         
+                         MenuItem.CreateNew("TENA Identifi", "List", "Tena", "Patient", null, null, Permissions.Tena.Read, null)
                     };
                 }
                 return this.patient;

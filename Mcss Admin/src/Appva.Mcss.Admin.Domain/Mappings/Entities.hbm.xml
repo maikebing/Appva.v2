@@ -366,7 +366,7 @@
       <one-to-many class="Task" />
     </bag>
     <bag name="TenaObservationPeriods" cascade="save-update" table="TenaObservationPeriod">
-      <key column="TenaId" />
+      <key column="Patient" />
       <one-to-many class="TenaObservationPeriod" />
     </bag>
     <property name="Identifier" />
@@ -638,19 +638,6 @@
     <many-to-one name="Schedule" class="Schedule" />
   </class>
   
-  <!-- TenaObservervation -->
-  <class name="TenaObservation">
-    <id name="Id">
-      <generator class="guid.comb" />
-    </id>
-    <property name="Version" />
-    <property name="IsActive" column="Active" />
-    <property name="CreatedAt" column="Created" />
-    <property name="UpdatedAt" column="Modified" />
-    <property name="TenaObservationPeriodId" />
-    <property name="Value" />
-    <property name="CreatedBy" />
-  </class>
 
   <!-- TenaObservationPeriod-->
   <class name="TenaObservationPeriod">
@@ -660,12 +647,29 @@
     <property name="IsActive" column="Active" />
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
-    <property name="TenaId" />
     <property name="StartDate" />
     <property name="EndDate" />
-    <bag name="TenaObservations" cascade="save-update" table="TenaObservation">
-      <key column="TenaObservationPeriodId" />
-      <one-to-many class="TenaObservation" />
+    <many-to-one name="Patient" class="Patient" />
+    <bag name="TenaObservationItems" cascade="save-update" table="TenaObservationItem">
+      <key column="TenaObservationPeriod" />
+      <one-to-many class="TenaObservationItem" />
     </bag>
   </class>
+
+  <!-- TenaObservervationItem -->
+  <class name="TenaObservationItem">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Measurement" />
+    <property name="Signature" />
+    <property name="Comment" />
+    <many-to-one name="TenaObservationPeriod" class="TenaObservationPeriod" />    
+  </class>
+
+
 </hibernate-mapping>

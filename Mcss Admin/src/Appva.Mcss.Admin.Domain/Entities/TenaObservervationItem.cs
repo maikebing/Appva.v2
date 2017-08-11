@@ -1,4 +1,4 @@
-﻿// <copyright file="TenaObservervation.cs" company="Appva AB">
+﻿// <copyright file="TenaObservervationItem.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -17,48 +17,55 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class TenaObservation : AggregateRoot<TenaObservation>
+    public class TenaObservationItem : AggregateRoot<TenaObservationItem>
     {
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TenaObservation"/> class.
+        /// Initializes a new instance of the <see cref="TenaObservationItem"/> class.
         /// </summary>
-        public TenaObservation()
+        public TenaObservationItem()
         {
         }
         
         #endregion
 
         #region Properties
-
         /// <summary>
-        /// TenaId
+        /// Measurement
         /// </summary>
-        public virtual Guid TenaObservationPeriodId
+        public virtual string Measurement
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Measured value
+        /// Signature
         /// </summary>
-        public virtual string Value
+        public virtual string Signature
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Registered by
+        /// Comment
         /// </summary>
-        public virtual string CreatedBy
+        public virtual string Comment
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Comment
+        /// </summary>
+        public virtual TenaObservationPeriod TenaObservationPeriod
+        {
+            get;
+            set;
+        }
         #endregion
     }
 }

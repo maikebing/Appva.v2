@@ -169,7 +169,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Observation Periods List
         /// </summary>
-        public virtual IList<TenaObservationPeriod> TenaObservationPeriods { get; set; }
+        public virtual IList<TenaObservationPeriod> TenaObservationPeriods
+        {
+            get;
+            set;
+        }
 
         #endregion
     }

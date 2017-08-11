@@ -630,6 +630,10 @@
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTenaId.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTenaIdHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriod.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Find\FindTenaId.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Find\FindTenaIdHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTena.cs" />
@@ -1092,7 +1096,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Dashboard\Features\Shared\" />
-    <Folder Include="Areas\Patient\Features\Tena\Create\" />
     <Folder Include="Areas\Patient\Features\Tena\Delete\" />
     <Folder Include="Areas\Patient\Features\Tena\Update\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
@@ -1430,7 +1433,7 @@
     <Content Include="Areas\Patient\Features\Tena\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Tena\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_ActivateTenaIdPartial.cshtml" />
-    <Content Include="Areas\Patient\Features\Tena\List\Partials\_CreateFirstTenaPeriod.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\List\Partials\_CreateFirstTenaPeriodPartial.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_ListTenaValuesPartial.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />

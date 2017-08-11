@@ -1,4 +1,4 @@
-﻿// <copyright file="ListTenaModel.cs" company="Appva AB">
+﻿// <copyright file="CreateTenaObserverPeriodModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -24,14 +24,33 @@ namespace Appva.Mcss.Admin.Models
     /// TODO: 
     /// </summary>
 
-    public class ListTenaModel
+    public class CreateTenaObserverPeriodModel : IRequest<ListTena>
     {
         /// <summary>
-        /// Patient
+        /// PatientId
         /// </summary>
-        public PatientViewModel patientViewModel { get; set; }
-        public Patient patient { get; set; }
-        public string ExternalId { get; set; }
-        public bool isInstalled { get; set; }
+        public Guid Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// StartDate
+        /// </summary>
+        public DateTime StartDate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// EndDate
+        /// </summary>
+        public DateTime EndDate
+        {
+            get;
+            set;
+        }
     }
 }

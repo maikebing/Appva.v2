@@ -30,16 +30,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// TenaId, Connection to TenaId in Patient
-        /// </summary>
-        public virtual string TenaId
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Date at start of period
         /// </summary>
@@ -57,10 +47,26 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
+
+        /// <summary>
+        /// Date at end of period
+        /// </summary>
+        public virtual Patient Patient
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// TenaObservations
         /// </summary>
-        public virtual IList<TenaObservation> TenaObservations { get; set; }
+        public virtual IList<TenaObservationItem> TenaObservationItems
+        {
+            get;
+            set;
+        }
+
+
         #endregion
     }
 }

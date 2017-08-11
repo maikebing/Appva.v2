@@ -85,7 +85,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             return this.settingsService.Find(ApplicationSettings.TenaSettings).RequestUri;
         }
-        
+
         #endregion
     }
 }

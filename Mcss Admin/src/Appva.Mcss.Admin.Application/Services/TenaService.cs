@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using System.Threading.Tasks;
     using System.Net.Http;
     using System.Net;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -46,6 +47,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="externalId">The external tena id.</param>
         /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
         KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId);
+
+        void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate);
     }
 
     /// <summary>
@@ -96,6 +99,7 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.HasUniqueExternalId(externalId);
         }
 
+
         /// <inheritdoc />
         public KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId)
         {
@@ -105,11 +109,17 @@ namespace Appva.Mcss.Admin.Application.Services
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.GetCredentials());
-                response = Task.Run(() => client.GetAsync(this.GetRequestUri() + externalId)).Result;
+                response = System.Threading.Tasks.Task.Run(() => client.GetAsync(this.GetRequestUri() + externalId)).Result;
                 content = response.StatusCode == HttpStatusCode.OK ? response.Content.ReadAsStringAsync().Result : string.Empty;
             }
 
             return new KeyValuePair<HttpResponseMessage, string>(response, content);
+        }
+
+        /// <inheritdoc />
+        public void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate)
+        {
+            this.repository.CreateNewTenaObserverPeriod(patient, startdate, enddate);
         }
 
         #endregion
@@ -123,7 +133,7 @@ namespace Appva.Mcss.Admin.Application.Services
             var credentials = System.Text.Encoding.UTF8.GetBytes(settings.ClientId + ":" + settings.ClientSecret);
             return Convert.ToBase64String(credentials);
         }
-
+        
         #endregion
     }
 }

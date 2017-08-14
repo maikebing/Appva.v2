@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System.Collections.Generic;
     using Appva.Persistence;
     using Appva.Mcss.Admin.Domain.Entities;
+    using System;
 
     #endregion
 
@@ -26,6 +27,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="externalId">The external tena id.</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
         bool HasUniqueExternalId(string externalId);
+        void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate);
     }
 
     /// <summary>
@@ -64,6 +66,19 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .Where(x => x.TenaId == externalId)
                     .RowCount() == 0;
         }
+
+        /// <inheritdoc />
+        public void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate)
+        {
+            var period = new TenaObservationPeriod
+            {
+                Patient = patient,
+                StartDate = startdate,
+                EndDate = enddate
+            };
+            this.persistence.Save(period);
+        }
+
 
         #endregion
     }

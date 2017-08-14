@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc.Security;
+    using Appva.Mvc;
 
     #endregion
 
@@ -80,6 +81,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         #endregion
 
         #region Create
+
         [Route("create")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
@@ -91,7 +93,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
 
         [Route("create")]
-        [HttpPost, Dispatch("list", "create")]
+        [HttpPost, Validate, ValidateAntiForgeryToken(), Dispatch("list", "tena")]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
         public ActionResult Create(CreateTenaObserverPeriodModel request)
         {

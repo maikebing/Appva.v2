@@ -432,6 +432,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 });
                 schedule = this.context.Get<Schedule>(scheduleID);
             }
+
             this.sequenceService.Create(
                 patient,
                 this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),

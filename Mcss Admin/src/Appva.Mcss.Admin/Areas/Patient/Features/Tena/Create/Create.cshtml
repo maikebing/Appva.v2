@@ -2,15 +2,17 @@
 @{
     SetTitle("Ny Mätperiod");
 }
-
-
-
 <div class="grid">
     <div data-size="s:24 l:12">
         <div class="section section--hspace">
             <h2>Skapa ny mätperiod - Tena Identifi</h2>
             <div id="add-measuring-period">
-                <form action="/pages/tena-identifi/patient-tena-measurements-list.html" class="validate">
+                @using (Html.BeginForm("create", "tena"))
+                {
+                    @Html.AntiForgeryToken()
+
+
+                    @*<form action="/pages/tena-identifi/patient-tena-measurements-list.html" class="validate">*@
                     <div class="width-limiter width-limiter--xs">
 
 
@@ -19,24 +21,27 @@
                                 <div class="form-controls date-picker">
 
 
-                                    <label for="from-date123">Från och med</label>
+                                    @*<label for="from-date123">Från och med</label>*@
                                     @Html.LabelFor(x => x.StartDate, "Från och med")
-                                    @Html.TextBoxFor(x => x.StartDate, new {
-                                           @class = "datepicker",
-                                           data_datepicker_limit ="future",
-                                           data_rule_datelimit = "future",
-                                           autocomplete = "off"})
+                                    @Html.TextBoxFor(x => x.StartDate, new
+                               {
+                                   @class = "datepicker",
+                                   data_datepicker_limit = "future",
+                                   data_rule_datelimit = "future",
+                                   autocomplete = "off"
+                               })
                                     @*<input id="from-date123"
-                                           data-datepicker-limit="future"
-                                           data-rule-datelimit="future"
-                                           class="datepicker"
-                                           autocomplete="off"
-                                           name="from-date123" />*@
+                                        data-datepicker-limit="future"
+                                        data-rule-datelimit="future"
+                                        class="datepicker"
+                                        autocomplete="off"
+                                        name="from-date123" />*@
                                 </div>
                             </div>
                             <div>
                                 <svg class="icon icon--e icon--separator icon--separator-offset">
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
+                                    @*<img src="~/Assets/images/icons/icon.sprite.svg" />*@
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="~/Assets/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
                                 </svg>
                             </div>
                             <div data-size="s:24 m:10">
@@ -44,24 +49,28 @@
                                 <div class="form-controls date-picker">
 
 
-                                    <label for="idC9936FD6-AB04-4D72-907D-C66FC3CF657E">Till och med</label>
+                                    @*<label for="idC9936FD6-AB04-4D72-907D-C66FC3CF657E">Till och med</label>*@
                                     @Html.LabelFor(x => x.EndDate, "Till och med")
-                                    @Html.TextBoxFor(x => x.EndDate, new {
-                                           @class = "datepicker",
-                                           data_datepicker_limit = "future",
-                                           data_rule_datelimit = "future",
-                                           data_rule_greaterthan = Model.StartDate,
-                                           data_rule_date = "true",
-                                           autocomplete = "off"})
-                                    <input id="idC9936FD6-AB04-4D72-907D-C66FC3CF657E"
-                                           data-datepicker-limit="future"
-                                           data-rule-datelimit="future"
-                                           class="datepicker"
-                                           autocomplete="off"
-                                           name="idC9936FD6-AB04-4D72-907D-C66FC3CF657E"
-                                           data-rule-greaterthan="#from-date123"
-                                           data-rule-date="true"
-                                           data-msg-greaterthan="Slutdatum måste vara senare än startdatumet" />
+                                    @Html.TextBoxFor(x => x.EndDate, new
+                               {
+                                   @class = "datepicker",
+                                   data_datepicker_limit = "future",
+                                   data_rule_datelimit = "future",
+                                   data_rule_greaterthan = "#StartDate",
+                                   data_rule_date = "true",
+                                   autocomplete = "off",
+                                   data_msg_greaterthan = "Slutdatum måste vara senare än startdatumet"
+                               })
+
+                                    @*<input id="idC9936FD6-AB04-4D72-907D-C66FC3CF657E"
+                                        data-datepicker-limit="future"
+                                        data-rule-datelimit="future"
+                                        class="datepicker"
+                                        autocomplete="off"
+                                        name="idC9936FD6-AB04-4D72-907D-C66FC3CF657E"
+                                        data-rule-greaterthan="#from-date123"
+                                        data-rule-date="true"
+                                        data-msg-greaterthan="Slutdatum måste vara senare än startdatumet" />*@
                                 </div>
                             </div>
                         </div>
@@ -73,7 +82,11 @@
                             <button type="submit" class="button button--primary">Spara</button>
                         </div>
                     </div>
-                </form>
+                    @*</form>*@
+                }
+
+
+                
 
             </div>
         </div>

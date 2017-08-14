@@ -124,11 +124,14 @@
                 if (!$.contains(self.dialogElement.get(0), e.target)) {
                     e.stopPropagation();
 
+
                     // Put focus on the first focusable element in the dialog
-                    self.dialogElement.find('input, select, textarea, button, object, a, [tabindex]').filter(function () {
-                        var element = $(this);
-                        return (!element.is(':disabled') && (element.attr('tabindex') !== '-1'));
-                    }).eq(0).focus();
+
+                    //self.dialogElement.find('input, select, textarea, button, object, a, [tabindex]').filter(function () {
+                    //    var element = $(this);
+                    //    return (!element.is(':disabled') && (element.attr('tabindex') !== '-1'));
+                    //}).eq(0).focus();
+
                 }
             });
             // Close the dialog when the ESC key is pressed

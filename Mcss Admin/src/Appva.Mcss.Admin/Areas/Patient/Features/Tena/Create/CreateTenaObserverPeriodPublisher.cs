@@ -45,6 +45,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ISettingsService settingsService;
 
+
         #endregion
 
         #region Constructor
@@ -68,7 +69,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListTena Handle(CreateTenaObserverPeriodModel message)
         {
             var patient = this.patientService.Get(message.Id);
-            this.tenaService.CreateNewTenaObserverPeriod(
+
+            this.tenaService.CreateTenaObserverPeriod(
                 patient,
                 message.StartDate,
                 message.EndDate

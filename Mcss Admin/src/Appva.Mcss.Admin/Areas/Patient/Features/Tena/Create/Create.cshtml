@@ -10,125 +10,49 @@
                 @using (Html.BeginForm("create", "tena"))
                 {
                     @Html.AntiForgeryToken()
-
-
-                    @*<form action="/pages/tena-identifi/patient-tena-measurements-list.html" class="validate">*@
                     <div class="width-limiter width-limiter--xs">
-
-
                         <div class="grid grid--align-center">
                             <div data-size="s:24 m:10">
                                 <div class="form-controls date-picker">
 
-
-                                    @*<label for="from-date123">Från och med</label>*@
                                     @Html.LabelFor(x => x.StartDate, "Från och med")
                                     @Html.TextBoxFor(x => x.StartDate, new
-                               {
-                                   @class = "datepicker",
-                                   data_datepicker_limit = "future",
-                                   data_rule_datelimit = "future",
-                                   autocomplete = "off"
-                               })
-                                    @*<input id="from-date123"
-                                        data-datepicker-limit="future"
-                                        data-rule-datelimit="future"
-                                        class="datepicker"
-                                        autocomplete="off"
-                                        name="from-date123" />*@
+                                       {
+                                           @class = "datepicker",
+                                           data_datepicker_limit = "future",
+                                           data_rule_datelimit = "future",
+                                           autocomplete = "off"
+                                       })
                                 </div>
                             </div>
                             <div>
                                 <svg class="icon icon--e icon--separator icon--separator-offset">
-                                    @*<img src="~/Assets/images/icons/icon.sprite.svg" />*@
                                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="~/Assets/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
                                 </svg>
                             </div>
                             <div data-size="s:24 m:10">
-
                                 <div class="form-controls date-picker">
-
-
-                                    @*<label for="idC9936FD6-AB04-4D72-907D-C66FC3CF657E">Till och med</label>*@
                                     @Html.LabelFor(x => x.EndDate, "Till och med")
                                     @Html.TextBoxFor(x => x.EndDate, new
-                               {
-                                   @class = "datepicker",
-                                   data_datepicker_limit = "future",
-                                   data_rule_datelimit = "future",
-                                   data_rule_greaterthan = "#StartDate",
-                                   data_rule_date = "true",
-                                   autocomplete = "off",
-                                   data_msg_greaterthan = "Slutdatum måste vara senare än startdatumet"
-                               })
-
-                                    @*<input id="idC9936FD6-AB04-4D72-907D-C66FC3CF657E"
-                                        data-datepicker-limit="future"
-                                        data-rule-datelimit="future"
-                                        class="datepicker"
-                                        autocomplete="off"
-                                        name="idC9936FD6-AB04-4D72-907D-C66FC3CF657E"
-                                        data-rule-greaterthan="#from-date123"
-                                        data-rule-date="true"
-                                        data-msg-greaterthan="Slutdatum måste vara senare än startdatumet" />*@
+                                       {
+                                           @class = "datepicker",
+                                           data_datepicker_limit = "future",
+                                           data_rule_datelimit = "future",
+                                           data_rule_greaterthan = "#StartDate",
+                                           data_rule_date = "true",
+                                           autocomplete = "off",
+                                           data_msg_greaterthan = "Slutdatum måste vara senare än startdatumet"
+                                       })
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-controls form-controls--align-end form-controls--no-margin">
-
-
                             <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
                             <button type="submit" class="button button--primary">Spara</button>
                         </div>
                     </div>
-                    @*</form>*@
                 }
-
-
-                
-
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-@*<div class="section section--hspace">
-    <h2>Skapa Mätperiod</h2>
-    <div id="add-item-to-order-list">
-        @using (Html.Post(new { @class = "validate" }))
-        {
-            <div class="width-limiter width-limiter--xs">
-                <div class="form-controls form-controls--select">
-                    @Html.LabelFor(x => x.StartDate, "Start Datum")
-                    @Html.DropDownListFor(x => x.SelectedCategory, Model.Categories, new { @class = "select-style required" })
-                </div>
-                <div class="form-controls">
-                    @Html.LabelFor(x => x.Name, "Namn")
-                    @Html.TextBoxFor(x => x.Name, new { @data_rule_required = "true" })
-                </div>
-                <div class="form-controls form-controls--text">
-                    @Html.LabelFor(x => x.Description, "Beskrivning")
-                    @Html.TextAreaFor(x => x.Description, new { cols = "30", rows = "5" })
-                </div>
-                <div class="form-controls form-controls--align-end form-controls--no-margin">
-                    @Html.HiddenFor(x => x.Id)
-                    <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
-                    @Html.Submit("Spara", new { @class = "button button--primary" })
-                </div>
-            </div>
-        }
-    </div>
-</div>
-
-
-
-<form action="/" class="validate">
-    <div class="form-controls date-picker">
-        <label for="id582eeaa156a6b">Text field</label>
-        <input id="id582eeaa156a6b" class="datepicker" name="id582eeaa156a6b" type="date" />
-    </div>
-</form>*@

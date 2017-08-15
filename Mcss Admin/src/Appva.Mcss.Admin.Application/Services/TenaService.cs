@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using System.Net.Http;
     using System.Net;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
 
     #endregion
 
@@ -48,7 +49,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
         KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId);
 
-        void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate);
+        void CreateTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate);
     }
 
     /// <summary>
@@ -68,6 +69,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly ISettingsService settingsService;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>.
+        /// </summary>
+        //private readonly IPersistenceContext context;
+
         #endregion
 
         #region Constructor.
@@ -77,10 +83,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        public TenaService(ITenaRepository repository, ISettingsService settingsService)
+        public TenaService(ITenaRepository repository, ISettingsService settingsService) // , IPersistenceContext context
         {
             this.repository = repository;
             this.settingsService = settingsService;
+            //this.context = context;
         }
 
         #endregion
@@ -117,8 +124,20 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate)
+        public void CreateTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate)
         {
+            // Validate the dates
+
+            //var oldEndDate = context.QueryOver<TenaObservationPeriod>()
+            //    .Where(x => x.Patient == patient)
+            //    .OrderBy(s => s.EndDate).Desc.SingleOrDefault();
+
+            
+            
+            //if(startdate > oldEndDate.EndDate || oldEndDate.EndDate == null)
+            //{
+                
+            //}
             this.repository.CreateNewTenaObserverPeriod(patient, startdate, enddate);
         }
 

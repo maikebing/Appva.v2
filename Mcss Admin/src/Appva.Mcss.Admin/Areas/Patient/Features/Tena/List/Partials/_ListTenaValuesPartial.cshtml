@@ -1,43 +1,52 @@
-﻿@{
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.ListTenaModel
+
+@{
     Layout = null;
 }
+
+
 
 <div class="section section--hspace">
     <div class="distributor distributor--justified">
         <div class="distributor__inline-children">
             <h2>TENA Identifi</h2>
             <div class="form-controls">
-                <a class="button button--ml open-in-dialog" href="/pages/tena-identifi/patient-tena-new-measuring-period-dialog.html#add-measuring-period" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use></svg>Ny mätperiod</a>
+                <a class="button button--ml open-in-dialog" href="@Url.Action("create", "tena")#add-measuring-period" data-dialog-title="Ny mätperiod">
+                    <svg class="icon icon--mr" aria-hidden="true">
+                        <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+                    </svg>
+                    Ny mätperiod
+                </a>
             </div>
         </div>
+        <!-- Admin panelen? -->
         <div class="form-controls">
-            <a class="button open-in-dialog" href="/pages/tena-identifi/patient-tena-settings.html#tena-settings" data-dialog-title="Inställningar">Inställningar</a>
+            <a class="button open-in-dialog" href="/assets/tena-identifi/patient-tena-settings.html#tena-settings" data-dialog-title="Inställningar">Inställningar</a>
         </div>
     </div>
     <div>
         <div class="grid">
             <div data-size="xs:24 s:10 m:8 l:6 xl:6">
 
+                <!-- Lista över mätperioder -->
 
 
-                <div class="tabs tabs--vertical" role="navigation">
+
+
+                <div class="tabs tabs--vertical tabs--dynamic" role="navigation">
                     <h2 class="visually-hidden">Huvudnavigering</h2>
                     <ul>
-                        <li class="tabs__item tabs__item--selected">
-                            <a href="/home.html" aria-label="Denna sida: 2017-05-24 &#8211; 2017-05-25">2017-05-24 &#8211; 2017-05-25</a>
-                        </li>
-                        <li class="tabs__item">
-                            <a href="/sub-section.html">2017-05-25 &#8211; 2017-05-26</a>
-                        </li>
-                        <li class="tabs__item">
-                            <a href="/sub-section.html">2017-05-27 &#8211; 2017-05-28</a>
-                        </li>
-                        <li class="tabs__item">
-                            <a href="/sub-section.html">2017-05-29 &#8211; 2017-05-30</a>
-                        </li>
+                        @foreach (var item in Model.patient.TenaObservationPeriods)
+                        {
+                            <li class="tabs__item">
+                                <a href="@Url.Action("list", "tena")" aria-label="Denna sida: @item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()">@item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
+
             <div data-size="xs:24 s:14 m:16 l:18 xl:18">
                 <div class="distributor distributor--justified">
                     <h3>Mätperiod 2017-05-24 &#8211; 2017-05-25</h3>

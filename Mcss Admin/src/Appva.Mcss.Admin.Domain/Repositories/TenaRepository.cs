@@ -43,8 +43,19 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <returns>Returns a <see cref="bool"/>.</returns>
         void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate);
 
-
+        /// <summary>
+        /// Get a specific Tena Observation Period from DB
+        /// </summary>
+        /// <param name="periodId">The selected Observation Period.</param>
+        /// <returns>Returns a <see cref="TenaObservationPeriod"/>.</returns>
         TenaObservationPeriod GetTenaPeriod(Guid periodId);
+
+        /// <summary>
+        /// Get the TenaId from DB
+        /// </summary>
+        /// <param name="patientId">The Patient Id.</param>
+        /// <returns>Returns a <see cref="string"/>.</returns>
+        string GetTenaId(Guid patientId);
     }
 
     /// <summary>
@@ -109,9 +120,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public TenaObservationPeriod GetTenaPeriod(Guid periodId)
         {
-            var period = this.persistence.QueryOver<TenaObservationPeriod>().Where(x => x.Id == periodId).SingleOrDefault();
+            return this.persistence.QueryOver<TenaObservationPeriod>().Where(x => x.Id == periodId).SingleOrDefault();
+        }
 
-            return period;
+        /// <inheritdoc />
+        public string GetTenaId(Guid patientId)
+        {
+            return this.persistence.QueryOver<Patient>()
+                .Where(x => x.Id == patientId)
+                .Select(t => t.TenaId)
+                .SingleOrDefault()
+                .ToString();
         }
         #endregion
     }

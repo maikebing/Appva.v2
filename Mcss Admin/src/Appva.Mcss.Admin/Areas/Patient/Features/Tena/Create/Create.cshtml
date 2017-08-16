@@ -2,10 +2,7 @@
 @{
     SetTitle("Ny Mätperiod");
 }
-<!-- Vill inte ladda script på load -->
-
-
-
+@Url.Action("check", "tena")
 
 <div class="grid">
     <div data-size="s:24 l:12">
@@ -26,8 +23,8 @@
                                            @class = "datepicker",
                                            data_datepicker_limit = "future",
                                            data_rule_datelimit = "future",
-                                           autocomplete = "off",
-                                           onfocus = "javascript: test();"
+                                           data_datepicker_dbquery = "true",
+                                           autocomplete = "off"
                                        })
                                 </div>
                             </div>

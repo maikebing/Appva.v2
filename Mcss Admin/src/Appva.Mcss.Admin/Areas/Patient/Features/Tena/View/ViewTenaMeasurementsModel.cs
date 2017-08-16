@@ -10,8 +10,7 @@ namespace Appva.Mcss.Admin.Models
 {
     public class ViewTenaMeasurementsModel
     {
-        //public CreateTenaObserverPeriod tenaPeriod { get; set; }
-        //public IList<CreateTenaObserverPeriod> tenaPeriods { get; set; }
+        public TenaObservationPeriod ObservationPeriod { get; set; }
         public List<TenaObservationItem> ObservationItems { get; internal set; }
     }
 }

@@ -83,7 +83,7 @@
                 // On input, check that this date is permitted
                 self.on('change', function () {
                     $.ajax({
-                        url: '@Url.Action("check","tena")',
+                        url: 'check',
                         type: 'GET',
                         data: { 'Date': this.value },
                         success: function (data) {
@@ -124,7 +124,7 @@
                 numberOfMonths: 12,
                 onSelect: onSelect,
                 onClose: onClose,
-                buttonImage: '/project/images/icons/calendar.svg',
+                buttonImage: '/assets/images/icons/calendar.svg',
                 buttonImageOnly: true,
                 buttonText: netr.string.translate('datepicker.selectDate'),
                 beforeShowDay: beforeShowDay

@@ -49,13 +49,36 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
         KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId);
 
+        /// <summary>
+        /// Post data to the TENA API.
+        /// </summary>
+        /// <param name="periodId">The ObservationPeriodId.</param>
+        /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
+        KeyValuePair<HttpResponseMessage, string> PostDataToTena(Guid patientId, Guid periodId);
 
-
+        /// <summary>
+        /// Creates a new ObserverPeriod.
+        /// </summary>
+        /// <param name="Patient">The patient in this context.</param>
+        /// <param name="StartDate">Starting date for the period</param>
+        /// <param name="EndDate">Ending date for the period</param>
+        /// <returns>Returns a <see cref="bool"/>.</returns>
         bool CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate);
 
+
+        /// <summary>
+        /// Validate the Starting date against previous periods
+        /// </summary>
+        /// <param name="patientId">The patientId in this context.</param>
+        /// <param name="StartDate">Starting date for the period</param>
+        /// <returns>Returns a <see cref="bool"/>.</returns>
         bool HasConflictingDate(Guid patientId, DateTime startdate);
 
-
+        /// <summary>
+        /// Get a specific Period from Database
+        /// </summary>
+        /// <param name="periodId"></param>
+        /// <returns>Returns a <see cref="TenaObservationPeriod"/>.</returns>
         TenaObservationPeriod GetTenaObservationPeriod(Guid periodId);
     }
 
@@ -76,11 +99,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly ISettingsService settingsService;
 
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
-        /// </summary>
-        private readonly IPersistenceContext context;
-
         #endregion
 
         #region Constructor.
@@ -90,11 +108,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        public TenaService(ITenaRepository repository, ISettingsService settingsService, IPersistenceContext context) // , IPersistenceContext context
+        public TenaService(ITenaRepository repository, ISettingsService settingsService) // , IPersistenceContext context
         {
             this.repository = repository;
             this.settingsService = settingsService;
-            this.context = context;
         }
 
         #endregion
@@ -151,6 +168,25 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.HasConflictingDate(patientId, startdate);
         }
 
+        public KeyValuePair<HttpResponseMessage, string> PostDataToTena(Guid patientId, Guid periodId)
+        {
+            var measurements = this.repository.GetTenaPeriod(periodId).TenaObservationItems;
+            var tenaId = this.repository.GetTenaId(patientId);
+            HttpResponseMessage response = null;
+            string content = string.Empty;
+
+            using(var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.GetRequestUri());
+
+            }
+
+            // TODO: Insert logic here
+            // Make a POST call to TenaAPI with a Observation Period and its measurements as JSON
+
+
+            return new KeyValuePair<HttpResponseMessage, string>(response, content);
+        }
 
         #endregion
 

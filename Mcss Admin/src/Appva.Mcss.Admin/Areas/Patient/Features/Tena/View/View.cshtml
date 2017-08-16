@@ -1,16 +1,23 @@
 ﻿@model Appva.Mcss.Admin.Models.ViewTenaMeasurementsModel
 
-
-@*<div id="tena-measurements-table" data-size="xs:24 s:14 m:16 l:18 xl:18">*@
+<div id="tena-measurements-table">
     <div class="distributor distributor--justified">
-        <h3>Mätperiod 2017-05-24 &#8211; 2017-05-25</h3>
+        
+        <h3>@Model.ObservationPeriod.StartDate.ToShortDateString() &#8211; @Model.ObservationPeriod.EndDate.ToShortDateString()</h3>
 
         <div class="form-controls form-controls--inline">
-            <a class="button button--primary open-in-dialog" href="/assets/tena-identifi/patient-tena-post-to-remote-response.html#remote-response" data-dialog-title="Uppladdning klar!"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/assets/images/icons/icon.sprite.svg#arrow-ne-icon"></use></svg>Ladda upp till TENA Identifi</a>
+            <a 
+               class="button button--primary open-in-dialog" 
+               href="@Url.Action("upload", "tena", new {periodid = Model.ObservationPeriod.Id})#remote-response"
+               data-dialog-title="Uppladdning klar!">
+            <svg class="icon icon--mr" aria-hidden="true">
+                <use xlink:href="/assets/images/icons/icon.sprite.svg#arrow-ne-icon"></use>
+                </svg>Ladda upp till TENA Identifi
+            </a>
         </div>
     </div>
 
-    <table class="table-general table-general--descending" id="tena-measurements-table">
+    <table class="table-general table-general--descending">
         <thead>
             <tr>
                 <th scope="col">Datum</th>
@@ -19,15 +26,14 @@
             </tr>
         </thead>
         <tbody>
-           @foreach (var item in Model.ObservationItems)
-           {
-               <tr>
-                   <td>@item.CreatedAt</td>
-                   <td>@item.Measurement</td>
-                   <td>@item.Signature</td>
-               </tr>
-           }
+            @foreach (var item in Model.ObservationItems)
+            {
+                <tr>
+                    <td>@item.CreatedAt</td>
+                    <td>@item.Measurement</td>
+                    <td>@item.Signature</td>
+                </tr>
+            }
         </tbody>
     </table>
-
-@*</div>*@
+</div>

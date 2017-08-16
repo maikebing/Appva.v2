@@ -4,44 +4,6 @@
 @{
     Layout = null;
 }
-
-<script>
-    function test() {
-        console.log("test click!");
-        $.ajax({
-            url: '@Url.Action("check","tena")',
-            type: 'GET',
-            data: { 'Date': $("#StartDate").val() },
-            success: function (data) {
-                var result = JSON.parse(data);
-                if (result.Content == "fail") {
-                    $('.button--primary').prop('disabled', true);
-                    console.log($("#StartDate").val() + " : " + result.Content + " : " + result.Message)
-                } else {
-                    $('.button--primary').prop('disabled', false);
-                    console.log($("#StartDate").val() + " : " + result.Content + " : " + result.Message)
-                }
-            }
-        });
-    }
-    $(document).ready(function () {
-        $("#StartDate").on("input", function () {
-            $.ajax({
-                url: '@Url.Action("check","tena")',
-                type: 'GET',
-                data: { 'Date': this.value },
-                success: function (data) {
-                    var result = JSON.parse(data);
-
-                    if (result.Content == "fail") {
-                        $('.button--primary').prop('disabled', true);
-                        console.log(result.Message)
-                    }
-                }
-            });
-        });
-    });
-</script>
 <div class="section section--hspace">
     <div class="distributor distributor--justified">
         <div class="distributor__inline-children">
@@ -71,7 +33,7 @@
                         @foreach (var item in Model.patient.TenaObservationPeriods.OrderByDescending(x => x.CreatedAt))
                         {
                             <li class="tabs__item">
-                                <a data-update-section-target="tena-measurements-list" href="@Url.Action("view", "tena", new { period=item.Id })#tena-measurements-table" aria-label="Denna sida: @item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()">@item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()</a>
+                                <a data-update-section-target="tena-measurements-list" href="@Url.Action("view", "tena", new { periodid=item.Id })#tena-measurements-table" aria-label="Denna sida: @item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()">@item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()</a>
                             </li>
                         }
                     </ul>
@@ -79,6 +41,7 @@
             </div>
 
             <div id="tena-measurements-list" data-size="xs:24 s:14 m:16 l:18 xl:18">
+
                 <!-- Mätvärden laddas in här -->
 
             </div>

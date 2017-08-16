@@ -92,7 +92,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #endregion
 
-
         #region Create
 
         [Route("create")]
@@ -113,11 +112,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #endregion
 
-        #region Measurements
-        [Route("view/period")]
+        #region View
+        [Route("view")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ReadValue)]
-        public ActionResult View(ViewTenaMeasurements request, string period)
+        public ActionResult View(ViewTenaMeasurements request)
         {
             return this.View();
         }
@@ -125,7 +124,17 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #endregion
 
+        #region Upload
 
+        [Route("upload")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Tena.CreateValue)]
+        public ActionResult Upload(UploadTenaObserverPeriod request)
+        {
+            return this.View();
+        }
+
+        #endregion
 
         #endregion
     }

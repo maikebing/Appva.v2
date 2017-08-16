@@ -47,10 +47,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ViewTenaMeasurementsModel Handle(ViewTenaMeasurements message)
         {
+            var period = this.tenaService.GetTenaObservationPeriod(message.PeriodId);
+
             return new ViewTenaMeasurementsModel
             {
-                ObservationItems = this.tenaService
-                    .GetTenaObservationPeriod(Guid.Parse(message.Period))
+                ObservationPeriod = period,
+                ObservationItems = period
                     .TenaObservationItems
                     .OrderByDescending(x => x.CreatedAt)
                     .ToList()

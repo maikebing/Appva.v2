@@ -24,7 +24,7 @@
 	*/
     var Dialog = function (options) {
         // var self = this;
-        // var closeIcon = '<svg class="icon" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#x-icon"></use></svg>';
+        // var closeIcon = '<svg class="icon" aria-hidden="true"><use xlink:href="/assets/images/icons/icon.sprite.svg#x-icon"></use></svg>';
 
         this.options = $.extend({
             // Extra dialog class

@@ -1,9 +1,10 @@
 ﻿using Appva.Cqrs;
+using System;
 
 namespace Appva.Mcss.Admin.Models
 {
     public class ViewTenaMeasurements : Identity<ViewTenaMeasurementsModel>
     {
-        public string Period { get; set; }
+        public Guid PeriodId { get; set; }
     }
 }

@@ -69,17 +69,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListTena Handle(CreateTenaObserverPeriodModel message)
         {
             var patient = this.patientService.Get(message.Id);
-
-            this.tenaService.CreateTenaObserverPeriod(
-                patient,
-                message.StartDate,
-                message.EndDate
-            );
-
-            return new ListTena
+            var listTena = new ListTena { Id = patient.Id };
+            if(this.tenaService.CreateTenaObservervationPeriod(patient, message.StartDate, message.EndDate) == false)
             {
-                Id = patient.Id
-            };
+                listTena.Message = "Gick inte att skapa ny period. Överlappande datum.";
+            }
+            return listTena;
         }
 
         #endregion

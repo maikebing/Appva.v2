@@ -80,6 +80,19 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #endregion
 
+        #region Check
+
+        [Route("check")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Tena.ReadValue)]
+        public DispatchJsonResult Check(CheckDate request)
+        {
+            return this.JsonGet();
+        }
+
+        #endregion
+
+
         #region Create
 
         [Route("create")]
@@ -90,8 +103,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
             return this.View();
         }
 
-
-
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken(), Dispatch("list", "tena")]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
@@ -101,6 +112,20 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         }
 
         #endregion
+
+        #region Measurements
+        [Route("view/period")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Tena.ReadValue)]
+        public ActionResult View(ViewTenaMeasurements request, string period)
+        {
+            return this.View();
+        }
+
+
+        #endregion
+
+
 
         #endregion
     }

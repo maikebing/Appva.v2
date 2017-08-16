@@ -27,7 +27,24 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="externalId">The external tena id.</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
         bool HasUniqueExternalId(string externalId);
+
+        /// <summary>
+        /// If the StartDate is conflicting with previous EndDates
+        /// </summary>
+        /// <param name="patientId">The external patient id.</param>
+        /// <param name="startdate">The selected start date</param>
+        /// <returns>Returns a <see cref="bool"/>.</returns>
+        bool HasConflictingDate(Guid patientId, DateTime startdate);
+
+        /// <summary>
+        /// If the StartDate is conflicting with previous EndDates
+        /// </summary>
+        /// <param name="externalId">The external tena id.</param>
+        /// <returns>Returns a <see cref="bool"/>.</returns>
         void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate);
+
+
+        TenaObservationPeriod GetTenaPeriod(Guid periodId);
     }
 
     /// <summary>
@@ -68,6 +85,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
+        public bool HasConflictingDate(Guid patientId, DateTime startdate)
+        {
+            if(this.persistence.QueryOver<TenaObservationPeriod>().Where(x => x.Patient.Id == patientId).Where(y => y.EndDate > startdate).RowCount() > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <inheritdoc />
         public void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate)
         {
             var period = new TenaObservationPeriod
@@ -79,7 +106,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             this.persistence.Save(period);
         }
 
+        /// <inheritdoc />
+        public TenaObservationPeriod GetTenaPeriod(Guid periodId)
+        {
+            var period = this.persistence.QueryOver<TenaObservationPeriod>().Where(x => x.Id == periodId).SingleOrDefault();
 
+            return period;
+        }
         #endregion
     }
 }

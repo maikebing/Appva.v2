@@ -28,5 +28,6 @@ namespace Appva.Mcss.Admin.Models
         /// Patient Id
         /// </summary>
         public Guid Id { get; set; }
+        public string Message { get; set; }
     }
 }

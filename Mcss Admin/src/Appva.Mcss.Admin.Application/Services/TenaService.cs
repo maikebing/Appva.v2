@@ -49,7 +49,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
         KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId);
 
-        void CreateTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate);
+
+
+        bool CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate);
+
+        bool HasConflictingDate(Guid patientId, DateTime startdate);
+
+
+        TenaObservationPeriod GetTenaObservationPeriod(Guid periodId);
     }
 
     /// <summary>
@@ -72,7 +79,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
         /// </summary>
-        //private readonly IPersistenceContext context;
+        private readonly IPersistenceContext context;
 
         #endregion
 
@@ -83,11 +90,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        public TenaService(ITenaRepository repository, ISettingsService settingsService) // , IPersistenceContext context
+        public TenaService(ITenaRepository repository, ISettingsService settingsService, IPersistenceContext context) // , IPersistenceContext context
         {
             this.repository = repository;
             this.settingsService = settingsService;
-            //this.context = context;
+            this.context = context;
         }
 
         #endregion
@@ -124,22 +131,26 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void CreateTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate)
+        public bool CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate)
         {
-            // Validate the dates
-
-            //var oldEndDate = context.QueryOver<TenaObservationPeriod>()
-            //    .Where(x => x.Patient == patient)
-            //    .OrderBy(s => s.EndDate).Desc.SingleOrDefault();
-
-            
-            
-            //if(startdate > oldEndDate.EndDate || oldEndDate.EndDate == null)
-            //{
-                
-            //}
+            if(this.repository.HasConflictingDate(patient.Id, startdate))
+            {
+                return false;
+            }
             this.repository.CreateNewTenaObserverPeriod(patient, startdate, enddate);
+            return true;            
         }
+
+        public TenaObservationPeriod GetTenaObservationPeriod(Guid periodId)
+        {
+            return this.repository.GetTenaPeriod(periodId);
+        }
+
+        public bool HasConflictingDate(Guid patientId, DateTime startdate)
+        {
+            return this.repository.HasConflictingDate(patientId, startdate);
+        }
+
 
         #endregion
 

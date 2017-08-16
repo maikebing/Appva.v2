@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateTenaObserverPeriodHandler.cs" company="Appva AB">
+﻿// <copyright file="ViewTenaMeasurementsHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -19,15 +19,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     #endregion
 
-
-    internal sealed class CreateTenaObserverPeriodHandler : RequestHandler<CreateTenaObserverPeriod, CreateTenaObserverPeriodModel>
+    internal sealed class ViewTenaMeasurementsHandler : RequestHandler<ViewTenaMeasurements, ViewTenaMeasurementsModel>
     {
         #region Fields.
-
-        /// <summary>
-        /// The <see cref="IPatientService"/>.
-        /// </summary>
-        private readonly IPatientService patientService;
 
         /// <summary>
         /// The <see cref="ITenaService"/>.
@@ -41,28 +35,30 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateTenaObserverPeriodHandler"/> class.
         /// </summary>
-        /// <param name="persistence">The <see cref="IPatientService"/>.</param>
-        /// <param name="patientService">The <see cref="ITenaService"/>.</param>
-        public CreateTenaObserverPeriodHandler(IPatientService patientService, ITenaService tenaService)
+        /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
+        public ViewTenaMeasurementsHandler(ITenaService tenaService)
         {
-            this.patientService = patientService;
             this.tenaService = tenaService;
         }
-
         #endregion
 
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override CreateTenaObserverPeriodModel Handle(CreateTenaObserverPeriod message)
+        public override ViewTenaMeasurementsModel Handle(ViewTenaMeasurements message)
         {
-            return new CreateTenaObserverPeriodModel
+            return new ViewTenaMeasurementsModel
             {
-                Id = message.Id,
-                StartDate = DateTime.Today,
-                EndDate = DateTime.Today.AddMonths(1)
+                ObservationItems = this.tenaService
+                    .GetTenaObservationPeriod(Guid.Parse(message.Period))
+                    .TenaObservationItems
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToList()
             };
         }
+
         #endregion
+
+
     }
 }

@@ -56,7 +56,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 patientViewModel = this.patientTransformer.ToPatient(this.patientService.Get(message.Id)),
                 patient = this.patientService.Get(message.Id),
-                isInstalled = this.settingsService.Find(ApplicationSettings.TenaSettings).IsInstalled
+                isInstalled = this.settingsService.Find(ApplicationSettings.TenaSettings).IsInstalled,
+                Message = message.Message
             };
         }
 

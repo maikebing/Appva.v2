@@ -630,6 +630,8 @@
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTenaId.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Activate\ActivateTenaIdHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Check\CheckDate.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Check\CheckDateHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriod.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodModel.cs" />
@@ -640,6 +642,9 @@
     <Compile Include="Areas\Patient\Features\Tena\List\ListTenaHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTenaModel.cs" />
     <Compile Include="Areas\Patient\Features\Tena\TenaController.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\View\ViewTenaMeasurements.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\View\ViewTenaMeasurementsHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\View\ViewTenaMeasurementsModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
@@ -1436,6 +1441,7 @@
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_CreateFirstTenaPeriodPartial.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\List\Partials\_ListTenaValuesPartial.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\View\View.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

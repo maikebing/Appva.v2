@@ -33,5 +33,6 @@ namespace Appva.Mcss.Admin.Models
         public Patient patient { get; set; }
         public string ExternalId { get; set; }
         public bool isInstalled { get; set; }
+        public string Message { get; set; }
     }
 }

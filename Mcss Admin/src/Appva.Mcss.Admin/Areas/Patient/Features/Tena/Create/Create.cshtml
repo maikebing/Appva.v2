@@ -2,6 +2,11 @@
 @{
     SetTitle("Ny Mätperiod");
 }
+<!-- Vill inte ladda script på load -->
+
+
+
+
 <div class="grid">
     <div data-size="s:24 l:12">
         <div class="section section--hspace">
@@ -21,7 +26,8 @@
                                            @class = "datepicker",
                                            data_datepicker_limit = "future",
                                            data_rule_datelimit = "future",
-                                           autocomplete = "off"
+                                           autocomplete = "off",
+                                           onfocus = "javascript: test();"
                                        })
                                 </div>
                             </div>
@@ -56,3 +62,5 @@
         </div>
     </div>
 </div>
+
+

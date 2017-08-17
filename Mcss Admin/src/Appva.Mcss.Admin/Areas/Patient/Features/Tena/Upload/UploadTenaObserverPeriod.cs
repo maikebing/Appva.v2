@@ -4,15 +4,11 @@
 // <author>
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
 
     #endregion
 

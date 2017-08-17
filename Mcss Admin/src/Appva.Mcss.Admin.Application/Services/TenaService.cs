@@ -13,14 +13,12 @@ namespace Appva.Mcss.Admin.Application.Services
     #region Imports.
 
     using System;
-    using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Mcss.Admin.Application.Services.Settings;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using System.Net.Http;
     using System.Net;
+    using System.Net.Http;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Persistence;
+    using Appva.Mcss.Admin.Domain.Repositories;
 
     #endregion
 
@@ -52,33 +50,33 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Post data to the TENA API.
         /// </summary>
-        /// <param name="periodId">The ObservationPeriodId.</param>
+        /// <param name="patientId">The Patient ID.</param>
+        /// <param name="periodId">The Observation Period ID.</param>
         /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
         KeyValuePair<HttpResponseMessage, string> PostDataToTena(Guid patientId, Guid periodId);
 
         /// <summary>
         /// Creates a new ObserverPeriod.
         /// </summary>
-        /// <param name="Patient">The patient in this context.</param>
-        /// <param name="StartDate">Starting date for the period</param>
-        /// <param name="EndDate">Ending date for the period</param>
+        /// <param name="patient">The patient in this context.</param>
+        /// <param name="startdate">Starting date for the period</param>
+        /// <param name="enddate">Ending date for the period</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
         bool CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate);
-
 
         /// <summary>
         /// Validate the Starting date against previous periods
         /// </summary>
         /// <param name="patientId">The patientId in this context.</param>
-        /// <param name="StartDate">Starting date for the period</param>
+        /// <param name="startdate">Starting date for the period</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
         bool HasConflictingDate(Guid patientId, DateTime startdate);
 
         /// <summary>
         /// Get a specific Period from Database
         /// </summary>
-        /// <param name="periodId"></param>
-        /// <returns>Returns a <see cref="TenaObservationPeriod"/>.</returns>
+        /// <param name="periodId">Period ID</param>
+        /// <returns>Returns a <see cref="TenaObservationPeriod"/>observation period</returns>
         TenaObservationPeriod GetTenaObservationPeriod(Guid periodId);
     }
 
@@ -130,7 +128,6 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.HasUniqueExternalId(externalId);
         }
 
-
         /// <inheritdoc />
         public KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId)
         {
@@ -150,24 +147,29 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public bool CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate)
         {
-            if(this.repository.HasConflictingDate(patient.Id, startdate))
+            if (this.repository.HasConflictingDate(patient.Id, startdate))
             {
                 return false;
             }
+
             this.repository.CreateNewTenaObserverPeriod(patient, startdate, enddate);
+
             return true;            
         }
 
+        /// <inheritdoc />
         public TenaObservationPeriod GetTenaObservationPeriod(Guid periodId)
         {
             return this.repository.GetTenaPeriod(periodId);
         }
-
+        
+        /// <inheritdoc />
         public bool HasConflictingDate(Guid patientId, DateTime startdate)
         {
             return this.repository.HasConflictingDate(patientId, startdate);
         }
-
+        
+        /// <inheritdoc />
         public KeyValuePair<HttpResponseMessage, string> PostDataToTena(Guid patientId, Guid periodId)
         {
             var measurements = this.repository.GetTenaPeriod(periodId).TenaObservationItems;
@@ -175,13 +177,15 @@ namespace Appva.Mcss.Admin.Application.Services
             HttpResponseMessage response = null;
             string content = string.Empty;
 
-            using(var client = new HttpClient())
+            using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(this.GetRequestUri());
+                client.BaseAddress = new Uri("https://tenaidentifistage.sca.com/api/resident/");
+                
+
 
             }
 
-            // TODO: Insert logic here
+            // TODO: Insert logic here, work in progress
             // Make a POST call to TenaAPI with a Observation Period and its measurements as JSON
 
 

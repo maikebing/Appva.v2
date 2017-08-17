@@ -10,21 +10,14 @@ namespace Appva.Mcss.Admin.Models
     #region imports
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Appva.Cqrs;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
-
 
     /// <summary>
     /// TODO: 
     /// </summary>
-
-    public class CreateTenaObserverPeriodModel : IRequest<ListTena>
+    public class CreateTenaObserverPeriodModel : Identity<ListTena>
     {
         /// <summary>
         /// PatientId

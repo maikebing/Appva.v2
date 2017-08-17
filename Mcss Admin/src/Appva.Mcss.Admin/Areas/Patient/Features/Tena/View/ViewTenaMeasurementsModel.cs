@@ -1,16 +1,40 @@
-﻿using Appva.Cqrs;
-using Appva.Mcss.Admin.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Appva.Mcss.Admin.Domain.Entities;
+﻿// <copyright file="ViewTenaMeasurementsModel.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+// </author>
 
 namespace Appva.Mcss.Admin.Models
 {
-    public class ViewTenaMeasurementsModel
+    #region Imports
+
+    using System.Collections.Generic;
+    using Appva.Mcss.Admin.Domain.Entities;
+
+    #endregion
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public sealed class ViewTenaMeasurementsModel
     {
-        public TenaObservationPeriod ObservationPeriod { get; set; }
-        public List<TenaObservationItem> ObservationItems { get; internal set; }
+        /// <summary>
+        /// Tena Observation Period ID
+        /// </summary>
+        public TenaObservationPeriod ObservationPeriod
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// List of Tena Observation Measurements
+        /// </summary>
+        public List<TenaObservationItem> ObservationItems
+        {
+            get;
+            set;
+        }
     }
 }

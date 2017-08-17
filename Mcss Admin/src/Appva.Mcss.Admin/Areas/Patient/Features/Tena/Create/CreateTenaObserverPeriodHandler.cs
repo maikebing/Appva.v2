@@ -9,17 +9,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Persistence;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
 
     #endregion
 
-
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     internal sealed class CreateTenaObserverPeriodHandler : RequestHandler<CreateTenaObserverPeriod, CreateTenaObserverPeriodModel>
     {
         #region Fields.
@@ -41,8 +39,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateTenaObserverPeriodHandler"/> class.
         /// </summary>
-        /// <param name="persistence">The <see cref="IPatientService"/>.</param>
-        /// <param name="patientService">The <see cref="ITenaService"/>.</param>
+        /// <param name="patientService">The <see cref="IPatientService"/>.</param>
+        /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
         public CreateTenaObserverPeriodHandler(IPatientService patientService, ITenaService tenaService)
         {
             this.patientService = patientService;

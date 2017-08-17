@@ -12,17 +12,19 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
-    using System.Collections.Generic;
-    using Appva.Persistence;
-    using Appva.Mcss.Admin.Domain.Entities;
     using System;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
 
     #endregion
 
+    /// <summary>
+    /// The <see cref="TenaRepository"/> repository.
+    /// </summary>
     public interface ITenaRepository : IRepository
     {
         /// <summary>
-        /// If the provided external id is unique.
+        /// Checks if externalId is Unique
         /// </summary>
         /// <param name="externalId">The external tena id.</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
@@ -37,10 +39,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         bool HasConflictingDate(Guid patientId, DateTime startdate);
 
         /// <summary>
-        /// If the StartDate is conflicting with previous EndDates
+        /// Creates a new Tena Observation Period
         /// </summary>
-        /// <param name="externalId">The external tena id.</param>
-        /// <returns>Returns a <see cref="bool"/>.</returns>
+        /// <param name="patient">The Patient Entity.</param>
+        /// <param name="startdate">Periods starting date.</param>
+        /// <param name="enddate">Periods ending date.</param>
         void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate);
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public bool HasConflictingDate(Guid patientId, DateTime startdate)
         {
-            if(this.persistence.QueryOver<TenaObservationPeriod>().Where(x => x.Patient.Id == patientId).Where(y => y.EndDate > startdate).RowCount() > 0)
+            if (this.persistence.QueryOver<TenaObservationPeriod>().Where(x => x.Patient.Id == patientId).Where(y => y.EndDate > startdate).RowCount() > 0)
             {
                 return true;
             }

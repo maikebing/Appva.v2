@@ -1,4 +1,4 @@
-﻿// <copyright file="TenaObservervationPeriod.cs" company="Appva AB">
+﻿// <copyright file="TenaObservationPeriod.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,9 +8,11 @@
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports
-    using Appva.Common.Domain;
+
     using System;
     using System.Collections.Generic;
+    using Appva.Common.Domain;
+
     #endregion
 
     /// <summary>
@@ -58,14 +60,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// TenaObservations
+        /// TenaObservationItem
         /// </summary>
         public virtual IList<TenaObservationItem> TenaObservationItems
         {
             get;
             set;
         }
-
 
         #endregion
     }

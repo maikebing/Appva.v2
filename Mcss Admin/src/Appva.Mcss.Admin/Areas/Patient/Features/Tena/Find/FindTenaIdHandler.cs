@@ -12,14 +12,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System.Net;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using System.Net.Http.Headers;
-    using System;
     using Newtonsoft.Json;
-    using System.Net;
 
     #endregion
 
@@ -71,15 +67,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 status = "Detta Identifi ID används redan.";
             }
-            else if(response.Key.StatusCode == HttpStatusCode.NotFound)
+            else if (response.Key.StatusCode == HttpStatusCode.NotFound)
             {
                 status = "Inga boende hittades med angivet Identifi ID.";
             }
-            else if(response.Key.StatusCode == HttpStatusCode.Unauthorized)
+            else if (response.Key.StatusCode == HttpStatusCode.Unauthorized)
             {
                 status = "Tjänsten har inte konfigurerats, kontakta Appvas support (kod: " + (int)HttpStatusCode.Unauthorized + ").";
             }
-            else if(response.Key.StatusCode == HttpStatusCode.InternalServerError)
+            else if (response.Key.StatusCode == HttpStatusCode.InternalServerError)
             {
                 status = "Ett fel har inträffat, försök igen om en stund. Om felet kvarstår, kontakta Appvas support (kod: " + (int)HttpStatusCode.InternalServerError + ").";
             }

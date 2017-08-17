@@ -9,30 +9,59 @@ namespace Appva.Mcss.Admin.Models
 {
     #region imports
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using Appva.Cqrs;
-    using Appva.Mcss.Web.ViewModels;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Web.ViewModels;
 
     #endregion
-
 
     /// <summary>
     /// TODO: 
     /// </summary>
-
-    public class ListTenaModel
+    public sealed class ListTenaModel
     {
         /// <summary>
         /// Patient
         /// </summary>
-        public PatientViewModel patientViewModel { get; set; }
-        public Patient patient { get; set; }
-        public string ExternalId { get; set; }
-        public bool isInstalled { get; set; }
-        public string Message { get; set; }
+        public PatientViewModel PatientViewModel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Patient
+        /// </summary>
+        public Patient Patient
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// ExternalId
+        /// </summary>
+        public string ExternalId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// IsInstalled
+        /// </summary>
+        public bool IsInstalled
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Message
+        /// </summary>
+        public string Message
+        {
+            get;
+            set;
+        }
     }
 }

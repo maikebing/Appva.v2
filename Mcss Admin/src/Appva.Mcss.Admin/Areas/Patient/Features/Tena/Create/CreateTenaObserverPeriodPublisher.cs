@@ -4,22 +4,14 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
-
 namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Mcss.Admin.Areas.Models;
 
     #endregion
 
@@ -45,7 +37,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ISettingsService settingsService;
 
-
         #endregion
 
         #region Constructor
@@ -53,6 +44,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateTenaObserverPeriodPublisher"/> class.
         /// </summary>
+        /// <param name="patientService">The <see cref="IPatientService"/>.</param>
+        /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/></param>
         public CreateTenaObserverPeriodPublisher(IPatientService patientService, ITenaService tenaService, ISettingsService settingsService)
         {
             this.patientService = patientService;
@@ -62,7 +56,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-
         #region RequestHandler Overrides.
 
         /// <inheritdoc />
@@ -70,7 +63,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var patient = this.patientService.Get(message.Id);
             var listTena = new ListTena { Id = patient.Id };
-            if(this.tenaService.CreateTenaObservervationPeriod(patient, message.StartDate, message.EndDate) == false)
+            if (this.tenaService.CreateTenaObservervationPeriod(patient, message.StartDate, message.EndDate) == false)
             {
                 listTena.Message = "Gick inte att skapa ny period. Överlappande datum.";
             }

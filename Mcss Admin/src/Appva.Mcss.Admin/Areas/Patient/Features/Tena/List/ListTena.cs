@@ -21,13 +21,24 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: 
     /// </summary>
-
     public sealed class ListTena : IRequest<ListTenaModel>
     {
         /// <summary>
         /// Patient Id
         /// </summary>
-        public Guid Id { get; set; }
-        public string Message { get; set; }
+        public Guid Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Message
+        /// </summary>
+        public string Message
+        {
+            get;
+            set;
+        }
     }
 }

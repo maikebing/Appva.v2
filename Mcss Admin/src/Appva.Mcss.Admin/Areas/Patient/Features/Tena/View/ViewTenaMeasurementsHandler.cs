@@ -9,16 +9,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Persistence;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
 
     #endregion
 
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     internal sealed class ViewTenaMeasurementsHandler : RequestHandler<ViewTenaMeasurements, ViewTenaMeasurementsModel>
     {
         #region Fields.
@@ -33,7 +32,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateTenaObserverPeriodHandler"/> class.
+        /// Initializes a new instance of the <see cref="ViewTenaMeasurementsHandler"/> class.
         /// </summary>
         /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
         public ViewTenaMeasurementsHandler(ITenaService tenaService)
@@ -60,7 +59,5 @@ namespace Appva.Mcss.Admin.Models.Handlers
         }
 
         #endregion
-
-
     }
 }

@@ -1,4 +1,9 @@
-﻿
+﻿// <copyright file="CheckDateHandler.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+// </author>
 
 namespace Appva.Mcss.Admin.Models.Handlers
 {
@@ -6,12 +11,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using System.Net.Http.Headers;
-    using System;
     using Newtonsoft.Json;
-    using System.Net;
 
     #endregion
 
@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FindTenaIdHandler"/> class.
+        /// Initializes a new instance of the <see cref="CheckDateHandler"/> class.
         /// </summary>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
@@ -55,13 +55,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override string Handle(CheckDate message)
         {
             string json_result = "ok";
-            string json_message = "";
-            if(this.tenaService.HasConflictingDate(message.Id, message.Date))
+            string json_message = string.Empty;
+            if (this.tenaService.HasConflictingDate(message.Id, message.Date))
             {
                 json_result = "fail";
                 json_message = "Det här datumet överlappar tidigare perioder";
             }
-            return JsonConvert.SerializeObject(new { Content = json_result, Message = json_message});
+            return JsonConvert.SerializeObject(new
+            {
+                Content = json_result,
+                Message = json_message
+            });
         }
 
         #endregion

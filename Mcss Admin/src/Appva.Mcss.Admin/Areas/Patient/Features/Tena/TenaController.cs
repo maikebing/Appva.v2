@@ -17,8 +17,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Models;
-    using Appva.Mvc.Security;
     using Appva.Mvc;
+    using Appva.Mvc.Security;
 
     #endregion
 
@@ -30,12 +30,13 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     {
         #region Routes.
 
-        #region List Tena.
+        #region List.
 
         /// <summary>
         /// Displays the observations list or the activation view.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="request">The <see cref="ListTena"/>.</param>
+        /// <returns>A <see cref="ActionResult"/>.</returns>
         [Route("list")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ReadValue)]
@@ -82,6 +83,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #region Check
 
+        /// <summary>
+        /// Validating the starting date selected
+        /// </summary>
+        /// <param name="request">The <see cref="CheckDate"/>.</param>
+        /// <returns>A <see cref="JsonResult"/>.</returns>
         [Route("check")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ReadValue)]
@@ -94,6 +100,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #region Create
 
+        /// <summary>
+        /// GET Creates a Tena Observation Period
+        /// </summary>
+        /// <param name="request">The <see cref="CreateTenaObserverPeriod"/>.</param>
+        /// <returns>A <see cref="ActionResult"/>.</returns>
         [Route("create")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
@@ -102,8 +113,13 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
             return this.View();
         }
 
+        /// <summary>
+        /// POST Creates a Tena Observation Period
+        /// </summary>
+        /// <param name="request">The <see cref="CreateTenaObserverPeriodModel"/>.</param>
+        /// <returns>A <see cref="ActionResult"/>.</returns>
         [Route("create")]
-        [HttpPost, Validate, ValidateAntiForgeryToken(), Dispatch("list", "tena")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "tena")]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
         public ActionResult Create(CreateTenaObserverPeriodModel request)
         {
@@ -113,6 +129,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         #endregion
 
         #region View
+
+        /// <summary>
+        /// View a list with Tena Observation Measurements
+        /// </summary>
+        /// <param name="request">The <see cref="ViewTenaMeasurements"/>.</param>
+        /// <returns>A <see cref="ActionResult"/>.</returns>
         [Route("view")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ReadValue)]
@@ -121,11 +143,15 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
             return this.View();
         }
 
-
         #endregion
 
         #region Upload
 
+        /// <summary>
+        /// Upload Tena Observation to designated API endpoint
+        /// </summary>
+        /// <param name="request">The <see cref="UploadTenaObserverPeriod"/>.</param>
+        /// <returns>A <see cref="ActionResult"/>.</returns>
         [Route("upload")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]

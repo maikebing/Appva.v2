@@ -30,10 +30,10 @@
                 <div class="tabs tabs--vertical tabs--dynamic" role="navigation">
                     <h2 class="visually-hidden">Huvudnavigering</h2>
                     <ul>
-                        @foreach (var item in Model.patient.TenaObservationPeriods.OrderByDescending(x => x.CreatedAt))
+                        @foreach (var item in Model.Patient.TenaObservationPeriods.OrderByDescending(x => x.CreatedAt))
                         {
                             <li class="tabs__item">
-                                <a data-update-section-target="tena-measurements-list" href="@Url.Action("view", "tena", new { periodid=item.Id })#tena-measurements-table" aria-label="Denna sida: @item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()">@item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()</a>
+                                <a data-update-section-target="tena-measurements-list" href="@Url.Action("view", "tena", new { Periodid=item.Id })#tena-measurements-table" aria-label="Denna sida: @item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()">@item.StartDate.ToShortDateString() &#8211; @item.EndDate.ToShortDateString()</a>
                             </li>
                         }
                     </ul>

@@ -53,14 +53,33 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override UploadTenaObserverPeriodModel Handle(UploadTenaObserverPeriod message)
         {
-            var patientId = message.Id;
-            var periodId = message.PeriodId;
+            //var patientId = message.Id;
+            var tenaId = this.patientService.Get(message.Id).TenaId.ToString();
+            var statusCode = this.tenaService.PostDataToTena(tenaId, message.PeriodId);
+            var statusMessage = string.Empty;
 
-            var responsone = this.tenaService.PostDataToTena(patientId, periodId);
+            switch (statusCode)
+            {
+                case System.Net.HttpStatusCode.Accepted:
+                    statusMessage = "Uppladdning lyckades";
+                    break;
+                case System.Net.HttpStatusCode.BadRequest:
+                    statusMessage = "Listan är tom eller innehåller fel. Vänligen kontrollera innehållet.";
+                    break;
+                case System.Net.HttpStatusCode.InternalServerError:
+                    statusMessage = "Ett fel uppstod. Var god försök igen. Om felet kvarstår, vänligen kontakta Appva Support.";
+                    break;
+                default:
+                    statusMessage = "Ett oväntat fel uppstod. Var god försök igen. Om felet kvarstår, vänligen kontakta Appva Support.";
+                    break;
+            }
 
-            // under construction
-
-            throw new NotImplementedException();
+            return new UploadTenaObserverPeriodModel
+            {
+                StatusCode = statusCode,
+                StatusMessage = statusMessage,
+                TenaId = tenaId
+            };
         }
 
         #endregion

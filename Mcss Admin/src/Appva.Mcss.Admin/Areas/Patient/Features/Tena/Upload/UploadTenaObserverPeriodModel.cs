@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Web;
 
     #endregion
@@ -21,5 +22,32 @@ namespace Appva.Mcss.Admin.Models
     /// </summary>
     public sealed class UploadTenaObserverPeriodModel
     {
+        /// <summary>
+        /// HttpStatusCode
+        /// </summary>
+        public HttpStatusCode StatusCode
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// HttpStatusMessage as String
+        /// </summary>
+        public string StatusMessage
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Tena Identifi ID
+        /// </summary>
+        public string TenaId
+        {
+            get;
+            set;
+        }
+
     }
 }

@@ -14,11 +14,15 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Web.Http;
+    using Appva.Apis.Http;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -53,7 +57,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="patientId">The Patient ID.</param>
         /// <param name="periodId">The Observation Period ID.</param>
         /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
-        KeyValuePair<HttpResponseMessage, string> PostDataToTena(Guid patientId, Guid periodId);
+        HttpStatusCode PostDataToTena(string tenaId, Guid periodId);
 
         /// <summary>
         /// Creates a new ObserverPeriod.
@@ -88,6 +92,16 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         /// <summary>
+        /// The <see cref="getEndpoint"/>.
+        /// </summary>
+        private const string getEndpoint = "https://tenaidentifistage.sca.com/api/resident/";
+
+        /// <summary>
+        /// The <see cref="token"/>.
+        /// </summary>
+        private static string token = string.Empty;
+
+        /// <summary>
         /// The <see cref="ITenaRepository"/>.
         /// </summary>
         private readonly ITenaRepository repository;
@@ -96,6 +110,16 @@ namespace Appva.Mcss.Admin.Application.Services
         /// The <see cref="ISettingsService"/>.
         /// </summary>
         private readonly ISettingsService settingsService;
+
+        /// <summary>
+        /// The <see cref="IHttpRequest"/>.
+        /// </summary>
+        private readonly IHttpRequest httpRequest;
+
+        /// <summary>
+        /// The <see cref="IHttpRequestClient"/>.
+        /// </summary>
+        private readonly IHttpRequestClient httpRequestClient;
 
         #endregion
 
@@ -106,10 +130,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        public TenaService(ITenaRepository repository, ISettingsService settingsService) // , IPersistenceContext context
+        /// <param name="httpRequest">The <see cref="IHttpRequest"/>.</param>
+        /// <param name="httpRequestClient">The <see cref="IHttpRequestClient"/>.</param>
+        public TenaService(ITenaRepository repository, ISettingsService settingsService)
         {
             this.repository = repository;
             this.settingsService = settingsService;
+            this.httpRequestClient = new HttpRequestClient();
         }
 
         #endregion
@@ -170,26 +197,33 @@ namespace Appva.Mcss.Admin.Application.Services
         }
         
         /// <inheritdoc />
-        public KeyValuePair<HttpResponseMessage, string> PostDataToTena(Guid patientId, Guid periodId)
+        public HttpStatusCode PostDataToTena(string tenaId, Guid periodId)
         {
             var measurements = this.repository.GetTenaPeriod(periodId).TenaObservationItems;
-            var tenaId = this.repository.GetTenaId(patientId);
-            HttpResponseMessage response = null;
-            string content = string.Empty;
+            var statuscode = new HttpStatusCode();
+            //// TODO: Take a look and go over this method for improvements.
 
-            using (var client = new HttpClient())
+            var headers = new Dictionary<string, string>();
+            headers.Add("Accept", "application/json");
+            headers.Add("Token", this.GetToken(tenaId));
+
+            if (measurements == null)
             {
-                client.BaseAddress = new Uri("https://tenaidentifistage.sca.com/api/resident/");
-                
-
-
+                statuscode = HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                string data = this.ConvertDataToTenaModel(measurements, tenaId);
+                var response = new HttpRequestClient("https://tenaidentifistage.sca.com/")
+                    .Post("api/ManualEvent/")
+                    .WithBody(data, "application/json")
+                    .WithHeaders(headers)
+                    .GetAsync()
+                    .Result;
+                statuscode = response.GetStatusCode();
             }
 
-            // TODO: Insert logic here, work in progress
-            // Make a POST call to TenaAPI with a Observation Period and its measurements as JSON
-
-
-            return new KeyValuePair<HttpResponseMessage, string>(response, content);
+            return statuscode;
         }
 
         #endregion
@@ -203,7 +237,53 @@ namespace Appva.Mcss.Admin.Application.Services
             var credentials = System.Text.Encoding.UTF8.GetBytes(settings.ClientId + ":" + settings.ClientSecret);
             return Convert.ToBase64String(credentials);
         }
-        
+
+        /// <inheritdoc />
+        private string GetToken(string externalId)
+        {
+            HttpResponseMessage response = null;
+            string content = string.Empty;
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.GetCredentials());
+                response = System.Threading.Tasks.Task.Run(() => client.GetAsync(getEndpoint + externalId)).Result;
+            }
+            if (response.IsSuccessStatusCode)
+            {
+                token = response.Headers.GetValues("Token").FirstOrDefault();
+            }
+            return token;
+        }
+
+        /// <inheritdoc />
+        private string ConvertDataToTenaModel(IList<TenaObservationItem> tenaObservationItemsList, string externalId)
+        {
+            var tenaAPIList = new List<TenaPostRequestModel>();
+            foreach (var item in tenaObservationItemsList)
+            {
+                tenaAPIList.Add(new TenaPostRequestModel
+                {
+                    id = item.Id.ToString(),
+                    eventType = item.Measurement,
+                    residentId = externalId,
+                    timestamp = item.UpdatedAt.ToString(),
+                    active = item.IsActive
+                });                
+            }
+
+            return JsonConvert.SerializeObject(tenaAPIList);
+        }
+
         #endregion
+    }
+
+    internal class TenaPostRequestModel
+    {
+        public string id { get; set; }
+        public string eventType { get; set; }
+        public string residentId { get; set; }
+        public string timestamp { get; set; }
+        public bool active { get; set; }
     }
 }

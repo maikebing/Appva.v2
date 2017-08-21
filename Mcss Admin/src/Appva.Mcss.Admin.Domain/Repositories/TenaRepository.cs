@@ -129,11 +129,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public string GetTenaId(Guid patientId)
         {
-            return this.persistence.QueryOver<Patient>()
-                .Where(x => x.Id == patientId)
-                .Select(t => t.TenaId)
-                .SingleOrDefault()
-                .ToString();
+            var patient = this.persistence.QueryOver<Patient>().Where(x => x.Id == patientId).SingleOrDefault();
+            return patient.TenaId;
         }
         #endregion
     }

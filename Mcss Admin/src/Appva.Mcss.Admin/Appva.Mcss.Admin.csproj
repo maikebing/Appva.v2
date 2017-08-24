@@ -527,6 +527,10 @@
     <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationRequest.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\MedicationController.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\OrderController.cs" />
@@ -1406,6 +1410,7 @@
     <Content Include="Areas\Area51\Features\Shared\_aclButtons.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRole.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\List\List.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

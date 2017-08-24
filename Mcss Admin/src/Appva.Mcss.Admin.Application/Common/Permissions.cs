@@ -696,6 +696,30 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
+        #region Medication
+
+        /// <summary>
+        /// The Medivation permissions.
+        /// </summary>
+        public static class Medication
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "medication/read";
+
+            /// <summary>
+            /// Permission to read/view backoffice.
+            /// </summary>
+            [Sort(100000)]
+            [Name("Read medications list")]
+            [Description("Permission to read/view medications list from eHM")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
+
+        #endregion
+
         #region Schedule.
 
         /// <summary>
@@ -1414,27 +1438,27 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #region Backoffice.
 
-    /// <summary>
-    /// The Backoffice permissions.
-    /// </summary>
-    public static class Backoffice
-    {
         /// <summary>
-        /// The read value.
+        /// The Backoffice permissions.
         /// </summary>
-        public const string ReadValue = Schema + "backoffice/read";
+        public static class Backoffice
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "backoffice/read";
 
-        /// <summary>
-        /// Permission to read/view backoffice.
-        /// </summary>
-        [Sort(100000)]
-        [Name("Read backoffice")]
-        [Description("Permission to read/view backoffice")]
-        [Visibility(Visibility.Hidden)]
-        public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
-    }
+            /// <summary>
+            /// Permission to read/view backoffice.
+            /// </summary>
+            [Sort(100000)]
+            [Name("Read backoffice")]
+            [Description("Permission to read/view backoffice")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
 
-    #endregion
+        #endregion
 
         #endregion
 

@@ -111,6 +111,7 @@ namespace Appva.Mcss.Admin.Application.Common
                     this.patient = new List<IMenuItem>()
                     {
                          MenuItem.CreateNew("Signeringslistor", "List", "Schedule", "Patient", null, null, Permissions.Schedule.Read, this.Schedule),
+                         MenuItem.CreateNew("Läkemedelslista", "List", "Medication", "Patient", null, null, Permissions.Medication.Read, null),
                          MenuItem.CreateNew("Signerade händelser", "Sign", "Schedule", "Patient", null, null, Permissions.Schedule.EventList, null),
                          MenuItem.CreateNew("Larm", "List", "Alerts", "Patient", null, null, Permissions.Alert.Read, null),
                          MenuItem.CreateNew("Rapport", "ScheduleReport", "Schedule", "Patient", null, null, Permissions.Schedule.Report, null),

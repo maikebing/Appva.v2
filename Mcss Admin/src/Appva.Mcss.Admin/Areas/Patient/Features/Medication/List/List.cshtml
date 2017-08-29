@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Admin.Areas.Patient.Models.ListMedicationModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Areas.Patient.Models.ListMedicationModel
 
 @{
     SetTitle("Läkemedelslista");
@@ -7,10 +8,167 @@
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 <div id="subheader" class="cf">
     <h1>Läkemedelslista</h1>
-}
-    }
+    <p class="filter">
+        <strong>Visa:</strong>
+        @Html.ActionLink("Alla", "List", new { }, new { @class = "sel div" })
+        @Html.ActionLink("Dos", "List", new { }, new { @class = "div" })
+        @Html.ActionLink("Stående ordination", "List", new { }, new { @class =  "div" })
+        @Html.ActionLink("Vid behov", "List", new { }, new { @class = "div" })
+    </p>
 </div>
 <div id="content">
 
+    <div id="content-primary" class="signlist-collection">
+
+        <div id="signlist">
+            <div><h2></h2></div>
+            <div id="signed-events">
+                <table>
+                    <thead>
+                        <tr class="head">
+                            <th scope="col">Läkemedel</th>
+                            <th scope="col">Styrka</th>
+                            <th scope="col">Läkemedelsform</th>
+                            <th scope="col">Dosering</th>
+                            <th scope="col">Ändamål</th>
+                            <th scope="col">Insättning</th>
+                            <th scope="col">Utsättning</th>
+                            <th scope="col">Signeringslista</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var drug in Model.Medications.Entities)
+                        {
+                            //var sequence = Model.Sequences.Where(x => x.ExternalId == drug.Content.Id).SingleOrDefault();
+                            var style = "sequence-inactive";// sequence != null ? (sequence.IsActive ? (sequence.UpdatedAt > drug.TimeStamp ? "y" : "alarm") : "sequence-inactive") : "";
+                            <tr class="@style">
+                                <td>
+                                    @drug.Name
+                                    <span class="date">
+                                        @if (drug.PackageType == Appva.Mcss.Admin.Application.Models.PackageType.Dispenzed)
+                                        {
+                                            @:Disp
+                                        }
+                                        else if (drug.PackageType == Appva.Mcss.Admin.Application.Models.PackageType.Scheduled)
+                                        {
+                                            @:Stående
+                                        }
+                                        else if (drug.PackageType == Appva.Mcss.Admin.Application.Models.PackageType.NeedBased)
+                                        {
+                                            @:Vid behov
+                                        }
+                                        
+                                    </span>
+                                </td>
+                                <td class="">
+                                    @drug.StrenghtText
+                                </td>
+                                <td class="">
+                                    @drug.Form
+                                </td>
+                                <td class="">
+                                    @drug.ScheduleText
+                                </td>
+                                <td class="">
+                                    @drug.Description
+                                </td>
+                                <td class="">
+                                    @drug.StartDate
+                                </td>
+                                <td class="">
+                                    @if (drug.EndDate.HasValue)
+                                    {
+                                        @drug.EndDate.GetValueOrDefault()
+                                    }
+                                    
+                                </td>
+                                <td>
+                                    @if (drug.PackageType != Appva.Mcss.Admin.Application.Models.PackageType.Dispenzed)
+                                    {
+                                        @Html.ActionLink(Permissions.Schedule.Read, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = Model.ScheduleID }, new { @class = "lb-link", @title = "Lägg till" })     
+                                    }
+                                </td>
+                                <td class="actions">
+                                    @Html.ActionLink("Visa mer", "Details", "Medication", new { Id = Model.Patient.Id }, new { @class = "btn", @title = "Visa mer" })
+                                </td>
+                            </tr>
+                        }
+                        <!--
+                        <tr class="">
+                            <td>
+                                Spironolakton Nykomed
+                                <span class="date">
+                                    2012-02-04 —
+                                </span>
+                            </td>
+                            <td class="">
+                                1 tablett dagligen. För blodtrycket.
+                            </td>
+                            <td class="">
+                                50 mg
+                            </td>
+                            <td class="">
+                                Ej på signeringslista
+                            </td>
+                            <td class="">
+                                @Html.ActionLink(Permissions.Sequence.Create, "Lägg till på signeringslista", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "btn lb-link", @title = "Lägg till" })
+                                @*Html.ActionLink(Permissions.Sequence.Update, "Ändra", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
+                            @Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })*@
+                            </td>
+                        </tr>
+                        <tr class="active">
+                            <td>
+                                Trombyl
+                                <span class="date">
+                                    2004-04-04 —
+                                </span>
+                            </td>
+                            <td class="">
+                                En tabl dagligen enligt tidigare ord
+                            </td>
+                            <td class="">75 mg</td>
+                            <td class="">
+                                <img alt="" src="/Assets/i/icn-ok.png"> Finns på signeringslista
+                            </td>
+                            <td class="">
+                                @*Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "lb-link", @title = "Lägg till" })*@
+                                @*Html.ActionLink(Permissions.Schedule.Read, "Visa signeringslista", "Details", "Schedule", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "btn", @title = "Ändra raden" })*@
+                                @*Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })*@
+                            </td>
+                        </tr>
+                        <tr class="inactive">
+                            <td>
+                                NovoMix 30 FlexPen
+                                <span class="date">
+                                    2012-01-07 — 2014-09-09
+                                </span>
+                            </td>
+                            <td class="">
+                                NovoMix 30 FlexPen
+                            </td>
+                            <td class="">100 E/ml</td>
+                            <td class="">
+                                <img alt="" src="~/Assets/i/icn-alarm.png">Ej updaterad på signeringslista
+                            </td>
+                            <td class="">
+                                @*Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { Id = Model.Patient.Id, ScheduleId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { @class = "lb-link", @title = "Lägg till" })*@
+                                @*Html.ActionLink(Permissions.Sequence.Update, "Updatera insats på signeringslista", "Update", "Sequence", new { Id = Model.Patient.Id, SequenceId = "369567F9-2DAA-4369-BC4B-A0F90166F130" }, new { class = "btn lb-link", title = "Ändra raden" })*@
+                                @*Html.ActionLink(Permissions.Sequence.Inactivate, "Ta bort", "Inactivate", "Sequence", new { Id = Model.Patient.Id, SequenceId = item.Id }, new { @class = "delete", @title = "Ta bort raden" })*@
+                            </td>
+                        </tr>-->
+
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        @*Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount).Options(x => x
+    .DisplayTemplate("Pagination")
+    .MaxNrOfPages(15)
+    .AlwaysAddFirstPageNumber())
+    }*@
+    </div>
 </div>
 

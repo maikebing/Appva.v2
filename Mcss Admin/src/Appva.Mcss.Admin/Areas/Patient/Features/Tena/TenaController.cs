@@ -8,6 +8,12 @@
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
 
+using System;
+using System.Threading.Tasks;
+using Appva.Mcss.Admin.Application.Services;
+using Appva.Mcss.Admin.Application.Services.Settings;
+using Appva.Sca;
+
 namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 {
     #region Imports.
@@ -28,6 +34,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     [RouteArea("patient"), RoutePrefix("{id:guid}/tena")]
     public sealed class TenaController : Controller
     {
+
         #region Routes.
 
         #region List.
@@ -159,6 +166,32 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         {
             return this.View();
         }
+
+        //[Route("find")]
+        //[HttpGet]
+        //[PermissionsAttribute(Permissions.Tena.CreateValue)]
+        //public async Task<ActionResult> FindTask(FindTenaId request)
+        //{
+        //    var apiService = new ApiService(new Uri("baseUrl"), "clientId", "clientSecret");
+        //    var response = await apiService.GetResidentAsync(request.Id.ToString());
+        //    var result = response.Result;
+
+        //    return 
+
+
+        //    //return JsonConvert.SerializeObject(new FindTenaIdModel
+        //    //{
+        //    //    TenaId = message.ExternalId,
+        //    //    RoomNumber = response.RoomNumber,
+        //    //    FacilityName = response.FacilityName,
+        //    //    StatusCode = 800, // (int)response.StatusCode
+        //    //    StatusMessage = status
+        //    //});
+
+
+        //    return this.View();
+        //}
+
 
         #endregion
 

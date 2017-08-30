@@ -17,7 +17,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class UploadTenaObserverPeriodHandler : RequestHandler<UploadTenaObserverPeriod, UploadTenaObserverPeriodModel>
+    internal sealed class UploadTenaObserverPeriodHandler : RequestHandler<UploadTenaObserverPeriod, string>
     {
         #region Fields.
 
@@ -51,35 +51,33 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override UploadTenaObserverPeriodModel Handle(UploadTenaObserverPeriod message)
+        public override string Handle(UploadTenaObserverPeriod message)
         {
             //var patientId = message.Id;
-            var tenaId = this.patientService.Get(message.Id).TenaId.ToString();
-            var statusCode = this.tenaService.PostDataToTena(tenaId, message.PeriodId);
-            var statusMessage = string.Empty;
 
-            switch (statusCode)
-            {
-                case System.Net.HttpStatusCode.Accepted:
-                    statusMessage = "Uppladdning lyckades";
-                    break;
-                case System.Net.HttpStatusCode.BadRequest:
-                    statusMessage = "Listan är tom eller innehåller fel. Vänligen kontrollera innehållet.";
-                    break;
-                case System.Net.HttpStatusCode.InternalServerError:
-                    statusMessage = "Ett fel uppstod. Var god försök igen. Om felet kvarstår, vänligen kontakta Appva Support.";
-                    break;
-                default:
-                    statusMessage = "Ett oväntat fel uppstod. Var god försök igen. Om felet kvarstår, vänligen kontakta Appva Support.";
-                    break;
-            }
+            var upload = this.tenaService.PostDataToTena(message.PeriodId);
 
-            return new UploadTenaObserverPeriodModel
-            {
-                StatusCode = statusCode,
-                StatusMessage = statusMessage,
-                TenaId = tenaId
-            };
+            //var tenaId = this.patientService.Get(message.Id).TenaId.ToString();
+            //var statusCode = this.tenaService.PostDataToTena(tenaId, message.PeriodId).StatusCode;
+            //var statusMessage = string.Empty;
+
+            //switch (statusCode)
+            //{
+            //    case System.Net.HttpStatusCode.Accepted:
+            //        statusMessage = "Uppladdning lyckades";
+            //        break;
+            //    case System.Net.HttpStatusCode.BadRequest:
+            //        statusMessage = "Listan är tom eller innehåller fel. Vänligen kontrollera innehållet.";
+            //        break;
+            //    case System.Net.HttpStatusCode.InternalServerError:
+            //        statusMessage = "Ett fel uppstod. Var god försök igen. Om felet kvarstår, vänligen kontakta Appva Support.";
+            //        break;
+            //    default:
+            //        statusMessage = "Ett oväntat fel uppstod. Var god försök igen. Om felet kvarstår, vänligen kontakta Appva Support.";
+            //        break;
+            //}
+
+            return "OK";
         }
 
         #endregion

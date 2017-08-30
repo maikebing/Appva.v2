@@ -59,28 +59,40 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override string Handle(FindTenaId message)
         {
             var response = this.tenaService.GetDataFromTena(message.ExternalId);
+            
             var status = string.Empty;
 
-            response.Key.StatusCode = this.tenaService.HasUniqueExternalId(message.ExternalId) == false ? HttpStatusCode.Conflict : response.Key.StatusCode;
+            //response.StatusCode = this.tenaService.HasUniqueExternalId(message.ExternalId) == false ? HttpStatusCode.Conflict : response.StatusCode;
 
-            if (response.Key.StatusCode == HttpStatusCode.Conflict)
-            {
-                status = "Detta Identifi ID används redan.";
-            }
-            else if (response.Key.StatusCode == HttpStatusCode.NotFound)
-            {
-                status = "Inga boende hittades med angivet Identifi ID.";
-            }
-            else if (response.Key.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                status = "Tjänsten har inte konfigurerats, kontakta Appvas support (kod: " + (int)HttpStatusCode.Unauthorized + ").";
-            }
-            else if (response.Key.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                status = "Ett fel har inträffat, försök igen om en stund. Om felet kvarstår, kontakta Appvas support (kod: " + (int)HttpStatusCode.InternalServerError + ").";
-            }
+            //switch (response.StatusCode)
+            //{
+            //    case HttpStatusCode.BadRequest:
+            //        status = "Inga boende hittades med angivet Identifi ID. (Felkod: " + (int)response.StatusCode + ").";
+            //        break;
+            //    case HttpStatusCode.Unauthorized:
+            //        status = "Tjänsten är ej installerad korrekt. (Felkod: " + (int)response.StatusCode + ").";
+            //        break;
+            //    case HttpStatusCode.NotFound:
+            //        status = "Inga boende hittades med angivet Identifi ID. (Felkod: " + (int)response.StatusCode + ").";
+            //        break;
+            //    case HttpStatusCode.Conflict:
+            //        status = "Detta Identifi ID är redan i bruk.. (Felkod: " + (int)response.StatusCode + ").";
+            //        break;
+            //    case HttpStatusCode.InternalServerError:
+            //        status = "Ett fel har inträffat, försök igen om en stund. Om felet kvarstår, kontakta Appvas support (Felkod: " + (int)response.StatusCode + ").";
+            //        break;
+            //    default:
+            //        status = string.Empty;
+            //        break;
+            //}
 
-            return JsonConvert.SerializeObject(new { Content = response.Value, StatusMessage = status, StatusCode = (int)response.Key.StatusCode });
+            return JsonConvert.SerializeObject(new FindTenaIdModel {
+                TenaId = message.ExternalId,
+                RoomNumber = response.RoomNumber,
+                FacilityName = response.FacilityName,
+                StatusCode = 800, // (int)response.StatusCode
+                StatusMessage = status
+            });
         }
 
         #endregion

@@ -53,7 +53,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Tena settings",
             "MCSS.Tena",
             "The Tena settings",
-            TenaConfiguration.CreateNew(null, null, "https://tenaidentifistage.sca.com/api/resident/"));
+            TenaConfiguration.CreateNew(null, null, "https://tenaidentifistage.sca.com/"));
 
         #endregion
 

@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Persistence;
+    using Appva.Sca.Models;
 
     #endregion
 
@@ -71,8 +72,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var patient = this.patientService.Get(message.Id);
 
-            if (this.tenaService.GetDataFromTena(message.ExternalId).Key.StatusCode == System.Net.HttpStatusCode.OK
-                && this.tenaService.HasUniqueExternalId(message.ExternalId))
+            if (this.tenaService.HasUniqueExternalId(message.ExternalId))  // this.tenaService.GetDataFromTena(message.ExternalId).StatusCode == System.Net.HttpStatusCode.Accepted &&
             {
                 patient.TenaId = message.ExternalId;
                 this.persistence.Update(patient);

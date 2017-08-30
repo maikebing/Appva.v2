@@ -3,36 +3,13 @@
     SetTitle("Ladda upp mätvärden");
 }
 
-@*<div class="grid">
-    <div data-size="s:24 l:12">
-        <div class="section section--hspace">
-            <h2>Skapa ny mätperiod - Tena Identifi</h2>
-            <div id="remote-response">
-                <div class="width-limiter width-limiter--xs">
-                    <div class="grid grid--align-center">
-                        <p>
-                            Bla bla testing....
-                            @Model.StatusCode <br/>
-                            @Model.StatusMessage
-
-                        </p>
-                    </div>
-                    <div class="form-controls form-controls--align-end form-controls--no-margin">
-                        <button type="button" class="button button--primary">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
-
 @if (Model.StatusCode == HttpStatusCode.Accepted)
 {
     <div id="remote-response">
-        <form action="@Url.Action("list","tena")" class="validate">
+        <form action="@Url.Action("list","tena")" class="validate" http-response="@Model.StatusCode" response-title="Uppladdningen lyckades">
             <div class="width-limiter width-limiter--xs">
                 <p>Uppladdat till TENA Identifi.</p>
-                <p><strong>@Model.TenaId</strong></p>
+                <p><strong>@Model.StatusMessage</strong></p> 
 
                 <div class="form-controls form-controls--align-end form-controls--no-margin">
                     <a href="@Url.Action("list","tena")" class="button" data-dialog-close="true">Ok</a>
@@ -44,9 +21,9 @@
 else
 {
     <div id="remote-response">
-        <form action="@Url.Action("list","tena")" class="validate">
+        <form action="@Url.Action("list","tena")" class="validate" http-response="@Model.StatusCode" response-title="Uppladdningen misslyckades">
             <div class="width-limiter width-limiter--xs">
-                <p>Uppladdning misslyckades.</p>
+                @*<p>Uppladdning misslyckades.</p>*@
                 <p><strong>@Model.StatusCode</strong>: @Model.StatusMessage</p>
 
                 <div class="form-controls form-controls--align-end form-controls--no-margin">

@@ -57,9 +57,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
-        /// The request URI.
+        /// The API BaseAddress.
         /// </summary>
-        public string RequestUri
+        public string BaseAddress
         {
             get;
             set;

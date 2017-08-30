@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             {
                 ClientIdMask = Mask(tenaSettings.ClientId),
                 ClientSecretMask = Mask(tenaSettings.ClientSecret),
-                RequestUri = tenaSettings.RequestUri,
+                BaseAddress = tenaSettings.BaseAddress,
                 IsInstalled = tenaSettings.IsInstalled
             };
         }

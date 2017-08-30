@@ -8,6 +8,10 @@
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
 
+using System.Threading.Tasks;
+using Appva.Core.Extensions;
+using Appva.Http;
+
 namespace Appva.Mcss.Admin.Application.Services
 {
     #region Imports.
@@ -22,6 +26,8 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Sca;
+    using Sca.Models;
     using Newtonsoft.Json;
 
     #endregion
@@ -43,21 +49,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="externalId">The external tena id.</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
         bool HasUniqueExternalId(string externalId);
-
-        /// <summary>
-        /// Get data from the TENA API.
-        /// </summary>
-        /// <param name="externalId">The external tena id.</param>
-        /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
-        KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId);
-
-        /// <summary>
-        /// Post data to the TENA API.
-        /// </summary>
-        /// <param name="patientId">The Patient ID.</param>
-        /// <param name="periodId">The Observation Period ID.</param>
-        /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
-        HttpStatusCode PostDataToTena(string tenaId, Guid periodId);
 
         /// <summary>
         /// Creates a new ObserverPeriod.
@@ -82,6 +73,22 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="periodId">Period ID</param>
         /// <returns>Returns a <see cref="TenaObservationPeriod"/>observation period</returns>
         TenaObservationPeriod GetTenaObservationPeriod(Guid periodId);
+
+        /// <summary>
+        /// Get data from the TENA API.
+        /// </summary>
+        /// <param name="externalId">The external tena id.</param>
+        /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
+        GetResidentModel GetDataFromTena(string externalId);
+
+        /// <summary>
+        /// Post data to the TENA API.
+        /// </summary>
+        /// <param name="patientId">The Patient ID.</param>
+        /// <param name="periodId">The Observation Period ID.</param>
+        /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
+        List<GetManualEventModel> PostDataToTena(Guid periodId);
+
     }
 
     /// <summary>
@@ -112,14 +119,9 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly ISettingsService settingsService;
 
         /// <summary>
-        /// The <see cref="IHttpRequest"/>.
+        /// The <see cref="IApiService"/>.
         /// </summary>
-        private readonly IHttpRequest httpRequest;
-
-        /// <summary>
-        /// The <see cref="IHttpRequestClient"/>.
-        /// </summary>
-        private readonly IHttpRequestClient httpRequestClient;
+        private ApiService apiService; // readonly
 
         #endregion
 
@@ -130,13 +132,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        /// <param name="httpRequest">The <see cref="IHttpRequest"/>.</param>
-        /// <param name="httpRequestClient">The <see cref="IHttpRequestClient"/>.</param>
+        /// <param name="apiService">The <see cref="IApiService"/>.</param>
         public TenaService(ITenaRepository repository, ISettingsService settingsService)
         {
             this.repository = repository;
             this.settingsService = settingsService;
-            this.httpRequestClient = new HttpRequestClient();
+            //this.apiService = apiService;
+            this.apiService = new ApiService(new Uri(GetSettings().BaseAddress), GetSettings().ClientId, GetSettings().ClientSecret);
         }
 
         #endregion
@@ -146,29 +148,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public string GetRequestUri()
         {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings).RequestUri;
+            return this.settingsService.Find(ApplicationSettings.TenaSettings).BaseAddress;
         }
 
         /// <inheritdoc />
         public bool HasUniqueExternalId(string externalId)
         {
             return this.repository.HasUniqueExternalId(externalId);
-        }
-
-        /// <inheritdoc />
-        public KeyValuePair<HttpResponseMessage, string> GetDataFromTena(string externalId)
-        {
-            HttpResponseMessage response = null;
-            string content = string.Empty;
-
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.GetCredentials());
-                response = System.Threading.Tasks.Task.Run(() => client.GetAsync(this.GetRequestUri() + externalId)).Result;
-                content = response.StatusCode == HttpStatusCode.OK ? response.Content.ReadAsStringAsync().Result : string.Empty;
-            }
-
-            return new KeyValuePair<HttpResponseMessage, string>(response, content);
         }
 
         /// <inheritdoc />
@@ -195,35 +181,44 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             return this.repository.HasConflictingDate(patientId, startdate);
         }
-        
+        #endregion
+
+
+
+        #region API communcation
+        // TODO: Clean up above methods.
+
         /// <inheritdoc />
-        public HttpStatusCode PostDataToTena(string tenaId, Guid periodId)
+        public GetResidentModel GetDataFromTena(string externalId)
         {
+            return this.apiService.GetResident(externalId);
+
+            //return apiService.GetResident(externalId);
+        }
+
+        /// <inheritdoc />
+        public List<GetManualEventModel> PostDataToTena(Guid periodId)
+        {
+            // TODO: Exceptionhandling
             var measurements = this.repository.GetTenaPeriod(periodId).TenaObservationItems;
-            var statuscode = new HttpStatusCode();
-            //// TODO: Take a look and go over this method for improvements.
 
-            var headers = new Dictionary<string, string>();
-            headers.Add("Accept", "application/json");
-            headers.Add("Token", this.GetToken(tenaId));
-
-            if (measurements == null)
+            if (measurements.IsNull())
             {
-                statuscode = HttpStatusCode.BadRequest;
+                return new List<GetManualEventModel>()
+                {
+                    new GetManualEventModel()
+                    {
+                        Id = "0000",
+                        ImportResult = "EmptyList"
+                    }
+                };
             }
-            else
-            {
-                string data = this.ConvertDataToTenaModel(measurements, tenaId);
-                var response = new HttpRequestClient("https://tenaidentifistage.sca.com/")
-                    .Post("api/ManualEvent/")
-                    .WithBody(data, "application/json")
-                    .WithHeaders(headers)
-                    .GetAsync()
-                    .Result;
-                statuscode = response.GetStatusCode();
-            }
+            return apiService.PostManualEvent(this.ConvertDataToTenaModel(measurements));
+        }
 
-            return statuscode;
+        public async Task<IHttpResponseMessage<GetResidentModel>> GetDataFromTenaAsync(string externalId)
+        {
+            return await this.GetDataFromTenaAsync(externalId);
         }
 
         #endregion
@@ -231,59 +226,29 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Private methods.
 
         /// <inheritdoc />
-        private string GetCredentials()
+        private List<PostManualEventModel> ConvertDataToTenaModel(IList<TenaObservationItem> tenaObservationItemsList)
         {
-            var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
-            var credentials = System.Text.Encoding.UTF8.GetBytes(settings.ClientId + ":" + settings.ClientSecret);
-            return Convert.ToBase64String(credentials);
-        }
-
-        /// <inheritdoc />
-        private string GetToken(string externalId)
-        {
-            HttpResponseMessage response = null;
-            string content = string.Empty;
-
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", this.GetCredentials());
-                response = System.Threading.Tasks.Task.Run(() => client.GetAsync(getEndpoint + externalId)).Result;
-            }
-            if (response.IsSuccessStatusCode)
-            {
-                token = response.Headers.GetValues("Token").FirstOrDefault();
-            }
-            return token;
-        }
-
-        /// <inheritdoc />
-        private string ConvertDataToTenaModel(IList<TenaObservationItem> tenaObservationItemsList, string externalId)
-        {
-            var tenaAPIList = new List<TenaPostRequestModel>();
+            var tenaApiList = new List<PostManualEventModel>();
             foreach (var item in tenaObservationItemsList)
             {
-                tenaAPIList.Add(new TenaPostRequestModel
+                tenaApiList.Add(new PostManualEventModel
                 {
-                    id = item.Id.ToString(),
-                    eventType = item.Measurement,
-                    residentId = externalId,
-                    timestamp = item.UpdatedAt.ToString(),
-                    active = item.IsActive
-                });                
+                    Id = item.Id.ToString(),
+                    EventType = item.Measurement,
+                    ResidentId = item.TenaObservationPeriod.Patient.TenaId,
+                    Timestamp = item.UpdatedAt.ToString(),
+                    Active = item.IsActive
+                });
             }
+            return tenaApiList;
+        }
 
-            return JsonConvert.SerializeObject(tenaAPIList);
+        /// <inheritdoc />
+        private Domain.VO.TenaConfiguration GetSettings()
+        {
+            return this.settingsService.Find(ApplicationSettings.TenaSettings);
         }
 
         #endregion
-    }
-
-    internal class TenaPostRequestModel
-    {
-        public string id { get; set; }
-        public string eventType { get; set; }
-        public string residentId { get; set; }
-        public string timestamp { get; set; }
-        public bool active { get; set; }
     }
 }

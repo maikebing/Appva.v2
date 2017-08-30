@@ -76,9 +76,8 @@
       <HintPath>..\..\..\Packages\Appva.GrandId.0.1.4\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Http, Version=0.1.0.17181, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Http.0.1.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Appva.Http, Version=0.2.0.14844, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Http.0.2.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
     </Reference>
     <Reference Include="Appva.Ldap, Version=0.0.1.25447, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
@@ -183,9 +182,8 @@
     <Reference Include="MvcPaging">
       <HintPath>..\..\..\Packages\MvcPaging.2.1.2\lib\net40\MvcPaging.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
@@ -218,6 +216,12 @@
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
@@ -638,6 +642,8 @@
     <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Find\FindTenaId.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Find\FindTenaIdHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Find\FindTenaIdHandlerAsync.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Find\FindTenaIdModel.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTena.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTenaHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\List\ListTenaModel.cs" />
@@ -1020,6 +1026,7 @@
     <Content Include="Assets\i\trendup.png" />
     <Content Include="Assets\i\trest-logo.png" />
     <Content Include="Assets\i\web-ajax-loader.gif" />
+    <Content Include="Assets\js\components\dialog\dialog.js" />
     <Content Include="Assets\js\jquery\jquery-1.6.3.js" />
     <Content Include="Assets\js\jquery\jquery-1.6.3.min.js" />
     <Content Include="Assets\js\jquery\jquery-1.8.2.js" />
@@ -1094,6 +1101,10 @@
     <ProjectReference Include="..\Appva.Mcss.Admin.Domain\Appva.Mcss.Admin.Domain.csproj">
       <Project>{26d66f09-5072-4fb2-81c4-29df5249aaa7}</Project>
       <Name>Appva.Mcss.Admin.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Sca\Appva.Sca.csproj">
+      <Project>{f523cd19-d7c7-41b7-a28e-a2b978086513}</Project>
+      <Name>Appva.Sca</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

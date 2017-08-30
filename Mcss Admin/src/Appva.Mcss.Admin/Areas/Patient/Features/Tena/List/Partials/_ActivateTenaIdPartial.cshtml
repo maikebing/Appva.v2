@@ -12,10 +12,11 @@
                     data: { 'ExternalId': this.value },
                     success: function (result) {
                         var message = JSON.parse(result);
-                        if (message.StatusCode == 200) {
+                        console.log(result);
+                        if (message.StatusCode == 800) {
                             resetError();
-                            $('.tena-response-facility').html(JSON.parse(message.Content).facilityName);
-                            $('.tena-response-room').html(JSON.parse(message.Content).roomNumber);
+                            $('.tena-response-facility').html(message.FacilityName);
+                            $('.tena-response-room').html(message.RoomNumber);
                             $('#tena-response').show();
                             $('.button--primary').prop('disabled', false);
                             $('.button--secondary').prop('disabled', false).click(function (e) {
@@ -25,6 +26,7 @@
                             });
                             $('.button--primary').prop('disabled', false);
                         } else {
+                            console.log(message.StatusMessage);
                             $('.tena-error-message').html(message.StatusMessage);
                             $('#tena-error').show();
                         }

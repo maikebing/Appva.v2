@@ -4,6 +4,9 @@
 // <author>
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
+// <author>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+// </author>
 
 namespace Appva.Mcss.Admin.Domain.VO
 {
@@ -26,14 +29,14 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="clientId">The client id.</param>
         /// <param name="clientSecret">The client secret.</param>
-        /// <param name="requestUri">The request URI.</param>
+        /// <param name="baseAddress">The API BaseAddress.</param>
         /// <param name="isInstalled">If the Tena permissions has been installed.</param>
         [JsonConstructor]
-        private TenaConfiguration(string clientId, string clientSecret, string requestUri, bool isInstalled)
+        private TenaConfiguration(string clientId, string clientSecret, string baseAddress, bool isInstalled)
         {
             this.ClientId = clientId;
             this.ClientSecret = clientSecret;
-            this.RequestUri = requestUri;
+            this.BaseAddress = baseAddress;
             this.IsInstalled = isInstalled;
         }
 
@@ -62,10 +65,10 @@ namespace Appva.Mcss.Admin.Domain.VO
         }
 
         /// <summary>
-        /// The request URI.
+        /// The API BaseAddress.
         /// </summary>
         [JsonProperty]
-        public string RequestUri
+        public string BaseAddress
         {
             get;
             set;
@@ -90,12 +93,12 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="clientId">The client id.</param>
         /// <param name="clientSecret">The client secret.</param>
-        /// <param name="requestUri">The request URI.</param>
+        /// <param name="baseAddress">The API BaseAddress.</param>
         /// <param name="isInstalled">If the Tena permissions has been installed.</param>
         /// <returns>A new <see cref="TenaConfiguration"/> instance.</returns>
-        public static TenaConfiguration CreateNew(string clientId = null, string clientSecret = null, string requestUri = null, bool isInstalled = false)
+        public static TenaConfiguration CreateNew(string clientId = null, string clientSecret = null, string baseAddress = null, bool isInstalled = false)
         {
-            return new TenaConfiguration(clientId, clientSecret, requestUri, isInstalled);
+            return new TenaConfiguration(clientId, clientSecret, baseAddress, isInstalled);
         }
 
         #endregion
@@ -107,7 +110,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         {
             return this.ClientId.GetHashCode() +
                    this.ClientSecret.GetHashCode() +
-                   this.RequestUri.GetHashCode() +
+                   this.BaseAddress.GetHashCode() +
                    this.IsInstalled.GetHashCode();
         }
 
@@ -117,7 +120,7 @@ namespace Appva.Mcss.Admin.Domain.VO
             return other != null
                 && this.ClientId.Equals(other.ClientId)
                 && this.ClientSecret.Equals(other.ClientSecret)
-                && this.RequestUri.Equals(other.RequestUri)
+                && this.BaseAddress.Equals(other.BaseAddress)
                 && this.IsInstalled.Equals(other.IsInstalled);
         }
 

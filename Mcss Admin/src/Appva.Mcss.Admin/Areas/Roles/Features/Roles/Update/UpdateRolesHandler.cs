@@ -67,7 +67,8 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
             {
                 Name = role.Name,
                 Description = role.Description,
-                Permissions = this.Merge(permissions, role.Permissions)
+                Permissions = this.Merge(permissions, role.Permissions),
+                IsHiddenRole = role.IsVisible == false
             };
         }
 

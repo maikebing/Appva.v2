@@ -3930,6 +3930,6 @@ ul.people li {
 }
 
 /* Overriding jQuery generated class tickLabel */
-.tickLabel {
+.yAxis > .tickLabel {
     left: 0px !important;
 }

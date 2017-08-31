@@ -57,7 +57,9 @@ namespace Appva.Sca
         /// <summary>
         /// The <see cref="ApiClient"/> client.
         /// </summary>
-        private ApiClient client;
+        //private ApiClient client;
+
+        private ApiTestClient client;
 
         #endregion
 
@@ -72,7 +74,8 @@ namespace Appva.Sca
         public ApiService(Uri baseAddress, string clientId, string clientSecret)
         {
             this.config = new Configuration(baseAddress, clientId, clientSecret);
-            this.client = new ApiClient(this.config);
+            //this.client = new ApiClient(this.config);
+            this.client = new ApiTestClient(this.config);
             
         }
 

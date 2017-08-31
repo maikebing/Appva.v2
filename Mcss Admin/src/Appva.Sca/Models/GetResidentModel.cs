@@ -15,6 +15,6 @@ namespace Appva.Sca.Models
         public string FacilityName { get; set; }
         [HttpRequestProperty("externalId")]
         public string ExternalId { get; set; }
-        //public HttpStatusCode StatusCode { get; set; }
+        public string Message { get; set; }
     }
 }

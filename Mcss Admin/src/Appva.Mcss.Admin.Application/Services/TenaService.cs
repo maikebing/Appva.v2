@@ -216,10 +216,10 @@ namespace Appva.Mcss.Admin.Application.Services
             return apiService.PostManualEvent(this.ConvertDataToTenaModel(measurements));
         }
 
-        public async Task<IHttpResponseMessage<GetResidentModel>> GetDataFromTenaAsync(string externalId)
-        {
-            return await this.GetDataFromTenaAsync(externalId);
-        }
+        //public async Task<IHttpResponseMessage<GetResidentModel>> GetDataFromTenaAsync(string externalId)
+        //{
+        //    return await this.GetDataFromTenaAsync(externalId);
+        //}
 
         #endregion
 

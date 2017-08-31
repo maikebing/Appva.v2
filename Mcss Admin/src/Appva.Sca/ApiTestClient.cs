@@ -55,60 +55,58 @@ namespace Appva.Sca
             : base(options, handler, disposeHandler)
         {
             this.config = config;
-            this.BaseAddress = new Uri("https://tenaidentifistage.sca.com/");
+            this.BaseAddress = config.BaseAddress;
         }
 
         #endregion
 
         #region Members.
 
-        public async Task<string> GetMeTheBloodyToken(string url)
-        {
-            var tokenvalue = string.Empty;
-            var httpMessage = new HttpResponseMessage();
-            try
-            {
-                var getmeabloodytoken = await this.Get("https://tenaidentifistage.sca.com/api/token/")
-                    .WithBasicAuthorization(
-                        "RUFCRTY3NTEtMkFCRC00MzExLUE3OTQtNzBBODMzRDMxQzMxOkM1QzhEQUVCLTZDMDctNDIzRC04MkNGLTgxNzdDOENCOTYwNA==")
-                    .ToResultAsync<string>();
-
-                tokenvalue = "this is a fake token value";
-            }
-            catch (HttpResponseException exp)
-            {
-                tokenvalue = exp.Message;
-                httpMessage = exp.Response;
-
-            }
-
-            //var x = getmeabloodytoken.Response.IsSuccessStatusCode;
-
-            return tokenvalue;
-        }
-
         /// <summary>
         /// Get Resident
         /// </summary>
-        /// <param name="url">External Id.</param>
-        /// <returns>IHttpResponseMessage</returns>
-        public GetResidentModel GiveMeAResident(string url)
+        /// <param name="id">A List of <see cref="string"/>.</param>
+        /// <returns>GetResidentModel<see cref="GetResidentModel"/>.</returns>
+        public GetResidentModel GetResident(string id)
         {
-            var model = new GetResidentModel();
-            model.ExternalId = url;
+            var myToken = this.GetToken();
+            var mockedModel = new GetResidentModel
+            {
+                ExternalId = id,
+                RoomNumber = "1",
+                FacilityName = myToken
+            };
+            var result = mockedModel;
+            return result;
+        }
 
-            try
+        /// <summary>
+        /// Post ManualEvent
+        /// </summary>
+        /// <param name="events">A List of <see cref="PostManualEventModel"/>.</param>
+        /// <returns>IHttpResponseMessage</returns>
+        public List<GetManualEventModel> PostManualEvent(IList<PostManualEventModel> events)
+        {
+            var tokenvalue = this.GetToken();
+
+            var FakeResponseData = new List<GetManualEventModel>();
+            foreach (var item in events)
             {
-                var abloodytokenvalue = this.GetMeTheBloodyToken(string.Empty).Result;
-                model.FacilityName = abloodytokenvalue;
-                model.RoomNumber = "123";
+                FakeResponseData.Add(new GetManualEventModel()
+                {
+                    Id = item.Id,
+                    ImportResult = "Created"
+                });
             }
-            catch (Exception ex)
-            {
-                model.RoomNumber = ex.StackTrace;
-                model.FacilityName = ex.Message;
-            }
-            return model;
+
+            //var result = this.Post(UriHelper.ManualEventUrl, events)
+            //    .WithBearerToken(tokenvalue)
+            //    .ToResultAsync<dynamic>().Result;
+            //if (result.Response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            //{
+            //    this.token = null;
+            //}
+            return FakeResponseData;
         }
 
         /// <summary>
@@ -124,16 +122,16 @@ namespace Appva.Sca
             else
             {
                 /* Fake response generated to simulate a real environment */
-                var FakeResponse = new HttpResponseMessage();
-                FakeResponse.Headers.Add("Authorization", "Bearer FAKETOKENVALUE");
-                FakeResponse.Content.Headers.Expires = DateTimeOffset.UtcNow.AddMinutes(30);
-                FakeResponse.StatusCode = HttpStatusCode.OK;
+                //var fakeResponse = new HttpResponseMessage();
+                //fakeResponse.Headers.Add("Authorization", "Bearer FAKETOKENVALUE");
+                //fakeResponse.Content = new HttpMessageContent(new HttpResponseMessage(HttpStatusCode.Accepted));
+                //fakeResponse.Content.Headers.Expires = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30));
+                //var response = fakeResponse;
+                //var result = response;
 
-                //var response = this.Get(UriHelper.TokenUrl).WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>().Result;
-                //var result = response.Response;
+                var response = this.Get(UriHelper.TokenUrl).WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>().Result;
+                var result = response.Response;
 
-                var response = FakeResponse;
-                var result = response;
 
                 if (result.IsSuccessStatusCode)
                 {
@@ -165,6 +163,52 @@ namespace Appva.Sca
             return this.token.Value;
         }
 
+        public async Task<string> GetTokenAsync()
+        {
+            var response = await this.Get("api/token/").WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>();
+            var result = response.Response;
+
+            if (result.IsSuccessStatusCode)
+            {
+                IEnumerable<string> authvalues = null;
+                string tokenValue = string.Empty;
+                this.token = new Token();
+
+                result.Headers.TryGetValues("Authorization", out authvalues);
+                var expires = result.Content.Headers.Expires;
+
+                if (authvalues.IsNull() || expires == null)
+                {
+                    ////If Bearer value is missing or invalid format and/or Expires value are missing.
+                    this.token.SetValues("NOT_VALID", DateTimeOffset.UtcNow);
+                }
+                else
+                {
+                    tokenValue = authvalues.FirstOrDefault().Replace("Bearer", string.Empty).TrimStart();
+                    this.token.SetValues(tokenValue, (DateTimeOffset)expires);
+                }
+
+                return this.token.Value;
+            }
+
+            // kommer hit om credentials eller token enpoint är felinställda. Generar 500 fel i slutändan.
+            this.token = new Token("NOT_VALID");
+            return this.token.Value;
+        }
+
+        #endregion
+
+        #region Testmembers.
+        // TEST Async
+        public async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id)
+        {
+            var myToken = await this.GetTokenAsync();
+            var residentUrl = this.BaseAddress + UriHelper.ResidentUrl(id);
+            var testUrl = "https://tenaidentifistage.sca.com/" + UriHelper.ResidentUrl(id);
+            var response = await this.Get(UriHelper.ResidentUrl(id)).WithBearerToken(myToken)
+                .ToResultAsync<GetResidentModel>();
+            return response;
+        }
         #endregion
     }
 }

@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -61,13 +62,50 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// </summary>
         /// <param name="request">The <see cref="FindTenaId"/>.</param>
         /// <returns>A <see cref="JsonResult"/>.</returns>
+        //[Route("find")]
+        //[HttpGet, Dispatch]
+        //[PermissionsAttribute(Permissions.Tena.ActivateValue)]
+        //public DispatchJsonResult Find(FindTenaId request)
+        //{
+        //    return this.JsonGet();
+        //}
+
+
+
         [Route("find")]
-        [HttpGet, Dispatch]
-        [PermissionsAttribute(Permissions.Tena.ActivateValue)]
-        public DispatchJsonResult Find(FindTenaId request)
+        [HttpGet]
+        [PermissionsAttribute(Permissions.Tena.CreateValue)]
+        public async Task<ActionResult> Find(FindTenaId request)
         {
-            return this.JsonGet();
+            var residentModel = new Appva.Sca.Models.GetResidentModel();
+            var tenaId = request.ExternalId;
+            var apiService = new ApiService(new Uri("https://tenaidentifistage.sca.com/"), "EABE6751-2ABD-4311-A794-70A833D31C31", "C5C8DAEB-6C07-423D-82CF-8177C8CB9604");
+            var response = await apiService.GetResidentAsync(tenaId);
+            if (response.Response.IsSuccessStatusCode)
+            {
+                // check if HasUniqueID...
+
+            }
+            var result = response.Result;
+
+            
+
+            var model = JsonConvert.SerializeObject(result);
+            return this.Content(model);
+
+            //return JsonConvert.SerializeObject(new FindTenaIdModel
+            //{
+            //    TenaId = message.ExternalId,
+            //    RoomNumber = response.RoomNumber,
+            //    FacilityName = response.FacilityName,
+            //    StatusCode = 800, // (int)response.StatusCode
+            //    StatusMessage = status
+            //});
+
+            //return this.View();
         }
+
+
 
         #endregion
 
@@ -166,32 +204,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         {
             return this.View();
         }
-
-        //[Route("find")]
-        //[HttpGet]
-        //[PermissionsAttribute(Permissions.Tena.CreateValue)]
-        //public async Task<ActionResult> FindTask(FindTenaId request)
-        //{
-        //    var apiService = new ApiService(new Uri("baseUrl"), "clientId", "clientSecret");
-        //    var response = await apiService.GetResidentAsync(request.Id.ToString());
-        //    var result = response.Result;
-
-        //    return 
-
-
-        //    //return JsonConvert.SerializeObject(new FindTenaIdModel
-        //    //{
-        //    //    TenaId = message.ExternalId,
-        //    //    RoomNumber = response.RoomNumber,
-        //    //    FacilityName = response.FacilityName,
-        //    //    StatusCode = 800, // (int)response.StatusCode
-        //    //    StatusMessage = status
-        //    //});
-
-
-        //    return this.View();
-        //}
-
 
         #endregion
 

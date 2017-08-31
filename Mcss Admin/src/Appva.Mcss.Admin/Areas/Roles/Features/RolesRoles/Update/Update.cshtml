@@ -7,9 +7,12 @@
     @using (Html.Post())
     {
         <div class="form-tab form-tab-1">
-            <h3 class="section-title">Redigera behörighet på signeringslista</h3>
+            <h3 class="section-title">Redigera behörighet för @Model.RoleName</h3>
             @Html.ValidationAlert("Ett fel inträffade", "Var vänlig korrigera markerade fält i formuläret och försök igen")
-            @Html.FormGroup(x => x.Roles, "text").Label("Roller").CheckboxList().Validate().Build()
+            <h4 class="section-title">Roller för superadmins</h4>
+            @Html.FormGroup(x => x.AdminRoles, "text").CheckboxList().Validate().Build()
+            <h4 class="section-title">Roller för användare</h4>
+            @Html.FormGroup(x => x.UserRoles, "text").CheckboxList().Validate().Build()
         </div>
         <div class="submit">
             @Html.Submit("Spara")

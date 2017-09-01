@@ -6,6 +6,7 @@
 // </author>
 using Appva.Core.Extensions;
 using Appva.Http;
+using Appva.Mcss.Admin.Domain.Entities;
 using Appva.Sca.Models;
 using System;
 using System.Collections.Generic;
@@ -121,14 +122,6 @@ namespace Appva.Sca
             }
             else
             {
-                /* Fake response generated to simulate a real environment */
-                //var fakeResponse = new HttpResponseMessage();
-                //fakeResponse.Headers.Add("Authorization", "Bearer FAKETOKENVALUE");
-                //fakeResponse.Content = new HttpMessageContent(new HttpResponseMessage(HttpStatusCode.Accepted));
-                //fakeResponse.Content.Headers.Expires = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30));
-                //var response = fakeResponse;
-                //var result = response;
-
                 var response = this.Get(UriHelper.TokenUrl).WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>().Result;
                 var result = response.Response;
 
@@ -159,40 +152,45 @@ namespace Appva.Sca
                 // kommer hit om credentials eller token enpoint är felinställda. Generar 500 fel i slutändan.
                 this.token = new Token("NOT_VALID");
             }
-
             return this.token.Value;
         }
 
         public async Task<string> GetTokenAsync()
         {
-            var response = await this.Get("api/token/").WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>();
-            var result = response.Response;
-
-            if (result.IsSuccessStatusCode)
+            if (this.token.IsNotNull() && this.token.IsValid)
             {
-                IEnumerable<string> authvalues = null;
-                string tokenValue = string.Empty;
-                this.token = new Token();
-
-                result.Headers.TryGetValues("Authorization", out authvalues);
-                var expires = result.Content.Headers.Expires;
-
-                if (authvalues.IsNull() || expires == null)
-                {
-                    ////If Bearer value is missing or invalid format and/or Expires value are missing.
-                    this.token.SetValues("NOT_VALID", DateTimeOffset.UtcNow);
-                }
-                else
-                {
-                    tokenValue = authvalues.FirstOrDefault().Replace("Bearer", string.Empty).TrimStart();
-                    this.token.SetValues(tokenValue, (DateTimeOffset)expires);
-                }
-
                 return this.token.Value;
             }
+            else
+            {
+                var response = await this.Get("api/token/").WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>();
+                var result = response.Response;
 
-            // kommer hit om credentials eller token enpoint är felinställda. Generar 500 fel i slutändan.
-            this.token = new Token("NOT_VALID");
+                if (result.IsSuccessStatusCode)
+                {
+                    IEnumerable<string> authvalues = null;
+                    string tokenValue = string.Empty;
+                    this.token = new Token();
+
+                    result.Headers.TryGetValues("Authorization", out authvalues);
+                    var expires = result.Content.Headers.Expires;
+
+                    if (authvalues.IsNull() || expires == null)
+                    {
+                        ////If Bearer value is missing or invalid format and/or Expires value are missing.
+                        this.token.SetValues("NOT_VALID", DateTimeOffset.UtcNow);
+                    }
+                    else
+                    {
+                        tokenValue = authvalues.FirstOrDefault().Replace("Bearer", string.Empty).TrimStart();
+                        this.token.SetValues(tokenValue, (DateTimeOffset)expires);
+                    }
+
+                    return this.token.Value;
+                }
+                // kommer hit om credentials eller token enpoint är felinställda. Generar 500 fel i slutändan.
+                this.token = new Token("NOT_VALID");
+            }
             return this.token.Value;
         }
 
@@ -202,11 +200,18 @@ namespace Appva.Sca
         // TEST Async
         public async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id)
         {
+            // snygga till denna kod och lägg in den i riktiga klienten.
             var myToken = await this.GetTokenAsync();
-            var residentUrl = this.BaseAddress + UriHelper.ResidentUrl(id);
-            var testUrl = "https://tenaidentifistage.sca.com/" + UriHelper.ResidentUrl(id);
             var response = await this.Get(UriHelper.ResidentUrl(id)).WithBearerToken(myToken)
                 .ToResultAsync<GetResidentModel>();
+            return response;
+        }
+
+        public async Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventModelAsync(List<PostManualEventModel> manualEvents)
+        {
+            //TODO: Logic in here.
+            var myToken = await this.GetTokenAsync();
+            var response = await this.Post(UriHelper.ManualEventUrl, manualEvents).WithBearerToken(myToken).AsJson().ToResultAsync<List<GetManualEventModel>>();
             return response;
         }
         #endregion

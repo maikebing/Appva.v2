@@ -121,6 +121,9 @@
 				case 'negative':
 					titleContainer.addClass('dialog__title--negative');
 					break;
+				case 'warning':
+					titleContainer.addClass('dialog__title--warning');
+					break;
 			}
 
 			if (this.options.showDialogTitle) {
@@ -437,23 +440,15 @@
 					}
 					// Add a title if the triggering element has a data-dialog-title attribute
 					callbacks.add(function (data, dialog) {
-						var title;
-						var symbol;
-						var type;
-						var httpResponse = dialog.contentElement.find('[http-response]');
+						var title = element.data('dialog-title');
+						var symbol = element.data('dialog-symbol');
+						var type = element.data('dialog-type');
+						var httpResponse = dialog.contentElement.find('[data-http-response]');
 
-						if (!httpResponse) {
-							title = element.data('dialog-title');
-							symbol = element.data('dialog-symbol');
-							type = element.data('dialog-type');
-						}
-						else if (httpResponse.attr('http-response') === 'OK') {
-							type = 'positive';
-							title = httpResponse.attr('response-title');
-						}
-						else if (httpResponse.attr('http-response') !== 'OK') {
-							type = 'negative';
-							title = httpResponse.attr('response-title');
+						if (httpResponse.length > 0) {
+							title = httpResponse.data('http-response-title');
+							symbol = httpResponse.data('http-response-symbol');
+							type = httpResponse.data('http-response-type');
 						}
 						dialog.setTitle(title, symbol, type);
 					});

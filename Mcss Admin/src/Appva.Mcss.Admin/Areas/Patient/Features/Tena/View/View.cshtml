@@ -6,10 +6,10 @@
         <h3>@Model.ObservationPeriod.StartDate.ToShortDateString() &#8211; @Model.ObservationPeriod.EndDate.ToShortDateString()</h3>
 
         <div class="form-controls form-controls--inline">
-            <a class="button button--primary open-in-dialog" href="@Url.Action("upload", "tena", new {periodid = Model.ObservationPeriod.Id})#remote-response">
+            <a class="button button--primary open-in-dialog" href="@Url.Action("uploadasync", "tena", new {periodid = Model.ObservationPeriod.Id})#remote-response">
                 @*data-dialog-title="Uppladdning klar!"*@
-            <svg class="icon icon--mr" aria-hidden="true">
-                <use xlink:href="/assets/images/icons/icon.sprite.svg#arrow-ne-icon"></use>
+                <svg class="icon icon--mr" aria-hidden="true">
+                    <use xlink:href="/assets/images/icons/icon.sprite.svg#arrow-ne-icon"></use>
                 </svg>Ladda upp till TENA Identifi
             </a>
         </div>

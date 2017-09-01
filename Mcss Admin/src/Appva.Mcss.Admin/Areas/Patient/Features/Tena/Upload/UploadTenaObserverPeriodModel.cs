@@ -23,27 +23,25 @@ namespace Appva.Mcss.Admin.Models
     public sealed class UploadTenaObserverPeriodModel
     {
         /// <summary>
-        /// HttpStatusCode
+        /// Title.
         /// </summary>
-        public HttpStatusCode StatusCode
+        public string Title
         {
             get;
             set;
         }
-
         /// <summary>
-        /// HttpStatusMessage as String
+        /// Message
         /// </summary>
-        public string StatusMessage
+        public string Message
         {
             get;
             set;
         }
-
         /// <summary>
-        /// Tena Identifi ID
+        /// Symbol
         /// </summary>
-        public string TenaId
+        public string Symbol
         {
             get;
             set;

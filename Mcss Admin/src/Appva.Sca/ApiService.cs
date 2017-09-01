@@ -40,6 +40,7 @@ namespace Appva.Sca
         List<GetManualEventModel> PostManualEvent(List<PostManualEventModel> manualEventList);
 
         Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id);
+        Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(List<PostManualEventModel> manualEvents);
     }
 
     /// <summary>
@@ -100,6 +101,11 @@ namespace Appva.Sca
         public async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id)
         {
             return await this.client.GetResidentAsync(id);
+        }
+
+        public async Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(List<PostManualEventModel> manualEvents)
+        {
+            return await this.client.PostManualEventModelAsync(manualEvents);
         }
         #endregion
     }

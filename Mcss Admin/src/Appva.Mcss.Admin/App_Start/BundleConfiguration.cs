@@ -57,6 +57,24 @@ namespace Appva.Mcss.Admin
             bundles.Add(new StyleBundle("~/Assets/css/new/bundle").Include(
                 "~/Assets/css/new/all.min.css", "~/Assets/css/new/main.prefixed.css"
             ));
+
+            ////Exit-Confirmation
+            //bundles.Add(new ScriptBundle("~/Assets/js/utilities/exit-confirmation").Include(
+            //    "/Assets/js/utilities/exit-confirmation/exit-confirmation.js"
+            //));
+            //bundles.Add(new StyleBundle("~/Assets/js/utilities/exit-confirmation").Include(
+            //    "~/Assets/js/utilities/exit-confirmation/exit-confirmation.css"
+            //));
+
+            ////Dialog
+            //bundles.Add(new ScriptBundle("").Include(""));
+            //bundles.Add(new StyleBundle("").Include(""));
+
+            //Date-Picker
+            bundles.Add(new ScriptBundle("~/Assets/js/base/elements/forms").Include("~/Assets/js/base/elements/forms/date-picker.js"));
+            bundles.Add(new StyleBundle("~/Assets/css").Include("~/Assets/css/date-picker.css"));
+
+
         }
     }
 }

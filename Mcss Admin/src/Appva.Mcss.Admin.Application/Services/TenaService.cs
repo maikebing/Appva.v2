@@ -89,6 +89,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
         List<GetManualEventModel> PostDataToTena(Guid periodId);
 
+        Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string externalId);
+        Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(Guid periodId);
     }
 
     /// <summary>
@@ -181,6 +183,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             return this.repository.HasConflictingDate(patientId, startdate);
         }
+
         #endregion
 
 
@@ -216,10 +219,42 @@ namespace Appva.Mcss.Admin.Application.Services
             return apiService.PostManualEvent(this.ConvertDataToTenaModel(measurements));
         }
 
-        //public async Task<IHttpResponseMessage<GetResidentModel>> GetDataFromTenaAsync(string externalId)
-        //{
-        //    return await this.GetDataFromTenaAsync(externalId);
-        //}
+        public async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string externalId)
+        {
+            return await this.apiService.GetResidentAsync(externalId);
+        }
+
+        public async Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(Guid periodId)
+        {
+            var testDataLista = new List<PostManualEventModel>
+            {
+                new PostManualEventModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    EventType = "toilet",
+                    ResidentId = "8L2vJIUo",
+                    Timestamp = DateTime.UtcNow.AddHours(5).ToString(),
+                    Active = true
+                },
+                new PostManualEventModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    EventType = "feces",
+                    ResidentId = "8L2vJIUo",
+                    Timestamp = DateTime.UtcNow.AddHours(5).ToString(),
+                    Active = true
+                }
+            };
+
+            var measurements = this.repository.GetTenaPeriod(periodId).TenaObservationItems;
+            if (measurements.IsEmpty())
+            {
+                // Funkar detta? Detta skapar ett exception som bubblar? upp till ytan på något vis...
+                return null;
+            }
+            // posta en lista med mötvärden och eventuellt hantera svaret. Returnera något pegagogiskt för användaren.
+            return await this.apiService.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
+        }
 
         #endregion
 

@@ -7,11 +7,12 @@
         $("#ExternalId").on("input", function () {
             if (this.value.length == 8) {
                 $.ajax({
-                    url: '@Url.Action("find","tena")',
+                    url: '@Url.Action("findasync","tena")',
                     type: 'GET',
                     data: { 'ExternalId': this.value },
                     success: function (result) {
                         var message = JSON.parse(result);
+                        console.log(result);
                         /* 
                         if (message.StatusCode == 200) {
                             resetError();
@@ -32,6 +33,9 @@
                         }
                         */
                         if (message.Message) {
+                            $('.tena-error-message').html(message.Message);
+                            $('#tena-error').show();
+                        } else {
                             resetError();
                             $('.tena-response-facility').html(message.FacilityName);
                             $('.tena-response-room').html(message.RoomNumber);
@@ -43,9 +47,6 @@
                                 reset();
                             });
                             $('.button--primary').prop('disabled', false);
-                        } else {
-                            $('.tena-error-message').html("model.Message innehåller ingen data...");
-                            $('#tena-error').show();
                         }
                     },
                     error: function (error) {

@@ -85,6 +85,15 @@
 	background-color:hsl(2, 46%, 68%);
 }
 
+/* Warning dialog
+---------------------------------------------- */
+.dialog__title--warning {
+	background-color:hsl(55, 100%, 40%);
+}
+.dialog__title--warning .dialog__symbol {
+	background-color:hsl(55, 100%, 45%);
+}
+
 .dialog__header > * {
 	margin-bottom:0;
 	color:#fff;

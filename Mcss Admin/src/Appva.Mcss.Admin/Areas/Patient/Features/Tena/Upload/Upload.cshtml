@@ -3,16 +3,33 @@
     SetTitle("Ladda upp mätvärden");
 }
 
-@if (Model.StatusCode == HttpStatusCode.Accepted)
+<div id="remote-response" data-http-response="@Model.Title" data-http-response-title="@Model.Title" data-http-response-type="@Model.Symbol"> 
+    <form action="@Url.Action("list","tena")" class="validate" response-title="Uppladdningen lyckades">
+        <div class="width-limiter width-limiter--xs">
+            <p>Uppladdat till TENA Identifi.</p>
+            <p><strong>@Model.Message</strong></p>
+
+            <div class="form-controls form-controls--align-end form-controls--no-margin">
+                <a href="@Url.Action("list","tena")" class="button" data-dialog-close="true">Ok</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+@*if (model.statuscode == httpstatuscode.accepted)
 {
     <div id="remote-response">
-        <form action="@Url.Action("list","tena")" class="validate" http-response="@Model.StatusCode" response-title="Uppladdningen lyckades">
+        <form action="@url.action("list","tena")" class="validate" http-response="@model.statuscode" response-title="uppladdningen lyckades">
             <div class="width-limiter width-limiter--xs">
-                <p>Uppladdat till TENA Identifi.</p>
-                <p><strong>@Model.StatusMessage</strong></p> 
+                <p>uppladdat till tena identifi.</p>
+                <p><strong>@model.statusmessage</strong></p> 
 
                 <div class="form-controls form-controls--align-end form-controls--no-margin">
-                    <a href="@Url.Action("list","tena")" class="button" data-dialog-close="true">Ok</a>
+                    <a href="@url.action("list","tena")" class="button" data-dialog-close="true">ok</a>
                 </div>
             </div>
         </form>
@@ -21,17 +38,17 @@
 else
 {
     <div id="remote-response">
-        <form action="@Url.Action("list","tena")" class="validate" http-response="@Model.StatusCode" response-title="Uppladdningen misslyckades">
+        <form action="@url.action("list","tena")" class="validate" http-response="@model.statuscode" response-title="uppladdningen misslyckades">
             <div class="width-limiter width-limiter--xs">
-                @*<p>Uppladdning misslyckades.</p>*@
-                <p><strong>@Model.StatusCode</strong>: @Model.StatusMessage</p>
+                @*<p>uppladdning misslyckades.</p>
+                <p><strong>@model.statuscode</strong>: @model.statusmessage</p>
 
                 <div class="form-controls form-controls--align-end form-controls--no-margin">
-                    <a href="@Url.Action("list","tena")" class="button" data-dialog-close="true">Ok</a>
+                    <a href="@url.action("list","tena")" class="button" data-dialog-close="true">ok</a>
                 </div>
             </div>
         </form>
     </div>
-}
+}*@
 
 

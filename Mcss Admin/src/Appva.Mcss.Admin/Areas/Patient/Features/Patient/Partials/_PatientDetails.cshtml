@@ -14,7 +14,10 @@
     	</h2>
     	<span class="pnr">@Model.UniqueIdentifier</span>
     </div>
-    @Html.ActionLink(Permissions.Patient.Inactivate, "Ta bort", "Inactivate", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
+    @if (Model.Active == true)
+    {
+        @Html.ActionLink(Permissions.Patient.Inactivate, "Ta bort", "Inactivate", "Patient", new { id = Model.Id }, new { @class = "btn btn-del" })
+    }
     @Html.ActionLink(Permissions.Patient.Update, "Ändra boendeuppgifter", "Update", "Patient", new { id = Model.Id }, new { @class = "btn lb-link" })
     @if (Model.Address.IsNotNull())
     { 

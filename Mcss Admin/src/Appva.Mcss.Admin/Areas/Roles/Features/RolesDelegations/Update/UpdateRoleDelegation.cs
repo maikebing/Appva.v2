@@ -34,5 +34,14 @@ namespace Appva.Mcss.Admin.Areas.Roles.Models
             get;
             set;
         }
+
+        /// <summary>
+        /// The name of the role, for displaying
+        /// </summary>
+        public string RoleName
+        {
+            get;
+            set;
+        }
     }
 }

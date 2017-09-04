@@ -76,7 +76,8 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
                 .List();
             return new UpdateRoleDelegation
             {
-                Delegations = this.Merge(delegations, role.Delegations)
+                Delegations = this.Merge(delegations, role.Delegations).OrderBy(x => x.Label).ToList(),
+                RoleName    = role.Name
             };
         }
 

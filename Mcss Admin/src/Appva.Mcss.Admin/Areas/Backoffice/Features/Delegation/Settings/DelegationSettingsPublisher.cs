@@ -54,6 +54,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 ApplicationSettings.DelegationRemovalReasons,
                 message.Reasons.Replace("\r\n", "\n").Split('\n').Where(x => x.IsNotEmpty()).ToList()
                 );
+            this.settings.Upsert<string>(ApplicationSettings.PrintDelegationSendToText, message.PrintBottomText);
 
             return null;
         }

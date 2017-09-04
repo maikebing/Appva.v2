@@ -64,6 +64,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
             role.Name = message.Name;
             role.Description = message.Description;
             role.Permissions = this.service.ListAllIn(message.Permissions.Where(x => x.IsSelected).Select(x => x.Id).ToArray());
+            role.IsVisible = message.IsHiddenRole == false;
             this.persistence.Update(role);
             return true;
         }

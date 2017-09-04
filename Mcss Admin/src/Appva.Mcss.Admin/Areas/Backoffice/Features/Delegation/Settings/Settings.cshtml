@@ -13,7 +13,8 @@
             @Html.FormGroup(x => x.SpecifyReasonIsActive, "checkbox").Checkbox("Aktivera", new { }).Validate().Build()
             @Html.FormGroup(x => x.Reasons, "text large").Label("Ange en orsak per rad").TextArea().Validate().Build()
 
-
+            <h3 class="section-title">Utskrift av delegeringsbeslut</h3>
+            @Html.FormGroup(x => x.PrintBottomText, "text large").Label("Text i botten på delegerinsbeslut").TextBox().Validate().Build()
         </div>
         <div class="submit">
             @Html.Submit("Spara", new { @class = "btn" })

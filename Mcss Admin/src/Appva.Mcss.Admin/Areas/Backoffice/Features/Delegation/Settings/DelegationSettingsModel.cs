@@ -47,6 +47,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the print bottom text.
+        /// </summary>
+        public string PrintBottomText
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

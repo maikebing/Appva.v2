@@ -8,7 +8,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
 
@@ -36,7 +35,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateTenaObserverPeriodHandler"/> class.
+        /// Initializes a new instance of the <see cref="UploadTenaObserverPeriodHandler"/> class.
         /// </summary>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
@@ -53,31 +52,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override string Handle(UploadTenaObserverPeriod message)
         {
-            //var patientId = message.Id;
-
-            var upload = this.tenaService.PostDataToTena(message.PeriodId);
-
-            //var tenaId = this.patientService.Get(message.Id).TenaId.ToString();
-            //var statusCode = this.tenaService.PostDataToTena(tenaId, message.PeriodId).StatusCode;
-            //var statusMessage = string.Empty;
-
-            //switch (statusCode)
-            //{
-            //    case System.Net.HttpStatusCode.Accepted:
-            //        statusMessage = "Uppladdning lyckades";
-            //        break;
-            //    case System.Net.HttpStatusCode.BadRequest:
-            //        statusMessage = "Listan är tom eller innehåller fel. Vänligen kontrollera innehållet.";
-            //        break;
-            //    case System.Net.HttpStatusCode.InternalServerError:
-            //        statusMessage = "Ett fel uppstod. Var god försök igen. Om felet kvarstår, vänligen kontakta Appva Support.";
-            //        break;
-            //    default:
-            //        statusMessage = "Ett oväntat fel uppstod. Var god försök igen. Om felet kvarstår, vänligen kontakta Appva Support.";
-            //        break;
-            //}
-
-            return "OK";
+            return null;
         }
 
         #endregion

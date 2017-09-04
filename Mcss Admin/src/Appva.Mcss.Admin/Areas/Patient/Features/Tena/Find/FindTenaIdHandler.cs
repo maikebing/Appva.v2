@@ -58,41 +58,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override string Handle(FindTenaId message)
         {
-            var response = this.tenaService.GetDataFromTena(message.ExternalId);
-            
-            var status = string.Empty;
+            return null;
 
-            //response.StatusCode = this.tenaService.HasUniqueExternalId(message.ExternalId) == false ? HttpStatusCode.Conflict : response.StatusCode;
-
-            //switch (response.StatusCode)
-            //{
-            //    case HttpStatusCode.BadRequest:
-            //        status = "Inga boende hittades med angivet Identifi ID. (Felkod: " + (int)response.StatusCode + ").";
-            //        break;
-            //    case HttpStatusCode.Unauthorized:
-            //        status = "Tjänsten är ej installerad korrekt. (Felkod: " + (int)response.StatusCode + ").";
-            //        break;
-            //    case HttpStatusCode.NotFound:
-            //        status = "Inga boende hittades med angivet Identifi ID. (Felkod: " + (int)response.StatusCode + ").";
-            //        break;
-            //    case HttpStatusCode.Conflict:
-            //        status = "Detta Identifi ID är redan i bruk.. (Felkod: " + (int)response.StatusCode + ").";
-            //        break;
-            //    case HttpStatusCode.InternalServerError:
-            //        status = "Ett fel har inträffat, försök igen om en stund. Om felet kvarstår, kontakta Appvas support (Felkod: " + (int)response.StatusCode + ").";
-            //        break;
-            //    default:
-            //        status = string.Empty;
-            //        break;
-            //}
-
-            return JsonConvert.SerializeObject(new FindTenaIdModel {
-                TenaId = message.ExternalId,
-                RoomNumber = response.RoomNumber,
-                FacilityName = response.FacilityName,
-                StatusCode = 800, // (int)response.StatusCode
-                StatusMessage = status
-            });
         }
 
         #endregion

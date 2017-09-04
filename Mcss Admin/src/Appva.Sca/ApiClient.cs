@@ -4,22 +4,17 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-using Appva.Core.Extensions;
-using Appva.Http;
-using Appva.Sca.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using System.Web.Http;
-
 namespace Appva.Sca
 {
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Appva.Core.Extensions;
+    using Appva.Http;
+    using Appva.Sca.Models;
 
     #endregion
 
@@ -63,59 +58,36 @@ namespace Appva.Sca
         #region Members.
 
         /// <summary>
-        /// Get Resident
+        /// GetResidentAsync
         /// </summary>
         /// <param name="id">A List of <see cref="string"/>.</param>
         /// <returns>GetResidentModel<see cref="GetResidentModel"/>.</returns>
-        public GetResidentModel GetResident(string id)
+        public async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id)
         {
-            var result = this.Get(UriHelper.ResidentUrl(id)).WithBearerToken(this.GetToken())
-                .ToResultAsync<GetResidentModel>().Result.Result;
-            //var mockedModel = new GetResidentModel
-            //{
-            //    ExternalId = this.GetToken(),
-            //    RoomNumber = "1",
-            //    FacilityName = "MockedFacility"
-            //};
-            return result;
-            
-            //return result;
+            // snygga till denna kod och lägg in den i riktiga klienten.
+            var myToken = await this.GetTokenAsync();
+            var response = await this.Get(UriHelper.GetResidentUrl(id)).WithBearerToken(myToken)
+                .ToResultAsync<GetResidentModel>();
+            return response;
         }
 
         /// <summary>
-        /// Post ManualEvent
+        /// Post ManualEvent as an asynchronous operation.
         /// </summary>
-        /// <param name="events">A List of <see cref="PostManualEventModel"/>.</param>
-        /// <returns>IHttpResponseMessage</returns>
-        public List<GetManualEventModel> PostManualEvent(IList<PostManualEventModel> events)
+        /// <param name="manualEvents">The manual events.</param>
+        /// <returns>Task&lt;IHttpResponseMessage&lt;List&lt;GetManualEventModel&gt;&gt;&gt;.</returns>
+        public async Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(List<PostManualEventModel> manualEvents)
         {
-            var tokenvalue = this.GetToken();
-
-            var FakeResponseData = new List<GetManualEventModel>();
-            foreach (var item in events)
-            {
-                FakeResponseData.Add(new GetManualEventModel()
-                {
-                    Id = item.Id,
-                    ImportResult = "Created"
-                });
-            }
-
-            //var result = this.Post(UriHelper.ManualEventUrl, events)
-            //    .WithBearerToken(tokenvalue)
-            //    .ToResultAsync<dynamic>().Result;
-            //if (result.Response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            //{
-            //    this.token = null;
-            //}
-            return FakeResponseData;
+            var myToken = await this.GetTokenAsync();
+            var response = await this.Post(UriHelper.ManualEventUrl, manualEvents).WithBearerToken(myToken).AsJson().ToResultAsync<List<GetManualEventModel>>();
+            return response;
         }
-        
+
         /// <summary>
-        /// Get Token
+        /// GetTokenAsync
         /// </summary>
-        /// <returns>String</returns>
-        private string GetToken()
+        /// <returns>Token value as string<see cref="String"/>.</returns>
+        private async Task<string> GetTokenAsync()
         {
             if (this.token.IsNotNull() && this.token.IsValid)
             {
@@ -123,17 +95,8 @@ namespace Appva.Sca
             }
             else
             {
-                /* Fake response generated to simulate a real environment */
-                var fakeResponse = new HttpResponseMessage();
-                fakeResponse.Headers.Add("Authorization", "Bearer FAKETOKENVALUE");
-                fakeResponse.Content = new HttpMessageContent(new HttpResponseMessage(HttpStatusCode.Accepted));
-                fakeResponse.Content.Headers.Expires = new DateTimeOffset(DateTime.UtcNow.AddMinutes(30));
-                var response = fakeResponse;
-                var result = response;
-
-                //var response = this.Get(UriHelper.TokenUrl).WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>().Result;
-                //var result = response.Response;
-
+                var response = await this.Get("api/token/").WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>();
+                var result = response.Response;
 
                 if (result.IsSuccessStatusCode)
                 {
@@ -146,7 +109,7 @@ namespace Appva.Sca
 
                     if (authvalues.IsNull() || expires == null)
                     {
-                        ////If Bearer value is missing or invalid format and/or Expires value are missing.
+                        ////If Bearer and/or Expires are missing or invalid.
                         this.token.SetValues("NOT_VALID", DateTimeOffset.UtcNow);
                     }
                     else
@@ -157,23 +120,12 @@ namespace Appva.Sca
 
                     return this.token.Value;
                 }
-
-                // kommer hit om credentials eller token enpoint är felinställda. Generar 500 fel i slutändan.
+                //// If credentials and/or Token Endpoint is invalid.
                 this.token = new Token("NOT_VALID");
             }
-
             return this.token.Value;
         }
-        #endregion
 
-        #region Testmembers.
-        // TEST Async
-        public async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id)
-        {
-            var response = await this.Get(UriHelper.ResidentUrl(id)).WithBearerToken(this.GetToken())
-                .ToResultAsync<GetResidentModel>();
-            return response;
-        }
         #endregion
     }
 }

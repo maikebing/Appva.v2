@@ -7,28 +7,19 @@
 // <author>
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
-
-using System.Threading.Tasks;
-using Appva.Core.Extensions;
-using Appva.Http;
-
 namespace Appva.Mcss.Admin.Application.Services
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
-    using Appva.Apis.Http;
+    using System.Threading.Tasks;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Sca;
     using Sca.Models;
-    using Newtonsoft.Json;
 
     #endregion
 
@@ -78,19 +69,15 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Get data from the TENA API.
         /// </summary>
         /// <param name="externalId">The external tena id.</param>
-        /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
-        GetResidentModel GetDataFromTena(string externalId);
+        /// <returns>Returns a <see cref="GetResidentModel"/>.</returns>
+        Task<GetResidentModel> GetResidentAsync(string externalId);
 
         /// <summary>
-        /// Post data to the TENA API.
+        /// Post Period to the TENA API.
         /// </summary>
-        /// <param name="patientId">The Patient ID.</param>
         /// <param name="periodId">The Observation Period ID.</param>
-        /// <returns>Returns a <see cref="KeyValuePair{HttpResponseMessage, string}"/>.</returns>
-        List<GetManualEventModel> PostDataToTena(Guid periodId);
-
-        Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string externalId);
-        Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(Guid periodId);
+        /// <returns>Returns a list of <see cref="GetManualEventModel"/>.</returns>
+        Task<List<GetManualEventModel>> PostManualEventAsync(Guid periodId);
     }
 
     /// <summary>
@@ -101,9 +88,9 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         /// <summary>
-        /// The <see cref="getEndpoint"/>.
+        /// The <see cref="GetEndpoint"/>.
         /// </summary>
-        private const string getEndpoint = "https://tenaidentifistage.sca.com/api/resident/";
+        private const string GetEndpoint = "https://tenaidentifistage.sca.com/api/resident/";
 
         /// <summary>
         /// The <see cref="token"/>.
@@ -134,13 +121,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        /// <param name="apiService">The <see cref="IApiService"/>.</param>
         public TenaService(ITenaRepository repository, ISettingsService settingsService)
         {
             this.repository = repository;
             this.settingsService = settingsService;
-            //this.apiService = apiService;
-            this.apiService = new ApiService(new Uri(GetSettings().BaseAddress), GetSettings().ClientId, GetSettings().ClientSecret);
+            this.apiService = new ApiService(new Uri(this.GetSettings().BaseAddress), this.GetSettings().ClientId, this.GetSettings().ClientSecret);
         }
 
         #endregion
@@ -186,73 +171,30 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #endregion
 
-
-
-        #region API communcation
-        // TODO: Clean up above methods.
+        #region API communication members.
 
         /// <inheritdoc />
-        public GetResidentModel GetDataFromTena(string externalId)
+        public async Task<GetResidentModel> GetResidentAsync(string externalId)
         {
-            return this.apiService.GetResident(externalId);
-
-            //return apiService.GetResident(externalId);
-        }
-
-        /// <inheritdoc />
-        public List<GetManualEventModel> PostDataToTena(Guid periodId)
-        {
-            // TODO: Exceptionhandling
-            var measurements = this.repository.GetTenaPeriod(periodId).TenaObservationItems;
-
-            if (measurements.IsNull())
+            if (this.HasUniqueExternalId(externalId))
             {
-                return new List<GetManualEventModel>()
-                {
-                    new GetManualEventModel()
-                    {
-                        Id = "0000",
-                        ImportResult = "EmptyList"
-                    }
-                };
+                return await this.apiService.GetResidentAsync(externalId);
             }
-            return apiService.PostManualEvent(this.ConvertDataToTenaModel(measurements));
-        }
 
-        public async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string externalId)
-        {
-            return await this.apiService.GetResidentAsync(externalId);
-        }
-
-        public async Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(Guid periodId)
-        {
-            var testDataLista = new List<PostManualEventModel>
+            return new GetResidentModel
             {
-                new PostManualEventModel
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    EventType = "toilet",
-                    ResidentId = "8L2vJIUo",
-                    Timestamp = DateTime.UtcNow.AddHours(5).ToString(),
-                    Active = true
-                },
-                new PostManualEventModel
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    EventType = "feces",
-                    ResidentId = "8L2vJIUo",
-                    Timestamp = DateTime.UtcNow.AddHours(5).ToString(),
-                    Active = true
-                }
+                Message = "Användaren är redan registrerad."
             };
+        }
 
+        /// <inheritdoc />
+        public async Task<List<GetManualEventModel>> PostManualEventAsync(Guid periodId)
+        {
             var measurements = this.repository.GetTenaPeriod(periodId).TenaObservationItems;
             if (measurements.IsEmpty())
             {
-                // Funkar detta? Detta skapar ett exception som bubblar? upp till ytan på något vis...
                 return null;
             }
-            // posta en lista med mötvärden och eventuellt hantera svaret. Returnera något pegagogiskt för användaren.
             return await this.apiService.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
         }
 

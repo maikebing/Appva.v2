@@ -649,6 +649,7 @@
     <Compile Include="Areas\Patient\Features\Tena\List\ListTenaModel.cs" />
     <Compile Include="Areas\Patient\Features\Tena\TenaController.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Upload\UploadTenaObserverPeriod.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Upload\UploadTenaObserverPeriodHandlerAsync.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Upload\UploadTenaObserverPeriodHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Upload\UploadTenaObserverPeriodModel.cs" />
     <Compile Include="Areas\Patient\Features\Tena\View\ViewTenaMeasurements.cs" />

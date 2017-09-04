@@ -21,7 +21,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
+    using Appva.Sca.Models;
     using Newtonsoft.Json;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Web.Mvc;
 
@@ -74,30 +76,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
         public async Task<ActionResult> FindAsync(FindTenaId request)
         {
-            var residentModel = new Appva.Sca.Models.GetResidentModel();
-            residentModel.Message = string.Empty;
+            var response = await this.tenaService.GetResidentAsync(request.ExternalId);
+            var model = JsonConvert.SerializeObject(response);
 
-            if (this.tenaService.HasUniqueExternalId(request.ExternalId))
-            {
-                var response = await this.tenaService.GetResidentAsync(request.ExternalId);
-
-                if (response.Response.IsSuccessStatusCode)
-                {
-                    var result = response.Result;
-                    residentModel.ExternalId = result.ExternalId;
-                    residentModel.FacilityName = result.FacilityName;
-                    residentModel.RoomNumber = result.RoomNumber;
-                }
-                else
-                {
-                    residentModel.Message = "Kan inte hitta någon användare.";
-                }
-            }
-            else
-            {
-                residentModel.Message = "Användaren är redan registrerad.";
-            }
-            var model = JsonConvert.SerializeObject(residentModel);
             return this.Content(model);
         }
 
@@ -184,59 +165,66 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #endregion
 
-        #region Upload
+        #region UploadAsync
 
         /// <summary>
         /// Upload Tena Observation to designated API endpoint
         /// </summary>
         /// <param name="request">The <see cref="UploadTenaObserverPeriod"/>.</param>
         /// <returns>A <see cref="ActionResult"/>.</returns>
-        [Route("upload")]
-        [HttpGet, Dispatch]
-        [PermissionsAttribute(Permissions.Tena.CreateValue)]
-        public ActionResult Upload(UploadTenaObserverPeriod request)
-        {
-            return this.View();
-        }
-
         [Route("uploadasync")]
         [HttpGet]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
         public async Task<ActionResult> UploadAsync(UploadTenaObserverPeriod request)
         {
-            var viewModel = new UploadTenaObserverPeriodModel
-            {
-                Title = string.Empty,
-                Message = string.Empty,
-                Symbol = "standard"
-            };
-            var periodId = request.PeriodId;
             var response = await this.tenaService.PostManualEventAsync(request.PeriodId);
-            if (response == null)
-            {
-                viewModel.Title = "Error.";
-                viewModel.Message = "Listan är tom på mätvärden.";
-                viewModel.Symbol = "warning";
-                return this.View(viewModel);
-            }
-            if (response.Response.IsSuccessStatusCode)
-            {
-                viewModel.Title = "OK";
-                viewModel.Message = "Uppladdningen klar.";
-                viewModel.Symbol = "success";
-            }
-            else
-            {
-                viewModel.Title = "Error.";
-                viewModel.Message = "Ett fel uppstod, Var god försök igen senare.";
-                viewModel.Symbol = "warning";
-            }
 
-            //var model = JsonConvert.SerializeObject(viewModel);
-            return this.View(viewModel);
+            return this.View(UploadModel(response));
         }
 
         #endregion
+
+        #endregion
+
+        #region Private members.
+
+        private UploadTenaObserverPeriodModel UploadModel(List<GetManualEventModel> lista)
+        {
+            var title = string.Empty;
+            var message = string.Empty;
+            var symbol = string.Empty;
+
+            if(lista == null)
+            {
+                title = "Error!";
+                message = "Listan är tom.";
+                symbol = "warning";
+            }
+            else
+            {
+                if (lista.Count > 0)
+                {
+                    title = "Uppladdning klar!";
+                    message = "Uppladdning klar";
+                    symbol = "success";
+                }
+                else
+                {
+                    title = "Error!";
+                    message = "Uppladdningen misslyckades";
+                    symbol = "warning";
+                }
+            }
+
+            var model = new UploadTenaObserverPeriodModel
+            {
+                Title = title,
+                Message = message,
+                Symbol = symbol
+            };
+
+            return model;
+        }
 
         #endregion
     }

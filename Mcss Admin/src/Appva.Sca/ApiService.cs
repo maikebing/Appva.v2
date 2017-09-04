@@ -4,18 +4,15 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
-
-using System.Threading.Tasks;
-using Appva.Http;
-
 namespace Appva.Sca
 {
     #region Imports
 
-    using Appva.Sca.Models;
     using System;
     using System.Collections.Generic;
+    using System.Net;
+    using System.Threading.Tasks;
+    using Appva.Sca.Models;
 
     #endregion
 
@@ -29,18 +26,14 @@ namespace Appva.Sca
         /// </summary>
         /// <param name="id">Identifi ID</param>
         /// <returns>Returns a <see cref="GetResidentModel"/>.</returns>
-        GetResidentModel GetResident(string id);
+        Task<GetResidentModel> GetResidentAsync(string id);
 
         /// <summary>
-        /// Get the request URI.
+        /// Posts the manual event asynchronous.
         /// </summary>
-        /// <param name="id">Identifi ID</param>
-        /// <param name="manualeventList">List of <see cref="PostManualEventModel"/></param>
-        /// <returns>Returns a <see cref="GetManualEventModel"/>.</returns>
-        List<GetManualEventModel> PostManualEvent(List<PostManualEventModel> manualEventList);
-
-        Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id);
-        Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(List<PostManualEventModel> manualEvents);
+        /// <param name="manualEvents">The manual events.</param>
+        /// <returns>Task&lt;List&lt;GetManualEventModel&gt;&gt;.</returns>
+        Task<List<GetManualEventModel>> PostManualEventAsync(List<PostManualEventModel> manualEvents);
     }
 
     /// <summary>
@@ -58,9 +51,7 @@ namespace Appva.Sca
         /// <summary>
         /// The <see cref="ApiClient"/> client.
         /// </summary>
-        //private ApiClient client;
-
-        private ApiTestClient client;
+        private ApiClient client;
 
         #endregion
 
@@ -75,9 +66,7 @@ namespace Appva.Sca
         public ApiService(Uri baseAddress, string clientId, string clientSecret)
         {
             this.config = new Configuration(baseAddress, clientId, clientSecret);
-            //this.client = new ApiClient(this.config);
-            this.client = new ApiTestClient(this.config);
-            
+            this.client = new ApiClient(this.config);
         }
 
         #endregion
@@ -85,27 +74,38 @@ namespace Appva.Sca
         #region ApiService Members
 
         /// <inheritdoc />
-        public GetResidentModel GetResident(string id)
+        public async Task<GetResidentModel> GetResidentAsync(string id)
         {
-            // TODO: Exception Handling.
-            return this.client.GetResident(id);
+            var response = await this.client.GetResidentAsync(id);
+
+            if (response.Response.IsSuccessStatusCode)
+            {
+                return response.Result;
+            }
+
+            var result = new GetResidentModel();
+
+            switch (response.Response.StatusCode)
+            {
+                case HttpStatusCode.NotFound:
+                    result.Message = "Användaren kan inte hittas";
+                    break;
+                default:
+                    result.Message = "Ett fel inträffade. Var god försök igen.";
+                    break;
+            }
+            return result;
         }
 
         /// <inheritdoc />
-        public List<GetManualEventModel> PostManualEvent(List<PostManualEventModel> manualEventList)
+        public async Task<List<GetManualEventModel>> PostManualEventAsync(List<PostManualEventModel> manualEvents)
         {
-            // TODO: Exception Handling.
-            return this.client.PostManualEvent(manualEventList);
-        }
+            var response = await this.client.PostManualEventAsync(manualEvents);
+            var result = response.Result;
 
-        public async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id)
-        {
-            return await this.client.GetResidentAsync(id);
-        }
+            //// TODO: response handling?
 
-        public async Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(List<PostManualEventModel> manualEvents)
-        {
-            return await this.client.PostManualEventModelAsync(manualEvents);
+            return result;
         }
         #endregion
     }

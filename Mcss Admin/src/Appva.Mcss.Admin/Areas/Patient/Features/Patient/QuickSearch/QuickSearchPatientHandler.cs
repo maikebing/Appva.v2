@@ -76,7 +76,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var isActive = message.IsActive ?? true;
             var isDeceased = message.IsDeceased ?? false;
             var query = this.persistence.QueryOver<Patient>()
-                .Where(x => x.IsActive == isActive);
+                .Where(x => x.IsActive == isActive).And(y => y.IsArchived == false);
             if (isActive)
             {
                 query.Where(x => x.Deceased == isDeceased);

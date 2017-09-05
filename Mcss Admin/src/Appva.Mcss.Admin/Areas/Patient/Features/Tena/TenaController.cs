@@ -179,22 +179,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         {
             var response = await this.tenaService.PostManualEventAsync(request.PeriodId);
 
-            return this.View(UploadModel(response));
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Private members.
-
-        private UploadTenaObserverPeriodModel UploadModel(List<GetManualEventModel> lista)
-        {
             var title = string.Empty;
             var message = string.Empty;
             var symbol = string.Empty;
 
-            if(lista == null)
+            if (response == null)
             {
                 title = "Error!";
                 message = "Listan är tom.";
@@ -202,7 +191,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
             }
             else
             {
-                if (lista.Count > 0)
+                if (response.Count > 0)
                 {
                     title = "Uppladdning klar!";
                     message = "Uppladdning klar";
@@ -223,8 +212,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
                 Symbol = symbol
             };
 
-            return model;
+            return this.View(model);
         }
+        #endregion
 
         #endregion
     }

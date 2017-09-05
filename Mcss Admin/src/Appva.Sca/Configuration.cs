@@ -54,9 +54,9 @@ namespace Appva.Sca
         /// <summary>
         /// Initializes a new instance of the <see cref="Configuration"/> class.
         /// </summary>
-        /// <param name="baseAddress">The <see cref="Uri"/>.</param>
-        /// <param name="clientId">The <see cref="String"/>.</param>
-        /// <param name="clientSecret">The <see cref="String"/>.</param>
+        /// <param name="baseAddress">The base address.</param>
+        /// <param name="clientId">The client identifier.</param>
+        /// <param name="clientSecret">The client secret.</param>
         public Configuration(Uri baseAddress, string clientId, string clientSecret)
         {
             this.BaseAddress = baseAddress;

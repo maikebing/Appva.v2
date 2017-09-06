@@ -95,7 +95,7 @@ namespace Appva.Sca
             }
             else
             {
-                var response = await this.Get("api/token/").WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>();
+                var response = await this.Get(UriHelper.TokenUrl).WithBasicAuthorization(this.config.Credentials).ToResultAsync<dynamic>();
                 var result = response.Response;
 
                 if (result.IsSuccessStatusCode)

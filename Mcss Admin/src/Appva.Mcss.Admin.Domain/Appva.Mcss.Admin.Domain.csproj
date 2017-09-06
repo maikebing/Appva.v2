@@ -66,9 +66,8 @@
       <HintPath>..\..\..\Packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
@@ -154,10 +153,15 @@
     <Compile Include="Entities\Signature\Signature.cs" />
     <Compile Include="Entities\Signature\SignedData.cs" />
     <Compile Include="Entities\Task\SubTask.cs" />
+    <Compile Include="Entities\TenaObservationPeriod.cs" />
+    <Compile Include="Entities\TenaObservationItem.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\SearchPatientModel.cs" />
+    <Compile Include="Models\SearchProfileModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\IObservationRepository.cs" />
@@ -181,6 +185,7 @@
     <Compile Include="Configurations\PdfLookAndFeel.cs" />
     <Compile Include="Entities\VO\Period.cs" />
     <Compile Include="Entities\VO\PersonalIdentityNumber.cs" />
+    <Compile Include="Repositories\TenaRepository.cs" />
     <Compile Include="Entities\PreparedSequence.cs" />
     <Compile Include="Entities\PreparedTask.cs" />
     <Compile Include="Entities\RefillModel.cs" />
@@ -203,6 +208,7 @@
     </Compile>
     <Compile Include="Repositories\PermissionRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
+    <Compile Include="VO\TenaConfiguration.cs" />
     <Compile Include="Configurations\SecurityMailerConfiguration.cs" />
     <Compile Include="Configurations\SecurityPasswordConfiguration.cs" />
     <Compile Include="Configurations\SecurityTokenConfiguration.cs" />

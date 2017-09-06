@@ -166,8 +166,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Updates an account
         /// </summary>
         /// <param name="account">The <see cref="Account"/></param>
-        /// <param name="location">The new location.</param>
-        void Update(Account account, Taxon location);
+        void Update(Account account);
 
         /// <summary>
         /// Updates the roles for a user account.
@@ -176,7 +175,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="roles">The list of roles to be added</param>
         /// <param name="isAccountUpgradedForAdminAccess">If true then the user has got new roles which permits them to access admin</param>
         /// <param name="isAccountUpgradedForDeviceAccess">If true then the user has got new roles which permits them to access device</param>
-        void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess);
+        void UpdateRoles(Account account, IList<Role> roles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess, Taxon location = null);
 
         /// <summary>
         /// Lists all accounts with expiring
@@ -198,6 +197,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <returns></returns>
         IList<Account> List();
+
+        /// <summary>
+        /// Returns locations for an account, never null
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        IList<Location> LocationsFor(Account account);
     }
 
     /// <summary>
@@ -255,6 +261,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IIdentityService identityService;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomies;
+
         #endregion
 
         #region Constructor.
@@ -276,15 +287,17 @@ namespace Appva.Mcss.Admin.Application.Services
             IPersistenceContext persitence,
             ISettingsService settingsService, 
             IAuditService auditing,
-            IIdentityService identityService)
+            IIdentityService identityService,
+            ITaxonomyService taxonomies)
         {
-            this.repository = repository;
-            this.roles = roles;
-            this.permissions = permissions;
-            this.persistence = persitence;
+            this.repository      = repository;
+            this.roles           = roles;
+            this.permissions     = permissions;
+            this.persistence     = persitence;
             this.settingsService = settingsService;
-            this.auditing = auditing;
+            this.auditing        = auditing;
             this.identityService = identityService;
+            this.taxonomies      = taxonomies;
         }
 
         #endregion
@@ -359,7 +372,22 @@ namespace Appva.Mcss.Admin.Application.Services
         public IPaged<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
             this.auditing.Read("läste medarbetarlista sida {0}", page);
-            return this.repository.Search(model, page, pageSize);
+            var retval = this.repository.Search(model, page, pageSize);
+
+            //// Fix to get locations in account model
+            //// TODO: Add to main query
+            var accounts  = retval.Entities.Select(x => x.Id).ToArray();
+            var locations = this.persistence.QueryOver<Location>()
+                .WhereRestrictionOn(x => x.Account.Id).IsIn(accounts)
+                .List().GroupBy(x => x.Account.Id).ToDictionary(x => x.Key, g => g.ToList());
+
+            foreach (var account in retval.Entities.Where(x => locations.ContainsKey(x.Id)))
+            {
+                account.Locations = locations[account.Id];
+            }
+
+            return retval;
+
         }
 
         /// <inheritdoc />
@@ -372,7 +400,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
         
         /// <inheritdoc />
-        public void UpdateRoles(Account account, IList<Role> newRoles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess)
+        public void UpdateRoles(Account account, IList<Role> newRoles, out bool isAccountUpgradedForAdminAccess, out bool isAccountUpgradedForDeviceAccess, Taxon location = null)
         {
             var user            = this.CurrentPrincipal();
             var userAccessRoles = user.GetRoleAccess();
@@ -443,29 +471,10 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             //// Overwrite the new roles - no need to remove any roles per definition (device/backend).
             account.Roles = difference;
-            this.repository.Update(account);
-            this.auditing.Update("uppdaterade roller för {0} (REF: {1}).", account.FullName, account.Id);
-        }
 
-        /// <inheritdoc />
-        public string CreateUniqueUserNameFor(Account account)
-        {
-            return this.CreateUserName(account.FirstName, account.LastName, this.ListAllUserNames());
-        }
-
-        /// <inheritdoc />
-        public void Update(Account account, Taxon location)
-        {
-            var user = this.CurrentPrincipal();
-            //// If the user updates its own user account, let it 
-            //// only update the preferred address location.
-            if (user.Id == account.Id)
+            if (this.HasAnyPermissions(user, Common.Permissions.Practitioner.UpdateOrganizationPermissionValue) && location != null)
             {
-                account.Taxon = location;
-            }
-            else
-            {
-                var remove = account.Locations.Select(x => x).ToList();
+                 var remove = account.Locations.Select(x => x).ToList();
                 //// Remove any previous locations since it's stil 1-1.
                 foreach (var previous in remove)
                 {
@@ -477,12 +486,26 @@ namespace Appva.Mcss.Admin.Application.Services
                 //// make sure it updates too.
                 if (account.Taxon != null)
                 {
-                    if (! account.Taxon.Path.ToLowerInvariant().Contains(location.Id.ToString()))
+                    if (! account.Taxon.Path.ToLowerInvariant().Contains(location.Id.ToString().ToLowerInvariant()))
                     {
                         account.Taxon = location;
                     }
                 }
+                this.auditing.Update("uppdaterade organisations-behörighet för {0} till {1} (REF: {2}", account.Id, location.Name, location.Id);
             }
+            this.repository.Update(account);
+            this.auditing.Update("uppdaterade roller för {0}", account.Id);
+        }
+
+        /// <inheritdoc />
+        public string CreateUniqueUserNameFor(Account account)
+        {
+            return this.CreateUserName(account.FirstName, account.LastName, this.ListAllUserNames());
+        }
+
+        /// <inheritdoc />
+        public void Update(Account account)
+        {
             this.repository.Update(account);
             this.auditing.Update("uppdaterade kontot för {0} (REF: {1}).", account.FullName, account.Id);
         }
@@ -540,6 +563,19 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var user = this.CurrentPrincipal();
             return this.repository.ListByExpiringDelegation(user, taxonFilter.Path, expiringDate, filterByIssuerId);
+        }
+
+        public IList<Location> LocationsFor(Account account)
+        {
+            if (account.Locations == null || account.Locations.Count() == 0)
+            {
+                var root = this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
+                var location = new Location(account, this.taxonomies.Load(root.Id));
+                account.Locations = new List<Location> { location };
+                this.persistence.Save<Location>(location);
+                this.Update(account);
+            }
+            return account.Locations;
         }
 
         #endregion

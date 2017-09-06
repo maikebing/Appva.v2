@@ -357,6 +357,7 @@
     <property name="FirstName" />
     <property name="LastName" />
     <property name="FullName" />
+    <property name="TenaId" />
     <component name="PersonalIdentityNumber">
       <property name="Value" column="UniqueIdentifier" unique="true" access="nosetter.camelcase" />
     </component>
@@ -382,6 +383,10 @@
     <bag name="Tasks" cascade="save-update">
       <key column="Patient" />
       <one-to-many class="Task" />
+    </bag>
+    <bag name="TenaObservationPeriods" cascade="save-update" table="TenaObservationPeriod">
+      <key column="Patient" />
+      <one-to-many class="TenaObservationPeriod" />
     </bag>
     <property name="Identifier" />
   </class>
@@ -489,7 +494,9 @@
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
     <property name="Name" />
-    <property name="Description" />
+    <property name="Description" type="StringClob">
+      <column name="Description" sql-type="NVARCHAR(MAX)"/>
+    </property>
     <property name="StartDate" />
     <property name="EndDate" />
     <property name="RangeInMinutesBefore" />
@@ -729,5 +736,39 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
+  
+
+  <!-- TenaObservationPeriod-->
+  <class name="TenaObservationPeriod">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="StartDate" />
+    <property name="EndDate" />
+    <many-to-one name="Patient" class="Patient" />
+    <bag name="TenaObservationItems" cascade="save-update" table="TenaObservationItem">
+      <key column="TenaObservationPeriod" />
+      <one-to-many class="TenaObservationItem" />
+    </bag>
+  </class>
+
+  <!-- TenaObservervationItem -->
+  <class name="TenaObservationItem">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Modified" />
+    <property name="Measurement" />
+    <property name="Signature" />
+    <property name="Comment" />
+    <many-to-one name="TenaObservationPeriod" class="TenaObservationPeriod" />    
+  </class>
+
 
 </hibernate-mapping>

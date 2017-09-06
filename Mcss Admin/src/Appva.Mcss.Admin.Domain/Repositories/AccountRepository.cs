@@ -333,6 +333,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             //// Ordering and transforming
             mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
                 .ThenByAlias(() => accountModel.LastName).Asc
+                .Fetch(x => accountModel.Locations).Eager
                 .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
             var count = query.Clone().Select(Projections.CountDistinct("Id")).SingleOrDefault<int>();
             var items = mainQuery.Skip(pageQuery.Skip).Take(pageQuery.PageSize).List<AccountModel>();

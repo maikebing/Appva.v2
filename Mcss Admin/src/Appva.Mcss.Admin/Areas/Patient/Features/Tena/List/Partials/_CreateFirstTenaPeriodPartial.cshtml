@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="section section--hspace">
+    <div class="distributor distributor--justified">
+        <h2>TENA Identifi</h2>
+
+        <div class="form-controls">
+            <a class="button open-in-dialog" href="/assets/tena-identifi/patient-tena-settings.html#tena-settings" data-dialog-title="Inställningar">Inställningar</a>
+        </div>
+    </div>
+    <div>
+        <div class="grid">
+            <div data-size="xs:24 s:10 m:8 l:6 xl:6">
+                <div class="tabs tabs--vertical" role="navigation">
+                    <h2 class="visually-hidden">Huvudnavigering</h2>
+                    <ul>
+                        <li class="tabs__item tabs__item--selected">
+                            <a href="?" aria-label="Denna sida: Ingen mätperiod">Ingen mätperiod</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div data-size="xs:24 s:14 m:16 l:18 xl:18">
+                <div class="">
+                    <h3>Ingen mätperiod upplagd</h3>
+                </div>
+                <div class="text-align--center">
+                    <p>Skapa en ny mätperiod för att börja mäta.</p>                    
+                    <a href="@Url.Action("create", "tena")#add-measuring-period" class="button button--primary open-in-dialog" data-dialog-title="Ny mätperiod">
+                        <svg class="icon icon--mr" aria-hidden="true">
+                            <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+                        </svg>
+                        Ny mätperiod
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

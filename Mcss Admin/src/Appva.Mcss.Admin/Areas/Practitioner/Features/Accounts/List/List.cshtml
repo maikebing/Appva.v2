@@ -12,28 +12,31 @@
 	<div class="col col-1">
 		<div class="filter-ctrl">
 			@using (Html.BeginForm("List", "Accounts", FormMethod.Get, new { @class = "filter-form" }))
-			{
+            {
+                <input type="hidden" name="isActive" value="@Model.IsFilterByIsActiveEnabled.ToString()" />
+                <input type="hidden" name="isPaused" value="@Model.IsFilterByIsPausedEnabled.ToString()" />
+                <input type="hidden" name="filterByCreatedBy" value="@Model.IsFilterByCreatedByEnabled.ToString()" />
                 <div class="filter-row">
                     <strong>Visa:</strong>
                     <ul>
-                        <li>@Html.ActionLink("Alla", "List", null, new { @class = (!Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false) && Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) && !Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false) && !Model.IsFilterByIsSynchronizedEnabled.HasValue) ? "div sel" : "div" })</li>
-                        <li>@Html.ActionLink("Mina delegeringar", "List", new { FilterByCreatedBy = true }, new { @class = (Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
-                        <li>@Html.ActionLink("Borttagna", "List", new { isActive = false }, new { @class = !Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) ? "div sel" : "div" })</li>
-                        <li>@Html.ActionLink("Inaktiverade", "List", new { isPaused = true }, new { @class = (Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
-                        @if(Html.HasPermissionFor(Permissions.Synchronization.Read))
+                        <li>@Html.ActionLink("Alla", "List", new { RoleFilterId = Model.RoleFilterId, DelegationFilterId = Model.DelegationFilterId }, new { @class = (!Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false) && Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) && !Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false) && !Model.IsFilterByIsSynchronizedEnabled.HasValue) ? "div sel" : "div" })</li>
+                        <li>@Html.ActionLink("Mina delegeringar", "List", new { FilterByCreatedBy = true, RoleFilterId = Model.RoleFilterId, DelegationFilterId = Model.DelegationFilterId }, new { @class = (Model.IsFilterByCreatedByEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
+                        <li>@Html.ActionLink("Borttagna", "List", new { isActive = false, RoleFilterId = Model.RoleFilterId, DelegationFilterId = Model.DelegationFilterId }, new { @class = !Model.IsFilterByIsActiveEnabled.GetValueOrDefault(true) ? "div sel" : "div" })</li>
+                        <li>@Html.ActionLink("Inaktiverade", "List", new { isPaused = true, RoleFilterId = Model.RoleFilterId, DelegationFilterId = Model.DelegationFilterId }, new { @class = (Model.IsFilterByIsPausedEnabled.GetValueOrDefault(false)) ? "div sel" : "div" })</li>
+                        @if (Html.HasPermissionFor(Permissions.Synchronization.Read))
                         {
-                            <li>@Html.ActionLink("Synkroniserade", "List", new { isSynchronized = true }, new { @class = Model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault(false) ? "div sel" : "div" })</li>
-                            <li>@Html.ActionLink("Ej synkroniserade", "List", new { isSynchronized = false }, new { @class = (!Model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault(true)) ? "div sel" : "div" })</li>
+                            <li>@Html.ActionLink("Synkroniserade", "List", new { isSynchronized = true, RoleFilterId = Model.RoleFilterId, DelegationFilterId = Model.DelegationFilterId }, new { @class = Model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault(false) ? "div sel" : "div" })</li>
+                            <li>@Html.ActionLink("Ej synkroniserade", "List", new { isSynchronized = false, RoleFilterId = Model.RoleFilterId, DelegationFilterId = Model.DelegationFilterId }, new { @class = (!Model.IsFilterByIsSynchronizedEnabled.GetValueOrDefault(true)) ? "div sel" : "div" })</li>
                         }
                     </ul>
                 </div>
-				if (Model.Delegations.Count > 0)
-				{
+                        if (Model.Delegations.Count > 0)
+                        {
 					<div class="filter-row">
 						<strong>Med delegering</strong>
 						@Html.DropDownListFor(x => x.DelegationFilterId, new SelectList(Model.Delegations, "Value", "Text"), "Alla")
 					</div>
-				}
+                        }
 				<div class="filter-row">
 					<strong>Med titel:</strong>
 					@Html.DropDownListFor(x => x.RoleFilterId, new SelectList(Model.Roles, "Value", "Text"), "Alla")
@@ -41,7 +44,7 @@
 				<div class="filter-row">
 					@Html.Submit("Visa")
 				</div>
-		 }
+            }
 		</div>
 	</div>
 	@if (Model.Accounts.Items.Count() > 0)
@@ -51,7 +54,7 @@
                 @foreach (var item in Model.Accounts.Items)
                 {
                     <li class="cf @((item.HasExpiringDelegation) ? "update" : "")">
-                        @if (item.IsEditableForCurrentUser)
+                        @if (item.IsEditableForUser(Model.CurrentUser))
                         {
                             if (item.IsActive)
                             {

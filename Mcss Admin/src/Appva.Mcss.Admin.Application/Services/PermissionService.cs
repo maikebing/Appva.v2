@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using System.Collections.Generic;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
 
@@ -24,7 +25,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Returns a collection of <see cref="Permission"/>.
         /// </summary>
         /// <returns>A collection of <see cref="Permission"/></returns>
-        IList<Permission> List();
+        IList<Permission> List(string bySchema = null);
 
         /// <summary>
         /// Returns a filtered collection of <see cref="Permission"/> by specified 
@@ -72,9 +73,15 @@ namespace Appva.Mcss.Admin.Application.Services
         #region IPermissionService Members.
 
         /// <inheritdoc />
-        public IList<Permission> List()
+        public IList<Permission> List(string bySchema = null)
         {
-            return this.repository.List();
+            if (bySchema.IsEmpty())
+            {
+                return this.repository.List();
+            }
+
+            return this.repository.Search(bySchema);
+            
         }
 
         /// <inheritdoc />

@@ -128,7 +128,7 @@ namespace Appva.Mcss.Admin.Infrastructure
                     Overseeing = null, ////(overseer.IsNotNull()) ? overseer.FullName : null,
                     FirstLineContact = null, ///(firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
                     HasUnattendedTasks = false,
-                    SeniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.ToList().Select(x => new TaxonItem(x.Id, x.Name, x.Description, x.Path, x.Type, x.Weight)).ToList<ITaxon>() : null
+                    SeniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.Where(x => x.IsActive).ToList().Select(x => new TaxonItem(x.Id, x.Name, x.Description, x.Path, x.Type, x.Weight, null, x.IsActive)).ToList<ITaxon>() : null
                 });
             }
             return retval;

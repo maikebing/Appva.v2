@@ -1,14 +1,14 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
 @model Appva.Mcss.Web.ViewModels.PatientViewModel       
-<div class="people people-item cf">
+<div class="people people-item cf oldstyle">
 	<div class="h">
     	<h2>
             @Model.FullName
             @if (Model.SeniorAlerts.IsNotNull())
             {
                 foreach (var sa in Model.SeniorAlerts)
-                { 
-                    <img src="@String.Format("/Assets/i/{0}", sa.Type)" alt="Senior alert" title="@sa.Name"/>
+                {
+                    <img src="@String.Format("/Assets/i/{0}", sa.Type)" alt="Senior alert" title="@sa.Name" />
                 }
             }
     	</h2>

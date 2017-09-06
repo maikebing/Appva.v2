@@ -1,0 +1,40 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.ListTenaModel
+@{
+    SetTitle("TENA Identifi");
+}
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.PatientViewModel)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.PatientViewModel)
+
+
+@if (Model.IsInstalled)
+{
+    if (Model.Patient.TenaId.IsNull())
+    {
+        @Html.Partial("~/Areas/Patient/Features/Tena/List/Partials/_ActivateTenaIdPartial.cshtml", Model)
+    }
+    else
+    {
+        if (Model.Patient.TenaObservationPeriods.Count == 0)
+        {
+            @Html.Partial("~/Areas/Patient/Features/Tena/List/Partials/_CreateFirstTenaPeriodPartial.cshtml", Model)
+            
+        }
+        else
+        {
+            @Html.Partial("~/Areas/Patient/Features/Tena/List/Partials/_ListTenaValuesPartial.cshtml", Model)
+        }
+    }
+}
+else
+{
+    <div class="main" id="main" role="main">
+        <div class="section section--hspace section--vspace section--lightblue">
+            <h2 style="text-align:center;">
+                Tjänsten är ej installerad. <br />
+                Kontakta din Administratör för att installera denna tjänst.
+            </h2>
+        </div>
+    </div>
+}
+

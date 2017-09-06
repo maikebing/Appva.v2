@@ -14,13 +14,18 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using NHibernate.Transform;
+using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IRoleRepository : IRepository<Role>, IListRepository<Role>
+    public interface IRoleRepository : 
+        IIdentityRepository<Role>, 
+        IListRepository<Role>, 
+        IUpdateRepository<Role>,
+        IRepository
     {
         /// <summary>
         /// Returns a <see cref="Role"/> by unique identifier.
@@ -146,6 +151,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .OrderBy(x => x.Weight).Asc
                 .ThenBy (x => x.Name).Asc
                 .List();
+        }
+
+        #endregion
+
+        #region IUpdateRepository<Role> Members.
+
+        /// <inheritdoc />
+        public void Update(Role entity)
+        {
+            this.persistenceContext.Update<Role>(entity);
         }
 
         #endregion

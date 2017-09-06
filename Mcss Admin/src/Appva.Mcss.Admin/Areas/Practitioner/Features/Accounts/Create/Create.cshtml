@@ -1,4 +1,5 @@
-﻿@model CreateAccountModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model CreateAccountModel
 @{ 
     SetTitle("Ny medarbetare"); 
 }
@@ -43,6 +44,10 @@
                 @Html.HiddenFor(m => m.Taxon)
                 @Html.ValidationMessageFor(m => m.Taxon)
             </div>
+            @if (Html.HasPermissionFor(Permissions.Practitioner.UpdateOrganizationPermission))
+            {
+                @Html.FormGroup(x => x.UseTaxonAsRootAddress, "checkbox").Checkbox("Begränsa användaren till vald adress").Validate().Build()
+            }
         </div>
         <div class="submit">
             @Html.Submit("Spara")

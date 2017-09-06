@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
 {
     #region Imports.
 
+    using System;
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -100,7 +101,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
         /// </summary>
         /// <returns>A redirect to authorized return url or authorized menu</returns>
         [Route("sign-in")]
-        [AllowAnonymous, HttpPost, Validate, ValidateAntiForgeryToken]
+        [AllowAnonymous, HttpPost, Validate(UseReferralRoute: true), ValidateAntiForgeryToken]
         public ActionResult SignIn(SignInForm request)
         {
             IAuthenticationResult result;
@@ -111,7 +112,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
                     return this.RedirectToAction("Lockout");
                 }
                 ModelState.AddModelError(string.Empty, string.Empty);
-                return this.View();
+                return this.View(request.LoginView);
             }
             this.authentication.SignIn(result.Identity);
             if (! result.Identity.LastPasswordChangedDate.HasValue)
@@ -155,27 +156,40 @@ namespace Appva.Mcss.Admin.Features.Authentication
         [AllowAnonymous, HttpGet]
         public async Task<ActionResult> SignInSiths()
         {
-            var url = await this.siths.ExternalLoginUrlAsync();
-            return this.Redirect(url.ToString());
+            var urlHelper   = new UrlHelper(this.Request.RequestContext);
+            var callback    = urlHelper.Action("SignInSithsViaToken", "Authentication", new RouteValueDictionary { { "Area", string.Empty } }, this.Request.Url.Scheme);
+            var response    = await this.siths.ExternalLoginUrlAsync(new Uri(callback));
+            return this.Redirect(response.RedirectUri.ToString());
         }
 
         /// <summary>
         /// The Siths Identity Provider (IdP) token response authentication.
         /// </summary>
-        /// <param name="authify_response_token">The response token</param>
+        /// <param name="grandidsession">The response session ID.</param>
         /// <returns>A redirect to the external login</returns>
         [Route("sign-in/external/siths/token")]
         [AllowAnonymous, HttpGet]
-        public async Task<ActionResult> SignInSithsViaToken(string authify_response_token)
+        public async Task<ActionResult> SignInSithsViaToken(string grandidsession)
         {
-            var result = await this.siths.AuthenticateTokenAsync(authify_response_token);
+            var result = await this.siths.AuthenticateTokenAsync(grandidsession);
             if (! result.IsAuthorized)
             {
-                return this.RedirectToAction("SignInSiths");
+                return this.RedirectToAction("SignInSithsFailed");
             }
             this.authentication.SignIn(result.Identity);
-            await this.siths.LogoutAsync(authify_response_token);
+            await this.siths.LogoutAsync(grandidsession);
             return this.RedirectToAction("Index", "Home");
+        }
+
+        /// <summary>
+        /// Returns a siths-auth failed message
+        /// </summary>
+        /// <returns>Sign-in failed message</returns>
+        [Route("sign-in/external/siths/failed")]
+        [AllowAnonymous, HttpGet]
+        public ActionResult SignInSithsFailed()
+        {
+            return this.View();
         }
 
         #endregion

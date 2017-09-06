@@ -76,7 +76,7 @@ namespace Appva.Mcss.Admin.Models.handlers
                     IsActive    = isActive,
                     IsDeceased  = isDeceased,
                     SearchQuery = message.SearchQuery
-                },
+                }, 
                 pageIndex,
                 pageSize);            
             return new ListPatientModel

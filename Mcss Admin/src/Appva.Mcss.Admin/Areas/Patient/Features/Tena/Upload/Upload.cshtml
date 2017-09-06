@@ -1,0 +1,55 @@
+﻿@model Appva.Mcss.Admin.Models.UploadTenaObserverPeriodModel
+@{
+    SetTitle("Ladda upp mätvärden");
+}
+
+<div id="remote-response" data-http-response="NOK" data-http-response-title="Inte lyckad" data-http-response-type="warning">
+    <form action="@Url.Action("list","tena")" class="validate" response-title="Uppladdningen lyckades">
+        <div class="width-limiter width-limiter--xs">
+            <p>Uppladdat till TENA Identifi.</p>
+            <p><strong>@Model.Message</strong></p>
+
+            <div class="form-controls form-controls--align-end form-controls--no-margin">
+                <a href="@Url.Action("list","tena")" class="button" data-dialog-close="true">Ok</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+@*<div id="remote-response" data-http-response="@Model.Title" data-http-response-title="@Model.Title" data-http-response-type="@Model.Symbol">*@
+
+
+    @*if (model.statuscode == httpstatuscode.accepted)
+        {
+            <div id="remote-response">
+                <form action="@url.action("list","tena")" class="validate" http-response="@model.statuscode" response-title="uppladdningen lyckades">
+                    <div class="width-limiter width-limiter--xs">
+                        <p>uppladdat till tena identifi.</p>
+                        <p><strong>@model.statusmessage</strong></p>
+
+                        <div class="form-controls form-controls--align-end form-controls--no-margin">
+                            <a href="@url.action("list","tena")" class="button" data-dialog-close="true">ok</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div id="remote-response">
+                <form action="@url.action("list","tena")" class="validate" http-response="@model.statuscode" response-title="uppladdningen misslyckades">
+                    <div class="width-limiter width-limiter--xs">
+                        @*<p>uppladdning misslyckades.</p>
+                        <p><strong>@model.statuscode</strong>: @model.statusmessage</p>
+
+                        <div class="form-controls form-controls--align-end form-controls--no-margin">
+                            <a href="@url.action("list","tena")" class="button" data-dialog-close="true">ok</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        }*@
+
+

@@ -48,6 +48,13 @@ using Appva.Mcss.Admin.Application.Models;
             "Whether or not risk assessment information, such as 'Senior' alert is visible",
             false);
 
+        public static readonly ApplicationSettingIdentity<TenaConfiguration> TenaSettings = ApplicationSettingIdentity<TenaConfiguration>.CreateNew(
+            "MCSS.Tena",
+            "Tena settings",
+            "MCSS.Tena",
+            "The Tena settings",
+            TenaConfiguration.CreateNew(null, null, "https://tenaidentifistage.sca.com/"));
+
         #endregion
 
         #region Account

@@ -96,10 +96,10 @@ namespace Appva.Mcss.Admin.Features.Account
         /// </summary>
         /// <returns>A success message</returns>
         [Route("reset-password/success")]
-        [AllowAnonymous, HttpGet]
+        [AllowAnonymous, Hydrate, HttpGet]
         public ActionResult ResetSuccess()
         {
-            return this.View();
+            return this.View(new SignInForm { LoginView = "ResetSuccess" });
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Appva.Mcss.Admin.Features.Account
         /// <returns>A <see cref="Register"/></returns>
         [Route("register")]
         [Permissions(Permissions.Token.Register)]
-        [HttpGet, Hydrate]
+        [HttpGet]
         public ActionResult Register()
         {
             return this.View();
@@ -159,10 +159,10 @@ namespace Appva.Mcss.Admin.Features.Account
         /// </summary>
         /// <returns>A success message</returns>
         [Route("register/success")]
-        [AllowAnonymous, HttpGet]
+        [AllowAnonymous, Hydrate, HttpGet]
         public ActionResult RegisterSuccess()
         {
-            return this.View();
+            return this.View(new SignInForm { LoginView = "RegisterSuccess" });
         }
 
         /// <summary>

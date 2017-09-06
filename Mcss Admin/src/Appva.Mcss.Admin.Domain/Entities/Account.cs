@@ -309,7 +309,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <returns>A collection of roles the user account can create/view/delete/edit</returns>
         public virtual IList<Role> GetRoleAccess()
         {
-            return this.Roles.SelectMany(x => x.Roles).OrderBy(x => x.Weight).ThenBy(x => x.Name).ToList();
+            return this.Roles.SelectMany(x => x.Roles).OrderBy(x => x.Weight).ThenBy(x => x.Name).Distinct().ToList();
         }
 
         /// <summary>

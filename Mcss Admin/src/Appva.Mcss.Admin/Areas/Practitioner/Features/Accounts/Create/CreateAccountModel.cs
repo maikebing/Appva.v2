@@ -135,6 +135,12 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        public bool UseTaxonAsRootAddress
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// The address taxons.
         /// </summary>

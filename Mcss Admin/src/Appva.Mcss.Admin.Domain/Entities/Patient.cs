@@ -152,6 +152,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        /// <summary>
+        /// The tena identifier for the patient.
+        /// </summary>
+        public virtual string TenaId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Observation Periods List
+        /// </summary>
+        public virtual IList<TenaObservationPeriod> TenaObservationPeriods
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

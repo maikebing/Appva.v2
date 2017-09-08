@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public IList<Taxon> ListByFilter(string identifier, bool? showActive)
         {
-            var query = this.persistenceContext.QueryOver<Taxon>();
+            var query = this.Context.QueryOver<Taxon>();
 
             if (showActive == true)
             {
@@ -131,7 +131,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public Taxon Get(Guid id)
         {
-            return this.persistenceContext.QueryOver<Taxon>()
+            return this.Context.QueryOver<Taxon>()
                 .Where(x => x.Id == id)
                 .SingleOrDefault();
         }
@@ -146,12 +146,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         #endregion
-        
+
+        #region IProxyRepository<Taxon> members.
 
         /// <inheritdoc />
         public Taxon Load(Guid id)
         {
-            return this.persistenceContext.Session.Load<Taxon>(id);
+            return this.Context.Session.Load<Taxon>(id);
         }
 
         #endregion
@@ -181,6 +182,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             entity.UpdatedAt = DateTime.Now;
             this.Context.Update<Taxon>(entity);
         }
+
+        #endregion
 
     }
 }

@@ -78,7 +78,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(
                 settings.ClientId, 
                 settings.ClientSecret,
-                settings.BaseAddress,
                 settings.IsInstalled
             ));
 

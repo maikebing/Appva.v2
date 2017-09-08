@@ -48,6 +48,8 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Http.ModelBinding;
     using System.Reflection;
     using System;
+    using Appva.Sca;
+    using System.Configuration;
 
     #endregion
 
@@ -240,6 +242,16 @@ namespace Appva.Mcss.Admin.Configuration
             var options     = RestOptions.CreateNew(null, modelBinder);
             builder.Register(x => new GrandIdClient      (options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
             builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+        }
+
+        /// <summary>
+        /// Registers the tena identifi api service.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        public static void RegisterTenaIdentifi(this ContainerBuilder builder)
+        {
+            var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(ApiService)));
+            builder.Register(x => new ApiService(new Uri(ConfigurationManager.AppSettings.Get("TenaAPI.ServerUrl")))).As<IApiService>().SingleInstance();
         }
 
         /// <summary>

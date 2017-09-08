@@ -34,6 +34,9 @@ namespace Appva.Sca
         /// <param name="manualEvents">The manual events.</param>
         /// <returns>Task&lt;List&lt;GetManualEventModel&gt;&gt;.</returns>
         Task<List<GetManualEventModel>> PostManualEventAsync(List<PostManualEventModel> manualEvents);
+
+        void SetCredentials(string credentials);
+        bool HasCredentials { get; }
     }
 
     /// <summary>
@@ -53,6 +56,11 @@ namespace Appva.Sca
         /// </summary>
         private ApiClient client;
 
+
+        public bool HasCredentials => this.config.HasCredentials;
+
+
+
         #endregion
 
         #region Constructor
@@ -60,14 +68,26 @@ namespace Appva.Sca
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiService"/> class.
         /// </summary>
+        /// <param name="baseAddress">The base address.</param>
+        public ApiService(Uri baseAddress)
+        {
+            this.config = new Configuration(baseAddress);
+            this.client = new ApiClient(this.config);
+        }
+
+        // Ta bort denna struct.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiService"/> class.
+        /// </summary>
         /// <param name="baseAddress">The <see cref="Uri"/>.</param>
         /// <param name="clientId">The <see cref="String"/> Client Id.</param>
         /// <param name="clientSecret">The <see cref="String"/> Client Secret.</param>
-        public ApiService(Uri baseAddress, string clientId, string clientSecret)
-        {
-            this.config = new Configuration(baseAddress, clientId, clientSecret);
-            this.client = new ApiClient(this.config);
-        }
+        //public ApiService(Uri baseAddress, string clientId, string clientSecret)
+        //{
+        //    this.config = new Configuration(baseAddress, clientId, clientSecret);
+        //    this.client = new ApiClient(this.config);
+        //}
 
         #endregion
 
@@ -106,6 +126,11 @@ namespace Appva.Sca
             //// TODO: response handling?
 
             return result;
+        }
+
+        public void SetCredentials(string credentials)
+        {
+            this.config.SetCredentials(credentials);
         }
         #endregion
     }

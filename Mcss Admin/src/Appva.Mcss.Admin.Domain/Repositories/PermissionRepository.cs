@@ -146,7 +146,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public IList<Permission> Search(string bySchema)
         {
-            return this.persistenceContext.QueryOver<Permission>()
+            return this.Context.QueryOver<Permission>()
                 .WhereRestrictionOn(x => x.Resource)
                     .IsLike(bySchema, MatchMode.Start)
                 .OrderBy(x => x.Sort).Asc.List();

@@ -31,7 +31,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// List of Tena Observation Measurements
         /// </summary>
-        public List<TenaObservationItem> ObservationItems
+        public List<ObservationItem> ObservationItems
         {
             get;
             set;

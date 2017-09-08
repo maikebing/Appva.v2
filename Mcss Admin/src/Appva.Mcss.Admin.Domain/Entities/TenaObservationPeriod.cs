@@ -4,27 +4,41 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports
 
     using System;
-    using System.Collections.Generic;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class TenaObservationPeriod : AggregateRoot<TenaObservationPeriod>
+    public class TenaObservationPeriod : Observation
     {
         #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TenaObservationPeriod"/> class.
         /// </summary>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
+        /// <param name="patient">The patient.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="category">The category.</param>
+        public TenaObservationPeriod(DateTime startDate, DateTime endDate, Patient patient, string name, string description, Taxon category = null) 
+            : base(patient, name, description, category)
+        {
+            this.StartDate = startDate;
+            this.EndDate = endDate;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TenaObservationPeriod"/> class.
+        /// </summary>
+        /// <remarks>An NHibernate visible no-argument constructor.</remarks>
         public TenaObservationPeriod()
         {
         }
@@ -45,24 +59,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// Date at end of period
         /// </summary>
         public virtual DateTime EndDate
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Date at end of period
-        /// </summary>
-        public virtual Patient Patient
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// TenaObservationItem
-        /// </summary>
-        public virtual IList<TenaObservationItem> TenaObservationItems
         {
             get;
             set;

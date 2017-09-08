@@ -21,7 +21,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// The <see cref="TenaRepository"/> repository.
     /// </summary>
-    public interface ITenaRepository : IRepository
+    public interface ITenaRepository : IRepository<Observation>
     {
         /// <summary>
         /// Checks if externalId is Unique
@@ -111,12 +111,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate)
         {
-            var period = new TenaObservationPeriod
-            {
-                Patient = patient,
-                StartDate = startdate,
-                EndDate = enddate
-            };
+            var period = new TenaObservationPeriod(startdate, enddate, patient, "Mätperiod", "Tena mätperiod");
+
             this.persistence.Save(period);
         }
 
@@ -131,6 +127,18 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             var patient = this.persistence.QueryOver<Patient>().Where(x => x.Id == patientId).SingleOrDefault();
             return patient.TenaId;
+        }
+
+        /// <inheritdoc />
+        public Observation Get(object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Observation Load(object id)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

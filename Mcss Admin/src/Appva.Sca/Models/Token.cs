@@ -57,6 +57,8 @@ namespace Appva.Sca.Models
         /// </summary>
         internal Token()
         {
+            this.Value = string.Empty;
+            this.Expires = DateTimeOffset.UtcNow.AddHours(-1);
         }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Diagnostics.CodeAnalysis;
     using Appva.Ldap.Configuration;
     using Appva.Mcss.Admin.Domain.VO;
-using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Common;
 
     #endregion
@@ -53,7 +53,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Tena settings",
             "MCSS.Tena",
             "The Tena settings",
-            TenaConfiguration.CreateNew(null, null, "https://tenaidentifistage.sca.com/"));
+            TenaConfiguration.CreateNew(null, null));
 
         #endregion
 

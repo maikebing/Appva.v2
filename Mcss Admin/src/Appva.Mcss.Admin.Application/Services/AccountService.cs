@@ -372,22 +372,10 @@ namespace Appva.Mcss.Admin.Application.Services
         public IPaged<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
             this.auditing.Read("läste medarbetarlista sida {0}", page);
-            var retval = this.repository.Search(model, page, pageSize);
 
+            return this.repository.Search(model, page, pageSize);
             //// Fix to get locations in account model
             //// TODO: Add to main query
-            var accounts  = retval.Entities.Select(x => x.Id).ToArray();
-            var locations = this.persistence.QueryOver<Location>()
-                .WhereRestrictionOn(x => x.Account.Id).IsIn(accounts)
-                .List().GroupBy(x => x.Account.Id).ToDictionary(x => x.Key, g => g.ToList());
-
-            foreach (var account in retval.Entities.Where(x => locations.ContainsKey(x.Id)))
-            {
-                account.Locations = locations[account.Id];
-            }
-
-            return retval;
-
         }
 
         /// <inheritdoc />

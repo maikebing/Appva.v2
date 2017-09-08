@@ -7,17 +7,17 @@
 
 namespace Appva.Mcss.Admin.Domain.Entities
 {
+    using Appva.Mcss.Admin.Domain.VO;
     #region Imports
 
     using System;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class TenaObservationItem : AggregateRoot<TenaObservationItem>
+    public class TenaObservationItem : AggregateRoot
     {
         #region Constructor
 
@@ -27,10 +27,20 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public TenaObservationItem()
         {
         }
-        
+
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// TenaObservationPeriod, ForeignKeyId
+        /// </summary>
+        public virtual TenaObservationPeriod TenaObservationPeriod
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Measurement
         /// </summary>
@@ -58,14 +68,18 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        #endregion
+
+        #region Public Static Builders.
+
         /// <summary>
-        /// TenaObservationPeriod, ForeignKeyd
+        /// Creates a new instance of the <see cref="TenaObservationItem"/> class.
         /// </summary>
-        public virtual TenaObservationPeriod TenaObservationPeriod
-        {
-            get;
-            set;
-        }
+        /// <param name="observation">The observation.</param>
+        /// <param name="measurement">The measurement.</param>
+        /// <param name="signature">The signature.</param>
+        /// <returns>A new <see cref="ObservationItem"/> instance.</returns>
+
         #endregion
     }
 }

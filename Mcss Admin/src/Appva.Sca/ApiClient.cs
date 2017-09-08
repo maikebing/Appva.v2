@@ -11,6 +11,7 @@ namespace Appva.Sca
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using Appva.Core.Extensions;
     using Appva.Http;
@@ -62,7 +63,7 @@ namespace Appva.Sca
         /// </summary>
         /// <param name="id">A List of <see cref="string"/>.</param>
         /// <returns>GetResidentModel<see cref="GetResidentModel"/>.</returns>
-        public async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id)
+        internal async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id)
         {
             // snygga till denna kod och lägg in den i riktiga klienten.
             var myToken = await this.GetTokenAsync();
@@ -76,7 +77,7 @@ namespace Appva.Sca
         /// </summary>
         /// <param name="manualEvents">The manual events.</param>
         /// <returns>Task&lt;IHttpResponseMessage&lt;List&lt;GetManualEventModel&gt;&gt;&gt;.</returns>
-        public async Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(List<PostManualEventModel> manualEvents)
+        internal async Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(List<PostManualEventModel> manualEvents)
         {
             var myToken = await this.GetTokenAsync();
             var response = await this.Post(UriHelper.ManualEventUrl, manualEvents).WithBearerToken(myToken).AsJson().ToResultAsync<List<GetManualEventModel>>();

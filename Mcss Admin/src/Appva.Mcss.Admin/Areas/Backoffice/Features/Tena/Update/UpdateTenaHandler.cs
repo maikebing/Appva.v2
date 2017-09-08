@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Persistence;
@@ -33,6 +34,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// </summary>
         private readonly IPersistenceContext persistenceContext;
 
+        private readonly ITenaService tenaService;
+
         #endregion
 
         #region Constructor.
@@ -42,9 +45,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// </summary>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
         /// <param name="persistenceContext">The <see cref="IPersistenceContext"/>.</param>
-        public UpdateTenaHandler(ISettingsService settingsService, IPersistenceContext persistenceContext)
+        public UpdateTenaHandler(ISettingsService settingsService, ITenaService tenaService, IPersistenceContext persistenceContext)
         {
             this.settingsService = settingsService;
+            this.tenaService = tenaService;
             this.persistenceContext = persistenceContext;
         }
 
@@ -62,9 +66,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             this.settingsService.Upsert(ApplicationSettings.TenaSettings, Domain.VO.TenaConfiguration.CreateNew(
                 clientId, 
                 clientSecret, 
-                settings.BaseAddress, 
                 settings.IsInstalled
             ));
+            this.tenaService.SetCredentials(clientId, clientSecret);
 
             return true;
         }

@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.UnitTests
     /// Class ScaServiceTests.
     /// </summary>
     [TestClass]
-    public class ScaServiceTests
+    public class ApiServiceTests
     {
         /// <summary>
         /// Gets the resident test.
@@ -31,7 +31,9 @@ namespace Appva.Mcss.Admin.UnitTests
         public void TestGetResident()
         {
             // arrange
-            var service = new ApiService(new Uri("https://tenaidentifistage.sca.com/"), "EABE6751-2ABD-4311-A794-70A833D31C31", "C5C8DAEB-6C07-423D-82CF-8177C8CB9604");
+            var service = new ApiService(new Uri("https://tenaidentifistage.sca.com/"));
+            var credentials = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("EABE6751-2ABD-4311-A794-70A833D31C31" + ":" + "C5C8DAEB-6C07-423D-82CF-8177C8CB9604"));
+            service.SetCredentials(credentials);
 
             var testResident1 = new GetResidentModel { ExternalId = "8L2vJIUo" }; // Testsubject Alpha
             var testResident2 = new GetResidentModel { ExternalId = "VkURQBEo" }; // Testsubject Beta
@@ -52,11 +54,13 @@ namespace Appva.Mcss.Admin.UnitTests
         public void TestPostManualEvent()
         {
             // arrange
-            var service = new ApiService(new Uri("https://tenaidentifistage.sca.com/"), "EABE6751-2ABD-4311-A794-70A833D31C31", "C5C8DAEB-6C07-423D-82CF-8177C8CB9604");
+            var service = new ApiService(new Uri("https://tenaidentifistage.sca.com/"));
+            var credentials = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("EABE6751-2ABD-4311-A794-70A833D31C31" + ":" + "C5C8DAEB-6C07-423D-82CF-8177C8CB9604"));
+            service.SetCredentials(credentials);
 
             var testManualEvents1 = new List<PostManualEventModel>
             {
-                new PostManualEventModel
+                new PostManualEventModel  // Testsubject Alpha
                 {
                     Id = Guid.NewGuid().ToString(),
                     EventType = "toilet",
@@ -64,7 +68,7 @@ namespace Appva.Mcss.Admin.UnitTests
                     Timestamp = DateTime.Now.AddDays(-4).ToString(),
                     Active = true
                 },
-                new PostManualEventModel
+                new PostManualEventModel  // Testsubject Alpha
                 {
                     Id = Guid.NewGuid().ToString(),
                     EventType = "leakage",
@@ -86,10 +90,13 @@ namespace Appva.Mcss.Admin.UnitTests
         }
 
         [TestMethod]
-        public void TestCredentials()
+        public void TestInvalidCredentials()
         {
             // arrange
-            var service = new ApiService(new Uri("https://tenaidentifistage.sca.com/"), "EABE6751-4311-A794-2ABD-70A833D31C31", "C5C8DAEB-6C07-82CF-423D-8177C8CB9604");
+            var service = new ApiService(new Uri("https://tenaidentifistage.sca.com/"));
+            var credentials = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("EABE6751-4311-A794-2ABD-70A833D31C31" + ":" + "C5C8DAEB-6C07-82CF-423D-8177C8CB9604"));
+            service.SetCredentials(credentials);
+
             var testResident1 = new GetResidentModel { ExternalId = "8L2vJIUo" }; // Testsubject Alpha
 
             // act
@@ -108,7 +115,7 @@ namespace Appva.Mcss.Admin.UnitTests
         public void TestBaseAddress()
         {
             // arrange
-            var service = new ApiService(new Uri("https://tenaidentifistaeg.sca.se/"), "EABE6751-2ABD-4311-A794-70A833D31C31", "C5C8DAEB-6C07-423D-82CF-8177C8CB9604");
+            var service = new ApiService(new Uri("https://tenaidentifistaeg.sca.se/")); //, "EABE6751-2ABD-4311-A794-70A833D31C31", "C5C8DAEB-6C07-423D-82CF-8177C8CB9604");
             var testResident1 = new GetResidentModel { ExternalId = "8L2vJIUo" }; // Testsubject Alpha
             var response1 = new GetResidentModel();
 

@@ -47,6 +47,8 @@ namespace Appva.Sca
             set;
         }
 
+        internal bool HasCredentials => this.Credentials != null;
+
         #endregion
 
         #region Constructor
@@ -55,14 +57,30 @@ namespace Appva.Sca
         /// Initializes a new instance of the <see cref="Configuration"/> class.
         /// </summary>
         /// <param name="baseAddress">The base address.</param>
-        /// <param name="clientId">The client identifier.</param>
-        /// <param name="clientSecret">The client secret.</param>
-        public Configuration(Uri baseAddress, string clientId, string clientSecret)
+        internal Configuration(Uri baseAddress)
         {
             this.BaseAddress = baseAddress;
-            this.clientId = clientId;
-            this.clientSecret = clientSecret;
-            this.Credentials = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(this.clientId + ":" + this.clientSecret));
+        }
+
+        // rensa bort denna struct
+
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="Configuration"/> class.
+        ///// </summary>
+        ///// <param name="baseAddress">The base address.</param>
+        ///// <param name="clientId">The client identifier.</param>
+        ///// <param name="clientSecret">The client secret.</param>
+        //internal Configuration(Uri baseAddress, string clientId, string clientSecret)
+        //{
+        //    this.BaseAddress = baseAddress;
+        //    this.clientId = clientId;
+        //    this.clientSecret = clientSecret;
+        //    this.Credentials = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(this.clientId + ":" + this.clientSecret));
+        //}
+
+        internal void SetCredentials(string credentials)
+        {
+            this.Credentials = credentials;
         }
 
         #endregion

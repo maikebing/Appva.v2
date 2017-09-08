@@ -12,7 +12,7 @@ namespace Appva.Mcss.Admin.Domain.VO
 {
     #region Imports.
 
-    using Appva.Common.Domain;
+    using System.Collections.Generic;
     using Newtonsoft.Json;
 
     #endregion
@@ -29,14 +29,12 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="clientId">The client id.</param>
         /// <param name="clientSecret">The client secret.</param>
-        /// <param name="baseAddress">The API BaseAddress.</param>
         /// <param name="isInstalled">If the Tena permissions has been installed.</param>
         [JsonConstructor]
-        private TenaConfiguration(string clientId, string clientSecret, string baseAddress, bool isInstalled)
+        private TenaConfiguration(string clientId, string clientSecret, bool isInstalled) 
         {
             this.ClientId = clientId;
             this.ClientSecret = clientSecret;
-            this.BaseAddress = baseAddress;
             this.IsInstalled = isInstalled;
         }
 
@@ -65,16 +63,6 @@ namespace Appva.Mcss.Admin.Domain.VO
         }
 
         /// <summary>
-        /// The API BaseAddress.
-        /// </summary>
-        [JsonProperty]
-        public string BaseAddress
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// If the Tena permissions has been installed.
         /// </summary>
         [JsonProperty]
@@ -93,12 +81,11 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="clientId">The client id.</param>
         /// <param name="clientSecret">The client secret.</param>
-        /// <param name="baseAddress">The API BaseAddress.</param>
         /// <param name="isInstalled">If the Tena permissions has been installed.</param>
         /// <returns>A new <see cref="TenaConfiguration"/> instance.</returns>
-        public static TenaConfiguration CreateNew(string clientId = null, string clientSecret = null, string baseAddress = null, bool isInstalled = false)
+        public static TenaConfiguration CreateNew(string clientId = null, string clientSecret = null, bool isInstalled = false)
         {
-            return new TenaConfiguration(clientId, clientSecret, baseAddress, isInstalled);
+            return new TenaConfiguration(clientId, clientSecret, isInstalled);
         }
 
         #endregion
@@ -110,20 +97,16 @@ namespace Appva.Mcss.Admin.Domain.VO
         {
             return this.ClientId.GetHashCode() +
                    this.ClientSecret.GetHashCode() +
-                   this.BaseAddress.GetHashCode() +
                    this.IsInstalled.GetHashCode();
         }
 
         /// <inheritdoc />
-        public override bool Equals(TenaConfiguration other)
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            return other != null
-                && this.ClientId.Equals(other.ClientId)
-                && this.ClientSecret.Equals(other.ClientSecret)
-                && this.BaseAddress.Equals(other.BaseAddress)
-                && this.IsInstalled.Equals(other.IsInstalled);
+            yield return this.ClientId;
+            yield return this.ClientSecret;
+            yield return this.IsInstalled;
         }
-
         #endregion
     }
 }

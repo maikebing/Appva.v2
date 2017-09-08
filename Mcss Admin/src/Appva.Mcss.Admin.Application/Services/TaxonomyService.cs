@@ -161,7 +161,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public ITaxon Find(Guid id)
         {
-            var item = this.repository.Find(id);
+            var item = this.repository.Get(id);
             return new TaxonItem(
                     item.Id,
                     item.Name,

@@ -543,6 +543,7 @@
     <id name="Id">
       <generator class="guid.comb" />
     </id>
+    <discriminator column="ObservationType" />
     <version  name="Version"                                       />
     <property name="IsActive"     column="Active"                  />
     <property name="CreatedAt"    column="Created"  update="false" />
@@ -555,6 +556,10 @@
       <key column="Observation" />
       <one-to-many class="ObservationItem" />
     </bag>
+    <subclass name="TenaObservationPeriod" discriminator-value="TenaObservationPeriod">
+      <property name="StartDate" />
+      <property name="EndDate" />
+    </subclass>
   </class>
   
   <!-- Observation Item -->
@@ -736,24 +741,6 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
-  
-
-  <!-- TenaObservationPeriod-->
-  <class name="TenaObservationPeriod">
-    <id name="Id">
-      <generator class="guid.comb" />
-    </id>
-    <property name="IsActive" column="Active" />
-    <property name="CreatedAt" column="Created" />
-    <property name="UpdatedAt" column="Modified" />
-    <property name="StartDate" />
-    <property name="EndDate" />
-    <many-to-one name="Patient" class="Patient" />
-    <bag name="TenaObservationItems" cascade="save-update" table="TenaObservationItem">
-      <key column="TenaObservationPeriod" />
-      <one-to-many class="TenaObservationItem" />
-    </bag>
-  </class>
 
   <!-- TenaObservervationItem -->
   <class name="TenaObservationItem">
@@ -769,6 +756,5 @@
     <property name="Comment" />
     <many-to-one name="TenaObservationPeriod" class="TenaObservationPeriod" />    
   </class>
-
 
 </hibernate-mapping>

@@ -29,12 +29,6 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface ITenaService : IService
     {
         /// <summary>
-        /// Get the request URI.
-        /// </summary>
-        /// <returns>The request URI.</returns>
-        string GetRequestUri();
-
-        /// <summary>
         /// If the provided external id is unique.
         /// </summary>
         /// <param name="externalId">The external tena id.</param>
@@ -66,6 +60,13 @@ namespace Appva.Mcss.Admin.Application.Services
         TenaObservationPeriod GetTenaObservationPeriod(Guid periodId);
 
         /// <summary>
+        /// Sets the credentials.
+        /// </summary>
+        /// <param name="client">The client.</param>
+        /// <param name="secret">The secret.</param>
+        void SetCredentials(string client, string secret);
+
+        /// <summary>
         /// Get data from the TENA API.
         /// </summary>
         /// <param name="externalId">The external tena id.</param>
@@ -88,16 +89,6 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         /// <summary>
-        /// The <see cref="GetEndpoint"/>.
-        /// </summary>
-        private const string GetEndpoint = "https://tenaidentifistage.sca.com/api/resident/";
-
-        /// <summary>
-        /// The <see cref="token"/>.
-        /// </summary>
-        private static string token = string.Empty;
-
-        /// <summary>
         /// The <see cref="ITenaRepository"/>.
         /// </summary>
         private readonly ITenaRepository repository;
@@ -110,7 +101,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// The <see cref="IApiService"/>.
         /// </summary>
-        private ApiService apiService; // readonly
+        private readonly IApiService apiService; // readonly
 
         #endregion
 
@@ -121,22 +112,21 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        public TenaService(ITenaRepository repository, ISettingsService settingsService)
+        /// <param name="apiService">The <see cref="IApiService"/>.</param>
+        public TenaService(ITenaRepository repository, ISettingsService settingsService, IApiService apiService)
         {
             this.repository = repository;
             this.settingsService = settingsService;
-            this.apiService = new ApiService(new Uri(this.GetSettings().BaseAddress), this.GetSettings().ClientId, this.GetSettings().ClientSecret);
+            this.apiService = apiService;
+            if (this.apiService.HasCredentials == false)
+            {
+                this.apiService.SetCredentials(this.GetCredentials());
+            }
         }
 
         #endregion
 
         #region ITenaService members.
-
-        /// <inheritdoc />
-        public string GetRequestUri()
-        {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings).BaseAddress;
-        }
 
         /// <inheritdoc />
         public bool HasUniqueExternalId(string externalId)
@@ -174,6 +164,12 @@ namespace Appva.Mcss.Admin.Application.Services
         #region API communication members.
 
         /// <inheritdoc />
+        public void SetCredentials(string client, string secret)
+        {
+            this.apiService.SetCredentials(this.GetCredentials(client, secret));
+        }
+
+        /// <inheritdoc />
         public async Task<GetResidentModel> GetResidentAsync(string externalId)
         {
             if (this.HasUniqueExternalId(externalId))
@@ -190,7 +186,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public async Task<List<GetManualEventModel>> PostManualEventAsync(Guid periodId)
         {
-            var measurements = this.repository.GetTenaPeriod(periodId).TenaObservationItems;
+            var measurements = this.repository.GetTenaPeriod(periodId).Items;
             if (measurements.IsEmpty())
             {
                 return null;
@@ -203,7 +199,7 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Private methods.
 
         /// <inheritdoc />
-        private List<PostManualEventModel> ConvertDataToTenaModel(IList<TenaObservationItem> tenaObservationItemsList)
+        private List<PostManualEventModel> ConvertDataToTenaModel(IList<ObservationItem> tenaObservationItemsList)
         {
             var tenaApiList = new List<PostManualEventModel>();
             foreach (var item in tenaObservationItemsList)
@@ -211,8 +207,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 tenaApiList.Add(new PostManualEventModel
                 {
                     Id = item.Id.ToString(),
-                    EventType = item.Measurement,
-                    ResidentId = item.TenaObservationPeriod.Patient.TenaId,
+                    EventType = item.Measurement.Value,
+                    ResidentId = item.Observation.Patient.TenaId,
                     Timestamp = item.UpdatedAt.ToString(),
                     Active = item.IsActive
                 });
@@ -221,11 +217,17 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        private Domain.VO.TenaConfiguration GetSettings()
+        private string GetCredentials(string client, string secret)
         {
-            return this.settingsService.Find(ApplicationSettings.TenaSettings);
+            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(client + ":" + secret));
         }
 
+        /// <inheritdoc />
+        private string GetCredentials()
+        {
+            var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
+            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(settings.ClientId + ":" + settings.ClientSecret));
+        }
         #endregion
     }
 }

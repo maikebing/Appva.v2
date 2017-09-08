@@ -8,13 +8,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using NHibernate.Transform;
-using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
     #endregion
 
@@ -22,10 +19,9 @@ using Appva.Mcss.Admin.Domain.Repositories.Contracts;
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public interface IRoleRepository : 
-        IIdentityRepository<Role>, 
-        IListRepository<Role>, 
+        IListRepository<Role>,
         IUpdateRepository<Role>,
-        IRepository
+        IRepository<Role>
     {
         /// <summary>
         /// Returns a <see cref="Role"/> by unique identifier.
@@ -155,14 +151,5 @@ using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
         #endregion
 
-        #region IUpdateRepository<Role> Members.
-
-        /// <inheritdoc />
-        public void Update(Role entity)
-        {
-            this.persistenceContext.Update<Role>(entity);
-        }
-
-        #endregion
     }
 }

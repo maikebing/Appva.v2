@@ -29,7 +29,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.IsActive    = observation.IsActive;
             this.Name        = observation.Name;
             this.Description = observation.Description;
-            this.Category    = observation.Category.Id;
+            // this.Category = observation.Category.Id;
         }
 
         /// <summary>

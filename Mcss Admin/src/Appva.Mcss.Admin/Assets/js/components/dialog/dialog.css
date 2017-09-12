@@ -93,7 +93,6 @@
 .dialog__title--warning .dialog__symbol {
 	background-color:hsl(55, 100%, 45%);
 }
-
 .dialog__header > * {
 	margin-bottom:0;
 	color:#fff;
@@ -146,17 +145,19 @@
 	position:absolute;
 	top:10px;
 	right:10px;
+	box-sizing:content-box;
 	width:16px;
 	height:16px;
 	margin:0;
-	padding:0;
+	padding:10px;
 	border:none;
-	background:transparent;
+	border-radius:50%;
 	color:#637491;
 	color:var(--c-blue);
 	font-size:20px;
 	cursor:pointer;
 }
+/* TODO: Give same focus style as other buttons */
 .dialog__close:focus {
 	outline:1px dotted #666;
 }

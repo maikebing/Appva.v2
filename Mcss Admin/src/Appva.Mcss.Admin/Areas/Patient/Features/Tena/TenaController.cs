@@ -181,10 +181,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// </summary>
         /// <param name="request">The <see cref="UploadTenaObserverPeriod"/>.</param>
         /// <returns>A <see cref="ActionResult"/>.</returns>
-        [Route("uploadasync")]
+        [Route("upload")]
         [HttpGet]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
-        public async Task<ActionResult> UploadAsync(UploadTenaObserverPeriod request)
+        public async Task<ActionResult> Upload(UploadTenaObserverPeriod request)
         {
             var handler = new UploadTenaObserverPeriodHandlerAsync(this.tenaService);
             //var response = await this.tenaService.PostManualEventAsync(request.PeriodId);

@@ -39,6 +39,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.tenaService = tenaService;
         }
 
+        /// <inheritdoc />
         internal async Task<UploadTenaObserverPeriodModel> HandleAsync(UploadTenaObserverPeriod request)
         {
             var period = this.tenaService.GetTenaObservationPeriod(request.PeriodId);
@@ -63,14 +64,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     title = "Uppladdning klar!";
                     message = "Uppladdningen till Tena Identfi lyckades";
                     icon = "check";
-                    type = "";
+                    type = "positive";
                 }
                 else
                 {
                     title = "Inte lyckad";
                     message = "Uppladdningen till Tena Identifi misslyckades";
-                    icon = "alert";
-                    type = "warning";
+                    icon = "x";
+                    type = "negative";
                 }
             }
 

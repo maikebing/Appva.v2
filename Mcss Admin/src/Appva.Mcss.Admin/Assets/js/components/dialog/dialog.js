@@ -23,8 +23,8 @@
 	* TODO: abort ajax call on click on shield?
 	*/
 	var Dialog = function (options) {
-		// var self = this;
-		// var closeIcon = '<svg class="icon" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#x-icon"></use></svg>';
+		var self = this;
+		var closeIcon = '<svg class="icon" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#x-icon"></use></svg>';
 
 		this.options = $.extend({
 			// Extra dialog class
@@ -56,17 +56,17 @@
 			'aria-live': 'assertive'
 		}).appendTo(this.dialogElement);
 
-		// // Create and append close button
-		// this.closeElement = $('<button>', {
-		// 	'type': 'button',
-		// 	'class': 'dialog__close',
-		// 	'aria-label': this.options.closeText,
-		// 	'html': '<span class="visually-hidden">' + this.options.closeText + '</span>',
-		// 	'click': function (e) {
-		// 		e.preventDefault();
-		// 		self.close();
-		// 	}
-		// }).prependTo(this.dialogElement);
+		// Create and append close button
+		this.closeElement = $('<button>', {
+			'type': 'button',
+			'class': 'dialog__close',
+			'aria-label': this.options.closeText,
+			'html': '<span class="visually-hidden">' + this.options.closeText + '</span>' + closeIcon,
+			'click': function (e) {
+				e.preventDefault();
+				self.close();
+			}
+		}).prependTo(this.dialogElement);
 
 		dialogs.push(this);
 	};
@@ -91,57 +91,17 @@
 			this.position();
 			this.dialogElement.trigger('load.netrdialog', this);
 		},
-		setTitle: function (title, symbol, type) {
-			var titleContainer = $('<div class="dialog__title"></div>');
-
-			if (!symbol && !type) {
-				// If the calling element doesn't have type or symbol specified, print this symbol
-				symbol = '!';
-			}
-			else if (!symbol) {
-				// If the calling element doesn't have symbol specified
-				switch (type) {
-					case 'positive':
-						symbol = '&#x2713;';
-						break;
-					case 'negative':
-						symbol = 'X';
-						break;
-					default:
-						// Fallback if type doesn't match the specified types
-						symbol = '!';
-						break;
-				}
-			}
-
-			switch (type) {
-				case 'positive':
-					titleContainer.addClass('dialog__title--positive');
-					break;
-				case 'negative':
-					titleContainer.addClass('dialog__title--negative');
-					break;
-				case 'warning':
-					titleContainer.addClass('dialog__title--warning');
-					break;
-			}
-
+		setTitle: function (title) {
 			if (this.options.showDialogTitle) {
 				// Visible dialog title
 				this.dialogElement.attr('aria-labelledby', 'dialog-title-' + (z - 1));
-				this.dialogElement.find('.dialog__title').remove();
-				$('<div class="dialog__symbol"><span>' + symbol + '</span></div>').appendTo(titleContainer);
-				$('<div class="dialog__header"><h3 id="dialog-title-' + (z - 1) + '">' + title + '</h3></div>').appendTo(titleContainer);
-				titleContainer.prependTo(this.dialogElement);
+				this.dialogElement.find('.alert-message.alert-message--dialog').remove();
+				$('<div class="alert-message alert-message--dialog"><h2 id="dialog-title-' + (z - 1) + '" class="alert-message__heading h3">' + title + '</h2></div>').prependTo(this.dialogElement);
 			}
 			else {
 				// Visually hidden dialog title
 				this.dialogElement.attr('aria-label', title);
 			}
-		},
-		httpResponse: function (code) {
-			// console.log('herro');
-			return code;
 		},
 		open: function () {
 			var self = this;
@@ -162,10 +122,10 @@
 					e.stopPropagation();
 
 					// Put focus on the first focusable element in the dialog
-					// self.dialogElement.find('input, select, textarea, button, object, a, [tabindex]').filter(function () {
-					// 	var element = $(this);
-					// 	return (!element.is(':disabled') && (element.attr('tabindex') !== '-1'));
-					// }).eq(0).focus();
+					self.dialogElement.find('input, select, textarea, button, object, a, [tabindex]').filter(function () {
+						var element = $(this);
+						return (!element.is(':disabled') && (element.attr('tabindex') !== '-1'));
+					}).eq(0).focus();
 				}
 			});
 			// Close the dialog when the ESC key is pressed
@@ -181,20 +141,19 @@
 			// Close the dialog when something outside it is clicked or tapped
 			// `$(e.target).data('event') === 'click'` is to prevent the dialog from closing when pressing the
 			// next/prev month buttons on a datepicker.
-			// $(document).bind('click.netrdialog touchend.netrdialog', function (e) {
-			// 	if (!jQuery.contains(self.dialogElement.get(0), e.target) && (self.dialogElement.get(0) !== e.target)) {
-			// 		if ($('.ui-datepicker').length) {
-			// 			if (jQuery.contains($('#ui-datepicker-div').get(0), e.target) || ($('#ui-datepicker-div').get(0) === e.target) || $(e.target).data('event') === 'click') {
-			// 				return;
-			// 			}
-			// 		}
+			$(document).bind('click.netrdialog touchend.netrdialog', function (e) {
+				if (!jQuery.contains(self.dialogElement.get(0), e.target) && (self.dialogElement.get(0) !== e.target)) {
+					if ($('.ui-datepicker').length) {
+						if (jQuery.contains($('#ui-datepicker-div').get(0), e.target) || ($('#ui-datepicker-div').get(0) === e.target) || $(e.target).data('event') === 'click') {
+							return;
+						}
+					}
 
-			// 		// close dialog
-			// 		e.preventDefault();
-			// 		self.close();
-			// 	}
-			// });
-
+					// close dialog
+					e.preventDefault();
+					self.close();
+				}
+			});
 			// Trigger open event
 			this.dialogElement.trigger('open.netrdialog', this);
 		},
@@ -273,20 +232,11 @@
 				e.preventDefault();
 				var element = $(this);
 				var dialog = element.data('netrdialog');
-				var dialogType;
 
 				if (!dialog) {
-
-					if ($(this).hasClass('button--negative')) {
-						dialogType = 'warning';
-					}
-					else {
-						dialogType = '';
-					}
-
 					// Create a new dialog
 					element.data('netrdialog', dialog = new Dialog({
-						extraClass: dialogType,
+						extraClass: options.extraClass,
 						closeText: options.closeText
 					}));
 
@@ -329,7 +279,7 @@
 						'load.netrdialog': function (e) {
 							var form = dialog.contentElement.find('form');
 							var clearForm = form.serialize();
-							var hasInput = false;
+							var firmDirty = false;
 
 							if (options.hijackForms) {
 								var button;
@@ -367,7 +317,7 @@
 											success: function (data) {
 												if (data.length) {
 													dialog.setContent(data);
-													dialog.httpResponse = 201;
+
 													// Fire Callbacks!
 													callbacks.fire(data, dialog);
 												}
@@ -382,16 +332,19 @@
 									});
 								}
 							}
+							// Move heading outside content
+							dialog.dialogElement.find('.alert-message').remove();
+							dialog.contentElement.find('.alert-message').first().insertBefore(dialog.contentElement).addClass('alert-message--dialog');
 
 							// Trigger new content and find and bind in-content-close-buttons.
 							dialog.contentElement.trigger('newcontent');
 							if (form) {
 								form.on('change input', function () {
-									hasInput = form.serialize() !== clearForm;
+									firmDirty = form.serialize() !== clearForm;
 								});
 
 								dialog.contentElement.on('click', '[data-dialog-close]', function () {
-									if (hasInput === false) {
+									if (firmDirty === false) {
 										dialog.close();
 									}
 									else {
@@ -438,20 +391,15 @@
 							}
 						});
 					}
+
 					// Add a title if the triggering element has a data-dialog-title attribute
 					callbacks.add(function (data, dialog) {
 						var title = element.data('dialog-title');
-						var symbol = element.data('dialog-symbol');
-						var type = element.data('dialog-type');
-						var httpResponse = dialog.contentElement.find('[data-http-response]');
-
-						if (httpResponse.length > 0) {
-							title = httpResponse.data('http-response-title');
-							symbol = httpResponse.data('http-response-symbol');
-							type = httpResponse.data('http-response-type');
+						if (title) {
+							dialog.setTitle(title);
 						}
-						dialog.setTitle(title, symbol, type);
 					});
+
 				}
 			});
 		}

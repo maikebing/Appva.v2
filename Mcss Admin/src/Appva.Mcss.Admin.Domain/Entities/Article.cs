@@ -60,15 +60,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Check if the article needs to be refilled.
-        /// </summary>
-        public virtual bool Refill
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The account which ordered the last refill.
         /// </summary>
         public virtual Account RefillOrderedBy
@@ -86,14 +77,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
-        /// <summary>
-        /// Check if the article needs to be refilled and material have been ordered from manufacturer.
-        /// </summary>
-        public virtual bool Ordered
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// The account which made the order from manufacturer.
@@ -150,10 +133,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
             {
                 Name = name,
                 Description = description,
-                Refill = false,
                 RefillOrderDate = null,
                 RefillOrderedBy = null,
-                Ordered = true,
                 OrderDate = null,
                 OrderedBy = null,
                 Status = orderStatus,

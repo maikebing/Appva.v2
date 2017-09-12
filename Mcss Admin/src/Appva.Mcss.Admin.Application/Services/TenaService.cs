@@ -79,6 +79,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="periodId">The Observation Period ID.</param>
         /// <returns>Returns a list of <see cref="GetManualEventModel"/>.</returns>
         Task<List<GetManualEventModel>> PostManualEventAsync(Guid periodId);
+
+        /// <summary>
+        /// Posts the manual event asynchronous.
+        /// </summary>
+        /// <param name="period">The period.</param>
+        /// <returns>Task&lt;List&lt;GetManualEventModel&gt;&gt;.</returns>
+        Task<List<GetManualEventModel>> PostManualEventAsync(TenaObservationPeriod period);
     }
 
     /// <summary>
@@ -172,21 +179,36 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public async Task<GetResidentModel> GetResidentAsync(string externalId)
         {
-            if (this.HasUniqueExternalId(externalId))
+            if (this.HasUniqueExternalId(externalId) == false)
             {
-                return await this.apiService.GetResidentAsync(externalId);
+                return new GetResidentModel
+                {
+                    Message = "Användaren är redan registrerad."
+                };
             }
 
-            return new GetResidentModel
-            {
-                Message = "Användaren är redan registrerad."
-            };
+            return await this.apiService.GetResidentAsync(externalId);
         }
 
         /// <inheritdoc />
         public async Task<List<GetManualEventModel>> PostManualEventAsync(Guid periodId)
         {
-            var measurements = this.repository.GetTenaPeriod(periodId).Items;
+            var period = this.repository.GetTenaPeriod(periodId);
+            var measurements = period.Items;
+            //var measurements = this.repository.GetTenaPeriod(periodId).Items;
+            if (measurements.IsEmpty())
+            {
+                return null;
+            }
+            return await this.apiService.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
+        }
+
+
+
+        /// <inheritdoc />
+        public async Task<List<GetManualEventModel>> PostManualEventAsync(TenaObservationPeriod period)
+        {
+            var measurements = period.Items;
             if (measurements.IsEmpty())
             {
                 return null;

@@ -8,12 +8,12 @@
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
 
-
-
 namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 {
     #region Imports.
 
+    using System.Threading.Tasks;
+    using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Infrastructure;
@@ -21,11 +21,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Mvc.Security;
-    using Appva.Sca.Models;
     using Newtonsoft.Json;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using System.Web.Mvc;
+    using Appva.Mcss.Admin.Models.Handlers;
 
     #endregion
 
@@ -37,13 +34,20 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     {
         #region Variables.
 
+        /// <summary>
+        /// The tena service
+        /// </summary>
         private ITenaService tenaService;
 
         #endregion
 
         #region Constructor
 
-        public TenaController(ITenaService tenaService) //, ISettingsService settingsService
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TenaController"/> class.
+        /// </summary>
+        /// <param name="tenaService">The tena service.</param>
+        public TenaController(ITenaService tenaService)
         {
             this.tenaService = tenaService;
         }
@@ -71,6 +75,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #region FindAsync
 
+        /// <summary>
+        /// Find as an asynchronous operation.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
         [Route("findasync")]
         [HttpGet]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
@@ -177,40 +186,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
         public async Task<ActionResult> UploadAsync(UploadTenaObserverPeriod request)
         {
-            var response = await this.tenaService.PostManualEventAsync(request.PeriodId);
-
-            var title = string.Empty;
-            var message = string.Empty;
-            var symbol = string.Empty;
-
-            if (response == null)
-            {
-                title = "Error!";
-                message = "Listan är tom.";
-                symbol = "warning";
-            }
-            else
-            {
-                if (response.Count > 0)
-                {
-                    title = "Uppladdning klar!";
-                    message = "Uppladdning klar";
-                    symbol = "success";
-                }
-                else
-                {
-                    title = "Error!";
-                    message = "Uppladdningen misslyckades";
-                    symbol = "warning";
-                }
-            }
-
-            var model = new UploadTenaObserverPeriodModel
-            {
-                Title = title,
-                Message = message,
-                Symbol = symbol
-            };
+            var handler = new UploadTenaObserverPeriodHandlerAsync(this.tenaService);
+            //var response = await this.tenaService.PostManualEventAsync(request.PeriodId);
+            var model = await handler.HandleAsync(request);
 
             return this.View(model);
         }

@@ -6,11 +6,12 @@
 // </author>
 namespace Appva.Mcss.Admin.Models.Handlers
 {
+    using System;
+    using System.Collections.Generic;
     #region Imports.
 
-    using System;
-    using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Sca.Models;
     using System.Threading.Tasks;
 
     #endregion
@@ -38,9 +39,51 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.tenaService = tenaService;
         }
 
-        public async Task<string> Handle()
+        internal async Task<UploadTenaObserverPeriodModel> HandleAsync(UploadTenaObserverPeriod request)
         {
-            return null;
+            var period = this.tenaService.GetTenaObservationPeriod(request.PeriodId);
+            var response = await this.tenaService.PostManualEventAsync(period);
+
+            var title = string.Empty;
+            var message = string.Empty;
+            var icon = string.Empty;
+            var type = string.Empty;
+
+            if (response == null)
+            {
+                title = "Mätvärden saknas";
+                message = "Kan inte ladda upp en tom lista till Tena Identifi.";
+                icon = "alert";
+                type = "warning";
+            }
+            else
+            {
+                if (response.Count > 0)
+                {
+                    title = "Uppladdning klar!";
+                    message = "Uppladdningen till Tena Identfi lyckades";
+                    icon = "check";
+                    type = "";
+                }
+                else
+                {
+                    title = "Inte lyckad";
+                    message = "Uppladdningen till Tena Identifi misslyckades";
+                    icon = "alert";
+                    type = "warning";
+                }
+            }
+
+            var model = new UploadTenaObserverPeriodModel
+            {
+                Title = title,
+                Message = message,
+                Icon = icon,
+                Type = type,
+                Period = period
+            };
+
+            return model;
         }
 
         #endregion

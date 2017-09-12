@@ -1,4 +1,4 @@
-﻿// <copyright file="ScaServiceTests.cs" company="Appva AB">
+﻿// <copyright file="ApiServiceTests.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,12 +9,11 @@ namespace Appva.Mcss.Admin.UnitTests
     #region Imports.
 
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Collections.Generic;
     using Appva.Sca;
     using Appva.Sca.Models;
-    using System.Collections.Generic;
-    using System.Net.Http;
-    using System.Net;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Threading.Tasks;
 
     #endregion
 
@@ -50,6 +49,9 @@ namespace Appva.Mcss.Admin.UnitTests
             Assert.AreEqual(testResident3.ExternalId, response3.ExternalId);
         }
 
+        /// <summary>
+        /// Tests the PostManualEvent.
+        /// </summary>
         [TestMethod]
         public void TestPostManualEvent()
         {
@@ -89,6 +91,9 @@ namespace Appva.Mcss.Admin.UnitTests
             Assert.AreEqual("created", response1[1].ImportResult);
         }
 
+        /// <summary>
+        /// Tests the invalid credentials.
+        /// </summary>
         [TestMethod]
         public void TestInvalidCredentials()
         {
@@ -116,21 +121,27 @@ namespace Appva.Mcss.Admin.UnitTests
         {
             // arrange
             var service = new ApiService(new Uri("https://tenaidentifistaeg.sca.se/")); //, "EABE6751-2ABD-4311-A794-70A833D31C31", "C5C8DAEB-6C07-423D-82CF-8177C8CB9604");
+            var credentials = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("EABE6751-4311-A794-2ABD-70A833D31C31" + ":" + "C5C8DAEB-6C07-82CF-423D-8177C8CB9604"));
+            service.SetCredentials(credentials);
+
             var testResident1 = new GetResidentModel { ExternalId = "8L2vJIUo" }; // Testsubject Alpha
+
             var response1 = new GetResidentModel();
+            var res = service.GetResidentAsync(testResident1.ExternalId).Result;
 
             // act
             try
             {
-                response1 = service.GetResidentAsync(testResident1.ExternalId).Result;
+                response1 = Task.Run(() => service.GetResidentAsync(testResident1.ExternalId)).Result;
             }
             catch (AggregateException aggregateException) // WebException webException, HttpRequestException httpException
             {
                 // assert
-                
+
             }
 
-            Assert.Fail("No exceptions was thrown.");
+            Assert.Fail("No exceptions handled");
+
         }
     }
 }

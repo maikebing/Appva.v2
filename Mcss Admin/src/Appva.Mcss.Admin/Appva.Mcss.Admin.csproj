@@ -804,7 +804,6 @@
     <Compile Include="Features\Statistics\StatisticsController.cs" />
     <Compile Include="Features\Taxa\TaxonFilter\TaxonFilter.cs" />
     <Compile Include="Features\Taxa\TaxaController.cs" />
-    <Compile Include="GetManualEventModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

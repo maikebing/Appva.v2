@@ -7,6 +7,7 @@
 
 namespace Appva.Mcss.Admin.Models
 {
+    using Appva.Mcss.Admin.Domain.Entities;
     #region Imports.
 
     using System;
@@ -41,7 +42,19 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Symbol
         /// </summary>
-        public string Symbol
+        public string Icon
+        {
+            get;
+            set;
+        }
+
+        public string Type
+        {
+            get;
+            set;
+        }
+
+        public TenaObservationPeriod Period
         {
             get;
             set;

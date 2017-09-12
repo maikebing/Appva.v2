@@ -65,11 +65,8 @@ namespace Appva.Sca
         /// <returns>GetResidentModel<see cref="GetResidentModel"/>.</returns>
         internal async Task<IHttpResponseMessage<GetResidentModel>> GetResidentAsync(string id)
         {
-            // snygga till denna kod och lägg in den i riktiga klienten.
             var myToken = await this.GetTokenAsync();
-            var response = await this.Get(UriHelper.GetResidentUrl(id)).WithBearerToken(myToken)
-                .ToResultAsync<GetResidentModel>();
-            return response;
+            return await this.Get(UriHelper.GetResidentUrl(id)).WithBearerToken(myToken).ToResultAsync<GetResidentModel>();
         }
 
         /// <summary>
@@ -80,8 +77,7 @@ namespace Appva.Sca
         internal async Task<IHttpResponseMessage<List<GetManualEventModel>>> PostManualEventAsync(List<PostManualEventModel> manualEvents)
         {
             var myToken = await this.GetTokenAsync();
-            var response = await this.Post(UriHelper.ManualEventUrl, manualEvents).WithBearerToken(myToken).AsJson().ToResultAsync<List<GetManualEventModel>>();
-            return response;
+            return await this.Post(UriHelper.ManualEventUrl, manualEvents).WithBearerToken(myToken).AsJson().ToResultAsync<List<GetManualEventModel>>();
         }
 
         /// <summary>

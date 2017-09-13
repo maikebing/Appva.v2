@@ -219,7 +219,6 @@
     <Compile Include="Helpers\HttpRequest.cs" />
     <Compile Include="Helpers\MockedMailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Domain\Services\ApiServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appva.Mcss.Admin.Application\Appva.Mcss.Admin.Application.csproj">
@@ -233,10 +232,6 @@
     <ProjectReference Include="..\Appva.Mcss.Admin\Appva.Mcss.Admin.csproj">
       <Project>{a58f3b0a-68bc-48c0-be51-e8cec1fdb313}</Project>
       <Name>Appva.Mcss.Admin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Appva.Sca\Appva.Sca.csproj">
-      <Project>{f523cd19-d7c7-41b7-a28e-a2b978086513}</Project>
-      <Name>Appva.Sca</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -203,8 +203,6 @@ namespace Appva.Mcss.Admin.Application.Services
             return await this.apiService.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
         }
 
-
-
         /// <inheritdoc />
         public async Task<List<GetManualEventModel>> PostManualEventAsync(TenaObservationPeriod period)
         {

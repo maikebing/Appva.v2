@@ -41,6 +41,7 @@ namespace Appva.Sca
         {
             return $"{ResidentUrl}{id}";
         }
+
         #endregion
     }
 }

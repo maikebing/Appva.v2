@@ -35,8 +35,24 @@ namespace Appva.Sca
         /// <returns>Task&lt;List&lt;GetManualEventModel&gt;&gt;.</returns>
         Task<List<GetManualEventModel>> PostManualEventAsync(List<PostManualEventModel> manualEvents);
 
-        void SetCredentials(string credentials);
+        /// <summary>
+        /// Gets a value indicating whether this instance has credentials.
+        /// </summary>
+        /// <value><c>true</c> if this instance has credentials; otherwise, <c>false</c>.</value>
         bool HasCredentials { get; }
+
+        /// <summary>
+        /// Sets the credentials.
+        /// </summary>
+        /// <param name="credentials">The credentials.</param>
+        void SetCredentials(string credentials);
+
+        /// <summary>
+        /// Sets the credentials.
+        /// </summary>
+        /// <param name="tenant">The tenant.</param>
+        /// <param name="credentials">The credentials.</param>
+        void SetCredentials(string tenant, string credentials);
     }
 
     /// <summary>
@@ -56,10 +72,11 @@ namespace Appva.Sca
         /// </summary>
         private ApiClient client;
 
-
+        /// <summary>
+        /// Gets a value indicating whether this instance has credentials.
+        /// </summary>
+        /// <value><c>true</c> if this instance has credentials; otherwise, <c>false</c>.</value>
         public bool HasCredentials => this.config.HasCredentials;
-
-
 
         #endregion
 
@@ -74,20 +91,6 @@ namespace Appva.Sca
             this.config = new Configuration(baseAddress);
             this.client = new ApiClient(this.config);
         }
-
-        // Ta bort denna struct.
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiService"/> class.
-        /// </summary>
-        /// <param name="baseAddress">The <see cref="Uri"/>.</param>
-        /// <param name="clientId">The <see cref="String"/> Client Id.</param>
-        /// <param name="clientSecret">The <see cref="String"/> Client Secret.</param>
-        //public ApiService(Uri baseAddress, string clientId, string clientSecret)
-        //{
-        //    this.config = new Configuration(baseAddress, clientId, clientSecret);
-        //    this.client = new ApiClient(this.config);
-        //}
 
         #endregion
 
@@ -128,10 +131,18 @@ namespace Appva.Sca
             return result;
         }
 
+        /// <inheritdoc />
         public void SetCredentials(string credentials)
         {
             this.config.SetCredentials(credentials);
         }
+
+        /// <inheritdoc />
+        public void SetCredentials(string tenant, string credentials)
+        {
+            this.config.SetCredentials(tenant, credentials);
+        }
+        
         #endregion
     }
 }

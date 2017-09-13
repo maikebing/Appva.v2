@@ -9,6 +9,7 @@ namespace Appva.Sca
     #region Imports.
 
     using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -19,15 +20,11 @@ namespace Appva.Sca
     {
         #region Fields.
 
-        /// <summary>
-        /// ClientId.
-        /// </summary>
-        private string clientId; // = "EABE6751-2ABD-4311-A794-70A833D31C31"
-
-        /// <summary>
-        /// ClientSecret.
-        /// </summary>
-        private string clientSecret; // = "C5C8DAEB-6C07-423D-82CF-8177C8CB9604"
+        internal Dictionary<string, string> CredList
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Credentials.
@@ -47,6 +44,10 @@ namespace Appva.Sca
             set;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance has credentials.
+        /// </summary>
+        /// <value><c>true</c> if this instance has credentials; otherwise, <c>false</c>.</value>
         internal bool HasCredentials => this.Credentials != null;
 
         #endregion
@@ -62,25 +63,26 @@ namespace Appva.Sca
             this.BaseAddress = baseAddress;
         }
 
-        // rensa bort denna struct
-
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="Configuration"/> class.
-        ///// </summary>
-        ///// <param name="baseAddress">The base address.</param>
-        ///// <param name="clientId">The client identifier.</param>
-        ///// <param name="clientSecret">The client secret.</param>
-        //internal Configuration(Uri baseAddress, string clientId, string clientSecret)
-        //{
-        //    this.BaseAddress = baseAddress;
-        //    this.clientId = clientId;
-        //    this.clientSecret = clientSecret;
-        //    this.Credentials = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(this.clientId + ":" + this.clientSecret));
-        //}
-
+        /// <summary>
+        /// Sets the credentials.
+        /// </summary>
+        /// <param name="credentials">The credentials.</param>
         internal void SetCredentials(string credentials)
         {
             this.Credentials = credentials;
+        }
+
+        internal void SetCredentials(string tenant, string credentials)
+        {
+            if(this.CredList.ContainsKey(tenant))
+            {
+                this.CredList.Remove(tenant);
+                this.CredList.Add(tenant, credentials);
+            }
+            else
+            {
+                this.CredList.Add(tenant, credentials);
+            }
         }
 
         #endregion

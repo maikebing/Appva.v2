@@ -260,6 +260,7 @@ namespace Appva.Mcss.Admin.Application.Services
                     FullName                             = string.Format("{0} {1}", firstName, lastName),
                     PersonalIdentityNumber               = personalIdentityNumber,
                     Taxon                                = address,
+                    SeniorAlerts                         = assessments,
                     Identifier                           = alternativeIdentity,
                     IsAllDemographicInformationSensitive = isPersonWithAllDemographicsSensitivity,
                     IsPersonOfPublicInterest             = isPersonOfPublicInterest

@@ -63,7 +63,7 @@
                             @if (Model.Inventory.IsActive)
                             {
                                 @Html.ActionLink(Permissions.Inventory.Update, "Ändra", "Update", "Inventory", new { Id = Model.Patient.Id, Inventory = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-new lb-link" })
-                                @Html.ActionLink(Permissions.Inventory.Delete, "Ta bort", "Inactivate", "Inventory", new { Id = Model.Patient.Id, Inventory = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-del" })
+                                @Html.ActionLink(Permissions.Inventory.Delete, "Ta bort", "Inactivate", "Inventory", new { Id = Model.Patient.Id, Inventory = Model.Inventory.Id, returnUrl = HttpContext.Current.Request.Url.AbsoluteUri }, new { @class = "btn btn-del item-delete-confirmation", data_text = "ta bort förbrukningsjournalen" })
                             }
                             else
                             {

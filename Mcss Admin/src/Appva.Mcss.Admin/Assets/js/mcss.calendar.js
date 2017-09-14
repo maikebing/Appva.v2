@@ -8,6 +8,10 @@
         var id = cat.attr('id');
         $(".act." + id).show();
     },
+    hideUnchecked: function (cat) {
+        var id = cat.attr('id');
+        $(".act." + id).hide();
+    },
     unmarkAll: function () {
         $('#select-all').attr('checked', false);
         $('.act').hide();
@@ -64,6 +68,12 @@
         }, function (e) {
             var id = $(this).attr('id');
             $("." + id).parent().removeClass("focus");
+        });
+        $('.cal-filter :checkbox').each(function () {
+            var elem = $(this);
+            if (!elem.is(':checked')) {
+                mcss.Calendar.hideUnchecked(elem);
+            }
         });
         $('.cal-filter :checkbox').change(function () {
             var elem = $(this);

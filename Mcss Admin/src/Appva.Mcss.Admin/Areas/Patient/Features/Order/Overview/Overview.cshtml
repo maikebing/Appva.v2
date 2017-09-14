@@ -59,7 +59,7 @@
                             <td>
                                 @if (Html.HasPermissionFor(Permissions.Practitioner.Read))
                                 {
-                                    @Html.ActionLink(order.RefillInfo.RefillOrderedBy.FullName, "List", "Delegation", new { id = order.RefillInfo.RefillOrderedBy.Id }, new { }) 
+                                    @Html.ActionLink(order.RefillInfo.RefillOrderedBy.FullName, "List", "Delegation", new { id = order.RefillInfo.RefillOrderedBy.Id, Area = "Practitioner" }, new { }) 
                                 } 
                                 else
                                 {

@@ -1,6 +1,5 @@
 ﻿@using Appva.Mcss.Admin.Application.Common﻿
 @model Appva.Mcss.Web.ViewModels.ScheduleDetailsViewModel
-
 @{
     ViewBag.Title = "Ordinationer";
     var intervalMap = new Dictionary<int, string>();
@@ -42,9 +41,22 @@
     }
     times.Sort();
 }
-
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+@section JavaScript
+{
+    <script>
+        $(document).ready(function () {
+            $('.nurse input[type=checkbox]').live('change', function () {
+                if ($(this).is(':checked')) {
+                    $('.delegation-select').css('display', 'none');
+                } else {
+                    $('.delegation-select').css('display', 'block');
+                }
+            });
+        });
+    </script>
+}
 <div id="subheader" class="cf">
 	<h1>Signeringslistor</h1>
     @Html.ActionLink(Permissions.Sequence.Print, "Skapa pdf", "PrintPopUp", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })

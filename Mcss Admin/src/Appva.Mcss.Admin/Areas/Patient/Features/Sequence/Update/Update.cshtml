@@ -11,7 +11,7 @@
                 @Html.FormGroup(x => x.Description, "text large").Label().TextArea(null, new { @rows = "24", @cols = "80", @class = "wide" }).Validate().Build()
                 @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox("Får endast ges av legitimerad " + Model.RequiredRoleText, new { @class = "nurse" }).Validate().Build()
                 @if (Model.Delegations.Count() > 0) { 
-                    <div class="select">
+                    <div class="select delegation-select" style="@(Model.Nurse ? "display:none" : null)">
                         @Html.LabelFor(m => m.Delegation)
                         @Html.DropDownListFor(
                             m => m.Delegation,

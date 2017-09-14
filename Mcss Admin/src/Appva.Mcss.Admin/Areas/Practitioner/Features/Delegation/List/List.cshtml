@@ -4,6 +4,30 @@
 @{ 
     SetTitle("Aktuella delegeringar, {0}", Model.Account.FullName); 
 }
+@section JavaScript
+{
+    <script>
+        $(document).ready(function () {
+            $('#reason-submit').live("click", function (e) {
+                var val = $('.reason-list').val();
+                if (!val) {
+                    if (!$('#reason-error').length) {
+                        jQuery('<p/>', { id: 'reason-error', for: 'reason-list', class: 'error-msg', style: 'margin-top:10px', text: 'Välj en orsak i listan.' }).appendTo('.reason-select');
+                    }
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            });
+            $('.reason-list').live("change", function () {
+                if ($(this).val()) {
+                    $('#reason-error').remove();
+                }
+            });
+        });
+    </script>
+}
 @if (! Model.IsAccountVisibilityHidden)
 {
 <div id="main" class="delegate-view">    

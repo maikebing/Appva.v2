@@ -8,12 +8,12 @@
         if (Model.Reasons != null && Model.Reasons.Count > 0)
         {
             <h3 class="section-title">Ta bort delegering</h3>
-            <div class="select">
+            <div class="select reason-select">
                 @Html.LabelFor(m => m.Reason)
-                @Html.DropDownListFor(m => m.Reason, Model.Reasons, "Välj...", new { })
+                @Html.DropDownListFor(m => m.Reason, Model.Reasons, "Välj...", new { @class = "reason-list" })
             </div>
             <div class="submit">
-                @Html.Submit("Ta bort", new { @class = "btn btn-del" })
+                @Html.Submit("Ta bort", new { @class = "btn btn-del", id = "reason-submit" })
                 @Html.Cancel("Avbryt")
             </div>
         }

@@ -16,6 +16,7 @@ namespace Appva.Sca
     using Appva.Core.Extensions;
     using Appva.Http;
     using Appva.Sca.Models;
+    using Newtonsoft.Json;
 
     #endregion
 

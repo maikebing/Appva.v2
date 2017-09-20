@@ -66,6 +66,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        // New logic here
+        public virtual bool IsUsingTypes { get; set; }
+
         #endregion
 
         #region Public Methods.

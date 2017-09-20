@@ -90,10 +90,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 requiredRole = this.roleService.Find(RoleTypes.Nurse);
             }
+
             return new CreateSequenceForm
             {
                 Id = message.Id,
                 ScheduleId = schedule.Id,
+                IsUsingTypes = schedule.IsUsingTypes,
+                // Scales = get scale list from database (observervation)
                 Delegations = schedule.ScheduleSettings.DelegationTaxon != null ? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
                     .Select(x => new SelectListItem { 
                         Text = x.Name,

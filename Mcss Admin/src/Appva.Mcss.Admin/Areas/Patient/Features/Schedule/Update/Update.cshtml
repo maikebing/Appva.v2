@@ -1,0 +1,22 @@
+﻿@model UpdateScheduleForm
+@{
+    SetTitle("Ändra Signeringslista");
+}
+<div>
+    @using (Html.BeginForm())
+    {
+    <h3 class="section-title">
+        @Model.Name
+    </h3>
+        <div>
+            @Html.LabelFor(x => x.IsUsingTypes)
+            @Html.CheckBoxFor(x => x.IsUsingTypes, htmlAttributes: new { @checked = Model.IsUsingTypes })
+        </div>
+
+        <div class="submit">
+            @Html.AntiForgeryToken()
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

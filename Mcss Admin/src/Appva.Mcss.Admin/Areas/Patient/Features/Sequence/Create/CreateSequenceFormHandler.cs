@@ -192,6 +192,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 RangeInMinutesAfter = message.RangeInMinutesAfter,
                 Times = string.Join(",", message.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray()),
                 Dates = message.Dates,
+
+                // New logic Create a new column for the scale in use..
+                UnitType = message.Scale,
+
                 Interval = (message.OnNeedBasis) ? 1 : message.Interval.Value,
                 OnNeedBasis = message.OnNeedBasis,
                 Reminder = message.Reminder,

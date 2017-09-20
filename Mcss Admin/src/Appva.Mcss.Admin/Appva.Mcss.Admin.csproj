@@ -400,6 +400,12 @@
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Measurement\Create\CreateMeasurementHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Measurement\Create\CreateMeasurementModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Measurement\Create\CreateMeasurementPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Measurement\List\ListMeasurementHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Measurement\List\ListMeasurementModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Measurement\MeasurementController.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitModel.cs" />
@@ -583,6 +589,10 @@
     </Compile>
     <Compile Include="Areas\Patient\Features\Schedule\Sign\SignSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\Sign\SignScheduleHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Update\UpdateSchedule.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Update\UpdateScheduleForm.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Update\UpdateScheduleFormHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Schedule\Update\UpdateScheduleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\VerifyIsUnique\VerifyIsUniqueScheduleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Schedule\VerifyIsUnique\VerifyIsUniqueSchedule.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Create\CreateSequence.cs" />
@@ -1363,6 +1373,9 @@
     <Content Include="Areas\Area51\Features\Location\Index\Index.cshtml" />
     <Content Include="Areas\Patient\Features\Observation\Create\Create.cshtml" />
     <Content Include="Areas\Patient\Features\Observation\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Measurement\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Measurement\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Schedule\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

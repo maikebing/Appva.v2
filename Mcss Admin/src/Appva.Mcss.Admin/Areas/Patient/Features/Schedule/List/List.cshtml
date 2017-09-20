@@ -19,6 +19,7 @@
                         <li>
                             @Html.ActionLink(schedule.ScheduleSettings.Name, "Details", new { Id = Model.Patient.Id, ScheduleId = schedule.Id })
                             @string.Format("{0:yyyy-MM-dd}", schedule.CreatedAt) Kl @String.Format("{0:H:mm}", schedule.CreatedAt)
+                            @Html.ActionLink(Permissions.Schedule.Update, "Ändra", "Update", "Schedule", new { Id = Model.Patient.Id, ScheduleId = schedule.Id }, new { @class = "item-update", @title = "Ändra listan" })
                             @Html.ActionLink(Permissions.Schedule.Inactivate, "Ta bort", "Inactivate", "Schedule", new { Id = Model.Patient.Id, ScheduleId = schedule.Id }, new { @class = "item-delete", @title = "Ta bort listan" })
                         </li>
                     }

@@ -471,6 +471,10 @@
     <property name="CreatedAt" column="Created" />
     <property name="UpdatedAt" column="Modified" />
     <property name="Name" />
+    
+    <!-- New logic here -->
+    <property name="IsUsingTypes" />
+    
     <many-to-one name="Patient" class="Patient" />
     <many-to-one name="ScheduleSettings" class="ScheduleSettings" lazy="false" />
     <bag name="Sequences" cascade="save-update">
@@ -515,6 +519,10 @@
     <property name="PauseAnyAlerts" />
     <property name="AllDay" />
     <property name="Absent" />
+    
+    <!-- Adding Support for UnitType -->
+    <property name="UnitType" />
+    
     <many-to-one name="Patient" class="Patient" />
     <many-to-one name="Schedule" class="Schedule" />
     <many-to-one name="Taxon" class="Taxon" />

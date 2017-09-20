@@ -82,6 +82,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 IsActive = true,
+
+                // new logic here
+                IsUsingTypes = message.IsUsingTypes,
+
                 Patient = patient,
                 ScheduleSettings = settings
             };

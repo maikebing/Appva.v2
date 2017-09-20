@@ -4,6 +4,7 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
+
 namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
@@ -56,6 +57,8 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        [DisplayName("Hantera given mängd")]
+        public virtual bool IsUsingTypes { get; set; }
     }
 
 }

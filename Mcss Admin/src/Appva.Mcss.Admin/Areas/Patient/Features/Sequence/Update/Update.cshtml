@@ -10,6 +10,17 @@
                 @Html.FormGroup(x => x.Name, "text large").Label().TextBox(null, new { @class = "wide check-length" }).Validate().Build()
                 @Html.FormGroup(x => x.Description, "text large").Label().TextArea(null, new { @rows = "24", @cols = "80", @class = "wide" }).Validate().Build()
                 @Html.FormGroup(x => x.Nurse, "checkbox").Checkbox("Får endast ges av legitimerad " + Model.RequiredRoleText, new { @class = "nurse" }).Validate().Build()
+
+                <div class="select">
+                    @*
+                        TODO: Lägg till CSS klass för att snygga matcha andra listors design
+                        TODO: if (Model.IsUsingTypes == true)
+                    *@
+
+                    @Html.LabelFor(m => m.Scale)
+                    @Html.DropDownListFor(m => m.Scale, new SelectList(Model.Scales, "Value", "Text", Model.Scale), "Välj enhet ...", new { @class = "scale" })
+                </div>
+
                 @if (Model.Delegations.Count() > 0) { 
                     <div class="select">
                         @Html.LabelFor(m => m.Delegation)

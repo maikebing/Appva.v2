@@ -176,6 +176,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.RangeInMinutesAfter = model.RangeInMinutesAfter;
             sequence.Times = string.Join(",", model.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray());
             sequence.Dates = model.Dates;
+
+            // new logic
+            sequence.UnitType = model.Scale;
+
             sequence.Interval = model.OnNeedBasis ? 1 : model.Interval.Value;
             sequence.OnNeedBasis = model.OnNeedBasis;
             sequence.Reminder = model.Reminder;

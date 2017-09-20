@@ -66,6 +66,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+
+        // styr om denna till en entitet som ärver från Observation - SequenceObservation?
+        public virtual string UnitType { get; set; }
+
+
         /// <summary>
         /// A start date of the <see cref="Sequence"/>
         /// </summary>

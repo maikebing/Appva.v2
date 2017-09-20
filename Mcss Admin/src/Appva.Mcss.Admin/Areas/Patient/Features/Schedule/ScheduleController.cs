@@ -117,6 +117,38 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
         #endregion
 
+        #region Update
+
+        /// <summary>
+        /// Returns the update schedule view.
+        /// </summary>
+        /// <param name="request">The update schedule request</param>
+        /// <returns>A <see cref="CreateScheduleForm"/></returns>
+        [Route("update/patient/{id:guid}")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Schedule.UpdateValue)]
+        public ActionResult Update(UpdateSchedule request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Saves an updated schedule if valid.
+        /// </summary>
+        /// <param name="request">The update schedule request</param>
+        /// <returns>A redirect to <see cref="ListSchedule"/></returns>
+        [Route("update/patient/{id:guid}")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Schedule")]
+        [PermissionsAttribute(Permissions.Schedule.CreateValue)]
+        public ActionResult Update(UpdateScheduleForm request)
+        {
+            //// TODO: Must fix this somehow --> ValidateNonDuplicates(model);
+            return this.View();
+        }
+
+
+        #endregion
+
         #region Inactivate.
 
         /// <summary>

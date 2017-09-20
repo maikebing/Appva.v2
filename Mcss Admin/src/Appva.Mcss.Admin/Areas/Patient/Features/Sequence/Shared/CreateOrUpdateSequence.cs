@@ -45,6 +45,14 @@ namespace Appva.Mcss.Admin.Models
                 new SelectListItem { Text = "Annan ...",        Value = "0" }
             };
 
+        // Store these scales in the database, right now mocked data.
+        private static readonly List<SelectListItem> AllScales = new List<SelectListItem>()
+            {
+                new SelectListItem { Text = "Antal (st)", Value = "st" },
+                new SelectListItem { Text = "Mängd (ml)", Value = "ml" },
+                new SelectListItem { Text = "Mängd (gram)", Value = "g" }
+            };
+
         #endregion
 
         #region Constructor.
@@ -55,6 +63,7 @@ namespace Appva.Mcss.Admin.Models
         public CreateOrUpdateSequence()
         {
             Intervals = AllIntervals;
+            Scales = AllScales;
         }
 
         #endregion
@@ -137,6 +146,21 @@ namespace Appva.Mcss.Admin.Models
         /// The required role text, eg. the sequence can only be completed by a nurse.
         /// </summary>
         public string RequiredRoleText
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Is the sequence is using Unit Types?
+        /// </summary>
+        public bool IsUsingTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the scale, eg. the unit for a given scale
+        /// </summary>
+        [DisplayName("Enhet för given mängd")]
+        public string Scale
         {
             get;
             set;
@@ -330,6 +354,15 @@ namespace Appva.Mcss.Admin.Models
         { 
             get; 
             set; 
+        }
+
+        /// <summary>
+        /// All available scales.
+        /// </summary>
+        public IEnumerable<SelectListItem> Scales
+        {
+            get;
+            set;
         }
 
         #endregion

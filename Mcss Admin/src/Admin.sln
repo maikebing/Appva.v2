@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Mcss.Admin.UnitTests"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin", "Admin", "{83F6C13F-E577-4C77-BAA5-F96FE9FF7822}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appva.Ehm", "Appva.Ehm\Appva.Ehm.csproj", "{0E392CD0-2967-4706-975C-881FFE9EAFEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{5620E65E-C741-4022-9628-D449BA353262}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5620E65E-C741-4022-9628-D449BA353262}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5620E65E-C741-4022-9628-D449BA353262}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E392CD0-2967-4706-975C-881FFE9EAFEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E392CD0-2967-4706-975C-881FFE9EAFEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E392CD0-2967-4706-975C-881FFE9EAFEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E392CD0-2967-4706-975C-881FFE9EAFEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

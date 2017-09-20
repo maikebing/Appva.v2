@@ -741,6 +741,7 @@
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
+    <Compile Include="Configuration\EhmConfiguration.cs" />
     <Compile Include="Configuration\GrandIdConfiguration.cs" />
     <Compile Include="Configuration\MockedTenantWcfClient.cs" />
     <Compile Include="Features\Account\AccountController.cs" />
@@ -1058,6 +1059,10 @@
     <ProjectReference Include="..\Appva.Admin.Utils\Appva.Admin.Utils.csproj">
       <Project>{2edab8ce-5318-400f-a1a8-7b604732cf5b}</Project>
       <Name>Appva.Admin.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appva.Ehm\Appva.Ehm.csproj">
+      <Project>{0e392cd0-2967-4706-975c-881ffe9eafee}</Project>
+      <Name>Appva.Ehm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.Admin.Application\Appva.Mcss.Admin.Application.csproj">
       <Project>{0e34a41f-f641-45d2-91e4-ff4c3e9b7853}</Project>

@@ -53,6 +53,7 @@ namespace Appva.Mcss.Admin
             builder.RegisterIdentityServices();
             builder.RegisterMediator();
             builder.RegisterGrandId();
+            builder.RegisterEhmApi();
             builder.RegisterAuthorization(app);
             builder.RegisterPersistence();
             builder.RegisterEmailMessaging();

@@ -79,7 +79,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override CreateSequenceForm Handle(CreateSequence message)
         {
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
-            //var dosageScales = this.context.Get<DosageObservation>(message.Id);
+            var dosageScaleList = new List<SelectListItem>();
             //// Temporary mapping
             Role requiredRole = null;
             var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
@@ -91,14 +91,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 requiredRole = this.roleService.Find(RoleTypes.Nurse);
             }
+            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true)
+            {
 
+            }
             return new CreateSequenceForm
             {
                 Id = message.Id,
                 ScheduleId = schedule.Id,
                 IsCollectingGivenDosage = schedule.ScheduleSettings.IsCollectingGivenDosage,
-
-                // DosageScales = get scale list from applicationsettings,
+                DosageScales = new List<SelectListItem>
+                {
+                },
+                //get scale list from applicationsettings,
 
                 Delegations = schedule.ScheduleSettings.DelegationTaxon != null ? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
                     .Select(x => new SelectListItem { 

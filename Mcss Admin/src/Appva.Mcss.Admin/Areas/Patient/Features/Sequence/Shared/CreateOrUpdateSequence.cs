@@ -368,6 +368,9 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         public string DosageScaleUnit { get; set; }
 
+
+        //public DosageObservation DosageObservation
+
         #endregion
 
 

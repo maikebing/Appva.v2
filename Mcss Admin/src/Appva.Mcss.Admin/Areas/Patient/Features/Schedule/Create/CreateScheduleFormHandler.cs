@@ -77,15 +77,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var patient = this.patientService.Get(message.Id);
             var settings = this.persistence.Get<ScheduleSettings>(message.ScheduleSetting);
+
             var schedule = new Schedule
             {
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 IsActive = true,
-
-                // new logic here
-                IsUsingTypes = message.IsUsingTypes,
-
                 Patient = patient,
                 ScheduleSettings = settings
             };

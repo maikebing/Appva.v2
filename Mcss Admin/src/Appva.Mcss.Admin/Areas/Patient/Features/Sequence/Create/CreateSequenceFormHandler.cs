@@ -178,7 +178,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }
                 inventory = this.inventories.Find(message.Inventory.GetValueOrDefault());
             }
-           
+
+            //var dosageObservation = new DosageObservation(message.Patient, message.DosageScaleUnit, "Dosering");
+
             return new Sequence()
             {
                 CreatedAt = DateTime.Now,
@@ -194,7 +196,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Dates = message.Dates,
 
                 // New logic Create a new column for the scale in use..
-                UnitType = message.Scale,
+                // DosageObservation
+                // DosageObservation = dosageObservation,
 
                 Interval = (message.OnNeedBasis) ? 1 : message.Interval.Value,
                 OnNeedBasis = message.OnNeedBasis,

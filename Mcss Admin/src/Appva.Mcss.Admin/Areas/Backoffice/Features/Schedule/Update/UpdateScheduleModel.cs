@@ -111,6 +111,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
+        /// If schedule is collecting Given Dosage
+        /// </summary>
+        [DisplayName("Hantera given mängd")]
+        public bool IsCollectingGivenDosage
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Deviation-dialog on/off
         /// </summary>
         [DisplayName("Kontrollruta vid avvikande signering")]

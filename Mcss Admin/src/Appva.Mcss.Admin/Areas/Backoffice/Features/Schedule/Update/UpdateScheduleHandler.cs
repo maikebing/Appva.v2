@@ -68,6 +68,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 CountInventory                = schedule.CountInventory,
                 DelegationTaxon               = schedule.DelegationTaxon != null ? schedule.DelegationTaxon.Id : (Guid?)null,
                 HasInventory                  = schedule.HasInventory,
+                IsCollectingGivenDosage       = schedule.IsCollectingGivenDosage,
                 HasSetupDrugsPanel            = schedule.HasSetupDrugsPanel,
                 IsPausable                    = schedule.IsPausable,
                 Name                          = schedule.Name,

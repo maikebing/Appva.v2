@@ -69,6 +69,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
+
+        public virtual bool IsCollectingGivenDosage
+        {
+            get;
+            set;
+        }
+
         public virtual bool NurseConfirmDeviation
         {
             get;

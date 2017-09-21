@@ -56,9 +56,5 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
-
-        [DisplayName("Hantera given mängd")]
-        public virtual bool IsUsingTypes { get; set; }
     }
-
 }

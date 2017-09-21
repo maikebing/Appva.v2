@@ -71,6 +71,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 DelegationTaxon = message.DelegationTaxon.HasValue ? this.taxonomyService.Load(message.DelegationTaxon.Value) : null,
                 GenerateIncompleteTasks = true,
                 HasInventory = message.HasInventory,
+                IsCollectingGivenDosage = message.IsCollectingGivenDosage,
                 HasSetupDrugsPanel = message.HasSetupDrugsPanel,
                 IsActive = true,
                 IsPausable = message.IsPausable,

@@ -67,6 +67,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             schedule.CanRaiseAlerts = message.CanRaiseAlerts;
             schedule.CountInventory = message.CountInventory;
             schedule.HasInventory = message.HasInventory;
+            schedule.IsCollectingGivenDosage = message.IsCollectingGivenDosage;
             schedule.HasSetupDrugsPanel = message.HasSetupDrugsPanel;
             schedule.IsPausable = message.IsPausable;
             schedule.NurseConfirmDeviation = message.NurseConfirmDeviation;

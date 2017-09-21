@@ -50,7 +50,7 @@ namespace Appva.Mcss.Admin.Models
             {
                 new SelectListItem { Text = "Antal (st)", Value = "st" },
                 new SelectListItem { Text = "Mängd (ml)", Value = "ml" },
-                new SelectListItem { Text = "Mängd (gram)", Value = "g" }
+                new SelectListItem { Text = "Mängd (mg)", Value = "mg" }
             };
 
         #endregion
@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Models
         public CreateOrUpdateSequence()
         {
             Intervals = AllIntervals;
-            Scales = AllScales;
+            DosageScales = AllScales;
         }
 
         #endregion
@@ -154,13 +154,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Is the sequence is using Unit Types?
         /// </summary>
-        public bool IsUsingTypes { get; set; }
-
-        /// <summary>
-        /// Gets or sets the scale, eg. the unit for a given scale
-        /// </summary>
-        [DisplayName("Enhet för given mängd")]
-        public string Scale
+        public bool IsCollectingGivenDosage
         {
             get;
             set;
@@ -356,14 +350,23 @@ namespace Appva.Mcss.Admin.Models
             set; 
         }
 
+
+        // Logic for DosageObservation
+
         /// <summary>
-        /// All available scales.
+        /// A list of available scales
         /// </summary>
-        public IEnumerable<SelectListItem> Scales
+        [DisplayName("Enhet för given mängd")]
+        public IEnumerable<SelectListItem> DosageScales
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Selected DosageScale
+        /// </summary>
+        public string DosageScaleUnit { get; set; }
 
         #endregion
 

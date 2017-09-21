@@ -152,6 +152,7 @@
     <Compile Include="Caching\TenantAwareMemoryCache.cs" />
     <Compile Include="Common\CacheUtils.cs" />
     <Compile Include="Common\Color.cs" />
+    <Compile Include="Common\DosageDefaults.cs" />
     <Compile Include="Common\EncryptionUtils.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
@@ -170,6 +171,7 @@
     <Compile Include="Models\ConfirmDeviationMessage.cs" />
     <Compile Include="Models\DelegationCategoryModel.cs" />
     <Compile Include="Models\DelegationViewModel.cs" />
+    <Compile Include="Models\DosageScaleListModel.cs" />
     <Compile Include="Models\InventoryAmountListModel.cs" />
     <Compile Include="Models\ListInventoryRecountItem.cs" />
     <Compile Include="Models\ReportData.cs" />

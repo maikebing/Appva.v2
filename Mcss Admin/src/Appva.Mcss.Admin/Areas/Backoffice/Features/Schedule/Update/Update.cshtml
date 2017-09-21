@@ -4,6 +4,7 @@
 }
 
 <div class="std-panel std-form lb-panel-small lb-validate-form">
+@*<div class="std-panel std-form lb-panel-small lb-validate-form">*@
     @using (Html.Post(new { }, new { Id = Model.Id }))
     {
         <div>
@@ -15,19 +16,20 @@
             @Html.FormGroup(x => x.HasSetupDrugsPanel, "checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.HasInventory, "checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.CountInventory, "checkbox").Checkbox("").Label().Validate().Build()
-            @Html.FormGroup(x => x.OrderRefill, "checkbox").Checkbox("").Label().Validate().Build()
-            <h3 class="section-title">Dialogruta vid avvikande signering</h3>
-            @Html.FormGroup(x => x.NurseConfirmDeviation, "nurse-confirm-deviation checkbox").Checkbox("").Label().Validate().Build()
-            @Html.FormGroup(x => x.DeviationMessage.IncludeListOfNurses, "nurse-confirm-deviation-option checkbox").Checkbox("").Label().Validate().Build()
-            @Html.FormGroup(x => x.DeviationMessage.Header, "nurse-confirm-deviation-option text large").Label("Rubrik").TextBox().Validate().Build()
-            @Html.FormGroup(x => x.DeviationMessage.Message, "nurse-confirm-deviation-option text large").Label("Meddelande").TextArea().Validate().Build()
-            <h3 class="section-title">Delegering</h3>
-            @Html.LabelFor(x => x.DelegationTaxon)
-            @Html.DropDownListFor(x => x.DelegationTaxon, Model.Delegations, "Ingen delegering")
-        </div>
-        <div class="submit">
-            @Html.Submit("Spara", new { @class = "btn" })
-        </div>
+            @Html.FormGroup(x => x.IsCollectingGivenDosage, "checkbox").Checkbox("Hantera given mängd").Validate().Build()
+        @Html.FormGroup(x => x.OrderRefill, "checkbox").Checkbox("").Label().Validate().Build()
+        <h3 class="section-title">Dialogruta vid avvikande signering</h3>
+        @Html.FormGroup(x => x.NurseConfirmDeviation, "nurse-confirm-deviation checkbox").Checkbox("").Label().Validate().Build()
+        @Html.FormGroup(x => x.DeviationMessage.IncludeListOfNurses, "nurse-confirm-deviation-option checkbox").Checkbox("").Label().Validate().Build()
+        @Html.FormGroup(x => x.DeviationMessage.Header, "nurse-confirm-deviation-option text large").Label("Rubrik").TextBox().Validate().Build()
+        @Html.FormGroup(x => x.DeviationMessage.Message, "nurse-confirm-deviation-option text large").Label("Meddelande").TextArea().Validate().Build()
+        <h3 class="section-title">Delegering</h3>
+        @Html.LabelFor(x => x.DelegationTaxon)
+        @Html.DropDownListFor(x => x.DelegationTaxon, Model.Delegations, "Ingen delegering")
+    </div>
+    <div class="submit">
+        @Html.Submit("Spara", new { @class = "btn" })
+    </div>
     }
 </div>
 

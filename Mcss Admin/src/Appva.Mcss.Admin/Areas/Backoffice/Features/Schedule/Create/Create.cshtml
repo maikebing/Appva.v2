@@ -3,7 +3,8 @@
     SetTitle("Skapa lista");
 }
 
-<div class="std-panel std-form lb-panel-small lb-validate-form">
+@*<div class="std-panel std-form lb-panel-small lb-validate-form">*@
+<div class="std-panel std-form lb-validate-form">
     @using (Html.Post())
     {
         <div>
@@ -15,6 +16,7 @@
             @Html.FormGroup(x => x.HasSetupDrugsPanel, "checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.HasInventory, "checkbox").Checkbox("").Label().Validate().Build()
             @Html.FormGroup(x => x.CountInventory, "checkbox").Checkbox("").Label().Validate().Build()
+            @Html.FormGroup(x => x.IsCollectingGivenDosage, "checkbox").Checkbox("Hantera given mängd").Validate().Build()
             @Html.FormGroup(x => x.OrderRefill, "checkbox").Checkbox("").Label().Validate().Build()
             <h3 class="section-title">Dialogruta vid avvikande signering</h3>
             @Html.FormGroup(x => x.NurseConfirmDeviation, "nurse-confirm-deviation checkbox").Checkbox("").Label().Validate().Build()

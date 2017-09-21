@@ -168,6 +168,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 sequence.Inventory = this.inventoryService.Find(model.Inventory.GetValueOrDefault());
             }
+
+            //if (schedule.ScheduleSettings.IsCollectingGivenDosage)
+            //{
+            //    //update sequence.DosageObservation.Name with the GivenUnit.
+            //    var x = sequence.DosageObservation.Name;
+            //}
+
             sequence.Name = model.Name;
             sequence.Description = model.Description;
             sequence.StartDate = startDate;
@@ -177,8 +184,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.Times = string.Join(",", model.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray());
             sequence.Dates = model.Dates;
 
-            // new logic
-            sequence.UnitType = model.Scale;
+            // new logic, refer to DosageObservation
+
+            // sequence.DosageObservation.Name = model.DosageScaleUnit;
+            // sequence.DosageScale = model.DosageScaleUnit;
 
             sequence.Interval = model.OnNeedBasis ? 1 : model.Interval.Value;
             sequence.OnNeedBasis = model.OnNeedBasis;

@@ -9,6 +9,6 @@ namespace Appva.Mcss.Admin.Models
         public Guid Id { get; set; }
         public Guid ScheduleId { get; set; }
         public string Name { get; set; }
-        public bool IsUsingTypes { get; set; }
+        public bool IsCollectingGivenDosage { get; set; }
     }
 }

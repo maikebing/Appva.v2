@@ -61,11 +61,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler overrides
 
-        public override ListSchedule Handle(UpdateScheduleForm message)
+         public override ListSchedule Handle(UpdateScheduleForm message)
         {
             var patient = patientService.Get(message.Id);
+
+            //// TODO: Optimize. Query ScheduleSettings instead to save roundtrips to database
+
             var schedule = context.Get<Schedule>(message.ScheduleId);
-            schedule.IsUsingTypes = message.IsUsingTypes;
+            schedule.ScheduleSettings.IsCollectingGivenDosage = message.IsCollectingGivenDosage;
 
             this.context.Update<Schedule>(schedule);
 

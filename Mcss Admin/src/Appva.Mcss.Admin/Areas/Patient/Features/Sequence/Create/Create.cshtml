@@ -17,11 +17,11 @@
                         TODO: if (Model.IsUsingTypes == true)
                     *@
                     
-                    @if (Model.IsUsingTypes == true)
+                    @if (Model.IsCollectingGivenDosage == true)
                     {
                         <div class="select">
-                            @Html.LabelFor(m => m.Scale)
-                            @Html.DropDownListFor(m => m.Scale, new SelectList(Model.Scales, "Value", "Text", Model.Scale), "Välj enhet ...", new { @class = "scale" })
+                            @Html.LabelFor(m => m.DosageScale)
+                            @Html.DropDownListFor(m => m.DosageScale, new SelectList(Model.Scales, "Value", "Text", Model.DosageScale), "Välj enhet ...", new { @class = "scale" })
                         </div>
                     }
 

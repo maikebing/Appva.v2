@@ -3371,7 +3371,7 @@ span.custom-select {
 .lb-panel-small {
 	width:36%;
 	max-width:475px;
-	margin-left:-18% !important;
+	/*margin-left:-18% !important;*/
 }
 .lb-panel .btn-close {
 	display:block;

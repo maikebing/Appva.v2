@@ -131,6 +131,7 @@
     <Compile Include="Entities\DashboardNotification.cs" />
     <Compile Include="Entities\Delegation.cs" />
     <Compile Include="Entities\Device.cs" />
+    <Compile Include="Entities\DosageObservation.cs" />
     <Compile Include="Entities\EscalationAlert.cs" />
     <Compile Include="Entities\EscalationLevel.cs" />
     <Compile Include="Entities\Inventory.cs" />

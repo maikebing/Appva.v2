@@ -53,6 +53,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         public override UpdateScheduleForm Handle(UpdateSchedule message)
         {
+            //// TODO: Optimize. Query ScheduleSettings instead to save roundtrips to database
+
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
             var patient = this.patientService.Get(message.Id);
             if (schedule == null || patient == null)
@@ -64,7 +66,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Id = patient.Id,
                 ScheduleId = schedule.Id,
                 Name = schedule.ScheduleSettings.Name,
-                IsUsingTypes = schedule.IsUsingTypes
+                IsCollectingGivenDosage = schedule.ScheduleSettings.IsCollectingGivenDosage
             };
         }
     }

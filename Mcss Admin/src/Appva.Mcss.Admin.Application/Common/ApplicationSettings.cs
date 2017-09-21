@@ -250,6 +250,19 @@ using Appva.Mcss.Admin.Application.Models;
 
         #endregion
 
+        #region Dosage
+
+        //public static readonly ApplicationSettingIdentity<List<DosageScaleListModel>> DosageScaleWithValues = ApplicationSettingIdentity<List<DosageScaleListModel>>.CreateNew(
+        //    "MCSS.Core.Dosage.Scales",
+        //    "The scales available for dosage observation",
+        //    "MCSS.Core.Dosage",
+        //    "The scales available for dosage and the their amount-lists",
+        //    DosageDefaults.Scales()
+        //    );
+
+
+        #endregion
+
         #region LDAP.
 
         /// <summary>

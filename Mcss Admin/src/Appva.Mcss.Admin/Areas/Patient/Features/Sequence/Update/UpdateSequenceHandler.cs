@@ -102,6 +102,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 EndDate                     = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.EndDate : (DateTime?) null,
                 RangeInMinutesBefore        = sequence.RangeInMinutesBefore,
                 RangeInMinutesAfter         = sequence.RangeInMinutesAfter,
+                IsCollectingGivenDosage     = sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage,
                 Delegation                  = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
                 Delegations                 = this.GetDelegations(schedule),
                 Dates                       = sequence.Dates,

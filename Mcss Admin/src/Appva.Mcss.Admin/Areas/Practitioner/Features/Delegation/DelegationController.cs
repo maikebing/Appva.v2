@@ -294,9 +294,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                 x => new ExcelTaskModel
                 {
                     Task = x.Name,
-                    TaskCompletedOnDate = x.UpdatedAt.Date,
+                    TaskCompletedOnDate = x.UpdatedAt.Date.ToString("yyyy-MM-dd"),
                     TaskCompletedOnTime = (x.Delayed && x.CompletedBy.IsNull()) ? "Ej signerad" : string.Format("{0} {1:HH:mm}", "kl", x.UpdatedAt),
-                    TaskScheduledOnDate = x.Scheduled.Date,
+                    TaskScheduledOnDate = x.Scheduled.Date.ToString("yyyy-MM-dd"),
                     TaskScheduledOnTime = string.Format("{0} {1:HH:mm}", "kl", x.Scheduled),
                     MinutesBefore = x.RangeInMinutesBefore,
                     MinutesAfter = x.RangeInMinutesAfter,

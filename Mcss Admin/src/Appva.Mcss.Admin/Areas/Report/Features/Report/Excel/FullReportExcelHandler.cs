@@ -152,9 +152,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 x => new ExcelTaskModel
                 {
                     Task                 = x.Name,
-                    TaskCompletedOnDate  = x.IsCompleted ? x.CompletedDate.Value.Date : x.UpdatedAt, //// FIXME: Its either completed or null.
-                    TaskCompletedOnTime  = x.Delayed && x.CompletedBy.IsNull() ? "Ej given" : string.Format("{0} {1:HH:mm}", "kl", x.CompletedDate),
-                    TaskScheduledOnDate  = x.Scheduled.Date,
+                    TaskCompletedOnDate  = x.IsCompleted ? x.CompletedDate.Value.Date.ToString("yyyy-MM-dd") : x.UpdatedAt.ToString("yyyy-MM-dd"), //// FIXME: Its either completed or null.
+                    TaskCompletedOnTime  = x.Delayed && x.CompletedBy.IsNull() ? "Ej given" : x.CompletedBy.IsNull() ? "-" : string.Format("{0} {1:HH:mm}", "kl", x.CompletedDate),
+                    TaskScheduledOnDate  = x.Scheduled.Date.ToString("yyyy-MM-dd"),
                     TaskScheduledOnTime  = string.Format("{0} {1:HH:mm}", "kl", x.Scheduled),
                     MinutesBefore        = x.RangeInMinutesBefore,
                     MinutesAfter         = x.RangeInMinutesAfter,

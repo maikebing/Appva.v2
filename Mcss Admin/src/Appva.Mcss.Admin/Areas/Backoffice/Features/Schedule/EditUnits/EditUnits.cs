@@ -1,32 +1,28 @@
-﻿// <copyright file="DosageScaleModel.cs" company="Appva AB">
+﻿// <copyright file="EditUnits.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author></author>
+// <author>
+//     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
+// </author>
 
-namespace Appva.Mcss.Admin.Domain.Models
+namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
+    using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class DosageScaleModel
+    public sealed class EditUnits : IRequest<EditUnitsModel>
     {
-        /// <summary>
-        /// The <see cref="Guid"/>.
-        /// </summary>
-        public Guid Id {
-            get;
-            internal set;
-        }
+        #region Properties.
 
         /// <summary>
-        /// The dosage name.
+        /// The unit name.
         /// </summary>
         public string Name
         {
@@ -44,12 +40,14 @@ namespace Appva.Mcss.Admin.Domain.Models
         }
 
         /// <summary>
-        /// A collection of dosage values.
+        /// A string of dosage values.
         /// </summary>
-        public List<double> Values
+        public string Values
         {
             get;
             set;
         }
+
+        #endregion
     }
 }

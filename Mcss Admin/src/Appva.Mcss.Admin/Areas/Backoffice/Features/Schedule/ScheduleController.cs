@@ -156,6 +156,34 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Scehdule
 
         #endregion
 
+        #region Edit units
+
+        /// <summary>
+        /// The edit unit options view
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("editunits")]
+        [HttpGet, Hydrate, Dispatch(typeof(Parameterless<EditUnitsModel>))]
+        public ActionResult EditUnits()
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Handles the edit unit options request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("editunits")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
+        public ActionResult EditUnits(EditSigningOptionsModel request)
+        {
+            return this.Redirect(this.Request.UrlReferrer.ToString());
+        }
+
+        #endregion
+
         #endregion
     }
 }

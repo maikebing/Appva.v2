@@ -1,0 +1,16 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.EditUnitsModel
+@{
+    SetTitle("Ställ in dosering");
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <div>
+            @foreach (var item in Model.Dosages)
+            {
+                @Html.LabelFor(x => item.Values, string.Format("{0} ({1})", item.Name, item.Unit))
+                @Html.TextBoxFor(x => item.Values)
+            }
+        </div>
+    }
+</div>

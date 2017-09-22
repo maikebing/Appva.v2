@@ -46,6 +46,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
+        /// The unit.
+        /// </summary>
+        [DisplayName("Enhet")]
+        public string Unit
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The list of amounts as a string
         /// </summary>
         [DisplayName("Enheter")]

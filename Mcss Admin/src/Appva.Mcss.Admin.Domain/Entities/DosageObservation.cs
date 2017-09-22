@@ -32,6 +32,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties
 
         /// <summary>
+        /// Gets or sets the dosage scale id.
+        /// </summary>
+        public virtual Guid DosageScaleId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the dosage scale unit.
         /// </summary>
         public virtual string DosageScaleUnit

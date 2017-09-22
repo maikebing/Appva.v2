@@ -15,7 +15,8 @@
                 <thead class="head">
                     <tr>
                         <th>&nbsp;</th>
-                        <th>Namn (enhet)</th>
+                        <th>Namn</th>
+                        <th>Enhet</th>
                         <th>Värden</th>
                     </tr>
                 </thead>
@@ -27,7 +28,8 @@
                                 @Html.ActionLink("Ändra", "Update", "Inventory", new { unit.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
                                 @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
                             </td>
-                            <td>@unit.Name @(unit.Unit != null ? "(" + unit.Unit + ")" : "")</td>
+                            <td>@unit.Name</td>
+                            <td>@(unit.Unit != null ? Html.Raw(unit.Unit) : Html.Raw("&mdash;"))</td>
                             <td>@Html.Serialize(unit.Amounts)</td>
                         </tr>
                     }

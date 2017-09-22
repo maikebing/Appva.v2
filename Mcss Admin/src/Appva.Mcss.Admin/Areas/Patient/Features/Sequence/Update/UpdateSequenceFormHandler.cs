@@ -89,7 +89,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
+
+
             this.CreateOrUpdate(message, sequence, schedule, delegation, null);
+            this.UpdateDosageObservation(message, schedule, sequence);
             this.sequenceService.Update(sequence);
             
             schedule.UpdatedAt = DateTime.Now;
@@ -99,6 +102,23 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Id         = message.Id,
                 ScheduleId = schedule.Id
             };
+        }
+
+        private Sequence UpdateDosageObservation(UpdateSequenceForm message, Schedule schedule, Sequence sequence)
+        {
+            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true)
+            {
+                var selectedScale = message.SelectedDosageScale;
+                var scale = this.settingsService.Find(ApplicationSettings.DosageConfigurationValues)
+                    .DosageScaleModelList
+                    .Where(x => x.Id.Equals(Guid.Parse(selectedScale)))
+                    .FirstOrDefault();
+
+                sequence.DosageObservation.Name = scale.Name;
+                sequence.DosageObservation.DosageScaleUnit = scale.Unit;
+                sequence.DosageObservation.DosageScaleValues = scale.Values;
+            }
+            return sequence;
         }
 
         #endregion
@@ -169,12 +189,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 sequence.Inventory = this.inventoryService.Find(model.Inventory.GetValueOrDefault());
             }
 
-            //if (schedule.ScheduleSettings.IsCollectingGivenDosage)
-            //{
-            //    //update sequence.DosageObservation.Name with the GivenUnit.
-            //    var x = sequence.DosageObservation.Name;
-            //}
-
             sequence.Name = model.Name;
             sequence.Description = model.Description;
             sequence.StartDate = startDate;
@@ -183,12 +197,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.RangeInMinutesAfter = model.RangeInMinutesAfter;
             sequence.Times = string.Join(",", model.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray());
             sequence.Dates = model.Dates;
-
-            // new logic, refer to DosageObservation
-
-            // sequence.DosageObservation.Name = model.DosageScaleUnit;
-            // sequence.DosageScale = model.DosageScaleUnit;
-
             sequence.Interval = model.OnNeedBasis ? 1 : model.Interval.Value;
             sequence.OnNeedBasis = model.OnNeedBasis;
             sequence.Reminder = model.Reminder;

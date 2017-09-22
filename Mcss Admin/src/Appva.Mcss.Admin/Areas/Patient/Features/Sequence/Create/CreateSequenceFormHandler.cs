@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -132,12 +133,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if (schedule.ScheduleSettings.IsCollectingGivenDosage  == false) return null;
 
             var selectedScale = message.SelectedDosageScale;
-            var scale = this.settingsService.Find(ApplicationSettings.DosageConfigurationValues)
-                .DosageScaleModelList
+            var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
                 .Where(x => x.Id.Equals(Guid.Parse(selectedScale)))
                 .FirstOrDefault();
-
-            return new DosageObservation(scale.Unit, scale.Values, schedule.Patient, scale.Name, "DosageScale");
+            var jsonSetting = new JsonSerializerSettings();
+            var json = JsonConvert.SerializeObject(scale.Amounts);
+            return new DosageObservation(scale.Unit, json, schedule.Patient, scale.Name, "DosageScale");
         }
 
         /// <summary>

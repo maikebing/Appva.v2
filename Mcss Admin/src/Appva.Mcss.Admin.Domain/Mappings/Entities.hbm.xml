@@ -552,8 +552,10 @@
       <one-to-many class="ObservationItem" />
     </bag>
     <subclass name="DosageObservation" discriminator-value="DosageObservation">
+      <property name="DosageScaleUnit" type="StringClob">
+        <column name="DosageScaleUnit" sql-type="NVARCHAR(MAX)"/>
+      </property>      
       <property name="DosageScaleId" />
-      <property name="DosageScaleUnit" />
       <property name="DosageScaleValues" />
     </subclass>
 

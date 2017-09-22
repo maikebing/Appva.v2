@@ -556,7 +556,8 @@
         <column name="DosageScaleUnit" sql-type="NVARCHAR(MAX)"/>
       </property>      
       <property name="DosageScaleId" />
-      <property name="DosageScaleValues" />
+      <property name="DosageScaleUnit" />
+      <property name="DosageScaleValues" type="StringClob" />
     </subclass>
 
   </class>

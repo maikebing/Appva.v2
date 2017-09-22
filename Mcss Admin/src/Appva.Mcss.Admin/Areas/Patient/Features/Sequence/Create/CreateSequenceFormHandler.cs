@@ -138,7 +138,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 .FirstOrDefault();
             var jsonSetting = new JsonSerializerSettings();
             var json = JsonConvert.SerializeObject(scale.Amounts);
-            return new DosageObservation(scale.Unit, json, schedule.Patient, scale.Name, "DosageScale");
+            return new DosageObservation(scale.Id, scale.Unit, json, schedule.Patient, scale.Name, "DosageScale");
         }
 
         /// <summary>

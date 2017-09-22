@@ -116,16 +116,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
                 if (sequence.DosageObservation.IsNull())
                 {
-                    var dosageObservation = new DosageObservation(scale.Unit, JsonConvert.SerializeObject(scale.Amounts), schedule.Patient, scale.Name, "DosageScale");
+                    var dosageObservation = new DosageObservation(scale.Id, scale.Unit, JsonConvert.SerializeObject(scale.Amounts), schedule.Patient, scale.Name, "DosageScale");
                     this.context.Save<DosageObservation>(dosageObservation);
                     sequence.DosageObservation = dosageObservation;
                     return sequence;
                 }
 
+                sequence.DosageObservation.DosageScaleId = scale.Id;
                 sequence.DosageObservation.Name = scale.Name;
                 sequence.DosageObservation.DosageScaleUnit = scale.Unit;
                 var json = JsonConvert.SerializeObject(scale.Amounts);
-                sequence.DosageObservation.DosageScaleValues = JsonConvert.SerializeObject(json);
+                sequence.DosageObservation.DosageScaleValues = json;
             }
             return sequence;
         }

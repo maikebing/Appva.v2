@@ -552,7 +552,8 @@
       <one-to-many class="ObservationItem" />
     </bag>
     <subclass name="DosageObservation" discriminator-value="DosageObservation">
-      <property name="TestString" />
+      <property name="DosageScaleUnit" />
+      <property name="DosageScaleValues" />
     </subclass>
 
   </class>

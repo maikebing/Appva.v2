@@ -252,12 +252,10 @@ using Appva.Mcss.Admin.Application.Models;
 
         #region Dosage
 
-        //public static readonly ApplicationSettingIdentity<List<DosageScaleListModel>> DosageScaleWithValues = ApplicationSettingIdentity<List<DosageScaleListModel>>.CreateNew(
-
-        //    DosageDefaults.Scales()
-        //    );
-
-
+        /// <summary>
+        /// The dosage configuration values
+        /// </summary>
+        /// /// <remarks>The setting returns a <c>DosageConfiguration</c> together with a List of <c>DosageScaleModel</c></remarks>
         public static readonly ApplicationSettingIdentity<DosageConfiguration> DosageConfigurationValues = ApplicationSettingIdentity<DosageConfiguration>.CreateNew(
             "MCSS.Core.Dosage.Scales",
             "The scales available for dosage observation",
@@ -265,7 +263,6 @@ using Appva.Mcss.Admin.Application.Models;
             "The scales available for dosage and the their amount-lists",
             DosageConfiguration.CreateNew()
             );
-
 
         #endregion
 

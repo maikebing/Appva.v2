@@ -179,9 +179,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 inventory = this.inventories.Find(message.Inventory.GetValueOrDefault());
             }
 
-            //var dosageObservation = new DosageObservation(message.Patient, message.DosageScaleUnit, "Dosering");
-
-            return new Sequence()
+            var sequence = new Sequence
             {
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
@@ -194,11 +192,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 RangeInMinutesAfter = message.RangeInMinutesAfter,
                 Times = string.Join(",", message.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray()),
                 Dates = message.Dates,
-
-                // New logic Create a new column for the scale in use..
-                // DosageObservation
-                // DosageObservation = dosageObservation,
-
                 Interval = (message.OnNeedBasis) ? 1 : message.Interval.Value,
                 OnNeedBasis = message.OnNeedBasis,
                 Reminder = message.Reminder,
@@ -210,10 +203,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Role = requiredRole,
                 Inventory = inventory
             };
+
+            if (schedule.ScheduleSettings.IsCollectingGivenDosage)
+            {
+                var selectedscale = message.SelectedDosageScale;
+                var scale = this.settingsService.Find(ApplicationSettings.DosageConfigurationValues)
+                    .DosageScaleModelList
+                    .Where(x => x.Id.Equals(Guid.Parse(selectedscale)))
+                    .FirstOrDefault();
+                sequence.DosageObservation = new DosageObservation(scale.Unit, scale.Values, message.Patient, scale.Name, "DosageScale");
+            }
+
+            return sequence;
         }
-
-   
-
         #endregion
     }
 }

@@ -70,7 +70,7 @@ namespace Appva.Mcss.Admin.Domain.VO
                         Id = Guid.NewGuid(),
                         Name = "Antal",
                         Unit = "st",
-                        Values = CalculateValues(0, 10, 1.0)
+                        Values = CalculateValues(0, 10, 1.0).ToString()
                     }
                 };
             }

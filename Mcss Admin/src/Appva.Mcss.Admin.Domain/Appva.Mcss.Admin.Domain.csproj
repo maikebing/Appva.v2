@@ -156,6 +156,7 @@
     <Compile Include="Entities\Signature\Signature.cs" />
     <Compile Include="Entities\Signature\SignedData.cs" />
     <Compile Include="Entities\Task\SubTask.cs" />
+    <Compile Include="Configurations\DosageConfiguration.cs" />
     <Compile Include="Models\DosageScaleModel.cs" />
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Models\LogModel.cs" />

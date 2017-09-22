@@ -93,18 +93,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             if (schedule.ScheduleSettings.IsCollectingGivenDosage == true)
             {
-
+                var scales = this.settingsService.Find(ApplicationSettings.DosageConfigurationValues);
+                foreach (var item in scales.DosageScaleModelList)
+                {
+                    dosageScaleList.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                }
+                
             }
             return new CreateSequenceForm
             {
                 Id = message.Id,
                 ScheduleId = schedule.Id,
                 IsCollectingGivenDosage = schedule.ScheduleSettings.IsCollectingGivenDosage,
-                DosageScales = new List<SelectListItem>
-                {
-                },
-                //get scale list from applicationsettings,
-
+                DosageScales = dosageScaleList,
                 Delegations = schedule.ScheduleSettings.DelegationTaxon != null ? this.delegations.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false)
                     .Select(x => new SelectListItem { 
                         Text = x.Name,

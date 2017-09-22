@@ -46,7 +46,7 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// A collection of dosage values.
         /// </summary>
-        public List<double> Values
+        public string Values
         {
             get;
             set;

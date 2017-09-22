@@ -98,7 +98,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     dosageScaleList.Add(new SelectListItem { Text = item.Name + " (" + item.Unit + ")", Value = item.Id.ToString() });
                 }
-                
             }
             return new CreateSequenceForm
             {

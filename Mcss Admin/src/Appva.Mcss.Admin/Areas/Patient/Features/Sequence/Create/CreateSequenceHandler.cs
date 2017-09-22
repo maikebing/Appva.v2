@@ -93,10 +93,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             if (schedule.ScheduleSettings.IsCollectingGivenDosage == true)
             {
-                var scales = this.settingsService.Find(ApplicationSettings.DosageConfigurationValues);
-                foreach (var item in scales.DosageScaleModelList)
+                var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts);
+                foreach (var item in scales)
                 {
-                    dosageScaleList.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                    dosageScaleList.Add(new SelectListItem { Text = item.Name + " (" + item.Unit + ")", Value = item.Id.ToString() });
                 }
                 
             }

@@ -114,6 +114,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     .Where(x => x.Id.Equals(Guid.Parse(selectedScale)))
                     .FirstOrDefault();
 
+                if (sequence.DosageObservation.IsNull())
+                {
+                    var dosageObservation = new DosageObservation(scale.Unit, scale.Values, schedule.Patient, scale.Name, "DosageScale");
+                    this.context.Save<DosageObservation>(dosageObservation);
+                    sequence.DosageObservation = dosageObservation;
+                    return sequence;
+                }
+
                 sequence.DosageObservation.Name = scale.Name;
                 sequence.DosageObservation.DosageScaleUnit = scale.Unit;
                 sequence.DosageObservation.DosageScaleValues = scale.Values;

@@ -64,7 +64,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceHandler"/> class.
         /// </summary>
-        public UpdateSequenceHandler( IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IPersistenceContext context)
+        public UpdateSequenceHandler(IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IPersistenceContext context)
         {
             this.inventories     = inventories;
             this.roleService     = roleService;
@@ -164,7 +164,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             foreach (var item in scales.DosageScaleModelList)
             {
-                dosageScaleList.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+                dosageScaleList.Add(new SelectListItem { Text = item.Name + " (" + item.Unit + ")", Value = item.Id.ToString() });
             }
             return dosageScaleList;
         }

@@ -1,4 +1,4 @@
-﻿// <copyright file="TenaObservationPeriod.cs" company="Appva AB">
+﻿// <copyright file="DosageObservation.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports
 
     using System;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -17,36 +18,36 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class DosageObservation : Observation
     {
-        #region Constructor
+        public DosageObservation(string dosageScaleUnit, string dosageScaleValues, Patient patient, string name, string description, Taxon category = null) 
+            : base(patient, name, description, category)
+        {
+            this.DosageScaleUnit = dosageScaleUnit;
+            this.DosageScaleValues = dosageScaleValues;
+        }
 
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="DosageObservation"/> class.
-        ///// </summary>
-        ///// <param name="startDate">The start date.</param>
-        ///// <param name="endDate">The end date.</param>
-        ///// <param name="patient">The patient.</param>
-        ///// <param name="name">The name.</param>
-        ///// <param name="description">The description.</param>
-        ///// <param name="category">The category.</param>
-        //public DosageObservation(Patient patient, string name, string description, Taxon category = null)
-        //    : base(patient, name, description, category)
-        //{
-        //}
-
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="DosageObservation"/> class.
-        ///// </summary>
-        ///// <remarks>An NHibernate visible no-argument constructor.</remarks>
-        //public DosageObservation()
-        //{
-        //}
-
-        #endregion
+        public DosageObservation()
+        {
+        }
 
         #region Properties
 
-        public virtual string TestString { get; set; }
+        /// <summary>
+        /// Gets or sets the dosage scale unit.
+        /// </summary>
+        public virtual string DosageScaleUnit
+        {
+            get;
+            protected internal set;
+        }
 
+        /// <summary>
+        /// Gets or sets the dosage scale values.
+        /// </summary>
+        public virtual string DosageScaleValues
+        {
+            get;
+            protected internal set;
+        }
 
         #endregion
     }

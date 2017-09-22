@@ -350,7 +350,6 @@ namespace Appva.Mcss.Admin.Models
             set; 
         }
 
-
         // Logic for DosageObservation
 
         /// <summary>
@@ -366,13 +365,9 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Selected DosageScale
         /// </summary>
-        public string DosageScaleUnit { get; set; }
-
-
-        //public DosageObservation DosageObservation
+        public string SelectedDosageScale { get; set; }
 
         #endregion
-
 
         #endregion
     }

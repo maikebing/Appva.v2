@@ -20,8 +20,8 @@
                     @if (Model.IsCollectingGivenDosage == true)
                     {
                         <div class="select">
-                            @Html.LabelFor(m => m.DosageScale)
-                            @Html.DropDownListFor(m => m.DosageScale, new SelectList(Model.Scales, "Value", "Text", Model.DosageScale), "Välj enhet ...", new { @class = "scale" })
+                            @Html.LabelFor(m => m.DosageScales)
+                            @Html.DropDownListFor(m => m.SelectedDosageScale, new SelectList(Model.DosageScales, "Value", "Text", Model.SelectedDosageScale), "Välj enhet ...", new { @class = "scale" })
                         </div>
                     }
 
@@ -38,7 +38,6 @@
                         @Html.ValidationMessageFor(m => m.Delegation)
 	                </div>
                 }
-                
 
                     @if (Model.Inventories != null)
                     {

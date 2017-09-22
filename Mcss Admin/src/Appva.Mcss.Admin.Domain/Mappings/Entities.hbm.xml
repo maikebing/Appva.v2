@@ -558,8 +558,10 @@
       <key column="DosageObservation" />
       <one-to-many class="Sequence" />
     </bag>-->
+    
     <subclass name="DosageObservation" discriminator-value="DosageObservation">
-      <property name="TestString" />
+      <property name="DosageScaleUnit" />
+      <property name="DosageScaleValues" />
     </subclass>
 
   </class>

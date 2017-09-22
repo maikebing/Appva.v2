@@ -11,6 +11,6 @@ namespace Appva.Mcss.Admin.Domain.Models
         public Guid Id { get; internal set; }
         public string Name { get; set; }
         public string Unit { get; set; }
-        public List<double> Values { get; set; }
+        public string Values { get; set; }
     }
 }

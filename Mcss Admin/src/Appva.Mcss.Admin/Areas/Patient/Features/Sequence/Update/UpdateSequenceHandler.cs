@@ -93,33 +93,41 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 requiredRole = this.roleService.Find(RoleTypes.Nurse);
             }
-            return new UpdateSequenceForm
+            var updateSequenceForm = new UpdateSequenceForm
             {
-                Id                          = message.Id,
-                Name                        = sequence.Name,
-                Description                 = sequence.Description,
-                StartDate                   = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.StartDate : (DateTime?) null,
-                EndDate                     = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.EndDate : (DateTime?) null,
-                RangeInMinutesBefore        = sequence.RangeInMinutesBefore,
-                RangeInMinutesAfter         = sequence.RangeInMinutesAfter,
-                IsCollectingGivenDosage     = sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage,
-                Delegation                  = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
-                Delegations                 = this.GetDelegations(schedule),
-                Dates                       = sequence.Dates,
-                Interval                    = sequence.Interval,
-                Times                       = this.CreateTimes(sequence),
-                OnNeedBasis                 = sequence.OnNeedBasis,
-                OnNeedBasisStartDate        = sequence.OnNeedBasis ? sequence.StartDate : (DateTime?) null,
-                OnNeedBasisEndDate          = sequence.OnNeedBasis ? sequence.EndDate   : (DateTime?) null,
-                Reminder                    = sequence.Reminder,
-                ReminderInMinutesBefore     = sequence.ReminderInMinutesBefore,
-                Patient                     = sequence.Patient,
-                Schedule                    = sequence.Schedule,
-                Nurse                       = sequence.Role != null,
-                Inventory                   = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
-                Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
-                RequiredRoleText            = requiredRole.Name.ToLower()
+                Id = message.Id,
+                Name = sequence.Name,
+                Description = sequence.Description,
+                StartDate = sequence.OnNeedBasis ? (DateTime?)null : sequence.Dates.IsEmpty() ? sequence.StartDate : (DateTime?)null,
+                EndDate = sequence.OnNeedBasis ? (DateTime?)null : sequence.Dates.IsEmpty() ? sequence.EndDate : (DateTime?)null,
+                RangeInMinutesBefore = sequence.RangeInMinutesBefore,
+                RangeInMinutesAfter = sequence.RangeInMinutesAfter,
+                IsCollectingGivenDosage = schedule.ScheduleSettings.IsCollectingGivenDosage,
+                Delegation = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?)null,
+                Delegations = this.GetDelegations(schedule),
+                Dates = sequence.Dates,
+                Interval = sequence.Interval,
+                Times = this.CreateTimes(sequence),
+                OnNeedBasis = sequence.OnNeedBasis,
+                OnNeedBasisStartDate = sequence.OnNeedBasis ? sequence.StartDate : (DateTime?)null,
+                OnNeedBasisEndDate = sequence.OnNeedBasis ? sequence.EndDate : (DateTime?)null,
+                Reminder = sequence.Reminder,
+                ReminderInMinutesBefore = sequence.ReminderInMinutesBefore,
+                Patient = sequence.Patient,
+                Schedule = sequence.Schedule,
+                Nurse = sequence.Role != null,
+                Inventory = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
+                Inventories = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
+                RequiredRoleText = requiredRole.Name.ToLower()
             };
+
+            if (updateSequenceForm.IsCollectingGivenDosage == true)
+            {
+                updateSequenceForm.DosageScales = GetDosageScales(schedule);
+            }
+
+            return updateSequenceForm;
+            
         }
 
         #endregion
@@ -147,6 +155,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Text  = x.Name,
                 Value = x.Id.ToString()
             });
+        }
+
+        private IList<SelectListItem> GetDosageScales(Schedule schedule)
+        {
+            var dosageScaleList = new List<SelectListItem>();
+            var scales = this.settingsService.Find(ApplicationSettings.DosageConfigurationValues);
+
+            foreach (var item in scales.DosageScaleModelList)
+            {
+                dosageScaleList.Add(new SelectListItem { Text = item.Name, Value = item.Id.ToString() });
+            }
+            return dosageScaleList;
         }
 
         /// <summary>

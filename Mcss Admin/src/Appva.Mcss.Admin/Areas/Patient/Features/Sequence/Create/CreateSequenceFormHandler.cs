@@ -92,7 +92,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
-            var sequence = this.CreateOrUpdate(message, schedule, delegation);
+
+            var scale = this.CreateDosageObservation(message, schedule);
+            if (scale.IsNotNull())
+            {
+                this.context.Save(scale);
+            }
+            var sequence = this.CreateOrUpdate(message, schedule, delegation, scale);
             this.context.Save(sequence);
 
             this.auditing.Create(
@@ -116,11 +122,30 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private Methods.
 
         /// <summary>
+        /// Creates the dosage observation.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <returns>DosageObservation.</returns>
+        private DosageObservation CreateDosageObservation(CreateSequenceForm message, Schedule schedule)
+        {
+            if (schedule.ScheduleSettings.IsCollectingGivenDosage  == false) return null;
+
+            var selectedScale = message.SelectedDosageScale;
+            var scale = this.settingsService.Find(ApplicationSettings.DosageConfigurationValues)
+                .DosageScaleModelList
+                .Where(x => x.Id.Equals(Guid.Parse(selectedScale)))
+                .FirstOrDefault();
+
+            return new DosageObservation(scale.Unit, scale.Values, schedule.Patient, scale.Name, "DosageScale");
+        }
+
+        /// <summary>
         /// TODO: MOVE?
         /// </summary>
         /// <param name="schedule"></param>
         /// <returns></returns>
-        private Sequence CreateOrUpdate(CreateSequenceForm message, Schedule schedule, Taxon delegation)
+        private Sequence CreateOrUpdate(CreateSequenceForm message, Schedule schedule, Taxon delegation, DosageObservation scale)
         {
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate = null;
@@ -204,15 +229,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Inventory = inventory
             };
 
-            if (schedule.ScheduleSettings.IsCollectingGivenDosage)
-            {
-                var selectedscale = message.SelectedDosageScale;
-                var scale = this.settingsService.Find(ApplicationSettings.DosageConfigurationValues)
-                    .DosageScaleModelList
-                    .Where(x => x.Id.Equals(Guid.Parse(selectedscale)))
-                    .FirstOrDefault();
-                sequence.DosageObservation = new DosageObservation(scale.Unit, scale.Values, message.Patient, scale.Name, "DosageScale");
-            }
+            if (scale.IsNotNull()) sequence.DosageObservation = scale;
+
 
             return sequence;
         }

@@ -68,7 +68,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string Name
         {
             get;
-            internal protected set;
+            set;
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string Description
         {
             get;
-            internal protected set;
+            set;
         }
 
         /// <summary>

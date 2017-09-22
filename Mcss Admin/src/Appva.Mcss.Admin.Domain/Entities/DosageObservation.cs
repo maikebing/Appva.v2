@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string DosageScaleUnit
         {
             get;
-            protected internal set;
+            set;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string DosageScaleValues
         {
             get;
-            protected internal set;
+            set;
         }
 
         #endregion

@@ -123,6 +123,7 @@
     <Compile Include="Common\Types\JsonType.cs" />
     <Compile Include="Common\Helpers\TypeNameHelper.cs" />
     <Compile Include="Common\ValueObject.cs" />
+    <Compile Include="Configurations\DosageConfiguration.cs" />
     <Compile Include="Configurations\IConfiguration.cs" />
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Change.cs" />

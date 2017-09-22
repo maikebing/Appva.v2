@@ -533,9 +533,6 @@
 
   </class>
 
-
-  
-  
   <!-- Observation -->
   <class name="Observation" table="Observations">
     <id name="Id">
@@ -554,11 +551,6 @@
       <key column="Observation" />
       <one-to-many class="ObservationItem" />
     </bag>
-    <!--<bag name="Sequences" cascade="save-update">
-      <key column="DosageObservation" />
-      <one-to-many class="Sequence" />
-    </bag>-->
-    
     <subclass name="DosageObservation" discriminator-value="DosageObservation">
       <property name="DosageScaleUnit" />
       <property name="DosageScaleValues" />

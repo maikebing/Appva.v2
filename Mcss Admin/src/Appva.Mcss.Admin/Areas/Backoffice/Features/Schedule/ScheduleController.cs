@@ -177,7 +177,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Scehdule
         /// <returns></returns>
         [Route("editunits")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
-        public ActionResult EditUnits(EditSigningOptionsModel request)
+        public ActionResult EditUnits(EditUnitsModel request)
         {
             return this.Redirect(this.Request.UrlReferrer.ToString());
         }

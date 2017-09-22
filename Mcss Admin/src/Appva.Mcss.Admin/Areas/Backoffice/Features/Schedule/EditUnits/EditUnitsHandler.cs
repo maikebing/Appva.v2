@@ -56,6 +56,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             {
                 var dosage = new EditUnits()
                 {
+                    Id = item.Id,
                     Name = item.Name,
                     Unit = item.Unit,
                     Values = item.Values

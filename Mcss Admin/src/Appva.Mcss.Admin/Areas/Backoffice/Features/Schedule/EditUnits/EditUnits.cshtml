@@ -7,20 +7,21 @@
     {
         <div class="form-tab form-tab-1">
             <h3 class="section-title">Ställ in doseringar</h3>
-            @foreach (var item in Model.Dosages)
+            @for (int i = 0; i < Model.Dosages.Count(); i++)
             {
-                <h3 class="section-sub-title">@string.Format("{0} ({1})", item.Name, item.Unit)</h3>
+                <h3 class="section-sub-title">@string.Format("{0} ({1})", Model.Dosages[i].Name, Model.Dosages[i].Unit)</h3>
                 <div class="text large">
-                    @Html.LabelFor(x => item.Name, "Namn")
-                    @Html.TextBoxFor(x => item.Name)
+                    @Html.LabelFor(x => Model.Dosages[i].Name, "Namn")
+                    @Html.TextBoxFor(x => Model.Dosages[i].Name)
                 </div>
                 <div class="text large">
-                    @Html.LabelFor(x => item.Unit, "Enhet")
-                    @Html.TextBoxFor(x => item.Unit)
+                    @Html.LabelFor(x => Model.Dosages[i].Unit, "Enhet")
+                    @Html.TextBoxFor(x => Model.Dosages[i].Unit)
                 </div>
                 <div class="text large section-end">
-                    @Html.LabelFor(x => item.Values, "Skala")
-                    @Html.TextAreaFor(x => item.Values)
+                    @Html.LabelFor(x => Model.Dosages[i].Values, "Skala")
+                    @Html.TextAreaFor(x => Model.Dosages[i].Values)
+                    @Html.HiddenFor(x => Model.Dosages[i].Id)
                 </div>
             }
             <p><b>OBS!</b> Decimaler skrivs med punkt '.' (1.5) och tal separeras med komma-tecken ','</p>

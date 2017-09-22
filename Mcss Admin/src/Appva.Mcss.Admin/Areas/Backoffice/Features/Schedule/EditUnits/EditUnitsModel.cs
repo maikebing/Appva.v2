@@ -24,7 +24,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// A collection of dosages.
         /// </summary>
-        public IList<EditUnits> Dosages
+        public List<EditUnits> Dosages
         {
             get;
             set;

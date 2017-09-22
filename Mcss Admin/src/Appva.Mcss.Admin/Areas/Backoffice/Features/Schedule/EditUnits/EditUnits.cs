@@ -9,7 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 {
     #region Imports.
 
-    using System.Collections.Generic;
+    using System;
     using Appva.Cqrs;
 
     #endregion
@@ -20,6 +20,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     public sealed class EditUnits : IRequest<EditUnitsModel>
     {
         #region Properties.
+
+        /// <summary>
+        /// The model id.
+        /// </summary>
+        public Guid Id
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The unit name.

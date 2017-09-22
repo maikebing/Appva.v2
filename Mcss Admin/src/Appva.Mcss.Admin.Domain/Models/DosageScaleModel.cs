@@ -20,9 +20,10 @@ namespace Appva.Mcss.Admin.Domain.Models
         /// <summary>
         /// The <see cref="Guid"/>.
         /// </summary>
-        public Guid Id {
+        public Guid Id
+        {
             get;
-            internal set;
+            set;
         }
 
         /// <summary>

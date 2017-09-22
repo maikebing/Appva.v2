@@ -438,6 +438,7 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\EditUnits\EditUnits.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\EditUnits\EditUnitsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\EditUnits\EditUnitsModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Schedule\EditUnits\EditUnitsPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\ScheduleController.cs" />

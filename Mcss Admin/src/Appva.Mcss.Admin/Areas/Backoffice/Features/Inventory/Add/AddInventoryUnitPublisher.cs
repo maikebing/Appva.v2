@@ -58,6 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             {
                 Id = Guid.NewGuid(),
                 Name = name,
+                Unit = string.IsNullOrWhiteSpace(message.Unit) ? null : message.Unit,
                 Amounts = amounts
             });
 

@@ -61,6 +61,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             return new UpdateInventoryUnitModel() {
                 Amounts = JsonConvert.SerializeObject(setting.Amounts).Replace("[", "").Replace("]", ""),
                 Name    = setting.Name,
+                Unit    = setting.Unit,
                 Id      = setting.Id
             };
         }

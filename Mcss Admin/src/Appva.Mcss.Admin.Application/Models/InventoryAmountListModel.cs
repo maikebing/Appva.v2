@@ -39,6 +39,15 @@ using System.Collections.Generic;
         }
 
         /// <summary>
+        /// The unit.
+        /// </summary>
+        public string Unit
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// List of amounts in current list.
         /// </summary>
         public IList<double> Amounts

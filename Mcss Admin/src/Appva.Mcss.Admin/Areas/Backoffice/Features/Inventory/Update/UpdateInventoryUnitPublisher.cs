@@ -55,6 +55,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             var setting  = settings.SingleOrDefault(x => x.Id == message.Id);
             
             setting.Name    = message.Name;
+            setting.Unit = string.IsNullOrWhiteSpace(message.Unit) ? null : message.Unit;
             setting.Amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", "")));
 
             this.settings.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, settings);

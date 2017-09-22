@@ -8,15 +8,16 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 {
     #region Imports.
 
+    using System.Collections.Generic;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Persistence;
     using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -32,6 +33,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// </summary>
         private readonly ISettingsService settings;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>.
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
         #endregion
 
         #region Constructor.
@@ -39,9 +45,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateInventoryUnitPublisher"/> class.
         /// </summary>
-        public UpdateInventoryUnitPublisher(ISettingsService settings)
+        public UpdateInventoryUnitPublisher(ISettingsService settings, IPersistenceContext persistence)
         {
             this.settings = settings;
+            this.persistence = persistence;
         }
 
         #endregion
@@ -59,6 +66,22 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             setting.Amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", "")));
 
             this.settings.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, settings);
+
+            var query = this.persistence.QueryOver<Sequence>()
+                .Where(x => x.IsActive == true)
+                    .JoinQueryOver(x => x.DosageObservation)
+                        .Where(x => x.DosageScaleId == setting.Id)
+                            .List();
+
+            var amountToJson = JsonConvert.SerializeObject(setting.Amounts);
+
+            foreach (var row in query)
+            {
+                row.DosageObservation.DosageScaleValues = setting.Name;
+                row.DosageObservation.DosageScaleUnit = setting.Unit;
+                row.DosageObservation.DosageScaleValues = amountToJson;
+                this.persistence.Update(row);
+            }
 
             return new Parameterless<ListInventoriesModel>();
         }

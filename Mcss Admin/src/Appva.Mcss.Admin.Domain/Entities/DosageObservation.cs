@@ -18,9 +18,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class DosageObservation : Observation
     {
-        public DosageObservation(string dosageScaleUnit, string dosageScaleValues, Patient patient, string name, string description, Taxon category = null) 
+        public DosageObservation(Guid dosageScaleId, string dosageScaleUnit, string dosageScaleValues, Patient patient, string name, string description, Taxon category = null) 
             : base(patient, name, description, category)
         {
+            this.DosageScaleId = dosageScaleId;
             this.DosageScaleUnit = dosageScaleUnit;
             this.DosageScaleValues = dosageScaleValues;
         }

@@ -1,16 +1,23 @@
 ﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.EditUnitsModel
 @{
-    SetTitle("Ställ in dosering");
+    SetTitle("Ställ in doseringsvärden");
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form">
     @using (Html.Post())
     {
-        <div>
+        <div class="form-tab form-tab-1">
+            <h3 class="section-title">Ställ in doseringar</h3>
             @foreach (var item in Model.Dosages)
             {
-                @Html.LabelFor(x => item.Values, string.Format("{0} ({1})", item.Name, item.Unit))
-                @Html.TextBoxFor(x => item.Values)
+                <div class="text large">
+                    @Html.LabelFor(x => item.Values, string.Format("{0} ({1})", item.Name, item.Unit))
+                    @Html.TextAreaFor(x => item.Values)
+                </div>
             }
+            <p><b>OBS!</b> Decimaler skrivs med punkt '.' (1.5) och tal separeras med komma-tecken ','</p>
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
         </div>
     }
 </div>

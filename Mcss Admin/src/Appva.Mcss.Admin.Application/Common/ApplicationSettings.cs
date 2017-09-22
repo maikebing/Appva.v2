@@ -258,7 +258,7 @@ using Appva.Mcss.Admin.Application.Models;
         //    );
 
 
-        public static readonly ApplicationSettingIdentity<DosageConfiguration> DosageConfigurationvalues = ApplicationSettingIdentity<DosageConfiguration>.CreateNew(
+        public static readonly ApplicationSettingIdentity<DosageConfiguration> DosageConfigurationValues = ApplicationSettingIdentity<DosageConfiguration>.CreateNew(
             "MCSS.Core.Dosage.Scales",
             "The scales available for dosage observation",
             "MCSS.Core.Dosage",

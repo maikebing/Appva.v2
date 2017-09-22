@@ -435,6 +435,9 @@
     <Compile Include="Areas\Backoffice\Features\Schedule\EditSigningOptions\EditSigningOptionsHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\EditSigningOptions\EditSigningOptionsModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\EditSigningOptions\EditSigningOptionsPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Schedule\EditUnits\EditUnits.cs" />
+    <Compile Include="Areas\Backoffice\Features\Schedule\EditUnits\EditUnitsHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Schedule\EditUnits\EditUnitsModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\List\ListScheduleModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Schedule\ScheduleController.cs" />
@@ -1376,6 +1379,7 @@
     <Content Include="Areas\Backoffice\Features\Measurement\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Measurement\Create\Create.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\Update\Update.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Schedule\EditUnits\EditUnits.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

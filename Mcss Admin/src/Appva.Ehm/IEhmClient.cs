@@ -11,6 +11,7 @@ namespace Appva.Ehm
     using Appva.Ehm.Models;
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     #endregion
 
@@ -25,6 +26,6 @@ namespace Appva.Ehm
         /// <param name="forPatient"></param>
         /// <param name="byUser"></param>
         /// <returns></returns>
-        IList<Ordination> ListOrdinations(string forPatientUniqueId, User byUser);
+        Task<IList<Ordination>> ListOrdinations(string forPatientUniqueId, User byUser);
     }
 }

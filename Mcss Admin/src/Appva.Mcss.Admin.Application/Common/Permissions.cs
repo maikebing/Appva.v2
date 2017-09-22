@@ -1414,36 +1414,60 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #region Backoffice.
 
-    /// <summary>
-    /// The Backoffice permissions.
-    /// </summary>
-    public static class Backoffice
-    {
         /// <summary>
-        /// The read value.
+        /// The Backoffice permissions.
         /// </summary>
-        public const string ReadValue = Schema + "backoffice/read";
+        public static class Backoffice
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "backoffice/read";
 
-        /// <summary>
-        /// Permission to read/view backoffice.
-        /// </summary>
-        [Sort(100000)]
-        [Name("Read backoffice")]
-        [Description("Permission to read/view backoffice")]
-        [Visibility(Visibility.Hidden)]
-        public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
-    }
-
-    #endregion
+            /// <summary>
+            /// Permission to read/view backoffice.
+            /// </summary>
+            [Sort(100000)]
+            [Name("Read backoffice")]
+            [Description("Permission to read/view backoffice")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
 
         #endregion
 
-        #region Resource
+        #region Medication
 
-        
-            #region Constants.
+        /// <summary>
+        /// The medication permissions.
+        /// </summary>
+        public static class Medication
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/medication/read";
 
             /// <summary>
+            /// Permission to read/view medications.
+            /// </summary>
+            [Sort(60)]
+            [Name("Read medications")]
+            [Description("Permission to read/view medication list")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
+
+        #endregion
+
+    #endregion
+
+    #region Resource
+
+
+    #region Constants.
+
+    /// <summary>
             /// The permission schema for mobile.
             /// </summary>
             public const string DeviceSchema = "https://schemas.appva.se/permission/device";

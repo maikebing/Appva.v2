@@ -65,7 +65,7 @@ namespace Appva.Ehm
             /// <summary>
             /// The list endpoint
             /// </summary>
-            internal const string List = "/api/v1/ordinationer";
+            internal const string List = "api/v1/ordinationer";
 
             #endregion
         }

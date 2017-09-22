@@ -14,7 +14,9 @@ namespace Appva.Ehm
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
 
     #endregion
 
@@ -40,7 +42,8 @@ namespace Appva.Ehm
         public EhmClient(IRestOptions options, EhmConfiguration config, HttpMessageHandler handler = null) 
             : base(options, handler)
         {
-            this.config = config;
+            this.config      = config;
+            this.BaseAddress = config.baseUri;
         }
 
         #endregion
@@ -48,14 +51,18 @@ namespace Appva.Ehm
         #region IEhmClient members
 
         /// <inheritdoc />
-        public IList<Ordination> ListOrdinations(string forPatientUniqueId, User byUser)
+        public async Task<IList<Ordination>> ListOrdinations(string forPatientUniqueId, User byUser)
         {
             var request = this.Get(string.Format("{0}{1}", config.baseUri, EhmConfiguration.Endpoints.List), new { personnummer = forPatientUniqueId });
-            var response = request.ToResult<IList<Ordination>>();
-
-            if (!response.Response.IsSuccessStatusCode)
+            var response = await request.ToResultAsync<IList<Ordination>>();
+            
+            if (response.Response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 throw new EhmUnauthorizedException();
+            }
+            if (!response.Response.IsSuccessStatusCode)
+            {
+                throw new EhmBadRequestException();
             }
 
             return response.Result;

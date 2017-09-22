@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Appva.Ehm</RootNamespace>
     <AssemblyName>Appva.Ehm</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>dad2676a</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,9 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="EhmClient.cs" />
     <Compile Include="EhmConfiguration.cs" />
+    <Compile Include="Exceptions\EhmBadRequestException.cs" />
     <Compile Include="Exceptions\EhmUnauthorizedException.cs" />
     <Compile Include="IEhmClient.cs" />
     <Compile Include="Models\Ordination.cs" />

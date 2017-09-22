@@ -9,8 +9,17 @@
             <h3 class="section-title">Ställ in doseringar</h3>
             @foreach (var item in Model.Dosages)
             {
+                <h3 class="section-sub-title">@string.Format("{0} ({1})", item.Name, item.Unit)</h3>
                 <div class="text large">
-                    @Html.LabelFor(x => item.Values, string.Format("{0} ({1})", item.Name, item.Unit))
+                    @Html.LabelFor(x => item.Name, "Namn")
+                    @Html.TextBoxFor(x => item.Name)
+                </div>
+                <div class="text large">
+                    @Html.LabelFor(x => item.Unit, "Enhet")
+                    @Html.TextBoxFor(x => item.Unit)
+                </div>
+                <div class="text large section-end">
+                    @Html.LabelFor(x => item.Values, "Skala")
                     @Html.TextAreaFor(x => item.Values)
                 </div>
             }

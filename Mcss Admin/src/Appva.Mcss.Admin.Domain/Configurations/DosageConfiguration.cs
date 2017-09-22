@@ -7,12 +7,12 @@
 
 namespace Appva.Mcss.Admin.Domain.VO
 {
-    using System;
-    using System.Collections.Generic;
     #region Imports.
 
-    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
     using Appva.Mcss.Admin.Domain.Models;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -70,7 +70,21 @@ namespace Appva.Mcss.Admin.Domain.VO
                         Id = Guid.NewGuid(),
                         Name = "Antal",
                         Unit = "st",
-                        Values = CalculateValues(0, 10, 1.0).ToString()
+                        Values = CalculateValues(0.5, 10, 0.5)
+                    },
+                    new DosageScaleModel
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Antal",
+                        Unit = "mg",
+                        Values = CalculateValues(25, 1000, 25)
+                    },
+                    new DosageScaleModel
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Mängd",
+                        Unit = "ml",
+                        Values = CalculateValues(25, 1000, 25)
                     }
                 };
             }
@@ -79,18 +93,18 @@ namespace Appva.Mcss.Admin.Domain.VO
 
         #endregion
 
-
         #region Private members.
 
-        private static List<double> CalculateValues(double min, double max, double increment)
+        private static string CalculateValues(double min, double max, double increment)
         {
-            var amounts = new List<double>();
+            var amounts = new List<string>();
 
             for (var x = min; x <= max; x = x + increment)
             {
-                amounts.Add(x);
+                amounts.Add(x.ToString().Replace(",", "."));
             }
-            return amounts;
+
+            return string.Join(", ", amounts);
         }
 
         #endregion

@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 {
                     Name = item.Name,
                     Unit = item.Unit,
-                    Values = string.Join(",", item.Values)
+                    Values = item.Values
                 };
 
                 dosages.Add(dosage);

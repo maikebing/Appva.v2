@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
     using Appva.Mvc.Security;
     using System.Threading.Tasks;
     using Appva.Ehm.Exceptions;
+using Appva.Mcss.Admin.Infrastructure;
 
     #endregion
 
@@ -29,9 +30,19 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IMedicationService"/>
+        /// The <see cref="IMedicationService"/>.
         /// </summary>
         private readonly IMedicationService medicationService;
+
+        /// <summary>
+        /// The <see cref="IPatientService"/>.
+        /// </summary>
+        private readonly IPatientService patientService;
+
+        /// <summary>
+        /// The <see cref="IPatientTransformer"/>
+        /// </summary>
+        private readonly IPatientTransformer patientTransformer;
 
         #endregion
 
@@ -41,9 +52,14 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
         /// 
         /// </summary>
         /// <param name="medicationSevice"></param>
-        public MedicationController(IMedicationService medicationSevice)
+        public MedicationController(
+            IMedicationService medicationSevice, 
+            IPatientService patientService, 
+            IPatientTransformer patientTransformer)
         {
-            this.medicationService = medicationSevice;
+            this.medicationService  = medicationSevice;
+            this.patientService     = patientService;
+            this.patientTransformer = patientTransformer;
         }
 
         #endregion
@@ -63,8 +79,13 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
         {
             try
             {
-                var list = await this.medicationService.List(id);
-                return this.View(new ListMedicationModel());
+                var patient         = this.patientService.Get(id);
+                var patientModel    = this.patientTransformer.ToPatient(patient);
+                var list            = await this.medicationService.List(id);
+                return this.View(new ListMedicationModel 
+                { 
+                    Patient = patientModel
+                });
             }
             catch (EhmBadRequestException e)
             {
@@ -73,7 +94,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
         }
 
         #endregion
-
 
         #endregion
     }

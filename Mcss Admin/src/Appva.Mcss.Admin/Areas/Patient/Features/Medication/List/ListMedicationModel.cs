@@ -8,32 +8,39 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Services;
+using Appva.Mcss.Web.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ListMedicationModel : Controller
+    public sealed class ListMedicationModel
     {
-        #region Constructor.
+        #region Properties
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListMedicationModel"/> class.
+        /// The patient
         /// </summary>
-        public ListMedicationModel()
+        public PatientViewModel Patient
         {
+            get;
+            set;
         }
 
-        #endregion
-
-        #region Routes.
-
-        //// TODO: Add routes here!
+        /// <summary>
+        /// The medications
+        /// </summary>
+        public IList<Medication> Medications
+        {
+            get;
+            set;
+        }
 
         #endregion
     }

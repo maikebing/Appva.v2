@@ -1,0 +1,129 @@
+﻿.e-panel {
+    background: #fff;
+    padding: 10px 0;
+    margin: 20px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    color: rgb(64,78,104);
+}
+
+#ehm h3 {
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px;
+    color: rgb(64,78,104);
+}
+
+
+/* TABLE */
+#ehm table {
+    border: none;
+    font-size: 14px;
+    color: rgb(64,78,104);
+}
+
+#ehm thead {
+    border-top:solid 1px rgb(219, 224, 236);
+    border-bottom:solid 1px rgb(219, 224, 236);
+    background:#fff;
+    font-family: Helvetica,Arial,sans-serif;
+    
+}
+
+#ehm thead th {
+    border: none;
+    background:#fff;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-weight:700;
+}
+
+#ehm tbody {
+    border-top:solid 1px rgb(219, 224, 236);
+    border-bottom:solid 1px rgb(219, 224, 236);
+    background:#fff;
+    font-family: Helvetica,Arial,sans-serif;
+    
+}
+
+#ehm table td {
+    border:none;
+    padding-top:4px;
+    padding-bottom:4px;
+    vertical-align:middle;
+    height:39px;
+}
+
+#ehm table tr.ok { border-left:4px solid rgb(104,173,87); }
+
+#ehm table td:first-child, #ehm table th:first-child  { padding-left:15px; }
+#ehm table td:last-child, #ehm table th:last-child  { padding-right:15px; }
+
+#ehm table tbody tr:nth-child(even) { background: rgb(239,241,246); }
+#ehm table tbody tr:nth-child(odd) { background: rgb(250, 251, 252); }
+#ehm table tbody tr:hover { background: rgb(219, 224, 236);}
+
+/* Dosage */
+#ehm table td div.dosage {
+    background:#fff;
+    color:rgb(128,143,167);
+    font-size:10px;
+    text-align:center;
+    width: 30px;
+    border:1px solid rgb(219, 224, 236);
+}
+
+#ehm table td div.dosage p {
+    padding:3px;
+}
+
+#ehm table td div.dosage p.time {
+    padding-bottom:2px;
+    margin-bottom:0;
+    border-bottom:1px solid rgb(219, 224, 236);
+}
+#ehm table td div.dosage p.amount {
+    padding-top:2px;
+    margin-bottom:0;
+    font-size:10px;
+    font-weight:bold;
+}
+
+/* DOS */
+#ehm table td span.dos {
+    font-size: 10px;
+    background: #637491;
+    border-radius: 38px;
+    color: #fff;
+    padding: 10px 5px;
+    font-weight:bold;
+    float: right;
+}
+
+/* Button */
+#ehm table td a.button {
+    border-radius:40px;
+    text-decoration:none;
+    padding:10px 0;
+    background:#637491;
+    color:#fff;
+    border:1px solid rgb(64,78,104);
+}
+
+#ehm table td a.button.add {
+    background:rgb(104,173,87);
+    color:#fff;
+    border:1px solid rgb(88,154,73);
+    font-size:20px;
+    padding:5px 10px
+}
+
+#ehm table td a.button.add:hover { background:rgb(88,154,73); }
+
+#ehm table td a.button.add {
+    background:rgb(104,173,87);
+    color:#fff;
+    border:1px solid rgb(88,154,73);
+}
+
+#ehm table td a.button.add:hover { background:rgb(88,154,73); }

@@ -1,1 +1,62 @@
 ﻿@model Appva.Mcss.Admin.Models.ListMedicationModel
+
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+
+<div id="ehm" class="e-panel">
+    <h3>Läkemedelslistan</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Namn</th>
+                <th>Styrka</th>
+                <th>Läkemedelsform</th>
+                <th>Dosering</th>
+                <th>Ändamål</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Alvedon</td>
+                <td>500mg</td>
+                <td>Tablett</td>
+                <td><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
+                <td>Värk i arm</td>
+                <td><a class="button add" href="#" title="Lägg till på signeringslista">+</a></td>
+            </tr>
+            <tr>
+                <td>Alvedon</td>
+                <td>500mg</td>
+                <td>Tablett</td>
+                <td><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
+                <td>Värk i arm</td>
+                <td></td>
+            </tr>
+            <tr class="ok">
+                <td><a href="#">Alvedon</a></td>
+                <td>500mg</td>
+                <td>Tablett</td>
+                <td>2 tabletter 12:00</td>
+                <td>Värk i arm</td>
+                <td><a class="button edit" href="#" title="Editera på signeringslista">Ändra</a></td>
+            </tr>
+            <tr>
+                <td><span>Alvedon</span> <span class="dos">DOS</span></td>
+                <td>500mg</td>
+                <td>Tablett</td>
+                <td>2 tabletter 12:00</td>
+                <td>Värk i arm</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Alvedon</td>
+                <td>500mg</td>
+                <td>Tablett</td>
+                <td>2 tabletter 12:00</td>
+                <td>Värk i arm</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

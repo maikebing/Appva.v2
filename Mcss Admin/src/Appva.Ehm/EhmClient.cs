@@ -53,7 +53,7 @@ namespace Appva.Ehm
         /// <inheritdoc />
         public async Task<IList<Ordination>> ListOrdinations(string forPatientUniqueId, User byUser)
         {
-            var request = this.Get(string.Format("{0}{1}", config.baseUri, EhmConfiguration.Endpoints.List), new { personnummer = forPatientUniqueId });
+            var request = this.Get(string.Format("{0}{1}?personnummer={2}", config.baseUri, EhmConfiguration.Endpoints.List, forPatientUniqueId));
             var response = await request.ToResultAsync<IList<Ordination>>();
             
             if (response.Response.StatusCode == HttpStatusCode.Unauthorized)

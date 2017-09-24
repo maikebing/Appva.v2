@@ -271,7 +271,8 @@ namespace Appva.Mcss.Admin.Configuration
             var configuration = new EhmConfiguration(AppvaEhmConfiguration.ServerUrl);
             var modelBinder   = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(EhmClient)));
             var options       = RestOptions.CreateNew(null, modelBinder);
-            builder.Register(x => new EhmClient(options, configuration)).As<IEhmClient>().SingleInstance();
+            //builder.Register(x => new EhmClient(options, configuration)).As<IEhmClient>().SingleInstance();
+            builder.Register(x => new MockedEhmClient()).As<IEhmClient>().SingleInstance();
         }
     }
 }

@@ -55,6 +55,9 @@
     <Compile Include="Exceptions\EhmBadRequestException.cs" />
     <Compile Include="Exceptions\EhmUnauthorizedException.cs" />
     <Compile Include="IEhmClient.cs" />
+    <Compile Include="MockedEhmClient.cs" />
+    <Compile Include="Models\Dosage.cs" />
+    <Compile Include="Models\DosageScheme.cs" />
     <Compile Include="Models\Ordination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\User.cs" />

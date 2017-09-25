@@ -60,5 +60,22 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
+
+        #region Public Static Builders.
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Observation"/> class.
+        /// </summary>
+        /// <param name="patient">The patient which the observation is made for.</param>
+        /// <param name="name">The name of the observation.</param>
+        /// <param name="description">The description or instruction.</param>
+        /// <param name="category">Classification of type of observation.</param>
+        /// <returns>A new <see cref="Observation"/> instance.</returns>
+        public static DosageObservation New(Guid dosageScaleId, string dosageScaleUnit, string dosageScaleValues, Patient patient, string name, string description, Taxon category = null)
+        {
+            return new DosageObservation(dosageScaleId, dosageScaleUnit, dosageScaleValues, patient, name, description, category);
+        }
+
+        #endregion
     }
 }

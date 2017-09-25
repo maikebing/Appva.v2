@@ -13,6 +13,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.VO;
     using System.Globalization;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -48,38 +51,38 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override bool Handle(EditUnitsModel message)
         {
-            var list = new List<DosageScaleModel>();
+            var list = new List<InventoryAmountListModel>();
 
-            foreach (var item in message.Dosages)
-            {
-                if(string.IsNullOrWhiteSpace(item.Name) || 
-                   string.IsNullOrWhiteSpace(item.Unit) ||
-                   string.IsNullOrWhiteSpace(item.Values))
-                {
-                    return false;
-                }
+            //foreach (var item in message.Dosages)
+            //{
+            //    if(string.IsNullOrWhiteSpace(item.Name) || 
+            //       string.IsNullOrWhiteSpace(item.Unit) ||
+            //       string.IsNullOrWhiteSpace(item.Values))
+            //    {
+            //        return false;
+            //    }
 
-                var array = item.Values.Split(',');
+            //    var array = item.Values.Split(',');
 
-                foreach (var value in array)
-                {
-                    double result = 0;
-                    if(double.TryParse(value.Trim(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out result) == false)
-                    {
-                        return false;
-                    }
-                }
+            //    foreach (var value in array)
+            //    {
+            //        double result = 0;
+            //        if(double.TryParse(value.Trim(), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out result) == false)
+            //        {
+            //            return false;
+            //        }
+            //    }
 
-                list.Add(new DosageScaleModel
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Unit = item.Unit,
-                    Values = item.Values
-                });
-            }
+            //    list.Add(new InventoryAmountListModel
+            //    {
+            //        Id = item.Id,
+            //        Name = item.Name,
+            //        Unit = item.Unit,
+            //        Amounts = item.Values
+            //    });
+            //}
 
-            this.service.Upsert(ApplicationSettings.DosageConfigurationValues, DosageConfiguration.CreateNew(list));
+            //this.service.Upsert(ApplicationSettings.InventoryUnitsWithAmounts, InventoryDefaults.CreateNew(list));
 
             return true;
         }

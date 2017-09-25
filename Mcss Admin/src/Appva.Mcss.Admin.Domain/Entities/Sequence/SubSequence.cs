@@ -27,10 +27,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// </summary>
         /// <param name="sequence">The sequence.</param>
         /// <param name="observation">The observation.</param>
-        public SubSequence(Sequence sequence, Observation observation)
+        public SubSequence(Sequence sequence, DosageObservation dosageObservation)
         {
             Requires.NotNull(sequence,    "sequence"   );
-            Requires.NotNull(observation, "observation");
+            Requires.NotNull(dosageObservation, "SequenceObservation");
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The observation.
         /// </summary>
-        public virtual Observation Observation
+        public virtual DosageObservation SequenceObservation
         {
             get;
             internal protected set;

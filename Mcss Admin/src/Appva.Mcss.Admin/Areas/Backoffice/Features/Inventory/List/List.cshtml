@@ -1,10 +1,10 @@
 ﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListInventoriesModel
 @{
-	SetTitle("Backoffice - Förbrukningsjournal");
+	SetTitle("Backoffice - Enheter och Värden");
 }
 @Html.Partial("_BackofficeMenuPartial")
 <div id="subheader" class="cf">
-	<h1>Förbrukningsjournal</h1>
+	<h1>Enheter och Värden</h1>
     @Html.ActionLink("Lägg till enhet", "Add", "Inventory", new { area = "Backoffice" }, new { @class = "lb-link btn" })
 </div>
 <div id="content" class="cf">
@@ -30,7 +30,9 @@
                             </td>
                             <td>@unit.Name</td>
                             <td>@(unit.Unit != null ? Html.Raw(unit.Unit) : Html.Raw("&mdash;"))</td>
-                            <td>@Html.Serialize(unit.Amounts)</td>
+                            <td>
+                                @Html.Serialize(unit.Amounts).ToHtmlString().Replace(",", ", ").Replace("<code>[", "").Replace("]</code>", "")
+                            </td>
                         </tr>
                     }
                 </tbody>

@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -49,17 +50,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override EditUnitsModel Handle(Parameterless<EditUnitsModel> message)
         {
-            var settings = this.service.Find(ApplicationSettings.DosageConfigurationValues);
+            var settings = this.service.Find(ApplicationSettings.InventoryUnitsWithAmounts);
             var dosages = new List<EditUnits>();
 
-            foreach (var item in settings.DosageScaleModelList)
+            foreach (var item in settings)
             {
                 var dosage = new EditUnits()
                 {
                     Id = item.Id,
                     Name = item.Name,
                     Unit = item.Unit,
-                    Values = item.Values
+                    Values = JsonConvert.SerializeObject(item.Amounts)
                 };
 
                 dosages.Add(dosage);
@@ -67,7 +68,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
             return new EditUnitsModel
             {
-                Dosages = dosages
+                //Dosages = dosages
             };
         }
 

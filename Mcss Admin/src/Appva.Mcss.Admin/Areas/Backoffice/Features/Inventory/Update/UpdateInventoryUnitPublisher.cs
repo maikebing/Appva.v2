@@ -60,7 +60,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         {
             var settings = this.settings.Find<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts);
             var setting  = settings.SingleOrDefault(x => x.Id == message.Id);
-            
+
             setting.Name    = message.Name;
             setting.Unit = string.IsNullOrWhiteSpace(message.Unit) ? null : message.Unit;
             setting.Amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", "")));
@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
             foreach (var row in query)
             {
-                row.DosageObservation.DosageScaleValues = setting.Name;
+                row.DosageObservation.Name = setting.Name;
                 row.DosageObservation.DosageScaleUnit = setting.Unit;
                 row.DosageObservation.DosageScaleValues = amountToJson;
                 this.persistence.Update(row);

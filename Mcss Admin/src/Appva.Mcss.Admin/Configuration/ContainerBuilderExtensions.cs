@@ -46,6 +46,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Microsoft.Owin.Security.DataProtection;
     using Owin;
     using RazorEngine.Configuration;
+    using System;
 
     #endregion
 
@@ -230,7 +231,7 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<MultiTenantPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
             builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerRequest();
             builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerRequest()
-                .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
+                    .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
         }
 
         /// <summary>

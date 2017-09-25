@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
     using System.Collections.Generic;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -24,7 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// A collection of dosages.
         /// </summary>
-        public List<EditUnits> Dosages
+        public List<InventoryAmountListModel> Dosages
         {
             get;
             set;

@@ -12,8 +12,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
+    using Appva.Persistence;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -32,6 +35,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// </summary>
         private readonly ISettingsService settings;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>.
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
         #endregion
 
         #region Constructor.
@@ -39,9 +47,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteInventoryUnitHandler"/> class.
         /// </summary>
-        public DeleteInventoryUnitHandler(ISettingsService settings)
+        public DeleteInventoryUnitHandler(ISettingsService settings, IPersistenceContext persistence)
         {
             this.settings = settings;
+            this.persistence = persistence;
         }
 
         #endregion
@@ -58,6 +67,26 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
             this.settings.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, settings);
 
+
+            //// Do we really want to remove the scale setting for each related signlist? Answer is no. Will save this snippet in case.
+            /*
+            var query = this.persistence.QueryOver<Sequence>()
+                .Where(x => x.IsActive == true)
+                .JoinQueryOver(x => x.DosageObservation)
+                .Where(x => x.DosageScaleId == setting.Id)
+                .List();
+
+            var amountToJson = JsonConvert.SerializeObject(setting.Amounts);
+
+            foreach (var row in query)
+            {
+                row.DosageObservation.DosageScaleId = Guid.Empty;
+                row.DosageObservation.Name = string.Empty;
+                row.DosageObservation.DosageScaleUnit = string.Empty;
+                row.DosageObservation.DosageScaleValues = string.Empty;
+                this.persistence.Update(row);
+            }
+            */
             return new Parameterless<ListInventoriesModel>();
         }
 

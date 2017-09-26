@@ -9,7 +9,7 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities.Medication;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using System;
     using System.Collections.Generic;

@@ -16,6 +16,8 @@
                     <th>Läkemedelsform</th>
                     <th>Dosering</th>
                     <th>Ändamål</th>
+                    <th>Insättning</th>
+                    <th>Utsättning</th>
                     <th></th>
                 </tr>
             </thead>
@@ -25,11 +27,11 @@
                     <tr>
                         <td>
                             @Html.ActionLink(Permissions.Medication.Read, med.Article.Name, "Details", "Medication", new { id = Model.Patient.Id, ordinationId = med.OrdinationId }, new { }) 
-                            @if (med.Type == Appva.Mcss.Admin.Domain.Entities.Medication.OrdinationType.Dispensed)
+                            @if (med.Type == Appva.Mcss.Admin.Domain.Entities.OrdinationType.Dispensed)
                             {
                                 <span title="Dos-dispensierad" class="dos">DOS</span>
                             }
-                            @if (med.Type == Appva.Mcss.Admin.Domain.Entities.Medication.OrdinationType.NeedBased)
+                            @if (med.Type == Appva.Mcss.Admin.Domain.Entities.OrdinationType.NeedBased)
                             {
                                 <span title="Vid behov" class="vb">VB</span>
                             }
@@ -38,7 +40,14 @@
                         <td>@med.Article.Form</td>
                         <td><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
                         <td>@med.Purpose</td>
-                        <td>@Html.ActionLink(Permissions.Sequence.Create, "+", "SelectSchedule", "Medication", new { id = Model.Patient.Id, ordinationId = "ord-id" }, new { @class = "button add lb-link", title = "Lägg till på signeringslista" })</td>
+                        <td>@med.OrdinationStartsAt.ToString("yyyy-MM-dd")</td>
+                        <td>@med.OrdinationValidUntil</td>
+                        <td>
+                            @if(med.Type != Appva.Mcss.Admin.Domain.Entities.OrdinationType.Dispensed)
+                            {
+                                @Html.ActionLink(Permissions.Sequence.Create, "+", "SelectSchedule", "Medication", new { id = Model.Patient.Id, ordinationId = med.OrdinationId }, new { @class = "button add lb-link", title = "Lägg till på signeringslista" })
+                            }
+                        </td>
                     </tr>
                 }
                 <tr>

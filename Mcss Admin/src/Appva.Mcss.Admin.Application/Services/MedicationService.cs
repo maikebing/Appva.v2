@@ -13,7 +13,6 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Transformers;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Domain.Entities.Medication;
     using System;
     using System.Collections.Generic;
     using System.Linq;

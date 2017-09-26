@@ -52,6 +52,13 @@ namespace Appva.Mcss.Admin.Application.Services
         IList<Schedule> List(Guid byPatient);
 
         /// <summary>
+        /// Finds schedule by the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Schedule Find(Guid id);
+
+        /// <summary>
         /// Gets all schedulesettings in  the system or for a given patient/account
         /// </summary>
         /// <param name="Account"></param>
@@ -134,6 +141,12 @@ namespace Appva.Mcss.Admin.Application.Services
                     .And(s => s.ScheduleType == ScheduleType.Action);
 
             return query.List();
+        }
+
+        /// <inheritdoc />
+        public Schedule Find(Guid id)
+        {
+            return this.persistence.Get<Schedule>(id);
         }
 
         #endregion

@@ -632,5 +632,48 @@
     <many-to-one name="PreparedSequence" column="PrepareSequence" class="PreparedSequence" />
     <many-to-one name="Schedule" class="Schedule" />
   </class>
+  
+  <!-- Medication -->
+  <class name="Medication">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Version" />
+    <property name="IsActive" column="Active" />
+    <property name="CreatedAt" column="Created" />
+    <property name="UpdatedAt" column="Updated" />
+    <property name="OrdinationId" unique="true" />
+    <property name="Status" />
+    <property name="Type" />
+    <property name="OrdinationStartsAt" />
+    <property name="OrdinationCreatedAt" />
+    <property name="OrdinationValidUntil" />
+    <property name="TreatmentStartsAt" />
+    <property name="TreatmentEndsAt" />
+    <property name="Purpose" />
+    <property name="DosageText1" />
+    <property name="DosageText2" />
+    <component name="Article" class="Article">
+      <property name="Name" />
+      <property name="Form" />
+      <property name="Strength" />
+      <property name ="NplId" />
+      <property name="NplPackId" />
+      <property name="PackageUnit" />
+      <property name="PackageType" />
+      <property name="PackageSize" />
+      <property name="ArticleNumber" />
+      <property name="Atc" />
+      <property name="AtcCode" />
+      <property name="Stakeholder" />
+      <property name="Provided" />
+    </component>
+    <component name="Prescriber" class="Prescriber">
+      <property name="GivenName" column="PrescriberGivenName" />
+      <property name="FamilyName" column="PrescriberFamilyName" />
+      <property name="Code" column="PrescriberCode" />
+      <property name="WorkPlaceCode" column="PrescriberWorkPlaceCode" />
+    </component>
+  </class>
 
 </hibernate-mapping>

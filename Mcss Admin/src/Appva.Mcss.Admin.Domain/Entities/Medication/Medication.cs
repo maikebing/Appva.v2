@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:$emailAddress$">$developer$</a>
 // </author>
-namespace Appva.Mcss.Admin.Domain.Entities.Medication
+namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
@@ -39,7 +39,7 @@ namespace Appva.Mcss.Admin.Domain.Entities.Medication
             set;
         }
 
-        public virtual int Status
+        public virtual int? Status
         {
             get;
             set;
@@ -51,7 +51,7 @@ namespace Appva.Mcss.Admin.Domain.Entities.Medication
             set;
         }
 
-        public virtual DateTime StartsAt
+        public virtual DateTime OrdinationStartsAt
         {
             get;
             set;
@@ -63,13 +63,13 @@ namespace Appva.Mcss.Admin.Domain.Entities.Medication
             set;
         }
 
-        public virtual DateTime? ValidUntil
+        public virtual DateTime? OrdinationValidUntil
         {
             get;
             set;
         }
 
-        public virtual DateTime TreatmentStartsAt
+        public virtual DateTime? TreatmentStartsAt
         {
             get;
             set;
@@ -97,6 +97,14 @@ namespace Appva.Mcss.Admin.Domain.Entities.Medication
         {
             get;
             set;
+        }
+
+        public virtual string DosageText
+        {
+            get
+            {
+                return string.Format("{0}. {1}", this.DosageText1, this.DosageText2); 
+            }
         }
 
         //// TODO: Fix dosageSchemes

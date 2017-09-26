@@ -59,6 +59,7 @@
     <Compile Include="Models\Dosage.cs" />
     <Compile Include="Models\DosageScheme.cs" />
     <Compile Include="Models\Ordination.cs" />
+    <Compile Include="Models\Response\ListOrdinationsResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\User.cs" />
   </ItemGroup>

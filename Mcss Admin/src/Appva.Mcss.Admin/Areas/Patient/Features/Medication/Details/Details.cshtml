@@ -7,11 +7,11 @@
     
     <h2>
         @Model.Medication.Article.Name 
-        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.Medication.OrdinationType.Dispensed)
+        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.OrdinationType.Dispensed)
         {
             <span title="Dos-dispensierad" class="dos">DOS</span>
         }
-        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.Medication.OrdinationType.NeedBased)
+        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.OrdinationType.NeedBased)
         {
             <span title="Vid behov" class="vb">VB</span>
         }
@@ -73,7 +73,7 @@
                 <h4>Allmänt</h4>
                 <div class="param-box">
                     <label for="start">Insättning</label>
-                    <p name="start">2017-08-22</p>
+                    <p name="start">@Model.Medication.OrdinationStartsAt.ToString("yyyy-mm-dd")</p>
                 </div>
                 <div class="param-box">
                     <label for="origin-start">Tidigast kännda insättning</label>
@@ -85,21 +85,21 @@
                 </div>
                 <div class="param-box">
                     <label for="created">Ordinationstidpunkt</label>
-                    <p name="created">2017-08-22</p>
+                    <p name="created">@Model.Medication.OrdinationCreatedAt.ToString("yyyy-mm-dd")</p>
                 </div>
                 <div class="param-box">
                     <label for="valid">Giltig t.o.m</label>
-                    <p name="valid">2017-09-22</p>
+                    <p name="valid">@Model.Medication.OrdinationValidUntil.GetValueOrDefault().ToString("yyyy-mm-dd")</p>
                 </div>
             </div>
             <div class="info cf">
                 <div class="param-box">
                     <label for="text">Text till patienten</label>
-                    <p name="text">2 tabletter dagligen klockan 12:00</p>
+                    <p name="text">@Model.Medication.DosageText</p>
                 </div>
                 <div class="param-box">
                     <label for="text">Ändamål</label>
-                    <p name="text">Värk</p>
+                    <p name="text">@Model.Medication.Purpose</p>
                 </div>
                 <div class="param-box">
                     <label for="dosage">Doseringsschema</label>
@@ -116,15 +116,13 @@
                 <div class="param-box">
                     <label for="ordinator">Ursprungligen insatt av</label>
                     <p name="ordinator">
-                        John Akm <br/>
-                        Överläkare
+                        @Model.Medication.Prescriber.FullName
                     </p>
                 </div>
                 <div class="param-box">
                     <label for="workplace">Arbetsplats</label>
                     <p name="workplace">
-                        Sahlgrenska <br/> 
-                        Göteborg
+                        @Model.Medication.Prescriber.WorkPlaceCode
                     </p>
                 </div>
             </div>

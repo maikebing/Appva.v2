@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:$emailAddress$">$developer$</a>
 // </author>
-namespace Appva.Mcss.Admin.Domain.Entities.Medication
+namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Domain.Entities.Medication
             set;
         }
 
-        public virtual int PackageSize 
+        public virtual double PackageSize 
         { 
             get; 
             set; 

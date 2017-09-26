@@ -35,7 +35,7 @@ namespace Appva.Ehm.Models
         #region Properties.
 
         [JsonProperty("ordinationsstatus")]
-        public int Status
+        public int? Status
         {
             get;
             set;
@@ -84,7 +84,7 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("behandlingsstart")]
-        public DateTime TreatmentStartsAt
+        public DateTime? TreatmentStartsAt
         {
             get;
             set;
@@ -156,7 +156,7 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("senastExpedieradMangd")]
-        public int LastExpiditedAmount
+        public int? LastExpiditedAmount
         {
             get;
             set;
@@ -177,21 +177,21 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("helforpackningForeskrivetAntalUttag")]
-        public int NumbersOfExpiditions
+        public int? NumbersOfExpiditions
         {
             get;
             set;
         }
 
         [JsonProperty("helforpackningForstaUttagFore")]
-        public DateTime FirstExpiditionBefore
+        public DateTime? FirstExpiditionBefore
         {
             get;
             set;
         }
 
         [JsonProperty("helforpackningStartforpackning")]
-        public bool ExpiditionStartPackage
+        public bool? ExpiditionStartPackage
         {
             get;
             set;
@@ -247,7 +247,7 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("forpackningsmangd")]
-        public int ArticlePackageSize
+        public double ArticlePackageSize
         {
             get;
             set;
@@ -373,7 +373,7 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("makuleringOrsakskod")]
-        public int CancellationReasonCode
+        public int? CancellationReasonCode
         {
             get;
             set;

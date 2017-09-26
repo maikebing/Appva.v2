@@ -4,7 +4,7 @@
 // <author>
 //     <a href="mailto:$emailAddress$">$developer$</a>
 // </author>
-namespace Appva.Mcss.Admin.Domain.Entities.Medication
+namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
@@ -43,6 +43,18 @@ namespace Appva.Mcss.Admin.Domain.Entities.Medication
         {
             get;
             set;
+        }
+
+        #endregion
+
+        #region Computed properties.
+
+        public virtual string FullName
+        {
+            get
+            {
+                return string.Format("{0} {1}", this.GivenName.Trim(), this.FamilyName.Trim());
+            }
         }
 
         #endregion

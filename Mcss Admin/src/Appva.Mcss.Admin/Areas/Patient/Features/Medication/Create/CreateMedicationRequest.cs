@@ -41,6 +41,15 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the schedule.
+        /// </summary>
+        public Guid Schedule
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

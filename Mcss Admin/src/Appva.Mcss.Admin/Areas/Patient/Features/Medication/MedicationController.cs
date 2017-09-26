@@ -50,6 +50,11 @@ using Appva.Mcss.Admin.Infrastructure;
         /// </summary>
         private readonly IScheduleService scheduleService;
 
+        /// <summary>
+        /// The <see cref="IDelegationService"/>
+        /// </summary>
+        private readonly IDelegationService delegationService;
+
         #endregion
 
         #region Constructor
@@ -62,12 +67,14 @@ using Appva.Mcss.Admin.Infrastructure;
             IMedicationService medicationSevice, 
             IPatientService patientService, 
             IPatientTransformer patientTransformer,
-            IScheduleService scheduleService)
+            IScheduleService scheduleService,
+            IDelegationService delegationService)
         {
             this.medicationService  = medicationSevice;
             this.patientService     = patientService;
             this.patientTransformer = patientTransformer;
             this.scheduleService    = scheduleService;
+            this.delegationService  = delegationService;
         }
 
         #endregion
@@ -147,11 +154,13 @@ using Appva.Mcss.Admin.Infrastructure;
         {
             try
             {
-                var medication = await this.medicationService.Find(request.OrdinationId, request.Id);
-                var schedules  = this.scheduleService.List(request.Id);
+                var medication  = await this.medicationService.Find(request.OrdinationId, request.Id);
+                var schedule    = this.scheduleService.Find(request.Schedule);
+                var delegations = this.delegationService.List(schedule.ScheduleSettings.DelegationTaxon.Path);
                 return this.View(new CreateMedicationModel
                 {
-                    //Schedules = schedules.Select(x => new SelectListItem { Text = x.ScheduleSettings.Name, Value = x.Id.ToString() }).ToList(),
+                    ScheduleId = request.Schedule,
+                    Delegations = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
                 });
             }
             catch (EhmBadRequestException e)
@@ -180,7 +189,19 @@ using Appva.Mcss.Admin.Infrastructure;
                 OrdinationId = request.OrdinationId,
                 Schedules = schedules.Select(x => new SelectListItem { Text = x.ScheduleSettings.Name, Value = x.Id.ToString() }).ToList(),
             });
-        } 
+        }
+
+        /// <summary>
+        /// Details for a medication
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("select-schedule/{ordinationId}")]
+        [HttpPost]
+        [PermissionsAttribute(Permissions.Sequence.CreateValue)]
+        public ActionResult SelectSchedule(SelectScheduleMedicationModel request)
+        {
+            return this.RedirectToAction("Create", new { Id = request.Id, OrdinationId = request.OrdinationId, Schedule = request.Schedule });
+        }
 
         #endregion
 

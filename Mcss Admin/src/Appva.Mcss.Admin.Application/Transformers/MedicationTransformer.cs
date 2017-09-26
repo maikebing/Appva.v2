@@ -9,10 +9,11 @@ namespace Appva.Mcss.Admin.Application.Transformers
     #region Imports.
 
     using Appva.Ehm.Models;
-using Appva.Mcss.Admin.Domain.Entities.Medication;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+    using Appva.Mcss.Admin.Domain;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
@@ -58,12 +59,12 @@ using System.Linq;
                 OrdinationId        = ehmOrdination.Id,
                 Prescriber          = prescriber,
                 Purpose             = ehmOrdination.TreatmentPurpose,
-                StartsAt            = ehmOrdination.OrdinationStartsAt,
+                OrdinationStartsAt            = ehmOrdination.OrdinationStartsAt,
                 Status              = ehmOrdination.Status,
                 TreatmentEndsAt     = ehmOrdination.TreatmentEndsAt,
                 TreatmentStartsAt   = ehmOrdination.TreatmentStartsAt,
                 Type                = OrdinationTypeExtension.FromString(ehmOrdination.OrdinationType),
-                ValidUntil          = ehmOrdination.OrdinationValidUntil,
+                OrdinationValidUntil          = ehmOrdination.OrdinationValidUntil,
             };
         }
 

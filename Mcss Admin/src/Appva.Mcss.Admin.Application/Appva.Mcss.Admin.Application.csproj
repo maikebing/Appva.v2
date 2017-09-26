@@ -252,6 +252,7 @@
     <Compile Include="Services\TenantService.cs" />
     <Compile Include="Transformers\DelegationTransformer.cs" />
     <Compile Include="Transformers\EventTransformer.cs" />
+    <Compile Include="Transformers\MedicationTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appva.Ehm\Appva.Ehm.csproj">

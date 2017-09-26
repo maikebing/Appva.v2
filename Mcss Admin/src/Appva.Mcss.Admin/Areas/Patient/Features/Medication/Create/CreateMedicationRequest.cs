@@ -1,4 +1,4 @@
-﻿// <copyright file="ListMedicationModel.cs" company="Appva AB">
+﻿// <copyright file="CreateMedicationRequest.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,9 +8,7 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities.Medication;
-    using Appva.Mcss.Web.ViewModels;
+    using Appva.Cqrs;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -21,23 +19,23 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListMedicationModel
+    public sealed class CreateMedicationRequest : IRequest<CreateMedicationModel>
     {
-        #region Properties
+        #region Properties.
 
         /// <summary>
-        /// The patient
+        /// The patient id
         /// </summary>
-        public PatientViewModel Patient
+        public Guid Id
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The medications
+        /// The ordination id
         /// </summary>
-        public IList<Medication> Medications
+        public long OrdinationId
         {
             get;
             set;

@@ -11,7 +11,9 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Ehm;
     using Appva.Ehm.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Transformers;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Domain.Entities.Medication;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -27,6 +29,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="patient"></param>
         /// <returns></returns>
         Task<IList<Medication>> List(Guid patientId);
+
+        /// <summary>
+        /// Returns a medication by its is id and the patient
+        /// </summary>
+        /// <param name="id">The medication-id</param>
+        /// <param name="patientId">The patient for the medication</param>
+        /// <returns></returns>
+        Task<Medication> Find(long id, Guid patientId);
     }
 
     /// <summary>
@@ -79,14 +89,23 @@ namespace Appva.Mcss.Admin.Application.Services
 
             var ordinations = await this.ehmClient.ListOrdinations(patient.PersonalIdentityNumber.ToString(), user);
 
-            return new List<Medication>();
+            return MedicationTransformer.From(ordinations);
+        }
+
+        /// <inheritdoc />
+        public async Task<Medication> Find(long id, Guid patientId)
+        {
+            var patient = this.patientService.Get(patientId);
+            var account = this.identity.PrincipalId;
+            //// TODO: Insert auth for eHM here
+            var user = new User();
+
+            var ordinations = await this.ehmClient.ListOrdinations(patient.PersonalIdentityNumber.ToString(), user);
+            var ordination = ordinations.FirstOrDefault(x => x.Id == id);
+
+            return MedicationTransformer.From(ordination);
         }
 
         #endregion
-    }
-
-    public class Medication
-    {
-
     }
 }

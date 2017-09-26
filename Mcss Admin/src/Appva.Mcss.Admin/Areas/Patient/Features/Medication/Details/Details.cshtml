@@ -1,0 +1,134 @@
+﻿@model Appva.Mcss.Admin.Models.DetailsMedicationModel
+
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+
+<div id="ehm">
+    
+    <h2>
+        @Model.Medication.Article.Name 
+        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.Medication.OrdinationType.Dispensed)
+        {
+            <span title="Dos-dispensierad" class="dos">DOS</span>
+        }
+        @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.Medication.OrdinationType.NeedBased)
+        {
+            <span title="Vid behov" class="vb">VB</span>
+        }
+    </h2>
+    <div class="row cf">
+        <div class="e-panel col-2">
+            <h3>Signeringslista</h3>
+            <div class="no-sequence">
+                <p>Detta läkemedel är ännu inte upplagt på en signeringslista</p>
+                <a class="button add" href="#">+ Lägg till</a>
+            </div>
+        </div>
+        <div class="e-panel col-2">
+            <h3>Läkemedel</h3>
+            <div class="info cf">
+                <div class="param-box">
+                    <label for="articleName">Namn</label>
+                    <p name="articleName">@Model.Medication.Article.Name</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleForm">Läkemedelsform</label>
+                    <p name="articleForm">@Model.Medication.Article.Form</p>
+                </div>
+                <div class="param-box">
+                    <label for="articlePackageSize">Förpackningsstorlek</label>
+                    <p name="articlePackageSize">@Model.Medication.Article.PackageSize @string.Format("{0}(er)",Model.Medication.Article.PackageUnit)</p>
+                </div>
+                <div class="param-box">
+                    <label for="articlePackageType">Förpackningstyp</label>
+                    <p name="articlePackageType">@Model.Medication.Article.PackageType</p>
+                </div>
+            </div>
+            <div class="info cf">
+                <div class="param-box">
+                    <label for="articleNplId">NplId</label>
+                    <p name="articleNplId">@Model.Medication.Article.NplId</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleNplPackId">NplPackId</label>
+                    <p name="articleNplPackId">@Model.Medication.Article.NplPackId</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleNumber">Artikelnummer</label>
+                    <p name="articleNumber">@Model.Medication.Article.ArticleNumber</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleAtc">ATC</label>
+                    <p name="articleAtc">@Model.Medication.Article.Atc</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleAtcCode">ATC-kod</label>
+                    <p name="articleAtcCode">@Model.Medication.Article.AtcCode</p>
+                </div>
+            </div>
+        </div>
+        <div class="e-panel col-2">
+            <h3>Ordination</h3>
+            <div class="info cf">
+                <h4>Allmänt</h4>
+                <div class="param-box">
+                    <label for="start">Insättning</label>
+                    <p name="start">2017-08-22</p>
+                </div>
+                <div class="param-box">
+                    <label for="origin-start">Tidigast kännda insättning</label>
+                    <p name="origin-start">2016-08-12</p>
+                </div>
+                <div class="param-box">
+                    <label for="end">Utsatt</label>
+                    <p name="origin-start">2017-09-12</p>
+                </div>
+                <div class="param-box">
+                    <label for="created">Ordinationstidpunkt</label>
+                    <p name="created">2017-08-22</p>
+                </div>
+                <div class="param-box">
+                    <label for="valid">Giltig t.o.m</label>
+                    <p name="valid">2017-09-22</p>
+                </div>
+            </div>
+            <div class="info cf">
+                <div class="param-box">
+                    <label for="text">Text till patienten</label>
+                    <p name="text">2 tabletter dagligen klockan 12:00</p>
+                </div>
+                <div class="param-box">
+                    <label for="text">Ändamål</label>
+                    <p name="text">Värk</p>
+                </div>
+                <div class="param-box">
+                    <label for="dosage">Doseringsschema</label>
+                    
+                        <div class="dosage">
+                            <p class="time">12:00</p>
+                            <p class="amount">1</p>
+                        </div>
+
+                </div>
+            </div>
+            <div class="info cf">
+                <h4>Ordinatör</h4>
+                <div class="param-box">
+                    <label for="ordinator">Ursprungligen insatt av</label>
+                    <p name="ordinator">
+                        John Akm <br/>
+                        Överläkare
+                    </p>
+                </div>
+                <div class="param-box">
+                    <label for="workplace">Arbetsplats</label>
+                    <p name="workplace">
+                        Sahlgrenska <br/> 
+                        Göteborg
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

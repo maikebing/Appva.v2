@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
     #region Imports.
 
     using System;
+    using System.Linq;
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
@@ -44,6 +45,11 @@ using Appva.Mcss.Admin.Infrastructure;
         /// </summary>
         private readonly IPatientTransformer patientTransformer;
 
+        /// <summary>
+        /// The <see cref="IScheduleService"/>
+        /// </summary>
+        private readonly IScheduleService scheduleService;
+
         #endregion
 
         #region Constructor
@@ -55,11 +61,13 @@ using Appva.Mcss.Admin.Infrastructure;
         public MedicationController(
             IMedicationService medicationSevice, 
             IPatientService patientService, 
-            IPatientTransformer patientTransformer)
+            IPatientTransformer patientTransformer,
+            IScheduleService scheduleService)
         {
             this.medicationService  = medicationSevice;
             this.patientService     = patientService;
             this.patientTransformer = patientTransformer;
+            this.scheduleService    = scheduleService;
         }
 
         #endregion
@@ -84,7 +92,8 @@ using Appva.Mcss.Admin.Infrastructure;
                 var list            = await this.medicationService.List(id);
                 return this.View(new ListMedicationModel 
                 { 
-                    Patient = patientModel
+                    Patient = patientModel,
+                    Medications = list
                 });
             }
             catch (EhmBadRequestException e)
@@ -92,6 +101,86 @@ using Appva.Mcss.Admin.Infrastructure;
                 return this.View("EhmError");
             }
         }
+
+        #endregion
+
+        #region Details
+
+        /// <summary>
+        /// Details for a medication
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("{ordinationId}")]
+        [HttpGet]
+        [PermissionsAttribute(Permissions.Medication.ReadValue)]
+        public async Task<ActionResult> Details(DetailsMedicationRequest request)
+        {
+            try
+            {
+                var patient      = this.patientService.Get(request.Id);
+                var patientModel = this.patientTransformer.ToPatient(patient);
+                var medication   = await this.medicationService.Find(request.OrdinationId, request.Id);
+                return this.View(new DetailsMedicationModel
+                {
+                    Medication  = medication,
+                    Patient     = patientModel
+                });
+            }
+            catch (EhmBadRequestException e)
+            {
+                return this.View("EhmError");
+            }
+        }
+
+        #endregion
+
+        #region Create.
+
+        /// <summary>
+        /// Details for a medication
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("create/{ordinationId}")]
+        [HttpGet]
+        [PermissionsAttribute(Permissions.Sequence.CreateValue)]
+        public async Task<ActionResult> Create(CreateMedicationRequest request)
+        {
+            try
+            {
+                var medication = await this.medicationService.Find(request.OrdinationId, request.Id);
+                var schedules  = this.scheduleService.List(request.Id);
+                return this.View(new CreateMedicationModel
+                {
+                    //Schedules = schedules.Select(x => new SelectListItem { Text = x.ScheduleSettings.Name, Value = x.Id.ToString() }).ToList(),
+                });
+            }
+            catch (EhmBadRequestException e)
+            {
+                return this.View("EhmError");
+            }
+        } 
+
+        #endregion
+
+        #region Select schedule 
+
+        /// <summary>
+        /// Details for a medication
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("select-schedule/{ordinationId}")]
+        [HttpGet]
+        [PermissionsAttribute(Permissions.Sequence.CreateValue)]
+        public ActionResult SelectSchedule(SelectScheduleMedicationRequest request)
+        {
+            var schedules = this.scheduleService.List(request.Id);
+            return this.View(new SelectScheduleMedicationModel
+            {
+                Id = request.Id,
+                OrdinationId = request.OrdinationId,
+                Schedules = schedules.Select(x => new SelectListItem { Text = x.ScheduleSettings.Name, Value = x.Id.ToString() }).ToList(),
+            });
+        } 
 
         #endregion
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="ListMedicationModel.cs" company="Appva AB">
+﻿// <copyright file="DetailsMedicationModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -21,9 +21,9 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListMedicationModel
+    public sealed class DetailsMedicationModel
     {
-        #region Properties
+        #region Properties.
 
         /// <summary>
         /// The patient
@@ -35,9 +35,9 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The medications
+        /// The medication
         /// </summary>
-        public IList<Medication> Medications
+        public Medication Medication
         {
             get;
             set;

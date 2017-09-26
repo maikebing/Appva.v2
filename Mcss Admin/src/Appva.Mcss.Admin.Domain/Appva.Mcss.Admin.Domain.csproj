@@ -111,6 +111,9 @@
     <Compile Include="Entities\KnowledgeTest.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Log.cs" />
+    <Compile Include="Entities\Medication\Article.cs" />
+    <Compile Include="Entities\Medication\Medication.cs" />
+    <Compile Include="Entities\Medication\Prescriber.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\MenuLink.cs" />
     <Compile Include="Entities\Notification.cs" />

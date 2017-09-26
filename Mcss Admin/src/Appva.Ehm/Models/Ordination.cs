@@ -42,7 +42,7 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("ordinationsId")]
-        public string Id
+        public long Id
         {
             get;
             set;
@@ -77,7 +77,7 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("ordinationSistaGiltighetsdag")]
-        public DateTime? OrdinationEndsAt
+        public DateTime? OrdinationValidUntil
         {
             get;
             set;
@@ -354,7 +354,7 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("ordinatorArbetsplatskod")]
-        public string PrescriberWorkPlace
+        public string PrescriberWorkPlaceCode
         {
             get;
             set;

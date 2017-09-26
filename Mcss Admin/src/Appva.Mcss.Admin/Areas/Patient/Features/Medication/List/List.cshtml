@@ -1,62 +1,87 @@
-﻿@model Appva.Mcss.Admin.Models.ListMedicationModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.ListMedicationModel
 
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 
 <div id="ehm" class="e-panel">
-    <h3>Läkemedelslistan</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Namn</th>
-                <th>Styrka</th>
-                <th>Läkemedelsform</th>
-                <th>Dosering</th>
-                <th>Ändamål</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Alvedon</td>
-                <td>500mg</td>
-                <td>Tablett</td>
-                <td><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
-                <td>Värk i arm</td>
-                <td><a class="button add" href="#" title="Lägg till på signeringslista">+</a></td>
-            </tr>
-            <tr>
-                <td>Alvedon</td>
-                <td>500mg</td>
-                <td>Tablett</td>
-                <td><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
-                <td>Värk i arm</td>
-                <td></td>
-            </tr>
-            <tr class="ok">
-                <td><a href="#">Alvedon</a></td>
-                <td>500mg</td>
-                <td>Tablett</td>
-                <td>2 tabletter 12:00</td>
-                <td>Värk i arm</td>
-                <td><a class="button edit" href="#" title="Editera på signeringslista">Ändra</a></td>
-            </tr>
-            <tr>
-                <td><span>Alvedon</span> <span class="dos">DOS</span></td>
-                <td>500mg</td>
-                <td>Tablett</td>
-                <td>2 tabletter 12:00</td>
-                <td>Värk i arm</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Alvedon</td>
-                <td>500mg</td>
-                <td>Tablett</td>
-                <td>2 tabletter 12:00</td>
-                <td>Värk i arm</td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+    <h3 class="no-border">Läkemedelslistan</h3>
+    @if (Model.Medications != null && Model.Medications.Count > 0)
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Namn</th>
+                    <th>Styrka</th>
+                    <th>Läkemedelsform</th>
+                    <th>Dosering</th>
+                    <th>Ändamål</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var med in Model.Medications)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(Permissions.Medication.Read, med.Article.Name, "Details", "Medication", new { id = Model.Patient.Id, ordinationId = med.OrdinationId }, new { }) 
+                            @if (med.Type == Appva.Mcss.Admin.Domain.Entities.Medication.OrdinationType.Dispensed)
+                            {
+                                <span title="Dos-dispensierad" class="dos">DOS</span>
+                            }
+                            @if (med.Type == Appva.Mcss.Admin.Domain.Entities.Medication.OrdinationType.NeedBased)
+                            {
+                                <span title="Vid behov" class="vb">VB</span>
+                            }
+                        </td>
+                        <td>@med.Article.Strength</td>
+                        <td>@med.Article.Form</td>
+                        <td><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
+                        <td>@med.Purpose</td>
+                        <td>@Html.ActionLink(Permissions.Sequence.Create, "+", "SelectSchedule", "Medication", new { id = Model.Patient.Id, ordinationId = "ord-id" }, new { @class = "button add lb-link", title = "Lägg till på signeringslista" })</td>
+                    </tr>
+                }
+                <tr>
+                    <td>Alvedon</td>
+                    <td>500mg</td>
+                    <td>Tablett</td>
+                    <td><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
+                    <td>Värk i arm</td>
+                    <td>@Html.ActionLink(Permissions.Sequence.Create, "+", "SelectSchedule", "Medication", new { id = Model.Patient.Id, ordinationId = "ord-id" }, new { @class = "button add lb-link", title = "Lägg till på signeringslista" })</td>
+                </tr>
+                <tr class="updated">
+                    <td>Alvedon</td>
+                    <td>500mg</td>
+                    <td>Tablett</td>
+                    <td><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
+                    <td>Värk i arm</td>
+                    <td><a class="button edit" href="#" title="Editera på signeringslista">Ändra</a></td>
+                </tr>
+                <tr class="ok">
+                    <td>@Html.ActionLink(Permissions.Medication.Read, "Alvedon", "Details", "Medication", new { id = Model.Patient.Id, ordinationId = "ord-id" }, new { }) <span title="Vid behov" class="vb">VB</span></td>
+                    <td>500mg</td>
+                    <td>Tablett</td>
+                    <td>2 tabletter 12:00</td>
+                    <td>Värk i arm</td>
+                    <td><a class="button edit" href="#" title="Editera på signeringslista">Ändra</a></td>
+                </tr>
+                <tr>
+                    <td><span>Alvedon</span> <span title="Dos-dispensierad" class="dos">DOS</span></td>
+                    <td>500mg</td>
+                    <td>Tablett</td>
+                    <td>2 tabletter 12:00</td>
+                    <td>Värk i arm</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Alvedon<span class="dos">DOS</span></td>
+                    <td>500mg</td>
+                    <td>Tablett</td>
+                    <td>2 tabletter 12:00</td>
+                    <td>Värk i arm</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    }
 </div>

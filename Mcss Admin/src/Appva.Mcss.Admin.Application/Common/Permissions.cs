@@ -696,30 +696,6 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
-        #region Medication
-
-        /// <summary>
-        /// The Medivation permissions.
-        /// </summary>
-        public static class Medication
-        {
-            /// <summary>
-            /// The read value.
-            /// </summary>
-            public const string ReadValue = Schema + "medication/read";
-
-            /// <summary>
-            /// Permission to read/view backoffice.
-            /// </summary>
-            [Sort(100000)]
-            [Name("Read medications list")]
-            [Description("Permission to read/view medications list from eHM")]
-            [Visibility(Visibility.Hidden)]
-            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
-        }
-
-        #endregion
-
         #region Schedule.
 
         /// <summary>
@@ -1460,14 +1436,38 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
-        #endregion
+        #region Medication
 
-        #region Resource
-
-        
-            #region Constants.
+        /// <summary>
+        /// The medication permissions.
+        /// </summary>
+        public static class Medication
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "patient/medication/read";
 
             /// <summary>
+            /// Permission to read/view medications.
+            /// </summary>
+            [Sort(60)]
+            [Name("Read medications")]
+            [Description("Permission to read/view medication list")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+        }
+
+        #endregion
+
+    #endregion
+
+    #region Resource
+
+
+    #region Constants.
+
+    /// <summary>
             /// The permission schema for mobile.
             /// </summary>
             public const string DeviceSchema = "https://schemas.appva.se/permission/device";

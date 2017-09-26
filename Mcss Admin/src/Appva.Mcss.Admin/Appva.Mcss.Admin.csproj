@@ -527,10 +527,14 @@
     <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItemHandler.cs" />
-    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Create\CreateMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Create\CreateMedicationRequest.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationRequest.cs" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
-    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationRequest.cs" />
     <Compile Include="Areas\Patient\Features\Medication\MedicationController.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\SelectSchedule\SelectScheduleMedicationRequest.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\SelectSchedule\SelectScheduleMedicationModel.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\OrderController.cs" />
@@ -745,6 +749,7 @@
     <Compile Include="Commands\SearchTaskCommand.cs" />
     <Compile Include="Commands\TaskUtils.cs" />
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
+    <Compile Include="Configuration\EhmConfiguration.cs" />
     <Compile Include="Configuration\GrandIdConfiguration.cs" />
     <Compile Include="Configuration\MockedTenantWcfClient.cs" />
     <Compile Include="Features\Account\AccountController.cs" />
@@ -847,6 +852,7 @@
   <ItemGroup>
     <Content Include="Assets\css\auth.css" />
     <Content Include="Assets\css\datePicker.css" />
+    <Content Include="Assets\css\ehm.css" />
     <Content Include="Assets\error-pages\400.html" />
     <Content Include="Assets\error-pages\403.html" />
     <Content Include="Assets\error-pages\404.html" />
@@ -962,6 +968,8 @@
     <Content Include="Assets\i\ico-warning-hypersensitive.png" />
     <Content Include="Assets\i\ico-warning-swallow.png" />
     <Content Include="Assets\i\icon-calendar.gif" />
+    <Content Include="Assets\i\ico-edit.png" />
+    <Content Include="Assets\i\ico-edit.svg" />
     <Content Include="Assets\i\ipad-htoggle-off.png" />
     <Content Include="Assets\i\ipad-htoggle-on.png" />
     <Content Include="Assets\i\ipad-late.png" />
@@ -1063,6 +1071,10 @@
       <Project>{2edab8ce-5318-400f-a1a8-7b604732cf5b}</Project>
       <Name>Appva.Admin.Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Appva.Ehm\Appva.Ehm.csproj">
+      <Project>{0e392cd0-2967-4706-975c-881ffe9eafee}</Project>
+      <Name>Appva.Ehm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.Admin.Application\Appva.Mcss.Admin.Application.csproj">
       <Project>{0e34a41f-f641-45d2-91e4-ff4c3e9b7853}</Project>
       <Name>Appva.Mcss.Admin.Application</Name>
@@ -1080,6 +1092,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Dashboard\Features\Shared\" />
+    <Folder Include="Areas\Patient\Features\Medication\Update\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -1411,6 +1424,10 @@
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRole.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\EhmError.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Details\Details.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\SelectSchedule\SelectSchedule.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

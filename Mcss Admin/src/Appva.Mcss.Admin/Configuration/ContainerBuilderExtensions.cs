@@ -47,6 +47,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Http.ModelBinding;
     using System.Reflection;
     using System;
+    using Appva.Ehm;
 
     #endregion
 
@@ -259,6 +260,19 @@ namespace Appva.Mcss.Admin.Configuration
         {
             builder.RegisterAssemblyTypes(typeof(IService).Assembly).Where(x => x.GetInterfaces()
                 .Any(y => y.IsAssignableFrom(typeof(IService)))).AsImplementedInterfaces().InstancePerRequest();
+        }
+
+        /// <summary>
+        /// Registers the the eHM API client.
+        /// </summary>
+        /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
+        public static void RegisterEhmApi(this ContainerBuilder builder)
+        {
+            var configuration = new EhmConfiguration(AppvaEhmConfiguration.ServerUrl);
+            var modelBinder   = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(EhmClient)));
+            var options       = RestOptions.CreateNew(null, modelBinder);
+            //builder.Register(x => new EhmClient(options, configuration)).As<IEhmClient>().SingleInstance();
+            builder.Register(x => new MockedEhmClient()).As<IEhmClient>().SingleInstance();
         }
     }
 }

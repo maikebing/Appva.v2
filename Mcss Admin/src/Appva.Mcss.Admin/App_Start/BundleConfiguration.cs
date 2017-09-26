@@ -40,7 +40,7 @@ namespace Appva.Mcss.Admin
                 "~/Assets/css/ui-lightness/jquery-ui-{version}.custom.css"
             ));
             bundles.Add(new StyleBundle("~/Assets/css/bundle").Include(
-                "~/Assets/css/datePicker.css", "~/Assets/css/main.css"
+                "~/Assets/css/datePicker.css", "~/Assets/css/main.css", "~/Assets/css/ehm.css"
             ));
             //// Authorization and external user management
             bundles.Add(new StyleBundle("~/Assets/css/auth").Include(

@@ -1,0 +1,232 @@
+﻿.e-panel {
+    background: #fff;
+    padding: 10px 0;
+    margin: 20px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    color: rgb(64,78,104);
+}
+
+#ehm h3 {
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px;
+    border-bottom:solid 1px rgb(219, 224, 236);
+}
+
+#ehm h3.no-border {
+    border-bottom:none;
+}
+
+#ehm h2 {
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    padding: 0px 35px;
+    margin-top:30px;
+    color: rgb(64,78,104);
+}
+
+#ehm .row .col-2 {
+    width:calc(50% - 40px);
+    float:left;
+}
+
+
+/* TABLE */
+#ehm table {
+    border: none;
+    font-size: 14px;
+    color: rgb(64,78,104);
+}
+
+#ehm thead {
+    border-top:solid 1px rgb(219, 224, 236);
+    border-bottom:solid 1px rgb(219, 224, 236);
+    background:#fff;
+    font-family: Helvetica,Arial,sans-serif;
+    
+}
+
+#ehm thead th {
+    border: none;
+    background:#fff;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-weight:700;
+}
+
+#ehm tbody {
+    border-top:solid 1px rgb(219, 224, 236);
+    border-bottom:solid 1px rgb(219, 224, 236);
+    background:#fff;
+    font-family: Helvetica,Arial,sans-serif;
+    
+}
+
+#ehm table td {
+    border:none;
+    padding-top:4px;
+    padding-bottom:4px;
+    vertical-align:middle;
+    height:39px;
+}
+
+#ehm table td:first-child, #ehm table th:first-child  { padding-left:15px; }
+#ehm table td:last-child, #ehm table th:last-child  { padding-right:15px; }
+
+#ehm table tbody tr:nth-child(even) { background: rgb(239,241,246); }
+#ehm table tbody tr:nth-child(odd) { background: rgb(250, 251, 252); }
+#ehm table tbody tr:hover { background: rgb(219, 224, 236);}
+
+/* Table-row statuses */
+#ehm table tr.ok { border-left:4px solid rgb(104,173,87); }
+
+#ehm table tbody tr.updated { 
+    border-left:4px solid rgb(243,160,2); 
+    background:rgb(254,244,225);
+}
+#ehm table tbody tr.updated:hover { 
+    background:rgb(254, 235, 191);
+}
+
+
+/* Dosage */
+#ehm div.dosage {
+    background:#fff;
+    color:rgb(128,143,167);
+    font-size:10px;
+    text-align:center;
+    width: 30px;
+    border:1px solid rgb(219, 224, 236);
+}
+
+#ehm div.dosage p {
+    padding:3px;
+}
+
+#ehm div.dosage p.time {
+    padding-bottom:2px;
+    margin-bottom:0;
+    border-bottom:1px solid rgb(219, 224, 236);
+}
+#ehm div.dosage p.amount {
+    padding-top:2px;
+    margin-bottom:0;
+    font-size:10px;
+    font-weight:bold;
+}
+
+/* DOS & VB */
+#ehm span.dos,
+#ehm span.vb {
+    display:inline-block;
+    font-size: 10px;
+    border-radius: 38px;
+    /*padding: 10px 5px;*/
+    font-weight:bold;
+    float: right;
+    text-align:center;
+    height:30px;
+    width:30px;
+    line-height:30px;
+    vertical-align:middle;
+    border:2px solid #637491;
+}
+
+#ehm h2 span.dos,
+#ehm h2 span.vb {
+    font-size: 14px;
+    height: 40px;
+    font-weight:bold;
+    float:none;
+    width:40px;
+    margin-left:5px;
+    line-height:40px;
+}
+
+#ehm span.dos {
+    background: #637491;
+    color: #fff;
+}
+
+#ehm span.vb {
+    color:#637491;
+}
+
+/* Button */
+#ehm a.button {
+    border-radius:40px;
+    text-decoration:none;
+    padding:10px 0;
+    background:#637491;
+    color:#fff;
+    border:1px solid rgb(64,78,104);
+}
+
+#ehm a.button.add {
+    background:rgb(104,173,87);
+    color:#fff;
+    border:1px solid rgb(88,154,73);
+}
+
+#ehm table td a.button.add {
+    font-size:20px;
+    padding:5px 10px
+}
+
+#ehm a.button.add:hover { background:rgb(88,154,73); }
+
+#ehm table td a.button.edit {
+    background:#637491 url(../i/ico-edit.svg) no-repeat 10px center;
+    background-size:20px;
+    padding-left:40px;
+    padding-right:10px;
+    text-transform: uppercase;
+    font-size: 10px;
+    height:34px;
+    font-weight:bold;
+    color:#fff;
+}
+
+#ehm table td a.button.edit:hover { background-color:rgb(64,78,104); }
+
+/* Details */
+
+#ehm .info {
+    margin:15px;
+    border-bottom:solid 1px rgb(219, 224, 236);
+}
+
+#ehm .info .param-box {
+    float:left;
+    margin: 0 10px 10px 0;
+    min-width: 150px;
+}
+
+#ehm .info .param-box label {
+    color:rgb(128,143,167);
+    font-weight:bold;
+    font-size:12px;
+}
+
+#ehm .info .param-box p {
+    color:rgb(64,78,104);
+    font-size:14px;
+    margin-top:5px;
+}
+
+#ehm .e-panel .no-sequence {
+    text-align:center;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:18px;
+    color:rgb(128,143,167);
+    padding:30px 15px;
+}
+
+#ehm .e-panel .no-sequence a.button.add {
+    padding-left:20px;
+    padding-right:20px;
+    margin-top:30px;
+    display:inline-block;
+}

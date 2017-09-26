@@ -235,6 +235,7 @@
     <Compile Include="Services\LdapService.cs" />
     <Compile Include="Services\ILogService.cs" />
     <Compile Include="Services\InventoryService.cs" />
+    <Compile Include="Services\MedicationService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\MenuService.cs" />
@@ -252,8 +253,13 @@
     <Compile Include="Services\TenantService.cs" />
     <Compile Include="Transformers\DelegationTransformer.cs" />
     <Compile Include="Transformers\EventTransformer.cs" />
+    <Compile Include="Transformers\MedicationTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Appva.Ehm\Appva.Ehm.csproj">
+      <Project>{0e392cd0-2967-4706-975c-881ffe9eafee}</Project>
+      <Name>Appva.Ehm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Mcss.Admin.Domain\Appva.Mcss.Admin.Domain.csproj">
       <Project>{26d66f09-5072-4fb2-81c4-29df5249aaa7}</Project>
       <Name>Appva.Mcss.Admin.Domain</Name>

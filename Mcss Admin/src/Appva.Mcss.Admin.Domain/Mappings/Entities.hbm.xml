@@ -554,9 +554,10 @@
     <subclass name="DosageObservation" discriminator-value="DosageObservation">
       <property name="DosageScaleId" />
       <property name="DosageScaleUnit" />
-      <property name="DosageScaleValues" type="StringClob">
-        <column name="DosageScaleValues" sql-type="NVARCHAR(MAX)"/>
+      <property name="DosageScaleValues" type="StringClob" />
+        <!--<column name="DosageScaleValues" sql-type="NVARCHAR(MAX)"/>
       </property>
+      <property name="DosageScaleValues" type="StringClob" />-->
     </subclass>
 
   </class>

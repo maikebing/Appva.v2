@@ -60,6 +60,10 @@ namespace Appva.Ehm
             {
                 throw new EhmUnauthorizedException();
             }
+            if(response.Response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new EhmPatientNotFoundException();
+            }
             if (!response.Response.IsSuccessStatusCode)
             {
                 throw new EhmBadRequestException();

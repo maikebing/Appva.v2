@@ -53,6 +53,7 @@
     <Compile Include="EhmClient.cs" />
     <Compile Include="EhmConfiguration.cs" />
     <Compile Include="Exceptions\EhmBadRequestException.cs" />
+    <Compile Include="Exceptions\EhmPatientNotFoundException.cs" />
     <Compile Include="Exceptions\EhmUnauthorizedException.cs" />
     <Compile Include="IEhmClient.cs" />
     <Compile Include="MockedEhmClient.cs" />

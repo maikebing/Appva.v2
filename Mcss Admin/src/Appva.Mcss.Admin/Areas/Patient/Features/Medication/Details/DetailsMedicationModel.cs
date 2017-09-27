@@ -8,13 +8,14 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Web.ViewModels;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
+    using Appva.Mcss.Admin.Application.Models;
+using Appva.Mcss.Admin.Application.Services;
+using Appva.Mcss.Admin.Domain.Entities;
+using Appva.Mcss.Web.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
     #endregion
 
@@ -38,6 +39,18 @@ namespace Appva.Mcss.Admin.Models
         /// The medication
         /// </summary>
         public Medication Medication
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the sequences.
+        /// </summary>
+        /// <value>
+        /// The sequences.
+        /// </value>
+        public SequenceMedicationCompareModel Sequences
         {
             get;
             set;

@@ -4,21 +4,21 @@
 // <author>
 //     <a href="mailto:$emailAddress$">$developer$</a>
 // </author>
-namespace Appva.Ehm.Models
+namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
-    using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+    using Appva.Common.Domain;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class Dosage
+    public class Dosage : AggregateRoot<Dosage>
     {
         #region Constructor.
 
@@ -31,33 +31,21 @@ using System.Linq;
 
         #endregion
 
-        #region Properties.
+        #region Properties
 
-        /// <summary>
-        /// The day in a period this dosage is guilty
-        /// </summary>
-        [JsonProperty("dagIPeriod")]
-        public int DayInPeriod
+        public virtual int DayInPeriod
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// The amount of the drug which should be given
-        /// </summary>
-        [JsonProperty("intagsmangd")]
-        public double? Amount
+        public virtual double? Amount
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// The time which the dosage should be given
-        /// </summary>
-        [JsonProperty("klockslag")]
-        public int Time
+        public virtual int Time
         {
             get;
             set;

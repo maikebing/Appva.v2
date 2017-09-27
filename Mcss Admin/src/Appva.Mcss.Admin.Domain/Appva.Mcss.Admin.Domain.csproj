@@ -112,6 +112,8 @@
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Log.cs" />
     <Compile Include="Entities\Medication\Article.cs" />
+    <Compile Include="Entities\Medication\Dosage.cs" />
+    <Compile Include="Entities\Medication\DosageScheme.cs" />
     <Compile Include="Entities\Medication\Medication.cs" />
     <Compile Include="Entities\Medication\Prescriber.cs" />
     <Compile Include="Entities\Menu.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="Repositories\AuthenticationRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />
+    <Compile Include="Repositories\MedicationRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\Contracts\IProxyRepository.cs" />
     <Compile Include="Repositories\DelegationRepository.cs" />

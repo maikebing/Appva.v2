@@ -1,59 +1,57 @@
-﻿// <copyright file="CreateMedicationModel.cs" company="Appva AB">
+﻿// <copyright file="SequenceMedicationCompareModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
 //     <a href="mailto:$emailAddress$">$developer$</a>
 // </author>
-namespace Appva.Mcss.Admin.Models
+namespace Appva.Mcss.Admin.Application.Models
 {
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateMedicationModel : CreateOrUpdateSequence
+    public sealed class SequenceMedicationCompareModel
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateMedicationModel"/> class.
+        /// Initializes a new instance of the <see cref="SequenceMedicationCompareModel"/> class.
         /// </summary>
-        public CreateMedicationModel()
-            : base()
+        public SequenceMedicationCompareModel()
         {
         }
 
         #endregion
 
-        #region Properties 
-        
+        #region Properties.
+
         /// <summary>
-        /// Gets or sets the ordination identifier.
+        /// Gets or sets the sequence.
         /// </summary>
         /// <value>
-        /// The ordination identifier.
+        /// The sequence.
         /// </value>
-        public long OrdinationId
+        public Sequence Sequence
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the identifier.
+        /// Gets or sets the history.
         /// </summary>
         /// <value>
-        /// The identifier.
+        /// The history.
         /// </value>
-        public Guid Id
+        public IList<Sequence> History
         {
             get;
             set;

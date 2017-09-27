@@ -6,6 +6,14 @@
 <div id="ehm">
     
     <h2>
+        @if (Model.Medication.DiscontinuedAt.HasValue)
+        {
+            <span class="canceled">Utsatt - </span>
+        }
+        else if (Model.Medication.CanceledAt.HasValue)
+        {
+            <span class="canceled">Mackulerad - </span>
+        }
         @Model.Medication.Article.Name 
         @if (Model.Medication.Type == Appva.Mcss.Admin.Domain.Entities.OrdinationType.Dispensed)
         {
@@ -17,10 +25,13 @@
         }
     </h2>
     <div class="row cf">
+        
         <div class="e-panel col-2">
             <h3>Signeringslista</h3>
+            @if()
             <div class="no-sequence">
                 <p>Detta läkemedel är ännu inte upplagt på en signeringslista</p>
+
                 <a class="button add" href="#">+ Lägg till</a>
             </div>
         </div>
@@ -78,11 +89,7 @@
                 <div class="param-box">
                     <label for="origin-start">Tidigast kännda insättning</label>
                     <p name="origin-start">2016-08-12</p>
-                </div>
-                <div class="param-box">
-                    <label for="end">Utsatt</label>
-                    <p name="origin-start">2017-09-12</p>
-                </div>
+                </div>                
                 <div class="param-box">
                     <label for="created">Ordinationstidpunkt</label>
                     <p name="created">@Model.Medication.OrdinationCreatedAt.ToString("yyyy-mm-dd")</p>
@@ -91,7 +98,45 @@
                     <label for="valid">Giltig t.o.m</label>
                     <p name="valid">@Model.Medication.OrdinationValidUntil.GetValueOrDefault().ToString("yyyy-mm-dd")</p>
                 </div>
+                @if (Model.Medication.DiscontinuedAt.HasValue)
+                {
+                    <div class="param-box">
+                        <label for="end">Utsatt</label>
+                        <p name="origin-start">@Model.Medication.DiscontinuedAt.Value.ToString("yyyy-MM-dd")</p>
+                    </div>
+                }
+                @if (Model.Medication.DiscontinuedComment.IsNotEmpty())
+                {
+                    <div class="param-box">
+                        <label for="end">Utsatt kommentar</label>
+                        <p name="origin-start">@Model.Medication.DiscontinuedComment</p>
+                    </div>
+                }
             </div>
+            @if (Model.Medication.CanceledAt.HasValue)
+            {
+                <div class="info cf">
+                    <div class="param-box">
+                        <label for="text">Mackulerad</label>
+                        <p name="text">@Model.Medication.CanceledAt.Value.ToString("yyyy-MM-dd")</p>
+                    </div>
+                    @if (Model.Medication.CancellationReason.IsNotEmpty())
+                    {
+                        <div class="param-box">
+                            <label for="text">Mackuleringsorsak</label>
+                            <p name="text">@Model.Medication.CancellationReason</p>
+                        </div>
+                    }
+                    @if (Model.Medication.CancellationComment.IsNotEmpty())
+                    {
+                        <div class="param-box">
+                            <label for="text">Mackuleringsorsak</label>
+                            <p name="text">@Model.Medication.CancellationComment</p>
+                        </div>
+                    }
+                    
+                </div>
+            }
             <div class="info cf">
                 <div class="param-box">
                     <label for="text">Text till patienten</label>

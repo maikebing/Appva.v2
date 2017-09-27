@@ -90,6 +90,11 @@
     background:rgb(254, 235, 191);
 }
 
+#ehm table tbody tr.canceled {
+    color:#808080;
+    text-decoration:line-through;
+}
+
 
 /* Dosage */
 #ehm div.dosage {
@@ -99,6 +104,9 @@
     text-align:center;
     width: 30px;
     border:1px solid rgb(219, 224, 236);
+    float:left;
+    margin:2px 10px 2px 0;
+
 }
 
 #ehm div.dosage p {
@@ -114,6 +122,15 @@
     padding-top:2px;
     margin-bottom:0;
     font-size:10px;
+    font-weight:bold;
+}
+
+#ehm span.periodicity {
+    background:rgb(219, 224, 236);
+    font-size: 12px;
+    padding: 8px;
+    float:left;
+    margin:4px 10px 0 0;
     font-weight:bold;
 }
 
@@ -193,6 +210,10 @@
 
 /* Details */
 
+#ehm h2 span.canceled {
+    font-style:italic;
+}
+
 #ehm .info {
     margin:15px;
     border-bottom:solid 1px rgb(219, 224, 236);
@@ -229,4 +250,54 @@
     padding-right:20px;
     margin-top:30px;
     display:inline-block;
+}
+
+/* Errors */
+#ehm .e-panel.error {
+    text-align:center;
+    color:rgb(64,78,104);
+}
+
+#ehm .e-panel.error img {
+    margin-top:100px;
+    width:150px;
+}
+
+#ehm .e-panel.error h2 {
+    font-size:64px;
+}
+
+#ehm .e-panel.error p {
+    font-size:18px;
+    margin-top:30px;
+    padding:0 20px;
+}
+
+#ehm .e-panel.error .contact {
+    margin-top:50px;
+    padding-top:50px;
+    padding-bottom:50px;
+    background:rgb(239,241,246);
+}
+
+#ehm .e-panel.error .contact p {
+    font-size:18px;
+    color: rgb(128,143,167);
+    margin-bottom:15px;
+    margin-top:0px;
+}
+
+#ehm .e-panel.error a.button {
+    display:inline-block;
+    color: rgb(128,143,167);
+    border: 2px solid rgb(128,143,167);
+    font-size:14px;
+    font-weight:bold;
+    background:transparent;
+    padding:10px 15px;
+}
+
+#ehm .e-panel.error a.button:hover {
+    color:rgb(255,255,255);
+    background:rgb(128,143,167);
 }

@@ -104,6 +104,7 @@
                         </div>
                     </div>
                     <div class="submit">
+                        @Html.HiddenFor(x => x.ScheduleId)
                         @Html.AntiForgeryToken()
                         @Html.Submit("Spara")
                         @Html.Cancel("Avbryt")

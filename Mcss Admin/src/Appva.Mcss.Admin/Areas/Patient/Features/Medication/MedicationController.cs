@@ -18,6 +18,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
     using System.Threading.Tasks;
     using Appva.Ehm.Exceptions;
 using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using System.Collections.Generic;
+using Appva.Mcss.Web.ViewModels;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -55,6 +59,29 @@ using Appva.Mcss.Admin.Infrastructure;
         /// </summary>
         private readonly IDelegationService delegationService;
 
+        /// <summary>
+        /// The <see cref="ISequenceService"/>
+        /// </summary>
+        private readonly ISequenceService sequenceService;
+
+        /// <summary>
+        /// The <see cref="IRoleService"/>
+        /// </summary>
+        private readonly IRoleService roleService;
+
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
+        private readonly ITaxonomyService taxonService;
+
+        #endregion
+
+        #region Const.
+
+        private static IList<int> times = new List<int> {
+            6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5
+        };
+
         #endregion
 
         #region Constructor
@@ -68,13 +95,19 @@ using Appva.Mcss.Admin.Infrastructure;
             IPatientService patientService, 
             IPatientTransformer patientTransformer,
             IScheduleService scheduleService,
-            IDelegationService delegationService)
+            IDelegationService delegationService,
+            ISequenceService sequenceService,
+            IRoleService roleService,
+            ITaxonomyService taxonService)
         {
             this.medicationService  = medicationSevice;
             this.patientService     = patientService;
             this.patientTransformer = patientTransformer;
             this.scheduleService    = scheduleService;
             this.delegationService  = delegationService;
+            this.sequenceService    = sequenceService;
+            this.roleService        = roleService;
+            this.taxonService       = taxonService;
         }
 
         #endregion
@@ -92,20 +125,32 @@ using Appva.Mcss.Admin.Infrastructure;
         [PermissionsAttribute(Permissions.Medication.ReadValue)]
         public async Task<ActionResult> List(Guid id)
         {
+            var patient         = this.patientService.Get(id);
+            var patientModel    = this.patientTransformer.ToPatient(patient);
+            
             try
-            {
-                var patient         = this.patientService.Get(id);
-                var patientModel    = this.patientTransformer.ToPatient(patient);
-                var list            = await this.medicationService.List(id);
+            {    
+                var list      = await this.medicationService.List(id);
+                var sequences = this.medicationService.GetSequenceInformationFor(list);
                 return this.View(new ListMedicationModel 
                 { 
-                    Patient = patientModel,
-                    Medications = list
+                    Patient                     = patientModel,
+                    DispensedMedications        = list.Where(x => x.Type == Domain.Entities.OrdinationType.Dispensed).ToList(),
+                    OriginalPackageMedications  = list.Where(x => x.Type != Domain.Entities.OrdinationType.Dispensed).ToList(),
+                    Sequences                   = sequences
                 });
+            }
+            catch (EhmPatientNotFoundException e)
+            {
+                return this.View("EhmErrorPatientNotFound", patientModel);
+            }
+            catch (EhmUnauthorizedException e)
+            {
+                return this.View("EhmUnauthorized", patientModel);
             }
             catch (EhmBadRequestException e)
             {
-                return this.View("EhmError");
+                return this.View("EhmError", patientModel);
             }
         }
 
@@ -127,10 +172,12 @@ using Appva.Mcss.Admin.Infrastructure;
                 var patient      = this.patientService.Get(request.Id);
                 var patientModel = this.patientTransformer.ToPatient(patient);
                 var medication   = await this.medicationService.Find(request.OrdinationId, request.Id);
+                var sequences    = this.medicationService.GetSequenceInformationFor(new List<Medication> { medication });
                 return this.View(new DetailsMedicationModel
                 {
                     Medication  = medication,
-                    Patient     = patientModel
+                    Patient     = patientModel,
+                    Sequences   = sequences.FirstOrDefault().Value
                 });
             }
             catch (EhmBadRequestException e)
@@ -156,18 +203,73 @@ using Appva.Mcss.Admin.Infrastructure;
             {
                 var medication  = await this.medicationService.Find(request.OrdinationId, request.Id);
                 var schedule    = this.scheduleService.Find(request.Schedule);
-                var delegations = this.delegationService.List(schedule.ScheduleSettings.DelegationTaxon.Path);
+                var delegations = schedule.ScheduleSettings.DelegationTaxon != null ? 
+                    this.delegationService.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false) :
+                    null;
                 return this.View(new CreateMedicationModel
                 {
                     ScheduleId = request.Schedule,
-                    Delegations = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
+                    Delegations = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
+                    OnNeedBasis = medication.Type == OrdinationType.NeedBased,
+                    OnNeedBasisStartDate = medication.Type == OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
+                    OnNeedBasisEndDate = medication.Type == OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
+                    StartDate = medication.Type != OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
+                    EndDate = medication.Type != OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
+                    Name = medication.Article.Name,
+                    Interval = (int)medication.DosageScheme.GetPeriodicity < 8 ? (int)medication.DosageScheme.GetPeriodicity : 0,
+                    Times = (int)medication.DosageScheme.GetPeriodicity < 8 ? 
+                        this.GetTimes(times, medication.DosageScheme.Dosages.Select(x => x.Time).ToList()) :
+                        this.GetTimes(times, new List<int>())
                 });
             }
             catch (EhmBadRequestException e)
             {
                 return this.View("EhmError");
             }
-        } 
+        }
+
+        /// <summary>
+        /// Details for a medication
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("create/{ordinationId}")]
+        [HttpPost]
+        [PermissionsAttribute(Permissions.Sequence.CreateValue)]
+        public async Task<ActionResult> Create(CreateMedicationModel request)
+        {
+            try
+            {
+                var medication = await this.medicationService.Find(request.OrdinationId, request.Id);
+                this.medicationService.Save(medication);
+
+                var patient = this.patientService.Get(request.Id);
+                var schedule = this.scheduleService.Find(request.ScheduleId);
+                var start = request.OnNeedBasis ? request.OnNeedBasisStartDate.GetValueOrDefault() : request.StartDate.GetValueOrDefault();
+                var end = request.OnNeedBasis ? request.OnNeedBasisEndDate : request.EndDate;
+                var delegation = this.taxonService.Load(request.Delegation.GetValueOrDefault());
+
+                this.sequenceService.Create(
+                    patient: patient,
+                    startDate: start,
+                    endDate: end,
+                    schedule: schedule,
+                    description: request.Description,
+                    canRaiseAlert: null,
+                    interval: 0,
+                    name: request.Name, 
+                    rangeInMinutesAfter: request.RangeInMinutesAfter, 
+                    rangeInMinutesBefore: request.RangeInMinutesBefore,
+                    
+                    onNeedBasis: request.OnNeedBasis,
+                    medications: new List<Medication>() { medication });
+                var delegations = this.delegationService.List(schedule.ScheduleSettings.DelegationTaxon.Path);
+                return this.RedirectToAction("List", new { Id = patient.Id, OrdinationId = request.OrdinationId });
+            }
+            catch (EhmBadRequestException e)
+            {
+                return this.View("EhmError");
+            }
+        }
 
         #endregion
 
@@ -204,6 +306,19 @@ using Appva.Mcss.Admin.Infrastructure;
         }
 
         #endregion
+
+        #endregion
+
+        #region Private helpers.
+
+        private IList<CheckBoxViewModel> GetTimes(IList<int> times, IList<int> selected)
+        {
+            return times.Select(x => new CheckBoxViewModel()
+            {
+                Id = x,
+                Checked = selected.Contains(x)
+            }).ToList();
+        }
 
         #endregion
     }

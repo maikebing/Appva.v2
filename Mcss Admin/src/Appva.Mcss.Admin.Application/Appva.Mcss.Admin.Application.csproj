@@ -189,6 +189,7 @@
     <Compile Include="Models\ReportDataSegment.cs" />
     <Compile Include="Models\ReportSearch.cs" />
     <Compile Include="Models\ScheduleSettings\ConfirmDeviationMessage.cs" />
+    <Compile Include="Models\SequenceMedicationCompareModel.cs" />
     <Compile Include="Models\SignatureModel.cs" />
     <Compile Include="Models\SynchronizationEmailData.cs" />
     <Compile Include="Models\Taxa.cs" />

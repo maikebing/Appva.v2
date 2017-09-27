@@ -899,6 +899,7 @@
     <Content Include="Assets\i\dayslot-hover.png" />
     <Content Include="Assets\i\dayslot-unsel.png" />
     <Content Include="Assets\i\dot-grey.png" />
+    <Content Include="Assets\i\error.png" />
     <Content Include="Assets\i\icn-change-password.png" />
     <Content Include="Assets\i\icn-dualstaffing.png" />
     <Content Include="Assets\i\icn-logout.png" />
@@ -983,6 +984,7 @@
     <Content Include="Assets\i\logo.png" />
     <Content Include="Assets\i\minichart.jpg" />
     <Content Include="Assets\i\no-connection.png" />
+    <Content Include="Assets\i\not-allowed.png" />
     <Content Include="Assets\i\page_white_excel.png" />
     <Content Include="Assets\i\popover.png" />
     <Content Include="Assets\i\popover2.png" />
@@ -1428,6 +1430,10 @@
     <Content Include="Areas\Patient\Features\Medication\Details\Details.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Create\Create.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\SelectSchedule\SelectSchedule.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\_dosageScheme.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\EhmErrorPatientNotFound.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\EhmUnauthorized.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Partials\_listMedicationsTableRow.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

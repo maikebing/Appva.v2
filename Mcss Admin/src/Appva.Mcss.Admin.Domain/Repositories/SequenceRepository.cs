@@ -21,7 +21,12 @@ using System.Linq;
         IUpdateRepository<Sequence>,
         IRepository
     {
-
+        /// <summary>
+        /// Lists the specified ordinations ids.
+        /// </summary>
+        /// <param name="ordinationsIds">If set, lists by given ordination-ids<param>
+        /// <returns></returns>
+        IList<Sequence> List(IList<long> ordinationsIds = null);
     }
 
     /// <summary>
@@ -57,6 +62,25 @@ using System.Linq;
         {
             entity.UpdatedAt = DateTime.Now;
             this.persistenceContext.Update<Sequence>(entity);
+        }
+
+        #endregion
+
+        #region ISequenceRepository members.
+
+        /// <inheritdoc />
+        public IList<Sequence> List(IList<long> ordinationsIds = null)
+        {   
+            // TODO: Check permissions to schedules 
+            var query = this.persistenceContext.QueryOver<Sequence>();
+
+            if (ordinationsIds != null)
+            {
+                Medication alias = null;
+                query.JoinQueryOver(x => x.Medications, () => alias)
+                    .WhereRestrictionOn(() => alias.OrdinationId).IsIn(ordinationsIds.ToArray());
+            }
+            return query.List();
         }
 
         #endregion

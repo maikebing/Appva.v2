@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
@@ -35,9 +36,30 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The medications
+        /// The dispensed medications
         /// </summary>
-        public IList<Medication> Medications
+        public IList<Medication> DispensedMedications
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The original package medications
+        /// </summary>
+        public IList<Medication> OriginalPackageMedications
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the sequences.
+        /// </summary>
+        /// <value>
+        /// The sequences.
+        /// </value>
+        public Dictionary<long, SequenceMedicationCompareModel> Sequences
         {
             get;
             set;

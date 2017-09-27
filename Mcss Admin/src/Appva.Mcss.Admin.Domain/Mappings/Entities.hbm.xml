@@ -511,6 +511,10 @@
       <property name="OrderedDate" />
       <many-to-one name="OrderedBy"  class="Account" />
     </component>
+    <bag name="Medications" table="SequenceMedications" cascade="save-update">
+      <key column="SequenceId" />
+      <many-to-many column="MedicationId" class="Medication" />
+    </bag>
 
   </class>
   

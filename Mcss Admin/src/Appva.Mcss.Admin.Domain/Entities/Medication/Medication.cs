@@ -107,7 +107,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
             }
         }
 
-        //// TODO: Fix dosageSchemes
+        public virtual DosageScheme DosageScheme
+        {
+            get;
+            set;
+        }
 
 
         public virtual Article Article 
@@ -121,6 +125,142 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
+
+        public virtual IList<Medication> PreviousMedications
+        {
+            get;
+            set;
+        }
+
+        #region Medication runs out
+
+        #region Properties.
+
+        /// <summary>
+        /// Gets or sets the discontinued at.
+        /// Swedish: Utsättningsdatum
+        /// </summary>
+        /// <value>
+        /// The discontinued at.
+        /// </value>
+        public virtual DateTime? DiscontinuedAt
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the type of the discontinued.
+        /// Swedish: Utsättningstyp
+        /// </summary>
+        /// <value>
+        /// The type of the discontinued.
+        /// </value>
+        public virtual string DiscontinuedType
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the discontinued comment.
+        /// Swedish: Uttsättnings kommentar
+        /// </summary>
+        /// <value>
+        /// The discontinued comment.
+        /// </value>
+        public virtual string DiscontinuedComment
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the canceled at.
+        /// Swedish: Makuleringsdatum
+        /// </summary>
+        /// <value>
+        /// The canceled at.
+        /// </value>
+        public virtual DateTime? CanceledAt
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the cancellation reason code.
+        /// Swedish: Makuleringsorsakskod
+        /// </summary>
+        /// <value>
+        /// The cancellation reason code.
+        /// </value>
+        public virtual int? CancellationReasonCode
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the cancellation reason.
+        /// Swedish: Makuleringsorsak
+        /// </summary>
+        /// <value>
+        /// The cancellation reason.
+        /// </value>
+        public virtual string CancellationReason
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the cancellation comment.
+        /// Swedish: Makuleringskommentar
+        /// </summary>
+        /// <value>
+        /// The cancellation comment.
+        /// </value>
+        public virtual string CancellationComment
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
+        #region Computed properties
+
+        public virtual bool IsCanceled
+        {
+            get { return this.CanceledAt.HasValue; }
+        }
+
+        public virtual DateTime? EndsAt
+        {
+            get {
+                var endDates = new List<DateTime>();
+                if (this.CanceledAt.HasValue)
+                {
+                    endDates.Add(this.CanceledAt.Value);
+                }
+                if (this.DiscontinuedAt.HasValue)
+                {
+                    endDates.Add(this.DiscontinuedAt.Value);
+                }
+
+                if (endDates.Count == 0)
+                {
+                    return null;
+                }
+
+                return endDates.FirstOrDefault();
+            }
+        }
+
+        #endregion
+
+        #endregion
 
         #endregion
     }

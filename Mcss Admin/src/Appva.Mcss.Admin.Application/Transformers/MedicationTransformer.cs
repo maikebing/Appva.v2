@@ -50,6 +50,17 @@ namespace Appva.Mcss.Admin.Application.Transformers
                 GivenName     = ehmOrdination.PrescriberGivenName,
                 WorkPlaceCode = ehmOrdination.PrescriberWorkPlaceCode
             };
+            var dosageScheme = ehmOrdination.Dosing != null ? new Appva.Mcss.Admin.Domain.Entities.DosageScheme
+            {
+                Period = ehmOrdination.Dosing.PeriodLength,
+                Dosages = ehmOrdination.Dosing.Dosages.Select(x =>
+                    new Appva.Mcss.Admin.Domain.Entities.Dosage
+                    {
+                        Amount = x.Amount,
+                        DayInPeriod = x.DayInPeriod,
+                        Time = x.Time
+                    }).ToList()
+            } : null;
             return new Medication
             {
                 Article             = article,
@@ -59,12 +70,21 @@ namespace Appva.Mcss.Admin.Application.Transformers
                 OrdinationId        = ehmOrdination.Id,
                 Prescriber          = prescriber,
                 Purpose             = ehmOrdination.TreatmentPurpose,
-                OrdinationStartsAt            = ehmOrdination.OrdinationStartsAt,
+                OrdinationStartsAt      = ehmOrdination.OrdinationStartsAt,
                 Status              = ehmOrdination.Status,
                 TreatmentEndsAt     = ehmOrdination.TreatmentEndsAt,
                 TreatmentStartsAt   = ehmOrdination.TreatmentStartsAt,
                 Type                = OrdinationTypeExtension.FromString(ehmOrdination.OrdinationType),
-                OrdinationValidUntil          = ehmOrdination.OrdinationValidUntil,
+                OrdinationValidUntil    = ehmOrdination.OrdinationValidUntil,
+                CanceledAt              = ehmOrdination.CanceledAt,
+                CancellationComment     = ehmOrdination.CancellationComment,
+                CancellationReason      = ehmOrdination.CancellationReason,
+                CancellationReasonCode  = ehmOrdination.CancellationReasonCode,
+                DiscontinuedAt          = ehmOrdination.DiscontinuedAt,
+                DiscontinuedComment     = ehmOrdination.DiscontinuedComment,
+                DiscontinuedType        = ehmOrdination.DiscontinuedType,
+                DosageScheme            = dosageScheme,
+                PreviousMedications     = ehmOrdination.PreviousOrdinations != null ? ehmOrdination.PreviousOrdinations.Select(x => From(x)).ToList() : new List<Medication>()
             };
         }
 

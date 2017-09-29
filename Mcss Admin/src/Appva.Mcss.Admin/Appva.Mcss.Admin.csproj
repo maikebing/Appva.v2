@@ -834,6 +834,9 @@
   <ItemGroup>
     <Content Include="Assets\css\auth.css" />
     <Content Include="Assets\css\datePicker.css" />
+    <Content Include="Assets\css\new\all.min.css" />
+    <Content Include="Assets\css\new\all.min.old.css" />
+    <Content Include="Assets\css\new\main.prefixed.css" />
     <Content Include="Assets\error-pages\400.html" />
     <Content Include="Assets\error-pages\403.html" />
     <Content Include="Assets\error-pages\404.html" />

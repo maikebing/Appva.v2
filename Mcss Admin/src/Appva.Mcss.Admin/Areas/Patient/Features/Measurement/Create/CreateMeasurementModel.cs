@@ -13,9 +13,11 @@ namespace Appva.Mcss.Admin.Models
         public new Guid Id { get; set; }
 
         [DisplayName("Namn")]
+        [Required]
         public string Name { get; set; }
 
         [DisplayName("Instruktion")]
+        [Required]
         public string Description { get; set; }
 
         [DisplayName("Enhet")]
@@ -32,9 +34,10 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        [Required]
         public string SelectedUnit { get; set; }
 
-        //[Required(AllowEmptyStrings = true)]
+        [Required]
         public string SelectedDelegation { get; set; }
     }
 }

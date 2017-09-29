@@ -1,53 +1,88 @@
 ﻿@using Appva.Mcss.Admin.Application.Common
 @model Appva.Mcss.Admin.Models.ListMeasurementModel
 
-@{
-    Layout = null;
-}
-
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 
-<div class="section section--hspace">
-    <div class="distributor distributor--justified">
-        <div class="distributor__inline-children">
-            <h2>Mätvärden</h2>
-            <div class="form-controls">
-                <a class="button button--ml open-in-dialog" href="@Url.Action("create", "measurement")#add-measuring-period" data-dialog-title="Nytt mätvärde">
-                    <svg class="icon icon--mr" aria-hidden="true">
-                        <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
-                    </svg>
-                    Lägg till
-                </a>
-                Model.Message
+<div id="subheader" class="cf">
+    <h1>Mätvärden</h1>
+    @Html.ActionLink("Lägg till", "create", "measurement")
+</div>
+
+
+
+
+<div id="content" class="has-nav cf">
+    <ul id="nav-sub">
+        @if (Model.MeasurementList.IsNotNull())
+        {
+            <li class="sel">
+                @*@Html.ActionLink("Alla", "ScheduleReport", new { Id = Model.Patient.Id, StartDate = Model.StartDate.ToShortDateString(), EndDate = Model.EndDate.ToShortDateString() })*@
+                @Html.ActionLink("Alla", "view", "measurement")
+            </li>
+            foreach (var item in Model.MeasurementList)
+            {
+                <li>
+                    @*@Html.ActionLink(item.Name, "ScheduleReport", new { id = Model.Patient.Id, scheduleSettingsId = schedule.Id, startDate = Model.StartDate.ToShortDateString(), endDate = Model.EndDate.ToShortDateString() })*@
+                    @Html.ActionLink(item.Name, "view", "measurement", new { id = item.Id })
+                </li>
+            }
+        }
+    </ul>
+
+    <div id="content-primary">
+
+
+        <div id="report" class="cf">
+
+            <div id="chart" class="chart" style="height: 250px; margin-bottom:20px;">
+                EN GRAF SoM VISAR UTVEckLINGEN
             </div>
-        </div>
-        <!-- Admin panelen? -->
-        <div class="form-controls">
-            <a class="button open-in-dialog" href="/assets/tena-identifi/patient-tena-settings.html#tena-settings" data-dialog-title="Inställningar">Inställningar</a>
-        </div>
-    </div>
-    <div>
-        <div class="grid">
-            <div data-size="xs:24 s:10 m:8 l:6 xl:6">
-                <!-- Lista över mätperioder -->
-                <div class="tabs tabs--vertical tabs--dynamic" role="navigation">
-                    <h2 class="visually-hidden">Huvudnavigering</h2>
-                    <ul>
-                        @foreach (var item in Model.MeasurementList)
-                        {
-                            <li class="tabs__item">
-                                <a data-update-section-target="measurement-observation-list" href="@Url.Action("view", "measurement", new { MeasurementId = item.Id })#tena-measurements-table" aria-label="Denna sida: @item.Name">@item.Name</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
+
+            @*@Html.Partial("/Features/Statistics/Data/StatisticsData.cshtml", , Model.Report)*@
+
+
+            <div class="data cf">
+                <dl>
+                    <dt>Förändring</dt>
+                    <dd class="small">Bättre</dd>
+                </dl>
+                <dl>
+                    <dt>Genonsnittlig förändring</dt>
+                    <dd class="small">Sakta</dd>
+                </dl>
+                <dl>
+                    <dt>Vid start</dt>
+                    <dd class="small">Jättedåligt</dd>
+                </dl>
+                <dl>
+                    <dt>Antal mätningar</dt>
+                    <dd class="small">9898</dd>
+                </dl>
             </div>
 
-            <div id="measurement-observation-list" data-size="xs:24 s:14 m:16 l:18 xl:18">
+            <div id="signed-events" class="listing">
+                <h2 class="heading">Insatser under perioden</h2>
+                <table>
+                    <thead>
+                        <tr class="head">
+                            <th scope="col">Datum</th>
+                            <th scope="col">Värde</th>
+                            <th scope="col">Signerad av</th>
+                            <th scope="col"> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                <!-- Mätvärden laddas in här -->
+                        <tr>
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
 
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -50,6 +50,15 @@ namespace Appva.Mcss.Admin
             bundles.Add(new ScriptBundle("~/Assets/js/auth").Include(
                 "~/Assets/js/jquery/jquery-1.6.3.js", "~/Assets/js/zxcvbn.js", "~/Assets/js/mcss.password-strength.js"
             ));
+
+            //// New design
+            //bundles.Add(new StyleBundle("~/Assets/css/new/bundle").Include(
+            //    "~/Assets/css/new/all.min.css", "~/Assets/css/new/main.prefixed.css"
+            //));
+
+            ////Date-Picker
+            //bundles.Add(new ScriptBundle("~/Assets/js/base/elements/forms").Include("~/Assets/js/base/elements/forms/date-picker.js"));
+            //bundles.Add(new StyleBundle("~/Assets/css").Include("~/Assets/css/date-picker.css"));
         }
     }
 }

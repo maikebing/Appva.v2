@@ -1,0 +1,558 @@
+﻿@using Appva.Mcss.Admin.Configuration;
+@using Appva.Core.Environment;
+
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+        var claim = identity.Claims.Where(x => x.Type == System.Security.Claims.ClaimTypes.Version).SingleOrDefault();
+        if (claim == null || !claim.Value.Substring(0, claim.Value.LastIndexOf('.')).Equals(ApplicationEnvironment.Info.Version.Substring(0, ApplicationEnvironment.Info.Version.LastIndexOf('.'))))
+        {
+            //this.Response.Redirect(Url.Action("SignOut", "Authentication", new { area = string.Empty }));
+        }
+    }
+}
+<!DOCTYPE html>
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if IE 9]><html class="ie9 gt-ie8"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="gt-ie8 gt-ie9 not-ie" lang="sv" id="oldstyle-enabler">
+<!--<![endif]-->
+<head>
+    <title>@Title - Appva MCSS</title>
+    @Html.Partial("_Meta")
+    @Styles.Render("~/Assets/css/ui-lightness/bundle", "~/Assets/css/new/bundle")
+    <!-- Move to end -->
+    <script src="/Assets/js/vendor/jquery-2.2.0.min.js"></script>
+    <script src="/Assets/js/vendor/jquery.breakpoint-min.js"></script>
+    <script src="/Assets/js/vendor/jquery-ui-1.12.1.custom.min.js"></script>
+    <script src="/Assets/js/vendor/jquery-validation/jquery.validate.js"></script>
+    <script src="/Assets/js/vendor/jquery-validation/localization/messages_sv.min.js"></script>
+    <!-- -->
+    <!-- Temp -->
+    <script src="/Assets/js/jquery/plugins/date.js"></script>
+    <script src="/Assets/js/jquery/plugins/excanvas.js"></script>
+    <script src="/Assets/js/jquery/plugins/jquery.flot-0.7.0.js"></script>
+    <script src="/Assets/js/main.updated.js"></script>
+    <script src="/Assets/js/mcss.js"></script>
+    <script src="/Assets/js/mcss.customselect.js"></script>
+    <script src="/Assets/js/mcss.chart.js"></script>
+    <script src="/Assets/js/mcss.validation.js"></script>
+    <script src="/Assets/js/mcss.calendar.js"></script>
+    <script src="/Assets/js/mcss.calendar.lb.js"></script>
+    <script src="/Assets/js/mcss.lightbox.js"></script>
+    <script src="/Assets/js/mcss.prepareweeks.js"></script>
+    <script src="/Assets/js/mcss.order.js"></script>
+    <script src="/Assets/js/mcss.domready.js"></script>
+    <!-- -->
+
+    <script type="text/javascript">
+            // Stop any cache on GET html ajax
+            $.ajaxSetup({
+                'cache': false
+            });
+            $.validator.setDefaults({
+                'errorElement': 'p',
+                'errorClass': 'error-msg',
+                'highlight': function (element, errorClass) {
+                    $(element).parent().addClass("has-error");
+                },
+                'unhighlight': function (element) {
+                    $(element).parent().removeClass("has-error");
+                }
+            });
+
+            $.validator.addMethod("date", function (value, element) {
+                var check = false, re = /^\d{4}\-\d{2}\-\d{2}$/;
+                if (re.test(value)) {
+                    var adata = value.split('-');
+                    var yyyy = parseInt(adata[0], 10),
+                        mm = parseInt(adata[1], 10),
+                        dd = parseInt(adata[2], 10);
+                    var xdata = new Date(yyyy, mm - 1, dd);
+                    if ((xdata.getFullYear() == yyyy) && (xdata.getMonth() == mm - 1) && (xdata.getDate() == dd))
+                        check = true;
+                    else
+                        check = false;
+                } else
+                    check = false;
+                return this.optional(element) || check;
+            });
+
+            $.validator.addMethod("time", function (value, element) {
+                return this.optional(element) || (/^(\d{2}\:\d{2})$/.test(value));
+            });
+
+            $.validator.addMethod("socialsecuritynumber", function (value, element) {
+                if (this.optional(element)) {
+                    return true;
+                }
+                var isValid = false;
+                if (/^(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][0-9])|(3[0-1])|([6-8][0-9])|(9[0-1]))-?[0-9pPtTfF][0-9]{3}$/i.test(value) && value.indexOf("-") != -1) {
+                    var yyyy = parseInt(value.substring(0, 4)),
+                        mm = parseInt(value.substring(4, 6),10),
+                        dd = parseInt(value.substring(6, 8), 10);
+                    if (dd > 60)
+                    {
+                        dd -= 60;
+                    }
+                    var date = new Date(yyyy, mm - 1, dd);
+                    if ((date.getFullYear() == yyyy) && (date.getMonth() == mm - 1) && (date.getDate() == dd)) {
+                        if (value.indexOf('-') > -1) {
+                            value = value.replace('-', '');
+                        }
+                        value = value.substring(2);
+                        var fourLastDigits = value.substring(6);
+                        if (!/^[pPtTfF][0-9]{3}$/i.test(fourLastDigits)) {
+                            var nn = "", checksum = 0;
+                            for (var n = 0; n < value.length; n++) {
+                                nn += ((((n + 1) % 2) + 1) * value.substring(n, n + 1));
+                            }
+                            for (var n = 0; n < nn.length; n++) {
+                                checksum += nn.substring(n, n + 1) * 1;
+                            }
+                            isValid = (checksum % 10 == 0);
+                        } else {
+                            isValid = true;
+                        }
+                    }
+                }
+                return isValid;
+            });
+
+            $.validator.addMethod("dategreaterthan", function (value, element, params) {
+                if ((params && params[0] && params[0][0] && this.optional(params[0][0])) || this.optional(element)) {
+                    return true;
+                }
+                var dateParts = value.split('-');
+                var startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                dateParts = params[0].val().split('-');
+                var endDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                return startDate > endDate;
+            });
+
+            $.validator.addMethod("datelessthan", function (value, element, params) {
+                if ((params && params[0] && params[0][0] && this.optional(params[0][0])) || this.optional(element)) {
+                    return true;
+                }
+                var dateParts = value.split('-');
+                var startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                dateParts = params[0].val().split('-');
+                var endDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                return startDate < endDate;
+            });
+
+            $.validator.addMethod("dategreaterthanorequal", function (value, element, params) {
+                if ((params && params[0] && params[0][0] && this.optional(params[0][0])) || this.optional(element)) {
+                    return true;
+                }
+                var dateParts = value.split('-');
+                var startDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                dateParts = params[0].val().split('-');
+                var endDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                return startDate >= endDate;
+            });
+
+            $.validator.addMethod("datelessthanorequal", function (value, element, params) {
+                if ((params && params[0] && params[0][0] && this.optional(params[0][0])) || this.optional(element)) {
+                    return true;
+                }
+                var dateParts = value.split('-');
+                var startDate = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+                dateParts = params[0].val().split('-');
+                var endDate = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+                return startDate <= endDate;
+            });
+            $.validator.addMethod("interval", function (value, element, params) {
+                if (params[2].val() == 0)
+                    return true;
+                var start = params[0].val().split('-');
+                start = new Date(start[0], start[1], start[2]);
+                var end = params[1].val().split('-');
+                end = new Date(end[0], end[1], end[2]);
+
+                var diff = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
+
+                var interval = params[2].val() * params[3].val();
+
+                if (interval < diff) {
+                    return false;
+                }
+                return true;
+            });
+
+    </script>
+
+    <script type="text/javascript">
+            $(function () {
+
+                $('.print').click(function() {
+                    window.print();
+                });
+
+                $(".global-dropdown").change(dropdown);
+                $(".dropdown").change(dropdown);
+
+                $('.lb-link').bind('lightboxopen', function () {
+                    disableDelegation($('.checkbox .nurse'));
+                    $('.cancel').click(function () {
+                        mcss.lightbox.closeAll();
+                        $(".dropdown").unbind("change");
+                    });
+                    $(".dropdown").change(dropdown);
+                    // NEW STUFF SEPT 2012
+                    // Radio toggles
+                    $('.std-form .toggle-group .radio .toggle').each(function () {
+                        var t = $(this);
+                        if (!t.attr('checked')) {
+                            $('.' + t.data('toggletarget')).hide();
+                        } else {
+                            t.parent().addClass('toggled');
+                        }
+                        t.click(function () {
+                            var t = $(this);
+                            t.parent().parent().find('.toggled').removeClass('toggled');
+                            t.parent().addClass('toggled');
+                            $('.' + t.data('togglegroup')).hide();
+                            $('.' + t.data('toggletarget')).show();
+                        });
+                    });
+
+                    //Form-tabs toggle
+                    $('.lb-nav li a').each(function () {
+                        var t = $(this);
+                        if(!t.parent().hasClass("sel")) {
+                            $("." + t.data('formtab')).hide();
+                        }
+                        t.click(function (e) {
+                            e.preventDefault;
+                            var t = $(this);
+                            $('.form-tab').hide();
+                            $('.' + t.data('formtab')).show();
+                            t.parents('.nav').find('.sel').removeClass('sel');
+                            t.parent().addClass('sel');
+                            return false;
+                        });
+                    });
+
+                    // Checkbox toggles
+                    $('.std-form .checkbox .toggle').each(function () {
+                        var t = $(this);
+                        if (!t.attr('checked')) {
+                            $('.' + t.data('toggletarget')).hide();
+                        } else {
+                            t.parent().addClass('toggled');
+                        }
+                        t.click(function () {
+                            var t = $(this);
+                            $('.' + t.data('toggletarget')).slideToggle(100);
+                        });
+                    });
+
+
+                    if ($('#AllDay').is(':checked')) {
+                        $('.hour, #StartTime, #EndTime').hide();
+                    }
+
+                    $('#AllDay').change(function() {
+                        $('.hour, #StartTime, #EndTime').toggle();
+                    });
+
+                    //Textbox toggles
+                    if ($('#Category').val() != "new") {
+                        $('#NewCat').hide();
+                    }
+
+                    $('#Category').change(function() {
+                        if($(this).val() == "new") {
+                            $('#NewCat').show();
+                        }
+                        else {
+                            $('#NewCat').hide();
+                        }
+                    });
+
+                    //Autochange enddate for new activity
+                    var endDateChanged = false;
+
+                    $('.cal-settings.new #StartDate').change(function(){
+                        if(!endDateChanged){
+                            var val = $(this).val();
+                            $('.cal-settings #EndDate').val(val);
+                        }
+                    });
+
+                    $('.cal-settings.new #EndDate').change(function(){
+                        endDateChanged = true;
+                    });
+
+                    // Calendar-stuff
+                    $('#Category').change(function () {
+                        var t = $(this);
+                        if (CategorySettings[t.val()].Absent) {
+                            $('#Absent').val(true);
+                            $('#Absence').show();
+                        }
+                        else {
+                            $('#Absent').val(false);
+                            $('#Absence').hide();
+                        }
+
+                    });
+
+                    $('#Interval').change(function () {
+                        var t = $(this);
+                        if (t.val() == 7) {
+                            $('#intervalFactorText').html("vecka");
+                            $('.factors .date').hide();
+                            $('.factors').show();
+                        }
+                        else if (t.val() == 31) {
+                            $('#intervalFactorText').html("månad");
+                            $('.factors .date').show();
+                            $('.factors').show();
+                        }
+                        else {
+                            $('.factors').hide();
+                        }
+                        SetSummary(t.val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
+
+                    $('#IntervalFactor').change(function () {
+                        SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
+
+                    $('input[name=SpecificDate]:radio').change(function () {
+                        SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
+
+                    $('#StartDate').change(function () {
+                        SetSummary($('#Interval').val(), $('#IntervalFactor').val(), $('#SpecificDate:checked').val());
+                    });
+
+                    $('.calendar-details :checkbox.cal-quittance').click(function () {
+                        if ($(this).is(':checked')) {
+                            mcss.Calendar.quittance($(this));
+                        }
+                        else {
+                            mcss.Calendar.unQuittance($(this));
+                        }
+
+                    });
+
+                    $('#Interval').trigger('change');
+                    $('#Category').trigger('change');
+
+                    // Disable/enable delegation on update/create ordination
+                    $('.checkbox .nurse').change(function () {
+                        var t = $(this);
+                        if (t.is(':checked')) {
+                            $('.delegation').attr('disabled', 'disabled');
+                        } else {
+                            $('.delegation').removeAttr('disabled');
+                        }
+                    });
+
+                    $(".check-length").bind("change keyup",function (e) {
+                        var elem = $(this);
+                        if (elem.val().length > 30) {
+                            if (elem.next(".warning-length").length < 1)
+                            {
+                                elem.after("<div class='warning-length'><span style='font-weight:bold;'>Observera!</span> För långa meningar kan oavsiktligt förkortas i signeringsenhet. Kontrollera att texten är synlig i sin helhet på signeringsenhet, eller använd instruktionsfältet för längre kompletterande text.</div>");
+                            }
+                        }
+                        else {
+                            $('.warning-length').remove();
+                        }
+                    });
+
+                    $(".check-datetime-update, .check-datetime-update #StartDate").bind("change", function (e) {
+                        ShowSequenceReminderWarning(e);
+                    });
+
+                    $(".check-datetime-update.btn").bind("click", function (e) {
+                        ShowSequenceReminderWarning(e);
+                    });
+
+                    $(".check-datetime-create #StartDate").bind("change", function (e) {
+                        elem = $(this);
+                        var now = new Date();
+                        var start = new Date(elem.val());
+
+                        if (now > start) {
+                            ShowSequenceReminderWarning(e);
+                        }
+                        else {
+                            $(".warning-datetime").remove();
+                        }
+
+
+                    });
+
+                    $("a.btn.btn-mdatepick.check-datetime-create.dp-applied").bind("dpClosed", function (e) {
+                        var vals = $("#activity-freq-days").val().split(',');
+                        var now = new Date();
+                        $.each(vals, function (index, elem) {
+                            var date = new Date(elem);
+                            if (now > date) {
+                                ShowSequenceReminderWarning(e);
+                            }
+                        });
+
+                    });
+
+                    $('.activity-edit .freq .btn-mdatepick').each(function () {
+                        if ($(this).prev().val() != '0') $(this).hide();
+                    });
+                    $('.activity-edit .freq-select').each(function () {
+                        var t = $(this);
+                        if (t.val() == '0') {
+                            t.parents('.std-form:first').find('.freq-hide').hide();
+                            t.parents('.std-form:first').find('.freq-show').show();
+                        } else {
+                            t.parents('.std-form:first').find('.freq-hide').show();
+                            t.parents('.std-form:first').find('.freq-show').hide();
+                        }
+                        t.change(function () {
+                            var t = $(this);
+                            if ($(this).val() == '0') {
+                                t.parents('.std-form:first').find('.freq-hide').hide();
+                                t.parents('.std-form:first').find('.freq-show').show();
+                            } else {
+                                t.parents('.std-form:first').find('.freq-hide').show();
+                                t.parents('.std-form:first').find('.freq-show').hide();
+                            }
+                        });
+                    });
+                });
+
+                function ShowSequenceReminderWarning(e) {
+                    var save = $('.std-panel .submit input[type="submit"]')
+                    if (save.prev(".warning-datetime").length < 1) {
+                        save.before("<div class='warning-datetime'><span style='font-weight:bold;'>Observera!</span> Påminnelser genereras inte retroaktivt.</div>");
+                    }
+                }
+
+                function disableDelegation(t) {
+                    if (t.is(':checked')) {
+                         $('.delegation').attr('disabled', 'disabled');
+                     } else {
+                         $('.delegation').removeAttr('disabled');
+                     }
+                }
+
+                function dropdown() {
+                    var self = $(this), url = "@Url.Action("GetByParent", "Taxa", new { Area = string.Empty })";
+                    if (self.parent().hasClass('custom-select-wrap')) {
+                        self.parent().parent().nextAll('.select').unbind("change").unbind("onchange").remove();
+                    } else {
+                        self.parent().nextAll('.select').unbind("change").remove();
+                    }
+                    if (self.val() != null && self.val() != 'undefined' && self.val() != '-1' && self.val() != '') {
+                        $('#Taxon').val(self.val());
+                        $.getJSON(url, { "id": self.val() }, function(data) {
+                            var items = [];
+                            if (data.length > 0) {
+                                items.push('<option value="-1">Välj ...</option>');
+                            }
+                            $.each(data, function (i, obj) {
+                                items.push('<option value="' + obj.key + '">' + obj.value + '</option>');
+                            });
+                            if (items.length > 0) {
+                                var select = $('#'+self.val());
+                                if (select.length) {
+                                    select.find('option').remove().end().append(items.join(''));
+                                } else {
+                                    var selectbox = $('<select />', {
+                                        "class": self.cssClass,
+                                        "name": self.val(),
+                                        html: items.join('')
+                                    }).bind("change", dropdown);
+                                    if(self.parent().hasClass('custom-select-wrap')) {
+                                        $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent().parent());
+                                        mcss.customSelect($('.global-filter .select:last'));
+                                    } else {
+                                        $('<div />', { "class": "select" }).wrapInner(selectbox).insertAfter(self.parent());
+                                    }
+
+                                }
+                            }
+                        });
+                    } else {
+                        var value = null;
+                        self.parent().prevAll('.select').each(function(i, v) {
+                            var val = $(v).find('.dropdown').val();
+                            if (val != null || val != 'undefined' || val != '-1') {
+                                value = val;
+                                return false;
+                            }
+                        });
+                        $('#Taxon').val(value);
+                    }
+                };
+            });
+    </script>
+</head>
+<body>
+    @if (ApplicationEnvironment.Is.Staging)
+    {
+        <div class="environment">
+            <p>ENVIRONMENT @ApplicationEnvironment.Environment | VERSION @ApplicationEnvironment.Info.Version | SERVER @ApplicationEnvironment.OperatingSystem.MachineName</p>
+        </div>
+    }
+    @if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
+    {
+        var expiration = Request.GetOwinContext().Get<DateTimeOffset?>("ExpiresUtc");
+        if (expiration.HasValue && User.Identity.IsAuthenticated)
+        {
+            <script type="text/javascript">
+                    mcss.auth.init(@expiration.Value.LocalDateTime.ToUnixEpochMilliseconds(),
+                        {
+                            loginUrl:                 '/auth/sign-in',
+                            redirectToLogin:           true,
+                            showCountdownAfterMinutes: 5
+                        });
+            </script>
+        }
+    }
+    <div class="global-filter oldstyle">
+        @Html.Action("TaxonFilter", "Taxa", new { Area = string.Empty })
+    </div>
+    <div id="header" class="cf oldstyle">
+        <div id="logo"><img src="@Url.Image("logo.png")" alt="" /></div>
+        @Html.Partial("_LoginPartial")
+        @Html.Partial("_MenuPartial")
+    </div>
+    <div id="main" class="@ViewBag.MainClass">
+        @RenderBody()
+    </div>
+    @Html.Partial("_Footer")
+    <script src="/Assets/js/vendor/svgxuse.min.js"></script>
+    <script src="/Assets/js/utilities/netr.js"></script>
+    <script src="/Assets/js/utilities/netr.string.js"></script>
+    <script src="/Assets/js/utilities/netr.uri.js"></script>
+    <script src="/Assets/js/utilities/jquery.netr-extensions.js"></script>
+    <script src="/Assets/js/utilities/netr.latinise.js"></script>
+    <script src="/Assets/js/utilities/netr.throttle.js"></script>
+    <script src="/Assets/js/utilities/autocomplete.js"></script>
+    <script src="/Assets/js/utilities/input-value-list.js"></script>
+    <script src="/Assets/js/utilities/mouse-click-class-toggler.js"></script>
+    <script src="/Assets/js/utilities/numberspinner.js"></script>
+    <script src="/Assets/js/utilities/collapsable-section.js"></script>
+    <script src="/Assets/js/utilities/scrollable-tables.js"></script>
+    <script src="/Assets/js/utilities/sortable-tables.js"></script>
+    <script src="/Assets/js/utilities/toggle-by-input.js"></script>
+    <script src="/Assets/js/utilities/post-single-input.js"></script>
+    <script src="/Assets/js/utilities/show-message-if-empty.js"></script>
+    <script src="/Assets/js/utilities/update-section.js"></script>
+    <script src="/Assets/js/utilities/validation.js"></script>
+    <script src="/Assets/js/base/elements/forms/select.js"></script>
+    <script src="/Assets/js/components/navigation/skip-link.js"></script>
+    <script src="/Assets/js/components/navigation/tabs.js"></script>
+    <script src="/Assets/js/base/elements/forms/date-picker.js"></script>
+    <script src="/Assets/js/components/dialog/dialog.js"></script>
+    <script src="/Assets/js/vendor/datepicker-sv.js"></script>
+    <script src="/Assets/js/lang/sv.js"></script>
+    <script src="/Assets/js/base/base.js"></script>
+</body>
+</html>

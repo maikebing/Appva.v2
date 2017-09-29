@@ -367,6 +367,55 @@ namespace Appva.Mcss.Admin.Application.Common
 
         #endregion
 
+        #region FileUpload.
+
+        /// <summary>
+        /// The file upload permission.
+        /// </summary>
+        public static class FileUpload
+        {
+            /// <summary>
+            /// The read value.
+            /// </summary>
+            public const string ReadValue = Schema + "fileupload/read";
+
+            /// <summary>
+            /// The create value.
+            /// </summary>
+            public const string CreateValue = Schema + "fileupload/create";
+
+            /// <summary>
+            /// The delete value.
+            /// </summary>
+            public const string DeleteValue = Schema + "fileupload/delete";
+
+            /// <summary>
+            /// Permission to read files.
+            /// </summary>
+            [Sort(0)]
+            [Name("Read files")]
+            [Description("Permission to view/download files")]
+            public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+            /// <summary>
+            /// Permission to create files.
+            /// </summary>
+            [Sort(0)]
+            [Name("Create files")]
+            [Description("Permission to create/upload files")]
+            public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
+
+            /// <summary>
+            /// Permission to delete files.
+            /// </summary>
+            [Sort(0)]
+            [Name("Delete files")]
+            [Description("Permission to delete files")]
+            public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
+        }
+
+        #endregion
+
         #region Practitioner.
 
         /// <summary>

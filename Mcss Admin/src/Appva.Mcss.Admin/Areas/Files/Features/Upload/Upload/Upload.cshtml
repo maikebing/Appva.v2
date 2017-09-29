@@ -1,0 +1,26 @@
+﻿@model UploadFileModel
+@{
+    SetTitle("Ladda upp en fil");
+}
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.BeginForm("Upload", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div>
+            <h3 class="section-title">Ladda upp en fil</h3>
+            @Html.File(x => x.UploadedFile)
+        </div>
+        <div class="text">
+            @Html.LabelFor(x => x.Title)
+            @Html.TextBoxFor(x => x.Title)
+        </div>
+        <div class="text">
+            @Html.LabelFor(x => x.Description)
+            @Html.TextBoxFor(x => x.Description)
+        </div>
+        <div class="submit">
+            @Html.AntiForgeryToken()
+            @Html.Submit("Spara")
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

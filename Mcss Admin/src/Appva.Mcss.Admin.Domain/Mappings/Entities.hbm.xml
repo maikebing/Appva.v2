@@ -633,4 +633,20 @@
     <many-to-one name="Schedule" class="Schedule" />
   </class>
 
+  <!-- DataFile -->
+  <class name="DataFile">
+    <id name="Id">
+      <generator class="guid.comb" />
+    </id>
+    <version name="Version" />
+    <property name="IsActive" />
+    <property name="CreatedAt" />
+    <property name="UpdatedAt" />
+    <property name="Description" />
+    <property name="Title" />
+    <property name="Name" />
+    <property name="ContentType" />
+    <property name="Data" type="BinaryBlob" />
+  </class>
+
 </hibernate-mapping>

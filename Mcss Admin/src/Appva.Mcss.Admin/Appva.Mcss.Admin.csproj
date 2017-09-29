@@ -463,6 +463,13 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Files\Features\Upload\List\ListUploadHandler.cs" />
+    <Compile Include="Areas\Files\Features\Upload\Upload\UploadFileHandler.cs" />
+    <Compile Include="Areas\Files\Features\Upload\Upload\UploadFileModel.cs" />
+    <Compile Include="Areas\Files\Features\Upload\Delete\DeleteFile.cs" />
+    <Compile Include="Areas\Files\Features\Upload\List\ListUploadModel.cs" />
+    <Compile Include="Areas\Files\Features\Upload\UploadController.cs" />
+    <Compile Include="Areas\Files\Features\Upload\Upload\UploadFilePublisher.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogModel.cs" />
@@ -1410,6 +1417,10 @@
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRole.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\rename-inventory.cshtml" />
+    <Content Include="Areas\Files\Features\_ViewStart.cshtml" />
+    <Content Include="Areas\Files\Features\web.config" />
+    <Content Include="Areas\Files\Features\Upload\List\List.cshtml" />
+    <Content Include="Areas\Files\Features\Upload\Upload\Upload.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

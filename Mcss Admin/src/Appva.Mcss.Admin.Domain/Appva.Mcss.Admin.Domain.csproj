@@ -105,6 +105,7 @@
     <Compile Include="Entities\Device.cs" />
     <Compile Include="Entities\EscalationAlert.cs" />
     <Compile Include="Entities\EscalationLevel.cs" />
+    <Compile Include="Entities\DataFile.cs" />
     <Compile Include="Entities\Inventory.cs" />
     <Compile Include="Entities\InventoryOld.cs" />
     <Compile Include="Entities\InventoryTransactionItem.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Models\SearchPatientModel.cs" />
     <Compile Include="Models\SearchProfileModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
+    <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />

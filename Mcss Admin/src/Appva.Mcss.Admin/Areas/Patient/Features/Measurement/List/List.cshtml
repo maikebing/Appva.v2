@@ -1,0 +1,54 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.ListMeasurementModel
+
+@{
+    Layout = null;
+}
+
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+
+<div class="section section--hspace">
+    <div class="distributor distributor--justified">
+        <div class="distributor__inline-children">
+            <h2>Mätvärden</h2>
+            <div class="form-controls">
+                <a class="button button--ml open-in-dialog" href="@Url.Action("create", "measurement")#add-measuring-period" data-dialog-title="Nytt mätvärde">
+                    <svg class="icon icon--mr" aria-hidden="true">
+                        <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
+                    </svg>
+                    Lägg till
+                </a>
+                Model.Message
+            </div>
+        </div>
+        <!-- Admin panelen? -->
+        <div class="form-controls">
+            <a class="button open-in-dialog" href="/assets/tena-identifi/patient-tena-settings.html#tena-settings" data-dialog-title="Inställningar">Inställningar</a>
+        </div>
+    </div>
+    <div>
+        <div class="grid">
+            <div data-size="xs:24 s:10 m:8 l:6 xl:6">
+                <!-- Lista över mätperioder -->
+                <div class="tabs tabs--vertical tabs--dynamic" role="navigation">
+                    <h2 class="visually-hidden">Huvudnavigering</h2>
+                    <ul>
+                        @foreach (var item in Model.MeasurementList)
+                        {
+                            <li class="tabs__item">
+                                <a data-update-section-target="measurement-observation-list" href="@Url.Action("view", "measurement", new { MeasurementId = item.Id })#tena-measurements-table" aria-label="Denna sida: @item.Name">@item.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div id="measurement-observation-list" data-size="xs:24 s:14 m:16 l:18 xl:18">
+
+                <!-- Mätvärden laddas in här -->
+
+            </div>
+        </div>
+    </div>
+</div>

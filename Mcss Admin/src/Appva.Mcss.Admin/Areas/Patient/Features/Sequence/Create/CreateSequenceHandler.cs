@@ -96,7 +96,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts);
                 foreach (var item in scales)
                 {
-                    dosageScaleList.Add(new SelectListItem { Text = item.Name + " (" + item.Unit + ")", Value = item.Id.ToString() });
+                    dosageScaleList.Add(new SelectListItem {
+                        Text = String.Format("{0} ({1})", item.Name, item.Unit),
+                        Value = item.Id.ToString()
+                    });
                 }
             }
             return new CreateSequenceForm

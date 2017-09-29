@@ -1,0 +1,36 @@
+﻿@model Appva.Mcss.Admin.Models.CreateMeasurementModel
+@{
+    SetTitle("Lägg till mätvärde");
+}
+<div class="lb-panel lb-validate-form" data-valclass="SequenceCreate">
+    <div class="std-panel activity-edit std-form">
+        @using (Html.BeginForm("create", "measurement"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <div class="row cf">
+                <div class="form-section col">
+                    <h3 class="section-title">Lägg till mätvärde</h3>
+                    @Html.LabelFor(x => x.Name)
+                    @Html.TextBoxFor(x => x.Name)
+
+                    @Html.LabelFor(x => x.Description)
+                    @Html.TextAreaFor(x => x.Description)
+
+                    <div class="select">
+                        @Html.LabelFor(x => x.SelectUnitList)
+                        @Html.DropDownListFor(m => m.SelectedUnit, new SelectList(Model.SelectUnitList, "Value", "Text", Model.SelectedUnit), "Välj enhet ...", new { @class = "scale" })
+                    </div>
+                    <div class="select">
+                        @Html.LabelFor(x => x.SelectDelegationList)
+                        @Html.DropDownListFor(m => m.SelectedDelegation, new SelectList(Model.SelectDelegationList, "Value", "Text", Model.SelectedDelegation), "deligation...", new { @class = "scale" })
+                    </div>
+                </div>
+            </div>
+            <div class="submit">
+                <button type="submit" class="button button--primary">Spara</button>
+                <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
+            </div>
+        }
+    </div>
+</div>

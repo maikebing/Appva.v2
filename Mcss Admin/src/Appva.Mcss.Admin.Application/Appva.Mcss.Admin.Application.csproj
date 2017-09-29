@@ -228,6 +228,7 @@
     <Compile Include="Services\LdapService.cs" />
     <Compile Include="Services\ILogService.cs" />
     <Compile Include="Services\InventoryService.cs" />
+    <Compile Include="Services\MeasurementService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\MenuService.cs" />

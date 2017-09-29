@@ -167,7 +167,7 @@
     <Compile Include="Repositories\IObservationRepository.cs" />
     <Compile Include="Repositories\ISignatureRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />
-    <Compile Include="Repositories\MeasurementObservationRepository.cs" />
+    <Compile Include="Repositories\MeasurementRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\DelegationRepository.cs" />
     <Compile Include="Repositories\ObservationRepository.cs" />

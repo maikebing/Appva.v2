@@ -533,6 +533,7 @@
     <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationRequest.cs" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\MedicationController.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\Overview\MedicationOverviewModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\SelectSchedule\SelectScheduleMedicationRequest.cs" />
     <Compile Include="Areas\Patient\Features\Medication\SelectSchedule\SelectScheduleMedicationModel.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
@@ -1434,6 +1435,7 @@
     <Content Include="Areas\Patient\Features\Medication\Partials\EhmErrorPatientNotFound.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Partials\EhmUnauthorized.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Partials\_listMedicationsTableRow.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\Overview\Overview.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

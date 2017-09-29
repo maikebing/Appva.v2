@@ -132,6 +132,40 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        #region Expidition
+
+        public virtual DateTime? LastExpiditedAt
+        {
+            get;
+            set;
+        }
+
+        public virtual int? LastExpiditedAmount
+        {
+            get;
+            set;
+        }
+
+        public virtual string LastExpiditedNplPackId
+        {
+            get;
+            set;
+        }
+
+        public virtual int? NumbersOfExpiditions
+        {
+            get;
+            set;
+        }
+
+        public virtual int? RemainingExpiditions
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
         #region Medication runs out
 
         #region Properties.

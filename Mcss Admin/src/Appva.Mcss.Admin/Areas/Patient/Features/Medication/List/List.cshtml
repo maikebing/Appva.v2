@@ -7,7 +7,10 @@
 
     <h2>Läkemedelslistan</h2>
     <div class="e-panel">
-        <h3 class="no-border">Dos-dispensierade läkemedel</h3>
+        <h3 class="no-border">
+            Dos-dispensierade läkemedel
+            @Html.ActionLink(Permissions.Sequence.Create, "+ Skapa insats", "SelectSchedule", "Medication", new { OrdinationId = Int64.MinValue, Id = Model.Patient.Id }, new { @class = "lb-link button add" })
+        </h3>
         @if (Model.DispensedMedications != null && Model.DispensedMedications.Count > 0)
         {
             <table>
@@ -71,7 +74,7 @@
                                     @med.EndsAt.Value.ToString("yyyy-MM-dd")
                                     if (med.IsCanceled)
                                     {
-                                        <span>M</span>
+                                        <span title="@string.Format("Mackulerad, {0}", med.CancellationReason)" class="canceled">M</span>
                                     }
                                 }
 
@@ -106,6 +109,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr class="updated">
+                        <td><a href="#">Alvedon</a></td>
+                        <td>500mg</td>
+                        <td>Tablett</td>
+                        <td><span class="periodicity">Dagligen</span><div class="dosage"><p class="time">12:00</p><p class="amount">1</p></div></td>
+                        <td>Värk i arm</td>
+                        <td>2017-09-27</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                     @foreach (var med in Model.OriginalPackageMedications)
                     {
                         var sequences = Model.Sequences[med.OrdinationId];

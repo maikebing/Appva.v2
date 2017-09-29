@@ -18,6 +18,14 @@
     border-bottom:none;
 }
 
+#ehm .e-panel h3.no-border a.button {
+    padding-left:20px;
+    padding-right:20px;
+    display:inline-block;
+    float:right;
+    margin-top:-10px;
+}
+
 #ehm h2 {
     font-family: Helvetica,Arial,sans-serif;
     font-size: 24px;
@@ -93,6 +101,14 @@
 #ehm table tbody tr.canceled {
     color:#808080;
     text-decoration:line-through;
+}
+
+#ehm table tbody tr.canceled span.canceled {
+    color:rgb(250, 251, 252);
+    background:rgb(201,73,73);
+    padding:8px;
+    border-radius:5px;
+
 }
 
 
@@ -225,6 +241,12 @@
     min-width: 150px;
 }
 
+#ehm .info .param-box.large {
+    float:left;
+    margin: 0 10px 10px 0;
+    min-width: 90%;
+}
+
 #ehm .info .param-box label {
     color:rgb(128,143,167);
     font-weight:bold;
@@ -235,6 +257,15 @@
     color:rgb(64,78,104);
     font-size:14px;
     margin-top:5px;
+}
+
+#ehm .info .param-box.large > div {
+    vertical-align:middle;
+    display:table-cell;
+}
+
+#ehm .info .param-box.large .periodicity {
+    margin-top:20px;
 }
 
 #ehm .e-panel .no-sequence {
@@ -250,6 +281,26 @@
     padding-right:20px;
     margin-top:30px;
     display:inline-block;
+}
+
+#ehm .e-panel h3.sign-list-ok {
+    padding-left: 60px;
+    background:url(../i/check-icon.png) no-repeat 15px center;
+    background-size:35px;
+}
+
+#ehm .e-panel p.sign-list-summary {
+    padding: 15px;
+    color:rgb(64,78,104);
+    font-size:14px;
+}
+
+#ehm .e-panel p.sign-list-summary span.schedule {
+    font-weight:bold;
+}
+
+#ehm .e-panel table.compare-table tr td:first-child{
+    font-weight:bold;
 }
 
 /* Errors */

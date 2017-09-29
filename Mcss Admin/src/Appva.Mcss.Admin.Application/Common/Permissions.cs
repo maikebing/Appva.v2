@@ -1449,6 +1449,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string ReadValue = Schema + "patient/medication/read";
 
             /// <summary>
+            /// The overview value.
+            /// </summary>
+            public const string OverviewValue = Schema + "patient/medication/overview";
+
+            /// <summary>
             /// Permission to read/view medications.
             /// </summary>
             [Sort(60)]
@@ -1456,13 +1461,22 @@ namespace Appva.Mcss.Admin.Application.Common
             [Description("Permission to read/view medication list")]
             [Visibility(Visibility.Hidden)]
             public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+            /// <summary>
+            /// Permission to read/view medications.
+            /// </summary>
+            [Sort(60)]
+            [Name("Read medications overview")]
+            [Description("Permission to read/view medication overviw")]
+            [Visibility(Visibility.Hidden)]
+            public static readonly IPermission Overview = PermissionType.CreateNew(OverviewValue);
         }
 
         #endregion
 
     #endregion
 
-    #region Resource
+        #region Resource
 
 
     #region Constants.

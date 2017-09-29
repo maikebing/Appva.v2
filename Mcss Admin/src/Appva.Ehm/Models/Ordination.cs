@@ -183,6 +183,13 @@ namespace Appva.Ehm.Models
             set;
         }
 
+        [JsonProperty("helforpackningResterandeAntalUttag")]
+        public int? RemainingExpiditions
+        {
+            get;
+            set;
+        }
+
         [JsonProperty("helforpackningForstaUttagFore")]
         public DateTime? FirstExpiditionBefore
         {

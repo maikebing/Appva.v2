@@ -201,26 +201,42 @@ using Appva.Mcss.Web.ViewModels;
         {
             try
             {
-                var medication  = await this.medicationService.Find(request.OrdinationId, request.Id);
                 var schedule    = this.scheduleService.Find(request.Schedule);
                 var delegations = schedule.ScheduleSettings.DelegationTaxon != null ? 
                     this.delegationService.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false) :
                     null;
+                if (request.OrdinationId != Int64.MinValue)
+                {
+                    var medication = await this.medicationService.Find(request.OrdinationId, request.Id);
+                    return this.View(new CreateMedicationModel
+                    {
+                        ScheduleId = request.Schedule,
+                        Delegations = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
+                        OnNeedBasis = medication.Type == OrdinationType.NeedBased,
+                        OnNeedBasisStartDate = medication.Type == OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
+                        OnNeedBasisEndDate = medication.Type == OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
+                        StartDate = medication.Type != OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
+                        EndDate = medication.Type != OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
+                        Name = medication.Article.Name,
+                        Interval = medication.DosageScheme != null && (int)medication.DosageScheme.GetPeriodicity < 8 ? (int)medication.DosageScheme.GetPeriodicity : 0,
+                        Times = medication.DosageScheme != null && (int)medication.DosageScheme.GetPeriodicity < 8 ?
+                            this.GetTimes(times, medication.DosageScheme.Dosages.Select(x => x.Time).ToList()) :
+                            this.GetTimes(times, new List<int>())
+                    });
+                }
+
                 return this.View(new CreateMedicationModel
                 {
                     ScheduleId = request.Schedule,
                     Delegations = delegations.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }),
-                    OnNeedBasis = medication.Type == OrdinationType.NeedBased,
-                    OnNeedBasisStartDate = medication.Type == OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
-                    OnNeedBasisEndDate = medication.Type == OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
-                    StartDate = medication.Type != OrdinationType.NeedBased ? medication.OrdinationStartsAt : (DateTime?)null,
-                    EndDate = medication.Type != OrdinationType.NeedBased ? medication.EndsAt : (DateTime?)null,
-                    Name = medication.Article.Name,
-                    Interval = (int)medication.DosageScheme.GetPeriodicity < 8 ? (int)medication.DosageScheme.GetPeriodicity : 0,
-                    Times = (int)medication.DosageScheme.GetPeriodicity < 8 ? 
-                        this.GetTimes(times, medication.DosageScheme.Dosages.Select(x => x.Time).ToList()) :
-                        this.GetTimes(times, new List<int>())
+                    OnNeedBasis = false,
+                    StartDate = DateTime.Now,
+                    Name = "Dos-påse",
+                    Interval = 1,
+                    Times = this.GetTimes(times, new List<int>(){ 8,12,16,20 })
                 });
+
+               
             }
             catch (EhmBadRequestException e)
             {
@@ -239,14 +255,33 @@ using Appva.Mcss.Web.ViewModels;
         {
             try
             {
-                var medication = await this.medicationService.Find(request.OrdinationId, request.Id);
-                this.medicationService.Save(medication);
+                
 
                 var patient = this.patientService.Get(request.Id);
                 var schedule = this.scheduleService.Find(request.ScheduleId);
                 var start = request.OnNeedBasis ? request.OnNeedBasisStartDate.GetValueOrDefault() : request.StartDate.GetValueOrDefault();
                 var end = request.OnNeedBasis ? request.OnNeedBasisEndDate : request.EndDate;
                 var delegation = this.taxonService.Load(request.Delegation.GetValueOrDefault());
+
+                var medications = new List<Medication>() { };
+                
+
+                if (request.OrdinationId != Int64.MinValue)
+                {
+                    var medication = await this.medicationService.Find(request.OrdinationId, request.Id);
+                    this.medicationService.Save(medication);
+                    medications.Add(medication);
+                }
+                else
+                {
+                    var list = await this.medicationService.List(request.Id);
+                    medications = list.Where(x => x.Type == OrdinationType.Dispensed && x.EndsAt.GetValueOrDefault(DateTime.MaxValue) > DateTime.Now).ToList();
+                    foreach (var m in medications)
+                    {
+                        this.medicationService.Save(m);
+                    }
+
+                }
 
                 this.sequenceService.Create(
                     patient: patient,
@@ -259,9 +294,9 @@ using Appva.Mcss.Web.ViewModels;
                     name: request.Name, 
                     rangeInMinutesAfter: request.RangeInMinutesAfter, 
                     rangeInMinutesBefore: request.RangeInMinutesBefore,
-                    
+                    times: string.Join(",", request.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray()),
                     onNeedBasis: request.OnNeedBasis,
-                    medications: new List<Medication>() { medication });
+                    medications: medications);
                 var delegations = this.delegationService.List(schedule.ScheduleSettings.DelegationTaxon.Path);
                 return this.RedirectToAction("List", new { Id = patient.Id, OrdinationId = request.OrdinationId });
             }
@@ -303,6 +338,27 @@ using Appva.Mcss.Web.ViewModels;
         public ActionResult SelectSchedule(SelectScheduleMedicationModel request)
         {
             return this.RedirectToAction("Create", new { Id = request.Id, OrdinationId = request.OrdinationId, Schedule = request.Schedule });
+        }
+
+        #endregion
+
+        #region Overview
+
+        /// <summary>
+        /// Details for a medication
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
+        [Route("~/patient/medication/overview")]
+        [HttpGet]
+        [PermissionsAttribute(Permissions.Medication.OverviewValue)]
+        public PartialViewResult Overview()
+        {
+            var patient = this.patientService.Get(new Guid("f4f9ce58-28e3-41b3-ac2e-a0f700fac669"));
+            var patientModel = this.patientTransformer.ToPatient(patient);
+            return this.PartialView(new MedicationOverviewModel
+            {
+                Patients = new List<PatientViewModel>() { patientModel }
+            });
         }
 
         #endregion

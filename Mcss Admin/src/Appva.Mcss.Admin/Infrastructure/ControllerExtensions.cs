@@ -55,6 +55,16 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// </summary>
         /// <param name="controller"></param>
         /// <returns></returns>
+        public static DispatchFileContentResult File(this Controller controller)
+        {
+            return new DispatchFileContentResult();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <returns></returns>
         public static PdfFileResult PdfFile(this Controller controller)
         {
             return new PdfFileResult();

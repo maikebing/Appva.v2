@@ -463,6 +463,8 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Files\Features\Upload\Download\DownloadFile.cs" />
+    <Compile Include="Areas\Files\Features\Upload\Download\DownloadFileHandler.cs" />
     <Compile Include="Areas\Files\Features\Upload\List\ListUploadHandler.cs" />
     <Compile Include="Areas\Files\Features\Upload\Upload\UploadFileHandler.cs" />
     <Compile Include="Areas\Files\Features\Upload\Upload\UploadFileModel.cs" />
@@ -783,6 +785,7 @@
     <Compile Include="Infrastructure\Controllers\AbstractMediatorController.cs" />
     <Compile Include="Infrastructure\Controllers\IdentityController.cs" />
     <Compile Include="Infrastructure\DispatchExcelFileContentResult.cs" />
+    <Compile Include="Infrastructure\DispatchFileContentResult.cs" />
     <Compile Include="Infrastructure\DispatchJsonResult.cs" />
     <Compile Include="Infrastructure\MvcExceptionHandler.cs" />
     <Compile Include="Infrastructure\Models\Parameterless.cs" />

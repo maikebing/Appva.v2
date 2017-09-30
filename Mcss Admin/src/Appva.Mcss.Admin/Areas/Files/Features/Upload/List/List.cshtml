@@ -34,7 +34,7 @@
                             <td>@file.Title</td>
                             <td>@file.Description</td>
                             <td>@file.Name</td>
-                            <td><a href="">Ladda ner</a></td>
+                            <td width="200">@Html.ActionLink(string.Format("Ladda ner ({0}) kB", file.Data.Length / 1024), "Download", new { Id = file.Id })</td>
                         </tr>
                     }
                 </tbody>

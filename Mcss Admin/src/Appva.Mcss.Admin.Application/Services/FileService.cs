@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Application.Services
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
@@ -20,6 +21,13 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface IFileService : IService
     {
+        /// <summary>
+        /// Get a file by its <see cref="Guid"/>.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A <see cref="DataFile"/>.</returns>
+        DataFile Get(Guid id);
+
         /// <summary>
         /// Gets a collection of uploaded files.
         /// </summary>
@@ -60,6 +68,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<DataFile> GetUploadedFiles()
         {
             return this.repository.GetUploadedFiles();
+        }
+
+        /// <inheritdoc />
+        public DataFile Get(Guid id)
+        {
+            return this.repository.Get(id);
         }
 
         #endregion

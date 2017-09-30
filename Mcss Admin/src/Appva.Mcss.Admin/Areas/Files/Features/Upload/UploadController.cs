@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
 
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Infrastructure.Attributes;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
@@ -27,8 +28,12 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
     {
         #region Routes.
 
-        #region List Files.
+        #region List.
 
+        /// <summary>
+        /// Displays a list of uploaded files.
+        /// </summary>
+        /// <returns><see cref="ActionResult"/>.</returns>
         [Route("list")]
         [HttpGet, Dispatch(typeof(Parameterless<ListUploadModel>))]
         [PermissionsAttribute(Permissions.FileUpload.ReadValue)]
@@ -39,8 +44,29 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
 
         #endregion
 
-        #region Upload Files.
+        #region Download.
 
+        /// <summary>
+        /// Gets the download link for a specific file.
+        /// </summary>
+        /// <param name="request">The <see cref="DownloadFile"/>.</param>
+        /// <returns><see cref="DispatchFileContentResult"/>.</returns>
+        [Route("{id:guid}/download")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.FileUpload.ReadValue)]
+        public DispatchFileContentResult Download(DownloadFile request)
+        {
+            return this.File();
+        }
+
+        #endregion
+
+        #region Upload.
+
+        /// <summary>
+        /// Uploads a file.
+        /// </summary>
+        /// <returns><see cref="ActionResult"/></returns>
         [Route("upload")]
         [HttpGet, Hydrate, Dispatch(typeof(Parameterless<UploadFileModel>))]
         [PermissionsAttribute(Permissions.FileUpload.CreateValue)]
@@ -49,6 +75,11 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
             return this.View();
         }
 
+        /// <summary>
+        /// Handles the upload file request.
+        /// </summary>
+        /// <param name="request">The <see cref="UploadFileModel"/>.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
         [Route("upload")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Upload")]
         [AlertSuccess("En ny fil har sparats!")]
@@ -60,8 +91,13 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
 
         #endregion
 
-        #region Delete Files.
+        #region Delete.
 
+        /// <summary>
+        /// Deletes a file.
+        /// </summary>
+        /// <param name="request">The <see cref="DeleteFile"/> model.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
         [Route("delete/{id:guid}")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Upload")]
         [AlertSuccess("Filen har tagits bort!")]

@@ -1,4 +1,4 @@
-﻿// <copyright file="ListUploadModel.cs" company="Appva AB">
+﻿// <copyright file="DownloadFile.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,27 +9,24 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System.Collections.Generic;
-    using Appva.Mcss.Admin.Domain.Entities;
+    using System;
+    using System.Web.Mvc;
+    using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListUploadModel
+    public sealed class DownloadFile : IRequest<FileContentResult>
     {
-        #region Properties.
-
         /// <summary>
-        /// A collection of <see cref="DataFile"/>.
+        /// The file id.
         /// </summary>
-        public IList<DataFile> Files
+        public Guid Id
         {
             get;
             set;
         }
-
-        #endregion
     }
 }

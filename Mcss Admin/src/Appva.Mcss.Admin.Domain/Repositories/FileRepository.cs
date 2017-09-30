@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
@@ -20,6 +21,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public interface IFileRepository : IRepository
     {
+        /// <summary>
+        /// Get a file by its <see cref="Guid"/>.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A <see cref="DataFile"/>.</returns>
+        DataFile Get(Guid id);
+
         /// <summary>
         /// Gets a collection of uploaded files.
         /// </summary>
@@ -62,6 +70,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             return this.persistence.QueryOver<DataFile>()
                 .Where(x => x.IsActive == true)
                     .List();
+        }
+
+        /// <inheritdoc />
+        public DataFile Get(Guid id)
+        {
+            return this.persistence.QueryOver<DataFile>()
+                .Where(x => x.Id == id)
+                    .SingleOrDefault();
         }
 
         #endregion

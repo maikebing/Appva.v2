@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System.Collections.Generic;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using NHibernate.Criterion;
 
     #endregion
 
@@ -31,8 +32,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <summary>
         /// Gets a collection of uploaded files.
         /// </summary>
-        /// <returns></returns>
-        IList<DataFile> GetUploadedFiles();
+        /// <param name="isFilteredByImages">If true, only images will be fetched.</param>
+        /// <returns>A collection of <see cref="DataFile"/>.</returns>
+        IList<DataFile> GetUploadedFiles(bool? isFilteredByImages = null);
     }
 
     /// <summary>
@@ -65,11 +67,21 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IFileRepository members.
 
         /// <inheritdoc />
-        public IList<DataFile> GetUploadedFiles()
+        public IList<DataFile> GetUploadedFiles(bool? isFilteredByImages = null)
         {
-            return this.persistence.QueryOver<DataFile>()
-                .Where(x => x.IsActive == true)
-                    .List();
+            var query = this.persistence.QueryOver<DataFile>()
+                .Where(x => x.IsActive == true);
+
+            if(isFilteredByImages.HasValue && isFilteredByImages.Value)
+            {
+                query = query.WhereRestrictionOn(x => x.ContentType).IsLike("image", MatchMode.Anywhere);
+            }
+            else if(isFilteredByImages.HasValue && isFilteredByImages.Value == false)
+            {
+                query = query.WhereRestrictionOn(x => x.ContentType).Not.IsInsensitiveLike("image", MatchMode.Anywhere);
+            }
+
+            return query.List();
         }
 
         /// <inheritdoc />

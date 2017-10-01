@@ -31,8 +31,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Gets a collection of uploaded files.
         /// </summary>
+        /// <param name="isFilteredByImages">If true, only images will be fetched.</param>
         /// <returns>A <see cref="IList{DataFile}"/> collection.</returns>
-        IList<DataFile> GetUploadedFiles();
+        IList<DataFile> GetUploadedFiles(bool? isFilteredByImages = null);
     }
 
     /// <summary>
@@ -65,9 +66,9 @@ namespace Appva.Mcss.Admin.Application.Services
         #region IFileService members.
 
         /// <inheritdoc />
-        public IList<DataFile> GetUploadedFiles()
+        public IList<DataFile> GetUploadedFiles(bool? isFilteredByImages = null)
         {
-            return this.repository.GetUploadedFiles();
+            return this.repository.GetUploadedFiles(isFilteredByImages);
         }
 
         /// <inheritdoc />

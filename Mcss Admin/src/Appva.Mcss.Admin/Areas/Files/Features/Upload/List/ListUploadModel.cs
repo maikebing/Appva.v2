@@ -10,21 +10,30 @@ namespace Appva.Mcss.Admin.Models
     #region Imports.
 
     using System.Collections.Generic;
-    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListUploadModel
+    public sealed class ListUploadModel : IRequest<ListUploadModel>
     {
         #region Properties.
 
         /// <summary>
-        /// A collection of <see cref="DataFile"/>.
+        /// A collection of files.
         /// </summary>
-        public IList<DataFile> Files
+        public IList<ListUpload> Files
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The list will output images only if true, or every other type if false.
+        /// </summary>
+        public bool? IsFilteredByImages
         {
             get;
             set;

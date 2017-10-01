@@ -1,4 +1,5 @@
-﻿// <copyright file="DownloadFileHandler.cs" company="Appva AB">
+﻿/*
+// <copyright file="ImagePreviewHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -19,7 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class DownloadFileHandler : RequestHandler<DownloadFile, FileContentResult>
+    internal sealed class ImagePreviewHandler : RequestHandler<ImagePreview, FileContentResult>
     {
         #region Fields.
 
@@ -33,9 +34,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DownloadFileHandler"/> class.
+        /// Initializes a new instance of the <see cref="ImagePreviewHandler"/> class.
         /// </summary>
-        public DownloadFileHandler(IFileService service)
+        public ImagePreviewHandler(IFileService service)
         {
             this.service = service;
         }
@@ -45,21 +46,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override FileContentResult Handle(DownloadFile message)
+        public override FileContentResult Handle(ImagePreview message)
         {
             var file = this.service.Get(message.Id);
 
-            if(file == null)
+            if (file == null)
             {
                 return null;
             }
 
-            return new FileContentResult(file.Data, file.ContentType)
-            {
-                FileDownloadName = file.Name
-            };
+            return new FileContentResult(file.Data, file.ContentType);
         }
 
         #endregion
     }
 }
+*/

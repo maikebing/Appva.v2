@@ -7,7 +7,10 @@
     {
         <div>
             <h3 class="section-title">Ladda upp en fil</h3>
-            @Html.File(x => x.UploadedFile)
+            <div class="file-upload-box">
+                @Html.File(x => x.UploadedFile)
+                <p class="file-message">Maximal filstorlek: @Model.MaxFileSize MB</p>
+            </div>
         </div>
         <div class="text">
             @Html.LabelFor(x => x.Title)
@@ -17,7 +20,7 @@
             @Html.LabelFor(x => x.Description)
             @Html.TextBoxFor(x => x.Description)
         </div>
-        <div class="submit">
+        <div class="submit" style="padding-top:8px">
             @Html.AntiForgeryToken()
             @Html.Submit("Spara")
             @Html.Cancel("Avbryt")

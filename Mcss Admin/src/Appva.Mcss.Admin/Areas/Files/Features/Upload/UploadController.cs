@@ -33,11 +33,12 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// <summary>
         /// Displays a list of uploaded files.
         /// </summary>
+        /// <param name="request">The <see cref="ListUploadModel"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("list")]
-        [HttpGet, Dispatch(typeof(Parameterless<ListUploadModel>))]
+        [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ReadValue)]
-        public ActionResult List()
+        public ActionResult List(ListUploadModel request)
         {
             return this.View();
         }
@@ -50,14 +51,32 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// Gets the download link for a specific file.
         /// </summary>
         /// <param name="request">The <see cref="DownloadFile"/>.</param>
-        /// <returns><see cref="DispatchFileContentResult"/>.</returns>
-        [Route("{id:guid}/download")]
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [Route("download")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ReadValue)]
-        public DispatchFileContentResult Download(DownloadFile request)
+        public ActionResult Download(DownloadFile request)
         {
             return this.File();
         }
+
+        #endregion
+
+        #region Image preview.
+
+        /*
+        /// <summary>
+        /// Gets an image by id.
+        /// </summary>
+        /// <param name="request">The <see cref="ImagePreview"/>.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [Route("{id:guid}/image")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.FileUpload.ReadValue)]
+        public ActionResult GetImage(ImagePreview request)
+        {
+            return this.File();
+        */
 
         #endregion
 

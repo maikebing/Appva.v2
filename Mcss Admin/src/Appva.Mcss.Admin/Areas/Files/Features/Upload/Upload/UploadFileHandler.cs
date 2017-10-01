@@ -5,10 +5,12 @@
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
 
-namespace Appva.Mcss.Admin.Areas.Log.Handlers
+namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System;
+    using System.Web.Configuration;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
@@ -41,7 +43,13 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// <inheritdoc />
         public override UploadFileModel Handle(Parameterless<UploadFileModel> message)
         {
-            return new UploadFileModel();
+            var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+            var httpRuntimeSection = configuration.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
+
+            return new UploadFileModel
+            {
+                MaxFileSize = Math.Round(httpRuntimeSection.MaxRequestLength / 1024.0, 2)
+            };
         }
 
         #endregion

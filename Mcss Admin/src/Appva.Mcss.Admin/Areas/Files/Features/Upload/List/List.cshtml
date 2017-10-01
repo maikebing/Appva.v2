@@ -7,10 +7,10 @@
     <h1>Filer</h1>
     @Html.ActionLink(Permissions.FileUpload.Create, "Ladda upp", "Upload", "Upload", null, new { @class = "btn lb-link" })
     <p class="filter">
-        <strong>Filtyp:</strong>
-        @Html.ActionLink("Alla", "List")
-        @Html.ActionLink("Bilder", "List")
-        @Html.ActionLink("Dokument", "List")
+        <strong>Visa:</strong>
+        @Html.ActionLink("Alla", "List", null, new { @class = (Model.IsFilteredByImages.HasValue == false ? "sel div" : "div") })
+        @Html.ActionLink("Bilder", "List", new { IsFilteredByImages = true }, new { @class = (Model.IsFilteredByImages.GetValueOrDefault(false) ? "sel div" : "div") })
+        @Html.ActionLink("Dokument", "List", new { IsFilteredByImages = false }, new { @class = (Model.IsFilteredByImages.GetValueOrDefault(true) ? "div" : "sel div") })
     </p>
 </div>
 
@@ -21,20 +21,26 @@
             <table class="device-table">
                 <thead>
                     <tr class="head">
-                        <th scope="col">Namn</th>
-                        <th scope="col">Beskrivning</th>
-                        <th scope="col">Sökväg</th>
-                        <th></th>
+                        <th style="text-align:center"></th>
+                        <th>Namn</th>
+                        <th>Beskrivning</th>
+                        <th>Filnamn</th>
+                        <th>Storlek</th>
+                        <th>Datum</th>
+                        <th>Åtgärder</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var file in Model.Files)
                     {
-                        <tr>
-                            <td>@file.Title</td>
-                            <td>@file.Description</td>
-                            <td>@file.Name</td>
-                            <td width="200">@Html.ActionLink(string.Format("Ladda ner ({0}) kB", file.Data.Length / 1024), "Download", new { Id = file.Id })</td>
+                        <tr class="tr-highlight">
+                            <td class="flpad" style="text-align:center;width:40px"><img src="~/Assets/i/@file.TypeImage" width="20" alt="@file.Type" title="@file.Type" style="vertical-align:bottom" /></td>
+                            <td class="flpad">@file.Title</td>
+                            <td class="flpad">@file.Description</td>
+                            <td class="flpad">@file.Name</td>
+                            <td class="flpad">@file.Size</td>
+                            <td class="flpad">@file.DateAdded</td>
+                            <td class="flpad" width="200">@Html.ActionLink("Ladda ner", "Download", new { Id = file.Id }, new { @class = "btn" })</td>
                         </tr>
                     }
                 </tbody>

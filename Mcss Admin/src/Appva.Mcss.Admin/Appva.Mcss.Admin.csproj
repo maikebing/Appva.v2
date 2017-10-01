@@ -465,6 +465,8 @@
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Files\Features\Upload\Download\DownloadFile.cs" />
     <Compile Include="Areas\Files\Features\Upload\Download\DownloadFileHandler.cs" />
+    <Compile Include="Areas\Files\Features\Upload\ImagePreview\ImagePreviewHandler.cs" />
+    <Compile Include="Areas\Files\Features\Upload\List\ListUpload.cs" />
     <Compile Include="Areas\Files\Features\Upload\List\ListUploadHandler.cs" />
     <Compile Include="Areas\Files\Features\Upload\Upload\UploadFileHandler.cs" />
     <Compile Include="Areas\Files\Features\Upload\Upload\UploadFileModel.cs" />
@@ -968,6 +970,12 @@
     <Content Include="Assets\i\ico-warning-hypersensitive.png" />
     <Content Include="Assets\i\ico-warning-swallow.png" />
     <Content Include="Assets\i\icon-calendar.gif" />
+    <Content Include="Assets\i\icon_fl_doc.png" />
+    <Content Include="Assets\i\icon_fl_excel.png" />
+    <Content Include="Assets\i\icon_fl_image.png" />
+    <Content Include="Assets\i\icon_fl_pdf.png" />
+    <Content Include="Assets\i\icon_fl_pp.png" />
+    <Content Include="Assets\i\icon_fl_word.png" />
     <Content Include="Assets\i\ipad-htoggle-off.png" />
     <Content Include="Assets\i\ipad-htoggle-on.png" />
     <Content Include="Assets\i\ipad-late.png" />

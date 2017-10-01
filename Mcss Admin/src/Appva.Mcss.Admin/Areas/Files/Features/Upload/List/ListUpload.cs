@@ -1,4 +1,4 @@
-﻿// <copyright file="UploadFileModel.cs" company="Appva AB">
+﻿// <copyright file="ListUpload.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,25 +9,30 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-    using System.Web;
-    using Appva.Cqrs;
+    using System;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class UploadFileModel : IRequest<bool>
+    public sealed class ListUpload
     {
         #region Properties.
 
         /// <summary>
-        /// The uploaded file.
+        /// The file id.
         /// </summary>
-        [Required]
-        public HttpPostedFileBase UploadedFile
+        public Guid Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The file name.
+        /// </summary>
+        public string Name
         {
             get;
             set;
@@ -36,8 +41,6 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The title.
         /// </summary>
-        [Required]
-        [DisplayName("Namn")]
         public string Title
         {
             get;
@@ -47,7 +50,6 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The file description.
         /// </summary>
-        [DisplayName("Beskrivning")]
         public string Description
         {
             get;
@@ -55,9 +57,36 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The max file size.
+        /// The file type.
         /// </summary>
-        public double MaxFileSize
+        public string Type
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The file type image path.
+        /// </summary>
+        public string TypeImage
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The file size.
+        /// </summary>
+        public string Size
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The date when the file was saved.
+        /// </summary>
+        public string DateAdded
         {
             get;
             set;

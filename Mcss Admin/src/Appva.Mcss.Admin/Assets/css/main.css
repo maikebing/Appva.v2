@@ -1451,9 +1451,6 @@ td.rights {
     margin-right:8px;
     border-radius:10px;
 }
-#signlist .prpad {
-    padding:6px 10px!important;
-}
 #signlist .tr-highlight:hover { background:#f9f9f9; }
 #signlist .tr-highlight { transition:background .2s ease-in-out; }
 #signlist .primg {
@@ -1474,10 +1471,8 @@ td.rights {
     text-align:center;
 }
 #signlist .prtd2 .btn-del { margin-left:6px; }
-#signlist .prpad {
-    padding:6px 10px!important;
-}
-#signlist .tr-highlight:hover { background:#f9f9f9; }
+#signlist .prpad { padding:6px 10px!important; }
+#signlist .flpad { padding:12px 6px!important; }
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}
@@ -2983,6 +2978,18 @@ form .time {width:4em;}
 	background:#eaeff9;
 }
 .std-panel .prpanel-img img {width:45px;}
+.std-panel .file-upload-box {
+    display:inline-block;
+    border:1px solid #aaa;
+    background:#fff;
+    padding:10px;
+    margin:20px 0 10px 0;
+}
+.std-panel .file-message {
+    padding-top:15px;
+    margin:0;
+    font-size:11px;
+}
 #sign-op input[type="text"] {
     font-size:13px;
     padding:6px;

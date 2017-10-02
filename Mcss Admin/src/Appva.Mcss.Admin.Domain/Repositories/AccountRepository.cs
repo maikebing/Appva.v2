@@ -344,7 +344,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IUpdateRepository<Account> Members.
 
         /// <inheritdoc /> 
-        public void Update(Account entity)
+        public void UpdateMeasurementObservation(Account entity)
         {
             entity.UpdatedAt = DateTime.Now;
             entity.Version = entity.Version++;

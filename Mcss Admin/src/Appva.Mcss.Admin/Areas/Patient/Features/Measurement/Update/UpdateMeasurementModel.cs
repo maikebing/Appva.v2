@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateMeasurementModel.cs" company="Appva AB">
+﻿// <copyright file="UpdateMeasurementModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -11,25 +11,43 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class CreateMeasurementModel : Identity<ListMeasurementModel>
+    public class UpdateMeasurementModel : IRequest<ListMeasurementModel>
     {
         #region Variables
 
         /// <summary>
-        /// The ID.
+        /// The PatientId
         /// </summary>
-        public new Guid Id
+        public Guid PatientId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The MeasurementObservation.
+        /// </summary>
+        public MeasurementObservation MeasurementObservation
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The MeasurementObservationId
+        /// </summary>
+        public Guid MeasurementObservationId
         {
             get;
             set;
@@ -38,8 +56,6 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The name.
         /// </summary>
-        [DisplayName("Namn")]
-        [Required]
         public string Name
         {
             get;
@@ -47,20 +63,17 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Gets or sets the description.
+        /// The instruction.
         /// </summary>
-        [DisplayName("Instruktion")]
-        [Required]
-        public string Description
+        public string Instruction
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The Unit SelectList.
+        /// The unit SelectList
         /// </summary>
-        [DisplayName("Enhet")]
         public IEnumerable<SelectListItem> SelectUnitList
         {
             get;
@@ -68,9 +81,8 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The delegation select list.
+        /// The delegation SelectList
         /// </summary>
-        [DisplayName("Kräver delegering för")]
         public IEnumerable<SelectListItem> SelectDelegationList
         {
             get;
@@ -80,7 +92,6 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The selected unit.
         /// </summary>
-        [Required]
         public string SelectedUnit
         {
             get;
@@ -90,7 +101,6 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The selected delegation.
         /// </summary>
-        [Required]
         public string SelectedDelegation
         {
             get;

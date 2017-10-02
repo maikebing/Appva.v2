@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateMeasurement.cs" company="Appva AB">
+﻿// <copyright file="UpdateMeasurement.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -8,22 +8,31 @@
 namespace Appva.Mcss.Admin.Models
 {
     #region Imports
-    
+
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using System.Web;
-    using System.Web.Mvc;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Models;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class CreateMeasurement : Identity<CreateMeasurementModel>
+    public class UpdateMeasurement : Identity<UpdateMeasurementModel>
     {
+        #region Variables
+
+        /// <summary>
+        /// The Measurement Observation Id.
+        /// </summary>
+        public Guid MeasurementObservationId
+        {
+            get;
+            set;
+        }
+
+        #endregion
     }
 }

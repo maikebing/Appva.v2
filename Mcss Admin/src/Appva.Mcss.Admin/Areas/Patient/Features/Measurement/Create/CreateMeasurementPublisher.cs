@@ -1,48 +1,92 @@
-﻿using Appva.Cqrs;
-using Appva.Mcss.Admin.Application.Services;
-using Appva.Mcss.Admin.Application.Services.Settings;
-using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Admin.Infrastructure;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// <copyright file="CreateMeasurementPublisher.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+// </author>
 
 namespace Appva.Mcss.Admin.Models.Handlers
 {
+    #region Imports.
+
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Infrastructure;
+    using Newtonsoft.Json;
+
+    #endregion
+
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
     public class CreateMeasurementPublisher : RequestHandler<CreateMeasurementModel, ListMeasurementModel>
     {
+        #region Variables
+
+        /// <summary>
+        /// The Measurement Service
+        /// </summary>
         private readonly IMeasurementService service;
+
+        /// <summary>
+        /// The Patient Transformer
+        /// </summary>
         private readonly IPatientTransformer transformer;
-        private readonly ITaxonomyService taxonService;
+
+        /// <summary>
+        /// The Settings Service
+        /// </summary>
         private readonly ISettingsService settings;
 
-        public CreateMeasurementPublisher(IMeasurementService service, IPatientTransformer transformer, ITaxonomyService taxonService, ISettingsService settings)
+        #endregion
+
+        #region constructor
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateMeasurementPublisher"/> class.
+        /// </summary>
+        /// <param name="service">The Measurement Service<see cref="IMeasurementService"/>.</param>
+        /// <param name="transformer">The Patient Transformer<see cref="IPatientTransformer"/>.</param>
+        /// <param name="settings">The settings service<see cref="ISettingsService"/>.</param>
+        public CreateMeasurementPublisher(IMeasurementService service, IPatientTransformer transformer, ISettingsService settings)
         {
             this.service = service;
             this.transformer = transformer;
-            this.taxonService = taxonService;
             this.settings = settings;
         }
 
+        #endregion
+
+        #region Members
+
+        /// <inheritdoc />
         public override ListMeasurementModel Handle(CreateMeasurementModel message)
         {
-            //// Fetch data, Create Object and Save to database
             var patient = this.service.GetPatient(message.Id);
-            var delegation = this.taxonService.Get(Guid.Parse(message.SelectedDelegation));
-            var scale = JsonConvert.SerializeObject(this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts).Where(x => x.Id == Guid.Parse(message.SelectedUnit)));
-
-            var observation = MeasurementObservation.New(scale, delegation, patient, message.Name, message.Description);
-
-            this.service.CreateMeasurementObservation(observation);
+            
+            if (patient != null)
+            {
+                this.service.CreateMeasurementObservation(MeasurementObservation.New(
+                    scale: JsonConvert.SerializeObject(this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts).Where(x => x.Id == Guid.Parse(message.SelectedUnit))), 
+                    delegation: this.service.GetTaxon(Guid.Parse(message.SelectedDelegation)), 
+                    patient: patient, 
+                    name: message.Name, 
+                    description: message.Description));
+            }       
 
             return new ListMeasurementModel
             {
                 Patient = this.transformer.ToPatient(patient),
-                Names = new List<string> { "Vikt", "Längd", "P-Glukos", "Blodtryck" },
-                MeasurementList = this.service.GetMeasurementCategories(message.Id)
+                MeasurementList = this.service.GetMeasurementObservationsList(message.Id)
             };
         }
+
+        #endregion
     }
 }

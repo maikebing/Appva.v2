@@ -114,11 +114,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public void Update(Delegation entity, ChangeSet changes)
         {
             this.Context.Save<ChangeSet>(changes);
-            this.Update(entity);
+            this.UpdateMeasurementObservation(entity);
         }
 
         /// <inheritdoc />
-        public void Update(Delegation entity)
+        public void UpdateMeasurementObservation(Delegation entity)
         {
             entity.UpdatedAt = DateTime.Now;
             this.Context.Update<Delegation>(entity);

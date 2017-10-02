@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateMeasurementHandler.cs" company="Appva AB">
+﻿// <copyright file="UpdateMeasurementHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -10,36 +10,33 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports
 
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Infrastructure.Models;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class CreateMeasurementHandler : RequestHandler<CreateMeasurement, CreateMeasurementModel>
+    public class UpdateMeasurementHandler : RequestHandler<UpdateMeasurement, UpdateMeasurementModel>
     {
         #region Variables
 
         /// <summary>
-        /// The service
+        /// The MeasurementService
         /// </summary>
         private readonly IMeasurementService service;
 
         /// <summary>
-        /// The settings
+        /// The SettingsService
         /// </summary>
         private readonly ISettingsService settings;
 
         /// <summary>
-        /// The delegations
+        /// The DelegationService
         /// </summary>
         private readonly IDelegationService delegations;
 
@@ -48,12 +45,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateMeasurementHandler"/> class.
+        /// Initializes a new instance of the <see cref="UpdateMeasurementHandler"/> class.
         /// </summary>
         /// <param name="service">The Measurement Service<see cref="IMeasurementService"/>.</param>
         /// <param name="settings">The Settings Service<see cref="ISettingsService"/>.</param>
         /// <param name="delegations">The Delegation Service<see cref="IDelegationService"/>.</param>
-        public CreateMeasurementHandler(IMeasurementService service, ISettingsService settings, IDelegationService delegations)
+        public UpdateMeasurementHandler(IMeasurementService service, ISettingsService settings, IDelegationService delegations)
         {
             this.service = service;
             this.settings = settings;
@@ -65,24 +62,29 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Members
 
         /// <inheritdoc />
-        public override CreateMeasurementModel Handle(CreateMeasurement message)
+        public override UpdateMeasurementModel Handle(UpdateMeasurement message)
         {
-            var model = new CreateMeasurementModel();
-            model.Id = message.Id;
-            model.SelectUnitList = this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts)
+            var observation = this.service.Get(message.MeasurementObservationId);
+
+            return new UpdateMeasurementModel
+            {
+                PatientId = message.Id,
+                MeasurementObservationId = observation.Id,
+                Name = observation.Name,
+                Instruction = observation.Description,
+                SelectUnitList = this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts)
                 .Select(x => new SelectListItem
                 {
                     Text = string.Format("{0} ({1})", x.Name, x.Unit),
                     Value = x.Id.ToString()
-                });
-
-            model.SelectDelegationList = this.delegations.ListDelegationTaxons()
+                }),
+                SelectDelegationList = this.delegations.ListDelegationTaxons()
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
-                });
-            return model;
+                })
+            };
         }
 
         #endregion

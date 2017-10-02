@@ -42,7 +42,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #endregion
 
         /// <inheritdoc />
-        public void Update(Sequence entity)
+        public void UpdateMeasurementObservation(Sequence entity)
         {
             entity.UpdatedAt = DateTime.Now;
             this.Context.Update<Sequence>(entity);

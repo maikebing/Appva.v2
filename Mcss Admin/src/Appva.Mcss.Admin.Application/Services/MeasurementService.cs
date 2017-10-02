@@ -130,19 +130,19 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public IList<MeasurementObservation> GetMeasurementObservationsList(Guid patientId)
         {
-            return this.measurementRepository.GetMeasurementObservationsList(patientId);
+            return this.measurementRepository.GetList(patientId);
         }
 
         /// <inheritdoc />
         public void CreateMeasurementObservation(MeasurementObservation observation)
         {
-            this.measurementRepository.CreateMeasurementObservation(observation);
+            this.measurementRepository.Create(observation);
         }
 
         /// <inheritdoc />
         public void Update(MeasurementObservation observation)
         {
-            this.measurementRepository.UpdateMeasurementObservation(observation);
+            this.measurementRepository.Update(observation);
         }
 
         #endregion

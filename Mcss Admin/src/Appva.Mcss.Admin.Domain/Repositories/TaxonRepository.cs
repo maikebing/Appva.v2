@@ -126,7 +126,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public void UpdateMeasurementObservation(Taxon entity)
+        public void Update(Taxon entity)
         {
             entity.UpdatedAt = DateTime.Now;
             this.Context.Update<Taxon>(entity);

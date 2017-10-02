@@ -81,7 +81,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IIdentityRepository<Inventory> Members.
 
         /// <inheritdoc />
-        public void UpdateMeasurementObservation(Inventory entity)
+        public void Update(Inventory entity)
         {
             entity.UpdatedAt = DateTime.Now;
             this.Context.Update<Inventory>(entity);

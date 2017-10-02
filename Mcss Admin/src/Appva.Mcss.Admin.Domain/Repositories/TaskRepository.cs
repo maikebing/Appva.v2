@@ -169,7 +169,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public void UpdateMeasurementObservation(Task entity)
+        public void Update(Task entity)
         {
             entity.UpdatedAt = DateTime.Now;
             entity.Version = entity.Version++;

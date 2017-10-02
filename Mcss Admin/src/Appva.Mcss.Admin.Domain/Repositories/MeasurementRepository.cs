@@ -31,19 +31,19 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// </summary>
         /// <param name="patientId">The patient identifier.</param>
         /// <returns>IList&lt;MeasurementObservation&gt;.</returns>
-        IList<MeasurementObservation> GetMeasurementObservationsList(Guid patientId);
+        IList<MeasurementObservation> GetList(Guid patientId);
 
         /// <summary>
         /// Creates the measurement observation.
         /// </summary>
         /// <param name="measurementObservation">The measurement observation<see cref="MeasurementObservation"/>.</param>
-        void CreateMeasurementObservation(MeasurementObservation measurementObservation);
+        void Create(MeasurementObservation measurementObservation);
 
         /// <summary>
         /// Updates the specified observation.
         /// </summary>
         /// <param name="observation">The observation<see cref="MeasurementObservation"/>.</param>
-        void UpdateMeasurementObservation(MeasurementObservation observation);
+        void Update(MeasurementObservation observation);
 
         #endregion
     }
@@ -69,7 +69,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IMeasurementRepository Members
 
         /// <inheritdoc />
-        public IList<MeasurementObservation> GetMeasurementObservationsList(Guid patientId)
+        public IList<MeasurementObservation> GetList(Guid patientId)
         {
             return this.Context.QueryOver<MeasurementObservation>()
                 .Where(x => x.IsActive)
@@ -78,15 +78,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public void CreateMeasurementObservation(MeasurementObservation measurementObservation)
+        public void Create(MeasurementObservation measurementObservation)
         {
             this.Save(measurementObservation);
-        }
-
-        /// <inheritdoc />
-        public void UpdateMeasurementObservation(MeasurementObservation observation)
-        {
-            this.Update(observation);
         }
 
         #endregion

@@ -19,18 +19,12 @@ namespace Appva.Mcss.Admin.Controllers
     [RouteArea("patient"), RoutePrefix("{id:guid}/measurement")]
     public sealed class MeasurementController : Controller
     {
-        public MeasurementController()
-        {
-
-        }
-
         #region List
 
         /// <summary>
         /// The index view
         /// </summary>
         /// <returns></returns>
-        [Route("list")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Patient.ReadValue)]
         public ActionResult List(ListMeasurement request)
@@ -43,7 +37,7 @@ namespace Appva.Mcss.Admin.Controllers
         #region Create
 
         /// <summary>
-        /// Returns the create patient form.
+        /// Returns the create measurement observation form.
         /// </summary>
         /// <returns><see cref="CreatePatient"/></returns>
         [Route("create")]
@@ -51,23 +45,52 @@ namespace Appva.Mcss.Admin.Controllers
         [PermissionsAttribute(Permissions.Patient.CreateValue)]
         public ActionResult Create(CreateMeasurement request)
         {
-            return View();
+            return this.View();
         }
 
         /// <summary>
-        /// Creates a patient if valid.
+        /// Creates a measurement observation if valid.
         /// </summary>
-        /// <param name="request">The patient form request</param>
-        /// <returns>A redirect to <see cref="PatientController.List"/> if valid</returns>
+        /// <param name="request">The measurementobservation form request<see cref="CreateMeasurementModel"/></param>
+        /// <returns>A redirect to <see cref="MeasurementController.List"/> if valid</returns>
         [Route("create")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "measurement")]
         [PermissionsAttribute(Permissions.Patient.CreateValue)]
         public ActionResult Create(CreateMeasurementModel request)
         {
-            return View();
+            return this.View();
         }
 
         #endregion
 
+        #region Update
+
+        /// <summary>
+        /// Updates the specified measurement observation.
+        /// </summary>
+        /// <param name="request">The request<see cref="UpdateMeasurement"/>.</param>
+        /// <returns>ActionResult.</returns>
+        [Route("{id:guid}/update")]
+        [HttpGet, Hydrate, Dispatch()]
+        [PermissionsAttribute(Permissions.Patient.UpdateValue)]
+        public ActionResult Update(UpdateMeasurement request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Updates the specified measurement observation if valid.
+        /// </summary>
+        /// <param name="request">The request<see cref="UpdateMeasurementModel"/>.</param>
+        /// <returns>A redirect to <see cref="MeasurementController.List"/> if valid</returns>
+        [Route("{id:guid}/update")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "measurement")]
+        [PermissionsAttribute(Permissions.Patient.UpdateValue)]
+        public ActionResult Update(UpdateMeasurementModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
     }
 }

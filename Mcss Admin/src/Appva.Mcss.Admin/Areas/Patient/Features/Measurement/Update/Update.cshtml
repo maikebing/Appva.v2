@@ -1,1 +1,53 @@
-﻿
+﻿@model Appva.Mcss.Admin.Models.UpdateMeasurementModel
+
+<div class="section section--hspace">
+    <h2>Ändra observation</h2>
+    <div id="add-observation">
+
+        @using (Html.BeginForm("update", "measurement", FormMethod.Post, new { @id = Model.Id, @class = "validate", novalidate = "novalidate" }))
+        {
+            <div class="width-limiter width-limiter--s">
+                <div class="form-controls">
+                    @Html.LabelFor(x => x.Name, new { @class = "required-indicator" })
+                    @Html.TextBoxFor(x => x.Name, new { @required = "required", aria_required = "true" })
+                </div>
+
+                <div class="form-controls form-controls--text">
+                    @Html.LabelFor(x => x.Description)
+                    @Html.TextBoxFor(x => x.Description, new { @cols = "30", @rows = "5" })
+                </div>
+
+                <div class="form-controls form-controls--select">
+                    @Html.LabelFor(x => x.SelectUnitList)
+                    @Html.DropDownListFor(x => x.SelectedUnit, new SelectList(Model.SelectUnitList, "Value", "Text", Model.SelectedUnit), "Välj enhet ..", new { @class = "replaced", aria_invalid = "false" })
+                    <span class="custom-select__select" aria-hidden="true">
+                        <span class="custom-select__text">[selected_value]</span>
+                        <span class="custom-select__icon">
+                            <svg class="icon icon--s" focusable="false" aria-hidden="true">
+                                <use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
+                            </svg>
+                        </span>
+                    </span>
+                </div>
+
+                <div class="form-controls form-controls--select">
+                    @Html.LabelFor(x => x.SelectDelegationList)
+                    @Html.DropDownListFor(x => x.SelectedDelegation, new SelectList(Model.SelectedDelegation, "Value", "Text", Model.SelectedDelegation), "Välj delegation ..", new { @class = "replaced" })
+                    <span class="custom-select__select" aria-hidden="true">
+                        <span class="custom-select__text">[selected_value]</span>
+                        <span class="custom-select__icon">
+                            <svg class="icon icon--s" focusable="false" aria-hidden="true">
+                                <use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
+                            </svg>
+                        </span>
+                    </span>
+                </div>
+
+                <div class="form-controls form-controls--align-end form-controls--no-margin">
+                    <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
+                    @Html.Submit("Spara", new { @class = "button button--primary" })
+                </div>
+            </div>
+        }
+    </div>
+</div>

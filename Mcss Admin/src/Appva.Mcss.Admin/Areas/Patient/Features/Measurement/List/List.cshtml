@@ -4,85 +4,276 @@
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
 
-<div id="subheader" class="cf">
-    <h1>Mätvärden</h1>
-    @Html.ActionLink("Lägg till", "create", "measurement")
-</div>
 
+<div class="section section--hspace">
+    <div class="inliner">
+        <h2>Mätvärden</h2>
+        <div>
+            <a class="button button--ml open-in-dialog" href="@Html.Action("create", "measurement")#add-observation" data-dialog-title="Lägg till mätvärde" data-dialog-symbol="+">
+                <svg class="icon icon--mr" aria-hidden="true">
+                    <use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use>
+                </svg>Lägg till
+            </a>
+        </div>
+    </div>
 
-
-
-<div id="content" class="has-nav cf">
-    <ul id="nav-sub">
-        @if (Model.MeasurementList.IsNotNull())
-        {
-            <li class="sel">
-                @*@Html.ActionLink("Alla", "ScheduleReport", new { Id = Model.Patient.Id, StartDate = Model.StartDate.ToShortDateString(), EndDate = Model.EndDate.ToShortDateString() })*@
-                @Html.ActionLink("Alla", "view", "measurement")
-            </li>
-            foreach (var item in Model.MeasurementList)
-            {
-                <li>
-                    @*@Html.ActionLink(item.Name, "ScheduleReport", new { id = Model.Patient.Id, scheduleSettingsId = schedule.Id, startDate = Model.StartDate.ToShortDateString(), endDate = Model.EndDate.ToShortDateString() })*@
-                    @Html.ActionLink(item.Name, "view", "measurement", new { id = item.Id })
-                </li>
-            }
-        }
-    </ul>
-
-    <div id="content-primary">
-
-
-        <div id="report" class="cf">
-
-            <div id="chart" class="chart" style="height: 250px; margin-bottom:20px;">
-                EN GRAF SoM VISAR UTVEckLINGEN
+    <div>
+        <div class="grid">
+            <div data-size="xs:24 s:10 m:8 l:6 xl:6">
+                <div class="tabs tabs--vertical" role="navigation">
+                    <h2 class="visually-hidden">Huvudnavigering</h2>
+                    <ul>
+                        <li class="tabs__item tabs__item--selected">
+                            <a href="@Html.Action("view", "measurement")">Alla</a>
+                        </li>
+                        @foreach (var item in Model.MeasurementList)
+                        {
+                            <li class="tabs__item">
+                                <a href="@Html.Action("view","measurement", new { id = item.Id})">@item.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
 
-            @*@Html.Partial("/Features/Statistics/Data/StatisticsData.cshtml", , Model.Report)*@
+            <div data-size="xs:24 s:14 m:16 l:18 xl:18">
 
+                <!-- Den valda Observationen -->
 
-            <div class="data cf">
-                <dl>
-                    <dt>Förändring</dt>
-                    <dd class="small">Bättre</dd>
-                </dl>
-                <dl>
-                    <dt>Genonsnittlig förändring</dt>
-                    <dd class="small">Sakta</dd>
-                </dl>
-                <dl>
-                    <dt>Vid start</dt>
-                    <dd class="small">Jättedåligt</dd>
-                </dl>
-                <dl>
-                    <dt>Antal mätningar</dt>
-                    <dd class="small">9898</dd>
-                </dl>
-            </div>
+                <div class="distributor distributor--justified">
+                    <div class="inliner">
+                        <h3>Vikt</h3>
+                        <div class="form-controls">
+                            <a class="button button--right" href="https://appva-gui.azurewebsites.net/"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#pdf-icon"></use></svg>skapa PDF</a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-controls form-controls--inline">
+                            <a class="button open-in-dialog" href="https://appva-gui.azurewebsites.net/pages/add-observation.html#add-observation" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#pencil-icon"></use></svg>Ändra</a>
+                        </div>
+                        <div class="form-controls form-controls--inline">
+                            <a class="button button--negative" href="https://appva-gui.azurewebsites.net/"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#x-icon"></use></svg>Ta bort</a>
+                        </div>
+                    </div>
+                </div>
 
-            <div id="signed-events" class="listing">
-                <h2 class="heading">Insatser under perioden</h2>
-                <table>
+                <!-- Instruktion för den valda observationen -->
+
+                <p>Mätningen görs innan måltiden. Be brukaren att undvika tunga tankar som kan påverka mätresultatet.</p>
+
+                <dl>
+                    <dt>Delegering</dt>
+                    <dd>Administrera inhalation av läkemedel</dd>
+                </dl>
+
+                <!-- Diagram för den valda observationen -->
+                <figure class="figure">
+                    <svg class="figure__image graph" aria-labelledby="graph1" xmlns="http://www.w3.org/2000/svg" width="1000" height="500" viewBox="0 0 1000 500">
+                        <g class="grid">
+                            <!-- Horizontal lines -->
+                            <line y1="125" x2="1000" y2="125"></line>
+                            <text x="0" y="125">75%</text>
+
+                            <line y1="250" x2="1000" y2="250"></line>
+                            <text x="0" y="250">50%</text>
+
+                            <line y1="375" x2="1000" y2="375"></line>
+                            <text x="0" y="375">25%</text>
+
+                            <!-- Vertical lines -->
+                            <line x1="100" x2="100" y2="500"></line>
+                            <text dy="-1em" x="100" y="500">Måndag</text>
+
+                            <line x1="200" x2="200" y2="500"></line>
+                            <text dy="-1em" x="200" y="500">Tisdag</text>
+
+                            <line x1="300" x2="300" y2="500"></line>
+                            <text dy="-1em" x="300" y="500">Onsdag</text>
+
+                            <line x1="400" x2="400" y2="500"></line>
+                            <text dy="-1em" x="400" y="500">Torsdag</text>
+
+                            <line x1="500" x2="500" y2="500"></line>
+                            <text dy="-1em" x="500" y="500">Fredag</text>
+
+                            <line x1="600" x2="600" y2="500"></line>
+                            <text dy="-1em" x="600" y="500">Lördag</text>
+
+                            <line x1="700" x2="700" y2="500"></line>
+                            <text dy="-1em" x="700" y="500">Söndag</text>
+
+                            <line x1="800" x2="800" y2="500"></line>
+                            <text dy="-1em" x="800" y="500">Måndag</text>
+
+                            <line x1="900" x2="900" y2="500"></line>
+                            <text dy="-1em" x="900" y="500">Tisdag</text>
+
+                        </g>
+                        <polyline class="line" points="100,320 200,220 300,310 400,210 500,350 600,210 700,400 800,360 900,280" stroke-miterlimit="10"></polyline>
+                        <!-- Circles -->
+                        <g class="markers">
+                            <a xlink:href="#">
+                                <circle cx="100" cy="320" r="10"></circle>
+                                <g class="info">
+                                    <text x="100" y="320">I tid: 32%</text>
+                                    <text x="100" y="320" dy="1.2em">2016-11-30</text>
+                                </g>
+                            </a>
+                            <a xlink:href="#">
+                                <circle cx="200" cy="220" r="10"></circle>
+                                <g class="info">
+                                    <text x="200" y="220">I tid: 22%</text>
+                                    <text x="200" y="220" dy="1.2em">2016-12-01</text>
+                                </g>
+                            </a>
+                            <a xlink:href="#">
+                                <circle cx="300" cy="310" r="10"></circle>
+                                <g class="info">
+                                    <text x="300" y="310">I tid: 31%</text>
+                                    <text x="300" y="310" dy="1.2em">2016-12-02</text>
+                                </g>
+                            </a>
+                            <a xlink:href="#">
+                                <circle cx="400" cy="210" r="10"></circle>
+                                <g class="info">
+                                    <text x="400" y="210">I tid: 21%</text>
+                                    <text x="400" y="210" dy="1.2em">2016-12-03</text>
+                                </g>
+                            </a>
+                            <a xlink:href="#">
+                                <circle cx="500" cy="350" r="10"></circle>
+                                <g class="info">
+                                    <text x="500" y="350">I tid: 35%</text>
+                                    <text x="500" y="350" dy="1.2em">2016-12-04</text>
+                                </g>
+                            </a>
+                            <a xlink:href="#">
+                                <circle cx="600" cy="210" r="10"></circle>
+                                <g class="info">
+                                    <text x="600" y="210">I tid: 21%</text>
+                                    <text x="600" y="210" dy="1.2em">2016-12-05</text>
+                                </g>
+                            </a>
+                            <a xlink:href="#">
+                                <circle cx="700" cy="400" r="10"></circle>
+                                <g class="info">
+                                    <text x="700" y="400">I tid: 40%</text>
+                                    <text x="700" y="400" dy="1.2em">2016-12-06</text>
+                                </g>
+                            </a>
+                            <a xlink:href="#">
+                                <circle cx="800" cy="360" r="10"></circle>
+                                <g class="info">
+                                    <text x="800" y="360">I tid: 36%</text>
+                                    <text x="800" y="360" dy="1.2em">2016-12-07</text>
+                                </g>
+                            </a>
+                            <a xlink:href="#">
+                                <circle cx="900" cy="280" r="10"></circle>
+                                <g class="info">
+                                    <text x="900" y="280">I tid: 28%</text>
+                                    <text x="900" y="280" dy="1.2em">2016-12-08</text>
+                                </g>
+                            </a>
+                        </g>
+                    </svg>
+                    <figcaption class="figure__figcaption" id="graph1">Viktutveckling</figcaption>
+                </figure>
+
+                <!-- Visnings alternativ för den valda observationen -->
+                <div class="grid grid--align-bottom">
+                    <div data-size="xs:24 s:24 m:24 l:18 xl:20">
+                        <form action="/pages/observation.html#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
+                            <div class="grid grid--align-bottom">
+                                <div data-size="xs:24 s:24 m:10 l:8 xl:6">
+                                    <div class="form-controls date-picker">
+                                        <label for="id582eeaa156a6b">Från</label>
+                                        <input id="id582eeaa156a6b" class="datepicker hasDatepicker" data-datepicker-limit="past" data-rule-date="true" name="id582eeaa156a6b"><img class="ui-datepicker-trigger" src="Provtagning%20_%20Webbplatsnamn_files/calendar.svg" alt="Välj datum" title="Välj datum">
+                                    </div>
+                                </div>
+                                <div data-size="xs:24 s:24 m:10 l:8 xl:6">
+                                    <div class="form-controls date-picker">
+                                        <label for="idC9936FD6-AB04-4D72-907D-C66FC3CF657F">Till</label>
+                                        <input id="idC9936FD6-AB04-4D72-907D-C66FC3CF657F" class="datepicker hasDatepicker" data-datepicker-limit="past" data-rule-greaterthan="#id582eeaa156a6b" data-rule-date="true" data-msg-greaterthan="Slutdatum måste vara senare än startdatumet" name="idC9936FD6-AB04-4D72-907D-C66FC3CF657F"><img class="ui-datepicker-trigger" src="Provtagning%20_%20Webbplatsnamn_files/calendar.svg" alt="Välj datum" title="Välj datum">
+                                    </div>
+                                </div>
+                                <div data-size="xs:24 s:24 m:4 l:2 xl:1">
+                                    <div class="form-controls js-hidden">
+                                        <button type="submit" class="button">Visa</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div data-size="xs:24 s:24 m:24 l:6 xl:4">
+                        <div class="form-controls form-controls--align-end">
+                            <a class="button open-in-dialog" href="https://appva-gui.azurewebsites.net/pages/add-observation-value.html#add-observation-value" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use></svg>Mata in värde</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Listning av mätvärden -->
+                <table class="table-general table-general--descending" id="update-table" aria-live="polite" role="region">
                     <thead>
-                        <tr class="head">
+                        <tr>
+                            <th></th>
                             <th scope="col">Datum</th>
                             <th scope="col">Värde</th>
                             <th scope="col">Signerad av</th>
-                            <th scope="col"> </th>
+                            <th scope="col"><span class="visually-hidden">Åtgärder</span></th>
                         </tr>
                     </thead>
                     <tbody>
-
                         <tr>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <td></td>
+                            <td><time datetime="2016-01-01 10:59:00">2016-01-03, 10:59</time></td>
+                            <td>75 kg</td>
+                            <td>John Doe 59d20159bd97e</td>
+                            <td><a class="button button--small open-in-dialog" href="https://appva-gui.azurewebsites.net/pages/amend-observation-value.html#amend-observation-value" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#pencil-icon"></use></svg>Rättelse</a></td>
                         </tr>
-
+                        <tr class="table-general__subrow-parent table-general--even">
+                            <th rowspan="3" scope="row" class="table-general__subrow-heading"><span class="visually-hidden">Rättad</span></th>
+                            <td><time datetime="2016-01-01 13:30:00">2016-01-01, 13:30</time></td>
+                            <td>72 kg</td>
+                            <td>John Doe</td>
+                            <td><a class="button button--small open-in-dialog" href="https://appva-gui.azurewebsites.net/pages/amend-observation-value.html#amend-observation-value" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#pencil-icon"></use></svg>Rättelse</a></td>
+                        </tr>
+                        <tr class="table-general__subrow table-general__row--disabled table-general--even">
+                            <td><time datetime="2016-01-01 11:59:00">2016-01-01, 11:29</time></td>
+                            <td>73 kg</td>
+                            <td>John Doe</td>
+                            <td></td>
+                        </tr>
+                        <tr class="table-general__subrow table-general__row--disabled table-general--even">
+                            <td><time datetime="2016-01-01 10:59:00">2016-01-01, 10:59</time></td>
+                            <td>75 kg</td>
+                            <td>John Doe</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><time datetime="2015-12-22 10:59:00">2015-12-22, 10:59</time></td>
+                            <td>75 kg</td>
+                            <td>John Doe</td>
+                            <td><a class="button button--small open-in-dialog" href="https://appva-gui.azurewebsites.net/pages/amend-observation-value.html#amend-observation-value" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#pencil-icon"></use></svg>Rättelse</a></td>
+                        </tr>
+                        <tr class="table-general--even">
+                            <td></td>
+                            <td><time datetime="2015-12-21 10:59:00">2015-12-21, 10:59</time></td>
+                            <td>75 kg</td>
+                            <td>John Doe</td>
+                            <td><a class="button button--small open-in-dialog" href="https://appva-gui.azurewebsites.net/pages/amend-observation-value.html#amend-observation-value" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#pencil-icon"></use></svg>Rättelse</a></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><time datetime="2015-12-01 10:59:00">2015-12-01, 10:59</time></td>
+                            <td>75 kg</td>
+                            <td>John Doe</td>
+                            <td><a class="button button--small open-in-dialog" href="https://appva-gui.azurewebsites.net/pages/amend-observation-value.html#amend-observation-value" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#pencil-icon"></use></svg>Rättelse</a></td>
+                        </tr>
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>

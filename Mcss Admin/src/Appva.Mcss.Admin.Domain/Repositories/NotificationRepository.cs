@@ -103,7 +103,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
         #endregion
 
-        public void UpdateMeasurementObservation(Notification entity)
+        public void Update(Notification entity)
         {
             entity.UpdatedAt = DateTime.Now;
             entity.Version = entity.Version++;

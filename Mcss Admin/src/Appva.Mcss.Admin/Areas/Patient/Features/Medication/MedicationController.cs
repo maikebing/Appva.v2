@@ -17,11 +17,14 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
     using Appva.Mvc.Security;
     using System.Threading.Tasks;
     using Appva.Ehm.Exceptions;
-using Appva.Mcss.Admin.Infrastructure;
+    using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Admin.Domain.Entities;
     using System.Collections.Generic;
-using Appva.Mcss.Web.ViewModels;
+    using Appva.Mcss.Web.ViewModels;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Infrastructure.Attributes;
+using Appva.Mcss.Admin.Application.Security;
+    using System.IdentityModel.Tokens;
 
     #endregion
 
@@ -30,6 +33,7 @@ using Appva.Mcss.Web.ViewModels;
     /// </summary>
     [RouteArea("patient"), RoutePrefix("{id:guid}/medication")]
     [PermissionsAttribute(Permissions.Medication.ReadValue)]
+    [RequiredAuthenticationMethodAttribute(AuthenticationMethods.Smartcard, "EhmErrorSithsRequired")]
     public sealed class MedicationController : Controller
     {
         #region Fields.

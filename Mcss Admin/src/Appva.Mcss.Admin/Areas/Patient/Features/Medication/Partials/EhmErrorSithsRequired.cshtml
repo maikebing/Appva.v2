@@ -1,0 +1,16 @@
+﻿@model Appva.Mcss.Web.ViewModels.PatientViewModel
+
+@*Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model)*@
+@*Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model)*@
+
+<div id="ehm">
+    <div class="e-panel error">
+        <img src="~/Assets/i/not-allowed.png" />
+        <h2>Siths krävs</h2>
+        <p>För att kunna hämta läkemedelslistan krävs att du loggat in med ditt SITHS-kort. <br />Var vänlig logga ut och logga sedan in med ditt SITHS-kort för att öppna läkemedelslistan.</p>
+        <div class="contact">
+            <p>För frågor kontakta Appva Support</p>
+            <a class="button" href="https://support.appva.se/open.php">Kontakta support</a>
+        </div>
+    </div>
+</div>

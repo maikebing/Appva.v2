@@ -1,0 +1,44 @@
+﻿@model Appva.Mcss.Admin.Domain.Entities.Medication
+<div class="e-panel col-2">
+            <h3>Läkemedel</h3>
+            <div class="info cf">
+                <div class="param-box">
+                    <label for="articleName">Namn</label>
+                    <p name="articleName">@Model.Article.Name</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleForm">Läkemedelsform</label>
+                    <p name="articleForm">@Model.Article.Form</p>
+                </div>
+                <div class="param-box">
+                    <label for="articlePackageSize">Förpackningsstorlek</label>
+                    <p name="articlePackageSize">@string.Format("{0} {1}",Model.Article.PackageSize,Model.Article.PackageUnit)</p>
+                </div>
+                <div class="param-box">
+                    <label for="articlePackageType">Förpackningstyp</label>
+                    <p name="articlePackageType">@Model.Article.PackageType</p>
+                </div>
+            </div>
+            <div class="info cf">
+                <div class="param-box">
+                    <label for="articleNplId">NplId</label>
+                    <p name="articleNplId">@Model.Article.NplId</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleNplPackId">NplPackId</label>
+                    <p name="articleNplPackId">@Model.Article.NplPackId</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleNumber">Artikelnummer</label>
+                    <p name="articleNumber">@Model.Article.ArticleNumber</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleAtc">ATC</label>
+                    <p name="articleAtc">@Model.Article.Atc</p>
+                </div>
+                <div class="param-box">
+                    <label for="articleAtcCode">ATC-kod</label>
+                    <p name="articleAtcCode">@Model.Article.AtcCode</p>
+                </div>
+            </div>
+        </div>

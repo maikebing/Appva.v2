@@ -176,7 +176,7 @@ namespace Appva.Mcss.Admin.Features.Authentication
             {
                 return this.RedirectToAction("SignInSithsFailed");
             }
-            this.authentication.SignIn(result.Identity);
+            this.siths.SignIn(result.Identity);
             await this.siths.LogoutAsync(grandidsession);
             return this.RedirectToAction("Index", "Home");
         }

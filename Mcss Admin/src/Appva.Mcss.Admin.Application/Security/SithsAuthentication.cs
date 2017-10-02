@@ -26,7 +26,7 @@ namespace Appva.Mcss.Admin.Application.Security
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface ISithsAuthentication : IService
+    public interface ISithsAuthentication : IService, IAuthentication
     {
         /// <summary>
         /// Returns the external identity provider (IdP) URI asynchronous.

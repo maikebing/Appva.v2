@@ -236,10 +236,23 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterGrandId(this ContainerBuilder builder)
         {
-            var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
-            var options     = RestOptions.CreateNew(null, modelBinder);
-            builder.Register(x => new GrandIdClient      (options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
-            builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+            if (ApplicationEnvironment.Is.Development)
+            {
+                builder.Register(x => new MockedGrandIdClient()).As<IGrandIdClient>().SingleInstance();
+                //builder.Register(x => new MockedGrandIdClient(userHsaId: "richardhenriksson")).As<IMobileGrandIdClient>().SingleInstance();
+
+                var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+                var options = RestOptions.CreateNew(null, modelBinder);
+                builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+
+            }
+            else
+            {
+                //var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+                //var options = RestOptions.CreateNew(null, modelBinder);
+                //builder.Register(x => new GrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
+                //builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+            }  
         }
 
         /// <summary>

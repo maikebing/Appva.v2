@@ -51,7 +51,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
-        public virtual DateTime OrdinationStartsAt
+        public virtual DateTime? OrdinationStartsAt
         {
             get;
             set;
@@ -140,7 +140,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
-        public virtual int? LastExpiditedAmount
+        public virtual double? LastExpiditedAmount
         {
             get;
             set;

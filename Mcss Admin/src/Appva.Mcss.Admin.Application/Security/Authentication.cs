@@ -212,7 +212,13 @@ namespace Appva.Mcss.Admin.Application.Security
             };
             if (account.Taxon != null)
             {
-                retval.Add(new Claim(Core.Resources.ClaimTypes.Taxon,            account.Taxon.Id.ToString()));
+                retval.Add(new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString()));
+            }
+
+            if (method == AuthenticationMethod.Siths)
+            {
+                retval.Add(new Claim(PrincipalExtensions.LegitimationCodeClaimType, "9001371"));
+                retval.Add(new Claim(PrincipalExtensions.PrescriberCodeClaimType , ""));
             }
             
             //// Add the location-claim

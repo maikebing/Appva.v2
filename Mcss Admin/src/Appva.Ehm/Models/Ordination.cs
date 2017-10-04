@@ -56,14 +56,14 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("framtidaOrdination")]
-        public bool IsCommingOrdination
+        public bool? IsCommingOrdination
         {
             get;
             set;
         }
 
         [JsonProperty("ordinationInsattningstidpunkt")]
-        public DateTime OrdinationStartsAt
+        public DateTime? OrdinationStartsAt
         {
             get;
             set;
@@ -156,7 +156,7 @@ namespace Appva.Ehm.Models
         }
 
         [JsonProperty("senastExpedieradMangd")]
-        public int? LastExpiditedAmount
+        public double? LastExpiditedAmount
         {
             get;
             set;

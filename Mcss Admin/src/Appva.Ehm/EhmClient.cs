@@ -11,11 +11,13 @@ namespace Appva.Ehm
     using Appva.Ehm.Exceptions;
     using Appva.Ehm.Models;
     using Appva.Http;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Text;
     using System.Threading.Tasks;
 
     #endregion
@@ -53,9 +55,12 @@ namespace Appva.Ehm
         /// <inheritdoc />
         public async Task<IList<Ordination>> ListOrdinations(string forPatientUniqueId, User byUser)
         {
-            var response = await this.Get(
-                string.Format("{0}{1}?personnummer={2}", config.baseUri, EhmConfiguration.Endpoints.List, forPatientUniqueId.Replace("-", "")))
-                .ToResultAsync<ListOrdinationsResponse>();
+            var token = this.GetAuthorizationToken(byUser);
+            var headers = new Dictionary<string, string>() { { "Authorization", string.Format("Basic {0}", token) } };
+            var request = this.Get(
+                string.Format("{0}{1}?personnummer={2}", config.baseUri, EhmConfiguration.Endpoints.List, forPatientUniqueId.Replace("-", "")));
+            request.WithHeaders(headers);//.WithBasicAuthorization(token);
+            var response = await request.ToResultAsync<ListOrdinationsResponse>();
             
             if (response.Response.StatusCode == HttpStatusCode.Unauthorized)
             {
@@ -75,6 +80,22 @@ namespace Appva.Ehm
 
         #endregion
 
-        
+        #region Private members.
+
+        /// <summary>
+        /// Gets the authorization token.
+        /// </summary>
+        /// <param name="forUser">For user.</param>
+        /// <returns></returns>
+        private string GetAuthorizationToken(User forUser)
+        {
+            var json         = JsonConvert.SerializeObject(forUser);
+            var bytes        = Encoding.UTF8.GetBytes(json);
+            var base64String = Convert.ToBase64String(bytes);
+
+            return base64String;
+        }
+
+        #endregion
     }
 }

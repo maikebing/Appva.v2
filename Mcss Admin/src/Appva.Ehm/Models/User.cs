@@ -8,6 +8,7 @@ namespace Appva.Ehm.Models
 {
     #region Imports.
 
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -17,15 +18,29 @@ namespace Appva.Ehm.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [JsonObject]
     public class User
     {
-        #region Constructor.
+        #region Properties.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="User"/> class.
+        /// Gets or sets the prescriber code.
         /// </summary>
-        public User()
+        /// <value>
+        /// The prescriber code.
+        /// </value>
+        [JsonProperty("forskrivarkod")]
+        public string PrescriberCode
         {
+            get;
+            set;
+        }
+
+        [JsonProperty("legitimationskod")]
+        public string Legitimation
+        {
+            get;
+            set;
         }
 
         #endregion

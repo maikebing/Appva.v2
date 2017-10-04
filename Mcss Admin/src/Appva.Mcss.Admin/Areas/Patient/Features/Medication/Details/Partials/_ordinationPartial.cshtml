@@ -5,7 +5,7 @@
         <h4>Allmänt</h4>
         <div class="param-box">
             <label for="start">Insättning</label>
-            <p name="start">@Model.OrdinationStartsAt.ToString("yyyy-MM-dd")</p>
+            <p name="start">@(Model.OrdinationStartsAt.HasValue ? Model.OrdinationStartsAt.Value.ToString("yyyy-MM-dd") : "Inget datum")</p>
         </div>
         <div class="param-box">
             <label for="created">Ordinationstidpunkt</label>
@@ -97,6 +97,10 @@
             <label for="ordinator">Återstående uttag</label>
             <p name="ordinator">
                 @string.Format("{0} av {1}", Model.RemainingExpiditions.GetValueOrDefault(), Model.NumbersOfExpiditions.GetValueOrDefault())
+                @if (Model.RemainingExpiditions.GetValueOrDefault() == 0)
+                {
+                    
+                }
             </p>
         </div>
         <div class="param-box">

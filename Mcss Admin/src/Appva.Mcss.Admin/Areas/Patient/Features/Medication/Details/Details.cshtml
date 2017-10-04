@@ -55,7 +55,7 @@
                         </tr>
                         <tr>
                             <td>Startar</td>
-                            <td>@Model.Medication.OrdinationStartsAt.ToString("yyyy-MM-dd")</td>
+                            <td>@(Model.Medication.OrdinationStartsAt.HasValue ? Model.Medication.OrdinationStartsAt.Value.ToString("yyyy-MM-dd") :  "-")</td>
                             <td>@sequence.StartDate.ToString("yyyy-MM-dd")</td>
                         </tr>
                         <tr>

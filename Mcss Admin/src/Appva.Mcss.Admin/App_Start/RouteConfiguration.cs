@@ -6,6 +6,7 @@
 // </author>
 namespace Appva.Mcss.Admin
 {
+    using System.Collections.Generic;
     #region Imports.
 
     using System.Web.Mvc;
@@ -24,6 +25,9 @@ namespace Appva.Mcss.Admin
         /// <param name="routes">The <see cref="RouteCollection"/></param>
         public static void RegisterRoutes(RouteCollection routes)
         {
+            var routelist = new List<RouteCollection>();
+            routelist.Add(routes);
+
             routes.MapMvcAttributeRoutes();
             routes.LowercaseUrls = true;
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

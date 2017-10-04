@@ -52,6 +52,15 @@ namespace Appva.Mcss.Admin.Application.Services
         MeasurementObservation Get(Guid observationId);
 
         /// <summary>
+        /// Gets the value list by date.
+        /// </summary>
+        /// <param name="observationId">The Measurement Observation Id.</param>
+        /// <param name="startDate">The start date.</param>
+        /// <param name="endDate">The end date.</param>
+        /// <returns>IList&lt;ObservationItem&gt;<see cref="ObservationItem"/>.</returns>
+        IList<ObservationItem> GetValueListByDate(Guid observationId, DateTime startDate, DateTime endDate);
+
+        /// <summary>
         /// Gets the taxon.
         /// </summary>
         /// <param name="guid">The unique identifier.</param>
@@ -63,6 +72,57 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="observation">The observation.</param>
         void Update(MeasurementObservation observation);
+
+        /// <summary>
+        /// Gets the delegations list.
+        /// </summary>
+        /// <returns>IList&lt;Models.ITaxon&gt;.</returns>
+        IList<Models.ITaxon> GetDelegationsList();
+
+        /// <summary>
+        /// Gets the measurement observation.
+        /// </summary>
+        /// <param name="observationId">The measurement observation identifier.</param>
+        /// <returns>MeasurementObservation.</returns>
+        MeasurementObservation GetMeasurementObservation(Guid observationId);
+
+        /// <summary>
+        /// Deletes the measurement observation.
+        /// </summary>
+        /// <param name="observation">The observation.</param>
+        void DeleteMeasurementObservation(MeasurementObservation observation);
+
+        /// <summary>
+        /// Gets the value list.
+        /// </summary>
+        /// <param name="observationId">The observation identifier.</param>
+        /// <returns>IList&lt;ObservationItem&gt;.</returns>
+        IList<ObservationItem> GetValueList(Guid observationId);
+
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <param name="valueId">The value identifier.</param>
+        /// <returns>ObservationItem.</returns>
+        ObservationItem GetValue(Guid valueId);
+
+        /// <summary>
+        /// Creates the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        void CreateValue(ObservationItem value);
+
+        /// <summary>
+        /// Updates the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        void UpdateValue(ObservationItem value);
+
+        /// <summary>
+        /// Deletes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        void DeleteValue(ObservationItem value);
 
         #endregion
     }
@@ -94,6 +154,16 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly ITaxonRepository taxonRepository;
 
+        /// <summary>
+        /// The delegation service
+        /// </summary>
+        private readonly IDelegationService delegationService;
+
+        /// <summary>
+        /// The observationitem repository
+        /// </summary>
+        private readonly IObservationItemRepository itemRepository;
+
         #endregion
 
         #region Constructor
@@ -105,16 +175,21 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="measurementRepository">The MeasurementRepository<see cref="IMeasurementRepository"/>.</param>
         /// <param name="patientRepository">The PatientRepository<see cref="IPatientRepository"/>.</param>
         /// <param name="taxonRepository">The TaxonRepository<see cref="ITaxonRepository"/>.</param>
+        /// <param name="delegationService">The DelegationService<see cref="IDelegationService"/>.</param>
         public MeasurementService(
             IPersistenceContext context, 
             IMeasurementRepository measurementRepository, 
             IPatientRepository patientRepository, 
-            ITaxonRepository taxonRepository)
+            ITaxonRepository taxonRepository,
+            IDelegationService delegationService,
+            IObservationItemRepository itemRepository)
         {
             this.context = context;
             this.measurementRepository = measurementRepository;
             this.patientRepository = patientRepository;
             this.taxonRepository = taxonRepository;
+            this.delegationService = delegationService;
+            this.itemRepository = itemRepository;
         }
 
         #endregion
@@ -128,9 +203,15 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
+        public MeasurementObservation GetMeasurementObservation(Guid observationId)
+        {
+            return this.measurementRepository.Get(observationId);
+        }
+
+        /// <inheritdoc />
         public IList<MeasurementObservation> GetMeasurementObservationsList(Guid patientId)
         {
-            return this.measurementRepository.GetList(patientId);
+            return this.measurementRepository.List(patientId);
         }
 
         /// <inheritdoc />
@@ -145,6 +226,11 @@ namespace Appva.Mcss.Admin.Application.Services
             this.measurementRepository.Update(observation);
         }
 
+        /// <inheritdoc />
+        public void DeleteMeasurementObservation(MeasurementObservation observation)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
         #region IPatientRepository members
@@ -157,12 +243,64 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #endregion
 
-        #region ITaxonRepository
+        #region ITaxonRepository members
 
         /// <inheritdoc />
         public Taxon GetTaxon(Guid taxonId)
         {
+            var x = this.delegationService.ListDelegationTaxons();
             return this.taxonRepository.Get(taxonId);
+        }
+
+        #endregion
+
+        #region IDelegationService members
+
+        /// <inheritdoc />
+        public IList<Models.ITaxon> GetDelegationsList()
+        {
+            return this.delegationService.ListDelegationTaxons();
+        }
+
+
+        #endregion
+
+        #region IObservationItemRepository Members
+
+        /// <inheritdoc />
+        public IList<ObservationItem> GetValueList(Guid observationId)
+        {
+            return this.itemRepository.List(observationId);
+        }
+
+        /// <inheritdoc />
+        public IList<ObservationItem> GetValueListByDate(Guid observationId, DateTime startDate, DateTime endDate)
+        {
+            return this.itemRepository.ListByDate(observationId, startDate, endDate);
+        }
+
+        /// <inheritdoc />
+        public ObservationItem GetValue(Guid valueId)
+        {
+            return this.itemRepository.Get(valueId);
+        }
+
+        /// <inheritdoc />
+        public void CreateValue(ObservationItem value)
+        {
+            this.itemRepository.Create(value);
+        }
+
+        /// <inheritdoc />
+        public void UpdateValue(ObservationItem value)
+        {
+            this.itemRepository.Update(value);
+        }
+
+        /// <inheritdoc />
+        public void DeleteValue(ObservationItem value)
+        {
+            this.itemRepository.Delete(value);
         }
 
         #endregion

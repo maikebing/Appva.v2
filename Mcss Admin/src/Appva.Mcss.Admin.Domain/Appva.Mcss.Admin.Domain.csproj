@@ -170,6 +170,7 @@
     <Compile Include="Repositories\MeasurementRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\DelegationRepository.cs" />
+    <Compile Include="Repositories\ObservationItemRepository.cs" />
     <Compile Include="Repositories\ObservationRepository.cs" />
     <Compile Include="Repositories\PatientRepository.cs" />
     <Compile Include="Repositories\SequenceRepository.cs" />

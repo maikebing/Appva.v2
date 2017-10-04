@@ -29,7 +29,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The ID.
         /// </summary>
-        public new Guid Id
+        public Guid PatientId
         {
             get;
             set;

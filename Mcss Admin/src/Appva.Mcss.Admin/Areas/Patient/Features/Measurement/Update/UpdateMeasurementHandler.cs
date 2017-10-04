@@ -64,12 +64,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override UpdateMeasurementModel Handle(UpdateMeasurement message)
         {
-            var observation = this.service.Get(message.MeasurementObservationId);
+            var observation = this.service.Get(message.MeasurementId);
 
             return new UpdateMeasurementModel
             {
                 PatientId = message.Id,
-                MeasurementObservationId = observation.Id,
+                MeasurementId = observation.Id,
                 Name = observation.Name,
                 Instruction = observation.Description,
                 SelectUnitList = this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts)
@@ -78,7 +78,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Text = string.Format("{0} ({1})", x.Name, x.Unit),
                     Value = x.Id.ToString()
                 }),
-                SelectDelegationList = this.delegations.ListDelegationTaxons()
+                SelectDelegationList = this.service.GetDelegationsList()
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,

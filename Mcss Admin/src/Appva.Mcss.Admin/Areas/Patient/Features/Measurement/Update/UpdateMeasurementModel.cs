@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class UpdateMeasurementModel : IRequest<ListMeasurementModel>
+    public class UpdateMeasurementModel : Identity<ListMeasurementModel>
     {
         #region Variables
 
@@ -47,7 +47,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The MeasurementObservationId
         /// </summary>
-        public Guid MeasurementObservationId
+        public Guid MeasurementId
         {
             get;
             set;

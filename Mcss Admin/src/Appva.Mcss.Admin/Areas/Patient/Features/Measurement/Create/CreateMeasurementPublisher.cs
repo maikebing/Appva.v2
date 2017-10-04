@@ -63,12 +63,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region Members
+        #region RequestHandler overrides
 
         /// <inheritdoc />
         public override ListMeasurementModel Handle(CreateMeasurementModel message)
         {
-            var patient = this.service.GetPatient(message.Id);
+            var patient = this.service.GetPatient(message.PatientId);
             
             if (patient != null)
             {

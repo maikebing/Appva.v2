@@ -107,6 +107,17 @@ namespace Appva.Mcss.Admin.Domain.Entities
             return new ObservationItem(observation, measurement, signature);
         }
 
+        ///// <summary>
+        ///// Updates the specified measurement.
+        ///// </summary>
+        ///// <param name="measurement">The measurement.</param>
+        ///// <param name="signature">The signature.</param>
+        //public void Update(Measurement measurement, Signature signature)
+        //{
+        //    this.Measurement = measurement;
+        //    this.Signature = signature;
+        //}
+
         #endregion
     }
 }

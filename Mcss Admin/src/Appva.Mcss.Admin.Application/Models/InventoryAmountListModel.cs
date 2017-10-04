@@ -6,6 +6,7 @@
 // </author>
 namespace Appva.Mcss.Admin.Application.Models
 {
+    using Newtonsoft.Json;
     #region Imports.
 
     using System;
@@ -23,6 +24,7 @@ using System.Collections.Generic;
         /// <summary>
         /// The inventory id
         /// </summary>
+        //[JsonProperty("id")]
         public Guid Id
         {
             get;
@@ -32,6 +34,7 @@ using System.Collections.Generic;
         /// <summary>
         /// The name of the list.
         /// </summary>
+        //[JsonProperty("name")]
         public string Name
         {
             get;
@@ -41,6 +44,7 @@ using System.Collections.Generic;
         /// <summary>
         /// The unit.
         /// </summary>
+        //[JsonProperty("unit")]
         public string Unit
         {
             get;
@@ -50,6 +54,7 @@ using System.Collections.Generic;
         /// <summary>
         /// List of amounts in current list.
         /// </summary>
+        //[JsonProperty("amounts")]
         public IList<double> Amounts
         {
             get;

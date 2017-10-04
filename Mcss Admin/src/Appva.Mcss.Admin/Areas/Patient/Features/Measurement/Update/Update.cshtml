@@ -4,7 +4,7 @@
     <h2>Ändra observation</h2>
     <div id="add-observation">
 
-        @using (Html.BeginForm("update", "measurement", FormMethod.Post, new { @id = Model.Id, @class = "validate", novalidate = "novalidate" }))
+        @using (Html.BeginForm("update", "measurement", FormMethod.Post, new { @MeasurementObservationId = Model.MeasurementObservationId, @class = "validate", novalidate = "novalidate" }))
         {
             <div class="width-limiter width-limiter--s">
                 <div class="form-controls">
@@ -13,8 +13,8 @@
                 </div>
 
                 <div class="form-controls form-controls--text">
-                    @Html.LabelFor(x => x.Description)
-                    @Html.TextBoxFor(x => x.Description, new { @cols = "30", @rows = "5" })
+                    @Html.LabelFor(x => x.Instruction)
+                    @Html.TextBoxFor(x => x.Instruction, new { @cols = "30", @rows = "5" })
                 </div>
 
                 <div class="form-controls form-controls--select">

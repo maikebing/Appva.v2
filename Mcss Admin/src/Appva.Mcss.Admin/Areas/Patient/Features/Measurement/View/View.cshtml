@@ -1,0 +1,46 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.ViewMeasurementModel
+
+@{
+    Layout = null;
+}
+<!-- Visa detalj information, knapp för att editera, knapp för att ta bort -->
+
+<div class="distributor distributor--justified">
+    <div class="inliner">
+        <h3>@Model.Observation.Name</h3>
+        <div class="form-controls">
+            <a class="button button--right" href="https://appva-gui.azurewebsites.net/"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#pdf-icon"></use></svg>skapa PDF</a>
+        </div>
+    </div>
+    <div>
+        <div class="form-controls form-controls--inline">
+            <a class="button open-in-dialog" 
+               href="@Url.Action("update","measurement", new { MeasurementId = Model.Observation.Id })#add-observation" 
+               data-dialog-title="Lägg till mätvärde">
+                <svg class="icon icon--mr" aria-hidden="true">
+                    <use xlink:href="/project/images/icons/icon.sprite.svg#pencil-icon"></use>
+                </svg>Ändra
+            </a>
+        </div>
+        <div class="form-controls form-controls--inline">
+            <a class="button button--negative" href="@Url.Action("delete", "measurement", new { MeasurementId = Model.Observation.Id })">
+                <svg class="icon icon--mr" aria-hidden="true">
+                    <use xlink:href="/project/images/icons/icon.sprite.svg#x-icon"></use>
+                </svg>Ta bort
+            </a>
+        </div>
+    </div>
+</div>
+
+<p>@Model.Observation.Description</p>
+
+<dl>
+    <dt>Delegering</dt>
+    <dd>@Model.Observation.Delegation.Name</dd>
+</dl>
+
+
+@Html.Partial("~/Areas/Patient/Features/Measurement/View/Partials/_ViewStatistics.cshtml", Model)
+
+@Html.Partial("~/Areas/Patient/Features/Measurement/View/Partials/_ViewValues.cshtml", Model)

@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListMeasurementModel Handle(UpdateMeasurementModel message)
         {
-            var observation = this.service.Get(message.MeasurementObservationId);
+            var observation = this.service.Get(message.MeasurementId);
 
             if (observation != null)
             {

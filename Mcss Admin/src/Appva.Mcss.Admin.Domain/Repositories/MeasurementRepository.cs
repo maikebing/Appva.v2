@@ -31,7 +31,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// </summary>
         /// <param name="patientId">The patient identifier.</param>
         /// <returns>IList&lt;MeasurementObservation&gt;.</returns>
-        IList<MeasurementObservation> GetList(Guid patientId);
+        IList<MeasurementObservation> List(Guid patientId);
 
         /// <summary>
         /// Creates the measurement observation.
@@ -43,7 +43,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// Updates the specified observation.
         /// </summary>
         /// <param name="observation">The observation<see cref="MeasurementObservation"/>.</param>
-        void Update(MeasurementObservation observation);
+        void Update(MeasurementObservation measurementObservation);
+
+        /// <summary>
+        /// Deletes the specified measurement observation.
+        /// </summary>
+        /// <param name="measurementObservation">The measurement observation<see cref="MeasurementObservation"/>.</param>
+        void Delete(MeasurementObservation measurementObservation);
 
         #endregion
     }
@@ -69,11 +75,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IMeasurementRepository Members
 
         /// <inheritdoc />
-        public IList<MeasurementObservation> GetList(Guid patientId)
+        public IList<MeasurementObservation> List(Guid patientId)
         {
             return this.Context.QueryOver<MeasurementObservation>()
                 .Where(x => x.IsActive)
                 .And(x => x.Patient.Id == patientId)
+                .OrderBy(x => x.Name).Asc
                 .List();
         }
 
@@ -81,6 +88,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public void Create(MeasurementObservation measurementObservation)
         {
             this.Save(measurementObservation);
+        }
+
+        /// <inheritdoc />
+        public void Delete(MeasurementObservation measurementObservation)
+        {
+            this.Context.Delete(measurementObservation);
         }
 
         #endregion

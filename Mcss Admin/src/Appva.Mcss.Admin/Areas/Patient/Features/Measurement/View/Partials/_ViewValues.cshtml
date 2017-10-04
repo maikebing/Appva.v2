@@ -1,0 +1,66 @@
+﻿@model Appva.Mcss.Admin.Models.ViewMeasurementModel
+
+<div class="grid grid--align-bottom">
+    <div data-size="xs:24 s:24 m:24 l:18 xl:20">
+        <form action="@Url.Action("view", "measurement", new { measurementId = Model.Observation.Id })#update-table" class="validate" data-update-section-target="update-table" data-update-section-autopost="true" aria-controls="update-table" novalidate="novalidate">
+            <div class="grid grid--align-bottom">
+                <div data-size="xs:24 s:24 m:10 l:8 xl:6">
+                    <div class="form-controls date-picker">
+                        <label for="id582eeaa156a6b">Från</label>
+                        @Html.LabelFor(x => x.StartDate, "Från")
+                        @Html.TextBoxFor(x => x.StartDate, new { @class = "datepicker hasDatepicker", data_datepicker_limit = "past", data_rule_date = "true" })
+                        @*<input id="id582eeaa156a6b" class="datepicker hasDatepicker" data-datepicker-limit="past" data-rule-date="true" name="id582eeaa156a6b">*@
+                        <img class="ui-datepicker-trigger" src="Provtagning%20_%20Webbplatsnamn_files/calendar.svg" alt="Välj datum" title="Välj datum">
+                    </div>
+                </div>
+                <div data-size="xs:24 s:24 m:10 l:8 xl:6">
+                    <div class="form-controls date-picker">
+                        @Html.LabelFor(x => x.EndDate, "Till")
+                        @Html.TextBoxFor(x => x.EndDate, new { @class = "datepicker hasDatepicker", data_datepicker_limit = "past", data_rule_greaterthan = "#StartDate", data_rule_date = "true", data_msg_greaterthan = "Slutdatum måste vara senare än startdatumet" })
+                        @*<input id="idC9936FD6-AB04-4D72-907D-C66FC3CF657F" class="datepicker hasDatepicker" data-datepicker-limit="past" data-rule-greaterthan="#id582eeaa156a6b" data-rule-date="true" data-msg-greaterthan="Slutdatum måste vara senare än startdatumet" name="idC9936FD6-AB04-4D72-907D-C66FC3CF657F">*@
+                        <img class="ui-datepicker-trigger" src="Provtagning%20_%20Webbplatsnamn_files/calendar.svg" alt="Välj datum" title="Välj datum">
+                    </div>
+                </div>
+                <div data-size="xs:24 s:24 m:4 l:2 xl:1">
+                    <div class="form-controls js-hidden">
+                        <button type="submit" class="button">Visa</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div data-size="xs:24 s:24 m:24 l:6 xl:4">
+        <div class="form-controls form-controls--align-end">
+            <a class="button open-in-dialog" href="@Url.Action("addvalue", "measurement", new { measurementId = Model.Observation.Id })#add-observation-value" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use></svg>Mata in värde</a>
+        </div>
+    </div>
+</div>
+
+<table class="table-general table-general--descending" id="update-table" aria-live="polite" role="region">
+    <thead>
+        <tr>
+            <th></th>
+            <th scope="col">Datum</th>
+            <th scope="col">Värde</th>
+            <th scope="col">Signerad av</th>
+            <th scope="col"><span class="visually-hidden">Åtgärder</span></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Values != null)
+        {
+            foreach (var item in Model.Values)
+            {
+                <tr>
+                    <td> </td>
+                    <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+                    <td>@item.Measurement.Value @Model.Unit</td>
+                    <td>@item.Signature.Who.FullName</td>
+                    <td> </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

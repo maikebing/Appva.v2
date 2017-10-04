@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The Measurement Observation Id.
         /// </summary>
-        public Guid MeasurementObservationId
+        public Guid MeasurementId
         {
             get;
             set;

@@ -67,22 +67,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override CreateMeasurementModel Handle(CreateMeasurement message)
         {
-            var model = new CreateMeasurementModel();
-            model.Id = message.Id;
-            model.SelectUnitList = this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                .Select(x => new SelectListItem
-                {
+            return new CreateMeasurementModel
+            {
+                PatientId = message.Id,
+                SelectUnitList = this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts)
+                .Select(x => new SelectListItem {
                     Text = string.Format("{0} ({1})", x.Name, x.Unit),
                     Value = x.Id.ToString()
-                });
-
-            model.SelectDelegationList = this.delegations.ListDelegationTaxons()
+                }),
+                SelectDelegationList = this.service.GetDelegationsList()
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
-                });
-            return model;
+                })
+            };
         }
 
         #endregion

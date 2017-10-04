@@ -103,7 +103,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     sequence.Description, 
                     sequence.Patient, 
                     sequence.Schedule.ScheduleSettings.ArticleCategory, 
-                    ArticleStatus.Refilled.ToString()
+                    ArticleStatus.NotStarted
                 );
 
                 this.context.Save(article);

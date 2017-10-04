@@ -83,7 +83,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                 Description = message.Description,
                 ArticleCategory = category,
                 Patient = patient,
-                Status = ArticleStatus.Refilled.ToString()
+                Status = ArticleStatus.NotStarted
             };
 
             this.articleRepository.Save(article);

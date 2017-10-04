@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="patientId">The patient <see cref="Guid"/>.</param>
         /// <param name="categories">A collection of <see cref="ArticleCategory"/>.</param>
         /// <returns>A collection of refilled <see cref="Article"/>.</returns>
-        IList<Article> ListByRefilledArticles(Guid patientId, IList<ArticleCategory> categories = null);
+        IList<Article> List(Guid patientId, IList<ArticleCategory> categories = null);
 
         /// <summary>
         /// Updates an <see cref="Article"/>.
@@ -131,7 +131,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             var query = this.persistenceContext.QueryOver<Article>()
                 .Where(x => x.Patient.Id == patientId)
-                    .And(x => x.Refill == true)
+                    .And(x => x.Status != ArticleStatus.NotStarted)
                         .And(x => x.IsActive == true);
 
             if(categories != null)
@@ -145,12 +145,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public IList<Article> ListByRefilledArticles(Guid patientId, IList<ArticleCategory> categories = null)
+        public IList<Article> List(Guid patientId, IList<ArticleCategory> categories = null)
         {
             var query = this.persistenceContext.QueryOver<Article>()
                 .Where(x => x.Patient.Id == patientId)
-                    .And(x => x.Refill == false)
-                        .And(x => x.IsActive == true);
+                .And(x => x.IsActive == true);
 
             if (categories != null)
             {

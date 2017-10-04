@@ -71,8 +71,7 @@ namespace Appva.Mcss.Admin.Application.Transformers
                 OrderedBy = article.RefillOrderedBy,
                 OrderDate = article.RefillOrderDate,
                 FormattedOrderDate = article.RefillOrderDate.Value.Day == DateTime.Now.Day ? "idag" : (article.RefillOrderDate.Value.Day == DateTime.Now.Day - 1 ? "igår" : article.RefillOrderDate.Value.ToString("d MMM yyyy")),
-                SelectedOrderOptionKey = article.Status,
-                SelectedOrderOptionValue = this.service.GetOrderOptions().FirstOrDefault(x => x.Key == article.Status).Value,
+                Status = article.Status,
                 Patient = article.Patient
             };
         }

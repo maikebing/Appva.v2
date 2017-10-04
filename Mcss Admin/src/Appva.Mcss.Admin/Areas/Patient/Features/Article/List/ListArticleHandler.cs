@@ -117,7 +117,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var account = this.accountService.Find(this.identityService.PrincipalId);
             var categories = this.articleService.GetRoleArticleCategoryList(account);
             var orderedArticles = this.articleRepository.ListByOrderedArticles(message.Id, categories).OrderByDescending(x => x.RefillOrderDate);
-            var refilledArticles = this.articleRepository.ListByRefilledArticles(message.Id, categories).OrderByDescending(x => x.CreatedAt).ToList();
+            var articles = this.articleRepository.List(message.Id, categories).OrderByDescending(x => x.Name).ToList();
             var patient = this.patientService.Get(message.Id);
             var patientViewModel = this.patientTransformer.ToPatient(patient);
 
@@ -132,8 +132,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new ListArticleModel
             {
                 OrderedArticles = articleModelList,
-                RefilledArticles = refilledArticles,
-                HasArticles = articleModelList.Count > 0 || refilledArticles.Count > 0 ? true : false,
+                Articles = articles,
+                HasArticles = articleModelList.Count > 0 || articles.Count > 0 ? true : false,
                 Patient = patientViewModel,
                 OrderOptions = this.articleService.GetOrderOptions()
             };

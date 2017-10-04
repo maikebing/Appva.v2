@@ -1,5 +1,5 @@
-﻿@using Appva.Mcss.Admin.Application.Common;
-@using Appva.Mcss.Application.Models;
+﻿@using Appva.Mcss.Admin.Domain.Entities;
+@using Appva.Mcss.Admin.Application.Common;
 @model ListArticleModel
 @{
     SetTitle("Beställningslista");
@@ -35,7 +35,7 @@
                             <tbody>
                                 @for(int i = 0; i < Model.OrderedArticles.Count; i++)
                                 {
-                                    <tr class="@(Model.OrderedArticles[i].SelectedOrderOptionKey == ArticleStatus.OrderedFromSupplier.ToString() ? Html.Raw("table-general__row--yellow") : Html.Raw(string.Empty))@(i % 2 != 0 ? Html.Raw(" table-general--even") : Html.Raw(""))">
+                                    <tr class="@(Model.OrderedArticles[i].Status == ArticleStatus.OrderedFromSupplier ? Html.Raw("table-general__row--yellow") : Html.Raw(string.Empty))@(i % 2 != 0 ? Html.Raw(" table-general--even") : Html.Raw(""))">
                                         <td>@Model.OrderedArticles[i].Name</td>
                                         <td>@Model.OrderedArticles[i].Description</td>
                                         <td>@Model.OrderedArticles[i].Category.Name</td>
@@ -45,8 +45,8 @@
                                         {
                                             <td class="inliner">
                                                 <div class="control-container control-container--select control-container--no-margin">
-                                                    @Html.LabelFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, "Status", new { @class = "visually-hidden" })
-                                                    @Html.DropDownListFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].SelectedOrderOptionKey), new { @class = "select-style" })
+                                                    @Html.LabelFor(x => x.OrderedArticles[i].Status, "Status", new { @class = "visually-hidden" })
+                                                    @Html.DropDownListFor(x => x.OrderedArticles[i].Status, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].Status), new { @class = "select-style" })
                                                 </div>
                                                 <div class="control-container control-container--no-margin">
                                                     @Html.HiddenFor(x => x.OrderedArticles[i].Id)
@@ -55,7 +55,7 @@
                                         }
                                         else
                                         { 
-                                            <td>@Model.OrderedArticles[i].SelectedOrderOptionValue</td>
+                                            <td>@Model.OrderedArticles[i].Status</td>
                                         }
                                     </tr>
                                 }
@@ -75,14 +75,14 @@
             }
         </div>
     }
-    else if(Model.RefilledArticles.Count > 0 && Model.OrderedArticles.Count == 0)
+    else if(Model.Articles.Count > 0 && Model.OrderedArticles.Count == 0)
     {
         <div class="section section--lightblue section--hspace section--vspace">
             <p>Alla artiklar är påfyllda.</p>
         </div>
     }
     @(Model.HasArticles == false ? Html.Raw("") : Html.Raw("<h2>Artiklar</h2>"))
-    @if (Model.RefilledArticles.Count > 0)
+    @if (Model.Articles.Count > 0)
     {
         <table class="table-general">
             <thead>
@@ -97,22 +97,22 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.RefilledArticles.Count; i++)
+                @for (int i = 0; i < Model.Articles.Count; i++)
                 {
                     <tr class="@(i % 2 != 0 ? Html.Raw("table-general--even") : Html.Raw(""))">
-                        <td>@Model.RefilledArticles[i].Name</td>
-                        <td>@(Model.RefilledArticles[i].Description == null ? string.Empty : Model.RefilledArticles[i].Description)</td>
-                        <td>@(Model.RefilledArticles[i].ArticleCategory == null || Model.RefilledArticles[i].ArticleCategory.IsActive == false ? Html.Raw("&mdash;") : Html.Raw(Model.RefilledArticles[i].ArticleCategory.Name))</td>
+                        <td>@Model.Articles[i].Name</td>
+                        <td>@(Model.Articles[i].Description == null ? string.Empty : Model.Articles[i].Description)</td>
+                        <td>@(Model.Articles[i].ArticleCategory == null || Model.Articles[i].ArticleCategory.IsActive == false ? Html.Raw("&mdash;") : Html.Raw(Model.Articles[i].ArticleCategory.Name))</td>
                         @if (Html.HasPermissionFor(Permissions.OrderList.Edit) || Html.HasPermissionFor(Permissions.OrderList.Delete))
                         {
                             <td>
                                 @if (Html.HasPermissionFor(Permissions.OrderList.Edit))
                                 {
-                                    @Html.ActionLink("Ändra", "Edit", "Article", null, null, "add-item-to-order-list", new { Article = Model.RefilledArticles[i].Id }, new { @class = "button button--inline open-in-dialog", @data_dialog_title = "Ändra artikel" })
+                                    @Html.ActionLink("Ändra", "Edit", "Article", null, null, "add-item-to-order-list", new { Article = Model.Articles[i].Id }, new { @class = "button button--inline open-in-dialog", @data_dialog_title = "Ändra artikel" })
                                 }
                                 @if (Html.HasPermissionFor(Permissions.OrderList.Delete))
                                 {
-                                    @Html.ActionLink("Ta bort", "Delete", "Article", null, null, "remove-item", new { Article = Model.RefilledArticles[i].Id }, new { @class = "button button--negative button--inline open-in-dialog", @data_dialog_title = "Ta bort artikel" })
+                                    @Html.ActionLink("Ta bort", "Delete", "Article", null, null, "remove-item", new { Article = Model.Articles[i].Id }, new { @class = "button button--negative button--inline open-in-dialog", @data_dialog_title = "Ta bort artikel" })
                                 }
                             </td>
                         }

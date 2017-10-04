@@ -91,33 +91,18 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void UpdateStatus(IList<ArticleModel> list, Guid userId)
         {
+            var account = this.accountRepository.Find(userId);
             foreach (var orderedArticle in list)
             {
                 var article = this.articleRepository.Get(orderedArticle.Id);
-                var account = this.accountRepository.Find(userId);
 
-                if (article != null && account != null && article.Status != orderedArticle.SelectedOrderOptionKey)
+                if (article != null && article.Status != orderedArticle.Status)
                 {
-                    bool isRefilled = orderedArticle.SelectedOrderOptionKey == ArticleStatus.Refilled.ToString();
-                    string selectedOrderOption = this.GetOrderOptions().FirstOrDefault(x => x.Key == orderedArticle.SelectedOrderOptionKey).Value;
-
-                    article.Refill = isRefilled ? false : true;
-                    article.RefillOrderDate = isRefilled ? (DateTime?)null : article.RefillOrderDate;
-                    article.RefillOrderedBy = isRefilled ? null : article.RefillOrderedBy;
-                    article.Ordered = isRefilled ? true : false;
-                    article.OrderDate = isRefilled ? DateTime.Now : article.OrderDate;
-                    article.OrderedBy = isRefilled ? account : null;
-                    article.Status = isRefilled ? ArticleStatus.Refilled.ToString() : orderedArticle.SelectedOrderOptionKey;
+                    article.UpdateStatus(orderedArticle.Status, account);
                     this.articleRepository.Update(article);
 
-                    if (isRefilled)
-                    {
-                        this.auditing.Update(article.Patient, "fyllde på {0} ({1})", article.Name, article.Id);
-                    }
-                    else
-                    {
-                        this.auditing.Update(article.Patient, "ändrade orderstatus för {0} ({1}) till {2}", article.Name, article.Id, selectedOrderOption.ToLower());
-                    }
+                    this.auditing.Update(article.Patient, "ändrade orderstatus för {0} ({1}) till {2}", article.Name, article.Id, article.Status.ToString().ToLower());
+
                 }
             }
         }
@@ -127,9 +112,9 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             return new Dictionary<string, string>
             {
-                { ArticleStatus.NotStarted.ToString(), "Påfyllning begärd" },
+                { ArticleStatus.RefillRequested.ToString(), "Påfyllning begärd" },
                 { ArticleStatus.OrderedFromSupplier.ToString(), "Beställd" },
-                { ArticleStatus.Refilled.ToString(), "Påfylld" }
+                { ArticleStatus.NotStarted.ToString(), "Påfylld" }
             };
         }
 

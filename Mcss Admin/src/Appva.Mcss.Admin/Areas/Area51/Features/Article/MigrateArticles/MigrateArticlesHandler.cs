@@ -104,13 +104,11 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             {
                 Name = sequence.Name,
                 Description = sequence.Description,
-                Refill = false,
                 RefillOrderDate = null,
                 RefillOrderedBy = null,
-                Ordered = true,
                 OrderDate = null,
                 OrderedBy = null,
-                Status = ArticleStatus.Refilled.ToString(),
+                Status = ArticleStatus.NotStarted,
                 Patient = sequence.Patient,
                 ArticleCategory = sequence.Schedule.ScheduleSettings.ArticleCategory
             };
@@ -119,9 +117,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             {
                 if (sequence.RefillInfo.Refill == true)
                 {
-                    article.Refill = true;
-                    article.Ordered = false;
-                    article.Status = ArticleStatus.NotStarted.ToString();
+                    article.Status = ArticleStatus.RefillRequested;
                     article.RefillOrderedBy = sequence.RefillInfo.RefillOrderedBy;
                     article.RefillOrderDate = sequence.RefillInfo.RefillOrderedDate;
                 }

@@ -150,11 +150,9 @@
     <property name="Description" type="StringClob">
       <column name="Description" sql-type="NVARCHAR(MAX)" />
     </property>
-    <property name="Refill" />
     <property name="RefillOrderDate" />
-    <property name="Ordered" />
     <property name="OrderDate" />
-    <property name="Status" />
+    <property name="Status" type="NHibernate.Type.EnumStringType`1[[ Appva.Mcss.Admin.Domain.Entities.ArticleStatus, Appva.Mcss.Admin.Domain]], NHibernate" />
     <many-to-one name="OrderedBy" class="Account" />
     <many-to-one name="RefillOrderedBy" class="Account" />
     <many-to-one name="ArticleCategory" class="ArticleCategory" />

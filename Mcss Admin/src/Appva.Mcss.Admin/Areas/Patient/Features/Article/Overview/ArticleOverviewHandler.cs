@@ -107,7 +107,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             var orders = this.persistence.QueryOver<Article>()
                 .Where(x => x.IsActive)
-                    .And(x => x.Refill == true)
+                    .And(x => x.Status == ArticleStatus.RefillRequested)
                         .Fetch(x => x.RefillOrderedBy).Eager
                             .JoinAlias(x => x.ArticleCategory, () => articleCategory)
                                 .WhereRestrictionOn(() => articleCategory.Id)

@@ -99,7 +99,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The refill order status.
         /// </summary>
-        public virtual string Status
+        public virtual ArticleStatus Status
         {
             get;
             set;
@@ -116,6 +116,33 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
+        #region Public members.
+
+        /// <summary>
+        /// Updates the status.
+        /// </summary>
+        /// <param name="withStatus">The with status.</param>
+        /// <param name="byUser">The by user.</param>
+        public virtual void UpdateStatus(ArticleStatus withStatus, Account byUser)
+        {
+            this.Status = withStatus;
+            switch (withStatus)
+            {
+                case ArticleStatus.NotStarted:
+                    break;
+                case ArticleStatus.RefillRequested:
+                    this.RefillOrderedBy = byUser;
+                    this.RefillOrderDate = DateTime.Now;
+                    break;
+                case ArticleStatus.OrderedFromSupplier:
+                    this.OrderedBy = byUser;
+                    this.OrderDate = DateTime.Now;
+                    break;
+            }
+        }
+
+        #endregion
+
         #region Public static methods.
 
         /// <summary>
@@ -127,7 +154,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="category">The <see cref="ArticleCategory"/>.</param>
         /// <param name="orderStatus">The article order status.</param>
         /// <returns>A new <see cref="Article"/>.</returns>
-        public static Article CreateNew(string name, string description, Patient patient, ArticleCategory category, string orderStatus)
+        public static Article CreateNew(string name, string description, Patient patient, ArticleCategory category, ArticleStatus status)
         {
             return new Article
             {
@@ -137,12 +164,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
                 RefillOrderedBy = null,
                 OrderDate = null,
                 OrderedBy = null,
-                Status = orderStatus,
+                Status = status,
                 Patient = patient,
                 ArticleCategory = category
             };
         }
 
         #endregion
+    }
+
+    public enum ArticleStatus
+    {
+        NotStarted,
+        RefillRequested,
+        OrderedFromSupplier
     }
 }

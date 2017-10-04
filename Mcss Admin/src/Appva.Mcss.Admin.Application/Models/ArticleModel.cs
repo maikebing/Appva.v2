@@ -14,13 +14,6 @@ namespace Appva.Mcss.Application.Models
 
     #endregion
 
-    public enum ArticleStatus
-    {
-        NotStarted,
-        OrderedFromSupplier,
-        Refilled
-    }
-
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
@@ -83,20 +76,13 @@ namespace Appva.Mcss.Application.Models
         /// <summary>
         /// The selected order option key.
         /// </summary>
-        public string SelectedOrderOptionKey
+        public ArticleStatus Status
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// The selected order option value.
-        /// </summary>
-        public string SelectedOrderOptionValue
-        {
-            get;
-            set;
-        }
+       
 
         /// <summary>
         /// Displays a formatted order date.

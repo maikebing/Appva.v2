@@ -33,7 +33,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// A list of refilled articles.
         /// </summary>
-        public IList<Article> RefilledArticles
+        public IList<Article> Articles
         {
             get;
             set;

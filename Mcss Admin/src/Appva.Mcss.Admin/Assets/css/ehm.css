@@ -108,7 +108,6 @@
     background:rgb(201,73,73);
     padding:8px;
     border-radius:5px;
-
 }
 
 
@@ -301,6 +300,14 @@
 
 #ehm .e-panel table.compare-table tr td:first-child{
     font-weight:bold;
+}
+
+#ehm .info span.label {
+    background:#637491;
+    color:#fff;
+    border-radius:20px;
+    padding:5px 10px;
+    font-size:12px;
 }
 
 /* Errors */

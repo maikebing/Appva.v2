@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Application.Security
     #region Imports.
 
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using Appva.Core.Logging;
     using Appva.GrandId;
@@ -20,6 +21,9 @@ namespace Appva.Mcss.Admin.Application.Security
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Microsoft.Owin;
+    using Appva.Mcss.Admin.Application.Models;
+    using System.Security.Claims;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -48,6 +52,14 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <param name="sessionId">The session ID.</param>
         /// <returns>A <see cref="Task{bool}"/>; true if successful.</returns>
         Task<bool> LogoutAsync(string sessionId);
+
+        /// <summary>
+        /// Signs in a user account to the web application.
+        /// </summary>
+        /// <param name="account">The user account</param>
+        /// <param name="hsaAttributes">The HSA attributes</param>
+        /// <param name="isPersistent">Whether or not persistent cookies are enabled, defaults to false</param>
+        void SignIn(Account account, HsaAttributes hsaAttributes, bool isPersistent = false);
     }
 
     /// <summary>
@@ -181,6 +193,29 @@ namespace Appva.Mcss.Admin.Application.Security
                 Log.Warn("GrandID 'Logout' session is not deleted for session ID {0}", sessionId);
             }
             return response.IsSessionDeleted;
+        }
+
+        /// <inheritdoc />
+        public void SignIn(Account account, HsaAttributes hsaAttributes, bool isPersistent = false)
+        {
+            if (account == null)
+            {
+                return;
+            }
+            this.auditing.SignIn(account);
+
+            //// Issue standard-claims and add extra from HSA attributes
+            var claims = this.IssueClaims(account, this.method).ToList();
+            claims.Add(new Claim(PrincipalExtensions.LegitimationCodeClaimType, hsaAttributes.LegitimationCode));
+            claims.Add(new Claim(PrincipalExtensions.PrescriberCodeClaimType, hsaAttributes.PrescriberCode));
+
+            this.IssueToken(
+                new ClaimsPrincipal(
+                    new ClaimsIdentity(claims, this.method.Value)),
+                    this.method,
+                    this.type,
+                    null,
+                    isPersistent);
         }
 
         #endregion

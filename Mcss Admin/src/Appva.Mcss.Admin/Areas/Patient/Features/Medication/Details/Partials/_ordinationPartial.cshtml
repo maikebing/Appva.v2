@@ -92,15 +92,19 @@
         </div>
     </div>
     <div class="info cf">
-        <h4>Expidition</h4>
+        <h4>
+            Expidition
+            @if (Model.RemainingExpiditions.GetValueOrDefault() == 0)
+            {
+                <span class="label">Alla uttag gjorda</span>
+            }
+        </h4>
+
         <div class="param-box">
             <label for="ordinator">Återstående uttag</label>
             <p name="ordinator">
                 @string.Format("{0} av {1}", Model.RemainingExpiditions.GetValueOrDefault(), Model.NumbersOfExpiditions.GetValueOrDefault())
-                @if (Model.RemainingExpiditions.GetValueOrDefault() == 0)
-                {
-                    
-                }
+               
             </p>
         </div>
         <div class="param-box">

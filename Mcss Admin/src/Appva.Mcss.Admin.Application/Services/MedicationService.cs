@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using Appva.Ehm;
     using Appva.Ehm.Models;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Transformers;
@@ -85,6 +86,16 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IMedicationRepository medicationRepository;
 
+        /// <summary>
+        /// The <see cref="IAccountService"/>.
+        /// </summary>
+        private readonly IAccountService accountService;
+
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
         #endregion
 
         #region Constructor.
@@ -97,13 +108,17 @@ namespace Appva.Mcss.Admin.Application.Services
             IIdentityService identity, 
             IPatientService patientService,
             ISequenceRepository sequenceRepository,
-            IMedicationRepository medicationRepository)
+            IMedicationRepository medicationRepository,
+            IAccountService accountService,
+            ITaxonomyService taxonomyService)
         {
             this.ehmClient              = ehmClient;
             this.identity               = identity;
             this.patientService         = patientService;
             this.sequenceRepository     = sequenceRepository;
             this.medicationRepository   = medicationRepository;
+            this.accountService         = accountService;
+            this.taxonomyService        = taxonomyService;
         }
 
         #endregion
@@ -115,25 +130,23 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var patient = this.patientService.Get(patientId);
             var account = this.identity.PrincipalId;
-            //// TODO: Insert auth for eHM here
-            var user = new User();
 
-            var ordinations = await this.ehmClient.ListOrdinations(patient.PersonalIdentityNumber.ToString(), user);
+            var ordinations = await this.ehmClient.ListOrdinations(patient.PersonalIdentityNumber.ToString(), GetUser());
 
             return MedicationTransformer.From(ordinations)
                 .OrderByDescending(x => x.EndsAt.GetValueOrDefault(DateTime.MaxValue))
                 .ThenByDescending(x => x.Article.Name).ToList();
         }
 
+        
+
         /// <inheritdoc />
         public async Task<Medication> Find(long id, Guid patientId)
         {
             var patient = this.patientService.Get(patientId);
             var account = this.identity.PrincipalId;
-            //// TODO: Insert auth for eHM here
-            var user = new User();
 
-            var ordinations = await this.ehmClient.ListOrdinations(patient.PersonalIdentityNumber.ToString(), user);
+            var ordinations = await this.ehmClient.ListOrdinations(patient.PersonalIdentityNumber.ToString(), GetUser());
             var ordination = ordinations.FirstOrDefault(x => x.Id == id);
 
             return MedicationTransformer.From(ordination);
@@ -174,6 +187,32 @@ namespace Appva.Mcss.Admin.Application.Services
             this.medicationRepository.Save(entity);
         }
 
+
+        #endregion
+
+        #region Private members
+
+        /// <summary>
+        /// Gets the user.
+        /// </summary>
+        /// <returns></returns>
+        private User GetUser()
+        {
+            var account = this.accountService.Find(this.identity.PrincipalId);
+            return new User
+            {
+                PrescriberCode = this.identity.Principal.PrescriberCode(),
+                LegitimationCode = this.identity.Principal.LegitimationCode(),
+                Adress = "Nordenskiöldsgatan 14",
+                City = "Göteborg",
+                FirstName = account.FirstName,
+                LastName = account.LastName,
+                Phone = "076 336 39 62",
+                WorkplaceCode = "2002020200202",
+                Zip = "413 09",
+                Workplace = this.taxonomyService.Find(this.identity.Principal.Location()).Address
+            };
+        }
 
         #endregion
     }

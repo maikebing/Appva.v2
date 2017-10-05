@@ -177,6 +177,7 @@
     <Compile Include="Models\ConfirmDeviationMessage.cs" />
     <Compile Include="Models\DelegationCategoryModel.cs" />
     <Compile Include="Models\DelegationViewModel.cs" />
+    <Compile Include="Models\HsaAttributes.cs" />
     <Compile Include="Models\InventoryAmountListModel.cs" />
     <Compile Include="Models\ListInventoryRecountItem.cs" />
     <Compile Include="Models\MedicationModel.cs" />

@@ -177,7 +177,7 @@
                                     @med.EndsAt.Value.ToString("yyyy-MM-dd")
                                     if (med.IsCanceled)
                                     {
-                                        <span>M</span>
+                                        <span title="@string.Format("Mackulerad, {0}", med.CancellationReason)" class="canceled">M</span>
                                     }
                                 }
 

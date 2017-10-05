@@ -78,17 +78,17 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
-        private readonly IAuditService auditing;
+        protected readonly IAuditService auditing;
 
         /// <summary>
         /// The <see cref="AuthenticationMethod"/>.
         /// </summary>
-        private readonly AuthenticationMethod method;
+        protected readonly AuthenticationMethod method;
 
         /// <summary>
         /// The authentication type currently enabled.
         /// </summary>
-        private readonly AuthenticationType type;
+        protected readonly AuthenticationType type;
 
         #endregion
 
@@ -213,12 +213,6 @@ namespace Appva.Mcss.Admin.Application.Security
             if (account.Taxon != null)
             {
                 retval.Add(new Claim(Core.Resources.ClaimTypes.Taxon, account.Taxon.Id.ToString()));
-            }
-
-            if (method == AuthenticationMethod.Siths)
-            {
-                retval.Add(new Claim(PrincipalExtensions.LegitimationCodeClaimType, "9001371"));
-                retval.Add(new Claim(PrincipalExtensions.PrescriberCodeClaimType , ""));
             }
             
             //// Add the location-claim

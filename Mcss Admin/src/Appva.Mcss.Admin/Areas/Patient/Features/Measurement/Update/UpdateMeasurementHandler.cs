@@ -66,9 +66,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var observation = this.service.Get(message.MeasurementId);
 
-            return new UpdateMeasurementModel
+            var model = new UpdateMeasurementModel
             {
-                PatientId = message.Id,
                 MeasurementId = observation.Id,
                 Name = observation.Name,
                 Instruction = observation.Description,
@@ -85,6 +84,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Value = x.Id.ToString()
                 })
             };
+            return model;
         }
 
         #endregion

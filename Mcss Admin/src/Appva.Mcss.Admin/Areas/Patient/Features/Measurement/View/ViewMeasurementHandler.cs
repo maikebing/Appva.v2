@@ -49,7 +49,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var model = new ViewMeasurementModel();
             model.Observation = this.service.GetMeasurementObservation(message.MeasurementId);
             model.Unit = JsonConvert.DeserializeObject<IList<InventoryAmountListModel>>(model.Observation.Scale)[0].Unit;
-            //model.Unit = JsonConvert.DeserializeObject<dynamic>(model.Observation.Scale).Unit;
             if (message.StartDate == null && message.EndDate == null)
             {
                 model.Values = this.service.GetValueList(model.Observation.Id);

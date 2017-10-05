@@ -27,15 +27,6 @@ namespace Appva.Mcss.Admin.Models
         #region Variables
 
         /// <summary>
-        /// The PatientId
-        /// </summary>
-        public Guid PatientId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The MeasurementObservation.
         /// </summary>
         public MeasurementObservation MeasurementObservation

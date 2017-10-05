@@ -3,32 +3,35 @@
 <div class="section section--hspace">
     <h2>Provtagning</h2>
     <div id="add-observation-value">
-        <form action="@Url.Action("addvalue", "measurement", new { measurementId = Model.Observation.Id })#update-table" class="validate" data-update-section-target="update-table" aria-controls="update-table" novalidate="novalidate">
+
+        @using (Html.BeginForm("addvalue", "measurement", new { MeasurementId = Model.MeasurementId }, FormMethod.Post, new { @class = "validate", data_update_section_target = "update-table", aria_controls = "update-table", novalidate = "novalidate" }))
+        {
             <div class="width-limiter width-limiter--s">
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary()
 
-                <h3>@Model.Observation.Name</h3>
-                <p>@Model.Observation.Description</p>
+                <h3>@Model.Name</h3>
+                <p>@Model.Instruction</p>
 
 
                 <div class="form-controls">
 
-                    @Html.LabelFor(x => x.Value, String.Format("Värde (i {0})", Model.Unit), new { @class = "required-indicator" })
+                    @Html.LabelFor(x => x.Unit, String.Format("Värde (i {0})", Model.Unit), new { @class = "required-indicator" })
 
                     @*<label for="id59d4c69331587">Värde (i @Model.Unit) <b class="required-indicator">*</b></label>*@
 
                     <span class="numberspinner">
-                    <button class="button decrease" tabindex="-1">
-                        <span class="visually-hidden">Minska Värde (i kg) <b class="required-indicator">*</b></span>
-                        <svg class="icon icon--small icon--w" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
+                        <button class="button decrease" tabindex="-1">
+                            <span class="visually-hidden">Minska Värde (i kg) <b class="required-indicator">*</b></span>
+                            <svg class="icon icon--small icon--w" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
                         </button>
 
                         @Html.TextBoxFor(x => x.Value, new { min = "0", size = "3", required = "required", aria_required = "true", type = "number" })
+                        @Html.ValidationMessageFor(x => x.Value)
                         @*<input id="id59d4c69331587" name="id59d4c69331587" min="0" size="3" required="required" aria-required="true" type="number">*@
-                    <button class="button increase" tabindex="-1">
-                        <span class="visually-hidden">Öka Värde (i kg) <b class="required-indicator">*</b></span>
-                        <svg class="icon icon--small icon--e" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
+                        <button class="button increase" tabindex="-1">
+                            <span class="visually-hidden">Öka Värde (i kg) <b class="required-indicator">*</b></span>
+                            <svg class="icon icon--small icon--e" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
                         </button>
                     </span>
                 </div>
@@ -37,6 +40,20 @@
                     <button type="submit" class="button button--primary">Spara och signera</button>
                 </div>
             </div>
-        </form>
+        }
+
+        @*<form action="@Url.Action("addvalue", "measurement", new { measurementId = Model.MeasurementId })#update-table" class="validate" method="post" data-update-section-target="update-table" aria-controls="update-table" novalidate="novalidate">
+
+
+
+
+
+
+
+        </form>*@
+
+
+
+
     </div>
 </div>

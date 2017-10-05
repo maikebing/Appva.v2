@@ -10,10 +10,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.VO;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -61,7 +63,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ViewMeasurementModel Handle(AddMeasurementValueModel message)
         {
             var account = this.account.CurrentPrincipal();
-            var observation = this.service.GetMeasurementObservation(message.Id);
+            var observation = this.service.GetMeasurementObservation(message.MeasurementId);
 
             if (account != null && observation != null && HasValidValue(message.Value))
             {
@@ -77,7 +79,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new ViewMeasurementModel
             {
                 Observation = observation,
-                Values = this.service.GetValueList(observation.Id)
+                Values = this.service.GetValueList(observation.Id),
+                Unit = JsonConvert.DeserializeObject<List<InventoryAmountListModel>>(observation.Scale)[0].Unit
             };
         }
 

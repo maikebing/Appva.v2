@@ -27,12 +27,11 @@ namespace Appva.Mcss.Admin.Models
         #region Variables
 
         /// <summary>
-        /// The ID.
+        /// Patient Id
         /// </summary>
         public Guid PatientId
         {
-            get;
-            set;
+            get; set;
         }
 
         /// <summary>

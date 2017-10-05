@@ -64,6 +64,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="item">The item<see cref="ObservationItem"/>.</param>
         void Delete(ObservationItem item);
 
+
+        /// <summary>
+        /// Deletes all items.
+        /// </summary>
+        /// <param name="items">The items<see cref="ObservationItem"/>.</param>
+        void DeleteAll(IList<ObservationItem> items);
+
         #endregion
     }
 
@@ -83,13 +90,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public void Create(ObservationItem item)
         {
-            this.Create(item);
+            this.Context.Save<ObservationItem>(item);
         }
 
         /// <inheritdoc />
         public ObservationItem Get(Guid id)
         {
-            return this.Get(id);
+            return this.Context.Get<ObservationItem>(id);
         }
 
         /// <inheritdoc />
@@ -115,7 +122,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public void Delete(ObservationItem item)
         {
-            this.Context.Delete(item);
+            this.Context.Delete<ObservationItem>(item);
+        }
+
+        /// <inheritdoc />
+        public void DeleteAll(IList<ObservationItem> items)
+        {
+            foreach (var item in items)
+            {
+                this.Context.Delete<ObservationItem>(item);
+            }
         }
 
         #endregion

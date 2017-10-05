@@ -8,6 +8,6 @@ namespace Appva.Mcss.Admin.Models
 {
     public class DeleteMeasurementModel : Identity<ListMeasurementModel>
     {
-        public MeasurementObservation Observation { get; set; }
+        public Guid MeasurementId { get; set; }
     }
 }

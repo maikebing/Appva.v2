@@ -60,7 +60,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 ValueId = item.Id,
                 Value = item.Measurement.Value,
-                Unit = JsonConvert.DeserializeObject<InventoryAmountListModel>(observation.Scale).Unit
+                Unit = JsonConvert.DeserializeObject<List<InventoryAmountListModel>>(observation.Scale)[0].Unit
             };
         }
 

@@ -4,8 +4,10 @@
     <h2>Ändra observation</h2>
     <div id="add-observation">
 
-        @using (Html.BeginForm("update", "measurement", FormMethod.Post, new { @MeasurementObservationId = Model.MeasurementObservationId, @class = "validate", novalidate = "novalidate" }))
+        @using (Html.BeginForm("update", "measurement", FormMethod.Post, new { MeasurementId = Model.MeasurementId, @class = "validate", novalidate = "novalidate" }))
         {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
             <div class="width-limiter width-limiter--s">
                 <div class="form-controls">
                     @Html.LabelFor(x => x.Name, new { @class = "required-indicator" })
@@ -18,7 +20,7 @@
                 </div>
 
                 <div class="form-controls form-controls--select">
-                    @Html.LabelFor(x => x.SelectUnitList)
+                    @Html.LabelFor(x => x.SelectedUnit)
                     @Html.DropDownListFor(x => x.SelectedUnit, new SelectList(Model.SelectUnitList, "Value", "Text", Model.SelectedUnit), "Välj enhet ..", new { @class = "replaced", aria_invalid = "false" })
                     <span class="custom-select__select" aria-hidden="true">
                         <span class="custom-select__text">[selected_value]</span>
@@ -31,8 +33,8 @@
                 </div>
 
                 <div class="form-controls form-controls--select">
-                    @Html.LabelFor(x => x.SelectDelegationList)
-                    @Html.DropDownListFor(x => x.SelectedDelegation, new SelectList(Model.SelectedDelegation, "Value", "Text", Model.SelectedDelegation), "Välj delegation ..", new { @class = "replaced" })
+                    @Html.LabelFor(x => x.SelectedDelegation)
+                    @Html.DropDownListFor(x => x.SelectedDelegation, new SelectList(Model.SelectDelegationList, "Value", "Text", Model.SelectedDelegation), "Välj delegation ..", new { @class = "replaced" })
                     <span class="custom-select__select" aria-hidden="true">
                         <span class="custom-select__text">[selected_value]</span>
                         <span class="custom-select__icon">

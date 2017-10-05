@@ -124,6 +124,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="value">The value.</param>
         void DeleteValue(ObservationItem value);
 
+        /// <summary>
+        /// Deletes a measurement value list.
+        /// </summary>
+        /// <param name="items">The items<see cref="ObservationItem"/>.</param>
+        void DeleteMeasurementValueList(IList<ObservationItem> items);
+
+
         #endregion
     }
 
@@ -229,7 +236,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void DeleteMeasurementObservation(MeasurementObservation observation)
         {
-            throw new NotImplementedException();
+            this.measurementRepository.Delete(observation);
         }
         #endregion
 
@@ -301,6 +308,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public void DeleteValue(ObservationItem value)
         {
             this.itemRepository.Delete(value);
+        }
+
+        /// <inheritdoc />
+        public void DeleteMeasurementValueList(IList<ObservationItem> items)
+        {
+            this.itemRepository.DeleteAll(items);
         }
 
         #endregion

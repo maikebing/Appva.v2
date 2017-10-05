@@ -579,7 +579,7 @@
       <property name="Code"  column="Code"               />
       <many-to-one name="Unit" class="Taxon"             />
     </component>
-    <many-to-one name="Signature" class="Signature"      />
+    <many-to-one name="Signature" class="Signature" cascade="save-update"    />
     <many-to-one name="Comment"   class="Comment"        />
   </class>
 

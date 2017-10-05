@@ -14,7 +14,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IMeasurementService service;
         private readonly IPatientTransformer transformer;
 
-        protected DeleteMeasurementPublisher(IMeasurementService service, IPatientTransformer transformer)
+        public DeleteMeasurementPublisher(IMeasurementService service, IPatientTransformer transformer)
         {
             this.service = service;
             this.transformer = transformer;
@@ -23,17 +23,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListMeasurementModel Handle(DeleteMeasurementModel message)
         {
             var patientViewModel = new PatientViewModel();
+            var observation = this.service.GetMeasurementObservation(message.MeasurementId);
 
-            if (message.Observation.Equals(this.service.GetMeasurementObservation(message.Observation.Id)))
+            if (observation != null)
             {
-                patientViewModel = this.transformer.ToPatient(message.Observation.Patient);
-                this.service.DeleteMeasurementObservation(message.Observation);
+                this.service.DeleteMeasurementValueList(observation.Items);
+
+                patientViewModel = this.transformer.ToPatient(observation.Patient);
+                this.service.DeleteMeasurementObservation(observation);
             }
 
             return new ListMeasurementModel
             {
                 Patient = patientViewModel,
-                MeasurementList = this.service.GetMeasurementObservationsList(message.Id)
+                MeasurementList = this.service.GetMeasurementObservationsList(patientViewModel.Id)
             };
         }
     }

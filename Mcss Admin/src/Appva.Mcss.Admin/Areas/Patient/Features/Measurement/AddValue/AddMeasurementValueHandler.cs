@@ -57,7 +57,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             return new AddMeasurementValueModel
             {
-                Observation = observation,
+                MeasurementId = observation.Id,
+                Name = observation.Name,
+                Instruction = observation.Description,
                 Unit = unit
             };
         }

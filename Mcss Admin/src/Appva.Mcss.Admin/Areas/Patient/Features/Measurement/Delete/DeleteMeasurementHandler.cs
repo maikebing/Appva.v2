@@ -21,7 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             return new DeleteMeasurementModel
             {
-                Observation = this.service.GetMeasurementObservation(message.MeasurementId)
+                MeasurementId = message.MeasurementId
             };
         }
     }

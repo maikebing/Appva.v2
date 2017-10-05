@@ -160,7 +160,7 @@ namespace Appva.Mcss.Admin.Areas.Patient
         [Route("{measurementid:guid}/addvalue")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.Patient.CreateValue)]
-        public ActionResult Add(AddMeasurementValue request)
+        public ActionResult AddValue(AddMeasurementValue request)
         {
             return this.View();
         }

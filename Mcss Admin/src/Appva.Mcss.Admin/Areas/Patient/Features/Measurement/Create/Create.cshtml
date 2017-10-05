@@ -4,8 +4,10 @@
     <h2>Lägg till observation</h2>
     <div id="add-observation">
 
-        @using (Html.BeginForm("create", "measurement", FormMethod.Post, new { @class = "validate", novalidate = "novalidate" }))
+        @using (Html.BeginForm("create", "measurement", new { PatientId = Model.PatientId }, FormMethod.Post, new { @class = "validate", novalidate = "novalidate" }))
         {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
             <div class="width-limiter width-limiter--s">
                 <div class="form-controls">
                     @Html.LabelFor(x => x.Name, new { @class = "required-indicator" })

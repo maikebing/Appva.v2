@@ -11,7 +11,9 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.GrandId;
     using Appva.GrandId.Http.Response;
     using Appva.GrandId.Identity;
+    using Appva.Mcss.Admin.Application.Mock;
     using Appva.Mcss.Admin.Application.Security;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -31,6 +33,11 @@ namespace Appva.Mcss.Admin.Configuration
         /// The user hsa identifier
         /// </summary>
         private string userHsaId;
+
+        /// <summary>
+        /// The settings
+        /// </summary>
+        private readonly ISettingsService settings;
         
         #endregion
 
@@ -39,9 +46,10 @@ namespace Appva.Mcss.Admin.Configuration
         /// <summary>
         /// Initializes a new instance of the <see cref="MockedGrandIdClient"/> class.
         /// </summary>
-        public MockedGrandIdClient()
+        public MockedGrandIdClient(ISettingsService settings)
         {
             this.userHsaId = "SE165567766992-132B";
+            this.settings  = settings;
         }
 
         #endregion
@@ -62,8 +70,13 @@ namespace Appva.Mcss.Admin.Configuration
 
         public async Task<GetSession<T>> GetSessionAsync<T>(string sessionId) where T : class, IIdentity
         {
-            var result = await Task.Run(() => GetSession<T>.CreateNew<T>(sessionId, this.userHsaId, null));
-            return result;
+            var identity = new DesktopSithsIdentity("dum", "dummber", "dumbest");
+            identity.PrescriberCode = this.settings.Find<EhmMockedParameters>(ApplicationSettings.EhmMockParameters).PrescriberCode;
+            identity.LegitimationCode = this.settings.Find<EhmMockedParameters>(ApplicationSettings.EhmMockParameters).LegitimationCode;
+
+            var result = await Task.Run(() => GetSession<DesktopSithsIdentity>.CreateNew<DesktopSithsIdentity>(sessionId, this.userHsaId, identity));
+
+            return result as GetSession<T>;
         }
 
         public async Task<Logout> LogoutAsync(string sessionId)

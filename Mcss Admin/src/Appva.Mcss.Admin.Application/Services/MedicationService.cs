@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Application.Transformers;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
@@ -96,6 +97,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly ITaxonomyService taxonomyService;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settings;
+
         #endregion
 
         #region Constructor.
@@ -110,7 +116,8 @@ namespace Appva.Mcss.Admin.Application.Services
             ISequenceRepository sequenceRepository,
             IMedicationRepository medicationRepository,
             IAccountService accountService,
-            ITaxonomyService taxonomyService)
+            ITaxonomyService taxonomyService,
+            ISettingsService settings)
         {
             this.ehmClient              = ehmClient;
             this.identity               = identity;
@@ -119,6 +126,7 @@ namespace Appva.Mcss.Admin.Application.Services
             this.medicationRepository   = medicationRepository;
             this.accountService         = accountService;
             this.taxonomyService        = taxonomyService;
+            this.settings               = settings;
         }
 
         #endregion
@@ -199,18 +207,19 @@ namespace Appva.Mcss.Admin.Application.Services
         private User GetUser()
         {
             var account = this.accountService.Find(this.identity.PrincipalId);
+            var ehmAttr = this.settings.Find<TenantAttributes>(ApplicationSettings.EhmTenantUserAttributes);
             return new User
             {
                 PrescriberCode = this.identity.Principal.PrescriberCode(),
                 LegitimationCode = this.identity.Principal.LegitimationCode(),
-                Adress = "Nordenskiöldsgatan 14",
-                City = "Göteborg",
+                Adress = ehmAttr.Adress,
+                City = ehmAttr.City,
                 FirstName = account.FirstName,
                 LastName = account.LastName,
-                Phone = "076 336 39 62",
-                WorkplaceCode = "2002020200202",
-                Zip = "413 09",
-                Workplace = this.taxonomyService.Find(this.identity.Principal.Location()).Address
+                Phone = ehmAttr.Phone,
+                WorkplaceCode = ehmAttr.WorkplaceCode,
+                Zip = ehmAttr.Zip,
+                Workplace = ehmAttr.Workplace
             };
         }
 

@@ -169,7 +169,12 @@ namespace Appva.Mcss.Admin.Application.Security
                 return AuthenticationResult.Failure;
             }
             var account = this.accounts.FindByHsaId(response.Username);
-            var result  = this.Authenticate(response.Username, account, null);
+            var hsaAttributes = new HsaAttributes
+            {
+                PrescriberCode = response.UserAttributes.PrescriberCode,
+                LegitimationCode = response.UserAttributes.LegitimationCode
+            };
+            var result  = this.Authenticate(response.Username, account, null, hsaAttributes: hsaAttributes);
             this.VerifyAuthenticationResult(account, result);
             return result;
         }
@@ -206,8 +211,14 @@ namespace Appva.Mcss.Admin.Application.Security
 
             //// Issue standard-claims and add extra from HSA attributes
             var claims = this.IssueClaims(account, this.method).ToList();
-            claims.Add(new Claim(PrincipalExtensions.LegitimationCodeClaimType, hsaAttributes.LegitimationCode));
-            claims.Add(new Claim(PrincipalExtensions.PrescriberCodeClaimType, hsaAttributes.PrescriberCode));
+            if (hsaAttributes.LegitimationCode != null)
+            {
+                claims.Add(new Claim(PrincipalExtensions.LegitimationCodeClaimType, hsaAttributes.LegitimationCode));
+            }
+            if (hsaAttributes.PrescriberCode != null)
+            {
+                claims.Add(new Claim(PrincipalExtensions.PrescriberCodeClaimType, hsaAttributes.PrescriberCode));
+            }
 
             this.IssueToken(
                 new ClaimsPrincipal(

@@ -72,12 +72,12 @@
       <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.GrandId, Version=0.1.4.17896, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.4\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
+    <Reference Include="Appva.GrandId, Version=0.1.6.20311, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.8\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Http, Version=0.1.0.17181, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Http.0.1.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
+    <Reference Include="Appva.Http, Version=0.2.0.14844, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Http.0.2.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Ldap, Version=0.0.1.25447, Culture=neutral, processorArchitecture=MSIL">
@@ -401,6 +401,15 @@
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Delegation\Update\UpdateDelegationPublisher.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\EhmController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\Index\EhmSettingsModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\Index\EhmSettingsRequestHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributesModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributesFormHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributesRequestHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMockFormHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMockModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMockRequestHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitPublisher.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Organization\Create\CreateOrganizationalUnitModel.cs" />
@@ -532,6 +541,9 @@
     <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\Details\DetailsMedicationRequest.cs" />
     <Content Include="Areas\Patient\Features\Medication\Details\Partials\_ordinationPartial.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Ehm\Index\Index.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributes.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMock.cshtml" />
     <None Include="Areas\Patient\Features\Medication\Details\Partials\_medicationPartial.cshtml" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\MedicationController.cs" />

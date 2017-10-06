@@ -51,12 +51,12 @@
       <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.GrandId, Version=0.1.4.17896, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.4\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
+    <Reference Include="Appva.GrandId, Version=0.1.6.20311, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.GrandId.0.1.8\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Http, Version=0.1.0.17181, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Http.0.1.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
+    <Reference Include="Appva.Http, Version=0.2.0.14844, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Http.0.2.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Ldap, Version=0.0.1.25447, Culture=neutral, processorArchitecture=MSIL">
@@ -170,6 +170,7 @@
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Common\Taxons.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
+    <Compile Include="Models\Mock\EhmMockedParameters.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
     <Compile Include="Models\CalendarDay.cs" />
     <Compile Include="Models\CalendarTask.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Models\Taxa.cs" />
     <Compile Include="Models\Taxon.cs" />
     <Compile Include="Models\DelegationUpdateModel.cs" />
+    <Compile Include="Models\TenantAttributes.cs" />
     <Compile Include="Pdf\AbstractPdfDocument.cs" />
     <Compile Include="Pdf\PatientInformation.cs" />
     <Compile Include="Pdf\PdfPrintService.cs" />

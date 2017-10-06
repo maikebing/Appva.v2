@@ -95,7 +95,13 @@
                 </tbody>
             </table>
         }
-    </div>
+        else
+        {
+            <div class="no-sequence">
+                <p>Detta finns inga dos-dispenserade läkemedel</p>
+                </div>
+                }
+            </div>
     <div class="e-panel">
         <h3 class="no-border">Helförpackade läkemedel</h3>
         @if (Model.OriginalPackageMedications != null && Model.OriginalPackageMedications.Count > 0)
@@ -235,6 +241,12 @@
                     </tr-->
                 </tbody>
             </table>
+        }
+        else
+        {
+            <div class="no-sequence">
+                <p>Det finns inga helförpackade läkemedel</p>
+            </div>
         }
     </div>
 

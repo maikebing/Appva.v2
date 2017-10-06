@@ -248,7 +248,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// <param name="account">The account</param>
         /// <param name="password">The password</param>
         /// <returns>A <see cref="IAuthenticationResult"/></returns>
-        protected IAuthenticationResult Authenticate(object credentials, Account account, string password)
+        protected IAuthenticationResult Authenticate(object credentials, Account account, string password, HsaAttributes hsaAttributes = null)
         {
             if (account == null)
             {
@@ -291,7 +291,7 @@ namespace Appva.Mcss.Admin.Application.Security
                 this.auditing.FailedAuthentication(account, "misslyckades att autentisera p g a otillräcklig behörighet.");
                 return AuthenticationResult.Failure;
             }
-            return AuthenticationResult.CreateSuccessResult(account);
+            return AuthenticationResult.CreateSuccessResult(account, hsaAttributes: hsaAttributes);
         }
 
         /// <summary>

@@ -1,0 +1,19 @@
+﻿@model Appva.Mcss.Admin.Models.EhmSettingsModel
+@{
+    SetTitle("Admin - Ehm");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Ehm settings</h1>
+    @Html.ActionLink("Mock", "UpdateMock", "Ehm", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+    @Html.ActionLink("Attributes", "UpdateAttributes", "Ehm", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+</div>
+
+<div id="content" class="delegate-view log">
+    <div id="content-primary">
+        
+
+    </div>
+</div>
+
+

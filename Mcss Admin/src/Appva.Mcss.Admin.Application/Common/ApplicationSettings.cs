@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using Appva.Mcss.Admin.Domain.VO;
 using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Mock;
 
     #endregion
 
@@ -351,6 +352,32 @@ using Appva.Mcss.Admin.Application.Models;
            "MCSS.Temporary",
            "A simple dictionary schedule settings ID to role ID for required role on sequence",
            new Dictionary<Guid, Guid>());
+
+        #endregion
+
+        #region eHM
+
+        /// <summary>
+        /// Mocked parameters for eHM
+        /// </summary>
+        /// <remarks>The setting returns <see cref="EhmMockedParameters"/></remarks>
+        public static readonly ApplicationSettingIdentity<EhmMockedParameters> EhmMockParameters = ApplicationSettingIdentity<EhmMockedParameters>.CreateNew(
+           "Appva.Ehm.MockedParameters",
+           "Mocked parameters for ehm",
+           "Appva.Ehm",
+           "Mocked codes for ehm",
+           EhmMockedParameters.Default());
+
+        /// <summary>
+        /// Tenant specific user attributes for eHM
+        /// </summary>
+        /// <remarks>The setting returns <see cref="TenantAttributes"/></remarks>
+        public static readonly ApplicationSettingIdentity<TenantAttributes> EhmTenantUserAttributes = ApplicationSettingIdentity<TenantAttributes>.CreateNew(
+           "Appva.Ehm.TenantAttributes",
+           "Tenant attributes for ehm",
+           "Appva.Ehm",
+           "Tenant specific attributes needed for SAML-tickets to eHM ",
+           TenantAttributes.Default());
 
         #endregion
     }

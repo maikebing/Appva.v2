@@ -238,12 +238,12 @@ namespace Appva.Mcss.Admin.Configuration
         {
             if (ApplicationEnvironment.Is.Development || ApplicationEnvironment.Is.Staging)
             {
-                builder.Register(x => new MockedGrandIdClient()).As<IGrandIdClient>().SingleInstance();
+                builder.RegisterType<MockedGrandIdClient>().As<IGrandIdClient>().InstancePerRequest();
                 //builder.Register(x => new MockedGrandIdClient(userHsaId: "richardhenriksson")).As<IMobileGrandIdClient>().SingleInstance();
 
-                var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
-                var options = RestOptions.CreateNew(null, modelBinder);
-                builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+                //var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+                //var options = RestOptions.CreateNew(null, modelBinder);
+                //builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
 
             }
             else

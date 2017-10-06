@@ -1,0 +1,21 @@
+﻿@model Appva.Mcss.Admin.Models.UpdateMockModel
+@{
+    SetTitle("Inställningar");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post())
+    {
+        <div class="form-tab form-tab-1">
+            <h3 class="section-title">Mockad data</h3>
+ 
+            @Html.FormGroup(x => x.PrescriberCode, "text large").Label("Förskrivarkod").TextBox().Validate().Build()
+            @Html.FormGroup(x => x.LegitimationCode, "text large").Label("Legitimationskod").TextBox().Validate().Build()
+
+
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn" })
+        </div>
+    }
+</div>

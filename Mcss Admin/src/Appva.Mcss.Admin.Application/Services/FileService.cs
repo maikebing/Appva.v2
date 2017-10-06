@@ -34,6 +34,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="isFilteredByImages">If true, only images will be fetched.</param>
         /// <returns>A <see cref="IList{DataFile}"/> collection.</returns>
         IList<DataFile> GetUploadedFiles(bool? isFilteredByImages = null);
+
+        /// <summary>
+        /// Deletes a file.
+        /// </summary>
+        /// <param name="id">The <see cref="DataFile"/>.</param>
+        void Delete(DataFile file);
     }
 
     /// <summary>
@@ -75,6 +81,11 @@ namespace Appva.Mcss.Admin.Application.Services
         public DataFile Get(Guid id)
         {
             return this.repository.Get(id);
+        }
+
+        public void Delete(DataFile file)
+        {
+            this.repository.Delete(file);
         }
 
         #endregion

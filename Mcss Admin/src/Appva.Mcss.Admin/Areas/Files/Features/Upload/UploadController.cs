@@ -117,8 +117,8 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// </summary>
         /// <param name="request">The <see cref="DeleteFile"/> model.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("delete/{id:guid}")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Upload")]
+        [Route("{id:guid}/delete")]
+        [HttpGet, Dispatch("List", "Upload")]
         [AlertSuccess("Filen har tagits bort!")]
         [PermissionsAttribute(Permissions.FileUpload.DeleteValue)]
         public ActionResult Delete(DeleteFile request)

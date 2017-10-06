@@ -9,14 +9,22 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
+    using Appva.Cqrs;
+    using System;
+
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class DeleteFile
+    public sealed class DeleteFile : IRequest<bool>
     {
         #region Properties.
+
+        /// <summary>
+        /// The file id.
+        /// </summary>
+        public Guid Id { get; set; }
 
         #endregion
     }

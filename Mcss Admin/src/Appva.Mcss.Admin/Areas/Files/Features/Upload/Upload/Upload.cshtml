@@ -8,7 +8,9 @@
         <div>
             <h3 class="section-title">Ladda upp en fil</h3>
             <div class="file-upload-box">
-                @Html.File(x => x.UploadedFile)
+                <div class="file-input">
+                    @Html.File(x => x.UploadedFile)
+                </div>
                 <p class="file-message">Maximal filstorlek: @Model.MaxFileSize MB</p>
             </div>
         </div>
@@ -27,3 +29,25 @@
         </div>
     }
 </div>
+<script>
+    $(document).ready(function () {
+        $('#UploadedFile').bind('change', function () {
+            if ((this.files[0].size / (1024 * 1024)) >= @Model.MaxFileSize) {
+                $('input[type=submit]').prop('disabled', true);
+                $('.file-upload-box').css({
+                    'border-color': '#e44444',
+                    'background-color': '#fff5f5'
+                });
+                $('.file-message').css({ 'border-color': '#e44444' }).html('Filen överskrider den maximala filstorleken på @Model.MaxFileSize MB.');
+            }
+            else {
+                $('input[type=submit]').prop('disabled', false);
+                $('.file-upload-box').css({
+                    'border-color': '#aaa',
+                    'background-color': '#fff'
+                });
+                $('.file-message').css({ 'border-color': '#aaa' }).html('Maximal filstorlek: @Model.MaxFileSize MB.');
+            }
+        });
+    });
+</script>

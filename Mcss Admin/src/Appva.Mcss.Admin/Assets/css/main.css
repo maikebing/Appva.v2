@@ -1451,8 +1451,8 @@ td.rights {
     margin-right:8px;
     border-radius:10px;
 }
-#signlist .tr-highlight:hover { background:#f9f9f9; }
-#signlist .tr-highlight { transition:background .2s ease-in-out; }
+#signlist .tr-highlight:hover, #filelist .tr-highlight:hover { background:#f9f9f9; }
+#signlist .tr-highlight, #filelist .tr-highlight { transition:background .2s ease-in-out; }
 #signlist .primg {
     width:45px;
     padding:6px 0;
@@ -1472,7 +1472,7 @@ td.rights {
 }
 #signlist .prtd2 .btn-del { margin-left:6px; }
 #signlist .prpad { padding:6px 10px!important; }
-#signlist .flpad { padding:12px 6px!important; }
+#filelist .flpad { padding:12px 6px!important; }
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}
@@ -2982,13 +2982,14 @@ form .time {width:4em;}
     display:inline-block;
     border:1px solid #aaa;
     background:#fff;
-    padding:10px;
+    padding:0;
     margin:20px 0 10px 0;
 }
+.std-panel .file-upload-box .file-input { padding:10px; }
 .std-panel .file-message {
-    padding-top:15px;
+    border-top:1px solid #aaa;
+    padding:10px;
     margin:0;
-    font-size:11px;
 }
 #sign-op input[type="text"] {
     font-size:13px;

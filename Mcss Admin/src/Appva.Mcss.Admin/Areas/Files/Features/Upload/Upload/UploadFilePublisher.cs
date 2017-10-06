@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
 {
     #region Imports.
 
+    using System.IO;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
@@ -52,12 +53,12 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
                 return false;
             }
 
-            var fileName = System.IO.Path.GetFileName(message.UploadedFile.FileName);
+            var fileName = Path.GetFileName(message.UploadedFile.FileName);
             var contentType = message.UploadedFile.ContentType;
 
             using (var fileStream = message.UploadedFile.InputStream)
             {
-                using (var binaryReader = new System.IO.BinaryReader(fileStream))
+                using (var binaryReader = new BinaryReader(fileStream))
                 {
                     var bytes = binaryReader.ReadBytes((int)fileStream.Length);
                     this.persistence.Save(new DataFile

@@ -23,7 +23,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     public interface IFileRepository : IRepository
     {
         /// <summary>
-        /// Get a file by its <see cref="Guid"/>.
+        /// Gets a file by id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A <see cref="DataFile"/>.</returns>
@@ -35,6 +35,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="isFilteredByImages">If true, only images will be fetched.</param>
         /// <returns>A collection of <see cref="DataFile"/>.</returns>
         IList<DataFile> GetUploadedFiles(bool? isFilteredByImages = null);
+
+        /// <summary>
+        /// Deletes a file.
+        /// </summary>
+        /// <param name="id">The <see cref="DataFile"/>.</param>
+        void Delete(DataFile file);
     }
 
     /// <summary>
@@ -42,7 +48,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public sealed class FileRepository : IFileRepository
     {
-        #region Variables.
+        #region Fields.
 
         /// <summary>
         /// The <see cref="IPersistenceContext"/>.
@@ -51,7 +57,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileRepository"/> class.
@@ -81,7 +87,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 query = query.WhereRestrictionOn(x => x.ContentType).Not.IsInsensitiveLike("image", MatchMode.Anywhere);
             }
 
-            return query.List();
+            return query.OrderBy(x => x.CreatedAt).Desc.List();
         }
 
         /// <inheritdoc />
@@ -90,6 +96,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             return this.persistence.QueryOver<DataFile>()
                 .Where(x => x.Id == id)
                     .SingleOrDefault();
+        }
+
+        /// <inheritdoc />
+        public void Delete(DataFile file)
+        {
+            this.persistence.Delete(file);
         }
 
         #endregion

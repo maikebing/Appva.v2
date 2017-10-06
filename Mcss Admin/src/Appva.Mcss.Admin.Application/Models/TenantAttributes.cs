@@ -21,35 +21,72 @@ namespace Appva.Mcss.Admin.Application.Models
     {
         #region Properties.
 
+        /// <summary>
+        /// Gets or sets the adress.
+        /// </summary>
+        /// <value>
+        /// The adress.
+        /// </value>
         public string Adress
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the city.
+        /// </summary>
+        /// <value>
+        /// The city.
+        /// </value>
         public string City
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the zip.
+        /// </summary>
+        /// <value>
+        /// The zip.
+        /// </value>
         public string Zip
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the phone.
+        /// </summary>
+        /// <value>
+        /// The phone.
+        /// </value>
         public string Phone
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets the workplace code.
+        /// </summary>
+        /// <value>
+        /// The workplace code.
+        /// </value>
         public string WorkplaceCode
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the workplace.
+        /// </summary>
+        /// <value>
+        /// The workplace.
+        /// </value>
         public string Workplace
         {
             get;

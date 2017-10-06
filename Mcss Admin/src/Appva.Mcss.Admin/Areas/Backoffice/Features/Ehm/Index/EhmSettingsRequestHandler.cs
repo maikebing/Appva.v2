@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Areas.Handlers
 {
     #region Imports.
 
+    using Appva.Core.Environment;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Mock;
     using Appva.Mcss.Admin.Application.Models;
@@ -54,7 +55,7 @@ namespace Appva.Mcss.Admin.Areas.Handlers
         {
             return new EhmSettingsModel
             {
-                MockedParameters = this.settings.Find<EhmMockedParameters>(ApplicationSettings.EhmMockParameters),
+                MockedParameters = ApplicationEnvironment.Is.Production != true ? this.settings.Find<EhmMockedParameters>(ApplicationSettings.EhmMockParameters) : null,
                 TenantSettings = this.settings.Find<TenantAttributes>(ApplicationSettings.EhmTenantUserAttributes)
             };
         }

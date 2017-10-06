@@ -190,7 +190,7 @@
 #ehm a.button {
     border-radius:40px;
     text-decoration:none;
-    padding:10px 0;
+    padding:10px 10px;
     background:#637491;
     color:#fff;
     border:1px solid rgb(64,78,104);
@@ -209,7 +209,7 @@
 
 #ehm a.button.add:hover { background:rgb(88,154,73); }
 
-#ehm table td a.button.edit {
+#ehm a.button.edit {
     background:#637491 url(../i/ico-edit.svg) no-repeat 10px center;
     background-size:20px;
     padding-left:40px;

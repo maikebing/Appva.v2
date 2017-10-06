@@ -4,16 +4,58 @@
 }
 @Html.Partial("_BackofficeMenuPartial")
 <div id="subheader" class="cf">
-    <h1>Ehm settings</h1>
-    @Html.ActionLink("Mock", "UpdateMock", "Ehm", new { area = "Backoffice" }, new { @class = "lb-link btn" })
-    @Html.ActionLink("Attributes", "UpdateAttributes", "Ehm", new { area = "Backoffice" }, new { @class = "lb-link btn" })
+    <h1>eHM</h1>
+   
 </div>
 
-<div id="content" class="delegate-view log">
-    <div id="content-primary">
+<div id="ehm" class="">
+    <div class="e-panel">
+        <h3>Inställningar för anslutningar till eHälsomyndigheten</h3>
+        <p class="sign-list-summary">Följande inställningar gäller för kunden och skickas med´för den inloggade användaren i alla anslutningar som görs till eHälsomyndigheten</p>
+        <table>
+            <tr>
+                <td style="width:150px;"><b>Arbetsplatskod</b></td>
+                <td>@Model.TenantSettings.WorkplaceCode</td>
+            </tr>
+            <tr>
+                <td style ="width:150px;"><b>Adress</b></tdstyle>
+                <td>@Model.TenantSettings.Adress</td>
+            </tr>
+            <tr>
+                <td style="width:150px;"><b>Postnummer</b></td>
+                <td>@Model.TenantSettings.Zip</td>
+            </tr>
+            <tr>
+                <td style="width:150px;"><b>Stad</b></td>
+                <td>@Model.TenantSettings.City</td>
+            </tr>
+            <tr>
+                <td style="width:150px;"><b>Telefonnummer</b></td>
+                <td>@Model.TenantSettings.Phone</td>
+            </tr>
+        </table>
+        <p class="sign-list-summary">@Html.ActionLink("Ändra attribut", "UpdateAttributes", "Ehm", new { area = "Backoffice" }, new { @class = "lb-link button edit" })</p>
+      </div>
+      <div class="e-panel">
         
-
-    </div>
+        @if (Model.MockedParameters != null)
+        {
+            <h3>Mockade inställningar</h3>
+            <p class ="sign-list-summary">Då applikationen körs i 'Development', 'Demo' eller 'Staging' miljö finns nöjlighet att mocka paramterar för anslutning till eHM. Nedan kan en legitimations-kod för en Sjuksköterska alternativt en Förskrivarkod för en Förskrivare anges för att autentisera mot eHälsomyndigheten</p>
+            <table>
+                <tr>
+                    <td style="width:150px;"><b>Legitimationskod</b></td>
+                    <td>@Model.MockedParameters.LegitimationCode</td>
+                </tr>
+                <tr>
+                    <td style="width:150px;"><b>Förskrivarkod</b></td>
+                    <td>@Model.MockedParameters.PrescriberCode</td>
+                </tr>
+            </table>
+          <p class="sign-list-summary">
+              @Html.ActionLink("Ändra Mock", "UpdateMock", "Ehm", new { area = "Backoffice" }, new { @class = "lb-link button edit" })</p>
+          }
+</div>
 </div>
 
 

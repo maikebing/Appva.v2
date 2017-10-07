@@ -14,8 +14,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.IO;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Models;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -68,7 +68,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Type = contentType.Length > 1 ? contentType[1] : contentType[0],
                     TypeImage = typeImage,
                     Size = fileSize,
-                    DateAdded = file.CreatedAt.ToShortDateString()
+                    DateAdded = file.CreatedAt.ToShortDateString(),
+                    Properties = file.Properties == null ? null : JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties)
                 });
             }
 

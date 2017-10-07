@@ -1,4 +1,4 @@
-﻿// <copyright file="DeleteFile.cs" company="Appva AB">
+﻿// <copyright file="FileUploadProperties.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -17,14 +17,14 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class DeleteFile : IRequest<bool>
+    public sealed class FileUploadProperties
     {
         #region Properties.
 
         /// <summary>
-        /// The file id.
+        /// If the file is an importable excel file.
         /// </summary>
-        public Guid Id
+        public bool IsImportableExcelFile
         {
             get;
             set;

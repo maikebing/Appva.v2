@@ -390,6 +390,11 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string DeleteValue = Schema + "fileupload/delete";
 
             /// <summary>
+            /// The execute value.
+            /// </summary>
+            public const string ExecuteValue = Schema + "fileupload/execute";
+
+            /// <summary>
             /// Permission to read files.
             /// </summary>
             [Sort(0)]
@@ -412,6 +417,14 @@ namespace Appva.Mcss.Admin.Application.Common
             [Name("Delete files")]
             [Description("Permission to delete files")]
             public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
+
+            /// <summary>
+            /// Permission to execute files.
+            /// </summary>
+            [Sort(0)]
+            [Name("Execute files")]
+            [Description("Permission to execute files")]
+            public static readonly IPermission Execute = PermissionType.CreateNew(ExecuteValue);
         }
 
         #endregion

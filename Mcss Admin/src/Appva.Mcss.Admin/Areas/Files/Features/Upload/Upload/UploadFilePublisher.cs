@@ -9,11 +9,13 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
 {
     #region Imports.
 
+    using System.Collections.Generic;
     using System.IO;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
     using Appva.Persistence;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -53,6 +55,11 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
                 return false;
             }
 
+            var properties = new FileUploadProperties
+            {
+                IsImportableExcelFile = message.IsImportableExcelFile
+            };
+
             var fileName = Path.GetFileName(message.UploadedFile.FileName);
             var contentType = message.UploadedFile.ContentType;
 
@@ -67,7 +74,8 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
                         ContentType = contentType,
                         Data = bytes,
                         Title = message.Title,
-                        Description = message.Description
+                        Description = message.Description,
+                        Properties = JsonConvert.SerializeObject(properties)
                     });
                 }
             }

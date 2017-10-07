@@ -92,6 +92,15 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        /// <summary>
+        /// The file properties.
+        /// </summary>
+        public FileUploadProperties Properties
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

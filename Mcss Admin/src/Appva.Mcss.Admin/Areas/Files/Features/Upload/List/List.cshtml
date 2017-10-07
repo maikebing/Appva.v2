@@ -13,7 +13,6 @@
         @Html.ActionLink("Dokument", "List", new { IsFilteredByImages = false }, new { @class = (Model.IsFilteredByImages.GetValueOrDefault(true) ? "div" : "sel div") })
     </p>
 </div>
-
 <div id="content" class="log cf">
     <div id="filelist">
         @if (Model.Files.Count > 0)
@@ -21,8 +20,8 @@
             <table class="device-table">
                 <thead>
                     <tr class="head">
-                        <th style="text-align:center"></th>
-                        <th>Namn</th>
+                        <th></th>
+                        <th>Titel</th>
                         <th>Beskrivning</th>
                         <th>Filnamn</th>
                         <th>Storlek</th>
@@ -33,16 +32,25 @@
                 <tbody>
                     @foreach (var file in Model.Files)
                     {
-                        <tr class="tr-highlight">
-                            <td class="flpad" style="text-align:center;width:40px"><img src="~/Assets/i/@file.TypeImage" width="20" alt="@file.Type" title="@file.Type" style="vertical-align:bottom" /></td>
+                        var isImportableExcelFile = Html.HasPermissionFor(Permissions.FileUpload.Execute) && file.Properties != null && file.Properties.IsImportableExcelFile;
+                        <tr class="tr-highlight" style="@(isImportableExcelFile ? "background:#eafff3" : string.Empty)">
+                            <td class="flpad flimgcell"><img class="flicon" src="~/Assets/i/@file.TypeImage" width="20" alt="@file.Type" title="@file.Type" /></td>
                             <td class="flpad">@file.Title</td>
                             <td class="flpad">@file.Description</td>
                             <td class="flpad">@file.Name</td>
                             <td class="flpad">@file.Size</td>
                             <td class="flpad">@file.DateAdded</td>
-                            <td class="flpad" width="200">
+                            <td class="flpad flactions">
                                 @Html.ActionLink("Ladda ner", "Download", new { Id = file.Id }, new { @class = "btn" })
-                                @Html.ActionLink("Ta bort", "Delete", new { Id = file.Id }, new { @class = "btn btn-del item-delete-confirmation", data_text = "ta bort filen \"" + file.Name + "\"" })
+                                @if (isImportableExcelFile)
+                                {
+                                    @Html.ActionLink("Importera", "ImportExcel", new { Id = file.Id }, new { @class = "btn-green" })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Ta bort", "Delete", new { Id = file.Id }, new { @class = "btn btn-del item-delete-confirmation", data_text = "ta bort filen \"" + file.Name + "\"" })
+                                }
+                                
                             </td>
                         </tr>
                     }

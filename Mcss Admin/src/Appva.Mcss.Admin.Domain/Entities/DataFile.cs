@@ -69,6 +69,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
+        /// The file properties.
+        /// </summary>
+        public virtual string Properties
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The data.
         /// </summary>
         public virtual byte[] Data

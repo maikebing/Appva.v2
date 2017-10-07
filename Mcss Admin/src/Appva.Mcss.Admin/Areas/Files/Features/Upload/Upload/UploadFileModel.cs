@@ -37,7 +37,7 @@ namespace Appva.Mcss.Admin.Models
         /// The title.
         /// </summary>
         [Required]
-        [DisplayName("Namn")]
+        [DisplayName("Titel")]
         public string Title
         {
             get;
@@ -58,6 +58,16 @@ namespace Appva.Mcss.Admin.Models
         /// The max file size.
         /// </summary>
         public double MaxFileSize
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If the file is an importable excel file.
+        /// </summary>
+        [DisplayName("Importbar lista från Excel")]
+        public bool IsImportableExcelFile
         {
             get;
             set;

@@ -62,24 +62,6 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
 
         #endregion
 
-        #region Image preview.
-
-        /*
-        /// <summary>
-        /// Gets an image by id.
-        /// </summary>
-        /// <param name="request">The <see cref="ImagePreview"/>.</param>
-        /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("{id:guid}/image")]
-        [HttpGet, Dispatch]
-        [PermissionsAttribute(Permissions.FileUpload.ReadValue)]
-        public ActionResult GetImage(ImagePreview request)
-        {
-            return this.File();
-        */
-
-        #endregion
-
         #region Upload.
 
         /// <summary>
@@ -101,7 +83,6 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("upload")]
         [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Upload")]
-        [AlertSuccess("En ny fil har sparats!")]
         [PermissionsAttribute(Permissions.FileUpload.CreateValue)]
         public ActionResult Upload(UploadFileModel request)
         {
@@ -119,7 +100,6 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("{id:guid}/delete")]
         [HttpGet, Dispatch("List", "Upload")]
-        [AlertSuccess("Filen har tagits bort!")]
         [PermissionsAttribute(Permissions.FileUpload.DeleteValue)]
         public ActionResult Delete(DeleteFile request)
         {

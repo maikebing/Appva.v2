@@ -646,6 +646,7 @@
     <property name="Title" />
     <property name="Name" />
     <property name="ContentType" />
+    <property name="Properties" />
     <property name="Data" type="BinaryBlob" />
   </class>
 

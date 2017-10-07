@@ -463,10 +463,10 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Files\Features\Shared\FileUploadProperties.cs" />
     <Compile Include="Areas\Files\Features\Upload\Delete\DeleteFileHandler.cs" />
     <Compile Include="Areas\Files\Features\Upload\Download\DownloadFile.cs" />
     <Compile Include="Areas\Files\Features\Upload\Download\DownloadFileHandler.cs" />
-    <Compile Include="Areas\Files\Features\Upload\ImagePreview\ImagePreviewHandler.cs" />
     <Compile Include="Areas\Files\Features\Upload\List\ListUpload.cs" />
     <Compile Include="Areas\Files\Features\Upload\List\ListUploadHandler.cs" />
     <Compile Include="Areas\Files\Features\Upload\Upload\UploadFileHandler.cs" />

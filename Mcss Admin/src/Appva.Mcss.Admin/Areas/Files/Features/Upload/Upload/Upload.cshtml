@@ -22,6 +22,14 @@
             @Html.LabelFor(x => x.Description)
             @Html.TextBoxFor(x => x.Description)
         </div>
+        <div class="text">
+            <input id="file-enable-options" type="checkbox" /><label class="checkbox-inline" for="file-enable-options">Visa fler alternativ</label>
+            <div class="file-options">
+                @Html.LabelFor(x => x.IsImportableExcelFile)
+                @Html.RadioButtonFor(x => x.IsImportableExcelFile, false) Nej
+                @Html.RadioButtonFor(x => x.IsImportableExcelFile, true) Ja
+            </div>
+        </div>
         <div class="submit" style="padding-top:8px">
             @Html.AntiForgeryToken()
             @Html.Submit("Spara")
@@ -31,6 +39,14 @@
 </div>
 <script>
     $(document).ready(function () {
+        $('.file-options').hide();
+        $('#file-enable-options').change(function () {
+            if (this.checked) {
+                $('.file-options').show();
+            } else {
+                $('.file-options').hide();
+            }
+        });
         $('#UploadedFile').bind('change', function () {
             if (this.files.length === 0) {
                 fileBoxStyle(false, '#aaa', '#fff', 'Maximal filstorlek: @Model.MaxFileSize MB.');
@@ -38,16 +54,13 @@
             }
             var fileSize = this.files[0].size / (1024 * 1024);
             if (fileSize > @Model.MaxFileSize) {
-                $('input[type=submit]').prop('disabled', true);
                 fileBoxStyle(true, '#e44444', '#fff5f5', 'Filen överskrider den maximala filstorleken på @Model.MaxFileSize MB.');
-            }
-            else {
-
+            } else {
                 fileBoxStyle(false, '#2ecc71', '#f6fffa', 'Ok!');
             }
         });
         function fileBoxStyle(disableSubmit, borderColor, backgroundColor, text) {
-            $('#UploadedFile input[type=submit]').prop('disabled', disableSubmit);
+            $('input[type=submit]').prop('disabled', disableSubmit);
             $('.file-upload-box').css({
                 'border-color': borderColor,
                 'background-color': backgroundColor

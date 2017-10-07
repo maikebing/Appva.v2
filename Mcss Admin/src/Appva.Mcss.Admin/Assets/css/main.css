@@ -276,34 +276,68 @@ span.bold {
 
 input[type="submit"].btn,
 a.btn,
-a.btn:visited {
-	padding:5px 12px;
+a.btn:visited,
+a.btn-green,
+a.btn-green:visited {
+    padding:5px 12px;
 	color:#fff;
-	background:#455169 url(../i/bg-stdbtn.png) repeat-x;
-	border:1px solid #445068;
+    background-repeat:repeat-x;
 	-webkit-border-radius:20px;
 	-moz-border-radius:20px;
 	border-radius:20px;
 	text-decoration:none;
-	text-shadow:0 -1px 0 #445068;
 	font-weight:bold;
+}
+input[type="submit"].btn,
+a.btn,
+a.btn:visited {
+    background-image:url(../i/bg-stdbtn.png);
+	background-color:#455169;
+	border:1px solid #445068;
+	text-shadow:0 -1px 0 #445068;
+}
+a.btn-green,
+a.btn-green:visited {
+    background-image:url(../i/bg-stdbtn-green.png);
+    background-color:#1a6c3d;
+	border:1px solid #14522f;
+	text-shadow:0 -1px 0 #14522f;
+}
+input[type="submit"].btn:hover,
+a.btn:hover,
+a.btn:focus,
+a.btn-green:hover,
+a.btn-green:focus {
+	color:#fff;
+	border-color:#001;
+    cursor:pointer;
 }
 input[type="submit"].btn:hover,
 a.btn:hover,
 a.btn:focus {
-	color:#fff;
-	border-color:#001;
 	-webkit-box-shadow:0 0 4px #445068;
 	-moz-box-shadow:0 0 4px #445068;
 	box-shadow:0 0 4px #445068;
-    cursor:pointer;
+}
+a.btn-green:hover,
+a.btn-green:focus {
+	-webkit-box-shadow:0 0 4px #14522f;
+	-moz-box-shadow:0 0 4px #14522f;
+	box-shadow:0 0 4px #14522f;
 }
 input[type="submit"].btn:active,
-a.btn:active {
-	background:#445068;
+a.btn:active,
+a.btn-green:active{
 	-webkit-box-shadow:none;
 	-moz-box-shadow:none;
 	box-shadow:none;
+}
+    input[type="submit"].btn:active,
+    a.btn:active {
+        background: #2bbb68;
+    }
+a.btn-green:active {
+
 }
 
 input[type="submit"].btn-del,
@@ -1472,7 +1506,21 @@ td.rights {
 }
 #signlist .prtd2 .btn-del { margin-left:6px; }
 #signlist .prpad { padding:6px 10px!important; }
+
 #filelist .flpad { padding:12px 6px!important; }
+#filelist .flactions {
+    width:180px;
+    text-align:center;
+}
+#filelist .flimgcell {
+    width:40px;
+    text-align:center;
+}
+#filelist table th:first-child { text-align:center; }
+#filelist .flicon { vertical-align:bottom; }
+#file-enable-options { float:left; }
+.file-options { padding-top:10px; }
+
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}

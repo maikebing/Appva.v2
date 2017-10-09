@@ -65,7 +65,7 @@ using System.Collections.Generic;
         }
 
         public InventoryDefaults.Feature Feature { get; set; }
-
+        public InventoryDefaults.MeasurementScale Scale { get; set; }
 
         /// <summary>
         /// List of amounts in current list.

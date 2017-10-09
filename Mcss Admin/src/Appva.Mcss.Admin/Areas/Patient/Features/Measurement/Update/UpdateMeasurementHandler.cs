@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -72,6 +73,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Name = observation.Name,
                 Instruction = observation.Description,
                 SelectUnitList = this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts)
+                .Where(x => x.Field == InventoryDefaults.Feature.measurement.ToString())
                 .Select(x => new SelectListItem
                 {
                     Text = string.Format("{0} ({1})", x.Name, x.Unit),

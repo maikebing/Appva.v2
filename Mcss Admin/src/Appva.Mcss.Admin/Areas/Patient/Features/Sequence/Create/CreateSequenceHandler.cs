@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Persistence;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -93,13 +94,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             if (schedule.ScheduleSettings.IsCollectingGivenDosage == true)
             {
-                var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts);
+                var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
+                    .Where(x => x.Field == InventoryDefaults.Feature.dosage.ToString());
                 foreach (var item in scales)
                 {
-                    dosageScaleList.Add(new SelectListItem {
-                        Text = String.Format("{0} ({1})", item.Name, item.Unit),
-                        Value = item.Id.ToString()
-                    });
+                    dosageScaleList.Add(
+                        new SelectListItem {
+                            Text = String.Format("{0} ({1})", item.Name, item.Unit),
+                            Value = item.Id.ToString()
+                        });
                 }
             }
             return new CreateSequenceForm

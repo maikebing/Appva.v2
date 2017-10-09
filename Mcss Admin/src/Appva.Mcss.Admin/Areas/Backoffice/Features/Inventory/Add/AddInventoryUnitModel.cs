@@ -11,6 +11,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using Appva.Cqrs;
+    using System.Collections;
+    using System.Web.Mvc;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -29,6 +32,14 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
             set;
         }
 
+        [DisplayName("Användningsområde")]
+        [Required]
+        public string Field
+        {
+            get;
+            set;
+        }
+
         [DisplayName("Enhet")]
         public string Unit
         {
@@ -39,6 +50,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         [DisplayName("Enheter")]
         [Required]
         public string Amounts
+        {
+            get;
+            set;
+        }
+
+        public IList<SelectListItem> SelectField
         {
             get;
             set;

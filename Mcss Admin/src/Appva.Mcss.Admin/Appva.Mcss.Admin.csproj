@@ -829,6 +829,7 @@
     <Compile Include="Models\KnowledgeTestFormModel.cs" />
     <Compile Include="Models\KnowledgeTestViewModel.cs" />
     <Compile Include="Models\ListInventoryViewModel.cs" />
+    <Compile Include="Models\MeasurementScaleModel.cs" />
     <Compile Include="Models\NotificationViewModel.cs" />
     <Compile Include="Models\OrderOverviewViewModel.cs" />
     <Compile Include="Areas\Patient\Features\Patient\Create\CreatePatient.cs" />

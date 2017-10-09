@@ -53,7 +53,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override AddMeasurementValueModel Handle(AddMeasurementValue message)
         {
             var observation = this.service.GetMeasurementObservation(message.MeasurementId);
-            var unit = JsonConvert.DeserializeObject<IList<InventoryAmountListModel>>(observation.Scale)[0].Unit;
+            var unit = JsonConvert.DeserializeObject<IList<MeasurementScaleModel>>(observation.Scale)[0].Unit;
 
             return new AddMeasurementValueModel
             {

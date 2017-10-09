@@ -62,25 +62,48 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             var setting  = settings.SingleOrDefault(x => x.Id == message.Id);
 
             setting.Name    = message.Name;
+            setting.Field   = message.Field;
             setting.Unit = string.IsNullOrWhiteSpace(message.Unit) ? null : message.Unit;
             setting.Amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", "")));
 
             this.settings.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, settings);
 
-            var query = this.persistence.QueryOver<Sequence>()
+            var dosageQuery = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive == true)
                     .JoinQueryOver(x => x.DosageObservation)
                         .Where(x => x.DosageScaleId == setting.Id)
                             .List();
 
+
+
+
             var amountToJson = JsonConvert.SerializeObject(setting.Amounts);
 
-            foreach (var row in query)
+            foreach (var row in dosageQuery)
             {
                 row.DosageObservation.Name = setting.Name;
                 row.DosageObservation.DosageScaleUnit = setting.Unit;
                 row.DosageObservation.DosageScaleValues = amountToJson;
                 this.persistence.Update(row);
+            }
+
+            //// Testa denna logik på måndag, utvärdera
+            var measurementQuery = this.persistence.QueryOver<MeasurementObservation>()
+                .Where(x => x.IsActive == true)
+                .And(x => x.Scale != string.Empty)
+                .List();
+            //.And(x => JsonConvert.DeserializeObject<List<InventoryAmountListModel>>(x.Scale)[0].Id == setting.Id)
+
+            foreach (var row in measurementQuery)
+            {
+                var scale = JsonConvert.DeserializeObject<List<InventoryAmountListModel>>(row.Scale).FirstOrDefault();
+                if (setting.Id == scale.Id)
+                {
+                    var list = new List<InventoryAmountListModel>();
+                    list.Add(setting);
+                    row.Scale = JsonConvert.SerializeObject(list);
+                    this.persistence.Update(row);
+                }
             }
 
             return new Parameterless<ListInventoriesModel>();

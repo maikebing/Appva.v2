@@ -127,18 +127,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="schedule">The schedule.</param>
-        /// <returns>DosageObservation.</returns>
+        /// <returns>DosageObservation<see cref="DosageObservation"/>.</returns>
         private DosageObservation CreateDosageObservation(CreateSequenceForm message, Schedule schedule)
         {
             if (schedule.ScheduleSettings.IsCollectingGivenDosage  == false) return null;
 
             var selectedScale = message.SelectedDosageScale;
             var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                .Where(x => x.Id.Equals(Guid.Parse(selectedScale)))
-                .FirstOrDefault();
-            var jsonSetting = new JsonSerializerSettings();
-            var json = JsonConvert.SerializeObject(scale.Amounts);
-            var dosageObservation = DosageObservation.New(scale.Id, scale.Unit, json, schedule.Patient, scale.Name, "DosageScale");
+                .Where(x => x.Id == Guid.Parse(selectedScale)).ToList();
+            var jsonScale = JsonConvert.SerializeObject(scale);
+            var dosageObservation = DosageObservation.New(schedule.Patient, scale[0].Name, "DosageScale", jsonScale);
             return dosageObservation;
         }
 

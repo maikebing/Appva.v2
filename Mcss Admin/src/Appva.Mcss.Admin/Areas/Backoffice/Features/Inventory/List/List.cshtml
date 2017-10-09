@@ -16,6 +16,7 @@
                     <tr>
                         <th>&nbsp;</th>
                         <th>Namn</th>
+                        <th>Område</th>
                         <th>Enhet</th>
                         <th>Värden</th>
                     </tr>
@@ -29,6 +30,7 @@
                                 @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
                             </td>
                             <td>@unit.Name</td>
+                            <td>@unit.Field</td>
                             <td>@(unit.Unit != null ? Html.Raw(unit.Unit) : Html.Raw("&mdash;"))</td>
                             <td>
                                 @Html.Serialize(unit.Amounts).ToHtmlString().Replace(",", ", ").Replace("<code>[", "").Replace("]</code>", "")

@@ -26,6 +26,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.DosageScaleValues = dosageScaleValues;
         }
 
+        public DosageObservation(Patient patient, string name, string description, string scale, Taxon category = null)
+            : base(patient, name, description, category)
+        {
+            this.DosageScale = scale;
+        }
+
         public DosageObservation()
         {
         }
@@ -59,6 +65,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the dosage scale.
+        /// </summary>
+        public virtual string DosageScale
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Public Static Builders.
@@ -74,6 +89,11 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public static DosageObservation New(Guid dosageScaleId, string dosageScaleUnit, string dosageScaleValues, Patient patient, string name, string description, Taxon category = null)
         {
             return new DosageObservation(dosageScaleId, dosageScaleUnit, dosageScaleValues, patient, name, description, category);
+        }
+
+        public static DosageObservation New(Patient patient, string name, string description, string scale, Taxon category = null)
+        {
+            return new DosageObservation(patient, name, description, scale, category);
         }
 
         #endregion

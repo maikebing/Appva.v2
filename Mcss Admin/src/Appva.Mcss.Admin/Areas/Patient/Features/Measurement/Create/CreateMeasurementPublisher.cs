@@ -69,7 +69,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListMeasurementModel Handle(CreateMeasurementModel message)
         {
             var patient = this.service.GetPatient(message.PatientId);
-            
             if (patient != null)
             {
                 this.service.CreateMeasurementObservation(MeasurementObservation.New(

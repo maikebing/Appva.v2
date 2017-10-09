@@ -160,11 +160,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private IList<SelectListItem> GetDosageScales(Schedule schedule)
         {
             var dosageScaleList = new List<SelectListItem>();
-            var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts);
+            var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
+                .Where(x => x.Field == InventoryDefaults.Feature.dosage.ToString());
 
             foreach (var item in scales)
             {
-                dosageScaleList.Add(new SelectListItem { Text = item.Name + " (" + item.Unit + ")", Value = item.Id.ToString() });
+                dosageScaleList.Add(
+                    new SelectListItem {
+                        Text = item.Name + " (" + item.Unit + ")",
+                        Value = item.Id.ToString()
+                    });
             }
             return dosageScaleList;
         }

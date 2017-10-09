@@ -26,19 +26,15 @@ namespace Appva.Mcss.Admin.Models
         [Required]
         public Guid MeasurementId { get; set; }
 
-        //[Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
-        //[Required(AllowEmptyStrings = true)]
         public string Instruction { get; set; }
 
         [Required]
         public string Value { get; set; }
 
-        //[Required(AllowEmptyStrings = true)]
         public string Comment { get; set; }
 
-        //[Required(AllowEmptyStrings = true)]
         public string Unit { get; set; }
 
         #endregion

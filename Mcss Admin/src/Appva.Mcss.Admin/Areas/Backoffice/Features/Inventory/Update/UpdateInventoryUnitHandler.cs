@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
     using Appva.Core.Extensions;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
@@ -18,6 +19,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web.Mvc;
 
     #endregion
 
@@ -61,6 +63,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             return new UpdateInventoryUnitModel() {
                 Amounts = JsonConvert.SerializeObject(setting.Amounts).Replace("[", "").Replace("]", ""),
                 Name    = setting.Name,
+                SelectField = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Inventarier", Value = InventoryDefaults.Feature.inventory.ToString() },
+                    new SelectListItem { Text = "Dosering", Value = InventoryDefaults.Feature.dosage.ToString() },
+                    new SelectListItem { Text = "Mätning", Value = InventoryDefaults.Feature.measurement.ToString() }
+                },
                 Unit    = setting.Unit,
                 Id      = setting.Id
             };

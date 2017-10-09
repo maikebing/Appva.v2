@@ -91,7 +91,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
 
-
             this.CreateOrUpdate(message, sequence, schedule, delegation, null);
             this.UpdateDosageObservation(message, schedule, sequence);
             this.sequenceService.Update(sequence);
@@ -111,22 +110,22 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 var selectedScale = message.SelectedDosageScale;
                 var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                    .Where(x => x.Id.Equals(Guid.Parse(selectedScale)))
-                    .FirstOrDefault();
+                    .Where(x => x.Id == Guid.Parse(selectedScale)).ToList();
 
                 if (sequence.DosageObservation.IsNull())
                 {
-                    var dosageObservation = new DosageObservation(scale.Id, scale.Unit, JsonConvert.SerializeObject(scale.Amounts), schedule.Patient, scale.Name, "DosageScale");
+                    var dosageObservation = new DosageObservation(schedule.Patient, scale[0].Name, "DosageScale", JsonConvert.SerializeObject(scale));
                     this.context.Save<DosageObservation>(dosageObservation);
                     sequence.DosageObservation = dosageObservation;
                     return sequence;
                 }
 
-                sequence.DosageObservation.DosageScaleId = scale.Id;
-                sequence.DosageObservation.Name = scale.Name;
-                sequence.DosageObservation.DosageScaleUnit = scale.Unit;
-                var json = JsonConvert.SerializeObject(scale.Amounts);
-                sequence.DosageObservation.DosageScaleValues = json;
+                //sequence.DosageObservation.DosageScaleId = scale.Id;
+                //sequence.DosageObservation.Name = scale.Name;
+                //sequence.DosageObservation.DosageScaleUnit = scale.Unit;
+                //var json = JsonConvert.SerializeObject(scale.Amounts);
+                //sequence.DosageObservation.DosageScaleValues = json;
+                sequence.DosageObservation.DosageScale = JsonConvert.SerializeObject(scale);
             }
             return sequence;
         }

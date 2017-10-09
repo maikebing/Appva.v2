@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Web.Mvc;
 
     #endregion
 
@@ -46,6 +47,17 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         }
 
         /// <summary>
+        /// The Field of usage
+        /// </summary>
+        [DisplayName("Användning")]
+        [Required]
+        public string Field
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The unit.
         /// </summary>
         [DisplayName("Enhet")]
@@ -61,6 +73,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         [DisplayName("Enheter")]
         [Required]
         public string Amounts
+        {
+            get;
+            set;
+        }
+
+        public IList<SelectListItem> SelectField
         {
             get;
             set;

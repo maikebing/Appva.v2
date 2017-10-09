@@ -23,6 +23,26 @@ using System.Linq;
         #region Fields.
 
         /// <summary>
+        /// The Fields enum.
+        /// An indicatetion in which field the enum is used.
+        /// </summary>
+        public enum Feature
+        {
+            inventory = 1,
+            dosage = 2,
+            measurement = 3
+        };
+
+        public enum MeasurementScale
+        {
+            length = 1,
+            weight = 2,
+            glukos = 3,
+            blood = 4,
+            bristol = 5
+        };
+
+        /// <summary>
         /// The default amounts.
         /// </summary>
         public static readonly IReadOnlyCollection<double> AmountList = new List<double>
@@ -49,6 +69,7 @@ using System.Linq;
                         Id      = Guid.NewGuid(),
                         Name    = "dos",
                         Unit    = "st",
+                        Feature   =  Feature.inventory,
                         Amounts = zeropointfive
                     },
                     new InventoryAmountListModel
@@ -56,6 +77,7 @@ using System.Linq;
                         Id      = Guid.NewGuid(),
                         Name    = "ml",
                         Unit    = "ml",
+                        Feature   =  Feature.inventory,
                         Amounts = new List<double> { 0.2, 0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10 }
                     },
                     new InventoryAmountListModel
@@ -63,6 +85,7 @@ using System.Linq;
                         Id      = Guid.NewGuid(),
                         Name    = "plåster",
                         Unit    = "st",
+                        Feature   =  Feature.inventory,
                         Amounts = AmountList.ToList()
                     },
                     new InventoryAmountListModel
@@ -70,6 +93,7 @@ using System.Linq;
                         Id      = Guid.NewGuid(),
                         Name    = "tbl",
                         Unit    = "st",
+                        Feature   =  Feature.inventory,
                         Amounts = zeropointfive
                     }
                 };

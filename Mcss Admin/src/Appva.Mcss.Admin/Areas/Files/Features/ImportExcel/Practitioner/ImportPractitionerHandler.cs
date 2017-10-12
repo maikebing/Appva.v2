@@ -89,7 +89,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             sheet = (XSSFSheet)workbook.GetSheet(sheetName);
 
-            for (int i = 0; i < sheet.LastRowNum; i++)
+            int i = 0;
+            while(sheet.GetRow(i) != null)
             {
                 if (dataTable.Columns.Count < sheet.GetRow(i).Cells.Count)
                 {
@@ -108,6 +109,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         dataTable.Rows[i][j] = sheet.GetRow(i).GetCell(j);
                     }
                 }
+
+                i++;
             }
 
             File.Delete(path);

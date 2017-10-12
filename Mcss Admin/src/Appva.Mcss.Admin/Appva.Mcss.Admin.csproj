@@ -463,6 +463,9 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
+    <Compile Include="Areas\Files\Features\ImportExcel\ImportExcelController.cs" />
+    <Compile Include="Areas\Files\Features\ImportExcel\Practitioner\ImportPractitionerHandler.cs" />
+    <Compile Include="Areas\Files\Features\ImportExcel\Practitioner\ImportPractitionerModel.cs" />
     <Compile Include="Areas\Files\Features\Shared\FileUploadProperties.cs" />
     <Compile Include="Areas\Files\Features\Upload\Delete\DeleteFileHandler.cs" />
     <Compile Include="Areas\Files\Features\Upload\Download\DownloadFile.cs" />
@@ -885,6 +888,7 @@
     <Content Include="Assets\i\appva-logo-icon.png" />
     <Content Include="Assets\i\bell.png" />
     <Content Include="Assets\i\bg-stdbtn-del.png" />
+    <Content Include="Assets\i\bg-stdbtn-green.png" />
     <Content Include="Assets\i\bg-stdbtn.png" />
     <Content Include="Assets\i\bg-texture.png" />
     <Content Include="Assets\i\btn-delete.png" />
@@ -1433,6 +1437,7 @@
     <Content Include="Areas\Files\Features\web.config" />
     <Content Include="Areas\Files\Features\Upload\List\List.cshtml" />
     <Content Include="Areas\Files\Features\Upload\Upload\Upload.cshtml" />
+    <Content Include="Areas\Files\Features\ImportExcel\Practitioner\Practitioner.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

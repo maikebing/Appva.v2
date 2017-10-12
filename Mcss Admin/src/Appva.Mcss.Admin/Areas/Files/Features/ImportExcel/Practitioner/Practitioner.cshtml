@@ -1,0 +1,46 @@
+﻿@using System.Data;
+@model Appva.Mcss.Admin.Models.ImportPractitionerModel
+@{
+    SetTitle("Importera medarbetare från Excel");
+}
+<div id="subheader" class="cf">
+    <h1>Importera medarbetare från Excel</h1>
+</div>
+<div id="content" class="log cf">
+    <div>
+        @if (Model.Data != null)
+        {
+            <table class="device-table">
+                <thead>
+                    <tr class="head">
+                        @if (Model.Data.Rows.Count > 0)
+                        {
+                            for (int i = 0; i < Model.Data.Columns.Count; i++)
+                            {
+                                <th>@Model.Data.Rows[0][Model.Data.Columns[i]]</th>
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Data.Rows.Count > 1)
+                    {
+                        for (int i = 1; i < Model.Data.Rows.Count; i++)
+                        {
+                            <tr>
+                                @foreach (DataColumn column in Model.Data.Columns)
+                                {
+                                    <td>@Model.Data.Rows[i][column].ToString()</td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h3>Filen finns inte, eller är ingen giltig Excel-fil (.xlsx).</h3>
+        }
+    </div>
+</div>

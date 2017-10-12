@@ -44,13 +44,12 @@
                                 @Html.ActionLink("Ladda ner", "Download", new { Id = file.Id }, new { @class = "btn" })
                                 @if (isImportableExcelFile)
                                 {
-                                    @Html.ActionLink("Importera", "ImportExcel", new { Id = file.Id }, new { @class = "btn-green" })
+                                    @Html.ActionLink("Granska", "Practitioner", "ImportExcel", new { Area = "Files", Id = file.Id }, new { @class = "btn-green" })
                                 }
                                 else
                                 {
                                     @Html.ActionLink("Ta bort", "Delete", new { Id = file.Id }, new { @class = "btn btn-del item-delete-confirmation", data_text = "ta bort filen \"" + file.Name + "\"" })
                                 }
-                                
                             </td>
                         </tr>
                     }

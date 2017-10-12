@@ -52,7 +52,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// </summary>
         /// <param name="request">The <see cref="DownloadFile"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("download")]
+        [Route("{id:guid}/download")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ReadValue)]
         public ActionResult Download(DownloadFile request)
@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// <summary>
         /// Uploads a file.
         /// </summary>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <returns><see cref="ActionResult"/>.</returns>
         [Route("upload")]
         [HttpGet, Hydrate, Dispatch(typeof(Parameterless<UploadFileModel>))]
         [PermissionsAttribute(Permissions.FileUpload.CreateValue)]

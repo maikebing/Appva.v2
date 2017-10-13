@@ -153,6 +153,32 @@ namespace Appva.Ehm.Models
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the organization identifier.
+        /// </summary>
+        /// <value>
+        /// The organization identifier.
+        /// </value>
+        [JsonProperty("organisationsnummer")]
+        public string OrganizationId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the user identifier.
+        /// </summary>
+        /// <value>
+        /// The user identifier.
+        /// </value>
+        [JsonProperty("anvandarid")]
+        public Guid UserId
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Areas.Handlers
             return new EhmSettingsModel
             {
                 MockedParameters = ApplicationEnvironment.Is.Production != true ? this.settings.Find<EhmMockedParameters>(ApplicationSettings.EhmMockParameters) : null,
-                TenantSettings = this.settings.Find<TenantAttributes>(ApplicationSettings.EhmTenantUserAttributes)
+                TenantSettings   = this.settings.Find<TenantAttributes>(ApplicationSettings.EhmTenantUserAttributes)
             };
         }
 

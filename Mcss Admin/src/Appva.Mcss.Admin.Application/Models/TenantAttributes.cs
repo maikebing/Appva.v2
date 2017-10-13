@@ -93,6 +93,18 @@ namespace Appva.Mcss.Admin.Application.Models
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the organization identifier.
+        /// </summary>
+        /// <value>
+        /// The organization identifier.
+        /// </value>
+        public string OrganizationId
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Static members

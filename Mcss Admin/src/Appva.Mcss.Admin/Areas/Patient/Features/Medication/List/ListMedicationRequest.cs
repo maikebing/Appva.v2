@@ -20,8 +20,18 @@ namespace Appva.Mcss.Admin.Areas.Patient.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ListMedicationRequest : Identity<ListMedicationModel>
+    public class ListMedicationRequest : IAsyncRequest<ListMedicationModel>
     {
-        
+        /// <summary>
+        /// Gets or sets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public Guid Id
+        {
+            get;
+            set;
+        }
     }
 }

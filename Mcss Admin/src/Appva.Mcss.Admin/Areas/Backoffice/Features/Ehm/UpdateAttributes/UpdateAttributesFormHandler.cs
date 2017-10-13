@@ -55,12 +55,13 @@ namespace Appva.Mcss.Admin.Areas.Handlers
             
             var attr = new TenantAttributes
             {
-                Adress = message.Adress,
-                City = message.City,
-                Phone = message.Phone,
-                Workplace = message.Workplace,
-                WorkplaceCode = message.WorkplaceCode,
-                Zip = message.Zip
+                Adress          = message.Adress,
+                City            = message.City,
+                Phone           = message.Phone,
+                Workplace       = message.Workplace,
+                WorkplaceCode   = message.WorkplaceCode,
+                Zip             = message.Zip,
+                OrganizationId  = message.OrganizationId
             };
             this.settings.Upsert<TenantAttributes>(ApplicationSettings.EhmTenantUserAttributes, attr);
 

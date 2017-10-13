@@ -545,7 +545,11 @@
     <Content Include="Areas\Backoffice\Features\Ehm\UpdateAttributes\UpdateAttributes.cshtml" />
     <Content Include="Areas\Backoffice\Features\Ehm\UpdateMock\UpdateMock.cshtml" />
     <None Include="Areas\Patient\Features\Medication\Details\Partials\_medicationPartial.cshtml" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationHandler.cs" />
     <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\ListMedicationRequest.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\Partials\Table\Models\ListMedicationsTableViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\Medication\List\Partials\Table\Models\ListMedicationTableRowViewModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\MedicationController.cs" />
     <Compile Include="Areas\Patient\Features\Medication\Overview\MedicationOverviewModel.cs" />
     <Compile Include="Areas\Patient\Features\Medication\SelectSchedule\SelectScheduleMedicationRequest.cs" />
@@ -803,6 +807,7 @@
     <Compile Include="Infrastructure\Controllers\IdentityController.cs" />
     <Compile Include="Infrastructure\DispatchExcelFileContentResult.cs" />
     <Compile Include="Infrastructure\DispatchJsonResult.cs" />
+    <Compile Include="Infrastructure\ExceptionHandling\EhmExceptionHandlerAttribute.cs" />
     <Compile Include="Infrastructure\MvcExceptionHandler.cs" />
     <Compile Include="Infrastructure\Models\Parameterless.cs" />
     <Compile Include="Infrastructure\PatientTransformer.cs" />
@@ -1450,9 +1455,10 @@
     <Content Include="Areas\Patient\Features\Medication\Partials\_dosageScheme.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Partials\EhmErrorPatientNotFound.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Partials\EhmUnauthorized.cshtml" />
-    <Content Include="Areas\Patient\Features\Medication\Partials\_listMedicationsTableRow.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\List\Partials\Table\_listMedicationsTableRow.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Overview\Overview.cshtml" />
     <Content Include="Areas\Patient\Features\Medication\Partials\EhmErrorSithsRequired.cshtml" />
+    <Content Include="Areas\Patient\Features\Medication\List\Partials\Table\_listMedicationsTable.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

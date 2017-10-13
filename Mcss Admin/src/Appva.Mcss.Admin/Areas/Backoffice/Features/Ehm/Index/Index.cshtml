@@ -11,8 +11,12 @@
 <div id="ehm" class="">
     <div class="e-panel">
         <h3>Inställningar för anslutningar till eHälsomyndigheten</h3>
-        <p class="sign-list-summary">Följande inställningar gäller för kunden och skickas med´för den inloggade användaren i alla anslutningar som görs till eHälsomyndigheten</p>
+        <p class="sign-list-summary">Följande inställningar gäller för kunden och skickas med för den inloggade användaren i alla anslutningar som görs till eHälsomyndigheten</p>
         <table>
+            <tr>
+                <td style="width:150px;"><b>Organizationsnummer</b></td>
+                <td>@Model.TenantSettings.OrganizationId</td>
+            </tr>
             <tr>
                 <td style="width:150px;"><b>Arbetsplatskod</b></td>
                 <td>@Model.TenantSettings.WorkplaceCode</td>

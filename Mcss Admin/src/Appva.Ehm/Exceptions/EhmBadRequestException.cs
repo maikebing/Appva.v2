@@ -17,7 +17,7 @@ namespace Appva.Ehm.Exceptions
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class EhmBadRequestException : Exception
+    public class EhmBadRequestException : EhmException
     {
         #region Constructor.
 

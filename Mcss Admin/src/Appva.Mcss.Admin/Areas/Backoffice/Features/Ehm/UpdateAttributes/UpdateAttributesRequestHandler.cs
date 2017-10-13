@@ -55,12 +55,13 @@ namespace Appva.Mcss.Admin.Areas.Handlers
             var attr = this.settings.Find<TenantAttributes>(ApplicationSettings.EhmTenantUserAttributes);
             return new UpdateAttributesModel
             {
-                Adress = attr.Adress,
-                City = attr.City,
-                Phone = attr.Phone,
-                Workplace = attr.Workplace,
-                WorkplaceCode = attr.WorkplaceCode,
-                Zip = attr.Zip
+                Adress          = attr.Adress,
+                City            = attr.City,
+                Phone           = attr.Phone,
+                Workplace       = attr.Workplace,
+                WorkplaceCode   = attr.WorkplaceCode,
+                Zip             = attr.Zip,
+                OrganizationId  = attr.OrganizationId
             };
         }
 

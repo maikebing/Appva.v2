@@ -55,12 +55,9 @@ namespace Appva.Ehm
         /// <inheritdoc />
         public async Task<IList<Ordination>> ListOrdinations(string forPatientUniqueId, User byUser)
         {
-            var token = this.GetAuthorizationToken(byUser);
-            var headers = new Dictionary<string, string>() { { "Authorization", string.Format("Basic {0}", token) } };
-            var request = this.Get(
-                string.Format("{0}{1}?personnummer={2}", config.baseUri, EhmConfiguration.Endpoints.List, forPatientUniqueId.Replace("-", "")));
-            request.WithHeaders(headers);//.WithBasicAuthorization(token);
-            var response = await request.ToResultAsync<ListOrdinationsResponse>();
+            var response = await this.Get(string.Format("{0}{1}?personnummer={2}", config.baseUri, EhmConfiguration.Endpoints.List, forPatientUniqueId.Replace("-", "")))
+                .WithBasicAuthorization(this.GetAuthorizationToken(byUser))
+                .ToResultAsync<ListOrdinationsResponse>();
             
             if (response.Response.StatusCode == HttpStatusCode.Unauthorized)
             {

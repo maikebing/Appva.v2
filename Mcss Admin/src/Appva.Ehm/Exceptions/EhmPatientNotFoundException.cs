@@ -17,7 +17,7 @@ namespace Appva.Ehm.Exceptions
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class EhmPatientNotFoundException : Exception
+    public sealed class EhmPatientNotFoundException : EhmException
     {
         #region Constructor.
 

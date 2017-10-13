@@ -25,6 +25,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication
     using Appva.Mcss.Admin.Infrastructure.Attributes;
 using Appva.Mcss.Admin.Application.Security;
     using System.IdentityModel.Tokens;
+    using Appva.Mcss.Admin.Areas.Patient.Models;
+    using Appva.Cqrs;
 
     #endregion
 
@@ -78,6 +80,11 @@ using Appva.Mcss.Admin.Application.Security;
         /// </summary>
         private readonly ITaxonomyService taxonService;
 
+        /// <summary>
+        /// The <see cref="IMediator"/>
+        /// </summary>
+        private readonly IMediator mediator;
+
         #endregion
 
         #region Const.
@@ -102,7 +109,8 @@ using Appva.Mcss.Admin.Application.Security;
             IDelegationService delegationService,
             ISequenceService sequenceService,
             IRoleService roleService,
-            ITaxonomyService taxonService)
+            ITaxonomyService taxonService,
+            IMediator mediator)
         {
             this.medicationService  = medicationSevice;
             this.patientService     = patientService;
@@ -112,6 +120,7 @@ using Appva.Mcss.Admin.Application.Security;
             this.sequenceService    = sequenceService;
             this.roleService        = roleService;
             this.taxonService       = taxonService;
+            this.mediator           = mediator;
         }
 
         #endregion
@@ -127,35 +136,21 @@ using Appva.Mcss.Admin.Application.Security;
         [Route("")]
         [HttpGet]
         [PermissionsAttribute(Permissions.Medication.ReadValue)]
-        public async Task<ActionResult> List(Guid id)
+        public async Task<ActionResult> List(ListMedicationRequest request)
         {
-            var patient         = this.patientService.Get(id);
-            var patientModel    = this.patientTransformer.ToPatient(patient);
+            
             
             try
-            {    
-                var list      = await this.medicationService.List(id);
-                var sequences = this.medicationService.GetSequenceInformationFor(list);
-                return this.View(new ListMedicationModel 
-                { 
-                    Patient                     = patientModel,
-                    DispensedMedications        = list.Where(x => x.Type == Domain.Entities.OrdinationType.Dispensed).ToList(),
-                    OriginalPackageMedications  = list.Where(x => x.Type != Domain.Entities.OrdinationType.Dispensed).ToList(),
-                    Sequences                   = sequences
-                });
-            }
-            catch (EhmPatientNotFoundException e)
             {
-                return this.View("EhmErrorPatientNotFound", patientModel);
+                var response = await this.mediator.SendAsync(request);
+                return this.View(response);
             }
-            catch (EhmUnauthorizedException e)
+            catch (EhmException e)
             {
-                return this.View("EhmUnauthorized", patientModel);
+                return this.HandleError(e, request.Id);                
             }
-            catch (EhmBadRequestException e)
-            {
-                return this.View("EhmError", patientModel);
-            }
+
+            
         }
 
         #endregion
@@ -184,9 +179,9 @@ using Appva.Mcss.Admin.Application.Security;
                     Sequences   = sequences.FirstOrDefault().Value
                 });
             }
-            catch (EhmBadRequestException e)
+            catch (EhmException e)
             {
-                return this.View("EhmError");
+                return this.HandleError(e, request.Id);
             }
         }
 
@@ -242,9 +237,9 @@ using Appva.Mcss.Admin.Application.Security;
 
                
             }
-            catch (EhmBadRequestException e)
+            catch (EhmException e)
             {
-                return this.View("EhmError");
+                return this.HandleError(e, request.Id);
             }
         }
 
@@ -304,9 +299,9 @@ using Appva.Mcss.Admin.Application.Security;
                 var delegations = this.delegationService.List(schedule.ScheduleSettings.DelegationTaxon.Path);
                 return this.RedirectToAction("List", new { Id = patient.Id, OrdinationId = request.OrdinationId });
             }
-            catch (EhmBadRequestException e)
+            catch (EhmException e)
             {
-                return this.View("EhmError");
+                return this.HandleError(e, request.Id);
             }
         }
 
@@ -371,6 +366,12 @@ using Appva.Mcss.Admin.Application.Security;
 
         #region Private helpers.
 
+        /// <summary>
+        /// Gets the times.
+        /// </summary>
+        /// <param name="times">The times.</param>
+        /// <param name="selected">The selected.</param>
+        /// <returns></returns>
         private IList<CheckBoxViewModel> GetTimes(IList<int> times, IList<int> selected)
         {
             return times.Select(x => new CheckBoxViewModel()
@@ -378,6 +379,25 @@ using Appva.Mcss.Admin.Application.Security;
                 Id = x,
                 Checked = selected.Contains(x)
             }).ToList();
+        }
+
+        private ActionResult HandleError(EhmException e, Guid id)
+        {
+            var patient         = this.patientService.Get(id);
+            var patientModel    = this.patientTransformer.ToPatient(patient);
+            
+            /* var type = e.GetType();
+            switch (true)
+            {
+                case typeof(EhmUnauthorizedException):
+                    return this.View("EhmUnauthorized", patientModel);
+                case typeof(EhmPatientNotFoundException):
+                    return this.View("EhmErrorPatientNotFound", patientModel);
+                case typeof(EhmBadRequestException):
+                    return this.View("EhmError", patientModel);
+            }*/
+
+            return this.View("EhmError", patientModel);
         }
 
         #endregion

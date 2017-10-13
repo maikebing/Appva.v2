@@ -1,4 +1,4 @@
-﻿// <copyright file="EhmUnauthorizedException.cs" company="Appva AB">
+﻿// <copyright file="EhmException.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -17,15 +17,14 @@ namespace Appva.Ehm.Exceptions
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class EhmUnauthorizedException : EhmException
+    public class EhmException : Exception
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EhmUnauthorizedException"/> class.
+        /// Initializes a new instance of the <see cref="EhmException"/> class.
         /// </summary>
-        public EhmUnauthorizedException()
-            : base()
+        public EhmException()
         {
         }
 

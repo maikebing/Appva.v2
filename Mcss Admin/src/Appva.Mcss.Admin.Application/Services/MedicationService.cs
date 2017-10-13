@@ -177,7 +177,11 @@ namespace Appva.Mcss.Admin.Application.Services
                 var history = new List<Sequence>();
                 foreach(var h in m.PreviousMedications)
                 {
-                    history.AddRange(sequences.Where(x => x.Medications.First(y => y.OrdinationId == m.OrdinationId) != null).ToList());
+                    var s = sequences.Where(x => x.Medications.FirstOrDefault(y => y.OrdinationId == m.OrdinationId) != null).ToList();
+                    if (s != null && s.Count > 0)
+                    {
+                        history.AddRange(s);
+                    }
                 }
                 //var sequence = 
                 var model = new SequenceMedicationCompareModel {
@@ -210,16 +214,18 @@ namespace Appva.Mcss.Admin.Application.Services
             var ehmAttr = this.settings.Find<TenantAttributes>(ApplicationSettings.EhmTenantUserAttributes);
             return new User
             {
-                PrescriberCode = this.identity.Principal.PrescriberCode(),
+                PrescriberCode   = this.identity.Principal.PrescriberCode(),
                 LegitimationCode = this.identity.Principal.LegitimationCode(),
-                Adress = ehmAttr.Adress,
-                City = ehmAttr.City,
-                FirstName = account.FirstName,
-                LastName = account.LastName,
-                Phone = ehmAttr.Phone,
-                WorkplaceCode = ehmAttr.WorkplaceCode,
-                Zip = ehmAttr.Zip,
-                Workplace = ehmAttr.Workplace
+                Adress           = ehmAttr.Adress,
+                City             = ehmAttr.City,
+                FirstName        = account.FirstName,
+                LastName         = account.LastName,
+                Phone            = ehmAttr.Phone,
+                WorkplaceCode    = ehmAttr.WorkplaceCode,
+                Zip              = ehmAttr.Zip,
+                Workplace        = ehmAttr.Workplace,
+                OrganizationId   = ehmAttr.OrganizationId,
+                UserId           = account.Id
             };
         }
 

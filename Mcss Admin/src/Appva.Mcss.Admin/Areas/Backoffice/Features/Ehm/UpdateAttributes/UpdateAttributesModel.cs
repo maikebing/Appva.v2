@@ -60,6 +60,12 @@ namespace Appva.Mcss.Admin.Models
             set;
         }
 
+        public string OrganizationId
+        {
+            get;
+            set;
+        }
+
         #endregion
     }
 }

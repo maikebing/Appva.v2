@@ -11,6 +11,8 @@ namespace Appva.Mcss.Admin.Application.Services
 
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Web;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
 
@@ -40,6 +42,21 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="id">The <see cref="DataFile"/>.</param>
         void Delete(DataFile file);
+
+        /// <summary>
+        /// Saves the file to a temporary folder.
+        /// </summary>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="fileData">The file data.</param>
+        /// <returns>The file path.</returns>
+        string SaveToDisk(string fileName, byte[] fileData);
+
+        /// <summary>
+        /// Gets a formatted file size.
+        /// </summary>
+        /// <param name="contentLength">The content length.</param>
+        /// <returns>The formatted file size.</returns>
+        string GetFileSizeFormat(int contentLength);
     }
 
     /// <summary>
@@ -86,6 +103,40 @@ namespace Appva.Mcss.Admin.Application.Services
         public void Delete(DataFile file)
         {
             this.repository.Delete(file);
+        }
+
+        /// <inheritdoc />
+        public string SaveToDisk(string fileName, byte[] fileData)
+        {
+            var folder = HttpContext.Current.Server.MapPath("~/Content/Temp");
+            var path = string.Format("{0}\\{1}", folder, fileName);
+
+            if (Directory.Exists(path) == false)
+            {
+                Directory.CreateDirectory(folder);
+            }
+
+            File.WriteAllBytes(path, fileData);
+            return path;
+        }
+
+        /// <inheritdoc />
+        public string GetFileSizeFormat(int contentLength)
+        {
+            var fileSize = string.Empty;
+            var kB = 1024;
+
+            if (contentLength > kB)
+            {
+                double length = contentLength;
+                fileSize = length > Math.Pow(kB, 2) ? Math.Round(length / Math.Pow(kB, 2), 1) + " MB" : Math.Round(length / kB, 1) + " kB";
+            }
+            else
+            {
+                fileSize = contentLength + " bytes";
+            }
+
+            return fileSize;
         }
 
         #endregion

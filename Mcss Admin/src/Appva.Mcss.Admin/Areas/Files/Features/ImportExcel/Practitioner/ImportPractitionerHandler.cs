@@ -9,14 +9,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System;
     using System.Data;
-    using System.Data.OleDb;
-    using System.Web;
     using System.IO;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
     using NPOI.XSSF.UserModel;
+    using NPOI.SS.UserModel;
 
     #endregion
 
@@ -31,6 +32,35 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// The <see cref="IFileService"/>.
         /// </summary>
         private readonly IFileService fileService;
+
+        /// <summary>
+        /// The validation data.
+        /// </summary>
+        private readonly string[] validRowData =
+        {
+            "Personnummer",
+            "Förnamn",
+            "Efternamn",
+            "E-post",
+            "Roll",
+            "Organisationstillhörighet",
+            "HSA-id"
+        };
+
+        /// <summary>
+        /// Validate cells at the specified row.
+        /// </summary>
+        private const byte validateAtRow = 2;
+
+        /// <summary>
+        /// Reads data from the specified row.
+        /// </summary>
+        private const byte readFromRow = 4;
+
+        /// <summary>
+        /// The number of rows in the excel file.
+        /// </summary>
+        private int rowCount;
 
         #endregion
 
@@ -55,13 +85,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var file = this.fileService.Get(message.Id);
             var model = new ImportPractitionerModel();
 
-            if(file == null || Path.GetExtension(file.Name) != ".xlsx")
+            if (file == null || Path.GetExtension(file.Name) != ".xlsx")
             {
                 return model;
             }
 
-            var path = this.SaveExcelFile(file.Name, file.Data);
-            model.Data = this.ExcelToDataTable(path);
+            var path = this.fileService.SaveToDisk(file.Name, file.Data);
+            model.Title = file.Title;
+            model.Description = file.Description;
+            model.Name = file.Name;
+            model.Size = this.fileService.GetFileSizeFormat(file.Data.Length);
+            model.ValidateAtRow = validateAtRow + 1;
+            model.ReadFromRow = readFromRow;
+            model.Data = this.ReadPractitionersFromExcel(path);
+            model.RowCount = this.rowCount;
+
             return model;
         }
 
@@ -70,11 +108,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private methods.
 
         /// <summary>
-        /// Reads data from an excel file.
+        /// Read practitioner data from an excel file.
         /// </summary>
         /// <param name="path">The file path.</param>
         /// <returns>A <see cref="DataTable"/>.</returns>
-        private DataTable ExcelToDataTable(string path)
+        private DataTable ReadPractitionersFromExcel(string path)
         {
             var dataTable = new DataTable();
             XSSFWorkbook workbook;
@@ -89,54 +127,52 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             sheet = (XSSFSheet)workbook.GetSheet(sheetName);
 
-            int i = 0;
-            while(sheet.GetRow(i) != null)
+            try
             {
-                if (dataTable.Columns.Count < sheet.GetRow(i).Cells.Count)
+                var dataHeader = dataTable.NewRow();
+                for (int i = 0; i < sheet.GetRow(validateAtRow).LastCellNum; i++)
                 {
-                    for (int j = 0; j < sheet.GetRow(i).Cells.Count; j++)
+                    if (validRowData[i].ToLower() != sheet.GetRow(validateAtRow).GetCell(i).ToString().ToLower().Trim())
                     {
-                        dataTable.Columns.Add();
+                        return null;
                     }
+
+                    dataTable.Columns.Add();
+                    dataHeader[i] = sheet.GetRow(validateAtRow).GetCell(i);
                 }
 
-                dataTable.Rows.Add();
+                dataTable.Rows.Add(dataHeader);
+                int j = readFromRow;
 
-                for (int j = 0; j < sheet.GetRow(i).Cells.Count; j++)
+                while (sheet.GetRow(j) != null)
                 {
-                    if (sheet.GetRow(i).GetCell(j) != null)
+                    if (sheet.GetRow(j).Cells.All(x => x.CellType == CellType.Blank))
                     {
-                        dataTable.Rows[i][j] = sheet.GetRow(i).GetCell(j);
+                        j++;
+                        continue;
                     }
-                }
 
-                i++;
+                    var dataRow = dataTable.NewRow();
+
+                    for (int k = 0; k < sheet.GetRow(j).LastCellNum; k++)
+                    {
+                        if (sheet.GetRow(j).GetCell(k) != null)
+                        {
+                            dataRow[k] = sheet.GetRow(j).GetCell(k);
+                        }
+                    }
+
+                    dataTable.Rows.Add(dataRow);
+                    this.rowCount++;
+                    j++;
+                }
             }
-
-            File.Delete(path);
-
+            finally
+            {
+                File.Delete(path);
+            }
+            
             return dataTable;
-        }
-
-        /// <summary>
-        /// Saves the excel file to a folder.
-        /// </summary>
-        /// <param name="fileName">The file name.</param>
-        /// <param name="fileData">The file data.</param>
-        /// <returns>The file path.</returns>
-        private string SaveExcelFile(string fileName, byte[] fileData)
-        {
-            var folder = HttpContext.Current.Server.MapPath("~/Content/Temp");
-            var path = string.Format("{0}\\{1}", folder, fileName);
-
-            if (Directory.Exists(path) == false)
-            {
-                Directory.CreateDirectory(folder);
-            }
-
-            File.WriteAllBytes(path, fileData);
-
-            return path;
         }
 
         #endregion

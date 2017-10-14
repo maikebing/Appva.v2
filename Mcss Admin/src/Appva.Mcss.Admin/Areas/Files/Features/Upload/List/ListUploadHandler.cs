@@ -9,7 +9,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using Appva.Cqrs;
@@ -56,7 +55,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             foreach (var file in this.fileService.GetUploadedFiles(message.IsFilteredByImages))
             {
                 var typeImage = SetImagePath(file.ContentType.ToLower(), Path.GetExtension(file.Name).ToLower());
-                var fileSize = GetFileSizeFormat(file.Data.Length);
                 var contentType = file.ContentType.Split('/');
 
                 files.Add(new ListUpload
@@ -67,7 +65,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     Description = file.Description,
                     Type = contentType.Length > 1 ? contentType[1] : contentType[0],
                     TypeImage = typeImage,
-                    Size = fileSize,
+                    Size = this.fileService.GetFileSizeFormat(file.Data.Length),
                     DateAdded = file.CreatedAt.ToShortDateString(),
                     Properties = file.Properties == null ? null : JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties)
                 });
@@ -83,29 +81,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #endregion
 
         #region Private methods.
-
-        /// <summary>
-        /// Gets a formatted file size.
-        /// </summary>
-        /// <param name="contentLength">The content length.</param>
-        /// <returns>The formatted file size.</returns>
-        private string GetFileSizeFormat(int contentLength)
-        {
-            var fileSize = string.Empty;
-            var kB = 1024;
-
-            if (contentLength > kB)
-            {
-                double length = contentLength;
-                fileSize = length > Math.Pow(kB, 2) ? Math.Round(length / Math.Pow(kB, 2), 1) + " MB" : Math.Round(length / kB, 1) + " kB";
-            }
-            else
-            {
-                fileSize = contentLength + " bytes";
-            }
-
-            return fileSize;
-        }
 
         /// <summary>
         /// Sets the image icon for the file type.

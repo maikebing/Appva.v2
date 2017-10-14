@@ -1,18 +1,42 @@
 ﻿@using System.Data;
 @model Appva.Mcss.Admin.Models.ImportPractitionerModel
 @{
-    SetTitle("Importera medarbetare från Excel");
+    SetTitle("Importera medarbetare");
 }
 <div id="subheader" class="cf">
-    <h1>Importera medarbetare från Excel</h1>
+    <h1>Importera medarbetare</h1>
 </div>
 <div id="content" class="log cf">
     <div>
         @if (Model.Data != null)
         {
             <table class="device-table">
+                <tr>
+                    <td style="width:100px">Filnamn</td>
+                    <td><b>@(Model.Name)</b></td>
+                </tr>
+                <tr>
+                    <td>Titel</td>
+                    <td>@Model.Title</td>
+                </tr>
+                <tr>
+                    <td>Beskrivning</td>
+                    <td>@Model.Description</td>
+                </tr>
+                <tr>
+                    <td>Filstorlek</td>
+                    <td>@Model.Size</td>
+                </tr>
+                <tr>
+                    <td>Antal rader</td>
+                    <td>@Model.RowCount</td>
+                </tr>
+            </table>
+            <h3>Förhandsgranskning</h3>
+            <table class="device-table">
                 <thead>
                     <tr class="head">
+                        <th style="background:#777;text-align:center">@Model.ValidateAtRow</th>
                         @if (Model.Data.Rows.Count > 0)
                         {
                             for (int i = 0; i < Model.Data.Columns.Count; i++)
@@ -25,22 +49,38 @@
                 <tbody>
                     @if (Model.Data.Rows.Count > 1)
                     {
-                        for (int i = 1; i < Model.Data.Rows.Count; i++)
+                        int i = 0;
+                        foreach (DataRow row in Model.Data.Rows)
                         {
-                            <tr>
-                                @foreach (DataColumn column in Model.Data.Columns)
-                                {
-                                    <td>@Model.Data.Rows[i][column].ToString()</td>
-                                }
-                            </tr>
+                            if (i > 0)
+                            {
+                                <tr>
+                                    <td style="background:#eee;text-align:center">@(Model.ReadFromRow + i)</td>
+                                    @foreach (DataColumn column in Model.Data.Columns)
+                                    {
+                                        <td>@row[column].ToString()</td>
+                                    }
+                                </tr>
+                            }
+                            if (i > 2)
+                            {
+                                break;
+                            }
+                            i++;
                         }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="@(Model.Data.Columns.Count + 1)" style="text-align:center;padding:12px 0;color:#aaa">Filen innehåller inga rader.</td>
+                        </tr>
                     }
                 </tbody>
             </table>
         }
         else
         {
-            <h3>Filen finns inte, eller är ingen giltig Excel-fil (.xlsx).</h3>
+            <h3>Det gick inte att öppna filen.</h3>
         }
     </div>
 </div>

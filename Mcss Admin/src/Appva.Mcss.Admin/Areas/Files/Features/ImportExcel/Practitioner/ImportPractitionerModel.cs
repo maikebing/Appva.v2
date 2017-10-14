@@ -22,6 +22,69 @@ namespace Appva.Mcss.Admin.Models
         #region Properties.
 
         /// <summary>
+        /// The file title.
+        /// </summary>
+        public string Title
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The file description.
+        /// </summary>
+        public string Description
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The file name.
+        /// </summary>
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The file size.
+        /// </summary>
+        public string Size
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The number of rows in the excel file.
+        /// </summary>
+        public int RowCount
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Validate cells at the specified row.
+        /// </summary>
+        public byte ValidateAtRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Reads data from the specified row.
+        /// </summary>
+        public byte ReadFromRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The excel data.
         /// </summary>
         public DataTable Data

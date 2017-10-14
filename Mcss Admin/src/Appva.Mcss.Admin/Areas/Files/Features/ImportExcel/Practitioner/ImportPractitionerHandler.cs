@@ -9,7 +9,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System;
     using System.Data;
     using System.IO;
     using System.Linq;
@@ -91,6 +90,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
 
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
+            model.FileId = message.Id;
             model.Title = file.Title;
             model.Description = file.Description;
             model.Name = file.Name;

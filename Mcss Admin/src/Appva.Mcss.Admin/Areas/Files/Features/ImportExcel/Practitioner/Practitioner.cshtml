@@ -7,31 +7,57 @@
     <h1>Importera medarbetare</h1>
 </div>
 <div id="content" class="log cf">
-    <div>
+    <div id="fileimport">
         @if (Model.Data != null)
         {
-            <table class="device-table">
-                <tr>
-                    <td style="width:100px">Filnamn</td>
-                    <td><b>@(Model.Name)</b></td>
-                </tr>
-                <tr>
-                    <td>Titel</td>
-                    <td>@Model.Title</td>
-                </tr>
-                <tr>
-                    <td>Beskrivning</td>
-                    <td>@Model.Description</td>
-                </tr>
-                <tr>
-                    <td>Filstorlek</td>
-                    <td>@Model.Size</td>
-                </tr>
-                <tr>
-                    <td>Antal rader</td>
-                    <td>@Model.RowCount</td>
-                </tr>
-            </table>
+            <div id="fileinfo">
+                <h3>Filinformation</h3>
+                <table class="device-table fileinfo">
+                    <tr>
+                        <td>Filnamn</td>
+                        <td><b>@(Model.Name)</b></td>
+                    </tr>
+                    <tr>
+                        <td>Titel</td>
+                        <td>@Model.Title</td>
+                    </tr>
+                    <tr>
+                        <td>Beskrivning</td>
+                        <td>@Model.Description</td>
+                    </tr>
+                    <tr>
+                        <td>Filstorlek</td>
+                        <td>@Model.Size</td>
+                    </tr>
+                </table>
+            </div>
+            if (Model.RowCount > 0)
+            {
+                using (Html.BeginForm())
+                {
+                    <div id="importinfo">
+                        <h3>Inställningar</h3>
+                        <table class="device-table fileinfo">
+                            <tr>
+                                <td>Läser in</td>
+                                <td>@Model.RowCount rader</td>
+                            </tr>
+                            <tr>
+                                <td>Exkludera roller</td>
+                                <td>@Html.TextBoxFor(x => x.ExcludedRoles, new { placeholder = "Enhetschef, arbetsterapeut..." })</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    @Html.HiddenFor(x => x.FileId)
+                                    @Html.AntiForgeryToken()
+                                    @Html.Submit("Importera")
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                }
+            }
+            <div style="clear:both"></div>
             <h3>Förhandsgranskning</h3>
             <table class="device-table">
                 <thead>
@@ -55,7 +81,7 @@
                             if (i > 0)
                             {
                                 <tr>
-                                    <td style="background:#eee;text-align:center">@(Model.ReadFromRow + i)</td>
+                                    <td>@(Model.ReadFromRow + i)</td>
                                     @foreach (DataColumn column in Model.Data.Columns)
                                     {
                                         <td>@row[column].ToString()</td>
@@ -72,7 +98,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="@(Model.Data.Columns.Count + 1)" style="text-align:center;padding:12px 0;color:#aaa">Filen innehåller inga rader.</td>
+                            <td class="emptyrow" colspan="@(Model.Data.Columns.Count + 1)">Filen innehåller inga rader.</td>
                         </tr>
                     }
                 </tbody>

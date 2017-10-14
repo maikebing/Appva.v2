@@ -47,11 +47,11 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// <param name="request">The <see cref="UploadFileModel"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("{id:guid}/practitioner")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Upload")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
-        public ActionResult Practitioner(UploadFileModel request)
+        public ActionResult Practitioner(ImportPractitionerModel request)
         {
-            return this.View();
+            return this.RedirectToAction("List", "Accounts", new { area = "Practitioner" });
         }
 
         #endregion

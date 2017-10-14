@@ -9,8 +9,8 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
     using System;
+    using Appva.Cqrs;
 
     #endregion
 

@@ -1521,6 +1521,40 @@ td.rights {
 #file-enable-options { float:left; }
 .file-options { padding-top:10px; }
 
+#fileimport th:first-child {
+    background:#777;
+    text-align:center;
+}
+#fileimport td:first-child {
+    background:#eee;
+    text-align:center;
+}
+#fileimport .fileinfo td:first-child {
+    width:110px;
+    text-align:left;
+    background:#eee;
+}
+#fileimport .emptyrow {
+    text-align:center;
+    padding:12px 0!important;
+    color:#aaa;
+    background:#fff!important;
+}
+#fileinfo { 
+    float:left;
+    width:49%;
+}
+#importinfo { 
+    float:right; 
+    width:50%;
+}
+#importinfo input[type="text"] { 
+    padding:6px; 
+    width:100%;
+    box-sizing:border-box;
+}
+#importinfo .fileinfo td:last-child { background:#fff; }
+
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,
 #content-primary th {vertical-align:middle;}

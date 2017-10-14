@@ -9,8 +9,9 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
+    using System;
     using System.Data;
+    using Appva.Cqrs;
 
     #endregion
 
@@ -20,6 +21,15 @@ namespace Appva.Mcss.Admin.Models
     public sealed class ImportPractitionerModel : IRequest<bool>
     {
         #region Properties.
+
+        /// <summary>
+        /// The file id.
+        /// </summary>
+        public Guid FileId
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The file title.
@@ -79,6 +89,15 @@ namespace Appva.Mcss.Admin.Models
         /// Reads data from the specified row.
         /// </summary>
         public byte ReadFromRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The excluded roles.
+        /// </summary>
+        public string ExcludedRoles
         {
             get;
             set;

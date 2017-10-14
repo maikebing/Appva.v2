@@ -9,7 +9,6 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
 {
     #region Imports.
 
-    using System.Collections.Generic;
     using System.IO;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Domain.Entities;

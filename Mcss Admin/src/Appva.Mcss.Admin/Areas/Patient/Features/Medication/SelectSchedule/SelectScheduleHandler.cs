@@ -35,15 +35,20 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
 
         #region Constructor.
 
-        public SelectScheduleHandler()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectScheduleHandler"/> class.
+        /// </summary>
+        /// <param name="scheduleService">The schedule service.</param>
+        public SelectScheduleHandler(IScheduleService scheduleService)
         {
-            
+            this.scheduleService = scheduleService;
         }
 
         #endregion
 
         #region RequestHandler overrides.
 
+        /// <inheritdoc />
         public override SelectScheduleMedicationModel Handle(SelectScheduleMedicationRequest message)
         {
             var schedules = this.scheduleService.List(message.Id);

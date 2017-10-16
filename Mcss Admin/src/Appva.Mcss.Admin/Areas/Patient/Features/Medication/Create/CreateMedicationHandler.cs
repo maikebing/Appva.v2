@@ -85,6 +85,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
                 this.delegationService.ListDelegationTaxons(byRoot: schedule.ScheduleSettings.DelegationTaxon.Id, includeRoots: false) :
                 null;
                 
+            //// If ordination-id is set, the request is for an original packaged medication.
             if (message.OrdinationId != Int64.MinValue)
             {
                 var medication = await this.medicationService.Find(message.OrdinationId, message.Id);
@@ -105,6 +106,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
                 };
             }
 
+            //// If ordination-id NOT is set, the request is for dosage-dispensed bags.
             return new CreateMedicationModel
             {
                 ScheduleId = message.Schedule,

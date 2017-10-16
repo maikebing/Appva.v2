@@ -41,11 +41,6 @@ using Appva.Mcss.Admin.Application.Security;
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IMedicationService"/>.
-        /// </summary>
-        private readonly IMedicationService medicationService;
-
-        /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
@@ -56,70 +51,27 @@ using Appva.Mcss.Admin.Application.Security;
         private readonly IPatientTransformer patientTransformer;
 
         /// <summary>
-        /// The <see cref="IScheduleService"/>
-        /// </summary>
-        private readonly IScheduleService scheduleService;
-
-        /// <summary>
-        /// The <see cref="IDelegationService"/>
-        /// </summary>
-        private readonly IDelegationService delegationService;
-
-        /// <summary>
-        /// The <see cref="ISequenceService"/>
-        /// </summary>
-        private readonly ISequenceService sequenceService;
-
-        /// <summary>
-        /// The <see cref="IRoleService"/>
-        /// </summary>
-        private readonly IRoleService roleService;
-
-        /// <summary>
-        /// The <see cref="ITaxonomyService"/>
-        /// </summary>
-        private readonly ITaxonomyService taxonService;
-
-        /// <summary>
         /// The <see cref="IMediator"/>
         /// </summary>
         private readonly IMediator mediator;
 
         #endregion
 
-        #region Const.
-
-        private static IList<int> times = new List<int> {
-            6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 1, 2, 3, 4, 5
-        };
-
-        #endregion
-
         #region Constructor
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="MedicationController"/> class.
         /// </summary>
-        /// <param name="medicationSevice"></param>
+        /// <param name="patientService">The patient service.</param>
+        /// <param name="patientTransformer">The patient transformer.</param>
+        /// <param name="mediator">The mediator.</param>
         public MedicationController(
-            IMedicationService medicationSevice, 
             IPatientService patientService, 
             IPatientTransformer patientTransformer,
-            IScheduleService scheduleService,
-            IDelegationService delegationService,
-            ISequenceService sequenceService,
-            IRoleService roleService,
-            ITaxonomyService taxonService,
             IMediator mediator)
         {
-            this.medicationService  = medicationSevice;
             this.patientService     = patientService;
             this.patientTransformer = patientTransformer;
-            this.scheduleService    = scheduleService;
-            this.delegationService  = delegationService;
-            this.sequenceService    = sequenceService;
-            this.roleService        = roleService;
-            this.taxonService       = taxonService;
             this.mediator           = mediator;
         }
 
@@ -273,21 +225,6 @@ using Appva.Mcss.Admin.Application.Security;
         #endregion
 
         #region Private helpers.
-
-        /// <summary>
-        /// Gets the times.
-        /// </summary>
-        /// <param name="times">The times.</param>
-        /// <param name="selected">The selected.</param>
-        /// <returns></returns>
-        private IList<CheckBoxViewModel> GetTimes(IList<int> times, IList<int> selected)
-        {
-            return times.Select(x => new CheckBoxViewModel()
-            {
-                Id = x,
-                Checked = selected.Contains(x)
-            }).ToList();
-        }
 
         /// <summary>
         /// Handles the error.

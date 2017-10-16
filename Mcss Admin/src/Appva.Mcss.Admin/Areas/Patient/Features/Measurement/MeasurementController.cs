@@ -94,7 +94,7 @@ namespace Appva.Mcss.Admin.Areas.Patient
         /// <param name="request">The request<see cref="UpdateMeasurementModel"/>.</param>
         /// <returns>A redirect to <see cref="MeasurementController.List"/> if valid</returns>
         [Route("{MeasurementId:guid}/update")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "measurement")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("view", "measurement")]
         [PermissionsAttribute(Permissions.Patient.UpdateValue)]
         public ActionResult Update(UpdateMeasurementModel request)
         {

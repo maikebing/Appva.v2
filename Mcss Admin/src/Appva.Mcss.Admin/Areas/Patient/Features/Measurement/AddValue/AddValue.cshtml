@@ -12,28 +12,36 @@
 
                 <h3>@Model.Name</h3>
                 <p>@Model.Instruction</p>
-
+                <p>@Model.LongScale</p>
 
                 <div class="form-controls">
 
-                    @Html.LabelFor(x => x.Unit, String.Format("Värde (i {0})", Model.Unit), new { @class = "required-indicator" })
+                    @if (Model.Scale == "weight")
+                    {
+                        <span class="numberspinner">
+                            <button class="button decrease" tabindex="-1">
+                                <span class="visually-hidden">Minska Värde (i kg) <b class="required-indicator">*</b></span>
+                                <svg class="icon icon--small icon--w" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
+                            </button>
+                            @Html.TextBoxFor(x => x.Value, new { min = "0", size = "3", required = "required", type = "number" })
+                            
+                            <button class="button increase" tabindex="-1">
+                                <span class="visually-hidden">Öka Värde (i kg) <b class="required-indicator">*</b></span>
+                                <svg class="icon icon--small icon--e"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
+                            </button>
+                        </span>
+                        @Html.LabelFor(x => x.Unit, new { @class = "required-indicator" })
+                    }
+                    else if (Model.Scale == "melior")
+                    {
+                        // visa melior snurra
+                    }
+                    else if (Model.Scale == "bristol")
+                    {
+                        // visa bristol snurra
+                    }
 
-                    @*<label for="id59d4c69331587">Värde (i @Model.Unit) <b class="required-indicator">*</b></label>*@
-
-                    <span class="numberspinner">
-                        <button class="button decrease" tabindex="-1">
-                            <span class="visually-hidden">Minska Värde (i kg) <b class="required-indicator">*</b></span>
-                            <svg class="icon icon--small icon--w" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
-                        </button>
-
-                        @Html.TextBoxFor(x => x.Value, new { min = "0", size = "3", required = "required", aria_required = "true", type = "number" })
-                        @Html.ValidationMessageFor(x => x.Value)
-                        @*<input id="id59d4c69331587" name="id59d4c69331587" min="0" size="3" required="required" aria-required="true" type="number">*@
-                        <button class="button increase" tabindex="-1">
-                            <span class="visually-hidden">Öka Värde (i kg) <b class="required-indicator">*</b></span>
-                            <svg class="icon icon--small icon--e" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
-                        </button>
-                    </span>
+                    @Html.ValidationMessageFor(x => x.Value)
                 </div>
                 <div class="form-controls form-controls--align-end">
                     <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
@@ -41,19 +49,6 @@
                 </div>
             </div>
         }
-
-        @*<form action="@Url.Action("addvalue", "measurement", new { measurementId = Model.MeasurementId })#update-table" class="validate" method="post" data-update-section-target="update-table" aria-controls="update-table" novalidate="novalidate">
-
-
-
-
-
-
-
-        </form>*@
-
-
-
 
     </div>
 </div>

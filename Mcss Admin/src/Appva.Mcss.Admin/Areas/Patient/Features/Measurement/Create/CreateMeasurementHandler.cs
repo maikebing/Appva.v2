@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -71,12 +72,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new CreateMeasurementModel
             {
                 PatientId = message.Id,
-                SelectUnitList = this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                .Where(x => x.Field == InventoryDefaults.Feature.measurement.ToString())
-                .Select(x => new SelectListItem {
-                    Text = string.Format("{0} ({1})", x.Name, x.Unit),
-                    Value = x.Id.ToString()
-                }),
+                SelectScaleList = Enum.GetValues(typeof(MeasurementScale.Scale)).Cast<MeasurementScale.Scale>().Skip(1).Select(v => new SelectListItem
+                {
+                    Text = MeasurementScale.GetNameForScale(v),
+                    Value = v.ToString()
+                }).ToList(),
                 SelectDelegationList = this.service.GetDelegationsList()
                 .Select(x => new SelectListItem
                 {

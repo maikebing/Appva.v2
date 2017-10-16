@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Persistence;
     using Newtonsoft.Json;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -61,8 +62,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             var settings = this.settings.Find<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts);
             var setting  = settings.SingleOrDefault(x => x.Id == message.Id);
 
-            setting.Name    = message.Name;
-            setting.Field   = message.Field;
+            setting.Name = message.Name;
+            setting.Feature = message.Feature;
             setting.Unit = string.IsNullOrWhiteSpace(message.Unit) ? null : message.Unit;
             setting.Amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", "")));
 
@@ -73,9 +74,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                     .JoinQueryOver(x => x.DosageObservation)
                         .Where(x => x.DosageScaleId == setting.Id)
                             .List();
-
-
-
 
             var amountToJson = JsonConvert.SerializeObject(setting.Amounts);
 
@@ -99,8 +97,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 var scale = JsonConvert.DeserializeObject<List<InventoryAmountListModel>>(row.Scale).FirstOrDefault();
                 if (setting.Id == scale.Id)
                 {
-                    var list = new List<InventoryAmountListModel>();
-                    list.Add(setting);
+                    var list = new List<InventoryAmountListModel>
+                    {
+                        setting
+                    };
                     row.Scale = JsonConvert.SerializeObject(list);
                     this.persistence.Update(row);
                 }

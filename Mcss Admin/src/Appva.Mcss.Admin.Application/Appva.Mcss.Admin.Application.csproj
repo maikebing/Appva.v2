@@ -174,6 +174,7 @@
     <Compile Include="Models\DosageScaleListModel.cs" />
     <Compile Include="Models\InventoryAmountListModel.cs" />
     <Compile Include="Models\ListInventoryRecountItem.cs" />
+    <Compile Include="Models\MeasurementScale.cs" />
     <Compile Include="Models\ReportData.cs" />
     <Compile Include="Models\ChartDataFilter.cs" />
     <Compile Include="Models\IReportingFilter.cs" />

@@ -8,10 +8,10 @@ namespace Appva.Mcss.Admin.Application.Common
 {
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Appva.Mcss.Admin.Application.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
     #endregion
 
@@ -26,15 +26,17 @@ using System.Linq;
         /// The Fields enum.
         /// An indicatetion in which field the enum is used.
         /// </summary>
-        public enum Feature
+        public enum Feature : Byte
         {
+            none = 0,
             inventory = 1,
             dosage = 2,
             measurement = 3
         };
 
-        public enum MeasurementScale
+        public enum MeasurementScale : Byte
         {
+            none = 0,
             length = 1,
             weight = 2,
             glukos = 3,
@@ -97,6 +99,22 @@ using System.Linq;
                         Amounts = zeropointfive
                     }
                 };
+        }
+
+        public static InventoryDefaults.Feature MapToFeature(string value)
+        {
+            switch (value)
+            {
+                case "dosage":
+                    return InventoryDefaults.Feature.dosage;
+                case "inventory":
+                    return InventoryDefaults.Feature.inventory;
+                case "measurement":
+                    return InventoryDefaults.Feature.measurement;
+                default:
+                    break;
+            }
+            return InventoryDefaults.Feature.none;
         }
 
         #endregion

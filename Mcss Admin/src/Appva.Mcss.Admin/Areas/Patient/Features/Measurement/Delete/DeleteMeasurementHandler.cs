@@ -7,15 +7,31 @@ using System.Web;
 
 namespace Appva.Mcss.Admin.Models.Handlers
 {
+    #region Imports
+
+    #endregion
 
     public class DeleteMeasurementHandler : RequestHandler<DeleteMeasurement, DeleteMeasurementModel>
     {
+        #region Variables
+
+        /// <summary>
+        /// The IMeasurementsService
+        /// </summary>
         private readonly IMeasurementService service;
+
+        #endregion
+
+        #region Constructor
 
         public DeleteMeasurementHandler(IMeasurementService service)
         {
             this.service = service;
         }
+
+        #endregion
+
+        #region Handler overrides
 
         public override DeleteMeasurementModel Handle(DeleteMeasurement message)
         {
@@ -24,5 +40,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 MeasurementId = message.MeasurementId
             };
         }
+
+        #endregion
     }
 }

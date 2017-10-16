@@ -95,7 +95,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if (schedule.ScheduleSettings.IsCollectingGivenDosage == true)
             {
                 var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                    .Where(x => x.Field == InventoryDefaults.Feature.dosage.ToString());
+                    .Where(x => x.Feature == InventoryDefaults.Feature.dosage);
                 foreach (var item in scales)
                 {
                     dosageScaleList.Add(

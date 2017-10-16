@@ -20,29 +20,14 @@
                 </div>
 
                 <div class="form-controls form-controls--select">
-                    @Html.LabelFor(x => x.SelectUnitList)
-                    @Html.DropDownListFor(x => x.SelectedUnit, new SelectList(Model.SelectUnitList, "Value", "Text", Model.SelectedUnit), "Välj enhet ..", new { @class = "replaced", aria_invalid = "false" })
-                    @*<span class="custom-select__select" aria-hidden="true">
-                        <span class="custom-select__text">[selected_value]</span>
-                        <span class="custom-select__icon">
-                            <svg class="icon icon--s" focusable="false" aria-hidden="true">
-                                <use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
-                            </svg>
-                        </span>
-                    </span>*@
+                    @Html.LabelFor(x => x.SelectScaleList)
+                    @Html.DropDownListFor(x => x.SelectedScale, new SelectList(Model.SelectScaleList, "Value", "Text", Model.SelectedScale), "Välj skala ..")
                 </div>
 
                 <div class="form-controls form-controls--select">
                     @Html.LabelFor(x => x.SelectDelegationList)
-                    @Html.DropDownListFor(x => x.SelectedDelegation, new SelectList(Model.SelectDelegationList, "Value", "Text", Model.SelectedDelegation), "Välj delegation ..", new { @class = "replaced"})
-                    @*<span class="custom-select__select" aria-hidden="true">
-                        <span class="custom-select__text">[selected_value]</span>
-                        <span class="custom-select__icon">
-                            <svg class="icon icon--s" focusable="false" aria-hidden="true">
-                                <use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
-                            </svg>
-                        </span>
-                    </span>*@
+                    @Html.DropDownListFor(x => x.SelectedDelegation, new SelectList(Model.SelectDelegationList, "Value", "Text", Model.SelectedDelegation), "Välj delegation ..")
+
                 </div>
 
                 <div class="form-controls form-controls--align-end form-controls--no-margin">

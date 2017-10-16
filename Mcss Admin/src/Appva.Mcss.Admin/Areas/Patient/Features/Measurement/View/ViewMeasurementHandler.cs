@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Infrastructure;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
@@ -26,6 +27,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         private readonly IMeasurementService service;
 
+        /// <summary>
+        /// The patient transformer
+        /// </summary>
+        private readonly IPatientTransformer patientTransformer;
         #endregion
 
         #region Constructor
@@ -34,9 +39,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="ViewMeasurementHandler"/> class.
         /// </summary>
         /// <param name="service">The Measurement Service<see cref="IMeasurementService"/>.</param>
-        public ViewMeasurementHandler(IMeasurementService service)
+        public ViewMeasurementHandler(IMeasurementService service, IPatientTransformer patientTransformer)
         {
             this.service = service;
+            this.patientTransformer = patientTransformer;
         }
 
         #endregion
@@ -48,7 +54,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var model = new ViewMeasurementModel();
             model.Observation = this.service.GetMeasurementObservation(message.MeasurementId);
-            model.Unit = JsonConvert.DeserializeObject<IList<MeasurementScaleModel>>(model.Observation.Scale)[0].Unit;
+            model.Unit = JsonConvert.DeserializeObject<MeasurementScaleModel>(model.Observation.Scale).Unit;
+            model.ListModel = new ListMeasurementModel
+            {
+                Patient = this.patientTransformer.ToPatient(model.Observation.Patient),
+                MeasurementList = this.service.GetMeasurementObservationsList(message.Id)
+            };
+
             if (message.StartDate == null && message.EndDate == null)
             {
                 model.Values = this.service.GetValueList(model.Observation.Id);

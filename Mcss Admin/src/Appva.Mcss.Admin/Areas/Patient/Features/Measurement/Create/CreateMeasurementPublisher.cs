@@ -19,6 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
     using Newtonsoft.Json;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -71,8 +72,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var patient = this.service.GetPatient(message.PatientId);
             if (patient != null)
             {
+                var scale = new MeasurementScaleModel
+                {
+                    Unit = MeasurementScale.GetUnitForScale((MeasurementScale.Scale) Enum.Parse(typeof(MeasurementScale.Scale), message.SelectedScale)),
+                    Scale = message.SelectedScale
+                };
+
                 this.service.CreateMeasurementObservation(MeasurementObservation.New(
-                    scale: JsonConvert.SerializeObject(this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts).Where(x => x.Id == Guid.Parse(message.SelectedUnit))), 
+
+                    //// TODO: scale skall sparas efter en enum och inte från settings.
+
+                    scale: JsonConvert.SerializeObject(scale),
                     delegation: this.service.GetTaxon(Guid.Parse(message.SelectedDelegation)), 
                     patient: patient, 
                     name: message.Name, 

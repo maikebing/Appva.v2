@@ -13,5 +13,6 @@ namespace Appva.Mcss.Admin.Models
         public string Unit { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public ListMeasurementModel ListModel { get; set; }
     }
 }

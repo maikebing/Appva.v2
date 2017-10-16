@@ -1,15 +1,27 @@
-﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.UpdateInventoryUnitModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Areas.Backoffice.Models.UpdateInventoryUnitModel
 @{ 
     SetTitle(string.Format("Updatera enhet {0}", Model.Name));
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form" data-valclass="AddInventoryUnit" >
     @using (Html.Post(new { Model.Id }))
     {
+
         <h3 class="section-title">Updatera enhet</h3>
-        @Html.FormGroup(x => x.Name, "text large").Label().TextBox().Validate().Build()
-        @Html.LabelFor(x => x.Field)
-        @Html.DropDownListFor(x => x.Field, Model.SelectField, Model.Field)
-        @Html.FormGroup(x => x.Unit, "text large").Label().TextBox().Validate().Build()
+        if (Model.Feature == InventoryDefaults.Feature.measurement)
+        {
+            @Html.LabelFor(x => x.Name) @Model.Name
+            @Html.LabelFor(x => x.Feature) @Model.Feature
+            @Html.LabelFor(x => x.Unit) @Model.Unit
+        }
+        else
+        {
+            @Html.FormGroup(x => x.Name, "text large").Label().TextBox().Validate().Build()
+            @Html.LabelFor(x => x.Feature)
+            @Html.DropDownListFor(x => x.Feature, Model.SelectField, Model.Feature)
+            @Html.FormGroup(x => x.Unit, "text large").Label().TextBox().Validate().Build()
+        }
+
         @Html.FormGroup(x => x.Amounts, "text large").Label().TextArea().Validate().Build()
         <p><b>OBS!</b> Decimaler skrivs med punkt '.' (1.5) och tal separeras med komma-tecken ','</p>
         <div class="submit">

@@ -208,6 +208,7 @@
     <Compile Include="Helpers\HttpRequest.cs" />
     <Compile Include="Helpers\MockedMailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MeasurementScaleTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appva.Mcss.Admin.Application\Appva.Mcss.Admin.Application.csproj">

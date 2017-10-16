@@ -18,13 +18,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Infrastructure;
     using Newtonsoft.Json;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class UpdateMeasurementPublisher : RequestHandler<UpdateMeasurementModel, ListMeasurementModel>
+    public class UpdateMeasurementPublisher : RequestHandler<UpdateMeasurementModel, ViewMeasurementModel>
     {
         #region Variables
 
@@ -65,7 +66,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Members
 
         /// <inheritdoc />
-        public override ListMeasurementModel Handle(UpdateMeasurementModel message)
+        public override ViewMeasurementModel Handle(UpdateMeasurementModel message)
         {
             var observation = this.service.Get(message.MeasurementId);
 
@@ -73,15 +74,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 observation.Name = message.Name;
                 observation.Description = message.Instruction;
-                observation.Scale = JsonConvert.SerializeObject(this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts).Where(x => x.Id == Guid.Parse(message.SelectedUnit)));
                 observation.Delegation = this.service.GetTaxon(Guid.Parse(message.SelectedDelegation));
                 this.service.Update(observation);
             }
 
-            return new ListMeasurementModel
+            return new ViewMeasurementModel
             {
-                Patient = this.transformer.ToPatient(this.service.GetPatient(message.Id)),
-                MeasurementList = this.service.GetMeasurementObservationsList(message.Id)
+                Observation = observation,
+                Unit = JsonConvert.DeserializeObject<MeasurementScaleModel>(observation.Scale).Unit,
+                ListModel = new ListMeasurementModel
+                {
+                    Patient = this.transformer.ToPatient(observation.Patient),
+                    MeasurementList = this.service.GetMeasurementObservationsList(observation.Patient.Id)
+                },
+                Values = this.service.GetValueList(observation.Id)
             };
         }
 

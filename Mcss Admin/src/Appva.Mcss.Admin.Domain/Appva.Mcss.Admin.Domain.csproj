@@ -153,6 +153,7 @@
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Person.cs" />
     <Compile Include="Entities\Provenance\Provenance.cs" />
+    <Compile Include="Entities\Scale.cs" />
     <Compile Include="Entities\Sequence\SubSequence.cs" />
     <Compile Include="Entities\Signature\Signature.cs" />
     <Compile Include="Entities\Signature\SignedData.cs" />

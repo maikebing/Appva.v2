@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using System;
     using System.Collections.Generic;
@@ -49,9 +50,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// The Field of usage
         /// </summary>
-        [DisplayName("Användning")]
+        [DisplayName("Användningsområde")]
         [Required]
-        public string Field
+        public InventoryDefaults.Feature Feature
         {
             get;
             set;

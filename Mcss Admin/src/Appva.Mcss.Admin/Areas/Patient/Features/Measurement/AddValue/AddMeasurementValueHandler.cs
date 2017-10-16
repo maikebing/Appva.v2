@@ -53,14 +53,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override AddMeasurementValueModel Handle(AddMeasurementValue message)
         {
             var observation = this.service.GetMeasurementObservation(message.MeasurementId);
-            var unit = JsonConvert.DeserializeObject<IList<MeasurementScaleModel>>(observation.Scale)[0].Unit;
-
+            var scale = JsonConvert.DeserializeObject<MeasurementScaleModel>(observation.Scale);
             return new AddMeasurementValueModel
             {
                 MeasurementId = observation.Id,
                 Name = observation.Name,
                 Instruction = observation.Description,
-                Unit = unit
+                Unit = scale.Unit,
+                Scale = scale.Scale,
+                LongScale = MeasurementScale.GetNameForScale((MeasurementScale.Scale)Enum.Parse(typeof(MeasurementScale.Scale), scale.Scale))
             };
         }
 

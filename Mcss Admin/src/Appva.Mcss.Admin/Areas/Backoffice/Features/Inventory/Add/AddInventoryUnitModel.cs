@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
     using System.Collections;
     using System.Web.Mvc;
     using System.Collections.Generic;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -34,7 +35,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
 
         [DisplayName("Användningsområde")]
         [Required]
-        public string Field
+        public InventoryDefaults.Feature Feature
         {
             get;
             set;

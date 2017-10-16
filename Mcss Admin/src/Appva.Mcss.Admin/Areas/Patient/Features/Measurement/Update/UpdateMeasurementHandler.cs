@@ -16,6 +16,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Application.Common;
+    using Newtonsoft.Json;
+    using Appva.Mcss.Admin.Application.Models;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -66,19 +69,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateMeasurementModel Handle(UpdateMeasurement message)
         {
             var observation = this.service.Get(message.MeasurementId);
+            var scale = JsonConvert.DeserializeObject<MeasurementScaleModel>(observation.Scale);
 
             var model = new UpdateMeasurementModel
             {
                 MeasurementId = observation.Id,
                 Name = observation.Name,
                 Instruction = observation.Description,
-                SelectUnitList = this.settings.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                .Where(x => x.Field == InventoryDefaults.Feature.measurement.ToString())
-                .Select(x => new SelectListItem
-                {
-                    Text = string.Format("{0} ({1})", x.Name, x.Unit),
-                    Value = x.Id.ToString()
-                }),
+                SelectedScale = MeasurementScale.GetNameForScale((MeasurementScale.Scale) Enum.Parse(typeof(MeasurementScale.Scale), scale.Scale)),
+                SelectedUnit = scale.Unit,
                 SelectDelegationList = this.service.GetDelegationsList()
                 .Select(x => new SelectListItem
                 {

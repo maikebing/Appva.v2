@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Application.Models;
     using System;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -58,7 +59,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
             {
                 Id = Guid.NewGuid(),
                 Name = name,
-                Field = message.Field,
+                Feature = message.Feature,
                 Unit = string.IsNullOrWhiteSpace(message.Unit) ? null : message.Unit,
                 Amounts = amounts
             });

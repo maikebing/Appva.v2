@@ -161,7 +161,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var dosageScaleList = new List<SelectListItem>();
             var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                .Where(x => x.Field == InventoryDefaults.Feature.dosage.ToString());
+                .Where(x => x.Feature == InventoryDefaults.Feature.dosage);
 
             foreach (var item in scales)
             {
@@ -213,8 +213,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 var times = sequence.Times.Split(',');
                 foreach (var time in times)
                 {
-                    var value = 0;
-                    if (int.TryParse(time, out value))
+                    if (int.TryParse(time, out int value))
                     {
                         foreach (var checkbox in checkBoxList)
                         {

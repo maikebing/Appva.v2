@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListInventoriesModel
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListInventoriesModel
 @{
 	SetTitle("Backoffice - Enheter och Värden");
 }
@@ -27,10 +28,13 @@
                         <tr>
                             <td class="edit">
                                 @Html.ActionLink("Ändra", "Update", "Inventory", new { unit.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
-                                @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                                if (@unit.Feature != InventoryDefaults.Feature.measurement)
+                                {
+                                    @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
+                                }
                             </td>
                             <td>@unit.Name</td>
-                            <td>@unit.Field</td>
+                            <td>@unit.Feature</td>
                             <td>@(unit.Unit != null ? Html.Raw(unit.Unit) : Html.Raw("&mdash;"))</td>
                             <td>
                                 @Html.Serialize(unit.Amounts).ToHtmlString().Replace(",", ", ").Replace("<code>[", "").Replace("]</code>", "")

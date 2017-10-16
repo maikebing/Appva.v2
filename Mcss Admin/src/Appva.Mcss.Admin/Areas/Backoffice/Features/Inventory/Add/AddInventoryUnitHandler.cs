@@ -31,7 +31,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 SelectField = new List<SelectListItem> {
                     new SelectListItem { Text = "Inventarier", Value = InventoryDefaults.Feature.inventory.ToString() },
                     new SelectListItem { Text = "Dosering", Value = InventoryDefaults.Feature.dosage.ToString() },
-                    new SelectListItem { Text = "Mätning", Value = InventoryDefaults.Feature.measurement.ToString() }
+                    //new SelectListItem { Text = "Mätning", Value = InventoryDefaults.Feature.measurement.ToString() }
                 },
                 Amounts = JsonConvert.SerializeObject(InventoryDefaults.AmountList).Replace("[","").Replace("]","")
             };

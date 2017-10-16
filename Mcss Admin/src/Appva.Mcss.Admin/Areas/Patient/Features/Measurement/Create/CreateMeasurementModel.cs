@@ -57,10 +57,10 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The Unit SelectList.
+        /// The Scale SelectList.
         /// </summary>
-        [DisplayName("Enhet")]
-        public IEnumerable<SelectListItem> SelectUnitList
+        [DisplayName("Skala")]
+        public IEnumerable<SelectListItem> SelectScaleList
         {
             get;
             set;
@@ -77,20 +77,20 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The selected unit.
+        /// The selected delegation.
         /// </summary>
         [Required]
-        public string SelectedUnit
+        public string SelectedDelegation
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The selected delegation.
+        /// The selected scale.
         /// </summary>
         [Required]
-        public string SelectedDelegation
+        public string SelectedScale
         {
             get;
             set;

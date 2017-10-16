@@ -16,13 +16,15 @@ namespace Appva.Mcss.Admin.Models
     using System.Web.Mvc;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Domain.Entities;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class UpdateMeasurementModel : Identity<ListMeasurementModel>
+    public class UpdateMeasurementModel : Identity<ViewMeasurementModel>
     {
         #region Variables
 
@@ -63,17 +65,9 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The unit SelectList
-        /// </summary>
-        public IEnumerable<SelectListItem> SelectUnitList
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The delegation SelectList
         /// </summary>
+        [DisplayName("Kräver delegation för")] 
         public IEnumerable<SelectListItem> SelectDelegationList
         {
             get;
@@ -90,8 +84,18 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
+        /// The selected scale.
+        /// </summary>
+        public string SelectedScale
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The selected delegation.
         /// </summary>
+        [Required]
         public string SelectedDelegation
         {
             get;

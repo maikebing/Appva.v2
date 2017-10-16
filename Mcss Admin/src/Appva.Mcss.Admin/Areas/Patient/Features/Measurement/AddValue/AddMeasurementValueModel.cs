@@ -37,6 +37,10 @@ namespace Appva.Mcss.Admin.Models
 
         public string Unit { get; set; }
 
+        public string Scale { get; set; }
+
+        public string LongScale { get; set; }
+
         #endregion
     }
 }

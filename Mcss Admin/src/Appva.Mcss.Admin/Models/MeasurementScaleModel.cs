@@ -8,24 +8,6 @@ namespace Appva.Mcss.Admin.Models
     public class MeasurementScaleModel
     {
         /// <summary>
-        /// The inventory id
-        /// </summary>
-        public Guid Id
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The name of the list.
-        /// </summary>
-        public string Name
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The unit.
         /// </summary>
         public string Unit
@@ -35,9 +17,9 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// List of amounts in current list.
+        /// The scale.
         /// </summary>
-        public IList<double> Amounts
+        public string Scale
         {
             get;
             set;

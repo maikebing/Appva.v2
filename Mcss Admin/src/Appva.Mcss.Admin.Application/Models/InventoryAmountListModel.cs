@@ -6,12 +6,12 @@
 // </author>
 namespace Appva.Mcss.Admin.Application.Models
 {
-    using Appva.Mcss.Admin.Application.Common;
-    using Newtonsoft.Json;
     #region Imports.
 
     using System;
-using System.Collections.Generic;
+    using System.Collections.Generic;
+    using Appva.Mcss.Admin.Application.Common;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -54,18 +54,19 @@ using System.Collections.Generic;
             set;
         }
 
-        /// <summary>
-        /// The Field of usage
-        /// </summary>
-        [JsonProperty("Field")]
-        public string Field
+        [JsonProperty("Feature")]
+        public InventoryDefaults.Feature Feature
         {
             get;
             set;
         }
 
-        public InventoryDefaults.Feature Feature { get; set; }
-        public InventoryDefaults.MeasurementScale Scale { get; set; }
+        [JsonProperty("Scale")]
+        public InventoryDefaults.MeasurementScale Scale
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// List of amounts in current list.

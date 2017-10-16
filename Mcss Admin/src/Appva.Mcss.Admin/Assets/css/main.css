@@ -1530,9 +1530,14 @@ td.rights {
     text-align:center;
 }
 #fileimport .fileinfo td:first-child {
-    width:110px;
+    width:130px;
     text-align:left;
     background:#eee;
+}
+#fileimport .fileinfo span {
+    display:block;
+    font-size:10px;
+    color:#888;
 }
 #fileimport .emptyrow {
     text-align:center;

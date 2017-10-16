@@ -479,6 +479,7 @@
     <Compile Include="Areas\Files\Features\Upload\List\ListUploadModel.cs" />
     <Compile Include="Areas\Files\Features\Upload\UploadController.cs" />
     <Compile Include="Areas\Files\Features\Upload\Upload\UploadFilePublisher.cs" />
+    <Compile Include="Areas\Files\Utils\ExcelReader.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogModel.cs" />

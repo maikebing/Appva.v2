@@ -68,27 +68,45 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The number of rows in the excel file.
+        /// The valid column data.
         /// </summary>
-        public int RowCount
+        public string[] ValidColumns
         {
-            get;
-            set;
+            get
+            {
+                return new string[]
+                {
+                    "Personnummer",
+                    "Förnamn",
+                    "Efternamn",
+                    "E-post",
+                    "Roll",
+                    "Organisationstillhörighet",
+                    "HSA-id"
+                };
+            }
         }
 
         /// <summary>
         /// Validate cells at the specified row.
         /// </summary>
-        public byte ValidateAtRow
+        public int ValidateAtRow
         {
-            get;
-            set;
+            get { return 2; }
         }
 
         /// <summary>
         /// Reads data from the specified row.
         /// </summary>
-        public byte ReadFromRow
+        public int ReadFromRow
+        {
+            get { return 4; }
+        }
+
+        /// <summary>
+        /// Roles that doesn't require HSA id.
+        /// </summary>
+        public string IncludedRolesWithoutHsaId
         {
             get;
             set;

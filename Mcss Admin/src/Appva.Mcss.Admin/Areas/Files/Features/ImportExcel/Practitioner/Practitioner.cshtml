@@ -31,7 +31,7 @@
                     </tr>
                 </table>
             </div>
-            if (Model.RowCount > 0)
+            if (Model.Data.Rows.Count - 1 > 0)
             {
                 using (Html.BeginForm())
                 {
@@ -39,16 +39,18 @@
                         <h3>Inställningar</h3>
                         <table class="device-table fileinfo">
                             <tr>
-                                <td>Läser in</td>
-                                <td>@Model.RowCount rader</td>
+                                <td>Roller utan HSA-id<span>Läses in om HSA-id saknas.</span></td>
+                                <td>@Html.TextBoxFor(x => x.IncludedRolesWithoutHsaId, new { placeholder = "T.ex. undersköterska...", @Value = "Undersköterska" })</td>
                             </tr>
                             <tr>
-                                <td>Exkludera roller</td>
-                                <td>@Html.TextBoxFor(x => x.ExcludedRoles, new { placeholder = "Enhetschef, arbetsterapeut..." })</td>
+                                <td>Exkludera roller<span>Roller inläses ej.</span></td>
+                                <td>@Html.TextBoxFor(x => x.ExcludedRoles, new { placeholder = "T.ex. enhetschef, arbetsterapeut..." })</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     @Html.HiddenFor(x => x.FileId)
+                                    @Html.HiddenFor(x => x.ValidateAtRow)
+                                    @Html.HiddenFor(x => x.ReadFromRow)
                                     @Html.AntiForgeryToken()
                                     @Html.Submit("Importera")
                                 </td>
@@ -62,7 +64,7 @@
             <table class="device-table">
                 <thead>
                     <tr class="head">
-                        <th style="background:#777;text-align:center">@Model.ValidateAtRow</th>
+                        <th style="background:#777;text-align:center">@(Model.ValidateAtRow + 1)</th>
                         @if (Model.Data.Rows.Count > 0)
                         {
                             for (int i = 0; i < Model.Data.Columns.Count; i++)
@@ -87,10 +89,6 @@
                                         <td>@row[column].ToString()</td>
                                     }
                                 </tr>
-                            }
-                            if (i > 2)
-                            {
-                                break;
                             }
                             i++;
                         }

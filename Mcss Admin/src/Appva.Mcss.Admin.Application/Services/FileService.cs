@@ -48,8 +48,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="fileName">The file name.</param>
         /// <param name="fileData">The file data.</param>
+        /// <param name="mapPath">The map path.</param>
         /// <returns>The file path.</returns>
-        string SaveToDisk(string fileName, byte[] fileData);
+        string SaveToDisk(string fileName, byte[] fileData, string mapPath = null);
 
         /// <summary>
         /// Gets a formatted file size.
@@ -106,9 +107,10 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public string SaveToDisk(string fileName, byte[] fileData)
+        public string SaveToDisk(string fileName, byte[] fileData, string mapPath = null)
         {
-            var folder = HttpContext.Current.Server.MapPath("~/Content/Temp");
+            mapPath = mapPath ?? "~/Content/Temp";
+            var folder = HttpContext.Current.Server.MapPath(mapPath);
             var path = string.Format("{0}\\{1}", folder, fileName);
 
             if (Directory.Exists(path) == false)

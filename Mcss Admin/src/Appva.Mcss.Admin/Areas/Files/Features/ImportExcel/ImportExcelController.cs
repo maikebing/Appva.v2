@@ -32,7 +32,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// Import practitioners.
         /// </summary>
         /// <param name="request">The <see cref="Identity{ImportPractitionerModel}"/>.</param>
-        /// <returns><see cref="ActionResult"/></returns>
+        /// <returns><see cref="ActionResult"/>.</returns>
         [Route("{id:guid}/practitioner")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]

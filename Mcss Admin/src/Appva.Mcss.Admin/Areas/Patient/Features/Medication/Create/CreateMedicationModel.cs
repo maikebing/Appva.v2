@@ -8,18 +8,19 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
+    using Appva.Cqrs;
     using Appva.Mcss.Admin.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateMedicationModel : CreateOrUpdateSequence
+    public sealed class CreateMedicationModel : CreateOrUpdateSequence, IAsyncRequest<DetailsMedicationRequest>
     {
         #region Constructor.
 

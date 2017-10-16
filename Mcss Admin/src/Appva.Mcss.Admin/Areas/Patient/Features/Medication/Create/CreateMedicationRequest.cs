@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class CreateMedicationRequest : IRequest<CreateMedicationModel>
+    public sealed class CreateMedicationRequest : IAsyncRequest<CreateMedicationModel>
     {
         #region Properties.
 

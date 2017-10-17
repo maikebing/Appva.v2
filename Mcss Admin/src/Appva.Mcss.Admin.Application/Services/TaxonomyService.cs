@@ -98,6 +98,15 @@ namespace Appva.Mcss.Admin.Application.Services
         Taxon Load(Guid id);
 
         Taxon Get(Guid id);
+
+        /// <summary>
+        /// Gets a single <see cref="Taxon"/> by its name and <see cref="TaxonomicSchema"/>.
+        /// </summary>
+        /// <param name="taxonName">The taxon name.</param>
+        /// <param name="schema">The <see cref="TaxonomicSchema"/>.</param>
+        /// <returns>A <see cref="Taxon"/>.</returns>
+        Taxon Get(string taxonName, TaxonomicSchema schema);
+
         IList<Taxon> ListIn(params Guid[] ids);
 
         /// <summary>
@@ -260,6 +269,12 @@ namespace Appva.Mcss.Admin.Application.Services
         public Taxon Get(Guid id)
         {
             return this.repository.Find(id);
+        }
+
+        /// <inheritdoc />
+        public Taxon Get(string taxonName, TaxonomicSchema schema)
+        {
+            return this.repository.Get(taxonName, schema.Id);
         }
 
         /// <inheritdoc />

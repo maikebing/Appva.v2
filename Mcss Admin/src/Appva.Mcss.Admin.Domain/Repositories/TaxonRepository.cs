@@ -55,6 +55,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         Taxon Get(Guid id);
 
         /// <summary>
+        /// Gets a single <see cref="Taxon"/> by its name and taxonomy identifier.
+        /// </summary>
+        /// <param name="taxonName">The taxon name.</param>
+        /// <param name="taxonomy">The taxonomy identifier.</param>
+        /// <returns>A <see cref="Taxon"/>.</returns>
+        Taxon Get(string taxonName, string taxonomy);
+
+        /// <summary>
         /// Loads an taxonomy by its id
         /// </summary>
         /// <param name="id"></param>
@@ -154,6 +162,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             return this.persistenceContext.QueryOver<Taxon>()
                 .Where(x => x.Id == id)
+                .SingleOrDefault();
+        }
+
+        /// <inheritdoc />
+        public Taxon Get(string taxonName, string taxonomy)
+        {
+            return this.persistenceContext.QueryOver<Taxon>()
+                .Where(x => x.Name == taxonName)
+                .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
+                .Where(x => x.MachineName == taxonomy)
                 .SingleOrDefault();
         }
 

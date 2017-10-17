@@ -52,6 +52,11 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         private readonly IRoleService roleService;
 
         /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
+        /// <summary>
         /// A dictionary of invalid practitioner rows.
         /// </summary>
         private Dictionary<string, DataRow> invalidRows;
@@ -72,12 +77,14 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// <param name="fileService">The <see cref="IFileService"/>.</param>
         /// <param name="accountService">The <see cref="IAccountService"/>.</param>
         /// <param name="roleService">The <see cref="IRoleService"/>.</param>
-        public ImportPractitionerPublisher(IPersistenceContext persistence, IFileService fileService, IAccountService accountService, IRoleService roleService)
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/>.</param>
+        public ImportPractitionerPublisher(IPersistenceContext persistence, IFileService fileService, IAccountService accountService, IRoleService roleService, ITaxonomyService taxonomyService)
         {
             this.persistence = persistence;
             this.fileService = fileService;
             this.accountService = accountService;
             this.roleService = roleService;
+            this.taxonomyService = taxonomyService;
             this.invalidRows = new Dictionary<string, DataRow>();
         }
 
@@ -126,26 +133,21 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
                 {
                     var columnName = data.Rows[0][data.Columns[j]].ToString();
                     var columnValue = data.Rows[i][data.Columns[j]].ToString();
-
-                    if (columnName == validColumns[0] && this.ValidatePersonalIdentityNumber(data.Rows[j], columnValue, "Ogiltigt personnummer.") == false)
-                    {
-                        continue;
-                    }
-                    if ((columnName == validColumns[1] || columnName == validColumns[2]) && this.ValidateName(data.Rows[j], columnValue, (columnName == validColumns[1] ? "Förnamn" : "Efternamn") + " saknas.") == false)
-                    {
-                        continue;
-                    }
-                    if (columnName == validColumns[3] && this.ValidateEmailAddress(data.Rows[j], columnValue, "Ogiltig e-postadress.") == false)
-                    {
-                        continue;
-                    }
-                    if (columnName == validColumns[4] && this.ValidateRoles(roles, data.Rows[j], excludedRoles, columnValue, new string[] { "Exkluderad roll.", "Rollen finns ej i MCSS.", "Roll saknas." }))
-                    {
-                        continue;
-                    }
+                    var row = data.Rows[j];
+                    this.ValidatePersonalIdentityNumber(row, columnValue, "Ogiltigt personnummer.");
+                    this.ValidateName(row, columnValue, (columnName == validColumns[1] ? "Förnamn" : "Efternamn") + " saknas.");
+                    this.ValidateEmailAddress(row, columnValue, "Ogiltig e-postadress.");
+                    this.ValidateRoles(roles, row, excludedRoles, columnValue, new string[] { "Exkluderad roll.", "Rollen finns ej i MCSS.", "Roll saknas." });
+                    this.ValidateOrganizationNodes(row, columnValue, new string[] { "Organisation saknas.", "Organisationsnod hittades ej." });
+                    this.ValidateHsaId(row, columnValue, includedRolesWithoutHsaId, "HSA-id saknas.");
                 }
 
-                // TODO: save the account.
+                if (this.invalidRows.Count > 0)
+                {
+                    continue;
+                }
+
+                // TODO: save the account if invalidRows.Count == 0.
             }
         }
 
@@ -234,23 +236,70 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// <returns><see cref="bool"/>.</returns>
         private bool ValidateRoles(IList<Role> roles, DataRow row, string excludedRoles, string columnValue, string[] reasons)
         {
-            if(string.IsNullOrWhiteSpace(excludedRoles) == false && excludedRoles.Contains(columnValue))
+            if (string.IsNullOrWhiteSpace(excludedRoles) == false && excludedRoles.ToLower().Contains(columnValue.ToLower()))
             {
                 this.invalidRows.Add(reasons[0], row);
                 return false;
             }
-            if(roles.Where(x => x.Id == columnValue.ToGuid()).FirstOrDefault() == null)
+            if (roles.Where(x => x.Id == columnValue.ToGuid()).FirstOrDefault() == null)
             {
                 this.invalidRows.Add(reasons[1], row);
                 return false;
             }
-            if(string.IsNullOrWhiteSpace(columnValue))
+            if (string.IsNullOrWhiteSpace(columnValue))
             {
                 this.invalidRows.Add(reasons[2], row);
                 return false;
             }
 
-            account.Roles = new List<Role> { this.roleService.Find(columnValue.ToGuid()) };
+            this.account.Roles = new List<Role> { this.roleService.Find(columnValue.ToGuid()) };
+            return true;
+        }
+
+        /// <summary>
+        /// Validates the organization nodes.
+        /// </summary>
+        /// <param name="row">The current row.</param>
+        /// <param name="columnValue">The column value.</param>
+        /// <param name="reasons">The reasons if values are not valid.</param>
+        /// <returns><see cref="bool"/>.</returns>
+        private bool ValidateOrganizationNodes(DataRow row, string columnValue, string[] reasons)
+        {
+            if (string.IsNullOrWhiteSpace(columnValue))
+            {
+                this.invalidRows.Add(reasons[0], row);
+                return false;
+            }
+
+            var nodes = columnValue.Split(',');
+            var node = this.taxonomyService.Get(nodes[nodes.Length - 1].Trim().FirstToUpper().ToGuid());
+
+            if (node == null)
+            {
+                this.invalidRows.Add(reasons[1], row);
+                return false;
+            }
+
+            this.account.Taxon = node;
+            return true;
+        }
+
+        /// <summary>
+        /// Validates the email address.
+        /// </summary>
+        /// <param name="row">The current row.</param>
+        /// <param name="columnValue">The column value.</param>
+        /// <param name="includedRolesWithoutHsaId">Roles without HSA id.</param>
+        /// <param name="reason">The reason if value is not valid.</param>
+        /// <returns><see cref="bool"/>.</returns>
+        private bool ValidateHsaId(DataRow row, string columnValue, string includedRolesWithoutHsaId, string reason)
+        {
+            if (string.IsNullOrWhiteSpace(columnValue) && includedRolesWithoutHsaId.ToLower().Contains(columnValue.Trim().ToLower()) == false)
+            {
+                this.invalidRows.Add(reason, row);
+            }
+
+            this.account.HsaId = columnValue;
             return true;
         }
 

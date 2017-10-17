@@ -106,7 +106,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
             var data = ExcelReader.ReadPractitionersFromExcel(path, message.ValidateAtRow, message.ValidColumns, message.ReadFromRow);
             File.Delete(path);
-            this.ImportData(data, message.ValidColumns, message.ExcludedRoles, message.IncludedRolesWithoutHsaId);
+            var importedRowCount = this.ImportData(data, message.ValidColumns, message.ExcludedRoles, message.IncludedRolesWithoutHsaId);
 
             return true;
         }
@@ -122,14 +122,17 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// <param name="validColumns">The columns.</param>
         /// <param name="excludedRoles">The excluded roles.</param>
         /// <param name="includedRolesWithoutHsaId">Roles without HSA id.</param>
-        private void ImportData(DataTable data, string[] validColumns, string excludedRoles, string includedRolesWithoutHsaId)
+        /// <returns>The number of imported rows.</returns>
+        private int ImportData(DataTable data, string[] validColumns, string excludedRoles, string includedRolesWithoutHsaId)
         {
+            int importedRowCount = 0;
             var roles = this.roleService.List();
 
             for (int i = 1; i < data.Rows.Count; i++)
             {
                 this.account = new Account();
                 var errors = new List<KeyValuePair<DataRow, string>>(data.Columns.Count);
+                var role = string.Empty;
 
                 for (int j = 0; j < data.Columns.Count; j++)
                 {
@@ -151,6 +154,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
                     }
                     else if (columnName == validColumns[4])
                     {
+                        role = columnValue;
                         this.ValidateRoles(errors, row, excludedRoles, columnValue, new string[] { "Exkluderad roll.", "Rollen finns ej i MCSS.", "Roll saknas." });
                     }
                     else if (columnName == validColumns[5])
@@ -159,7 +163,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
                     }
                     else if (columnName == validColumns[6])
                     {
-                        this.ValidateHsaId(errors, row, columnValue, includedRolesWithoutHsaId, "HSA-id saknas.");
+                        this.ValidateHsaId(errors, row, columnValue, role, includedRolesWithoutHsaId, "HSA-id saknas.");
                     }
                 }
 
@@ -170,7 +174,10 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
                 }
 
                 // TODO: save the account if errors.Count == 0.
+                importedRowCount++;
             }
+
+            return importedRowCount;
         }
 
         /// <summary>
@@ -317,12 +324,13 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// <param name="errors">A list of validation errors.</param>
         /// <param name="row">The current row.</param>
         /// <param name="columnValue">The column value.</param>
+        /// <param name="role">The </param>
         /// <param name="includedRolesWithoutHsaId">Roles without HSA id.</param>
         /// <param name="reason">The reason if value is not valid.</param>
         /// <returns><see cref="bool"/>.</returns>
-        private bool ValidateHsaId(List<KeyValuePair<DataRow, string>> errors, DataRow row, string columnValue, string includedRolesWithoutHsaId, string reason)
+        private bool ValidateHsaId(List<KeyValuePair<DataRow, string>> errors, DataRow row, string columnValue, string role, string includedRolesWithoutHsaId, string reason)
         {
-            if (string.IsNullOrWhiteSpace(columnValue) && includedRolesWithoutHsaId.ToLower().Contains(columnValue.Trim().ToLower()) == false)
+            if (string.IsNullOrWhiteSpace(columnValue) && includedRolesWithoutHsaId.ToLower().Contains(role.Trim().ToLower()) == false)
             {
                 errors.Add(new KeyValuePair<DataRow, string>(row, reason));
             }

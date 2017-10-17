@@ -123,7 +123,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             if (updateSequenceForm.IsCollectingGivenDosage == true)
             {
-                updateSequenceForm.DosageScales = GetDosageScales(schedule);
+                updateSequenceForm.DosageScales = GetDosageScales();
             }
 
             return updateSequenceForm;
@@ -157,7 +157,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             });
         }
 
-        private IList<SelectListItem> GetDosageScales(Schedule schedule)
+        private IList<SelectListItem> GetDosageScales()
         {
             var dosageScaleList = new List<SelectListItem>();
             var scales = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)

@@ -11,8 +11,8 @@
                 @Html.ValidationSummary()
 
                 <h3>@Model.Name</h3>
+                <p>Använder skala: @Model.LongScale</p>
                 <p>@Model.Instruction</p>
-                <p>@Model.LongScale</p>
 
                 <div class="form-controls">
 
@@ -32,15 +32,29 @@
                         </span>
                         @Html.LabelFor(x => x.Unit, new { @class = "required-indicator" })
                     }
-                    else if (Model.Scale == "melior")
+                    else if (Model.Scale == "common")
                     {
                         // visa melior snurra
+                        @Html.LabelFor(x => x.Unit, new { @class = "required-indicator" })
+                        @Html.TextBoxFor(x => x.Value, new { required = "reguired", type = "text" })
                     }
                     else if (Model.Scale == "bristol")
                     {
                         // visa bristol snurra
-                    }
 
+                        @Html.LabelFor(x => x.Unit, new { @class = "required-indicator" })
+                        <span class="numberspinner">
+                            <button class="button decrease" tabindex="-1">
+                                <span class="visually-hidden">Minska Värde <b class="required-indicator">*</b></span>
+                                <svg class="icon icon--small icon--w" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
+                            </button>
+                            @Html.TextBoxFor(x => x.Value, new { min = "1", max = "7", size = "3", required = "reguired", type = "number" })
+                            <button class="button increase" tabindex="-1">
+                                <span class="visually-hidden">Öka Värde <b class="required-indicator">*</b></span>
+                                <svg class="icon icon--small icon--e"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
+                            </button>
+                        </span>
+                    }
                     @Html.ValidationMessageFor(x => x.Value)
                 </div>
                 <div class="form-controls form-controls--align-end">

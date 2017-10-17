@@ -51,15 +51,31 @@
     <tbody>
         @if (Model.Values != null)
         {
-            foreach (var item in Model.Values)
+            if (Model.Scale == "common" || Model.Scale == "bristol")
             {
-                <tr>
-                    <td> </td>
-                    <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
-                    <td>@item.Measurement.Value @Model.Unit</td>
-                    <td>@item.Signature.Who.FullName</td>
-                    <td> </td>
-                </tr>
+                foreach (var item in Model.Values)
+                {
+                    <tr>
+                        <td> </td>
+                        <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+                        <td>@Model.Unit @item.Measurement.Value</td>
+                        <td>@item.Signature.Who.FullName</td>
+                        <td> </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                foreach (var item in Model.Values)
+                {
+                    <tr>
+                        <td> </td>
+                        <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+                        <td>@item.Measurement.Value @Model.Unit</td>
+                        <td>@item.Signature.Who.FullName</td>
+                        <td> </td>
+                    </tr>
+                }
             }
         }
     </tbody>

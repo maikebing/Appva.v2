@@ -88,7 +88,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 },
                 Observation = observation,
                 Values = this.service.GetValueList(observation.Id),
-                Unit = JsonConvert.DeserializeObject<MeasurementScaleModel>(observation.Scale).Unit,
+                Unit = MeasurementScale.GetUnitForScale(observation.Scale),
+                Longscale = MeasurementScale.GetNameForScale((MeasurementScale.Scale)Enum.Parse(typeof(MeasurementScale.Scale), observation.Scale, true))
             };
         }
 

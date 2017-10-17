@@ -54,7 +54,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var model = new ViewMeasurementModel();
             model.Observation = this.service.GetMeasurementObservation(message.MeasurementId);
-            model.Unit = JsonConvert.DeserializeObject<MeasurementScaleModel>(model.Observation.Scale).Unit;
+            model.Unit = MeasurementScale.GetUnitForScale(model.Observation.Scale);
+            model.Longscale = MeasurementScale.GetNameForScale((MeasurementScale.Scale) Enum.Parse(typeof(MeasurementScale.Scale), model.Observation.Scale, true));
             model.ListModel = new ListMeasurementModel
             {
                 Patient = this.patientTransformer.ToPatient(model.Observation.Patient),

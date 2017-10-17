@@ -81,7 +81,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new ViewMeasurementModel
             {
                 Observation = observation,
-                Unit = JsonConvert.DeserializeObject<MeasurementScaleModel>(observation.Scale).Unit,
+                Unit = MeasurementScale.GetUnitForScale(observation.Scale),
                 ListModel = new ListMeasurementModel
                 {
                     Patient = this.transformer.ToPatient(observation.Patient),

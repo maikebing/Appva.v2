@@ -25,10 +25,10 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         public enum Scale : byte
         {
-            none,
-            weight,
-            bristol,
-            melior
+            None,
+            Weight,
+            Bristol,
+            Common
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         private enum KingScale : byte
         {
-            none,
+            None,
             A1, A2, A3,
             B1, B2, B3,
             C1, C2, C3,
@@ -46,17 +46,17 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <summary>
         /// Enum MeliorScale Values
         /// </summary>
-        public enum MeliorScale : byte
+        public enum CommonScale : byte
         {
-            none,
-            bigtriplea,
-            bigdoublea,
-            biga,
-            smalla,
-            smalltriplea,
-            smalld,
-            bigd,
-            k
+            None,
+            BigTripleA,
+            BigDoubleA,
+            BigA,
+            SmallA,
+            SmallTripleA,
+            SmallD,
+            BigD,
+            K
         }
 
         #endregion
@@ -87,14 +87,14 @@ namespace Appva.Mcss.Admin.Application.Models
 
             switch (validScale)
             {
-                case Scale.weight:
-                    result = ValidateWeight(value);
+                case Scale.Weight:
+                    result = ValidateWeightScale(value);
                     break;
-                case Scale.bristol:
-                    result = ValidateBristol(value);
+                case Scale.Bristol:
+                    result = ValidateBristolScale(value);
                     break;
-                case Scale.melior:
-                    result = ValidateMelior(value);
+                case Scale.Common:
+                    result = ValidateCommonScale(value);
                     break;
                 default:
                     result = false;
@@ -116,7 +116,7 @@ namespace Appva.Mcss.Admin.Application.Models
         {
             var result = string.Empty;
 
-            if (Enum.TryParse(scale, out Scale validScale))
+            if (Enum.TryParse(scale, true, out Scale validScale))
             {
                 result = GetUnitForScale(validScale);
             }
@@ -135,13 +135,13 @@ namespace Appva.Mcss.Admin.Application.Models
 
             switch (scale)
             {
-                case Scale.weight:
+                case Scale.Weight:
                     result = "kg";
                     break;
-                case Scale.bristol:
+                case Scale.Bristol:
                     result = "Typ";
                     break;
-                case Scale.melior:
+                case Scale.Common:
                     result = "Typ";
                     break;
                 default:
@@ -157,7 +157,7 @@ namespace Appva.Mcss.Admin.Application.Models
         #region GetNameForScale
 
         /// <summary>
-        /// Gets a readable the name for the scale.
+        /// Gets a readable the name for the a scale for presentation purposes.
         /// </summary>
         /// <param name="scale">The scale.</param>
         /// <returns>System.String.</returns>
@@ -167,13 +167,13 @@ namespace Appva.Mcss.Admin.Application.Models
 
             switch (scale)
             {
-                case Scale.weight:
+                case Scale.Weight:
                     result = "Vikt (kg)";
                     break;
-                case Scale.bristol:
+                case Scale.Bristol:
                     result = "Bristol Stool Scale (Typ 1-7)";
                     break;
-                case Scale.melior:
+                case Scale.Common:
                     result = "Generisk Avföringsskala (Typ A, a)";
                     break;
                 default:
@@ -186,22 +186,29 @@ namespace Appva.Mcss.Admin.Application.Models
 
         #endregion
 
-        #region GetBounderiesForScale
+        #region GetScaleBounderies
+        public static string GetScaleBounderies(Scale scale)
+        {
+            var retval = string.Empty;
 
+            //// TODO: build an object with bounderies/instructions for the view to present and pass through validation in handlers.
+
+            return retval;
+        }
 
         #endregion
 
 
-        #region MeliorScaleHelpers
+        #region CommonScaleHelpers
 
         /// <summary>
         /// Returns the value from the enum description of the value. 
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>System.String.</returns>
-        public static string GetMeliorValue(string value)
+        public static string GetCommonValue(string value)
         {
-            return MeliorToString((MeliorScale)Enum.Parse(typeof(MeliorScale), value));
+            return CommonToString((CommonScale)Enum.Parse(typeof(CommonScale), value, true));
         }
 
         /// <summary>
@@ -209,34 +216,34 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         /// <param name="scale">The melior scale.</param>
         /// <returns>System.String.</returns>
-        public static string MeliorToString(this MeliorScale scale)
+        public static string CommonToString(this CommonScale scale)
         {
             var retval = string.Empty;
 
             switch (scale)
             {
-                case MeliorScale.bigtriplea:
+                case CommonScale.BigTripleA:
                     retval = "AAA";
                     break;
-                case MeliorScale.bigdoublea:
+                case CommonScale.BigDoubleA:
                     retval = "AA";
                     break;
-                case MeliorScale.biga:
+                case CommonScale.BigA:
                     retval = "A";
                     break;
-                case MeliorScale.smalla:
+                case CommonScale.SmallA:
                     retval = "a";
                     break;
-                case MeliorScale.smalltriplea:
+                case CommonScale.SmallTripleA:
                     retval = "aaa";
                     break;
-                case MeliorScale.smalld:
+                case CommonScale.SmallD:
                     retval = "d";
                     break;
-                case MeliorScale.bigd:
+                case CommonScale.BigD:
                     retval = "D";
                     break;
-                case MeliorScale.k:
+                case CommonScale.K:
                     retval = "k";
                     break;
                 default:
@@ -248,8 +255,6 @@ namespace Appva.Mcss.Admin.Application.Models
 
         #endregion
 
-
-
         #endregion
 
         #region Private members.
@@ -259,9 +264,9 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the value meets the requirements, otherwise <c>false</c></returns>
-        private static bool ValidateMelior(string value)
+        private static bool ValidateCommonScale(string value)
         {
-            if ((Enum.TryParse(value, out MeliorScale scale)) == true)
+            if ((Enum.TryParse(value, true, out CommonScale scale)) == true)
             {
                 return true;
             }
@@ -273,7 +278,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the value meets the requirements, otherwise <c>false</c></returns>
-        private static bool ValidateBristol(string value)
+        private static bool ValidateBristolScale(string value)
         {
             if (int.TryParse(value, out int bristol) == true)
             {
@@ -290,7 +295,7 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the value meets the requirements, otherwise <c>false</c></returns>
-        private static bool ValidateWeight(string value)
+        private static bool ValidateWeightScale(string value)
         {
             if (double.TryParse(value, out double weight) == true)
             {

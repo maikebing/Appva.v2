@@ -69,15 +69,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateMeasurementModel Handle(UpdateMeasurement message)
         {
             var observation = this.service.Get(message.MeasurementId);
-            var scale = JsonConvert.DeserializeObject<MeasurementScaleModel>(observation.Scale);
+            //var scale = JsonConvert.DeserializeObject<MeasurementScaleModel>(observation.Scale);
 
             var model = new UpdateMeasurementModel
             {
                 MeasurementId = observation.Id,
                 Name = observation.Name,
                 Instruction = observation.Description,
-                SelectedScale = MeasurementScale.GetNameForScale((MeasurementScale.Scale) Enum.Parse(typeof(MeasurementScale.Scale), scale.Scale)),
-                SelectedUnit = scale.Unit,
+                SelectedScale = MeasurementScale.GetNameForScale((MeasurementScale.Scale) Enum.Parse(typeof(MeasurementScale.Scale), observation.Scale)),
+                SelectedUnit = MeasurementScale.GetUnitForScale(observation.Scale),
                 SelectDelegationList = this.service.GetDelegationsList()
                 .Select(x => new SelectListItem
                 {

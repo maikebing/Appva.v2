@@ -72,17 +72,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var patient = this.service.GetPatient(message.PatientId);
             if (patient != null)
             {
-                var scale = new MeasurementScaleModel
-                {
-                    Unit = MeasurementScale.GetUnitForScale((MeasurementScale.Scale) Enum.Parse(typeof(MeasurementScale.Scale), message.SelectedScale)),
-                    Scale = message.SelectedScale
-                };
-
                 this.service.CreateMeasurementObservation(MeasurementObservation.New(
-
-                    //// TODO: scale skall sparas efter en enum och inte från settings.
-
-                    scale: JsonConvert.SerializeObject(scale),
+                    scale: message.SelectedScale,
                     delegation: this.service.GetTaxon(Guid.Parse(message.SelectedDelegation)), 
                     patient: patient, 
                     name: message.Name, 

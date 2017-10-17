@@ -73,7 +73,7 @@ namespace Appva.Mcss.Admin.UnitTests
             var test_result = string.Empty;
 
             // Act
-            test_result = MeasurementScale.GetMeliorValue(value_to_test);
+            test_result = MeasurementScale.GetCommonValue(value_to_test);
 
             // Assert
             Assert.AreEqual("AAA", test_result);

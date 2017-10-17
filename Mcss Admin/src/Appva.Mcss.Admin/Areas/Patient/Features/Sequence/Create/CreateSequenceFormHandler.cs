@@ -94,11 +94,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
 
+            // if (schedule.IsCollectingGivenDosage && message.SelectedDosageScale != null) { skapa rad i Observation med en ref till sequence... }
+
             var scale = this.CreateDosageObservation(message, schedule);
-            if (scale.IsNotNull())
+            if (scale != null)
             {
                 this.context.Save(scale);
             }
+
             var sequence = this.CreateOrUpdate(message, schedule, delegation, scale);
             this.context.Save(sequence);
 
@@ -130,7 +133,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <returns>DosageObservation<see cref="DosageObservation"/>.</returns>
         private DosageObservation CreateDosageObservation(CreateSequenceForm message, Schedule schedule)
         {
-            if (schedule.ScheduleSettings.IsCollectingGivenDosage  == false) return null;
+            if (schedule.ScheduleSettings.IsCollectingGivenDosage == false)
+            {
+                return null;
+            }
 
             var selectedScale = message.SelectedDosageScale;
             var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
@@ -229,8 +235,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Inventory = inventory
             };
 
-            if (scale.IsNotNull()) sequence.DosageObservation = scale;
-
+            if (scale != null)
+            {
+                sequence.DosageObservation = scale;
+            }
 
             return sequence;
         }

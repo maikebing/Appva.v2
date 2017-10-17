@@ -92,7 +92,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
 
             this.CreateOrUpdate(message, sequence, schedule, delegation, null);
-            this.UpdateDosageObservation(message, schedule, sequence);
+
+            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true && message.SelectedDosageScale != null)
+            {
+                this.UpdateDosageObservation(sequence, message.SelectedDosageScale);
+            }
+            
             this.sequenceService.Update(sequence);
             
             schedule.UpdatedAt = DateTime.Now;
@@ -104,29 +109,31 @@ namespace Appva.Mcss.Admin.Models.Handlers
             };
         }
 
-        private Sequence UpdateDosageObservation(UpdateSequenceForm message, Schedule schedule, Sequence sequence)
+        /// <summary>
+        /// Updates the dosage observation.
+        /// </summary>
+        /// <param name="sequence">The sequence<see cref="Sequence"/>.</param>
+        /// <param name="dosageScale">The dosage scale.</param>
+        /// <returns>Sequence<see cref="Sequence"/>.</returns>
+        private Sequence UpdateDosageObservation(Sequence sequence, string dosageScale)
         {
-            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true)
+            var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
+                .Where(x => x.Id == Guid.Parse(dosageScale)).FirstOrDefault();
+
+            // var observation = this.context.QueryOver<DosageObservation>().Where(x => x.IsActive).And(x => x.Sequence.Id == sequence.Id).FirstOrDefault()
+            // if observation == null  
+
+            if (sequence.DosageObservation == null)
             {
-                var selectedScale = message.SelectedDosageScale;
-                var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                    .Where(x => x.Id == Guid.Parse(selectedScale)).ToList();
-
-                if (sequence.DosageObservation.IsNull())
-                {
-                    var dosageObservation = new DosageObservation(schedule.Patient, scale[0].Name, "DosageScale", JsonConvert.SerializeObject(scale));
-                    this.context.Save<DosageObservation>(dosageObservation);
-                    sequence.DosageObservation = dosageObservation;
-                    return sequence;
-                }
-
-                //sequence.DosageObservation.DosageScaleId = scale.Id;
-                //sequence.DosageObservation.Name = scale.Name;
-                //sequence.DosageObservation.DosageScaleUnit = scale.Unit;
-                //var json = JsonConvert.SerializeObject(scale.Amounts);
-                //sequence.DosageObservation.DosageScaleValues = json;
-                sequence.DosageObservation.DosageScale = JsonConvert.SerializeObject(scale);
+                var dosageObservation = new DosageObservation(sequence.Patient, scale.Name, "DosageScale", JsonConvert.SerializeObject(scale));
+                this.context.Save<DosageObservation>(dosageObservation);
+                sequence.DosageObservation = dosageObservation;
+                return sequence;
             }
+
+            // liten ändring
+            sequence.DosageObservation.DosageScale = JsonConvert.SerializeObject(scale);
+
             return sequence;
         }
 

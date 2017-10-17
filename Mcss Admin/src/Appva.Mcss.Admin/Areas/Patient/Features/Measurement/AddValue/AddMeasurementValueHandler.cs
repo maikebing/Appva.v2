@@ -59,8 +59,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 MeasurementId = observation.Id,
                 Name = observation.Name,
                 Instruction = observation.Description,
-                Unit = scale.Unit,
-                Scale = scale.Scale,
+                Unit = MeasurementScale.GetUnitForScale(observation.Scale),
+                Scale = observation.Scale,
                 LongScale = MeasurementScale.GetNameForScale((MeasurementScale.Scale)Enum.Parse(typeof(MeasurementScale.Scale), scale.Scale))
             };
         }

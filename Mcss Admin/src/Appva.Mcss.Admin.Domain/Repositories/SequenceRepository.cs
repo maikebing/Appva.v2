@@ -76,9 +76,10 @@ using System.Linq;
 
             if (ordinationsIds != null)
             {
+                var array = ordinationsIds.ToArray();
                 Medication alias = null;
                 query.JoinQueryOver(x => x.Medications, () => alias)
-                    .WhereRestrictionOn(() => alias.OrdinationId).IsIn(ordinationsIds.ToArray());
+                    .WhereRestrictionOn(() => alias.OrdinationId).IsIn(array);
             }
             return query.List();
         }

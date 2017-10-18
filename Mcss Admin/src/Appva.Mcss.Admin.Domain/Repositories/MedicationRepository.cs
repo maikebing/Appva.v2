@@ -19,9 +19,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     public interface IMedicationRepository :
         ISaveRepository<Medication>,
+        IUpdateRepository<Medication>,
         IRepository
     {
-
+        /// <summary>
+        /// Finds the specified by ordination identifier.
+        /// </summary>
+        /// <param name="byOrdinationId">The by ordination identifier.</param>
+        /// <returns></returns>
+        Medication Find(long byOrdinationId);
     }
 
     /// <summary>
@@ -56,6 +62,24 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public void Save(Medication entity)
         {
             this.persistence.Save<Medication>(entity);
+        }
+
+        /// <inheritdoc />
+        public Medication Find(long byOrdinationId)
+        {
+            return this.persistence.QueryOver<Medication>()
+                .Where(x => x.OrdinationId == byOrdinationId)
+                .SingleOrDefault();
+        }
+
+        #endregion
+
+        #region IUpdateRepository members.
+
+        /// <inheritdoc />
+        public void Update(Medication entity)
+        {
+            this.persistence.Update<Medication>(entity);
         }
 
         #endregion

@@ -61,6 +61,7 @@ namespace Appva.Mcss.Admin.Application.Transformers
                         Time = x.Time
                     }).ToList()
             } : null;
+            var history = ehmOrdination.PreviousOrdinations != null ? ehmOrdination.PreviousOrdinations.Select(x => From(x)).ToList() : new List<Medication>();
             return new Medication
             {
                 Article             = article,
@@ -84,7 +85,7 @@ namespace Appva.Mcss.Admin.Application.Transformers
                 DiscontinuedComment     = ehmOrdination.DiscontinuedComment,
                 DiscontinuedType        = ehmOrdination.DiscontinuedType,
                 DosageScheme            = dosageScheme,
-                PreviousMedications     = ehmOrdination.PreviousOrdinations != null ? ehmOrdination.PreviousOrdinations.Select(x => From(x)).ToList() : new List<Medication>(),
+                PreviousMedications     = history,
                 NumbersOfExpiditions    = ehmOrdination.NumbersOfExpiditions,
                 RemainingExpiditions    = ehmOrdination.RemainingExpiditions,
                 LastExpiditedAt         = ehmOrdination.LastExpiditedAt,

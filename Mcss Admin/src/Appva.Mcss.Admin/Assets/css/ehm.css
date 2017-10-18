@@ -110,6 +110,15 @@
     border-radius:5px;
 }
 
+#ehm table tbody tr td span.prescription-expired {
+    font-style:italic;
+}
+
+#ehm table tbody tr td span.prescription-expired img {
+    width: 20px;
+    margin-left:10px;
+    vertical-align:middle;
+}
 
 /* Dosage */
 #ehm div.dosage {

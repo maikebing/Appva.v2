@@ -52,7 +52,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Saves the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        void Save(Medication entity);
+        Medication SaveOrUpdate(Medication entity);
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
             return MedicationTransformer.From(ordinations)
                 .OrderByDescending(x => x.EndsAt.GetValueOrDefault(DateTime.MaxValue))
-                .ThenByDescending(x => x.Article.Name).ToList();
+                .ThenBy(x => x.Article.Name).ToList();
         }
 
         
@@ -165,9 +165,11 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var extracted = medications.SelectMany(x => x.PreviousMedications).ToList();
             var all = medications.Concat(extracted).ToList();
-            var ordinationIds = medications.SelectMany(x => x.PreviousMedications
-                                            .Select(y => y.OrdinationId))
-                                            .Concat(medications.Select(x => x.OrdinationId)).ToList();
+            var ordinationIds = medications.Select(y => y.OrdinationId).ToList();
+            foreach (var m in medications.Where(x => x.PreviousMedications.Count > 0))
+            {
+                ordinationIds.AddRange(m.PreviousMedications.Select(x => x.OrdinationId).ToList());
+            }
             var sequences = sequenceRepository.List(ordinationsIds: ordinationIds);
 
             var retval = new Dictionary<long, SequenceMedicationCompareModel>();
@@ -177,7 +179,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 var history = new List<Sequence>();
                 foreach(var h in m.PreviousMedications)
                 {
-                    var s = sequences.Where(x => x.Medications.FirstOrDefault(y => y.OrdinationId == m.OrdinationId) != null).ToList();
+                    var s = sequences.Where(x => x.Medications.Any(y => y.OrdinationId == m.OrdinationId) != null).ToList();
                     if (s != null && s.Count > 0)
                     {
                         history.AddRange(s);
@@ -194,11 +196,16 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void Save(Medication entity)
+        public Medication SaveOrUpdate(Medication entity)
         {
-            this.medicationRepository.Save(entity);
+            var med = this.medicationRepository.Find(entity.OrdinationId);
+            if (med == null)
+            {
+                this.medicationRepository.Save(entity);
+                return entity;
+            }
+            return this.UpdateMedication(med, entity);
         }
-
 
         #endregion
 
@@ -227,6 +234,39 @@ namespace Appva.Mcss.Admin.Application.Services
                 OrganizationId   = ehmAttr.OrganizationId,
                 UserId           = account.Id
             };
+        }
+
+        private Medication UpdateMedication(Medication medication, Medication updates)
+        {
+            medication.Article                = updates.Article;
+            medication.CanceledAt             = updates.CanceledAt;
+            medication.CancellationComment    = updates.CancellationComment;
+            medication.CancellationReason     = updates.CancellationReason;
+            medication.CancellationReasonCode = updates.CancellationReasonCode;
+            medication.DiscontinuedAt         = updates.DiscontinuedAt;
+            medication.DiscontinuedComment    = updates.DiscontinuedComment;
+            medication.DiscontinuedType       = updates.DiscontinuedType;
+            medication.DosageScheme           = updates.DosageScheme;
+            medication.DosageText1            = updates.DosageText1;
+            medication.DosageText2            = updates.DosageText2;
+            medication.LastExpiditedAmount    = updates.LastExpiditedAmount;
+            medication.LastExpiditedAt        = updates.LastExpiditedAt;
+            medication.LastExpiditedNplPackId = updates.LastExpiditedNplPackId;
+            medication.NumbersOfExpiditions   = updates.NumbersOfExpiditions;
+            medication.OrdinationCreatedAt    = updates.OrdinationCreatedAt;
+            medication.OrdinationStartsAt     = updates.OrdinationStartsAt;
+            medication.OrdinationValidUntil   = updates.OrdinationValidUntil;
+            medication.Prescriber             = updates.Prescriber;
+            medication.Purpose                = updates.Purpose;
+            medication.RemainingExpiditions   = updates.RemainingExpiditions;
+            medication.Status                 = updates.Status;
+            medication.TreatmentEndsAt        = updates.TreatmentEndsAt;
+            medication.TreatmentStartsAt      = updates.TreatmentStartsAt;
+            medication.Type                   = updates.Type;
+
+            this.medicationRepository.Update(medication);
+
+            return medication;
         }
 
         #endregion

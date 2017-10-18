@@ -41,6 +41,10 @@
                 <span title="@string.Format("Mackulerad, {0}", Model.Medication.CancellationReason)" class="canceled">M</span>
             }
         }
+        else if (Model.Medication.OrdinationValidUntil.HasValue && Model.Medication.OrdinationValidUntil.Value < DateTime.Now)
+        {
+            <span class="prescription-expired">@Model.Medication.OrdinationValidUntil.Value.ToString("yyyy-MM-dd")<img title="Receptets giltighetstid har löpt ut" src="~/Assets/i/ico-info.png" /></span>
+        }
 
     </td>
     <td>

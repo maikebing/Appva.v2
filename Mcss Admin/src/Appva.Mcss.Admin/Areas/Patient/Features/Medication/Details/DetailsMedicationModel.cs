@@ -56,6 +56,12 @@ using System.Web.Mvc;
             set;
         }
 
+        /// <summary>
+        /// Gets the intervall translation.
+        /// </summary>
+        /// <value>
+        /// The intervall translation.
+        /// </value>
         public Dictionary<int, string> IntervallTranslation
         {
             get
@@ -76,6 +82,15 @@ using System.Web.Mvc;
                 intervalMap.Add(56, "Var åttonde vecka");
                 intervalMap.Add(84, "Var tolfte vecka");
                 return intervalMap;
+            }
+        }
+
+        public Medication PreviousMedication
+        {
+            get
+            {
+                var sequence = this.Sequences.History.OrderBy(x => x.CreatedAt).FirstOrDefault(x => x.IsActive);
+                return this.Medication.PreviousMedications.OrderBy(x => x.OrdinationCreatedAt).FirstOrDefault(x => sequence.Medications.Select(y => y.OrdinationId).ToList().Contains(x.OrdinationId));
             }
         }
 

@@ -56,8 +56,8 @@
       <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Core, Version=0.6.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Core.0.6.1\lib\net45\Appva.Core.dll</HintPath>
+    <Reference Include="Appva.Core, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Core.0.7.0\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core.Messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -92,8 +92,8 @@
       <HintPath>..\..\..\Packages\Appva.Office.0.3.1\lib\net45\Appva.Office.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
+    <Reference Include="Appva.Persistence, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Persistence.0.4.0\lib\net45\Appva.Persistence.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Persistence.Autofac, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -985,6 +985,7 @@
     <Content Include="Assets\i\ico-activity-group.png" />
     <Content Include="Assets\i\ico-activity-message.png" />
     <Content Include="Assets\i\ico-escape.png" />
+    <Content Include="Assets\i\ico-info.png" />
     <Content Include="Assets\i\ico-outdoor-act-message-group.png" />
     <Content Include="Assets\i\ico-outdoor-act-message.png" />
     <Content Include="Assets\i\ico-walk-group.png" />

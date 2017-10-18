@@ -94,16 +94,17 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Medication.Handlers
             if (message.OrdinationId != Int64.MinValue)
             {
                 var medication = await this.medicationService.Find(message.OrdinationId, message.Id);
-                this.medicationService.Save(medication);
+                medication = this.medicationService.SaveOrUpdate(medication);
                 medications.Add(medication);
             }
             else
             {
                 var list = await this.medicationService.List(message.Id);
                 medications = list.Where(x => x.Type == OrdinationType.Dispensed && x.EndsAt.GetValueOrDefault(DateTime.MaxValue) > DateTime.Now).ToList();
+                IList<Medication> persistedMedications = new List<Medication>();
                 foreach (var m in medications)
                 {
-                    this.medicationService.Save(m);
+                    persistedMedications.Add(this.medicationService.SaveOrUpdate(m));
                 }
             }
 

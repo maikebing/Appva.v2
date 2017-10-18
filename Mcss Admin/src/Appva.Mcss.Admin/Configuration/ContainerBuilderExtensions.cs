@@ -226,7 +226,7 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<MultiTenantDatasource>().As<IMultiTenantDatasource>().SingleInstance();
             builder.RegisterType<MultiTenantPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
             builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerRequest();
-            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerRequest()
+            builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().New()).As<IPersistenceContext>().InstancePerRequest()
                 .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
         }
 
@@ -241,8 +241,13 @@ namespace Appva.Mcss.Admin.Configuration
                 builder.RegisterType<MockedGrandIdClient>().As<IGrandIdClient>().InstancePerRequest();
                 //builder.Register(x => new MockedGrandIdClient(userHsaId: "richardhenriksson")).As<IMobileGrandIdClient>().SingleInstance();
 
+                var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
+                var options = RestOptions.CreateNew(null, modelBinder);
+                builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
+
                 //var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(GrandIdClient)));
                 //var options = RestOptions.CreateNew(null, modelBinder);
+                //builder.Register(x => new GrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.AuthenticationServiceKey))).As<IGrandIdClient>().SingleInstance();
                 //builder.Register(x => new MobileGrandIdClient(options, new Uri(GrandIdConfiguration.ServerUrl), GrandIdCredentials.CreateNew(GrandIdConfiguration.ApiKey, GrandIdConfiguration.MobileAuthenticationServiceKey))).As<IMobileGrandIdClient>().SingleInstance();
 
             }

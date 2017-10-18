@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
 {
     #region Imports.
 
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.IO;
@@ -223,7 +224,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             }
             else
             {
-                this.account.FirstName = columnValue.Trim().FirstToUpper();
+                this.account.FirstName = columnValue.Trim().ToLower().FirstToUpper();
                 return true;
             }
         }
@@ -299,8 +300,35 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
                 return false;
             }
 
-            var nodes = columnValue.Split(',');
-            var node = this.taxonomyService.Get(nodes[nodes.Length - 1].Trim().FirstToUpper(), TaxonomicSchema.Organization);
+            var inputNodes = columnValue.Split(',');
+            var nodes = this.persistence.QueryOver<Taxon>()
+                .JoinQueryOver<Taxonomy>(x => x.Taxonomy)
+                    .Where(x => x.MachineName == TaxonomicSchema.Organization.Id)
+                        .List();
+
+            Taxon node = null;
+            var ids = new List<Guid>();
+
+            // TODO: Replace with a faster solution for finding organization nodes.
+            // E.g. check if the path of first node exists in the path of last node.
+
+            for (int i = 0; i < inputNodes.Length; i++)
+            {
+                var currentNode = inputNodes[i].Trim().ToLower().FirstToUpper();
+
+                if(ids.Any())
+                {
+                    node = nodes.Where(x => x.Name == currentNode && ids.Contains(x.Parent.Id)).FirstOrDefault();
+                }
+                if(node == null)
+                {
+                    node = nodes.Where(x => x.Name == currentNode).FirstOrDefault();
+                }
+                if (i != inputNodes.Length - 1)
+                {
+                    ids = nodes.Where(x => x.Name == currentNode).Select(x => x.Id).ToList();
+                }
+            }
 
             if (node == null )
             {

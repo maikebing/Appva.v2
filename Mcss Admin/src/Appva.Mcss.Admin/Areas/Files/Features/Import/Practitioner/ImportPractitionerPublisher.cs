@@ -29,7 +29,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ImportPractitionerPublisher : RequestHandler<ImportPractitionerModel, bool>
+    internal sealed class ImportPractitionerPublisher : RequestHandler<ImportPractitionerModel, ImportPractitionerStatusModel>
     {
         #region Fields.
 
@@ -54,7 +54,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         private readonly IRoleService roleService;
 
         /// <summary>
-        /// A list of invalid practitioner rows.
+        /// A dictionary of invalid practitioner rows.
         /// </summary>
         private Dictionary<DataRow, List<string>> invalidRows;
 
@@ -88,21 +88,25 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override bool Handle(ImportPractitionerModel message)
+        public override ImportPractitionerStatusModel Handle(ImportPractitionerModel message)
         {
+            var model = new ImportPractitionerStatusModel();
             var file = this.fileService.Get(message.FileId);
 
             if (file == null)
             {
-                return false;
+                return model;
             }
 
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
             var data = ExcelReader.ReadPractitionersFromExcel(path, message.ValidateAtRow, message.ValidColumns, message.ReadFromRow);
             File.Delete(path);
-            var importedRowCount = this.ImportData(data, message.ValidColumns, message.ExcludedRoles, message.IncludedRolesWithoutHsaId);
 
-            return true;
+            model.FileId = file.Id;
+            model.FileName = file.Name;
+            model.ImportedRowsCount = this.ImportData(data, message.ValidColumns, message.ExcludedRoles, message.IncludedRolesWithoutHsaId);
+            model.InvalidRows = invalidRows;
+            return model;
         }
 
         #endregion

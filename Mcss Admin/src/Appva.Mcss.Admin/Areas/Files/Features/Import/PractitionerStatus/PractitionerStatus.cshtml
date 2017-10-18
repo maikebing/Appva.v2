@@ -1,0 +1,41 @@
+﻿@using System.Data;
+@model Appva.Mcss.Admin.Models.ImportPractitionerStatusModel
+@{
+    SetTitle("Importstatus");
+}
+<div id="subheader" class="cf">
+    <h1>Importera medarbetare</h1>
+</div>
+<div id="content" class="log cf">
+    <div id="fileimport">
+        <h3>Filinformation</h3>
+        <table class="device-table fileinfo">
+            <tr>
+                <td>Filnamn</td>
+                <td><b>@(Model.FileName)</b></td>
+            </tr>
+            <tr>
+                <td>Importerade rader</td>
+                <td>@Model.ImportedRowsCount st</td>
+            </tr>
+            <tr>
+                <td>Felaktiga rader</td>
+                <td>@Model.InvalidRows.Count st (@Html.ActionLink("Spara Excel-fil", "", ""))</td>
+            </tr>
+        </table>
+        @if (Model.InvalidRows.Count > 0)
+        {
+            <h3>Följande rader kunde inte importeras</h3>
+            <table class="device-table">
+                <thead>
+                    <tr class="head">
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

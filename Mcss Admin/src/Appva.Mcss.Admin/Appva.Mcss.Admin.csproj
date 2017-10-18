@@ -464,6 +464,8 @@
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Files\Features\Import\ImportController.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerStatus\ImportPractitionerStatusHandler.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerStatus\ImportPractitionerStatusModel.cs" />
     <Compile Include="Areas\Files\Features\Import\Practitioner\ImportPractitionerHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\Practitioner\ImportPractitionerModel.cs" />
     <Compile Include="Areas\Files\Features\Import\Practitioner\ImportPractitionerPublisher.cs" />
@@ -1440,6 +1442,7 @@
     <Content Include="Areas\Files\Features\View\List\List.cshtml" />
     <Content Include="Areas\Files\Features\View\Upload\Upload.cshtml" />
     <Content Include="Areas\Files\Features\Import\Practitioner\Practitioner.cshtml" />
+    <Content Include="Areas\Files\Features\Import\PractitionerStatus\PractitionerStatus.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

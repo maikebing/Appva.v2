@@ -332,12 +332,12 @@ a.btn-green:active{
 	-moz-box-shadow:none;
 	box-shadow:none;
 }
-    input[type="submit"].btn:active,
-    a.btn:active {
-        background: #2bbb68;
-    }
+input[type="submit"].btn:active,
+a.btn:active {
+    background:#445068;
+}
 a.btn-green:active {
-
+    background: #14522f;
 }
 
 input[type="submit"].btn-del,

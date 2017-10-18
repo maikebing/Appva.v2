@@ -1,4 +1,4 @@
-﻿// <copyright file="UploadController.cs" company="Appva AB">
+﻿// <copyright file="ViewController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -23,8 +23,8 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [RouteArea("files"), RoutePrefix("upload")]
-    public sealed class UploadController : Controller
+    [RouteArea("files"), RoutePrefix("view")]
+    public sealed class ViewController : Controller
     {
         #region Routes.
 
@@ -50,12 +50,12 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// <summary>
         /// Gets the download link for a specific file.
         /// </summary>
-        /// <param name="request">The <see cref="DownloadFile"/>.</param>
+        /// <param name="request">The <see cref="SaveFile"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("{id:guid}/download")]
+        [Route("{id:guid}/save")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ReadValue)]
-        public ActionResult Download(DownloadFile request)
+        public ActionResult Save(SaveFile request)
         {
             return this.File();
         }

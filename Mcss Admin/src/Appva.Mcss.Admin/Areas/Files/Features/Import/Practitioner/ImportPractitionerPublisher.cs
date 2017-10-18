@@ -54,11 +54,6 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         private readonly IRoleService roleService;
 
         /// <summary>
-        /// The <see cref="ITaxonomyService"/>.
-        /// </summary>
-        private readonly ITaxonomyService taxonomyService;
-
-        /// <summary>
         /// A list of invalid practitioner rows.
         /// </summary>
         private Dictionary<DataRow, List<string>> invalidRows;
@@ -79,14 +74,12 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// <param name="fileService">The <see cref="IFileService"/>.</param>
         /// <param name="accountService">The <see cref="IAccountService"/>.</param>
         /// <param name="roleService">The <see cref="IRoleService"/>.</param>
-        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/>.</param>
-        public ImportPractitionerPublisher(IPersistenceContext persistence, IFileService fileService, IAccountService accountService, IRoleService roleService, ITaxonomyService taxonomyService)
+        public ImportPractitionerPublisher(IPersistenceContext persistence, IFileService fileService, IAccountService accountService, IRoleService roleService)
         {
             this.persistence = persistence;
             this.fileService = fileService;
             this.accountService = accountService;
             this.roleService = roleService;
-            this.taxonomyService = taxonomyService;
             this.invalidRows = new Dictionary<DataRow, List<string>>();
         }
 
@@ -310,7 +303,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             var ids = new List<Guid>();
 
             // TODO: Replace with a faster solution for finding organization nodes.
-            // E.g. check if the path of first node exists in the path of last node.
+            // E.g. check if the last node contains the paths of the previous nodes.
 
             for (int i = 0; i < inputNodes.Length; i++)
             {

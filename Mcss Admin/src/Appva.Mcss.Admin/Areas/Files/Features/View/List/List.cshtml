@@ -41,10 +41,10 @@
                             <td class="flpad">@file.Size</td>
                             <td class="flpad">@file.DateAdded</td>
                             <td class="flpad flactions">
-                                @Html.ActionLink("Ladda ner", "Download", new { Id = file.Id }, new { @class = "btn" })
+                                @Html.ActionLink("Ladda ner", "Save", new { Id = file.Id }, new { @class = "btn" })
                                 @if (isImportableExcelFile)
                                 {
-                                    @Html.ActionLink("Granska", "Practitioner", "ImportExcel", new { Area = "Files", Id = file.Id }, new { @class = "btn-green" })
+                                    @Html.ActionLink("Granska", "Practitioner", "Import", new { Area = "Files", Id = file.Id }, new { @class = "btn-green" })
                                 }
                                 else
                                 {

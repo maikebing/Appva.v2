@@ -1,4 +1,4 @@
-﻿// <copyright file="ImportExcelController.cs" company="Appva AB">
+﻿// <copyright file="ImportController.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -21,8 +21,8 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    [RouteArea("files"), RoutePrefix("importexcel")]
-    public sealed class ImportExcelController : Controller
+    [RouteArea("files"), RoutePrefix("import")]
+    public sealed class ImportController : Controller
     {
         #region Routes.
 

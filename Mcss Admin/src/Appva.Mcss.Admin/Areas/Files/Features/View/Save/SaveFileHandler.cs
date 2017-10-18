@@ -1,4 +1,4 @@
-﻿// <copyright file="DownloadFileHandler.cs" company="Appva AB">
+﻿// <copyright file="SaveFileHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class DownloadFileHandler : RequestHandler<DownloadFile, FileContentResult>
+    internal sealed class SaveFileHandler : RequestHandler<SaveFile, FileContentResult>
     {
         #region Fields.
 
@@ -33,9 +33,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DownloadFileHandler"/> class.
+        /// Initializes a new instance of the <see cref="SaveFileHandler"/> class.
         /// </summary>
-        public DownloadFileHandler(IFileService service)
+        public SaveFileHandler(IFileService service)
         {
             this.service = service;
         }
@@ -45,7 +45,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override FileContentResult Handle(DownloadFile message)
+        public override FileContentResult Handle(SaveFile message)
         {
             var file = this.service.Get(message.Id);
 

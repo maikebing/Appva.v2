@@ -3,7 +3,7 @@
     SetTitle("Ladda upp en fil");
 }
 <div class="std-panel std-form lb-panel-small lb-validate-form">
-    @using (Html.BeginForm("Upload", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("Upload", "View", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div>
             <h3 class="section-title">Ladda upp en fil</h3>

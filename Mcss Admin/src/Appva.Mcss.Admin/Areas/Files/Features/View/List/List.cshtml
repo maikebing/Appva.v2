@@ -5,7 +5,7 @@
 }
 <div id="subheader" class="cf">
     <h1>Filer</h1>
-    @Html.ActionLink(Permissions.FileUpload.Create, "Ladda upp", "Upload", "Upload", null, new { @class = "btn lb-link" })
+    @Html.ActionLink(Permissions.FileUpload.Create, "Ladda upp", "Upload", "View", null, new { @class = "btn lb-link" })
     <p class="filter">
         <strong>Visa:</strong>
         @Html.ActionLink("Alla", "List", null, new { @class = (Model.IsFilteredByImages.HasValue == false ? "sel div" : "div") })
@@ -41,15 +41,15 @@
                             <td class="flpad">@file.Size</td>
                             <td class="flpad">@file.DateAdded</td>
                             <td class="flpad flactions">
-                                @Html.ActionLink("Ladda ner", "Save", new { Id = file.Id }, new { @class = "btn" })
                                 @if (isImportableExcelFile)
                                 {
-                                    @Html.ActionLink("Granska", "Practitioner", "Import", new { Area = "Files", Id = file.Id }, new { @class = "btn-green" })
+                                    @Html.ActionLink("Granska", "Practitioner", "Import", new { Area = "Files", Id = file.Id }, new { @class = "btn-green", style = "padding:5px 16px" })
                                 }
                                 else
                                 {
-                                    @Html.ActionLink("Ta bort", "Delete", new { Id = file.Id }, new { @class = "btn btn-del item-delete-confirmation", data_text = "ta bort filen \"" + file.Name + "\"" })
+                                    @Html.ActionLink("Ladda ner", "Save", new { Id = file.Id }, new { @class = "btn" })
                                 }
+                                @Html.ActionLink("Ta bort", "Delete", new { Id = file.Id }, new { @class = "btn btn-del item-delete-confirmation", data_text = "ta bort filen \"" + file.Name + "\"" })
                             </td>
                         </tr>
                     }

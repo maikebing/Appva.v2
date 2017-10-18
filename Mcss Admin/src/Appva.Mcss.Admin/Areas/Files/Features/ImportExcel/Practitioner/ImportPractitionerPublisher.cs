@@ -60,7 +60,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// <summary>
         /// A list of invalid practitioner rows.
         /// </summary>
-        private List<List<KeyValuePair<DataRow, string>>> invalidRows;
+        private Dictionary<DataRow, List<string>> invalidRows;
 
         /// <summary>
         /// The <see cref="Account"/>.
@@ -86,7 +86,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             this.accountService = accountService;
             this.roleService = roleService;
             this.taxonomyService = taxonomyService;
-            this.invalidRows = new List<List<KeyValuePair<DataRow, string>>>();
+            this.invalidRows = new Dictionary<DataRow, List<string>>();
         }
 
         #endregion
@@ -131,45 +131,44 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             for (int i = 1; i < data.Rows.Count; i++)
             {
                 this.account = new Account();
-                var errors = new List<KeyValuePair<DataRow, string>>(data.Columns.Count);
+                var errors = new List<string>(data.Columns.Count);
                 var role = string.Empty;
 
                 for (int j = 0; j < data.Columns.Count; j++)
                 {
                     var columnName = data.Rows[0][data.Columns[j]].ToString();
                     var columnValue = data.Rows[i][data.Columns[j]].ToString();
-                    var row = data.Rows[i];
 
                     if (columnName == validColumns[0])
                     {
-                        this.ValidatePersonalIdentityNumber(errors, row, columnValue, "Ogiltigt personnummer.");
+                        this.ValidatePersonalIdentityNumber(errors, columnValue, "Ogiltigt personnummer.");
                     }
                     else if (columnName == validColumns[1] || columnName == validColumns[2])
                     {
-                        this.ValidateName(errors, row, columnValue, (columnName == validColumns[1] ? "Förnamn" : "Efternamn") + " saknas.");
+                        this.ValidateName(errors, columnValue, (columnName == validColumns[1] ? "Förnamn" : "Efternamn") + " saknas.");
                     }
                     else if (columnName == validColumns[3])
                     {
-                        this.ValidateEmailAddress(errors, row, columnValue, "Ogiltig e-postadress.");
+                        this.ValidateEmailAddress(errors, columnValue, "Ogiltig e-postadress.");
                     }
                     else if (columnName == validColumns[4])
                     {
                         role = columnValue;
-                        this.ValidateRoles(errors, row, excludedRoles, columnValue, new string[] { "Exkluderad roll.", "Rollen finns ej i MCSS.", "Roll saknas." });
+                        this.ValidateRoles(errors, excludedRoles, columnValue, new string[] { "Exkluderad roll.", "Rollen finns ej i MCSS.", "Roll saknas." });
                     }
                     else if (columnName == validColumns[5])
                     {
-                        this.ValidateOrganizationNodes(errors, row, columnValue, new string[] { "Organisation saknas.", "Organisationsnod hittades ej." });
+                        this.ValidateOrganizationNodes(errors, columnValue, new string[] { "Organisation saknas.", "Organisationsnod hittades ej." });
                     }
                     else if (columnName == validColumns[6])
                     {
-                        this.ValidateHsaId(errors, row, columnValue, role, includedRolesWithoutHsaId, "HSA-id saknas.");
+                        this.ValidateHsaId(errors, columnValue, role, includedRolesWithoutHsaId, "HSA-id saknas.");
                     }
                 }
 
                 if (errors.Count > 0)
                 {
-                    this.invalidRows.Add(errors);
+                    this.invalidRows.Add(data.Rows[i], errors);
                     continue;
                 }
 
@@ -184,11 +183,10 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// Validates the personal identity number.
         /// </summary>
         /// <param name="errors">A list of validation errors.</param>
-        /// <param name="row">The current row.</param>
         /// <param name="columnValue">The column value.</param>
         /// <param name="reason">The reason if value is not valid.</param>
         /// <returns><see cref="bool"/>.</returns>
-        private bool ValidatePersonalIdentityNumber(List<KeyValuePair<DataRow, string>> errors, DataRow row, string columnValue, string reason)
+        private bool ValidatePersonalIdentityNumber(List<string> errors, string columnValue, string reason)
         {
             var personalIdentityNumber = new PersonalIdentityNumber(columnValue);
             var isValid = personalIdentityNumber.IsValid();
@@ -199,7 +197,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             }
             else if (isValid == false)
             {
-                errors.Add(new KeyValuePair<DataRow, string>(row, reason));
+                errors.Add(reason);
                 return false;
             }
             else
@@ -213,15 +211,14 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// Validates the name.
         /// </summary>
         /// <param name="errors">A list of validation errors.</param>
-        /// <param name="row">The current row.</param>
         /// <param name="columnValue">The column value.</param>
         /// <param name="reason">The reason if value is not valid.</param>
         /// <returns><see cref="bool"/>.</returns>
-        private bool ValidateName(List<KeyValuePair<DataRow, string>> errors, DataRow row, string columnValue, string reason)
+        private bool ValidateName(List<string> errors, string columnValue, string reason)
         {
             if (string.IsNullOrWhiteSpace(columnValue))
             {
-                errors.Add(new KeyValuePair<DataRow, string>(row, reason));
+                errors.Add(reason);
                 return false;
             }
             else
@@ -235,11 +232,10 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// Validates the email address.
         /// </summary>
         /// <param name="errors">A list of validation errors.</param>
-        /// <param name="row">The current row.</param>
         /// <param name="columnValue">The column value.</param>
         /// <param name="reason">The reason if value is not valid.</param>
         /// <returns><see cref="bool"/>.</returns>
-        private bool ValidateEmailAddress(List<KeyValuePair<DataRow, string>> errors, DataRow row, string columnValue, string reason)
+        private bool ValidateEmailAddress(List<string> errors, string columnValue, string reason)
         {
             MailAddress emailAddress = null;
 
@@ -249,7 +245,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             }
             catch
             {
-                errors.Add(new KeyValuePair<DataRow, string>(row, reason));
+                errors.Add(reason);
                 return false;
             }
 
@@ -261,27 +257,26 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// Validates the role.
         /// </summary>
         /// <param name="errors">A list of validation errors.</param>
-        /// <param name="row">The current row.</param>
         /// <param name="excludedRoles">The excluded rows.</param>
         /// <param name="columnValue">The column value.</param>
         /// <param name="reasons">The reasons if values are not valid.</param>
         /// <returns><see cref="bool"/>.</returns>
-        private bool ValidateRoles(List<KeyValuePair<DataRow, string>> errors, DataRow row, string excludedRoles, string columnValue, string[] reasons)
+        private bool ValidateRoles(List<string> errors, string excludedRoles, string columnValue, string[] reasons)
         {
             if (string.IsNullOrWhiteSpace(excludedRoles) == false && excludedRoles.ToLower().Contains(columnValue.ToLower()))
             {
-                errors.Add(new KeyValuePair<DataRow, string>(row, reasons[0]));
+                errors.Add(reasons[0]);
                 return false;
             }
             var role = this.roleService.List().Where(x => x.Name.ToLower() == columnValue.Trim().ToLower()).FirstOrDefault();
             if (role == null)
             {
-                errors.Add(new KeyValuePair<DataRow, string>(row, reasons[1]));
+                errors.Add(reasons[1]);
                 return false;
             }
             if (string.IsNullOrWhiteSpace(columnValue))
             {
-                errors.Add(new KeyValuePair<DataRow, string>(row, reasons[2]));
+                errors.Add(reasons[2]);
                 return false;
             }
 
@@ -293,15 +288,14 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// Validates the organization nodes.
         /// </summary>
         /// <param name="errors">A list of validation errors.</param>
-        /// <param name="row">The current row.</param>
         /// <param name="columnValue">The column value.</param>
         /// <param name="reasons">The reasons if values are not valid.</param>
         /// <returns><see cref="bool"/>.</returns>
-        private bool ValidateOrganizationNodes(List<KeyValuePair<DataRow, string>> errors, DataRow row, string columnValue, string[] reasons)
+        private bool ValidateOrganizationNodes(List<string> errors, string columnValue, string[] reasons)
         {
             if (string.IsNullOrWhiteSpace(columnValue))
             {
-                errors.Add(new KeyValuePair<DataRow, string>(row, reasons[0]));
+                errors.Add(reasons[0]);
                 return false;
             }
 
@@ -310,7 +304,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
 
             if (node == null )
             {
-                errors.Add(new KeyValuePair<DataRow, string>(row, reasons[1]));
+                errors.Add(reasons[1]);
                 return false;
             }
 
@@ -322,17 +316,16 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// Validates the email address.
         /// </summary>
         /// <param name="errors">A list of validation errors.</param>
-        /// <param name="row">The current row.</param>
         /// <param name="columnValue">The column value.</param>
-        /// <param name="role">The </param>
+        /// <param name="role">The practitioner role.</param>
         /// <param name="includedRolesWithoutHsaId">Roles without HSA id.</param>
         /// <param name="reason">The reason if value is not valid.</param>
         /// <returns><see cref="bool"/>.</returns>
-        private bool ValidateHsaId(List<KeyValuePair<DataRow, string>> errors, DataRow row, string columnValue, string role, string includedRolesWithoutHsaId, string reason)
+        private bool ValidateHsaId(List<string> errors, string columnValue, string role, string includedRolesWithoutHsaId, string reason)
         {
             if (string.IsNullOrWhiteSpace(columnValue) && includedRolesWithoutHsaId.ToLower().Contains(role.Trim().ToLower()) == false)
             {
-                errors.Add(new KeyValuePair<DataRow, string>(row, reason));
+                errors.Add(reason);
             }
 
             this.account.HsaId = columnValue;

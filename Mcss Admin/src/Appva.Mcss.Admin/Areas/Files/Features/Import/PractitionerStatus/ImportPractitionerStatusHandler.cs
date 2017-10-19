@@ -9,9 +9,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System.Collections.Generic;
+    using System.Data;
     using System.IO;
+    using System.Runtime.Serialization.Formatters.Binary;
     using Appva.Cqrs;
-    using Appva.Files.Excel;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Models;
 
@@ -49,7 +51,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ImportPractitionerStatusModel Handle(ImportPractitionerStatusModel message)
         {
-            return message;
+            var model = new ImportPractitionerStatusModel();
+            var file = this.fileService.Get(message.FileId);
+
+            if(file == null)
+            {
+                return model;
+            }
+
+            model.InvalidRowsCount = message.InvalidRowsCount;
+            model.ImportedRowsCount = message.ImportedRowsCount;
+            model.FileName = message.FileName;
+            model.FileId = message.FileId;
+            return model;
         }
 
         #endregion

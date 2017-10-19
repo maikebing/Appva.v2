@@ -469,6 +469,7 @@
     <Compile Include="Areas\Files\Features\Import\Practitioner\ImportPractitionerHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\Practitioner\ImportPractitionerModel.cs" />
     <Compile Include="Areas\Files\Features\Import\Practitioner\ImportPractitionerPublisher.cs" />
+    <Compile Include="Areas\Files\Features\Import\Practitioner\InvalidPractitionerData.cs" />
     <Compile Include="Areas\Files\Features\Shared\FileUploadProperties.cs" />
     <Compile Include="Areas\Files\Features\View\Delete\DeleteFileHandler.cs" />
     <Compile Include="Areas\Files\Features\View\Save\SaveFile.cs" />
@@ -482,6 +483,7 @@
     <Compile Include="Areas\Files\Features\View\ViewController.cs" />
     <Compile Include="Areas\Files\Features\View\Upload\UploadFilePublisher.cs" />
     <Compile Include="Areas\Files\Utils\ExcelReader.cs" />
+    <Compile Include="Areas\Files\Utils\ExcelWriter.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogModel.cs" />
@@ -1446,6 +1448,7 @@
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />
+    <Content Include="Templates\PractitionerTemplate.xlsx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

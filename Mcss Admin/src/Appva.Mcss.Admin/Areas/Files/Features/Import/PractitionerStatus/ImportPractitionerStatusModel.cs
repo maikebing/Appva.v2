@@ -42,9 +42,9 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// A dictionary of practitioner rows that could not be imported.
+        /// The number of practitioner rows that could not be imported.
         /// </summary>
-        public Dictionary<DataRow, List<string>> InvalidRows
+        public int InvalidRowsCount
         {
             get;
             set;

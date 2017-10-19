@@ -20,9 +20,10 @@
             </tr>
             <tr>
                 <td>Felaktiga rader</td>
-                <td>@Model.InvalidRows.Count st (@Html.ActionLink("Spara Excel-fil", "", ""))</td>
+                <td>@Model.InvalidRowsCount st (@Html.ActionLink("Ladda ner Excel-fil", "Save", "View", new { Id = Model.FileId }, null))</td>
             </tr>
         </table>
+        @*
         @if (Model.InvalidRows.Count > 0)
         {
             <h3>Följande rader kunde inte importeras</h3>
@@ -37,5 +38,6 @@
                 </tbody>
             </table>
         }
+        *@
     </div>
 </div>

@@ -82,7 +82,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// <param name="request">The <see cref="UploadFileModel"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("upload")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "Upload")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("List", "View")]
         [PermissionsAttribute(Permissions.FileUpload.CreateValue)]
         public ActionResult Upload(UploadFileModel request)
         {
@@ -99,7 +99,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         /// <param name="request">The <see cref="DeleteFile"/> model.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
         [Route("{id:guid}/delete")]
-        [HttpGet, Dispatch("List", "Upload")]
+        [HttpGet, Dispatch("List", "View")]
         [PermissionsAttribute(Permissions.FileUpload.DeleteValue)]
         public ActionResult Delete(DeleteFile request)
         {

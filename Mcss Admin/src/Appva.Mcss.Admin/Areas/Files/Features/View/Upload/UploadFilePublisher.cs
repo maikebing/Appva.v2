@@ -5,7 +5,7 @@
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
 
-namespace Appva.Mcss.Admin.Areas.Log.Handlers
+namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 

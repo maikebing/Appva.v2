@@ -5,7 +5,7 @@
 //     <a href="mailto:emmanuel.hansson@appva.com">Emmanuel Hansson</a>
 // </author>
 
-namespace Appva.Mcss.Admin.Areas.Log.Handlers
+namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
@@ -23,6 +23,7 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
     using Appva.Persistence;
+    using Appva.Core.IO;
 
     #endregion
 
@@ -53,10 +54,17 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
         /// </summary>
         private readonly IRoleService roleService;
 
+        /*
         /// <summary>
         /// A dictionary of invalid practitioner rows.
         /// </summary>
         private Dictionary<DataRow, List<string>> invalidRows;
+        */
+
+        /// <summary>
+        /// A list of invalid practitioner rows.
+        /// </summary>
+        private List<InvalidPractitionerData> invalidRows;
 
         /// <summary>
         /// The <see cref="Account"/>.
@@ -80,7 +88,8 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             this.fileService = fileService;
             this.accountService = accountService;
             this.roleService = roleService;
-            this.invalidRows = new Dictionary<DataRow, List<string>>();
+            //this.invalidRows = new Dictionary<DataRow, List<string>>();
+            this.invalidRows = new List<InvalidPractitionerData>();
         }
 
         #endregion
@@ -102,10 +111,13 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             var data = ExcelReader.ReadPractitionersFromExcel(path, message.ValidateAtRow, message.ValidColumns, message.ReadFromRow);
             File.Delete(path);
 
-            model.FileId = file.Id;
-            model.FileName = file.Name;
             model.ImportedRowsCount = this.ImportData(data, message.ValidColumns, message.ExcludedRoles, message.IncludedRolesWithoutHsaId);
-            model.InvalidRows = invalidRows;
+
+            var templatePath = PathResolver.ResolveAppRelativePath("Templates\\PractitionerTemplate.xlsx");
+            var invalidDataToExcel = ExcelWriter.Write(templatePath, this.invalidRows, message.ReadFromRow);
+            model.FileId = this.Persist(invalidDataToExcel);
+            model.FileName = file.Name;
+            model.InvalidRowsCount = invalidRows.Count;
             return model;
         }
 
@@ -139,24 +151,24 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
 
                     if (columnName == validColumns[0])
                     {
-                        this.ValidatePersonalIdentityNumber(errors, columnValue, "Ogiltigt personnummer.");
+                        this.ValidatePersonalIdentityNumber(errors, columnValue, "Ogiltigt personnummer");
                     }
                     else if (columnName == validColumns[1] || columnName == validColumns[2])
                     {
-                        this.ValidateName(errors, columnValue, (columnName == validColumns[1] ? "Förnamn" : "Efternamn") + " saknas.");
+                        this.ValidateName(errors, columnValue, (columnName == validColumns[1] ? "Förnamn" : "Efternamn") + " saknas");
                     }
                     else if (columnName == validColumns[3])
                     {
-                        this.ValidateEmailAddress(errors, columnValue, "Ogiltig e-postadress.");
+                        this.ValidateEmailAddress(errors, columnValue, "Ogiltig e-postadress");
                     }
                     else if (columnName == validColumns[4])
                     {
                         role = columnValue;
-                        this.ValidateRoles(errors, excludedRoles, columnValue, new string[] { "Exkluderad roll.", "Rollen finns ej i MCSS.", "Roll saknas." });
+                        this.ValidateRoles(errors, excludedRoles, columnValue, new string[] { "Exkluderad roll", "Rollen finns ej i MCSS", "Roll saknas" });
                     }
                     else if (columnName == validColumns[5])
                     {
-                        this.ValidateOrganizationNodes(errors, columnValue, new string[] { "Organisation saknas.", "Organisationsnod hittades ej." });
+                        this.ValidateOrganizationNodes(errors, columnValue, new string[] { "Organisation saknas", "Organisationsnod hittades ej" });
                     }
                     else if (columnName == validColumns[6])
                     {
@@ -166,7 +178,8 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
 
                 if (errors.Count > 0)
                 {
-                    this.invalidRows.Add(data.Rows[i], errors);
+                    //this.invalidRows.Add(data.Rows[i], errors);
+                    this.MapRowToModel(data.Rows[i], errors);
                     continue;
                 }
 
@@ -355,6 +368,47 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
 
             this.account.HsaId = columnValue;
             return true;
+        }
+
+        /// <summary>
+        /// Maps row data to a new <see cref="InvalidPractitionerData"/> object.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="errors"></param>
+        private void MapRowToModel(DataRow row, List<string> errors)
+        {
+            this.invalidRows.Add(new InvalidPractitionerData
+            {
+                PersonalIdentityNumber = row[0].ToString(),
+                FirstName = row[1].ToString(),
+                LastName = row[2].ToString(),
+                EmailAddress = row[3].ToString(),
+                Role = row[4].ToString(),
+                OrganizationNode = row[5].ToString(),
+                HsaId = row[6].ToString(),
+                Errors = errors[0] + (errors.Count > 2 ? " och " + (errors.Count - 1) + " andra fel." : (errors.Count == 2 ? " och 1 annat fel." : "." ))
+            });
+        }
+
+        /// <summary>
+        /// Saves invalid practitioner rows.
+        /// </summary>
+        /// <param name="bytes">The byte array.</param>
+        /// <returns>The file id.</returns>
+        private Guid Persist(byte[] bytes)
+        {
+            var file = new DataFile
+            {
+                Name = string.Format("inläsningsfel-{0}.xlsx", DateTime.Now.ToShortDateString()),
+                Data = bytes,
+                Title = "Excel: inläsningsfel",
+                Description = "Innehåller rader av medarbetare som inte kunde importeras till MCSS.",
+                ContentType = "application/octet-stream"
+                //IsActive = false
+            };
+
+            this.persistence.Save(file);
+            return file.Id;
         }
 
         #endregion

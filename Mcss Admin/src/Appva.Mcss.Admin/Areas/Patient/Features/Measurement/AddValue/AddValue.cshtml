@@ -16,33 +16,34 @@
 
                 <div class="form-controls">
 
-                    @if (Model.Scale == "weight")
+                    @if (Model.Scale == "Weight")
                     {
                         <span class="numberspinner">
                             <button class="button decrease" tabindex="-1">
                                 <span class="visually-hidden">Minska Värde (i kg) <b class="required-indicator">*</b></span>
                                 <svg class="icon icon--small icon--w" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
                             </button>
-                            @Html.TextBoxFor(x => x.Value, new { min = "0", size = "3", required = "required", type = "number" })
+                            @Html.TextBoxFor(x => x.Value, new { min = "5", max = "450", size = "3", required = "required", type = "number" })
                             
                             <button class="button increase" tabindex="-1">
                                 <span class="visually-hidden">Öka Värde (i kg) <b class="required-indicator">*</b></span>
                                 <svg class="icon icon--small icon--e"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
                             </button>
                         </span>
-                        @Html.LabelFor(x => x.Unit, new { @class = "required-indicator" })
+                        @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
                     }
-                    else if (Model.Scale == "common")
+                    else if (Model.Scale == "Common")
                     {
                         // visa melior snurra
-                        @Html.LabelFor(x => x.Unit, new { @class = "required-indicator" })
+
+                        @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
                         @Html.TextBoxFor(x => x.Value, new { required = "reguired", type = "text" })
                     }
-                    else if (Model.Scale == "bristol")
+                    else if (Model.Scale == "Bristol")
                     {
                         // visa bristol snurra
 
-                        @Html.LabelFor(x => x.Unit, new { @class = "required-indicator" })
+                        @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
                         <span class="numberspinner">
                             <button class="button decrease" tabindex="-1">
                                 <span class="visually-hidden">Minska Värde <b class="required-indicator">*</b></span>

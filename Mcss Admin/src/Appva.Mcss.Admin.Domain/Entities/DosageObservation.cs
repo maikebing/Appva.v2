@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
     using System;
     using System.Collections.Generic;
+    using Validation;
 
     #endregion
 
@@ -18,19 +19,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class DosageObservation : Observation
     {
-        public DosageObservation(Guid dosageScaleId, string dosageScaleUnit, string dosageScaleValues, Patient patient, string name, string description, Taxon category = null) 
+        public DosageObservation(Sequence sequence, Patient patient, string name, string description, string dosageScale, Taxon category = null) 
             : base(patient, name, description, category)
         {
-            this.DosageScaleId = dosageScaleId;
-            this.DosageScaleUnit = dosageScaleUnit;
-            this.DosageScaleValues = dosageScaleValues;
+            Requires.NotNull(sequence, "sequence");
+            this.DosageScale = dosageScale;
+            this.Sequence = sequence;
         }
 
-        public DosageObservation(Patient patient, string name, string description, string scale, Taxon category = null)
-            : base(patient, name, description, category)
-        {
-            this.DosageScale = scale;
-        }
+        //public DosageObservation(Patient patient, string name, string description, string scale, Taxon category = null)
+        //    : base(patient, name, description, category)
+        //{
+        //    this.DosageScale = scale;
+        //}
 
         public DosageObservation()
         {
@@ -39,36 +40,19 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties
 
         /// <summary>
-        /// Gets or sets the dosage scale id.
-        /// </summary>
-        public virtual Guid DosageScaleId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the dosage scale unit.
-        /// </summary>
-        public virtual string DosageScaleUnit
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the dosage scale values.
-        /// </summary>
-        public virtual string DosageScaleValues
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the dosage scale.
         /// </summary>
         public virtual string DosageScale
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The Task
+        /// </summary>
+        /// <value>The sequence<see cref="Sequence"/>.</value>
+        public virtual Sequence Sequence
         {
             get;
             set;
@@ -86,14 +70,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="description">The description or instruction.</param>
         /// <param name="category">Classification of type of observation.</param>
         /// <returns>A new <see cref="Observation"/> instance.</returns>
-        public static DosageObservation New(Guid dosageScaleId, string dosageScaleUnit, string dosageScaleValues, Patient patient, string name, string description, Taxon category = null)
-        {
-            return new DosageObservation(dosageScaleId, dosageScaleUnit, dosageScaleValues, patient, name, description, category);
-        }
+        //public static DosageObservation New(string dosageScale, Sequence sequence, Patient patient, string name, string description, Taxon category = null)
+        //{
+        //    return new DosageObservation(dosageScale, sequence, patient, name, description, category);
+        //}
 
-        public static DosageObservation New(Patient patient, string name, string description, string scale, Taxon category = null)
+        public static DosageObservation New(Sequence sequence, Patient patient, string name, string description, string scale, Taxon category = null)
         {
-            return new DosageObservation(patient, name, description, scale, category);
+            return new DosageObservation(sequence, patient, name, description, scale, category);
         }
 
         #endregion

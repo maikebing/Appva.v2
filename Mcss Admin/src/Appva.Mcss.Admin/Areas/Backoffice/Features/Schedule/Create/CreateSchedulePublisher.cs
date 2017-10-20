@@ -53,7 +53,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
         #endregion
 
-        #region
+        #region RequestHandler overrides
 
         /// <inheritdoc />
         public override Identity<DetailsScheduleModel> Handle(CreateScheduleModel message)

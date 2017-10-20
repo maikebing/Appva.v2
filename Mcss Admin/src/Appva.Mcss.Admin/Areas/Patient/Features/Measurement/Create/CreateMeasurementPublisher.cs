@@ -69,16 +69,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListMeasurementModel Handle(CreateMeasurementModel message)
         {
-            var patient = this.service.GetPatient(message.PatientId);
-            if (patient != null)
+            var patient = this.service.GetPatient(message.Id);
+            if (patient == null)
             {
-                this.service.CreateMeasurementObservation(MeasurementObservation.New(
-                    scale: message.SelectedScale,
-                    delegation: this.service.GetTaxon(Guid.Parse(message.SelectedDelegation)), 
-                    patient: patient, 
-                    name: message.Name, 
-                    description: message.Description));
-            }       
+                throw new ArgumentNullException();
+            }
+            
+            this.service.CreateMeasurementObservation(MeasurementObservation.New(
+                scale: message.SelectedScale,
+                delegation: this.service.GetTaxon(Guid.Parse(message.SelectedDelegation)), 
+                patient: patient, 
+                name: message.Name, 
+                description: message.Description));
 
             return new ListMeasurementModel
             {

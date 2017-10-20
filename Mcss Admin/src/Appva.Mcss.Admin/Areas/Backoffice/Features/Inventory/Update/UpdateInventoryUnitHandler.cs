@@ -68,7 +68,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 {
                     new SelectListItem { Text = "Inventarier", Value = InventoryDefaults.Feature.inventory.ToString() },
                     new SelectListItem { Text = "Dosering", Value = InventoryDefaults.Feature.dosage.ToString() },
-                    // new SelectListItem { Text = "Mätning", Value = InventoryDefaults.Feature.measurement.ToString() }
                 },
                 Unit    = setting.Unit,
                 Id      = setting.Id

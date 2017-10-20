@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure;
     using Newtonsoft.Json;
     using System;
@@ -75,6 +76,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
 
             return model;
+        }
+
+        private ViewMeasurementValueModel ToMeasurementValueModel (ObservationItem observationItem)
+        {
+            var model = new ViewMeasurementValueModel();
+
+
+            return new ViewMeasurementValueModel
+            {
+                ValueId = observationItem.Id,
+                Value = observationItem.Measurement.Value,
+
+            };
         }
 
         #endregion

@@ -328,6 +328,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
+        /// taskobservationitemss for this task.
+        /// it should only never be more than 1 item in this list.
+        /// </summary>
+        public virtual IList<TaskObservationItem> TaskObservationItems
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The collection of sub tasks.
         /// </summary>
         /// <remarks>Populated by NHibernate.</remarks>

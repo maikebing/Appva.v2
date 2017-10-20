@@ -157,6 +157,7 @@
     <Compile Include="Entities\Sequence\SubSequence.cs" />
     <Compile Include="Entities\Signature\Signature.cs" />
     <Compile Include="Entities\Signature\SignedData.cs" />
+    <Compile Include="Entities\TaskObservationItem.cs" />
     <Compile Include="Entities\Task\SubTask.cs" />
     <Compile Include="Models\DosageScaleModel.cs" />
     <Compile Include="Models\ListTaskModel.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\SearchPatientModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
+    <Compile Include="Repositories\DosageObservationRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\IObservationRepository.cs" />
     <Compile Include="Repositories\ISignatureRepository.cs" />

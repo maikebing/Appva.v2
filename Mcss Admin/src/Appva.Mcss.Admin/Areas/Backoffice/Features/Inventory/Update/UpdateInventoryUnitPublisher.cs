@@ -69,40 +69,19 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
             this.settings.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, settings);
 
-            var dosageQuery = this.persistence.QueryOver<Sequence>()
+            var dosageQuery = this.persistence.QueryOver<DosageObservation>()
                 .Where(x => x.IsActive == true)
-                    .JoinQueryOver(x => x.DosageObservation)
-                        .Where(x => x.DosageScaleId == setting.Id)
+                    .And(x => x.Sequence != null)
+                        .And(x => x.DosageScale != string.Empty)
                             .List();
-
-            var amountToJson = JsonConvert.SerializeObject(setting.Amounts);
 
             foreach (var row in dosageQuery)
             {
-                row.DosageObservation.Name = setting.Name;
-                row.DosageObservation.DosageScaleUnit = setting.Unit;
-                row.DosageObservation.DosageScaleValues = amountToJson;
-                this.persistence.Update(row);
-            }
-
-            //// Testa denna logik på måndag, utvärdera
-            var measurementQuery = this.persistence.QueryOver<MeasurementObservation>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.Scale != string.Empty)
-                .List();
-            //.And(x => JsonConvert.DeserializeObject<List<InventoryAmountListModel>>(x.Scale)[0].Id == setting.Id)
-
-            foreach (var row in measurementQuery)
-            {
-                var scale = JsonConvert.DeserializeObject<List<InventoryAmountListModel>>(row.Scale).FirstOrDefault();
+                var scale = JsonConvert.DeserializeObject<InventoryAmountListModel>(row.DosageScale);
                 if (setting.Id == scale.Id)
                 {
-                    var list = new List<InventoryAmountListModel>
-                    {
-                        setting
-                    };
-                    row.Scale = JsonConvert.SerializeObject(list);
-                    this.persistence.Update(row);
+                    row.DosageScale = JsonConvert.SerializeObject(setting);
+                    this.persistence.Update<DosageObservation>(row);
                 }
             }
 

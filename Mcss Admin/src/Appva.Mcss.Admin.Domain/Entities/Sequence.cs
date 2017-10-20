@@ -336,10 +336,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
             set;
         }
 
+        //public virtual DosageObservation DosageObservation { get; set; }
+
+
         /// <summary>
         /// Dosage Observation
         /// </summary>
-        public virtual DosageObservation DosageObservation
+        public virtual IList<DosageObservation> DosageObservations
         {
             get;
             set;

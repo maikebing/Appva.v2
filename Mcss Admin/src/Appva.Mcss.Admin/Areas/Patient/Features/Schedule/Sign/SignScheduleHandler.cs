@@ -146,6 +146,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }
             }
             var scheduleSetting = this.persistence.Get<ScheduleSettings>(message.ScheduleSettingsId);
+
+            //// TODO: Check ScheduleSetting for IsCollectingGivenDosage == true
+
+
             return new TaskListViewModel
             {
                 Patient                  = this.transformer.ToPatient(patient),

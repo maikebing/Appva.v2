@@ -60,6 +60,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IInventoryService inventories;
 
+        private readonly IDosageObservationService dosageService;
+
         #endregion
 
         #region Constructor.
@@ -71,13 +73,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="inventories"></param>
         /// <param name="roleService"></param>
         /// <param name="auditing"></param>
-        public CreateSequenceFormHandler(IPersistenceContext context, IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IAuditService auditing)
+        public CreateSequenceFormHandler(IPersistenceContext context, IInventoryService inventories, IRoleService roleService, ISettingsService settingsService, IAuditService auditing, IDosageObservationService dosageService)
         {
             this.context         = context;
             this.inventories     = inventories;
             this.roleService     = roleService;
             this.auditing        = auditing;
             this.settingsService = settingsService;
+            this.dosageService   = dosageService;
         }
 
         #endregion
@@ -94,16 +97,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
 
-            // if (schedule.IsCollectingGivenDosage && message.SelectedDosageScale != null) { skapa rad i Observation med en ref till sequence... }
-
-            var scale = this.CreateDosageObservation(message, schedule);
-            if (scale != null)
-            {
-                this.context.Save(scale);
-            }
-
-            var sequence = this.CreateOrUpdate(message, schedule, delegation, scale);
+            var sequence = this.CreateOrUpdate(message, schedule, delegation);
             this.context.Save(sequence);
+
+            if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage == true && Guid.TryParse(message.SelectedDosageScale, out Guid dosageScale) == true)
+            {
+                var dosageObservation = this.CreateDosageObservation(dosageScale, sequence);
+                if (dosageObservation != null)
+                {
+                    this.dosageService.Save(dosageObservation);
+                }
+            }
 
             this.auditing.Create(
                 sequence.Patient,
@@ -131,19 +135,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="message">The message.</param>
         /// <param name="schedule">The schedule.</param>
         /// <returns>DosageObservation<see cref="DosageObservation"/>.</returns>
-        private DosageObservation CreateDosageObservation(CreateSequenceForm message, Schedule schedule)
+        private DosageObservation CreateDosageObservation(Guid scaleId, Sequence sequence)
         {
-            if (schedule.ScheduleSettings.IsCollectingGivenDosage == false)
-            {
-                return null;
-            }
+            var scale = JsonConvert.SerializeObject(
+                this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
+                    .Where(x => x.Id == scaleId)
+                        .SingleOrDefault());
 
-            var selectedScale = message.SelectedDosageScale;
-            var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                .Where(x => x.Id == Guid.Parse(selectedScale)).ToList();
-            var jsonScale = JsonConvert.SerializeObject(scale);
-            var dosageObservation = DosageObservation.New(schedule.Patient, scale[0].Name, "DosageScale", jsonScale);
-            return dosageObservation;
+            return DosageObservation.New(sequence, sequence.Patient, "Given Mängd", "DosageScale", scale);
         }
 
         /// <summary>
@@ -151,7 +150,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="schedule"></param>
         /// <returns></returns>
-        private Sequence CreateOrUpdate(CreateSequenceForm message, Schedule schedule, Taxon delegation, DosageObservation scale)
+        private Sequence CreateOrUpdate(CreateSequenceForm message, Schedule schedule, Taxon delegation)
         {
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate = null;
@@ -234,11 +233,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Role = requiredRole,
                 Inventory = inventory
             };
-
-            if (scale != null)
-            {
-                sequence.DosageObservation = scale;
-            }
 
             return sequence;
         }

@@ -59,6 +59,18 @@ namespace Appva.Mcss.Admin.Application.Models
             K
         }
 
+        private enum CommonScaleValues : byte
+        {
+            AAA,
+            AA,
+            A,
+            a,
+            aaa,
+            d,
+            D,
+            k
+        }
+
         #endregion
 
         #region Public members
@@ -198,7 +210,6 @@ namespace Appva.Mcss.Admin.Application.Models
 
         #endregion
 
-
         #region CommonScaleHelpers
 
         /// <summary>
@@ -206,8 +217,13 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>System.String.</returns>
-        public static string GetCommonValue(string value)
+        public static string GetCommonScaleValue(string value)
         {
+            if ((Enum.TryParse<CommonScaleValues>(value, false, out CommonScaleValues result)) == true)
+            {
+                return value;
+            }
+
             return CommonToString((CommonScale)Enum.Parse(typeof(CommonScale), value, true));
         }
 
@@ -270,6 +286,13 @@ namespace Appva.Mcss.Admin.Application.Models
             {
                 return true;
             }
+
+            if ((Enum.TryParse(value, out CommonScaleValues scaleValues)) == true)
+            {
+                return true;
+            }
+
+            //if ()
             return false;
         }
 

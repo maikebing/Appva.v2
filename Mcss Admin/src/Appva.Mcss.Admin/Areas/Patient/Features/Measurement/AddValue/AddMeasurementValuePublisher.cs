@@ -66,23 +66,25 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ViewMeasurementModel Handle(AddMeasurementValueModel message)
         {
-            var account = this.account.CurrentPrincipal();
             var observation = this.service.GetMeasurementObservation(message.MeasurementId);
 
-            if (account != null && observation != null && MeasurementScale.HasValidValue(message.Value, message.Scale))
+            if (MeasurementScale.HasValidValue(message.Value, observation.Scale))
             {
-                var taxon = observation.Delegation;
-                var measurement = new Measurement(message.Value, taxon);
+                if (observation.Scale == MeasurementScale.Scale.Common.ToString())
+                {
+                    message.Value = MeasurementScale.GetCommonScaleValue(message.Value);
+                }
+                var measurement = new Measurement(message.Value, observation.Delegation);
                 var data = new List<SignedData> { SignedData.New(new Domain.VO.Base64Binary(message.Value)) };
-                var signature = Signature.New(taxon, account, data);
-                var value = ObservationItem.New(observation, measurement, signature);
+                var signature = Signature.New(observation.Delegation, this.account.CurrentPrincipal(), data);
 
-                this.service.CreateValue(value);
+                this.service.CreateValue(ObservationItem.New(observation, measurement, signature));
             }
 
             return new ViewMeasurementModel
             {
-                ListModel = new ListMeasurementModel { 
+                ListModel = new ListMeasurementModel
+                { 
                     MeasurementList = this.service.GetMeasurementObservationsList(observation.Patient.Id),
                     Patient = transformer.ToPatient(observation.Patient)
                 },

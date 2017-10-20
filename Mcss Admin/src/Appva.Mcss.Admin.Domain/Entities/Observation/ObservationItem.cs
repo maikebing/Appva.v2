@@ -35,6 +35,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Signature   = signature;
         }
 
+        public ObservationItem(Measurement measurement, Signature signature = null)
+        {
+            Requires.NotNull(measurement, "measurement");
+            this.Measurement = measurement;
+            this.Signature = signature;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservationItem"/> class.
         /// </summary>

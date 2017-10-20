@@ -60,6 +60,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ISettingsService settingsService;
 
+        /// <summary>
+        /// The dosage service <see cref="IDosageObservationService"/>.
+        /// </summary>
+        private readonly IDosageObservationService dosageService;
+
         #endregion
 
         #region Constructor.
@@ -67,13 +72,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSequenceFormHandler"/> class.
         /// </summary>
-        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService)
+        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService, IDosageObservationService dosageService)
         {
             this.context            = context;
             this.roleService        = roleService;
             this.sequenceService    = sequenceService;
             this.inventoryService   = inventoryService;
             this.settingsService    = settingsService;
+            this.dosageService      = dosageService;
         }
 
         #endregion
@@ -93,11 +99,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             this.CreateOrUpdate(message, sequence, schedule, delegation, null);
 
-            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true && message.SelectedDosageScale != null)
+
+            if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage == true && Guid.TryParse(message.SelectedDosageScale, out Guid dosageScale) == true)
             {
-                this.UpdateDosageObservation(sequence, message.SelectedDosageScale);
+                this.CreateOrUpdateDosageObservation(sequence, dosageScale);
             }
-            
+
             this.sequenceService.Update(sequence);
             
             schedule.UpdatedAt = DateTime.Now;
@@ -115,26 +122,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="sequence">The sequence<see cref="Sequence"/>.</param>
         /// <param name="dosageScale">The dosage scale.</param>
         /// <returns>Sequence<see cref="Sequence"/>.</returns>
-        private Sequence UpdateDosageObservation(Sequence sequence, string dosageScale)
+        private void CreateOrUpdateDosageObservation(Sequence sequence, Guid dosageScale)
         {
-            var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                .Where(x => x.Id == Guid.Parse(dosageScale)).FirstOrDefault();
+            var scale = JsonConvert.SerializeObject(this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
+                .Where(x => x.Id == dosageScale).FirstOrDefault());
+            var observation = this.dosageService.GetDosageObservationBySequence(sequence.Id);
 
-            // var observation = this.context.QueryOver<DosageObservation>().Where(x => x.IsActive).And(x => x.Sequence.Id == sequence.Id).FirstOrDefault()
-            // if observation == null  
-
-            if (sequence.DosageObservation == null)
+            if (observation == null)
             {
-                var dosageObservation = new DosageObservation(sequence.Patient, scale.Name, "DosageScale", JsonConvert.SerializeObject(scale));
-                this.context.Save<DosageObservation>(dosageObservation);
-                sequence.DosageObservation = dosageObservation;
-                return sequence;
+                this.dosageService.Save(new DosageObservation(sequence, sequence.Patient, "Given Mängd", "DosageScale", scale));
             }
-
-            // liten ändring
-            sequence.DosageObservation.DosageScale = JsonConvert.SerializeObject(scale);
-
-            return sequence;
+            else
+            {
+                observation.DosageScale = scale;
+                this.dosageService.Save(observation);
+            }
         }
 
         #endregion

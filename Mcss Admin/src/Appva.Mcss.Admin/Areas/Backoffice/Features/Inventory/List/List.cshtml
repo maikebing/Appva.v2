@@ -28,7 +28,7 @@
                         <tr>
                             <td class="edit">
                                 @Html.ActionLink("Ändra", "Update", "Inventory", new { unit.Id }, new { @class = "edit lb-link", @title = "Ändra raden" })
-                                if (@unit.Feature != InventoryDefaults.Feature.measurement)
+                                @if (@unit.Feature != InventoryDefaults.Feature.measurement)
                                 {
                                     @Html.ActionLink("Ta bort", "Delete", "Inventory", new { unit.Id }, new { @class = "delete", @title = "Ta bort raden" })
                                 }

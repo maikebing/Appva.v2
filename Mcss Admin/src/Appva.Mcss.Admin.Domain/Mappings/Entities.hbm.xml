@@ -516,7 +516,7 @@
     <property name="PauseAnyAlerts" />
     <property name="AllDay" />
     <property name="Absent" />
-    <many-to-one name="DosageObservation" class="DosageObservation" />
+    <!--<many-to-one name="DosageObservation" class="DosageObservation" />-->
     <many-to-one name="Patient" class="Patient" />
     <many-to-one name="Schedule" class="Schedule" />
     <many-to-one name="Taxon" class="Taxon" />
@@ -530,6 +530,10 @@
       <property name="OrderedDate" />
       <many-to-one name="OrderedBy"  class="Account" />
     </component>
+    <bag name="DosageObservations" cascade="save-update">
+      <key column="Sequence" />
+      <one-to-many class="DosageObservation" />
+    </bag>
 
   </class>
 
@@ -546,21 +550,23 @@
     <property name="Name"                                />
     <property name="Description"                         />
     <many-to-one name="Patient"   class="Patient"        />
-    <many-to-one name="Category"  class="Taxon"          />
+    <!--<many-to-one name="Category"  class="Taxon"          />-->
     <bag name="Items" cascade="save-update" inverse="true">
       <key column="Observation" />
       <one-to-many class="ObservationItem" />
     </bag>
     <subclass name="DosageObservation" discriminator-value="DosageObservation">
       <property name="DosageScale" column="Scale" type="StringClob" />
-      <property name="DosageScaleId" />
-      <property name="DosageScaleUnit" />
-      <property name="DosageScaleValues" type="StringClob" />
+      <many-to-one name="Sequence" class="Sequence" />
     </subclass>
     <subclass name="MeasurementObservation" discriminator-value="MeasurementObservation">
       <property name="Scale" type="StringClob" />
       <many-to-one name="Delegation" class="Taxon" />
     </subclass>
+    <!--<subclass name="TenaObservationPeriod" discriminator-value="TenaObservationPeriod">
+      <property name="StartDate" />
+      <property name="EndDate" />
+    </subclass>-->
 
   </class>
   
@@ -569,6 +575,7 @@
     <id name="Id">
       <generator class="guid.comb" />
     </id>
+    <discriminator column="ObservationItemType" />
     <version  name="Version"                             />
     <property name="IsActive"     column="Active"        />
     <property name="CreatedAt"    column="Created"       />
@@ -582,6 +589,10 @@
     </component>
     <many-to-one name="Signature" class="Signature" cascade="save-update"    />
     <many-to-one name="Comment"   class="Comment"        />
+    <subclass name="TaskObservationItem" discriminator-value="TaskObservationItem">
+      <many-to-one name="Task" class="Task" />
+    </subclass>
+    
   </class>
 
   <!-- Signature -->
@@ -690,6 +701,10 @@
     <bag name="InventoryTransactions" cascade="save-update">
       <key column="Task" />
       <one-to-many class="InventoryTransactionItem" />
+    </bag>
+    <bag name="TaskObservationItems" cascade="save-update">
+      <key column="Task" />
+      <one-to-many class="TaskObservationItem" />
     </bag>
   </class>
 

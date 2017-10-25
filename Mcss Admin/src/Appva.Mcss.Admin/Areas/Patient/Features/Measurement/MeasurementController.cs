@@ -94,7 +94,7 @@ namespace Appva.Mcss.Admin.Areas.Patient
         /// <param name="request">The request<see cref="UpdateMeasurementModel"/>.</param>
         /// <returns>A redirect to <see cref="MeasurementController.List"/> if valid</returns>
         [Route("{MeasurementId:guid}/update")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("view", "measurement")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "measurement")]
         [PermissionsAttribute(Permissions.Patient.UpdateValue)]
         public ActionResult Update(UpdateMeasurementModel request)
         {
@@ -171,7 +171,7 @@ namespace Appva.Mcss.Admin.Areas.Patient
         /// <param name="request">The request<see cref="AddMeasurementValueModel"/>.</param>
         /// <returns>ActionResult<see cref="ViewMeasurementModel"/>.</returns>
         [Route("{measurementid:guid}/addvalue")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("view", "measurement")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "measurement")]
         [PermissionsAttribute(Permissions.Patient.CreateValue)]
         public ActionResult AddValue(AddMeasurementValueModel request)
         {
@@ -231,7 +231,7 @@ namespace Appva.Mcss.Admin.Areas.Patient
         /// <param name="request">The request<see cref="DeleteMeasurementValueModel"/>.</param>
         /// <returns>ActionResult<see cref="ViewMeasurementModel"/>.</returns>
         [Route("{valueid:guid}/deletevalue")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("view", "measurement")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "measurement")]
         [PermissionsAttribute(Permissions.Patient.InactivateValue)]
         public ActionResult DeleteValue(DeleteMeasurementValueModel request)
         {

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Appva.Mcss.Admin.Models
 {
-    public class DeleteMeasurementValueModel : Identity<ViewMeasurementModel>
+    public class DeleteMeasurementValueModel : Identity<ListMeasurement>
     {
         public Guid ValueId { get; set; }
         public bool DeleteConfirmed { get; set; }

@@ -26,7 +26,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class CreateMeasurementPublisher : RequestHandler<CreateMeasurementModel, ListMeasurementModel>
+    public class CreateMeasurementPublisher : RequestHandler<CreateMeasurementModel, ListMeasurement>
     {
         #region Variables
 
@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides
 
         /// <inheritdoc />
-        public override ListMeasurementModel Handle(CreateMeasurementModel message)
+        public override ListMeasurement Handle(CreateMeasurementModel message)
         {
             var patient = this.service.GetPatient(message.Id);
             if (patient == null)
@@ -82,10 +82,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 name: message.Name, 
                 description: message.Description));
 
-            return new ListMeasurementModel
+            return new ListMeasurement
             {
-                Patient = this.transformer.ToPatient(patient),
-                MeasurementList = this.service.GetMeasurementObservationsList(patient.Id)
+                Id = message.Id,
             };
         }
 

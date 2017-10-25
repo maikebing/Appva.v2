@@ -142,7 +142,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     .Where(x => x.Id == scaleId)
                         .SingleOrDefault());
 
-            return DosageObservation.New(sequence, sequence.Patient, "Given Mängd", "DosageScale", scale);
+            return DosageObservation.New(sequence.Patient, "Given mängd", "DosageObservation", scale, sequence);
         }
 
         /// <summary>

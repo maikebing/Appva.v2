@@ -1,5 +1,6 @@
 ﻿@using Appva.Core.Utilities;
 @using Appva.Mcss.Admin.Application.Common;
+@using Appva.Mcss.Admin.Domain.Models;
 @model Appva.Mcss.Web.ViewModels.TaskListViewModel
 @{ 
 	ViewBag.Title = "Signerade händelser";
@@ -13,6 +14,7 @@
 }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+
 
 <div id="subheader" class="cf">
 	<h1>Signerade händelser</h1>
@@ -178,6 +180,10 @@
 									},
 									new { @class = (int)Model.Order == 5 ? "sort" : "" })
 							</th>
+                            @if (Model.Schedule.IsCollectingGivenDosage == true)
+                            {
+                                <th scope="col">Given Mängd</th>
+                            }
 							@if (Html.HasPermissionFor(Permissions.Area51.Read) || User.IsInRole(Appva.Core.Resources.RoleTypes.Appva))
 							{
 								<th scope="col"></th>
@@ -196,7 +202,7 @@
 											@:-
 										} else {
                                             @Html.DateString(task.OnNeedBasis, task.UpdatedAt, task.CompletedDate)
-										}
+                                        }
 									</td>
 									<td>
 										@if (task.Delayed && task.CompletedBy.IsNull()) {
@@ -305,6 +311,33 @@
 										}
 										
 									</td>
+                                    @if  (Model.Schedule.IsCollectingGivenDosage == true)
+                                    {
+                                        <td>
+                                            @if (task.IsCompleted && task.StatusTaxon.IsNotNull() && task.TaskObservationItems.Count > 0)
+                                            {
+                                                if (task.StatusTaxon.Description.Equals("1") || task.StatusTaxon.Description.Equals("2") || task.StatusTaxon.Description.Equals("5"))
+                                                {
+                                                    @String.Format("{0} {1}", task.TaskObservationItems.FirstOrDefault().Measurement.Value, Json.Decode<DosageScaleModel>(task.TaskObservationItems.FirstOrDefault().Observation.Scale).Unit)
+                                                }
+                                            }
+                                        </td>
+                                    }
+
+                                    <!-- Temporary statement for display purposes only, using mocked data -->
+                                    @if (Model.Schedule.IsCollectingGivenDosage == false)
+                                    {
+                                        <td>
+                                            @if (task.IsCompleted && task.StatusTaxon.IsNotNull())
+                                            {
+                                                if (task.StatusTaxon.Description.Equals("1") || task.StatusTaxon.Description.Equals("2") || task.StatusTaxon.Description.Equals("5"))
+                                                {
+                                                    @String.Format("{0} {1}", "2", "st")
+                                                }
+                                            }
+                                        </td>
+                                    }
+
 									@if (Html.HasPermissionFor(Permissions.Area51.Read) || User.IsInRole(Appva.Core.Resources.RoleTypes.Appva))
 									{
 										<td>

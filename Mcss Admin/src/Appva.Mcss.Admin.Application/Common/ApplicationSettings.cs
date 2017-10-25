@@ -250,22 +250,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
 
         #endregion
 
-        //#region Dosage
-
-        ///// <summary>
-        ///// The dosage configuration values
-        ///// </summary>
-        ///// /// <remarks>The setting returns a <c>DosageConfiguration</c> together with a List of <c>DosageScaleModel</c></remarks>
-        //public static readonly ApplicationSettingIdentity<DosageConfiguration> DosageConfigurationValues = ApplicationSettingIdentity<DosageConfiguration>.CreateNew(
-        //    "MCSS.Core.Dosage.Scales",
-        //    "The scales available for dosage observation",
-        //    "MCSS.Core.Dosage",
-        //    "The scales available for dosage and the their amount-lists",
-        //    DosageConfiguration.CreateNew()
-        //    );
-
-        //#endregion
-
         #region LDAP.
 
         /// <summary>

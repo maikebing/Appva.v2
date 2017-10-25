@@ -34,16 +34,6 @@ namespace Appva.Mcss.Admin.Application.Common
             measurement = 3
         };
 
-        public enum MeasurementScale : Byte
-        {
-            none = 0,
-            length = 1,
-            weight = 2,
-            glukos = 3,
-            blood = 4,
-            bristol = 5
-        };
-
         /// <summary>
         /// The default amounts.
         /// </summary>

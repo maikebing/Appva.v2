@@ -127,7 +127,7 @@ namespace Appva.Mcss.Admin.Areas
         {
             var patient  = this.patientRepository.Load(model.Id);
             var category = this.taxonRepository.List("ORG").First();
-            this.observationRepository.Save(Observation.New(patient, model.Name, model.Description, category));
+            this.observationRepository.Save(Observation.New(patient, model.Name, model.Description, category: category));
             
             var signator = this.accountRepository.List().First();
             this.signatureRepository.Save(Signature.New(category, signator, new List<SignedData>

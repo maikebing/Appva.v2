@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
     #endregion
 
-    public class DeleteMeasurementValuePublisher : RequestHandler<DeleteMeasurementValueModel, ViewMeasurementModel>
+    public class DeleteMeasurementValuePublisher : RequestHandler<DeleteMeasurementValueModel, ListMeasurement>
     {
         #region Variables
 
@@ -41,7 +41,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides
 
         /// <inheritdoc />
-        public override ViewMeasurementModel Handle(DeleteMeasurementValueModel message)
+        public override ListMeasurement Handle(DeleteMeasurementValueModel message)
         {
             var item = this.service.GetValue(message.ValueId);
 
@@ -50,10 +50,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 this.service.DeleteValue(item);
             }
 
-            return new ViewMeasurementModel
+            return new ListMeasurement
             {
-                Observation = this.service.GetMeasurementObservation(item.Observation.Id),
-                Values = this.service.GetValueList(item.Observation.Id)
+                Id = message.Id,
             };
         }
 

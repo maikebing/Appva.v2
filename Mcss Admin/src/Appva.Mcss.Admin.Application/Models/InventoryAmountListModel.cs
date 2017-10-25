@@ -61,13 +61,6 @@ namespace Appva.Mcss.Admin.Application.Models
             set;
         }
 
-        [JsonProperty("Scale")]
-        public InventoryDefaults.MeasurementScale Scale
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// List of amounts in current list.
         /// </summary>

@@ -19,44 +19,18 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class DosageObservation : Observation
     {
-        public DosageObservation(Sequence sequence, Patient patient, string name, string description, string dosageScale, Taxon category = null) 
-            : base(patient, name, description, category)
+        public DosageObservation(Patient patient, string name, string description, string scale, Sequence sequence, Taxon category = null) 
+            : base(patient, name, description, scale, sequence, category)
         {
+            Requires.NotNull(scale, "scale");
             Requires.NotNull(sequence, "sequence");
-            this.DosageScale = dosageScale;
-            this.Sequence = sequence;
         }
-
-        //public DosageObservation(Patient patient, string name, string description, string scale, Taxon category = null)
-        //    : base(patient, name, description, category)
-        //{
-        //    this.DosageScale = scale;
-        //}
 
         public DosageObservation()
         {
         }
 
         #region Properties
-
-        /// <summary>
-        /// Gets or sets the dosage scale.
-        /// </summary>
-        public virtual string DosageScale
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The Task
-        /// </summary>
-        /// <value>The sequence<see cref="Sequence"/>.</value>
-        public virtual Sequence Sequence
-        {
-            get;
-            set;
-        }
 
         #endregion
 
@@ -75,9 +49,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         //    return new DosageObservation(dosageScale, sequence, patient, name, description, category);
         //}
 
-        public static DosageObservation New(Sequence sequence, Patient patient, string name, string description, string scale, Taxon category = null)
+        public new static DosageObservation New(Patient patient, string name, string description, string scale, Sequence sequence, Taxon category = null)
         {
-            return new DosageObservation(sequence, patient, name, description, scale, category);
+            return new DosageObservation(patient, name, description, scale, sequence, category);
         }
 
         #endregion

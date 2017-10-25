@@ -516,7 +516,6 @@
     <property name="PauseAnyAlerts" />
     <property name="AllDay" />
     <property name="Absent" />
-    <!--<many-to-one name="DosageObservation" class="DosageObservation" />-->
     <many-to-one name="Patient" class="Patient" />
     <many-to-one name="Schedule" class="Schedule" />
     <many-to-one name="Taxon" class="Taxon" />
@@ -549,25 +548,19 @@
     <property name="UpdatedAt"    column="Modified"      />
     <property name="Name"                                />
     <property name="Description"                         />
+    <property name="Scale" column="scale" type="StringClob" />
     <many-to-one name="Patient"   class="Patient"        />
+    <many-to-one name="Sequence" class="Sequence" />
     <!--<many-to-one name="Category"  class="Taxon"          />-->
     <bag name="Items" cascade="save-update" inverse="true">
       <key column="Observation" />
       <one-to-many class="ObservationItem" />
     </bag>
     <subclass name="DosageObservation" discriminator-value="DosageObservation">
-      <property name="DosageScale" column="Scale" type="StringClob" />
-      <many-to-one name="Sequence" class="Sequence" />
     </subclass>
     <subclass name="MeasurementObservation" discriminator-value="MeasurementObservation">
-      <property name="Scale" type="StringClob" />
       <many-to-one name="Delegation" class="Taxon" />
     </subclass>
-    <!--<subclass name="TenaObservationPeriod" discriminator-value="TenaObservationPeriod">
-      <property name="StartDate" />
-      <property name="EndDate" />
-    </subclass>-->
-
   </class>
   
   <!-- Observation Item -->
@@ -581,6 +574,7 @@
     <property name="CreatedAt"    column="Created"       />
     <property name="UpdatedAt"    column="Modified"      />
     <many-to-one name="Observation" class="Observation"  />
+    <many-to-one name="Task" class="Task" />
     <component name="Measurement">
       <property name="Value" column="Value"              />
       <property name="Type"  column="Type"               />
@@ -590,7 +584,6 @@
     <many-to-one name="Signature" class="Signature" cascade="save-update"    />
     <many-to-one name="Comment"   class="Comment"        />
     <subclass name="TaskObservationItem" discriminator-value="TaskObservationItem">
-      <many-to-one name="Task" class="Task" />
     </subclass>
     
   </class>

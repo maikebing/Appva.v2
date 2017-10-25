@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class CreateMeasurementModel : Identity<ListMeasurementModel>
+    public class CreateMeasurementModel : Identity<ListMeasurement>
     {
         #region Variables
 

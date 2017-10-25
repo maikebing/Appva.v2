@@ -21,17 +21,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskObservationItem"/> class.
         /// </summary>
-        /// <param name="task">The task</param>
-        /// <param name="dosageObservation">The dosage observation</param>
-        /// <param name="measurement">The measurement</param>
+        /// <param name="task">The task. Required</param>
+        /// <param name="observation">The dosage observation. Required</param>
+        /// <param name="measurement">The measurement. Required</param>
         /// <param name="signature">The signature</param>
-        public TaskObservationItem(Task task, DosageObservation dosageObservation, Measurement measurement, Signature signature = null)
-            :base(measurement, signature)
+        public TaskObservationItem(Observation observation, Measurement measurement, Task task, Signature signature, Comment comment = null)
+            : base(observation, measurement, task, signature, comment)
         {
-            Requires.NotNull(dosageObservation, "dosageObservation");
+            Requires.NotNull(signature, "signature");
             Requires.NotNull(task, "task");
-            this.DosageObservation = dosageObservation;
-            this.Task = task;
         }
 
         /// <summary>
@@ -48,21 +46,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #region Properties
 
-        public virtual DosageObservation DosageObservation
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The task
-        /// </summary>
-        public virtual Task Task
-        {
-            get;
-            set;
-        }
-
         #endregion
 
         #region Public static builders
@@ -75,9 +58,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="measurement">The measurement</param>
         /// <param name="signature">The signature</param>
         /// <returns><see cref="TaskObservationItem"/></returns>
-        public static TaskObservationItem New(Task task, DosageObservation dosageObservation, Measurement measurement, Signature signature = null)
+        public new static TaskObservationItem New(Observation observation, Measurement measurement, Task task, Signature signature, Comment comment = null)
         {
-            return new TaskObservationItem(task, dosageObservation, measurement, signature);
+            return new TaskObservationItem(observation, measurement, task, signature, comment);
         }
         #endregion
     }

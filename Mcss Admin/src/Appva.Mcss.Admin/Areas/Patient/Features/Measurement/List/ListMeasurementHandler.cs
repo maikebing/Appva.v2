@@ -73,7 +73,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new ListMeasurementModel
             {
                 Patient = this.patientTransformer.ToPatient(this.service.GetPatient(message.Id)),
-                MeasurementList = measurementList
+                MeasurementList = measurementList,
             };
         }
 

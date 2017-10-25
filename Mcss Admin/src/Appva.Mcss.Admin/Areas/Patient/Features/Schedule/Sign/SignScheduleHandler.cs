@@ -147,9 +147,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             var scheduleSetting = this.persistence.Get<ScheduleSettings>(message.ScheduleSettingsId);
 
-            //// TODO: Check ScheduleSetting for IsCollectingGivenDosage == true
-
-
             return new TaskListViewModel
             {
                 Patient                  = this.transformer.ToPatient(patient),
@@ -229,9 +226,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 query.Where(x => x.CanRaiseAlert);
             }
+            if (scheduleSetting.IsCollectingGivenDosage == true)
+            {
+                query.JoinQueryOver<TaskObservationItem>(x => x.TaskObservationItems);
+            }
+
             query.JoinQueryOver<Schedule>(x => x.Schedule)
                 .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
                     .Where(x => x.Id == message.ScheduleSettingsId);
+
             var items      = query.Skip((message.PageNumber - 1) * message.PageSize).Take(message.PageSize).Future().ToList();
             var totalCount = query.ToRowCountQuery().FutureValue<int>();
             return new SearchViewModel<Task>

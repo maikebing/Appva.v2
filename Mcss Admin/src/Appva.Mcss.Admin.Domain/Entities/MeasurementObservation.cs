@@ -9,26 +9,40 @@ namespace Appva.Mcss.Admin.Domain.Entities
 {
     public class MeasurementObservation : Observation
     {
-        public MeasurementObservation(string scale, Taxon delegation, Patient patient, string name, string description, Taxon category = null)
-            : base (patient, name, description, category)
+        public MeasurementObservation(Patient patient, string name, string description, string scale, Taxon delegation, Sequence sequence = null, Taxon category = null)
+            : base (patient, name, description, scale, sequence, category)
         {
             Requires.NotNullOrWhiteSpace(scale, "scale");
             Requires.NotNull(delegation, "delegation");
-
-            this.Scale = scale;
             this.Delegation = delegation;
         }
         public MeasurementObservation()
         {
-
         }
 
-        public virtual string Scale { get; set; }
-        public virtual Taxon Delegation { get; set; }
-
-        public static MeasurementObservation New(string scale, Taxon delegation, Patient patient, string name, string description, Taxon category = null)
+        /// <summary>
+        /// The delegation.
+        /// </summary>
+        public virtual Taxon Delegation
         {
-            return new MeasurementObservation(scale, delegation, patient, name, description, category);
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// News the specified patient.
+        /// </summary>
+        /// <param name="patient">The patient.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="scale">The scale.</param>
+        /// <param name="delegation">The delegation.</param>
+        /// <param name="sequence">The sequence.</param>
+        /// <param name="category">The category.</param>
+        /// <returns>MeasurementObservation.</returns>
+        public static MeasurementObservation New(Patient patient, string name, string description, string scale, Taxon delegation, Sequence sequence = null, Taxon category = null)
+        {
+            return new MeasurementObservation(patient, name, description, scale, delegation, sequence, category);
         }
     }
 }

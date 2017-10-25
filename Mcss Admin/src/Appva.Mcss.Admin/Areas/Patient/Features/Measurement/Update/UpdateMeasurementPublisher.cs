@@ -25,7 +25,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class UpdateMeasurementPublisher : RequestHandler<UpdateMeasurementModel, ViewMeasurementModel>
+    public class UpdateMeasurementPublisher : RequestHandler<UpdateMeasurementModel, ListMeasurement>
     {
         #region Variables
 
@@ -66,7 +66,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Members
 
         /// <inheritdoc />
-        public override ViewMeasurementModel Handle(UpdateMeasurementModel message)
+        public override ListMeasurement Handle(UpdateMeasurementModel message)
         {
             var observation = this.service.Get(message.MeasurementId);
 
@@ -78,17 +78,22 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 this.service.Update(observation);
             }
 
-            return new ViewMeasurementModel
+            return new ListMeasurement
             {
-                Observation = observation,
-                Unit = MeasurementScale.GetUnitForScale(observation.Scale),
-                ListModel = new ListMeasurementModel
-                {
-                    Patient = this.transformer.ToPatient(observation.Patient),
-                    MeasurementList = this.service.GetMeasurementObservationsList(observation.Patient.Id)
-                },
-                Values = this.service.GetValueList(observation.Id)
+                Id = message.Id
             };
+
+            //return new ViewMeasurementModel
+            //{
+            //    Observation = observation,
+            //    Unit = MeasurementScale.GetUnitForScale(observation.Scale),
+            //    ListModel = new ListMeasurementModel
+            //    {
+            //        Patient = this.transformer.ToPatient(observation.Patient),
+            //        MeasurementList = this.service.GetMeasurementObservationsList(observation.Patient.Id)
+            //    },
+            //    Values = this.service.GetValueList(observation.Id)
+            //};
         }
 
         #endregion

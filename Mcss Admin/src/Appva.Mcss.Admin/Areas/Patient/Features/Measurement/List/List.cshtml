@@ -27,7 +27,7 @@
                     <h2 class="visually-hidden">Huvudnavigering</h2>
                     <ul>
                         <li class="tabs__item tabs__item--selected">
-                            <a href="@Url.Action("view", "measurement")">Alla</a>
+                            <a href="@Url.Action("list", "measurement")">Alla</a>
                         </li>
                         @foreach (var item in Model.MeasurementList)
                         {
@@ -40,9 +40,7 @@
             </div>
 
             <div id="measurements" data-size="xs:24 s:14 m:16 l:18 xl:18">
-
-                <!-- PLACEHOLDER FOR VIEW SPEcIFIC DATA -->
-
+                
             </div>
         </div>
     </div>

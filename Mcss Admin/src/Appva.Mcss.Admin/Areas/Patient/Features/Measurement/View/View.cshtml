@@ -26,14 +26,33 @@
                 <div class="tabs tabs--vertical tabs--dynamic" role="navigation" data-tabs-target="measurements">
                     <h2 class="visually-hidden">Huvudnavigering</h2>
                     <ul>
-                        <li class="tabs__item tabs__item--selected">
-                            <a href="@Url.Action("view", "measurement")">Alla</a>
-                        </li>
-                        @foreach (var item in Model.ListModel.MeasurementList)
+                        @if (Model.Observation == null)
+                        {
+                            <li class="tabs__item tabs__item--selected">
+                                <a href="@Url.Action("view", "measurement")">Alla</a>
+                            </li>
+                        }
+                        else
                         {
                             <li class="tabs__item">
-                                <a href="@Url.Action("view","measurement", new { MeasurementId = item.Id })#measurements">@item.Name</a>
+                                <a href="@Url.Action("view", "measurement")">Alla</a>
                             </li>
+                        }
+
+                        @foreach (var item in Model.ListModel.MeasurementList)
+                        {
+                            if (Model.Observation.Id == item.Id)
+                            {
+                                <li class="tabs__item tabs__item--selected">
+                                    <a href="@Url.Action("view","measurement", new { MeasurementId = item.Id })#measurements">@item.Name</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="tabs__item">
+                                    <a href="@Url.Action("view","measurement", new { MeasurementId = item.Id })#measurements">@item.Name</a>
+                                </li>
+                            }
                         }
                     </ul>
                 </div>

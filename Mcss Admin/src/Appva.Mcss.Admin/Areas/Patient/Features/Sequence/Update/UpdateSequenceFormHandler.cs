@@ -130,11 +130,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             if (observation == null)
             {
-                this.dosageService.Save(new DosageObservation(sequence, sequence.Patient, "Given Mängd", "DosageScale", scale));
+                this.dosageService.Save(DosageObservation.New(sequence.Patient, "Given Mängd", "DosageScale", scale, sequence));
             }
             else
             {
-                observation.DosageScale = scale;
+                observation.Scale = scale;
                 this.dosageService.Save(observation);
             }
         }

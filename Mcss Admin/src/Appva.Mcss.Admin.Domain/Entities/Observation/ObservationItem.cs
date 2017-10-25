@@ -25,14 +25,18 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// </summary>
         /// <param name="observation">The observation.</param>
         /// <param name="measurement">The measurement.</param>
+        /// <param name="task">The Task</param>
         /// <param name="signature">The signature.</param>
-        public ObservationItem(Observation observation, Measurement measurement, Signature signature = null)
+        /// <param name="comment">The comment.</param>
+        public ObservationItem(Observation observation, Measurement measurement, Task task = null, Signature signature = null, Comment comment = null)
         {
             Requires.NotNull(observation, "observation");
             Requires.NotNull(measurement, "measurement");
             this.Observation = observation;
             this.Measurement = measurement;
-            this.Signature   = signature;
+            this.Task = task;
+            this.Signature = signature;
+            this.Comment = comment;
         }
 
         public ObservationItem(Measurement measurement, Signature signature = null)
@@ -98,6 +102,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
             internal protected set;
         }
 
+        /// <summary>
+        /// The task.
+        /// </summary>
+        public virtual Task Task
+        {
+            get;
+            internal protected set;
+        }
+
         #endregion
 
         #region Public Static Builders.
@@ -108,22 +121,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="observation">The observation.</param>
         /// <param name="measurement">The measurement.</param>
         /// <param name="signature">The signature.</param>
+        /// <param name="task">The task.</param>
+        /// <param name="comment">The comment.</param>
         /// <returns>A new <see cref="ObservationItem"/> instance.</returns>
-        public static ObservationItem New(Observation observation, Measurement measurement, Signature signature = null)
+        public static ObservationItem New(Observation observation, Measurement measurement, Task task = null, Signature signature = null, Comment comment = null)
         {
-            return new ObservationItem(observation, measurement, signature);
+            return new ObservationItem(observation, measurement, task, signature, comment);
         }
-
-        ///// <summary>
-        ///// Updates the specified measurement.
-        ///// </summary>
-        ///// <param name="measurement">The measurement.</param>
-        ///// <param name="signature">The signature.</param>
-        //public void Update(Measurement measurement, Signature signature)
-        //{
-        //    this.Measurement = measurement;
-        //    this.Signature = signature;
-        //}
 
         #endregion
     }

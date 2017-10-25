@@ -72,15 +72,15 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             var dosageQuery = this.persistence.QueryOver<DosageObservation>()
                 .Where(x => x.IsActive == true)
                     .And(x => x.Sequence != null)
-                        .And(x => x.DosageScale != string.Empty)
+                        .And(x => x.Scale != string.Empty)
                             .List();
 
             foreach (var row in dosageQuery)
             {
-                var scale = JsonConvert.DeserializeObject<InventoryAmountListModel>(row.DosageScale);
+                var scale = JsonConvert.DeserializeObject<InventoryAmountListModel>(row.Scale);
                 if (setting.Id == scale.Id)
                 {
-                    row.DosageScale = JsonConvert.SerializeObject(setting);
+                    row.Scale = JsonConvert.SerializeObject(setting);
                     this.persistence.Update<DosageObservation>(row);
                 }
             }

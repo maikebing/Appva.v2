@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Models
 
     #endregion
 
-    public class AddMeasurementValueModel : Identity<ListMeasurement>
+    public class AddMeasurementValueModel : Identity<TestMeasurement>
     {
         #region Variables
 

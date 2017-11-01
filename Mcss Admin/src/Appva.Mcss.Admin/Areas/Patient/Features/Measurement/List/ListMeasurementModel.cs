@@ -35,15 +35,6 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The view measurement model.
-        /// </summary>
-        public ViewMeasurementModel ViewMeasurementModel
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The measurement observation list.
         /// </summary>
         public IList<Domain.Entities.MeasurementObservation> MeasurementList

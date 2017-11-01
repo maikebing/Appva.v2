@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class AddMeasurementValuePublisher : RequestHandler<AddMeasurementValueModel, ListMeasurement>
+    public class AddMeasurementValuePublisher : RequestHandler<AddMeasurementValueModel, TestMeasurement>
     {
         #region Variables
 
@@ -64,7 +64,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides
 
         /// <inheritdoc />
-        public override ListMeasurement Handle(AddMeasurementValueModel message)
+        public override TestMeasurement Handle(AddMeasurementValueModel message)
         {
             var observation = this.service.GetMeasurementObservation(message.MeasurementId);
 
@@ -80,42 +80,22 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
                 this.service.CreateValue(ObservationItem.New(observation, measurement, signature: signature));
             }
-            return new ListMeasurement
+
+            var model = new TestMeasurement
             {
-                Id = message.Id,
+                Id = observation.Patient.Id,
+                MeasurementId = observation.Id
             };
 
+            return model;
 
-            //return model;
+            //var measurementList = this.service.GetMeasurementObservationsList(observation.Patient.Id);
+            //var patientViewModel = this.transformer.ToPatient(observation.Patient);
 
-            //return new ViewMeasurementModel
+            //return new ListMeasurement
             //{
-            //    ListModel = new ListMeasurementModel
-            //    { 
-            //        MeasurementList = this.service.GetMeasurementObservationsList(observation.Patient.Id),
-            //        Patient = transformer.ToPatient(observation.Patient)
-            //    },
-            //    Observation = observation,
-            //    Values = this.service.GetValueList(observation.Id),
-            //    Unit = MeasurementScale.GetUnitForScale(observation.Scale),
-            //    Longscale = MeasurementScale.GetNameForScale((MeasurementScale.Scale)Enum.Parse(typeof(MeasurementScale.Scale), observation.Scale, true))
+            //    Id = message.Id
             //};
-        }
-
-        #endregion
-
-        #region Private members
-
-        private static bool HasValidValue(string value)
-        {
-            var result = true;
-
-            if (value == null || value == string.Empty || value.Trim() == "")
-            {
-                result = false;
-            }
-
-            return result;
         }
 
         #endregion

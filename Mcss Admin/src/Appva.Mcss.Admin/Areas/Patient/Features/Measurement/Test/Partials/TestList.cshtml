@@ -1,0 +1,44 @@
+﻿@model Appva.Mcss.Admin.Models.TestMeasurementModel
+
+<div class="tabs tabs--vertical tabs--dynamic" role="navigation" data-tab-target="measurements">
+
+    <h2 class="visually-hidden">Huvudnavigering</h2>
+    <ul>
+
+        @if (Model.MeasurementId == null)
+        {
+            <li class="tabs__item tabs__item--selected">
+                <a href="@Url.Action("list", "measurement")">Alla</a>
+            </li>
+
+            foreach (var item in Model.MeasurementList)
+            {
+                <li class="tabs__item">
+                    <a href="@Url.Action("view","measurement", new { MeasurementId = item.Id })#measurements">@item.Name</a>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="tabs__item">
+                <a href="@Url.Action("list", "measurement")">Alla</a>
+            </li>
+
+            foreach (var item in Model.MeasurementList)
+            {
+                if (Model.MeasurementId == item.Id)
+                {
+                    <li class="tabs__item tabs__item--selected">
+                        <a href="@Url.Action("view","measurement", new { MeasurementId = item.Id })#measurements">@item.Name</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="tabs__item">
+                        <a href="@Url.Action("view","measurement", new { MeasurementId = item.Id })#measurements">@item.Name</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</div>

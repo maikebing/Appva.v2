@@ -173,6 +173,23 @@ namespace Appva.Mcss.Admin.Application.Models
         /// </summary>
         /// <param name="scale">The scale.</param>
         /// <returns>System.String.</returns>
+        public static string GetNameForScale(string scale)
+        {
+            var result = string.Empty;
+
+            if (Enum.TryParse(scale, true, out Scale validScale))
+            {
+                result = GetNameForScale(validScale);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a readable the name for the a scale for presentation purposes.
+        /// </summary>
+        /// <param name="scale">The scale.</param>
+        /// <returns>System.String.</returns>
         public static string GetNameForScale(Scale scale)
         {
             var result = string.Empty;

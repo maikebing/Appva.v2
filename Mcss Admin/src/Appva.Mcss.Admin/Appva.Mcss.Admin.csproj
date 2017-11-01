@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -540,6 +541,9 @@
     <Compile Include="Areas\Patient\Features\Inventory\Update\UpdateInventoryPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItem.cs" />
     <Compile Include="Areas\Patient\Features\Inventory\Withdraw\WithdrawInventoryItemHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Measurement\Test\TestMeasurement.cs" />
+    <Compile Include="Areas\Patient\Features\Measurement\Test\TestMeasurementHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Measurement\Test\TestMeasurementModel.cs" />
     <Compile Include="Areas\Patient\Features\Measurement\UpdateValue\UpdateMeasurementValue.cs" />
     <Compile Include="Areas\Patient\Features\Measurement\UpdateValue\UpdateMeasurementValueHandler.cs" />
     <Compile Include="Areas\Patient\Features\Measurement\UpdateValue\UpdateMeasurementValueModel.cs" />
@@ -876,6 +880,7 @@
     <Content Include="Assets\css\datePicker.css" />
     <Content Include="Assets\css\new\all.min.css" />
     <Content Include="Assets\css\new\all.min.old.css" />
+    <Content Include="Assets\css\new\editor.min.css" />
     <Content Include="Assets\css\new\main.prefixed.css" />
     <Content Include="Assets\error-pages\400.html" />
     <Content Include="Assets\error-pages\403.html" />
@@ -1187,7 +1192,6 @@
   <ItemGroup>
     <Folder Include="Areas\Area51\Features\Test\Index\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
-    <Folder Include="Areas\Patient\Features\Measurement\List\Partials\" />
     <Folder Include="Areas\Patient\Features\Observation\Update\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
   </ItemGroup>
@@ -1527,6 +1531,9 @@
     <Content Include="Areas\Patient\Features\Measurement\AddValue\AddValue.cshtml" />
     <Content Include="Areas\Backoffice\Features\Scale\List\List.cshtml" />
     <Content Include="Areas\Backoffice\Features\Scale\View\View.cshtml" />
+    <Content Include="Areas\Patient\Features\Measurement\Test\Test.cshtml" />
+    <Content Include="Areas\Patient\Features\Measurement\Test\Partials\TestList.cshtml" />
+    <Content Include="Areas\Patient\Features\Measurement\Test\Partials\TestView.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

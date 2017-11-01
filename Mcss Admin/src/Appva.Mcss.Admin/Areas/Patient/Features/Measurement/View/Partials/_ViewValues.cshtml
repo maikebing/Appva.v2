@@ -30,53 +30,57 @@
         </form>
     </div>
 
-
     <div data-size="xs:24 s:24 m:24 l:6 xl:4">
         <div class="form-controls form-controls--align-end">
-            <a class="button open-in-dialog" href="@Url.Action("addvalue", "measurement", new { measurementId = Model.Observation.Id })#add-observation-value" data-dialog-title="Lägg till mätvärde"><svg class="icon icon--mr" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use></svg>Mata in värde</a>
+            <a class="button open-in-dialog" href="@Url.Action("addvalue", "measurement", new { measurementId = Model.Observation.Id })#add-observation-value" data-dialog-title="Lägg till mätvärde">
+                <svg class="icon icon--mr"><use xlink:href="/project/images/icons/icon.sprite.svg#plus-icon"></use></svg>
+                Mata in värde
+            </a>
         </div>
     </div>
+
+    <table class="table-general table-general--descending" id="update-table" role="region">
+        <thead>
+            <tr>
+                <th></th>
+                <th scope="col">Datum</th>
+                <th scope="col">Värde</th>
+                <th scope="col">Signerad av</th>
+                <th scope="col"><span class="visually-hidden">Åtgärder</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Values != null)
+            {
+                if (Model.Observation.Scale == "Common" || Model.Observation.Scale == "Bristol")
+                {
+                    foreach (var item in Model.Values)
+                    {
+                        <tr>
+                            <td> </td>
+                            <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+                            <td>@Model.Unit @item.Measurement.Value</td>
+                            <td>@item.Signature.Who.FullName</td>
+                            <td> </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    foreach (var item in Model.Values)
+                    {
+                        <tr>
+                            <td> </td>
+                            <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
+                            <td>@item.Measurement.Value @Model.Unit</td>
+                            <td>@item.Signature.Who.FullName</td>
+                            <td> </td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+
 </div>
 
-<table class="table-general table-general--descending" id="update-table" aria-live="polite" role="region">
-    <thead>
-        <tr>
-            <th></th>
-            <th scope="col">Datum</th>
-            <th scope="col">Värde</th>
-            <th scope="col">Signerad av</th>
-            <th scope="col"><span class="visually-hidden">Åtgärder</span></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Values != null)
-        {
-            if (Model.Observation.Scale == "Common" || Model.Observation.Scale == "Bristol")
-            {
-                foreach (var item in Model.Values)
-                {
-                    <tr>
-                        <td> </td>
-                        <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
-                        <td>@Model.Unit @item.Measurement.Value</td>
-                        <td>@item.Signature.Who.FullName</td>
-                        <td> </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                foreach (var item in Model.Values)
-                {
-                    <tr>
-                        <td> </td>
-                        <td><time datetime="@item.CreatedAt">@item.CreatedAt.ToShortDateString(), @item.CreatedAt.ToShortTimeString()</time></td>
-                        <td>@item.Measurement.Value @Model.Unit</td>
-                        <td>@item.Signature.Who.FullName</td>
-                        <td> </td>
-                    </tr>
-                }
-            }
-        }
-    </tbody>
-</table>

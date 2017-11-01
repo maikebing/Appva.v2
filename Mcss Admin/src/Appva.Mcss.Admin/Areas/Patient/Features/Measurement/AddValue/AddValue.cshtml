@@ -3,9 +3,8 @@
 <div class="section section--hspace">
     <h2>Provtagning</h2>
     <div id="add-observation-value">
-
-        @using (Html.BeginForm("addvalue", "measurement", new { MeasurementId = Model.MeasurementId }, FormMethod.Post, new { @class = "validate", data_update_section_target = "update-table", aria_controls = "update-table", novalidate = "novalidate" }))
-        {
+        @using (Html.BeginForm("addvalue", "measurement", new { MeasurementId = Model.MeasurementId }, FormMethod.Post, new { @class = "validate", data_update_section_target = "update-table", novalidate = "novalidate" }))
+            {
             <div class="width-limiter width-limiter--s">
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary()
@@ -18,43 +17,19 @@
 
                     @if (Model.Scale == "Weight")
                     {
-                        <span class="numberspinner">
-                            <button class="button decrease" tabindex="-1">
-                                <span class="visually-hidden">Minska Värde (i kg) <b class="required-indicator">*</b></span>
-                                <svg class="icon icon--small icon--w" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
-                            </button>
-                            @Html.TextBoxFor(x => x.Value, new { min = "5", max = "450", size = "3", required = "required", type = "number" })
-                            
-                            <button class="button increase" tabindex="-1">
-                                <span class="visually-hidden">Öka Värde (i kg) <b class="required-indicator">*</b></span>
-                                <svg class="icon icon--small icon--e"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
-                            </button>
-                        </span>
+                        @Html.TextBoxFor(x => x.Value, new { min = "5", max = "450", size = "3", required = "required", type = "number" })
                         @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
                     }
                     else if (Model.Scale == "Common")
                     {
-                        // visa melior snurra
-
                         @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
                         @Html.TextBoxFor(x => x.Value, new { required = "reguired", type = "text" })
                     }
                     else if (Model.Scale == "Bristol")
                     {
-                        // visa bristol snurra
-
                         @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
-                        <span class="numberspinner">
-                            <button class="button decrease" tabindex="-1">
-                                <span class="visually-hidden">Minska Värde <b class="required-indicator">*</b></span>
-                                <svg class="icon icon--small icon--w" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
-                            </button>
-                            @Html.TextBoxFor(x => x.Value, new { min = "1", max = "7", size = "3", required = "reguired", type = "number" })
-                            <button class="button increase" tabindex="-1">
-                                <span class="visually-hidden">Öka Värde <b class="required-indicator">*</b></span>
-                                <svg class="icon icon--small icon--e"><use xlink:href="/project/images/icons/icon.sprite.svg#arrow--fat-icon"></use></svg>
-                            </button>
-                        </span>
+                        @Html.TextBoxFor(x => x.Value, new { min = "1", max = "7", size = "3", required = "reguired", type = "number" })
+
                     }
                     @Html.ValidationMessageFor(x => x.Value)
                 </div>
@@ -64,6 +39,5 @@
                 </div>
             </div>
         }
-
     </div>
 </div>

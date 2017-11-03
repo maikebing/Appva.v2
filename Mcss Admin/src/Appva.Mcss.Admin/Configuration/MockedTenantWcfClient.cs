@@ -105,7 +105,7 @@ namespace Appva.Mcss.Admin.Configuration
                 Identifier = "development",
                 Name = "Test",
                 //ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\TestDB\\Test.mdf;Integrated Security=True;Connect Timeout=30"
-                ConnectionString = "Data Source=FREDRIKANDECC0F;Initial Catalog=AppvaTest;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+                ConnectionString = "Server=localhost;Database=AppvaTest;Trusted_Connection=True;User ID = AppvaTest; Password=test"
             };
         }
     }

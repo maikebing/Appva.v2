@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System.Collections.Generic;
     using System.Linq;
     using Appva.Common.Domain;
+    using Validation;
 
     #endregion
 
@@ -28,7 +29,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         private const int Weekly  = 7;
 
         /// <summary>
-        /// Monthlu interval.
+        /// Monthly interval.
         /// </summary>
         private const int Monthly = 31;
 
@@ -40,6 +41,168 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #endregion
 
         #region Constructor.
+
+        // Construct for OnNeedBasis Sequences. Minimun requirements for a sequence construct
+        public Sequence(Schedule schedule, string name, string description, DateTime startDate, bool onNeedBasis, 
+            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
+        {
+            Requires.NotNull(schedule, "schedule");
+            Requires.NotNullOrEmpty(name, "name");
+            Requires.Equals((startDate >= DateTime.Now), true);
+            Requires.Equals(onNeedBasis, true);
+
+            this.Schedule = schedule;
+            this.Patient = schedule.Patient;
+            this.Name = name;
+            this.Description = description;
+            this.StartDate = startDate;
+            this.EndDate = endDate;
+            this.OnNeedBasis = onNeedBasis; // in this context this should always be set to true.
+            this.Taxon = taxon;
+            this.Role = role;
+            this.RangeInMinutesBefore = rangeInMinutesBefore;
+            this.RangeInMinutesAfter = rangeInMinutesAfter;
+            this.Inventory = inventory;
+        }
+        
+        // construct for repetitative sequences
+        public Sequence(Schedule schedule, string name, string description, DateTime startDate, int interval, int intervalFactor, string times, bool intervalIsDate,
+            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
+        {
+            Requires.NotNull(schedule, "schedule");
+            Requires.NotNullOrEmpty(name, "name");
+            Requires.Equals(startDate >= DateTime.Now, true);
+            Requires.Equals((interval > 0), true);
+            Requires.NotNullOrEmpty(times, "times");
+
+            this.Schedule = schedule;
+            this.Patient = schedule.Patient;
+            this.Name = name;
+            this.Description = description;
+            this.StartDate = startDate;
+            this.Interval = interval;
+            this.IntervalFactor = intervalFactor;
+            this.Times = times;
+            this.IntervalIsDate = intervalIsDate;
+            this.EndDate = endDate;
+            this.Taxon = taxon;
+            this.Role = role;
+            this.RangeInMinutesBefore = rangeInMinutesBefore;
+            this.RangeInMinutesAfter = rangeInMinutesAfter;
+            this.Inventory = inventory;
+        }
+
+        // construct for sequence with fixed dates
+        public Sequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate, string dates, string times,
+            Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
+        {
+            Requires.NotNull(schedule, "schedule");
+            Requires.NotNullOrEmpty(name, "name");
+            Requires.Equals(startDate >= DateTime.Now, true);
+            Requires.Equals(endDate.HasValue, true);
+            Requires.Equals(endDate.Value >= startDate, true);
+            Requires.NotNullOrEmpty(dates, "dates");
+            Requires.NotNullOrEmpty(times, "times");
+
+            this.Schedule = schedule;
+            this.Name = name;
+            this.Description = description;
+            this.StartDate = startDate;
+            this.EndDate = endDate;
+            this.Dates = dates;
+            this.Times = times;
+            this.Taxon = taxon;
+            this.Role = role;
+            this.RangeInMinutesBefore = rangeInMinutesBefore;
+            this.RangeInMinutesAfter = rangeInMinutesAfter;
+            this.Inventory = inventory;
+        }
+
+        // construct for sequences used in events
+        public Sequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate)
+        {
+            Requires.NotNull(schedule, "schedule");
+            Requires.NotNullOrEmpty(name, "name");
+            Requires.NotNullOrEmpty(description, "description");
+            Requires.Equals(startDate >= DateTime.Now, true);
+            Requires.Equals(endDate.HasValue, true);
+            Requires.Equals(endDate.Value >= startDate, true);
+
+        }
+
+
+        private Sequence(
+            string name,  // always required
+            string description,  // optional?
+            DateTime startDate, // always required
+            DateTime? endDate,  // optional
+            int rangeInMinutesBefore, // optional, default = 0
+            int rangeInMinutesAfter, 
+            string times, 
+            string dates, 
+            //string hour, 
+            //string minute, 
+            int interval,
+            int intervalFactor,
+            bool intervalIsDate,
+            bool onNeedBasis,
+            bool reminder,
+            int reminderInMinutesBefore,
+            Account reminderRecipient,
+            //DateTime? lastReminderSent,
+            //int? stockAmount,
+            //DateTime? lastStockAmountCalculation,
+            Patient patient,
+            Schedule schedule,
+            Taxon taxon,
+            Role role,
+            bool overview,
+            bool canRaiseAlert,
+            bool pauseAnyAlerts,
+            bool allDay,
+            bool absent,
+            RefillModel refillInfo,
+            Inventory inventory)
+        {
+            Requires.NotNull(name, "name");
+            Requires.NotNull(schedule, "schedule");
+
+            this.Name = name;
+            this.StartDate = startDate;
+            this.Schedule = schedule;
+
+            this.Description = description;
+            this.EndDate = endDate;
+            this.RangeInMinutesBefore = rangeInMinutesBefore;
+            this.RangeInMinutesAfter = rangeInMinutesAfter;
+            this.Times = times;
+            this.Dates = dates;
+            //this.Hour = hour;
+            //this.Minute = minute;
+            this.Interval = interval;
+            this.IntervalFactor = intervalFactor;
+            this.IntervalIsDate = intervalIsDate;
+            this.OnNeedBasis = onNeedBasis;
+
+            this.Reminder = reminder;
+            this.ReminderInMinutesBefore = reminderInMinutesBefore;
+            this.ReminderRecipient = reminderRecipient;
+            //this.LastReminderSent = lastReminderSent; // no refs
+            //this.StockAmount = stockAmount; // no refs
+            //this.LastStockAmountCalculation = lastStockAmountCalculation; // no refs
+            this.Patient = schedule.Patient;
+            this.Taxon = taxon;
+            this.Role = role;
+
+            // used in any construction of class. 
+            this.Overview = overview;
+            this.CanRaiseAlert = canRaiseAlert;
+            this.PauseAnyAlerts = pauseAnyAlerts;
+            this.AllDay = allDay;
+            this.Absent = absent;
+            this.RefillInfo = refillInfo;
+            this.Inventory = inventory;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sequence"/> class.
@@ -129,7 +292,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The hour of day
         /// </summary>
-        public virtual string Hour
+        public virtual string Hour // always null?
         {
             get;
             set;
@@ -138,7 +301,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The minute of hour
         /// </summary>
-        public virtual string Minute
+        public virtual string Minute // always null?
         {
             get;
             set;
@@ -207,7 +370,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Recipient of a reminder.
         /// </summary>
-        public virtual Account ReminderRecipient
+        public virtual Account ReminderRecipient // Questions raised around this property
         {
             get;
             set;
@@ -217,7 +380,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// When the last reminder was sent out.
         /// </summary>
         /// <remarks>The sequence scheduled date</remarks>
-        public virtual DateTime? LastReminderSent
+        private DateTime? LastReminderSent // No references
         {
             get;
             set;
@@ -226,7 +389,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Used only for keeping track of e.g. stock amount of medicine X.
         /// </summary>
-        public virtual int? StockAmount
+        public virtual int? StockAmount // no references
         {
             get;
             set;
@@ -235,7 +398,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Last time the stock amount was recalculated.
         /// </summary>
-        public virtual DateTime? LastStockAmountCalculation
+        public virtual DateTime? LastStockAmountCalculation // no references
         {
             get;
             set;

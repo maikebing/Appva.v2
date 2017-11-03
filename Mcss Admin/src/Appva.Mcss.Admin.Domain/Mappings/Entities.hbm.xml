@@ -568,7 +568,7 @@
     <id name="Id">
       <generator class="guid.comb" />
     </id>
-    <discriminator column="ObservationItemType" />
+    <!--<discriminator column="ObservationItemType" />-->
     <version  name="Version"                             />
     <property name="IsActive"     column="Active"        />
     <property name="CreatedAt"    column="Created"       />
@@ -583,9 +583,8 @@
     </component>
     <many-to-one name="Signature" class="Signature" cascade="save-update"    />
     <many-to-one name="Comment"   class="Comment"        />
-    <subclass name="TaskObservationItem" discriminator-value="TaskObservationItem">
-    </subclass>
-    
+    <!--<subclass name="TaskObservationItem" discriminator-value="TaskObservationItem">
+    </subclass>-->
   </class>
 
   <!-- Signature -->
@@ -697,7 +696,7 @@
     </bag>
     <bag name="TaskObservationItems" cascade="save-update">
       <key column="Task" />
-      <one-to-many class="TaskObservationItem" />
+      <one-to-many class="ObservationItem" />
     </bag>
   </class>
 

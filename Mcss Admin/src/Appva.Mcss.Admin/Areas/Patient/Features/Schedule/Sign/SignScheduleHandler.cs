@@ -228,7 +228,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
             if (scheduleSetting.IsCollectingGivenDosage == true)
             {
-                query.JoinQueryOver<TaskObservationItem>(x => x.TaskObservationItems);
+                query.JoinQueryOver<ObservationItem>(x => x.TaskObservationItems)
+                    .Where(x => x.IsActive)
+                    .Where(x => x.Task != null);
             }
 
             query.JoinQueryOver<Schedule>(x => x.Schedule)

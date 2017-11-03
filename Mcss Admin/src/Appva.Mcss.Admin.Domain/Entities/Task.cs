@@ -331,7 +331,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// taskobservationitems for this task.
         /// it should only never be more than 1 item in this list.
         /// </summary>
-        public virtual IList<TaskObservationItem> TaskObservationItems
+        public virtual IList<ObservationItem> TaskObservationItems
         {
             get;
             set;

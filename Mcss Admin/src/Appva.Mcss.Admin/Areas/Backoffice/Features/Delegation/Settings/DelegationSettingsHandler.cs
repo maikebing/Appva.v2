@@ -53,7 +53,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             {
                 SpecifyReasonIsActive       = this.settings.Find<bool>(ApplicationSettings.SpecifyReasonOnDelegationRemoval),
                 Reasons                     = string.Join("\n", this.settings.Find<List<string>>(ApplicationSettings.DelegationRemovalReasons)),
-                RequireActivationOnChange   = this.settings.Find<bool>(ApplicationSettings.RequireDelegationActivationAfterChange)
+                RequireActivationOnChange   = this.settings.Find<bool>(ApplicationSettings.RequireDelegationActivationAfterChange),
+                PrintBottomText             = this.settings.Find<string>(ApplicationSettings.PrintDelegationSendToText)
             };
         }
 

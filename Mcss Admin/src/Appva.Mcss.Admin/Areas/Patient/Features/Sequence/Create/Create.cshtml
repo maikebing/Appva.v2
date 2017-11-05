@@ -28,15 +28,15 @@
                     @if (Model.Inventories != null)
                     {
                         <div class="sequence-inventory">
-                            <h3 class="section-title">Ange saldo</h3>
+                            <h3 class="section-title">Ange förbrukningsjournal</h3>
                             <div class="row toggle-group cf">
                                 <div class="radio col">
                                     @Html.RadioButtonFor(m => m.CreateNewInventory, true, new { @id = "inventory-type-1", @class = "toggle", @data_toggletarget = "toggle-inventory-target-1", @data_togglegroup = "toggle-inventory" })
-                                    <label for="inventory-type-1">Skapa nytt saldo</label>
+                                    <label for="inventory-type-1">Skapa ny</label>
                                 </div>
                                 <div class="radio col">
                                     @Html.RadioButtonFor(m => m.CreateNewInventory, false, new { @id = "inventory-type-2", @class = "toggle", @data_toggletarget = "toggle-inventory-target-2", @data_togglegroup = "toggle-inventory" })
-                                    <label for="inventory-type-2">Välj befintligt saldo</label>
+                                    <label for="inventory-type-2">Välj befintlig</label>
                                 </div>
                             </div>
                             <div class="toggle-inventory-target-1 toggle-inventory">
@@ -45,7 +45,7 @@
                                 @Html.DropDownListFor(
                                         m => m.Inventory,
                                         new SelectList(Model.Inventories, "Value", "Text", Model.Inventory),
-                                        "Välj saldo ...",
+                                        "Välj förbrukningsjournal ...",
                                         new { @class = "inventories" })
             </div>
                         </div>

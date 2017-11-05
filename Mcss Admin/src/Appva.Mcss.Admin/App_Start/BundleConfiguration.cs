@@ -30,7 +30,7 @@ namespace Appva.Mcss.Admin
                 "~/Assets/js/jquery/jquery-1.6.3.js", "~/Assets/js/jquery/jquery-ui-{version}.custom.js",
                 "~/Assets/js/jquery/plugins/date.js", "~/Assets/js/jquery/plugins/jquery.datepicker.js",
                 "~/Assets/js/jquery/plugins/excanvas.js", "~/Assets/js/jquery/plugins/jquery.flot-{version}.js",
-                "~/Assets/js/jquery/plugins/jquery.validate-{version}.js"
+                "~/Assets/js/jquery/plugins/jquery.flot.resize.js", "~/Assets/js/jquery/plugins/jquery.validate-{version}.js"
             ));
             bundles.Add(new ScriptBundle("~/Assets/js/mcss/bundle").Include(
                 "~/Assets/js/main.js", "~/Assets/js/mcss.js", "~/Assets/js/mcss.customselect.js", "~/Assets/js/mcss.chart.js",

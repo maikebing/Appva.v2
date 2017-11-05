@@ -80,7 +80,7 @@
 						<th scope="col" colspan="@((Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read)) ? 1 : 2)">Instruktion</th>
                         @if (Model.Schedule.ScheduleSettings.HasInventory && Html.HasPermissionFor(Permissions.Inventory.Read))
                         {
-                            <th colspan="3" scope="col">Saldo</th>
+                            <th colspan="3" scope="col">Förbrukningsjournal</th>
                         }
 					</tr>
 					<tr>

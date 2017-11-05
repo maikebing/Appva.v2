@@ -218,7 +218,7 @@ namespace Appva.Mcss.Admin.Configuration
             //}
             //else
             //{
-                builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
+            builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
             //}
             builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
             {

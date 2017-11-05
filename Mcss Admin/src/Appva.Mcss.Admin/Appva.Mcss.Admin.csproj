@@ -971,9 +971,6 @@
     <Content Include="Assets\i\dayslot-hover.png" />
     <Content Include="Assets\i\dayslot-unsel.png" />
     <Content Include="Assets\i\dot-grey.png" />
-    <Content Include="Assets\i\icn-change-password.png" />
-    <Content Include="Assets\i\icn-dualstaffing.png" />
-    <Content Include="Assets\i\icn-logout.png" />
     <Content Include="Assets\i\filter-sep.png" />
     <Content Include="Assets\i\footer-shade.png" />
     <Content Include="Assets\i\globalfilter-select.png" />
@@ -988,15 +985,18 @@
     <Content Include="Assets\i\icn-arrows.png" />
     <Content Include="Assets\i\icn-big-signlist.png" />
     <Content Include="Assets\i\icn-caldel.png" />
+    <Content Include="Assets\i\icn-change-password.png" />
     <Content Include="Assets\i\icn-check.png" />
     <Content Include="Assets\i\icn-cross.png" />
     <Content Include="Assets\i\icn-delete.png" />
+    <Content Include="Assets\i\icn-dualstaffing.png" />
     <Content Include="Assets\i\icn-health-fall.png" />
     <Content Include="Assets\i\icn-health-oral.png" />
     <Content Include="Assets\i\icn-health-pressure.png" />
     <Content Include="Assets\i\icn-health-weight.png" />
     <Content Include="Assets\i\icn-help.png" />
     <Content Include="Assets\i\icn-home.png" />
+    <Content Include="Assets\i\icn-logout.png" />
     <Content Include="Assets\i\icn-none%402x.png" />
     <Content Include="Assets\i\icn-none.png" />
     <Content Include="Assets\i\icn-nothome%402x.png" />
@@ -1091,6 +1091,7 @@
     <Content Include="Assets\js\jquery\plugins\jquery.datePicker.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.flot-0.7.0.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.flot-0.7.0.min.js" />
+    <Content Include="Assets\js\jquery\plugins\jquery.flot.resize.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.validate-1.10.0.js" />
     <Content Include="Assets\js\lang\sv.js" />
     <Content Include="Assets\js\main.js" />
@@ -1141,6 +1142,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="media\appva-event.png" />
+    <Content Include="media\forbrukningsjournal.png" />
     <Content Include="media\icn-pdf.png" />
     <Content Include="media\jul.png" />
     <Content Include="media\logo-appva.png" />
@@ -1203,7 +1205,7 @@
     <Folder Include="Areas\Patient\Features\Tena\Delete\" />
     <Folder Include="Areas\Patient\Features\Tena\Update\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
-    <Folder Include="Assets\js\NewFolder1\" />
+    <Folder Include="Assets\error-pages\i\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Area51\Features\Cache\List\List.cshtml" />
@@ -1545,6 +1547,7 @@
     <Content Include="Assets\css\new\all.min.css.map" />
     <Content Include="Assets\images\custom-checkbox.svg_old" />
     <Content Include="Assets\images\graph.ai" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\rename-inventory.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

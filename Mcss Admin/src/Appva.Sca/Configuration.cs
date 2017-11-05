@@ -48,7 +48,10 @@ namespace Appva.Sca
         /// Gets a value indicating whether this instance has credentials.
         /// </summary>
         /// <value><c>true</c> if this instance has credentials; otherwise, <c>false</c>.</value>
-        internal bool HasCredentials => this.Credentials != null;
+        internal bool HasCredentials
+        {
+            get { return this.Credentials != null; }
+        }
 
         #endregion
 

@@ -703,7 +703,7 @@ namespace Appva.Mcss.Admin.Application.Common
         /// </summary>
         public static class Tena
         {
-            public const string ActivateValue = Schema + "tena/activate";
+            public const string RegisterValue = Schema + "tena/register";
 
             /// <summary>
             /// The create value.
@@ -726,43 +726,43 @@ namespace Appva.Mcss.Admin.Application.Common
             public const string DeleteValue = Schema + "tena/delete";
 
             /// <summary>
-            /// Permission to create a tena observation.
+            /// Permission to create a tena observation period.
             /// </summary>
-            [Sort(21)]
+            [Sort(200)]
             [Name("Activate Tena")]
-            [Description("Permission to activate Tena for a patient")]
-            public static readonly IPermission Activate = PermissionType.CreateNew(ActivateValue);
+            [Description("Permission to register a patient for using TENA")]
+            public static readonly IPermission Register = PermissionType.CreateNew(RegisterValue);
 
             /// <summary>
-            /// Permission to create a tena observation.
+            /// Permission to create a tena observation period.
             /// </summary>
-            [Sort(21)]
+            [Sort(200)]
             [Name("Create Tena observation")]
-            [Description("Permission to create a Tena observation")]
+            [Description("Permission to create a Tena observation period")]
             public static readonly IPermission Create = PermissionType.CreateNew(CreateValue);
 
             /// <summary>
             /// Permission to read/view the Tena page.
             /// </summary>
-            [Sort(22)]
+            [Sort(200)]
             [Name("Read Tena")]
             [Description("Permission to read/view the Tena page")]
             public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
             /// <summary>
-            /// Permission to update/edit a Tena observation.
+            /// Permission to update/edit a Tena observation period.
             /// </summary>
-            [Sort(23)]
+            [Sort(200)]
             [Name("Update Tena")]
-            [Description("Permission to update/edit a Tena observation")]
+            [Description("Permission to update/edit a Tena observation period")]
             public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
             /// <summary>
-            /// Permission to delete a Tena observation.
+            /// Permission to delete a Tena observation period.
             /// </summary>
-            [Sort(24)]
+            [Sort(200)]
             [Name("Delete a Tena observation")]
-            [Description("Permission to delete a Tena observation")]
+            [Description("Permission to delete a Tena observation period")]
             public static readonly IPermission Delete = PermissionType.CreateNew(DeleteValue);
         }
 
@@ -1595,7 +1595,40 @@ namespace Appva.Mcss.Admin.Application.Common
 
             #endregion
 
+            #region TENA
+
+            public static class TenaFromDevice
+            {
+                /// <summary>
+                /// The tena read value
+                /// </summary>
+                public const string ReadValue = DeviceSchema + "/tena/read";
+
+                /// <summary>
+                /// The tena create observation item value
+                /// </summary>
+                public const string CreateObservationItemValue = DeviceSchema + "/tena/item/create";
+
+                /// <summary>
+                /// Read TENA observation period from mobile device
+                /// </summary>
+                [Sort(21000)]
+                [Name("Read TENA observation period from mobile device")]
+                [Description("Permission to read TENA observation period from mobile device")]
+                public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
+
+                /// <summary>
+                /// Permission to create TENA observation item from mobile device
+                /// </summary>
+                [Sort(21000)]
+                [Name("Create TENA observation item from mobile device")]
+                [Description("Permission to create TENA observation item from mobile device")]
+                public static readonly IPermission CreateObservationItem = PermissionType.CreateNew(CreateObservationItemValue);
+            }
+
             #endregion
+
+        #endregion
     }
 
     /// <summary>

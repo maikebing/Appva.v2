@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
     using System.Threading.Tasks;
     using System.Web.Mvc;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Infrastructure;
@@ -23,6 +24,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     using Appva.Mvc.Security;
     using Newtonsoft.Json;
     using Appva.Mcss.Admin.Models.Handlers;
+using Appva.Cqrs;
 
     #endregion
 
@@ -30,6 +32,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     [RouteArea("patient"), RoutePrefix("{id:guid}/tena")]
+    [PermissionsAttribute(Permissions.Tena.ReadValue)]
     public sealed class TenaController : Controller
     {
         #region Variables.
@@ -39,6 +42,11 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// </summary>
         private ITenaService tenaService;
 
+        /// <summary>
+        /// The <see cref="IMediator"/>.
+        /// </summary>
+        private readonly IMediator mediator;
+
         #endregion
 
         #region Constructor
@@ -47,9 +55,10 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// Initializes a new instance of the <see cref="TenaController"/> class.
         /// </summary>
         /// <param name="tenaService">The tena service.</param>
-        public TenaController(ITenaService tenaService)
+        public TenaController(IMediator mediator, ITenaService tenaService)
         {
             this.tenaService = tenaService;
+            this.mediator = mediator;
         }
         
         #endregion
@@ -64,26 +73,35 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         /// <param name="request">The <see cref="ListTena"/>.</param>
         /// <returns>A <see cref="ActionResult"/>.</returns>
         [Route("list")]
-        [HttpGet, Dispatch]
+        [HttpGet]
         [PermissionsAttribute(Permissions.Tena.ReadValue)]
         public ActionResult List(ListTena request)
         {
-            return this.View();
+            var model = this.mediator.Send(request);
+            if (model.IsNull())
+            {
+                return this.RedirectToAction("register", new { Id = request.Id});
+            }
+            if(model.Periods == null || model.Periods.Count == 0)
+            {
+                return this.View("_EmptyList", model);
+            }
+            return this.View(model);
         }
 
         #endregion
 
-        #region FindAsync
+        #region Get resident
 
         /// <summary>
-        /// Find as an asynchronous operation.
+        /// Gets the resident from Tena Identifi
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>Task&lt;ActionResult&gt;.</returns>
-        [Route("findasync")]
+        [Route("resident")]
         [HttpGet]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
-        public async Task<ActionResult> FindAsync(FindTenaId request)
+        public async Task<ActionResult> GetResident(GetResident request)
         {
             var response = await this.tenaService.GetResidentAsync(request.ExternalId);
             var model = JsonConvert.SerializeObject(response);
@@ -93,41 +111,54 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #endregion
 
-        #region Activate.
+        #region Register patient.
 
         /// <summary>
-        /// Activates TENA for a patient.
+        /// Activates TENA Identifi for a patient.
         /// </summary>
-        /// <param name="request">The <see cref="ActivateTenaId"/>.</param>
+        /// <param name="request">The <see cref="RegisterTenaPatientId"/>.</param>
         /// <returns>A <see cref="ListTena"/>.</returns>
-        [Route("activate")]
+        [Route("register")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Tena.RegisterValue)]
+        public ActionResult Register(Identity<RegisterTenaPatientId> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Activates TENA Identifi for a patient.
+        /// </summary>
+        /// <param name="request">The <see cref="RegisterTenaPatientId"/>.</param>
+        /// <returns>A <see cref="ListTena"/>.</returns>
+        [Route("register")]
         [HttpPost, Dispatch("list", "tena")]
-        [PermissionsAttribute(Permissions.Tena.ActivateValue)]
-        public ActionResult Activate(ActivateTenaId request)
+        [PermissionsAttribute(Permissions.Tena.RegisterValue)]
+        public ActionResult Register(RegisterTenaPatientId request)
         {
             return this.View();
         }
 
         #endregion
 
-        #region Check
+        #region Validate date.
 
         /// <summary>
         /// Validating the starting date selected
         /// </summary>
         /// <param name="request">The <see cref="CheckDate"/>.</param>
         /// <returns>A <see cref="JsonResult"/>.</returns>
-        [Route("check")]
+        [Route("validate-date")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Tena.ReadValue)]
-        public DispatchJsonResult Check(CheckDate request)
+        public DispatchJsonResult ValidateDate(CheckDate request)
         {
             return this.JsonGet();
         }
 
         #endregion
 
-        #region Create
+        #region Create period
 
         /// <summary>
         /// GET Creates a Tena Observation Period
@@ -157,24 +188,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
 
         #endregion
 
-        #region View
-
-        /// <summary>
-        /// View a list with Tena Observation Measurements
-        /// </summary>
-        /// <param name="request">The <see cref="ViewTenaMeasurements"/>.</param>
-        /// <returns>A <see cref="ActionResult"/>.</returns>
-        [Route("view")]
-        [HttpGet, Dispatch]
-        [PermissionsAttribute(Permissions.Tena.ReadValue)]
-        public ActionResult View(ViewTenaMeasurements request)
-        {
-            return this.View();
-        }
-
-        #endregion
-
-        #region UploadAsync
+        #region Upload to Identifi
 
         /// <summary>
         /// Upload Tena Observation to designated API endpoint
@@ -184,7 +198,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
         [Route("upload")]
         [HttpGet]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
-        public async Task<ActionResult> Upload(UploadTenaObserverPeriod request)
+        public async Task<ActionResult> UploadToIdentifi(UploadTenaObserverPeriod request)
         {
             var handler = new UploadTenaObserverPeriodHandlerAsync(this.tenaService);
             //var response = await this.tenaService.PostManualEventAsync(request.PeriodId);

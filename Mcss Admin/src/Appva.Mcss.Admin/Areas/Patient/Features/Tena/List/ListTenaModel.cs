@@ -11,6 +11,9 @@ namespace Appva.Mcss.Admin.Models
 
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Web.ViewModels;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
@@ -22,46 +25,48 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Patient
         /// </summary>
-        public PatientViewModel PatientViewModel
+        public PatientViewModel Patient
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Patient
+        /// Gets or sets the periods.
         /// </summary>
-        public Patient Patient
+        /// <value>
+        /// The periods.
+        /// </value>
+        public IList<TenaObservationPeriod> Periods 
         {
             get;
             set;
         }
 
         /// <summary>
-        /// ExternalId
+        /// Gets or sets the current period identifier.
         /// </summary>
-        public string ExternalId
+        /// <value>
+        /// The current period identifier.
+        /// </value>
+        public Guid CurrentPeriodId
         {
             get;
             set;
         }
 
         /// <summary>
-        /// IsInstalled
+        /// Gets the period.
         /// </summary>
-        public bool IsInstalled
+        /// <value>
+        /// The period.
+        /// </value>
+        public TenaObservationPeriod Period
         {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Message
-        /// </summary>
-        public string Message
-        {
-            get;
-            set;
+            get
+            {
+                return Periods.FirstOrDefault(x => x.Id == CurrentPeriodId);
+            }
         }
     }
 }

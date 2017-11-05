@@ -20,7 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ActivateTenaIdHandler : RequestHandler<ActivateTenaId, ListTena>
+    internal sealed class RegisterTenaPatientIdPublisher : RequestHandler<RegisterTenaPatientId, ListTena>
     {
         #region Fields.
 
@@ -49,13 +49,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ActivateTenaIdHandler"/> class.
+        /// Initializes a new instance of the <see cref="RegisterTenaPatientIdPublisher"/> class.
         /// </summary>
         /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
         /// <param name="auditing">The <see cref="IAuditService"/>.</param>
-        public ActivateTenaIdHandler(ITenaService tenaService, IPatientService patientService, IPersistenceContext persistence, IAuditService auditing)
+        public RegisterTenaPatientIdPublisher(ITenaService tenaService, IPatientService patientService, IPersistenceContext persistence, IAuditService auditing)
         {
             this.tenaService = tenaService;
             this.patientService = patientService;
@@ -68,7 +68,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override ListTena Handle(ActivateTenaId message)
+        public override ListTena Handle(RegisterTenaPatientId message)
         {
             var patient = this.patientService.Get(message.Id);
 

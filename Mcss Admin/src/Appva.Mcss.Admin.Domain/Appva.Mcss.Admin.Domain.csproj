@@ -208,6 +208,10 @@
     </Compile>
     <Compile Include="Repositories\PermissionRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
+    <Compile Include="Unit\AbstractUnit.cs" />
+    <Compile Include="Unit\IUnit.cs" />
+    <Compile Include="Unit\TenaIdentifi\TenaIdentifiScale.cs" />
+    <Compile Include="Unit\TenaIdentifi\TenaIdentifiUnit.cs" />
     <Compile Include="VO\TenaConfiguration.cs" />
     <Compile Include="Configurations\SecurityMailerConfiguration.cs" />
     <Compile Include="Configurations\SecurityPasswordConfiguration.cs" />

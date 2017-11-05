@@ -17,48 +17,9 @@ namespace Appva.Sca
     #endregion
 
     /// <summary>
-    /// The <see cref="IApiService"/>.
+    /// The <see cref="TenaIdentifiClient"/> service.
     /// </summary>
-    public interface IApiService
-    {
-        /// <summary>
-        /// GetResident
-        /// </summary>
-        /// <param name="id">Identifi ID</param>
-        /// <returns>Returns a <see cref="GetResidentModel"/>.</returns>
-        Task<GetResidentModel> GetResidentAsync(string id);
-
-        /// <summary>
-        /// Posts the manual event asynchronous.
-        /// </summary>
-        /// <param name="manualEvents">The manual events.</param>
-        /// <returns>Task&lt;List&lt;GetManualEventModel&gt;&gt;.</returns>
-        Task<List<GetManualEventModel>> PostManualEventAsync(List<PostManualEventModel> manualEvents);
-
-        /// <summary>
-        /// Gets a value indicating whether this instance has credentials.
-        /// </summary>
-        /// <value><c>true</c> if this instance has credentials; otherwise, <c>false</c>.</value>
-        bool HasCredentials { get; }
-
-        /// <summary>
-        /// Sets the credentials.
-        /// </summary>
-        /// <param name="credentials">The credentials.</param>
-        void SetCredentials(string credentials);
-
-        /// <summary>
-        /// Sets the credentials.
-        /// </summary>
-        /// <param name="tenant">The tenant.</param>
-        /// <param name="credentials">The credentials.</param>
-        void SetCredentials(string tenant, string credentials);
-    }
-
-    /// <summary>
-    /// The <see cref="ApiService"/> service.
-    /// </summary>
-    public class ApiService : IApiService
+    public class TenaIdentifiClient : ITenaIdentifiClient
     {
         #region Variables.
 
@@ -76,17 +37,20 @@ namespace Appva.Sca
         /// Gets a value indicating whether this instance has credentials.
         /// </summary>
         /// <value><c>true</c> if this instance has credentials; otherwise, <c>false</c>.</value>
-        public bool HasCredentials => this.config.HasCredentials;
+        public bool HasCredentials 
+        {
+            get { return this.config.HasCredentials; }
+        }
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiService"/> class.
+        /// Initializes a new instance of the <see cref="TenaIdentifiClient"/> class.
         /// </summary>
         /// <param name="baseAddress">The base address.</param>
-        public ApiService(Uri baseAddress)
+        public TenaIdentifiClient(Uri baseAddress)
         {
             this.config = new Configuration(baseAddress);
             this.client = new ApiClient(this.config);
@@ -111,7 +75,7 @@ namespace Appva.Sca
             switch (response.Response.StatusCode)
             {
                 case HttpStatusCode.NotFound:
-                    result.Message = "Användaren kan inte hittas";
+                    result.Message = "Ingen boende kunde hittas för givet ID";
                     break;
                 default:
                     result.Message = "Ett fel inträffade. Var god försök igen.";

@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="name">The name of the observation.</param>
         /// <param name="description">The description or instruction.</param>
         /// <param name="category">Classification of type of observation.</param>
-        public Observation(Patient patient, string name, string description, Taxon category = null)
+        public Observation(Patient patient, string name, string description)
         {
             Requires.NotNull            (patient,     "patient"    );
             Requires.NotNullOrWhiteSpace(name,        "name"       );
@@ -35,7 +35,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Patient     = patient;
             this.Name        = name;
             this.Description = description;
-            this.Category    = category;
             this.RegisterEvent(ObservationCreatedEvent.New(this));
         }
 
@@ -81,15 +80,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// The observation category.
-        /// </summary>
-        public virtual Taxon Category
-        {
-            get;
-            internal protected set;
-        }
-
-        /// <summary>
         /// The collection of observation items.
         /// </summary>
         /// <remarks>Populated by NHibernate.</remarks>
@@ -111,9 +101,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="description">The description or instruction.</param>
         /// <param name="category">Classification of type of observation.</param>
         /// <returns>A new <see cref="Observation"/> instance.</returns>
-        public static Observation New(Patient patient, string name, string description, Taxon category = null)
+        public static Observation New(Patient patient, string name, string description)
         {
-            return new Observation(patient, name, description, category);
+            return new Observation(patient, name, description);
         }
 
         #endregion

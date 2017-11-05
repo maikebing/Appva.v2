@@ -36,6 +36,13 @@ namespace Appva.Mcss.Admin.Application.Services
         bool HasUniqueExternalId(string externalId);
 
         /// <summary>
+        /// Lists the tena observation period.
+        /// </summary>
+        /// <param name="patientId">The patient identifier.</param>
+        /// <returns></returns>
+        IList<TenaObservationPeriod> ListTenaObservationPeriod(Guid patientId);
+
+        /// <summary>
         /// Creates a new ObserverPeriod.
         /// </summary>
         /// <param name="patient">The patient in this context.</param>
@@ -108,7 +115,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// The <see cref="IApiService"/>.
         /// </summary>
-        private readonly IApiService apiService; // readonly
+        private readonly ITenaIdentifiClient IdentifiClient;
 
         #endregion
 
@@ -119,15 +126,15 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        /// <param name="apiService">The <see cref="IApiService"/>.</param>
-        public TenaService(ITenaRepository repository, ISettingsService settingsService, IApiService apiService)
+        /// <param name="identifiClient">The <see cref="IApiService"/>.</param>
+        public TenaService(ITenaRepository repository, ISettingsService settingsService, ITenaIdentifiClient identifiClient)
         {
             this.repository = repository;
             this.settingsService = settingsService;
-            this.apiService = apiService;
-            if (this.apiService.HasCredentials == false)
+            this.IdentifiClient = identifiClient;
+            if (this.IdentifiClient.HasCredentials == false)
             {
-                this.apiService.SetCredentials(this.GetCredentials());
+                this.IdentifiClient.SetCredentials(this.GetCredentials());
             }
         }
 
@@ -139,6 +146,11 @@ namespace Appva.Mcss.Admin.Application.Services
         public bool HasUniqueExternalId(string externalId)
         {
             return this.repository.HasUniqueExternalId(externalId);
+        }
+
+        public IList<TenaObservationPeriod> ListTenaObservationPeriod(Guid patientId)
+        {
+            return this.repository.ListTenaPeriods(patientId);
         }
 
         /// <inheritdoc />
@@ -173,7 +185,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void SetCredentials(string client, string secret)
         {
-            this.apiService.SetCredentials(this.GetCredentials(client, secret));
+            this.IdentifiClient.SetCredentials(this.GetCredentials(client, secret));
         }
 
         /// <inheritdoc />
@@ -183,24 +195,19 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 return new GetResidentModel
                 {
-                    Message = "Användaren är redan registrerad."
+                    Message = "Detta ID är redan registrerat på en boende."
                 };
             }
 
-            return await this.apiService.GetResidentAsync(externalId);
+            return await this.IdentifiClient.GetResidentAsync(externalId);
         }
 
         /// <inheritdoc />
         public async Task<List<GetManualEventModel>> PostManualEventAsync(Guid periodId)
         {
             var period = this.repository.GetTenaPeriod(periodId);
-            var measurements = period.Items;
-            //var measurements = this.repository.GetTenaPeriod(periodId).Items;
-            if (measurements.IsEmpty())
-            {
-                return null;
-            }
-            return await this.apiService.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
+            var retval = await this.PostManualEventAsync(period);
+            return retval;
         }
 
         /// <inheritdoc />
@@ -211,7 +218,7 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 return null;
             }
-            return await this.apiService.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
+            return await this.IdentifiClient.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
         }
 
         #endregion

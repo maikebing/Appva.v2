@@ -39,7 +39,7 @@ namespace Appva.Sca
         /// <returns>A full resident url as string</returns>
         internal static string GetResidentUrl(string id)
         {
-            return $"{ResidentUrl}{id}";
+            return string.Format("{0}{1}", ResidentUrl, id);
         }
 
         #endregion

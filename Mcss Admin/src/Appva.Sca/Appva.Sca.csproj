@@ -93,8 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiClient.cs" />
-    <Compile Include="ApiService.cs" />
+    <Compile Include="TenaIdentifiClient.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="ITenaIdentifiClient.cs" />
     <Compile Include="Models\GetManualEventModel.cs" />
     <Compile Include="Models\GetResidentModel.cs" />
     <Compile Include="Models\PostManualEventModel.cs" />

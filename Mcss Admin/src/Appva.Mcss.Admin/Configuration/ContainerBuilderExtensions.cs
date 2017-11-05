@@ -212,14 +212,14 @@ namespace Appva.Mcss.Admin.Configuration
                 properties.Add("show_sql", "true");
             }
             builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/db/admin")).As<IRuntimeMemoryCache>().SingleInstance();
-            if (ApplicationEnvironment.Is.Development)
-            {
-                builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
-            }
-            else
-            {
+            //if (ApplicationEnvironment.Is.Development)
+            //{
+            //    builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
+            //}
+            //else
+            //{
                 builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
-            }
+            //}
             builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
             {
                 Assembly = "Appva.Mcss.Admin.Domain",
@@ -250,8 +250,8 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The builder.</param>
         public static void RegisterTenaIdentifi(this ContainerBuilder builder)
         {
-            var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(ApiService)));
-            builder.Register(x => new ApiService(new Uri(ConfigurationManager.AppSettings.Get("TenaAPI.ServerUrl")))).As<IApiService>().SingleInstance();
+            var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(TenaIdentifiClient)));
+            builder.Register(x => new TenaIdentifiClient(new Uri(ConfigurationManager.AppSettings.Get("TenaAPI.ServerUrl")))).As<ITenaIdentifiClient>().SingleInstance();
         }
 
         /// <summary>

@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using System;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+using System.Collections.Generic;
 
     #endregion
 
@@ -52,6 +53,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="periodId">The selected Observation Period.</param>
         /// <returns>Returns a <see cref="TenaObservationPeriod"/>.</returns>
         TenaObservationPeriod GetTenaPeriod(Guid periodId);
+        
+        /// <summary>
+        /// Lists the tena periods.
+        /// </summary>
+        /// <param name="patientId">The patient identifier.</param>
+        /// <returns></returns>
+        IList<TenaObservationPeriod> ListTenaPeriods(Guid patientId);
 
         /// <summary>
         /// Get the TenaId from DB
@@ -59,6 +67,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="patientId">The Patient Id.</param>
         /// <returns>Returns a <see cref="string"/>.</returns>
         string GetTenaId(Guid patientId);
+
+
     }
 
     /// <summary>
@@ -141,5 +151,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             throw new NotImplementedException();
         }
         #endregion
+
+        /// <inheritdoc />
+        public IList<TenaObservationPeriod> ListTenaPeriods(Guid patientId)
+        {
+            return this.persistence.QueryOver<TenaObservationPeriod>()
+                .Where(x => x.IsActive == true)
+                .And(x => x.Patient.Id == patientId)
+                .List();
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class FindTenaIdHandler : RequestHandler<FindTenaId, string>
+    internal sealed class GetResidentHandler : RequestHandler<GetResident, string>
     {
         #region Fields.
 
@@ -41,11 +41,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FindTenaIdHandler"/> class.
+        /// Initializes a new instance of the <see cref="GetResidentHandler"/> class.
         /// </summary>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
-        public FindTenaIdHandler(IPatientService patientService, ITenaService tenaService)
+        public GetResidentHandler(IPatientService patientService, ITenaService tenaService)
         {
             this.patientService = patientService;
             this.tenaService = tenaService;
@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override string Handle(FindTenaId message)
+        public override string Handle(GetResident message)
         {
             return null;
 

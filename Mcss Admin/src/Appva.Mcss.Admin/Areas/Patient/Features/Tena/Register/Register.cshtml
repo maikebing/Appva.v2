@@ -1,0 +1,133 @@
+﻿@using Appva.Mcss.Admin.Application.Common
+@model Appva.Mcss.Admin.Models.RegisterTenaPatientId
+@{
+    SetTitle("TENA Identifi");
+}
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.PatientViewModel)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.PatientViewModel)
+
+
+<script>
+    $(document).ready(function () {
+        $('form').bind("reset", function (e) {
+            e.preventDefault();
+            reset();
+            $('#ExternalId').val('');
+        });
+        $("#ExternalId").on("input", function () {
+            if (this.value.length == 8) {
+                $.ajax({
+                    url: '@Url.Action("GetResident","Tena")',
+                    type: 'GET',
+                    data: { 'ExternalId': this.value },
+                    success: function (result) {
+                        var message = JSON.parse(result);
+                        console.log(result);
+                        /* 
+                        if (message.StatusCode == 200) {
+                            resetError();
+                            $('.tena-response-facility').html(message.FacilityName);
+                            $('.tena-response-room').html(message.RoomNumber);
+                            $('#tena-response').show();
+                            $('.button--primary').prop('disabled', false);
+                            $('.button--secondary').prop('disabled', false).click(function (e) {
+                                e.preventDefault();
+                                $('#ExternalId').val('');
+                                reset();
+                            });
+                            $('.button--primary').prop('disabled', false);
+                        } else {
+                            console.log(message.StatusMessage);
+                            $('.tena-error-message').html(message.StatusMessage);
+                            $('#tena-error').show();
+                        }
+                        */
+                        if (message.Message) {
+                            $('.tena-id-form .instructions .text').html(message.Message);
+                            $('.tena-id-form .instructions').addClass("error");
+                        } else {
+                            resetError();
+                            $('.tena-response-facility').html(message.FacilityName);
+                            $('.tena-response-room').html(message.RoomNumber);
+                            $('#tena-response').show();
+                            $('#tena-response .button').prop('disabled', false);
+                        }
+                    },
+                    error: function (error) {
+                        $('.tena-error-message').html("Ett fel inträffade, var god försök igen.");
+                        $('#tena-error').show();
+                    }
+                });
+            } else {
+                reset();
+                resetError();
+            }
+        });
+        function reset() {
+            $('#tena-response .button').prop('disabled', true);
+            $('#tena-response').css('display', 'none');
+            $('.tena-response-facility').html('');
+            $('.tena-response-room').html('');
+        }
+        function resetError() {
+            $('.tena-id-form .instructions .text').html("8 tecken");
+            $('.tena-id-form .instructions').removeClass("error");
+        }
+    });
+</script>
+<div class="main tena-reg" id="main" role="main">
+    <div class="section section--hspace section--vspace section--bluetone">
+        
+        <div class="section section--card section--vspace width-limiter width-limiter--s">
+            <div class="section section--header section--hspace">
+
+                <h2 class="h3">Börja använda TENA Identifi</h2>
+            </div>
+            
+            <div class="section section--hspace section--vspace">
+                @using (Html.BeginForm("activate", "tena"))
+                {
+                    <p class="body">För att kunna använda TENA Identifi tillsammans med MCSS måste du först ange <b>den boendes ID i Identifi</b> här.</p>
+
+                    <div class="">
+                        <p>
+                            
+                            <a href="#" class="button button--neutral">
+                                <img src="~/Assets/i/ico-question.png" />
+                            Var hittar jag TENA Identifi ID
+                            </a>
+                        </p>
+                        <div class="form-controls">
+                            @Html.LabelFor(x => x.ExternalId, "Den boendes Identifi-ID:")
+                            <div class="tena-id-form">
+                                <p class="instructions">
+                                    <span class="text">8 tecken</span>
+                                    <span class="required-indicator">*</span>
+                                </p>
+                                @Html.TextBoxFor(x => x.ExternalId, new { maxlength=8, placeholder="XXXXXXXX" })
+                            </div>
+                        </div>
+                        <div id="target">
+                            <div id="tena-response" class="section section--narrow section--white section--bubble section--hspace section--vspace inliner" style="display:none;">
+                                <dl>
+                                    <dt>Plats</dt>
+                                    <dd class="tena-response-facility"></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Rum</dt>
+                                    <dd class="tena-response-room"></dd>
+                                </dl>
+                                <div class="form-controls form-controls--align-end">
+                                    <button class="button" type="reset" disabled>Ångra</button>
+                                    <button class="button button--primary" type="submit" disabled>Aktivera</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                }
+            </div>
+            
+        </div>
+    </div>
+</div>

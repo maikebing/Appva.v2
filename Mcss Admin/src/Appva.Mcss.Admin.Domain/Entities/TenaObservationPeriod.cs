@@ -28,8 +28,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
         /// <param name="category">The category.</param>
-        public TenaObservationPeriod(DateTime startDate, DateTime endDate, Patient patient, string name, string description, Taxon category = null) 
-            : base(patient, name, description, category)
+        public TenaObservationPeriod(DateTime startDate, DateTime endDate, Patient patient, string name, string description) 
+            : base(patient, name, description)
         {
             this.StartDate = startDate;
             this.EndDate = endDate;

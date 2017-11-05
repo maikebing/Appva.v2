@@ -55,7 +55,7 @@ namespace Appva.Mcss.Admin
 
             // New design
             bundles.Add(new StyleBundle("~/Assets/css/new/bundle").Include(
-                "~/Assets/css/new/all.min.css", "~/Assets/css/new/main.prefixed.css"
+                "~/Assets/css/new/all.min.css", "~/Assets/css/new/hotfixes/tena/registration.css", "~/Assets/css/new/hotfixes/tena/list.css", "~/Assets/css/new/main.prefixed.css"
             ));
 
             ////Exit-Confirmation

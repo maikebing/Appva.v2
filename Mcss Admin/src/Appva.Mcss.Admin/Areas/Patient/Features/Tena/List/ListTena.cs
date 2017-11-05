@@ -33,9 +33,12 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Message
+        /// Gets or sets the period identifier.
         /// </summary>
-        public string Message
+        /// <value>
+        /// The period identifier.
+        /// </value>
+        public Guid? PeriodId
         {
             get;
             set;

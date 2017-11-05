@@ -11,6 +11,8 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using Appva.Cqrs;
+    using DataAnnotationsExtensions;
+    using System.ComponentModel.DataAnnotations;
 
     #endregion
 
@@ -31,6 +33,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// StartDate
         /// </summary>
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime StartDate
         {
             get;
@@ -40,6 +43,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// EndDate
         /// </summary>
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime EndDate
         {
             get;

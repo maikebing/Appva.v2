@@ -1,0 +1,85 @@
+﻿
+body {
+    background:rgb(239,241,246);
+}
+
+label, .button {
+    font-size:1rem;
+}
+
+/* Sections */
+
+.tena-list .section--header {
+    border-bottom: 1px solid rgb(219,224,236);
+}
+
+/* Left-nav */
+
+.tena-list .sub-nav {
+    margin-bottom:12px;
+}
+
+.tena-list .sub-nav h2 {
+    font-weight:bold;
+    text-transform: uppercase;
+    margin-top:16px;
+    padding:0 16px;
+    font-size:14px;
+}
+
+.tena-list .sub-nav .sub-nav__item a {
+    padding:12px 24px;
+    font-size:14px;
+    color:rgb(64,78,104);
+    margin:0px;
+}
+
+.tena-list .sub-nav .sub-nav__item.sub-nav__item--selected a {
+    color:#ffffff;
+}
+
+/* Table */
+.tena-list table tbody tr:nth-child(even) { background: rgb(239,241,246); }
+.tena-list table tbody tr:nth-child(odd) { background: rgb(250, 251, 252); }
+.tena-list table tbody tr:hover { background: rgb(219, 224, 236);}
+
+.tena-list .table-general thead th { color:rgb(64,78,104); }
+.tena-list .table-general td { 
+    color:rgb(64,78,104); 
+    padding-left:12px;
+}
+
+.tena-list .empty-list {
+    border: 4px dashed rgb(219,224,236);
+    border-radius:16px;
+    padding-top:24px;
+}
+
+/* Button-fixes */
+
+.tena-list .button {
+    padding:10px 20px;
+}
+
+.tena-list .button img{
+    height:20px;
+    margin-right:10px;
+}
+
+.tena-list .button--neutral {
+    background: rgb(99,116,145);
+    border:1px solid rgb(64,78,104);
+}
+
+.tena-list .button--neutral:hover {
+    background:rgb(64,78,104);
+}
+
+.tena-list .button--primary {
+    background: rgb(104,173,87);
+    border:1px solid rgb(88,159,73);
+}
+
+.tena-list .button--primary:hover {
+    background:rgb(88,159,73);
+}

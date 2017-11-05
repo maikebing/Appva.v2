@@ -9,6 +9,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region imports
 
+    using System.Linq;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
@@ -26,17 +28,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
-        private IPatientService patientService;
+        private readonly IPatientService patientService;
 
         /// <summary>
         /// The <see cref="IPatientTransformer"/>.
         /// </summary>
-        private IPatientTransformer patientTransformer;
+        private readonly IPatientTransformer patientTransformer;
 
         /// <summary>
-        /// The <see cref="ISettingsService"/>.
+        /// The <see cref="ITenaService"/>.
         /// </summary>
-        private ISettingsService settingsService;
+        private readonly ITenaService tenaService;
 
         #endregion
 
@@ -47,12 +49,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// <param name="patientTransformer">The <see cref="IPatientTransformer"/>.</param>
-        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
-        public ListTenaHandler(IPatientService patientService, IPatientTransformer patientTransformer, ISettingsService settingsService)
+        /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
+        public ListTenaHandler(IPatientService patientService, IPatientTransformer patientTransformer, ITenaService tenaService)
         {
-            this.patientService = patientService;
+            this.patientService     = patientService;
             this.patientTransformer = patientTransformer;
-            this.settingsService = settingsService;
+            this.tenaService        = tenaService;
         }
 
         #endregion
@@ -62,12 +64,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListTenaModel Handle(ListTena message)
         {
+            var patient = this.patientService.Get(message.Id);
+            if(patient.TenaId.IsEmpty())
+            {
+                return null;
+            }
+
+            var periods = this.tenaService.ListTenaObservationPeriod(patient.Id)
+                .OrderByDescending(x => x.StartDate)
+                .ToList();
             return new ListTenaModel
             {
-                PatientViewModel = this.patientTransformer.ToPatient(this.patientService.Get(message.Id)),
-                Patient = this.patientService.Get(message.Id),
-                IsInstalled = this.settingsService.Find(ApplicationSettings.TenaSettings).IsInstalled,
-                Message = message.Message
+                Patient         = this.patientTransformer.ToPatient(patient),
+                Periods         = periods,
+                CurrentPeriodId = message.PeriodId.GetValueOrDefault(periods.Select(x => x.Id).FirstOrDefault())
+
             };
         }
 

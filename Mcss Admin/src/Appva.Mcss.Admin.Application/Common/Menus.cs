@@ -119,9 +119,8 @@ namespace Appva.Mcss.Admin.Application.Common
                          MenuItem.CreateNew("Larm", "List", "Alerts", "Patient", null, null, Permissions.Alert.Read, null),
                          MenuItem.CreateNew("Rapport", "ScheduleReport", "Schedule", "Patient", null, null, Permissions.Schedule.Report, null),
                          MenuItem.CreateNew("Kalender", "List", "Calendar", "Patient", null, null, Permissions.Calendar.Read, null),
-                         MenuItem.CreateNew("Saldon", "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null),
-                         MenuItem.CreateNew("Observationer", "List", "Observation", "Patient", null, null, Permissions.Inventory.Read, null),
-                         MenuItem.CreateNew("TENA Identifi", "List", "Tena", "Patient", null, null, Permissions.Tena.Read, null)
+                         MenuItem.CreateNew("Saldon", "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null), 
+                         MenuItem.CreateNew("TENA Identifi", "List", "Tena", "Patient", null, null, Permissions.Tena.Read, this.Tena)
                     };
                 }
                 return this.patient;
@@ -214,6 +213,34 @@ namespace Appva.Mcss.Admin.Application.Common
                 return this.log;
             }
         }
+
+        #endregion
+
+        #region Tena
+
+        /// <summary>
+        /// The menu for tena (Dummy) field
+        /// </summary>
+        private IList<IMenuItem> tena;
+
+        /// <summary>
+        /// The schedule-menu getter
+        /// </summary>
+        private IList<IMenuItem> Tena
+        {
+            get
+            {
+                if (this.tena == null)
+                {
+                    this.tena = new List<IMenuItem>()
+                    {
+                        MenuItem.CreateNew("Registrera patient (Dummy)", "Register", "Tena", "Patient", null, null, Permissions.Tena.Create, null)
+                    };
+                }
+                return this.tena;
+            }
+        }
+
 
         #endregion
 

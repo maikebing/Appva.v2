@@ -1,4 +1,4 @@
-﻿// <copyright file="ViewTenaMeasurements.cs" company="Appva AB">
+﻿// <copyright file="FindTenaId.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -9,20 +9,17 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using Appva.Cqrs;
-    using System;
-
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ViewTenaMeasurements : Identity<ViewTenaMeasurementsModel>
+    public sealed class GetResident : Identity<string>
     {
         /// <summary>
-        /// Tena Observation Period ID
+        /// The external tena id.
         /// </summary>
-        public Guid PeriodId
+        public string ExternalId
         {
             get;
             set;

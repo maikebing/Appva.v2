@@ -432,22 +432,38 @@ namespace Appva.Mcss.Admin.Application.Services
                 });
                 schedule = this.context.Get<Schedule>(scheduleID);
             }
-            this.sequenceService.Create(
-                patient,
-                this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),
-                this.GetDateTimeWithHourAndMinutes(endDate,   endTime,   isAllDay ? "23:59" : null),
-                schedule,
-                description,
-                canRaiseAlert,
-                interval,
-                intervalFactor,
-                intervalIsDate,
+
+            this.sequenceService.CreateEventBasedSequence(
+                schedule: schedule,
                 name: schedule.ScheduleSettings.Name,
-                overView: overview,
-                pauseAnyAlerts: pauseAlerts,
-                absent: absent,
-                allDay: isAllDay
+                description: description,
+                startDate: this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),
+                endDate: this.GetDateTimeWithHourAndMinutes(endDate, endTime, isAllDay ? "23:59" : null),
+                interval: interval,
+                intervalFactor: intervalFactor,
+                intervalIsDate: intervalIsDate,
+                overview: overview,
+                canRaiseAlert: pauseAlerts,
+                allDay: isAllDay,
+                absent: absent
             );
+
+            //this.sequenceService.Create(
+            //    patient,
+            //    this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),
+            //    this.GetDateTimeWithHourAndMinutes(endDate,   endTime,   isAllDay ? "23:59" : null),
+            //    schedule,
+            //    description,
+            //    canRaiseAlert,
+            //    interval,
+            //    intervalFactor,
+            //    intervalIsDate,
+            //    name: schedule.ScheduleSettings.Name,
+            //    overView: overview,
+            //    pauseAnyAlerts: pauseAlerts,
+            //    absent: absent,
+            //    allDay: isAllDay
+            //);
         }
 
         /// <summary>

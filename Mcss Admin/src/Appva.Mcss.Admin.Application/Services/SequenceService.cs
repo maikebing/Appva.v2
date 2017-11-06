@@ -23,6 +23,8 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface ISequenceService : IService
     {
+        #region Fields
+
         /// <summary>
         /// Finds a sequence by id
         /// </summary>
@@ -36,32 +38,49 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="sequence"></param>
         void Update(Sequence sequence);
 
-        void Create(
-            Patient patient,
-            DateTime startDate,
-            DateTime? endDate,
-            Schedule schedule,
-            String description,
-            bool? canRaiseAlert,
-            int interval,
-            int intervalFactor = 0,
-            bool intervalIsDate = false,
-            int rangeInMinutesBefore = 0,
-            int rangeInMinutesAfter = 0,
-            String name = null,
-            String times = null,
-            String dates = null,
-            bool onNeedBasis = false,
-            bool reminder = false,
-            int remindInMinutesBefore = 0,
-            Account reminderRecipient = null,
-            Taxon taxon = null,
-            Role requiredRole = null,
-            bool overView = true,
-            bool pauseAnyAlerts = false,
-            bool absent = false,
-            bool allDay = false
-        );
+        void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, bool onNeedBasis, 
+            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null);
+
+        void CreateIntervalBasedSequence(Schedule schedule, string name, string description, DateTime startDate, int interval, string times,
+            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null);
+
+        void CreateDatesBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate, string dates, string times,
+            Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null);
+
+        void CreateEventBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate,
+            int interval = 0, int intervalFactor = 0, bool intervalIsDate = false, bool reminder = false, bool canRaiseAlert = false, bool overview = false, bool allDay = false, bool absent = false);
+
+
+
+
+        //void Create(
+        //    Patient patient,
+        //    DateTime startDate,
+        //    DateTime? endDate,
+        //    Schedule schedule,
+        //    String description,
+        //    bool? canRaiseAlert,
+        //    int interval,
+        //    int intervalFactor = 0,
+        //    bool intervalIsDate = false,
+        //    int rangeInMinutesBefore = 0,
+        //    int rangeInMinutesAfter = 0,
+        //    String name = null,
+        //    String times = null,
+        //    String dates = null,
+        //    bool onNeedBasis = false,
+        //    bool reminder = false,
+        //    int remindInMinutesBefore = 0,
+        //    Account reminderRecipient = null,
+        //    Taxon taxon = null,
+        //    Role requiredRole = null,
+        //    bool overView = true,
+        //    bool pauseAnyAlerts = false,
+        //    bool absent = false,
+        //    bool allDay = false
+        //);
+
+        #endregion
     }
 
     /// <summary>
@@ -72,19 +91,21 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
-        /// </summary>
-        private readonly IPersistenceContext context;
-
-        /// <summary>
         /// The <see cref="ISequenceRepository"/>
         /// </summary>
         private readonly ISequenceRepository sequenceRepository;
 
         /// <summary>
+        /// The <see cref="IScheduleRepository"/>
+        /// </summary>
+        private readonly IScheduleRepository scheduleRepository;
+
+        /// <summary>
         /// The <see cref="IAuditService"/>
         /// </summary>
         private readonly IAuditService auditService;
+
+        private readonly ITaxonRepository taxonRepository;
 
         #endregion
 
@@ -94,23 +115,65 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="SequenceService"/> class.
         /// </summary>
         /// <param name="context">The <see cref="IPersistenceContext"/></param>
-        public SequenceService(ISequenceRepository sequenceRepository, IAuditService auditService, IPersistenceContext context)
+        public SequenceService(ISequenceRepository sequenceRepository, IScheduleRepository scheduleRepository, IAuditService auditService, ITaxonRepository taxonRepository)
         {
-            this.context = context;
             this.sequenceRepository = sequenceRepository;
+            this.scheduleRepository = scheduleRepository;
             this.auditService = auditService;
+            this.taxonRepository = taxonRepository;
         }
 
         #endregion
 
-        #region ISequenceService Members.
+        #region ISequenceRepository Members.
+
+        /// <inheritdoc />
+        public void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, bool onNeedBasis, 
+            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
+        {
+            this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, onNeedBasis, endDate, taxon, role, rangeInMinutesBefore, rangeInMinutesAfter, inventory));
+            schedule.UpdatedAt = DateTime.Now;
+            this.scheduleRepository.Update(schedule);
+        }
+
+        /// <inheritdoc />
+        public void CreateIntervalBasedSequence(Schedule schedule, string name, string description, DateTime startDate, int interval, string times,
+            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
+        {
+            this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, interval, times, endDate, taxon, role, rangeInMinutesBefore, rangeInMinutesAfter, inventory));
+            schedule.UpdatedAt = DateTime.Now;
+            this.scheduleRepository.Update(schedule);
+        }
+
+        /// <inheritdoc />
+        public void CreateDatesBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate, string dates, string times,
+            Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
+        {
+            this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, endDate, dates, times, taxon, role, rangeInMinutesBefore, rangeInMinutesAfter, inventory));
+            schedule.UpdatedAt = DateTime.Now;
+            this.scheduleRepository.Update(schedule);
+        }
+
+        /// <inheritdoc />
+        public void CreateEventBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate,
+            int interval = 0, int intervalFactor = 0, bool intervalIsDate = false, bool reminder = false, bool canRaiseAlert = false, bool overview = false, bool allDay = false, bool absent = false)
+        {
+            if (schedule.ScheduleSettings.ScheduleType == ScheduleType.Action)
+            {
+                canRaiseAlert = schedule.ScheduleSettings.CanRaiseAlerts;
+            }
+            this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, endDate, interval, intervalFactor, intervalIsDate, reminder, canRaiseAlert, overview, allDay, absent));
+            schedule.UpdatedAt = DateTime.Now;
+            this.scheduleRepository.Update(schedule);
+        }
 
         /// <inheritdoc />
         public Sequence Find(Guid id)
         {
-            return this.context.Get<Sequence>(id);
+            return this.sequenceRepository.Get(id);
         }
 
+        /// <inheritdoc />
         public void Update(Sequence sequence)
         {
             this.auditService.Update(
@@ -124,71 +187,24 @@ namespace Appva.Mcss.Admin.Application.Services
             this.sequenceRepository.Update(sequence);
         }
 
+        #endregion
+
+        #region IScheduleRepository Members
+
         /// <inheritdoc />
-        public void Create(
-            Patient patient,
-            DateTime startDate,
-            DateTime? endDate,
-            Schedule schedule,
-            String description,
-            bool? canRaiseAlert,
-            int interval,
-            int intervalFactor = 0,
-            bool intervalIsDate = false,
-            int rangeInMinutesBefore = 0,
-            int rangeInMinutesAfter = 0,
-            String name = null,
-            String times = null,
-            String dates = null,
-            bool onNeedBasis = false,
-            bool reminder = false,
-            int remindInMinutesBefore = 0,
-            Account reminderRecipient = null,
-            Taxon taxon = null,
-            Role requiredRole = null,
-            bool overView = true,
-            bool pauseAnyAlerts = false,
-            bool absent = false,
-            bool allDay = false
-        )
+        public Schedule GetSchedule(Guid scheduleId)
         {
-            if (schedule.ScheduleSettings.ScheduleType == ScheduleType.Action)
-            {
-                canRaiseAlert = schedule.ScheduleSettings.CanRaiseAlerts;
-            }
-            var sequence = new Sequence
-            {
-                IsActive = true,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
-                Patient = patient,
-                StartDate = startDate,
-                EndDate = endDate,
-                Schedule = schedule,
-                Name = name,
-                Description = description,
-                RangeInMinutesAfter = rangeInMinutesAfter,
-                RangeInMinutesBefore = rangeInMinutesBefore,
-                Times = times,
-                Dates = dates,
-                Interval = interval,
-                IntervalFactor = intervalFactor,
-                IntervalIsDate = intervalIsDate,
-                OnNeedBasis = onNeedBasis,
-                Reminder = reminder,
-                ReminderInMinutesBefore = remindInMinutesBefore,
-                ReminderRecipient = reminderRecipient,
-                Taxon = taxon,
-                Role = requiredRole,
-                CanRaiseAlert = (bool)canRaiseAlert,
-                Overview = overView,
-                PauseAnyAlerts = pauseAnyAlerts,
-                Absent = absent,
-                AllDay = allDay
-            };
-            this.context.Save(sequence);
-            schedule.UpdatedAt = DateTime.Now;
-            this.context.Update(schedule);
+            return this.scheduleRepository.Get(scheduleId);
+        }
+
+        #endregion
+
+        #region ITaxonRepository Members
+
+        /// <inheritdoc />
+        public Taxon GetTaxon(Guid taxonId)
+        {
+            return this.taxonRepository.Get(taxonId);
         }
 
         #endregion

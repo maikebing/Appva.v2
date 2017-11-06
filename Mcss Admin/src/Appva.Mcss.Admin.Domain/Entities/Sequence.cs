@@ -42,7 +42,21 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #region Constructor.
 
-        // Construct for OnNeedBasis Sequences. Minimun requirements for a sequence construct
+        /// <summary>
+        /// Creates a new instance of Sequence.
+        /// On need basis
+        /// </summary>
+        /// <param name="schedule"></param>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="startDate"></param>
+        /// <param name="onNeedBasis"></param>
+        /// <param name="endDate"></param>
+        /// <param name="taxon"></param>
+        /// <param name="role"></param>
+        /// <param name="rangeInMinutesBefore"></param>
+        /// <param name="rangeInMinutesAfter"></param>
+        /// <param name="inventory"></param>
         public Sequence(Schedule schedule, string name, string description, DateTime startDate, bool onNeedBasis, 
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
@@ -65,8 +79,25 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Inventory = inventory;
         }
         
-        // construct for repetitative sequences
-        public Sequence(Schedule schedule, string name, string description, DateTime startDate, int interval, int intervalFactor, string times, bool intervalIsDate,
+        /// <summary>
+        /// Creates a new instance of Sequence.
+        /// A reoccurring sequence based on interval
+        /// </summary>
+        /// <param name="schedule"></param>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="startDate"></param>
+        /// <param name="interval"></param>
+        /// <param name="intervalFactor"></param>
+        /// <param name="times"></param>
+        /// <param name="intervalIsDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="taxon"></param>
+        /// <param name="role"></param>
+        /// <param name="rangeInMinutesBefore"></param>
+        /// <param name="rangeInMinutesAfter"></param>
+        /// <param name="inventory"></param>
+        public Sequence(Schedule schedule, string name, string description, DateTime startDate, int interval, string times,
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
             Requires.NotNull(schedule, "schedule");
@@ -81,9 +112,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Description = description;
             this.StartDate = startDate;
             this.Interval = interval;
-            this.IntervalFactor = intervalFactor;
             this.Times = times;
-            this.IntervalIsDate = intervalIsDate;
+            //this.IntervalIsDate = intervalIsDate;
             this.EndDate = endDate;
             this.Taxon = taxon;
             this.Role = role;
@@ -92,7 +122,22 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Inventory = inventory;
         }
 
-        // construct for sequence with fixed dates
+        /// <summary>
+        /// Creates a new instance of Sequence.
+        /// A reoccurring sequence with specific given dates
+        /// </summary>
+        /// <param name="schedule">Requried.</param>
+        /// <param name="name">Required.</param>
+        /// <param name="description">Required.</param>
+        /// <param name="startDate">Required.</param>
+        /// <param name="endDate">Required.</param>
+        /// <param name="dates">Required.</param>
+        /// <param name="times">Required.</param>
+        /// <param name="taxon">Optional. Default = null.</param>
+        /// <param name="role">Optional. Default = null.</param>
+        /// <param name="rangeInMinutesBefore">Optional. Default = 0.</param>
+        /// <param name="rangeInMinutesAfter">Optional. Default = 0.</param>
+        /// <param name="inventory">Optional. Default = null.</param>
         public Sequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate, string dates, string times,
             Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
@@ -105,6 +150,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             Requires.NotNullOrEmpty(times, "times");
 
             this.Schedule = schedule;
+            this.Patient = schedule.Patient;
             this.Name = name;
             this.Description = description;
             this.StartDate = startDate;
@@ -118,8 +164,25 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Inventory = inventory;
         }
 
-        // construct for sequences used in events
-        public Sequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate)
+        /// <summary>
+        /// Creates an instance of Sequence
+        /// A calender event
+        /// </summary>
+        /// <param name="schedule">Required.</param>
+        /// <param name="name">Required.</param>
+        /// <param name="description">Required.</param>
+        /// <param name="startDate">Required.</param>
+        /// <param name="endDate">Required.</param>
+        /// <param name="interval">Optional, default = 0</param>
+        /// <param name="intervalFactor">Optional, default = 0</param>
+        /// <param name="intervalIsDate">Optional, default = false</param>
+        /// <param name="reminder">Optional, default = false</param>
+        /// <param name="canRaiseAlert">Optional, default = false</param>
+        /// <param name="overview">Optional, default = false</param>
+        /// <param name="allDay">Optional, default = false</param>
+        /// <param name="absent">Optional, default = false</param>
+        public Sequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate,
+            int interval = 0, int intervalFactor = 0, bool intervalIsDate = false, bool reminder = false, bool canRaiseAlert = false, bool overview = false, bool allDay = false, bool absent = false)
         {
             Requires.NotNull(schedule, "schedule");
             Requires.NotNullOrEmpty(name, "name");
@@ -128,10 +191,25 @@ namespace Appva.Mcss.Admin.Domain.Entities
             Requires.Equals(endDate.HasValue, true);
             Requires.Equals(endDate.Value >= startDate, true);
 
+            this.Schedule = schedule;
+            this.Patient = schedule.Patient;
+            this.Name = name;
+            this.Description = description;
+            this.StartDate = startDate;
+            this.EndDate = endDate;
+            this.Interval = interval;
+            this.IntervalFactor = intervalFactor;
+            this.IntervalIsDate = intervalIsDate;
+            this.Reminder = reminder;
+            this.CanRaiseAlert = canRaiseAlert;
+            this.Overview = overview;
+            this.AllDay = allDay;
+            this.Absent = absent;
         }
 
 
-        private Sequence(
+        // My own scribbles
+        protected internal Sequence(
             string name,  // always required
             string description,  // optional?
             DateTime startDate, // always required
@@ -207,7 +285,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="Sequence"/> class.
         /// </summary>
-        public Sequence()
+        protected internal Sequence()
         {
         }
 
@@ -292,7 +370,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The hour of day
         /// </summary>
-        public virtual string Hour // always null?
+        public virtual string Hour // Always null?
         {
             get;
             set;
@@ -301,7 +379,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The minute of hour
         /// </summary>
-        public virtual string Minute // always null?
+        public virtual string Minute // Always null?
         {
             get;
             set;

@@ -11,30 +11,26 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using Appva.Mcss.Admin.Domain.Entities;
 using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 using Appva.Persistence;
-using System;
+    using Appva.Repository;
+    using System;
 using System.Collections.Generic;
 using System.Linq;
 
     #endregion
 
-    public interface ISequenceRepository : 
-        IUpdateRepository<Sequence>,
-        IRepository
+    public interface ISequenceRepository : IRepository<Sequence>
     {
+        #region Fields
 
+        #endregion
     }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class SequenceRepository : ISequenceRepository
+    public sealed class SequenceRepository : Repository<Sequence>, ISequenceRepository
     {
-        #region Fields.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>
-        /// </summary>
-        private readonly IPersistenceContext persistenceContext;
+        #region Variables.
 
         #endregion
 
@@ -44,8 +40,8 @@ using System.Linq;
         /// Initializes a new instance of the <see cref="SequenceRepository"/> class.
         /// </summary>
         public SequenceRepository(IPersistenceContext persistenceContext)
-        {
-            this.persistenceContext = persistenceContext;
+            :base(persistenceContext)
+        { 
         }
 
         #endregion
@@ -53,11 +49,11 @@ using System.Linq;
         #region IUpdateRepository members.
 
         /// <inheritdoc />
-        public void Update(Sequence entity)
-        {
-            entity.UpdatedAt = DateTime.Now;
-            this.persistenceContext.Update<Sequence>(entity);
-        }
+        //public void Update(Sequence entity)
+        //{
+        //    entity.UpdatedAt = DateTime.Now;
+        //    this.persistenceContext.Update<Sequence>(entity);
+        //}
 
         #endregion
     }

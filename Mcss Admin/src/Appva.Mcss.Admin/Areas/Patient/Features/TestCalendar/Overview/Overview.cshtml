@@ -1,0 +1,59 @@
+﻿@using Appva.Mcss.Admin.Application.Common;
+@model Appva.Mcss.Admin.Models.OverviewTestCalendarModel
+<div>
+    <div class="heading cf">
+        <h2>Kalender</h2>
+    </div>
+    <div class="panel-c">
+        @if (Model.OngoingEvents.IsNotNull() && Model.OngoingEvents.Count > 0)
+        {
+            <h3>Pågående</h3>
+            <table class="cal-overview">
+                <thead>
+                    <tr>
+                        <th scope="col">Boende</th>
+                        <th scope="col">Aktivitet</th>
+                        <th scope="col">Dagar kvar</th>
+                        <th scope="col" class="check">Kvittera</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var act in Model.OngoingEvents)
+                    {
+                        Html.RenderPartial("/Areas/Patient/Features/TestCalendar/Overview/_OverviewCalendarTask.cshtml", act);
+                    }
+                </tbody>
+            </table>
+        }
+        @if (Model.CommingEvents.IsNotNull() && Model.CommingEvents.Count > 0)
+        {
+            <h3>Kommande</h3>
+            <table class="cal-overview">
+                <thead>
+                    <tr>
+                        <th scope="col">Boende</th>
+                        <th scope="col">Aktivitet</th>
+                        <th scope="col">Startar om</th>
+                        <th scope="col" class="check">Kvittera</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var act in Model.CommingEvents)
+                    {
+                        Html.RenderPartial("/Areas/Patient/Features/TestCalendar/Overview/_OverviewCalendarTask.cshtml", act);
+                    }
+                </tbody>
+            </table>
+        }
+        @if ((Model.OngoingEvents.IsNull() || Model.OngoingEvents.Count == 0) &&
+        (Model.CommingEvents.IsNull() || Model.CommingEvents.Count == 0))
+        {
+            <div class="no-data">
+                <h3>Inga kommande händelser</h3>
+            </div>
+        }
+    </div>
+    <script type="text/javascript">
+        mcss.Calendar.init();
+        </script>
+    </div>

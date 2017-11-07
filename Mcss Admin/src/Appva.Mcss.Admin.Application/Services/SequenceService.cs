@@ -86,7 +86,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class SequenceService : ISequenceService
+    public class SequenceService : ISequenceService
     {
         #region Variables.
 
@@ -99,6 +99,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// The <see cref="IScheduleRepository"/>
         /// </summary>
         private readonly IScheduleRepository scheduleRepository;
+
+        //private readonly IScheduleService scheduleService;
 
         /// <summary>
         /// The <see cref="IAuditService"/>
@@ -132,7 +134,6 @@ namespace Appva.Mcss.Admin.Application.Services
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
             this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, onNeedBasis, endDate, taxon, role, rangeInMinutesBefore, rangeInMinutesAfter, inventory));
-            schedule.UpdatedAt = DateTime.Now;
             this.scheduleRepository.Update(schedule);
         }
 
@@ -141,7 +142,6 @@ namespace Appva.Mcss.Admin.Application.Services
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
             this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, interval, times, endDate, taxon, role, rangeInMinutesBefore, rangeInMinutesAfter, inventory));
-            schedule.UpdatedAt = DateTime.Now;
             this.scheduleRepository.Update(schedule);
         }
 
@@ -150,7 +150,6 @@ namespace Appva.Mcss.Admin.Application.Services
             Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
             this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, endDate, dates, times, taxon, role, rangeInMinutesBefore, rangeInMinutesAfter, inventory));
-            schedule.UpdatedAt = DateTime.Now;
             this.scheduleRepository.Update(schedule);
         }
 
@@ -163,7 +162,6 @@ namespace Appva.Mcss.Admin.Application.Services
                 canRaiseAlert = schedule.ScheduleSettings.CanRaiseAlerts;
             }
             this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, endDate, interval, intervalFactor, intervalIsDate, reminder, canRaiseAlert, overview, allDay, absent));
-            schedule.UpdatedAt = DateTime.Now;
             this.scheduleRepository.Update(schedule);
         }
 

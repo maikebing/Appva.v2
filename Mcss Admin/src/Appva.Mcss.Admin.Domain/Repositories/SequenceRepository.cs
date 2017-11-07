@@ -18,9 +18,14 @@ using System.Linq;
 
     #endregion
 
-    public interface ISequenceRepository : IRepository<Sequence>
+    public interface ISequenceRepository : IIdentityRepository<Sequence>, 
+        IUpdateRepository<Sequence>, 
+        ISaveRepository<Sequence>, 
+        IRepository
     {
         #region Fields
+
+        Sequence Get(Guid id);
 
         #endregion
     }
@@ -28,9 +33,11 @@ using System.Linq;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class SequenceRepository : Repository<Sequence>, ISequenceRepository
+    public sealed class SequenceRepository : ISequenceRepository
     {
         #region Variables.
+
+        private readonly IPersistenceContext persistenceContext;
 
         #endregion
 
@@ -40,21 +47,35 @@ using System.Linq;
         /// Initializes a new instance of the <see cref="SequenceRepository"/> class.
         /// </summary>
         public SequenceRepository(IPersistenceContext persistenceContext)
-            :base(persistenceContext)
-        { 
+        {
+            this.persistenceContext = persistenceContext;
         }
 
+
         #endregion
 
-        #region IUpdateRepository members.
+        public Sequence Get(Guid id)
+        {
+            return this.persistenceContext.Get<Sequence>(id);
+        }
 
         /// <inheritdoc />
-        //public void Update(Sequence entity)
-        //{
-        //    entity.UpdatedAt = DateTime.Now;
-        //    this.persistenceContext.Update<Sequence>(entity);
-        //}
+        public Sequence Find(Guid id)
+        {
+            return this.persistenceContext.Get<Sequence>(id);
+        }
 
-        #endregion
+        /// <inheritdoc />
+        public void Save(Sequence entity)
+        {
+            this.persistenceContext.Save(entity);
+        }
+
+        /// <inheritdoc />
+        public void Update(Sequence entity)
+        {
+            entity.UpdatedAt = DateTime.Now;
+            this.persistenceContext.Update(entity);
+        }
     }
 }

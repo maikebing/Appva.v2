@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Persistence;
+    using Appva.Mcss.Admin.Domain.Repositories;
 
     #endregion
 
@@ -70,6 +71,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="schedule"></param>
         void SaveScheduleSetting(ScheduleSettings schedule);
+
+        /// <summary>
+        /// Gets the specified schedule identifier.
+        /// </summary>
+        /// <param name="scheduleId">The schedule identifier.</param>
+        /// <returns>Schedule<see cref="Schedule"/>.</returns>
+        Schedule Get(Guid scheduleId);
     }
 
     /// <summary>
@@ -82,6 +90,8 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly ILogService logService;
 
         private readonly IPersistenceContext persistence;
+
+        //private readonly IScheduleRepository scheduleRepository;
 
         #endregion
 
@@ -97,6 +107,12 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         #endregion
+
+        /// <inheritdoc />
+        public Schedule Get(Guid id)
+        {
+            return this.persistence.Get<Schedule>(id);
+        }
 
         public IList<Task> FindTasks(
             DateTime start,

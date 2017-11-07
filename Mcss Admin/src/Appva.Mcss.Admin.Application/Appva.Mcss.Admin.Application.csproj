@@ -225,12 +225,14 @@
     <Compile Include="Security\PreAuthorizeTenantMiddleware.cs" />
     <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\AbstractTaskService.cs" />
+    <Compile Include="Services\CalendarService.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Security\SithsAuthentication.cs" />
     <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\IPatientTransformer.cs" />
     <Compile Include="Services\LdapService.cs" />
     <Compile Include="Services\ILogService.cs" />
     <Compile Include="Services\InventoryService.cs" />

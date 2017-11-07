@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -622,6 +623,27 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Create\CreateTestCalendar.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Create\CreateTestCalendarHandler.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Create\CreateTestCalendarModel.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Create\CreateTestCalendarPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Details\TestCalendarDetails.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Details\TestCalendarDetailsHandler.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\EditAll\EditAllTestCalendar.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Edit\EditTestCalendar.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Edit\EditTestCalendarHandler.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Edit\EditTestCalendarPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\List\ListTestCalendar.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\List\ListTestCalendarHandler.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\List\ListTestCalendarModel.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Models\TestCalendarTask.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Models\TestEventListViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Models\TestCalendarWeek.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Models\TestEventViewModel.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Overview\OverviewTestCalendar.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Overview\OverviewTestCalendarHandler.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\Overview\OverviewTestCalendarModel.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\TestCalendarController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
@@ -1410,6 +1432,13 @@
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRole.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\rename-inventory.cshtml" />
+    <Content Include="Areas\Patient\Features\TestCalendar\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\TestCalendar\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\TestCalendar\Details\Details.cshtml" />
+    <Content Include="Areas\Patient\Features\TestCalendar\Edit\Edit.cshtml" />
+    <Content Include="Areas\Patient\Features\TestCalendar\EditActivity\EditActivity.cshtml" />
+    <Content Include="Areas\Patient\Features\TestCalendar\Overview\Overview.cshtml" />
+    <Content Include="Areas\Patient\Features\TestCalendar\Overview\_OverviewCalendarTask.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

@@ -59,8 +59,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly ISettingsService settingsService;
 
-
-
         /// <summary>
         /// The <see cref="IInventoryService"/>.
         /// </summary>

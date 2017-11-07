@@ -1,0 +1,110 @@
+﻿@model Appva.Mcss.Admin.Application.Models.CalendarTask
+@using Appva.Mcss.Admin.Application.Common
+<div class="std-panel lb-panel-small calendar-details">
+    <div class="date" style="background:@Model.Color;">
+        <div class="day">@Model.StartTime.Day</div>
+        <div class="month">@Model.StartTime.ToString("MMMM").FirstToUpper()</div>
+    </div>
+    <h3 style="border-color:@Model.Color">@Model.CategoryName</h3>
+    <div class="time">
+        @{
+            var formatString = string.Empty;
+            if (Model.StartTime.Date.Equals(Model.EndTime.Date))
+            {
+                if (Model.IsFullDayEvent)
+                {
+                    formatString = "Hela dagen {1:d MMM yyyy}";
+                }
+                else
+                {
+                    formatString = " {1:d MMM yyyy} {0:HH:mm} till {1:HH:mm}";
+                }
+                
+            }
+            else
+            {
+                if (Model.IsFullDayEvent)
+                {
+                    formatString = "{0:d MMM yyyy} till {1:d MMM yyyy}";
+                }
+                else
+                {
+                    formatString = "{0:d MMM yyyy HH:mm} till {1:d MMM yyyy HH:mm}";
+                }
+                 
+            }
+        }
+        @string.Format(formatString, Model.StartTime, Model.EndTime)
+    </div>
+    <div class="description">
+        @Model.Description
+    </div>
+    <div class="info cf">
+        @if (Model.Interval != 0)
+        {
+            <label class="">Upprepning:</label>
+            <span>
+                @Model.RepetionText
+            </span>
+        }
+        
+    </div>
+    <div class="info cf">
+        <h6>Kvittering</h6>
+        @if (Model.NeedsQuittance)
+        {
+            <span class="act-activity">
+                <label class="cal-label" for="@Model.EndTime">
+                    @(Model.IsQuittanced ? string.Format("Kvitterad av {0}", Model.QuittancedBy.FullName) : string.Format("Ej kvitterad"))
+                </label>
+                <input type="checkbox" @(Model.IsQuittanced ? "checked" : "") value="@Model.IsQuittanced.ToString()" name="@Model.EndTime" id="@Model.SequenceId" class="cal-quittance" />
+            </span>
+        }
+        else
+        {
+            <span>Händelsen behöver inte kvitteras</span>
+        }
+    </div>
+    <div class="info cf">
+        <h6>Signering (TEST)</h6>
+        @if (Model.NeedsSignature)
+        {
+            if (Model.Signature != null)
+            {
+                <span class="act-activity">
+                    <span class="status">
+                        <img src="@Url.Image(Model.Signature.SignatureStatus.Path)" />
+                        <p>@Model.Signature.SignatureStatus.Name</p>
+                    </span>
+                    <span>
+                        <p class="name">@Model.Signature.SignedBy.FullName </p>
+                        <p class="time">@(Model.Signature.SignatureDate.Date == DateTime.Now.Date ? string.Format("Idag {0:HH:mm}",Model.Signature.SignatureDate) : Model.Signature.SignatureDate.ToString("yyyy-MM-dd HH:mm"))</p>
+                    </span>
+                </span>
+            }
+            else
+            {
+                <span>Inte signerad</span>
+            }
+
+        }
+        else
+        {
+            <span>Händelsen behöver inte signeras</span>
+        }
+    </div>
+    <div>
+        @Html.ActionLink(Permissions.Calendar.Update, "Ändra", "Edit", "TestCalendar", new { Id = Model.PatientId, SequenceId = Model.SequenceId, Date = Model.EndTime }, new { @class = "btn lb-link", @title = "Ändra aktiviteten" })
+        @if (Model.TaskId.NotEqual(Guid.Empty))
+        {
+            @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "RemoveActivity", "TestCalendar", new { Id = Model.PatientId, TaskId = Model.TaskId }, new { @class = "btn btn-del", @title = "Ta bort aktiviteten" })
+        }
+        else
+        {
+            @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "Remove", "TestCalendar", new { Id = Model.PatientId, SequenceId = Model.SequenceId, Date = Model.EndTime }, new { @class = "btn btn-del", @title = "Ta bort aktiviteten" })
+        }
+    </div>
+    
+</div>
+
+    

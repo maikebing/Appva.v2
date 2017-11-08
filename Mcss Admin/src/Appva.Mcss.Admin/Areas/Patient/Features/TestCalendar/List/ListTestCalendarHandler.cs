@@ -2,8 +2,10 @@
 using Appva.Core.Extensions;
 using Appva.Cqrs;
 using Appva.Mcss.Admin.Application.Auditing;
+using Appva.Mcss.Admin.Application.Models;
 using Appva.Mcss.Admin.Application.Services;
 using Appva.Mcss.Admin.Application.Services.Settings;
+using Appva.Mcss.Admin.Domain.Entities;
 using Appva.Mcss.Admin.Infrastructure;
 using Appva.Mcss.Web.ViewModels;
 using System;
@@ -42,6 +44,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IAuditService auditing;
 
+        // One service usage?
+        private readonly ICalendarService service;
         #endregion
 
         #region Constructor.
@@ -54,15 +58,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IPatientService patientService,
             ISettingsService settingsService,
             IPatientTransformer transformer,
-            IAuditService auditing)
+            IAuditService auditing,
+            ICalendarService service)
         {
             this.eventService = eventService;
             this.patientService = patientService;
             this.settingsService = settingsService;
             this.transformer = transformer;
             this.auditing = auditing;
+            this.service = service;
         }
-
+                
         #endregion
 
         public override TestEventListViewModel Handle(ListTestCalendar message)
@@ -76,6 +82,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 date = message.Date.GetValueOrDefault().NextMonth();
             }
+
+            // talk to 1 service instead?
             var categories = this.eventService.GetCategories();
             var filter = message.Filter ?? categories.Select(x => x.Id).ToArray();
             var patient = this.patientService.Get(message.Id);
@@ -89,7 +97,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Previous = date.PreviousMonth(),
                 Calendar = this.eventService.Calendar(date, events),
                 Patient = this.transformer.ToPatient(patient),
-                EventViewModel = new TestEventViewModel(),
+                //EventViewModel = new TestEventViewModel(), // why this?
                 Categories = categories.ToDictionary(x => categories.IndexOf(x)),
                 FilterList = filter.ToList(),
                 CalendarSettings = this.settingsService.GetCalendarSettings(),

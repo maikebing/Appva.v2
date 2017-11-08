@@ -644,6 +644,9 @@
     <Compile Include="Areas\Patient\Features\TestCalendar\Overview\OverviewTestCalendarHandler.cs" />
     <Compile Include="Areas\Patient\Features\TestCalendar\Overview\OverviewTestCalendarModel.cs" />
     <Compile Include="Areas\Patient\Features\TestCalendar\TestCalendarController.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\View\ViewTestCalendar.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\View\ViewTestCalendarHandler.cs" />
+    <Compile Include="Areas\Patient\Features\TestCalendar\View\ViewTestCalendarModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
@@ -1100,6 +1103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Dashboard\Features\Shared\" />
+    <Folder Include="Areas\Patient\Features\TestSequence\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
     <Folder Include="Assets\error-pages\i\" />
   </ItemGroup>

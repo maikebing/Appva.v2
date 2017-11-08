@@ -25,7 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     public sealed class SequenceController : Controller
     {
         #region Routes.
-
+        
         #region Create View.
 
         /// <summary>

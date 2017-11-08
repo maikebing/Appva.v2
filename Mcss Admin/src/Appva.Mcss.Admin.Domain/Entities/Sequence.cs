@@ -57,13 +57,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="rangeInMinutesBefore"></param>
         /// <param name="rangeInMinutesAfter"></param>
         /// <param name="inventory"></param>
-        public Sequence(Schedule schedule, string name, string description, DateTime startDate, bool onNeedBasis, 
+        public Sequence(Schedule schedule, string name, string description, DateTime startDate, 
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
             Requires.NotNull(schedule, "schedule");
             Requires.NotNullOrEmpty(name, "name");
             Requires.Equals((startDate >= DateTime.Now), true);
-            Requires.Equals(onNeedBasis, true);
 
             this.Schedule = schedule;
             this.Patient = schedule.Patient;
@@ -71,7 +70,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Description = description;
             this.StartDate = startDate;
             this.EndDate = endDate;
-            this.OnNeedBasis = onNeedBasis; // in this context this should always be set to true.
+            this.OnNeedBasis = true; // in this context this should always be set to true.
             this.Taxon = taxon;
             this.Role = role;
             this.RangeInMinutesBefore = rangeInMinutesBefore;
@@ -155,7 +154,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Description = description;
             this.StartDate = startDate;
             this.EndDate = endDate;
-            this.Dates = dates;
+            this.Dates = dates; // check the first and last date in this string. move logic here from service.
             this.Times = times;
             this.Taxon = taxon;
             this.Role = role;

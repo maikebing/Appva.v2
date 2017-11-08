@@ -420,6 +420,18 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         }
 
         #endregion
+
+        #region SequenceCalendar
+
+        [Route("view")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Calendar.ReadValue)]
+        public ActionResult View(ViewTestCalendar request)
+        {
+            return View();
+        }
+
+        #endregion
         
         #endregion
     }

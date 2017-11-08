@@ -203,7 +203,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="id"></param>
         public Sequence Get(Guid id)
         {
-            return this.context.Get<Sequence>(id);
+            //return this.context.Get<Sequence>(id);
+            return this.sequenceService.Find(id);
         }
 
         /// <summary>
@@ -216,6 +217,19 @@ namespace Appva.Mcss.Admin.Application.Services
             var firstInMonth = date.FirstOfMonth();
             var lastInMonth  = firstInMonth.AddDays(DateTime.DaysInMonth(firstInMonth.Year, firstInMonth.Month));
             return this.FindEventsWithinPeriod(firstInMonth, lastInMonth, patient: patient);
+        }
+
+        public IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, Patient patient, DateTime date)
+        {
+            var firstInMonth = date.FirstOfMonth();
+            var lastInMonth = firstInMonth.AddDays(DateTime.DaysInMonth(firstInMonth.Year, firstInMonth.Month));
+            var sequences = this.context.QueryOver<Sequence>()
+                .Where(x => x.IsActive)
+                  .And(x => x.Schedule.Id == schedule.Id);
+                  //.And(x => x.EndDate)
+
+
+            return this.FindEventsWithinPeriod(firstInMonth, lastInMonth, patient);
         }
 
         /// <summary>
@@ -360,7 +374,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public Guid CreateCategory(string name)
+        public Guid CreateCategory(string name)  // maybe clearify this one?
         {
             var category = new ScheduleSettings
             {
@@ -382,11 +396,13 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<ScheduleSettings> GetCategories(bool forceGetAllCategories = false)
         {
             var account = this.accountService.Find(this.identityService.PrincipalId);
+
+            // move to a repo?
             var categories = this.context.QueryOver<ScheduleSettings>()
                 .Where(x => x.ScheduleType == ScheduleType.Calendar)
                 .And(x => x.IsActive);
 
-            if (!forceGetAllCategories) 
+            if (forceGetAllCategories == false)
             {
                 var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
                 categories.WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
@@ -417,6 +433,9 @@ namespace Appva.Mcss.Admin.Application.Services
             bool absent
         )
         {
+            //Schedule sch = this.scheduleService.GetByPatient(patient.Id);
+
+            // repo
             var schedule = this.context.QueryOver<Schedule>()
                 .Where(x => x.Patient == patient)
                   .And(x => x.IsActive)

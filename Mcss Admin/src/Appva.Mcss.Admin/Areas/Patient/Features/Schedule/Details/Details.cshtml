@@ -1,4 +1,6 @@
 ﻿@using Appva.Mcss.Admin.Application.Common﻿
+@using Appva.Mcss.Admin.Configuration
+
 @model Appva.Mcss.Web.ViewModels.ScheduleDetailsViewModel
 
 @{
@@ -49,6 +51,10 @@
 	<h1>Signeringslistor</h1>
     @Html.ActionLink(Permissions.Sequence.Print, "Skapa pdf", "PrintPopUp", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn printp lb-link" })
     @Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+    @if (Appva.Core.Environment.ApplicationEnvironment.Is.Development || Appva.Core.Environment.ApplicationEnvironment.Is.Staging)
+    {
+        @Html.ActionLink("Signeringskalender", "view", "testcalendar", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+    }
 </div>
 
 <div id="content" class="cf">

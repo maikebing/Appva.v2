@@ -38,7 +38,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="sequence"></param>
         void Update(Sequence sequence);
 
-        void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, bool onNeedBasis, 
+        void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, 
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null);
 
         void CreateIntervalBasedSequence(Schedule schedule, string name, string description, DateTime startDate, int interval, string times,
@@ -130,10 +130,10 @@ namespace Appva.Mcss.Admin.Application.Services
         #region ISequenceRepository Members.
 
         /// <inheritdoc />
-        public void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, bool onNeedBasis, 
+        public void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, 
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
-            this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, onNeedBasis, endDate, taxon, role, rangeInMinutesBefore, rangeInMinutesAfter, inventory));
+            this.sequenceRepository.Save(new Sequence(schedule, name, description, startDate, endDate, taxon, role, rangeInMinutesBefore, rangeInMinutesAfter, inventory));
             this.scheduleRepository.Update(schedule);
         }
 

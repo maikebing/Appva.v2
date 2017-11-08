@@ -68,13 +68,36 @@ using System.Linq;
             };
         }
 
-        internal static CalendarTask SequenceToEvent(Sequence sequence, DateTime startDate, DateTime endDate)
+        //internal static CalendarTask SequenceToEvent(Sequence sequence, DateTime startDate, DateTime endDate)
+        //{
+        //    return new CalendarTask
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        StartTime = startDate,
+        //        EndTime = endDate,
+        //        Description = sequence.Description,
+        //        CategoryName = sequence.Schedule.ScheduleSettings.Name,
+        //        Color = sequence.Schedule.ScheduleSettings.Color,
+        //        SequenceId = sequence.Id,
+        //        CategoryId = sequence.Schedule.ScheduleSettings.Id,
+        //        IsFullDayEvent = sequence.AllDay,
+        //        NeedsQuittance = sequence.Overview,
+        //        NeedsSignature = sequence.CanRaiseAlert,
+        //        Interval = sequence.Interval,
+        //        IntervalFactor = sequence.IntervalFactor,
+        //        RepeatAtGivenDate = sequence.IntervalIsDate,
+        //        PatientId = sequence.Patient.Id,
+        //        PatientName = sequence.Patient.FullName
+        //    };
+        //}
+
+        public static CalendarTask SequenceToEvent(Sequence sequence, DateTime startDate, DateTime? endDate)
         {
             return new CalendarTask
             {
                 Id = Guid.NewGuid(),
                 StartTime = startDate,
-                EndTime = endDate,
+                EndTime = endDate.HasValue ? endDate.Value : startDate.AddMonths(3),
                 Description = sequence.Description,
                 CategoryName = sequence.Schedule.ScheduleSettings.Name,
                 Color = sequence.Schedule.ScheduleSettings.Color,
@@ -84,7 +107,7 @@ using System.Linq;
                 NeedsQuittance = sequence.Overview,
                 NeedsSignature = sequence.CanRaiseAlert,
                 Interval = sequence.Interval,
-                IntervalFactor = sequence.IntervalFactor,
+                IntervalFactor = sequence.IntervalFactor, // != 0? sequence.IntervalFactor : 1,
                 RepeatAtGivenDate = sequence.IntervalIsDate,
                 PatientId = sequence.Patient.Id,
                 PatientName = sequence.Patient.FullName

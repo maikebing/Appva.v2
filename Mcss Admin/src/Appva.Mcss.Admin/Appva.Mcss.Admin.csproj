@@ -1443,6 +1443,7 @@
     <Content Include="Areas\Patient\Features\TestCalendar\EditActivity\EditActivity.cshtml" />
     <Content Include="Areas\Patient\Features\TestCalendar\Overview\Overview.cshtml" />
     <Content Include="Areas\Patient\Features\TestCalendar\Overview\_OverviewCalendarTask.cshtml" />
+    <Content Include="Areas\Patient\Features\TestCalendar\View\View.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

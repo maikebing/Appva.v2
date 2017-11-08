@@ -53,7 +53,7 @@
     @Html.ActionLink(Permissions.Sequence.Create, "Lägg till", "Create", "Sequence", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
     @if (Appva.Core.Environment.ApplicationEnvironment.Is.Development || Appva.Core.Environment.ApplicationEnvironment.Is.Staging)
     {
-        @Html.ActionLink("Signeringskalender", "view", "testcalendar", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id }, new { @class = "btn lb-link" })
+        <a href="@Url.Action("view", "testcalendar", new { id = Model.Patient.Id, scheduleId = Model.Schedule.Id})" class="btn lb-link">Signeringskalender</a>
     }
 </div>
 

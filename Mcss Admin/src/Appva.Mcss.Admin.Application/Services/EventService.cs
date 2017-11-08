@@ -33,6 +33,7 @@ namespace Appva.Mcss.Admin.Application.Services
         Sequence Get(Guid id);
         IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date);
         IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null);
+        IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, DateTime date);
         IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null);
         Guid CreateCategory(string name);
 
@@ -219,17 +220,29 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.FindEventsWithinPeriod(firstInMonth, lastInMonth, patient: patient);
         }
 
-        public IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, Patient patient, DateTime date)
+        public IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, DateTime date)
         {
             var firstInMonth = date.FirstOfMonth();
             var lastInMonth = firstInMonth.AddDays(DateTime.DaysInMonth(firstInMonth.Year, firstInMonth.Month));
             var sequences = this.context.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
-                  .And(x => x.Schedule.Id == schedule.Id);
-                  //.And(x => x.EndDate)
+                  .And(x => x.Schedule.Id == schedule.Id)
+                  .And(x => x.Patient.Id == schedule.Patient.Id)
+                  .And(x => x.EndDate >= firstInMonth && x.StartDate <= lastInMonth)
+                  //.And(x.EndDate >= start && x.StartDate <= end))
+                .List();
 
+            var sequenceList = new List<Sequence>();
 
-            return this.FindEventsWithinPeriod(firstInMonth, lastInMonth, patient);
+            var retval = new List<CalendarTask>();
+
+            foreach (var sequence in sequences)
+            {
+                retval.Add(EventTransformer.SequenceToEvent(sequence, sequence.StartDate, sequence.EndDate));
+            }
+
+            return retval;
+            //return this.FindEventsWithinPeriod(firstInMonth, lastInMonth, schedule.Patient);
         }
 
         /// <summary>

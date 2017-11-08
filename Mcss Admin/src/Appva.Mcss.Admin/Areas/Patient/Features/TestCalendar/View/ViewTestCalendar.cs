@@ -10,5 +10,8 @@ namespace Appva.Mcss.Admin.Models
     {
         public Guid Id { get; set; }
         public Guid ScheduleId { get; set; }
+        public DateTime? Date { get; set; }
+        public string Prev { get; set; }
+        public string Next { get; set; }
     }
 }

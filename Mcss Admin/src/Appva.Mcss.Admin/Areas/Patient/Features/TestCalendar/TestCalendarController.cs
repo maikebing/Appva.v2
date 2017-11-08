@@ -423,7 +423,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
 
         #region SequenceCalendar
 
-        [Route("view")]
+        [Route("view/{scheduleid:guid}")]
         [HttpGet, Dispatch]
         [PermissionsAttribute(Permissions.Calendar.ReadValue)]
         public ActionResult View(ViewTestCalendar request)

@@ -161,7 +161,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 startDate = message.OnNeedBasisStartDate.HasValue ? message.OnNeedBasisStartDate.Value : startDate;
                 endDate = message.OnNeedBasisEndDate.HasValue ? message.OnNeedBasisEndDate.Value : endDate;
 
-                this.sequenceService.CreateNeedBasedSequence(schedule, schedule.ScheduleSettings.Name, message.Description, startDate, message.OnNeedBasis, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
+                this.sequenceService.CreateNeedBasedSequence(schedule, schedule.ScheduleSettings.Name, message.Description, startDate, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
             }
             else if (message.Interval.HasValue && message.Interval.Value > 0 && message.Dates == string.Empty)
             {

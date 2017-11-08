@@ -19,6 +19,10 @@ namespace Appva.Mcss.Admin.Application.Services
         Patient GetPatient(Guid id);
         IList<CalendarTask> FindWithinMonth(Patient pat, DateTime date);
         void AuditRead(Patient patient, string format, Guid patientId);
+        Schedule GetSchedule(Guid scheduleId);
+        IList<CalendarWeek> Calendar(DateTime date, IList<CalendarTask> events);
+
+        IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, DateTime date);
     }
 
     public class CalendarService : ICalendarService
@@ -47,20 +51,33 @@ namespace Appva.Mcss.Admin.Application.Services
 
 
         private readonly ISequenceService sequenceService;
+        private readonly IScheduleService scheduleService;
 
         #endregion
 
-        public CalendarService(IEventService eventService, IPatientService patientService, ISettingsService settingsService, IAuditService auditing)
+        public CalendarService(IEventService eventService, IPatientService patientService, ISettingsService settingsService, IAuditService auditing, IScheduleService scheduleService)
         {
             this.eventService = eventService;
             this.patientService = patientService;
             this.settingsService = settingsService;
             this.auditing = auditing;
+            this.scheduleService = scheduleService;
         }
 
         public void AuditRead(Patient patient, string format, Guid patientId)
         {
             this.auditing.Read(patient, format, patientId);
+        }
+
+        public IList<CalendarWeek> Calendar(DateTime date, IList<CalendarTask> events)
+        {
+            return this.eventService.Calendar(date, events);
+        }
+
+        public IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, DateTime date)
+        {
+
+            return this.eventService.FindSequencesWithinMonth(schedule, date);
         }
 
         public IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date)
@@ -75,7 +92,12 @@ namespace Appva.Mcss.Admin.Application.Services
 
         public Patient GetPatient(Guid id)
         {
-            throw new NotImplementedException();
+            return this.patientService.Get(id);
+        }
+
+        public Schedule GetSchedule(Guid scheduleId)
+        {
+            return this.scheduleService.Get(scheduleId);
         }
     }
 }

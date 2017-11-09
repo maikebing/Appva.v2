@@ -161,19 +161,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 startDate = message.OnNeedBasisStartDate.HasValue ? message.OnNeedBasisStartDate.Value : startDate;
                 endDate = message.OnNeedBasisEndDate.HasValue ? message.OnNeedBasisEndDate.Value : endDate;
 
-                this.sequenceService.CreateNeedBasedSequence(schedule, schedule.ScheduleSettings.Name, message.Description, startDate, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
+                this.sequenceService.CreateNeedBasedSequence(schedule, message.Name, message.Description, startDate, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
             }
-            else if (message.Interval.HasValue && message.Interval.Value > 0 && message.Dates == string.Empty)
+            else if (message.Interval.HasValue && message.Interval.Value > 0 && message.Dates.IsNull())
             {
                 startDate = message.StartDate.HasValue ? message.StartDate.Value : startDate;
                 endDate = message.EndDate.HasValue ? message.EndDate.Value : endDate;
 
-                this.sequenceService.CreateIntervalBasedSequence(schedule, schedule.ScheduleSettings.Name, message.Description, startDate, message.Interval.Value, times, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
+                this.sequenceService.CreateIntervalBasedSequence(schedule, message.Name, message.Description, startDate, message.Interval.Value, times, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
             }
             else
             {
                 DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out startDate, out endDate);
-                this.sequenceService.CreateDatesBasedSequence(schedule, schedule.ScheduleSettings.Name, message.Description, startDate, endDate, message.Dates, times, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
+                this.sequenceService.CreateDatesBasedSequence(schedule, message.Name, message.Description, startDate, endDate, message.Dates, times, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
             }
         }
 

@@ -280,7 +280,7 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessage = "Datum måste fyllas i.")]
         [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
-        [DateLessThan(Target = "OnNeedBasisEndDate", ErrorMessage = "Startdatum måste vara ett tidigare datum är slutdatum.")]
+        [DateLessThan(Target = "OnNeedBasisEndDate", ErrorMessage = "Startdatum måste vara ett tidigare datum än slutdatum.")]
         [DisplayName("Fr.o.m.")]
         public DateTime? OnNeedBasisStartDate 
         {
@@ -293,7 +293,7 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         [RequiredIf(Target = "OnNeedBasis", Value = true, ErrorMessage = "Datum måste fyllas i.")]
         [Date(ErrorMessage = "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.")]
-        [DateGreaterThan(Target = "OnNeedBasisStartDate", ErrorMessage = "Slutdatum måste vara ett senare datum är startdatum.")]
+        [DateGreaterThan(Target = "OnNeedBasisStartDate", ErrorMessage = "Slutdatum måste vara ett senare datum än startdatum.")]
         [DisplayName("T.o.m.")]
         public DateTime? OnNeedBasisEndDate
         {

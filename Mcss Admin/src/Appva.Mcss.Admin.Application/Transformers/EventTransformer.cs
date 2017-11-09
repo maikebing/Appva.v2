@@ -107,7 +107,7 @@ using System.Linq;
                 NeedsQuittance = sequence.Overview,
                 NeedsSignature = sequence.CanRaiseAlert,
                 Interval = sequence.Interval,
-                IntervalFactor = sequence.IntervalFactor, // != 0? sequence.IntervalFactor : 1,
+                IntervalFactor = sequence.IntervalFactor != 0? sequence.IntervalFactor : 1,
                 RepeatAtGivenDate = sequence.IntervalIsDate,
                 PatientId = sequence.Patient.Id,
                 PatientName = sequence.Patient.FullName

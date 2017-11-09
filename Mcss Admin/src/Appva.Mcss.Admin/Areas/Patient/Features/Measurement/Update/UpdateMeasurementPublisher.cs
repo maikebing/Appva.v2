@@ -80,7 +80,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             return new ListMeasurement
             {
-                Id = message.Id
+                Id = message.Id,
+                MeasurementId = message.MeasurementId
             };
 
             //return new ViewMeasurementModel

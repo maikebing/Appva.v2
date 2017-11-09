@@ -35,7 +35,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             return new ListMeasurementModel
             {
-                Patient = patientViewModel,
+                PatientViewModel = patientViewModel,
                 MeasurementList = this.service.GetMeasurementObservationsList(patientViewModel.Id)
             };
         }

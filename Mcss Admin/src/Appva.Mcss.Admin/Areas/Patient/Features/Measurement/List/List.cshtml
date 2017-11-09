@@ -5,8 +5,8 @@
     SetTitle("Mätvärden");
 }
 
-@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
-@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
+@Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.PatientViewModel)
+@Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.PatientViewModel)
 
 <div class="section section--hspace">
 
@@ -22,30 +22,29 @@
         </div>
     </div>
 
+
+
     <div>
         <div class="grid">
             <div data-size="xs:24 s:10 m:8 l:6 xl:6">
-                <div class="tabs tabs--vertical tabs--dynamic" role="navigation" data-tab-target="measurements">
 
-                    <h2 class="visually-hidden">Huvudnavigering</h2>
-                    <ul>
-                        <li class="tabs__item tabs__item--selected">
-                            <a href="@Url.Action("list", "measurement")">Alla</a>
-                        </li>
-                        @foreach (var item in Model.MeasurementList)
-                        {
-                            <li class="tabs__item">
-                                <a href="@Url.Action("view","measurement", new { MeasurementId = item.Id })#measurements">@item.Name</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
+                @if (Model.MeasurementList.IsNotNull())
+                {
+                    @Html.Partial("~/Areas/Patient/Features/Measurement/List/Partials/_MeasurementList.cshtml", Model)
+                }
+
             </div>
 
             <div id="measurements" data-size="xs:24 s:14 m:16 l:18 xl:18">
 
+                @if (Model.MeasurementValueList.IsNotNull())
+                {
+                    @Html.Partial("~/Areas/Patient/Features/Measurement/List/Partials/_MeasurementDetails.cshtml", Model)
+
+                }
 
             </div>
         </div>
     </div>
+
 </div>

@@ -172,7 +172,7 @@ namespace Appva.Mcss.Admin.Areas.Patient
         /// <param name="request">The request<see cref="AddMeasurementValueModel"/>.</param>
         /// <returns>ActionResult<see cref="ViewMeasurementModel"/>.</returns>
         [Route("{measurementid:guid}/addvalue")]
-        [HttpPost, ValidateAntiForgeryToken, Validate, Dispatch("test", "measurement")]
+        [HttpPost, ValidateAntiForgeryToken, Validate, Dispatch("list", "measurement")]
         [PermissionsAttribute(Permissions.Patient.CreateValue)]
         public ActionResult AddValue(AddMeasurementValueModel request)
         {

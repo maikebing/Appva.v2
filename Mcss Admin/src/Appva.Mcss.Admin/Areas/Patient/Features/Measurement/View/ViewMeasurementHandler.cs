@@ -59,7 +59,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             model.Longscale = MeasurementScale.GetNameForScale((MeasurementScale.Scale) Enum.Parse(typeof(MeasurementScale.Scale), model.Observation.Scale, true));
             model.ListModel = new ListMeasurementModel
             {
-                Patient = this.patientTransformer.ToPatient(model.Observation.Patient),
+                PatientViewModel = this.patientTransformer.ToPatient(model.Observation.Patient),
                 MeasurementList = this.service.GetMeasurementObservationsList(message.Id)
             };
 

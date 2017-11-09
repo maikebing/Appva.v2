@@ -1534,6 +1534,8 @@
     <Content Include="Areas\Patient\Features\Measurement\Test\Test.cshtml" />
     <Content Include="Areas\Patient\Features\Measurement\Test\Partials\TestList.cshtml" />
     <Content Include="Areas\Patient\Features\Measurement\Test\Partials\TestView.cshtml" />
+    <Content Include="Areas\Patient\Features\Measurement\List\Partials\_MeasurementList.cshtml" />
+    <Content Include="Areas\Patient\Features\Measurement\List\Partials\_MeasurementDetails.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

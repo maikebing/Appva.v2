@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Models
     using System.Linq;
     using System.Web;
     using Appva.Mcss.Web.ViewModels;
+    using Appva.Mcss.Admin.Domain.Entities;
 
 
     #endregion
@@ -28,20 +29,33 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The patient viewmodel
         /// </summary>
-        public PatientViewModel Patient
+        //public PatientViewModel Patient
+        //{
+        //    get;
+        //    set;
+        //}
+
+        /// <summary>
+        /// The measurement observation list.
+        /// </summary>
+        public IList<MeasurementObservation> MeasurementList
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// The measurement observation list.
-        /// </summary>
-        public IList<Domain.Entities.MeasurementObservation> MeasurementList
-        {
-            get;
-            set;
-        }
+        public Guid Id { get; set; }
+        public Guid MeasurementId { get; set; }
+        public PatientViewModel PatientViewModel { get; set; }
+        public IList<ObservationItem> MeasurementValueList { get; set; }
+        public string MeasurementUnit { get; set; }
+        public string MeasurementLongScale { get; set; }
+        public string MeasurementScale { get; set; }
+        public Taxon Delegation { get; set; }
+        public string MeasurementName { get; set; }
+        public string MeasurementInstructions { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         #endregion
     }

@@ -13,13 +13,16 @@ namespace Appva.Mcss.Admin.Models
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ListMeasurement : Identity<ListMeasurementModel>
+    public class ListMeasurement : IRequest<ListMeasurementModel>
     {
+        public Guid Id { get; set; }
+        public Guid MeasurementId { get; set; }
     }
 }

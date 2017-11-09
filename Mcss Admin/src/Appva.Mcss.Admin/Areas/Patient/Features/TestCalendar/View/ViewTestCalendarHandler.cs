@@ -36,7 +36,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
 
             var schedule = this.service.GetSchedule(message.ScheduleId); // done
-            var events = this.service.FindSequencesWithinMonth(schedule, date); // skall skicka med schedule..
+            var events = this.service.FindSequencesWithinMonth(schedule, date).OrderBy(x => x.StartTime).ToList(); // skall skicka med schedule..
             var categories = this.service.GetCategories(); // done
             var calendar = this.service.Calendar(date, events); // done
 

@@ -29,18 +29,19 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         #region Practitioners.
 
         /// <summary>
-        /// Import practitioners.
+        /// Starts the import practitioners wizard.
         /// </summary>
         /// <param name="request">The <see cref="Identity{ImportPractitionerModel}"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("{id:guid}/practitioner")]
+        [Route("practitioners/{id:guid}/preview")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
-        public ActionResult Practitioner(Identity<ImportPractitionerModel> request)
+        public ActionResult PractitionerPreview(Identity<PractitionerPreviewModel> request)
         {
             return this.View();
         }
 
+        /*
         /// <summary>
         /// Handles the import practitioner request.
         /// </summary>
@@ -53,16 +54,56 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         {
             return this.View();
         }
+        */
 
         /// <summary>
-        /// Imported practitioners status.
+        /// Import practitioners, step 1: row selection.
         /// </summary>
-        /// <param name="request">The <see cref="ImportPractitionerStatus"/>.</param>
+        /// <param name="request">The <see cref="PractitionerImportModel"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("practitionerstatus")]
+        [Route("practitioners/{id:guid}/selection")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
-        public ActionResult PractitionerStatus(ImportPractitionerStatusModel request)
+        public ActionResult PractitionerSelection(Identity<PractitionerSelectionModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Import practitioners, step 2: validate organization nodes.
+        /// </summary>
+        /// <param name="request">The <see cref="PractitionerImportModel"/>.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [Route("practitioners/{id:guid}/organization")]
+        [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
+        public ActionResult PractitionerOrganization(PractitionerImportModel request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Import practitioners, step 3: validate roles.
+        /// </summary>
+        /// <param name="request">The <see cref="PractitionerImportModel"/>.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [Route("practitioners/{id:guid}/roles")]
+        [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
+        public ActionResult PractitionerRoles(PractitionerImportModel request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Import practitioners, step 4: import and save.
+        /// </summary>
+        /// <param name="request">The <see cref="PractitionerImportModel"/>.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [Route("practitioners/{id:guid}/import")]
+        [HttpGet, Hydrate, Dispatch]
+        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
+        public ActionResult PractitionerImport(PractitionerImportModel request)
         {
             return this.View();
         }

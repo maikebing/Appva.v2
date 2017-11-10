@@ -1,5 +1,5 @@
 ﻿@using System.Data;
-@model Appva.Mcss.Admin.Models.ImportPractitionerModel
+@model Appva.Mcss.Admin.Models.PractitionerPreviewModel
 @{
     SetTitle("Importera medarbetare");
 }
@@ -31,34 +31,6 @@
                     </tr>
                 </table>
             </div>
-            if (Model.Data.Rows.Count - 1 > 0)
-            {
-                using (Html.BeginForm())
-                {
-                    <div id="importinfo">
-                        <h3>Inställningar</h3>
-                        <table class="device-table fileinfo">
-                            <tr>
-                                <td>Roller utan HSA-id<span>Läses in om HSA-id saknas.</span></td>
-                                <td>@Html.TextBoxFor(x => x.IncludedRolesWithoutHsaId, new { placeholder = "T.ex. undersköterska...", @Value = "Undersköterska" })</td>
-                            </tr>
-                            <tr>
-                                <td>Exkludera roller<span>Roller inläses ej.</span></td>
-                                <td>@Html.TextBoxFor(x => x.ExcludedRoles, new { placeholder = "T.ex. enhetschef, arbetsterapeut..." })</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    @Html.HiddenFor(x => x.FileId)
-                                    @Html.HiddenFor(x => x.ValidateAtRow)
-                                    @Html.HiddenFor(x => x.ReadFromRow)
-                                    @Html.AntiForgeryToken()
-                                    @Html.Submit("Importera")
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                }
-            }
             <div style="clear:both"></div>
             <h3>Förhandsgranskning</h3>
             <table class="device-table">
@@ -101,6 +73,12 @@
                     }
                 </tbody>
             </table>
+            if (Model.Data.Rows.Count - 1 > 0)
+            {
+                <div style="margin-top:20px;float:right">
+                    @Html.ActionLink("Starta importguiden", "PractitionerSelection", "Import", null, new { @class = "btn-green" })
+                </div>
+            }
         }
         else
         {

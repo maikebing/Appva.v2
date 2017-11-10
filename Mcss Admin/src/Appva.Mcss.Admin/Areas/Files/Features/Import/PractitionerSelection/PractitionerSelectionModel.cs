@@ -1,4 +1,4 @@
-﻿// <copyright file="ImportPractitionerStatusModel.cs" company="Appva AB">
+﻿// <copyright file="PractitionerSelectionModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ImportPractitionerStatusModel : IRequest<ImportPractitionerStatusModel>
+    public sealed class PractitionerSelectionModel
     {
         #region Properties.
 
@@ -33,27 +33,9 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The file name.
+        /// The excel data.
         /// </summary>
-        public string FileName
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The number of practitioner rows that could not be imported.
-        /// </summary>
-        public int InvalidRowsCount
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The number of successfully imported practitioner rows.
-        /// </summary>
-        public int ImportedRowsCount
+        public DataTable Data
         {
             get;
             set;

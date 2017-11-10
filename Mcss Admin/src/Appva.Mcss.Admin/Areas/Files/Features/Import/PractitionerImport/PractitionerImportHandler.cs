@@ -1,4 +1,4 @@
-﻿// <copyright file="ImportPractitionerStatusHandler.cs" company="Appva AB">
+﻿// <copyright file="PractitionerImportHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -22,7 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ImportPractitionerStatusHandler : RequestHandler<ImportPractitionerStatusModel, ImportPractitionerStatusModel>
+    internal sealed class PractitionerImportHandler : RequestHandler<PractitionerImportModel, PractitionerImportModel>
     {
         #region Fields.
 
@@ -36,10 +36,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImportPractitionerStatusHandler"/> class.
+        /// Initializes a new instance of the <see cref="PractitionerImportHandler"/> class.
         /// </summary>
         /// <param name="fileService">The <see cref="IFileService"/>.</param>
-        public ImportPractitionerStatusHandler(IFileService fileService)
+        public PractitionerImportHandler(IFileService fileService)
         {
             this.fileService = fileService;
         }
@@ -49,9 +49,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override ImportPractitionerStatusModel Handle(ImportPractitionerStatusModel message)
+        public override PractitionerImportModel Handle(PractitionerImportModel message)
         {
-            var model = new ImportPractitionerStatusModel();
+            var model = new PractitionerImportModel();
             var file = this.fileService.Get(message.FileId);
 
             if(file == null)

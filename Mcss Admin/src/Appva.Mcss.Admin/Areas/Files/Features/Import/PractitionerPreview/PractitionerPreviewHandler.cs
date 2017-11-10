@@ -1,4 +1,4 @@
-﻿// <copyright file="ImportPractitionerHandler.cs" company="Appva AB">
+﻿// <copyright file="PractitionerPreviewHandler.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -20,7 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ImportPractitionerHandler : RequestHandler<Identity<ImportPractitionerModel>, ImportPractitionerModel>
+    internal sealed class PractitionerPreviewHandler : RequestHandler<Identity<PractitionerPreviewModel>, PractitionerPreviewModel>
     {
         #region Fields.
 
@@ -34,10 +34,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImportPractitionerHandler"/> class.
+        /// Initializes a new instance of the <see cref="PractitionerPreviewHandler"/> class.
         /// </summary>
         /// <param name="fileService">The <see cref="IFileService"/>.</param>
-        public ImportPractitionerHandler(IFileService fileService)
+        public PractitionerPreviewHandler(IFileService fileService)
         {
             this.fileService = fileService;
         }
@@ -47,10 +47,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override ImportPractitionerModel Handle(Identity<ImportPractitionerModel> message)
+        public override PractitionerPreviewModel Handle(Identity<PractitionerPreviewModel> message)
         {
             var file = this.fileService.Get(message.Id);
-            var model = new ImportPractitionerModel();
+            var model = new PractitionerPreviewModel();
 
             if (file == null || Path.GetExtension(file.Name) != ".xlsx")
             {

@@ -1545,20 +1545,6 @@ td.rights {
     color:#aaa;
     background:#fff!important;
 }
-#fileinfo { 
-    float:left;
-    width:49%;
-}
-#importinfo { 
-    float:right; 
-    width:50%;
-}
-#importinfo input[type="text"] { 
-    padding:6px; 
-    width:100%;
-    box-sizing:border-box;
-}
-#importinfo .fileinfo td:last-child { background:#fff; }
 
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,

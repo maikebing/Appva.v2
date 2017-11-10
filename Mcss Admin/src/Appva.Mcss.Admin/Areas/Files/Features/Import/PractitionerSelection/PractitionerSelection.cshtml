@@ -1,0 +1,38 @@
+﻿@model Appva.Mcss.Admin.Models.PractitionerSelectionModel
+@{
+    SetTitle("Importera medarbetare");
+}
+<div id="subheader" class="cf">
+    <h1>Importera medarbetare</h1>
+</div>
+<div id="content" class="log cf">
+    <div id="fileimport">
+        @if (Model.Data != null)
+        {
+            <p style="font-size:20px;font-weight:bold">
+                <span style="display:inline-block;background:#60d370;color:#fff;border-radius:30px;padding:3px 11px;margin-right:15px">1</span>Välj vilka rader som ska importeras.
+            </p>
+            <h3>Förhandsgranskning</h3>
+            <table class="device-table">
+                <thead>
+                    <tr class="head">
+                        <th style="background:#777;text-align:center"></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="emptyrow" colspan="2">Filen innehåller inga rader.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top:20px;float:right">
+                @Html.ActionLink("Nästa steg", "PractitionerOrganization", "Import", null, new { @class = "btn" })
+            </div>
+        }
+        else
+        {
+            <h3>Det gick inte att öppna filen.</h3>
+        }
+    </div>
+</div>

@@ -1,4 +1,4 @@
-﻿// <copyright file="ImportPractitionerPublisher.cs" company="Appva AB">
+﻿// <copyright file="PractitionerPreviewPublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -30,7 +30,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class ImportPractitionerPublisher : RequestHandler<ImportPractitionerModel, ImportPractitionerStatusModel>
+    internal sealed class PractitionerPreviewPublisher : RequestHandler<PractitionerPreviewModel, PractitionerImportModel>
     {
         #region Fields.
 
@@ -54,13 +54,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IRoleService roleService;
 
-        /*
-        /// <summary>
-        /// A dictionary of invalid practitioner rows.
-        /// </summary>
-        private Dictionary<DataRow, List<string>> invalidRows;
-        */
-
         /// <summary>
         /// A list of invalid practitioner rows.
         /// </summary>
@@ -76,19 +69,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImportPractitionerPublisher"/> class.
+        /// Initializes a new instance of the <see cref="PractitionerPreviewPublisher"/> class.
         /// </summary>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
         /// <param name="fileService">The <see cref="IFileService"/>.</param>
         /// <param name="accountService">The <see cref="IAccountService"/>.</param>
         /// <param name="roleService">The <see cref="IRoleService"/>.</param>
-        public ImportPractitionerPublisher(IPersistenceContext persistence, IFileService fileService, IAccountService accountService, IRoleService roleService)
+        public PractitionerPreviewPublisher(IPersistenceContext persistence, IFileService fileService, IAccountService accountService, IRoleService roleService)
         {
             this.persistence = persistence;
             this.fileService = fileService;
             this.accountService = accountService;
             this.roleService = roleService;
-            //this.invalidRows = new Dictionary<DataRow, List<string>>();
             this.invalidRows = new List<InvalidPractitionerData>();
         }
 
@@ -97,9 +89,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region RequestHandler overrides.
 
         /// <inheritdoc />
-        public override ImportPractitionerStatusModel Handle(ImportPractitionerModel message)
+        public override PractitionerImportModel Handle(PractitionerPreviewModel message)
         {
-            var model = new ImportPractitionerStatusModel();
+            var model = new PractitionerImportModel();
             var file = this.fileService.Get(message.FileId);
 
             if (file == null)
@@ -172,13 +164,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     }
                     else if (columnName == validColumns[6])
                     {
-                        this.ValidateHsaId(errors, columnValue, role, includedRolesWithoutHsaId, "HSA-id saknas.");
+                        this.ValidateHsaId(errors, columnValue, role, includedRolesWithoutHsaId, "HSA-id saknas");
                     }
                 }
 
                 if (errors.Count > 0)
                 {
-                    //this.invalidRows.Add(data.Rows[i], errors);
                     this.MapRowToModel(data.Rows[i], errors);
                     continue;
                 }
@@ -404,7 +395,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Title = "Excel: inläsningsfel",
                 Description = "Innehåller rader av medarbetare som inte kunde importeras till MCSS.",
                 ContentType = "application/octet-stream"
-                //IsActive = false
             };
 
             this.persistence.Save(file);

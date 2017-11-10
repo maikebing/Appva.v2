@@ -7,13 +7,6 @@
 
 namespace Appva.Mcss.Admin.Models
 {
-    #region Imports.
-
-    using System;
-    using Appva.Cqrs;
-
-    #endregion
-
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
@@ -26,9 +19,9 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         public bool IsImportableExcelFile
         {
-            get;
+            get; 
             set;
-        }
+        } 
 
         #endregion
     }

@@ -1,4 +1,4 @@
-﻿// <copyright file="ImportPractitionerModel.cs" company="Appva AB">
+﻿// <copyright file="PractitionerPreviewModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class ImportPractitionerModel : IRequest<ImportPractitionerStatusModel>
+    public sealed class PractitionerPreviewModel : IRequest<PractitionerImportModel>
     {
         #region Properties.
 

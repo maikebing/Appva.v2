@@ -8,15 +8,6 @@
 namespace Appva.Mcss.Admin.Models
 {
     #region Imports
-    
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Models;
 
     #endregion
 

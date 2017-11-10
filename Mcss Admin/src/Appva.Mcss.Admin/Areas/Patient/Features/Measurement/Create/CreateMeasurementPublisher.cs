@@ -10,16 +10,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Newtonsoft.Json;
-    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -35,16 +28,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IMeasurementService service;
 
-        /// <summary>
-        /// The Patient Transformer
-        /// </summary>
-        private readonly IPatientTransformer transformer;
-
-        /// <summary>
-        /// The Settings Service
-        /// </summary>
-        private readonly ISettingsService settings;
-
         #endregion
 
         #region constructor
@@ -53,13 +36,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="CreateMeasurementPublisher"/> class.
         /// </summary>
         /// <param name="service">The Measurement Service<see cref="IMeasurementService"/>.</param>
-        /// <param name="transformer">The Patient Transformer<see cref="IPatientTransformer"/>.</param>
-        /// <param name="settings">The settings service<see cref="ISettingsService"/>.</param>
-        public CreateMeasurementPublisher(IMeasurementService service, IPatientTransformer transformer, ISettingsService settings)
+        public CreateMeasurementPublisher(IMeasurementService service)
         {
             this.service = service;
-            this.transformer = transformer;
-            this.settings = settings;
         }
 
         #endregion

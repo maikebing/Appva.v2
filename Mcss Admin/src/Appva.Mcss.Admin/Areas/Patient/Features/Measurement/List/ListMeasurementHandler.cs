@@ -10,16 +10,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Areas.Backoffice.Models;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Infrastructure;
 
     #endregion
 
@@ -47,7 +41,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListMeasurementHandler"/> class.
         /// </summary>
-        /// <param name="settings">The settings service<see cref="ISettingsService"/>.</param>
         /// <param name="service">The measurement service<see cref="IMeasurementService"/>.</param>
         /// <param name="patientTransformer">The patient transformer<see cref="IPatientTransformer"/>.</param>
         public ListMeasurementHandler(IMeasurementService service, IPatientTransformer patientTransformer)
@@ -63,8 +56,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListMeasurementModel Handle(ListMeasurement message)
         {
-            
-
             if (message.MeasurementId == Guid.Empty)
             {
                 var patient = this.service.GetPatient(message.Id);

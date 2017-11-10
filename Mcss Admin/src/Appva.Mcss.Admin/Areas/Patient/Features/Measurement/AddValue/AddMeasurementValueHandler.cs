@@ -9,14 +9,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports
 
+    using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
-    using Newtonsoft.Json;
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+    using System.Web.Mvc;
 
     #endregion
 
@@ -53,7 +51,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override AddMeasurementValueModel Handle(AddMeasurementValue message)
         {
             var observation = this.service.GetMeasurementObservation(message.MeasurementId);
-
+            
             return new AddMeasurementValueModel
             {
                 MeasurementId = observation.Id,

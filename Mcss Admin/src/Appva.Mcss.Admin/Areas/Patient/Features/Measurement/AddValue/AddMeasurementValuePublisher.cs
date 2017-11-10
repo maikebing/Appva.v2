@@ -1,26 +1,20 @@
-﻿// <copyright file="ObservationRepository.cs" company="Appva AB">
+﻿// <copyright file="AddMeasurementValuePublisher.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
 
 namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports
 
+    using System.Collections.Generic;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
-    using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.VO;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
 
     #endregion
 
@@ -41,8 +35,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IMeasurementService service;
 
-        private readonly IPatientTransformer transformer;
-
         #endregion
 
         #region Constructor
@@ -52,11 +44,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="account">The account service<see cref="IAccountService"/>.</param>
         /// <param name="service">The measurement service<see cref="IMeasurementService"/>.</param>
-        public AddMeasurementValuePublisher(IAccountService account, IMeasurementService service, IPatientTransformer transformer)
+        public AddMeasurementValuePublisher(IAccountService account, IMeasurementService service)
         {
             this.account = account;
             this.service = service;
-            this.transformer = transformer;
         }
 
         #endregion
@@ -81,21 +72,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 this.service.CreateValue(ObservationItem.New(observation, measurement, signature: signature));
             }
 
-            var model = new ListMeasurement
+            return new ListMeasurement
             {
                 Id = observation.Patient.Id,
                 MeasurementId = observation.Id
             };
-
-            return model;
-
-            //var measurementList = this.service.GetMeasurementObservationsList(observation.Patient.Id);
-            //var patientViewModel = this.transformer.ToPatient(observation.Patient);
-
-            //return new ListMeasurement
-            //{
-            //    Id = message.Id
-            //};
         }
 
         #endregion

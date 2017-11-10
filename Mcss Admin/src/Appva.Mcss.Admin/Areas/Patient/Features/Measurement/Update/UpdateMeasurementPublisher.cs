@@ -8,17 +8,10 @@
 namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports
-    
+
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Infrastructure;
-    using Newtonsoft.Json;
-    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -34,16 +27,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IMeasurementService service;
 
-        /// <summary>
-        /// The Settings Service
-        /// </summary>
-        private readonly ISettingsService settings;
-
-        /// <summary>
-        /// The Patient Transformer
-        /// </summary>
-        private readonly IPatientTransformer transformer;
-
         #endregion
 
         #region Constructor
@@ -52,13 +35,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="UpdateMeasurementPublisher"/> class.
         /// </summary>
         /// <param name="service">The Measurement Service<see cref="IMeasurementService"/>.</param>
-        /// <param name="settings">The Settings Service<see cref="ISettingsService"/>.</param>
-        /// <param name="transformer">The Patient Transformer<see cref="IPatientTransformer"/>.</param>
-        public UpdateMeasurementPublisher(IMeasurementService service, ISettingsService settings, IPatientTransformer transformer)
+        public UpdateMeasurementPublisher(IMeasurementService service)
         {
             this.service = service;
-            this.settings = settings;
-            this.transformer = transformer;
         }
 
         #endregion
@@ -83,18 +62,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Id = message.Id,
                 MeasurementId = message.MeasurementId
             };
-
-            //return new ViewMeasurementModel
-            //{
-            //    Observation = observation,
-            //    Unit = MeasurementScale.GetUnitForScale(observation.Scale),
-            //    ListModel = new ListMeasurementModel
-            //    {
-            //        Patient = this.transformer.ToPatient(observation.Patient),
-            //        MeasurementList = this.service.GetMeasurementObservationsList(observation.Patient.Id)
-            //    },
-            //    Values = this.service.GetValueList(observation.Id)
-            //};
         }
 
         #endregion

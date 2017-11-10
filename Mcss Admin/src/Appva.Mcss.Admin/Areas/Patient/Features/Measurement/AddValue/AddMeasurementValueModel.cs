@@ -1,45 +1,111 @@
-﻿// <copyright file="ObservationRepository.cs" company="Appva AB">
+﻿// <copyright file="AddMeasurementValueModel.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
 
 namespace Appva.Mcss.Admin.Models
 {
     #region Imports
 
-    using Appva.Mcss.Admin.Domain.Entities;
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Web;
 
     #endregion
 
+    /// <summary>
+    /// Class AddMeasurementValueModel.
+    /// </summary>
     public class AddMeasurementValueModel : Identity<ListMeasurement>
     {
         #region Variables
 
+        /// <summary>
+        /// The measurement Id
+        /// </summary>
         [Required]
-        public Guid MeasurementId { get; set; }
+        public Guid MeasurementId
+        {
+            get;
+            set;
+        }
 
-        public string Name { get; set; }
+        /// <summary>
+        /// The name
+        /// </summary>
+        public string Name
+        {
+            get;
+            set;
+        }
 
-        public string Instruction { get; set; }
+        /// <summary>
+        /// Gets or sets the instruction.
+        /// </summary>
+        public string Instruction
+        {
+            get;
+            set;
+        }
 
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
         [Required]
-        public string Value { get; set; }
+        public string Value
+        {
+            get;
+            set;
+        }
 
-        public string Comment { get; set; }
+        /// <summary>
+        /// Gets or sets the comment.
+        /// </summary>
+        public string Comment
+        {
+            get;
+            set;
+        }
 
-        public string Unit { get; set; }
+        /// <summary>
+        /// Gets or sets the unit.
+        /// </summary>
+        public string Unit
+        {
+            get;
+            set;
+        }
 
-        public string Scale { get; set; }
+        /// <summary>
+        /// Gets or sets the scale.
+        /// </summary>
+        public string Scale
+        {
+            get;
+            set;
+        }
 
-        public string LongScale { get; set; }
+        /// <summary>
+        /// Gets or sets the long scale.
+        /// </summary>
+        public string LongScale
+        {
+            get;
+            set;
+        }
+
+        public Application.Models.MeasurementScale.CommonScaleValues CommonScaleValues
+        {
+            get;
+            set;
+        }
+
+        public string SelectedScaleValue
+        {
+            get;
+            set;
+        }
 
         #endregion
     }

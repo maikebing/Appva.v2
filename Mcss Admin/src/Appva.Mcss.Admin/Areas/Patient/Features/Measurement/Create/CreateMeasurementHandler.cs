@@ -10,16 +10,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports
 
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Infrastructure.Models;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -35,16 +31,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IMeasurementService service;
 
-        /// <summary>
-        /// The settings
-        /// </summary>
-        private readonly ISettingsService settings;
-
-        /// <summary>
-        /// The delegations
-        /// </summary>
-        private readonly IDelegationService delegations;
-
         #endregion
 
         #region Constructor
@@ -53,13 +39,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="CreateMeasurementHandler"/> class.
         /// </summary>
         /// <param name="service">The Measurement Service<see cref="IMeasurementService"/>.</param>
-        /// <param name="settings">The Settings Service<see cref="ISettingsService"/>.</param>
-        /// <param name="delegations">The Delegation Service<see cref="IDelegationService"/>.</param>
-        public CreateMeasurementHandler(IMeasurementService service, ISettingsService settings, IDelegationService delegations)
+        public CreateMeasurementHandler(IMeasurementService service)
         {
             this.service = service;
-            this.settings = settings;
-            this.delegations = delegations;
         }
 
         #endregion

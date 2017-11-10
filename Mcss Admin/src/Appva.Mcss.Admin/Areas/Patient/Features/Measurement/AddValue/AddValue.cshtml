@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Admin.Models.AddMeasurementValueModel
+﻿@using Appva.Mcss.Admin.Application.Models
+@model Appva.Mcss.Admin.Models.AddMeasurementValueModel
 
 <div class="section section--hspace">
     <h2>Provtagning</h2>
@@ -23,7 +24,7 @@
                     else if (Model.Scale == "Common")
                     {
                         @Html.LabelFor(x => x.Value, String.Format("{0}", Model.Unit), new { @class = "required-indicator" })
-                        @Html.TextBoxFor(x => x.Value, new { required = "reguired", type = "text" })
+                        @Html.DropDownListFor(x => x.Value, EnumHelper.GetSelectList(typeof(MeasurementScale.CommonScaleValues)), new { required = "reguired" })
                     }
                     else if (Model.Scale == "Bristol")
                     {

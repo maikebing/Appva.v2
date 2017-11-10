@@ -13,12 +13,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System.Linq;
     using System.Web.Mvc;
     using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Application.Services.Settings;
-    using Appva.Mcss.Admin.Application.Common;
-    using Newtonsoft.Json;
     using Appva.Mcss.Admin.Application.Models;
-    using System.Collections.Generic;
+    using Appva.Mcss.Admin.Application.Services;
 
     #endregion
 
@@ -34,16 +30,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IMeasurementService service;
 
-        /// <summary>
-        /// The SettingsService
-        /// </summary>
-        private readonly ISettingsService settings;
-
-        /// <summary>
-        /// The DelegationService
-        /// </summary>
-        private readonly IDelegationService delegations;
-
         #endregion
 
         #region Constructor
@@ -52,13 +38,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="UpdateMeasurementHandler"/> class.
         /// </summary>
         /// <param name="service">The Measurement Service<see cref="IMeasurementService"/>.</param>
-        /// <param name="settings">The Settings Service<see cref="ISettingsService"/>.</param>
-        /// <param name="delegations">The Delegation Service<see cref="IDelegationService"/>.</param>
-        public UpdateMeasurementHandler(IMeasurementService service, ISettingsService settings, IDelegationService delegations)
+        public UpdateMeasurementHandler(IMeasurementService service)
         {
             this.service = service;
-            this.settings = settings;
-            this.delegations = delegations;
         }
 
         #endregion
@@ -69,7 +51,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateMeasurementModel Handle(UpdateMeasurement message)
         {
             var observation = this.service.Get(message.MeasurementId);
-            //var scale = JsonConvert.DeserializeObject<MeasurementScaleModel>(observation.Scale);
 
             var model = new UpdateMeasurementModel
             {

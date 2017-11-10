@@ -1,4 +1,4 @@
-﻿// <copyright file="ListMeasurementModel.cs" company="Appva AB">
+﻿// <copyright file="ListMeasurement.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -10,9 +10,6 @@ namespace Appva.Mcss.Admin.Models
     #region Imports
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Appva.Cqrs;
 
     #endregion
@@ -22,7 +19,22 @@ namespace Appva.Mcss.Admin.Models
     /// </summary>
     public class ListMeasurement : IRequest<ListMeasurementModel>
     {
-        public Guid Id { get; set; }
-        public Guid MeasurementId { get; set; }
+        /// <summary>
+        /// Gets or sets the identifier.
+        /// </summary>
+        public Guid Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the measurement identifier.
+        /// </summary>
+        public Guid MeasurementId
+        {
+            get;
+            set;
+        }
     }
 }

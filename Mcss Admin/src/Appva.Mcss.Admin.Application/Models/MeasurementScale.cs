@@ -59,7 +59,7 @@ namespace Appva.Mcss.Admin.Application.Models
             K
         }
 
-        private enum CommonScaleValues : byte
+        public enum CommonScaleValues : byte
         {
             AAA,
             AA,

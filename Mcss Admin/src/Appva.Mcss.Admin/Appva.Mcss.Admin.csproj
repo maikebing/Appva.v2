@@ -73,9 +73,6 @@
       <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Domain, Version=0.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Domain.0.0.4\lib\net45\Appva.Domain.dll</HintPath>
-    </Reference>
     <Reference Include="Appva.GrandId, Version=0.1.4.17896, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.GrandId.0.1.4\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
       <Private>True</Private>
@@ -1085,6 +1082,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Framework\Appva.Domain\Appva.Domain\Appva.Domain.csproj">
+      <Project>{b1dd67f4-e89a-41fa-9660-a22c522ec807}</Project>
+      <Name>Appva.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Admin.Utils\Appva.Admin.Utils.csproj">
       <Project>{2edab8ce-5318-400f-a1a8-7b604732cf5b}</Project>
       <Name>Appva.Admin.Utils</Name>

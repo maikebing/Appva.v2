@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Extensions
     using System.Linq;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Domain;
 
     #endregion
 

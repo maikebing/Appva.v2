@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Core.Logging;
     using Appva.Mcss.Admin.Domain.Models;
     using NHibernate.Criterion;
+    using Appva.Domain;
 
     #endregion
 
@@ -236,7 +237,7 @@ namespace Appva.Mcss.Admin.Application.Services
             //// Create the queries
             var sequences = this.context.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
-                  .And(x => x.Interval != 0 || (x.EndDate >= start && x.StartDate <= end));
+                  .And(x => x.Repeat.Interval != 0 || (x.Repeat.EndAt >= start && x.Repeat.StartAt <= end));
              var tasks = this.context.QueryOver<Task>()
                 .Where(x => x.IsActive)
                   .And(x => x.EndDate >= start && x.StartDate <= end);
@@ -525,14 +526,37 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             evt.Name = evt.Schedule.ScheduleSettings.Name;
             evt.Description = description;
-            evt.StartDate = this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null);
-            evt.EndDate   = this.GetDateTimeWithHourAndMinutes(endDate,   endTime,   isAllDay ? "23:59" : null);
-            evt.Interval  = interval;
-            evt.IntervalFactor = intervalFactor;
-            evt.IntervalIsDate = intervalIsDate;
+
+            //// TODO: skapa en ny repeat och stoppa in den här...
+
+            /*
+             public Repeat(DateTime startAt, DateTime endAt, int interval, int intervalFactor, int offsetBefore, int offsetAfter, List<TimeOfDay> timesOfDay, List<Date> boundsRange, bool isNeedBased, bool isIntervalDate, bool isAllDay)
+             public Repeat(Date startAt, Date endAt, int? period, UnitOfTime periodUnit, int? duration, UnitOfTime durationUnit, int offsetBefore, int offsetAfter, bool isNeedBased, List<TimeOfDay> timesOfDay, List<DayOfWeek> daysOfWeek, List<Flag> flags, List<Date> boundsRange);
+
+             */
+            var repeat = new Repeat(
+                startAt: this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),
+                endAt: this.GetDateTimeWithHourAndMinutes(endDate, endTime, isAllDay ? "23:59" : null),
+                interval: interval,
+                intervalFactor: intervalFactor,
+                offsetBefore: 0,
+                offsetAfter: 0,
+                timesOfDay: null,
+                boundsRange: null,
+                isNeedBased: false,
+                isIntervalDate: intervalIsDate,
+                isAllDay: isAllDay
+                );
+
+            //evt.Repeat.StartAt = this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null);
+            //evt.Repeat.EndAt = this.GetDateTimeWithHourAndMinutes(endDate,   endTime,   isAllDay ? "23:59" : null);
+            //evt.Repeat.Interval  = interval;
+            //evt.IntervalFactor = intervalFactor;
+            //evt.IntervalIsDate = intervalIsDate;
+            evt.Repeat = repeat;
             evt.CanRaiseAlert = canRaiseAlert;
             evt.Overview = overview;
-            evt.AllDay = isAllDay;
+            //evt.AllDay = isAllDay;
             evt.PauseAnyAlerts = pauseAlerts;
             evt.Absent = absent;
             this.context.Update(evt);
@@ -540,8 +564,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 evt.Patient,
                 "ändrade aktiviteten {0} till {1:yyyy-MM-dd HH:mm} - {2:yyyy-MM-dd HH:mm} (REF: {3}).",
                 evt.Description,
-                evt.StartDate,
-                evt.EndDate,
+                evt.Repeat.StartAt,
+                evt.Repeat.EndAt,
                 evt.Id);
         }
 
@@ -656,7 +680,7 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 IsWithinMonth = date.Month == currentMonthDisplayed,
                 IsToday = date.Equals(DateTime.Today),
-                Events = date.DayOfWeek.Equals(DayOfWeek.Monday) ? events.Where(x => x.StartTime.Date <= date.Date && x.EndTime.Date >= date.Date).ToList() : events.Where(x => x.StartTime.Date == date.Date).ToList(),
+                Events = date.DayOfWeek.Equals(System.DayOfWeek.Monday) ? events.Where(x => x.StartTime.Date <= date.Date && x.EndTime.Date >= date.Date).ToList() : events.Where(x => x.StartTime.Date == date.Date).ToList(),
                 NumberOfEvents = events.Where(x => x.StartTime.Date <= date.Date && x.EndTime.Date >= date.Date).Count(),
                 Date = date
             };
@@ -728,13 +752,13 @@ namespace Appva.Mcss.Admin.Application.Services
             }
 
             var s = this.sequenceService.Find(sequence);
-            var endDate = s.EndDate.GetValueOrDefault();
+            var endDate = s.Repeat.EndAt.GetValueOrDefault();
 
             while (endDate <= date)
             {
                 if (endDate.Date.Equals(date.Date))
                 {
-                    return EventTransformer.SequenceToEvent(s, endDate.AddDays((s.StartDate - s.EndDate.GetValueOrDefault()).TotalDays), endDate);
+                    return EventTransformer.SequenceToEvent(s, endDate.AddDays((s.Repeat.StartAt - s.Repeat.EndAt.GetValueOrDefault()).TotalDays), endDate);
                 }
                 endDate = s.GetNextDateInSequence(endDate);
             }
@@ -822,8 +846,8 @@ namespace Appva.Mcss.Admin.Application.Services
 
         private static IList<CalendarTask> GetActivitiesWithinPeriodFor(Sequence sequence, DateTime periodStart, DateTime periodEnd, IList<Task> tasks)
         {
-            var startDate = sequence.StartDate;
-            var endDate = sequence.EndDate.GetValueOrDefault();
+            var startDate = sequence.Repeat.StartAt;
+            var endDate = sequence.Repeat.EndAt.GetValueOrDefault();
 
             var retval = new List<CalendarTask>();
             
@@ -837,7 +861,7 @@ namespace Appva.Mcss.Admin.Application.Services
                         retval.Add(calendarTask);
                     }
                 }
-                if (sequence.Interval == 0)
+                if (sequence.Repeat.Interval == 0)
                 {
                     break;
                 }

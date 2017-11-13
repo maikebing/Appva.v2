@@ -60,9 +60,9 @@ using System.Linq;
                 QuittancedBy = t.QuittancedBy,
                 NeedsSignature = t.CanRaiseAlert,
                 Signature = t.IsCompleted ? new SignatureModel(t.CompletedBy, t.CompletedDate.Value, t.StatusTaxon) : null,
-                Interval = t.Sequence.Interval,
-                IntervalFactor = t.Sequence.IntervalFactor,
-                RepeatAtGivenDate = t.Sequence.IntervalIsDate,
+                Interval = t.Sequence.Repeat.Interval,
+                IntervalFactor = t.Sequence.Repeat.IntervalFactor,
+                RepeatAtGivenDate = t.Sequence.Repeat.IsIntervalDate,
                 PatientId = t.Patient.Id,
                 PatientName = t.Patient.FullName
             };
@@ -103,12 +103,12 @@ using System.Linq;
                 Color = sequence.Schedule.ScheduleSettings.Color,
                 SequenceId = sequence.Id,
                 CategoryId = sequence.Schedule.ScheduleSettings.Id,
-                IsFullDayEvent = sequence.AllDay,
+                IsFullDayEvent = sequence.Repeat.IsAllDay,
                 NeedsQuittance = sequence.Overview,
                 NeedsSignature = sequence.CanRaiseAlert,
-                Interval = sequence.Interval,
-                IntervalFactor = sequence.IntervalFactor != 0? sequence.IntervalFactor : 1,
-                RepeatAtGivenDate = sequence.IntervalIsDate,
+                Interval = sequence.Repeat.Interval,
+                IntervalFactor = sequence.Repeat.IntervalFactor != 0? sequence.Repeat.IntervalFactor : 1,
+                RepeatAtGivenDate = sequence.Repeat.IsIntervalDate,
                 PatientId = sequence.Patient.Id,
                 PatientName = sequence.Patient.FullName
             };

@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Handlers
     #region Imports.
 
     using Appva.Cqrs;
+    using Appva.Domain;
     using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Area51.Models;
@@ -52,15 +53,16 @@ namespace Appva.Mcss.Admin.Areas.Area51.Handlers
         {
             var sequence = this.sequenceService.Find(message.Id);
 
-            if (sequence != null && sequence.Interval == 0)
+            if (sequence != null && sequence.Repeat.Interval == 0)
             {
                 DateTime start;
                 DateTime? end;
-                DateTimeUtils.GetEarliestAndLatestDateFrom(sequence.Dates.Split(','), out start, out end);
+                DateTimeUtils.GetEarliestAndLatestDateFrom(sequence.Repeat.BoundsRange.Select(x => (DateTime) x).ToList(), out start, out end); //sequence.Dates.Split(',')
 
-                sequence.StartDate = start;
-                sequence.EndDate   = end;
-                sequenceService.Update(sequence);
+
+                //sequence.Repeat.StartAt = start;
+                //sequence.Repeat.EndAt   = end;
+                this.sequenceService.Update(sequence);
             }
 
             return new ListSequenceModel();

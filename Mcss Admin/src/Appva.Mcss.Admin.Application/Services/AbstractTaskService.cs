@@ -135,11 +135,12 @@ namespace Appva.Mcss.Admin.Application.Services
                         var current = period.Start.LocalDateTime.AddDays(i);
                         if (DateTimeUtils.IsDateOccurringWithinSpan(
                             current,
-                            sequence.StartDate.Date,
-                            sequence.EndDate,
-                            sequence.Interval,
-                            sequence.IntervalFactor,
-                            DateTimeUtils.Parse(sequence.Dates).ToList()))
+                            sequence.Repeat.StartAt.Date,
+                            sequence.Repeat.EndAt,
+                            sequence.Repeat.Interval,
+                            sequence.Repeat.IntervalFactor,
+                            sequence.Repeat.BoundsRange.Select(x => (DateTime)x).ToList())
+                        )
                         {
                             days.Add(current.Day);
                         }
@@ -151,7 +152,7 @@ namespace Appva.Mcss.Admin.Application.Services
                     //// Calculate the times only for the sequence.
                     foreach (var executing in ExecutingTimes(period.Start.LocalDateTime, sequence))
                     {
-                        var dateTime = sequence.OnNeedBasis ? (DateTime?) null : executing;
+                        var dateTime = sequence.Repeat.IsNeedBased ? (DateTime?) null : executing;
                         References reference = null;
                         if (showInstructionsOnSeparatePage)
                         {
@@ -194,12 +195,21 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="sequence"></param>
         protected IList<DateTime> ExecutingTimes(DateTime date, Sequence sequence)
         {
-            if (sequence.OnNeedBasis)
+            if (sequence.Repeat.IsNeedBased)
             {
                 return new List<DateTime> { date };
             }
-            int hour, minute;
             var result = new List<DateTime>();
+
+            foreach (var timeOfDay in sequence.Repeat.TimesOfDay)
+            {
+                result.Add(new DateTime(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, 0));
+            }
+
+            return result;
+            /*
+            int hour, minute;
+            
             if (!string.IsNullOrEmpty(sequence.Times))
             {
                 foreach (var hourString in sequence.Times.Split(','))
@@ -219,6 +229,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 }
             }
             return result;
+            */
         }
 
         #endregion

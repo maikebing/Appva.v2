@@ -53,7 +53,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Handlers
         {
             var sequences = this.context.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
-                .And(x => x.StartDate > x.EndDate) 
+                .And(x => x.Repeat.StartAt > x.Repeat.EndAt) 
                 .Fetch(x => x.Patient).Eager
                 .TransformUsing(Transformers.DistinctRootEntity)
                 .List();

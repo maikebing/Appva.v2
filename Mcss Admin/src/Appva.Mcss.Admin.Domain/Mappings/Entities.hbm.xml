@@ -473,30 +473,33 @@
     <property name="Description" type="StringClob">
       <column name="Description" sql-type="NVARCHAR(MAX)"/>
     </property>
-    <property name="StartDate" />
-    <property name="EndDate" />
-    <property name="RangeInMinutesBefore" />
-    <property name="RangeInMinutesAfter" />
-    <property name="Times" />
-    <property name="Dates" type="StringClob">
-      <column name="Dates" sql-type="NVARCHAR(MAX)"/>
-    </property>
-    <property name="Minute" />
-    <property name="Hour" />
-    <property name="Interval" />
-    <property name="IntervalFactor" />
-    <property name="IntervalIsDate" />
-    <property name="OnNeedBasis" />
+    <component name="Repeat" class="Appva.Domain.Repeat, Appva.Domain">
+      <property name="StartAt"         column="StartDate"            access="nosetter.camelcase" /> 
+      <property name="EndAt"           column="EndDate"              access="nosetter.camelcase" />     
+      <property name="TimesOfDay"      column="Times"                access="nosetter.camelcase" not-null="false" type="Appva.Domain.TimeType, Appva.Domain"      />
+      <property name="DaysOfWeek"      column="DaysOfWeek"           access="nosetter.camelcase" not-null="false" type="Appva.Domain.DayOfWeekType, Appva.Domain" />
+      <property name="BoundsRange"     column="Dates"                access="nosetter.camelcase" not-null="false" type="Appva.Domain.DateType, Appva.Domain"      />
+      <!-- New nullable property. -->
+      <property name="Period"          column="Period"               access="nosetter.camelcase" not-null="false"  />
+      <property name="PeriodUnit"      column="PeriodUnit"           access="nosetter.camelcase" not-null="false" type="Appva.Domain.UnitOfTimeType, Appva.Domain" />
+      <property name="Duration"        column="Duration"             access="nosetter.camelcase" not-null="false" />
+      <property name="IsNeedBased"     column="OnNeedBasis"          access="nosetter.camelcase"                  />
+      <property name="OffsetBefore"    column="RangeInMinutesBefore" access="nosetter.camelcase"                  />
+      <property name="OffsetAfter"     column="RangeInMinutesAfter"  access="nosetter.camelcase"                  />     
+      <!-- internal non nullable properties. -->
+      <property name="Interval"        column="Interval"             access="nosetter.camelcase" /> <!-- See PeriodUnit.-->
+      <property name="IntervalFactor"  column="IntervalFactor"       access="nosetter.camelcase" /> <!-- See Period. -->
+      <property name="IsIntervalDate"  column="IntervalIsDate"       access="nosetter.camelcase" />
+      <property name="IsAllDay"        column="AllDay"               access="nosetter.camelcase" /> <!-- See Duration.  -->
+      <property name="Compatibility"   column="Compatibility"        access="nosetter.camelcase" not-null="false" />
+    </component>
     <property name="Reminder" />
     <property name="ReminderInMinutesBefore" />
     <many-to-one name="ReminderRecipient" class="Account" />
     <property name="LastReminderSent" />
-    <property name="StockAmount" />
-    <property name="LastStockAmountCalculation" />
     <property name="Overview" />
     <property name="CanRaiseAlert" />
     <property name="PauseAnyAlerts" />
-    <property name="AllDay" />
     <property name="Absent" />
     <many-to-one name="Patient" class="Patient" />
     <many-to-one name="Schedule" class="Schedule" />
@@ -512,6 +515,26 @@
       <many-to-one name="OrderedBy"  class="Account" />
     </component>
 
+    <!--<property name="StartDate" />
+    <property name="EndDate" />
+    <property name="RangeInMinutesBefore" />
+    <property name="RangeInMinutesAfter" />
+    <property name="Times" />
+    <property name="Dates" type="StringClob">
+      <column name="Dates" sql-type="NVARCHAR(MAX)"/>
+    </property>
+    <property name="Minute" />
+    <property name="Hour" />
+    <property name="Interval" />
+    <property name="IntervalFactor" />
+    <property name="IntervalIsDate" />
+    <property name="OnNeedBasis" />
+    <property name="AllDay" />
+
+    <property name="StockAmount" />
+    <property name="LastStockAmountCalculation" />
+    -->
+    
   </class>
   
   <!-- Transaction -->

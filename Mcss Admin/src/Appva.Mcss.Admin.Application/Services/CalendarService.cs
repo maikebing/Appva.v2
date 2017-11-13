@@ -101,8 +101,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 .Where(x => x.IsActive)
                   .And(x => x.Schedule.Id == schedule.Id)
                   .And(x => x.Patient.Id == schedule.Patient.Id)
-                  .And(x => x.StartDate <= lastInMonth) // if endate == null?
-                  .And(x => x.EndDate == null || x.EndDate >= firstInMonth)
+                  .And(x => x.Repeat.StartAt <= lastInMonth) // if endate == null?
+                  .And(x => x.Repeat.EndAt == null || x.Repeat.EndAt >= firstInMonth)
                 .List();
 
             var sequenceList = new List<Sequence>();
@@ -112,53 +112,52 @@ namespace Appva.Mcss.Admin.Application.Services
             // THE LOOP FROM HELL!!!
             foreach (var sequence in sequences)
             {
-                if (sequence.OnNeedBasis == true)
+                if (sequence.Repeat.IsNeedBased == true)
                 {
-                    // lista dessa utanför kalendern kanske? nu visar den bara upp sig en dag.
-                    retval.Add(this.SequenceToEvent(sequence, sequence.StartDate, sequence.EndDate));
+                    /* hur skall vi presentera IsNeedBased sequences? */
+                    retval.Add(this.SequenceToEvent(sequence, sequence.Repeat.StartAt, sequence.Repeat.EndAt));
                 }
                 else
                 {
-                    var before = new TimeSpan(0, sequence.RangeInMinutesBefore, 0);
-                    var after = new TimeSpan(0, sequence.RangeInMinutesAfter, 0);
-                    var sequenceTimes = sequence.Times.Split(',');
+                    var before = new TimeSpan(0, sequence.Repeat.OffsetBefore, 0);
+                    var after = new TimeSpan(0, sequence.Repeat.OffsetAfter, 0);
+                    var sequenceTimes = sequence.Repeat.TimesOfDay;
 
-                    // titta på dates, plocka ut datumen och skapa en calendertask varje datum som är inom tidsspannet.
-                    // alternativt räkna ut nästa iteration..
-                    // loopa sålänge datumen ligger inom tidsspannet
-                    if (sequence.Dates != null && DateTime.TryParse(sequence.Dates.Split(',')[0], out DateTime firstDate) == true)
+                    /* titta på dates, plocka ut datumen och skapa en calendertask varje datum som är inom tidsspannet.
+                     * alternativt räkna ut nästa iteration..
+                     * loopa sålänge datumen ligger inom tidsspannet */
+                    if (sequence.Repeat.BoundsRange.Count() > 0)
                     {
-                        var sequenceDates = sequence.Dates.Split(',');
-
-                        for (int d = 0; d < sequenceDates.Length; d++)
+                        foreach (var dayInRange in sequence.Repeat.BoundsRange)
                         {
-                            var theDate = DateTime.Parse(sequenceDates[d]);
-
-                            // kolla om datumet ligger inom månaden.. innan task skapas
-                            if (theDate >= firstInMonth && theDate <= lastInMonth)
+                            if (dayInRange >= firstInMonth && dayInRange <= lastInMonth)
                             {
-                                for (int t = 0; t < sequenceTimes.Length; t++)
+                                foreach (var timeOfDay in sequence.Repeat.TimesOfDay)
                                 {
-                                    retval.Add(this.SequenceToEvent(sequence, theDate.AddHours(double.Parse(sequenceTimes[t])).Subtract(before), theDate.AddHours(double.Parse(sequenceTimes[t])).Add(after)));
+                                    var dayAndTime = new DateTime(dayInRange.Year, dayInRange.Month, dayInRange.Day, timeOfDay.Hour, timeOfDay.Minute, 0);
+                                    retval.Add(this.SequenceToEvent(sequence, dayAndTime.Subtract(before), dayAndTime.Add(after)));
                                 }
                             }
                         }
                     }
                     else
                     {
-                        var intervalDate = sequence.StartDate;
+                        var intervalDate = sequence.Repeat.StartAt;
 
-                        // kan vara bra med någon bättre matematik för att sortera och räkna datum
-                        while (intervalDate < lastInMonth)
+                        /* kan vara bra med någon bättre matematik för att sortera och räkna datum */
+                        while (intervalDate <= lastInMonth)
                         {
-                            if (intervalDate.Subtract(before) >= firstInMonth && intervalDate.Add(after) <= lastInMonth) // hmm vad händer om datum/tid är 2017-12-31 23:50 och after är 15 minuter?
+                            /* hmm vad händer om datum/tid är 2017-12-31 23:50 och after är 15 minuter
+                               eller om datum/tid är 2018-01-01 00:10 och before är 15 minuter? */
+                            if (intervalDate.Subtract(before) >= firstInMonth && intervalDate.Add(after) <= lastInMonth)
                             {
-                                for (int t = 0; t < sequenceTimes.Length; t++)
+                                foreach (var time in sequence.Repeat.TimesOfDay)
                                 {
-                                    retval.Add(this.SequenceToEvent(sequence, intervalDate.AddHours(double.Parse(sequenceTimes[t])).Subtract(before), intervalDate.AddHours(double.Parse(sequenceTimes[t])).Add(after)));
+                                    var dayAndTime = new DateTime(intervalDate.Year, intervalDate.Month, intervalDate.Day, time.Hour, time.Minute, 0);
+                                    retval.Add(this.SequenceToEvent(sequence, dayAndTime.Subtract(before), dayAndTime.Add(after)));
                                 }
                             }
-                            intervalDate = intervalDate.AddDays(sequence.Interval);
+                            intervalDate = intervalDate.AddDays(sequence.Repeat.Interval);
                         }
                     }
                 }
@@ -191,12 +190,12 @@ namespace Appva.Mcss.Admin.Application.Services
                 Color = sequence.Schedule.ScheduleSettings.Color,
                 SequenceId = sequence.Id,
                 CategoryId = sequence.Schedule.ScheduleSettings.Id,
-                IsFullDayEvent = sequence.AllDay,
+                IsFullDayEvent = sequence.Repeat.IsAllDay,
                 NeedsQuittance = sequence.Overview,
                 NeedsSignature = sequence.CanRaiseAlert,
-                Interval = sequence.Interval,
-                IntervalFactor = sequence.IntervalFactor != 0 ? sequence.IntervalFactor : 1,
-                RepeatAtGivenDate = sequence.IntervalIsDate,
+                Interval = sequence.Repeat.Interval,
+                IntervalFactor = sequence.Repeat.IntervalFactor != 0 ? sequence.Repeat.IntervalFactor : 1,
+                RepeatAtGivenDate = sequence.Repeat.IsIntervalDate,
                 PatientId = sequence.Patient.Id,
                 PatientName = sequence.Patient.FullName
             };

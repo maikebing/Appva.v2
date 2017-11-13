@@ -46,6 +46,9 @@
       <HintPath>..\..\..\Packages\Appva.Cryptography.0.3.0\lib\net45\Appva.Cryptography.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Appva.Domain, Version=0.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Domain.0.0.4\lib\net45\Appva.Domain.dll</HintPath>
+    </Reference>
     <Reference Include="Appva.NHibernateUtils, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.NHibernateUtils.0.4.0\lib\net45\Appva.NHibernateUtils.dll</HintPath>
       <Private>True</Private>
@@ -171,7 +174,9 @@
     <Compile Include="VO\SecurityTokenConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\Entities.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Entities.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

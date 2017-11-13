@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Domain;
 
     #endregion
 
@@ -168,16 +169,32 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 sequence.Inventory = this.inventoryService.Find(model.Inventory.GetValueOrDefault());
             }
+
+            var repeat = new Repeat(
+                startAt: startDate,
+                endAt: endDate.HasValue? endDate.Value : startDate,
+                interval: model.OnNeedBasis? 1 : model.Interval.Value,
+                intervalFactor: sequence.Repeat.IntervalFactor,
+                offsetBefore: model.RangeInMinutesBefore,
+                offsetAfter: model.RangeInMinutesAfter,
+                timesOfDay: model.Times.Where(x => x.Checked == true).Select(x => new TimeOfDay(x.Id, 00)).ToList(),
+                boundsRange: model.Dates.Split(',').Select(x => Date.Parse(x)).ToList(),
+                isNeedBased: model.OnNeedBasis,
+                isIntervalDate: false,
+                isAllDay: false
+                );
+
             sequence.Name = model.Name;
             sequence.Description = model.Description;
-            sequence.StartDate = startDate;
-            sequence.EndDate = endDate;
-            sequence.RangeInMinutesBefore = model.RangeInMinutesBefore;
-            sequence.RangeInMinutesAfter = model.RangeInMinutesAfter;
-            sequence.Times = string.Join(",", model.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray());
-            sequence.Dates = model.Dates;
-            sequence.Interval = model.OnNeedBasis ? 1 : model.Interval.Value;
-            sequence.OnNeedBasis = model.OnNeedBasis;
+            sequence.Repeat = repeat;
+            //sequence.StartDate = startDate;
+            //sequence.EndDate = endDate;
+            //sequence.RangeInMinutesBefore = model.RangeInMinutesBefore;
+            //sequence.RangeInMinutesAfter = model.RangeInMinutesAfter;
+            //sequence.Times = string.Join(",", model.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray());
+            //sequence.Dates = model.Dates;
+            //sequence.Interval = model.OnNeedBasis ? 1 : model.Interval.Value;
+            //sequence.OnNeedBasis = model.OnNeedBasis;
             sequence.Reminder = model.Reminder;
             sequence.ReminderInMinutesBefore = model.ReminderInMinutesBefore;
             sequence.ReminderRecipient = recipient; //// FIXME: This is always NULL why is it here at all? 

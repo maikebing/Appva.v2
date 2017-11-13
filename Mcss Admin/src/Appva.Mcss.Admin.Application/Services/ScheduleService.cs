@@ -136,17 +136,17 @@ namespace Appva.Mcss.Admin.Application.Services
                 }
                 start = start.AddDays(1);
             }
-            var severalMonthSeqs = sequences.Where(x => (x.StartDate.Month < x.EndDate.GetValueOrDefault().Month) || (x.StartDate.Year < x.EndDate.GetValueOrDefault().Year)).ToList();
+            var severalMonthSeqs = sequences.Where(x => (x.Repeat.StartAt.Month < x.Repeat.EndAt.GetValueOrDefault().Month) || (x.Repeat.StartAt.Year < x.Repeat.EndAt.GetValueOrDefault().Year)).ToList();
             foreach (var seq in severalMonthSeqs)
             {
-                if (seq.Interval != 0)
+                if (seq.Repeat.Interval != 0)
                 {
-                    var startDate = new DateTime(start.Year, start.Month, seq.StartDate.Day, seq.StartDate.Hour, seq.StartDate.Minute, seq.StartDate.Second);
-                    retval.AddRange(FindTasks(seq.EndDate.GetValueOrDefault().AddDays((startDate - start).TotalDays), schedules, new List<Sequence>() { seq }, tasks, new List<Task>()));
+                    var startDate = new DateTime(start.Year, start.Month, seq.Repeat.StartAt.Day, seq.Repeat.StartAt.Hour, seq.Repeat.StartAt.Minute, seq.Repeat.StartAt.Second);
+                    retval.AddRange(FindTasks(seq.Repeat.EndAt.GetValueOrDefault().AddDays((startDate - start).TotalDays), schedules, new List<Sequence>() { seq }, tasks, new List<Task>()));
                 }
                 else
                 {
-                    retval.AddRange(FindTasks(seq.EndDate.GetValueOrDefault(), schedules, new List<Sequence>() { seq }, tasks, new List<Task>()));
+                    retval.AddRange(FindTasks(seq.Repeat.EndAt.GetValueOrDefault(), schedules, new List<Sequence>() { seq }, tasks, new List<Task>()));
                 }
             }
 
@@ -194,19 +194,19 @@ namespace Appva.Mcss.Admin.Application.Services
                                 Sequence = sequence,
                                 Patient = sequence.Patient,
                                 Scheduled = time,
-                                RangeInMinutesBefore = sequence.RangeInMinutesBefore,
-                                RangeInMinutesAfter = sequence.RangeInMinutesAfter,
+                                RangeInMinutesBefore = sequence.Repeat.OffsetBefore,
+                                RangeInMinutesAfter = sequence.Repeat.OffsetAfter,
                                 IsReadyToExecute = true,
                                 Delayed = IsDelayed(delayedTasks, sequence, time),
-                                OnNeedBasis = sequence.OnNeedBasis,
+                                OnNeedBasis = sequence.Repeat.IsNeedBased,
                                 Absent = sequence.Absent,
-                                AllDay = sequence.AllDay,
+                                AllDay = sequence.Repeat.IsAllDay,
                                 CanRaiseAlert = sequence.CanRaiseAlert,
                                 Overview = sequence.Overview,
                                 PauseAnyAlerts = sequence.PauseAnyAlerts,
                                 Taxon = sequence.Patient.Taxon,
-                                StartDate = sequence.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar ? sequence.StartDate.AddDays(CalculateInterval(time, sequence)) : sequence.StartDate,
-                                EndDate = sequence.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar ? sequence.EndDate.GetValueOrDefault().AddDays(CalculateInterval(time, sequence)) : sequence.EndDate
+                                StartDate = sequence.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar ? sequence.Repeat.StartAt.AddDays(CalculateInterval(time, sequence)) : sequence.Repeat.StartAt,
+                                EndDate = sequence.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar ? sequence.Repeat.EndAt.GetValueOrDefault().AddDays(CalculateInterval(time, sequence)) : sequence.Repeat.EndAt
 
                                 //IsReadyToExecute = (timeOfDay.Within(
                                 //    time.AddMinutes(-sequence.RangeInMinutesBefore),
@@ -227,11 +227,11 @@ namespace Appva.Mcss.Admin.Application.Services
 
         private static double CalculateInterval(DateTime scheduled, Sequence sequence)
         {
-            if (scheduled.Within(sequence.StartDate, sequence.EndDate.GetValueOrDefault()))
+            if (scheduled.Within(sequence.Repeat.StartAt, sequence.Repeat.EndAt.GetValueOrDefault()))
             {
                 return 0;
             }
-            var retval = (scheduled.Date - sequence.EndDate.GetValueOrDefault().Date).TotalDays;
+            var retval = (scheduled.Date - sequence.Repeat.EndAt.GetValueOrDefault().Date).TotalDays;
             return retval;
         }
 
@@ -368,14 +368,23 @@ namespace Appva.Mcss.Admin.Application.Services
             IList<DateTime> retval = new List<DateTime>();
             if (sequence.Schedule.ScheduleSettings.ScheduleType == ScheduleType.Calendar)
             {
-                var endDate = sequence.EndDate.GetValueOrDefault();
+                var endDate = sequence.Repeat.EndAt.GetValueOrDefault();
                 Hour = endDate.Hour;
                 Minute = endDate.Minute;
                 retval.Add(new DateTime(any.Year, any.Month, any.Day, Hour, Minute, 0));
                 return retval;
             }
-            if (!sequence.OnNeedBasis)
+            if (!sequence.Repeat.IsNeedBased)
             {
+                if (sequence.Repeat.TimesOfDay != null)
+                {
+                    foreach (var time in sequence.Repeat.TimesOfDay)
+                    {
+                        retval.Add(any.Date.AddHours(time.Hour));
+                    }
+                }
+
+                /*
                 if (!String.IsNullOrEmpty(sequence.Times))
                 {
                     foreach (string hour in sequence.Times.Split(','))
@@ -387,6 +396,9 @@ namespace Appva.Mcss.Admin.Application.Services
                         }
                     }
                 }
+
+                
+
                 if (!String.IsNullOrEmpty(sequence.Hour) && !String.IsNullOrEmpty(sequence.Minute))
                 {
                     if (Int32.TryParse(sequence.Hour, out Hour) && Int32.TryParse(sequence.Minute, out Minute))
@@ -394,6 +406,7 @@ namespace Appva.Mcss.Admin.Application.Services
                         retval.Add(any.Date.AddHours(Hour).AddMinutes(Minute));
                     }
                 }
+                */
             }
             else
             {
@@ -415,8 +428,8 @@ namespace Appva.Mcss.Admin.Application.Services
             foreach (var sequence in sequences)
             {
                 var isOccuring = findEventsForDay ?
-                    DateTimeUtils.DateIsCoveredByEvent(date.Date, sequence.StartDate.Date, sequence.EndDate.GetValueOrDefault(), sequence.Interval, sequence.Dates, intervalFactor: sequence.IntervalFactor, intervalIsDate: sequence.IntervalIsDate) :
-                    DateTimeUtils.IsOccurring(date.Date, sequence.StartDate.Date, sequence.EndDate, sequence.Interval, sequence.Dates, sequence.Schedule.ScheduleSettings.ScheduleType, intervalFactor: sequence.IntervalFactor, intervalIsDate: sequence.IntervalIsDate);
+                    DateTimeUtils.DateIsCoveredByEvent(date.Date, sequence.Repeat.StartAt.Date, sequence.Repeat.EndAt.GetValueOrDefault(), sequence.Repeat.Interval, "", intervalFactor: sequence.Repeat.IntervalFactor, intervalIsDate: sequence.Repeat.IsIntervalDate) :
+                    DateTimeUtils.IsOccurring(date.Date, sequence.Repeat.StartAt.Date, sequence.Repeat.EndAt, sequence.Repeat.Interval, "", sequence.Schedule.ScheduleSettings.ScheduleType, intervalFactor: sequence.Repeat.IntervalFactor, intervalIsDate: sequence.Repeat.IsIntervalDate);
                 if (isOccuring)
                 {
                     retval.Add(sequence);

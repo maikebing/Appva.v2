@@ -98,18 +98,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Id                          = message.Id,
                 Name                        = sequence.Name,
                 Description                 = sequence.Description,
-                StartDate                   = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.StartDate : (DateTime?) null,
-                EndDate                     = sequence.OnNeedBasis ? (DateTime?) null : sequence.Dates.IsEmpty() ? sequence.EndDate : (DateTime?) null,
-                RangeInMinutesBefore        = sequence.RangeInMinutesBefore,
-                RangeInMinutesAfter         = sequence.RangeInMinutesAfter,
+                StartDate                   = sequence.Repeat.IsNeedBased ? (DateTime?) null : sequence.Repeat.BoundsRange.IsNull() ? sequence.Repeat.StartAt : (DateTime?) null,
+                EndDate                     = sequence.Repeat.IsNeedBased ? (DateTime?) null : sequence.Repeat.BoundsRange.IsNull() ? sequence.Repeat.EndAt : (DateTime?) null,
+                RangeInMinutesBefore        = sequence.Repeat.OffsetBefore,
+                RangeInMinutesAfter         = sequence.Repeat.OffsetAfter,
                 Delegation                  = sequence.Taxon.IsNotNull() ? sequence.Taxon.Id : (Guid?) null,
                 Delegations                 = this.GetDelegations(schedule),
-                Dates                       = sequence.Dates,
-                Interval                    = sequence.Interval,
+                Dates                       = string.Join(",", sequence.Repeat.BoundsRange.Select(x => x.ToString()).ToArray()),
+                Interval                    = sequence.Repeat.Interval,
                 Times                       = this.CreateTimes(sequence),
-                OnNeedBasis                 = sequence.OnNeedBasis,
-                OnNeedBasisStartDate        = sequence.OnNeedBasis ? sequence.StartDate : (DateTime?) null,
-                OnNeedBasisEndDate          = sequence.OnNeedBasis ? sequence.EndDate   : (DateTime?) null,
+                OnNeedBasis                 = sequence.Repeat.IsNeedBased,
+                OnNeedBasisStartDate        = sequence.Repeat.IsNeedBased ? sequence.Repeat.StartAt : (DateTime?) null,
+                OnNeedBasisEndDate          = sequence.Repeat.IsNeedBased ? sequence.Repeat.EndAt   : (DateTime?) null,
                 Reminder                    = sequence.Reminder,
                 ReminderInMinutesBefore     = sequence.ReminderInMinutesBefore,
                 Patient                     = sequence.Patient,
@@ -182,20 +182,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 new CheckBoxViewModel(5),
             };
 
-            if (sequence.Times.IsNotEmpty())
+            if (sequence.Repeat.TimesOfDay.IsNotNull())
             {
-                var times = sequence.Times.Split(',');
-                foreach (var time in times)
+                foreach (var time in sequence.Repeat.TimesOfDay)
                 {
-                    var value = 0;
-                    if (int.TryParse(time, out value))
+                    foreach (var checkbox in checkBoxList)
                     {
-                        foreach (var checkbox in checkBoxList)
+                        if (checkbox.Id == time.Hour)
                         {
-                            if (checkbox.Id == value)
-                            {
-                                checkbox.Checked = true;
-                            }
+                            checkbox.Checked = true;
                         }
                     }
                 }

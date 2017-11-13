@@ -138,13 +138,13 @@ namespace Appva.Mcss.Admin.Application.Pdf
             if (! showNeedBased)
             {
                 /// if its not included we filter it away.
-                query.And(x => x.OnNeedBasis == false);
+                query.And(x => x.Repeat.IsNeedBased == false);
             }
             //// if false then remove 
             if (! showStandardSequences)
             {
                 /// just filter on need based.
-                query.And(x => x.OnNeedBasis == true);
+                query.And(x => x.Repeat.IsNeedBased == true);
             }
             var sequences = query.List();
             var statusTaxons = schedule.ScheduleSettings.StatusTaxons;

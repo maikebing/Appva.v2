@@ -2,6 +2,7 @@
 @model Appva.Mcss.Admin.Models.RegisterTenaPatientId
 @{
     SetTitle("TENA Identifi");
+    var inputInstruction = string.Format("{0} tecken", Guid.Empty.ToString().Length, Guid.Empty);
 }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.PatientViewModel)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.PatientViewModel)
@@ -15,7 +16,7 @@
             $('#ExternalId').val('');
         });
         $("#ExternalId").on("input", function () {
-            if (this.value.length == 8) {
+            if (this.value.length > 35) {
                 $.ajax({
                     url: '@Url.Action("GetResident","Tena")',
                     type: 'GET',
@@ -42,13 +43,13 @@
                             $('#tena-error').show();
                         }
                         */
-                        if (message.Message) {
-                            $('.tena-id-form .instructions .text').html(message.Message);
+                        if (message.error_message) {
+                            $('.tena-id-form .instructions .text').html(message.error_message);
                             $('.tena-id-form .instructions').addClass("error");
                         } else {
                             resetError();
-                            $('.tena-response-facility').html(message.FacilityName);
-                            $('.tena-response-room').html(message.RoomNumber);
+                            $('.tena-response-facility').html(message.facility_name);
+                            $('.tena-response-room').html(message.room_number);
                             $('#tena-response').show();
                             $('#tena-response .button').prop('disabled', false);
                         }
@@ -70,7 +71,7 @@
             $('.tena-response-room').html('');
         }
         function resetError() {
-            $('.tena-id-form .instructions .text').html("8 tecken");
+            $('.tena-id-form .instructions .text').html("@inputInstruction");
             $('.tena-id-form .instructions').removeClass("error");
         }
     });
@@ -101,10 +102,10 @@
                             @Html.LabelFor(x => x.ExternalId, "Den boendes Identifi-ID:")
                             <div class="tena-id-form">
                                 <p class="instructions">
-                                    <span class="text">8 tecken</span>
+                                    <span class="text">@inputInstruction</span>
                                     <span class="required-indicator">*</span>
                                 </p>
-                                @Html.TextBoxFor(x => x.ExternalId, new { maxlength=8, placeholder="XXXXXXXX" })
+                                @Html.TextBoxFor(x => x.ExternalId, new { maxlength=Guid.Empty.ToString().Length, placeholder=Guid.Empty })
                             </div>
                         </div>
                         <div id="target">

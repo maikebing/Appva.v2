@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var patient = this.patientService.Get(message.Id);
             var listTena = new ListTena { Id = patient.Id };
-            if (this.tenaService.CreateTenaObservervationPeriod(patient, message.StartDate, message.EndDate) == false)
+            if (this.tenaService.CreateTenaObservervationPeriod(patient, message.StartDate, message.EndDate) != null)
             {
                 //listTena.Message = "Gick inte att skapa ny period. Överlappande datum.";
             }

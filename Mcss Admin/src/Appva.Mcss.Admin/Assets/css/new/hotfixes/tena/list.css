@@ -38,6 +38,21 @@ label, .button {
     color:#ffffff;
 }
 
+/* Details */
+.tena-list dl {
+    margin-right:48px;
+}
+
+.tena-list dl dt {
+    font-size: 14px;
+    color:rgb(128,143,167);
+    font-weight:normal;
+}
+.tena-list dl dd {
+    font-size: 14px;
+    color:rgb(64,78,104);
+}
+
 /* Table */
 .tena-list table tbody tr:nth-child(even) { background: rgb(239,241,246); }
 .tena-list table tbody tr:nth-child(odd) { background: rgb(250, 251, 252); }
@@ -53,6 +68,12 @@ label, .button {
     border: 4px dashed rgb(219,224,236);
     border-radius:16px;
     padding-top:24px;
+    margin-top:24px;
+    color:rgb(128,143,167);
+}
+
+.tena-list .empty-list h3 {
+    color:rgb(128,143,167);
 }
 
 /* Button-fixes */

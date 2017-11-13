@@ -22,7 +22,10 @@ using System.Collections.Generic;
     /// <summary>
     /// The <see cref="TenaRepository"/> repository.
     /// </summary>
-    public interface ITenaRepository : IRepository<Observation>
+    public interface ITenaObservationPeriodRepository : 
+        ISaveRepository<TenaObservationPeriod>,
+        IUpdateRepository<TenaObservationPeriod>,
+        IRepository<TenaObservationPeriod>
     {
         /// <summary>
         /// Checks if externalId is Unique
@@ -38,14 +41,6 @@ using System.Collections.Generic;
         /// <param name="startdate">The selected start date</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
         bool HasConflictingDate(Guid patientId, DateTime startdate);
-
-        /// <summary>
-        /// Creates a new Tena Observation Period
-        /// </summary>
-        /// <param name="patient">The Patient Entity.</param>
-        /// <param name="startdate">Periods starting date.</param>
-        /// <param name="enddate">Periods ending date.</param>
-        void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate);
 
         /// <summary>
         /// Get a specific Tena Observation Period from DB
@@ -74,7 +69,7 @@ using System.Collections.Generic;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class TenaRepository : ITenaRepository
+    public sealed class TenaRepository : ITenaObservationPeriodRepository
     {
         #region Variables.
 
@@ -94,6 +89,42 @@ using System.Collections.Generic;
         public TenaRepository(IPersistenceContext context)
         {
             this.persistence = context;
+        }
+
+        #endregion
+
+        #region IRepository members.
+
+        /// <inheritdoc />
+        public TenaObservationPeriod Get(object id)
+        {
+            return this.persistence.Get<TenaObservationPeriod>(id);
+        }
+
+        /// <inheritdoc />
+        public TenaObservationPeriod Load(object id)
+        {
+            return this.persistence.Session.Load<TenaObservationPeriod>(id);
+        }
+
+        #endregion
+
+        #region ISaveRepository members.
+
+        /// <inheritdoc />
+        public void Save(TenaObservationPeriod entity)
+        {
+            this.persistence.Save<TenaObservationPeriod>(entity);
+        }
+
+        #endregion
+
+        #region IUpdateRepository members.
+
+        /// <inheritdoc />
+        public void Update(TenaObservationPeriod entity)
+        {
+            this.persistence.Update<TenaObservationPeriod>(entity);
         }
 
         #endregion
@@ -119,14 +150,6 @@ using System.Collections.Generic;
         }
 
         /// <inheritdoc />
-        public void CreateNewTenaObserverPeriod(Patient patient, DateTime startdate, DateTime enddate)
-        {
-            var period = new TenaObservationPeriod(startdate, enddate, patient, "Mätperiod", "Tena mätperiod");
-
-            this.persistence.Save(period);
-        }
-
-        /// <inheritdoc />
         public TenaObservationPeriod GetTenaPeriod(Guid periodId)
         {
             return this.persistence.QueryOver<TenaObservationPeriod>().Where(x => x.Id == periodId).SingleOrDefault();
@@ -140,19 +163,7 @@ using System.Collections.Generic;
         }
 
         /// <inheritdoc />
-        public Observation Get(object id)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public Observation Load(object id)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        /// <inheritdoc />
+        /// 
         public IList<TenaObservationPeriod> ListTenaPeriods(Guid patientId)
         {
             return this.persistence.QueryOver<TenaObservationPeriod>()
@@ -160,5 +171,10 @@ using System.Collections.Generic;
                 .And(x => x.Patient.Id == patientId)
                 .List();
         }
+
+        #endregion
+
+
+       
     }
 }

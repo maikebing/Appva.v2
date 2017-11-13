@@ -16,20 +16,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Newtonsoft.Json;
+    using System.Threading.Tasks;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class GetResidentHandler : RequestHandler<GetResident, string>
+    internal sealed class GetResidentHandler : AsyncRequestHandler<GetResident, GetResidentModel>
     {
         #region Fields.
-
-        /// <summary>
-        /// The <see cref="IPatientService"/>.
-        /// </summary>
-        private readonly IPatientService patientService;
 
         /// <summary>
         /// The <see cref="ITenaService"/>.
@@ -45,9 +41,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// <param name="tenaService">The <see cref="ITenaService"/>.</param>
-        public GetResidentHandler(IPatientService patientService, ITenaService tenaService)
+        public GetResidentHandler(ITenaService tenaService)
         {
-            this.patientService = patientService;
             this.tenaService = tenaService;
         }
 
@@ -55,13 +50,26 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #region RequestHandler overrides.
 
-        /// <inheritdoc />
-        public override string Handle(GetResident message)
+        /// <summary>
+        /// Handles the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns></returns>
+        public override async Task<GetResidentModel> Handle(GetResident message)
         {
-            return null;
+            var response = await this.tenaService.GetResidentAsync(message.ExternalId);
 
+            return new GetResidentModel
+            {
+                FacilityName = response.FacilityName,
+                RoomNumber = response.RoomNumber,
+                Error = response.Message,
+                TenaId = response.ExternalId
+            };
         }
 
         #endregion
+
+        
     }
 }

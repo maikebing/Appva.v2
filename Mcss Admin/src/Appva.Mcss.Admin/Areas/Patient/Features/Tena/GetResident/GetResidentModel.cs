@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,6 +19,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// 
     /// </summary>
+    [JsonObject]
     public class GetResidentModel
     {
         #region Properties.
@@ -28,6 +30,7 @@ namespace Appva.Mcss.Admin.Models
         /// <value>
         /// The tena identifier.
         /// </value>
+        [JsonProperty("external_id")]
         public string TenaId 
         { 
             get;
@@ -40,6 +43,7 @@ namespace Appva.Mcss.Admin.Models
         /// <value>
         /// The room number.
         /// </value>
+        [JsonProperty("room_number")]
         public string RoomNumber 
         { 
             get; 
@@ -52,6 +56,7 @@ namespace Appva.Mcss.Admin.Models
         /// <value>
         /// The name of the facility.
         /// </value>
+        [JsonProperty("facility_name")]
         public string FacilityName 
         { 
             get;
@@ -64,22 +69,11 @@ namespace Appva.Mcss.Admin.Models
         /// <value>
         /// The status message.
         /// </value>
-        public string StatusMessage 
+        [JsonProperty("error_message")]
+        public string Error 
         { 
             get; 
             set; 
-        }
-
-        /// <summary>
-        /// Gets or sets the status code.
-        /// </summary>
-        /// <value>
-        /// The status code.
-        /// </value>
-        public int StatusCode 
-        { 
-            get; 
-            set;
         }
 
         #endregion

@@ -107,5 +107,24 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
+
+        #region Public members
+
+        /// <summary>
+        /// Updates the current instance.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="description">The description.</param>
+        public virtual void Update(string name, string description)
+        {
+            Requires.NotNullOrWhiteSpace(name, "name");
+            Requires.NotNullOrWhiteSpace(description, "description");
+            this.Name        = name;
+            this.Description = description;
+
+            this.RegisterEvent(ObservationUpdatedEvent.New(this));
+        }
+
+        #endregion
     }
 }

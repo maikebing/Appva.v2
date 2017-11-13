@@ -8,6 +8,7 @@ namespace Appva.Sca.Models
 {
     #region Imports.
     using Appva.Http;
+    using System;
     #endregion
 
     /// <summary>
@@ -50,9 +51,10 @@ namespace Appva.Sca.Models
 
         /// <summary>
         /// TimeStamp.
+        /// Must be in UTC
         /// </summary>
         [HttpRequestProperty("timeStamp")]
-        public string Timestamp
+        public DateTime Timestamp
         {
             get;
             set;

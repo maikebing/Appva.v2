@@ -91,26 +91,6 @@ using Appva.Cqrs;
 
         #endregion
 
-        #region Get resident
-
-        /// <summary>
-        /// Gets the resident from Tena Identifi
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>Task&lt;ActionResult&gt;.</returns>
-        [Route("resident")]
-        [HttpGet]
-        [PermissionsAttribute(Permissions.Tena.CreateValue)]
-        public async Task<ActionResult> GetResident(GetResident request)
-        {
-            var response = await this.tenaService.GetResidentAsync(request.ExternalId);
-            var model = JsonConvert.SerializeObject(response);
-
-            return this.Content(model);
-        }
-
-        #endregion
-
         #region Register patient.
 
         /// <summary>
@@ -161,7 +141,7 @@ using Appva.Cqrs;
         #region Create period
 
         /// <summary>
-        /// GET Creates a Tena Observation Period
+        /// Creates a Tena Observation Period
         /// </summary>
         /// <param name="request">The <see cref="CreateTenaObserverPeriod"/>.</param>
         /// <returns>A <see cref="ActionResult"/>.</returns>
@@ -188,6 +168,36 @@ using Appva.Cqrs;
 
         #endregion
 
+        #region Update period
+
+        /// <summary>
+        /// Creates a Tena Observation Period
+        /// </summary>
+        /// <param name="request">The <see cref="CreateTenaObserverPeriod"/>.</param>
+        /// <returns>A <see cref="ActionResult"/>.</returns>
+        [Route("{periodId:guid}/update")]
+        [HttpGet, Dispatch]
+        [PermissionsAttribute(Permissions.Tena.UpdateValue)]
+        public ActionResult Update(UpdateTenaObservationPeriod request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// POST Creates a Tena Observation Period
+        /// </summary>
+        /// <param name="request">The <see cref="CreateTenaObserverPeriodModel"/>.</param>
+        /// <returns>A <see cref="ActionResult"/>.</returns>
+        [Route("{periodId:guid}/update")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("list", "tena")]
+        [PermissionsAttribute(Permissions.Tena.UpdateValue)]
+        public ActionResult Update(UpdateTenaObservationPeriodModel request)
+        {
+            return this.View();
+        }
+
+        #endregion
+
         #region Upload to Identifi
 
         /// <summary>
@@ -206,6 +216,24 @@ using Appva.Cqrs;
 
             return this.View(model);
         }
+        #endregion
+
+        #region Get resident JSON
+
+        /// <summary>
+        /// Gets the resident from Tena Identifi
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Task&lt;ActionResult&gt;.</returns>
+        [Route("resident")]
+        [HttpGet]
+        [PermissionsAttribute(Permissions.Tena.CreateValue)]
+        public async Task<DispatchJsonResult> GetResident(GetResident request)
+        {
+            var response = await this.mediator.SendAsync(request);
+            return this.JsonGet(response);
+        }
+
         #endregion
 
         #endregion

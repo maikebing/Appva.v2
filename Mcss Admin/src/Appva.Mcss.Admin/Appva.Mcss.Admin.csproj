@@ -636,6 +636,10 @@
     <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientId.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientIdHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientIdPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriod.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriodHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriodModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriodPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Tena\ValidateDate\CheckDate.cs" />
     <Compile Include="Areas\Patient\Features\Tena\ValidateDate\CheckDateHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriod.cs" />
@@ -1031,6 +1035,7 @@
     <Content Include="Assets\i\ico-outdoor-act-message-group.png" />
     <Content Include="Assets\i\ico-outdoor-act-message.png" />
     <Content Include="Assets\i\ico-question.png" />
+    <Content Include="Assets\i\ico-tena-identifi.png" />
     <Content Include="Assets\i\ico-walk-group.png" />
     <Content Include="Assets\i\ico-walk-message.png" />
     <Content Include="Assets\i\ico-warning-antiglukos.png" />
@@ -1203,7 +1208,6 @@
     <Folder Include="Areas\Area51\Features\Test\Index\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
     <Folder Include="Areas\Patient\Features\Tena\Delete\" />
-    <Folder Include="Areas\Patient\Features\Tena\Update\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
     <Folder Include="Assets\error-pages\i\" />
   </ItemGroup>
@@ -1548,6 +1552,7 @@
     <Content Include="Assets\images\custom-checkbox.svg_old" />
     <Content Include="Assets\images\graph.ai" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\rename-inventory.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Update\Update.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

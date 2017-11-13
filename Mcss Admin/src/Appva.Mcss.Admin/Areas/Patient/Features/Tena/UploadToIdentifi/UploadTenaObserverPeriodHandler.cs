@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    internal sealed class UploadTenaObserverPeriodHandler : RequestHandler<UploadTenaObserverPeriod, string>
+    /*internal sealed class UploadTenaObserverPeriodHandler : RequestHandler<UploadTenaObserverPeriod, string>
     {
         #region Fields.
 
@@ -56,5 +56,5 @@ namespace Appva.Mcss.Admin.Models.Handlers
         }
 
         #endregion
-    }
+    }*/
 }

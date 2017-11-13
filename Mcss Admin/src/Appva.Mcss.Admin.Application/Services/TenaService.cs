@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Sca;
     using Sca.Models;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -49,7 +50,17 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="startdate">Starting date for the period</param>
         /// <param name="enddate">Ending date for the period</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
-        bool CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate);
+        TenaObservationPeriod CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate);
+
+        /// <summary>
+        /// Updates the tena pbservation period.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="startsAt">The starts at.</param>
+        /// <param name="endsAt">The ends at.</param>
+        /// <param name="instruction">The instruction.</param>
+        /// <returns></returns>
+        TenaObservationPeriod UpdateTenaPbservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction);
 
         /// <summary>
         /// Validate the Starting date against previous periods
@@ -103,9 +114,9 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables.
 
         /// <summary>
-        /// The <see cref="ITenaRepository"/>.
+        /// The <see cref="ITenaObservationPeriodRepository"/>.
         /// </summary>
-        private readonly ITenaRepository repository;
+        private readonly ITenaObservationPeriodRepository repository;
 
         /// <summary>
         /// The <see cref="ISettingsService"/>.
@@ -115,7 +126,12 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// The <see cref="IApiService"/>.
         /// </summary>
-        private readonly ITenaIdentifiClient IdentifiClient;
+        private readonly ITenaIdentifiClient identifiClient;
+
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService audit;
 
         #endregion
 
@@ -124,17 +140,23 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="TenaService"/> class.
         /// </summary>
-        /// <param name="repository">The <see cref="ITenaRepository"/>.</param>
+        /// <param name="repository">The <see cref="ITenaObservationPeriodRepository"/>.</param>
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
         /// <param name="identifiClient">The <see cref="IApiService"/>.</param>
-        public TenaService(ITenaRepository repository, ISettingsService settingsService, ITenaIdentifiClient identifiClient)
+        public TenaService(
+            ITenaObservationPeriodRepository repository, 
+            ISettingsService settingsService, 
+            ITenaIdentifiClient identifiClient,
+            IAuditService audit)
         {
-            this.repository = repository;
+            this.repository      = repository;
             this.settingsService = settingsService;
-            this.IdentifiClient = identifiClient;
-            if (this.IdentifiClient.HasCredentials == false)
+            this.audit           = audit;
+
+            this.identifiClient  = identifiClient;
+            if (this.identifiClient.HasCredentials == false)
             {
-                this.IdentifiClient.SetCredentials(this.GetCredentials());
+                this.identifiClient.SetCredentials(this.GetCredentials());
             }
         }
 
@@ -154,16 +176,27 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public bool CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate)
+        public TenaObservationPeriod CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate)
         {
             if (this.repository.HasConflictingDate(patient.Id, startdate))
             {
-                return false;
+                return null;
             }
+            var period = new TenaObservationPeriod(startdate, enddate, patient, "TENA Identifi", "För registrering av toalettbesök, läckage utanför produkten och ev avföring i produkten");
+            this.repository.Save(period);
 
-            this.repository.CreateNewTenaObserverPeriod(patient, startdate, enddate);
+            this.audit.Create(patient, "skapade TENA Identifi mätperiod {0} - {1} (ref, {2})", startdate, enddate, period.Id);
+            return period;            
+        }
 
-            return true;            
+        /// <inheritdoc />
+        public TenaObservationPeriod UpdateTenaPbservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction)
+        {
+            var period = this.repository.Get(id);
+            period.Update(period.Name, instruction, startsAt, endsAt);
+            this.repository.Update(period);
+
+            return period;
         }
 
         /// <inheritdoc />
@@ -185,7 +218,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void SetCredentials(string client, string secret)
         {
-            this.IdentifiClient.SetCredentials(this.GetCredentials(client, secret));
+            this.identifiClient.SetCredentials(this.GetCredentials(client, secret));
         }
 
         /// <inheritdoc />
@@ -199,7 +232,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 };
             }
 
-            return await this.IdentifiClient.GetResidentAsync(externalId);
+            return await this.identifiClient.GetResidentAsync(externalId);
         }
 
         /// <inheritdoc />
@@ -218,7 +251,7 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 return null;
             }
-            return await this.IdentifiClient.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
+            return await this.identifiClient.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
         }
 
         #endregion
@@ -231,12 +264,14 @@ namespace Appva.Mcss.Admin.Application.Services
             var tenaApiList = new List<PostManualEventModel>();
             foreach (var item in tenaObservationItemsList)
             {
+                //// FIX: Must convert to utc-time before sending to TENA.
+                var createdAt = new DateTime(item.CreatedAt.Ticks, DateTimeKind.Local);
                 tenaApiList.Add(new PostManualEventModel
                 {
                     Id = item.Id.ToString(),
                     EventType = item.Measurement.Value,
                     ResidentId = item.Observation.Patient.TenaId,
-                    Timestamp = item.UpdatedAt.ToString(),
+                    Timestamp = createdAt.ToUtc(),
                     Active = item.IsActive
                 });
             }

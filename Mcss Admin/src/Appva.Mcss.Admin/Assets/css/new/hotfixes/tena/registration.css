@@ -54,13 +54,13 @@ div.tena-id-form input {
     border:none;
     width:100%;
     color:rgb(64,78,104);
-    font-size:24px;
+    font-size:20px;
     border-radius:0;
 }
 
 
 div.tena-id-form input::placeholder {
-    font-size:24px;
+    font-size:20px;
     font-style:normal;
 }
 

@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 Id = message.Id,
                 StartDate = DateTime.Today,
-                EndDate = DateTime.Today.AddMonths(1)
+                EndDate = DateTime.Today.AddDays(4)
             };
         }
         #endregion

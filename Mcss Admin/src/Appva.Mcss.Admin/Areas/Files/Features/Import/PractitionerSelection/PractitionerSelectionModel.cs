@@ -9,10 +9,7 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
-    using System;
-    using System.Collections.Generic;
     using System.Data;
-    using Appva.Cqrs;
 
     #endregion
 
@@ -24,18 +21,54 @@ namespace Appva.Mcss.Admin.Models
         #region Properties.
 
         /// <summary>
-        /// The file id.
+        /// The excel data.
         /// </summary>
-        public Guid FileId
+        public DataTable Data
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The excel data.
+        /// Validate cells at the specified row.
         /// </summary>
-        public DataTable Data
+        public int ValidateAtRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Reads data from the specified row.
+        /// </summary>
+        public int ReadFromRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The last row.
+        /// </summary>
+        public int LastRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Specifies how many rows to skip before reading the first practitioner row.
+        /// </summary>
+        public int SkipRows
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The number of rows that will be previewed.
+        /// </summary>
+        public int PreviewRows
         {
             get;
             set;

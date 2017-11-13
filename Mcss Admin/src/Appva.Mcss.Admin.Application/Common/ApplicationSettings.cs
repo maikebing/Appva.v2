@@ -220,8 +220,23 @@ using Appva.Mcss.Admin.Application.Models;
              "Mcss.Core.Pdf",
              "Whether or not to show the instructions on a separate reference page",
              true);
- 
-         #endregion
+
+        #endregion
+
+        #region File.
+
+        /// <summary>
+        /// The file configuration.
+        /// </summary>
+        /// <remarks>The setting returns a <c>FileConfiguration</c></remarks>
+        public static readonly ApplicationSettingIdentity<FileConfiguration> FileConfiguration = ApplicationSettingIdentity<FileConfiguration>.CreateNew(
+            "Mcss.File",
+            "File Configuration",
+            "Mcss.File",
+            "The file configuration",
+            Domain.VO.FileConfiguration.CreateDefault());
+
+        #endregion
 
         #region Inventory
 

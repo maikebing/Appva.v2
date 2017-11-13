@@ -9,6 +9,7 @@ namespace Appva.Files.Excel
 {
     #region Imports.
 
+    using System.Collections.Generic;
     using System.Data;
     using System.IO;
     using System.Linq;
@@ -31,11 +32,22 @@ namespace Appva.Files.Excel
         /// <param name="validateAtRow">Validate columns at the specified row.</param>
         /// <param name="validColumns">The valid column data.</param>
         /// <param name="readFromRow">Read file from the specified row.</param>
+        /// <param name="lastRow">The last row.</param>
+        /// <param name="previewRows">The number of rows that will be previewed.</param>
         /// <param name="isPreviewMode">If the reader will get a preview of the entire file.</param>
+        /// <param name="skipInnerRows">Indicates if the preview will skip rows in the middle.</param>
         /// <returns>A <see cref="DataTable"/>.</returns>
-        public static DataTable ReadPractitionersFromExcel(string path, int validateAtRow, string[] validColumns, int readFromRow, bool isPreviewMode = false)
+        public static DataTable ReadPractitionersFromExcel(
+            string path, 
+            int validateAtRow, 
+            IList<string> validColumns, 
+            int readFromRow, 
+            out int lastRow,
+            int previewRows = 3,
+            bool isPreviewMode = false, 
+            bool skipInnerRows = false)
         {
-            int previewRows = 3;
+            lastRow = 0;
             var dataTable = new DataTable();
             XSSFWorkbook workbook;
             XSSFSheet sheet;
@@ -66,6 +78,18 @@ namespace Appva.Files.Excel
 
             while (sheet.GetRow(j) != null)
             {
+                if (isPreviewMode && skipInnerRows == false && j == (readFromRow + previewRows))
+                {
+                    break;
+                }
+
+                var test = sheet.LastRowNum;
+                if(isPreviewMode && skipInnerRows && j >= readFromRow + previewRows && j < sheet.LastRowNum - previewRows - 1)
+                {
+                    j++;
+                    continue;
+                }
+
                 if (sheet.GetRow(j).Cells.All(x => x.CellType == CellType.Blank))
                 {
                     j++;
@@ -82,15 +106,12 @@ namespace Appva.Files.Excel
                     }
                 }
 
-                if(isPreviewMode && j == (readFromRow + previewRows))
-                {
-                    break;
-                }
-
                 dataTable.Rows.Add(dataRow);
+                lastRow = j;
                 j++;
             }
 
+            lastRow -= validateAtRow;
             return dataTable;
         }
 

@@ -1,4 +1,5 @@
-﻿@model Appva.Mcss.Admin.Models.PractitionerSelectionModel
+﻿@using System.Data;
+@model Appva.Mcss.Admin.Models.PractitionerSelectionModel
 @{
     SetTitle("Importera medarbetare");
 }
@@ -9,25 +10,77 @@
     <div id="fileimport">
         @if (Model.Data != null)
         {
-            <p style="font-size:20px;font-weight:bold">
-                <span style="display:inline-block;background:#60d370;color:#fff;border-radius:30px;padding:3px 11px;margin-right:15px">1</span>Välj vilka rader som ska importeras.
-            </p>
+            <h3 style="padding-bottom:10px">Välj vilka rader som ska importeras</h3>
+            <div id="progress-container">
+                <div style="width:15%" class="progress-bar"></div>
+                <div style="left:15%" class="progress-section-completed">1</div>
+                <div style="left:35%" class="progress-section-notstarted">2</div>
+                <div style="left:55%" class="progress-section-notstarted">3</div>
+                <div style="left:75%" class="progress-section-notstarted">4</div>
+            </div>
+            <div id="fileinfo">
+                <table class="device-table fileinfo">
+                    <tr>
+                        <td>Läs in från rad</td>
+                        <td><input type="text" placeholder="@Model.ReadFromRow" value="@Model.ReadFromRow"/></td>
+                    </tr>
+                    <tr>
+                        <td>Läs in till rad</td>
+                        <td><input type="text" placeholder="@(Model.LastRow + Model.SkipRows + Model.ValidateAtRow)" value="@(Model.LastRow + Model.SkipRows + Model.ValidateAtRow)" /></td>
+                    </tr>
+                </table>
+            </div>
             <h3>Förhandsgranskning</h3>
             <table class="device-table">
                 <thead>
                     <tr class="head">
-                        <th style="background:#777;text-align:center"></th>
-                        <th></th>
+                        <th style="background:#777;text-align:center">@(Model.ValidateAtRow + 1)</th>
+                        @if (Model.Data.Rows.Count > 0)
+                        {
+                            for (int i = 0; i < Model.Data.Columns.Count; i++)
+                            {
+                                <th>@Model.Data.Rows[0][Model.Data.Columns[i]]</th>
+                            }
+                        }
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="emptyrow" colspan="2">Filen innehåller inga rader.</td>
-                    </tr>
+                    @if (Model.Data.Rows.Count > 1)
+                    {
+                        int j = 0;
+                        for (int i = 0; i < Model.Data.Rows.Count; i++)
+                        {
+                            if (j > 0)
+                            {
+                                <tr>
+                                    @if(j > Model.PreviewRows && j <= Model.Data.Rows.Count - Model.PreviewRows)
+                                    {
+                                        <td class="emptyrow" style="font-size:24px;padding:0 15px!important;text-align:left!important" colspan="@(Model.Data.Columns.Count + 1)">&#9642; &#9642; &#9642;</td>
+                                        i--;
+                                    }
+                                    else
+                                    {
+                                        <td>@(j > Model.PreviewRows ? Model.LastRow - Model.SkipRows - Model.PreviewRows + j : Model.ReadFromRow + j)</td>
+                                        foreach (DataColumn column in Model.Data.Columns)
+                                        {
+                                            <td>@Model.Data.Rows[i][column].ToString()</td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                            j++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="emptyrow" colspan="@(Model.Data.Columns.Count + 1)">Filen innehåller inga rader.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
             <div style="margin-top:20px;float:right">
-                @Html.ActionLink("Nästa steg", "PractitionerOrganization", "Import", null, new { @class = "btn" })
+                @Html.ActionLink("Nästa steg", "PractitionerOrganization", "Import", null, new { @class = "btn-green" })
             </div>
         }
         else

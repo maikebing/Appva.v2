@@ -20,6 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Files.Excel;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Models;
     using Appva.Persistence;
@@ -55,6 +56,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IRoleService roleService;
 
         /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
+        /// <summary>
         /// A list of invalid practitioner rows.
         /// </summary>
         private List<InvalidPractitionerData> invalidRows;
@@ -75,12 +81,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="fileService">The <see cref="IFileService"/>.</param>
         /// <param name="accountService">The <see cref="IAccountService"/>.</param>
         /// <param name="roleService">The <see cref="IRoleService"/>.</param>
-        public PractitionerPreviewPublisher(IPersistenceContext persistence, IFileService fileService, IAccountService accountService, IRoleService roleService)
+        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
+        public PractitionerPreviewPublisher(
+            IPersistenceContext persistence, 
+            IFileService fileService, 
+            IAccountService accountService, 
+            IRoleService roleService,
+            ISettingsService settingsService)
         {
             this.persistence = persistence;
             this.fileService = fileService;
             this.accountService = accountService;
             this.roleService = roleService;
+            this.settingsService = settingsService;
             this.invalidRows = new List<InvalidPractitionerData>();
         }
 
@@ -92,6 +105,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override PractitionerImportModel Handle(PractitionerPreviewModel message)
         {
             var model = new PractitionerImportModel();
+            var settings = this.settingsService.Find(ApplicationSettings.FileConfiguration);
             var file = this.fileService.Get(message.FileId);
 
             if (file == null)
@@ -100,10 +114,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
 
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
-            var data = ExcelReader.ReadPractitionersFromExcel(path, message.ValidateAtRow, message.ValidColumns, message.ReadFromRow);
+            int lastRow;
+            var data = ExcelReader.ReadPractitionersFromExcel(
+                path,
+                settings.ImportPractitionerSettings.ValidateAtRow, 
+                settings.ImportPractitionerSettings.ValidColumns,
+                settings.ImportPractitionerSettings.ReadFromRow,
+                out lastRow
+            );
             File.Delete(path);
 
-            model.ImportedRowsCount = this.ImportData(data, message.ValidColumns, message.ExcludedRoles, message.IncludedRolesWithoutHsaId);
+            model.ImportedRowsCount = this.ImportData(data, settings.ImportPractitionerSettings.ValidColumns, message.ExcludedRoles, message.IncludedRolesWithoutHsaId);
 
             var templatePath = PathResolver.ResolveAppRelativePath("Templates\\PractitionerTemplate.xlsx");
             var invalidDataToExcel = ExcelWriter.Write(templatePath, this.invalidRows, message.ReadFromRow);
@@ -125,7 +146,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="excludedRoles">The excluded roles.</param>
         /// <param name="includedRolesWithoutHsaId">Roles without HSA id.</param>
         /// <returns>The number of imported rows.</returns>
-        private int ImportData(DataTable data, string[] validColumns, string excludedRoles, string includedRolesWithoutHsaId)
+        private int ImportData(DataTable data, IList<string> validColumns, string excludedRoles, string includedRolesWithoutHsaId)
         {
             int importedRowCount = 0;
             var roles = this.roleService.List();

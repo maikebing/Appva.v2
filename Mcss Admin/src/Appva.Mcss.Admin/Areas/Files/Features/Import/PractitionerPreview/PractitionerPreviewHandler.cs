@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Files.Excel;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
 
     #endregion
@@ -29,6 +30,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IFileService fileService;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
         #endregion
 
         #region Constructor.
@@ -37,9 +43,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="PractitionerPreviewHandler"/> class.
         /// </summary>
         /// <param name="fileService">The <see cref="IFileService"/>.</param>
-        public PractitionerPreviewHandler(IFileService fileService)
+        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
+        public PractitionerPreviewHandler(IFileService fileService, ISettingsService settingsService)
         {
             this.fileService = fileService;
+            this.settingsService = settingsService;
         }
 
         #endregion
@@ -50,6 +58,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override PractitionerPreviewModel Handle(Identity<PractitionerPreviewModel> message)
         {
             var file = this.fileService.Get(message.Id);
+            var settings = this.settingsService.Find(ApplicationSettings.FileConfiguration);
             var model = new PractitionerPreviewModel();
 
             if (file == null || Path.GetExtension(file.Name) != ".xlsx")
@@ -59,7 +68,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             var size = this.fileService.GetFileSizeFormat(file.Data.Length);
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
-            var data = ExcelReader.ReadPractitionersFromExcel(path, model.ValidateAtRow, model.ValidColumns, model.ReadFromRow, true);
+            int lastRow;
+            var data = ExcelReader.ReadPractitionersFromExcel(
+                path, 
+                settings.ImportPractitionerSettings.ValidateAtRow, 
+                settings.ImportPractitionerSettings.ValidColumns, 
+                settings.ImportPractitionerSettings.ReadFromRow, 
+                out lastRow,
+                settings.ImportPractitionerSettings.PreviewRows,
+                true
+            );
             File.Delete(path);
 
             model.FileId = message.Id;
@@ -68,6 +86,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             model.Name = file.Name;
             model.Size = size;
             model.Data = data;
+            model.ValidateAtRow = settings.ImportPractitionerSettings.ValidateAtRow;
+            model.ReadFromRow = settings.ImportPractitionerSettings.ReadFromRow;
 
             return model;
         }

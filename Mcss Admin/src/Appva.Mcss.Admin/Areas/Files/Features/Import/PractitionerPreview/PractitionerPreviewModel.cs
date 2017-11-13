@@ -68,31 +68,12 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// The valid column data.
-        /// </summary>
-        public string[] ValidColumns
-        {
-            get
-            {
-                return new string[]
-                {
-                    "Personnummer",
-                    "Förnamn",
-                    "Efternamn",
-                    "E-post",
-                    "Roll",
-                    "Organisationstillhörighet",
-                    "HSA-id"
-                };
-            }
-        }
-
-        /// <summary>
         /// Validate cells at the specified row.
         /// </summary>
         public int ValidateAtRow
         {
-            get { return 2; }
+            get;
+            set;
         }
 
         /// <summary>
@@ -100,7 +81,8 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         public int ReadFromRow
         {
-            get { return 4; }
+            get;
+            set;
         }
 
         /// <summary>

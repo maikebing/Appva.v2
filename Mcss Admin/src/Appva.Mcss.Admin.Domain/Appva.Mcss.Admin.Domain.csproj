@@ -135,6 +135,7 @@
     <Compile Include="Repositories\SequenceRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="VO\AuditLoggingConfiguration.cs" />
+    <Compile Include="VO\FileConfiguration.cs" />
     <Compile Include="VO\HsaId.cs" />
     <Compile Include="VO\PdfLookAndFeel.cs" />
     <Compile Include="VO\PersonalIdentityNumber.cs" />

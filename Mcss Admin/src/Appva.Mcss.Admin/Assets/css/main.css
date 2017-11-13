@@ -1545,6 +1545,47 @@ td.rights {
     color:#aaa;
     background:#fff!important;
 }
+#fileimport input[type="text"] {
+    padding:6px;
+    width:100%;
+    max-width:220px;
+    box-sizing:border-box;
+}
+#progress-container {
+    display:block;
+    height:5px;
+    width:100%;
+    margin:20px 0 40px 0;
+    background:#e5e5e5
+}
+#progress-container .progress-bar {
+    background:#5ac24f;
+    height:5px;
+    position:relative
+}
+#progress-container .progress-section-completed,
+#progress-container .progress-section-notstarted {
+    display:inline-block;
+    width:27px;
+    height:24px;
+    text-align:center;
+    padding-top:2px;
+    font-size:16px;
+    font-weight:bold;
+    background:#fff;
+    border-radius:14px;
+    position:relative;
+    top:-16px;
+    user-select:none;
+}
+#progress-container .progress-section-completed {
+    color:#fff;
+    background:#5ac24f;
+}
+#progress-container .progress-section-notstarted {
+    color:#777;
+    background:#e5e5e5;
+}
 
 #content-primary #add-sign {padding:0 0 12px;}
 #content-primary td,

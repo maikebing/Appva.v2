@@ -50,7 +50,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Handlers
         public override ListTena Handle(UpdateTenaObservationPeriodModel message)
         {
             var period = this.tenaService.UpdateTenaPbservationPeriod(
-                message.Id, 
+                message.PeriodId, 
                 message.StartsAt, 
                 message.EndsAt, 
                 message.Instruction);

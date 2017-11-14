@@ -53,6 +53,24 @@ label, .button {
     color:rgb(64,78,104);
 }
 
+.tena-list dl dd img.icon.in-progress,
+.tena-list dl dd img.icon.pending,
+.tena-list dl dd img.icon.completed {
+    background: rgb(99,116,145);
+    border-radius:15px;
+    padding:5px;
+}
+
+.tena-list dl dd img.icon.pending{
+    background:rgb(244, 170, 0);
+}
+
+.tena-list dl dd img.icon.completed {
+    border:5px solid rgb(104,173,87);
+    background:#fff;
+    padding:0px;
+}
+
 /* Table */
 .tena-list table tbody tr:nth-child(even) { background: rgb(239,241,246); }
 .tena-list table tbody tr:nth-child(odd) { background: rgb(250, 251, 252); }
@@ -82,9 +100,8 @@ label, .button {
     padding:10px 20px;
 }
 
-.tena-list .button img{
-    height:20px;
-    margin-right:10px;
+.tena-list .button img.icon{
+    vertical-align:baseline;
 }
 
 .tena-list .button--neutral {

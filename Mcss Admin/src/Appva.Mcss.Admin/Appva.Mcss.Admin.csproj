@@ -926,7 +926,10 @@
     <Content Include="Assets\images\icons\edit.svg" />
     <Content Include="Assets\images\icons\fall.svg" />
     <Content Include="Assets\images\icons\feather.svg" />
+    <Content Include="Assets\images\icons\ico-continuous.svg" />
+    <Content Include="Assets\images\icons\ico-pending.svg" />
     <Content Include="Assets\images\icons\ico-question.svg" />
+    <Content Include="Assets\images\icons\ico-upload.svg" />
     <Content Include="Assets\images\icons\icon.sprite.svg" />
     <Content Include="Assets\images\icons\icons.txt" />
     <Content Include="Assets\images\icons\key.svg" />
@@ -1031,11 +1034,14 @@
     <Content Include="Assets\i\icn-warning-waran.png" />
     <Content Include="Assets\i\ico-activity-group.png" />
     <Content Include="Assets\i\ico-activity-message.png" />
+    <Content Include="Assets\i\ico-continuous.png" />
     <Content Include="Assets\i\ico-escape.png" />
     <Content Include="Assets\i\ico-outdoor-act-message-group.png" />
     <Content Include="Assets\i\ico-outdoor-act-message.png" />
+    <Content Include="Assets\i\ico-pending.png" />
     <Content Include="Assets\i\ico-question.png" />
     <Content Include="Assets\i\ico-tena-identifi.png" />
+    <Content Include="Assets\i\ico-upload.png" />
     <Content Include="Assets\i\ico-walk-group.png" />
     <Content Include="Assets\i\ico-walk-message.png" />
     <Content Include="Assets\i\ico-warning-antiglukos.png" />

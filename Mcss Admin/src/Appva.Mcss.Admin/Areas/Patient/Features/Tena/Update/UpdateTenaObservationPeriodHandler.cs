@@ -40,7 +40,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Handlers
         /// </summary>
         /// <param name="tenaService">The tena service.</param>
         public UpdateTenaObservationPeriodHandler(ITenaService tenaService)
-        {
+        {   
             this.tenaService = tenaService;
         }
 
@@ -55,7 +55,8 @@ namespace Appva.Mcss.Admin.Areas.Patient.Handlers
 
             return new UpdateTenaObservationPeriodModel
             {
-                Id          = period.Id,
+                PeriodId    = period.Id,
+                Id          = message.Id,
                 Instruction = period.Description,
                 StartsAt    = period.StartDate,
                 EndsAt      = period.EndDate

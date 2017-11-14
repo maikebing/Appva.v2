@@ -24,12 +24,24 @@ namespace Appva.Mcss.Admin.Models
         #region Properties.
 
         /// <summary>
-        /// Gets or sets the identifier.
+        /// Gets or sets the identifier of the patient.
         /// </summary>
         /// <value>
         /// The identifier.
         /// </value>
         public Guid Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the identifier of the period.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public Guid PeriodId
         {
             get;
             set;

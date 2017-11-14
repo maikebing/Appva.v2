@@ -54,7 +54,7 @@
                     <div class="section section--header section--hspace">
                         <div class="distributor distributor--justified">
 
-                            <h3>TENA Identifi Mätperiod</h3>
+                            <h3>TENA Identifi mätperiod</h3>
                             <div class="form-controls form-controls--inline">
                                 <a class="button open-in-dialog" href="@Url.Action("Update", "Tena", new { periodid = Model.Period.Id })#add-measuring-period" data-dialog-title="Ändra mätperiod">
                                     Ändra
@@ -62,9 +62,10 @@
                                 @if (Model.Period.Items != null && Model.Period.Items.Count() > 0)
                                 {
                                     <a class="button button--neutral open-in-dialog" href="@Url.Action("UploadToIdentifi", "Tena", new { periodid = Model.Period.Id })#remote-response">
-                                        <svg class="icon icon--mr" aria-hidden="true">
-                                            <use xlink:href="/assets/images/icons/icon.sprite.svg#arrow-ne-icon"></use>
-                                        </svg>Ladda upp till TENA Identifi
+                                        <img class="icon icon--mr" src="~/Assets/i/ico-upload.png" />
+                                        <!--svg class="icon icon--mr" aria-hidden="true">
+                                            <use xlink:href="~/assets/images/icons/ico-upload.svg"></use>
+                                        </svg-->Ladda upp till TENA Identifi
                                     </a>
                                 }
                             </div>
@@ -78,20 +79,28 @@
                         <div class="section section--vspace inliner">
                             <dl>
                                 <dt>Status</dt>
-                                <dd>
+                                
                                     @if (Model.Period.Status == "in-progress")
                                     {
-                                        @:Pågående
-                                   }
+                                        <dd>
+                                            <img class="icon in-progress" src="~/Assets/i/ico-continuous.png" />
+                                            Pågående
+                                        </dd>
+                                    }
                                     else if (Model.Period.Status == "pending")
                                     {
-                                        @:Kommande
-                                   }
+                                        <dd>
+                                            <img class="icon pending" src="~/Assets/i/ico-pending.png" />
+                                            Kommande
+                                        </dd>
+                                    }
                                     else if (Model.Period.Status == "completed")
                                     {
-                                        @:Avslutad
-                                   }
-                                </dd>
+                                        <dd>
+                                            <img class="icon completed" src="~/Assets/i/check-icon.png" />
+                                            Avslutad
+                                        </dd>
+                                    }
                             </dl>
                             <dl>
                                 <dt>Från</dt>

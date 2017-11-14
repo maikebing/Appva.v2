@@ -69,7 +69,7 @@ using System.Collections.Generic;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class TenaRepository : ITenaObservationPeriodRepository
+    public sealed class TenaRepository : Repository<TenaObservationPeriod>, ITenaObservationPeriodRepository
     {
         #region Variables.
 
@@ -86,45 +86,9 @@ using System.Collections.Generic;
         /// Initializes a new instance of the <see cref="TenaRepository"/> class.
         /// </summary>
         /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
-        public TenaRepository(IPersistenceContext context)
+        public TenaRepository(IPersistenceContext context) : base(context)
         {
             this.persistence = context;
-        }
-
-        #endregion
-
-        #region IRepository members.
-
-        /// <inheritdoc />
-        public TenaObservationPeriod Get(object id)
-        {
-            return this.persistence.Get<TenaObservationPeriod>(id);
-        }
-
-        /// <inheritdoc />
-        public TenaObservationPeriod Load(object id)
-        {
-            return this.persistence.Session.Load<TenaObservationPeriod>(id);
-        }
-
-        #endregion
-
-        #region ISaveRepository members.
-
-        /// <inheritdoc />
-        public void Save(TenaObservationPeriod entity)
-        {
-            this.persistence.Save<TenaObservationPeriod>(entity);
-        }
-
-        #endregion
-
-        #region IUpdateRepository members.
-
-        /// <inheritdoc />
-        public void Update(TenaObservationPeriod entity)
-        {
-            this.persistence.Update<TenaObservationPeriod>(entity);
         }
 
         #endregion

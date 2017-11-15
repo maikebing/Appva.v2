@@ -72,12 +72,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var patient = this.patientService.Get(message.Id);
             var schedule = this.persistence.Get<Schedule>(message.ScheduleId);
+
+            // Anropa sequenceService via scheduleService??
             var items = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive == true)
                 .And(x => x.Schedule.Id == message.ScheduleId)
                 .Fetch(x => x.Inventory).Eager
                 .TransformUsing(new DistinctRootEntityResultTransformer())
                 .List();
+
             this.auditing.Read(
                 patient,
                 "läste signeringslista {0} (REF: {1}) för boende {2} (REF: {3}).",
@@ -85,6 +88,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 schedule.Id, 
                 patient.FullName, 
                 patient.Id);
+
             return new ScheduleDetailsViewModel
             {
                 Patient = this.transformer.ToPatient(patient),

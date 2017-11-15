@@ -171,18 +171,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
             }
 
             var repeat = new Repeat(
-                startAt: startDate,
-                endAt: endDate.HasValue? endDate.Value : startDate,
-                interval: model.OnNeedBasis? 1 : model.Interval.Value,
-                intervalFactor: sequence.Repeat.IntervalFactor,
-                offsetBefore: model.RangeInMinutesBefore,
-                offsetAfter: model.RangeInMinutesAfter,
-                timesOfDay: model.Times.Where(x => x.Checked == true).Select(x => new TimeOfDay(x.Id, 00)).ToList(),
-                boundsRange: model.Dates.Split(',').Select(x => Date.Parse(x)).ToList(),
-                isNeedBased: model.OnNeedBasis,
-                isIntervalDate: false,
-                isAllDay: false
-                );
+                startDate,
+                endDate,
+                model.OnNeedBasis? 1 : model.Interval.Value,
+                1,
+                model.RangeInMinutesBefore,
+                model.RangeInMinutesAfter,
+                model.Times.Where(x => x.Checked == true).Select(x => new TimeOfDay(x.Id, 00)).ToList(),
+                model.Dates.IsNotEmpty() ? model.Dates.Split(',').Select(x => Date.Parse(x)).ToList() : null,
+                model.OnNeedBasis,
+                false,
+                false
+            );
 
             sequence.Name = model.Name;
             sequence.Description = model.Description;

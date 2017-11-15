@@ -157,20 +157,25 @@ namespace Appva.Mcss.Admin.Application.Services
         public void CreateIntervalBasedSequence(Schedule schedule, string name, string description, DateTime startDate, int interval, string times,
             DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
+            if (endDate.HasValue == false)
+            {
+
+            }
+
             var repeat = new Repeat(
-                startAt: (Date)startDate,
-                endAt: (Date)endDate,
-                period: interval,
-                periodUnit: UnitOfTime.Day,
-                duration: null,
-                durationUnit: null,
-                offsetBefore: rangeInMinutesBefore,
-                offsetAfter: rangeInMinutesAfter,
-                isNeedBased: false,
-                timesOfDay: times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
-                daysOfWeek: null,
-                flags: null,
-                boundsRange: null
+                startDate,
+                endDate,
+                interval,
+                UnitOfTime.Day,
+                //null,
+                //null,
+                rangeInMinutesBefore,
+                rangeInMinutesAfter,
+                times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
+                null,
+                false,
+                true,
+                false
             );
 
             this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
@@ -182,19 +187,19 @@ namespace Appva.Mcss.Admin.Application.Services
             Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
             var repeat = new Repeat(
-                startAt: (Date)startDate,
-                endAt: (Date)endDate,
-                period: null,
-                periodUnit: UnitOfTime.Day,
-                duration: null,
-                durationUnit: null,
-                offsetBefore: rangeInMinutesBefore,
-                offsetAfter: rangeInMinutesAfter,
-                isNeedBased: false,
-                timesOfDay: times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
-                daysOfWeek: null,
-                flags: null,
-                boundsRange: dates.Split(',').Select(x => Date.Parse(x)).ToList()
+                (Date) startDate,
+                (Date) endDate,
+                null,
+                UnitOfTime.Day,
+                null,
+                null,
+                rangeInMinutesBefore,
+                rangeInMinutesAfter,
+                false,
+                times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
+                null,
+                null,
+                dates.Split(',').Select(x => Date.Parse(x)).ToList()
             );
 
             this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
@@ -211,8 +216,8 @@ namespace Appva.Mcss.Admin.Application.Services
             }
             // DateTime startAt, DateTime endAt, int interval, int intervalFactor, int offsetBefore, int offsetAfter, List<TimeOfDay> timesOfDay, List<Date> boundsRange, bool isNeedBased, bool isIntervalDate, bool isAllDay;
             var repeat = new Repeat(
-                startAt: (Date) startDate,
-                endAt: (Date) endDate,
+                startAt: startDate,
+                endAt: endDate,
                 interval: interval,
                 intervalFactor: intervalFactor,
                 offsetBefore: 0,

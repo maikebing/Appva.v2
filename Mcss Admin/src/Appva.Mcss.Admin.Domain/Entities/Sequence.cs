@@ -53,6 +53,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             Requires.NotNull(repeat, "repeat");
 
             this.Schedule = schedule;
+            this.Patient = schedule.Patient;
             this.Name = name;
             this.Description = description;
             this.Repeat = repeat;

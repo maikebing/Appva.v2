@@ -97,7 +97,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var events = this.eventService.FindWithinMonth(patient, date);
             this.auditing.Read(patient, "läste kalenderaktiviteter för användare {0}(REF:{1})", patient.FullName, patient.Id);
 
-            return new EventListViewModel
+            var model = new EventListViewModel
             {
                 Current = date,
                 Next = date.NextMonth(),
@@ -110,6 +110,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 CalendarSettings = this.settingsService.GetCalendarSettings(),
                 CategorySettings = categories
             };
+
+            return model;
         }
 
         #endregion

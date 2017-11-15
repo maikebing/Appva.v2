@@ -396,7 +396,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 var scheduleSettings = TaskService.CalendarRoleScheduleSettingsList(account);
                 categories.WhereRestrictionOn(x => x.Id).IsIn(scheduleSettings.Select(x => x.Id).ToArray());
             }
-            
+           
             return categories.OrderBy(x => x.Name).Asc
                 .List();
         }
@@ -442,18 +442,18 @@ namespace Appva.Mcss.Admin.Application.Services
             }
 
             this.sequenceService.CreateEventBasedSequence(
-                schedule: schedule,
-                name: schedule.ScheduleSettings.Name,
-                description: description,
-                startDate: this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),
-                endDate: this.GetDateTimeWithHourAndMinutes(endDate, endTime, isAllDay ? "23:59" : null),
-                interval: interval,
-                intervalFactor: intervalFactor,
-                intervalIsDate: intervalIsDate,
-                overview: overview,
-                canRaiseAlert: pauseAlerts,
-                allDay: isAllDay,
-                absent: absent
+                schedule,
+                schedule.ScheduleSettings.Name,
+                description,
+                this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),
+                this.GetDateTimeWithHourAndMinutes(endDate, endTime, isAllDay ? "23:59" : null),
+                interval,
+                intervalFactor,
+                intervalIsDate,
+                overview,
+                pauseAlerts,
+                isAllDay,
+                absent
             );
 
             //this.sequenceService.Create(
@@ -851,22 +851,46 @@ namespace Appva.Mcss.Admin.Application.Services
 
             var retval = new List<CalendarTask>();
             
-            while(startDate <= periodEnd)
+            //while(startDate <= periodEnd)
+            //{
+            //    if (endDate >= periodStart)
+            //    {
+            //        var calendarTask = GetCalendarTaskFor(sequence, startDate, endDate, tasks);
+            //        if (calendarTask.IsNotNull())
+            //        {
+            //            retval.Add(calendarTask);
+            //        }
+            //    }
+            //    if (sequence.Repeat.Interval == 0)
+            //    {
+            //        break;
+            //    }
+
+            //    // lägg in randomDate = sequence.Repeat.next(randomDate);
+
+            //    startDate = sequence.GetNextDateInSequence(startDate);
+            //    endDate = sequence.GetNextDateInSequence(endDate);
+            //}
+
+            while (startDate <= periodEnd)
             {
                 if (endDate >= periodStart)
                 {
                     var calendarTask = GetCalendarTaskFor(sequence, startDate, endDate, tasks);
+
                     if (calendarTask.IsNotNull())
                     {
                         retval.Add(calendarTask);
                     }
+
+                    if (sequence.Repeat.Interval == 0)
+                    {
+                        break;
+                    }
                 }
-                if (sequence.Repeat.Interval == 0)
-                {
-                    break;
-                }
-                startDate = sequence.GetNextDateInSequence(startDate);
-                endDate = sequence.GetNextDateInSequence(endDate);                
+                //intervalDate = intervalDate.AddDays(sequence.Repeat.Interval);
+                startDate = sequence.Repeat.Next((Date)startDate);
+                endDate = sequence.Repeat.Next((Date)endDate);
             }
 
             return retval;

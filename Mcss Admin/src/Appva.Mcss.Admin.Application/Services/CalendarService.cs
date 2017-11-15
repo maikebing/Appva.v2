@@ -10,6 +10,7 @@ using Appva.Mcss.Admin.Application.Models;
 using Appva.Mcss.Admin.Application.Transformers;
 using Appva.Core.Extensions;
 using Appva.Persistence;
+using Appva.Domain;
 
 namespace Appva.Mcss.Admin.Application.Services
 {
@@ -97,12 +98,14 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var firstInMonth = date.FirstOfMonth();
             var lastInMonth = firstInMonth.AddDays(DateTime.DaysInMonth(firstInMonth.Year, firstInMonth.Month));
+
+            // anropa en metod på servicen som plockar fram motsvarande query...
             var sequences = this.persistenceContext.QueryOver<Sequence>()
                 .Where(x => x.IsActive)
                   .And(x => x.Schedule.Id == schedule.Id)
-                  .And(x => x.Patient.Id == schedule.Patient.Id)
-                  .And(x => x.Repeat.StartAt <= lastInMonth) // if endate == null?
-                  .And(x => x.Repeat.EndAt == null || x.Repeat.EndAt >= firstInMonth)
+                  .And(x => x.Patient.Id == schedule.Patient.Id) // lazy?
+                  .And(x => x.Repeat.StartAt <= lastInMonth)
+                  .And(x => x.Repeat.EndAt == null || x.Repeat.EndAt >= firstInMonth) // if endate == null
                 .List();
 
             var sequenceList = new List<Sequence>();
@@ -157,7 +160,8 @@ namespace Appva.Mcss.Admin.Application.Services
                                     retval.Add(this.SequenceToEvent(sequence, dayAndTime.Subtract(before), dayAndTime.Add(after)));
                                 }
                             }
-                            intervalDate = intervalDate.AddDays(sequence.Repeat.Interval);
+                            //intervalDate = intervalDate.AddDays(sequence.Repeat.Interval);
+                            intervalDate = sequence.Repeat.Next((Date)intervalDate);
                         }
                     }
                 }
@@ -232,7 +236,7 @@ namespace Appva.Mcss.Admin.Application.Services
             {
                 IsWithinMonth = date.Month == currentMonthDisplayed,
                 IsToday = date.Equals(DateTime.Today),
-                Events = date.DayOfWeek.Equals(DayOfWeek.Monday) ? events.Where(x => x.StartTime.Date <= date.Date && x.EndTime.Date >= date.Date).ToList() : events.Where(x => x.StartTime.Date == date.Date).ToList(),
+                Events = date.DayOfWeek.Equals(System.DayOfWeek.Monday) ? events.Where(x => x.StartTime.Date <= date.Date && x.EndTime.Date >= date.Date).ToList() : events.Where(x => x.StartTime.Date == date.Date).ToList(),
                 NumberOfEvents = events.Where(x => x.StartTime.Date <= date.Date && x.EndTime.Date >= date.Date).Count(),
                 Date = date
             };

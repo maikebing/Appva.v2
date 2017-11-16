@@ -752,15 +752,30 @@ namespace Appva.Mcss.Admin.Application.Services
             }
 
             var s = this.sequenceService.Find(sequence);
-            var endDate = s.Repeat.EndAt.GetValueOrDefault();
 
-            while (endDate <= date)
+            /* Experiment pågår nedan */
+
+            //var endDate = s.Repeat.EndAt.GetValueOrDefault();
+
+            //while (endDate <= date)
+            //{
+            //    if (endDate.Date.Equals(date.Date))
+            //    {
+            //        return EventTransformer.SequenceToEvent(s, endDate.AddDays((s.Repeat.StartAt - s.Repeat.EndAt.GetValueOrDefault()).TotalDays), endDate);
+            //    }
+
+            //    endDate = s.GetNextDateInSequence(endDate);
+            //}
+
+            var startDate = s.Repeat.StartAt;
+
+            while (startDate <= date)
             {
-                if (endDate.Date.Equals(date.Date))
+                if (startDate.Date.Equals(date.Date))
                 {
-                    return EventTransformer.SequenceToEvent(s, endDate.AddDays((s.Repeat.StartAt - s.Repeat.EndAt.GetValueOrDefault()).TotalDays), endDate);
+                    return EventTransformer.SequenceToEvent(s, startDate, startDate.Add(s.Repeat.EndAt.GetValueOrDefault() - s.Repeat.StartAt));
                 }
-                endDate = s.GetNextDateInSequence(endDate);
+                startDate = s.Repeat.Next((Date)startDate);
             }
 
             throw new Exception("There is no event for this sequence on given date");
@@ -848,6 +863,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var startDate = sequence.Repeat.StartAt;
             var endDate = sequence.Repeat.EndAt.GetValueOrDefault();
+            var duration = endDate - startDate;
 
             var retval = new List<CalendarTask>();
             
@@ -888,9 +904,8 @@ namespace Appva.Mcss.Admin.Application.Services
                         break;
                     }
                 }
-                //intervalDate = intervalDate.AddDays(sequence.Repeat.Interval);
                 startDate = sequence.Repeat.Next((Date)startDate);
-                endDate = sequence.Repeat.Next((Date)endDate);
+                endDate = startDate.Add(duration);
             }
 
             return retval;

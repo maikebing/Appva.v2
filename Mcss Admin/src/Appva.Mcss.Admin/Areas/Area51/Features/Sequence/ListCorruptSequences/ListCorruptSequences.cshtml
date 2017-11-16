@@ -23,10 +23,10 @@
                 <tr>
                     <td>@Html.ActionLink(s.Patient.FullName, "List", "Schedule", new { area = "patient" }, null )</td>
                     <td>@s.Name</td>
-                    <td>@s.Interval</td>
-                    <td>@s.Dates</td>
-                    <td>@s.StartDate</td>
-                    <td>@s.EndDate</td>
+                    <td>@s.Repeat.Interval</td>
+                    <td>@string.Join(",", s.Repeat.BoundsRange.Select(x => x.ToString()).ToArray())</td>
+                    <td>@s.Repeat.StartAt</td>
+                    <td>@s.Repeat.EndAt</td>
                     <td>
                         @using (Html.Post("UpdateStartAndEndDate", "Sequence", new { area = "Area51", id = s.Id }, null, false))
                         {

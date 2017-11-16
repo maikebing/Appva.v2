@@ -3933,3 +3933,13 @@ ul.people li {
 .yAxis > .tickLabel {
     left: 0px !important;
 }
+
+/*#calendar tr:last-of-type .act-info {
+    bottom: -5px;
+    top: auto;
+}*/
+
+#calendar > .month-row:last-of-type > .evt-grid .act-info {
+    bottom: -5px;
+    top: auto;
+}

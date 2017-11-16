@@ -67,7 +67,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 return EventTransformer.TasksToEvent(this.tasks.Get(message.TaskId));
             }
 
-            return this.events.GetActivityInSequence(message.SequenceId, message.EndTime);
+            return this.events.GetActivityInSequence(message.SequenceId, message.StartTime);
+            //return this.events.GetActivityInSequence(message.SequenceId, message.EndTime); // finns där någon anledning till varför vi puttar in message.endTime här?
         }
 
         #endregion

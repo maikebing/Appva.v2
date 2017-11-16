@@ -174,7 +174,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
                 null,
                 false,
-                true,
+                true, // skall denna verkligen vara true och därav hanteras som ett kalender event?
                 false
             );
 

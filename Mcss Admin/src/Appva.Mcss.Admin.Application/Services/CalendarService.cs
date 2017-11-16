@@ -126,9 +126,6 @@ namespace Appva.Mcss.Admin.Application.Services
                     var after = new TimeSpan(0, sequence.Repeat.OffsetAfter, 0);
                     var sequenceTimes = sequence.Repeat.TimesOfDay;
 
-                    /* titta på dates, plocka ut datumen och skapa en calendertask varje datum som är inom tidsspannet.
-                     * alternativt räkna ut nästa iteration..
-                     * loopa sålänge datumen ligger inom tidsspannet */
                     if (sequence.Repeat.BoundsRange.Count() > 0)
                     {
                         foreach (var dayInRange in sequence.Repeat.BoundsRange)
@@ -147,11 +144,8 @@ namespace Appva.Mcss.Admin.Application.Services
                     {
                         var intervalDate = sequence.Repeat.StartAt;
 
-                        /* kan vara bra med någon bättre matematik för att sortera och räkna datum */
                         while (intervalDate <= lastInMonth)
                         {
-                            /* hmm vad händer om datum/tid är 2017-12-31 23:50 och after är 15 minuter
-                               eller om datum/tid är 2018-01-01 00:10 och before är 15 minuter? */
                             if (intervalDate.Subtract(before) >= firstInMonth && intervalDate.Add(after) <= lastInMonth)
                             {
                                 foreach (var time in sequence.Repeat.TimesOfDay)
@@ -160,7 +154,6 @@ namespace Appva.Mcss.Admin.Application.Services
                                     retval.Add(this.SequenceToEvent(sequence, dayAndTime.Subtract(before), dayAndTime.Add(after)));
                                 }
                             }
-                            //intervalDate = intervalDate.AddDays(sequence.Repeat.Interval);
                             intervalDate = sequence.Repeat.Next((Date)intervalDate);
                         }
                     }
@@ -241,5 +234,6 @@ namespace Appva.Mcss.Admin.Application.Services
                 Date = date
             };
         }
+
     }
 }

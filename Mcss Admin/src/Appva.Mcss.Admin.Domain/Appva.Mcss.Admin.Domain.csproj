@@ -186,7 +186,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Framework\Appva.Domain\Appva.Domain\Appva.Domain.csproj">
+    <ProjectReference Include="..\..\..\..\Framework\Framework\Appva.Domain\Appva.Domain\Appva.Domain.csproj">
       <Project>{b1dd67f4-e89a-41fa-9660-a22c522ec807}</Project>
       <Name>Appva.Domain</Name>
     </ProjectReference>

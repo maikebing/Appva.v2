@@ -69,7 +69,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var size = this.fileService.GetFileSizeFormat(file.Data.Length);
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
             int lastRow;
-            var data = ExcelReader.ReadPractitionersFromExcel(
+            var data = ExcelReader.ReadPractitioners(
                 path, 
                 settings.ImportPractitionerSettings.ValidateAtRow, 
                 settings.ImportPractitionerSettings.ValidColumns, 

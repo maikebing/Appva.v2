@@ -1,0 +1,58 @@
+﻿@model PractitionerOrganizationModel
+@{
+    SetTitle("Importera medarbetare");
+}
+<div id="subheader" class="cf">
+    <h1>Importera medarbetare</h1>
+</div>
+<div id="content" class="log cf">
+    <div id="fileimport">
+        @if (true)
+        {
+            <h3 style="padding-bottom:10px">Validera organisationsnoder</h3>
+            <div id="progress-container">
+                <div style="width:19%" class="progress-bar"></div>
+                <div class="progress-section">
+                    <div class="progress-section-completed">1</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-section-notstarted progress-section-animation">2</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-section-notstarted">3</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-section-notstarted">4</div>
+                </div>
+            </div>
+            <div id="fileinfo">
+                <table class="device-table fileinfo">
+                    <tr>
+                        <td>Organisationsnod 1</td>
+                        <td>Dropdown-lista 1</td>
+                    </tr>
+                    <tr>
+                        <td>Organisationsnod 2</td>
+                        <td>Dropdown-lista 2</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="margin-top:20px;float:right">
+                @Html.ActionLink("Föregående", "PractitionerSelection", "Import", new { Id = Model.FileId, style = "padding-right:8px" })
+                @Html.ActionLink("Fortsätt", "PractitionerRoles", "Import", null, new { @class = "btn-green" })
+            </div>
+        }
+        else
+        {
+            <h3>Det gick inte att öppna filen.</h3>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.progress-bar').animate({ width: "39%" }, 600);
+        setTimeout(function () {
+            $('.progress-section-animation').css({ backgroundColor: "#5ac24f", color: "#fff" });
+        }, 400);
+    });
+</script>

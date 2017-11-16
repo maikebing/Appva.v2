@@ -1,4 +1,4 @@
-﻿// <copyright file="FileUploadProperties.cs" company="Appva AB">
+﻿// <copyright file="PractitionerImportProperties.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -10,23 +10,32 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class FileUploadProperties
+    public sealed class PractitionerImportProperties
     {
         #region Properties.
 
         /// <summary>
-        /// If the file is set as an importable excel file.
+        /// Read practitioner data from the specified row.
         /// </summary>
-        public bool IsSetAsImportableExcelFile
+        public int? SelectedFirstRow
         {
-            get; 
+            get;
             set;
         }
 
         /// <summary>
-        /// The <see cref="PractitionerImportProperties"/>.
+        /// Read practitioner data to the specified row.
         /// </summary>
-        public PractitionerImportProperties PractitionerImportProperties
+        public int? SelectedLastRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Indicates if the file has importable practitioners.
+        /// </summary>
+        public bool IsImportable
         {
             get;
             set;

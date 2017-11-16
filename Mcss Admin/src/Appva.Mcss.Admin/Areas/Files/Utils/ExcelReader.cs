@@ -37,7 +37,7 @@ namespace Appva.Files.Excel
         /// <param name="isPreviewMode">If the reader will get a preview of the entire file.</param>
         /// <param name="skipInnerRows">Indicates if the preview will skip rows in the middle.</param>
         /// <returns>A <see cref="DataTable"/>.</returns>
-        public static DataTable ReadPractitionersFromExcel(
+        public static DataTable ReadPractitioners(
             string path, 
             int validateAtRow, 
             IList<string> validColumns, 
@@ -83,7 +83,6 @@ namespace Appva.Files.Excel
                     break;
                 }
 
-                var test = sheet.LastRowNum;
                 if(isPreviewMode && skipInnerRows && j >= readFromRow + previewRows && j < sheet.LastRowNum - previewRows - 1)
                 {
                     j++;

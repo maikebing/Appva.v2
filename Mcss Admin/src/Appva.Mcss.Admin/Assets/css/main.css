@@ -275,6 +275,7 @@ span.bold {
 .caption sup {bottom:3px;}
 
 input[type="submit"].btn,
+input[type="submit"].btn-green,
 a.btn,
 a.btn:visited,
 a.btn-green,
@@ -296,6 +297,7 @@ a.btn:visited {
 	border:1px solid #445068;
 	text-shadow:0 -1px 0 #445068;
 }
+input[type="submit"].btn-green,
 a.btn-green,
 a.btn-green:visited {
     background-image:url(../i/bg-stdbtn-green.png);
@@ -304,6 +306,7 @@ a.btn-green:visited {
 	text-shadow:0 -1px 0 #14522f;
 }
 input[type="submit"].btn:hover,
+input[type="submit"].btn-green:hover,
 a.btn:hover,
 a.btn:focus,
 a.btn-green:hover,
@@ -319,6 +322,7 @@ a.btn:focus {
 	-moz-box-shadow:0 0 4px #445068;
 	box-shadow:0 0 4px #445068;
 }
+input[type="submit"].btn-green:hover,
 a.btn-green:hover,
 a.btn-green:focus {
 	-webkit-box-shadow:0 0 4px #14522f;
@@ -326,6 +330,7 @@ a.btn-green:focus {
 	box-shadow:0 0 4px #14522f;
 }
 input[type="submit"].btn:active,
+input[type="submit"].btn-green:active,
 a.btn:active,
 a.btn-green:active{
 	-webkit-box-shadow:none;
@@ -336,6 +341,7 @@ input[type="submit"].btn:active,
 a.btn:active {
     background:#445068;
 }
+input[type="submit"].btn-green:active,
 a.btn-green:active {
     background: #14522f;
 }
@@ -1528,6 +1534,7 @@ td.rights {
 #fileimport td:first-child {
     background:#eee;
     text-align:center;
+    transition:background 200ms ease-in-out;
 }
 #fileimport .fileinfo td:first-child {
     width:130px;
@@ -1556,12 +1563,16 @@ td.rights {
     height:5px;
     width:100%;
     margin:20px 0 40px 0;
-    background:#e5e5e5
+    background:#e5e5e5;
 }
 #progress-container .progress-bar {
     background:#5ac24f;
     height:5px;
-    position:relative
+    position:relative;
+}
+#progress-container .progress-section {
+    width:20%;
+    float:left;
 }
 #progress-container .progress-section-completed,
 #progress-container .progress-section-notstarted {
@@ -1576,15 +1587,18 @@ td.rights {
     border-radius:14px;
     position:relative;
     top:-16px;
+    left:90%;
     user-select:none;
 }
 #progress-container .progress-section-completed {
     color:#fff;
     background:#5ac24f;
 }
-#progress-container .progress-section-notstarted {
+#progress-container .progress-section-notstarted,
+#progress-container .progress-section-animation {
     color:#777;
     background:#e5e5e5;
+    transition:background 300ms ease-in-out, color 300ms ease-in-out;
 }
 
 #content-primary #add-sign {padding:0 0 12px;}

@@ -32,8 +32,8 @@
                 <tbody>
                     @foreach (var file in Model.Files)
                     {
-                        var isImportableExcelFile = Html.HasPermissionFor(Permissions.FileUpload.Execute) && file.Properties != null && file.Properties.IsImportableExcelFile;
-                        <tr class="tr-highlight" style="@(isImportableExcelFile ? "background:#f0f0f0" : string.Empty)">
+                        var isSetAsImportableExcelFile = Html.HasPermissionFor(Permissions.FileUpload.Execute) && file.Properties != null && file.Properties.IsSetAsImportableExcelFile;
+                        <tr class="tr-highlight" style="@(isSetAsImportableExcelFile ? "background:#f0f0f0" : string.Empty)">
                             <td class="flpad flimgcell"><img class="flicon" src="~/Assets/i/@file.TypeImage" width="20" alt="@file.Type" title="@file.Type" /></td>
                             <td class="flpad">@file.Title</td>
                             <td class="flpad">@file.Description</td>
@@ -41,7 +41,7 @@
                             <td class="flpad">@file.Size</td>
                             <td class="flpad">@file.DateAdded</td>
                             <td class="flpad flactions">
-                                @if (isImportableExcelFile)
+                                @if (isSetAsImportableExcelFile)
                                 {
                                     @Html.ActionLink("Granska", "PractitionerPreview", "Import", new { Area = "Files", Id = file.Id }, new { @class = "btn-green", style = "padding:5px 16px" })
                                 }

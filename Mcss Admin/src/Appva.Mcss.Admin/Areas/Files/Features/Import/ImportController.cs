@@ -29,7 +29,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         #region Practitioners.
 
         /// <summary>
-        /// Starts the import practitioners wizard.
+        /// Start the import practitioners wizard.
         /// </summary>
         /// <param name="request">The <see cref="Identity{ImportPractitionerModel}"/>.</param>
         /// <returns><see cref="ActionResult"/>.</returns>
@@ -37,6 +37,19 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
         public ActionResult PractitionerPreview(Identity<PractitionerPreviewModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Handles the practitioner preview request.
+        /// </summary>
+        /// <param name="request">The <see cref="Identity{ImportPractitionerModel}"/>.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [Route("practitioners/{id:guid}/preview")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("PractitionerSelection", "Import")]
+        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
+        public ActionResult PractitionerPreview(PractitionerPreviewModel request)
         {
             return this.View();
         }
@@ -77,7 +90,7 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         [Route("practitioners/{id:guid}/organization")]
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
-        public ActionResult PractitionerOrganization(PractitionerImportModel request)
+        public ActionResult PractitionerOrganization(Identity<PractitionerOrganizationModel> request)
         {
             return this.View();
         }

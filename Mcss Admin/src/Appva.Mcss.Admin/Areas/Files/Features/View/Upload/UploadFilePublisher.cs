@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             var properties = new FileUploadProperties
             {
-                IsImportableExcelFile = message.IsImportableExcelFile
+                IsSetAsImportableExcelFile = message.IsSetAsImportableExcelFile
             };
 
             var fileName = Path.GetFileName(message.UploadedFile.FileName);

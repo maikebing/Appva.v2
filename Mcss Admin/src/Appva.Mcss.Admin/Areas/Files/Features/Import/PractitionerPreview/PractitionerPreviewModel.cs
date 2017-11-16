@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PractitionerPreviewModel : IRequest<PractitionerImportModel>
+    public sealed class PractitionerPreviewModel : IRequest<Guid>
     {
         #region Properties.
 
@@ -107,6 +107,15 @@ namespace Appva.Mcss.Admin.Models
         /// The excel data.
         /// </summary>
         public DataTable Data
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Indicates if the file has importable practitioners.
+        /// </summary>
+        public bool IsImportable
         {
             get;
             set;

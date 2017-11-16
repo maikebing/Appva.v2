@@ -1,5 +1,5 @@
 ﻿@using System.Data;
-@model Appva.Mcss.Admin.Models.PractitionerSelectionModel
+@model PractitionerSelectionModel
 @{
     SetTitle("Importera medarbetare");
 }
@@ -8,25 +8,33 @@
 </div>
 <div id="content" class="log cf">
     <div id="fileimport">
-        @if (Model.Data != null)
+        @if (Model.Data != null && Model.IsImportable)
         {
             <h3 style="padding-bottom:10px">Välj vilka rader som ska importeras</h3>
             <div id="progress-container">
-                <div style="width:15%" class="progress-bar"></div>
-                <div style="left:15%" class="progress-section-completed">1</div>
-                <div style="left:35%" class="progress-section-notstarted">2</div>
-                <div style="left:55%" class="progress-section-notstarted">3</div>
-                <div style="left:75%" class="progress-section-notstarted">4</div>
+                <div style="width:0%" class="progress-bar"></div>
+                <div class="progress-section">
+                    <div class="progress-section-notstarted progress-section-animation">1</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-section-notstarted">2</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-section-notstarted">3</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-section-notstarted">4</div>
+                </div>
             </div>
             <div id="fileinfo">
                 <table class="device-table fileinfo">
                     <tr>
                         <td>Läs in från rad</td>
-                        <td><input type="text" placeholder="@Model.ReadFromRow" value="@Model.ReadFromRow"/></td>
+                        <td>@Html.TextBoxFor(x => x.SelectedFirstRow, new { Value = Model.SelectedFirstRow, placeholder = Model.SelectedFirstRow, @class = "read-from-row" })</td>
                     </tr>
                     <tr>
                         <td>Läs in till rad</td>
-                        <td><input type="text" placeholder="@(Model.LastRow + Model.SkipRows + Model.ValidateAtRow)" value="@(Model.LastRow + Model.SkipRows + Model.ValidateAtRow)" /></td>
+                        <td>@Html.TextBoxFor(x => x.SelectedLastRow, new { Value = Model.SelectedLastRow, placeholder = Model.SelectedLastRow, @class = "read-to-row" })</td>
                     </tr>
                 </table>
             </div>
@@ -52,15 +60,17 @@
                         {
                             if (j > 0)
                             {
-                                <tr>
-                                    @if(j > Model.PreviewRows && j <= Model.Data.Rows.Count - Model.PreviewRows)
+                                var row = j > Model.PreviewRows ? Model.LastRow - Model.SkipRows - Model.PreviewRows + j : Model.ReadFromRow + j;
+                                var isEmptyRow = j > Model.PreviewRows && j <= Model.Data.Rows.Count - Model.PreviewRows;
+                                <tr data-row="@(isEmptyRow ? -1 : row)">
+                                    @if (isEmptyRow)
                                     {
-                                        <td class="emptyrow" style="font-size:24px;padding:0 15px!important;text-align:left!important" colspan="@(Model.Data.Columns.Count + 1)">&#9642; &#9642; &#9642;</td>
+                                        <td class="emptyrow" style="font-size:21px;padding:0 15px!important;text-align:left!important" colspan="@(Model.Data.Columns.Count + 1)">&#9642; &#9642; &#9642;</td>
                                         i--;
                                     }
                                     else
                                     {
-                                        <td>@(j > Model.PreviewRows ? Model.LastRow - Model.SkipRows - Model.PreviewRows + j : Model.ReadFromRow + j)</td>
+                                        <td>@row</td>
                                         foreach (DataColumn column in Model.Data.Columns)
                                         {
                                             <td>@Model.Data.Rows[i][column].ToString()</td>
@@ -80,7 +90,8 @@
                 </tbody>
             </table>
             <div style="margin-top:20px;float:right">
-                @Html.ActionLink("Nästa steg", "PractitionerOrganization", "Import", null, new { @class = "btn-green" })
+                @Html.ActionLink("Föregående", "PractitionerPreview", "Import", new { Id = Model.FileId, style = "padding-right:8px" })
+                @Html.ActionLink("Fortsätt", "PractitionerOrganization", "Import", null, new { @class = "btn-green" })
             </div>
         }
         else
@@ -89,3 +100,25 @@
         }
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('.progress-bar').animate({ width: '19%' }, 600);
+        setTimeout(function () {
+            $('.progress-section-animation').css({ backgroundColor: '#5ac24f', color: '#fff' });
+        }, 400);
+        $('.read-from-row').change(function () {
+            var readvalue = $(this).val();
+            $('.device-table tbody tr').each(function () {
+                console.log("found: " + $(this).attr('data-row'));
+                var cell = $(this).children(':first');
+                cell.css({ backgroundColor: '#eee' });
+                if ($(this).attr('data-row') == readvalue) {
+                    cell.css({ backgroundColor: '#e2f9e0' });
+                }
+            });
+        });
+        $('.read-to-row').change(function () {
+
+        });
+    });
+</script>

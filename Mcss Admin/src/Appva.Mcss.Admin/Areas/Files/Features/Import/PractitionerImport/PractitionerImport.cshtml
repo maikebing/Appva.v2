@@ -23,21 +23,5 @@
                 <td>@Model.InvalidRowsCount st (@Html.ActionLink("Ladda ner Excel-fil", "Save", "View", new { Id = Model.FileId }, null))</td>
             </tr>
         </table>
-        @*
-        @if (Model.InvalidRows.Count > 0)
-        {
-            <h3>Följande rader kunde inte importeras</h3>
-            <table class="device-table">
-                <thead>
-                    <tr class="head">
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    </tr>
-                </tbody>
-            </table>
-        }
-        *@
     </div>
 </div>

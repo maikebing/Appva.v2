@@ -466,13 +466,17 @@
     <Compile Include="Areas\Files\Features\Import\ImportController.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerImport\PractitionerImportHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerImport\PractitionerImportModel.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerOrganization\PractitionerOrganizationHandler.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerOrganization\PractitionerOrganizationModel.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerPreviewHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerPreviewModel.cs" />
-    <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerPreviewPublisher.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerImportValidationTemp.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\InvalidPractitionerData.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerPreviewPublisher.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelectionHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelectionModel.cs" />
     <Compile Include="Areas\Files\Features\Shared\FileUploadProperties.cs" />
+    <Compile Include="Areas\Files\Features\Shared\PractitionerImportProperties.cs" />
     <Compile Include="Areas\Files\Features\View\Delete\DeleteFileHandler.cs" />
     <Compile Include="Areas\Files\Features\View\Save\SaveFile.cs" />
     <Compile Include="Areas\Files\Features\View\Save\SaveFileHandler.cs" />
@@ -1448,6 +1452,7 @@
     <Content Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerPreview.cshtml" />
     <Content Include="Areas\Files\Features\Import\PractitionerImport\PractitionerImport.cshtml" />
     <Content Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelection.cshtml" />
+    <Content Include="Areas\Files\Features\Import\PractitionerOrganization\PractitionerOrganization.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

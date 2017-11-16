@@ -9,13 +9,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System.Data;
     using System.IO;
     using Appva.Cqrs;
     using Appva.Files.Excel;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -58,7 +58,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override PractitionerSelectionModel Handle(Identity<PractitionerSelectionModel> message)
         {
             var file = this.fileService.Get(message.Id);
-            var settings = this.settingsService.Find(ApplicationSettings.FileConfiguration);
             var model = new PractitionerSelectionModel();
 
             if (file == null || Path.GetExtension(file.Name) != ".xlsx")
@@ -66,11 +65,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 return model;
             }
 
+            var settings = this.settingsService.Find(ApplicationSettings.FileConfiguration);
+            var properties = JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties);
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
             int lastRow;
+
+            model.FileId = file.Id;
             model.ValidateAtRow = settings.ImportPractitionerSettings.ValidateAtRow;
             model.ReadFromRow = settings.ImportPractitionerSettings.ReadFromRow;
-            model.Data = ExcelReader.ReadPractitionersFromExcel(
+            model.Data = ExcelReader.ReadPractitioners(
                 path, 
                 settings.ImportPractitionerSettings.ValidateAtRow, 
                 settings.ImportPractitionerSettings.ValidColumns, 
@@ -83,7 +86,26 @@ namespace Appva.Mcss.Admin.Models.Handlers
             model.LastRow = lastRow;
             model.SkipRows = settings.ImportPractitionerSettings.SkipRows;
             model.PreviewRows = settings.ImportPractitionerSettings.PreviewRows;
+            model.IsImportable = properties.PractitionerImportProperties.IsImportable;
             File.Delete(path);
+
+            if (properties.PractitionerImportProperties.SelectedFirstRow.HasValue)
+            {
+                model.SelectedFirstRow = properties.PractitionerImportProperties.SelectedFirstRow.Value;
+            }
+            else
+            {
+                model.SelectedFirstRow = settings.ImportPractitionerSettings.ReadFromRow + 1;
+            }
+
+            if (properties.PractitionerImportProperties.SelectedLastRow.HasValue)
+            {
+                model.SelectedLastRow = properties.PractitionerImportProperties.SelectedLastRow.Value;
+            }
+            else
+            {
+                model.SelectedLastRow = lastRow + model.SkipRows + model.ValidateAtRow;
+            }
 
             return model;
         }

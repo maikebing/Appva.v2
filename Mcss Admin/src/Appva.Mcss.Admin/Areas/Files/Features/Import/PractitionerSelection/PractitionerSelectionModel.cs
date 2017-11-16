@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
+    using System;
     using System.Data;
 
     #endregion
@@ -19,6 +20,15 @@ namespace Appva.Mcss.Admin.Models
     public sealed class PractitionerSelectionModel
     {
         #region Properties.
+
+        /// <summary>
+        /// The file id.
+        /// </summary>
+        public Guid FileId
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The excel data.
@@ -69,6 +79,33 @@ namespace Appva.Mcss.Admin.Models
         /// The number of rows that will be previewed.
         /// </summary>
         public int PreviewRows
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The selected first row.
+        /// </summary>
+        public int SelectedFirstRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The selected last row.
+        /// </summary>
+        public int SelectedLastRow
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Indicates if the file has importable practitioners.
+        /// </summary>
+        public bool IsImportable
         {
             get;
             set;

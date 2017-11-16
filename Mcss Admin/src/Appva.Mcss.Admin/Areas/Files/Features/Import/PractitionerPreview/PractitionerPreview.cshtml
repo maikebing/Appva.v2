@@ -1,5 +1,5 @@
 ﻿@using System.Data;
-@model Appva.Mcss.Admin.Models.PractitionerPreviewModel
+@model PractitionerPreviewModel
 @{
     SetTitle("Importera medarbetare");
 }
@@ -74,8 +74,16 @@
             </table>
             if (Model.Data.Rows.Count - 1 > 0)
             {
+                Model.IsImportable = true;
                 <div style="margin-top:20px;float:right">
-                    @Html.ActionLink("Starta importguiden", "PractitionerSelection", "Import", null, new { @class = "btn-green" })
+                    @using (Html.BeginForm())
+                    {
+                        @Html.HiddenFor(x => x.FileId)
+                        @Html.HiddenFor(x => x.IsImportable)
+                        @Html.AntiForgeryToken()
+                        @Html.Submit("Starta importguiden", new { @class = "btn-green" })
+                    }
+                    @*@Html.ActionLink("Starta importguiden", "PractitionerSelection", "Import", null, new { @class = "btn-green" })*@
                 </div>
             }
         }

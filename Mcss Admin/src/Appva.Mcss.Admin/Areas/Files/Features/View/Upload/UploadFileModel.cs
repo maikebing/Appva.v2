@@ -64,10 +64,10 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// If the file is an importable excel file.
+        /// If the file is set as an importable excel file.
         /// </summary>
         [DisplayName("Importbar lista från Excel")]
-        public bool IsImportableExcelFile
+        public bool IsSetAsImportableExcelFile
         {
             get;
             set;

@@ -152,6 +152,10 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The transactions.
         /// </summary>
-        public IList<InventoryTransactionItem> Transactions { get; set; }
+        public IEnumerable<InventoryTransactionItem> Transactions
+        {
+            get;
+            set;
+        }
     }
 }

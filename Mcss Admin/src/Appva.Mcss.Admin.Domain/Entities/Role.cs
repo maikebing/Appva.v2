@@ -8,14 +8,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Role : AggregateRoot<Role>
+    public class Role : AggregateRoot
     {
         #region Constructors.
 
@@ -140,7 +139,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="isVisible">Optional public visibility of the role, defaults to true</param>
         /// <param name="isDeletable">Optional public deletability of the roles, defaults to true</param>
         /// <returns>A new <see cref="Role"/> instance</returns>
-        public static Role CreateNew(string key, string name, string description, int sort = 0, bool isVisible = true, bool isDeletable = true)
+        public static Role New(string key, string name, string description, int sort = 0, bool isVisible = true, bool isDeletable = true)
         {
             return new Role { MachineName = key, Name = name, Description = description, Weight = sort, IsVisible = isVisible, IsDeletable = isDeletable };
         }

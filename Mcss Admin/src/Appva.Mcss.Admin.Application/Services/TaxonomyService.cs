@@ -161,7 +161,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public ITaxon Find(Guid id)
         {
-            var item = this.repository.Find(id);
+            var item = this.repository.Get(id);
             return new TaxonItem(
                     item.Id,
                     item.Name,
@@ -259,7 +259,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Taxon Get(Guid id)
         {
-            return this.repository.Find(id);
+            return this.repository.Get(id);
         }
 
         /// <inheritdoc />
@@ -296,7 +296,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void Update(ITaxon taxon, TaxonomicSchema schema)
         {
-            var t = this.repository.Find(taxon.Id);
+            var t = this.repository.Get(taxon.Id);
             t.Description = taxon.Description;
             t.IsRoot = taxon.IsRoot;
             t.Name = taxon.Name;
@@ -308,27 +308,6 @@ namespace Appva.Mcss.Admin.Application.Services
             this.repository.Update(t);
             this.cache.Remove(schema.CacheKey);
         }
-
-        //public void Delete(Guid id, TaxonomicSchema schema)
-        //{
-        //    var node = this.repository.Find(id);
-
-        //    if (node != null) {
-        //        try {
-        //            this.repository.Delete(node);
-
-        //            this.auditing.Update("raderade taxon {0} med namn {1}.", node.Id, node.Name);
-        //            this.cache.Remove(schema.CacheKey);
-        //        }
-        //        catch {
-        //            /* Here we should set IsActive = false.. But currently IsActive does not exist on ITaxon and i don't want to make all those changes, sust
-        //            this.auditing.Update("misslyckades med att radera -> inaktiverade taxon {0} med namn {1}.", node.Id, node.Name);
-        //            node.IsActive = false;                    
-        //            this.Update(node, schema);
-        //            */
-        //        }
-        //    }
-        //}
 
         #endregion
     }

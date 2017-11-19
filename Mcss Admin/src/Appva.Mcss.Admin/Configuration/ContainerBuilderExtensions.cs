@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Security.Middleware.Cookie;
     using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Domain;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mvc;
@@ -47,6 +48,8 @@ namespace Appva.Mcss.Admin.Configuration
     using Appva.Http.ModelBinding;
     using System.Reflection;
     using System;
+    using Appva.Sca;
+    using System.Configuration;
 
     #endregion
 
@@ -209,14 +212,14 @@ namespace Appva.Mcss.Admin.Configuration
                 properties.Add("show_sql", "true");
             }
             builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/db/admin")).As<IRuntimeMemoryCache>().SingleInstance();
-            if (ApplicationEnvironment.Is.Development)
-            {
-                builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
-            }
-            else
-            {
+            //if (ApplicationEnvironment.Is.Development)
+            //{
+            //    builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
+            //}
+            //else
+            //{
             builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
-            }
+            //}
             builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
             {
                 Assembly = "Appva.Mcss.Admin.Domain",
@@ -242,13 +245,24 @@ namespace Appva.Mcss.Admin.Configuration
         }
 
         /// <summary>
+        /// Registers the tena identifi api service.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        public static void RegisterTenaIdentifi(this ContainerBuilder builder)
+        {
+            var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(TenaIdentifiClient)));
+            var options     = RestOptions.CreateNew(null, modelBinder);
+            builder.Register(x => new TenaIdentifiClient(options, TenaIdentifiConfiguration.ServerUrl)).As<ITenaIdentifiClient>().SingleInstance();
+        }
+
+        /// <summary>
         /// Registers all repositories.
         /// </summary>
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterRepositories(this ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(IRepository).Assembly).Where(x => x.GetInterfaces()
-                .Any(y => y.IsAssignableFrom(typeof(IRepository)))).AsImplementedInterfaces().InstancePerRequest();
+            builder.RegisterAssemblyTypes(typeof(IRepository<>).Assembly)
+                .AsClosedTypesOf(typeof(IRepository<>)).AsImplementedInterfaces().InstancePerRequest();
         }
 
         /// <summary>

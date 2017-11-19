@@ -1,0 +1,8 @@
+{
+  "SkipMultiTenant": "true",
+  "ConnectionString": "Server=FREDRIKANDECC0F; Database=AuthServer;Trusted_Connection=True;",
+  "Properties": { "generate_statistics": "true" },
+  "Assembly": "Appva.Mcss.AuthorizationServer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+}
+
+

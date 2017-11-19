@@ -214,7 +214,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Delegation Find(Guid id)
         {
-            return this.repository.Find(id);
+            return this.repository.Get(id);
         }
 
         /// <inheritdoc />

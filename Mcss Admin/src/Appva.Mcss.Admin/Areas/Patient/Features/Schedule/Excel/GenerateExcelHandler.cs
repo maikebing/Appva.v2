@@ -151,7 +151,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     CompletedBy = x.CompletedBy.IsNotNull() ? x.CompletedBy.FullName : "",
                     TaskCompletionStatus = Status(x)
                 },
-                tasks.Entities);
+                tasks.Items.ToList());
             ITenantIdentity tenant;
             this.tenantService.TryIdentifyTenant(out tenant);
             return new FileContentResult(bytes, "application/vnd.ms-excel")

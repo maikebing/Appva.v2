@@ -8,13 +8,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using NHibernate.Transform;
-using Appva.Mcss.Admin.Domain.Repositories.Contracts;
 
     #endregion
 
@@ -22,10 +19,9 @@ using Appva.Mcss.Admin.Domain.Repositories.Contracts;
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public interface IRoleRepository : 
-        IIdentityRepository<Role>, 
-        IListRepository<Role>, 
+        IListRepository<Role>,
         IUpdateRepository<Role>,
-        IRepository
+        IRepository<Role>
     {
         /// <summary>
         /// Returns a <see cref="Role"/> by unique identifier.
@@ -70,38 +66,17 @@ using Appva.Mcss.Admin.Domain.Repositories.Contracts;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class RoleRepository : IRoleRepository
+    public sealed class RoleRepository : Repository<Role>, IRoleRepository
     {
-        #region Variables.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/> implementation.
-        /// </summary>
-        private readonly IPersistenceContext persistenceContext;
-
-        #endregion
-
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoleRepository"/> class.
         /// </summary>
-        /// <param name="persistenceContext">
-        /// The <see cref="IPersistenceContext"/> implementation
-        /// </param>
-        public RoleRepository(IPersistenceContext persistenceContext)
+        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
+        public RoleRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.persistenceContext = persistenceContext;
-        }
-
-        #endregion
-
-        #region IIdentityRepository<Role> Members.
-
-        /// <inheridoc />
-        public Role Find(Guid id)
-        {
-            return this.persistenceContext.Get<Role>(id);
         }
 
         #endregion
@@ -111,7 +86,7 @@ using Appva.Mcss.Admin.Domain.Repositories.Contracts;
         /// <inheridoc />
         public Role Find(string identifier)
         {
-            return this.persistenceContext.QueryOver<Role>()
+            return this.Context.QueryOver<Role>()
                 .Where(x => x.MachineName ==  identifier)
                 .SingleOrDefault();
         }
@@ -119,7 +94,7 @@ using Appva.Mcss.Admin.Domain.Repositories.Contracts;
         /// <inheritdoc />
         public bool IsInAnyRoles(Account account, params string[] roles)
         {
-            return this.persistenceContext.QueryOver<Role>()
+            return this.Context.QueryOver<Role>()
                 .Where(x => x.IsActive)
                 .AndRestrictionOn(x => x.MachineName)
                 .IsIn(roles)
@@ -132,7 +107,7 @@ using Appva.Mcss.Admin.Domain.Repositories.Contracts;
         /// <inheritdoc />
         public IList<Role> Roles(Account account)
         {
-            return this.persistenceContext.QueryOver<Role>()
+            return this.Context.QueryOver<Role>()
                 .Where(x => x.IsActive)
                 .JoinQueryOver<Account>(x => x.Accounts)
                     .Where(x => x.Id == account.Id)
@@ -143,17 +118,20 @@ using Appva.Mcss.Admin.Domain.Repositories.Contracts;
         /// <inheritdoc />
         public IList<Account> MembersOfRole(string identifier)
         {
-            return this.persistenceContext.QueryOver<Account>()
-                .Where(x => x.IsActive == true).JoinQueryOver<Role>(x => x.Roles)
-                .Where(x => x.MachineName == identifier).List();
+            return this.Context
+                .QueryOver<Account>()
+                    .Where(x => x.IsActive == true)
+                .JoinQueryOver<Role>(x => x.Roles)
+                    .Where(x => x.MachineName == identifier)
+                .List();
         }
 
         /// <inheritdoc />
         public IList<Role> ListOnlyVisible()
         {
-            return this.persistenceContext.QueryOver<Role>()
+            return this.Context.QueryOver<Role>()
                 .Where(x => x.IsActive)
-                .And(x => x.IsVisible)
+                  .And(x => x.IsVisible)
                 .List();
         }
 
@@ -162,25 +140,16 @@ using Appva.Mcss.Admin.Domain.Repositories.Contracts;
         #region IListRepository<Role> Members.
 
         /// <inheridoc />
-        public IList<Role> List(ulong maximumItems = long.MaxValue)
+        public IList<Role> List()
         {
-            return this.persistenceContext.QueryOver<Role>()
-                .Where(x => x.IsActive)
+            return this.Context.QueryOver<Role>()
+                    .Where(x => x.IsActive)
                 .OrderBy(x => x.Weight).Asc
-                .ThenBy(x => x.Name).Asc
+                .ThenBy (x => x.Name).Asc
                 .List();
         }
 
         #endregion
 
-        #region IUpdateRepository<Role> Members.
-
-        /// <inheritdoc />
-        public void Update(Role entity)
-        {
-            this.persistenceContext.Update<Role>(entity);
-        }
-
-        #endregion
     }
 }

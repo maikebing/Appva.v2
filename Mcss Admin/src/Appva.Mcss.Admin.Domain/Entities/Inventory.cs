@@ -1,16 +1,12 @@
 ﻿// <copyright file="Inventory.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
-    using Appva.Common.Domain;
     using Newtonsoft.Json;
 
     #endregion
@@ -18,7 +14,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Inventory : AggregateRoot<Inventory>
+    public class Inventory : AggregateRoot
     {
         #region Variables.
         
@@ -29,7 +25,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Inventory"/> class.

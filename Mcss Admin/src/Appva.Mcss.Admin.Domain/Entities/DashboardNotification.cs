@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class DashboardNotification : Notification
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DashboardNotification"/> class.
@@ -30,7 +30,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Properties
+        #region Properties.
 
         /// <summary>
         /// The notification template

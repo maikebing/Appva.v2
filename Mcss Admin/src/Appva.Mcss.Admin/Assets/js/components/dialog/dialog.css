@@ -1,0 +1,176 @@
+/* DIALOGS
+================================================================================ */
+#dialogs {
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	z-index:2010;
+	width:100%;
+}
+.dialog-bg::after {
+	position:fixed;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	z-index:2000;
+	background:#666;
+	background:rgba(0, 0, 0, 0.5);
+	content:"";
+}
+.dialog,
+.dialog--form-warning {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	position:absolute;
+	left:50%;
+	-ms-flex-direction:column;
+	-webkit-flex-direction:column;
+	flex-direction:column;
+	min-width:320px;
+	max-width:calc(100% - 24px * 2);
+	max-width:calc(100% - var(--l-space) * 2);
+	outline:0;
+	box-shadow:0 2px 12px 0 rgba(0, 0, 0, 0.4);
+	-webkit-transform:translateX(-50%);
+	transform:translateX(-50%);
+}
+
+/* Form exit confirmation dialog */
+.dialog--form-warning {
+	position:fixed;
+	top:50%;
+	z-index:5000;
+	max-width:480px;
+	-webkit-transform:translate(-50%, -50%);
+	transform:translate(-50%, -50%);
+}
+.dialog__title {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-ms-flex-align:center;
+	-webkit-align-items:center;
+	align-items:center;
+	padding:1rem;
+	background-color:#404e68;
+	background-color:var(--c-text);
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Colors
+----------------------------------------------------------------------------- */
+
+/* Positive dialog
+---------------------------------------------- */
+.dialog__title--positive {
+	background-color:#68ad57;
+	background-color:var(--c-standard-green);
+}
+.dialog__title--positive .dialog__symbol {
+	background-color:hsl(108, 34%, 68%);
+}
+
+/* Negative dialog
+---------------------------------------------- */
+.dialog__title--negative {
+	background-color:#c94949;
+	background-color:var(--c-alarmred);
+}
+.dialog__title--negative .dialog__symbol {
+	background-color:hsl(2, 46%, 68%);
+}
+
+/* Warning dialog
+---------------------------------------------- */
+.dialog__title--warning {
+	background-color:hsl(55, 100%, 40%);
+}
+.dialog__title--warning .dialog__symbol {
+	background-color:hsl(55, 100%, 45%);
+}
+.dialog__header > * {
+	margin-bottom:0;
+	color:#fff;
+}
+/* The symbol circle */
+.dialog__symbol {
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-ms-flex-pack:center;
+	-webkit-justify-content:center;
+	justify-content:center;
+	-ms-flex-align:center;
+	-webkit-align-items:center;
+	align-items:center;
+	width:64px;
+	height:64px;
+	margin-top:0;
+	margin-right:1rem;
+	border-radius:50%;
+	background-color:#637491;
+	background-color:var(--c-blue);
+}
+.dialog__symbol > * {
+	color:#fff;
+	font-size:2.2rem;
+}
+
+/* Warning colors */
+.dialog.warning .dialog__title {
+	background-color:#c94949;
+	background-color:var(--c-alarmred);
+}
+.dialog.warning .dialog__symbol {
+	background-color:hsl(0, 54%, 70%);
+}
+
+/* Content */
+.dialog__content {
+	padding:24px;
+	padding:var(--l-space);
+	background:#fff;
+}
+.dialog__content form {
+	margin-bottom:0;
+}
+
+/* Close button */
+.dialog__close {
+	position:absolute;
+	top:10px;
+	right:10px;
+	box-sizing:content-box;
+	width:16px;
+	height:16px;
+	margin:0;
+	padding:10px;
+	border:none;
+	border-radius:50%;
+	color:#637491;
+	color:var(--c-blue);
+	font-size:20px;
+	cursor:pointer;
+}
+/* TODO: Give same focus style as other buttons */
+.dialog__close:focus {
+	outline:1px dotted #666;
+}
+.dialog__close .icon {
+	display:block;
+	width:16px;
+	height:16px;
+	fill:currentColor;
+}
+
+@media only screen and (max-width:679px) {
+	.dialog {
+		width:calc(100% - 24px);
+		width:calc(100% - var(--l-space));
+	}
+}

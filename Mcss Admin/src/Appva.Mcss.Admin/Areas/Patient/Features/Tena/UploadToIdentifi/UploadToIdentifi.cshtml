@@ -1,0 +1,60 @@
+﻿@model Appva.Mcss.Admin.Models.UploadTenaObserverPeriodModel
+@{
+    SetTitle("Ladda upp mätvärden");
+}
+
+<div class="width-limiter width-limiter--m">
+    <div class="section section--hspace section--vspace">
+        <div id="remote-response">
+            <div class="alert-message alert-message--@Model.Type">
+                <h2 class="alert-message__heading h3">
+                    <img class="icon icon--round icon--@Model.Type" src="~/Assets/i/ico-upload.png" />
+                    @Model.Title
+                </h2>
+            </div>
+            <div class="width-limiter--m">
+                <div class="section tena-list">
+                    <p>MCSS har laddat upp alla händelserregistrerade för denna mätperiod till TENA Identifi</p>
+                    @if (Model.EventsWithError != 0)
+                    {
+                        <div class="section error">
+                            <b>@Model.EventsWithError</b> @(Model.EventsWithError == 1 ? "händelse":"händelser") kunde inte skickas till TENA Identifi, ett fel uppstod.
+                        </div>
+                    }
+                    @if (Model.EventsWthoutAssesments != 0)
+                    {
+                        <div class="section error">
+                            <b>@Model.EventsWthoutAssesments</b> händelser kunde inte skickas till TENA Identifi eftersom ingen aktiv mätperiod finns för tidpunkten då de registrerats.
+                        </div>
+                    }
+                </div>
+
+                <div class="section section--hspace section--vspace section--bluetone tena-list">
+                    <h4>Uppladdade händelser</h4>
+                    <p><b>@Model.TotalNumberOfEvents</b> händelser har skickats och hanterats av TENA Identifi</p>
+                    <div class="inliner">
+                        <dl>
+                            <dt>Skapade händelser</dt>
+                            <dd><p>@Model.EventsCreated</p></dd>
+                        </dl>
+                        <dl>
+                            <dt>Uppdaterade händelser</dt>
+                            <dd><p>@Model.EventsUpdated</p></dd>
+                        </dl>
+                        <dl>
+                            <dt>Misslyckade händelser</dt>
+                            <dd><p>@(Model.EventsWthoutAssesments + Model.EventsWithError)</p></dd>
+                        </dl>
+                    </div>
+                    
+                </div>
+                <div class="form-controls form-controls--align-end form-controls--no-margin">
+                    <button type="button" class="button" data-dialog-close="true">Stäng</button>
+                </div>
+                
+            </div>
+
+        </div>
+
+    </div>
+</div>

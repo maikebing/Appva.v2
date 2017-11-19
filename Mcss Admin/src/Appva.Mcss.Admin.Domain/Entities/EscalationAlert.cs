@@ -11,14 +11,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class EscalationAlert : AggregateRoot<EscalationAlert>
+    public class EscalationAlert : AggregateRoot
     {
         #region Constructor.
 

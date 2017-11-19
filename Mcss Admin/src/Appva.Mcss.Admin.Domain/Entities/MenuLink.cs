@@ -1,9 +1,6 @@
 ﻿// <copyright file="MenuLink.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,16 +8,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// Represents a single menu link item in a menu list.
     /// </summary>
-    public class MenuLink : Entity<MenuLink>
+    public class MenuLink : Entity
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuLink"/> class.
@@ -52,14 +48,17 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuLink"/> class.
         /// </summary>
-        /// <remarks>Required by NHibernate.</remarks>
+        /// <remarks>
+        /// An NHibernate visible no-argument constructor.
+        /// <remarks>
+        [Obsolete]
         protected MenuLink()
         {
         }
 
         #endregion
 
-        #region Public Properties.
+        #region Properties.
 
         /// <summary>
         /// The menu item text, e.g. "The road to no where".

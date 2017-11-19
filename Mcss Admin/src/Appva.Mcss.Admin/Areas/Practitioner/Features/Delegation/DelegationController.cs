@@ -304,7 +304,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Delegations
                     CompletedBy = x.CompletedBy.IsNotNull() ? x.CompletedBy.FullName : "",
                     TaskCompletionStatus = Status(x)
                 },
-                tasks.Entities);
+                tasks.Items.ToList());
             ITenantIdentity identity;
             this.tenantService.TryIdentifyTenant(out identity);
             return File(bytes, "application/vnd.ms-excel",

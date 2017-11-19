@@ -1,0 +1,139 @@
+﻿.tena-reg .section h2 {
+    font-size:24px;
+    color:rgb(64,78,104);
+    font-weight:bold;
+    margin-bottom:30px;
+}
+
+.tena-reg .section {
+        padding-top:30px;
+}
+
+.tena-reg .section--header {
+    border-bottom: 1px solid rgb(219,224,236);
+}
+
+.tena-reg p.body {
+    font-size:14px;
+    color:rgb(64,78,104);
+
+}
+
+.tena-reg .width-limiter {
+    padding: 0px;
+}
+
+/*input*/
+
+div.tena-id-form
+{
+    border:1px solid rgb(99,116,145);
+}
+
+div.tena-id-form p.instructions {
+    background:rgb(239,241,246);
+    padding:5px;
+    color:rgb(128,143,167);
+    font-size:14px;
+    margin:0;
+}
+
+div.tena-id-form p.instructions span.required-indicator {
+    float:right;
+    font-size:24px;
+    line-height: 24px;
+}
+
+div.tena-id-form p.instructions.error,
+div.tena-id-form p.instructions.error span.required-indicator {
+    background:#c94949;
+    color:#fff;
+}
+
+div.tena-id-form input {
+    border:none;
+    width:100%;
+    color:rgb(64,78,104);
+    font-size:20px;
+    border-radius:0;
+}
+
+
+div.tena-id-form input::placeholder {
+    font-size:20px;
+    font-style:normal;
+}
+
+div.tena-id-form input:active,
+div.tena-id-form input:focus {
+    border:none; 
+    box-shadow:none;
+}
+
+
+
+/* Button-fixes */
+
+.tena-reg .button {
+    padding:10px 20px;
+}
+
+.tena-reg .button img {
+    height:20px;
+    margin-right:10px;
+}
+
+.tena-reg .button--neutral {
+    background: rgb(99,116,145);
+    border:1px solid rgb(64,78,104);
+}
+
+.tena-reg .button--neutral:hover {
+    background:rgb(64,78,104);
+}
+
+.tena-reg .button--primary {
+    background: rgb(104,173,87);
+    border:1px solid rgb(88,159,73);
+}
+
+.tena-reg .button--primary:hover {
+    background:rgb(88,159,73);
+}
+
+
+/* Success */
+
+.tena-reg .section--white.section--bubble {
+    border: 2px solid rgb(104,173,87);
+    border-radius:100px;
+}
+
+.tena-reg .section--white.section--bubble::after {
+    border-bottom-color:rgb(104,173,87);
+}
+
+.tena-reg #tena-response {
+    padding:20px;
+    width:100%;
+}
+
+.tena-reg #tena-response .form-controls {
+    margin:0;
+    float: right;
+}
+
+.tena-reg dl {
+    margin-right:15px;
+}
+
+.tena-reg dl dt {
+    font-size: 14px;
+    color:rgb(128,143,167);
+    font-weight:normal;
+}
+.tena-reg dl dd {
+    font-size: 14px;
+    color:rgb(64,78,104);
+}
+

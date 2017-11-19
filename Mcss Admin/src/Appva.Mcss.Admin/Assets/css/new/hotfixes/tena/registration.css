@@ -137,3 +137,24 @@ div.tena-id-form input:focus {
     color:rgb(64,78,104);
 }
 
+/* Help */
+.tena-reg span.help-numbering {
+    padding:10px 16px;
+    border-radius:50%;
+    background:rgb(219,224,236);
+    color:rgb(64,78,104);
+    font-size:1.5rem;
+    margin-right:10px;
+}
+
+#register-help {
+    margin-left:-24px;
+    margin-right:-24px;
+}
+
+#register-help img {
+    max-width:100%;
+    margin-bottom:24px;
+    border:2px solid #385D8A;
+    border-radius:10px;
+}

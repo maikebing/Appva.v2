@@ -25,6 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Tena
     using Newtonsoft.Json;
     using Appva.Mcss.Admin.Models.Handlers;
 using Appva.Cqrs;
+    using Appva.Mcss.Admin.Infrastructure.Models;
 
     #endregion
 
@@ -223,6 +224,18 @@ using Appva.Cqrs;
         {
             var response = await this.mediator.SendAsync(request);
             return this.JsonGet(response);
+        }
+
+        #endregion
+
+        #region Help-pages
+
+        [Route("register/help")]
+        [HttpGet, Dispatch(typeof(Parameterless<RegisterHelpModel>))]
+        [PermissionsAttribute(Permissions.Tena.ReadValue)]
+        public ActionResult RegisterHelp()
+        {
+            return this.View();
         }
 
         #endregion

@@ -633,6 +633,8 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelpHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelpModel.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientId.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientIdHandler.cs" />
     <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientIdPublisher.cs" />
@@ -1081,6 +1083,11 @@
     <Content Include="Assets\i\siths-icon.png" />
     <Content Include="Assets\i\sort-arrow.png" />
     <Content Include="Assets\i\statusicons-tiles%402x.png" />
+    <Content Include="Assets\i\tena\tena-1.png" />
+    <Content Include="Assets\i\tena\tena-2.png" />
+    <Content Include="Assets\i\tena\tena-3.png" />
+    <Content Include="Assets\i\tena\tena-4.png" />
+    <Content Include="Assets\i\tena\tena-5.png" />
     <Content Include="Assets\i\trenddn.png" />
     <Content Include="Assets\i\trendup.png" />
     <Content Include="Assets\i\trest-logo.png" />
@@ -1560,6 +1567,7 @@
     <Content Include="Assets\images\graph.ai" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\rename-inventory.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\Update\Update.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelp.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

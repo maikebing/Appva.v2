@@ -16,7 +16,7 @@ namespace Appva.Mcss.Admin.Models
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class UploadTenaObserverPeriod : IAsyncRequest<string>
+    public sealed class UploadTenaObserverPeriod : IAsyncRequest<UploadTenaObserverPeriodModel>
     {
         /// <summary>
         /// Gets or sets the identifier.

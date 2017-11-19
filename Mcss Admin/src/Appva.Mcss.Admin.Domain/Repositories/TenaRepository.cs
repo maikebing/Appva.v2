@@ -16,11 +16,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
 using System.Collections.Generic;
+    using NHibernate.Criterion;
 
     #endregion
 
     /// <summary>
-    /// The <see cref="TenaRepository"/> repository.
+    /// The <see cref="TenaObservationPeriodRepository"/> repository.
     /// </summary>
     public interface ITenaObservationPeriodRepository : 
         ISaveRepository<TenaObservationPeriod>,
@@ -33,14 +34,6 @@ using System.Collections.Generic;
         /// <param name="externalId">The external tena id.</param>
         /// <returns>Returns a <see cref="bool"/>.</returns>
         bool HasUniqueExternalId(string externalId);
-
-        /// <summary>
-        /// If the StartDate is conflicting with previous EndDates
-        /// </summary>
-        /// <param name="patientId">The external patient id.</param>
-        /// <param name="startdate">The selected start date</param>
-        /// <returns>Returns a <see cref="bool"/>.</returns>
-        bool HasConflictingDate(Guid patientId, DateTime startdate);
 
         /// <summary>
         /// Get a specific Tena Observation Period from DB
@@ -63,13 +56,25 @@ using System.Collections.Generic;
         /// <returns>Returns a <see cref="string"/>.</returns>
         string GetTenaId(Guid patientId);
 
+        /// <summary>
+        /// Determines whether the specified patient identifier is unique.
+        /// </summary>
+        /// <param name="patientId">The patient identifier.</param>
+        /// <param name="startsAt">The starts at.</param>
+        /// <param name="endsAt">The ends at.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified patient identifier is unique; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsUnique(Guid patientId, DateTime startsAt, DateTime endsAt, Guid? id);
+
 
     }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class TenaRepository : Repository<TenaObservationPeriod>, ITenaObservationPeriodRepository
+    public sealed class TenaObservationPeriodRepository : Repository<TenaObservationPeriod>, ITenaObservationPeriodRepository
     {
         #region Variables.
 
@@ -83,10 +88,10 @@ using System.Collections.Generic;
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TenaRepository"/> class.
+        /// Initializes a new instance of the <see cref="TenaObservationPeriodRepository"/> class.
         /// </summary>
         /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
-        public TenaRepository(IPersistenceContext context) : base(context)
+        public TenaObservationPeriodRepository(IPersistenceContext context) : base(context)
         {
             this.persistence = context;
         }
@@ -126,14 +131,28 @@ using System.Collections.Generic;
             return patient.TenaId;
         }
 
-        /// <inheritdoc />
-        /// 
+        /// <inheritdoc /> 
         public IList<TenaObservationPeriod> ListTenaPeriods(Guid patientId)
         {
             return this.persistence.QueryOver<TenaObservationPeriod>()
                 .Where(x => x.IsActive == true)
                 .And(x => x.Patient.Id == patientId)
                 .List();
+        }
+
+        /// <inheritdoc />
+        public bool IsUnique(Guid patientId, DateTime startsAt, DateTime endsAt, Guid? ignorePeriodId)
+        {
+            var query = this.persistence.QueryOver<TenaObservationPeriod>()
+                .Where(x => x.IsActive)
+                .And(x => x.Patient.Id == patientId)
+                .And(x => (startsAt >= x.StartDate && startsAt <= x.EndDate) || (endsAt >= x.StartDate && endsAt <= x.EndDate));
+
+            if (ignorePeriodId.HasValue)
+            {
+                query.Where(x => x.Id != ignorePeriodId.GetValueOrDefault());
+            }
+            return query.RowCount() > 0;
         }
 
         #endregion

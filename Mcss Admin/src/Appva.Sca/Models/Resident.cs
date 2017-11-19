@@ -8,20 +8,21 @@ namespace Appva.Sca.Models
 {
     #region Imports.
     using Appva.Http;
+    using Newtonsoft.Json;
     #endregion
 
     /// <summary>
     /// GetResidentModel Http model
     /// </summary>
-    [HttpRequest]
-    public class GetResidentModel
+    [JsonObject]
+    public class Resident
     {
-        #region Fields
+        #region Properties.
 
         /// <summary>
         /// RoomNumber.
         /// </summary>
-        [HttpRequestProperty("roomNumber")]
+        [JsonProperty("roomNumber")]
         public string RoomNumber
         {
             get;
@@ -31,7 +32,7 @@ namespace Appva.Sca.Models
         /// <summary>
         /// FacilityName.
         /// </summary>
-        [HttpRequestProperty("facilityName")]
+        [JsonProperty("facilityName")]
         public string FacilityName
         {
             get;
@@ -41,7 +42,7 @@ namespace Appva.Sca.Models
         /// <summary>
         /// External ID.
         /// </summary>
-        [HttpRequestProperty("externalId")]
+        [JsonProperty("externalId")]
         public string ExternalId
         {
             get;

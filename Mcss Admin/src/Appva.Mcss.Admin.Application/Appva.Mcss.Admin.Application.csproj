@@ -184,6 +184,7 @@
     <Compile Include="Common\PrincipalExtensions.cs" />
     <Compile Include="Common\TaxonomicSchema.cs" />
     <Compile Include="Common\Taxons.cs" />
+    <Compile Include="Exception\NotUniqueException.cs" />
     <Compile Include="Extensions\DateTimeUtils.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
     <Compile Include="Models\CalendarDay.cs" />

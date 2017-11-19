@@ -92,13 +92,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiClient.cs" />
+    <Compile Include="TenaIdentifiCredentials.cs" />
+    <Compile Include="Models\ImportResult.cs" />
     <Compile Include="TenaIdentifiClient.cs" />
-    <Compile Include="Configuration.cs" />
     <Compile Include="ITenaIdentifiClient.cs" />
-    <Compile Include="Models\GetManualEventModel.cs" />
-    <Compile Include="Models\GetResidentModel.cs" />
-    <Compile Include="Models\PostManualEventModel.cs" />
+    <Compile Include="Models\ManualEventResult.cs" />
+    <Compile Include="Models\Resident.cs" />
+    <Compile Include="Models\ManualEvent.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UriHelper.cs" />

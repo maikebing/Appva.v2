@@ -28,37 +28,67 @@ namespace Appva.Mcss.Admin.Models
         /// </summary>
         public string Title
         {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Message
-        /// </summary>
-        public string Message
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Symbol
-        /// </summary>
-        public string Icon
-        {
-            get;
-            set;
+            get
+            {
+                if (this.TotalNumberOfEvents == this.EventsCreated + this.EventsUpdated)
+                {
+                    return "Uppladdning klar";
+                }
+                return "Uppladdning klar";
+            }
         }
 
         public string Type
         {
-            get;
-            set;
+            get
+            {
+                if (this.TotalNumberOfEvents == this.EventsCreated + this.EventsUpdated)
+                {
+                    return "positive";
+                }
+                return "neutral";
+            }
         }
 
-        public TenaObservationPeriod Period
+
+        /// <summary>
+        /// Gets or sets the events created.
+        /// </summary>
+        /// <value>
+        /// The events created.
+        /// </value>
+        public int EventsCreated { get; set; }
+
+        /// <summary>
+        /// Gets or sets the events updated.
+        /// </summary>
+        /// <value>
+        /// The events updated.
+        /// </value>
+        public int EventsUpdated { get; set; }
+
+        /// <summary>
+        /// Gets or sets the events with error.
+        /// </summary>
+        /// <value>
+        /// The events with error.
+        /// </value>
+        public int EventsWithError { get; set; }
+
+        /// <summary>
+        /// Gets or sets the events wthout assesments.
+        /// </summary>
+        /// <value>
+        /// The events wthout assesments.
+        /// </value>
+        public int EventsWthoutAssesments { get; set; }
+
+        public int TotalNumberOfEvents
         {
-            get;
-            set;
+            get
+            {
+                return this.EventsCreated + this.EventsUpdated + this.EventsWithError + this.EventsWthoutAssesments;
+            }
         }
-
     }
 }

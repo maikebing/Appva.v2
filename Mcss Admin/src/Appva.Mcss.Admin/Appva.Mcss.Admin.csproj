@@ -778,6 +778,7 @@
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
     <Compile Include="Configuration\GrandIdConfiguration.cs" />
     <Compile Include="Configuration\MockedTenantWcfClient.cs" />
+    <Compile Include="Configuration\TenaIdentifiConfiguration.cs" />
     <Compile Include="Features\Account\AccountController.cs" />
     <Compile Include="Features\Account\Forgot\Forgot.cs" />
     <Compile Include="Features\Account\Forgot\ForgotEmail.cs" />

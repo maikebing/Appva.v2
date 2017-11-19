@@ -9,21 +9,22 @@ namespace Appva.Sca.Models
     #region Imports.
 
     using Appva.Http;
+    using Newtonsoft.Json;
 
     #endregion
 
     /// <summary>
     /// GetManualEventModel, Http model.
     /// </summary>
-    [HttpRequest]
-    public sealed class GetManualEventModel
+    [JsonObject]
+    public sealed class ManualEventResult
     {
         #region Fields.
 
         /// <summary>
         /// Id.
         /// </summary>
-        [HttpRequestProperty("id")]
+        [JsonProperty("id")]
         public string Id
         {
             get;
@@ -33,12 +34,14 @@ namespace Appva.Sca.Models
         /// <summary>
         /// ImportResult.
         /// </summary>
-        [HttpRequestProperty("importResult")]
-        public string ImportResult
+        [JsonProperty("importResult")]
+        public ImportResult ImportResult
         {
             get;
             set;
         }
+
+
         #endregion
     }
 }

@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Sca;
     using Sca.Models;
     using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Exception;
 
     #endregion
 
@@ -60,15 +61,19 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="endsAt">The ends at.</param>
         /// <param name="instruction">The instruction.</param>
         /// <returns></returns>
-        TenaObservationPeriod UpdateTenaPbservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction);
+        TenaObservationPeriod UpdateTenaObservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction);
 
         /// <summary>
-        /// Validate the Starting date against previous periods
+        /// Determines whether the specified patient identifier is unique.
         /// </summary>
-        /// <param name="patientId">The patientId in this context.</param>
-        /// <param name="startdate">Starting date for the period</param>
-        /// <returns>Returns a <see cref="bool"/>.</returns>
-        bool HasConflictingDate(Guid patientId, DateTime startdate);
+        /// <param name="patientId">The patient identifier.</param>
+        /// <param name="startdate">The startdate.</param>
+        /// <param name="enddate">The enddate.</param>
+        /// <param name="ignorePeriodId">The ignore period identifier.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified patient identifier is unique; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsUnique(Guid patientId, DateTime startdate, DateTime enddate, Guid? ignorePeriodId);
 
         /// <summary>
         /// Get a specific Period from Database
@@ -78,32 +83,25 @@ namespace Appva.Mcss.Admin.Application.Services
         TenaObservationPeriod GetTenaObservationPeriod(Guid periodId);
 
         /// <summary>
-        /// Sets the credentials.
-        /// </summary>
-        /// <param name="client">The client.</param>
-        /// <param name="secret">The secret.</param>
-        void SetCredentials(string client, string secret);
-
-        /// <summary>
         /// Get data from the TENA API.
         /// </summary>
         /// <param name="externalId">The external tena id.</param>
         /// <returns>Returns a <see cref="GetResidentModel"/>.</returns>
-        Task<GetResidentModel> GetResidentAsync(string externalId);
+        Task<Resident> GetResidentAsync(string externalId);
 
         /// <summary>
         /// Post Period to the TENA API.
         /// </summary>
         /// <param name="periodId">The Observation Period ID.</param>
         /// <returns>Returns a list of <see cref="GetManualEventModel"/>.</returns>
-        Task<List<GetManualEventModel>> PostManualEventAsync(Guid periodId);
+        Task<List<ManualEventResult>> UploadAllEventsFor(Guid periodId);
 
         /// <summary>
-        /// Posts the manual event asynchronous.
+        /// Uploads all events for.
         /// </summary>
         /// <param name="period">The period.</param>
-        /// <returns>Task&lt;List&lt;GetManualEventModel&gt;&gt;.</returns>
-        Task<List<GetManualEventModel>> PostManualEventAsync(TenaObservationPeriod period);
+        /// <returns></returns>
+        Task<List<ManualEventResult>> UploadAllEventsFor(TenaObservationPeriod period);
     }
 
     /// <summary>
@@ -152,12 +150,7 @@ namespace Appva.Mcss.Admin.Application.Services
             this.repository      = repository;
             this.settingsService = settingsService;
             this.audit           = audit;
-
             this.identifiClient  = identifiClient;
-            if (this.identifiClient.HasCredentials == false)
-            {
-                this.identifiClient.SetCredentials(this.GetCredentials());
-            }
         }
 
         #endregion
@@ -178,10 +171,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public TenaObservationPeriod CreateTenaObservervationPeriod(Patient patient, DateTime startdate, DateTime enddate)
         {
-            if (this.repository.HasConflictingDate(patient.Id, startdate))
+            /*if ( ! this.IsUnique(patient.Id, startdate, enddate, null))
             {
-                return null;
-            }
+                throw new NotUniqueException("The given date is not unique");
+            }*/
             var period = new TenaObservationPeriod(startdate, enddate, patient, "TENA Identifi", "För registrering av toalettbesök, läckage utanför produkten och ev avföring i produkten");
             this.repository.Save(period);
 
@@ -190,7 +183,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public TenaObservationPeriod UpdateTenaPbservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction)
+        public TenaObservationPeriod UpdateTenaObservationPeriod(Guid id, DateTime startsAt, DateTime endsAt, string instruction)
         {
             var period = this.repository.Get(id);
             period.Update(period.Name, instruction, startsAt, endsAt);
@@ -206,9 +199,9 @@ namespace Appva.Mcss.Admin.Application.Services
         }
         
         /// <inheritdoc />
-        public bool HasConflictingDate(Guid patientId, DateTime startdate)
+        public bool IsUnique(Guid patientId, DateTime startdate, DateTime enddate, Guid? ignorePeriodId)
         {
-            return this.repository.HasConflictingDate(patientId, startdate);
+            return this.repository.IsUnique(patientId, startdate, enddate, ignorePeriodId);
         }
 
         #endregion
@@ -216,42 +209,36 @@ namespace Appva.Mcss.Admin.Application.Services
         #region API communication members.
 
         /// <inheritdoc />
-        public void SetCredentials(string client, string secret)
-        {
-            this.identifiClient.SetCredentials(this.GetCredentials(client, secret));
-        }
-
-        /// <inheritdoc />
-        public async Task<GetResidentModel> GetResidentAsync(string externalId)
+        public async Task<Resident> GetResidentAsync(string externalId)
         {
             if (this.HasUniqueExternalId(externalId) == false)
             {
-                return new GetResidentModel
+                return new Resident
                 {
                     Message = "Detta ID är redan registrerat på en boende."
                 };
             }
 
-            return await this.identifiClient.GetResidentAsync(externalId);
+            return await this.identifiClient.GetResidentAsync(externalId, this.GetCredentials());
         }
 
         /// <inheritdoc />
-        public async Task<List<GetManualEventModel>> PostManualEventAsync(Guid periodId)
+        public async Task<List<ManualEventResult>> UploadAllEventsFor(Guid periodId)
         {
             var period = this.repository.GetTenaPeriod(periodId);
-            var retval = await this.PostManualEventAsync(period);
+            var retval = await this.UploadAllEventsFor(period);
             return retval;
         }
 
         /// <inheritdoc />
-        public async Task<List<GetManualEventModel>> PostManualEventAsync(TenaObservationPeriod period)
+        public async Task<List<ManualEventResult>> UploadAllEventsFor(TenaObservationPeriod period)
         {
             var measurements = period.Items;
             if (measurements.IsEmpty())
             {
                 return null;
             }
-            return await this.identifiClient.PostManualEventAsync(this.ConvertDataToTenaModel(measurements));
+            return await this.identifiClient.PostManualEventsAsync(this.ConvertDataToTenaModel(measurements), this.GetCredentials());
         }
 
         #endregion
@@ -259,14 +246,14 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Private methods.
 
         /// <inheritdoc />
-        private List<PostManualEventModel> ConvertDataToTenaModel(IList<ObservationItem> tenaObservationItemsList)
+        private List<ManualEvent> ConvertDataToTenaModel(IList<ObservationItem> tenaObservationItemsList)
         {
-            var tenaApiList = new List<PostManualEventModel>();
+            var tenaApiList = new List<ManualEvent>();
             foreach (var item in tenaObservationItemsList)
             {
                 //// FIX: Must convert to utc-time before sending to TENA.
                 var createdAt = new DateTime(item.CreatedAt.Ticks, DateTimeKind.Local);
-                tenaApiList.Add(new PostManualEventModel
+                tenaApiList.Add(new ManualEvent
                 {
                     Id = item.Id.ToString(),
                     EventType = item.Measurement.Value,
@@ -279,16 +266,10 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        private string GetCredentials(string client, string secret)
-        {
-            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(client + ":" + secret));
-        }
-
-        /// <inheritdoc />
-        private string GetCredentials()
+        private TenaIdentifiCredentials GetCredentials()
         {
             var settings = this.settingsService.Find(ApplicationSettings.TenaSettings);
-            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(settings.ClientId + ":" + settings.ClientSecret));
+            return new TenaIdentifiCredentials(settings.ClientId, settings.ClientSecret);
         }
         #endregion
     }

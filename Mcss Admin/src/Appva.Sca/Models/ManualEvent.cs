@@ -8,21 +8,22 @@ namespace Appva.Sca.Models
 {
     #region Imports.
     using Appva.Http;
+    using Newtonsoft.Json;
     using System;
     #endregion
 
     /// <summary>
     /// PostManualEventModel Http model
     /// </summary>
-    [HttpRequest]
-    public class PostManualEventModel
+    [JsonObject]
+    public class ManualEvent
     {
-        #region Fields.
+        #region Properties.
 
         /// <summary>
         /// ID.
         /// </summary>
-        [HttpRequestProperty("id")]
+        [JsonProperty("id")]
         public string Id
         {
             get;
@@ -32,7 +33,7 @@ namespace Appva.Sca.Models
         /// <summary>
         /// EventType.
         /// </summary>
-        [HttpRequestProperty("eventType")]
+        [JsonProperty("eventType")]
         public string EventType
         {
             get;
@@ -42,7 +43,7 @@ namespace Appva.Sca.Models
         /// <summary>
         /// Resident ID.
         /// </summary>
-        [HttpRequestProperty("residentId")]
+        [JsonProperty("residentId")]
         public string ResidentId
         {
             get;
@@ -53,7 +54,7 @@ namespace Appva.Sca.Models
         /// TimeStamp.
         /// Must be in UTC
         /// </summary>
-        [HttpRequestProperty("timeStamp")]
+        [JsonProperty("timeStamp")]
         public DateTime Timestamp
         {
             get;
@@ -63,7 +64,7 @@ namespace Appva.Sca.Models
         /// <summary>
         /// Active.
         /// </summary>
-        [HttpRequestProperty("active")]
+        [JsonProperty("active")]
         public bool Active
         {
             get;

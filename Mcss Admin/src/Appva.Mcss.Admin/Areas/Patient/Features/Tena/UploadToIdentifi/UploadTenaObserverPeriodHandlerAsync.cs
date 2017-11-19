@@ -6,17 +6,20 @@
 // </author>
 namespace Appva.Mcss.Admin.Models.Handlers
 {
-    using System;
-    using System.Collections.Generic;
+    
     #region Imports.
 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Sca.Models;
     using System.Threading.Tasks;
+    using Appva.Cqrs;
 
     #endregion
 
-    internal sealed class UploadTenaObserverPeriodHandlerAsync
+    internal sealed class UploadTenaObserverPeriodHandlerAsync : AsyncRequestHandler<UploadTenaObserverPeriod, UploadTenaObserverPeriodModel>
     {
         #region Fields.
 
@@ -39,52 +42,34 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.tenaService = tenaService;
         }
 
-        /// <inheritdoc />
-        internal async Task<UploadTenaObserverPeriodModel> HandleAsync(UploadTenaObserverPeriod request)
-        {
-            var period = this.tenaService.GetTenaObservationPeriod(request.PeriodId);
-            var response = await this.tenaService.PostManualEventAsync(period);
+        #endregion
 
-            var title = string.Empty;
-            var message = string.Empty;
-            var icon = string.Empty;
-            var type = string.Empty;
+        #region AsyncRequestHandler overrides.
+
+        /// <summary>
+        /// Handles the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns></returns>
+        public override async Task<UploadTenaObserverPeriodModel> Handle(UploadTenaObserverPeriod message)
+        {
+            var response = await this.tenaService.UploadAllEventsFor(message.PeriodId);
 
             if (response == null)
             {
-                title = "Mätvärden saknas";
-                message = "Kan inte ladda upp en tom lista till Tena Identifi.";
-                icon = "alert";
-                type = "warning";
-            }
-            else
-            {
-                if (response.Count > 0)
-                {
-                    title = "Uppladdning klar!";
-                    message = "Uppladdningen till Tena Identfi lyckades";
-                    icon = "check";
-                    type = "positive";
-                }
-                else
-                {
-                    title = "Inte lyckad";
-                    message = "Uppladdningen till Tena Identifi misslyckades";
-                    icon = "x";
-                    type = "negative";
-                }
+                return new UploadTenaObserverPeriodModel();
             }
 
-            var model = new UploadTenaObserverPeriodModel
+            return new UploadTenaObserverPeriodModel
             {
-                Title = title,
-                Message = message,
-                Icon = icon,
-                Type = type,
-                Period = period
+                EventsCreated          = response.Count(x => x.ImportResult == ImportResult.Created),
+                EventsUpdated          = response.Count(x => x.ImportResult == ImportResult.Updated),
+                EventsWithError        = response.Count(x => x.ImportResult == ImportResult.ErrorOccured),
+                EventsWthoutAssesments = response.Count(x => x.ImportResult == ImportResult.AssessmentNotFound),
             };
+   
 
-            return model;
+            
         }
 
         #endregion

@@ -3,8 +3,18 @@ body {
     background:rgb(239,241,246);
 }
 
-label, .button {
+label, 
+.button,
+.tena-list .error,
+.tena-list p {
     font-size:1rem;
+}
+
+.icon--positive {
+    background:rgb(88,159,73);
+}
+.icon--neutral {
+    background:rgb(64,78,104);
 }
 
 /* Sections */
@@ -120,4 +130,24 @@ label, .button {
 
 .tena-list .button--primary:hover {
     background:rgb(88,159,73);
+}
+
+.dialog__content .tena-list.section--bluetone {
+    margin-left:-24px;
+    margin-right:-24px;
+    padding-bottom:24px;
+}
+
+/* Upload dialog specific */
+
+.dialog__content .tena-list .error {
+    background:rgba(201,73,73,0.15);
+    border-left:4px solid rgb(201,73,73);
+    padding:8px;
+    color:rgb(201,73,73);
+    margin:24px 0;
+}
+
+.dialog__content .tena-list {
+    color: rgb(64,78,104);
 }

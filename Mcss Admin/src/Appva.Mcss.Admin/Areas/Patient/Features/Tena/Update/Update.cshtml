@@ -7,6 +7,9 @@
         <div class="section section--hspace">
             <h2>Uppdatera mätperiod - TENA Identifi</h2>
             <div id="add-measuring-period">
+                <div class="alert-message">
+                    <h2 class="alert-message__heading h3">Ändra mätperiod</h2>
+                </div>
                 @using (Html.BeginForm("Update", "Tena", new {  periodId = Model.PeriodId, id = Model.Id }))
                 {
                     @Html.AntiForgeryToken()

@@ -68,7 +68,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 clientSecret, 
                 settings.IsInstalled
             ));
-            this.tenaService.SetCredentials(clientId, clientSecret);
 
             return true;
         }

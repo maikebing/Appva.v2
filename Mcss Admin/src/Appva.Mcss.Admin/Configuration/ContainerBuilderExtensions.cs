@@ -251,7 +251,8 @@ namespace Appva.Mcss.Admin.Configuration
         public static void RegisterTenaIdentifi(this ContainerBuilder builder)
         {
             var modelBinder = ModelBinder.CreateNew().Bind(Assembly.GetAssembly(typeof(TenaIdentifiClient)));
-            builder.Register(x => new TenaIdentifiClient(new Uri(ConfigurationManager.AppSettings.Get("TenaAPI.ServerUrl")))).As<ITenaIdentifiClient>().SingleInstance();
+            var options     = RestOptions.CreateNew(null, modelBinder);
+            builder.Register(x => new TenaIdentifiClient(options, TenaIdentifiConfiguration.ServerUrl)).As<ITenaIdentifiClient>().SingleInstance();
         }
 
         /// <summary>

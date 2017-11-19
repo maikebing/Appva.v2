@@ -24,33 +24,14 @@ namespace Appva.Sca
         /// GetResident
         /// </summary>
         /// <param name="id">Identifi ID</param>
-        /// <returns>Returns a <see cref="GetResidentModel"/>.</returns>
-        Task<GetResidentModel> GetResidentAsync(string id);
+        /// <returns>Returns a <see cref="Resident"/>.</returns>
+        Task<Resident> GetResidentAsync(string id, TenaIdentifiCredentials credentials);
 
         /// <summary>
         /// Posts the manual event asynchronous.
         /// </summary>
         /// <param name="manualEvents">The manual events.</param>
         /// <returns>Task&lt;List&lt;GetManualEventModel&gt;&gt;.</returns>
-        Task<List<GetManualEventModel>> PostManualEventAsync(List<PostManualEventModel> manualEvents);
-
-        /// <summary>
-        /// Gets a value indicating whether this instance has credentials.
-        /// </summary>
-        /// <value><c>true</c> if this instance has credentials; otherwise, <c>false</c>.</value>
-        bool HasCredentials { get; }
-
-        /// <summary>
-        /// Sets the credentials.
-        /// </summary>
-        /// <param name="credentials">The credentials.</param>
-        void SetCredentials(string credentials);
-
-        /// <summary>
-        /// Sets the credentials.
-        /// </summary>
-        /// <param name="tenant">The tenant.</param>
-        /// <param name="credentials">The credentials.</param>
-        void SetCredentials(string tenant, string credentials);
+        Task<List<ManualEventResult>> PostManualEventsAsync(List<ManualEvent> manualEvents, TenaIdentifiCredentials credentials);
     }
 }

@@ -24,7 +24,7 @@
                 <div class="section section--card section--vspace">
                     <div class="section section--header section--hspace">
                         <div class="form-controls text-align--center">
-                            <a class="button button--primary open-in-dialog" href="@Url.Action("create", "tena")#add-measuring-period" data-dialog-title="Ny mätperiod">
+                            <a class="button button--primary open-in-dialog" href="@Url.Action("create", "tena")#add-measuring-period">
                                 <svg class="icon icon--mr" aria-hidden="true">
                                     <use xlink:href="/assets/images/icons/icon.sprite.svg#plus-icon"></use>
                                 </svg>
@@ -56,9 +56,6 @@
 
                             <h3>TENA Identifi mätperiod</h3>
                             <div class="form-controls form-controls--inline">
-                                <a class="button open-in-dialog" href="@Url.Action("Update", "Tena", new { periodid = Model.Period.Id })#add-measuring-period" data-dialog-title="Ändra mätperiod">
-                                    Ändra
-                                </a>
                                 @if (Model.Period.Items != null && Model.Period.Items.Count() > 0)
                                 {
                                     <a class="button button--neutral open-in-dialog" href="@Url.Action("UploadToIdentifi", "Tena", new { periodid = Model.Period.Id })#remote-response">
@@ -68,6 +65,9 @@
                                         </svg-->Ladda upp till TENA Identifi
                                     </a>
                                 }
+                                <a class="button open-in-dialog" href="@Url.Action("Update", "Tena", new { periodid = Model.Period.Id })#add-measuring-period">
+                                    Ändra
+                                </a>
                             </div>
                         </div>
                         <div class="section section--vspace inliner">

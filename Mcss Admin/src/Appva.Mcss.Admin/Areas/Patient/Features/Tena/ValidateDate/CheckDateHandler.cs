@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             string json_result = "ok";
             string json_message = string.Empty;
-            if (this.tenaService.HasConflictingDate(message.Id, message.Date))
+            if (this.tenaService.IsUnique(message.Id, message.Date, message.Date, null))
             {
                 json_result = "fail";
                 json_message = "Det här datumet överlappar tidigare perioder";

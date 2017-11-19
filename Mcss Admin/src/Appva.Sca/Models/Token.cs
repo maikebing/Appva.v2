@@ -12,12 +12,28 @@ namespace Appva.Sca.Models
 
     #endregion
 
+
     /// <summary>
     /// Token.
     /// </summary>
     internal class Token
     {
-        #region Fields.
+        #region Constructors.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Token"/> class.
+        /// </summary>
+        /// <param name="value">Value.</param>
+        /// <param name="expires">Expires.</param>
+        internal Token(string value, DateTimeOffset expires)
+        {
+            this.Value = value;
+            this.Expires = expires;
+        }
+
+        #endregion
+
+        #region Properties.
 
         /// <summary>
         /// Value.
@@ -50,60 +66,27 @@ namespace Appva.Sca.Models
 
         #endregion
 
-        #region Constructors.
+        #region Members
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Token"/> class.
-        /// </summary>
-        internal Token()
+        /// <inheritdoc />
+        public override string ToString()
         {
-            this.Value = string.Empty;
-            this.Expires = DateTimeOffset.UtcNow.AddHours(-1);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Token"/> class.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        internal Token(string value)
-        {
-            this.Value = value;
-            this.Expires = DateTimeOffset.UtcNow;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Token"/> class.
-        /// </summary>
-        /// <param name="value">Value.</param>
-        /// <param name="expires">Expires.</param>
-        internal Token(string value, DateTimeOffset expires)
-        {
-            this.Value = value;
-            this.Expires = expires;
+            return this.Value;
         }
 
         #endregion
 
-        #region Members.
+        #region Static Members.
 
         /// <summary>
-        /// Sets the Expires.
+        /// Creates the specified token.
         /// </summary>
-        /// <param name="expires">Exprires.</param>
-        internal void SetExpires(DateTimeOffset expires)
-        {
-            this.Expires = expires;
-        }
-
-        /// <summary>
-        /// Sets the values.
-        /// </summary>
-        /// <param name="value">The value.</param>
+        /// <param name="token">The token.</param>
         /// <param name="expires">The expires.</param>
-        internal void SetValues(string value, DateTimeOffset expires)
+        /// <returns></returns>
+        public static Token Create(string token, DateTimeOffset expires)
         {
-            this.Value = value;
-            this.Expires = expires;
+            return new Token(token, expires);
         }
 
         #endregion

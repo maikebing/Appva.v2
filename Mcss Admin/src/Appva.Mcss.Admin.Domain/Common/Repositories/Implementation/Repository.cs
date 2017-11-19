@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Domain
         {
             entity.MarkAsUpdated();
             this.context.Update(entity);
-            this.StoreEvents(entity, entity.Version + 1);
+            /*this.StoreEvents(entity, entity.Version + 1);*/
         }
 
         /// <inheritdoc />
@@ -74,7 +74,7 @@ namespace Appva.Mcss.Admin.Domain
                 return;
             }
             this.context.Save(entity);
-            this.StoreEvents (entity);
+            /*this.StoreEvents (entity);*/
         }
 
         /// <inheritdoc />
@@ -130,7 +130,7 @@ namespace Appva.Mcss.Admin.Domain
         /// <param name="entity">The entity.</param>
         private void StoreEvents(T entity, int version)
         {
-            if (entity.IsNot<IEventSourced>())
+            /*if (entity.IsNot<IEventSourced>())
             {
                 return;
             }
@@ -140,7 +140,7 @@ namespace Appva.Mcss.Admin.Domain
             {
                 this.context.Save(Provenance.New(entity.Id, version, change));
             }
-            sourced.MarkChangesAsCommitted();
+            sourced.MarkChangesAsCommitted();*/
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace Appva.Mcss.Admin.Domain
         /// <param name="entity">The entity.</param>
         private void StoreEvents(T entity)
         {
-            this.StoreEvents(entity, entity.Version);
+            /*this.StoreEvents(entity, entity.Version);*/
         } 
 
         #endregion

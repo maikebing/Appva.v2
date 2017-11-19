@@ -38,11 +38,6 @@ using Appva.Cqrs;
         #region Variables.
 
         /// <summary>
-        /// The tena service
-        /// </summary>
-        private ITenaService tenaService;
-
-        /// <summary>
         /// The <see cref="IMediator"/>.
         /// </summary>
         private readonly IMediator mediator;
@@ -54,10 +49,8 @@ using Appva.Cqrs;
         /// <summary>
         /// Initializes a new instance of the <see cref="TenaController"/> class.
         /// </summary>
-        /// <param name="tenaService">The tena service.</param>
-        public TenaController(IMediator mediator, ITenaService tenaService)
+        public TenaController(IMediator mediator)
         {
-            this.tenaService = tenaService;
             this.mediator = mediator;
         }
         
@@ -205,17 +198,15 @@ using Appva.Cqrs;
         /// </summary>
         /// <param name="request">The <see cref="UploadTenaObserverPeriod"/>.</param>
         /// <returns>A <see cref="ActionResult"/>.</returns>
-        [Route("upload")]
+        [Route("{periodId:guid}/upload")]
         [HttpGet]
         [PermissionsAttribute(Permissions.Tena.CreateValue)]
         public async Task<ActionResult> UploadToIdentifi(UploadTenaObserverPeriod request)
         {
-            var handler = new UploadTenaObserverPeriodHandlerAsync(this.tenaService);
-            //var response = await this.tenaService.PostManualEventAsync(request.PeriodId);
-            var model = await handler.HandleAsync(request);
-
-            return this.View(model);
+            var response = await this.mediator.SendAsync(request);
+            return this.View(response);
         }
+
         #endregion
 
         #region Get resident JSON

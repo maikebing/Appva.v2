@@ -7,7 +7,10 @@
         <div class="section section--hspace">
             <h2>Skapa ny mätperiod - Tena Identifi</h2>
             <div id="add-measuring-period">
-                @using (Html.BeginForm("create", "tena"))
+                <div class="alert-message">
+                    <h2 class="alert-message__heading h3">Ny mätperiod</h2>
+                </div>
+                @using (Html.BeginForm("create", "tena", FormMethod.Post, new { @class = "exit-confirmation" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="width-limiter width-limiter--s">

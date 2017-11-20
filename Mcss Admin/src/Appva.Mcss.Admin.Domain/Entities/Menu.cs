@@ -1,9 +1,6 @@
 ﻿// <copyright file="Menu.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,16 +8,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// Represents a menu container.
     /// </summary>
-    public class Menu : Entity<Menu>
+    public class Menu : Entity
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Menu"/> class.
@@ -30,22 +26,25 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="description">The description</param>
         public Menu(string key, string name, string description)
         {
-            this.Key = key;
-            this.Name = name;
+            this.Key         = key;
+            this.Name        = name;
             this.Description = description;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Menu"/> class.
         /// </summary>
-        /// <remarks>Required by NHibernate.</remarks>
+        /// <remarks>
+        /// An NHibernate visible no-argument constructor.
+        /// <remarks>
+        [Obsolete]
         protected Menu()
         {
         }
 
         #endregion
 
-        #region Public Properties.
+        #region Properties.
 
         /// <summary>
         /// The menu key. 

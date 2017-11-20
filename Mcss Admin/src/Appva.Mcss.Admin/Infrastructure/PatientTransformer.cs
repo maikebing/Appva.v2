@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Web.ViewModels;
+    using System;
 
     #endregion
 
@@ -54,6 +55,11 @@ namespace Appva.Mcss.Admin.Infrastructure
         private readonly ITaxonomyService taxonService;
 
         /// <summary>
+        /// The <see cref="ITenaService"/>
+        /// </summary>
+        private readonly ITenaService tenaService;
+
+        /// <summary>
         /// The <see cref="ISettingsService"/>.
         /// </summary>
         private readonly ISettingsService settingsService;
@@ -69,11 +75,17 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// <param name="roleService">The <see cref="IRoleService"/></param>
         /// <param name="taxonService">The <see cref="ITaxonomyService"/></param>
         /// <param name="settingsService">The <see cref="ISettingsService"/></param>
-        public PatientTransformer(IPatientService patientService, IRoleService roleService, ITaxonomyService taxonService, ISettingsService settingsService)
+        public PatientTransformer(
+            IPatientService patientService, 
+            IRoleService roleService, 
+            ITaxonomyService taxonService,
+            ITenaService tenaService,
+            ISettingsService settingsService)
         {
-            this.patientService = patientService;
-            this.roleService = roleService;
-            this.taxonService = taxonService;
+            this.patientService  = patientService;
+            this.roleService     = roleService;
+            this.taxonService    = taxonService;
+            this.tenaService     = tenaService;
             this.settingsService = settingsService;
         }
 
@@ -111,6 +123,18 @@ namespace Appva.Mcss.Admin.Infrastructure
                         address += taxonMap[path].Name + " ";
                     }
                 }
+
+                var seniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.Where(x => x.IsActive).ToList().Select(x => new TaxonItem(x.Id, x.Name, x.Description, x.Path, x.Type, x.Weight, null, x.IsActive)).ToList<ITaxon>() : new List<ITaxon>();
+
+                var hasActiveTenaPeriod = this.tenaService.ListTenaObservationPeriod(patient.Id)
+                                            .Where(x => x.StartDate < DateTime.Now && x.EndDate > DateTime.Now)
+                                            .Count() > 0;
+                if (hasActiveTenaPeriod) 
+                {
+                    seniorAlerts.Add(TaxonItem.FromTaxon(Taxon.New(null, "TENA Identifi", "Observera pågående mätning med TENA Identifi", "ico-tena-identifi.png")));
+                }
+
+
                 ////var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
                 ////var superior = (superiorList.Count() > 0) ? superiorList.First() : null;
                 ////var overseerList = overseers.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
@@ -128,7 +152,7 @@ namespace Appva.Mcss.Admin.Infrastructure
                     Overseeing = null, ////(overseer.IsNotNull()) ? overseer.FullName : null,
                     FirstLineContact = null, ///(firstlineContact.IsNotNull()) ? firstlineContact.FullName : null,
                     HasUnattendedTasks = false,
-                    SeniorAlerts = tenantHasSeniorAlert ? patient.SeniorAlerts.Where(x => x.IsActive).ToList().Select(x => new TaxonItem(x.Id, x.Name, x.Description, x.Path, x.Type, x.Weight, null, x.IsActive)).ToList<ITaxon>() : null
+                    SeniorAlerts = seniorAlerts
                 });
             }
             return retval;
@@ -175,6 +199,13 @@ namespace Appva.Mcss.Admin.Infrastructure
                             seniorAlertTaxons.Add(seniorAlertMap[s]);
                         }
                     }
+                }
+                 var hasActiveTenaPeriod = this.tenaService.ListTenaObservationPeriod(patient.Id)
+                                            .Where(x => x.StartDate < DateTime.Now && x.EndDate > DateTime.Now)
+                                            .Count() > 0;
+                if (hasActiveTenaPeriod) 
+                {
+                    seniorAlertTaxons.Add(TaxonItem.FromTaxon(Taxon.New(null, "TENA Identifi", "Observera pågående mätning med TENA Identifi", "ico-tena-identifi.png")));
                 }
                 ////var superiorList = superiors.Where(x => taxon.Path.Contains(x.Taxon.Path)).ToList();
                 ////var superior = (superiorList.Count() > 0) ? superiorList.First() : null;

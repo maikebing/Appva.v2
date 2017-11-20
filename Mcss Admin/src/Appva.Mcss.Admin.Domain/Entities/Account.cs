@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Account : Person<Account>
+    public class Account : Person
     {
         #region Variables.
 

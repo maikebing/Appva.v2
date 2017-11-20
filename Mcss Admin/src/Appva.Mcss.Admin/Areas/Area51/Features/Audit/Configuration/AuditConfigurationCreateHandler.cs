@@ -68,7 +68,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Audit
                 this.settingsService.Upsert(ApplicationSettings.IsAuditCollectionActivated, true);
                 this.settingsService.Upsert(
                     ApplicationSettings.AuditConfiguration,
-                    AuditLoggingConfiguration.CreateNew(units.Select(x => x.Id).ToList()));
+                    AuditLoggingConfiguration.New(units.Select(x => x.Id).ToList()));
             }
             return new AuditConfiguration();
 		}

@@ -55,6 +55,11 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
         /// </summary>
         private readonly IRuntimeMemoryCache cache;
 
+        /// <summary>
+        /// The <see cref="ITenantService"/>
+        /// </summary>
+        private readonly ITenantService tenants;
+
         #endregion
 
         #region Constructor.
@@ -62,12 +67,13 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallRoleToRoleHandler"/> class.
         /// </summary>
-        public InstallRoleToRoleHandler(IRoleService roleService, ISettingsService settings, IPersistenceContext persistence, IRuntimeMemoryCache cache)
+        public InstallRoleToRoleHandler(IRoleService roleService, ISettingsService settings, IPersistenceContext persistence, IRuntimeMemoryCache cache, ITenantService tenants)
         {
             this.roleService = roleService;
-            this.settings = settings;
+            this.settings    = settings;
             this.persistence = persistence;
-            this.cache = cache;
+            this.cache       = cache;
+            this.tenants     = tenants;
         }
 
         #endregion
@@ -86,20 +92,27 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Acl.InstallRoleToRole
                 foreach (var entry in entries)
                 {
                     var factory = entry.Value as ISessionFactory;
-
-                    using (var context = factory.OpenSession())
-                    using (var transaction = context.BeginTransaction())
+                    try
                     {
-                        var aclIsActiveSetting = context.QueryOver<Setting>().Where(x => x.MachineName == "Mcss.Core.Security.Acl.IsInstalled").SingleOrDefault();
-                        if (aclIsActiveSetting != null && aclIsActiveSetting.Value == "true")
+                        using (var context = factory.OpenSession())
+                        using (var transaction = context.BeginTransaction())
                         {
-                            var tenant = this.cache.Find<ITenantIdentity>(entry.Key.ToString().Replace(CacheTypes.Persistence.FormatWith(string.Empty), CacheTypes.Tenant.FormatWith(string.Empty)));
+                            var aclIsActiveSetting = context.QueryOver<Setting>().Where(x => x.MachineName == "Mcss.Core.Security.Acl.IsInstalled").SingleOrDefault();
+                            if (aclIsActiveSetting != null && aclIsActiveSetting.Value == "true")
+                            {
+                                var tenant = this.tenants.Find(new TenantIdentifier(entry.Key.ToString().Replace(CacheTypes.Persistence.FormatWith(string.Empty), string.Empty)));
 
-                            var installed = this.Install(context);
-                            transaction.Commit();
-                            retval.Add(tenant.Name, installed);
+                                var installed = this.Install(context);
+                                transaction.Commit();
+                                retval.Add(tenant.Name, installed);
+                            }
+
                         }
-
+                    }
+                    catch (Exception e)
+                    {
+                        var error = string.Format("Installering misslyckades, felmeddelande: {0}  \n Stack trace: {1}", e.Message, e.StackTrace);
+                        retval.Add(entry.Key.ToString(), new List<string>() { error });
                     }
                 }
             }

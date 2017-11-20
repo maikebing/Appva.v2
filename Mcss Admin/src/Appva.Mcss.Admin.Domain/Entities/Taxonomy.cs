@@ -1,9 +1,6 @@
 ﻿// <copyright file="Taxonomy.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,16 +8,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Taxonomy : AggregateRoot<Taxonomy>
+    public class Taxonomy : AggregateRoot
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Taxonomy"/> class.
@@ -82,7 +78,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="description">The taxonomy description of usage</param>
         /// <param name="sort">Optional sort, defaults to 0</param>
         /// <returns>A new <see cref="Taxonomy"/> instance</returns>
-        public static Taxonomy CreateNew(string key, string name, string description, int sort = 0)
+        public static Taxonomy New(string key, string name, string description, int sort = 0)
         {
             return new Taxonomy { MachineName = key, Name = name, Description = description, Weight = sort };
         }

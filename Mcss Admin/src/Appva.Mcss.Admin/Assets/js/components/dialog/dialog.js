@@ -18,19 +18,22 @@
     // Dialog container
     var container;
 
-	/**
+    /**
 	Dialog
 	* TODO: abort ajax call on click on shield?
 	*/
     var Dialog = function (options) {
-        // var self = this;
-        // var closeIcon = '<svg class="icon" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#x-icon"></use></svg>';
+        var self = this;
+        // TODO: Change variable name to trigger or something.
+        var closeIcon = '<svg class="icon" aria-hidden="true"><use xlink:href="/Assets/images/icons/icon.sprite.svg#x-icon"></use></svg>';
 
-        this.options = $.extend({
+        // Default options
+        self.options = $.extend({
             // Extra dialog class
             extraClass: '',
             showDialogTitle: true,
-            closeText: netr.string.translate('dialog.close')
+            closeText: netr.string.translate('dialog.close'),
+            triggerElement: $(),
         }, options || {});
 
         // No previous dialog has been created
@@ -42,33 +45,142 @@
         }
 
         // Create dialog
-        this.dialogElement = $('<div>', {
+        self.dialogElement = $('<div>', {
             'class': 'dialog',
             'id': 'dialog-' + z,
             'role': 'dialog'
         });
 
-        this.dialogElement.addClass(this.options.extraClass);
+        // add any extra classes
+        self.dialogElement.addClass(self.options.extraClass);
 
         // Create and append content container
-        this.contentElement = $('<div>', {
+        self.contentElement = $('<div>', {
             'class': 'dialog__content',
             'aria-live': 'assertive'
-        }).appendTo(this.dialogElement);
+        }).appendTo(self.dialogElement);
 
-        // // Create and append close button
-        // this.closeElement = $('<button>', {
-        // 	'type': 'button',
-        // 	'class': 'dialog__close',
-        // 	'aria-label': this.options.closeText,
-        // 	'html': '<span class="visually-hidden">' + this.options.closeText + '</span>',
-        // 	'click': function (e) {
-        // 		e.preventDefault();
-        // 		self.close();
-        // 	}
-        // }).prependTo(this.dialogElement);
+        // Create and append close button
+        self.closeElement = $('<button>', {
+            'type': 'button',
+            'class': 'dialog__close no-exit-conf',
+            'aria-label': self.options.closeText,
+            'html': '<span class="visually-hidden">' + self.options.closeText + '</span>' + closeIcon,
+            'click': function (e) {
+                e.preventDefault();
+                self.close();
+            }
+        }).prependTo(self.dialogElement);
+        self.dialogElement.bind({
+            'close.netrdialog': function (e) {
+                // Remove events from document
+                $(document).off('focus.netrdialog', '*').off('keydown.netrdialog click.netrdialog touchend.netrdialog');
 
-        dialogs.push(this);
+                //Remove bg
+                $('body').removeClass('dialog-bg');
+
+                if (!e.isDefaultPrevented()) {
+                    $(self).detach();
+                    container.detach();
+                }
+
+                // Let the same event bubble away
+                // to the connected element.
+                self.options.triggerElement.trigger(e, self);
+
+                if (!e.isDefaultPrevented()) {
+                    self.options.triggerElement.focus();
+
+                    if (!self.options.persistent) {
+                        self.dispose();
+                        // Remove references to dialog
+                        self.options.triggerElement.data('netrdialog', self = null);
+                    }
+                    else {
+                        // Remove listener for clicks outside dialog
+                        $(document).off('click.netrdialog touchend.netrdialog');
+                    }
+                }
+            },
+            'closeTopmost.netrdialog': function () {
+                closeTopmost(self);
+            },
+            'open.netrdialog': function (e) {
+                // Let the same event bubble away
+                // to the connected element.
+                self.options.triggerElement.trigger(e, self);
+            },
+            'load.netrdialog': function (e) {
+                var form = self.contentElement.find('form');
+
+                if (self.options.hijackForms) {
+
+                    var button;
+                    if (form.attr('enctype') !== 'multipart/form-data') {
+                        // Observe button clicks
+                        form.on('click', '[type=submit]', function () {
+                            button = $(self);
+                        });
+
+                        // Observe submit event
+                        form.submit(function (e) {
+                            e.preventDefault();
+
+                            // Remove any placeholder texts before serializing.
+                            form.find('.placeholder').val(function (index, current_value) {
+                                if (current_value === $(self).attr('placeholder')) {
+                                    return '';
+                                }
+                                else {
+                                    return current_value;
+                                }
+                            });
+
+                            var data = form.serialize();
+
+                            if (button && button.length) {
+                                data += ('&' + button.attr('name') + '=' + encodeURIComponent(button.val()));
+                            }
+                            form.addClass('spinner');
+                            $.getFragment({
+                                url: form.attr('action'),
+                                type: (form.attr('method') || 'post'),
+                                data: data,
+                                success: function (data) {
+                                    if (data.length) {
+                                        self.setContent(data);
+
+                                        // Fire Callbacks!
+                                        // callbacks.fire(data, dialog);
+                                    }
+                                },
+                                error: function () {
+                                    self.setContent($(options.errorMessage));
+                                },
+                                complete: function () {
+                                    form.removeClass('spinner');
+                                }
+                            });
+                        });
+                    }
+                }
+                // Move heading outside content
+                self.contentElement.find('.alert-message').first().insertBefore(self.contentElement).addClass('alert-message--dialog');
+
+                // Trigger new content and find and bind in-content-close-buttons.
+                self.contentElement.trigger('newcontent');
+
+                self.contentElement.on('click', '[data-dialog-close]', function () {
+                    self.close();
+                });
+                // Let's the event bubble away
+                // to the connected element.
+                if (self.options.triggerElement !== null) {
+                    self.options.triggerElement.trigger(e, self);
+                }
+            }
+        });
+        dialogs.push(self);
     };
 
     Dialog.prototype = {
@@ -91,15 +203,26 @@
             this.position();
             this.dialogElement.trigger('load.netrdialog', this);
         },
-        setTitle: function (title, symbol) {
-            var titleContainer = $('<div class="dialog__title"></div>');
+        setTitle: function (title, theme, icon) {
             if (this.options.showDialogTitle) {
                 // Visible dialog title
                 this.dialogElement.attr('aria-labelledby', 'dialog-title-' + (z - 1));
-                this.dialogElement.find('.dialog__title').remove();
-                $('<div class="dialog__symbol"><span>' + symbol + '</span></div>').appendTo(titleContainer);
-                $('<div class="dialog__header"><h3 id="dialog-title-' + (z - 1) + '">' + title + '</h3></div>').appendTo(titleContainer);
-                titleContainer.prependTo(this.dialogElement);
+                this.dialogElement.find('.alert-message.alert-message--dialog').remove();
+                var dialogTitle = $('<div class="alert-message alert-message--dialog"><h2 id="dialog-title-' + (z - 1) + '" class="alert-message__heading h3">' + title + '</h2></div>');
+
+                // Set a color to title background.
+                if (typeof theme === 'string') {
+                    dialogTitle.addClass('alert-message--' + theme);
+                }
+
+                // Add icon to title
+                if (typeof icon === 'string') {
+                    var iconElement = $('<svg class="icon icon--round icon--mr icon--warning" aria-hidden="true"><use xlink:href="/project/images/icons/icon.sprite.svg#' + icon + '-icon"></use></svg>');
+                    iconElement.prependTo(dialogTitle.find('h2'));
+                }
+
+                // Add to top of dialog
+                dialogTitle.prependTo(this.dialogElement);
             }
             else {
                 // Visually hidden dialog title
@@ -108,63 +231,80 @@
         },
         open: function () {
             var self = this;
-
             container.appendTo('body');
-            this.dialogElement.appendTo(container);
-            this.position();
+            self.dialogElement.appendTo(container);
+            self.position();
 
             //Add bg
             $('body').addClass('dialog-bg');
 
             // Add tabindex attribute so the dialog can gain focus
-            this.dialogElement.attr('tabindex', '-1').focus();
+            self.dialogElement.attr('tabindex', '-1').focus();
 
             // Prevent tabbing outside the dialog
             $(document).on('focus.netrdialog', '*', function (e) {
                 if (!$.contains(self.dialogElement.get(0), e.target)) {
                     e.stopPropagation();
-
-                    // Put focus on the first focusable element in the dialog
-                    self.dialogElement.find('input, select, textarea, button, object, a, [tabindex]').filter(function () {
-                        var element = $(this);
-                        return (!element.is(':disabled') && (element.attr('tabindex') !== '-1'));
-                    }).eq(0).focus();
-                }
-            });
-            // Close the dialog when the ESC key is pressed
-            $(document).on('keydown.netrdialog', function (e) {
-                if (e.keyCode === 27) { // ESC
-                    // Close all dialogs
-                    $.each(dialogs, function () {
-                        this.close();
-                    });
+                    var elementZValue = self.dialogElement.css('z-index');
+                    var biggerZValues = false;
+                    // Finds out if this is the topmost dialog, to prevent eternal
+                    // recursion
+                    for (var i = dialogs.length - 1; i >= 0; i--) {
+                        var zValue = dialogs[i].dialogElement.css('z-index');
+                        if (zValue > elementZValue) {
+                            biggerZValues = true;
+                        }
+                    }
+                    if (!biggerZValues) {
+                        // Put focus on the first focusable element in the dialog
+                        self.dialogElement.find('input, select, textarea, button, object, a, [tabindex]').filter(function () {
+                            var element = $(this);
+                            return (!element.is(':disabled') && (element.attr('tabindex') !== '-1'));
+                        }).eq(0).focus();
+                    }
                 }
             });
 
             // Close the dialog when something outside it is clicked or tapped
             // `$(e.target).data('event') === 'click'` is to prevent the dialog from closing when pressing the
             // next/prev month buttons on a datepicker.
-            // $(document).bind('click.netrdialog touchend.netrdialog', function (e) {
-            // 	if (!jQuery.contains(self.dialogElement.get(0), e.target) && (self.dialogElement.get(0) !== e.target)) {
-            // 		if ($('.ui-datepicker').length) {
-            // 			if (jQuery.contains($('#ui-datepicker-div').get(0), e.target) || ($('#ui-datepicker-div').get(0) === e.target) || $(e.target).data('event') === 'click') {
-            // 				return;
-            // 			}
-            // 		}
+            $(document).bind('click.netrdialog touchend.netrdialog', function (e) {
 
-            // 		// close dialog
-            // 		e.preventDefault();
-            // 		self.close();
-            // 	}
-            // });
+                // Is the click in a dialog?
+                var inDialog = $(e.target).closest('.dialog').length || (self.dialogElement.get(0) === e.target);
 
+                // Is the click in a datepicker
+                if ($('#ui-datepicker-div').length) {
+                    var inDatePicker = jQuery.contains($('#ui-datepicker-div').get(0), e.target) || ($('#ui-datepicker-div').get(0) === e.target) || $(e.target).data('event') === 'click';
+                }
+
+                if (inDialog || inDatePicker) {
+                    return;
+                }
+
+                closeTopmost();
+
+            });
             // Trigger open event
             this.dialogElement.trigger('open.netrdialog', this);
         },
         close: function () {
             // Trigger close event
-            var close_event = new $.Event('close.netrdialog');
-            this.dialogElement.trigger(close_event);
+            var dirtyForms = this.dialogElement.find('form').filter(function () {
+                return $(this).data('dirty') === true;
+            });
+            if (dirtyForms.length) {
+                // This is an event from exit-confirmation.js that will trigger an exit confirmation dialog.
+                dirtyForms.trigger('formclosing');
+                return;
+            }
+            if (ontop(this) !== true) {
+                var close_event = new $.Event('close.netrdialog');
+                this.dialogElement.trigger(close_event);
+            }
+            else {
+                this.dispose();
+            }
         },
         position: function () {
             // Increment maximum z value
@@ -176,14 +316,14 @@
         }
     };
 
-	/**
+    /**
 	Create an independent dialog
 	*/
     $.netrdialog = function (options) {
         return new Dialog(options);
     };
 
-	/**
+    /**
 	Open the source of a link element in a dialog
 	@param {Object}  options  Options
 	@memberOf $.fn
@@ -241,112 +381,12 @@
                     // Create a new dialog
                     element.data('netrdialog', dialog = new Dialog({
                         extraClass: options.extraClass,
-                        closeText: options.closeText
+                        closeText: options.closeText,
+                        triggerElement: element
                     }));
-
-                    dialog.dialogElement.bind({
-                        'close.netrdialog': function (e) {
-                            // Remove events from document
-                            $(document).off('focus.netrdialog', '*').off('keydown.netrdialog click.netrdialog touchend.netrdialog');
-
-                            //Remove bg
-                            $('body').removeClass('dialog-bg');
-
-                            if (!e.isDefaultPrevented()) {
-                                $(this).detach();
-                                container.detach();
-                            }
-
-                            // Let the same event bubble away
-                            // to the connected element.
-                            element.trigger(e, dialog);
-
-                            if (!e.isDefaultPrevented()) {
-                                element.focus();
-
-                                if (!options.persistent) {
-                                    dialog.dispose();
-                                    // Remove references to dialog
-                                    element.data('netrdialog', dialog = null);
-                                }
-                                else {
-                                    // Remove listener for clicks outside dialog
-                                    $(document).off('click.netrdialog touchend.netrdialog');
-                                }
-                            }
-                        },
-                        'open.netrdialog': function (e) {
-                            // Let the same event bubble away
-                            // to the connected element.
-                            element.trigger(e, dialog);
-                        },
-                        'load.netrdialog': function (e) {
-                            if (options.hijackForms) {
-                                var form = dialog.contentElement.find('form');
-                                var button;
-
-                                if (form.attr('enctype') !== 'multipart/form-data') {
-                                    // Observe button clicks
-                                    form.on('click', '[type=submit]', function () {
-                                        button = $(this);
-                                    });
-
-                                    // Observe submit event
-                                    form.submit(function (e) {
-                                        e.preventDefault();
-
-                                        // Remove any placeholder texts before serializing.
-                                        form.find('.placeholder').val(function (index, current_value) {
-                                            if (current_value === $(this).attr('placeholder')) {
-                                                return '';
-                                            }
-                                            else {
-                                                return current_value;
-                                            }
-                                        });
-
-                                        var data = form.serialize();
-
-                                        if (button && button.length) {
-                                            data += ('&' + button.attr('name') + '=' + encodeURIComponent(button.val()));
-                                        }
-                                        form.addClass('spinner');
-                                        $.getFragment({
-                                            url: form.attr('action'),
-                                            type: (form.attr('method') || 'post'),
-                                            data: data,
-                                            success: function (data) {
-                                                if (data.length) {
-                                                    dialog.setContent(data);
-
-                                                    // Fire Callbacks!
-                                                    callbacks.fire(data, dialog);
-                                                }
-                                            },
-                                            error: function () {
-                                                dialog.setContent($(options.errorMessage));
-                                            },
-                                            complete: function () {
-                                                form.removeClass('spinner');
-                                            }
-                                        });
-                                    });
-                                }
-                            }
-
-                            // Trigger new content and find and bind in-content-close-buttons.
-                            dialog.contentElement.trigger('newcontent');
-                            dialog.contentElement.on('click', '[data-dialog-close]', function () {
-                                dialog.close();
-                            });
-
-                            // Let the same event bubble away
-                            // to the connected element.
-                            element.trigger(e, dialog);
-                        }
-                    });
                 }
 
+                // If there is no dialog, with content (i.e. it has not been triggered before)
                 if (!dialog.contentElement.children().length || !options.persistent) {
                     if (element.attr('href').match(/^#/)) {
                         // Get element from current page
@@ -366,8 +406,10 @@
                                     callbacks.fire(data, dialog);
                                 }
                             },
-                            error: function () {
+                            error: function (data) {
                                 dialog.setContent($(options.errorMessage));
+                                console.log(data);
+                                dialog.setTitle(data.status + ', ' + data.statusText, 'warning', 'alert');
                             },
                             complete: function () {
                                 $('body').removeClass('spinner');
@@ -376,17 +418,15 @@
                             }
                         });
                     }
+
                     // Add a title if the triggering element has a data-dialog-title attribute
                     callbacks.add(function (data, dialog) {
                         var title = element.data('dialog-title');
-                        var symbol = element.data('dialog-symbol');
-                        if (title && symbol) {
-                            dialog.setTitle(title, symbol);
-                        }
-                        else if (title) {
-                            dialog.setTitle(title, '!');
+                        if (title) {
+                            dialog.setTitle(title);
                         }
                     });
+
                 }
             });
         }
@@ -398,5 +438,68 @@
 
         return this;
     };
+    // Close the dialog when the ESC key is pressed
+    $(document).on('keydown.netrdialog', function (e) {
+        if (e.keyCode === 27) { // ESC
+            // Close all dialogs
+            // We use the first dialog element, just to have a starting point.
+            closeTopmost();
+
+            // TODO: trigger exit confirmation!
+            // $.each(dialogs, function () {
+            // 	console.log(this);
+            // 	this.close();
+            // });
+        }
+    });
+    function ontop(dialog) {
+        // Returns the true if element is on top, returns the element that is or false if theres just one dialog
+        var dialogElement = (typeof dialog !== 'undefined') ? dialog.dialogElement : $();
+        // This will be the topmost dialog
+        var topDialog = dialogs[0];
+
+        // The highest z-value of the dialogs
+        var highestZ = 0;
+
+        // If there is only one dialog element. Then it's not on top of anything.
+        if (dialogs.length === 1) {
+            // if there's only one dialog element
+            return false;
+        }
+
+        for (var i = dialogs.length - 1; i >= 0; i--) {
+            // the z value of the current element in the iteration
+            var zValue = dialogs[i].dialogElement.css('z-index');
+            // If the iterated z value is bigger than that of the element we're testing against
+            if (zValue >= highestZ) {
+                topDialog = dialogs[i];
+                highestZ = zValue;
+            }
+        }
+
+        // Is the tested dialog on top?
+        if (dialogElement.length && topDialog === dialog) {
+            return true;
+        }
+        else {
+            // Returns the element that is topmost
+            return topDialog;
+        }
+    }
+    function closeTopmost(dialog) {
+        var onTopValue = ontop(dialog);
+        if (onTopValue === true) {
+            // Entered dialog is on top, dispose of that!
+            dialog.dispose();
+        }
+        else if (onTopValue === false) {
+            // onTopValue returns false => there is only one dialog. Let's close and clean
+            dialogs[0].close();
+        }
+        else {
+            // onTopValue returns the topmost dialog. Let's dispose of that.
+            onTopValue.close();
+        }
+    }
 
 }(jQuery));

@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Repository;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Domain;
 
     #endregion
 
@@ -25,7 +26,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface ILogService : IService
     {
-        PageableSet<LogModel> List(DateTime? cursor = null, int page = 1, int pageSize = 100);
+        IPaged<LogModel> List(DateTime? cursor = null, int page = 1, int pageSize = 100);
 
         #region Old stuff
 
@@ -76,13 +77,13 @@ namespace Appva.Mcss.Admin.Application.Services
 
         #region ILogService Members
 
-        public PageableSet<LogModel> List(DateTime? cursor = null, int page = 1, int pageSize = 100)
+        public IPaged<LogModel> List(DateTime? cursor = null, int page = 1, int pageSize = 100)
         {
             
             var retval = this.logRepository.List(cursor, page, pageSize, this.identity.IsAppvaAccount());
             this.audit.Read("läste logg mellan {0} och {1}", 
-                ((List<LogModel>)retval.Entities).FirstOrDefault().CreatedAt, 
-                ((List<LogModel>)retval.Entities).Last().CreatedAt);
+                retval.Items.FirstOrDefault().CreatedAt, 
+                retval.Items.Last().CreatedAt);
 
             return retval;
         }

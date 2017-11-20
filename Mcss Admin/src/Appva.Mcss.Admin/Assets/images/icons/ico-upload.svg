@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="96px" height="96px" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>ico-upload</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect x="0" y="0" width="96" height="96" id="rect-1"></rect>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ico-upload">
+            <g id="icons8-upload">
+                <image x="0" y="0" width="96" height="96" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAAAXNSR0IArs4c6QAAAnpJREFUeAHtm0tug0AMQNN22aO0J+qKm3Gp9ibdt7YUNigOkMcv8CyhJBPsmXlPjJVFLhdDAhKQgAQkIAEJSEACEjgbgbcn3/BXrP8zru8n38dTLv8jVv17vfK9sSKB95jrJ66/65Xvc8xYiUAb83Twu9ccM1Yg0MQcHfT+a35nLEigO/f74LvP2RPsBwsJ6J/7HfT+q/1gIQFt1O3Drj7nvcaMBJqoVcGuxjPHmIHA0LlfCbAfzAB/7LlfSbAfQAlt5Fdwx45nDeMBAk3kjIU8dF/WMiYQePTcr0TYDybAp+d+JcF+MFJCG/dVEOl41jbuEGjiOwp5KD/nMG4QmPvcr0TYD27AX+rcryTYD3oS2vhcwVpqPOc0gkAT11KQh+rm3KeOtc79SsSp+8Ha534l4bT9oI1nv4Ky9niu5VTRxG7Xhjw0X67pFLH1uV+JOEU/2Mu5X0k4fD9o4xmvNr+X8VzjIaOJXe0F8tA6cq2Hir2e+5WIQ/WDvZ/7lYTD9IM2nuVqk3sfz7UvGi+LVp+neEoises9vpKdmcsJKIAzRBUUgPDxZAVwhqiCAhA+nqwAzhBVUADCx5MVwBmiCgpA+HiyAjhDVEEBCB9PVgBniCooAOHjyQrgDFEFBSB8PFkBnCGqoACEjycrgDNEFRSA8PFkBXCGqIICED6erADOEFVQAMLHkxXAGaIKCkD4eLICOENUQQEIH09WAGeIKigA4ePJCuAMUQUFIHwmS0ACEpCABCQgAQlIQAISmE5gzH9o6f90p6/qWBl3GftLeGPZClDAxgQ2nt4nQAEbE9h4ep8ABWxMwOklIAEJSEACEpCABCQgAQmsTOAf5qcAKSqzfboAAAAASUVORK5CYII="></image>
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#rect-1"></use>
+            </g>
+        </g>
+    </g>
+</svg>

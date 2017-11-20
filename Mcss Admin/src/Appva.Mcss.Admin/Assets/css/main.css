@@ -946,7 +946,6 @@ a.pause-btn:active {
 }
 
 #main .people .h img {
-    width:30px;
     height:30px;
     vertical-align:middle;
 }
@@ -1707,6 +1706,16 @@ a.delete {background:url(../i/icn-delete.png) no-repeat 0 50%;}
 
 #ac-roles-table tbody tr:hover { background:#ebf0f2; }
 #ac-roles-table .ac-role-col { cursor:pointer; }
+
+.display-code {
+    font-size:12px!important;
+    font-family:monospace;
+    letter-spacing:0.02em;
+    padding:10px 8px!important;
+    background:#f0f0f0;
+    color:#333;
+    border:1px solid #e5e5e5;
+}
 
 /* Prepared weeks */
 #prepare-weeks {
@@ -4012,4 +4021,9 @@ ul.people li {
 #logo {display:none;}
 
 
+}
+
+/* Overriding jQuery generated class tickLabel */
+.yAxis > .tickLabel {
+    left: 0px !important;
 }

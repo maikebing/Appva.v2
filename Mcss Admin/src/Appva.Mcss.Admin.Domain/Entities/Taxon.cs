@@ -11,16 +11,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Taxon : AggregateRoot<Taxon>
+    public class Taxon : AggregateRoot
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Taxon"/> class.
@@ -130,7 +129,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="parent">Optional parent taxon</param>
         /// <param name="sort">Optional sort order, defaults to 0</param>
         /// <returns>A new <see cref="Taxon"/> instance</returns>
-        public static Taxon CreateNew(Taxonomy taxonomy, string name, string description, string type, Taxon parent = null, int sort = 0)
+        public static Taxon New(Taxonomy taxonomy, string name, string description, string type, Taxon parent = null, int sort = 0)
         {
             return new Taxon { Taxonomy = taxonomy, Name = name, Description = description, Type = type, Parent = parent, Weight = sort };
         }

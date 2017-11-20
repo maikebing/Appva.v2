@@ -37,7 +37,7 @@
 
 			@Html.Partial("/Features/Statistics/Data/StatisticsData.cshtml", Model.Report)
 
-            @if (Model.Tasks.Entities.Count > 0) {
+            @if (Model.Tasks.Items.Count() > 0) {
             <div id="signed-events" class="listing">
 			    <h2 class="heading">Insatser under perioden</h2>
                 <table>
@@ -53,7 +53,7 @@
 					    </tr>
 				    </thead>
 				    <tbody>
-                        @foreach (var task in Model.Tasks.Entities) {
+                        @foreach (var task in Model.Tasks.Items) {
     <tr class="@(!task.IsActive ? "modified" : "") @((task.Delayed || (task.Status > 1 && task.Status < 5) || (task.StatusTaxon.IsNotNull() ? task.StatusTaxon.Weight > 1 : false)) ? "alarm" : "")">
 						    <td>@task.Name</td>
 						    <td>
@@ -163,14 +163,13 @@
                                         }
                                     }
                                 }
-                                
                             </td>
 					    </tr>
                         }
 				    </tbody>
 			    </table>
 		    </div>
-            @Html.Pager((int)Model.Tasks.PageSize, (int)Model.Tasks.CurrentPage, (int)Model.Tasks.TotalCount).Options(o => o
+            @Html.Pager(Model.Tasks.PageQuery.PageSize, Model.Tasks.PageQuery.PageNumber, (int) Model.Tasks.TotalCount).Options(o => o
                 .DisplayTemplate("Pagination")
                 .MaxNrOfPages(15)
                 .AlwaysAddFirstPageNumber()
@@ -203,11 +202,11 @@
             'messages': {
                 'StartDate': {
                     'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'datelessthan': "Startdatum måste vara ett tidigare datum är slutdatum."
+                    'datelessthan': "Startdatum måste vara ett tidigare datum än slutdatum."
                 },
                 'EndDate': {
                     'date': "Datum måste fyllas i med åtta siffror och bindestreck, t. ex. 2012-12-21.",
-                    'dategreaterthan': "Slutdatum måste vara ett senare datum är startdatum."
+                    'dategreaterthan': "Slutdatum måste vara ett senare datum än startdatum."
                 }
             }
         });

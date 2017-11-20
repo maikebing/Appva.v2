@@ -76,9 +76,8 @@
       <HintPath>..\..\..\Packages\Appva.GrandId.0.1.4\lib\portable-net45+win+wpa81\Appva.GrandId.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Http, Version=0.1.0.17181, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Http.0.1.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Appva.Http, Version=0.2.0.14844, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Http.0.2.0\lib\portable-net45+win+wpa81+wp80\Appva.Http.dll</HintPath>
     </Reference>
     <Reference Include="Appva.Ldap, Version=0.0.1.25447, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
@@ -183,9 +182,8 @@
     <Reference Include="MvcPaging">
       <HintPath>..\..\..\Packages\MvcPaging.2.1.2\lib\net40\MvcPaging.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
@@ -218,6 +216,12 @@
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
@@ -350,6 +354,7 @@
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\SyncLdap.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\LdapSyncHandler.cs" />
     <Compile Include="Areas\Area51\Features\Ldap\Synchronization\LdapSyncModel.cs" />
+    <Compile Include="Areas\Area51\Features\Location\InstallLocationsController.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddChristmas2016\AddChristmas2016Handler.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddChristmas2016\AddChristmas2016Notice.cs" />
     <Compile Include="Areas\Area51\Features\Notifications\AddPdf\AddPdfNotice.cs" />
@@ -481,6 +486,12 @@
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureHandler.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\List\ListSignatureModel.cs" />
     <Compile Include="Areas\Backoffice\Features\Signature\SignatureController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\Install\InstallTena.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\Install\InstallTenaHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\List\ListTenaHandler.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\List\ListTenaModel.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\TenaController.cs" />
+    <Compile Include="Areas\Backoffice\Features\Tena\Update\UpdateTenaHandler.cs" />
     <Compile Include="Areas\Dashboard\Features\Dashboard\DashboardController.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLog.cs" />
     <Compile Include="Areas\Log\Features\Log\List\ListLogHandler.cs" />
@@ -662,6 +673,32 @@
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequenceHandler.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\Update\UpdateSequence.cs" />
     <Compile Include="Areas\Patient\Features\Sequence\SequenceController.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelpHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelpModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientId.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientIdHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Register\RegisterTenaPatientIdPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriod.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriodHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriodModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Update\UpdateTenaObservationPeriodPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\ValidateDate\CheckDate.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\ValidateDate\CheckDateHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriod.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\Create\CreateTenaObserverPeriodPublisher.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\GetResident\GetResident.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\GetResident\GetResidentHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\GetResident\GetResidentModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\List\ListTena.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\List\ListTenaHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\List\ListTenaModel.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\TenaController.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadTenaObserverPeriod.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadTenaObserverPeriodHandlerAsync.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadTenaObserverPeriodHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadTenaObserverPeriodModel.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\AccountsController.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Practitioner\Features\Accounts\Create\CreateAccountModel.cs" />
@@ -787,6 +824,7 @@
     <Compile Include="Configuration\ContainerBuilderExtensions.cs" />
     <Compile Include="Configuration\GrandIdConfiguration.cs" />
     <Compile Include="Configuration\MockedTenantWcfClient.cs" />
+    <Compile Include="Configuration\TenaIdentifiConfiguration.cs" />
     <Compile Include="Features\Account\AccountController.cs" />
     <Compile Include="Features\Account\Forgot\Forgot.cs" />
     <Compile Include="Features\Account\Forgot\ForgotEmail.cs" />
@@ -889,6 +927,8 @@
     <Content Include="Assets\css\auth.css" />
     <Content Include="Assets\css\datePicker.css" />
     <Content Include="Assets\css\new\all.min.css" />
+    <Content Include="Assets\css\new\hotfixes\tena\list.css" />
+    <Content Include="Assets\css\new\hotfixes\tena\registration.css" />
     <Content Include="Assets\css\new\main.prefixed.css" />
     <Content Include="Assets\error-pages\400.html" />
     <Content Include="Assets\error-pages\403.html" />
@@ -934,6 +974,10 @@
     <Content Include="Assets\images\icons\edit.svg" />
     <Content Include="Assets\images\icons\fall.svg" />
     <Content Include="Assets\images\icons\feather.svg" />
+    <Content Include="Assets\images\icons\ico-continuous.svg" />
+    <Content Include="Assets\images\icons\ico-pending.svg" />
+    <Content Include="Assets\images\icons\ico-question.svg" />
+    <Content Include="Assets\images\icons\ico-upload.svg" />
     <Content Include="Assets\images\icons\icon.sprite.svg" />
     <Content Include="Assets\images\icons\icons.txt" />
     <Content Include="Assets\images\icons\key.svg" />
@@ -982,9 +1026,6 @@
     <Content Include="Assets\i\dayslot-hover.png" />
     <Content Include="Assets\i\dayslot-unsel.png" />
     <Content Include="Assets\i\dot-grey.png" />
-    <Content Include="Assets\i\icn-change-password.png" />
-    <Content Include="Assets\i\icn-dualstaffing.png" />
-    <Content Include="Assets\i\icn-logout.png" />
     <Content Include="Assets\i\filter-sep.png" />
     <Content Include="Assets\i\footer-shade.png" />
     <Content Include="Assets\i\globalfilter-select.png" />
@@ -999,15 +1040,18 @@
     <Content Include="Assets\i\icn-arrows.png" />
     <Content Include="Assets\i\icn-big-signlist.png" />
     <Content Include="Assets\i\icn-caldel.png" />
+    <Content Include="Assets\i\icn-change-password.png" />
     <Content Include="Assets\i\icn-check.png" />
     <Content Include="Assets\i\icn-cross.png" />
     <Content Include="Assets\i\icn-delete.png" />
+    <Content Include="Assets\i\icn-dualstaffing.png" />
     <Content Include="Assets\i\icn-health-fall.png" />
     <Content Include="Assets\i\icn-health-oral.png" />
     <Content Include="Assets\i\icn-health-pressure.png" />
     <Content Include="Assets\i\icn-health-weight.png" />
     <Content Include="Assets\i\icn-help.png" />
     <Content Include="Assets\i\icn-home.png" />
+    <Content Include="Assets\i\icn-logout.png" />
     <Content Include="Assets\i\icn-none%402x.png" />
     <Content Include="Assets\i\icn-none.png" />
     <Content Include="Assets\i\icn-nothome%402x.png" />
@@ -1026,8 +1070,6 @@
     <Content Include="Assets\i\icn-sent%402x.png" />
     <Content Include="Assets\i\icn-sent.png" />
     <Content Include="Assets\i\icn-sleep.png" />
-    <Content Include="Assets\i\icn-test1.png" />
-    <Content Include="Assets\i\icn-test2.png" />
     <Content Include="Assets\i\icn-toggle.png" />
     <Content Include="Assets\i\icn-toolclock.png" />
     <Content Include="Assets\i\icn-toolneed.png" />
@@ -1040,9 +1082,14 @@
     <Content Include="Assets\i\icn-warning-waran.png" />
     <Content Include="Assets\i\ico-activity-group.png" />
     <Content Include="Assets\i\ico-activity-message.png" />
+    <Content Include="Assets\i\ico-continuous.png" />
     <Content Include="Assets\i\ico-escape.png" />
     <Content Include="Assets\i\ico-outdoor-act-message-group.png" />
     <Content Include="Assets\i\ico-outdoor-act-message.png" />
+    <Content Include="Assets\i\ico-pending.png" />
+    <Content Include="Assets\i\ico-question.png" />
+    <Content Include="Assets\i\ico-tena-identifi.png" />
+    <Content Include="Assets\i\ico-upload.png" />
     <Content Include="Assets\i\ico-walk-group.png" />
     <Content Include="Assets\i\ico-walk-message.png" />
     <Content Include="Assets\i\ico-warning-antiglukos.png" />
@@ -1081,6 +1128,11 @@
     <Content Include="Assets\i\siths-icon.png" />
     <Content Include="Assets\i\sort-arrow.png" />
     <Content Include="Assets\i\statusicons-tiles%402x.png" />
+    <Content Include="Assets\i\tena\tena-1.png" />
+    <Content Include="Assets\i\tena\tena-2.png" />
+    <Content Include="Assets\i\tena\tena-3.png" />
+    <Content Include="Assets\i\tena\tena-4.png" />
+    <Content Include="Assets\i\tena\tena-5.png" />
     <Content Include="Assets\i\trenddn.png" />
     <Content Include="Assets\i\trendup.png" />
     <Content Include="Assets\i\trest-logo.png" />
@@ -1103,7 +1155,9 @@
     <Content Include="Assets\js\jquery\plugins\jquery.datePicker.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.flot-0.7.0.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.flot-0.7.0.min.js" />
+    <Content Include="Assets\js\jquery\plugins\jquery.flot.resize.js" />
     <Content Include="Assets\js\jquery\plugins\jquery.validate-1.10.0.js" />
+    <Content Include="Assets\js\lang\sv.js" />
     <Content Include="Assets\js\main.js" />
     <Content Include="Assets\js\main.updated.js" />
     <Content Include="Assets\js\mcss.calendar.js" />
@@ -1120,9 +1174,13 @@
     <Content Include="Assets\js\placeholder.v3.0.2.min.js" />
     <Content Include="Assets\js\utilities\autocomplete.js" />
     <Content Include="Assets\js\utilities\collapsable-section.js" />
+    <Content Include="Assets\js\utilities\exit-confirmation.js" />
+    <Content Include="Assets\js\utilities\exit-confirmation\exit-confirmation.css" />
+    <Content Include="Assets\js\utilities\exit-confirmation\exit-confirmation.js" />
+    <Content Include="Assets\js\utilities\exit-confirmation\exit-confirmation.txt" />
     <Content Include="Assets\js\utilities\input-value-list.js" />
-    <Content Include="Assets\js\utilities\mouse-click-class-toggler.js" />
     <Content Include="Assets\js\utilities\jquery.netr-extensions.js" />
+    <Content Include="Assets\js\utilities\mouse-click-class-toggler.js" />
     <Content Include="Assets\js\utilities\netr.js" />
     <Content Include="Assets\js\utilities\netr.latinise.js" />
     <Content Include="Assets\js\utilities\netr.string.js" />
@@ -1150,6 +1208,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="media\appva-event.png" />
+    <Content Include="media\forbrukningsjournal.png" />
     <Content Include="media\icn-pdf.png" />
     <Content Include="media\jul.png" />
     <Content Include="media\logo-appva.png" />
@@ -1195,6 +1254,10 @@
       <Project>{26d66f09-5072-4fb2-81c4-29df5249aaa7}</Project>
       <Name>Appva.Mcss.Admin.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Appva.Sca\Appva.Sca.csproj">
+      <Project>{f523cd19-d7c7-41b7-a28e-a2b978086513}</Project>
+      <Name>Appva.Sca</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Practitioner\Features\Accounts\List\List.cshtml" />
@@ -1203,8 +1266,11 @@
     <Content Include="Areas\Practitioner\Features\Accounts\Create\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Area51\Features\Test\Index\" />
     <Folder Include="Areas\Dashboard\Features\Shared\" />
+    <Folder Include="Areas\Patient\Features\Tena\Delete\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
+    <Folder Include="Assets\error-pages\i\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Area51\Features\Cache\List\List.cshtml" />
@@ -1535,12 +1601,27 @@
     <Content Include="Areas\Area51\Features\Acl\UpdatePermissions\UpdatePermissions.cshtml" />
     <Content Include="Areas\Roles\Features\RolesDelegations\Update\Update.cshtml" />
     <Content Include="Areas\Roles\Features\RolesRoles\Update\Update.cshtml" />
+    <Content Include="Areas\Area51\Features\Location\Index\Index.cshtml" />
     <Content Include="Features\Shared\SignInSithsFailed.cshtml" />
     <Content Include="Features\Shared\_LoginHeaderLogo.cshtml" />
     <Content Include="Features\Shared\_SignInFormPartial.cshtml" />
     <Content Include="Areas\Area51\Features\Shared\_aclButtons.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToRole\InstallRoleToRole.cshtml" />
     <Content Include="Areas\Area51\Features\Acl\InstallRoleToDelegation\InstallRoleToDelegation.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\_ViewStart.cshtml" />
+    <Content Include="Features\Shared\_NewStyleLayout.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\List\List.cshtml" />
+    <Content Include="Areas\Backoffice\Features\Tena\List\List.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Register\Register.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Partials\_EmptyList.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Create\Create.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\UploadToIdentifi\UploadToIdentifi.cshtml" />
+    <Content Include="Assets\css\new\all.min.css.map" />
+    <Content Include="Assets\images\custom-checkbox.svg_old" />
+    <Content Include="Assets\images\graph.ai" />
+    <Content Include="Areas\Notification\Features\Notification\Partials\Templates\rename-inventory.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\Update\Update.cshtml" />
+    <Content Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelp.cshtml" />
     <Content Include="Areas\Backoffice\Features\Article\AddCategory\AddCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Article\EditCategory\EditCategory.cshtml" />
     <Content Include="Areas\Backoffice\Features\Article\List\List.cshtml" />

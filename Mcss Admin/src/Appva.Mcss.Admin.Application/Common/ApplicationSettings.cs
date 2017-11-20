@@ -13,7 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Diagnostics.CodeAnalysis;
     using Appva.Ldap.Configuration;
     using Appva.Mcss.Admin.Domain.VO;
-    using Appva.Mcss.Admin.Application.Models;
+using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Common;
 
     #endregion
@@ -58,6 +58,13 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "Order list migration and activation settings.",
             Domain.VO.OrderListConfiguration.CreateNew()
             );
+
+        public static readonly ApplicationSettingIdentity<TenaConfiguration> TenaSettings = ApplicationSettingIdentity<TenaConfiguration>.CreateNew(
+            "MCSS.Tena",
+            "Tena settings",
+            "MCSS.Tena",
+            "The Tena settings",
+            TenaConfiguration.CreateNew(null, null));
 
         #endregion
 
@@ -157,7 +164,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "Mail Configuration",
             "Mcss.Core.Security.Messaging",
             "The E-mail configuration for sending and signing",
-            SecurityMailerConfiguration.CreateNew());
+            SecurityMailerConfiguration.New());
 
         /// <summary>
         /// The password configuration.
@@ -168,7 +175,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "Password Configuration",
             "Mcss.Core.Security.Password",
             "The password configuration",
-            SecurityPasswordConfiguration.CreateNew());
+            SecurityPasswordConfiguration.NewDefault());
 
         /// <summary>
         /// The tenant authentication cookie expiration timespan.
@@ -204,7 +211,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             "Audit logging configuration",
             "Mcss.Core.Security.Analytics.Audit",
             "The audit configuration settings",
-            AuditLoggingConfiguration.CreateNew(new List<Guid>()));
+            AuditLoggingConfiguration.New(new List<Guid>()));
 
         #endregion
 
@@ -219,7 +226,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
              "Pdf Generation Configuration",
              "Mcss.Core.Pdf",
              "The PDF configuration for look and feel",
-             PdfLookAndFeel.CreateDefault(null, "Appva AB"));
+             PdfLookAndFeel.NewDefault(null, "Appva AB"));
 
          /// <summary>
          /// PDF configuration for look and feel.

@@ -1,4 +1,6 @@
 ﻿@using Appva.Mcss.Admin.Configuration;
+@using Appva.Core.Environment;
+
 @{
     if (User.Identity.IsAuthenticated)
     {
@@ -14,7 +16,7 @@
 <!--[if IE 8]><html class="ie8"> <![endif]-->
 <!--[if IE 9]><html class="ie9 gt-ie8"> <![endif]-->
 <!--[if gt IE 9]><!-->
-<html class="gt-ie8 gt-ie9 not-ie" lang="sv" id="oldstyle-enabler">
+<html class="gt-ie8 gt-ie9 not-ie" lang="sv">
 <!--<![endif]-->
 <head>
     <title>@Title - Appva MCSS</title>
@@ -27,7 +29,6 @@
     <script src="/Assets/js/vendor/jquery-validation/jquery.validate.js"></script>
     <script src="/Assets/js/vendor/jquery-validation/localization/messages_sv.min.js"></script>
     <!-- -->
-
     <!-- Temp -->
     <script src="/Assets/js/jquery/plugins/date.js"></script>
     <script src="/Assets/js/jquery/plugins/excanvas.js"></script>
@@ -492,7 +493,7 @@
             });
     </script>
 </head>
-<body>
+<body id="oldstyle-enabler">
     @if (ApplicationEnvironment.Is.Staging)
     {
         <div class="environment">
@@ -505,12 +506,12 @@
         if (expiration.HasValue && User.Identity.IsAuthenticated)
         {
             <script type="text/javascript">
-                    mcss.auth.init(@expiration.Value.LocalDateTime.ToUnixEpochMilliseconds(),
-                        {
-                            loginUrl:                 '/auth/sign-in',
-                            redirectToLogin:           true,
-                            showCountdownAfterMinutes: 5
-                        });
+                mcss.auth.init(@expiration.Value.LocalDateTime.ToUnixEpochMilliseconds(),
+                    {
+                        loginUrl:                 '/auth/sign-in',
+                        redirectToLogin:           true,
+                        showCountdownAfterMinutes: 5
+                    });
             </script>
         }
     }
@@ -554,4 +555,5 @@
     <script src="/Assets/js/lang/sv.js"></script>
     <script src="/Assets/js/base/base.js"></script>
 </body>
+
 </html>

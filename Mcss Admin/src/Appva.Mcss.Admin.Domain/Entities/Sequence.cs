@@ -1,9 +1,6 @@
 ﻿// <copyright file="Sequence.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,14 +8,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Sequence : AggregateRoot<Sequence>
+    public class Sequence : AggregateRoot
     {
         #region Variables.
 
@@ -39,7 +35,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sequence"/> class.
@@ -360,7 +356,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Members
+        #region Public Methods.
 
         /// <summary>
         /// Returns the next date in the sequence from the given date

@@ -76,6 +76,48 @@
 				};
 			}
 
+			// Should we check the date against a database query?
+			if (datepickerInput.data('datepicker-dbquery') === true) {
+				var self = $(this);
+
+				// On input, check that this date is permitted
+				self.on('change', function () {
+
+					$.ajax({
+						url: 'check',
+						type: 'GET',
+						data: {'Date': this.value},
+						success: function (data) {
+							var result = JSON.parse(data);
+							if (result.Content === 'fail') {
+								var warningElement = $('<div class="form-controls__error-message">' + result.Message + '</div>');
+
+								// Disable the submit button
+								self.closest('form').find('[type="submit"]').prop('disabled', true);
+
+								self.parent().append(warningElement);
+
+								// Add listener to remove the warning if a new date is selected
+								self.change(function () {
+									warningElement.remove();
+									self.closest('form').find('[type="submit"]').prop('disabled', false);
+								});
+							}
+							else {
+								if (self.attr('datepicker-fill-end') === 'true') {
+									fillEndDate(self);
+								}
+							}
+						},
+						statusCode: {
+							404: function () {
+								console.log('404 error');
+							}
+						}
+					});
+				});
+			}
+
 			// call the datepicker!
 			// TODO: Date format by locale
 			datepickerInput.datepicker({
@@ -88,18 +130,29 @@
 				numberOfMonths: 12,
 				onSelect: onSelect,
 				onClose: onClose,
-				buttonImage: '/project/images/icons/calendar.svg',
+				buttonImage: '/Assets/images/icons/calendar.svg',
 				buttonImageOnly: true,
 				buttonText: netr.string.translate('datepicker.selectDate'),
 				beforeShowDay: beforeShowDay
 			});
 		});
 
+		function fillEndDate(self) {
+			var inputs = self.closest('form').find('.date-picker input');
+			var endDate = $(inputs[inputs.index(self) + 1]);
+
+			endDate.val(self.val());
+		}
+
 		// remove validation errors upon selecting date from datepicker
 		$('.datepicker').on('change', function () {
 			var self = $(this);
 			if (typeof self.valid === 'function') {
 				self.valid();
+
+				if ((self.attr('datepicker-fill-end') === 'true') && (self.data('datepicker-dbquery') !== true)) {
+					fillEndDate(self);
+				}
 			}
 		});
 	});

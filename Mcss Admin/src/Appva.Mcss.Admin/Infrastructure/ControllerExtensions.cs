@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     using System.Collections.Generic;
     using System.Web.Mvc;
     using Appva.Mvc;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -28,6 +29,28 @@ namespace Appva.Mcss.Admin.Infrastructure
         public static DispatchJsonResult JsonPost(this Controller controller)
         {
             return new DispatchJsonResult(JsonRequestBehavior.DenyGet);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <returns></returns>
+        public static DispatchJsonResult JsonPost(this Controller controller, object response)
+        {
+            controller.ViewData.Model = response;
+            return controller.JsonPost();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <returns></returns>
+        public static DispatchJsonResult JsonGet(this Controller controller, object response)
+        {
+            controller.ViewData.Model = JsonConvert.SerializeObject(response);
+            return controller.JsonGet();
         }
 
         /// <summary>

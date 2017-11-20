@@ -8,14 +8,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Location : AggregateRoot<Location>
+    public class Location : AggregateRoot
     {
         #region Constructors.
 

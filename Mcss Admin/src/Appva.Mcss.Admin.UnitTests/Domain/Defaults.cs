@@ -38,16 +38,16 @@ namespace Appva.Mcss.Admin.UnitTests.Domain
         {
             return new List<Role>
             {
-                Role.CreateNew(RoleTypes.AdministrativePersonnel, "Administrative personnel", null, 1, false, false),
-                Role.CreateNew(RoleTypes.Appva,                   "God Account",              null, 0, false, false),
-                Role.CreateNew(RoleTypes.Assistant,               "Assistant Nurse",          null, 2),
-                Role.CreateNew(RoleTypes.Backend,                 "Internal Admin Access",    null, 3, false, false),
-                Role.CreateNew(RoleTypes.Developer,               "Developer",                null, 4, false, false),
-                Role.CreateNew(RoleTypes.Device,                  "Internal Device Access",   null, 5, false, false),
-                Role.CreateNew(RoleTypes.Dietician,               "Dietician",                null, 6),
-                Role.CreateNew(RoleTypes.Nurse,                   "Registered Nurse",         null, 7),
-                Role.CreateNew(RoleTypes.OccupationalTherapist,   "Occupational Therapist",   null, 8),
-                Role.CreateNew(RoleTypes.Physiotherapist,         "Physiotherapist",          null, 9)
+                Role.New(RoleTypes.AdministrativePersonnel, "Administrative personnel", null, 1, false, false),
+                Role.New(RoleTypes.Appva,                   "God Account",              null, 0, false, false),
+                Role.New(RoleTypes.Assistant,               "Assistant Nurse",          null, 2),
+                Role.New(RoleTypes.Backend,                 "Internal Admin Access",    null, 3, false, false),
+                Role.New(RoleTypes.Developer,               "Developer",                null, 4, false, false),
+                Role.New(RoleTypes.Device,                  "Internal Device Access",   null, 5, false, false),
+                Role.New(RoleTypes.Dietician,               "Dietician",                null, 6),
+                Role.New(RoleTypes.Nurse,                   "Registered Nurse",         null, 7),
+                Role.New(RoleTypes.OccupationalTherapist,   "Occupational Therapist",   null, 8),
+                Role.New(RoleTypes.Physiotherapist,         "Physiotherapist",          null, 9)
             };
         }
 
@@ -59,8 +59,8 @@ namespace Appva.Mcss.Admin.UnitTests.Domain
         {
             return new List<Taxonomy>
             {
-                Taxonomy.CreateNew("ORG", "Organization", "The organizational structure", 0),
-                Taxonomy.CreateNew("SST", "Statuses",     "The statuses of tasks",        1)
+                Taxonomy.New("ORG", "Organization", "The organizational structure", 0),
+                Taxonomy.New("SST", "Statuses",     "The statuses of tasks",        1)
             };
         }
 
@@ -77,19 +77,19 @@ namespace Appva.Mcss.Admin.UnitTests.Domain
             {
                 if (taxonomy.MachineName == "ORG")
                 {
-                    var root = Taxon.CreateNew(taxonomy, "root", "A root object", null);
+                    var root = Taxon.New(taxonomy, "root", "A root object", null);
                     taxa.Add(root);
                     for (var i = 0; i < generate; i++)
                     {
-                        taxa.Add(Taxon.CreateNew(taxonomy, string.Format("Generated sub object {0}", i + 1), "A sub object", null, root, i + 1));
+                        taxa.Add(Taxon.New(taxonomy, string.Format("Generated sub object {0}", i + 1), "A sub object", null, root, i + 1));
                     }
                 }
                 if (taxonomy.MachineName == "SST")
                 {
-                    taxa.Add(Taxon.CreateNew(taxonomy, "Not administered",       null, null, null, 0));
-                    taxa.Add(Taxon.CreateNew(taxonomy, "Unable to administer",   null, null, null, 0));
-                    taxa.Add(Taxon.CreateNew(taxonomy, "Partially administered", null, null, null, 0));
-                    taxa.Add(Taxon.CreateNew(taxonomy, "Disposed",               null, null, null, 0));
+                    taxa.Add(Taxon.New(taxonomy, "Not administered", null, null, null, 0));
+                    taxa.Add(Taxon.New(taxonomy, "Unable to administer", null, null, null, 0));
+                    taxa.Add(Taxon.New(taxonomy, "Partially administered", null, null, null, 0));
+                    taxa.Add(Taxon.New(taxonomy, "Disposed", null, null, null, 0));
                 }
             }
             return taxa;
@@ -116,12 +116,12 @@ namespace Appva.Mcss.Admin.UnitTests.Domain
         {
             return new List<Setting>
             {
-                Setting.CreateNew(
+                Setting.New(
                     ApplicationSettings.MailMessagingConfiguration.Key, 
                     ApplicationSettings.MailMessagingConfiguration.Namespace,
                     ApplicationSettings.MailMessagingConfiguration.Name,
                     ApplicationSettings.MailMessagingConfiguration.Description, 
-                    JsonConvert.SerializeObject(SecurityMailerConfiguration.CreateNew(false, false, false, false, false, null)), 
+                    JsonConvert.SerializeObject(SecurityMailerConfiguration.New(false, false, false, false, false, null)), 
                     typeof(string))
             };
         }

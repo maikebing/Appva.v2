@@ -25,7 +25,7 @@ using System.Linq;
         /// <summary>
         /// The entities
         /// </summary>
-        public IList<LogModel> Logs
+        public IEnumerable<LogModel> Logs
         {
             get;
             set;

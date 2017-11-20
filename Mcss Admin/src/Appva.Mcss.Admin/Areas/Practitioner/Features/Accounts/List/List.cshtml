@@ -47,11 +47,11 @@
             }
 		</div>
 	</div>
-	@if (Model.Accounts.Entities.Count > 0)
+	@if (Model.Accounts.Items.Count() > 0)
     {
         <div class="col col-2">
             <ul class="people delegate">
-                @foreach (var item in Model.Accounts.Entities)
+                @foreach (var item in Model.Accounts.Items)
                 {
                     <li class="cf @((item.HasExpiringDelegation) ? "update" : "")">
                         @if (item.IsEditableForUser(Model.CurrentUser))
@@ -102,7 +102,7 @@
                     </li>
                 }
             </ul>
-            @Html.Pager((int) Model.Accounts.PageSize, (int) Model.Accounts.CurrentPage, (int) Model.Accounts.TotalCount).Options(o => o
+            @Html.Pager(Model.Accounts.PageQuery.PageSize, Model.Accounts.PageQuery.PageNumber, (int) Model.Accounts.TotalCount).Options(o => o
             .DisplayTemplate("Pagination")
             .MaxNrOfPages(15)
             .AlwaysAddFirstPageNumber()

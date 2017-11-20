@@ -9,19 +9,18 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using System;
-using System.Collections.Generic;
-using System.Linq;
-using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Admin.Domain.Repositories.Contracts;
-using Appva.Persistence;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface ISettingsRepository : 
-        IListRepository<Setting>, ISaveRepository<Setting>, IRepository
+    public interface ISettingsRepository : IRepository<Setting>,
+        IListRepository<Setting>, ISaveRepository<Setting>
     {
         /// <summary>
         /// Returns a single <see cref="Setting"/> instance
@@ -43,26 +42,17 @@ using Appva.Persistence;
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class SettingsRepository : ISettingsRepository
+    public sealed class SettingsRepository : Repository<Setting>, ISettingsRepository
     {
-        #region Variables.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/> instance.
-        /// </summary>
-        private readonly IPersistenceContext persistenceContext;
-
-        #endregion
-
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsRepository"/> class.
         /// </summary>
-        /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
-        public SettingsRepository(IPersistenceContext persistenceContext)
+        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
+        public SettingsRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.persistenceContext = persistenceContext;
         }
 
         #endregion
@@ -72,26 +62,27 @@ using Appva.Persistence;
         /// <inheritdoc />
         public Setting Find(string key)
         {
-            var retval = this.persistenceContext.QueryOver<Setting>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.MachineName == key)
-                .OrderBy(x => x.Namespace)
-                .Asc.List();
-            if (retval.Count == 1)
+            var retval = this.Context.QueryOver<Setting>()
+                .Where(x => x.IsActive    == true)
+                  .And(x => x.MachineName == key)
+                .OrderBy(x => x.Namespace).Asc
+                .List();
+            if (retval.Count != 1)
             {
-                return retval[0];
+                return null;
             }
-            return null;
+            return retval.First();
         }
 
         /// <inheritdoc />
         public IList<Setting> FindByNamespace(string theNamespace)
         {
-            return this.persistenceContext.QueryOver<Setting>()
-                .Where(x => x.IsActive == true)
-                .And(x => x.Namespace == theNamespace)
-                .OrderBy(x => x.Namespace)
-                .Asc.List();
+            return this.Context
+                .QueryOver<Setting>()
+                    .Where(x => x.IsActive  == true)
+                      .And(x => x.Namespace == theNamespace)
+                .OrderBy(x => x.Namespace).Asc
+                .List();
         }
 
         #endregion
@@ -99,22 +90,14 @@ using Appva.Persistence;
         #region IListRepository<Setting> Members.
 
         /// <inheritdoc />
-        public IList<Setting> List(ulong maximumItems = long.MaxValue)
+        public IList<Setting> List()
         {
-            return this.persistenceContext.QueryOver<Setting>()
-                .Where(x => x.IsActive == true)
-                .OrderBy(x => x.Namespace)
-                .Asc.Take(int.MaxValue).List();
-        }
-
-        #endregion
-
-        #region ISaveRepository<Setting> Members.
-
-        /// <inheritdoc />
-        public void Save(Setting entity)
-        {
-            this.persistenceContext.Save(entity);
+            return this.Context
+                .QueryOver<Setting>()
+                    .Where(x => x.IsActive == true)
+                .OrderBy(x => x.Namespace).Asc
+                .Take(int.MaxValue)
+                .List();
         }
 
         #endregion

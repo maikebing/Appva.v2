@@ -1,9 +1,6 @@
 ﻿// <copyright file="Permission.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
@@ -11,45 +8,46 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Permission : Entity<Permission>
+    public class Permission : AggregateRoot
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Permission"/> class.
         /// </summary>
-        /// <param name="name">The permission name</param>
-        /// <param name="description">The permission description</param>
-        /// <param name="resource">The resource</param>
-        /// <param name="action">The action</param>
-        /// <param name="permissionContext">The context</param>
+        /// <param name="name">The permission name.</param>
+        /// <param name="description">The permission description.</param>
+        /// <param name="resource">The resource.</param>
+        /// <param name="sort">The sort order.</param>
+        /// <param name="isVisible">The visibility of the permission.</param>
         public Permission(string name, string description, string resource, int sort = 0, bool isVisible = true)
         {
-            this.Name = name;
+            this.Name        = name;
             this.Description = description;
-            this.Resource = resource;
-            this.Sort = sort;
-            this.IsVisible = isVisible;
+            this.Resource    = resource;
+            this.Sort        = sort;
+            this.IsVisible   = isVisible;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Permission"/> class.
         /// </summary>
-        /// <remarks>Required by NHibernate.</remarks>
+        /// <remarks>
+        /// An NHibernate visible no-argument constructor.
+        /// <remarks>
         protected Permission()
         {
         }
 
         #endregion
 
-        #region Public Properties.
+        #region Properties.
 
         /// <summary>
         /// The permission policy name.

@@ -6,9 +6,16 @@
 // </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
+    #region Imports.
+
+    using System;
+
+    #endregion
+
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
+    [Obsolete]
     public class InventoryOld
     {
         /// <summary>

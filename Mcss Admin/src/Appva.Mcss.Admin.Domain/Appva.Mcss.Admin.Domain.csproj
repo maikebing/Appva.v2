@@ -34,10 +34,6 @@
       <HintPath>..\..\..\Packages\Appva.Azure.0.3.0\lib\net45\Appva.Azure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Common, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Appva.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Core.0.5.0\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
@@ -52,10 +48,6 @@
     </Reference>
     <Reference Include="Appva.Persistence, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Persistence.0.3.0\lib\net45\Appva.Persistence.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Appva.Repository, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Repository.0.3.0\lib\net45\Appva.Repository.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
@@ -74,9 +66,8 @@
       <HintPath>..\..\..\Packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
@@ -97,11 +88,47 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Domain\AggregateRoot.cs" />
+    <Compile Include="Common\Domain\DomainEvent.cs" />
+    <Compile Include="Common\Domain\Entity.cs" />
+    <Compile Include="Common\Domain\EventSourced.cs" />
+    <Compile Include="Common\Domain\IEntity.cs" />
+    <Compile Include="Common\Domain\IImmutable.cs" />
+    <Compile Include="Common\Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Common\Extensions\ObjectExtensions.cs" />
+    <Compile Include="Common\Helpers\HashCode.cs" />
+    <Compile Include="Common\Helpers\HumanNameRandomizer.cs" />
+    <Compile Include="Common\Helpers\PersonalIdentityNumberRandomizer.cs" />
+    <Compile Include="Common\Domain\IAggregateRoot.cs" />
+    <Compile Include="Common\Domain\IDomainEvent.cs" />
+    <Compile Include="Common\Domain\IEventSourced.cs" />
+    <Compile Include="Common\Domain\IMessage.cs" />
+    <Compile Include="Common\IDeepCopyable.cs" />
+    <Compile Include="Common\IStatelessPersistenceContext.cs" />
+    <Compile Include="Common\IValueObject.cs" />
+    <Compile Include="Common\Primitive.cs" />
+    <Compile Include="Common\Repositories\Implementation\Paged.cs" />
+    <Compile Include="Common\Repositories\IPaged.cs" />
+    <Compile Include="Common\Repositories\IRepository.cs" />
+    <Compile Include="Common\Repositories\ISaveListRepository.cs" />
+    <Compile Include="Common\Repositories\ISaveRepository.cs" />
+    <Compile Include="Common\Repositories\IUpdateRepository.cs" />
+    <Compile Include="Common\Repositories\Queries\ICursoredPageQuery.cs" />
+    <Compile Include="Common\Repositories\Queries\Implementation\PageQuery.cs" />
+    <Compile Include="Common\Repositories\Queries\IPageQuery.cs" />
+    <Compile Include="Common\Repositories\Queries\SearchableScope.cs" />
+    <Compile Include="Common\Repositories\Implementation\Repository.cs" />
+    <Compile Include="Common\Repositories\StatelessRepository.cs" />
+    <Compile Include="Common\Types\JsonType.cs" />
+    <Compile Include="Common\Helpers\TypeNameHelper.cs" />
+    <Compile Include="Common\ValueObject.cs" />
+    <Compile Include="Configurations\IConfiguration.cs" />
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Article.cs" />
     <Compile Include="Entities\ArticleCategory.cs" />
     <Compile Include="Entities\Change.cs" />
     <Compile Include="Entities\ChangeSet.cs" />
+    <Compile Include="Entities\Comment\Comment.cs" />
     <Compile Include="Entities\DashboardNotification.cs" />
     <Compile Include="Entities\Delegation.cs" />
     <Compile Include="Entities\Device.cs" />
@@ -117,10 +144,25 @@
     <Compile Include="Entities\MenuLink.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\NotificationReadByAccount.cs" />
+    <Compile Include="Entities\Observation\Events\ObservationUpdatedEvent.cs" />
+    <Compile Include="Entities\Observation\Events\ObservationCreatedEvent.cs" />
+    <Compile Include="Entities\Observation\Observation.cs" />
+    <Compile Include="Entities\Observation\ObservationItem.cs" />
+    <Compile Include="Entities\Observation\Tena\Events\TenaObservationPeriodCreatedEvent.cs" />
+    <Compile Include="Entities\Observation\Tena\Events\TenaObservationPeriodUpdatedEvent.cs" />
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\PatientArticle.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Person.cs" />
+    <Compile Include="Entities\Provenance\Provenance.cs" />
+    <Compile Include="Entities\Sequence\SubSequence.cs" />
+    <Compile Include="Entities\Signature\Signature.cs" />
+    <Compile Include="Entities\Signature\SignedData.cs" />
+    <Compile Include="Entities\Task\SubTask.cs" />
+    <Compile Include="Entities\Observation\Tena\TenaObservationPeriod.cs" />
+    <Compile Include="Entities\Observation\Tena\TenaObservationItem.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\PatientModel.cs" />
@@ -129,18 +171,29 @@
     <Compile Include="Models\SearchProfileModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
+    <Compile Include="Repositories\IObservationRepository.cs" />
+    <Compile Include="Repositories\ISignatureRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
-    <Compile Include="Repositories\Contracts\IProxyRepository.cs" />
     <Compile Include="Repositories\DelegationRepository.cs" />
+    <Compile Include="Repositories\ObservationRepository.cs" />
     <Compile Include="Repositories\PatientRepository.cs" />
     <Compile Include="Repositories\SequenceRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
-    <Compile Include="VO\AuditLoggingConfiguration.cs" />
-    <Compile Include="VO\HsaId.cs" />
-    <Compile Include="VO\OrderListConfiguration.cs" />
-    <Compile Include="VO\PdfLookAndFeel.cs" />
-    <Compile Include="VO\PersonalIdentityNumber.cs" />
+    <Compile Include="Configurations\AuditLoggingConfiguration.cs" />
+	<Compile Include="VO\OrderListConfiguration.cs" />
+    <Compile Include="Entities\VO\Base64Binary.cs" />
+    <Compile Include="Entities\VO\ContactPoint.cs" />
+    <Compile Include="Entities\VO\Gender.cs" />
+    <Compile Include="Entities\VO\HsaId.cs" />
+    <Compile Include="Entities\VO\HumanName.cs" />
+    <Compile Include="Entities\VO\MailAddress.cs" />
+    <Compile Include="Entities\VO\Measurement.cs" />
+    <Compile Include="Entities\VO\MobileTelephoneNumber.cs" />
+    <Compile Include="Configurations\PdfLookAndFeel.cs" />
+    <Compile Include="Entities\VO\Period.cs" />
+    <Compile Include="Entities\VO\PersonalIdentityNumber.cs" />
+    <Compile Include="Repositories\TenaRepository.cs" />
     <Compile Include="Entities\PreparedSequence.cs" />
     <Compile Include="Entities\PreparedTask.cs" />
     <Compile Include="Entities\RefillModel.cs" />
@@ -156,36 +209,42 @@
     <Compile Include="Models\SearchAccountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
-    <Compile Include="Repositories\Contracts\IIdentityRepository.cs" />
-    <Compile Include="Repositories\Contracts\IListRepository.cs" />
-    <Compile Include="Repositories\Contracts\ISaveRepository.cs" />
-    <Compile Include="Repositories\Contracts\IUpdateRepository.cs" />
-    <Compile Include="Repositories\MenuRepository.cs" />
-    <Compile Include="Repositories\Contracts\IPagedList.cs" />
-    <Compile Include="Repositories\Contracts\IRepository.cs" />
-    <Compile Include="Repositories\Contracts\IPagingAndSortingRepository.cs" />
+    <Compile Include="Common\Repositories\IListRepository.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\TaxonRepository.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Repositories\PermissionRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
-    <Compile Include="VO\SecurityMailerConfiguration.cs" />
-    <Compile Include="VO\SecurityPasswordConfiguration.cs" />
-    <Compile Include="VO\SecurityTokenConfiguration.cs" />
+    <Compile Include="Unit\AbstractUnit.cs" />
+    <Compile Include="Unit\IUnit.cs" />
+    <Compile Include="Unit\TenaIdentifi\TenaIdentifiScale.cs" />
+    <Compile Include="Unit\TenaIdentifi\TenaIdentifiUnit.cs" />
+    <Compile Include="VO\TenaConfiguration.cs" />
+    <Compile Include="Configurations\SecurityMailerConfiguration.cs" />
+    <Compile Include="Configurations\SecurityPasswordConfiguration.cs" />
+    <Compile Include="Configurations\SecurityTokenConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\Entities.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Entities.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Entities\Diagram\Diagram.cd" />
     <None Include="Mappings\nhibernate-configuration.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Mappings\nhibernate-mapping.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\Correction\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

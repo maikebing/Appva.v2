@@ -19,7 +19,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IAuthenticationRepository : IRepository
+    public interface IAuthenticationRepository : IRepository<Account>
     {
         /// <summary>
         /// Locates a user account by its unique Personal Identity Number. 
@@ -55,25 +55,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class AuthenticationRepository : IAuthenticationRepository
+    public sealed class AuthenticationRepository : Repository<Account>, IAuthenticationRepository
     {
-        #region Variables.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
-        /// </summary>
-        private readonly IPersistenceContext context;
-
-        #endregion
-
         #region Constructor.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationRepository"/> class.
         /// </summary>
         public AuthenticationRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.context = context;
         }
 
         #endregion
@@ -83,24 +74,27 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public Account FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber)
         {
-            return this.context.QueryOver<Account>()
-                .Where(x => x.PersonalIdentityNumber == personalIdentityNumber)
+            return this.Context
+                .QueryOver<Account>()
+                    .Where(x => x.PersonalIdentityNumber == personalIdentityNumber)
                 .SingleOrDefault();
         }
 
         /// <inheritdoc />
         public Account FindByUserName(string userName)
         {
-            return this.context.QueryOver<Account>()
-                .Where(x => x.UserName == userName)
+            return this.Context
+                .QueryOver<Account>()
+                    .Where(x => x.UserName == userName)
                 .SingleOrDefault();
         }
 
         /// <inheritdoc />
         public Account FindByHsaId(HsaId hsaId)
         {
-            return this.context.QueryOver<Account>()
-                .Where(x => x.HsaId == hsaId.Value)
+            return this.Context
+                .QueryOver<Account>()
+                    .Where(x => x.HsaId == hsaId.Value)
                 .SingleOrDefault();
         }
 

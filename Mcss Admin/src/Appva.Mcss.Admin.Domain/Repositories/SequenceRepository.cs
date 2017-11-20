@@ -9,56 +9,43 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     #region Imports.
 
     using Appva.Mcss.Admin.Domain.Entities;
-using Appva.Mcss.Admin.Domain.Repositories.Contracts;
-using Appva.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+    using Appva.Persistence;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
-    public interface ISequenceRepository : 
-        IUpdateRepository<Sequence>,
-        IRepository
+    /// <summary>
+    /// TODO: Add a descriptive summary to increase readability.
+    /// </summary>
+    public interface ISequenceRepository : IRepository<Sequence>, IUpdateRepository<Sequence>
     {
-
     }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class SequenceRepository : ISequenceRepository
+    public sealed class SequenceRepository : Repository<Sequence>, ISequenceRepository
     {
-        #region Fields.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/>
-        /// </summary>
-        private readonly IPersistenceContext persistenceContext;
-
-        #endregion
-
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceRepository"/> class.
         /// </summary>
-        public SequenceRepository(IPersistenceContext persistenceContext)
+        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
+        public SequenceRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.persistenceContext = persistenceContext;
         }
 
         #endregion
-
-        #region IUpdateRepository members.
 
         /// <inheritdoc />
         public void Update(Sequence entity)
         {
             entity.UpdatedAt = DateTime.Now;
-            this.persistenceContext.Update<Sequence>(entity);
+            this.Context.Update<Sequence>(entity);
         }
-
-        #endregion
     }
 }

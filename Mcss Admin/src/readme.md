@@ -2,7 +2,7 @@
 
 ## Setup
 
-Add a Local.AppSettings.config in directory path `src/Appva.Mcss.Admin`.
+Add a AppSettings.Local.config in directory `src/Appva.Mcss.Admin/`.
 Add custom configurations e.g.
 
 ```xml

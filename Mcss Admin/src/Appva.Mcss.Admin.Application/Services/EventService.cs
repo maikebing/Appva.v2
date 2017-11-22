@@ -867,27 +867,6 @@ namespace Appva.Mcss.Admin.Application.Services
 
             var retval = new List<CalendarTask>();
             
-            //while(startDate <= periodEnd)
-            //{
-            //    if (endDate >= periodStart)
-            //    {
-            //        var calendarTask = GetCalendarTaskFor(sequence, startDate, endDate, tasks);
-            //        if (calendarTask.IsNotNull())
-            //        {
-            //            retval.Add(calendarTask);
-            //        }
-            //    }
-            //    if (sequence.Repeat.Interval == 0)
-            //    {
-            //        break;
-            //    }
-
-            //    // lägg in randomDate = sequence.Repeat.next(randomDate);
-
-            //    startDate = sequence.GetNextDateInSequence(startDate);
-            //    endDate = sequence.GetNextDateInSequence(endDate);
-            //}
-
             while (startDate <= periodEnd)
             {
                 if (endDate >= periodStart)

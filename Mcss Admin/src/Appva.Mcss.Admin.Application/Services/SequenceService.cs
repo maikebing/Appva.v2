@@ -262,133 +262,133 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, 
-            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
-        {
-            var repeat = new Repeat(
-                startAt: (Date) startDate,
-                endAt: (Date) endDate,
-                period: null,
-                periodUnit: UnitOfTime.Day,
-                duration: null,
-                durationUnit: null, 
-                offsetBefore: rangeInMinutesBefore, 
-                offsetAfter: rangeInMinutesAfter, 
-                isNeedBased: true, 
-                timesOfDay: null, 
-                daysOfWeek: null, 
-                flags: null, 
-                boundsRange: null                
-            );
-            this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
-            this.scheduleRepository.Update(schedule);
-        }
+        //public void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, 
+        //    DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
+        //{
+        //    var repeat = new Repeat(
+        //        startAt: (Date) startDate,
+        //        endAt: (Date) endDate,
+        //        period: null,
+        //        periodUnit: UnitOfTime.Day,
+        //        duration: null,
+        //        durationUnit: null, 
+        //        offsetBefore: rangeInMinutesBefore, 
+        //        offsetAfter: rangeInMinutesAfter, 
+        //        isNeedBased: true, 
+        //        timesOfDay: null, 
+        //        daysOfWeek: null, 
+        //        flags: null, 
+        //        boundsRange: null                
+        //    );
+        //    this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
+        //    this.scheduleRepository.Update(schedule);
+        //}
 
         /// <inheritdoc />
-        public void CreateIntervalBasedSequence(Schedule schedule, string name, string description, DateTime startDate, int interval, string times,
-            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
-        {
-            if (endDate.HasValue == false)
-            {
+        //public void CreateIntervalBasedSequence(Schedule schedule, string name, string description, DateTime startDate, int interval, string times,
+        //    DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
+        //{
+        //    if (endDate.HasValue == false)
+        //    {
 
-            }
+        //    }
 
-            var repeat = new Repeat(
-                startDate,
-                endDate,
-                interval,
-                UnitOfTime.Day,
-                rangeInMinutesBefore,
-                rangeInMinutesAfter,
-                times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
-                null,
-                false,
-                false,
-                false
-            );
+        //    var repeat = new Repeat(
+        //        startDate,
+        //        endDate,
+        //        interval,
+        //        UnitOfTime.Day,
+        //        rangeInMinutesBefore,
+        //        rangeInMinutesAfter,
+        //        times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
+        //        null,
+        //        false,
+        //        false,
+        //        false
+        //    );
 
-            this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
-            this.scheduleRepository.Update(schedule);
-        }
-
-        /// <inheritdoc />
-        public void CreateDatesBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate, string dates, string times,
-            Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
-        {
-            var repeat = new Repeat(
-                (Date) startDate,
-                (Date) endDate,
-                null,
-                UnitOfTime.Day,
-                null,
-                null,
-                rangeInMinutesBefore,
-                rangeInMinutesAfter,
-                false,
-                times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
-                null,
-                null,
-                dates.Split(',').Select(x => Date.Parse(x)).ToList()
-            );
-
-            this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
-            this.scheduleRepository.Update(schedule);
-        }
+        //    this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
+        //    this.scheduleRepository.Update(schedule);
+        //}
 
         /// <inheritdoc />
-        public void CreateEventBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate,
-            int interval = 0, int intervalFactor = 0, bool intervalIsDate = false, bool reminder = false, bool canRaiseAlert = false, bool overview = false, bool allDay = false, bool absent = false)
-        {
-            if (schedule.ScheduleSettings.ScheduleType == ScheduleType.Action)
-            {
-                canRaiseAlert = schedule.ScheduleSettings.CanRaiseAlerts;
-            }
-            // DateTime startAt, DateTime endAt, int interval, int intervalFactor, int offsetBefore, int offsetAfter, List<TimeOfDay> timesOfDay, List<Date> boundsRange, bool isNeedBased, bool isIntervalDate, bool isAllDay;
-            var repeat = new Repeat(
-                startAt: startDate,
-                endAt: endDate,
-                interval: interval,
-                intervalFactor: intervalFactor,
-                offsetBefore: 0,
-                offsetAfter: 0,
-                timesOfDay: null,
-                boundsRange: null,
-                isNeedBased: false,
-                isIntervalDate: intervalIsDate,
-                isAllDay: allDay
-            );
+        //public void CreateDatesBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate, string dates, string times,
+        //    Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
+        //{
+        //    var repeat = new Repeat(
+        //        (Date) startDate,
+        //        (Date) endDate,
+        //        null,
+        //        UnitOfTime.Day,
+        //        null,
+        //        null,
+        //        rangeInMinutesBefore,
+        //        rangeInMinutesAfter,
+        //        false,
+        //        times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
+        //        null,
+        //        null,
+        //        dates.Split(',').Select(x => Date.Parse(x)).ToList()
+        //    );
 
-            //var repeat = new Repeat(
-            //    startAt: (Date)startDate,
-            //    endAt: (Date)endDate,
-            //    period: interval,
-            //    periodUnit: UnitOfTime.Parse(intervalFactor.ToString()),
-            //    duration: null,
-            //    durationUnit: null,
-            //    offsetBefore: 0,
-            //    offsetAfter: 0,
-            //    isNeedBased: false,
-            //    timesOfDay: null,
-            //    daysOfWeek: null,
-            //    flags: null,
-            //    boundsRange: null
-            //);
-            this.sequenceRepository.Save(new Sequence(
-                schedule: schedule,
-                name: name,
-                description: description, 
-                repeat: repeat,
-                taxon: null,
-                role: null,
-                inventory: null,
-                refillModel: null,
-                overview: overview,
-                canRaiseAlert: canRaiseAlert,
-                pauseAnyAlerts: false,
-                absent: absent, 
-                reminder: reminder)); // interval, intervalFactor, intervalIsDate,
-            this.scheduleRepository.Update(schedule);
-        }
+        //    this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
+        //    this.scheduleRepository.Update(schedule);
+        //}
+
+        /// <inheritdoc />
+        //public void CreateEventBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate,
+        //    int interval = 0, int intervalFactor = 0, bool intervalIsDate = false, bool reminder = false, bool canRaiseAlert = false, bool overview = false, bool allDay = false, bool absent = false)
+        //{
+        //    if (schedule.ScheduleSettings.ScheduleType == ScheduleType.Action)
+        //    {
+        //        canRaiseAlert = schedule.ScheduleSettings.CanRaiseAlerts;
+        //    }
+        //    // DateTime startAt, DateTime endAt, int interval, int intervalFactor, int offsetBefore, int offsetAfter, List<TimeOfDay> timesOfDay, List<Date> boundsRange, bool isNeedBased, bool isIntervalDate, bool isAllDay;
+        //    var repeat = new Repeat(
+        //        startAt: startDate,
+        //        endAt: endDate,
+        //        interval: interval,
+        //        intervalFactor: intervalFactor,
+        //        offsetBefore: 0,
+        //        offsetAfter: 0,
+        //        timesOfDay: null,
+        //        boundsRange: null,
+        //        isNeedBased: false,
+        //        isIntervalDate: intervalIsDate,
+        //        isAllDay: allDay
+        //    );
+
+        //    //var repeat = new Repeat(
+        //    //    startAt: (Date)startDate,
+        //    //    endAt: (Date)endDate,
+        //    //    period: interval,
+        //    //    periodUnit: UnitOfTime.Parse(intervalFactor.ToString()),
+        //    //    duration: null,
+        //    //    durationUnit: null,
+        //    //    offsetBefore: 0,
+        //    //    offsetAfter: 0,
+        //    //    isNeedBased: false,
+        //    //    timesOfDay: null,
+        //    //    daysOfWeek: null,
+        //    //    flags: null,
+        //    //    boundsRange: null
+        //    //);
+        //    this.sequenceRepository.Save(new Sequence(
+        //        schedule: schedule,
+        //        name: name,
+        //        description: description, 
+        //        repeat: repeat,
+        //        taxon: null,
+        //        role: null,
+        //        inventory: null,
+        //        refillModel: null,
+        //        overview: overview,
+        //        canRaiseAlert: canRaiseAlert,
+        //        pauseAnyAlerts: false,
+        //        absent: absent, 
+        //        reminder: reminder)); // interval, intervalFactor, intervalIsDate,
+        //    this.scheduleRepository.Update(schedule);
+        //}
 
         /// <inheritdoc />
         public Sequence Find(Guid id)

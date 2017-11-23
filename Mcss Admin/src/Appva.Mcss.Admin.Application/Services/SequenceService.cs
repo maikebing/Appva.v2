@@ -31,8 +31,6 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface ISequenceService : IService
     {
-        #region Fields
-
         /// <summary>
         /// Finds a sequence by id
         /// </summary>
@@ -72,7 +70,6 @@ namespace Appva.Mcss.Admin.Application.Services
 
         IList<ScheduleSettings> GetCategories(bool forceGetAllCategories = false);
         Guid CreateCategory(string name);
-
         void Delete(Sequence sequence);
         void CreateTask(Guid eventId, Guid scheduleSettingsId, string description, DateTime startDate, DateTime endDate, string startTime, string endTime, int interval, bool canRaiseAlert, bool overview, bool isAllDay, bool pauseAlerts, bool absent);
         void DeleteActivity(Task task);
@@ -82,8 +79,6 @@ namespace Appva.Mcss.Admin.Application.Services
         IList<CalendarWeek> Calendar(DateTime date, IList<CalendarTask> events);
         CalendarCategory Category(Guid id);
         CalendarTask GetActivityInSequence(Guid sequence, DateTime date);
-
-        #endregion
     }
 
     /// <summary>
@@ -102,11 +97,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// The <see cref="IAuditService"/>
         /// </summary>
         private readonly IAuditService auditService;
+
         private readonly IAccountRepository accountService;
         private readonly IIdentityService identityService;
         private readonly IPersistenceContext context;
         private readonly ITaskService taskService;
         private readonly IScheduleService scheduleService;
+
         #endregion
 
         #region Constructor.
@@ -115,10 +112,22 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="SequenceService"/> class.
         /// </summary>
         /// <param name="context">The <see cref="IPersistenceContext"/></param>
-        public SequenceService(ISequenceRepository sequenceRepository, IAuditService auditService)
+        public SequenceService(
+            IAuditService auditService, 
+            IIdentityService identityService, 
+            IAccountRepository accountService, 
+            IScheduleService scheduleService, 
+            ITaskService taskService, 
+            ISequenceRepository sequenceRepository,
+            IPersistenceContext context)
         {
-            this.sequenceRepository = sequenceRepository;
             this.auditService = auditService;
+            this.identityService = identityService;
+            this.accountService = accountService;
+            this.scheduleService = scheduleService;
+            this.taskService = taskService;
+            this.sequenceRepository = sequenceRepository;
+            this.context = context;
         }
 
         #endregion
@@ -150,7 +159,6 @@ namespace Appva.Mcss.Admin.Application.Services
                 null                
             );
             this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
-            //this.scheduleRepository.Update(schedule);
         }
 
         /// <inheritdoc />
@@ -167,28 +175,23 @@ namespace Appva.Mcss.Admin.Application.Services
                 times.Split(',').Select(x => TimeOfDay.Parse(x)).ToList(),
                 null,
                 false,
-                true, //// HACK: This shouldn't be set to 'true' by default
+                false,
                 false
             );
-
             this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
-            //this.scheduleRepository.Update(schedule);
         }
 
         /// <inheritdoc />
         public void CreateDatesBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate, string dates, string times,
             Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null)
         {
-            //// HACK: remove this when duration is nullable
-            var duration = endDate.HasValue ? (endDate.Value - startDate).Minutes : 0;
-
             var repeat = new Repeat(
                 (Date) startDate,
                 (Date) endDate,
                 null,
-                UnitOfTime.Day, //// HACK: set value to null
-                duration, //// HACK: set value to null
-                UnitOfTime.Minute, //// HACK: set value to null
+                null, 
+                null, 
+                null,
                 rangeInMinutesBefore,
                 rangeInMinutesAfter,
                 false,
@@ -197,9 +200,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 null,
                 dates.Split(',').Select(x => Date.Parse(x)).ToList()
             );
-
             this.sequenceRepository.Save(new Sequence(schedule, name, description, repeat, taxon, role, inventory));
-            //this.scheduleRepository.Update(schedule);
         }
 
         /// <inheritdoc />

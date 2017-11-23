@@ -27,9 +27,9 @@ using System.Linq;
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IEventService"/>.
+        /// The <see cref="ISequenceService"/>.
         /// </summary>
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
 
         #endregion
 
@@ -38,9 +38,9 @@ using System.Linq;
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateCategoryHandler"/> class.
         /// </summary>
-        public UpdateCategoryHandler(IEventService eventService)
+        public UpdateCategoryHandler(ISequenceService sequenceService)
         {
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
         }
 
         #endregion
@@ -50,7 +50,7 @@ using System.Linq;
         /// <inheritdoc />
         public override UpdateCategoryModel Handle(Identity<UpdateCategoryModel> message)
         {
-            var category = this.eventService.Category(message.Id);
+            var category = this.sequenceService.Category(message.Id);
 
             return new UpdateCategoryModel
             {

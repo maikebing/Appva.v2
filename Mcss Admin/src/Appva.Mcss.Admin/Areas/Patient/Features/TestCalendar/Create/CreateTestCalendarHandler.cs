@@ -12,18 +12,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     public class CreateTestCalendarHandler : RequestHandler<Identity<CreateTestCalendar>, CreateTestCalendar>
     {
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
         private readonly ISettingsService settingsService;
 
-        public CreateTestCalendarHandler(IEventService eventService, ISettingsService settingsService)
+        public CreateTestCalendarHandler(ISequenceService sequenceService, ISettingsService settingsService)
         {
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
             this.settingsService = settingsService;
         }
 
         public override CreateTestCalendar Handle(Identity<CreateTestCalendar> message)
         {
-            var categories = this.eventService.GetCategories();
+            var categories = this.sequenceService.GetCategories();
             var categorySelectlist = categories.Select(x => new SelectListItem
             {
                 Text = x.Name,

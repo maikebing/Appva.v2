@@ -45,7 +45,6 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         private readonly IPatientService patientService;
         private readonly ISettingsService settingsService;
         private readonly IScheduleService scheduleService;
-        private readonly IEventService eventService;
         private readonly ITaxonFilterSessionHandler filtering;
         private readonly ISequenceService sequenceService;
 
@@ -198,9 +197,9 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
             {
                 if (model.Category.Equals("new"))
                 {
-                    model.Category = this.eventService.CreateCategory(model.NewCategory).ToString();
+                    model.Category = this.sequenceService.CreateCategory(model.NewCategory).ToString();
                 }
-                this.eventService.CreateTask(
+                this.sequenceService.CreateTask(
                     seqId,
                     new Guid(model.Category),
                     model.Description,
@@ -235,7 +234,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         public ActionResult EditActivity(Guid id, Guid taskId)
         {
             var evt = this.context.Get<Task>(taskId);
-            var categories = this.eventService.GetCategories();
+            var categories = this.sequenceService.GetCategories();
             return View(new EventViewModel
             {
                 TaskId = evt.Id,
@@ -324,7 +323,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         public ActionResult RemoveActivity(Guid id, Guid taskId)
         {
             var evt = this.context.Get<Task>(taskId);
-            this.eventService.DeleteActivity(evt);
+            this.sequenceService.DeleteActivity(evt);
             return this.RedirectToAction("List", new { Id = evt.Patient.Id, StartDate = evt.StartDate });
         }
 

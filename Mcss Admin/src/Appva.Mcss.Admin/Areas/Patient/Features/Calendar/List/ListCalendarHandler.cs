@@ -27,10 +27,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     {
         #region Private Variables.
 
-        /// <summary>
-        /// The <see cref="IEventService"/>.
-        /// </summary>
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
 
         /// <summary>
         /// The <see cref="IPatientService"/>.
@@ -60,13 +57,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="ListCalendarHandler"/> class.
         /// </summary>
         public ListCalendarHandler(
-            IEventService eventService,
+            ISequenceService sequenceService,
             IPatientService patientService,
             ISettingsService settingsService,
             IPatientTransformer transformer,
             IAuditService auditing)
         {
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
             this.patientService = patientService;
             this.settingsService = settingsService;
             this.transformer = transformer;
@@ -91,10 +88,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 date = message.Date.GetValueOrDefault().NextMonth();
             }
 
-            var categories = this.eventService.GetCategories();
+            var categories = this.sequenceService.GetCategories();
             var filter = message.Filter ?? categories.Select(x => x.Id).ToArray();
             var patient = this.patientService.Get(message.Id);
-            var events = this.eventService.FindWithinMonth(patient, date);
+            var events = this.sequenceService.FindWithinMonth(patient, date);
             this.auditing.Read(patient, "läste kalenderaktiviteter för användare {0}(REF:{1})", patient.FullName, patient.Id);
 
             var model = new EventListViewModel
@@ -102,7 +99,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Current = date,
                 Next = date.NextMonth(),
                 Previous = date.PreviousMonth(),
-                Calendar = this.eventService.Calendar(date, events),
+                Calendar = this.sequenceService.Calendar(date, events),
                 Patient = this.transformer.ToPatient(patient),
                 EventViewModel = new EventViewModel(),
                 Categories = categories.ToDictionary(x => categories.IndexOf(x)),

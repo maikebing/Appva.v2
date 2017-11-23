@@ -58,9 +58,30 @@ namespace Appva.Mcss.Admin.Application.Services
         void CreateEventBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate,
             int interval = 0, int intervalFactor = 0, bool intervalIsDate = false, bool reminder = false, bool canRaiseAlert = false, bool overview = false, bool allDay = false, bool absent = false);
 
+        // HACK: refactor handlers/publisher in order to remove this.
+        void CreateEventBasedSequence(Guid scheduleSettingsId, Patient patient, string description,
+            DateTime startDate, DateTime endDate,
+            string startTime, string endTime, int interval, int intervalFactor,
+            bool intervalIsDate, bool canRaiseAlert, bool overview, bool isAllDay,
+            bool pauseAlerts, bool absent);
+
+        // HACK: refactor handlers/publisher in order to remove this.
+        void Update(Guid eventId, Guid scheduleSettingsId, string description, DateTime startDate, DateTime endDate,
+            string startTime, string endTime, int interval, int intervalFactor,
+            bool intervalIsDate, bool canRaiseAlert, bool overview, bool isAllDay, bool pauseAlerts, bool absent);
+
         IList<ScheduleSettings> GetCategories(bool forceGetAllCategories = false);
+        Guid CreateCategory(string name);
 
         void Delete(Sequence sequence);
+        void CreateTask(Guid eventId, Guid scheduleSettingsId, string description, DateTime startDate, DateTime endDate, string startTime, string endTime, int interval, bool canRaiseAlert, bool overview, bool isAllDay, bool pauseAlerts, bool absent);
+        void DeleteActivity(Task task);
+        IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date);
+        IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null);
+        IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null);
+        IList<CalendarWeek> Calendar(DateTime date, IList<CalendarTask> events);
+        CalendarCategory Category(Guid id);
+        CalendarTask GetActivityInSequence(Guid sequence, DateTime date);
 
         #endregion
     }
@@ -220,6 +241,47 @@ namespace Appva.Mcss.Admin.Application.Services
             //this.scheduleRepository.Update(schedule);
         }
 
+        //// HACK: Refactor depending handlers/publisher in order to remove this method.
+        /// <inheritdoc />
+        public void CreateEventBasedSequence(Guid scheduleSettingsId, Patient patient, string description, 
+            DateTime startDate, DateTime endDate, 
+            string startTime, string endTime, int interval, int intervalFactor, 
+            bool intervalIsDate, bool canRaiseAlert, bool overview, bool isAllDay, 
+            bool pauseAlerts, bool absent)
+        {
+            var schedule = this.context.QueryOver<Schedule>()
+                .Where(x => x.Patient == patient)
+                  .And(x => x.IsActive)
+                .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                    .Where(x => x.Id == scheduleSettingsId)
+                .SingleOrDefault();
+            if (schedule.IsNull())
+            {
+                var scheduleID = this.context.Save<Schedule>(new Schedule()
+                {
+                    Patient = patient,
+                    ScheduleSettings = this.context.Get<ScheduleSettings>(scheduleSettingsId)
+                });
+                schedule = this.context.Get<Schedule>(scheduleID);
+            }
+
+            this.CreateEventBasedSequence(
+                schedule,
+                schedule.ScheduleSettings.Name,
+                description,
+                this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),
+                this.GetDateTimeWithHourAndMinutes(endDate, endTime, isAllDay ? "23:59" : null),
+                interval,
+                intervalFactor,
+                intervalIsDate,
+                overview,
+                pauseAlerts,
+                isAllDay,
+                absent
+            );
+
+        }
+
         #endregion
 
         #region Read
@@ -246,6 +308,62 @@ namespace Appva.Mcss.Admin.Application.Services
                  sequence.Schedule.Id);
 
             this.sequenceRepository.Update(sequence);
+        }
+
+        public void Update(Guid eventId, Guid scheduleSettingsId, string description, DateTime startDate, DateTime endDate, 
+            string startTime, string endTime, int interval, int intervalFactor, 
+            bool intervalIsDate, bool canRaiseAlert, bool overview, bool isAllDay, bool pauseAlerts, bool absent)
+        {
+            var evt = this.Find(eventId);
+            if (scheduleSettingsId.NotEqual(evt.Schedule.ScheduleSettings.Id))
+            {
+                var schedule = this.context.QueryOver<Schedule>()
+                    .Where(x => x.Patient == evt.Patient)
+                    .And(x => x.IsActive)
+                    .JoinQueryOver<ScheduleSettings>(x => x.ScheduleSettings)
+                        .Where(x => x.Id == scheduleSettingsId)
+                    .SingleOrDefault();
+                if (schedule.IsNull())
+                {
+                    schedule = new Schedule
+                    {
+                        Patient = evt.Patient,
+                        ScheduleSettings = this.context.Get<ScheduleSettings>(scheduleSettingsId)
+                    };
+                    this.context.Update(schedule);
+                }
+                evt.Schedule = schedule;
+            }
+
+            var repeat = new Repeat(
+                this.GetDateTimeWithHourAndMinutes(startDate, startTime, isAllDay ? "00:00" : null),
+                this.GetDateTimeWithHourAndMinutes(endDate, endTime, isAllDay ? "23:59" : null),
+                interval,
+                intervalFactor,
+                0,
+                0,
+                null,
+                null,
+                false,
+                intervalIsDate,
+                isAllDay
+            );
+
+            evt.Name = evt.Schedule.ScheduleSettings.Name;
+            evt.Description = description;
+            evt.Repeat = repeat;
+            evt.CanRaiseAlert = canRaiseAlert;
+            evt.Overview = overview;
+            evt.PauseAnyAlerts = pauseAlerts;
+            evt.Absent = absent;
+            this.context.Update(evt);
+            this.auditService.Update(
+                evt.Patient,
+                "ändrade aktiviteten {0} till {1:yyyy-MM-dd HH:mm} - {2:yyyy-MM-dd HH:mm} (REF: {3}).",
+                evt.Description,
+                evt.Repeat.StartAt,
+                evt.Repeat.EndAt,
+                evt.Id);
         }
 
         #endregion

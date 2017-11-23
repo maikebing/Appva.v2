@@ -9,24 +9,24 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     public class OverviewTestCalendarHandler : RequestHandler<OverviewTestCalendar, OverviewTestCalendarModel>
     {
-        private IEventService events;
+        private readonly ISequenceService sequenceService;
         private ITaxonFilterSessionHandler filtering;
 
-        public OverviewTestCalendarHandler(IEventService events, ITaxonFilterSessionHandler filtering)
+        public OverviewTestCalendarHandler(ISequenceService sequenceService, ITaxonFilterSessionHandler filtering)
         {
-            this.events = events;
+            this.sequenceService = sequenceService;
             this.filtering = filtering;
         }
 
         public override OverviewTestCalendarModel Handle(OverviewTestCalendar message)
         {
             var filterTaxon = this.filtering.GetCurrentFilter();
-            var events = this.events.FindEventsWithinPeriod(
+            var events = this.sequenceService.FindEventsWithinPeriod(
                 DateTime.Now.Date,
                 DateTime.Now.Date.AddDays(7),
                 orgFilter: filterTaxon);
 
-            var delayedEvents = this.events.FindDelayedQuittanceEvents(filterTaxon);
+            var delayedEvents = this.sequenceService.FindDelayedQuittanceEvents(filterTaxon);
 
             var allEvents = delayedEvents.Concat(events);
 

@@ -26,9 +26,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IEventService"/>
+        /// The <see cref="ISequenceService"/>.
         /// </summary>
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
 
         #endregion
 
@@ -37,9 +37,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListCategoriesHandler"/> class.
         /// </summary>
-        public ListCategoriesHandler(IEventService eventService)
+        public ListCategoriesHandler(ISequenceService sequenceService)
         {
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
         }
 
         #endregion
@@ -49,7 +49,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override ListCategoriesModel Handle(Parameterless<ListCategoriesModel> message)
         {
-            var categories = this.eventService.GetCategories(forceGetAllCategories: true);
+            var categories = this.sequenceService.GetCategories(forceGetAllCategories: true);
 
             return new ListCategoriesModel
             {

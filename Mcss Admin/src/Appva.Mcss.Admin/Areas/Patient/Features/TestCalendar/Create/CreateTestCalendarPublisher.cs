@@ -12,13 +12,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
     public class CreateTestCalendarPublisher : RequestHandler<CreateTestCalendar, ListTestCalendar>
     {
         private readonly IPatientService patientService;
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
         private readonly ISettingsService settingsService;
 
-        public CreateTestCalendarPublisher(IPatientService patientService, IEventService eventService, ISettingsService settingsService)
+        public CreateTestCalendarPublisher(IPatientService patientService, ISequenceService sequenceService, ISettingsService settingsService)
         {
             this.patientService = patientService;
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
             this.settingsService = settingsService;
         }
 
@@ -27,9 +27,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var patient = this.patientService.Get(message.Id);
             if (message.Category.Equals("new"))
             {
-                message.Category = this.eventService.CreateCategory(message.NewCategory).ToString();
+                message.Category = this.sequenceService.CreateCategory(message.NewCategory).ToString();
             }
-            this.eventService.Create(
+            this.sequenceService.CreateEventBasedSequence(
                 new Guid(message.Category),
                 patient,
                 message.Description,

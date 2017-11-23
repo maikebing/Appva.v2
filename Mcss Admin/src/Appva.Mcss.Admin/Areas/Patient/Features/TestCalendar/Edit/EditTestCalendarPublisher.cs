@@ -11,20 +11,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     public class EditTestCalendarPublisher : RequestHandler<TestEventViewModel, ListTestCalendar>
     {
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
 
-        public EditTestCalendarPublisher(IEventService eventService)
+        public EditTestCalendarPublisher(ISequenceService sequenceService)
         {
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
         }
 
         public override ListTestCalendar Handle(TestEventViewModel message)
         {
             if (message.Category.Equals("new"))
             {
-                message.Category = this.eventService.CreateCategory(message.NewCategory).ToString();
+                message.Category = this.sequenceService.CreateCategory(message.NewCategory).ToString();
             }
-            this.eventService.Update(
+            this.sequenceService.Update(
                 message.SequenceId,
                 new Guid(message.Category),
                 message.Description,

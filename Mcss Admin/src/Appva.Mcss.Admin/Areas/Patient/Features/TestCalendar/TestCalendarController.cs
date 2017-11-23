@@ -45,7 +45,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         private readonly IPatientService patientService;
         private readonly ISettingsService settingsService;
         private readonly IScheduleService scheduleService;
-        private readonly IEventService eventService;
+        //private readonly IEventService eventService;
         private readonly ITaxonFilterSessionHandler filtering;
         private readonly ISequenceService sequenceService;
 
@@ -64,7 +64,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             ISettingsService settingsService,
             IScheduleService scheduleService,
             ISequenceService sequenceService,
-            IEventService eventService,
             IPersistenceContext context, ILogService logService,
             ITaxonFilterSessionHandler filtering
             )
@@ -74,7 +73,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             this.settingsService = settingsService;
             this.scheduleService = scheduleService;
             this.sequenceService = sequenceService;
-            this.eventService = eventService;
             this.context = context;
             this.logService = logService;
             this.filtering = filtering;
@@ -200,9 +198,9 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             {
                 if (model.Category.Equals("new"))
                 {
-                    model.Category = this.eventService.CreateCategory(model.NewCategory).ToString();
+                    model.Category = this.sequenceService.CreateCategory(model.NewCategory).ToString();
                 }
-                this.eventService.CreateTask(
+                this.sequenceService.CreateTask(
                     seqId,
                     new Guid(model.Category),
                     model.Description,
@@ -237,7 +235,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         public ActionResult EditActivity(Guid id, Guid taskId)
         {
             var evt = this.context.Get<Task>(taskId);
-            var categories = this.eventService.GetCategories();
+            var categories = this.sequenceService.GetCategories();
             return View(new EventViewModel
             {
                 TaskId = evt.Id,
@@ -308,7 +306,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         public ActionResult Remove(Guid id, Guid sequenceId, DateTime date)
         {
             var evt = this.sequenceService.Find(sequenceId);
-            this.eventService.DeleteSequence(evt);
+            this.sequenceService.Delete(evt);
             return this.RedirectToAction("List", new { Id = evt.Patient.Id, StartDate = date });
         }
 
@@ -326,7 +324,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         public ActionResult RemoveActivity(Guid id, Guid taskId)
         {
             var evt = this.context.Get<Task>(taskId);
-            this.eventService.DeleteActivity(evt);
+            this.sequenceService.DeleteActivity(evt);
             return this.RedirectToAction("List", new { Id = evt.Patient.Id, StartDate = evt.StartDate });
         }
 

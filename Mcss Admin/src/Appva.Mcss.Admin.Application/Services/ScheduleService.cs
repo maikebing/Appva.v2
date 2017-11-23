@@ -72,12 +72,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="schedule"></param>
         void SaveScheduleSetting(ScheduleSettings schedule);
 
-        /// <summary>
-        /// Gets the specified schedule identifier.
-        /// </summary>
-        /// <param name="scheduleId">The schedule identifier.</param>
-        /// <returns>Schedule<see cref="Schedule"/>.</returns>
-        Schedule Get(Guid scheduleId);
+        Schedule Find(Guid id);
     }
 
     /// <summary>
@@ -490,6 +485,11 @@ namespace Appva.Mcss.Admin.Application.Services
                 }
             }
             return null;
+        }
+
+        public Schedule Find(Guid id)
+        {
+            return this.persistence.Get<Schedule>(id);
         }
     }
 }

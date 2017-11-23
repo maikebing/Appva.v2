@@ -25,9 +25,9 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IEventService" />
+        /// The <see cref="ISequenceService"/>.
         /// </summary>
-        private IEventService events;
+        private readonly ISequenceService sequenceService;
 
         /// <summary>
         /// The <see cref="ITaxonFilterSessionHandler"/>
@@ -41,9 +41,9 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CalendarOverviewHandler"/> class.
         /// </summary>
-        public CalendarOverviewHandler(IEventService events, ITaxonFilterSessionHandler filtering)
+        public CalendarOverviewHandler(ISequenceService sequenceService, ITaxonFilterSessionHandler filtering)
         {
-            this.events = events;
+            this.sequenceService = sequenceService;
             this.filtering = filtering;
         }
 
@@ -55,12 +55,12 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         public override CalendarOverviewModel Handle(CalendarOverview message)
         {
             var filterTaxon = this.filtering.GetCurrentFilter();
-            var events = this.events.FindEventsWithinPeriod(
+            var events = this.sequenceService.FindEventsWithinPeriod(
                 DateTime.Now.Date,
                 DateTime.Now.Date.AddDays(7),
                 orgFilter: filterTaxon);
 
-            var delayedEvents = this.events.FindDelayedQuittanceEvents(filterTaxon);
+            var delayedEvents = this.sequenceService.FindDelayedQuittanceEvents(filterTaxon);
 
             var allEvents = delayedEvents.Concat(events);
 

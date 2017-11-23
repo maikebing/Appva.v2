@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Web.ViewModels;
     using Appva.Mcss.Admin.Areas.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -33,14 +34,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly IPatientService patientService;
 
         /// <summary>
-        /// The <see cref="IEventService"/>.
+        /// The <see cref="ISequenceService"/>.
         /// </summary>
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
 
         /// <summary>
         /// The <see cref="ISettingsService"/>.
         /// </summary>
         private readonly ISettingsService settingsService;
+
+        /// <summary>
+        /// The <see cref="IScheduleService"/>.
+        /// </summary>
+        private readonly IScheduleService scheduleService;
 
         #endregion
 
@@ -49,11 +55,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateEventPublisher"/> class.
         /// </summary>
-        public CreateEventPublisher(IPatientService patientService, IEventService eventService, ISettingsService settingsService)
+        public CreateEventPublisher(IPatientService patientService, ISequenceService sequenceService, ISettingsService settingsService, IScheduleService scheduleService)
         {
             this.patientService = patientService;
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
             this.settingsService = settingsService;
+            this.scheduleService = scheduleService;
         }
 
         #endregion
@@ -66,9 +73,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var patient = this.patientService.Get(message.Id);
             if (message.Category.Equals("new"))
             {
-                message.Category = this.eventService.CreateCategory(message.NewCategory).ToString();
+                message.Category = this.sequenceService.CreateCategory(message.NewCategory).ToString();
             }
-            this.eventService.Create(
+
+            this.sequenceService.CreateEventBasedSequence(
                 new Guid(message.Category),
                 patient,
                 message.Description,

@@ -33,11 +33,6 @@ namespace Appva.Mcss.Admin.Application.Services
         #region Variables
 
         /// <summary>
-        /// The <see cref="IEventService"/>.
-        /// </summary>
-        private readonly IEventService eventService;
-
-        /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
@@ -52,16 +47,26 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IAuditService auditing;
 
-
+        /// <summary>
+        /// The <see cref="ISequenceService"/>.
+        /// </summary>
         private readonly ISequenceService sequenceService;
+
+        /// <summary>
+        /// The <see cref="IScheduleService"/>.
+        /// </summary>
         private readonly IScheduleService scheduleService;
+
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>.
+        /// </summary>
         private readonly IPersistenceContext persistenceContext;
 
         #endregion
 
-        public CalendarService(IEventService eventService, IPatientService patientService, ISettingsService settingsService, IAuditService auditing, IScheduleService scheduleService, IPersistenceContext persistenceContext)
+        public CalendarService(ISequenceService sequenceService, IPatientService patientService, ISettingsService settingsService, IAuditService auditing, IScheduleService scheduleService, IPersistenceContext persistenceContext)
         {
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
             this.patientService = patientService;
             this.settingsService = settingsService;
             this.auditing = auditing;
@@ -76,12 +81,12 @@ namespace Appva.Mcss.Admin.Application.Services
 
         public IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date)
         {
-            return this.eventService.FindWithinMonth(patient, date);
+            return this.sequenceService.FindWithinMonth(patient, date);
         }
 
         public IList<ScheduleSettings> GetCategories()
         {
-            return this.eventService.GetCategories();
+            return this.sequenceService.GetCategories();
         }
 
         public Patient GetPatient(Guid id)
@@ -91,7 +96,7 @@ namespace Appva.Mcss.Admin.Application.Services
 
         public Schedule GetSchedule(Guid scheduleId)
         {
-            return this.scheduleService.Get(scheduleId);
+            return this.scheduleService.Find(scheduleId);
         }
 
         public IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, DateTime date)

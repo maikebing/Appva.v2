@@ -26,9 +26,9 @@ using Appva.Mcss.Admin.Application.Services;
         #region Variables.
 
         /// <summary>
-        /// The <see cref="IEventService" />
+        /// The <see cref="ISequenceService"/>.
         /// </summary>
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
 
         #endregion
 
@@ -37,9 +37,9 @@ using Appva.Mcss.Admin.Application.Services;
         /// <summary>
         /// Initializes a new instance of the <see cref="EditEventSequencePublisher"/> class.
         /// </summary>
-        public EditEventSequencePublisher(IEventService eventService)
+        public EditEventSequencePublisher(ISequenceService sequenceService)
         {
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
         }
 
         #endregion
@@ -51,9 +51,9 @@ using Appva.Mcss.Admin.Application.Services;
         {
             if (message.Category.Equals("new"))
             {
-                message.Category = this.eventService.CreateCategory(message.NewCategory).ToString();
+                message.Category = this.sequenceService.CreateCategory(message.NewCategory).ToString();
             }
-            this.eventService.Update(
+            this.sequenceService.Update(
                 message.SequenceId,
                 new Guid(message.Category),
                 message.Description,

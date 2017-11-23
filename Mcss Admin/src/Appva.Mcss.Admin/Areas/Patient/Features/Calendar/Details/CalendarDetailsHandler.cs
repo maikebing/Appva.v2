@@ -33,9 +33,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         private readonly ITaskService tasks;
 
         /// <summary>
-        /// The <see cref="IEventService"/>
+        /// The <see cref="ISequenceService"/>.
         /// </summary>
-        private readonly IEventService events;
+        private readonly ISequenceService sequenceService;
 
         /// <summary>
         /// The <see cref="IScheduleService"/>
@@ -49,10 +49,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="CalenderDetailsHandler"/> class.
         /// </summary>
-        public CalenderDetailsHandler(ITaskService tasks, IEventService events, IScheduleService schedules)
+        public CalenderDetailsHandler(ITaskService tasks, ISequenceService sequenceService, IScheduleService schedules)
         {
             this.tasks = tasks;
-            this.events = events;
+            this.sequenceService = sequenceService;
             this.schedules = schedules;
         }
 
@@ -67,8 +67,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 return EventTransformer.TasksToEvent(this.tasks.Get(message.TaskId));
             }
 
-            return this.events.GetActivityInSequence(message.SequenceId, message.StartTime);
-            //return this.events.GetActivityInSequence(message.SequenceId, message.EndTime); // finns där någon anledning till varför vi puttar in message.endTime här?
+            return this.sequenceService.GetActivityInSequence(message.SequenceId, message.StartTime);            
         }
 
         #endregion

@@ -46,6 +46,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IDelegationService delegations;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
         #endregion
 
         #region Constructor.
@@ -56,14 +61,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="accountService">The <see cref="IAccountService"/>.</param>
         /// <param name="filtering">The <see cref="ITaxonFilterSessionHandler"/>.</param>
         /// <param name="delegations">The <see cref="IDelegationService"/>.</param>
+        /// <param name="taxonomyService">The <see cref="ITaxonomyService"/>.</param>
         public ListAccountHandler(
             IAccountService accountService,
             ITaxonFilterSessionHandler filtering,
-            IDelegationService delegations)
+            IDelegationService delegations,
+            ITaxonomyService taxonomyService)
         {
-            this.accountService = accountService;
+            this.accountService    = accountService;
             this.filtering         = filtering;
             this.delegations       = delegations;
+            this.taxonomyService   = taxonomyService;
         }
 
         #endregion
@@ -73,9 +81,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListAccountModel Handle(ListAccount message)
         {
-            var user     = this.accountService.CurrentPrincipal();
-            var roles    = user.GetRoleAccess();
-            var accounts = this.accountService.Search(
+            var user      = this.accountService.CurrentPrincipal();
+            var taxonPath = this.accountService.LocationsFor(user).FirstOrDefault().Taxon.Path;
+            var roles     = user.GetRoleAccess();
+            var accounts  = this.accountService.Search(
                 new SearchAccountModel
                 {
                     IsFilterByIsActiveEnabled       = message.isActive.GetValueOrDefault(true),
@@ -87,7 +96,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     OrganisationFilterTaxonPath     = this.filtering.GetCurrentFilter().Path,
                     CurrentUserId                   = user.Id,
                     SearchQuery                     = message.q,
-                    CurrentUserLocationPath         = user.Locations.First().Taxon.Path //// TODO: Grab from Principal object.
+                    CurrentUserLocationPath         = taxonPath //// TODO: Grab from Principal object.
                 },
                 message.page.GetValueOrDefault(1));
             return new ListAccountModel
@@ -100,7 +109,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 IsFilterByCreatedByEnabled      = message.filterByCreatedBy,
                 IsFilterByIsActiveEnabled       = message.isActive.GetValueOrDefault(true),
                 IsFilterByIsPausedEnabled       = message.isPaused.GetValueOrDefault(false),
-                IsFilterByIsSynchronizedEnabled = message.isSynchronized
+                IsFilterByIsSynchronizedEnabled = message.isSynchronized,
+                CurrentUser                     = user
             };
         }
 

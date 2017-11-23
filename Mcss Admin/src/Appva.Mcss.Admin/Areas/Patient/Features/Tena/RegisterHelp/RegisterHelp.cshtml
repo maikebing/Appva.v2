@@ -1,0 +1,70 @@
+﻿@model Appva.Mcss.Admin.Models.RegisterHelpModel
+@{
+    SetTitle("Hitta TENA Identifi id");
+}
+
+<div class="width-limiter--m tena-reg" id="register-help">
+    <div class="alert-message">
+        <h2 class="alert-message__heading h3">Var hittar jag TENA Identifi ID?</h2>
+    </div>
+    <div class="section section--vspace section--hspace inliner">
+        <div>
+
+            <p class="body"><span class="help-numbering">1</span>Gå till TENA Identifi-portalen <a href="@Model.TenaUrl" target="_blank">@Model.TenaUrl</a></p>
+        </div>
+    </div>
+    <div class="section section--bluetone section--hspace section--vspace distributor distributor--justified">
+        <div>
+            <p class="body"><span class="help-numbering">2</span>Klicka ‘Hantera vårdtagare’.</p>
+        </div>
+        <div>
+            <img src="~/Assets/i/tena/tena-1.png" />
+        </div>
+        
+    </div>
+    <div class="section section--vspace section--hspace distributor distributor--justified">
+        <div>
+
+            <p class="body"><span class="help-numbering">3</span>Klicka ‘Detaljer’ för önskvärd vårdtagare.</p>
+        </div>
+        <div>
+            <img src="~/Assets/i/tena/tena-2.png" />
+        </div>
+    </div>
+    <div class="section section--bluetone section--vspace section--hspace distributor distributor--justified">
+        <div>
+
+            <p class="body"><span class="help-numbering">4</span>Klicka ‘Ändra vårdtagare’.</p>
+        </div>
+        <div>
+            <img src="~/Assets/i/tena/tena-3.png" />
+        </div>
+    </div>
+    <div class="section section--vspace section--hspace distributor distributor--justified">
+        <div>
+
+            <p class="body"><span class="help-numbering">5</span> Klicka ‘Hämta externt ID’.</p>
+        </div>
+        <div>
+            <img src="~/Assets/i/tena/tena-4.png" />
+        </div>
+    </div>
+    <div class="section section--bluetone section--hspace section--vspace distributor distributor--justified">
+        <div>
+
+            <p class="body">
+                <span class="help-numbering">6</span> Ett pop-up meddelande visas.
+            </p>
+            <p class="body"> Klicka ‘Kopiera till urklippet’.</p>
+            <p class="body">Externt ID är kopierat till urklippet för vald vårdtagare och kan nu kopieras till Appva.</p>
+        </div>
+        <div>
+            <img src="~/Assets/i/tena/tena-5.png" />
+        </div>
+    </div>
+    <div class="section--hspace form-controls form-controls--align-end form-controls--no-margin">
+        <button type="button" class="button" data-dialog-close="true">Stäng</button>
+    </div>
+</div>
+
+

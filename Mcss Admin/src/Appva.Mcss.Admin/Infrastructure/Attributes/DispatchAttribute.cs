@@ -174,6 +174,8 @@ namespace Appva.Mcss.Admin.Infrastructure.Attributes
             var routeValues = this.Handler(request).Handle(request);
             var urlHelper = new UrlHelper(filterContext.RequestContext);
             var url = urlHelper.Action(this.action, this.controller, routeValues);
+//            var testUrl = this.action + this.controller + routeValues.ToString();
+
             filterContext.Result = new RedirectResult(url);
         }
 

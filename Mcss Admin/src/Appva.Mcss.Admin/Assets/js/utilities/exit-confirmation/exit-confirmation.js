@@ -1,66 +1,95 @@
 (function ($) {
-	'use strict';
+    'use strict';
 
-	// Init on new content
-	$('body').on('newcontent', function (e) {
-		var context = e.target;
-		$('form', context).formChange();
-	});
+    // Init on new content
+    $('body').on('newcontent', function (e) {
+        var context = e.target;
+        $('.exit-confirmation', context).exitConfirmation();
+    });
 
-	// If form is changed
-	$.fn.formChange = function (settings) {
-		var config = {
-		};
+    // If form is changed
+    $.fn.exitConfirmation = function (settings) {
+        var config = {
+        };
 
-		if (settings) {
-			$.extend(config, settings);
-		}
+        if (settings) {
+            $.extend(config, settings);
+        }
 
-		var otherButtons = $('a, button').not('form a, form button, open-in-dialog');
+        // Buttons outside form that reloads the page or trigger navigation away from the page. And a little hacky class to prevent
+        // some buttons from triggering exit conf.
+        var otherButtons = $('a, button').not('form a, form button, open-in-dialog, .no-exit-conf');
 
-		this.each(function () {
-			var form = $(this);
-			var clearForm = form.serialize();
-			var hasInput = false;
-			var submit = form.find($(':submit').last());
-			var cancel = submit.parent().find($('a, button').not(submit));
-			var buttons = otherButtons.add(cancel);
+        this.each(function () {
+            var form = $(this);
 
-			form.on('change input', function () {
-				hasInput = form.serialize() !== clearForm;
-			});
+            // The form in it's pristine state
+            // TODO: check how firefox - with it's habit to remember values - does this. Is this really the clean state?
+            var clearForm = form.serialize();
 
-			buttons.on('click', function (e) {
-				if (hasInput === true) {
-					e.preventDefault();
-					var tag = $(this).prop('tagName');
-					var href = '#';
+            // Is the form "dirty", ie. is any inputs changed from the initial state
+            form.data('dirty', 'false');
 
-					if (tag === 'A') {
-						href = $(this).attr('href');
-					}
+            // The last submit button, supposedly the main submit button
+            // TODO: thats an assumption, that probably isn't always true...
+            var submit = form.find($(':submit').last());
 
-					var title = 'Lämna formulär';
-					var message = 'Du har inte sparat informationen i formuläret. Vill du verkligen lämna sidan?';
-					var symbol = '!';
-					var leaveBtn;
-					var dialog = $('<div class="dialog-bg"><div class="dialog--form-warning" role="dialog" tabindex="-1"><div class="dialog__title"><div class="dialog__symbol"><span>' + symbol + '</span></div><div class="dialog__header"><h3>' + title + '</h3></div></div><div class="dialog__content" aria-live="assertive"><div class="width-limiter width-limiter--xs"><p>' + message + '</p><div class="form-controls form-controls--align-end form-controls--no-margin">&nbsp;<a id="form-stay" class="button button--secondary">Avbryt</a></div></div></div></div></div>');
+            // Cancel buttons.
+            // TODO: See if we can do this some other way, seems a bit fragile
+            var cancel = submit.parent().find($('a, button').not(submit));
+            var buttons = otherButtons.add(cancel);
 
-					dialog.appendTo($('body'));
-					dialog.find($('#form-stay')).click(function () {
-						dialog.remove();
-					});
+            // If anything changes, does the form differ from it's pristine state?
+            // if so: Form is dirty.
+            form.on('change input', function () {
+                form.data('dirty', (form.serialize() !== clearForm).toString());
+            });
 
-					leaveBtn = $('<a id="form-leave" class="button button--negative" href="' + href + '">Lämna sida</a>');
+            function showDialogIfDirty(e) {
+                if (form.data('dirty') === 'true' && form.is(':visible')) {
+                    var triggeringEvent = e;
+                    e.preventDefault();
+                    var confirmDialog = $.netrdialog();
+                    // TODO: Translate "leave form"
+                    var leaveButton = $('<button class="button button--primary button--ml" data-dialog-action="close">Leave form</button>');
+                    var stayButton = $('<button class="button button--secondary" data-dialog-action="remain">Stay on form</button>');
+                    var content = $('<div><p>Do you want to leave your data?</p></div>');
+                    var buttonContainer = $('<div class="form-controls form-controls--align-end form-controls--no-margin"></div>');
 
-					leaveBtn.appendTo(dialog.find($('.form-controls')));
-					leaveBtn.click(function () {
-						hasInput = false;
-						dialog.remove();
-					});
-				}
-			});
-		});
-	};
+                    stayButton.appendTo(buttonContainer);
+                    leaveButton.appendTo(buttonContainer);
+                    buttonContainer.appendTo(content);
+
+                    confirmDialog.setContent(content);
+                    confirmDialog.open();
+                    e.stopPropagation();
+
+                    // events
+                    confirmDialog.dialogElement.on('click', '[data-dialog-action="close"]', function () {
+                        form[0].reset();
+                        form.data('dirty', 'false');
+                        // close dialog if the form is within one.
+                        confirmDialog.close();
+
+                        // setTimeout(function () {
+                        // Do what was planned to do!
+                        // console.log(triggeringEvent.target);
+                        // console.log(triggeringEvent.type);
+                        $(triggeringEvent.target).trigger(triggeringEvent.type);
+                        // }, 200);
+                        // form.trigger('close.netrdialog');
+
+                    });
+                    confirmDialog.dialogElement.on('click', '[data-dialog-action="remain"]', function () {
+                        confirmDialog.close();
+                    });
+                }
+            }
+            // if closing a form
+            form.on('formclosing', showDialogIfDirty);
+            // If any non submit button is pressede
+            buttons.on('click', showDialogIfDirty);
+        });
+    };
 
 }(jQuery));

@@ -57,10 +57,12 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
                 var context = HttpContext.Current;
                 if (context == null || context.Request == null)
                 {
+                    Log.Error("Context is null");
                     return false;
                 }
                 if (context.Request.Headers[ClientCertificateHeader] == null)
                 {
+                    Log.Error("Client certificate header empty");
                     return false;
                 }
                 var content = context.Request.Headers[ClientCertificateHeader];
@@ -87,7 +89,8 @@ namespace Appva.Mcss.Admin.Application.Security.Identity
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Log.Error("Client certificate header: {0}", HttpContext.Current.Request.Headers[ClientCertificateHeader]);
+                Log.Error("Exception when try identify tenant:{0}", ex.Message);
             }
             return identifier != null;
         }

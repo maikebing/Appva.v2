@@ -9,6 +9,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
     #region Imports.
 
     using Appva.Core.Resources;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Common;
@@ -107,7 +108,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         public override ListDelegationModel Handle(ListDelegation message)
         {
             var user          = this.accounts.CurrentPrincipal();
-            var userLocation  = this.identity.Principal.LocationPath();
+            var userLocation  = this.identity.Principal.LocationPath().IsNotEmpty() ? this.identity.Principal.LocationPath() : this.taxonomies.Roots(TaxonomicSchema.Organization).First().Path;
             var account       = this.accounts.Find(message.Id);
             var isInvisible   = account.Roles.Where(x => x.IsVisible).Count() == 0 && ! this.identity.IsInRole("_AA");
             var delegations   = this.delegations.List(userLocation, byAccount: message.Id, isActive: true);
@@ -126,7 +127,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
                     continue;
                 }
                 var organizationalTaxon      = this.taxonomies.Find(delegation.OrganisationTaxon.Id, TaxonomicSchema.Organization);
-                var isEditableForCurrentUser = organizationalTaxon.Path.StartsWith(userLocation);
+                var isEditableForCurrentUser = organizationalTaxon.Path.StartsWith(userLocation) || delegation.CreatedBy.Id == user.Id;
                 if (delegationMap.ContainsKey(taxon.Name))
                 {
                     delegationMap[taxon.Name].Add(DelegationTransformer.ToDelegationViewModel(delegation, taxons, isEditableForCurrentUser));

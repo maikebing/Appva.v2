@@ -130,7 +130,7 @@
 				numberOfMonths: 12,
 				onSelect: onSelect,
 				onClose: onClose,
-				buttonImage: '/project/images/icons/calendar.svg',
+				buttonImage: '/Assets/images/icons/calendar.svg',
 				buttonImageOnly: true,
 				buttonText: netr.string.translate('datepicker.selectDate'),
 				beforeShowDay: beforeShowDay

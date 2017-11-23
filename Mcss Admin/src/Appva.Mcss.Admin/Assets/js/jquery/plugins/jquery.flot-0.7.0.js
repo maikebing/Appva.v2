@@ -1681,7 +1681,7 @@
                         pos.top = Math.round(plotOffset.top + axis.p2c(tick.v) - axis.labelHeight/2);
                         if (axis.position == "left") {
                             pos.right = canvasWidth - (box.left + box.width - box.padding)
-                            align = "right";
+                             align = "right";
                         }
                         else {
                             pos.left = box.left + box.padding;

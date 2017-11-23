@@ -6,7 +6,7 @@
     var areaName = context.RouteData.DataTokens["area"] as string;
 }
 <div class="people-nav oldstyle">
-    <ul class="nav cf">
+    <ul class="nav cf oldstyle">
         @foreach (var item in Model)
         {
             if (item.IsSelected(actionName, controllerName, areaName) && item.Children.Count > 0)

@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Infrastructure
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Common;
     using Appva.Mcss.Admin.Application.Security.Identity;
     using Appva.Mcss.Admin.Application.Services;
@@ -42,6 +43,11 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// </summary>
         private readonly IIdentityService identityService;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
+
         #endregion
 
         #region Constructor.
@@ -49,9 +55,10 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountTransformer"/> class.
         /// </summary>
-        public AccountTransformer(IIdentityService identityService)
+        public AccountTransformer(IIdentityService identityService, ITaxonomyService taxonomyService)
         {
             this.identityService = identityService;
+            this.taxonomyService = taxonomyService;
         }
 
         #endregion
@@ -61,8 +68,12 @@ namespace Appva.Mcss.Admin.Infrastructure
         /// <inheritdoc />
         public AccountViewModel ToAccount(Account account)
         {
-            var principalLocationPath = this.identityService.Principal.LocationPath();
-            var IsEditableForCurrentPrincipal = account.Locations.OrderByDescending(x => x.Sort).First().Taxon.Path.StartsWith(principalLocationPath);
+            var principalLocationPath = this.identityService.Principal.LocationPath().IsEmpty() ? 
+                                        this.taxonomyService.Roots(TaxonomicSchema.Organization).First().Path : 
+                                        this.identityService.Principal.LocationPath();
+            var IsEditableForCurrentPrincipal = account.Locations.Count > 0 ? 
+                                                account.Locations.Any( x => x.Taxon.Path.StartsWith(principalLocationPath)) :
+                                                this.taxonomyService.Roots(TaxonomicSchema.Organization).First().Path.StartsWith(principalLocationPath);
             return new AccountViewModel
             {
                 Id                            = account.Id,

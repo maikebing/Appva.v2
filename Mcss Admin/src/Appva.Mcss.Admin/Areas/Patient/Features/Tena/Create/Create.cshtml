@@ -1,0 +1,62 @@
+﻿@model Appva.Mcss.Admin.Models.CreateTenaObserverPeriodModel
+@{
+    SetTitle("Ny Mätperiod");
+}
+<div class="grid">
+    <div data-size="s:24 l:12">
+        <div class="section section--hspace">
+            <h2>Skapa ny mätperiod - Tena Identifi</h2>
+            <div id="add-measuring-period">
+                <div class="alert-message">
+                    <h2 class="alert-message__heading h3">Ny mätperiod</h2>
+                </div>
+                @using (Html.BeginForm("create", "tena", FormMethod.Post, new { @class = "exit-confirmation" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="width-limiter width-limiter--s">
+                        <div class="grid grid--align-center">
+                            <div data-size="s:24 m:10">
+                                @Html.FormGroup(x => x.StartDate, "form-controls date-picker").Label("Från och med").TextBox(htmlAttributes: new
+                                       {
+                                           @class = "datepicker",
+                                           data_datepicker_limit = "future",
+                                           data_rule_datelimit = "future",
+                                           data_datepicker_dbquery = "true",
+                                           autocomplete = "off",
+                                           Value = Model.StartDate.ToString("yyyy-MM-dd")
+                                       }).Validate().Build()
+                      
+                            </div>
+                            <div>
+                                <svg class="icon icon--e icon--separator icon--separator-offset">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="~/Assets/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
+                                </svg>
+                            </div>
+                            <div data-size="s:24 m:10">
+                        
+                                    @Html.FormGroup(x => x.EndDate, "form-controls date-picker").Label("Till och med").TextBox(htmlAttributes: new
+                                       {
+                                           @class = "datepicker",
+                                           data_datepicker_limit = "future",
+                                           data_rule_datelimit = "future",
+                                           data_rule_greaterthan = "#StartDate",
+                                           data_rule_date = "true",
+                                           autocomplete = "off",
+                                           data_msg_greaterthan = "Slutdatum måste vara senare än startdatumet",
+                                           Value = Model.EndDate.ToString("yyyy-MM-dd")
+                                       }).Validate().Build()
+                                
+                            </div>
+                        </div>
+                        <div class="form-controls form-controls--align-end form-controls--no-margin">
+                            <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
+                            <button type="submit" class="button button--primary">Skapa</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

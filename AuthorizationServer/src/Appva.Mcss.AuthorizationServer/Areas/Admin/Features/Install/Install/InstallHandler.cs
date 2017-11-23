@@ -79,7 +79,10 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
                 .SingleOrDefault();
             if (setting.IsNotNull())
             {
-                return new Install();
+                return new Install()
+                {
+                    ExceptionMessage = "setting.IsNotNull()"
+                }; 
             }
             try
             {
@@ -93,6 +96,10 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
                 this.CreateUsers(roles, tenants);
                 this.CreateMenu(permissions);
                 this.CreateSettings();
+                return new Install()
+                {
+                    ExceptionMessage = "In try"
+                }; 
             }
             catch (Exception e)
             {
@@ -102,7 +109,10 @@ namespace Appva.Mcss.AuthorizationServer.Models.Handlers
                     ExceptionMessage = e.StackTrace
                 };
             }
-            return new Install();
+            return new Install()
+            {
+                ExceptionMessage = "Last shit"
+            }; 
         }
 
         private IList<Tenant> CreateTenants()

@@ -214,10 +214,12 @@ namespace Appva.Mcss.Admin.Application.Security
             {
                 retval.Add(new Claim(Core.Resources.ClaimTypes.Taxon,            account.Taxon.Id.ToString()));
             }
-            if (account.Locations.Count > 0)
+            
+            //// Add the location-claim
+            var location = this.accounts.LocationsFor(account).FirstOrDefault();
+            if (location != null)
             {
-                var location = account.Locations.OrderByDescending(x => x.Sort).FirstOrDefault();
-                retval.Add(new Claim(PrincipalExtensions.LocationsClaimType,     location.Taxon.Id.ToString()));
+                retval.Add(new Claim(PrincipalExtensions.LocationsClaimType, location.Taxon.Id.ToString()));
                 retval.Add(new Claim(PrincipalExtensions.LocationPathsClaimType, location.Taxon.Path));
             }
             if (this.settings.IsAccessControlListInstalled() && this.settings.IsAccessControlListActivated())

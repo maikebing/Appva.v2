@@ -8,7 +8,7 @@
 <div id="header" class="cf">
     @if (issuerTitle.Contains("Sjuksköterska"))
     {
-        <h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
+	<h1>Delegeringsbeslut av sjuksköterskan gällande hälso- och sjukvårdsuppgifter</h1>
     }
     else if (issuerTitle.Contains("Fysioterapeut"))
     {
@@ -83,18 +83,20 @@
             }
 		</tbody>
 	</table>
-    @if (Model.KnowledgeTests.Count > 0) {
+    @if (Model.KnowledgeTests.Count > 0)
+    {
 	    <div class="intro">
 		    <p>Undertecknad delegerar, i enlighet med Patientsäkerhetslagen och författningsbestämmelserna i SOSFS 1997:14 - Socialstyrelsens föreskrifter och allmänna råd; Delegering av arbetsuppgifter inom hälso- och sjukvård och tandvård. Den som mottager delegationen har läst och förstått MAS-riktlinjen, delegering av hälso- och sjukvårdsuppgifter. Har genomgått följande kunskapstester:</p>
 		    <table>
 			    <thead>
 				    <tr>
-					    <th scope="col">Test</th>
+					    <th scope="col">Kunskapstest</th>
 					    <th scope="col">Genomfördes</th>
 				    </tr>
 			    </thead>
 			    <tbody>
-                    @foreach (var test in Model.KnowledgeTests) {
+                    @foreach (var test in Model.KnowledgeTests)
+                    {
 				    <tr>
 					    <td>@test.Name</td>
 					    <td>@String.Format("{0:yyyy-MM-dd}", test.CompletedDate)</td>
@@ -108,7 +110,7 @@
 		<div class="col">
             @if (issuerTitle.Contains("Sjuksköterska"))
             {
-                <strong>Namnunderskrift delegerande sjuksköterska;</strong>
+			<strong>Namnunderskrift delegerande sjuksköterska;</strong>
             }
             else if (issuerTitle.Contains("Fysioterapeut"))
             {
@@ -139,6 +141,6 @@
 			<p>Datum</p>
 			<p>Underskrift</p>
 		</div>
-		<p><br/><br/><strong>@Model.SendToText</strong></p>
+        <p><br /><br /><strong>@Model.SendToText</strong></p>
 	</div>
 </div>

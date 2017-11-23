@@ -207,7 +207,7 @@ namespace Appva.Mcss.Admin.Application.Services
                     account.LastSynchronized = DateTime.Now;
 
                     this.audit.Update("synkroniserade användare {0} med ldap-katalog", account.Id);
-                    this.accountService.Update(account, null);
+                    this.accountService.Update(account);
 
                     SendSynchronizationMail(account, usernameUpdated, pinUpdated);
                 }

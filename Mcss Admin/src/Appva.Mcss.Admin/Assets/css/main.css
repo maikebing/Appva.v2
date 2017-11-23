@@ -946,7 +946,6 @@ a.pause-btn:active {
 }
 
 #main .people .h img {
-    width:30px;
     height:30px;
     vertical-align:middle;
 }
@@ -4022,4 +4021,9 @@ ul.people li {
 #logo {display:none;}
 
 
+}
+
+/* Overriding jQuery generated class tickLabel */
+.yAxis > .tickLabel {
+    left: 0px !important;
 }

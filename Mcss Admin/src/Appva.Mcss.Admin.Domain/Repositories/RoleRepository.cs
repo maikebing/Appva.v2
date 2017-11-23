@@ -8,9 +8,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 {
     #region Imports.
 
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using NHibernate.Transform;
@@ -20,7 +18,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IRoleRepository : IRepository<Role>, IListRepository<Role>
+    public interface IRoleRepository : 
+        IListRepository<Role>,
+        IUpdateRepository<Role>,
+        IRepository<Role>
     {
         /// <summary>
         /// Returns a <see cref="Role"/> by unique identifier.
@@ -149,5 +150,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         #endregion
+
     }
 }

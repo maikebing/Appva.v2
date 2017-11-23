@@ -8,6 +8,8 @@ namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
+    using Appva.Mcss.Web.ViewModels;
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.Mvc;
@@ -33,6 +35,34 @@ namespace Appva.Mcss.Admin.Models
         /// The selected roles.
         /// </summary>
         public string[] SelectedRoles
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The taxon which the user has permission to
+        /// </summary>
+        public Guid? Taxon
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Available taxons
+        /// </summary>
+        public IList<TaxonViewModel> Taxons
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// If the current user is allowed to update the account taxon
+        /// Eg. If current users location is child of accounts current taxon
+        /// </summary>
+        public bool CanUpdateTaxonPermission
         {
             get;
             set;

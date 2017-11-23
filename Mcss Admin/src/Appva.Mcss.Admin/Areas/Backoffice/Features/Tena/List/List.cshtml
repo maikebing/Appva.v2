@@ -1,0 +1,66 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.ListTenaModel
+@{
+    SetTitle("Backoffice - TENA Identifi");
+}
+@Html.Partial("_BackofficeMenuPartial")
+<div id="subheader" class="cf">
+    <h1>Tena Identifi</h1>
+</div>
+<div id="content" class="cf">
+    <div id="content-primary">
+        <div id="signlist" class="articlecategory">
+            @if (Model.IsInstalled)
+            {
+                using (Html.BeginForm("Update", "Tena"))
+                {
+                    <h4 class="list-header">Inställningar</h4>
+                    @Html.Submit("Spara", new { @class = "section-list-btn", style = "padding-right:16px!important" })
+                    <div style="clear:both"></div>
+                    <table id="signed-events">
+                        <thead class="head">
+                            <tr>
+                                <th>Endpoint-URL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="display-code">@(string.IsNullOrEmpty(Model.BaseAddress) ? "Saknas" : Model.BaseAddress)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="signed-events">
+                        <thead class="head">
+                            <tr>
+                                <th>ClientId</th>
+                                <th>ClientSecret</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="display-code">@(string.IsNullOrEmpty(Model.ClientIdMask) ? "Saknas" : Model.ClientIdMask)</td>
+                                <td class="display-code">@(string.IsNullOrEmpty(Model.ClientSecretMask) ? "Saknas" : Model.ClientSecretMask)</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(x => x.ClientId, "Ange nytt ClientId", new { style = "display:block;padding-bottom:5px;font-weight:bold" })
+                                    @Html.TextBoxFor(x => x.ClientId, new { style = "padding:4px;width:100%;box-sizing:border-box" })
+                                </td>
+                                <td>
+                                    @Html.LabelFor(x => x.ClientSecret, "Ange nytt ClientSecret", new { style = "display:block;padding-bottom:5px;font-weight:bold" })
+                                    @Html.TextBoxFor(x => x.ClientSecret, new { style = "padding:4px;width:100%;box-sizing:border-box" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    }
+                }
+                else
+                {
+                <h4 class="list-header" style="padding-bottom:20px">TENA Identify har inte installerats.</h4>
+                <div style="clear:both"></div>
+                <a href="@Url.Action("Install", "Tena")" class="section-list-btn" style="float:none!important;padding-right:16px!important;cursor:pointer">Installera</a>
+                <p></p>
+            }
+        </div>
+    </div>
+</div>

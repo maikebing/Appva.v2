@@ -26,16 +26,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="Signature"/> class.
         /// </summary>
-        /// <param name="type">The signature type.</param>
         /// <param name="signator">The signator.</param>
         /// <param name="data">The signed data.</param>
-        public Signature(Taxon type, Account signator, IList<SignedData> data)
+        public Signature(Account signator, IList<SignedData> data)
         {
-            Requires.NotNull(type,           "type"      );
             Requires.NotNull(signator,       "signator"  );
             Requires.NotNull(data,           "data"      );
             Requires.Range  (data.Count > 0, "data.Count");
-            this.Type     = type;
             this.Who      = signator;
             this.Data     = data;
             this.Checksum = this.ComputeChecksum();
@@ -54,15 +51,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #endregion
 
         #region Properties.
-
-        /// <summary>
-        /// The type of signature.
-        /// </summary>
-        public virtual Taxon Type
-        {
-            get;
-            internal protected set;
-        }
 
         /// <summary>
         /// The signator.
@@ -103,9 +91,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="signator">The signator.</param>
         /// <param name="data">The signed data.</param>
         /// <returns>A new <see cref="Signature"/> instance.</returns>
-        public static Signature New(Taxon type, Account signator, IList<SignedData> data)
+        public static Signature New(Account signator, IList<SignedData> data)
         {
-            return new Signature(type, signator, data);
+            return new Signature(signator, data);
         }
 
         #endregion

@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Domain.VO
     using System.Linq;
     using Appva.Mcss.Admin.Domain.Entities;
     using Validation;
+    using System.Reflection;
 
     #endregion
 
@@ -28,15 +29,13 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="value">The string representation of the value.</param>
         /// <param name="unit">The unit.</param>
-        public Measurement(object value, Taxon unit)
+        public Measurement(object value)
         {
             Requires.NotNull(value, "value");
-            Requires.NotNull(unit , "unit" );
             var type   = value.GetType();
             this.Value = Convert.ChangeType(value, typeof(string)) as string;
             this.Type  = type.FullName;
             this.Code  = System.Type.GetTypeCode(type);
-            this.Unit  = unit;
         }
 
         /// <summary>
@@ -80,15 +79,6 @@ namespace Appva.Mcss.Admin.Domain.VO
             internal protected set;
         }
 
-        /// <summary>
-        /// The unit.
-        /// </summary>
-        public virtual Taxon Unit
-        {
-            get;
-            internal protected set;
-        }
-
         #endregion
 
         #region Static Builders.
@@ -98,9 +88,9 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>A new <see cref="Measurement"/> instance.</returns>
-        public static Measurement New<T>(T value, Taxon unit) where T : struct
+        public static Measurement New<T>(T value) where T : struct
         {
-            return new Measurement(value, unit);
+            return new Measurement(value);
         }
 
         #endregion
@@ -112,9 +102,15 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetValue<T>() where T : struct
+        public T GetValue<T>()
         {
-            return (T) Convert.ChangeType(this.Value, System.Type.GetType(this.Type));
+            var type = System.Type.GetType(this.Type);
+            if (type.IsValueType)
+            {
+                return (T)Convert.ChangeType(this.Value, System.Type.GetType(this.Type));
+            }
+            ConstructorInfo ctor = type.GetConstructor(new[] { typeof(string) });
+            return (T)ctor.Invoke(new object[] { this.Value });
         }
 
         #endregion
@@ -124,11 +120,8 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// <inheritdoc />
         public override string ToString()
         {
-            if (this.Unit == null)
-            {
-                return this.Value;
-            }
-            return this.Value + " " + this.Unit.Name;
+            //// TODO: Should involve the type to also print the unit 
+            return this.Value;
         }
 
         /// <inheritdoc />
@@ -137,7 +130,6 @@ namespace Appva.Mcss.Admin.Domain.VO
             yield return this.Value;
             yield return this.Code;
             yield return this.Type;
-            yield return this.Unit.Id;
         }
 
         #endregion

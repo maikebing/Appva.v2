@@ -29,7 +29,23 @@ namespace Appva.Mcss.Admin.Areas.Roles.Models
         }
 
         [Required(ErrorMessage = "Roller får ej vara tom.")]
-        public IList<Tickable> Roles
+        public IList<Tickable> AdminRoles
+        {
+            get;
+            set;
+        }
+
+        [Required(ErrorMessage = "Roller får ej vara tom.")]
+        public IList<Tickable> UserRoles
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The name of the role, for displaying
+        /// </summary>
+        public string RoleName
         {
             get;
             set;

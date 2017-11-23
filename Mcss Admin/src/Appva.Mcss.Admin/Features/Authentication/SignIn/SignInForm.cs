@@ -48,5 +48,14 @@ namespace Appva.Mcss.Admin.Models
             get;
             set;
         }
+
+        /// <summary>
+        /// The login-view, to return if login fails
+        /// </summary>
+        public string LoginView 
+        { 
+            get;
+            set;
+        }
     }
 }

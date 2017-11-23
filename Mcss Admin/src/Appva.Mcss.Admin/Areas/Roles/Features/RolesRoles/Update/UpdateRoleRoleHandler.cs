@@ -71,7 +71,9 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
                 .List();
             return new UpdateRoleRole
             {
-                Roles = this.Merge(roles, role.Roles)
+                AdminRoles = this.Merge(roles.Where(x => x.IsVisible == false).ToList(), role.Roles),
+                UserRoles  = this.Merge(roles.Where(x => x.IsVisible == true).ToList(), role.Roles),
+                RoleName   = role.Name
             };
         }
 
@@ -91,7 +93,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
             var permissions = items.Select(x => new Tickable
             {
                 Id    = x.Id,
-                Label = x.Name
+                Label = x.Name,
             }).ToList();
             foreach (var permission in permissions)
             {
@@ -100,7 +102,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
                     permission.IsSelected = true;
                 }
             }
-            return permissions;
+            return permissions.OrderBy(x => x.Label).ToList();
         }
 
         #endregion

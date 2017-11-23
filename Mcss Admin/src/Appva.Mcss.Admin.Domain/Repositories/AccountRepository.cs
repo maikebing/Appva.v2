@@ -217,7 +217,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             Account accountAlias       = null;
             Role roleAlias             = null;
             Delegation delegationAlias = null;
-            Location locationAlias     = null;
             Taxon taxonAlias           = null;
             var query = this.Context.QueryOver<Account>(() => accountAlias)
                 .Where(x => x.IsActive == model.IsFilterByIsActiveEnabled);
@@ -255,9 +254,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             }
             if (model.OrganisationFilterTaxonPath.IsNotEmpty())
             {
-                query
-                    .Inner.JoinAlias(x => x.Locations, () => locationAlias)
-                    .Inner.JoinAlias<Taxon>(x => locationAlias.Taxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, model.OrganisationFilterTaxonPath));
+                query.Inner.JoinAlias<Taxon>(x => x.Taxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, model.OrganisationFilterTaxonPath));
             }
             if (model.IsFilterByCreatedByEnabled)
             {
@@ -333,6 +330,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             //// Ordering and transforming
             mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
                 .ThenByAlias(() => accountModel.LastName).Asc
+                .Fetch(x => accountModel.Locations).Eager
                 .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
             var count = query.Clone().Select(Projections.CountDistinct("Id")).SingleOrDefault<int>();
             var items = mainQuery.Skip(pageQuery.Skip).Take(pageQuery.PageSize).List<AccountModel>();

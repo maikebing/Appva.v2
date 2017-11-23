@@ -78,13 +78,13 @@ namespace Appva.Mcss.Admin.Modles.Handlers
         public override bool Handle(UpdateAccount message)
         {
             var account       = this.accounts.Find(message.Id);
-            var taxon         = this.taxonomies.Get(message.Taxon.ToGuid());
             var configuration = this.settings.MailMessagingConfiguration();
             
             account.UpdatedAt = DateTime.Now;
             account.FirstName = message.FirstName.Trim().FirstToUpper();
             account.LastName  = message.LastName .Trim().FirstToUpper();
             account.FullName  = string.Format("{0} {1}", account.FirstName, account.LastName);
+            account.Taxon     = this.taxonomies.Load(message.Taxon.ToGuid());
 
             var previousPassword               = account.DevicePassword;
             var isMobileDevicePasswordEditable = this.settings.Find<bool>(ApplicationSettings.IsMobileDevicePasswordEditable);
@@ -109,7 +109,9 @@ namespace Appva.Mcss.Admin.Modles.Handlers
                 }
                 account.PersonalIdentityNumber = message.PersonalIdentityNumber;
             }
-            this.accounts.Update(account, taxon);
+
+             
+            this.accounts.Update(account);
             //// If the the new password is null or empty, or previous password is unaltered, then
             //// then no reason to re-send an e-mail.
             if (message.DevicePassword.IsEmpty() || (previousPassword.IsNotEmpty() &&  previousPassword.Equals(message.DevicePassword)))

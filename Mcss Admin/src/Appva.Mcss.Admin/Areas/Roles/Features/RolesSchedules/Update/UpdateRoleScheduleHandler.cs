@@ -69,7 +69,9 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
                 .List();
             return new UpdateRoleSchedule
             {
-                Schedules = this.Merge(schedules, role.ScheduleSettings)
+                Schedules   = this.Merge(schedules.Where(x => x.ScheduleType == ScheduleType.Action).ToList(), role.ScheduleSettings).OrderBy(x => x.Label).ToList(),
+                Categories  = this.Merge(schedules.Where(x => x.ScheduleType == ScheduleType.Calendar).ToList() , role.ScheduleSettings).OrderBy(x => x.Label).ToList(),
+                RoleName    = role.Name
             };
         }
 

@@ -70,15 +70,19 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
             var accountRepository = new AccountRepository(context);
             var roleRepository = new RoleRepository(context);
             var permissionRepository = new PermissionRepository(context);
+
             var httpContext = MockedHttpRequestBase.CreateNew();
+            var taxonRepo = new TaxonRepository(context);
+
             var accountService = new AccountService(
-                    accountRepository,
-                    roleRepository,
-                    permissionRepository,
-                    context,
-                    setting,
-                    new AuditService(context, httpContext),
-                    new IdentityService(new Dictionary<string, object>()));
+                    repository: accountRepository,
+                    roles: roleRepository,
+                    permissions: permissionRepository,
+                    persitence: context,
+                    settingsService: setting,
+                    auditing: new AuditService(context, httpContext),
+                    identityService: new IdentityService(new Dictionary<string, object>()),
+                    taxonomies: new TaxonomyService(cache, taxonRepo));
             var handler = new CreateAccountPublisher(
                 accountService, 
                 setting, 
@@ -121,6 +125,7 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
             var roleRepository = new RoleRepository(context);
             var permissionRepository = new PermissionRepository(context);
             var httpContext = MockedHttpRequestBase.CreateNew();
+            var taxonRepo = new TaxonRepository(context);
             var accountService = new AccountService(
                     accountRepository,
                     roleRepository,
@@ -128,7 +133,8 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
                     context,
                     setting,
                     new AuditService(context, httpContext),
-                    new IdentityService(new Dictionary<string, object>()));
+                    new IdentityService(new Dictionary<string, object>()),
+                    new TaxonomyService(cache, taxonRepo));
             var handler = new CreateAccountPublisher(
                 accountService,
                 setting,

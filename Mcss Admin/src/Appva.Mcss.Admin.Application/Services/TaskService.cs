@@ -227,6 +227,12 @@ namespace Appva.Mcss.Admin.Application.Services
             return retval;
         }
 
+        public void DeleteActivity(Task task)
+        {
+            task.IsActive = false;
+            this.taskRepository.Update(task);
+        }
+
         #endregion
     }
 }

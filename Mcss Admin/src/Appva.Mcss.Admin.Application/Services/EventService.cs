@@ -31,7 +31,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public interface IEventService : IService
     {
-        Sequence Get(Guid id);
+        //Sequence Get(Guid id);
         IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date);
         IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null);
         //IList<CalendarTask> FindSequencesWithinMonth(Schedule schedule, DateTime date);
@@ -322,7 +322,6 @@ namespace Appva.Mcss.Admin.Application.Services
                       .And(s => s.ScheduleType == ScheduleType.Calendar)
                 .List();
             return EventTransformer.TasksToEvent(tasks);
-
         }
 
         /// <summary>
@@ -775,7 +774,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 {
                     return EventTransformer.SequenceToEvent(s, startDate, startDate.Add(s.Repeat.EndAt.GetValueOrDefault() - s.Repeat.StartAt));
                 }
-                startDate = s.Repeat.Next((Date)startDate);
+                startDate = (DateTime)s.Repeat.Next((Date)startDate);
             }
 
             throw new Exception("There is no event for this sequence on given date");
@@ -883,14 +882,12 @@ namespace Appva.Mcss.Admin.Application.Services
                         break;
                     }
                 }
-                startDate = sequence.Repeat.Next((Date)startDate);
+                startDate = (DateTime)sequence.Repeat.Next((Date)startDate);
                 endDate = startDate.Add(duration);
             }
 
             return retval;
         }
-
-        
 
         private static CalendarTask GetCalendarTaskFor(Sequence sequence, DateTime startDate, DateTime endDate, IList<Task> tasks)
         {

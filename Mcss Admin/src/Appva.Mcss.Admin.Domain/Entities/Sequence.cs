@@ -246,11 +246,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             var date = (Date)dateTime;
             var next = this.Repeat.Next(date);
-            return next;
+            return (DateTime)next;
         
             //return this.Repeat.Next((Date) date);
             
-            /*var factor = this.Repeat.IntervalFactor < 1 ? 1 : this.IntervalFactor;
+            /*
+             * var factor = this.Repeat.IntervalFactor < 1 ? 1 : this.IntervalFactor;
 
             if (this.Interval.Equals(Weekly))
             {
@@ -302,7 +303,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
             }
 
             //// Interval is specified in dates
-            return date.AddDays(this.Interval);*/
+            return date.AddDays(this.Interval);
+            */
         }
 
         #endregion

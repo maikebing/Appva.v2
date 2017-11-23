@@ -29,9 +29,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private Variables.
 
         /// <summary>
-        /// The <see cref="IEventService"/>.
+        /// The <see cref="ISequenceService"/>.
         /// </summary>
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
 
         /// <summary>
         /// The <see cref="ISettingsService"/>.
@@ -45,9 +45,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="EditEventSequenceHandler"/> class.
         /// </summary>
-        public EditEventSequenceHandler(IEventService eventService, ISettingsService settingsService)
+        public EditEventSequenceHandler(ISequenceService sequenceService, ISettingsService settingsService)
         {
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
             this.settingsService = settingsService;
         }
 
@@ -58,8 +58,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override EventViewModel Handle(EditEventSequence message)
         {
-            var evt = this.eventService.Get(message.SequenceId);
-            var categories = this.eventService.GetCategories();
+            var evt = this.sequenceService.Find(message.SequenceId);
+            var categories = this.sequenceService.GetCategories();
             var categorySelectlist = categories.IsNotNull() ? categories.Select(x => new SelectListItem
             {
                 Text = x.Name,

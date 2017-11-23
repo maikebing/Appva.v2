@@ -47,6 +47,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         private readonly IScheduleService scheduleService;
         private readonly IEventService eventService;
         private readonly ITaxonFilterSessionHandler filtering;
+        private readonly ISequenceService sequenceService;
 
         #endregion
 
@@ -62,6 +63,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             IPatientService patientService,
             ISettingsService settingsService,
             IScheduleService scheduleService,
+            ISequenceService sequenceService,
             IEventService eventService,
             IPersistenceContext context, ILogService logService,
             ITaxonFilterSessionHandler filtering
@@ -71,6 +73,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
             this.patientService = patientService;
             this.settingsService = settingsService;
             this.scheduleService = scheduleService;
+            this.sequenceService = sequenceService;
             this.eventService = eventService;
             this.context = context;
             this.logService = logService;
@@ -304,7 +307,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         [PermissionsAttribute(Permissions.Calendar.DeleteValue)]
         public ActionResult Remove(Guid id, Guid sequenceId, DateTime date)
         {
-            var evt = this.eventService.Get(sequenceId);
+            var evt = this.sequenceService.Find(sequenceId);
             this.eventService.DeleteSequence(evt);
             return this.RedirectToAction("List", new { Id = evt.Patient.Id, StartDate = date });
         }

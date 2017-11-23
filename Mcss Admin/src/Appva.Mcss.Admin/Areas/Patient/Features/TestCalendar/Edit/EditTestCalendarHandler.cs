@@ -13,19 +13,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     public class EditTestCalendarHandler : RequestHandler<EditTestCalendar, TestEventViewModel>
     {
-        private readonly IEventService eventService;
+        private readonly ISequenceService sequenceService;
         private readonly ISettingsService settingsService;
 
-        public EditTestCalendarHandler(IEventService eventService, ISettingsService settingsService)
+        public EditTestCalendarHandler(ISequenceService sequenceService, ISettingsService settingsService)
         {
-            this.eventService = eventService;
+            this.sequenceService = sequenceService;
             this.settingsService = settingsService;
         }
 
         public override TestEventViewModel Handle(EditTestCalendar message)
         {
-            var evt = this.eventService.Get(message.SequenceId);
-            var categories = this.eventService.GetCategories();
+            var evt = this.sequenceService.Find(message.SequenceId);
+            var categories = this.sequenceService.GetCategories();
             var categorySelectlist = categories.IsNotNull() ? categories.Select(x => new SelectListItem
             {
                 Text = x.Name,

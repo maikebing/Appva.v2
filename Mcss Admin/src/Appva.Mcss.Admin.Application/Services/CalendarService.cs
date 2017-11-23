@@ -154,7 +154,7 @@ namespace Appva.Mcss.Admin.Application.Services
                                     retval.Add(this.SequenceToEvent(sequence, dayAndTime.Subtract(before), dayAndTime.Add(after)));
                                 }
                             }
-                            intervalDate = sequence.Repeat.Next((Date)intervalDate);
+                            intervalDate = (DateTime)sequence.Repeat.Next((Date)intervalDate);
                         }
                     }
                 }

@@ -47,6 +47,7 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         private readonly IScheduleService scheduleService;
         private readonly IEventService eventService;
         private readonly ITaxonFilterSessionHandler filtering;
+        private readonly ISequenceService sequenceService;
 
         #endregion
 
@@ -56,25 +57,25 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         /// Initializes a new instance of the <see cref="CalendarController"/> class.
         /// </summary>
         public CalendarController(
-            IMediator mediator, 
-            IIdentityService identities, 
-            IAccountService accounts, 
+            IMediator mediator,
+            IIdentityService identities,
+            IAccountService accounts,
             IPatientService patientService,
             ISettingsService settingsService,
             IScheduleService scheduleService,
-            IEventService eventService,
             IPersistenceContext context, ILogService logService,
-            ITaxonFilterSessionHandler filtering
+            ITaxonFilterSessionHandler filtering,
+            ISequenceService sequenceService
             )
             : base(mediator, identities, accounts)
         {
             this.patientService = patientService;
             this.settingsService = settingsService;
             this.scheduleService = scheduleService;
-            this.eventService = eventService;
             this.context = context;
             this.logService = logService;
             this.filtering = filtering;
+            this.sequenceService = sequenceService;
         }
 
         #endregion
@@ -304,8 +305,8 @@ namespace Appva.Mcss.Admin.Areas.Practitioner.Features.Calendar
         [PermissionsAttribute(Permissions.Calendar.DeleteValue)]
         public ActionResult Remove(Guid id, Guid sequenceId, DateTime date)
         {
-            var evt = this.eventService.Get(sequenceId);
-            this.eventService.DeleteSequence(evt);
+            var evt = this.sequenceService.Find(sequenceId);
+            this.sequenceService.Delete(evt);
             return this.RedirectToAction("List", new { Id = evt.Patient.Id, StartDate = date });
         }
 

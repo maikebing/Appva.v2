@@ -14,14 +14,21 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using Appva.Common.Domain;
     using Validation;
     using Appva.Domain;
+    using NHibernate.Classic;
+using Appva.Core.Logging;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Sequence : AggregateRoot<Sequence>
+    public class Sequence : AggregateRoot<Sequence>, ILifecycle
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        private static readonly ILog Log = LogProvider.For<Sequence>();
+
         #region Variables.
 
         /// <summary>
@@ -242,9 +249,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// </summary>
         /// <param name="date">Current date in sequence</param>
         /// <returns>Next date in sequence</returns>
-        public virtual DateTime GetNextDateInSequence(DateTime dateTime)
+        public virtual DateTime? GetNextDateInSequence(DateTime dateTime)
         {
-            var date = (Date)dateTime;
+            var date = (Date) dateTime;
             var next = this.Repeat.Next(date);
             return (DateTime)next;
         
@@ -305,6 +312,32 @@ namespace Appva.Mcss.Admin.Domain.Entities
             //// Interval is specified in dates
             return date.AddDays(this.Interval);
             */
+        }
+
+        #endregion
+
+        #region ILifecycle Members
+
+        public virtual LifecycleVeto OnDelete(NHibernate.ISession s)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void OnLoad(NHibernate.ISession s, object id)
+        {
+            Log.Warn("Loading ID: {0}", id);
+        }
+
+        public virtual LifecycleVeto OnSave(NHibernate.ISession s)
+        {
+            Log.Warn("OnSave");
+            return LifecycleVeto.NoVeto;
+        }
+
+        public virtual LifecycleVeto OnUpdate(NHibernate.ISession s)
+        {
+            Log.Warn("OnUpdate");
+            return LifecycleVeto.NoVeto;
         }
 
         #endregion

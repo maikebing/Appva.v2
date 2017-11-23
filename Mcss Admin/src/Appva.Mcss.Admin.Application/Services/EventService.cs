@@ -774,7 +774,7 @@ namespace Appva.Mcss.Admin.Application.Services
                 {
                     return EventTransformer.SequenceToEvent(s, startDate, startDate.Add(s.Repeat.EndAt.GetValueOrDefault() - s.Repeat.StartAt));
                 }
-                startDate = (DateTime)s.Repeat.Next((Date)startDate);
+                startDate = s.Repeat.Next((Date) startDate).Value; //// HACK: Handle nullable date correctly.
             }
 
             throw new Exception("There is no event for this sequence on given date");
@@ -882,7 +882,7 @@ namespace Appva.Mcss.Admin.Application.Services
                         break;
                     }
                 }
-                startDate = (DateTime)sequence.Repeat.Next((Date)startDate);
+                startDate = sequence.Repeat.Next((Date) startDate).Value; //// Handle nullable date correctly.
                 endDate = startDate.Add(duration);
             }
 

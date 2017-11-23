@@ -476,7 +476,7 @@
     <component name="Repeat" class="Appva.Domain.Repeat, Appva.Domain">
       <property name="StartAt"         column="StartDate"            access="nosetter.camelcase" /> 
       <property name="EndAt"           column="EndDate"              access="nosetter.camelcase" />     
-      <property name="TimesOfDay"      column="Times"                access="nosetter.camelcase" not-null="false" type="Appva.Domain.TimeType, Appva.Domain"      />
+      <property name="TimesOfDay"      column="Times"                access="nosetter.camelcase" not-null="false" type="Appva.Domain.TimeOfDayType, Appva.Domain" />
       <property name="DaysOfWeek"      column="DaysOfWeek"           access="nosetter.camelcase" not-null="false" type="Appva.Domain.DayOfWeekType, Appva.Domain" />
       <property name="BoundsRange"     column="Dates"                access="nosetter.camelcase" not-null="false" type="Appva.Domain.DateType, Appva.Domain"      />
       <!-- New nullable property. -->

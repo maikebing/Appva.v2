@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Persistence;
     using NHibernate.Criterion;
     using Appva.Mcss.Admin.Application.Auditing;
+    using System;
 
     #endregion
 
@@ -101,7 +102,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var userId = this.identityService.PrincipalId;
             var orderedArticles = new List<ArticleModel>();
             var account = this.accountService.Find(userId);
-            var categories = this.articleService.GetRoleArticleCategoryList(account);
+            var categories = this.identityService.ArticleCategoryPermissions().Select(x => new Guid(x.Value));
             var filterTaxon = this.filtering.GetCurrentFilter();
             ArticleCategory articleCategory = null;
 
@@ -111,7 +112,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                         .Fetch(x => x.RefillOrderedBy).Eager
                             .JoinAlias(x => x.ArticleCategory, () => articleCategory)
                                 .WhereRestrictionOn(() => articleCategory.Id)
-                                    .IsIn(categories.Select(x => x.Id).ToArray());
+                                    .IsIn(categories.ToArray());
 
             orders.JoinQueryOver<Patient>(x => x.Patient)
                 .Where(x => x.IsActive)
@@ -130,7 +131,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             return new ArticleOverviewViewModel
             {
                 OrderedArticles = orderedArticles,
-                OrderOptions = this.articleService.GetOrderOptions(),
+                OrderOptions = this.articleService.GetArticleStatusOptions(),
                 UserId = userId
             };
         }

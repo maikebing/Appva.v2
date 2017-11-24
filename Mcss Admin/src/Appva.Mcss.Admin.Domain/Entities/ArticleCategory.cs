@@ -10,14 +10,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ArticleCategory : AggregateRoot<ArticleCategory>
+    public class ArticleCategory : AggregateRoot
     {
         #region Constructors.
 

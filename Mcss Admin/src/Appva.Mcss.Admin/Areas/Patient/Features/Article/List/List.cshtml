@@ -6,125 +6,75 @@
 }
 @Html.Partial("~/Areas/Patient/Features/Patient/Partials/_PatientDetails.cshtml", Model.Patient)
 @Html.Partial("~/Features/Shared/_SubMenuPartial.cshtml", Model.Patient)
-<div class="oldstyle">
-    <div id="subheader" class="cf">
-        <h1>Beställningslista</h1>
-        <a href="@Url.Action("Add", "Article")#add-item-to-order-list" class="btn open-in-dialog" data-dialog-title="Lägg till artikel" data-dialog-symbol="+">Lägg till artikel</a>
+
+<div class="section section--hspace section--vspace section--bluetone orderlist">
+    <div class="">
+        <h2>Beställningslista</h2>
+        
     </div>
-</div>
-<div class="section section--hspace section--vspace section--white orderlist">
-    @(Model.HasArticles ? Html.Raw("<h2>Begärd påfyllning</h2>") : Html.Raw("<h2>Artiklar</h2>"))
-    @if (Model.OrderedArticles.Count > 0)
-    {
-        <div class="section section--vspace section--white section--table">
-            @using (Html.BeginForm())
-            {
-                <div class="scrollable-table">
-                    <div class="inner">
-                        <table class="table-general scrollable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Namn</th>
-                                    <th scope="col">Beskrivning</th>
-                                    <th scope="col">Kategori</th>
-                                    <th scope="col">Begärdes av</th>
-                                    <th scope="col">Begärdes när</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for(int i = 0; i < Model.OrderedArticles.Count; i++)
-                                {
-                                    <tr class="@(Model.OrderedArticles[i].Status == ArticleStatus.OrderedFromSupplier ? Html.Raw("table-general__row--yellow") : Html.Raw(string.Empty))@(i % 2 != 0 ? Html.Raw(" table-general--even") : Html.Raw(""))">
-                                        <td>@Model.OrderedArticles[i].Name</td>
-                                        <td>@Model.OrderedArticles[i].Description</td>
-                                        <td>@Model.OrderedArticles[i].Category.Name</td>
-                                        <td>@(Model.OrderedArticles[i].OrderedBy.FirstName + " " + Model.OrderedArticles[i].OrderedBy.LastName)</td>
-                                        <td><time datetime="@Model.OrderedArticles[i].OrderDate">@(Model.OrderedArticles[i].FormattedOrderDate)</time></td>
-                                        @if (Html.HasPermissionFor(Permissions.OrderList.Update))
-                                        {
-                                            <td class="inliner">
-                                                <div class="control-container control-container--select control-container--no-margin">
-                                                    @Html.LabelFor(x => x.OrderedArticles[i].Status, "Status", new { @class = "visually-hidden" })
-                                                    @Html.DropDownListFor(x => x.OrderedArticles[i].Status, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].Status), new { @class = "select-style" })
-                                                </div>
-                                                <div class="control-container control-container--no-margin">
-                                                    @Html.HiddenFor(x => x.OrderedArticles[i].Id)
-                                                </div>
-                                            </td>
-                                        }
-                                        else
-                                        { 
-                                            <td>@Model.OrderedArticles[i].Status</td>
-                                        }
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                if(Html.HasPermissionFor(Permissions.OrderList.Update))
-                {
-                    <div class="distributor distributor--justified">
-                        <div>
-                            <input type="hidden" name="PatientId" value="@Model.Patient.Id" />
-                            @Html.Submit("Uppdatera alla", new { id = "submit-button", @class = "button", disabled = "disabled" })
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-    }
-    else if(Model.Articles.Count > 0 && Model.OrderedArticles.Count == 0)
-    {
-        <div class="section section--lightblue section--hspace section--vspace">
-            <p>Alla artiklar är påfyllda.</p>
-        </div>
-    }
-    @(Model.HasArticles == false ? Html.Raw("") : Html.Raw("<h2>Artiklar</h2>"))
     @if (Model.Articles.Count > 0)
     {
-        <table class="table-general">
-            <thead>
-                <tr>
-                    <th scope="col">Namn</th>
-                    <th scope="col">Beskrivning</th>
-                    <th scope="col">Kategori</th>
-                    @if (Html.HasPermissionFor(Permissions.OrderList.Edit) || Html.HasPermissionFor(Permissions.OrderList.Delete))
-                    {
-                        <th scope="col">Åtgärder</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < Model.Articles.Count; i++)
-                {
-                    <tr class="@(i % 2 != 0 ? Html.Raw("table-general--even") : Html.Raw(""))">
-                        <td>@Model.Articles[i].Name</td>
-                        <td>@(Model.Articles[i].Description == null ? string.Empty : Model.Articles[i].Description)</td>
-                        <td>@(Model.Articles[i].ArticleCategory == null || Model.Articles[i].ArticleCategory.IsActive == false ? Html.Raw("&mdash;") : Html.Raw(Model.Articles[i].ArticleCategory.Name))</td>
-                        @if (Html.HasPermissionFor(Permissions.OrderList.Edit) || Html.HasPermissionFor(Permissions.OrderList.Delete))
+        <div class="section section--vspace section--card section--table">
+            <div class="section--hspace distributor distributor--justified">
+                <h3>Artiklar</h3>
+                <div class="form-controls">
+                    <a href="@Url.Action("Add", "Article")#add-item-to-order-list" class="button button--primary open-in-dialog" data-dialog-symbol="+">Lägg till artikel</a>
+                </div>
+            </div>
+            @using (Html.BeginForm())
+            {
+
+                <table class="table-general">
+                    <thead>
+                        <tr>
+                            <th scope="col">Namn</th>
+                            <th scope="col">Beskrivning</th>
+                            <th scope="col">Kategori</th>
+                            <th scope="col">Begärdes av</th>
+                            <th scope="col">Begärdes när</th>
+                            <th scope="col">Status</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var article in Model.Articles)
                         {
-                            <td>
-                                @if (Html.HasPermissionFor(Permissions.OrderList.Edit))
+                            <tr class="@(article.Status == ArticleStatus.OrderedFromSupplier ? "table-general__row--yellow" : "")">
+                                <td>@article.Name</td>
+                                <td>@article.Description</td>
+                                <td>@article.ArticleCategory.Name</td>
+                                <td></td>
+                                <td><time datetime="@article.OrderDate">@(article.RefillOrderDate)</time></td>
+                                @if (Html.HasPermissionFor(Permissions.OrderList.Update))
                                 {
-                                    @Html.ActionLink("Ändra", "Edit", "Article", null, null, "add-item-to-order-list", new { Article = Model.Articles[i].Id }, new { @class = "button button--inline open-in-dialog", @data_dialog_title = "Ändra artikel" })
+                                    <td class="inliner">
+                                        <div class="control-container control-container--select control-container--no-margin">
+                                            @Html.LabelFor(x => article.Status, "Status", new { @class = "visually-hidden" })
+                                            @Html.DropDownListFor(x => article.Status, new SelectList(Model.OrderOptions, "Key", "Value", article.Status), new { @class = "select-style" })
+                                        </div>
+                                        <div class="control-container control-container--no-margin">
+                                            @Html.HiddenFor(x => article.Id)
+                                        </div>
+                                    </td>
                                 }
-                                @if (Html.HasPermissionFor(Permissions.OrderList.Delete))
+                                else
                                 {
-                                    @Html.ActionLink("Ta bort", "Delete", "Article", null, null, "remove-item", new { Article = Model.Articles[i].Id }, new { @class = "button button--negative button--inline open-in-dialog", @data_dialog_title = "Ta bort artikel" })
-                                }
-                            </td>
+                                    <td>@Model.OrderOptions[article.Status.ToString()]</td>
+                                }   
+
+                                <td>
+                                    <div class="form-controls--align-end section--hspace">
+                                        @Html.ActionLink(Permissions.OrderList.Update, "Ändra", "Edit", "Article", "add-item-to-order-list", new { Article = article.Id }, new { @class = "button button--neutral button--inline open-in-dialog", @data_dialog_title = "Ändra artikel" })
+                                        @Html.ActionLink(Permissions.OrderList.Delete, "Ta bort", "Delete", "Article", "remove-item", new { Article = article.Id }, new { @class = "button button--negative button--inline open-in-dialog icon-bg icon--only icon--delete", @data_dialog_title = "Ta bort artikel" })
+                                    </div>
+                                </td>
+                                
+                            </tr>
                         }
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <div class="section section--lightblue section--hspace section--vspace">
-            <p>@(Model.OrderedArticles.Count > 0 ? "Inga påfyllda artiklar hittades." : "Inga artiklar hittades för den här patienten.")</p>
+                    </tbody>
+                </table>
+
+            }
         </div>
     }
 </div>

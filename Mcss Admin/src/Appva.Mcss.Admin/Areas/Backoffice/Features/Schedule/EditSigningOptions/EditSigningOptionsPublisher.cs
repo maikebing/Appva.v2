@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         public override Identity<DetailsScheduleModel> Handle(EditSigningOptionsModel message)
         {
             var schedule = this.scheduleService.GetScheduleSettings(message.Id);
-            schedule.StatusTaxons = message.Options.Where(x => x.IsSelected).Select(x => this.taxonomyService.Load(x.Id)).ToList();
+            schedule.StatusTaxons = message.Options.Where(x => x.IsSelected).Select(x => this.taxonomyService.Load(new Guid(x.Id))).ToList();
             this.scheduleService.UpdateScheduleSetting(schedule);
 
             return new Identity<DetailsScheduleModel> { Id = message.Id };

@@ -34,8 +34,8 @@
       <HintPath>..\..\..\Packages\Appva.Azure.0.3.0\lib\net45\Appva.Azure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Core.0.5.0\lib\net45\Appva.Core.dll</HintPath>
+    <Reference Include="Appva.Core, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Core.0.7.2\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Cryptography, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -181,7 +181,7 @@
     <Compile Include="Repositories\SequenceRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="Configurations\AuditLoggingConfiguration.cs" />
-	<Compile Include="VO\OrderListConfiguration.cs" />
+    <Compile Include="VO\OrderListConfiguration.cs" />
     <Compile Include="Entities\VO\Base64Binary.cs" />
     <Compile Include="Entities\VO\ContactPoint.cs" />
     <Compile Include="Entities\VO\Gender.cs" />

@@ -99,7 +99,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns>A <see cref="EditArticleModel"/>.</returns>
         [Route("edit/{article:guid}")]
         [HttpGet, Dispatch]
-        [PermissionsAttribute(Permissions.OrderList.EditValue)]
+        [PermissionsAttribute(Permissions.OrderList.UpdateValue)]
         public ActionResult Edit(EditArticle request)
         {
             return this.View();

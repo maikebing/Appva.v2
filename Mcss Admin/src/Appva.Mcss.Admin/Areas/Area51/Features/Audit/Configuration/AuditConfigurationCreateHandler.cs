@@ -15,6 +15,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Audit
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.VO;
+    using System;
 
     #endregion
 
@@ -57,7 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Audit
 		/// <inheritdoc />
         public override AuditConfiguration Handle(AuditConfiguration message)
 		{
-            var selected       = message.OrganizationalUnits.Where(x => x.IsSelected).Select(x => x.Id).ToArray();
+            var selected       = message.OrganizationalUnits.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray();
             IList<Taxon> units = new List<Taxon>();
             if (selected.Length > 0)
             {

@@ -112,30 +112,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListArticleModel Handle(ListArticle message)
         {
-            var listArticleModel = new ListArticleModel();
-            var articleModelList = new List<ArticleModel>();
-            var account = this.accountService.Find(this.identityService.PrincipalId);
-            var categories = this.articleService.GetRoleArticleCategoryList(account);
-            var orderedArticles = this.articleRepository.ListByOrderedArticles(message.Id, categories).OrderByDescending(x => x.RefillOrderDate);
-            var articles = this.articleRepository.List(message.Id, categories).OrderByDescending(x => x.Name).ToList();
             var patient = this.patientService.Get(message.Id);
-            var patientViewModel = this.patientTransformer.ToPatient(patient);
+            var account = this.accountService.Find(this.identityService.PrincipalId);
+            var articles = this.articleService.ListArticlesFor(patient);
+        
 
-            foreach (var article in orderedArticles)
-            {
-                var options = new List<SelectListItem>();
-                articleModelList.Add(articleTransformer.ToArticleModel(article));
-            }
 
-            this.auditing.Read(patient, "läste beställningslistan");
+            this.auditing.Read(patient, "listade artiklar i beställningslistan");
 
             return new ListArticleModel
             {
-                OrderedArticles = articleModelList,
+                OrderedArticlesCount = 0,
                 Articles = articles,
-                HasArticles = articleModelList.Count > 0 || articles.Count > 0 ? true : false,
-                Patient = patientViewModel,
-                OrderOptions = this.articleService.GetOrderOptions()
+                Patient = this.patientTransformer.ToPatient(patient),
+                OrderOptions = this.articleService.GetArticleStatusOptions()
             };
         }
 

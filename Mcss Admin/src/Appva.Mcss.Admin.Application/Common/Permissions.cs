@@ -1415,33 +1415,28 @@ namespace Appva.Mcss.Admin.Application.Common
             /// <summary>
             /// The read value.
             /// </summary>
-            public const string ReadValue = Schema + "patient/orderlist/read";
+            public const string ReadValue = Schema + "patient/article/read";
 
             /// <summary>
             /// The create value.
             /// </summary>
-            public const string CreateValue = Schema + "patient/orderlist/create";
+            public const string CreateValue = Schema + "patient/article/create";
 
             /// <summary>
             /// The update value.
             /// </summary>
-            public const string UpdateValue = Schema + "patient/orderlist/update";
-
-            /// <summary>
-            /// The edit value.
-            /// </summary>
-            public const string EditValue = Schema + "patient/orderlist/edit";
+            public const string UpdateValue = Schema + "patient/article/update";
 
             /// <summary>
             /// The delete value.
             /// </summary>
-            public const string DeleteValue = Schema + "patient/orderlist/delete";
+            public const string DeleteValue = Schema + "patient/article/delete";
 
             /// <summary>
             /// Permission to read/view the article order list.
             /// </summary>
             [Sort(60)]
-            [Name("Read the article order list")]
+            [Name("Read articles")]
             [Description("Permission to read/view the article order list")]
             public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
 
@@ -1461,13 +1456,6 @@ namespace Appva.Mcss.Admin.Application.Common
             [Description("Permission update the order status of an article")]
             public static readonly IPermission Update = PermissionType.CreateNew(UpdateValue);
 
-            /// <summary>
-            /// Permission to edit articles.
-            /// </summary>
-            [Sort(63)]
-            [Name("Edit articles")]
-            [Description("Permission to edit articles")]
-            public static readonly IPermission Edit = PermissionType.CreateNew(EditValue);
 
             /// <summary>
             /// Permission to delete articles.
@@ -1671,12 +1659,38 @@ namespace Appva.Mcss.Admin.Application.Common
                 public const string SetRefilledValue = DeviceSchema + "/article/refill";
 
                 /// <summary>
+                /// The request refill value
+                /// </summary>
+                public const string RequestRefillValue = DeviceSchema + "/article/order";
+
+                /// <summary>
+                /// The read value
+                /// </summary>
+                public const string ReadValue = DeviceSchema + "/article/read";
+
+                /// <summary>
                 /// Permission to set the article as refilled.
                 /// </summary>
                 [Sort(10000)]
                 [Name("Refill an article from mobile device")]
                 [Description("Permission to set an article to refilled from a mobile device")]
                 public static readonly IPermission SetRefilled = PermissionType.CreateNew(SetRefilledValue);
+
+                /// <summary>
+                /// Permission to request refill from mobile device
+                /// </summary>
+                [Sort(10000)]
+                [Name("Request refill of an article from mobile device")]
+                [Description("Permission to request refill of an article from a mobile device")]
+                public static readonly IPermission RequestRefill = PermissionType.CreateNew(RequestRefillValue);
+
+                /// <summary>
+                /// Permission to read articles in mobile device
+                /// </summary>
+                [Sort(10000)]
+                [Name("Read articles from mobile device")]
+                [Description("Permission to read articles from mobile device")]
+                public static readonly IPermission Read = PermissionType.CreateNew(ReadValue);
             }
 
             #endregion

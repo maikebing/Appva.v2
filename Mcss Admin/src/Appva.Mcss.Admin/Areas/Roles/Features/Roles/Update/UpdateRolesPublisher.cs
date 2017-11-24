@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
             var role = this.persistence.Get<Role>(message.Id);
             role.Name = message.Name;
             role.Description = message.Description;
-            role.Permissions = this.service.ListAllIn(message.Permissions.Where(x => x.IsSelected).Select(x => x.Id).ToArray());
+            role.Permissions = this.service.ListAllIn(message.Permissions.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray());
             role.IsVisible = message.IsHiddenRole == false;
             this.persistence.Update(role);
             return true;

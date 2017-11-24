@@ -56,8 +56,8 @@
       <HintPath>..\..\..\Packages\Appva.Common.0.3.0\lib\net45\Appva.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Core, Version=0.6.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Core.0.6.1\lib\net45\Appva.Core.dll</HintPath>
+    <Reference Include="Appva.Core, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Core.0.7.2\lib\net45\Appva.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core.Messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -83,8 +83,8 @@
       <HintPath>..\..\..\Packages\Appva.Ldap.Nuget.0.0.1.7\lib\net45\Appva.Ldap.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Appva.Mvc, Version=0.6.0.17012, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Mvc.0.6.0\lib\net45\Appva.Mvc.dll</HintPath>
+    <Reference Include="Appva.Mvc, Version=0.7.2.21183, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Appva.Mvc.0.7.2\lib\net45\Appva.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Office, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -927,6 +927,7 @@
     <Content Include="Assets\css\auth.css" />
     <Content Include="Assets\css\datePicker.css" />
     <Content Include="Assets\css\new\all.min.css" />
+    <Content Include="Assets\css\new\hotfixes\general.css" />
     <Content Include="Assets\css\new\hotfixes\tena\list.css" />
     <Content Include="Assets\css\new\hotfixes\tena\registration.css" />
     <Content Include="Assets\css\new\main.prefixed.css" />
@@ -1089,6 +1090,7 @@
     <Content Include="Assets\i\ico-pending.png" />
     <Content Include="Assets\i\ico-question.png" />
     <Content Include="Assets\i\ico-tena-identifi.png" />
+    <Content Include="Assets\i\ico-trash.png" />
     <Content Include="Assets\i\ico-upload.png" />
     <Content Include="Assets\i\ico-walk-group.png" />
     <Content Include="Assets\i\ico-walk-message.png" />

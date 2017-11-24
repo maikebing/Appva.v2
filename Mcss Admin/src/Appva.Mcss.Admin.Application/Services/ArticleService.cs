@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Application.Models;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -35,14 +36,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Returns a collection of order options.
         /// </summary>
         /// <returns>An <see cref="IDictionary{string, string}"/>.</returns>
-        IDictionary<string, string> GetOrderOptions();
+        IDictionary<string, string> GetArticleStatusOptions();
 
         /// <summary>
-        /// Returns a collection of <see cref="ArticleCategory"/> filtered by role permissions.
+        /// Lists the articles for.
         /// </summary>
-        /// <param name="account">The <see cref="Account"/>.</param>
-        /// <returns>A collection of <see cref="ArticleCategory"/>.</returns>
-        IList<ArticleCategory> GetRoleArticleCategoryList(Account account);
+        /// <param name="patient">The patient.</param>
+        /// <returns></returns>
+        IList<Article> ListArticlesFor(Patient patient);
     }
 
     /// <summary>
@@ -63,6 +64,11 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly IAccountRepository accountRepository;
 
         /// <summary>
+        /// The <see cref="IIdentityService"/>
+        /// </summary>
+        private readonly IIdentityService identityService;
+
+        /// <summary>
         /// The <see cref="IAuditService"/>.
         /// </summary>
         private readonly IAuditService auditing;
@@ -77,11 +83,16 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="articleRepository">The <see cref="IArticleRepository"/>.</param>
         /// <param name="accountRepository">The <see cref="IAccountRepository"/>.</param>
         /// <param name="auditing">The <see cref="IAuditService"/>.</param>
-        public ArticleService(IArticleRepository articleRepository, IAccountRepository accountRepository, IAuditService auditing)
+        public ArticleService(
+            IArticleRepository articleRepository, 
+            IAccountRepository accountRepository, 
+            IIdentityService identityService,
+            IAuditService auditing)
         {
             this.articleRepository = articleRepository;
             this.accountRepository = accountRepository;
-            this.auditing = auditing;
+            this.identityService   = identityService;
+            this.auditing          = auditing;
         }
 
         #endregion
@@ -91,7 +102,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void UpdateStatus(IList<ArticleModel> list, Guid userId)
         {
-            var account = this.accountRepository.Find(userId);
+            var account = this.accountRepository.Get(userId);
             foreach (var orderedArticle in list)
             {
                 var article = this.articleRepository.Get(orderedArticle.Id);
@@ -108,7 +119,7 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IDictionary<string, string> GetOrderOptions()
+        public IDictionary<string, string> GetArticleStatusOptions()
         {
             return new Dictionary<string, string>
             {
@@ -119,21 +130,10 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IList<ArticleCategory> GetRoleArticleCategoryList(Account account)
+        public IList<Article> ListArticlesFor(Patient patient)
         {
-            var categories = new List<ArticleCategory>();
-            foreach (var role in account.Roles)
-            {
-                foreach (var category in role.ArticleCategories)
-                {
-                    if (!categories.Contains(category))
-                    {
-                        categories.Add(category);
-                    }
-                }
-            }
-
-            return categories;
+            var permissions = this.identityService.ArticleCategoryPermissions().Select(x => new Guid(x.Value)).ToList();
+            return this.articleRepository.List(patient.Id, permissions);
         }
 
         #endregion

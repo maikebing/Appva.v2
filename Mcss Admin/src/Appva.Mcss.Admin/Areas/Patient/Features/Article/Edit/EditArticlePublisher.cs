@@ -74,7 +74,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             article.Name = message.Name;
             article.Description = message.Description;
             article.ArticleCategory = category;
-            article.Version += 1;
+            //article.Version += 1;
             article.UpdatedAt = DateTime.Now;
             this.articleRepository.Update(article);
             this.auditing.Update(patient, "redigerade artikeln {0} ({1})", currentArticleName, article.Id);

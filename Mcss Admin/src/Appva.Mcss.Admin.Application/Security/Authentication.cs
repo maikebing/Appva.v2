@@ -238,6 +238,7 @@ namespace Appva.Mcss.Admin.Application.Security
             retval.AddRange(this.accounts.Roles(account).Select(x => new Claim(ClaimTypes.Role, x.MachineName)).ToList());
             retval.AddRange(this.accounts.Permissions(account).Select(x => new Claim(Core.Resources.ClaimTypes.Permission, x.Resource)).ToList());
             retval.AddRange(TaskService.GetAllRoleScheduleSettingsList(account).Select(x => new Claim(Core.Resources.ClaimTypes.SchedulePermission, x.Id.ToString())).ToList());
+            retval.AddRange(this.GetAllArticleCategoriesFor(account).Select(x => new Claim(Core.Resources.ClaimTypes.ArticleCategoryPermission, x.Id.ToString())).ToList());
             return retval;
         }
 
@@ -326,6 +327,20 @@ namespace Appva.Mcss.Admin.Application.Security
                     account.ResetFailedPasswordAttempts();
                 }
             }
+        }
+
+        #endregion
+
+        #region Private helpers
+
+        /// <summary>
+        /// Gets all article categories for user.
+        /// </summary>
+        /// <param name="account">The account.</param>
+        /// <returns></returns>
+        private IEnumerable<ArticleCategory> GetAllArticleCategoriesFor(Account account)
+        {
+            return account.Roles.SelectMany(x => x.ArticleCategories).Distinct();
         }
 
         #endregion

@@ -116,12 +116,12 @@ namespace Appva.Mcss.Admin.Application.Common
                     {
                          MenuItem.CreateNew("Signeringslistor", "List", "Schedule", "Patient", null, null, Permissions.Schedule.Read, this.Schedule),
                          MenuItem.CreateNew("Signerade händelser", "Sign", "Schedule", "Patient", null, null, Permissions.Schedule.EventList, null),
-                         MenuItem.CreateNew("Beställningslista", "List", "Article", "Patient", null, null, Permissions.OrderList.Read, null),
                          MenuItem.CreateNew("Larm", "List", "Alerts", "Patient", null, null, Permissions.Alert.Read, null),
                          MenuItem.CreateNew("Rapport", "ScheduleReport", "Schedule", "Patient", null, null, Permissions.Schedule.Report, null),
                          MenuItem.CreateNew("Kalender", "List", "Calendar", "Patient", null, null, Permissions.Calendar.Read, null),
                          MenuItem.CreateNew("Förbrukningsjournal", "List", "Inventory", "Patient", null, null, Permissions.Inventory.Read, null),
-                         MenuItem.CreateNew("TENA Identifi", "List", "Tena", "Patient", null, null, Permissions.Tena.Read, this.Tena)
+                         MenuItem.CreateNew("TENA Identifi", "List", "Tena", "Patient", null, null, Permissions.Tena.Read, this.Tena),
+                         MenuItem.CreateNew("Beställningslista", "List", "Article", "Patient", null, null, Permissions.OrderList.Read, null)
                     };
                 }
                 return this.patient;

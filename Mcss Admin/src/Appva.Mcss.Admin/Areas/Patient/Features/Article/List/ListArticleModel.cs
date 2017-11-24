@@ -24,14 +24,14 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// A list of articles with a refill request.
         /// </summary>
-        public IList<ArticleModel> OrderedArticles
+        public int OrderedArticlesCount
         {
             get;
             set;
         }
 
         /// <summary>
-        /// A list of refilled articles.
+        /// All articles
         /// </summary>
         public IList<Article> Articles
         {
@@ -43,15 +43,6 @@ namespace Appva.Mcss.Admin.Models
         /// A list of article order options.
         /// </summary>
         public IDictionary<string, string> OrderOptions
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Check if any refilled and ordered articles exists.
-        /// </summary>
-        public bool HasArticles
         {
             get;
             set;

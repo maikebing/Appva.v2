@@ -1,0 +1,75 @@
+﻿/* Tables */
+table.table-general tbody tr:nth-child(even) { background: rgb(239,241,246); }
+table.table-general tbody tr:nth-child(odd) { background: rgb(250, 251, 252); }
+table.table-general tbody tr:hover { background: rgb(219, 224, 236);}
+
+table.table-general thead th { color:rgb(64,78,104); }
+table.table-general td { 
+    color:rgb(64,78,104); 
+    padding-left:12px;
+}
+
+/* Buttons */
+a.button.icon-bg {
+    
+    background-repeat:no-repeat;
+    background-position-x:16px;
+    background-position-y:center;
+    background-size:16px;
+    padding-left:36px;
+    vertical-align:top;
+}
+
+a.button.icon-bg.icon--only {
+    font-size:0;
+    background-repeat:no-repeat;
+    background-position-x:center;
+    background-position-y:center;
+    background-size:16px;
+    padding:16px;
+}
+
+a.button.icon-bg.icon--delete {
+    background-image:url(/Assets/i/ico-trash.png);
+}
+
+.button {
+    padding:8px 16px;
+    font-weight:bold;
+}
+
+.button img.icon{
+    vertical-align:baseline;
+}
+
+.button--neutral {
+    background: rgb(99,116,145);
+    border:1px solid rgb(64,78,104);
+}
+
+.button--neutral:hover {
+    background:rgb(64,78,104);
+}
+
+.button--primary {
+    background: rgb(104,173,87);
+    border:1px solid rgb(88,159,73);
+}
+
+.button--primary:hover {
+    background:rgb(88,159,73);
+}
+
+.button--negative {
+    background: rgb(201,73,73);
+    border:1px solid rgb(160,40,40);
+}
+
+.button--negative:hover {
+    background:rgb(160,40,40);
+}
+
+.table-general .button {
+    font-size:14px;
+    padding:6px 16px;
+}

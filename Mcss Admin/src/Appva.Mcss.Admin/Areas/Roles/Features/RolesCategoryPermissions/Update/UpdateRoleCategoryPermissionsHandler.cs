@@ -18,6 +18,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc;
     using Appva.Persistence;
+    using System;
 
     #endregion
 
@@ -84,13 +85,13 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
             var selections = selected.Select(x => x.Id).ToList();
             var permissions = items.Select(x => new Tickable
             {
-                Id = x.Id,
+                Id = x.Id.ToString(),
                 Label = x.Name
             }).ToList();
 
             foreach (var permission in permissions)
             {
-                if (selections.Contains(permission.Id))
+                if (selections.Contains(new Guid(permission.Id)))
                 {
                     permission.IsSelected = true;
                 }

@@ -20,15 +20,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IArticleRepository : IRepository
+    public interface IArticleRepository : IRepository<Article>
     {
-        /// <summary>
-        /// Get an article by id.
-        /// </summary>
-        /// <param name="articleId">The article <see cref="Guid"/>.</param>
-        /// <returns>An <see cref="Article"/>.</returns>
-        Article Get(Guid articleId);
-
         /// <summary>
         /// Get a category by id.
         /// </summary>
@@ -48,15 +41,15 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="patientId">The patient <see cref="Guid"/>.</param>
         /// <param name="categories">A collection of <see cref="ArticleCategory"/>.</param>
         /// <returns>A collection of ordered <see cref="Article"/>.</returns>
-        IList<Article> ListByOrderedArticles(Guid patientId, IList<ArticleCategory> categories = null);
+        IList<Article> ListByOrderedArticles(Guid patientId, IList<Guid> categories = null);
 
         /// <summary>
         /// Returns a collection of refilled <see cref="Article"/>.
         /// </summary>
         /// <param name="patientId">The patient <see cref="Guid"/>.</param>
-        /// <param name="categories">A collection of <see cref="ArticleCategory"/>.</param>
-        /// <returns>A collection of refilled <see cref="Article"/>.</returns>
-        IList<Article> List(Guid patientId, IList<ArticleCategory> categories = null);
+        /// <param name="articleCategoryPermissions">A collection of Guid.</param>
+        /// <returns>A collection of <see cref="Article"/>.</returns>
+        IList<Article> List(Guid patientId, IList<Guid> articleCategoryPermissions = null);
 
         /// <summary>
         /// Updates an <see cref="Article"/>.
@@ -74,7 +67,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ArticleRepository : IArticleRepository
+    public sealed class ArticleRepository : Repository<Article>, IArticleRepository
     {
         #region Fields.
 
@@ -92,6 +85,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// </summary>
         /// <param name="persistenceContext">The <see cref="IPersistenceContext"/></param>
         public ArticleRepository(IPersistenceContext persistenceContext)
+            :base(persistenceContext)
         {
             this.persistenceContext = persistenceContext;
         }
@@ -99,15 +93,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #endregion
 
         #region IArticleRepository Members.
-
-        /// <inheritdoc />
-        public Article Get(Guid articleId)
-        {
-            return this.persistenceContext.QueryOver<Article>()
-                .Where(x => x.Id == articleId)
-                    .And(x => x.IsActive == true)
-                        .SingleOrDefault();
-        }
 
         public ArticleCategory GetCategory(Guid categoryId)
         {
@@ -127,7 +112,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public IList<Article> ListByOrderedArticles(Guid patientId, IList<ArticleCategory> categories = null)
+        public IList<Article> ListByOrderedArticles(Guid patientId, IList<Guid> categories = null)
         {
             var query = this.persistenceContext.QueryOver<Article>()
                 .Where(x => x.Patient.Id == patientId)
@@ -138,14 +123,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 query.JoinQueryOver(x => x.ArticleCategory)
                     .WhereRestrictionOn(x => x.Id)
-                        .IsIn(categories.Select(x => x.Id).ToArray());
+                        .IsIn(categories.ToArray());
             }
 
             return query.List();
         }
 
         /// <inheritdoc />
-        public IList<Article> List(Guid patientId, IList<ArticleCategory> categories = null)
+        public IList<Article> List(Guid patientId, IList<Guid> categories = null)
         {
             var query = this.persistenceContext.QueryOver<Article>()
                 .Where(x => x.Patient.Id == patientId)
@@ -155,8 +140,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             {
                 query.JoinQueryOver(x => x.ArticleCategory)
                     .WhereRestrictionOn(x => x.Id)
-                        .IsIn(categories.Select(x => x.Id).ToArray());
+                        .IsIn(categories.ToArray());
             }
+
+            query = query.OrderBy(x => x.Name).Asc;
 
             return query.List();
         }

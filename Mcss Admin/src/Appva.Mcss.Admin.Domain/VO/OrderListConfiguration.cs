@@ -9,7 +9,6 @@ namespace Appva.Mcss.Admin.Domain.VO
 {
     #region Imports.
 
-    using Appva.Common.Domain;
     using Newtonsoft.Json;
 
     #endregion
@@ -101,7 +100,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         }
 
         /// <inheritdoc />
-        public override bool Equals(OrderListConfiguration other)
+        public bool Equals(OrderListConfiguration other)
         {
             return other != null
                 && this.HasCreatedCategories.Equals(other.HasCreatedCategories)
@@ -110,5 +109,10 @@ namespace Appva.Mcss.Admin.Domain.VO
         }
 
         #endregion
+
+        protected override System.Collections.Generic.IEnumerable<object> GetEqualityComponents()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

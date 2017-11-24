@@ -43,7 +43,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Appva.Core.0.7.0\lib\net45\Appva.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\Appva.Core.0.7.2\lib\net45\Appva.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Appva.Core.Messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Appva.Core.Messaging.0.0.4\lib\net45\Appva.Core.Messaging.dll</HintPath>

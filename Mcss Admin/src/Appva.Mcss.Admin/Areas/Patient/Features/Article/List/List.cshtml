@@ -64,7 +64,10 @@
 
                                 <td>
                                     <div class="form-controls--align-end section--hspace">
-                                        @Html.ActionLink(Permissions.OrderList.Update, "Ändra", "Edit", "Article", "add-item-to-order-list", new { Article = article.Id }, new { @class = "button button--neutral button--inline open-in-dialog", @data_dialog_title = "Ändra artikel" })
+                                        @using (@Html.ActionLink(Permissions.OrderList.Update, "Ändra", "Edit", "Article", "add-item-to-order-list", new { Article = article.Id }, new { @class = "button button--neutral button--inline open-in-dialog", @data_dialog_title = "Ändra artikel" }))
+                                        {
+                                            <img src="~/Assets/i/btn-edit.png" />
+                                        }
                                         @Html.ActionLink(Permissions.OrderList.Delete, "Ta bort", "Delete", "Article", "remove-item", new { Article = article.Id }, new { @class = "button button--negative button--inline open-in-dialog icon-bg icon--only icon--delete", @data_dialog_title = "Ta bort artikel" })
                                     </div>
                                 </td>

@@ -572,9 +572,6 @@
     <Compile Include="Areas\Patient\Features\Measurement\Update\UpdateMeasurementHandler.cs" />
     <Compile Include="Areas\Patient\Features\Measurement\Update\UpdateMeasurementModel.cs" />
     <Compile Include="Areas\Patient\Features\Measurement\Update\UpdateMeasurementPublisher.cs" />
-    <Compile Include="Areas\Patient\Features\Observation\Create\CreateObservation.cs" />
-    <Compile Include="Areas\Patient\Features\Observation\List\ListObservations.cs" />
-    <Compile Include="Areas\Patient\Features\Observation\ObservationController.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrder.cs" />
     <Compile Include="Areas\Patient\Features\Order\Create\CreateOrderHandler.cs" />
     <Compile Include="Areas\Patient\Features\Order\OrderController.cs" />
@@ -1612,8 +1609,6 @@
     <Content Include="Areas\Patient\Features\Tena\Update\Update.cshtml" />
     <Content Include="Areas\Notification\Features\Notification\Partials\Templates\rename-inventory.cshtml" />
     <Content Include="Areas\Patient\Features\Tena\RegisterHelp\RegisterHelp.cshtml" />
-    <Content Include="Areas\Patient\Features\Observation\Create\Create.cshtml" />
-    <Content Include="Areas\Patient\Features\Observation\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Measurement\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Measurement\Create\Create.cshtml" />
     <Content Include="Areas\Patient\Features\Schedule\Update\Update.cshtml" />

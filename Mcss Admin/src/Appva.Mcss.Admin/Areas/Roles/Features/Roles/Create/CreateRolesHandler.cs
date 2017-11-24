@@ -58,7 +58,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
             {
                 Permissions = this.service.List().Select(x => new Tickable
                 {
-                    Id = x.Id,
+                    Id = x.Id.ToString(),
                     Label = x.Name,
                     HelpText = x.Description
                 }).ToList()

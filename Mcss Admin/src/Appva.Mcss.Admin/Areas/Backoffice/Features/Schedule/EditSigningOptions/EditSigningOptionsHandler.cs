@@ -66,7 +66,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             {
                 Options = statuses.Select(x => new Tickable 
                         { 
-                            Id    = x.Id,
+                            Id    = x.Id.ToString(),
                             Label = x.Name,
                             HelpText = x.Path,
                             IsSelected = schedule.StatusTaxons.Any(s => s.Id == x.Id)

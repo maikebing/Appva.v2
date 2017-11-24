@@ -56,7 +56,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Features.Ldap.Synchronization
         {
             foreach (var a in message.ReadyToSync.Where(x => x.IsSelected))
             {
-                var account = this.accountService.Find(a.Id);
+                var account = this.accountService.Find(new Guid(a.Id));
                 account.IsSynchronized = true;
                 this.ldapService.SynchronizeLdapAccount(account);
             }

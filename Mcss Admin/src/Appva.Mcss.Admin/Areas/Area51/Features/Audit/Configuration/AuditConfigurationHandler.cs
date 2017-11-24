@@ -84,7 +84,7 @@ namespace Appva.Mcss.Admin.Areas.Area51.Audit
                     )
                 ) || twoLevels.Contains(x))
                 .OrderBy(x => x.Sort)
-                    .Select(x => new OrganizationalUnit { Id = x.Id, Label = x.Name, IsSelected = configuration.Units != null && configuration.Units.Contains(x.Id), HelpText = x.Description })
+                    .Select(x => new OrganizationalUnit { Id = x.Id.ToString(), Label = x.Name, IsSelected = configuration.Units != null && configuration.Units.Contains(x.Id), HelpText = x.Description })
                 .ToList();
             return new AuditConfiguration { OrganizationalUnits = organizationalUnits };
 		}

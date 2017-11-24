@@ -94,8 +94,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var patient     = this.patientService.Get(message.Id);
             var assessments = assessable ? this.taxonomyService.List(TaxonomicSchema.RiskAssessment)
                 .Select(x => new Assessment 
-                    { 
-                        Id          = x.Id, 
+                    {
+                        Id = x.Id.ToString(), 
                         Label       = x.Name, 
                         Description = x.Description, 
                         ImagePath   = x.Type 
@@ -144,7 +144,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var ids = previousAssessments.Select(x => x.Id).ToList();
             foreach (var assessment in assessments)
             {
-                if (ids.Contains(assessment.Id))
+                if (ids.Contains(new Guid(assessment.Id)))
                 {
                     assessment.IsSelected = true;
                 }

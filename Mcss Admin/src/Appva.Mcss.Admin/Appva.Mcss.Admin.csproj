@@ -1256,6 +1256,10 @@
       <Project>{26d66f09-5072-4fb2-81c4-29df5249aaa7}</Project>
       <Name>Appva.Mcss.Admin.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Appva.Mvc.BetaExtensions\Appva.BetaMvc.csproj">
+      <Project>{20192d0e-85f8-42d3-adc5-b8404fcb1950}</Project>
+      <Name>Appva.BetaMvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appva.Sca\Appva.Sca.csproj">
       <Project>{f523cd19-d7c7-41b7-a28e-a2b978086513}</Project>
       <Name>Appva.Sca</Name>

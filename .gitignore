@@ -187,3 +187,5 @@ FakesAssemblies/
 # Tools folder
 [Tt]ools/NhProf/*
 
+
+\.DS_Store

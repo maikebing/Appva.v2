@@ -39,7 +39,7 @@
                 </table>
             </div>
             <h3>Förhandsgranskning</h3>
-            <table class="device-table">
+            <table id="row-selection" class="device-table">
                 <thead>
                     <tr class="head">
                         <th style="background:#777;text-align:center">@(Model.ValidateAtRow + 1)</th>
@@ -106,19 +106,75 @@
         setTimeout(function () {
             $('.progress-section-animation').css({ backgroundColor: '#5ac24f', color: '#fff' });
         }, 400);
-        $('.read-from-row').change(function () {
-            var readvalue = $(this).val();
-            $('.device-table tbody tr').each(function () {
-                console.log("found: " + $(this).attr('data-row'));
+
+        var start = $('.read-from-row');
+        var end = $('.read-to-row');
+        var lastValue;
+        setSelectedRow(start, true);
+        setSelectedRow(end, false);
+        start.bind('input', function () {
+            setSelectedRow($(this), true);
+        });
+        start.change(function () {
+            setInputValue($(this), end, true);
+        });
+        end.bind('input', function () {
+            setSelectedRow($(this), false);
+        });
+        end.change(function () {
+            setInputValue($(this), start, false);
+        });
+
+        function setSelectedRow(input, isStartValue) {
+            var next = isStartValue ? end : start;
+            var value = parseInt(input.val()), nextValue = parseInt(next.val());
+            $('#row-selection.device-table tbody tr').each(function () {
                 var cell = $(this).children(':first');
-                cell.css({ backgroundColor: '#eee' });
-                if ($(this).attr('data-row') == readvalue) {
-                    cell.css({ backgroundColor: '#e2f9e0' });
+                var dataRow = $(this).attr('data-row');
+                if (value == nextValue) {
+                    lastValue = value;
+                }
+                if (dataRow == input.val()) {
+                    if (isStartValue && value <= nextValue) {
+                        setColor(cell, '#e2f9e0', '#008908');
+                        if (typeof lastValue != 'undefined') {
+                            var row = $('#row-selection.device-table tbody').children('[data-row="' + lastValue + '"]');
+                            if (row.children(':first').css('background-color') == 'rgb(226, 249, 224)' && value != nextValue) {
+                                var isNext = lastValue == nextValue;
+                                setColor(row.children(':first'), isNext ? '#ffe9e9' : '#eee', isNext ? '#871717' : '#444');
+                            }
+                            lastValue = (function () {
+                                return;
+                            })();
+                        }
+                    } else if (!isStartValue && value > nextValue) {
+                        setColor(cell, '#ffe9e9', '#871717');
+                    }
+                } else if (dataRow != '-1' && dataRow != next.val()) {
+                    setColor(cell, '#eee', '#444');
+                }
+                if (dataRow == lastValue) {
+                    
                 }
             });
-        });
-        $('.read-to-row').change(function () {
-
-        });
+        }
+        function setColor(cell, bgColor, textColor) {
+            cell.css({ 'background-color': bgColor, 'color': textColor });
+        }
+        function setInputValue(sel, next, isStartVal) {
+            var selVal = parseInt(sel.val());
+            var nextVal = parseInt(next.val());
+            if ((isStartVal && selVal > nextVal) ||
+                (!isStartVal && selVal < nextVal)) {
+                sel.val(next.val());
+            }
+            if (sel.val() > @Model.SelectedLastRow) {
+                sel.val(@Model.SelectedLastRow);
+            }
+            if (sel.val() < @Model.SelectedFirstRow) {
+                sel.val(@Model.SelectedFirstRow);
+            }
+            setSelectedRow(sel, isStartVal);
+        }
     });
 </script>

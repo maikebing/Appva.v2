@@ -1534,7 +1534,7 @@ td.rights {
 #fileimport td:first-child {
     background:#eee;
     text-align:center;
-    transition:background 200ms ease-in-out;
+    transition:background 200ms ease-in-out, color 200ms ease-in-out;
 }
 #fileimport .fileinfo td:first-child {
     width:130px;

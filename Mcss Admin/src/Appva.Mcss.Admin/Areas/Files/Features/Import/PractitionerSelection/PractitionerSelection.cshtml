@@ -131,8 +131,9 @@
             $('#row-selection.device-table tbody tr').each(function () {
                 var cell = $(this).children(':first');
                 var dataRow = $(this).attr('data-row');
-                if (value == nextValue) {
+                if (value == nextValue && dataRow != -1) {
                     lastValue = value;
+                    setColor(cell, '#e2f9e0', '#008908');
                 }
                 if (dataRow == input.val()) {
                     if (isStartValue && value <= nextValue) {
@@ -150,11 +151,8 @@
                     } else if (!isStartValue && value > nextValue) {
                         setColor(cell, '#ffe9e9', '#871717');
                     }
-                } else if (dataRow != '-1' && dataRow != next.val()) {
+                } else if (dataRow != -1 && dataRow != next.val()) {
                     setColor(cell, '#eee', '#444');
-                }
-                if (dataRow == lastValue) {
-                    
                 }
             });
         }
@@ -162,17 +160,16 @@
             cell.css({ 'background-color': bgColor, 'color': textColor });
         }
         function setInputValue(sel, next, isStartVal) {
-            var selVal = parseInt(sel.val());
-            var nextVal = parseInt(next.val());
-            if ((isStartVal && selVal > nextVal) ||
-                (!isStartVal && selVal < nextVal)) {
-                sel.val(next.val());
+            var min = @Model.SelectedFirstRow, max = @Model.SelectedLastRow;
+            if (sel.val() > max) {
+                sel.val(max);
             }
-            if (sel.val() > @Model.SelectedLastRow) {
-                sel.val(@Model.SelectedLastRow);
+            if (sel.val() < min) {
+                sel.val(min);
             }
-            if (sel.val() < @Model.SelectedFirstRow) {
-                sel.val(@Model.SelectedFirstRow);
+            var selVal = parseInt(sel.val()), nextVal = parseInt(next.val());
+            if ((isStartVal && selVal > nextVal) || (!isStartVal && selVal < nextVal)) {
+                next.val(selVal);
             }
             setSelectedRow(sel, isStartVal);
         }

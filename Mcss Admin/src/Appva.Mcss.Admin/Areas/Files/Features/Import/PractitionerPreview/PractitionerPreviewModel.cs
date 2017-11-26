@@ -86,24 +86,6 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Roles that doesn't require HSA id.
-        /// </summary>
-        public string IncludedRolesWithoutHsaId
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The excluded roles.
-        /// </summary>
-        public string ExcludedRoles
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The excel data.
         /// </summary>
         public DataTable Data

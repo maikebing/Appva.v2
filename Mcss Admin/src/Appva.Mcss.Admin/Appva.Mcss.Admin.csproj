@@ -475,6 +475,7 @@
     <Compile Include="Areas\Files\Features\Import\PractitionerPreview\PractitionerPreviewPublisher.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelectionHandler.cs" />
     <Compile Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelectionModel.cs" />
+    <Compile Include="Areas\Files\Features\Import\PractitionerSelection\PractitionerSelectionPublisher.cs" />
     <Compile Include="Areas\Files\Features\Shared\FileUploadProperties.cs" />
     <Compile Include="Areas\Files\Features\Shared\PractitionerImportProperties.cs" />
     <Compile Include="Areas\Files\Features\View\Delete\DeleteFileHandler.cs" />

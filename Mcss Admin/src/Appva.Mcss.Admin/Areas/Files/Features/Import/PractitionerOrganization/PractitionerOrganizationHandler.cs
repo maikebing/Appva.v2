@@ -9,13 +9,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
+    using System.Collections.Generic;
+    using System.Data;
     using System.IO;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Files.Excel;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
     using Newtonsoft.Json;
+    using System;
 
     #endregion
 
@@ -59,14 +63,62 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var file = this.fileService.Get(message.Id);
             var model = new PractitionerOrganizationModel();
+            var properties = JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties);
 
-            if (file == null || Path.GetExtension(file.Name) != ".xlsx")
+            if (file == null ||
+                properties.PractitionerImportProperties == null ||
+                properties.PractitionerImportProperties.IsImportable == false)
             {
                 return model;
             }
 
-            model.IsNotNull = true;
+            int lastRow;
+            var settings = this.settingsService.Find(ApplicationSettings.FileConfiguration);
+            var path = this.fileService.SaveToDisk(file.Name, file.Data);
+            var data = ExcelReader.ReadPractitioners(
+                path,
+                settings.ImportPractitionerSettings.ValidateAtRow,
+                settings.ImportPractitionerSettings.ValidColumns,
+                out lastRow,
+                properties.PractitionerImportProperties.SelectedFirstRow.Value,
+                properties.PractitionerImportProperties.SelectedLastRow
+            );
+            File.Delete(path);
+
+            model.FileId = file.Id;
+            model.UniqueNodes = this.GetNodes(
+                data, 
+                settings.ImportPractitionerSettings.ValidColumns.IndexOf(
+                    settings.ImportPractitionerSettings.ValidColumns[5]
+                )
+            );
+
             return model;
+        }
+
+        #endregion
+
+        #region Private methods.
+
+        /// <summary>
+        /// Gets a list of unique organization nodes.
+        /// </summary>
+        /// <param name="data">The excel <see cref="DataTable"/>.</param>
+        /// <param name="columnIndex">The column index.</param>
+        /// <returns>A collection of unique organization nodes.</returns>
+        private IEnumerable<string> GetNodes(DataTable data, int columnIndex)
+        {
+            var nodes = new List<string>();
+
+            for (var i = 1; i < data.Rows.Count; i++)
+            {
+                if(nodes.Contains(data.Rows[i][data.Columns[columnIndex]].ToString()) == false)
+                {
+                    nodes.Add(data.Rows[i][data.Columns[columnIndex]].ToString());
+                }
+            }
+
+            return nodes;
         }
 
         #endregion

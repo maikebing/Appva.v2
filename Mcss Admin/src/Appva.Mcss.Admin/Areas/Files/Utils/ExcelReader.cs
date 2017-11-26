@@ -31,8 +31,9 @@ namespace Appva.Files.Excel
         /// <param name="path">The file path.</param>
         /// <param name="validateAtRow">Validate columns at the specified row.</param>
         /// <param name="validColumns">The valid column data.</param>
-        /// <param name="readFromRow">Read file from the specified row.</param>
         /// <param name="lastRow">The last row.</param>
+        /// <param name="readFromRow">Read file from the specified row.</param>
+        /// <param name="readToRow">Read file to the specified row.</param>
         /// <param name="previewRows">The number of rows that will be previewed.</param>
         /// <param name="isPreviewMode">If the reader will get a preview of the entire file.</param>
         /// <param name="skipInnerRows">Indicates if the preview will skip rows in the middle.</param>
@@ -40,9 +41,10 @@ namespace Appva.Files.Excel
         public static DataTable ReadPractitioners(
             string path, 
             int validateAtRow, 
-            IList<string> validColumns, 
-            int readFromRow, 
+            IList<string> validColumns,
             out int lastRow,
+            int readFromRow,
+            int? readToRow = null,
             int previewRows = 3,
             bool isPreviewMode = false, 
             bool skipInnerRows = false)

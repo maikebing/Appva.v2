@@ -41,6 +41,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// </summary>
         /// <param name="id">The <see cref="DataFile"/>.</param>
         void Delete(DataFile file);
+
+        /// <summary>
+        /// Saves a file.
+        /// </summary>
+        /// <param name="file">The <see cref="DataFile"/>.</param>
+        void Save(DataFile file);
     }
 
     /// <summary>
@@ -102,6 +108,12 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public void Delete(DataFile file)
         {
             this.persistence.Delete(file);
+        }
+
+        /// <inheritdoc />
+        public void Save(DataFile file)
+        {
+            this.persistence.Save(file);
         }
 
         #endregion

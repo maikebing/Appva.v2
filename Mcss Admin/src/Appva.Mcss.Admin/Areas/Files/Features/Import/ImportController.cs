@@ -28,6 +28,21 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
 
         #region Practitioners.
 
+        /*
+        /// <summary>
+        /// Handles the import practitioner request.
+        /// </summary>
+        /// <param name="request">The <see cref="UploadFileModel"/>.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [Route("{id:guid}/practitioner")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("practitionerstatus", "import")]
+        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
+        public ActionResult Practitioner(ImportPractitionerModel request)
+        {
+            return this.View();
+        }
+        */
+
         /// <summary>
         /// Start the import practitioners wizard.
         /// </summary>
@@ -54,21 +69,6 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
             return this.View();
         }
 
-        /*
-        /// <summary>
-        /// Handles the import practitioner request.
-        /// </summary>
-        /// <param name="request">The <see cref="UploadFileModel"/>.</param>
-        /// <returns><see cref="ActionResult"/>.</returns>
-        [Route("{id:guid}/practitioner")]
-        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("practitionerstatus", "import")]
-        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
-        public ActionResult Practitioner(ImportPractitionerModel request)
-        {
-            return this.View();
-        }
-        */
-
         /// <summary>
         /// Import practitioners, step 1: row selection.
         /// </summary>
@@ -78,6 +78,19 @@ namespace Appva.Mcss.Admin.Areas.Files.Features.Upload
         [HttpGet, Hydrate, Dispatch]
         [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
         public ActionResult PractitionerSelection(Identity<PractitionerSelectionModel> request)
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Handles the row selection request.
+        /// </summary>
+        /// <param name="request">The <see cref="PractitionerSelectionModel"/>.</param>
+        /// <returns><see cref="ActionResult"/>.</returns>
+        [Route("practitioners/{id:guid}/selection")]
+        [HttpPost, Validate, ValidateAntiForgeryToken, Dispatch("PractitionerOrganization", "Import")]
+        [PermissionsAttribute(Permissions.FileUpload.ExecuteValue)]
+        public ActionResult PractitionerSelection(PractitionerSelectionModel request)
         {
             return this.View();
         }

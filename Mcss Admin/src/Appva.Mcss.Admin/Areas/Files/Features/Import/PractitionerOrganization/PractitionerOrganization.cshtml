@@ -27,14 +27,13 @@
             </div>
             <div id="fileinfo">
                 <table class="device-table fileinfo">
-                    <tr>
-                        <td>Organisationsnod 1</td>
-                        <td>Dropdown-lista 1</td>
-                    </tr>
-                    <tr>
-                        <td>Organisationsnod 2</td>
-                        <td>Dropdown-lista 2</td>
-                    </tr>
+                    @foreach (var node in Model.UniqueNodes)
+                    {
+                        <tr>
+                            <td style="width:auto!important">@(string.IsNullOrWhiteSpace(node) ? "[Tomt fält]" : node)</td>
+                            <td><select><option>Välj organisationsnod</option></select></td>
+                        </tr>
+                    }
                 </table>
             </div>
             <div style="margin-top:20px;float:right">

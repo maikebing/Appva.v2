@@ -11,13 +11,14 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using System.Data;
+    using Appva.Cqrs;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PractitionerSelectionModel
+    public sealed class PractitionerSelectionModel : IRequest<Guid>
     {
         #region Properties.
 
@@ -97,15 +98,6 @@ namespace Appva.Mcss.Admin.Models
         /// The selected last row.
         /// </summary>
         public int SelectedLastRow
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Indicates if the file has importable practitioners.
-        /// </summary>
-        public bool IsImportable
         {
             get;
             set;

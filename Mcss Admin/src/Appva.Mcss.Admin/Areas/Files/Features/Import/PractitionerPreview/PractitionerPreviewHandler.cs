@@ -72,9 +72,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var data = ExcelReader.ReadPractitioners(
                 path, 
                 settings.ImportPractitionerSettings.ValidateAtRow, 
-                settings.ImportPractitionerSettings.ValidColumns, 
-                settings.ImportPractitionerSettings.ReadFromRow, 
+                settings.ImportPractitionerSettings.ValidColumns,
                 out lastRow,
+                settings.ImportPractitionerSettings.ReadFromRow,
+                null,
                 settings.ImportPractitionerSettings.PreviewRows,
                 true
             );

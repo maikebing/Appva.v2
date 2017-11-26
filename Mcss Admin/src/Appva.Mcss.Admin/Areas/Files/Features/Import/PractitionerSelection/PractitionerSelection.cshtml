@@ -8,91 +8,96 @@
 </div>
 <div id="content" class="log cf">
     <div id="fileimport">
-        @if (Model.Data != null && Model.IsImportable)
+        @if (Model.Data != null)
         {
-            <h3 style="padding-bottom:10px">Välj vilka rader som ska importeras</h3>
-            <div id="progress-container">
-                <div style="width:0%" class="progress-bar"></div>
-                <div class="progress-section">
-                    <div class="progress-section-notstarted progress-section-animation">1</div>
+            using (Html.BeginForm())
+            {
+                <h3 style="padding-bottom:10px">Välj vilka rader som ska importeras</h3>
+                <div id="progress-container">
+                    <div style="width:0%" class="progress-bar"></div>
+                    <div class="progress-section">
+                        <div class="progress-section-notstarted progress-section-animation">1</div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-section-notstarted">2</div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-section-notstarted">3</div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-section-notstarted">4</div>
+                    </div>
                 </div>
-                <div class="progress-section">
-                    <div class="progress-section-notstarted">2</div>
-                </div>
-                <div class="progress-section">
-                    <div class="progress-section-notstarted">3</div>
-                </div>
-                <div class="progress-section">
-                    <div class="progress-section-notstarted">4</div>
-                </div>
-            </div>
-            <div id="fileinfo">
-                <table class="device-table fileinfo">
-                    <tr>
-                        <td>Läs in från rad</td>
-                        <td>@Html.TextBoxFor(x => x.SelectedFirstRow, new { Value = Model.SelectedFirstRow, placeholder = Model.SelectedFirstRow, @class = "read-from-row" })</td>
-                    </tr>
-                    <tr>
-                        <td>Läs in till rad</td>
-                        <td>@Html.TextBoxFor(x => x.SelectedLastRow, new { Value = Model.SelectedLastRow, placeholder = Model.SelectedLastRow, @class = "read-to-row" })</td>
-                    </tr>
-                </table>
-            </div>
-            <h3>Förhandsgranskning</h3>
-            <table id="row-selection" class="device-table">
-                <thead>
-                    <tr class="head">
-                        <th style="background:#777;text-align:center">@(Model.ValidateAtRow + 1)</th>
-                        @if (Model.Data.Rows.Count > 0)
-                        {
-                            for (int i = 0; i < Model.Data.Columns.Count; i++)
-                            {
-                                <th>@Model.Data.Rows[0][Model.Data.Columns[i]]</th>
-                            }
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Data.Rows.Count > 1)
-                    {
-                        int j = 0;
-                        for (int i = 0; i < Model.Data.Rows.Count; i++)
-                        {
-                            if (j > 0)
-                            {
-                                var row = j > Model.PreviewRows ? Model.LastRow - Model.SkipRows - Model.PreviewRows + j : Model.ReadFromRow + j;
-                                var isEmptyRow = j > Model.PreviewRows && j <= Model.Data.Rows.Count - Model.PreviewRows;
-                                <tr data-row="@(isEmptyRow ? -1 : row)">
-                                    @if (isEmptyRow)
-                                    {
-                                        <td class="emptyrow" style="font-size:21px;padding:0 15px!important;text-align:left!important" colspan="@(Model.Data.Columns.Count + 1)">&#9642; &#9642; &#9642;</td>
-                                        i--;
-                                    }
-                                    else
-                                    {
-                                        <td>@row</td>
-                                        foreach (DataColumn column in Model.Data.Columns)
-                                        {
-                                            <td>@Model.Data.Rows[i][column].ToString()</td>
-                                        }
-                                    }
-                                </tr>
-                            }
-                            j++;
-                        }
-                    }
-                    else
-                    {
+                <div id="fileinfo">
+                    <table class="device-table fileinfo">
                         <tr>
-                            <td class="emptyrow" colspan="@(Model.Data.Columns.Count + 1)">Filen innehåller inga rader.</td>
+                            <td>Läs in från rad</td>
+                            <td>@Html.TextBoxFor(x => x.SelectedFirstRow, new { Value = Model.SelectedFirstRow, placeholder = Model.SelectedFirstRow, @class = "read-from-row" })</td>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            <div style="margin-top:20px;float:right">
-                @Html.ActionLink("Föregående", "PractitionerPreview", "Import", new { Id = Model.FileId, style = "padding-right:8px" })
-                @Html.ActionLink("Fortsätt", "PractitionerOrganization", "Import", null, new { @class = "btn-green" })
-            </div>
+                        <tr>
+                            <td>Läs in till rad</td>
+                            <td>@Html.TextBoxFor(x => x.SelectedLastRow, new { Value = Model.SelectedLastRow, placeholder = Model.SelectedLastRow, @class = "read-to-row" })</td>
+                        </tr>
+                    </table>
+                </div>
+                <h3>Förhandsgranskning</h3>
+                <table id="row-selection" class="device-table">
+                    <thead>
+                        <tr class="head">
+                            <th style="background:#777;text-align:center">@(Model.ValidateAtRow + 1)</th>
+                            @if (Model.Data.Rows.Count > 0)
+                            {
+                                for (int i = 0; i < Model.Data.Columns.Count; i++)
+                                {
+                                    <th>@Model.Data.Rows[0][Model.Data.Columns[i]]</th>
+                                }
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Data.Rows.Count > 1)
+                        {
+                            int j = 0;
+                            for (int i = 0; i < Model.Data.Rows.Count; i++)
+                            {
+                                if (j > 0)
+                                {
+                                    var row = j > Model.PreviewRows ? Model.LastRow - Model.SkipRows - Model.PreviewRows + j : Model.ReadFromRow + j;
+                                    var isEmptyRow = j > Model.PreviewRows && j <= Model.Data.Rows.Count - Model.PreviewRows;
+                                    <tr data-row="@(isEmptyRow ? -1 : row)">
+                                        @if (isEmptyRow)
+                                        {
+                                            <td class="emptyrow" style="font-size:21px;padding:0 15px!important;text-align:left!important" @("colspan=" + (Model.Data.Columns.Count + 1))>&#9642; &#9642; &#9642;</td>
+                                            i--;
+                                        }
+                                        else
+                                        {
+                                            <td>@row</td>
+                                            foreach (DataColumn column in Model.Data.Columns)
+                                            {
+                                                <td>@Model.Data.Rows[i][column].ToString()</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+                                j++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="emptyrow" @("colspan=" + (Model.Data.Columns.Count + 1))>Filen innehåller inga rader.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div style="margin-top:20px;float:right">
+                    @Html.HiddenFor(x => x.FileId)
+                    @Html.AntiForgeryToken()
+                    @Html.ActionLink("Föregående", "PractitionerPreview", "Import", new { Id = Model.FileId, style = "padding-right:8px" })
+                    @Html.Submit("Fortsätt", new { @class = "btn-green" })
+                </div>
+            }
         }
         else
         {

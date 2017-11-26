@@ -59,14 +59,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var file = this.fileService.Get(message.Id);
             var model = new PractitionerSelectionModel();
+            var properties = JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties);
 
-            if (file == null || Path.GetExtension(file.Name) != ".xlsx")
+            if (file == null || 
+                properties.PractitionerImportProperties == null || 
+                properties.PractitionerImportProperties.IsImportable == false)
             {
                 return model;
             }
 
             var settings = this.settingsService.Find(ApplicationSettings.FileConfiguration);
-            var properties = JsonConvert.DeserializeObject<FileUploadProperties>(file.Properties);
             var path = this.fileService.SaveToDisk(file.Name, file.Data);
             int lastRow;
 
@@ -76,9 +78,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
             model.Data = ExcelReader.ReadPractitioners(
                 path, 
                 settings.ImportPractitionerSettings.ValidateAtRow, 
-                settings.ImportPractitionerSettings.ValidColumns, 
-                settings.ImportPractitionerSettings.ReadFromRow, 
+                settings.ImportPractitionerSettings.ValidColumns,
                 out lastRow,
+                settings.ImportPractitionerSettings.ReadFromRow,
+                null,
                 settings.ImportPractitionerSettings.PreviewRows,
                 true,
                 true
@@ -86,7 +89,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             model.LastRow = lastRow;
             model.SkipRows = settings.ImportPractitionerSettings.SkipRows;
             model.PreviewRows = settings.ImportPractitionerSettings.PreviewRows;
-            model.IsImportable = properties.PractitionerImportProperties.IsImportable;
             File.Delete(path);
 
             if (properties.PractitionerImportProperties.SelectedFirstRow.HasValue)

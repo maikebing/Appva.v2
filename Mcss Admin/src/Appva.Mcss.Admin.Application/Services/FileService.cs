@@ -44,6 +44,12 @@ namespace Appva.Mcss.Admin.Application.Services
         void Delete(DataFile file);
 
         /// <summary>
+        /// Saves a file.
+        /// </summary>
+        /// <param name="file">The <see cref="DataFile"/>.</param>
+        void Save(DataFile file);
+
+        /// <summary>
         /// Saves the file to a temporary folder.
         /// </summary>
         /// <param name="fileName">The file name.</param>
@@ -65,7 +71,7 @@ namespace Appva.Mcss.Admin.Application.Services
     /// </summary>
     public sealed class FileService : IFileService
     {
-        #region Variables.
+        #region Fields.
 
         /// <summary>
         /// The <see cref="IFileRepository"/>.
@@ -101,9 +107,16 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.repository.Get(id);
         }
 
+        /// <inheritdoc />
         public void Delete(DataFile file)
         {
             this.repository.Delete(file);
+        }
+
+        /// <inheritdoc />
+        public void Save(DataFile file)
+        {
+            this.repository.Save(file);
         }
 
         /// <inheritdoc />

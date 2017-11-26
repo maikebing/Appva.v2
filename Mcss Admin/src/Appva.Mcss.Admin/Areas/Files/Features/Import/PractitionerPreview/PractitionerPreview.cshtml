@@ -67,7 +67,7 @@
                     else
                     {
                         <tr>
-                            <td class="emptyrow" colspan="@(Model.Data.Columns.Count + 1)">Filen innehåller inga rader.</td>
+                            <td class="emptyrow" @("colspan=" + (Model.Data.Columns.Count + 1))>Filen innehåller inga rader.</td>
                         </tr>
                     }
                 </tbody>
@@ -83,7 +83,6 @@
                         @Html.AntiForgeryToken()
                         @Html.Submit("Starta importguiden", new { @class = "btn-green" })
                     }
-                    @*@Html.ActionLink("Starta importguiden", "PractitionerSelection", "Import", null, new { @class = "btn-green" })*@
                 </div>
             }
         }

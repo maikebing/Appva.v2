@@ -31,15 +31,6 @@ namespace Appva.Mcss.Admin.Models
         }
 
         /// <summary>
-        /// Indicates if the file is not null.
-        /// </summary>
-        public bool IsNotNull
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// A collection of unique organization nodes.
         /// </summary>
         public IEnumerable<string> UniqueNodes

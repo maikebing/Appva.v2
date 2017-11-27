@@ -25,13 +25,11 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// </summary>
         /// <param name="hasCreatedCategories">If article categories has been migrated.</param>
         /// <param name="hasMigratedArticles">If articles has been migrated.</param>
-        /// <param name="hasMigratableItems">If there are any migratable items.</param>
         [JsonConstructor]
-        private OrderListConfiguration(bool hasCreatedCategories, bool hasMigratedArticles, bool hasMigratableItems)
+        private OrderListConfiguration(bool hasCreatedCategories, bool hasMigratedArticles)
         {
             this.HasCreatedCategories = hasCreatedCategories;
-            this.HasMigratedArticles = hasMigratedArticles;
-            this.HasMigratableItems = hasMigratableItems;
+            this.HasMigratedArticles  = hasMigratedArticles;
         }
 
         #endregion
@@ -58,14 +56,9 @@ namespace Appva.Mcss.Admin.Domain.VO
             private set;
         }
 
-        /// <summary>
-        /// If there are any migratable items.
-        /// </summary>
-        [JsonProperty]
-        public bool HasMigratableItems
+        public bool IsInstalled
         {
-            get;
-            set;
+            get { return this.HasCreatedCategories && this.HasMigratedArticles; }
         }
 
         #endregion
@@ -81,10 +74,9 @@ namespace Appva.Mcss.Admin.Domain.VO
         /// <returns>A new <see cref="OrderListConfiguration"/> instance.</returns>
         public static OrderListConfiguration CreateNew(
             bool hasCreatedCategories = false, 
-            bool hasMigratedArticles = false, 
-            bool hasMigratableItems = false)
+            bool hasMigratedArticles = false)
         {
-            return new OrderListConfiguration(hasCreatedCategories, hasMigratedArticles, hasMigratableItems);
+            return new OrderListConfiguration(hasCreatedCategories, hasMigratedArticles);
         }
 
         #endregion
@@ -95,8 +87,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         public override int GetHashCode()
         {
             return this.HasCreatedCategories.GetHashCode() +
-                   this.HasMigratedArticles.GetHashCode() +
-                   this.HasMigratableItems.GetHashCode();
+                   this.HasMigratedArticles.GetHashCode();
         }
 
         /// <inheritdoc />
@@ -104,8 +95,7 @@ namespace Appva.Mcss.Admin.Domain.VO
         {
             return other != null
                 && this.HasCreatedCategories.Equals(other.HasCreatedCategories)
-                && this.HasMigratedArticles.Equals(other.HasMigratedArticles)
-                && this.HasMigratableItems.Equals(other.HasMigratableItems);
+                && this.HasMigratedArticles.Equals(other.HasMigratedArticles);
         }
 
         #endregion

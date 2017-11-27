@@ -2,11 +2,18 @@
 @model EditArticleModel
 @{ SetTitle("Ändra en artikel"); }
 <div class="section section--hspace">
-    <h2>Ändra en artikel</h2>
+    
     <div id="add-item-to-order-list">
+        <div class="alert-message">
+            <h2 class="alert-message__heading h3">Ändra en artikel</h2>
+        </div>
         @using (Html.Post(new { @class = "validate" }))
         {
             <div class="width-limiter width-limiter--xs">
+                <div class="form-controls form-controls--text">
+                    @Html.LabelFor(x => x.Status, "Status")
+                    @Html.DropDownList("Status", new SelectList(Model.StatusOptions, "Key", "Value"), "Välj status", new { @class = "select-style" })
+                </div>
                 <div class="form-controls form-controls--select">
                     @Html.LabelFor(x => x.SelectedCategory, "Kategori")
                     @Html.DropDownListFor(x => x.SelectedCategory, Model.Categories, new { @class = "select-style" })
@@ -19,6 +26,7 @@
                     @Html.LabelFor(x => x.Description, "Beskrivning")
                     @Html.TextAreaFor(x => x.Description, new { cols = "30", rows = "5" })
                 </div>
+                
                 <div class="form-controls form-controls--align-end form-controls--no-margin">
                     @Html.HiddenFor(x => x.Id)
                     <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>

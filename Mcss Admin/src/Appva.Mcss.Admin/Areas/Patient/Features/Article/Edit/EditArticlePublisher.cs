@@ -30,6 +30,11 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         private readonly IArticleRepository articleRepository;
 
         /// <summary>
+        /// The <see cref="IArticleService"/>.
+        /// </summary>
+        private readonly IArticleService articleService;
+
+        /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
@@ -47,11 +52,16 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// Initializes a new instance of the <see cref="EditArticlePublisher"/> class.
         /// <param name="articleRepository">The <see cref="IArticleRepository"/>.</param>
         /// </summary>
-        public EditArticlePublisher(IArticleRepository articleRepository, IPatientService patientService, IAuditService auditing)
+        public EditArticlePublisher(
+            IArticleRepository articleRepository,
+            IArticleService articleService,
+            IPatientService patientService, 
+            IAuditService auditing)
         {
-            this.articleRepository = articleRepository;
-            this.patientService = patientService;
-            this.auditing = auditing;
+            this.articleRepository  = articleRepository;
+            this.articleService     = articleService;
+            this.patientService     = patientService;
+            this.auditing           = auditing;
         }
 
         #endregion
@@ -61,7 +71,8 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(EditArticleModel message)
         {
-            var article = this.articleRepository.Get(message.Article);
+            //// FIXME: Potential dangerous if UpdateStatusFor should be changed
+            var article = this.articleService.UpdateStatusFor(message.Article, message.Status);
             var currentArticleName = article.Name;
             var patient = this.patientService.Get(message.Id);
 
@@ -74,8 +85,8 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             article.Name = message.Name;
             article.Description = message.Description;
             article.ArticleCategory = category;
-            //article.Version += 1;
             article.UpdatedAt = DateTime.Now;
+            
             this.articleRepository.Update(article);
             this.auditing.Update(patient, "redigerade artikeln {0} ({1})", currentArticleName, article.Id);
 

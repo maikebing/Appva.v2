@@ -167,6 +167,7 @@
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\SearchPatientModel.cs" />
+    <Compile Include="Repositories\ArticleCategoryRepository.cs" />
     <Compile Include="Repositories\ArticleRepository.cs" />
     <Compile Include="Models\SearchProfileModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />
@@ -181,7 +182,7 @@
     <Compile Include="Repositories\SequenceRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="Configurations\AuditLoggingConfiguration.cs" />
-    <Compile Include="VO\OrderListConfiguration.cs" />
+    <Compile Include="Configurations\OrderListConfiguration.cs" />
     <Compile Include="Entities\VO\Base64Binary.cs" />
     <Compile Include="Entities\VO\ContactPoint.cs" />
     <Compile Include="Entities\VO\Gender.cs" />
@@ -220,7 +221,7 @@
     <Compile Include="Unit\IUnit.cs" />
     <Compile Include="Unit\TenaIdentifi\TenaIdentifiScale.cs" />
     <Compile Include="Unit\TenaIdentifi\TenaIdentifiUnit.cs" />
-    <Compile Include="VO\TenaConfiguration.cs" />
+    <Compile Include="Configurations\TenaConfiguration.cs" />
     <Compile Include="Configurations\SecurityMailerConfiguration.cs" />
     <Compile Include="Configurations\SecurityPasswordConfiguration.cs" />
     <Compile Include="Configurations\SecurityTokenConfiguration.cs" />
@@ -245,6 +246,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\Correction\" />
+    <Folder Include="VO\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -50,12 +50,12 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// </summary>
         /// <param name="request">The <see cref="ArticleStatusModel"/>.</param>
         /// <returns></returns>
-        [Route("list")]
-        [HttpPost, Dispatch("list", "article")]
+        [Route("update-status")]
+        [HttpPost, Dispatch]
         [PermissionsAttribute(Permissions.OrderList.UpdateValue)]
-        public ActionResult Status(ArticleStatusModel request)
+        public ActionResult UpdateStatus(ArticleStatusModel request)
         {
-            return this.View();
+            return this.Redirect(this.Request.UrlReferrer.ToString());
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
 
         #endregion
 
-        #region Edit.
+        #region Update.
 
         /// <summary>
         /// Returns the article edit view.

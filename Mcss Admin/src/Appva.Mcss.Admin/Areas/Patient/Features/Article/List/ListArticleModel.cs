@@ -24,7 +24,19 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// A list of articles with a refill request.
         /// </summary>
-        public int OrderedArticlesCount
+        public int OrderedCount
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the refill requested count.
+        /// </summary>
+        /// <value>
+        /// The refill requested count.
+        /// </value>
+        public int RefillRequestedCount
         {
             get;
             set;
@@ -43,6 +55,18 @@ namespace Appva.Mcss.Admin.Models
         /// A list of article order options.
         /// </summary>
         public IDictionary<string, string> OrderOptions
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the status filter.
+        /// </summary>
+        /// <value>
+        /// The status filter.
+        /// </value>
+        public ArticleStatus? StatusFilter
         {
             get;
             set;

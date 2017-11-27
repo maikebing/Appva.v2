@@ -536,8 +536,8 @@
     <Compile Include="Areas\Patient\Features\Article\OverviewUpdate\OverviewUpdateArticleHandler.cs" />
     <Compile Include="Areas\Patient\Features\Article\Overview\ArticleOverview.cs" />
     <Compile Include="Areas\Patient\Features\Article\Overview\ArticleOverviewHandler.cs" />
-    <Compile Include="Areas\Patient\Features\Article\Status\ArticleStatusHandler.cs" />
-    <Compile Include="Areas\Patient\Features\Article\Status\ArticleStatusModel.cs" />
+    <Compile Include="Areas\Patient\Features\Article\UpdateStatus\ArticleStatusHandler.cs" />
+    <Compile Include="Areas\Patient\Features\Article\UpdateStatus\ArticleStatusModel.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventHandler.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventPublisher.cs" />
     <Compile Include="Areas\Patient\Features\Calendar\Create\CreateEventModel.cs" />
@@ -1635,6 +1635,7 @@
     <Content Include="Areas\Area51\Features\Article\List\List.cshtml" />
     <Content Include="Areas\Patient\Features\Article\Inactivate\Inactivate.cshtml" />
     <Content Include="Areas\Roles\Features\RolesCategoryPermissions\Update\Update.cshtml" />
+    <Content Include="Areas\Patient\Features\Article\Partials\_EmptyList.cshtml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Mcss Admin 1.6.X.pubxml" />
     <Content Include="Templates\Template.xlsx" />

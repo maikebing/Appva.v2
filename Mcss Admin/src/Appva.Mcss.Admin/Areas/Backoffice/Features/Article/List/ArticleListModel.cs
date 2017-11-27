@@ -21,9 +21,12 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         #region Properties.
 
         /// <summary>
-        /// If there are any migratable items.
+        /// Gets or sets a value indicating whether this instance is installed.
         /// </summary>
-        public bool HasMigratableItems
+        /// <value>
+        ///   <c>true</c> if this instance is installed; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsInstalled
         {
             get;
             set;

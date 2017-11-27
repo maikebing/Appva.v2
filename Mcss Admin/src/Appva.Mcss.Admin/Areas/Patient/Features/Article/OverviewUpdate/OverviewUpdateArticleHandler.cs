@@ -54,7 +54,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(OverviewUpdateArticle message)
         {
-            this.service.UpdateStatus(message.OrderedArticles, message.UserId);
+            foreach (var article in message.OrderedArticles)
+            {
+                this.service.UpdateStatusFor(article.Id, article.Status);
+            }
             return true;
         }
 

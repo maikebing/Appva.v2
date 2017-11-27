@@ -10,6 +10,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Models;
@@ -48,11 +49,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListArticle Handle(ArticleStatusModel message)
         {
-            this.articleService.UpdateStatus(message.OrderedArticles, message.UserId);
+            foreach(var article in message.Articles.Where(x => x.IsSelected == true))
+            {
+                this.articleService.UpdateStatusFor(new Guid(article.Id), message.Status);
+            }
 
             return new ListArticle
             {
-                Id = message.PatientId
+                Id = message.Id
             };
         }
 

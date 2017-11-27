@@ -79,7 +79,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override OrderOverviewViewModel Handle(OverviewOrder message)
         {
-            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListSettings);
             var account = this.persistence.Get<Account>(this.identityService.PrincipalId);
             var scheduleList = TaskService.GetRoleScheduleSettingsList(account);
             var filterTaxon = this.filtering.GetCurrentFilter();

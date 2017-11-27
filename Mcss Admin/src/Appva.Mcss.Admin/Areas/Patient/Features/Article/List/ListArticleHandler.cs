@@ -21,6 +21,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Infrastructure;
     using Appva.Mcss.Application.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -30,16 +31,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
     public sealed class ListArticleHandler : RequestHandler<ListArticle, ListArticleModel>
     {
         #region Fields.
-
-        /// <summary>
-        /// The <see cref="IArticleRepository"/>.
-        /// </summary>
-        private readonly IArticleRepository articleRepository;
-
-        /// <summary>
-        /// The <see cref="IArticleTransformer"/>.
-        /// </summary>
-        private readonly IArticleTransformer articleTransformer;
 
         /// <summary>
         /// The <see cref="IArticleService"/>.
@@ -78,16 +69,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="ListArticleHandler"/> class.
         /// </summary>
-        /// <param name="articleRepository">The <see cref="IArticleRepository"/></param>
-        /// <param name="articleTransformer">The <see cref="IArticleTransformer"/></param>
         /// <param name="accountService">The <see cref="IAccountService"/>.</param>
         /// <param name="identityService">The <see cref="IIdentityService"/>.</param>
         /// <param name="patientService">The <see cref="IPatientService"/></param>
         /// <param name="patientTransformer">The <see cref="IPatientTransformer"/></param>
         /// <param name="articleService">The <see cref="IAuditService"/>.</param>
         public ListArticleHandler(
-            IArticleRepository articleRepository, 
-            IArticleTransformer articleTransformer, 
             IArticleService articleService,
             IAccountService accountService,
             IIdentityService identityService, 
@@ -95,8 +82,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             IPatientTransformer patientTransformer, 
             IAuditService auditing)
         {
-            this.articleRepository = articleRepository;
-            this.articleTransformer = articleTransformer;
             this.articleService = articleService;
             this.accountService = accountService;
             this.identityService = identityService;
@@ -112,20 +97,20 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListArticleModel Handle(ListArticle message)
         {
-            var patient = this.patientService.Get(message.Id);
-            var account = this.accountService.Find(this.identityService.PrincipalId);
-            var articles = this.articleService.ListArticlesFor(patient);
-        
-
+            var patient  = this.patientService.Get(message.Id);
+            var account  = this.accountService.Find(this.identityService.PrincipalId);
+            var articles = this.articleService.ListArticlesFor(patient, message.Status);
 
             this.auditing.Read(patient, "listade artiklar i beställningslistan");
 
             return new ListArticleModel
             {
-                OrderedArticlesCount = 0,
-                Articles = articles,
-                Patient = this.patientTransformer.ToPatient(patient),
-                OrderOptions = this.articleService.GetArticleStatusOptions()
+                OrderedCount         = (message.Status.HasValue ? this.articleService.ListArticlesFor(patient, null) : articles).Count(x => x.Status == ArticleStatus.OrderedFromSupplier),
+                RefillRequestedCount = (message.Status.HasValue ? this.articleService.ListArticlesFor(patient, null) : articles).Count(x => x.Status == ArticleStatus.RefillRequested),
+                Articles             = articles,
+                Patient              = this.patientTransformer.ToPatient(patient),
+                OrderOptions         = this.articleService.GetArticleStatusOptions(),
+                StatusFilter         = message.Status
             };
         }
 

@@ -14,6 +14,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Application.Services;
+    using Appva.Mcss.Admin.Application.Security.Identity;
 
     #endregion
 
@@ -25,9 +27,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IArticleRepository"/>.
+        /// The <see cref="IArticleService"/>.
         /// </summary>
-        private readonly IArticleRepository articleRepository;
+        private readonly IArticleService articleService;
 
         #endregion
 
@@ -37,9 +39,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="EditArticleHandler"/> class.
         /// </summary>
         /// <param name="articleRepository">The <see cref="IArticleRepository"/>.</param>
-        public EditArticleHandler(IArticleRepository articleRepository)
+        public EditArticleHandler(IArticleService articleService)
         {
-            this.articleRepository = articleRepository;
+            this.articleService = articleService;
         }
 
         #endregion
@@ -49,8 +51,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override EditArticleModel Handle(EditArticle message)
         {
-            var article = this.articleRepository.Get(message.Article);
-            var categories = this.articleRepository.GetCategories();
+            var article = this.articleService.Find(message.Article);
+            var categories = this.articleService.ListCategories();
             var categoryList = new List<SelectListItem>();
 
             foreach (var category in categories)
@@ -65,11 +67,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             return new EditArticleModel
             {
-                Article = message.Article,
-                Id = message.Id,
-                Name = article.Name,
+                Article     = message.Article,
+                Id          = message.Id,
+                Name        = article.Name,
                 Description = article.Description,
-                Categories = categoryList
+                Categories  = categoryList,
+                StatusOptions = this.articleService.GetArticleStatusOptions(),
+                Status      = article.Status
             };
         }
 

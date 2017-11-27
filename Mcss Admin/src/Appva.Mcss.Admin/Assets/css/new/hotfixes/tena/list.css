@@ -92,19 +92,6 @@ label,
     padding-left:12px;
 }
 
-.tena-list .empty-list {
-    border: 4px dashed rgb(219,224,236);
-    border-radius:16px;
-    padding-top:24px;
-    margin-top:24px;
-    color:rgb(128,143,167);
-}
-
-.tena-list .empty-list h3 {
-    color:rgb(128,143,167);
-}
-
-
 .dialog__content .tena-list.section--bluetone {
     margin-left:-24px;
     margin-right:-24px;

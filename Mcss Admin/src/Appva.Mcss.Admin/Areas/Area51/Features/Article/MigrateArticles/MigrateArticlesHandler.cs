@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
     using Appva.Mcss.Application.Models;
     using Appva.Persistence;
     using NHibernate;
+    using System;
 
     #endregion
 
@@ -59,35 +60,34 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override bool Handle(MigrateArticles message)
         {
-            IQueryOver<Sequence, ScheduleSettings> query = null;
-            int rowCount = 0;
-            do
+            var maxNumberOfRowsPerTransaction = 10000;
+            var list = this.persistence.QueryOver<Sequence>()
+                .Where(x => x.IsActive == true)
+                .And(x => x.EndDate <= DateTime.Now)
+                .And(x => x.Article == null)
+                .JoinQueryOver(x => x.Schedule)
+                    .JoinQueryOver(x => x.ScheduleSettings)
+                        .Where(x => x.OrderRefill == true)
+                        .And(x => x.ArticleCategory != null)
+                        .Take(maxNumberOfRowsPerTransaction)
+                        .List();
+
+            foreach (var sequence in list)
             {
-                var session = this.persistence.Session.SessionFactory.OpenSession();
-                using (var transaction = session.BeginTransaction())
-                {
-                    query = this.service.GetOrderListItemsFromSequence(session);
-                    rowCount = query.RowCount();
-                    if (rowCount > 0)
-                    {
-                        var list = query.Take(10000).List();
-                        foreach (var sequence in list)
-                        {
-                            var article = this.CreateArticle(sequence);
-                            session.Save(article);
-                            sequence.Article = article;
-                            sequence.IsOrderable = true;
-                            session.Update(sequence);
-                        }
-
-                        transaction.Commit();
-                    }
-                }
+                var article = this.CreateArticle(sequence);
+                this.persistence.Save(article);
+                sequence.Article = article;
+                sequence.IsOrderable = true;
+                this.persistence.Update(sequence);
             }
-            while (rowCount > 0);
 
-            var settings = this.service.Find(ApplicationSettings.OrderListConfiguration);
-            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(true, true, settings.HasMigratableItems));
+            if(list.Count == maxNumberOfRowsPerTransaction)
+            {
+                return false;
+            }
+
+            var settings = this.service.Find(ApplicationSettings.OrderListSettings);
+            this.service.Upsert(ApplicationSettings.OrderListSettings, OrderListConfiguration.CreateNew(true, true));
 
             return true;
         }

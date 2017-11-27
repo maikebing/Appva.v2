@@ -81,7 +81,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var schedule = this.context.Get<Schedule>(message.ScheduleId);
             //// Temporary mapping
             Role requiredRole = null;
-            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListSettings);
             var temp = this.settingsService.Find<Dictionary<Guid, Guid>>(ApplicationSettings.TemporaryScheduleSettingsRoleMap);
             if (temp != null && temp.ContainsKey(schedule.ScheduleSettings.Id))
             {

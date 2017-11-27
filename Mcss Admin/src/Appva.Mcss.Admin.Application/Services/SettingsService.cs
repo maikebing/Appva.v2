@@ -177,28 +177,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         TimeSpan GetCookieExpiration();
     }
 
-    public interface IOrderListConfiguration
-    {
-        /// <summary>
-        /// Returns whether or not the order list function is enableable.
-        /// </summary>
-        /// <returns>True if enableable; otherwise false.</returns>
-        bool HasMigratableItems();
-
-        /// <summary>
-        /// Finds migratable items from <see cref="Sequence"/>.
-        /// </summary>
-        /// <param name="session">The <see cref="ISession"/>.</param>
-        /// <returns>The <see cref="IQueryOver{Sequence, ScheduleSettings}"/>.</returns>
-        IQueryOver<Sequence, ScheduleSettings> GetOrderListItemsFromSequence(ISession session);
-
-        /// <summary>
-        /// Finds migratable items from <see cref="ScheduleSettings"/>.
-        /// </summary>
-        /// <returns>The <see cref="IQueryOver{ScheduleSettings, ScheduleSettings}"/>.</returns>
-        IQueryOver<ScheduleSettings, ScheduleSettings> GetOrderListItemsFromScheduleSettings();
-    }
-
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
@@ -211,7 +189,6 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         IAuditConfiguration,
         ILdapSettings,
         ICookieExpiration,
-        IOrderListConfiguration,
         IService
     {
         /// <summary>
@@ -783,14 +760,14 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         #region IOrderListConfiguration Members.
 
         /// <inheritdoc />
-        public bool HasMigratableItems()
+        /*public bool HasMigratableItems()
         {
             return this.GetOrderListItemsFromScheduleSettings().RowCount() > 0 
                 || this.GetOrderListItemsFromSequence(this.persistence.Session).RowCount() > 0;
-        }
+        }*/
 
         /// <inheritdoc />
-        public IQueryOver<Sequence, ScheduleSettings> GetOrderListItemsFromSequence(ISession session)
+        /*public IQueryOver<Sequence, ScheduleSettings> GetOrderListItemsFromSequence(ISession session)
         {
             return session.QueryOver<Sequence>()
                 .Where(x => x.Article == null)
@@ -806,7 +783,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             return this.persistence.QueryOver<ScheduleSettings>()
                 .Where(x => x.OrderRefill == true)
                     .And(x => x.ArticleCategory == null);
-        }
+        }*/
 
         #endregion
     }

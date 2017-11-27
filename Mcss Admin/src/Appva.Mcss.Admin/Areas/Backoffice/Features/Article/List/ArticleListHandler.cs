@@ -68,17 +68,11 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
         /// <inheritdoc />
         public override ArticleListModel Handle(Parameterless<ArticleListModel> message)
         {
-            var hasMigratableItems = this.settingsService.HasMigratableItems();
-            var setting = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
-            this.settingsService.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(
-                setting.HasCreatedCategories,
-                setting.HasMigratedArticles,
-                hasMigratableItems)
-            );
+            var setting = this.settingsService.Find(ApplicationSettings.OrderListSettings);
 
             return new ArticleListModel
             {
-                HasMigratableItems = hasMigratableItems,
+                IsInstalled = setting.IsInstalled,
                 CategoryList = this.GetArticleCategoryList()
             };
         }

@@ -22,27 +22,7 @@ namespace Appva.Mcss.Admin.Models
     /// </summary>
     public sealed class OverviewUpdateArticle : Identity<bool>
     {
-        #region Fields.
-
-        /// <summary>
-        /// The user <see cref="Guid"/>.
-        /// </summary>
-        private readonly Guid user = new Guid(HttpContext.Current.User.Identity.GetUserId());
-
-        #endregion
-
         #region Properties.
-
-        /// <summary>
-        /// The current user id.
-        /// </summary>
-        public Guid UserId
-        {
-            get
-            {
-                return this.user;
-            }
-        }
 
         /// <summary>
         /// A collection of articles.

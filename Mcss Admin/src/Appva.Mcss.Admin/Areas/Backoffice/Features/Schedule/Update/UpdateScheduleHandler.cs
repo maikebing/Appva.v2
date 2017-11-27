@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         public override UpdateScheduleModel Handle(Identity<UpdateScheduleModel> message)
         {
             var schedule = this.scheduleService.GetScheduleSettings(message.Id);
-            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListSettings);
             List<SelectListItem> categorySelectList = null;
 
             if (orderListConfiguration.HasMigratedArticles)

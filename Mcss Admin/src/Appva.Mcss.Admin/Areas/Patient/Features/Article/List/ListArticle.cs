@@ -11,6 +11,7 @@ namespace Appva.Mcss.Admin.Models
 
     using System;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -23,6 +24,18 @@ namespace Appva.Mcss.Admin.Models
         /// The patient id.
         /// </summary>
         public Guid Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the status.
+        /// </summary>
+        /// <value>
+        /// The status.
+        /// </value>
+        public ArticleStatus? Status
         {
             get;
             set;

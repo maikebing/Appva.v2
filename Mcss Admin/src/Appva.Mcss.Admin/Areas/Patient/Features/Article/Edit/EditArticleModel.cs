@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     using System.Collections.Generic;
     using System.Web.Mvc;
     using Appva.Cqrs;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -72,6 +73,27 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// A list of article categories.
         /// </summary>
         public IEnumerable<SelectListItem> Categories
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the status.
+        /// </summary>
+        /// <value>
+        /// The status.
+        /// </value>
+        public ArticleStatus Status
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A list of article status options.
+        /// </summary>
+        public IDictionary<string, string> StatusOptions
         {
             get;
             set;

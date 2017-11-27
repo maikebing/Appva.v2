@@ -20,7 +20,10 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IArticleRepository : IRepository<Article>
+    public interface IArticleRepository : 
+        IRepository<Article>, 
+        ISaveRepository<Article>, 
+        IUpdateRepository<Article>
     {
         /// <summary>
         /// Get a category by id.
@@ -49,19 +52,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="patientId">The patient <see cref="Guid"/>.</param>
         /// <param name="articleCategoryPermissions">A collection of Guid.</param>
         /// <returns>A collection of <see cref="Article"/>.</returns>
-        IList<Article> List(Guid patientId, IList<Guid> articleCategoryPermissions = null);
-
-        /// <summary>
-        /// Updates an <see cref="Article"/>.
-        /// </summary>
-        /// <param name="article">The <see cref="Article"/>.</param>
-        void Update(Article article);
-
-        /// <summary>
-        /// Saves an <see cref="Article"/>.
-        /// </summary>
-        /// <param name="article">The <see cref="Article"/>.</param>
-        void Save(Article article);
+        IList<Article> List(Guid patientId, ArticleStatus? filterBy, IList<Guid> articleCategoryPermissions = null);
     }
 
     /// <summary>
@@ -130,11 +121,16 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public IList<Article> List(Guid patientId, IList<Guid> categories = null)
+        public IList<Article> List(Guid patientId, ArticleStatus? filterBy, IList<Guid> categories = null)
         {
             var query = this.persistenceContext.QueryOver<Article>()
                 .Where(x => x.Patient.Id == patientId)
                 .And(x => x.IsActive == true);
+
+            if (filterBy.HasValue)
+            {
+                query.Where(x => x.Status == filterBy.GetValueOrDefault());
+            }
 
             if (categories != null)
             {
@@ -146,18 +142,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             query = query.OrderBy(x => x.Name).Asc;
 
             return query.List();
-        }
-
-        /// <inheritdoc />
-        public void Update(Article article)
-        {
-            this.persistenceContext.Update(article);
-        }
-
-        /// <inheritdoc />
-        public void Save(Article article)
-        {
-            this.persistenceContext.Save(article);
         }
 
         #endregion

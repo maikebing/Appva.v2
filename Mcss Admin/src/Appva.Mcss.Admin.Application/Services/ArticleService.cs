@@ -26,11 +26,20 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface IArticleService : IService
     {
         /// <summary>
-        /// Updates the order status.
+        /// Finds the specified identifier.
         /// </summary>
-        /// <param name="list">A collection of <see cref="ArticleModel"/>.</param>
-        /// <param name="userId">The user <see cref="Guid"/>.</param>
-        void UpdateStatus(IList<ArticleModel> list, Guid userId);
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Article Find(Guid id);
+
+        /// <summary>
+        /// Updates the status for.
+        /// </summary>
+        /// <param name="articleId">The article identifier.</param>
+        /// <param name="withStatus">The with status.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        Article UpdateStatusFor(Guid articleId, ArticleStatus withStatus);
 
         /// <summary>
         /// Returns a collection of order options.
@@ -43,7 +52,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="patient">The patient.</param>
         /// <returns></returns>
-        IList<Article> ListArticlesFor(Patient patient);
+        IList<Article> ListArticlesFor(Patient patient, ArticleStatus? filterBy);
+
+        /// <summary>
+        /// Lists the categories.
+        /// </summary>
+        /// <returns></returns>
+        IList<ArticleCategory> ListCategories();
     }
 
     /// <summary>
@@ -57,6 +72,8 @@ namespace Appva.Mcss.Admin.Application.Services
         /// The <see cref="IArticleRepository"/>.
         /// </summary>
         private readonly IArticleRepository articleRepository;
+
+        private readonly IArticleCategoryRepository articleCategoryRepository;
 
         /// <summary>
         /// The <see cref="IAccountRepository"/>.
@@ -85,11 +102,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="auditing">The <see cref="IAuditService"/>.</param>
         public ArticleService(
             IArticleRepository articleRepository, 
+            IArticleCategoryRepository articleCategoryRepository,
             IAccountRepository accountRepository, 
             IIdentityService identityService,
             IAuditService auditing)
         {
             this.articleRepository = articleRepository;
+            this.articleCategoryRepository = articleCategoryRepository;
             this.accountRepository = accountRepository;
             this.identityService   = identityService;
             this.auditing          = auditing;
@@ -100,22 +119,33 @@ namespace Appva.Mcss.Admin.Application.Services
         #region IArticleService Members.
 
         /// <inheritdoc />
-        public void UpdateStatus(IList<ArticleModel> list, Guid userId)
+        public Article Find(Guid id)
         {
-            var account = this.accountRepository.Get(userId);
-            foreach (var orderedArticle in list)
+            return this.articleRepository.Get(id);
+        }
+
+        /// <inheritdoc />
+        public Article UpdateStatusFor(Guid articleId, ArticleStatus withStatus)
+        {
+            var account = this.accountRepository.Get(this.identityService.PrincipalId);
+            var article = this.articleRepository.Get(articleId);
+
+            if(article == null)
             {
-                var article = this.articleRepository.Get(orderedArticle.Id);
-
-                if (article != null && article.Status != orderedArticle.Status)
-                {
-                    article.UpdateStatus(orderedArticle.Status, account);
-                    this.articleRepository.Update(article);
-
-                    this.auditing.Update(article.Patient, "ändrade orderstatus för {0} ({1}) till {2}", article.Name, article.Id, article.Status.ToString().ToLower());
-
-                }
+                return null;
             }
+
+            //// Can't update if article already has the given status
+            if (article.Status == withStatus)
+            {
+                return article;
+            }
+
+            article.UpdateStatus(withStatus, account);
+            this.articleRepository.Update(article);
+            this.auditing.Update(article.Patient, "ändrade orderstatus för {0} ({1}) till {2}", article.Name, article.Id, article.Status.ToString().ToLower());
+
+            return article;
         }
 
         /// <inheritdoc />
@@ -130,10 +160,17 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IList<Article> ListArticlesFor(Patient patient)
+        public IList<Article> ListArticlesFor(Patient patient, ArticleStatus? filterBy)
         {
             var permissions = this.identityService.ArticleCategoryPermissions().Select(x => new Guid(x.Value)).ToList();
-            return this.articleRepository.List(patient.Id, permissions);
+            return this.articleRepository.List(patient.Id, filterBy, permissions);
+        }
+
+        /// <inheritdoc />
+        public IList<ArticleCategory> ListCategories()
+        {
+            var categoryIds = this.identityService.ArticleCategoryPermissions().Select(x => new Guid(x.Value)).ToList();
+            return this.articleCategoryRepository.List(categoryIds);
         }
 
         #endregion

@@ -11,9 +11,11 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
 
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Mcss.Admin.Features.Area51.ArticleOption;
     using Appva.Mcss.Admin.Infrastructure.Models;
+    using Appva.Persistence;
 
     #endregion
 
@@ -29,6 +31,11 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// </summary>
         private readonly ISettingsService service;
 
+        /// <summary>
+        /// The <see cref="IPersistenceContext"/>
+        /// </summary>
+        private readonly IPersistenceContext persistence;
+
         #endregion
 
         #region Constructors.
@@ -37,9 +44,10 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// Initializes a new instance of the <see cref="ArticleOptionListHandler"/> class.
         /// </summary>
         /// <param name="service">The <see cref="ISettingsService"/>.</param>
-        public ArticleOptionListHandler(ISettingsService service)
+        public ArticleOptionListHandler(ISettingsService service, IPersistenceContext persistence)
         {
-            this.service = service;
+            this.service     = service;
+            this.persistence = persistence;
         }
 
         #endregion
@@ -49,13 +57,15 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         /// <inheritdoc />
         public override ArticleOption Handle(Parameterless<ArticleOption> message)
         {
-            var hasMigratableItems = this.service.HasMigratableItems();
-            var settings = this.service.Find(ApplicationSettings.OrderListConfiguration);
-            this.service.Upsert(ApplicationSettings.OrderListConfiguration, OrderListConfiguration.CreateNew(
-                settings.HasCreatedCategories,
-                settings.HasMigratedArticles,
-                hasMigratableItems)
-            );
+            var settings = this.service.Find(ApplicationSettings.OrderListSettings);
+            var hasMigratableItems = persistence.QueryOver<Sequence>()
+                .Where(x => x.Article == null)
+                .JoinQueryOver(x => x.Schedule)
+                    .JoinQueryOver(x => x.ScheduleSettings)
+                        .Where(x => x.OrderRefill == true)
+                        .And(x => x.ArticleCategory != null)
+                        .RowCount() > 0;
+
 
             return new ArticleOption
             {

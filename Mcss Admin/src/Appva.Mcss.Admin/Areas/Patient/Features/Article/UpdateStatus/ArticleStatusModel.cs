@@ -16,6 +16,8 @@ namespace Appva.Mcss.Admin.Areas.Models
     using Appva.Mcss.Admin.Models;
     using Appva.Mcss.Application.Models;
     using Microsoft.AspNet.Identity;
+    using Appva.Mvc;
+    using Appva.Mcss.Admin.Domain.Entities;
 
     #endregion
 
@@ -24,41 +26,36 @@ namespace Appva.Mcss.Admin.Areas.Models
     /// </summary>
     public sealed class ArticleStatusModel : IRequest<ListArticle>
     {
-        #region Fields.
-
-        /// <summary>
-        /// The user <see cref="Guid"/>.
-        /// </summary>
-        private readonly Guid user = new Guid(HttpContext.Current.User.Identity.GetUserId());
-
-        #endregion
-
         #region Properties.
 
         /// <summary>
         /// The patient id.
         /// </summary>
-        public Guid PatientId
+        public Guid Id
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The current user id.
+        /// Gets or sets the status.
         /// </summary>
-        public Guid UserId
+        /// <value>
+        /// The status.
+        /// </value>
+        public ArticleStatus Status
         {
-            get
-            {
-                return this.user;
-            }
+            get;
+            set;
         }
 
         /// <summary>
-        /// A collection of articles.
+        /// Gets or sets the articles.
         /// </summary>
-        public IList<ArticleModel> OrderedArticles
+        /// <value>
+        /// The articles.
+        /// </value>
+        public IList<Tickable> Articles
         {
             get;
             set;

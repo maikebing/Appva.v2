@@ -9,16 +9,11 @@
 <div id="content" class="cf">
     <div id="content-primary">
         <div id="signlist" class="articlecategory">
+@if (Model.IsInstalled)
+                {
             <h4 class="list-header">Artikelkategorier</h4>
             <a href="@Url.Action("AddCategory", "Article")" class="lb-link section-list-btn"><span>+</span>Ny kategori</a>
-            <p style="margin:16px 10px;font-weight:bold;float:right">
-                @if (Model.HasMigratableItems)
-                {
-                    <span style="display:inline-block;background:#FFF5F5;border:1px solid #F9E1E1;color:#3f2929;padding:4px 8px;font-weight:normal">
-                        <b>Obs!</b> Data behöver migreras, kontakta en utvecklare.
-                    </span>
-                }
-            </p>
+            
             <table id="signed-events">
                 <thead class="head">
                     <tr>
@@ -33,7 +28,7 @@
                 <tbody>
                     @if (Model.CategoryList.Count > 0)
                     {
-                        foreach (var category in Model.CategoryList.OrderByDescending(x => x.UpdatedAt))
+                        foreach (var category in Model.CategoryList)
                         {
                             <tr class="tr-highlight">
                                 <td>@category.Name</td>
@@ -56,6 +51,17 @@
                     }
                 </tbody>
             </table>
+                }
+else
+{
+    <h4 class="list-header">Artikelkategorier</h4>
+    <p>
+
+        Beställningslistan är ännu inte installerad för denna kund. Var vänlig kontakta produktägare/arkitekt för aktivering.
+
+    </p>
+}
+                
         </div>
     </div>
 </div>

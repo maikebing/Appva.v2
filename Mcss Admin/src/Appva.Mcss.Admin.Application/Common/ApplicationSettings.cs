@@ -48,24 +48,6 @@ using Appva.Mcss.Admin.Application.Models;
             "Whether or not risk assessment information, such as 'Senior' alert is visible",
             false);
 
-        /// <summary>
-        /// The order list configuration.
-        /// </summary>
-        public static readonly ApplicationSettingIdentity<OrderListConfiguration> OrderListConfiguration = ApplicationSettingIdentity<OrderListConfiguration>.CreateNew(
-            "MCSS.OrderList",
-            "Order list configuration",
-            "MCSS.OrderList",
-            "Order list migration and activation settings.",
-            Domain.VO.OrderListConfiguration.CreateNew()
-            );
-
-        public static readonly ApplicationSettingIdentity<TenaConfiguration> TenaSettings = ApplicationSettingIdentity<TenaConfiguration>.CreateNew(
-            "MCSS.Tena",
-            "Tena settings",
-            "MCSS.Tena",
-            "The Tena settings",
-            TenaConfiguration.CreateNew(null, null));
-
         #endregion
 
         #region Account
@@ -354,6 +336,35 @@ using Appva.Mcss.Admin.Application.Models;
            "MCSS.Core.Delegation.Setting",
            "After a change the delegation should be pending for a new activation",
            false);
+
+        #endregion
+
+        #region Tena Identifi
+
+        /// <summary>
+        /// The tena settings
+        /// </summary>
+        public static readonly ApplicationSettingIdentity<TenaConfiguration> TenaSettings = ApplicationSettingIdentity<TenaConfiguration>.CreateNew(
+            "MCSS.Tena",
+            "Tena settings",
+            "MCSS.Tena",
+            "The Tena settings",
+            TenaConfiguration.CreateNew(null, null));
+
+        #endregion
+
+        #region Article
+
+        /// <summary>
+        /// The order list configuration.
+        /// </summary>
+        public static readonly ApplicationSettingIdentity<OrderListConfiguration> OrderListSettings = ApplicationSettingIdentity<OrderListConfiguration>.CreateNew(
+            "MCSS.Article.Configuration",
+            "Order list configuration",
+            "MCSS.Article",
+            "Order list migration and activation settings.",
+            OrderListConfiguration.CreateNew()
+            );
 
         #endregion
 

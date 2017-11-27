@@ -66,9 +66,7 @@
                                         </svg-->Ladda upp till TENA Identifi
                                     </a>
                                 }
-                                <a class="button open-in-dialog" href="@Url.Action("Update", "Tena", new { periodid = Model.Period.Id })#add-measuring-period">
-                                    Ändra
-                                </a>
+                                @Html.ActionLink(Permissions.Tena.Update, "Ändra", "Update", "Tena", "add-measuring-period", new { periodid = Model.Period.Id }, new { @class = "button open-in-dialog" })
                             </div>
                         </div>
                         <div class="section section--vspace inliner">

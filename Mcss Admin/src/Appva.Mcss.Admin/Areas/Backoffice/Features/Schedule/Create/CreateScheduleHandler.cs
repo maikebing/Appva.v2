@@ -62,7 +62,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
         /// <inheritdoc />
         public override CreateScheduleModel Handle(Parameterless<CreateScheduleModel> message)
         {
-            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListConfiguration);
+            var orderListConfiguration = this.settingsService.Find(ApplicationSettings.OrderListSettings);
             List<SelectListItem> categorySelectList = null;
 
             if (orderListConfiguration.HasMigratedArticles)

@@ -139,11 +139,11 @@
     <Compile Include="VO\PersonalIdentityNumber.cs" />
     <Compile Include="Entities\PreparedSequence.cs" />
     <Compile Include="Entities\PreparedTask.cs" />
-    <Compile Include="Entities\RefillModel.cs" />
+    <Compile Include="Entities\Sequence\Refillable.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Schedule.cs" />
     <Compile Include="Entities\ScheduleSettings.cs" />
-    <Compile Include="Entities\Sequence.cs" />
+    <Compile Include="Entities\Sequence\Sequence.cs" />
     <Compile Include="Entities\Setting.cs" />
     <Compile Include="Entities\Task.cs" />
     <Compile Include="Entities\Taxon.cs" />

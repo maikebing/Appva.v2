@@ -19,7 +19,6 @@
                 {
                     formatString = " {1:d MMM yyyy} {0:HH:mm} till {1:HH:mm}";
                 }
-                
             }
             else
             {
@@ -31,7 +30,6 @@
                 {
                     formatString = "{0:d MMM yyyy HH:mm} till {1:d MMM yyyy HH:mm}";
                 }
-                 
             }
         }
         @string.Format(formatString, Model.StartTime, Model.EndTime)
@@ -47,7 +45,6 @@
                 @Model.RepetionText
             </span>
         }
-        
     </div>
     <div class="info cf">
         <h6>Kvittering</h6>
@@ -86,7 +83,6 @@
             {
                 <span>Inte signerad</span>
             }
-
         }
         else
         {
@@ -104,7 +100,4 @@
             @Html.ActionLink(Permissions.Calendar.Delete, "Ta bort", "Remove", "Calendar", new { Id = Model.PatientId, SequenceId = Model.SequenceId, Date = Model.EndTime }, new { @class = "btn btn-del", @title = "Ta bort aktiviteten" })
         }
     </div>
-    
 </div>
-
-    

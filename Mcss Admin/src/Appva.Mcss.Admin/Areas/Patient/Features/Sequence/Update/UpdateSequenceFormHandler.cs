@@ -117,13 +117,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <returns></returns>
         private Sequence CreateOrUpdate(UpdateSequenceForm model, Sequence sequence, Schedule schedule, Taxon delegation, Account recipient)
         {
-            DateTime startDate = DateTimeUtilities.Now();
+            DateTime startDate = Date.Today.ToDateTime(); ////DateTimeUtilities.Now(); WTF: Double check this.
             DateTime? endDate  = null;
-            Role requiredRole = null;
+            Role requiredRole  = null;
             if (model.Dates.IsNotEmpty() && model.Interval == 0)
             {
-                var dates = model.Dates.Split(',');
-                DateTimeUtils.GetEarliestAndLatestDateFrom(dates, out startDate, out endDate);
+                var dates = model.Dates.Split(',').Select(x => Date.Parse(x));
+                startDate = dates.Min();
+                endDate   = dates.Max();
             }
             if (model.Interval > 0)
             {
@@ -164,7 +165,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     endDate = model.EndDate.Value;
                 }
             }
-
             if (schedule.ScheduleSettings.HasInventory)
             {
                 sequence.Inventory = this.inventoryService.Find(model.Inventory.GetValueOrDefault());
@@ -173,7 +173,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             var repeat = new Repeat(
                 startDate,
                 endDate,
-                model.OnNeedBasis? 1 : model.Interval.Value,
+                model.OnNeedBasis? 1 : model.Interval.Value, //// WTF: Move logic to Repeat constructor.
                 1,
                 model.RangeInMinutesBefore,
                 model.RangeInMinutesAfter,
@@ -195,12 +195,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
             //sequence.Dates = model.Dates;
             //sequence.Interval = model.OnNeedBasis ? 1 : model.Interval.Value;
             //sequence.OnNeedBasis = model.OnNeedBasis;
-            sequence.Reminder = model.Reminder;
-            sequence.ReminderInMinutesBefore = model.ReminderInMinutesBefore;
-            sequence.ReminderRecipient = recipient; //// FIXME: This is always NULL why is it here at all? 
+            //// WTF: This is deprecated?
+            ////sequence.Reminder = model.Reminder;
+            ////sequence.ReminderInMinutesBefore = model.ReminderInMinutesBefore;
+            ////sequence.ReminderRecipient = recipient; //// FIXME: This is always NULL why is it here at all? 
             sequence.Schedule = schedule;
-            sequence.Taxon = delegation;
-            sequence.Role = requiredRole;
+            sequence.Taxon    = delegation;
+            sequence.Role     = requiredRole;
             return sequence;
         }
 

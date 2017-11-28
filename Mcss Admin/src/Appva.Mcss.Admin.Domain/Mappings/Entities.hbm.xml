@@ -465,9 +465,9 @@
     <id name="Id">
       <generator class="guid.comb" />
     </id>
-    <version name="Version" />
-    <property name="IsActive" column="Active" />
-    <property name="CreatedAt" column="Created" />
+    <version  name="Version" />
+    <property name="IsActive"  column="Active" />
+    <property name="CreatedAt" column="Created" update="false" />
     <property name="UpdatedAt" column="Modified" />
     <property name="Name" />
     <property name="Description" type="StringClob">
@@ -493,10 +493,12 @@
       <property name="IsAllDay"        column="AllDay"               access="nosetter.camelcase" /> <!-- See Duration.  -->
       <property name="Compatibility"   column="Compatibility"        access="nosetter.camelcase" not-null="false" />
     </component>
+   <!-- 
     <property name="Reminder" />
     <property name="ReminderInMinutesBefore" />
     <many-to-one name="ReminderRecipient" class="Account" />
     <property name="LastReminderSent" />
+    -->
     <property name="Overview" />
     <property name="CanRaiseAlert" />
     <property name="PauseAnyAlerts" />
@@ -506,7 +508,7 @@
     <many-to-one name="Taxon" class="Taxon" />
     <many-to-one name="Role"  class="Role" />
     <many-to-one name="Inventory"  class="Inventory" />
-    <component name="RefillInfo" class="RefillModel">
+    <component name="RefillInfo" class="Refillable">
       <property name="Refill" />
       <property name="RefillOrderedDate" />
       <many-to-one name="RefillOrderedBy"  class="Account" />

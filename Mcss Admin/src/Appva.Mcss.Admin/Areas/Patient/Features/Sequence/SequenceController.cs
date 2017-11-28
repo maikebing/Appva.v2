@@ -23,9 +23,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
     /// </summary>
     [RouteArea("patient"), RoutePrefix("sequence")]
     public sealed class SequenceController : Controller
-    {
-        #region Routes.
-        
+    {       
         #region Create View.
 
         /// <summary>
@@ -148,8 +146,6 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features
         {
             return this.View();
         }
-
-        #endregion
 
         #endregion
     }

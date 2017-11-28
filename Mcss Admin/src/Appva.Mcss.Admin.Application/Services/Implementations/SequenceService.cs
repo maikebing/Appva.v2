@@ -2,84 +2,29 @@
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
-//     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
+//     <a href="mailto:johan.sall.larsson@appva.com">Johan Säll Larsson</a>
 // </author>
-namespace Appva.Mcss.Admin.Application.Services
+namespace Appva.Mcss.Admin.Application.Services.Implementations
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Persistence;
-    using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Mcss.Admin.Application.Auditing;
-    using Appva.Domain;
-    using Appva.Mcss.Admin.Application.Models;
     using Appva.Core.Extensions;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using NHibernate.Criterion;
-    using Appva.Mcss.Admin.Application.Transformers;
     using Appva.Core.Utilities;
+    using Appva.Domain;
+    using Appva.Mcss.Admin.Application.Auditing;
+    using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Transformers;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
+    using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Persistence;
+    using NHibernate.Criterion;
 
     #endregion
-
-    /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
-    /// </summary>
-    public interface ISequenceService : IService
-    {
-        /// <summary>
-        /// Finds a sequence by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Sequence Find(Guid id);
-
-        /// <summary>
-        /// Updates the sequence
-        /// </summary>
-        /// <param name="sequence"></param>
-        void Update(Sequence sequence);
-
-        void CreateNeedBasedSequence(Schedule schedule, string name, string description, DateTime startDate, 
-            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null);
-
-        void CreateIntervalBasedSequence(Schedule schedule, string name, string description, DateTime startDate, int interval, string times,
-            DateTime? endDate, Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null);
-
-        void CreateDatesBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate, string dates, string times,
-            Taxon taxon = null, Role role = null, int rangeInMinutesBefore = 0, int rangeInMinutesAfter = 0, Inventory inventory = null);
-
-        void CreateEventBasedSequence(Schedule schedule, string name, string description, DateTime startDate, DateTime? endDate,
-            int interval = 0, int intervalFactor = 0, bool intervalIsDate = false, bool reminder = false, bool canRaiseAlert = false, bool overview = false, bool allDay = false, bool absent = false);
-
-        // HACK: refactor handlers/publisher in order to remove this.
-        void CreateEventBasedSequence(Guid scheduleSettingsId, Patient patient, string description,
-            DateTime startDate, DateTime endDate,
-            string startTime, string endTime, int interval, int intervalFactor,
-            bool intervalIsDate, bool canRaiseAlert, bool overview, bool isAllDay,
-            bool pauseAlerts, bool absent);
-
-        // HACK: refactor handlers/publisher in order to remove this.
-        void Update(Guid eventId, Guid scheduleSettingsId, string description, DateTime startDate, DateTime endDate,
-            string startTime, string endTime, int interval, int intervalFactor,
-            bool intervalIsDate, bool canRaiseAlert, bool overview, bool isAllDay, bool pauseAlerts, bool absent);
-
-        IList<ScheduleSettings> GetCategories(bool forceGetAllCategories = false);
-        Guid CreateCategory(string name);
-        void Delete(Sequence sequence);
-        void CreateTask(Guid eventId, Guid scheduleSettingsId, string description, DateTime startDate, DateTime endDate, string startTime, string endTime, int interval, bool canRaiseAlert, bool overview, bool isAllDay, bool pauseAlerts, bool absent);
-        void DeleteActivity(Task task);
-        IList<CalendarTask> FindWithinMonth(Patient patient, DateTime date);
-        IList<CalendarTask> FindEventsWithinPeriod(DateTime start, DateTime end, Patient patient = null, ITaxon orgFilter = null);
-        IList<CalendarTask> FindDelayedQuittanceEvents(ITaxon orgFilter = null);
-        IList<CalendarWeek> Calendar(DateTime date, IList<CalendarTask> events);
-        CalendarCategory Category(Guid id);
-        CalendarTask GetActivityInSequence(Guid sequence, DateTime date);
-    }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.

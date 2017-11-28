@@ -110,8 +110,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 OnNeedBasis                 = sequence.Repeat.IsNeedBased,
                 OnNeedBasisStartDate        = sequence.Repeat.IsNeedBased ? sequence.Repeat.StartAt : (DateTime?) null,
                 OnNeedBasisEndDate          = sequence.Repeat.IsNeedBased ? sequence.Repeat.EndAt   : (DateTime?) null,
-                Reminder                    = sequence.Reminder,
-                ReminderInMinutesBefore     = sequence.ReminderInMinutesBefore,
+                //// WTF: This is Deprecated?
+                ////Reminder                    = sequence.Reminder,
+                ////ReminderInMinutesBefore     = sequence.ReminderInMinutesBefore,
                 Patient                     = sequence.Patient,
                 Schedule                    = sequence.Schedule,
                 Nurse                       = sequence.Role != null,

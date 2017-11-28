@@ -9,23 +9,25 @@ namespace Appva.Mcss.Admin.Domain.Entities
     #region Imports.
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// A "trait" and/or component representing a handling of refill and
+    /// orders.
     /// </summary>
-    public class RefillModel : ValueObject<RefillModel>
+    public class Refillable : ValueObject<Refillable>
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RefillModel"/> class.
+        /// Initializes a new instance of the <see cref="Refillable"/> class.
         /// </summary>
-        public RefillModel()
+        /// <remarks>
+        /// An NHibernate visible no-argument constructor.
+        /// </remarks>
+        internal Refillable()
         {
         }
 
@@ -34,7 +36,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #region Properties.
 
         /// <summary>
-        /// If the sequence needs to be refilled
+        /// If the sequence needs to be refilled ---
+        /// If a stocked item is low in stock and needs to be refilled.
+        /// TODO: Change property name, IsRefillNeeded 
         /// </summary>
         public virtual bool Refill
         {
@@ -89,11 +93,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        public override bool Equals(RefillModel other)
+        /// <inheritdoc />
+        public override bool Equals(Refillable other)
         {
+            //// WTF: Why isn't this implemented?
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             throw new NotImplementedException();

@@ -1107,7 +1107,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Dashboard\Features\Shared\" />
-    <Folder Include="Areas\Patient\Features\TestSequence\" />
     <Folder Include="Areas\Roles\Features\Shared\" />
     <Folder Include="Assets\error-pages\i\" />
   </ItemGroup>

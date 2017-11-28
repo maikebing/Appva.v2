@@ -15,7 +15,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using Validation;
     using Appva.Domain;
     using NHibernate.Classic;
-using Appva.Core.Logging;
+    using Appva.Core.Logging;
 
     #endregion
 
@@ -24,34 +24,19 @@ using Appva.Core.Logging;
     /// </summary>
     public class Sequence : AggregateRoot<Sequence>, ILifecycle
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        private static readonly ILog Log = LogProvider.For<Sequence>();
-
         #region Variables.
 
         /// <summary>
-        /// Weekly interval.
+        /// The <see cref="ILog"/> for sequence.
         /// </summary>
-        private const int Weekly  = 7;
-
-        /// <summary>
-        /// Monthly interval.
-        /// </summary>
-        private const int Monthly = 31;
-
-        /// <summary>
-        /// Yearly interval.
-        /// </summary>
-        private const int Yearly  = 365;
+        private static readonly ILog Log = LogProvider.For<Sequence>();
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         public Sequence(Schedule schedule, string name, string description, Repeat repeat, 
-            Taxon taxon = null, Role role = null, Inventory inventory = null, RefillModel refillModel = null,
+            Taxon taxon = null, Role role = null, Inventory inventory = null, Refillable refillModel = null,
             bool overview = false, bool canRaiseAlert = false, bool pauseAnyAlerts = false, bool absent = false, 
             bool reminder = false)
         {
@@ -60,7 +45,7 @@ using Appva.Core.Logging;
             Requires.NotNull(repeat, "repeat");
 
             this.Schedule = schedule;
-            this.Patient = schedule.Patient;
+            this.Patient  = schedule.Patient;
             this.Name = name;
             this.Description = description;
             this.Repeat = repeat;
@@ -72,12 +57,19 @@ using Appva.Core.Logging;
             this.CanRaiseAlert = canRaiseAlert;
             this.PauseAnyAlerts = pauseAnyAlerts;
             this.Absent = absent;
-            this.Reminder = reminder;
+            ///this.Reminder = reminder;
+            if (Log.IsTraceEnabled())
+            {
+                Log.Trace("Initialized a new instance of sequence with id: {0}, name: {1}", this.Id, this.Name);
+            }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sequence"/> class.
         /// </summary>
+        /// <remarks>
+        /// An NHibernate visible no-argument constructor.
+        /// </remarks>
         protected internal Sequence()
         {
         }
@@ -96,6 +88,8 @@ using Appva.Core.Logging;
         }
 
         /// <summary>
+        /// TODO: Change property name to Instruction, since its not a description of the sequence
+        /// but rather an instruction for the end user of how to prepare or administer e.g. a drug.
         /// The desciption, such as instructions 
         /// </summary>
         public virtual string Description
@@ -103,44 +97,7 @@ using Appva.Core.Logging;
             get;
             set;
         }
-       
-        /// <summary>
-        /// If a reminder should be e.g. e-mailed to the <see cref="ReminderRecipient"/>.
-        /// </summary>
-        public virtual bool Reminder
-        {
-            get;
-            set;
-        }
 
-        /// <summary>
-        /// Minutes before <see cref="RangeInMinutesBefore"/> a reminder will be sent.
-        /// </summary>
-        public virtual int ReminderInMinutesBefore
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Recipient of a reminder.
-        /// </summary>
-        public virtual Account ReminderRecipient // Questions raised around this property
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// When the last reminder was sent out.
-        /// </summary>
-        /// <remarks>The sequence scheduled date</remarks>
-        private DateTime? LastReminderSent // No references
-        {
-            get;
-            set;
-        }
-        
         /// <summary>
         /// The <see cref="Repeat"/> object (rules for repititative events/tasks).
         /// </summary>
@@ -151,18 +108,18 @@ using Appva.Core.Logging;
         }
 
         /// <summary>
-        /// The Patient
+        /// The Schedule
         /// </summary>
-        public virtual Patient Patient
+        public virtual Schedule Schedule
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The Schedule
+        /// The Patient
         /// </summary>
-        public virtual Schedule Schedule
+        public virtual Patient Patient
         {
             get;
             set;
@@ -225,10 +182,10 @@ using Appva.Core.Logging;
         /// <summary>
         /// Information about Refill and ordering status
         /// </summary>
-        public virtual RefillModel RefillInfo
+        public virtual Refillable RefillInfo
         {
             get;
-            set;
+            internal protected set;
         }
 
         /// <summary>
@@ -239,104 +196,84 @@ using Appva.Core.Logging;
             get;
             set;
         } 
+       
+        ///// <summary>
+        ///// If a reminder should be e.g. e-mailed to the <see cref="ReminderRecipient"/>.
+        ///// </summary>
+        //public virtual bool Reminder
+        //{
+        //    get;
+        //    set;
+        //}
 
-        #endregion
+        ///// <summary>
+        ///// Minutes before <see cref="RangeInMinutesBefore"/> a reminder will be sent.
+        ///// </summary>
+        //public virtual int ReminderInMinutesBefore
+        //{
+        //    get;
+        //    set;
+        //}
 
-        #region Members
+        ///// <summary>
+        ///// Recipient of a reminder.
+        ///// </summary>
+        //public virtual Account ReminderRecipient // Questions raised around this property
+        //{
+        //    get;
+        //    set;
+        //}
 
-        /// <summary>
-        /// Returns the next date in the sequence from the given date
-        /// </summary>
-        /// <param name="date">Current date in sequence</param>
-        /// <returns>Next date in sequence</returns>
-        public virtual DateTime? GetNextDateInSequence(DateTime dateTime)
-        {
-            var date = (Date) dateTime;
-            var next = this.Repeat.Next(date);
-            return (DateTime)next;
+        ///// <summary>
+        ///// When the last reminder was sent out.
+        ///// </summary>
+        ///// <remarks>The sequence scheduled date</remarks>
+        //private DateTime? LastReminderSent // No references
+        //{
+        //    get;
+        //    set;
+        //}
         
-            //return this.Repeat.Next((Date) date);
-            
-            /*
-             * var factor = this.Repeat.IntervalFactor < 1 ? 1 : this.IntervalFactor;
-
-            if (this.Interval.Equals(Weekly))
-            {
-                var days = factor * 7;
-                return date.AddDays(days);
-            }
-
-            if (this.Interval.Equals(Yearly))
-            {
-                return date.AddYears(1);
-            }
-
-            if (this.Interval.Equals(Monthly))
-            {
-                //// Repeat on given date (eg. 10 every month)
-                if (this.IntervalIsDate)
-                {
-                    return date.AddMonths(factor);
-                }
-                //// Repeat on given day (eg. 2 monday every month)
-                else
-                {
-                    var newDate = date.AddMonths(factor);
-
-                    while (newDate.Day % 7 != 0)
-                    {
-                        if (newDate.DayOfWeek == date.DayOfWeek)
-                        {
-                            return newDate;
-                        }
-                        newDate = newDate.AddDays(1);
-                    }
-                    if (newDate.DayOfWeek == date.DayOfWeek)
-                    {
-                        return newDate;
-                    }
-                    newDate = newDate.AddDays(-1);
-                    while (newDate.Day % 7 != 0)
-                    {
-                        if (newDate.DayOfWeek == date.DayOfWeek)
-                        {
-                            return newDate;
-                        }
-                        newDate = newDate.AddDays(-1);
-                    }
-
-                    return newDate; 
-                }
-            }
-
-            //// Interval is specified in dates
-            return date.AddDays(this.Interval);
-            */
-        }
-
         #endregion
 
-        #region ILifecycle Members
+        #region ILifecycle Members.
 
+        /// <inheritdoc />
         public virtual LifecycleVeto OnDelete(NHibernate.ISession s)
         {
-            throw new NotImplementedException();
-        }
-
-        public virtual void OnLoad(NHibernate.ISession s, object id)
-        {
-            Log.Warn("Loading ID: {0}", id);
-        }
-
-        public virtual LifecycleVeto OnSave(NHibernate.ISession s)
-        {
-            Log.Warn("OnSave");
+            if (Log.IsTraceEnabled())
+            {
+                Log.Trace("Deleted sequence with id: {0}", this.Id);
+            }
             return LifecycleVeto.NoVeto;
         }
 
+        /// <inheritdoc />
+        public virtual void OnLoad(NHibernate.ISession s, object id)
+        {
+            if (Log.IsTraceEnabled())
+            {
+                Log.Trace("Loaded sequence with id: {0}", this.Id);
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual LifecycleVeto OnSave(NHibernate.ISession s)
+        {
+            if (Log.IsTraceEnabled())
+            {
+                Log.Trace("Saved sequence with id: {0}", this.Id);
+            }
+            return LifecycleVeto.NoVeto;
+        }
+
+        /// <inheritdoc />
         public virtual LifecycleVeto OnUpdate(NHibernate.ISession s)
         {
-            Log.Warn("OnUpdate");
+            if (Log.IsTraceEnabled())
+            {
+                Log.Trace("Updated sequence with id: {0}", this.Id);
+            }
             return LifecycleVeto.NoVeto;
         }
 

@@ -24,6 +24,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Extensions;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Domain;
 
     #endregion
 
@@ -125,11 +126,19 @@ namespace Appva.Mcss.Admin.Models.Handlers
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate = null;
             Role requiredRole = null;
-            string times = string.Empty;
+            
+            //// Start with need based.
+            if (message.OnNeedBasis)
+            {
+                //// do all need based stuff first.
+            }
 
+
+            IEnumerable<TimeOfDay> timesOfDay = new List<TimeOfDay>();
+            //// WTF? This is not an if, but is required! 
             if (message.Times.Count(x => x.Checked == true) > 0)
             {
-                times = string.Join(",", message.Times.Where(x => x.Checked == true).Select(x => x.Id).ToArray());
+                timesOfDay = message.Times.Where(x => x.Checked == true).Select(x => TimeOfDay.Parse(x.Id + ":00"));
             }
 
             if (message.Nurse)
@@ -167,13 +176,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 startDate = message.StartDate.HasValue ? message.StartDate.Value : startDate;
                 endDate = message.EndDate.HasValue ? message.EndDate.Value : endDate;
-
-                this.sequenceService.CreateIntervalBasedSequence(schedule, message.Name, message.Description, startDate, message.Interval.Value, times, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
+                this.sequenceService.CreateIntervalBasedSequence(schedule, message.Name, message.Description, startDate, message.Interval.Value, timesOfDay, endDate, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
             }
             else
             {
                 DateTimeUtils.GetEarliestAndLatestDateFrom(message.Dates.Split(','), out startDate, out endDate);
-                this.sequenceService.CreateDatesBasedSequence(schedule, message.Name, message.Description, startDate, endDate, message.Dates, times, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
+                this.sequenceService.CreateDatesBasedSequence(schedule, message.Name, message.Description, startDate, endDate, message.Dates, timesOfDay, delegation, requiredRole, message.RangeInMinutesBefore, message.RangeInMinutesAfter, inventory);
             }
         }
 

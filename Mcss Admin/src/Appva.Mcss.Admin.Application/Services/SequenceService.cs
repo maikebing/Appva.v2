@@ -62,6 +62,13 @@ namespace Appva.Mcss.Admin.Application.Services
             bool absent = false,
             bool allDay = false
         );
+        
+        /// <summary>
+        /// Lists the by article.
+        /// </summary>
+        /// <param name="articleId">The article identifier.</param>
+        /// <returns></returns>
+        IList<Sequence> ListByArticle(Guid articleId);
     }
 
     /// <summary>
@@ -189,6 +196,15 @@ namespace Appva.Mcss.Admin.Application.Services
             this.context.Save(sequence);
             schedule.UpdatedAt = DateTime.Now;
             this.context.Update(schedule);
+        }
+
+        /// <inheritdoc />
+        public IList<Sequence> ListByArticle(Guid articleId)
+        {
+            //// FIXME: Move to repository
+            return this.context.QueryOver<Sequence>()
+                        .Where(x => x.Article.Id == articleId)
+                        .List();
         }
 
         #endregion

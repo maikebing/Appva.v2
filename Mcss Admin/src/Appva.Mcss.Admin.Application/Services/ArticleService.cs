@@ -59,6 +59,22 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <returns></returns>
         IList<ArticleCategory> ListCategories();
+
+        /// <summary>
+        /// Inactivates the specified article.
+        /// </summary>
+        /// <param name="article">The article.</param>
+        void InactivateArticle(Guid articleId);
+
+        /// <summary>
+        /// Creates the article.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="patient">The patient.</param>
+        /// <param name="articleCategory">The article category.</param>
+        /// <returns></returns>
+        Article CreateArticle(string name, string description, Patient patient, ArticleCategory articleCategory);
     }
 
     /// <summary>
@@ -73,12 +89,20 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IArticleRepository articleRepository;
 
+        /// <summary>
+        /// The <see cref="IArticleCategoryRepository"/>.
+        /// </summary>
         private readonly IArticleCategoryRepository articleCategoryRepository;
 
         /// <summary>
         /// The <see cref="IAccountRepository"/>.
         /// </summary>
         private readonly IAccountRepository accountRepository;
+
+        /// <summary>
+        /// The <see cref="ISequenceService"/>.
+        /// </summary>
+        private readonly ISequenceService sequenceService;
 
         /// <summary>
         /// The <see cref="IIdentityService"/>
@@ -104,12 +128,14 @@ namespace Appva.Mcss.Admin.Application.Services
             IArticleRepository articleRepository, 
             IArticleCategoryRepository articleCategoryRepository,
             IAccountRepository accountRepository, 
+            ISequenceService sequenceService,
             IIdentityService identityService,
             IAuditService auditing)
         {
             this.articleRepository = articleRepository;
             this.articleCategoryRepository = articleCategoryRepository;
             this.accountRepository = accountRepository;
+            this.sequenceService   = sequenceService;
             this.identityService   = identityService;
             this.auditing          = auditing;
         }
@@ -173,6 +199,41 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.articleCategoryRepository.List(categoryIds);
         }
 
+        /// <inheritdoc />
+        public void InactivateArticle(Guid articleId)
+        {
+            var article = this.Find(articleId);
+            if (article == null)
+            {
+                return;
+            }
+
+            var sequences = this.sequenceService.ListByArticle(articleId);
+            foreach (var sequence in sequences)
+            {
+                sequence.Article = null;
+                this.sequenceService.Update(sequence);
+            }
+
+            article.IsActive = false;
+            this.articleRepository.Update(article);
+
+            this.auditing.Delete(article.Patient, "raderade artikeln {0} ({1})", article.Name, article.Id);
+        }
+
+        /// <inheritdoc />
+        public Article CreateArticle(string name, string description, Patient patient, ArticleCategory articleCategory)
+        {
+            var article = Article.CreateNew(name, description, patient, articleCategory, ArticleStatus.NotStarted);
+            this.articleRepository.Save(article);
+            this.auditing.Create(patient, "skapade artikeln {0} ({1})", article.Name, article.Id);
+
+            return article;
+        }
+
         #endregion
+
+
+        
     }
 }

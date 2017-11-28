@@ -10,10 +10,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #region Imports.
 
     using System;
+    using System.Linq;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Areas.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using Appva.Mcss.Admin.Application.Services;
 
     #endregion
 
@@ -25,9 +27,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IPersistenceContext"/>.
+        /// The <see cref="ISequenceService"/>.
         /// </summary>
-        private readonly IPersistenceContext persistence;
+        private readonly ISequenceService sequenceService;
+
+        /// <summary>
+        /// The <see cref="IArticleService"/>.
+        /// </summary>
+        private readonly IArticleService articleService;
 
         #endregion
 
@@ -37,9 +44,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="InactivateArticleHandler"/> class.
         /// </summary>
         /// <param name="persistence">The <see cref="IPersistenceContext"/>.</param>
-        public InactivateArticleHandler(IPersistenceContext persistence)
+        public InactivateArticleHandler(
+            ISequenceService sequenceService,
+            IArticleService articleService)
         {
-            this.persistence = persistence;
+            this.sequenceService = sequenceService;
+            this.articleService  = articleService;
         }
 
         #endregion
@@ -49,20 +59,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override InactivateArticleModel Handle(InactivateArticle message)
         {
-            var sequence = this.persistence.QueryOver<Sequence>()
-                .Where(x => x.IsActive)
-                    .And(x => x.IsOrderable)
-                        .JoinQueryOver(x => x.Article)
-                            .Where(x => x.Id == message.Article)
-                                .SingleOrDefault();
-
             return new InactivateArticleModel
             {
                 PatientId = message.Id,
                 ArticleId = message.Article,
-                SequenceId = sequence == null ? Guid.Empty : sequence.Id,
-                SequenceName = sequence == null ? string.Empty : sequence.Name,
-                ScheduleListName = sequence == null ? string.Empty : sequence.Schedule.ScheduleSettings.Name
+                Sequences = this.sequenceService.ListByArticle(message.Article).ToList(),
+                Article   = this.articleService.Find(message.Article)
             };
         }
 

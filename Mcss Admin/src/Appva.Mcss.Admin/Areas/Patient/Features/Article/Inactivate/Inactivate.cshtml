@@ -4,10 +4,14 @@
 <div class="section section--hspace">
     <h2>Ta bort artikel</h2>
     <div id="remove-item">
-        @using (Html.Post(null, new { PatientId = Model.PatientId, ArticleId = Model.ArticleId, SequenceId = Model.SequenceId }))
+        @using (Html.Post(null, new { PatientId = Model.PatientId, ArticleId = Model.ArticleId }))
         {
             <div class="width-limiter width-limiter--xs">
-                <p>@(Model.SequenceId != Guid.Empty ? Html.Raw("Artikeln används av insatsen <i>" + Model.SequenceName + "</i> i listan " + Model.ScheduleListName + ". ") : Html.Raw(string.Empty))Är du säker på att du vill ta bort artikeln?</p>
+                <p>Är du säker på att du vill ta bort artikeln "<b>@Model.Article.Name</b>"?</p>
+                @if (Model.Sequences != null && Model.Sequences.Count > 0)
+                {
+                    <p>Artikeln är kopplad till @Model.Sequences.Count @(Model.Sequences.Count == 1 ? "insats":"insatser"). Artikeln kommer att tas bort från @(Model.Sequences.Count == 1 ? "denna insats" : "dessa insatser") och det kommer inte gå att begära påfyllning från @(Model.Sequences.Count == 1 ? "insatsen" : "insatserna")</p>
+                }
                 <div class="form-controls form-controls--align-end form-controls--no-margin">
                     <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
                     @Html.Submit("Ta bort artikel", new { @class = "button button--negative" })

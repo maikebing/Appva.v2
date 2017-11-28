@@ -16,6 +16,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
     using Appva.Mcss.Admin.Features.Area51.ArticleOption;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Persistence;
+    using System;
 
     #endregion
 
@@ -58,20 +59,23 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
         public override ArticleOption Handle(Parameterless<ArticleOption> message)
         {
             var settings = this.service.Find(ApplicationSettings.OrderListSettings);
-            var hasMigratableItems = persistence.QueryOver<Sequence>()
-                .Where(x => x.Article == null)
+            var migratableItems = this.persistence.QueryOver<Sequence>()
+                .Where(x => x.IsActive == true)
+                .And(x => x.EndDate >= DateTime.Now || x.EndDate == null)
+                .And(x => x.Article == null)
                 .JoinQueryOver(x => x.Schedule)
                     .JoinQueryOver(x => x.ScheduleSettings)
                         .Where(x => x.OrderRefill == true)
                         .And(x => x.ArticleCategory != null)
-                        .RowCount() > 0;
+                        .RowCount();
+            var hasMigratableItems = migratableItems > 0;
 
 
             return new ArticleOption
             {
                 HasCreatedCategories = settings.HasCreatedCategories,
                 HasMigratedArticles = settings.HasMigratedArticles,
-                HasMigratableItems = hasMigratableItems
+                HasMigratableItems = settings.HasCreatedCategories == false || hasMigratableItems
             };
         }
 

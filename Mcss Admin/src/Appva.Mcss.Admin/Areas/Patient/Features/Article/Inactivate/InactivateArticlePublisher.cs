@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Areas.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
 
     #endregion
@@ -25,24 +26,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IArticleRepository"/>.
+        /// The <see cref="IArticleService"/>.
         /// </summary>
-        private readonly IArticleRepository articleRepository;
-
-        /// <summary>
-        /// The <see cref="ISequenceService"/>.
-        /// </summary>
-        private readonly ISequenceService sequenceService;
-
-        /// <summary>
-        /// The <see cref="IPatientService"/>.
-        /// </summary>
-        private readonly IPatientService patientService;
-
-        /// <summary>
-        /// The <see cref="IAuditService"/>.
-        /// </summary>
-        private readonly IAuditService auditing;
+        private readonly IArticleService articleService;
 
         #endregion
 
@@ -51,16 +37,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// Initializes a new instance of the <see cref="InactivateArticlePublisher"/> class.
         /// </summary>
-        /// <param name="articleRepository">The <see cref="IArticleRepository"/>.</param>
-        /// <param name="sequenceService">The <see cref="ISequenceService"/>.</param>
-        /// <param name="patientService">The <see cref="IPatientService"/>.</param>
-        /// <param name="auditing">The <see cref="IAuditService"/>.</param>
-        public InactivateArticlePublisher(IArticleRepository articleRepository, ISequenceService sequenceService, IPatientService patientService, IAuditService auditing)
+        /// <param name="articleRepository">The <see cref="IArticleService"/>.</param>
+        public InactivateArticlePublisher(IArticleService articleService)
         {
-            this.articleRepository = articleRepository;
-            this.sequenceService = sequenceService;
-            this.patientService = patientService;
-            this.auditing = auditing;
+            this.articleService = articleService;
         }
 
         #endregion
@@ -70,25 +50,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(InactivateArticleModel message)
         {
-            var patient = this.patientService.Get(message.PatientId);
-            var article = this.articleRepository.Get(message.ArticleId);
-            var sequence = this.sequenceService.Find(message.SequenceId);
-
-            if (article == null || patient == null)
+            var article = this.articleService.Find(message.ArticleId);
+            
+            if (article == null)
             {
                 return false;
             }
 
-            if(sequence != null && sequence.Article.Id == article.Id)
-            {
-                sequence.IsOrderable = false;
-                this.sequenceService.Update(sequence);
-            }
-
-            article.IsActive = false;
-            this.articleRepository.Update(article);
-            this.auditing.Delete(patient, "raderade artikeln {0} ({1})", article.Name, article.Id);
-
+            this.articleService.InactivateArticle(article.Id);
             return true;
         }
 

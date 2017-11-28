@@ -119,7 +119,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Inventory                   = sequence.Inventory.IsNotNull() ? sequence.Inventory.Id : Guid.Empty,
                 Inventories                 = schedule.ScheduleSettings.HasInventory ? this.inventories.Search(message.Id, true).Select(x => new SelectListItem() { Text = x.Description, Value = x.Id.ToString() }) : null,
                 RequiredRoleText            = requiredRole.Name.ToLower(),
-                IsOrderable                 = sequence.IsOrderable,
+                IsOrderable                 = sequence.Article != null,
                 IsOrderableArticleEnabled   = orderListConfiguration.HasMigratedArticles && schedule.ScheduleSettings.ArticleCategory != null
             };
         }

@@ -90,7 +90,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.Schedule.Create
             {
                 Delegations = this.taxonomyService.Roots(TaxonomicSchema.Delegation).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList(),
                 DeviationMessage = new ConfirmDeviationMessage(),
-                HasMigratedArticles = orderListConfiguration.HasMigratedArticles,
+                ArticleModuleIsInstalled = orderListConfiguration.IsInstalled,
                 Categories = categorySelectList
             };
         }

@@ -65,6 +65,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IAuditService auditing;
 
+        /// <summary>
+        /// The <see cref="IArticleService"/>.
+        /// </summary>
+        private readonly IArticleService articleService;
+
         #endregion
 
         #region Constructor.
@@ -78,7 +83,14 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
         /// <param name="inventoryService">The <see cref="IInventoryService"/>.</param>
         /// <param name="auditing">The <see cref="IAuditService"/>.</param>
-        public UpdateSequenceFormHandler(IPersistenceContext context, ISequenceService sequenceService, IRoleService roleService, ISettingsService settingsService, IInventoryService inventoryService, IAuditService auditing)
+        public UpdateSequenceFormHandler(
+            IPersistenceContext context, 
+            ISequenceService sequenceService, 
+            IRoleService roleService, 
+            ISettingsService settingsService, 
+            IInventoryService inventoryService,
+            IAuditService auditing,
+            IArticleService articleService)
         {
             this.context            = context;
             this.roleService        = roleService;
@@ -86,6 +98,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
             this.inventoryService   = inventoryService;
             this.settingsService    = settingsService;
             this.auditing           = auditing;
+            this.articleService     = articleService;
         }
 
         #endregion
@@ -101,25 +114,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if (message.Delegation.HasValue && !message.Nurse)
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
-            }
-
-            if (message.IsOrderable)
-            {
-                var article = Article.CreateNew(
-                    sequence.Name,
-                    sequence.Description,
-                    sequence.Patient,
-                    sequence.Schedule.ScheduleSettings.ArticleCategory,
-                    ArticleStatus.NotStarted
-                );
-
-                this.context.Save(article);
-                this.auditing.Create(sequence.Patient, "skapade artikeln {0} ({1})", article.Name, article.Id);
-                sequence.Article = article;
-            }
-            else
-            {
-                sequence.Article = null;
             }
 
             this.CreateOrUpdate(message, sequence, schedule, delegation, null);
@@ -197,6 +191,23 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }
             }
 
+            //// Handle article
+            //// If sequnce should be orderable and wasnt orderable before, we need to create an article
+            if (model.IsOrderable && sequence.Article == null)
+            {
+                sequence.Article = this.articleService.CreateArticle(
+                    sequence.Name,
+                    sequence.Description,
+                    sequence.Patient,
+                    sequence.Schedule.ScheduleSettings.ArticleCategory
+                );
+            }
+            //// If sequnce should not longer be orderable we need to delete the article
+            if(model.IsOrderable == false && sequence.Article != null)
+            {
+                this.articleService.InactivateArticle(sequence.Article.Id);
+            }
+
             if (schedule.ScheduleSettings.HasInventory)
             {
                 sequence.Inventory = this.inventoryService.Find(model.Inventory.GetValueOrDefault());
@@ -217,7 +228,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
             sequence.Schedule = schedule;
             sequence.Taxon = delegation;
             sequence.Role = requiredRole;
-            sequence.IsOrderable = model.IsOrderable;
             return sequence;
         }
 

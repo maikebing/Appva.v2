@@ -56,6 +56,12 @@ namespace Appva.Mcss.Admin.Domain.VO
             private set;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is installed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is installed; otherwise, <c>false</c>.
+        /// </value>
         public bool IsInstalled
         {
             get { return this.HasCreatedCategories && this.HasMigratedArticles; }

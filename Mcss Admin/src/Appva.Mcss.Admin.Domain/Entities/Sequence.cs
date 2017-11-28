@@ -319,15 +319,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// If the sequence is orderable.
-        /// </summary>
-        public virtual bool IsOrderable
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Information about Refill and ordering status
         /// </summary>
         public virtual RefillModel RefillInfo

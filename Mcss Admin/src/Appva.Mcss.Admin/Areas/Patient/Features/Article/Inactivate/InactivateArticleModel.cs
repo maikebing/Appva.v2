@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Areas.Models
     using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Domain.Entities;
+    using System.Collections.Generic;
 
     #endregion
 
@@ -41,32 +42,28 @@ namespace Appva.Mcss.Admin.Areas.Models
         }
 
         /// <summary>
-        /// The sequence.
+        /// The sequences.
         /// </summary>
-        public Guid SequenceId
+        public List<Sequence> Sequences
         {
             get;
             set;
         }
 
         /// <summary>
-        /// The sequence name.
+        /// Gets or sets the article.
         /// </summary>
-        public string SequenceName
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The schedule list name.
-        /// </summary>
-        public string ScheduleListName
-        {
-            get;
-            set;
+        /// <value>
+        /// The article.
+        /// </value>
+        public Article Article 
+        { 
+            get; 
+            set; 
         }
 
         #endregion
+
+        
     }
 }

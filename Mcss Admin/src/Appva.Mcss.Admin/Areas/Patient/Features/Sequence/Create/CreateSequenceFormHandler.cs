@@ -221,7 +221,6 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Taxon = delegation,
                 Role = requiredRole,
                 Inventory = inventory,
-                IsOrderable = message.IsOrderable
             };
         }
 

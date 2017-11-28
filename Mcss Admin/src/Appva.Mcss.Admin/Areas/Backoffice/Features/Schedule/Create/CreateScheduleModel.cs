@@ -190,7 +190,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models
         /// <summary>
         /// If articles has been migrated.
         /// </summary>
-        public bool HasMigratedArticles
+        public bool ArticleModuleIsInstalled
         {
             get;
             set;

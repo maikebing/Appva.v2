@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Handlers
     using Appva.Mcss.Admin.Areas.Roles.Models;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
+    using System;
 
     #endregion
 
@@ -51,12 +52,12 @@ namespace Appva.Mcss.Admin.Areas.Roles.Handlers
         {
             var categories = this.persistence.QueryOver<ArticleCategory>()
                 .AndRestrictionOn(x => x.Id)
-                    .IsIn(message.Categories.Where(x => x.IsSelected).Select(x => x.Id).ToArray())
+                    .IsIn(message.Categories.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray())
                         .List();
 
             var deviceCategories = this.persistence.QueryOver<ArticleCategory>()
                 .AndRestrictionOn(x => x.Id)
-                    .IsIn(message.DeviceCategories.Where(x => x.IsSelected).Select(x => x.Id).ToArray())
+                    .IsIn(message.DeviceCategories.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray())
                         .List();
 
             var role = this.persistence.Get<Role>(message.Id);

@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
             var maxNumberOfRowsPerTransaction = 10000;
             var list = this.persistence.QueryOver<Sequence>()
                 .Where(x => x.IsActive == true)
-                .And(x => x.EndDate <= DateTime.Now)
+                .And(x => x.EndDate >= DateTime.Now || x.EndDate == null )
                 .And(x => x.Article == null)
                 .JoinQueryOver(x => x.Schedule)
                     .JoinQueryOver(x => x.ScheduleSettings)
@@ -77,7 +77,6 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
                 var article = this.CreateArticle(sequence);
                 this.persistence.Save(article);
                 sequence.Article = article;
-                sequence.IsOrderable = true;
                 this.persistence.Update(sequence);
             }
 
@@ -121,8 +120,9 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
                     article.RefillOrderedBy = sequence.RefillInfo.RefillOrderedBy;
                     article.RefillOrderDate = sequence.RefillInfo.RefillOrderedDate;
                 }
-                else if (sequence.RefillInfo.Ordered == true)
+                if (sequence.RefillInfo.Ordered == true)
                 {
+                    article.Status = ArticleStatus.OrderedFromSupplier;
                     article.OrderedBy = sequence.RefillInfo.OrderedBy;
                     article.OrderDate = sequence.RefillInfo.OrderedDate;
                 }

@@ -1,0 +1,32 @@
+﻿@model Appva.Mcss.Admin.Areas.Backoffice.Models.EditSignatureModel
+@{
+    SetTitle("Redigera signering");
+}
+
+<div class="std-panel std-form lb-panel-small lb-validate-form">
+    @using (Html.Post(new { }))
+    {
+        <div id="sign-op">
+            <h3 class="section-title">Redigera signering</h3>
+            @Html.FormGroup(x => Model.Name, "text").Label().TextBox().Validate().Build()
+            <p class="btm-pad">
+                @Html.CheckBoxFor(x => Model.IsRoot)
+                <label class="lblcheckbox" for="IsRoot">Lägg till som standard</label>
+            </p>
+            <label>Välj en bild</label>
+            <ul id="sign-imglist">
+                @foreach (var item in Model.Images)
+                {
+                    <li>
+                        @Html.RadioButtonFor(x => Model.Path, item.Value, new { id = item.Key })
+                        <label for="@item.Key"><img src="@String.Format("/Assets/i/{0}", item.Value)"></label>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="submit">
+            @Html.Submit("Spara", new { @class = "btn"})
+            @Html.Cancel("Avbryt")
+        </div>
+    }
+</div>

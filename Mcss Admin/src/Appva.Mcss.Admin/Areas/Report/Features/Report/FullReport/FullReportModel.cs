@@ -42,7 +42,7 @@ namespace Appva.Mcss.Admin.Areas.Models
         [DataType(DataType.Date)]
         public DateTime End { get; set; }
 
-        public PageableSet<Task> Tasks { get; set; }
+        public IPaged<Task> Tasks { get; set; }
 
         public ReportData Report { get; set; }
 

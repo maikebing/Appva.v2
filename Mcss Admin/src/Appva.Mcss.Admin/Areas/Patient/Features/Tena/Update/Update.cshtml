@@ -1,0 +1,66 @@
+﻿@model Appva.Mcss.Admin.Models.UpdateTenaObservationPeriodModel
+@{
+    SetTitle("Ny Mätperiod");
+}
+<div class="grid">
+    <div data-size="s:24 l:12">
+        <div class="section section--hspace">
+            <h2>Uppdatera mätperiod - TENA Identifi</h2>
+            <div id="add-measuring-period">
+                <div class="alert-message">
+                    <h2 class="alert-message__heading h3">Ändra mätperiod</h2>
+                </div>
+                @using (Html.BeginForm("Update", "Tena", new {  periodId = Model.PeriodId, id = Model.Id }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="width-limiter width-limiter--s">
+                        <div class="section section--hspace section--vspace">
+                            @Html.FormGroup(x => x.Instruction, "form-controls").Label("Instruktion").TextArea().Validate().Build()
+                        </div>
+                        <div class="grid grid--align-center">
+                            
+                            <div data-size="s:24 m:10">
+                                @Html.FormGroup(x => x.StartsAt, "form-controls date-picker").Label("Från och med").TextBox(htmlAttributes: new
+                                       {
+                                           @class = "datepicker",
+                                           data_datepicker_limit = "future",
+                                           data_rule_datelimit = "future",
+                                           data_datepicker_dbquery = "true",
+                                           autocomplete = "off",
+                                           Value = Model.StartsAt.ToString("yyyy-MM-dd")
+                                       }).Validate().Build()
+                      
+                            </div>
+                            <div>
+                                <svg class="icon icon--e icon--separator icon--separator-offset">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="~/Assets/images/icons/icon.sprite.svg#arrow--fat-icon"></use>
+                                </svg>
+                            </div>
+                            <div data-size="s:24 m:10">
+                        
+                                    @Html.FormGroup(x => x.EndsAt, "form-controls date-picker").Label("Till och med").TextBox(htmlAttributes: new
+                                       {
+                                           @class = "datepicker",
+                                           data_datepicker_limit = "future",
+                                           data_rule_datelimit = "future",
+                                           data_rule_greaterthan = "#StartsAt",
+                                           data_rule_date = "true",
+                                           autocomplete = "off",
+                                           data_msg_greaterthan = "Slutdatum måste vara senare än startdatumet",
+                                           Value = Model.EndsAt.ToString("yyyy-MM-dd")
+                                       }).Validate().Build()
+                                
+                            </div>
+                        </div>
+                        <div class="form-controls form-controls--align-end form-controls--no-margin">
+                            <button type="reset" class="button button--secondary" data-dialog-close="true">Avbryt</button>
+                            <button type="submit" class="button button--primary">Spara</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

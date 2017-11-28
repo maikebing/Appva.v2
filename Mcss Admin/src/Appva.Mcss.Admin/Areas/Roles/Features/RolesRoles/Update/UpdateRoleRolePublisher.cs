@@ -56,9 +56,10 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
         /// <inheritdoc />
         public override bool Handle(UpdateRoleRole message)
         {
+            var allRoles = message.AdminRoles.Concat(message.UserRoles);
             var roles = this.persistence.QueryOver<Role>()
                 .AndRestrictionOn(x => x.Id)
-                .IsIn(message.Roles.Where(x => x.IsSelected)
+                .IsIn(allRoles.Where(x => x.IsSelected)
                 .Select(x => x.Id).ToArray())
                 .List();
             var role   = this.persistence.Get<Role>(message.Id);

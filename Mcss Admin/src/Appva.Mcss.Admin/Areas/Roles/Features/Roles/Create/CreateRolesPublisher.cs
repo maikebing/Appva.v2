@@ -71,7 +71,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
                 Name = message.Name,
                 Description = message.Description,
                 MachineName = Guid.NewGuid().ToString(),
-                IsVisible = true,
+                IsVisible = message.IsHiddenRole == false,
                 IsDeletable = true,
                 Permissions = permissions
             });

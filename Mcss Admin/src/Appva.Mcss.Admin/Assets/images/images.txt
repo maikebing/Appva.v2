@@ -1,0 +1,11 @@
+name: Images
+description: All icons and other images available for use on the site.
+type: Images
+images:
+  - File: flanges.jpg
+    Description: These are our best flanges
+  - File: close-blue-20x20.svg
+    Description: Close icon.
+    Usage: whenever you need to close something, use this icon
+----
+<p>Here's a list of all images one can use on the site, and their filenames. Some have descriptions to clarify how they are allowed to be used.</p>

@@ -5,18 +5,7 @@
 <div id="subheader" class="cf">
 	<h1>Roller och behörigheter</h1>
 	
-	@using (Html.Post("Install", "Acl", null))
-	{
-		@Html.Submit("Installera roller och behörigheter", new { @class = "btn" })
-	}
-	@using (Html.Post("Activate", "Acl", null))
-	{
-		@Html.Submit("Aktivera roller och behörigheter", new { @class = "btn" })
-	}
-    @using (Html.Post("UpdatePermissions", "Acl", null))
-    {
-        @Html.Submit("Upgradera behörigheter", new { @class = "btn" })
-    }
+	@Html.Partial("_aclButtons")
 </div>
 <div id="content" class="cf">
 	<div id="content-primary">

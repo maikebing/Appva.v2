@@ -103,11 +103,18 @@ namespace Appva.Mcss.Admin.Areas.Models
                 }
             }
 
+            //// IF the org taxon is null then the root taxon will be choosen...
+            //// We should change it. 
             var orgTaxon = message.OrganizationTaxon.IsNotNull() ? 
                 this.taxonomies.Find(new Guid(message.OrganizationTaxon), TaxonomicSchema.Organization) : 
                 this.taxonomies.Roots(TaxonomicSchema.Organization).FirstOrDefault();
-            //// IF the org taxon is null then the root taxon will be choosen...
-            //// We should change it. 
+            //// IF orgTaxon is out of scope for user, use users root
+            var userLocation = this.taxonomies.Find(this.accounts.LocationsFor(user).FirstOrDefault().Taxon.Id, TaxonomicSchema.Organization);
+            if (!userLocation.IsParentOf(orgTaxon))
+            {
+                orgTaxon = userLocation;
+            }
+            
             foreach (Guid delegation in message.Delegations)
             {
                 var taxon = this.taxonomies.Find(delegation, TaxonomicSchema.Delegation);
@@ -124,10 +131,6 @@ namespace Appva.Mcss.Admin.Areas.Models
                     CreatedBy = this.accounts.Load(delegatingAccount),
                     IsGlobal = (message.Patients.IsNotNull() && message.Patients.Count() > 0) ? false : true
                 };
-                if (del.IsGlobal)
-                {
-                    del.OrganisationTaxon = user.Locations.First().Taxon; 
-                }
                 this.delegations.Save(del);
             }
 

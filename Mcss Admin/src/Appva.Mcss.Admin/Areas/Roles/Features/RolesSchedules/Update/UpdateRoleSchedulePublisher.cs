@@ -55,9 +55,10 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
         /// <inheritdoc />
         public override bool Handle(UpdateRoleSchedule message)
         {
+            var allSchedules = message.Schedules.Concat(message.Categories);
             var settings = this.persistence.QueryOver<ScheduleSettings>()
                 .AndRestrictionOn(x => x.Id)
-                .IsIn(message.Schedules.Where(x => x.IsSelected).Select(x => x.Id).ToArray())
+                .IsIn(allSchedules.Where(x => x.IsSelected).Select(x => x.Id).ToArray())
                 .List();
             var role = this.persistence.Get<Role>(message.Id);
             role.ScheduleSettings = settings;

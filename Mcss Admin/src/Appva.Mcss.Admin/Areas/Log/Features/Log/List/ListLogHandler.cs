@@ -59,12 +59,12 @@ namespace Appva.Mcss.Admin.Areas.Log.Handlers
             var rootTaxon = this.taxonomyService.Roots(TaxonomicSchema.Organization).FirstOrDefault();
             return new ListLogModel
             {
-                Logs = list.Entities,
-                Page = (int)list.CurrentPage,
-                PageSize = (int)list.PageSize,
+                Logs       = list.Items,
+                Page       = list.PageQuery.PageNumber,
+                PageSize   = list.PageQuery.PageSize,
                 TotalCount = (int)list.TotalCount,
                 TenantName = rootTaxon.Name,
-                Cursor = message.Cursor.GetValueOrDefault(list.Entities.FirstOrDefault().CreatedAt)
+                Cursor     = message.Cursor.GetValueOrDefault(list.Items.FirstOrDefault().CreatedAt)
                 
             };
         }

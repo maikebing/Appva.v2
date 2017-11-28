@@ -34,5 +34,23 @@ namespace Appva.Mcss.Admin.Areas.Roles.Models
             get;
             set;
         }
+
+        [Required(ErrorMessage = "Kategorier får ej vara tom.")]
+        public IList<Tickable> Categories 
+        { 
+            get; 
+            set; 
+        }
+
+        /// <summary>
+        /// The name of the role, for displaying
+        /// </summary>
+        public string RoleName
+        {
+            get;
+            set;
+        }
+
+        
     }
 }

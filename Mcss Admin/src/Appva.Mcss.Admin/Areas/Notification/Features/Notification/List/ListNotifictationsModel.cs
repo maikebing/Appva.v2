@@ -25,7 +25,7 @@ namespace Appva.Mcss.Admin.Areas.Models
         /// <summary>
         /// The list of <see cref="Notification" />
         /// </summary>
-        public IList<Notification> Notifications
+        public IEnumerable<Notification> Notifications
         {
             get;
             set;

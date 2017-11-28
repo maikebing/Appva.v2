@@ -76,16 +76,16 @@ namespace Appva.Mcss.Admin.Models.handlers
                     IsActive    = isActive,
                     IsDeceased  = isDeceased,
                     SearchQuery = message.SearchQuery
-                },
+                }, 
                 pageIndex,
                 pageSize);            
             return new ListPatientModel
             {
                 IsActive       = isActive,
                 IsDeceased     = isDeceased,
-                Items          = this.transformer.ToPatientList(result.Entities),
-                PageNumber     = (int) result.CurrentPage,
-                PageSize       = (int) result.PageSize,
+                Items          = this.transformer.ToPatientList(result.Items),
+                PageNumber     = result.PageQuery.PageNumber,
+                PageSize       = result.PageQuery.PageSize,
                 TotalItemCount = (int) result.TotalCount
             };
         }

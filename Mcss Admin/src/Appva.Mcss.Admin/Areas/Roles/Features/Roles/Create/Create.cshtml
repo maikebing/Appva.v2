@@ -9,8 +9,11 @@
         <div class="form-tab form-tab-1">
             <h3 class="section-title">Ny roll</h3>
             @Html.ValidationAlert("Ett fel inträffade", "Var vänlig korrigera markerade fält i formuläret och försök igen")
+            <h4 class="section-title">Allmänt</h4>
             @Html.FormGroup(x => x.Name, "text large").Label("Namn").TextBox("Rollnamn").Validate().Build()
             @Html.FormGroup(x => x.Description, "text large").Label("Beskrivning").TextArea("Beskrivning av roll").Validate().Build()
+            @Html.FormGroup(x => x.IsHiddenRole, "checkbox").Checkbox("Rollen är dold för användare i systemet").Validate().Build()
+            <h4 class="section-title">Behörigheter</h4>
             @Html.FormGroup(x => x.Permissions, "text").Label("Behörigheter").CheckboxList().Validate().Build()
         </div>
         <div class="submit">

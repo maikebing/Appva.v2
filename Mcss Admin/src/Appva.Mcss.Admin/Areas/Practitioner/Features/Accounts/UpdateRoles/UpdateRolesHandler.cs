@@ -18,6 +18,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using System.Web.Mvc;
+    using Appva.Mcss.Web;
+    using Appva.Mcss.Admin.Application.Common;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -33,6 +36,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         private readonly IAccountService service;
 
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomies;
+
         #endregion
 
         #region Constructor.
@@ -41,9 +49,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="UpdateRolesHandler"/> class.
         /// </summary>
         /// <param name="service"></param>
-        public UpdateRolesHandler(IAccountService service)
+        public UpdateRolesHandler(IAccountService service, ITaxonomyService taxonomies)
         {
-            this.service = service;
+            this.service    = service;
+            this.taxonomies = taxonomies;
         }
 
         #endregion
@@ -54,12 +63,18 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override UpdateRolesForm Handle(UpdateRoles message)
         {
             var user    = this.service.CurrentPrincipal();
+            var userLocation = TaxonItem.FromTaxon(this.service.LocationsFor(user).FirstOrDefault().Taxon);
             var account = this.service.Find(message.Id);
             var roles   = user.GetRoleAccess();
+            var selected = TaxonItem.FromTaxon(this.service.LocationsFor(account).FirstOrDefault().Taxon);
             return new UpdateRolesForm
             {
                 Roles         = roles.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList(),
-                SelectedRoles = account.Roles.Select(x => x.Id.ToString()).ToArray()
+                SelectedRoles = account.Roles.Select(x => x.Id.ToString()).ToArray(),
+                Taxons        = TaxonomyHelper.CreateItems(user, selected, this.taxonomies.List(TaxonomicSchema.Organization)),
+                Taxon         = selected.Id,
+                CanUpdateTaxonPermission = userLocation.IsParentOf(selected)
+
             };
         }
 

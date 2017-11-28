@@ -22,6 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using Appva.Mcss.Admin.Domain.VO;
     using Appva.Persistence;
     using Appva.Core.Messaging.RazorMail;
+    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -123,13 +124,21 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListAccount Handle(UpdateRolesForm message)
         {
             var account = this.accountService.Find(message.Id);
-            var roles = (message.SelectedRoles != null && message.SelectedRoles.Length > 0) ? this.persistence.QueryOver<Role>()
+            var roles   = (message.SelectedRoles != null && message.SelectedRoles.Length > 0) ? this.persistence.QueryOver<Role>()
                     .AndRestrictionOn(x => x.Id)
                     .IsIn(message.SelectedRoles.Select(x => new Guid(x)).ToArray())
                     .List() : null;
+
+            Taxon address = null;
+            if (message.Taxon.HasValue)
+            {
+                address = this.taxonomies.Get(message.Taxon.GetValueOrDefault());
+            }
+            
             bool isAccountUpgradedForAdminAccess;
             bool isAccountUpgradedForDeviceAccess;
-            this.accountService.UpdateRoles(account, roles, out isAccountUpgradedForAdminAccess, out isAccountUpgradedForDeviceAccess);
+            this.accountService.UpdateRoles(account, roles, out isAccountUpgradedForAdminAccess, out isAccountUpgradedForDeviceAccess, address);
+
             var configuration = this.settings.MailMessagingConfiguration();
             this.SendRegistrationMail(account, configuration, isAccountUpgradedForAdminAccess);
             this.SendRegistrationMailForDevice(account, configuration, isAccountUpgradedForDeviceAccess);

@@ -4,13 +4,14 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
+
 namespace Appva.Mcss.Admin.Models
 {
     #region Imports.
 
     using System;
     using System.Collections.Generic;
-using Appva.Cqrs;
+    using Appva.Cqrs;
     using Appva.Mcss.Web.ViewModels;
 
     #endregion

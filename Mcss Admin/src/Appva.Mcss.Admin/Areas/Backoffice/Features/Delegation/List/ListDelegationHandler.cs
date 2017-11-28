@@ -55,7 +55,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Features.List
             var delegations = new Dictionary<ITaxon, IList<ITaxon>>();
             foreach (var cat in categories)
             {
-                delegations.Add(cat, this.taxonomyService.ListByParent(TaxonomicSchema.Delegation, cat));
+                delegations.Add(cat, this.taxonomyService.ListByParent(TaxonomicSchema.Delegation, cat).OrderBy(x => x.Sort).ThenBy(x => x.Name).ToList());
             }
 
             return new ListDelegationModel

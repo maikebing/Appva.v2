@@ -43,5 +43,16 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.Create
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is hidden role.
+        /// </summary>
+        /// <value>
+        /// </value>
+        public bool IsHiddenRole
+        {
+            get;
+            set;
+        }
     }
 }

@@ -92,7 +92,7 @@ using Appva.Mcss.Admin.Infrastructure;
                     CurrentUserLocationPath     = user.Locations.First().Taxon.Path //// TODO: Grab from Principal object.
                 },
                 pageSize: 30);
-            return accounts.Entities.Select(x => x.FullName).ToList();
+            return accounts.Items.Select(x => x.FullName).ToList();
         }
 
         #endregion

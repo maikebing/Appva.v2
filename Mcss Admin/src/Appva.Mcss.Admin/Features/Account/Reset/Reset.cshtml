@@ -2,11 +2,12 @@
 @{
     Layout = "~/Features/Shared/_LoginLayout.cshtml";
     SetTitle("Återställ lösenord");
-    SetBodyCssClass("page-reset-password");
+    SetBodyCssClass("page-register-password");
 }
 @section nav {
-    @Html.Partial("_PartialPasswordHeader")
+    
 }
+@Html.Partial("_PartialPasswordHeader")
 @Html.Partial("_PartialPassword", Model)
 @section javascript {
     @Html.Partial("_PartialPasswordStrength")

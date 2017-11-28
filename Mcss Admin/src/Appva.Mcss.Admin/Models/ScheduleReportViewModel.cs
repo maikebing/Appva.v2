@@ -9,6 +9,7 @@ using Appva.Mvc;
 using System.ComponentModel;
 using Appva.Mcss.Admin.Application.Models;
 using Appva.Repository;
+using Appva.Mcss.Admin.Domain;
 
 namespace Appva.Mcss.Web.ViewModels {
 
@@ -17,7 +18,7 @@ namespace Appva.Mcss.Web.ViewModels {
         public Guid? Schedule { get; set; }
         public IList<ScheduleSettings> Schedules { get; set; }
         public ReportData Report { get; set; }
-        public PageableSet<Task> Tasks { get; set; }
+        public IPaged<Task> Tasks { get; set; }
     }
 
 }

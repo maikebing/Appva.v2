@@ -11,16 +11,15 @@ namespace Appva.Mcss.Admin.Domain.Entities
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Common.Domain;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Log : AggregateRoot<Log>
+    public class Log : AggregateRoot
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Log"/> class.
@@ -113,9 +112,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public enum LogLevel
     {
-        Info = 0,
-        Warn = 1,
-        Error = 2,
+        Info       = 0,
+        Warn       = 1,
+        Error      = 2,
         TakeAction = 3
     }
 
@@ -124,12 +123,12 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public enum LogType
     {
-        None = 0,
-        Read = 1,
-        Write = 2,
+        None           = 0,
+        Read           = 1,
+        Write          = 2,
         Authentication = 3,
-        SignedIn = 4,
-        SignedOut = 5
+        SignedIn       = 4,
+        SignedOut      = 5
     }
 
     /// <summary>
@@ -137,10 +136,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public enum SystemType
     {
-        None = 0,
-        Web = 1,
+        None   = 0,
+        Web    = 1,
         Device = 2,
-        Admin = 3,
+        Admin  = 3,
         Client = 4
     }
 }

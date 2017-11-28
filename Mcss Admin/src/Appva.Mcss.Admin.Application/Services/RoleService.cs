@@ -51,6 +51,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="identifier">The unique identifier</param>
         /// <returns>A collection of <see cref="Account"/></returns>
         IList<Account> MembersOfRole(string identifier);
+
+        /// <summary>
+        /// Updates a role
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        Role Update(Role role);
     }
 
     /// <summary>
@@ -85,7 +92,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Role Find(Guid id)
         {
-            return this.repository.Find(id);
+            return this.repository.Get(id);
         }
 
         /// <inheritdoc />
@@ -110,6 +117,13 @@ namespace Appva.Mcss.Admin.Application.Services
         public IList<Account> MembersOfRole(string identifier)
         {
             return this.repository.MembersOfRole(identifier);
+        }
+
+        /// <inheritdoc />
+        public Role Update(Role role)
+        {
+            this.repository.Update(role);
+            return role;
         }
 
         #endregion

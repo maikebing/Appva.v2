@@ -44,7 +44,7 @@ namespace Appva.Mcss.Admin.Application.Common
         public static readonly ITaxon Pressure = CreateRiskAssement(
             "Liggsår",
             "Bedöms ha risk för liggsår",
-            "icn-health-fall.png");
+            "icn-health-pressure.png");
 
         /// <summary>
         /// The Health - Weight risk assesment
@@ -101,6 +101,46 @@ namespace Appva.Mcss.Admin.Application.Common
             "Blodförtunnande",
             "Observera blodförtunnande",
             "ico-warning-antiglukos.png");
+
+        /// <summary>
+        /// Waran risk assesment
+        /// </summary>
+        public static readonly ITaxon Waran = CreateRiskAssement(
+            "Waran",
+            "Observera waran",
+            "icn-warning-waran.png");
+
+        /// <summary>
+        /// 0HLR risk assesment
+        /// </summary>
+        public static readonly ITaxon NoHLR = CreateRiskAssement(
+            "0HLR",
+            "Ingen hjärt- lungräddning",
+            "icn-warning-0hlr.png");
+
+        /// <summary>
+        /// Epilepsy risk assesment
+        /// </summary>
+        public static readonly ITaxon Epilepsy = CreateRiskAssement(
+            "Epilepsi",
+            "Observera epilepsi",
+            "ico-warning-epilepsy.png");
+
+        /// <summary>
+        /// Epilepsy risk assesment
+        /// </summary>
+        public static readonly ITaxon EscapeInclined = CreateRiskAssement(
+            "Rymningsbenägen",
+            "Observera rymningsbenägen",
+            "ico-escape.png");
+
+        /// <summary>
+        /// Problem to swallow risk assesment
+        /// </summary>
+        public static readonly ITaxon HardToSwallow = CreateRiskAssement(
+            "Sväljsvårigheter",
+            "Observera sväljsvårigheter",
+            "ico-warning-swallow.png");
 
         #endregion
 

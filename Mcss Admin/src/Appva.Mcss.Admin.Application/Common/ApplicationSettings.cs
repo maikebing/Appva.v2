@@ -13,7 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
     using System.Diagnostics.CodeAnalysis;
     using Appva.Ldap.Configuration;
     using Appva.Mcss.Admin.Domain.VO;
-using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Common;
 
     #endregion
@@ -47,6 +47,13 @@ using Appva.Mcss.Admin.Application.Models;
             "MCSS.SeniorAlert",
             "Whether or not risk assessment information, such as 'Senior' alert is visible",
             false);
+
+        public static readonly ApplicationSettingIdentity<TenaConfiguration> TenaSettings = ApplicationSettingIdentity<TenaConfiguration>.CreateNew(
+            "MCSS.Tena",
+            "Tena settings",
+            "MCSS.Tena",
+            "The Tena settings",
+            TenaConfiguration.CreateNew(null, null));
 
         #endregion
 
@@ -146,7 +153,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Mail Configuration",
             "Mcss.Core.Security.Messaging",
             "The E-mail configuration for sending and signing",
-            SecurityMailerConfiguration.CreateNew());
+            SecurityMailerConfiguration.New());
 
         /// <summary>
         /// The password configuration.
@@ -157,7 +164,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Password Configuration",
             "Mcss.Core.Security.Password",
             "The password configuration",
-            SecurityPasswordConfiguration.CreateNew());
+            SecurityPasswordConfiguration.NewDefault());
 
         /// <summary>
         /// The tenant authentication cookie expiration timespan.
@@ -193,7 +200,7 @@ using Appva.Mcss.Admin.Application.Models;
             "Audit logging configuration",
             "Mcss.Core.Security.Analytics.Audit",
             "The audit configuration settings",
-            AuditLoggingConfiguration.CreateNew(new List<Guid>()));
+            AuditLoggingConfiguration.New(new List<Guid>()));
 
         #endregion
 
@@ -208,7 +215,7 @@ using Appva.Mcss.Admin.Application.Models;
              "Pdf Generation Configuration",
              "Mcss.Core.Pdf",
              "The PDF configuration for look and feel",
-             PdfLookAndFeel.CreateDefault(null, "Appva AB"));
+             PdfLookAndFeel.NewDefault(null, "Appva AB"));
 
          /// <summary>
          /// PDF configuration for look and feel.

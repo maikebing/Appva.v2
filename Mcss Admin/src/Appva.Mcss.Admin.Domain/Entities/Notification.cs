@@ -1,14 +1,10 @@
 ﻿// <copyright file="Notification.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
-// <author>
-//     <a href="mailto:richard.alvegard@appva.se">Richard Alvegard</a>
-// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     #region Imports.
 
-    using Appva.Common.Domain;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,9 +14,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class Notification : AggregateRoot<Notification>
+    public class Notification : AggregateRoot
     {
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Notification"/> class.
@@ -31,7 +27,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Properties
+        #region Properties.
 
         /// <summary>
         /// The discriptive name of the notification
@@ -107,7 +103,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Members
+        #region Public Methods.
 
         /// <summary>
         /// Adds a view by a user to the current notification
@@ -119,13 +115,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
             {
                 this.ViewedBy = new List<NotificationViewedBy>();
             }
-            this.ViewedBy.Add(new NotificationViewedBy() { Account = account, Notification = this });
+            this.ViewedBy.Add(new NotificationViewedBy { Account = account, Notification = this });
         }
 
         #endregion
     }
 
-    #region Enums
+    #region Enums.
 
     /// <summary>
     /// Defines the notification-type

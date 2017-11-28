@@ -14,9 +14,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
-    using Appva.Mcss.Admin.Domain.Repositories.Contracts;
     using Appva.Persistence;
-    using Appva.Repository;
     using NHibernate;
     using NHibernate.Criterion;
     using NHibernate.Dialect.Function;
@@ -30,11 +28,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
     public interface IAccountRepository : 
-        IIdentityRepository<Account>, 
-        IUpdateRepository<Account>,
-        IProxyRepository<Account>,
-        IListRepository<Account>,
-        IRepository
+        IRepository<Account>, 
+        IListRepository<Account>, 
+        IUpdateRepository<Account>
     {
         /// <summary>
         /// Returns a user account by its unique Personal Identity Number. 
@@ -46,8 +42,8 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <summary>
         /// Returns a user account by its unique user name. 
         /// </summary>
-        /// <param name="username">The unique username</param>
-        /// <returns>An <see cref="Account"/> if found, else null</returns>
+        /// <param name="username">The unique username.</param>
+        /// <returns>An <see cref="Account"/> if found, else null.</returns>
         Account FindByUserName(string username);
 
         /// <summary>
@@ -72,45 +68,24 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="model">The <see cref="SearchAccountModel"/></param>
         /// <param name="page">The current page, must be > 0</param>
         /// <param name="pageSize">The page-size</param>
-        /// <returns>A <see cref="PageableSet"/> of <see cref="AccountModel"/></returns>
-        PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10);
+        /// <returns>A <see cref="Paged"/> of <see cref="AccountModel"/></returns>
+        Paged<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10);
     }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class AccountRepository : IAccountRepository
+    public sealed class AccountRepository : Repository<Account>, IAccountRepository
     {
-        #region Variables.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/> implementation.
-        /// </summary>
-        private readonly IPersistenceContext persistenceContext;
-
-        #endregion
-
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountRepository"/> class.
         /// </summary>
-        /// <param name="persistenceContext">
-        /// The <see cref="IPersistenceContext"/> implementation
-        /// </param>
-        public AccountRepository(IPersistenceContext persistenceContext)
+        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
+        public AccountRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.persistenceContext = persistenceContext;
-        }
-
-        #endregion
-
-        #region IIdentifierRepository<Account> Members
-
-        /// <inheritdoc /> 
-        public Account Find(Guid id)
-        {
-            return this.persistenceContext.Get<Account>(id);
         }
 
         #endregion
@@ -120,76 +95,87 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public Account FindByPersonalIdentityNumber(PersonalIdentityNumber personalIdentityNumber)
         {
-            var accounts = this.persistenceContext.QueryOver<Account>()
-                .Where(x => x.PersonalIdentityNumber == personalIdentityNumber)
+            var accounts = this.Context
+                .QueryOver<Account>()
+                    .Where(x => x.PersonalIdentityNumber == personalIdentityNumber)
                 .List();
-            if (accounts.Count == 1)
+            if (accounts.Count == 0)
             {
-                return accounts[0];
+                return null;
             }
             if (accounts.Count > 1)
             {
                 throw new NonUniqueResultException(accounts.Count);
             }
-            return null;
+            return accounts.First();
         }
 
         /// <inheritdoc />
         public Account FindByUserName(string username)
         {
-            var accounts = this.persistenceContext.QueryOver<Account>()
-                .Where(x => x.IsActive)
-                .And(x => x.IsPaused == false)
-                .And(x => x.UserName == username)
+            var accounts = this.Context
+                .QueryOver<Account>()
+                    .Where(x => x.IsActive)
+                      .And(x => x.IsPaused == false)
+                      .And(x => x.UserName == username)
                 .List();
-            if (accounts.Count == 1)
+            if (accounts.Count == 0)
             {
-                return accounts[0];
+                return null;
             }
-            return null;
+            if (accounts.Count > 1)
+            {
+                throw new NonUniqueResultException(accounts.Count);
+            }
+            return accounts.First();
         }
 
         /// <inheritdoc />
         public Account FindByHsaId(string hsaId)
         {
-            var accounts = this.persistenceContext.QueryOver<Account>()
-                .Where(x => x.IsActive)
-                .And(x => x.IsPaused == false)
-                  .And(x => x.HsaId    == hsaId)
+            var accounts = this.Context
+                .QueryOver<Account>()
+                    .Where(x => x.IsActive)
+                      .And(x => x.IsPaused == false)
+                      .And(x => x.HsaId    == hsaId)
                 .List();
-            if (accounts.Count == 1)
+            if (accounts.Count == 0)
             {
-                return accounts[0];
+                return null;
             }
-            //// FIXME: should throw exception if we have several!
-            return null;
+            if (accounts.Count > 1)
+            {
+                throw new NonUniqueResultException(accounts.Count);
+            }
+            return accounts.First();
         }
 
         /// <inheritdoc />
         public IList<AccountModel> ListByExpiringDelegation(Account user, string taxonFilter, DateTime expiringDate, Guid? filterByIssuerId = null)
         {
-            Account accountAlias = null;
+            
+            Account accountAlias       = null;
             Delegation delegationAlias = null;
-            Taxon taxonAlias = null;
+            Taxon taxonAlias           = null;
             Taxon delegationtaxonAlias = null;
-            Role roleAlias = null;
-            AccountModel accountModel = null;
+            Role roleAlias             = null;
+            AccountModel accountModel  = null;
             Expression<Func<bool>> delegationFilter;
             if (filterByIssuerId.HasValue && filterByIssuerId.GetValueOrDefault() != Guid.Empty)
             {
-                delegationFilter = () => delegationAlias.IsActive == true &&
-                                         delegationAlias.Pending == false &&
-                                         delegationAlias.EndDate <= expiringDate &&
+                delegationFilter = () => delegationAlias.IsActive == true         && 
+                                         delegationAlias.Pending  == false        && 
+                                         delegationAlias.EndDate  <= expiringDate && 
                                          delegationAlias.CreatedBy.Id == filterByIssuerId.GetValueOrDefault();
             }
             else
             {
-                delegationFilter = () => delegationAlias.IsActive == true &&
-                                         delegationAlias.Pending == false &&
-                                         delegationAlias.EndDate <= expiringDate;
+                delegationFilter = () => delegationAlias.IsActive == true  && 
+                                         delegationAlias.Pending  == false && 
+                                         delegationAlias.EndDate  <= expiringDate;
             }
             var ids = user.GetRoleDelegationAccess().Select(x => x.Id).ToArray();
-            var query = this.persistenceContext.QueryOver<Account>(() => accountAlias)
+            var query = this.Context.QueryOver<Account>(() => accountAlias)
                 .Where(x => x.IsActive)
                   .And(x => x.IsPaused == false)
                 .Inner.JoinAlias(x => x.Roles, () => roleAlias)
@@ -225,11 +211,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         }
 
         /// <inheritdoc />
-        public PageableSet<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
+        public Paged<AccountModel> Search(SearchAccountModel model, int page = 1, int pageSize = 10)
         {
-            //// Main query - As a view
-            Account account = null;
-            var query = this.persistenceContext.QueryOver<Account>(() => account)
+            var pageQuery = PageQuery.New(page, pageSize);   
+            Account accountAlias       = null;
+            Role roleAlias             = null;
+            Delegation delegationAlias = null;
+            Taxon taxonAlias           = null;
+            var query = this.Context.QueryOver<Account>(() => accountAlias)
                 .Where(x => x.IsActive == model.IsFilterByIsActiveEnabled);
             //// If searching in active-users, check paused, else list all 
             if (model.IsFilterByIsActiveEnabled)
@@ -244,33 +233,31 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 {
                     expression = x => x.PersonalIdentityNumber.Value;
                 }
-                query.Where(Restrictions.On<Account>(expression).IsLike(model.SearchQuery, MatchMode.Anywhere))
+                query
+                    .WhereRestrictionOn(expression)
+                    .IsLike(model.SearchQuery, MatchMode.Anywhere)
                     .OrderBy(x => x.LastName);
             }
             if (model.RoleFilterId.HasValue)
             {
-                Role role = null;
-                query.Inner.JoinAlias(x => x.Roles, () => role)
-                    .Where(() => role.Id == model.RoleFilterId)
-                    .And(() => role.IsVisible);
+                query.Inner.JoinAlias(x => x.Roles, () => roleAlias)
+                    .Where(() => roleAlias.Id == model.RoleFilterId)
+                      .And(() => roleAlias.IsVisible);
             }
             else
             {
-                Role role = null;
-                query.Inner.JoinAlias(x => x.Roles, () => role)
+                query.Inner.JoinAlias(x => x.Roles, () => roleAlias)
                     .Where(Restrictions.Or(
-                        Restrictions.On(() => role.Accounts).IsNull,
-                        Restrictions.Where(() => role.IsVisible)
+                        Restrictions.On   (() => roleAlias.Accounts).IsNull,
+                        Restrictions.Where(() => roleAlias.IsVisible)
                     ));
             }
             if (model.OrganisationFilterTaxonPath.IsNotEmpty())
             {
-                Taxon taxonAlias = null;
                 query.Inner.JoinAlias<Taxon>(x => x.Taxon, () => taxonAlias, TaxonFilterRestrictions.Pipe<Taxon>(x => x.Path, model.OrganisationFilterTaxonPath));
             }
             if (model.IsFilterByCreatedByEnabled)
             {
-                Delegation delegationAlias = null;
                 query.Inner.JoinAlias<Delegation>(x => x.Delegations, () => delegationAlias, () => delegationAlias.CreatedBy.Id == model.CurrentUserId);
             }
             else if (model.DelegationFilterId.HasValue)
@@ -287,9 +274,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
             //// Subqueries to get days until delegation expires 
             var delegationSubquery = QueryOver.Of<Delegation>()
                     .Where(x => x.IsActive)
-                      .And(x => !x.Pending)
-                      .And(x => x.Account.Id == account.Id)
-                      .And(x => x.EndDate != null)
+                      .And(x => x.Pending    == false)
+                      .And(x => x.Account.Id == accountAlias.Id)
+                      .And(x => x.EndDate    != null)
                     .OrderBy(x => x.EndDate).Asc;
             var daysLeftSubquery = delegationSubquery.Clone()
                 .Select(Projections.SqlFunction(
@@ -310,42 +297,44 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                         Projections.Constant(true), 
                         Projections.Constant(false))).Take(1);
 
+            var isEditableForCurrentUser = QueryOver.Of<Location>()
+                .Where(x => x.Account.Id == accountAlias.Id)
+                .JoinQueryOver<Taxon>(x => x.Taxon)
+                    .WhereRestrictionOn(x => x.Path)
+                        .IsLike(model.CurrentUserLocationPath, MatchMode.Start)
+                .Select(
+                    Projections.Conditional(
+                        Restrictions.Gt(Projections.Count<Location>(x => x.Id), 0), 
+                        Projections.Constant(true), 
+                        Projections.Constant(false))).Take(1);
             //// Merges queries and selects needed columns and order rows for main query
             AccountModel accountModel = null;
-            var mainQuery = query.Clone().Select(
+            var mainQuery = query.Clone()
+                .Select(
                 Projections.Distinct(
                     Projections.ProjectionList()
-                    .Add(Projections.Property<Account>(x => x.Id).WithAlias(() => accountModel.Id))
-                    .Add(Projections.SqlFunction("COALESCE", NHibernateUtil.Boolean, Projections.SubQuery<Delegation>(showAlertOnDaysLeftSubquery), Projections.Constant(false)).WithAlias(() => accountModel.HasExpiringDelegation))
-                    .Add(Projections.SubQuery<Delegation>(daysLeftSubquery).WithAlias(() => accountModel.DelegationDaysLeft))
-                    .Add(Projections.Property<Account>(x => x.IsActive).WithAlias(() => accountModel.IsActive))
-                    .Add(Projections.Property<Account>(x => x.FirstName).WithAlias(() => accountModel.FirstName))
-                    .Add(Projections.Property<Account>(x => x.LastName).WithAlias(() => accountModel.LastName))
-                    .Add(Projections.Property<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
-                    .Add(Projections.Property<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
-                    .Add(Projections.Property<Account>(x => x.Title).WithAlias(() => accountModel.Title))
-                    .Add(Projections.Property<Account>(x => x.IsSynchronized).WithAlias(() => accountModel.IsSynchronized))
-                    .Add(Projections.Property<Account>(x => x.LastSynchronized).WithAlias(() => accountModel.LastSynchronized))
-                    .Add(Projections.Property<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber))));                
+                        .Add(Projections.Property<Account>(x => x.Id).WithAlias(() => accountModel.Id))
+                        .Add(Projections.SqlFunction("COALESCE", NHibernateUtil.Boolean, Projections.SubQuery<Delegation>(showAlertOnDaysLeftSubquery), Projections.Constant(false)).WithAlias(() => accountModel.HasExpiringDelegation))
+                        .Add(Projections.SqlFunction("COALESCE", NHibernateUtil.Boolean, Projections.SubQuery<Location>(isEditableForCurrentUser), Projections.Constant(false)).WithAlias(() => accountModel.IsEditableForCurrentUser))
+                        .Add(Projections.SubQuery<Delegation>(daysLeftSubquery).WithAlias(() => accountModel.DelegationDaysLeft))
+                        .Add(Projections.Property<Account>(x => x.IsActive).WithAlias(() => accountModel.IsActive))
+                        .Add(Projections.Property<Account>(x => x.FirstName).WithAlias(() => accountModel.FirstName))
+                        .Add(Projections.Property<Account>(x => x.LastName).WithAlias(() => accountModel.LastName))
+                        .Add(Projections.Property<Account>(x => x.FullName).WithAlias(() => accountModel.FullName))
+                        .Add(Projections.Property<Account>(x => x.IsPaused).WithAlias(() => accountModel.IsPaused))
+                        .Add(Projections.Property<Account>(x => x.Title).WithAlias(() => accountModel.Title))
+                        .Add(Projections.Property<Account>(x => x.IsSynchronized).WithAlias(() => accountModel.IsSynchronized))
+                        .Add(Projections.Property<Account>(x => x.LastSynchronized).WithAlias(() => accountModel.LastSynchronized))
+                        .Add(Projections.Property<Account>(x => x.PersonalIdentityNumber).WithAlias(() => accountModel.PersonalIdentityNumber))
+                    ));                
             //// Ordering and transforming
             mainQuery.OrderByAlias(() => accountModel.HasExpiringDelegation).Desc
                 .ThenByAlias(() => accountModel.LastName).Asc
+                .Fetch(x => accountModel.Locations).Eager
                 .TransformUsing(NHibernate.Transform.Transformers.AliasToBean<AccountModel>());
-            //// Checks that page is greater then 0
-            if (page < 1)
-            {
-                page = 1;
-            }
-            //// Number of rows to skip
-            var skip = (page - 1) * pageSize;
-            return new PageableSet<AccountModel>()
-            {
-                CurrentPage = page,
-                NextPage    = page++,
-                PageSize    = pageSize,
-                TotalCount  = query.Clone().Select(Projections.CountDistinct("Id")).SingleOrDefault<int>(),
-                Entities    = mainQuery.Skip(skip).Take(pageSize).List<AccountModel>()               
-            };
+            var count = query.Clone().Select(Projections.CountDistinct("Id")).SingleOrDefault<int>();
+            var items = mainQuery.Skip(pageQuery.Skip).Take(pageQuery.PageSize).List<AccountModel>();
+            return Paged<AccountModel>.New(pageQuery, items, count);
         }
 
         #endregion
@@ -357,17 +346,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         {
             entity.UpdatedAt = DateTime.Now;
             entity.Version = entity.Version++;
-            this.persistenceContext.Update<Account>(entity);
-        }
-
-        #endregion
-
-        #region IProxyRepository Members.
-    
-        /// <inheritdoc /> 
-        public Account Load(Guid id)
-        {
- 	        return this.persistenceContext.Session.Load<Account>(id);
+            this.Context.Update<Account>(entity);
         }
 
         #endregion
@@ -375,9 +354,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IListRepository Members.
 
         /// <inheritdoc />
-        public IList<Account> List(ulong maximumItems = long.MaxValue)
+        public IList<Account> List()
         {
-            return this.persistenceContext.QueryOver<Account>().List();
+            return this.Context.QueryOver<Account>().List();
         }
 
         #endregion

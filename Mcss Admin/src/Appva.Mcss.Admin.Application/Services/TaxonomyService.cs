@@ -33,6 +33,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <returns></returns>
         ITaxon Find(Guid id, TaxonomicSchema schema);
 
+
+        /// <summary>
+        /// Finds a taxonomy by id without caching
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ITaxon Find(Guid id);
+
         /// <summary>
         /// 
         /// </summary>
@@ -53,6 +61,13 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="schema"></param>
         /// <returns></returns>
         IList<ITaxon> List(TaxonomicSchema schema);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        IList<ITaxon> ListByFilter(TaxonomicSchema schema, bool? showActive = true);
 
         /// <summary>
         /// 
@@ -144,6 +159,21 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
+        public ITaxon Find(Guid id)
+        {
+            var item = this.repository.Get(id);
+            return new TaxonItem(
+                    item.Id,
+                    item.Name,
+                    item.Description,
+                    item.Path,
+                    item.Type,
+                    item.IsRoot,
+                    isActive: item.IsActive
+                );
+        }
+
+        /// <inheritdoc />
         public ITaxa Fetch(params Guid[] ids)
         {
             throw new NotImplementedException();
@@ -169,6 +199,17 @@ namespace Appva.Mcss.Admin.Application.Services
             return this.cache.Find<IList<ITaxon>>(schema.CacheKey);
         }
 
+        /// <inheritdoc />
+        public IList<ITaxon> ListByFilter(TaxonomicSchema schema, bool? showActive = true)
+        {
+            if (schema == null)
+            {
+                return null;
+            }
+
+            return this.HierarchyConvert(this.repository.ListByFilter(schema.Id, showActive), null, null);
+        }
+
         private IList<ITaxon> HierarchyConvert(IList<Taxon> list, Guid? parentId, ITaxon parent)
         {
             var retval = new List<ITaxon>();
@@ -184,7 +225,8 @@ namespace Appva.Mcss.Admin.Application.Services
                         item.Path,
                         item.Type,
                         item.Weight,
-                        parent);
+                        parent,
+                        item.IsActive);
                 retval.Add(taxon);
                 list.Remove(item);
                 retval.AddRange(HierarchyConvert(list, taxon.Id, taxon));
@@ -217,7 +259,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public Taxon Get(Guid id)
         {
-            return this.repository.Find(id);
+            return this.repository.Get(id);
         }
 
         /// <inheritdoc />
@@ -244,7 +286,8 @@ namespace Appva.Mcss.Admin.Application.Services
                 Path = taxon.Path,
                 Taxonomy = this.repository.LoadTaxonomy(schema.Id),
                 Type = taxon.Type,
-                Weight = taxon.Sort
+                Weight = taxon.Sort,
+                IsActive = taxon.IsActive
             }, (schema == TaxonomicSchema.Delegation || schema == TaxonomicSchema.Organization));
 
             this.cache.Remove(schema.CacheKey);
@@ -253,38 +296,18 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void Update(ITaxon taxon, TaxonomicSchema schema)
         {
-            var t = this.repository.Find(taxon.Id);
+            var t = this.repository.Get(taxon.Id);
             t.Description = taxon.Description;
             t.IsRoot = taxon.IsRoot;
             t.Name = taxon.Name;
             t.Path = taxon.Path;
             t.Type = taxon.Type;
             t.Weight = taxon.Sort;
+            t.IsActive = taxon.IsActive;
             
             this.repository.Update(t);
             this.cache.Remove(schema.CacheKey);
         }
-
-        //public void Delete(Guid id, TaxonomicSchema schema)
-        //{
-        //    var node = this.repository.Find(id);
-
-        //    if (node != null) {
-        //        try {
-        //            this.repository.Delete(node);
-
-        //            this.auditing.Update("raderade taxon {0} med namn {1}.", node.Id, node.Name);
-        //            this.cache.Remove(schema.CacheKey);
-        //        }
-        //        catch {
-        //            /* Here we should set IsActive = false.. But currently IsActive does not exist on ITaxon and i don't want to make all those changes, sust
-        //            this.auditing.Update("misslyckades med att radera -> inaktiverade taxon {0} med namn {1}.", node.Id, node.Name);
-        //            node.IsActive = false;                    
-        //            this.Update(node, schema);
-        //            */
-        //        }
-        //    }
-        //}
 
         #endregion
     }

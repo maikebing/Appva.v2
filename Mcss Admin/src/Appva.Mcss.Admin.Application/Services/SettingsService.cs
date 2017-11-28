@@ -281,7 +281,7 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
             var item = this.repository.Find(key.Key);
             if (item == null)
             {
-                this.repository.Save(Setting.CreateNew(
+                this.repository.Save(Setting.New(
                     key.Key,
                     key.Namespace,
                     key.Name,

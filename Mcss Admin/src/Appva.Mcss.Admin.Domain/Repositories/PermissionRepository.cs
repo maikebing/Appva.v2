@@ -15,13 +15,14 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
     using NHibernate.Transform;
+    using NHibernate.Criterion;
 
     #endregion
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IPermissionRepository : IIdentityRepository<Permission>, IListRepository<Permission>, IRepository
+    public interface IPermissionRepository : IRepository<Permission>, IListRepository<Permission>
     {
         /// <summary>
         /// Returns all permissions for the user account.
@@ -64,33 +65,29 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="ids">The ID:s to retrieve</param>
         /// <returns>A filtered collection of <see cref="Permission"/></returns>
         IList<Permission> ListAllIn(params Guid[] ids);
+
+        /// <summary>
+        /// Returns all persmissions matching a schema.
+        /// </summary>
+        /// <param name="bySchema">The schema</param>
+        /// <returns>A list of <see cref="Permission"/></returns>
+        IList<Permission> Search(string bySchema);
     }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public sealed class PermissionRepository : IPermissionRepository
+    public sealed class PermissionRepository : Repository<Permission>, IPermissionRepository
     {
-        #region Variables.
-
-        /// <summary>
-        /// The <see cref="IPersistenceContext"/> implementation.
-        /// </summary>
-        private readonly IPersistenceContext persistenceContext;
-
-        #endregion
-
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionRepository"/> class.
         /// </summary>
-        /// <param name="persistenceContext">
-        /// The <see cref="IPersistenceContext"/> implementation
-        /// </param>
-        public PermissionRepository(IPersistenceContext persistenceContext)
+        /// <param name="context">The <see cref="IPersistenceContext"/>.</param>
+        public PermissionRepository(IPersistenceContext context)
+            : base(context)
         {
-            this.persistenceContext = persistenceContext;
         }
 
         #endregion
@@ -113,7 +110,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public IList<Permission> PermissionsByRoleIds(ICollection roleIds)
         {
-            return this.persistenceContext.QueryOver<Permission>()
+            return this.Context.QueryOver<Permission>()
                 .JoinQueryOver<Role>(x => x.Roles)
                     .Where(x => x.IsActive)
                     .WhereRestrictionOn(x => x.Id)
@@ -126,7 +123,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         public bool HasAnyPermissions(Account account, params string[] permissions)
         {
             var roles = account.Roles.Select(x => x.Id).ToArray();
-            return this.persistenceContext.QueryOver<Permission>()
+            return this.Context.QueryOver<Permission>()
                 .WhereRestrictionOn(x => x.Resource)
                 .IsIn(permissions)
                 .JoinQueryOver<Role>(x => x.Roles)
@@ -140,30 +137,30 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <inheritdoc />
         public IList<Permission> ListAllIn(params Guid[] ids)
         {
-            return this.persistenceContext.QueryOver<Permission>()
+            return this.Context.QueryOver<Permission>()
                 .AndRestrictionOn(x => x.Id)
                 .IsIn(ids)
                 .List();
         }
 
-        #endregion
-
-        #region IIdentifierRepository<Permission> Members.
-
         /// <inheritdoc />
-        public Permission Find(Guid id)
+        public IList<Permission> Search(string bySchema)
         {
-            return this.persistenceContext.Get<Permission>(id);
+            return this.Context.QueryOver<Permission>()
+                .WhereRestrictionOn(x => x.Resource)
+                    .IsLike(bySchema, MatchMode.Start)
+                .OrderBy(x => x.Sort).Asc.List();
         }
 
         #endregion
 
+
         #region IListRepository<Permission> Members.
 
         /// <inheritdoc />
-        public IList<Permission> List(ulong maximumItems = long.MaxValue)
+        public IList<Permission> List()
         {
-            return this.persistenceContext.QueryOver<Permission>()
+            return this.Context.QueryOver<Permission>()
                 /*.Where(x => x.IsVisible)*/.OrderBy(x => x.Sort).Asc.List();
         }
 

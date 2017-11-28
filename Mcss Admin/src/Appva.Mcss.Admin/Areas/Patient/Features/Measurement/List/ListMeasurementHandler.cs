@@ -4,12 +4,12 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models.Handlers
 {
-    #region Imports
+    #region Imports.
 
     using System;
+    using Appva.Core.Extensions;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
@@ -22,66 +22,75 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     public class ListMeasurementHandler : RequestHandler<ListMeasurement, ListMeasurementModel>
     {
-        #region Variables
+        #region Variables.
 
         /// <summary>
-        /// The measurement service
+        /// The measurement service.
         /// </summary>
-        private readonly IMeasurementService service;
+        private readonly IMeasurementService measurementService;
 
         /// <summary>
-        /// The patient transformer
+        /// The patient service.
+        /// </summary>
+        private readonly IPatientService patientService;
+
+        /// <summary>
+        /// The patient transformer.
         /// </summary>
         private readonly IPatientTransformer patientTransformer;
 
         #endregion
 
-        #region Constructor
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListMeasurementHandler"/> class.
         /// </summary>
-        /// <param name="service">The measurement service<see cref="IMeasurementService"/>.</param>
-        /// <param name="patientTransformer">The patient transformer<see cref="IPatientTransformer"/>.</param>
-        public ListMeasurementHandler(IMeasurementService service, IPatientTransformer patientTransformer)
+        /// <param name="service">The service.</param>
+        /// <param name="patientService">The patient service.</param>
+        /// <param name="patientTransformer">The patient transformer.</param>
+        public ListMeasurementHandler(IMeasurementService measurementService, IPatientService patientService, IPatientTransformer patientTransformer)
         {
-            this.service = service;
+            this.measurementService = measurementService;
+            this.patientService     = patientService;
             this.patientTransformer = patientTransformer;
         }
 
         #endregion
 
-        #region Members
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
         public override ListMeasurementModel Handle(ListMeasurement message)
         {
-            if (message.MeasurementId == Guid.Empty)
+            var patient = this.patientService.Get(message.Id);
+            if (patient == null)
             {
-                var patient = this.service.GetPatient(message.Id);
+                throw new ArgumentNullException("patient", string.Format("Patient with ID: {0} does not exist", message.Id));
+            }
+            if (message.MeasurementId.IsNotEmpty())
+            {
+                var observation = this.measurementService.Get(message.MeasurementId);
                 return new ListMeasurementModel
                 {
-                    PatientViewModel = this.patientTransformer.ToPatient(patient),
-                    MeasurementList = this.service.GetMeasurementObservationsList(patient.Id)
+                    Id                      = observation.Patient.Id,
+                    MeasurementId           = observation.Id,
+                    PatientViewModel        = this.patientTransformer.ToPatient(observation.Patient),
+                    MeasurementList         = this.measurementService.ListByPatient(observation.Patient.Id),
+                    MeasurementValueList    = this.measurementService.GetValueList(observation.Id),
+                    MeasurementUnit         = MeasurementScale.GetUnitForScale(observation.Scale),
+                    MeasurementLongScale    = MeasurementScale.GetNameForScale(observation.Scale),
+                    MeasurementScale        = observation.Scale,
+                    Delegation              = observation.Delegation,
+                    MeasurementName         = observation.Name,
+                    MeasurementInstructions = observation.Description
                 };
             }
-
-            var observation = this.service.GetMeasurementObservation(message.MeasurementId);
-            var model = new ListMeasurementModel();
-
-            model.Id = message.Id;
-            model.MeasurementId = message.MeasurementId;
-            model.PatientViewModel = this.patientTransformer.ToPatient(observation.Patient);
-            model.MeasurementList = this.service.GetMeasurementObservationsList(observation.Patient.Id);
-            model.MeasurementValueList = this.service.GetValueList(observation.Id);
-            model.MeasurementUnit = MeasurementScale.GetUnitForScale(observation.Scale);
-            model.MeasurementLongScale = MeasurementScale.GetNameForScale(observation.Scale);
-            model.MeasurementScale = observation.Scale;
-            model.Delegation = observation.Delegation;
-            model.MeasurementName = observation.Name;
-            model.MeasurementInstructions = observation.Description;
-
-            return model;
+            return new ListMeasurementModel
+            {
+                PatientViewModel = this.patientTransformer.ToPatient(patient),
+                MeasurementList  = this.measurementService.ListByPatient(patient.Id)
+            };
         }
 
         #endregion

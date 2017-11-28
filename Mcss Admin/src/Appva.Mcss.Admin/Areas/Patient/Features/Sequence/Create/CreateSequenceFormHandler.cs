@@ -11,19 +11,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web.Mvc;
-    using Appva.Core.Utilities;
-    using Appva.Cqrs;
-    using Appva.Mcss.Admin.Application.Common;
-    using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Web.ViewModels;
-    using Appva.Persistence;
     using Appva.Core.Extensions;
     using Appva.Core.Resources;
+    using Appva.Core.Utilities;
+    using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Extensions;
+    using Appva.Mcss.Admin.Application.Services;
     using Appva.Mcss.Admin.Application.Services.Settings;
+    using Appva.Mcss.Admin.Domain.Entities;
+    using Appva.Persistence;
     using Newtonsoft.Json;
 
     #endregion
@@ -64,7 +61,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateSequenceFormHandler"/> class.
@@ -96,19 +93,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
-
             var sequence = this.CreateOrUpdate(message, schedule, delegation);
             this.context.Save(sequence);
-
             if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage == true && Guid.TryParse(message.SelectedDosageScale, out Guid dosageScale) == true)
             {
-                var dosageObservation = this.CreateDosageObservation(dosageScale, sequence);
-                if (dosageObservation != null)
-                {
-                    this.dosageService.Save(dosageObservation);
-                }
+                var scale = JsonConvert.SerializeObject(this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
+                    .Where(x => x.Id == dosageScale)
+                    .SingleOrDefault());
+                this.dosageService.Save(sequence.Patient, "Given mängd", "DosageObservation", scale);
             }
-
             this.auditing.Create(
                 sequence.Patient,
                 "skapade {0} (REF: {1}) i {2} (REF: {3}).",
@@ -142,7 +135,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                     .Where(x => x.Id == scaleId)
                         .SingleOrDefault());
 
-            return DosageObservation.New(sequence.Patient, "Given mängd", "DosageObservation", scale, sequence);
+            return new DosageObservation(sequence.Patient, "Given mängd", "DosageObservation", scale);
         }
 
         /// <summary>

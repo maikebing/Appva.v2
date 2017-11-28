@@ -100,7 +100,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         #endregion
-
         #region Operations.
 
         /// <summary>
@@ -108,24 +107,22 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="instruction">The instruction.</param>
-        public override void Update(string name, string instruction)
+        public void Update(string name, string instruction)
         {
             Requires.NotNullOrWhiteSpace(name,        "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");
-            this.Name = name;
+            this.Name        = name;
             this.Description = instruction;
-
-            this.RegisterEvent(TenaObservationPeriodUpdatedEvent.New(this));
         }
 
         /// <summary>
-        /// Updates the current tena period
+        /// Updates the current tena period.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="instruction">The instruction.</param>
         /// <param name="startsAt">The starts at.</param>
         /// <param name="endsAt">The ends at.</param>
-        public virtual void Update(string name, string instruction, DateTime startsAt, DateTime endsAt)
+        public void Update(string name, string instruction, DateTime startsAt, DateTime endsAt)
         {
             Requires.NotNullOrWhiteSpace(name,        "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");
@@ -133,8 +130,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Description = instruction;
             this.StartDate   = startsAt;
             this.EndDate     = endsAt;
-
-            this.RegisterEvent(TenaObservationPeriodUpdatedEvent.New(this));
         }
 
         #endregion

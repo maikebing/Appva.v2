@@ -4,10 +4,9 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models.Handlers
 {
-    #region Imports
+    #region Imports.
 
     using System.Collections.Generic;
     using Appva.Cqrs;
@@ -23,7 +22,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     public class AddMeasurementValuePublisher : RequestHandler<AddMeasurementValueModel, ListMeasurement>
     {
-        #region Variables
+        #region Variables.
 
         /// <summary>
         /// The account service
@@ -37,7 +36,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region Constructor
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddMeasurementValuePublisher"/> class.
@@ -52,12 +51,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region RequestHandler overrides
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
         public override ListMeasurement Handle(AddMeasurementValueModel message)
         {
-            var observation = this.service.GetMeasurementObservation(message.MeasurementId);
+            var observation = this.service.Get(message.MeasurementId);
 
             if (MeasurementScale.HasValidValue(message.Value, observation.Scale))
             {

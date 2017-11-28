@@ -155,9 +155,6 @@ using System.Collections.Generic;
             return query.RowCount() > 0;
         }
 
-        #endregion
-
-
-       
+        #endregion       
     }
 }

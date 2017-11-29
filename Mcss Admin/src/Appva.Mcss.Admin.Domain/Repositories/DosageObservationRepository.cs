@@ -22,18 +22,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         ISaveRepository<DosageObservation>, 
         IUpdateRepository<DosageObservation>
     {
-        /// <summary>
-        /// Saves the specified dosage observation.
-        /// </summary>
-        /// <param name="dosageObservation">The dosage observation.</param>
-        void Save(DosageObservation dosageObservation);
-
-        /// <summary>
-        /// Gets the by sequence.
-        /// </summary>
-        /// <param name="sequence">The sequence.</param>
-        /// <returns>DosageObservation.</returns>
-        DosageObservation GetBySequence(Sequence sequence);
     }
 
     /// <summary>
@@ -51,27 +39,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="context">The <see cref="T:Appva.Persistence.IPersistenceContext" />.</param>
         public DosageObservationRepository(IPersistenceContext context) : base(context)
         {
-        }
-
-        #endregion
-
-        #region IDosageRepository Members.
-
-        /// <inheritdoc />
-        public DosageObservation GetBySequence(Sequence sequence)
-        {
-            try
-            {
-                return this.Context.QueryOver<DosageObservation>()
-                .Where(x => x.IsActive)
-                  .And(x => x.Id == sequence.Observation.Id)
-                .SingleOrDefault();
-            }
-            catch (System.Exception)
-            {
-                return null;
-            }
-            
         }
 
         #endregion

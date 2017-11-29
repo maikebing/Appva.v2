@@ -8,6 +8,7 @@ Separera MeasurementObservationRepository från ObservationItemRepository
 
 ChangeMe och Unresolved, lös dessa kommentarer
 Skapa ev update metoder där det behövs.
+Create Observation skall även uppdatera Sequence (Sequence.Observation)
 
 Uppdatera Vyerna. 
 Loggning på Create/Update i services

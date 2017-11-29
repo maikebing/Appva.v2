@@ -3,6 +3,7 @@
 // </copyright>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
+    using Newtonsoft.Json;
     #region Imports.
 
     using System;
@@ -27,16 +28,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="name">The name of the observation.</param>
         /// <param name="description">The description or instruction.</param>
         /// <param name="scale">The scale used in the observation.</param>
-        public Observation(Patient patient, string name, string description, string scale)
+        public Observation(Patient patient, string name, string description, object scale)
         {
             Requires.NotNull            (patient,     "patient"    );
             Requires.NotNullOrWhiteSpace(name,        "name"       );
             Requires.NotNullOrWhiteSpace(description, "description");
-            Requires.NotNullOrWhiteSpace(scale,       "scale");
+            Requires.NotNull(scale,       "scale");
             this.Patient     = patient;
             this.Name        = name;
             this.Description = description;
-            this.Scale       = scale;
+            this.Scale       = JsonConvert.SerializeObject(scale);
         }
 
         /// <summary>
@@ -108,6 +109,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
         {
             get;
             internal protected set;
+        }
+
+        public virtual Observation UnProxied
+        {
+            get
+            {
+                return this;
+            }                
         }
 
         #endregion

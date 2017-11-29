@@ -124,19 +124,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <returns>Sequence<see cref="Sequence"/>.</returns>
         private void CreateOrUpdateDosageObservation(Sequence sequence, Guid dosageScale)
         {
-            var scale = JsonConvert.SerializeObject(this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                .Where(x => x.Id == dosageScale).FirstOrDefault());
-
-            var observation = this.dosageService.GetBySequence(sequence);
-            if (observation == null)
+            if (sequence.Observation == null)
             {
-                this.dosageService.Create(sequence.Patient, "Given Mängd", "DosageObservation", scale);
+                sequence.Observation = this.dosageService.Create(sequence.Patient, dosageScale);
+                return;
             }
-            else
-            {
-                observation.Update(scale);
-                this.dosageService.Update(observation);
-            }
+            //// UNRESOLVED: Not the best way to solve this, make it look better
+            this.dosageService.Update((DosageObservation)sequence.Observation.UnProxied, dosageScale);
         }
 
         #endregion

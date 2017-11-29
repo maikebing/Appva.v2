@@ -51,16 +51,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             if (observation == null)
             {
                 throw new ArgumentNullException("observation", string.Format("MeasurementObservation with ID: {0} does not exist.", message.MeasurementId));
-            }
-            
+            }            
             return new AddMeasurementValueModel
             {
                 MeasurementId = observation.Id,
-                Name = observation.Name,
-                Instruction = observation.Description,
-                Unit = MeasurementScale.GetUnitForScale(observation.Scale),
-                Scale = observation.Scale,
-                LongScale = MeasurementScale.GetNameForScale((MeasurementScale.Scale)Enum.Parse(typeof(MeasurementScale.Scale), observation.Scale))
+                Name          = observation.Name,
+                Instruction   = observation.Description,
+                Unit          = MeasurementScale.GetUnitForScale(observation.Scale),
+                Scale         = observation.Scale,
+                LongScale     = MeasurementScale.GetNameForScale(observation.Scale)
             };
         }
 

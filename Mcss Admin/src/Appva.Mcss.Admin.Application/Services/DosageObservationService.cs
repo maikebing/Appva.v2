@@ -11,6 +11,9 @@ namespace Appva.Mcss.Admin.Application.Services
     using System;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Application.Services.Settings;
+    using System.Linq;
+    using Appva.Mcss.Admin.Domain;
 
     #endregion
 
@@ -21,26 +24,18 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface IDosageObservationService : IService
     {
         /// <summary>
-        /// Saves the specified patient.
+        /// Creates the dosage observation for patient.
         /// </summary>
         /// <param name="patient">The patient.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="description">The description.</param>
-        /// <param name="scale">The scale.</param>
-        void Create(Patient patient, string name, string description, string scale);
-
-        /// <summary>
-        /// Gets the by sequence.
-        /// </summary>
-        /// <param name="sequence">The sequence.</param>
-        /// <returns>DosageObservation.</returns>
-        DosageObservation GetBySequence(Sequence sequence);
+        /// <param name="scaleId">The scale identifier.</param>
+        DosageObservation Create(Patient patient, Guid scaleId);
 
         /// <summary>
         /// Updates the specified dosage observation.
         /// </summary>
         /// <param name="dosageObservation">The dosage observation.</param>
-        void Update(DosageObservation dosageObservation);
+        /// <param name="scaleId">The scale identifier.</param>
+        void Update(DosageObservation dosageObservation, Guid scaleId);
     }
 
     /// <summary>
@@ -56,6 +51,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IDosageObservationRepository dosageRepository;
 
+        /// <summary>
+        /// The <see cref="ISettingsService"/>.
+        /// </summary>
+        private readonly ISettingsService settingsService;
+
         #endregion
 
         #region Constructors.
@@ -64,9 +64,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="DosageObservationService"/> class.
         /// </summary>
         /// <param name="dosageRepository">The dosage repository.</param>
-        public DosageObservationService(IDosageObservationRepository dosageRepository)
+        public DosageObservationService(IDosageObservationRepository dosageRepository, ISettingsService settingsService)
         {
             this.dosageRepository = dosageRepository;
+            this.settingsService = settingsService;
         }
 
         #endregion
@@ -74,20 +75,20 @@ namespace Appva.Mcss.Admin.Application.Services
         #region IDosageObservationRepository Members.
 
         /// <inheritdoc />
-        public void Create(Patient patient, string name, string description, string scale)
+        public DosageObservation Create(Patient patient, Guid scaleId)
         {
-            this.dosageRepository.Save(new DosageObservation(patient, name, description, scale));
+            var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts).SingleOrDefault(x => x.Id == scaleId);
+            var observation = new DosageObservation(patient, "Given mängd", "DosageObservation", scale);
+            this.dosageRepository.Save(observation);
+            //// UNRESOLVED: Do audit logging here
+            return observation;
         }
 
         /// <inheritdoc />
-        public DosageObservation GetBySequence(Sequence sequence)
+        public void Update(DosageObservation dosageObservation, Guid scaleId)
         {
-            return this.dosageRepository.GetBySequence(sequence);
-        }
-
-        /// <inheritdoc />
-        public void Update(DosageObservation dosageObservation)
-        {
+            var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts).SingleOrDefault(x => x.Id == scaleId);
+            dosageObservation.Update(scale);
             this.dosageRepository.Update(dosageObservation);
         }
 

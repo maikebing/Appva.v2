@@ -57,6 +57,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public override ListMeasurement Handle(AddMeasurementValueModel message)
         {
             var observation = this.service.Get(message.MeasurementId);
+            //// UNRESOLVED: move validation to controller.
 
             if (MeasurementScale.HasValidValue(message.Value, observation.Scale))
             {
@@ -66,10 +67,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 }
                 this.service.CreateValue(observation, this.account.CurrentPrincipal(), message.Value);
             }
-
             return new ListMeasurement
             {
-                Id = observation.Patient.Id,
+                Id            = observation.Patient.Id,
                 MeasurementId = observation.Id
             };
         }

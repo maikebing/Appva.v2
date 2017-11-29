@@ -93,16 +93,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
             {
                 delegation = this.context.Get<Taxon>(message.Delegation.Value);
             }
-            var sequence = this.CreateOrUpdate(message, schedule, delegation);
-            this.context.Save(sequence);
             Guid dosageScale;
-            if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage == true && Guid.TryParse(message.SelectedDosageScale, out dosageScale) == true)
+            DosageObservation dosageObservation = null;
+            if (schedule.ScheduleSettings.IsCollectingGivenDosage == true && Guid.TryParse(message.SelectedDosageScale, out dosageScale) == true)
             {
-                var scale = JsonConvert.SerializeObject(this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                    .Where(x => x.Id == dosageScale)
-                    .SingleOrDefault());
-                this.dosageService.Create(sequence.Patient, "Given mängd", "DosageObservation", scale);
+                dosageObservation = this.dosageService.Create(schedule.Patient, dosageScale);
             }
+            var sequence = this.CreateOrUpdate(message, schedule, delegation, dosageObservation);
+            this.context.Save(sequence);
+
             this.auditing.Create(
                 sequence.Patient,
                 "skapade {0} (REF: {1}) i {2} (REF: {3}).",
@@ -124,27 +123,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         #region Private Methods.
 
         /// <summary>
-        /// Creates the dosage observation.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="schedule">The schedule.</param>
-        /// <returns>DosageObservation<see cref="DosageObservation"/>.</returns>
-        private DosageObservation CreateDosageObservation(Guid scaleId, Sequence sequence)
-        {
-            var scale = JsonConvert.SerializeObject(
-                this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
-                    .Where(x => x.Id == scaleId)
-                        .SingleOrDefault());
-
-            return new DosageObservation(sequence.Patient, "Given mängd", "DosageObservation", scale);
-        }
-
-        /// <summary>
         /// TODO: MOVE?
         /// </summary>
         /// <param name="schedule"></param>
         /// <returns></returns>
-        private Sequence CreateOrUpdate(CreateSequenceForm message, Schedule schedule, Taxon delegation)
+        private Sequence CreateOrUpdate(CreateSequenceForm message, Schedule schedule, Taxon delegation, DosageObservation dosageObservation = null)
         {
             DateTime startDate = DateTimeUtilities.Now();
             DateTime? endDate = null;
@@ -225,7 +208,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Schedule = schedule,
                 Taxon = delegation,
                 Role = requiredRole,
-                Inventory = inventory
+                Inventory = inventory,
+                Observation = dosageObservation
             };
 
             return sequence;

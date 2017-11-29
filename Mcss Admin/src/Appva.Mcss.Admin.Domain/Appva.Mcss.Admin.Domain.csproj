@@ -109,6 +109,7 @@
     <Compile Include="Common\Primitive.cs" />
     <Compile Include="Common\Repositories\Implementation\Paged.cs" />
     <Compile Include="Common\Repositories\IPaged.cs" />
+    <Compile Include="Common\Repositories\IPagedRepository.cs" />
     <Compile Include="Common\Repositories\IRepository.cs" />
     <Compile Include="Common\Repositories\ISaveListRepository.cs" />
     <Compile Include="Common\Repositories\ISaveRepository.cs" />

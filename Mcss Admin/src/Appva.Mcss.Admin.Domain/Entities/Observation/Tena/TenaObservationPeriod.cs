@@ -18,7 +18,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// </summary>
     public class TenaObservationPeriod : Observation
     {
-        #region Constructor
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TenaObservationPeriod"/> class.
@@ -39,8 +39,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
             this.Description = description;
             this.StartDate   = startDate;
             this.EndDate     = endDate;
-
-            RegisterEvent(TenaObservationPeriodCreatedEvent.New(this));
         }
 
         /// <summary>
@@ -53,9 +51,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
 
         #endregion
 
-        #region Properties
+        #region Properties.
+
         /// <summary>
-        /// Date at start of period
+        /// Date at start of period.
         /// </summary>
         public virtual DateTime StartDate
         {
@@ -64,7 +63,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Date at end of period
+        /// Date at end of period.
         /// </summary>
         public virtual DateTime EndDate
         {
@@ -72,42 +71,33 @@ namespace Appva.Mcss.Admin.Domain.Entities
             protected internal set;
         }
 
-        #endregion
-
-        #region Computed properties.
-
         /// <summary>
-        /// Computes the status of the period.
-        /// E.g if the period is pending, in progress or completed
+        /// Computes the current status of the period.
+        /// E.g. if the period is pending, in progress or completed
         /// </summary>
         /// <value>
-        /// The status.
+        /// The current status.
         /// </value>
         public virtual string Status
         {
             get
             {
-                if (DateTime.Now > EndDate)
-                {
-                    return "completed";
-                }
-                else if (DateTime.Now < StartDate)
-                {
-                    return "pending";
-                }
+                if (DateTime.Now > EndDate  ) { return "completed"; }
+                if (DateTime.Now < StartDate) { return "pending";   }
                 return "in-progress";
             }
         }
 
         #endregion
-        #region Operations.
+
+        #region Public Methods.
 
         /// <summary>
         /// Updates the current tena period.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="instruction">The instruction.</param>
-        public void Update(string name, string instruction)
+        public virtual void Update(string name, string instruction)
         {
             Requires.NotNullOrWhiteSpace(name,        "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");
@@ -122,7 +112,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="instruction">The instruction.</param>
         /// <param name="startsAt">The starts at.</param>
         /// <param name="endsAt">The ends at.</param>
-        public void Update(string name, string instruction, DateTime startsAt, DateTime endsAt)
+        public virtual void Update(string name, string instruction, DateTime startsAt, DateTime endsAt)
         {
             Requires.NotNullOrWhiteSpace(name,        "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");

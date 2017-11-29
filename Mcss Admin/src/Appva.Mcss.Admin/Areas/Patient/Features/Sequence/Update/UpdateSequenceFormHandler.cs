@@ -128,15 +128,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 .Where(x => x.Id == dosageScale).FirstOrDefault());
             var observation = sequence.Observation;
 
-            if (observation == null)
+            /*if (observation == null)
             {
+                //// UNRESOLVED: Change me!!
                 this.dosageService.Save(new DosageObservation(sequence.Patient, "Given Mängd", "DosageScale", scale));
             }
             else
             {
+                //// UNRESOLVED: Change me!!
                 observation.Scale = scale;
                 this.dosageService.Save(observation);
-            }
+            }*/
         }
 
         #endregion

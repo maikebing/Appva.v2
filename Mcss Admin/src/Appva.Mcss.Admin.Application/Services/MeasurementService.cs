@@ -159,7 +159,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void Create(Patient patient, string name, string description, string scale, Taxon delegation = null)
         {
-            this.measurementRepository.Create(new MeasurementObservation(patient, name, description, scale, delegation));
+            this.measurementRepository.Save(new MeasurementObservation(patient, name, description, scale, delegation));
         }
 
         #endregion

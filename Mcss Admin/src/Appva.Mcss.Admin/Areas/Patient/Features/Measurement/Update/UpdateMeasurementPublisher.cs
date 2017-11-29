@@ -51,10 +51,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             if (observation != null)
             {
-                observation.Name = message.Name;
+                //// UNRESOLVED: Change me!!
+                /*observation.Name = message.Name;
                 observation.Description = message.Instruction;
                 observation.Delegation = this.service.GetTaxon(Guid.Parse(message.SelectedDelegation));
-                this.service.Update(observation);
+                this.service.Update(observation);*/
             }
 
             return new ListMeasurement

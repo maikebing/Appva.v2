@@ -78,8 +78,9 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
                 var scale = JsonConvert.DeserializeObject<InventoryAmountListModel>(row.Scale);
                 if (setting.Id == scale.Id)
                 {
-                    row.Scale = JsonConvert.SerializeObject(setting);
-                    this.persistence.Update<DosageObservation>(row);
+                    //// UNRESOLVED: Change me!!
+                    /*row.Scale = JsonConvert.SerializeObject(setting);
+                    this.persistence.Update<DosageObservation>(row);*/
                 }
             }
 

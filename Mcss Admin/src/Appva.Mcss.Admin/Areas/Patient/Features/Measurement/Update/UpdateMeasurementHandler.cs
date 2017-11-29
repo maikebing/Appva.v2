@@ -59,12 +59,13 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 Instruction = observation.Description,
                 SelectedScale = MeasurementScale.GetNameForScale((MeasurementScale.Scale) Enum.Parse(typeof(MeasurementScale.Scale), observation.Scale)),
                 SelectedUnit = MeasurementScale.GetUnitForScale(observation.Scale),
-                SelectDelegationList = this.service.GetDelegationsList()
+                //// UNRESOLVED: Change me!!
+                /*SelectDelegationList = this.service.GetDelegationsList()
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
-                })
+                })*/
             };
             return model;
         }

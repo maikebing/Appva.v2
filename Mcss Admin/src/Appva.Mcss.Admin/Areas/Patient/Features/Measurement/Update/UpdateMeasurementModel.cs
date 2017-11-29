@@ -64,7 +64,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The delegation SelectList
         /// </summary>
-        [DisplayName("Kräver delegation för")] 
+        [DisplayName("Kräver delegation för")]
         public IEnumerable<SelectListItem> SelectDelegationList
         {
             get;

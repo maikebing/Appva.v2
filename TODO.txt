@@ -1,0 +1,21 @@
+TODOs:
+MeasurementObservation, borttagna metoder för Save, Create, Find med mera. Fixa omgående.
+Kolla på Observation relaterad repositorys
+Kolla på att göra ObservationRepository generisk för MeasurementObservation, DosageObservation samt TenaObservation.
+UpdateHandlers och Publishers
+
+Updatera Vyerna
+
+
+DONEs:
+
+Entities
+Observation Lägg till: List<Sequence>, Ta bort: Sequence
+Sequence 	Lägg till: Observation, Ta bort: List<Observation>
+
+Mappings
+Observation Lägg till: Sequence (bag), Ta bort: Sequence (many-to-one)
+Sequence	Lägg till: Observation (many-to-one), Ta bort: Observation (bag)
+
+
+Q/A

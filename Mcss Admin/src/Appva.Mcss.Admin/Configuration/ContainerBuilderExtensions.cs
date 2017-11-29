@@ -134,12 +134,12 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<TenantCookieAuthenticationMiddleware>().InstancePerRequest();
             builder.Register(x => new SecurityTokenOptions
             {
-                RegisterTokenPath = new PathString("/account/register"),
+                RegisterTokenPath        = new PathString("/account/register"),
                 RegisterTokenExpiredPath = new PathString("/account/register/expired"),
-                ResetTokenPath = new PathString("/account/reset-password"),
-                ResetTokenExpiredPath = new PathString("/account/reset-password/expired"),
-                TokenInvalidPath = new PathString("/auth/sign-in"),
-                Provider = x.Resolve<JwtSecureDataFormat>()
+                ResetTokenPath           = new PathString("/account/reset-password"),
+                ResetTokenExpiredPath    = new PathString("/account/reset-password/expired"),
+                TokenInvalidPath         = new PathString("/auth/sign-in"),
+                Provider                 = x.Resolve<JwtSecureDataFormat>()
             }).InstancePerRequest();
             builder.RegisterType<SecurityTokenMiddleware>().InstancePerRequest();
         }
@@ -150,18 +150,13 @@ namespace Appva.Mcss.Admin.Configuration
         /// <param name="builder">The current <see cref="ContainerBuilder"/></param>
         public static void RegisterEmailMessaging(this ContainerBuilder builder)
         {
-            builder.Register(x => new TemplateServiceConfiguration
-            {
-                TemplateManager = new CshtmlTemplateManager("Features/Shared/EmailTemplates")
-            }).As<ITemplateServiceConfiguration>().SingleInstance();
+            builder.Register(x => new TemplateServiceConfiguration { TemplateManager = new CshtmlTemplateManager("Features/Shared/EmailTemplates") }).As<ITemplateServiceConfiguration>().SingleInstance();
             if (ApplicationEnvironment.Is.Production || ApplicationEnvironment.Is.Demo || ApplicationEnvironment.Is.Staging)
             {
                 builder.RegisterType<MailService>().As<IRazorMailService>().SingleInstance();
+                return;
             }
-            else
-            {
-                builder.RegisterType<NoOpMailService>().As<IRazorMailService>().SingleInstance();
-            }
+            builder.RegisterType<NoOpMailService>().As<IRazorMailService>().SingleInstance();
         }
 
         /// <summary>
@@ -197,33 +192,25 @@ namespace Appva.Mcss.Admin.Configuration
             if (ApplicationEnvironment.Is.Production)
             {
                 builder.RegisterType<ProductionTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+                builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
             }
             if (ApplicationEnvironment.Is.Demo)
             {
                 builder.RegisterType<DemoTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+                builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
             }
             if (ApplicationEnvironment.Is.Staging)
             {
                 builder.RegisterType<StagingTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+                builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
             }
             if (ApplicationEnvironment.Is.Development)
             {
                 builder.RegisterType<DevelopmentTenantIdentificationStrategy>().As<ITenantIdentificationStrategy>().SingleInstance();
+                builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
                 properties.Add("show_sql", "true");
             }
             builder.Register<RuntimeMemoryCache>(x => new RuntimeMemoryCache("https://schemas.appva.se/2015/04/cache/db/admin")).As<IRuntimeMemoryCache>().SingleInstance();
-
-            //builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
-
-            if (ApplicationEnvironment.Is.Development)
-            {
-                builder.RegisterType<MockedTenantWcfClient>().As<ITenantClient>().SingleInstance();
-            }
-            else
-            {
-                builder.RegisterType<TenantWcfClient>().As<ITenantClient>().SingleInstance();
-            }
-
             builder.Register<MultiTenantDatasourceConfiguration>(x => new MultiTenantDatasourceConfiguration
             {
                 Assembly = "Appva.Mcss.Admin.Domain",
@@ -233,7 +220,7 @@ namespace Appva.Mcss.Admin.Configuration
             builder.RegisterType<MultiTenantPersistenceContextAwareResolver>().As<IPersistenceContextAwareResolver>().SingleInstance().AutoActivate();
             builder.RegisterType<TrackablePersistenceContext>().AsSelf().InstancePerRequest();
             builder.Register(x => x.Resolve<IPersistenceContextAwareResolver>().CreateNew()).As<IPersistenceContext>().InstancePerRequest()
-                    .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
+                .OnActivated(x => x.Context.Resolve<TrackablePersistenceContext>().Persistence.Open().BeginTransaction(IsolationLevel.ReadCommitted));
         }
 
         /// <summary>

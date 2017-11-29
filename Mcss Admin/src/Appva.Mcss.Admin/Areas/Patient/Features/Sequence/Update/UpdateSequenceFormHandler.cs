@@ -126,11 +126,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var scale = JsonConvert.SerializeObject(this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
                 .Where(x => x.Id == dosageScale).FirstOrDefault());
-            var observation = this.dosageService.GetDosageObservationBySequence(sequence.Id);
+            var observation = sequence.Observation;
 
             if (observation == null)
             {
-                this.dosageService.Save(DosageObservation.New(sequence.Patient, "Given Mängd", "DosageScale", scale, sequence));
+                this.dosageService.Save(new DosageObservation(sequence.Patient, "Given Mängd", "DosageScale", scale));
             }
             else
             {

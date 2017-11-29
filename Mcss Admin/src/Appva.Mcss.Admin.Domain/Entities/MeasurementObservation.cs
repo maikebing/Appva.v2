@@ -1,24 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Validation;
-
+﻿// <copyright file="MeasurementObservation.cs" company="Appva AB">
+//     Copyright (c) Appva AB. All rights reserved.
+// </copyright>
+// <author>
+//     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
+// </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
+    #region Imports.
+
+    using Validation;
+
+    #endregion
+
+    /// <summary>
+    /// An implementation of Observation for Measurement Values
+    /// </summary>
+    /// <seealso cref="Appva.Mcss.Admin.Domain.Entities.Observation" />
     public class MeasurementObservation : Observation
     {
-        public MeasurementObservation(Patient patient, string name, string description, string scale, Taxon delegation, Sequence sequence = null, Taxon category = null)
-            : base (patient, name, description, scale, sequence, category)
+        #region Constructors.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MeasurementObservation"/> class.
+        /// </summary>
+        /// <param name="patient">The patient.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="scale">The scale.</param>
+        /// <param name="delegation">The delegation.</param>
+        public MeasurementObservation(Patient patient, string name, string description, string scale, Taxon delegation)
+            : base (patient, name, description, scale)
         {
-            Requires.NotNullOrWhiteSpace(scale, "scale");
             Requires.NotNull(delegation, "delegation");
             this.Delegation = delegation;
         }
-        public MeasurementObservation()
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MeasurementObservation"/> class.
+        /// </summary>
+        /// <remarks>An NHibernate visible no-argument constructor.</remarks>
+        internal protected MeasurementObservation()
         {
         }
+
+        #endregion
+
+        #region Properties.
 
         /// <summary>
         /// The delegation.
@@ -26,23 +53,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual Taxon Delegation
         {
             get;
-            set;
+            internal protected set;
         }
 
-        /// <summary>
-        /// News the specified patient.
-        /// </summary>
-        /// <param name="patient">The patient.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="description">The description.</param>
-        /// <param name="scale">The scale.</param>
-        /// <param name="delegation">The delegation.</param>
-        /// <param name="sequence">The sequence.</param>
-        /// <param name="category">The category.</param>
-        /// <returns>MeasurementObservation.</returns>
-        public static MeasurementObservation New(Patient patient, string name, string description, string scale, Taxon delegation, Sequence sequence = null, Taxon category = null)
-        {
-            return new MeasurementObservation(patient, name, description, scale, delegation, sequence, category);
-        }
+        #endregion
     }
 }

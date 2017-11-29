@@ -27,20 +27,16 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="name">The name of the observation.</param>
         /// <param name="description">The description or instruction.</param>
         /// <param name="scale">The scale used in the observation.</param>
-        /// <param name="sequence">The sequence which the observation is used within.</param>
-        /// <param name="category">Classification of type of observation.</param>
-        public Observation(Patient patient, string name, string description, string scale = "", Sequence sequence = null, Taxon category = null)
+        public Observation(Patient patient, string name, string description, string scale)
         {
             Requires.NotNull            (patient,     "patient"    );
             Requires.NotNullOrWhiteSpace(name,        "name"       );
             Requires.NotNullOrWhiteSpace(description, "description");
+            Requires.NotNullOrWhiteSpace(scale,       "scale");
             this.Patient     = patient;
             this.Name        = name;
             this.Description = description;
-            this.Scale = scale;
-            this.Sequence = sequence;
-            this.Category    = category;
-            this.RegisterEvent(ObservationCreatedEvent.New(this));
+            this.Scale       = scale;
         }
 
         /// <summary>
@@ -49,7 +45,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <remarks>
         /// An NHibernate visible no-argument constructor.
         /// </remarks>
-        protected Observation()
+        internal protected Observation()
         {
         }
 
@@ -72,22 +68,13 @@ namespace Appva.Mcss.Admin.Domain.Entities
         public virtual string Name
         {
             get;
-            set;
+            internal protected set;
         }
 
         /// <summary>
         /// The observation description.
         /// </summary>
         public virtual string Description
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The observation category.
-        /// </summary>
-        public virtual Taxon Category
         {
             get;
             internal protected set;
@@ -98,16 +85,6 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// TODO: Break out to a new entity : IUnit
         /// </summary>
         public virtual string Scale
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The Task
-        /// </summary>
-        /// <value>The sequence<see cref="Sequence"/>.</value>
-        public virtual Sequence Sequence
         {
             get;
             internal protected set;
@@ -123,40 +100,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
             internal protected set;
         }
 
-        #endregion
-
-        #region Public Static Builders.
-
         /// <summary>
-        /// Creates a new instance of the <see cref="Observation"/> class.
+        /// Gets or sets the sequences.
         /// </summary>
-        /// <param name="patient">The patient which the observation is made for.</param>
-        /// <param name="name">The name of the observation.</param>
-        /// <param name="description">The description or instruction.</param>
-        /// <param name="category">Classification of type of observation.</param>
-        /// <returns>A new <see cref="Observation"/> instance.</returns>
-        public static Observation New(Patient patient, string name, string description, string scale = "", Sequence sequence = null, Taxon category = null)
+        /// <remarks>Populated by NHibernate.</remarks>
+        public virtual IList<Sequence> Sequences
         {
-            return new Observation(patient, name, description, scale, sequence, category);
-        }
-
-        #endregion
-
-        #region Public members
-
-        /// <summary>
-        /// Updates the current instance.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="description">The description.</param>
-        public virtual void Update(string name, string description)
-        {
-            Requires.NotNullOrWhiteSpace(name, "name");
-            Requires.NotNullOrWhiteSpace(description, "description");
-            this.Name        = name;
-            this.Description = description;
-
-            this.RegisterEvent(ObservationUpdatedEvent.New(this));
+            get;
+            internal protected set;
         }
 
         #endregion

@@ -14,11 +14,10 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Areas.Backoffice.Models;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Infrastructure.Models;
     using Appva.Persistence;
     using Newtonsoft.Json;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Application.Common;
 
     #endregion
 
@@ -41,7 +40,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
         #endregion
 
-        #region Constructor.
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateInventoryUnitPublisher"/> class.
@@ -54,7 +53,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
         #endregion
 
-        #region RequestHandler Overrides
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
         public override Parameterless<ListInventoriesModel> Handle(UpdateInventoryUnitModel message)
@@ -71,9 +70,8 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
             var dosageQuery = this.persistence.QueryOver<DosageObservation>()
                 .Where(x => x.IsActive == true)
-                    .And(x => x.Sequence != null)
-                        .And(x => x.Scale != string.Empty)
-                            .List();
+                  .And(x => string.IsNullOrEmpty(x.Scale))
+                .List();
 
             foreach (var row in dosageQuery)
             {

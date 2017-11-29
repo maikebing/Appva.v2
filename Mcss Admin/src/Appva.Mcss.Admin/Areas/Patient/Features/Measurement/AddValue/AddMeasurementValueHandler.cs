@@ -4,17 +4,14 @@
 // <author>
 //     <a href="mailto:johansalllarsson@appva.se">Johan Säll Larsson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models.Handlers
 {
-    #region Imports
+    #region Imports.
 
     using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
-    using System.Collections.Generic;
-    using System.Web.Mvc;
 
     #endregion
 
@@ -23,7 +20,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
     /// </summary>
     public class AddMeasurementValueHandler : RequestHandler<AddMeasurementValue, AddMeasurementValueModel>
     {
-        #region Variables
+        #region Variables.
 
         /// <summary>
         /// The measurement service
@@ -32,7 +29,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region Constructor
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddMeasurementValueHandler"/> class.
@@ -45,12 +42,16 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
         #endregion
 
-        #region RequestHandler overrides
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
         public override AddMeasurementValueModel Handle(AddMeasurementValue message)
         {
-            var observation = this.service.GetMeasurementObservation(message.MeasurementId);
+            var observation = this.service.Get(message.MeasurementId);
+            if (observation == null)
+            {
+                throw new ArgumentNullException("observation", string.Format("MeasurementObservation with ID: {0} does not exist.", message.MeasurementId));
+            }
             
             return new AddMeasurementValueModel
             {

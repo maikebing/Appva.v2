@@ -22,36 +22,17 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public interface IMeasurementRepository : IRepository<MeasurementObservation>
+    public interface IMeasurementRepository : 
+        IRepository<MeasurementObservation>, 
+        ISaveRepository<MeasurementObservation>, 
+        IUpdateRepository<MeasurementObservation>
     {
-        #region Fields
-
         /// <summary>
         /// Gets the measurement categories.
         /// </summary>
         /// <param name="patientId">The patient identifier.</param>
         /// <returns>IList&lt;MeasurementObservation&gt;.</returns>
         IList<MeasurementObservation> List(Guid patientId);
-
-        /// <summary>
-        /// Creates the measurement observation.
-        /// </summary>
-        /// <param name="measurementObservation">The measurement observation<see cref="MeasurementObservation"/>.</param>
-        void Create(MeasurementObservation measurementObservation);
-
-        /// <summary>
-        /// Updates the specified observation.
-        /// </summary>
-        /// <param name="observation">The observation<see cref="MeasurementObservation"/>.</param>
-        void Update(MeasurementObservation measurementObservation);
-
-        /// <summary>
-        /// Deletes the specified measurement observation.
-        /// </summary>
-        /// <param name="measurementObservation">The measurement observation<see cref="MeasurementObservation"/>.</param>
-        void Delete(MeasurementObservation measurementObservation);
-
-        #endregion
     }
 
     /// <summary>
@@ -82,18 +63,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                 .And(x => x.Patient.Id == patientId)
                 .OrderBy(x => x.Name).Asc
                 .List();
-        }
-
-        /// <inheritdoc />
-        public void Create(MeasurementObservation measurementObservation)
-        {
-            this.Save(measurementObservation);
-        }
-
-        /// <inheritdoc />
-        public void Delete(MeasurementObservation measurementObservation)
-        {
-            this.Context.Delete(measurementObservation);
         }
 
         #endregion

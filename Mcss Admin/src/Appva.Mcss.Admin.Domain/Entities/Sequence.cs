@@ -337,9 +337,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
         }
 
         /// <summary>
-        /// Dosage Observation
+        /// The <see cref="Observation"/>.
         /// </summary>
-        public virtual IList<DosageObservation> DosageObservations
+        /// <value>The observation.</value>
+        public virtual Observation Observation
         {
             get;
             set;

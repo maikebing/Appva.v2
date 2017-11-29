@@ -10,6 +10,9 @@ namespace Appva.Mcss.Admin.Application.Models
     #region Imports.
 
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
 
     #endregion
 
@@ -116,6 +119,11 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         #endregion
+
+        public static IEnumerable<Scale> All()
+        {
+            return Enum.GetValues(typeof(Scale)).Cast<Scale>();
+        }
 
         #region GetUnitForScale
 
@@ -352,5 +360,13 @@ namespace Appva.Mcss.Admin.Application.Models
         }
 
         #endregion
+    }
+
+    public static class MeasurementScaleExtensions
+    {
+        public static string Name(this MeasurementScale.Scale scale)
+        {
+            return MeasurementScale.GetNameForScale(scale);
+        }
     }
 }

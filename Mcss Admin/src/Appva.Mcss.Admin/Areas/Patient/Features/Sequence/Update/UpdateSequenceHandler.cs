@@ -213,7 +213,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 var times = sequence.Times.Split(',');
                 foreach (var time in times)
                 {
-                    if (int.TryParse(time, out int value))
+                    int value;
+                    if (int.TryParse(time, out value))
                     {
                         foreach (var checkbox in checkBoxList)
                         {

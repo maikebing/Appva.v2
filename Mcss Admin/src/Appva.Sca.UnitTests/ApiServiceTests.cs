@@ -1,4 +1,5 @@
-﻿// <copyright file="ApiServiceTests.cs" company="Appva AB">
+﻿/*
+// <copyright file="ApiServiceTests.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -155,3 +156,4 @@ namespace Appva.Sca.UnitTests
         }
     }
 }
+*/

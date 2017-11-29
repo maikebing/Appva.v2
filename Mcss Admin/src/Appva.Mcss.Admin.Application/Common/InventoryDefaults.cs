@@ -26,7 +26,7 @@ namespace Appva.Mcss.Admin.Application.Common
         /// The Fields enum.
         /// An indicatetion in which field the enum is used.
         /// </summary>
-        public enum Feature : Byte
+        public enum Feature : byte
         {
             none = 0,
             inventory = 1,

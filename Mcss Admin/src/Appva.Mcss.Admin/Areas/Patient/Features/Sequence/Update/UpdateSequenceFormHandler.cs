@@ -99,8 +99,8 @@ namespace Appva.Mcss.Admin.Models.Handlers
 
             this.CreateOrUpdate(message, sequence, schedule, delegation, null);
 
-
-            if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage == true && Guid.TryParse(message.SelectedDosageScale, out Guid dosageScale) == true)
+            Guid dosageScale;
+            if (sequence.Schedule.ScheduleSettings.IsCollectingGivenDosage == true && Guid.TryParse(message.SelectedDosageScale, out dosageScale) == true)
             {
                 this.CreateOrUpdateDosageObservation(sequence, dosageScale);
             }

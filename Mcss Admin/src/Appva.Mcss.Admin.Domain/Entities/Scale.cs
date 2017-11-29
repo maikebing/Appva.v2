@@ -16,7 +16,7 @@
         {
         }
 
-        public enum Type : Byte
+        public enum Type : byte
         {
             none,
             weight,

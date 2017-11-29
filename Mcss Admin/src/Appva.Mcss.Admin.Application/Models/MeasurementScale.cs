@@ -91,8 +91,8 @@ namespace Appva.Mcss.Admin.Application.Models
             }
 
             var result = false;
-
-            if (Enum.TryParse(scale, out Scale validScale) == false)
+            Scale validScale;
+            if (Enum.TryParse(scale, out validScale) == false)
             {
                 return false;
             }
@@ -127,8 +127,8 @@ namespace Appva.Mcss.Admin.Application.Models
         public static string GetUnitForScale(string scale)
         {
             var result = string.Empty;
-
-            if (Enum.TryParse(scale, true, out Scale validScale))
+            Scale validScale;
+            if (Enum.TryParse(scale, true, out validScale))
             {
                 result = GetUnitForScale(validScale);
             }
@@ -176,8 +176,8 @@ namespace Appva.Mcss.Admin.Application.Models
         public static string GetNameForScale(string scale)
         {
             var result = string.Empty;
-
-            if (Enum.TryParse(scale, true, out Scale validScale))
+            Scale validScale;
+            if (Enum.TryParse(scale, true, out validScale))
             {
                 result = GetNameForScale(validScale);
             }
@@ -236,7 +236,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <returns>System.String.</returns>
         public static string GetCommonScaleValue(string value)
         {
-            if ((Enum.TryParse<CommonScaleValues>(value, false, out CommonScaleValues result)) == true)
+            CommonScaleValues result;
+            if ((Enum.TryParse<CommonScaleValues>(value, false, out result)) == true)
             {
                 return value;
             }
@@ -299,12 +300,13 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <returns><c>true</c> if the value meets the requirements, otherwise <c>false</c></returns>
         private static bool ValidateCommonScale(string value)
         {
-            if ((Enum.TryParse(value, true, out CommonScale scale)) == true)
+            CommonScale scale;
+            if ((Enum.TryParse(value, true, out scale)) == true)
             {
                 return true;
             }
-
-            if ((Enum.TryParse(value, out CommonScaleValues scaleValues)) == true)
+            CommonScaleValues scaleValues;
+            if ((Enum.TryParse(value, out scaleValues)) == true)
             {
                 return true;
             }
@@ -320,7 +322,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <returns><c>true</c> if the value meets the requirements, otherwise <c>false</c></returns>
         private static bool ValidateBristolScale(string value)
         {
-            if (int.TryParse(value, out int bristol) == true)
+            int bristol;
+            if (int.TryParse(value, out bristol) == true)
             {
                 if ((bristol <= 7 && bristol >= 1) == true)
                 {
@@ -337,7 +340,8 @@ namespace Appva.Mcss.Admin.Application.Models
         /// <returns><c>true</c> if the value meets the requirements, otherwise <c>false</c></returns>
         private static bool ValidateWeightScale(string value)
         {
-            if (double.TryParse(value, out double weight) == true)
+            double weight;
+            if (double.TryParse(value, out weight) == true)
             {
                 if ((weight <= 450 && weight >= 5) == true)
                 {

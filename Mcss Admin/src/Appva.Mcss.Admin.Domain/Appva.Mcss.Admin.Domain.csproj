@@ -132,7 +132,7 @@
     <Compile Include="Entities\DashboardNotification.cs" />
     <Compile Include="Entities\Delegation.cs" />
     <Compile Include="Entities\Device.cs" />
-    <Compile Include="Entities\DosageObservation.cs" />
+    <Compile Include="Entities\Observation\Dosage\DosageObservation.cs" />
     <Compile Include="Entities\EscalationAlert.cs" />
     <Compile Include="Entities\EscalationLevel.cs" />
     <Compile Include="Entities\Inventory.cs" />
@@ -141,17 +141,13 @@
     <Compile Include="Entities\KnowledgeTest.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Log.cs" />
-    <Compile Include="Entities\MeasurementObservation.cs" />
+    <Compile Include="Entities\Observation\Measurement\MeasurementObservation.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\MenuLink.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\NotificationReadByAccount.cs" />
-    <Compile Include="Entities\Observation\Events\ObservationUpdatedEvent.cs" />
-    <Compile Include="Entities\Observation\Events\ObservationCreatedEvent.cs" />
     <Compile Include="Entities\Observation\Observation.cs" />
     <Compile Include="Entities\Observation\ObservationItem.cs" />
-    <Compile Include="Entities\Observation\Tena\Events\TenaObservationPeriodCreatedEvent.cs" />
-    <Compile Include="Entities\Observation\Tena\Events\TenaObservationPeriodUpdatedEvent.cs" />
     <Compile Include="Entities\Patient.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Person.cs" />

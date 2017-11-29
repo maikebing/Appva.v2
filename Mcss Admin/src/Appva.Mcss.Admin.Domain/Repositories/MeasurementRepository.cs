@@ -32,7 +32,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// </summary>
         /// <param name="patientId">The patient identifier.</param>
         /// <returns>IList&lt;MeasurementObservation&gt;.</returns>
-        IList<MeasurementObservation> List(Guid patientId);
+        IList<MeasurementObservation> ListByPatient(Guid patientId);
     }
 
     /// <summary>
@@ -56,13 +56,13 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IMeasurementRepository Members
 
         /// <inheritdoc />
-        public IList<MeasurementObservation> List(Guid patientId)
+        public IList<MeasurementObservation> ListByPatient(Guid patientId)
         {
             return this.Context.QueryOver<MeasurementObservation>()
-                .Where(x => x.IsActive)
-                .And(x => x.Patient.Id == patientId)
+                  .Where(x => x.IsActive)
+                    .And(x => x.Patient.Id == patientId)
                 .OrderBy(x => x.Name).Asc
-                .List();
+                   .List();
         }
 
         #endregion

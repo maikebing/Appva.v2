@@ -3,8 +3,14 @@ MeasurementObservation, borttagna metoder för Save, Create, Find med mera. Fixa
 Kolla på Observation relaterad repositorys
 Kolla på att göra ObservationRepository generisk för MeasurementObservation, DosageObservation samt TenaObservation.
 UpdateHandlers och Publishers
+Separera MeasurementObservationRepository från ObservationItemRepository
 
-Updatera Vyerna
+
+ChangeMe och Unresolved, lös dessa kommentarer
+Skapa ev update metoder där det behövs.
+
+Uppdatera Vyerna. 
+Loggning på Create/Update i services
 
 
 DONEs:
@@ -19,3 +25,7 @@ Sequence	Lägg till: Observation (many-to-one), Ta bort: Observation (bag)
 
 
 Q/A
+Är delegering required för mätvärden? 
+I dagsläget är den optional,
+se create/update handlers, domänmodellen, services och repositorys, viewModel samt _MeasurementDetails.cshtml
+Borde det inte vara one-to-one relation mellan Sequence och Observation?

@@ -68,7 +68,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 throw new ArgumentNullException("patient", string.Format("Patient with ID: {0} does not exist.", message.Id));
             }
             Taxon delegation = null;
-            if (string.IsNullOrEmpty(message.SelectedDelegation))
+            if (string.IsNullOrEmpty(message.SelectedDelegation) == false)
             {
                 delegation = this.taxonService.Get(Guid.Parse(message.SelectedDelegation));
                 if (delegation == null)

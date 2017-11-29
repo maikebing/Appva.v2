@@ -64,11 +64,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     message.Value = MeasurementScale.GetCommonScaleValue(message.Value);
                 }
-                var measurement = new Measurement(message.Value);
-                var data = new List<SignedData> { SignedData.New(new Domain.VO.Base64Binary(message.Value)) };
-                var signature = Signature.New(this.account.CurrentPrincipal(), data);
-
-                this.service.CreateValue(ObservationItem.New(observation, measurement, signature: signature));
+                this.service.CreateValue(observation, this.account.CurrentPrincipal(), message.Value);
             }
 
             return new ListMeasurement

@@ -35,7 +35,6 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The name.
         /// </summary>
-        [DisplayName("Namn")]
         [Required]
         public string Name
         {
@@ -46,7 +45,6 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// Gets or sets the description.
         /// </summary>
-        [DisplayName("Instruktion")]
         [Required]
         public string Description
         {
@@ -77,7 +75,6 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// The selected delegation.
         /// </summary>
-        [Required]
         public string SelectedDelegation
         {
             get;

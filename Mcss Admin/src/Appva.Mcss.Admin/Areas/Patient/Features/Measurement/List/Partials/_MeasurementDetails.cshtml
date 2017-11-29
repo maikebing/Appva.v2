@@ -19,7 +19,6 @@
         </div>
     </div>
 </div>
-
 <p>@Model.MeasurementInstructions</p>
 <dl>
     <dt>Skala som används</dt>
@@ -28,7 +27,12 @@
 
 <dl>
     <dt>Delegering</dt>
-    <dd>@Model.Delegation.Name</dd>
+    <dd>
+        @if (Model.Delegation != null)
+        {
+            @Model.Delegation.Name
+        }
+    </dd>
 </dl>
 
 <figure class="figure">

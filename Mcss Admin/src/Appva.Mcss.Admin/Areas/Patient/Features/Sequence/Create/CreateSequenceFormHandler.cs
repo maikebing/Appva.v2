@@ -101,7 +101,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 var scale = JsonConvert.SerializeObject(this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
                     .Where(x => x.Id == dosageScale)
                     .SingleOrDefault());
-                this.dosageService.Save(sequence.Patient, "Given mängd", "DosageObservation", scale);
+                this.dosageService.Create(sequence.Patient, "Given mängd", "DosageObservation", scale);
             }
             this.auditing.Create(
                 sequence.Patient,

@@ -126,19 +126,17 @@ namespace Appva.Mcss.Admin.Models.Handlers
         {
             var scale = JsonConvert.SerializeObject(this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts)
                 .Where(x => x.Id == dosageScale).FirstOrDefault());
-            var observation = sequence.Observation;
 
-            /*if (observation == null)
+            var observation = this.dosageService.GetBySequence(sequence);
+            if (observation == null)
             {
-                //// UNRESOLVED: Change me!!
-                this.dosageService.Save(new DosageObservation(sequence.Patient, "Given Mängd", "DosageScale", scale));
+                this.dosageService.Create(sequence.Patient, "Given Mängd", "DosageObservation", scale);
             }
             else
             {
-                //// UNRESOLVED: Change me!!
-                observation.Scale = scale;
-                this.dosageService.Save(observation);
-            }*/
+                observation.Update(scale);
+                this.dosageService.Update(observation);
+            }
         }
 
         #endregion

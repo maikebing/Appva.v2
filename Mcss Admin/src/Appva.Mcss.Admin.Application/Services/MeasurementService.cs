@@ -12,6 +12,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using System.Collections.Generic;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Domain.VO;
 
     #endregion
 
@@ -29,12 +30,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="patientId">The patient identifier.</param>
         /// <returns>IList&lt;MeasurementObservation&gt;.</returns>
         IList<MeasurementObservation> ListByPatient(Guid patientId);
-
-        /// <summary>
-        /// Creates the measurement observation.
-        /// </summary>
-        /// <param name="observation">The observation.</param>
-        //void CreateMeasurementObservation(MeasurementObservation observation);
 
         /// <summary>
         /// Creates the specified patient.
@@ -85,8 +80,10 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Creates the value.
         /// </summary>
+        /// <param name="observation">The observation.</param>
+        /// <param name="account">The account.</param>
         /// <param name="value">The value.</param>
-        void CreateValue(ObservationItem value);
+        void CreateValue(MeasurementObservation observation, Account account, string value);
 
         #endregion
     }
@@ -147,7 +144,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public IList<MeasurementObservation> ListByPatient(Guid patientId)
         {
-            return this.measurementRepository.List(patientId);
+            return this.measurementRepository.ListByPatient(patientId);
         }
 
         /// <inheritdoc />
@@ -185,9 +182,13 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public void CreateValue(ObservationItem value)
+        public void CreateValue(MeasurementObservation observation, Account account, string value)
         {
-            this.itemRepository.Create(value);
+            var measurement = new Measurement(value);
+            var data = new List<SignedData> { SignedData.New(new Domain.VO.Base64Binary(value)) };
+            var signature = Signature.New(account, data);
+
+            this.itemRepository.Create(ObservationItem.New(observation, measurement, signature: signature));
         }
 
         #endregion

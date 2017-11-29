@@ -8,6 +8,7 @@ namespace Appva.Mcss.Admin.Application.Services
 {
     #region Imports.
 
+    using System;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
 
@@ -26,7 +27,20 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
         /// <param name="scale">The scale.</param>
-        void Save(Patient patient, string name, string description, string scale);
+        void Create(Patient patient, string name, string description, string scale);
+
+        /// <summary>
+        /// Gets the by sequence.
+        /// </summary>
+        /// <param name="sequence">The sequence.</param>
+        /// <returns>DosageObservation.</returns>
+        DosageObservation GetBySequence(Sequence sequence);
+
+        /// <summary>
+        /// Updates the specified dosage observation.
+        /// </summary>
+        /// <param name="dosageObservation">The dosage observation.</param>
+        void Update(DosageObservation dosageObservation);
     }
 
     /// <summary>
@@ -60,9 +74,21 @@ namespace Appva.Mcss.Admin.Application.Services
         #region IDosageObservationRepository Members.
 
         /// <inheritdoc />
-        public void Save(Patient patient, string name, string description, string scale)
+        public void Create(Patient patient, string name, string description, string scale)
         {
             this.dosageRepository.Save(new DosageObservation(patient, name, description, scale));
+        }
+
+        /// <inheritdoc />
+        public DosageObservation GetBySequence(Sequence sequence)
+        {
+            return this.dosageRepository.GetBySequence(sequence);
+        }
+
+        /// <inheritdoc />
+        public void Update(DosageObservation dosageObservation)
+        {
+            this.dosageRepository.Update(dosageObservation);
         }
 
         #endregion

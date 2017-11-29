@@ -4,10 +4,9 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models.Handlers
 {
-    #region Imports
+    #region Imports.
 
     using System;
     using System.Linq;
@@ -19,55 +18,59 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Class UpdateMeasurementHandler.
     /// </summary>
+    /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.UpdateMeasurement, Appva.Mcss.Admin.Models.UpdateMeasurementModel}" />
     public class UpdateMeasurementHandler : RequestHandler<UpdateMeasurement, UpdateMeasurementModel>
     {
-        #region Variables
+        #region Variables.
 
         /// <summary>
         /// The MeasurementService
         /// </summary>
-        private readonly IMeasurementService service;
+        private readonly IMeasurementService measurementService;
+
+        /// <summary>
+        /// The delegation service
+        /// </summary>
+        private readonly IDelegationService delegationService;
 
         #endregion
 
-        #region Constructor
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateMeasurementHandler"/> class.
         /// </summary>
-        /// <param name="service">The Measurement Service<see cref="IMeasurementService"/>.</param>
-        public UpdateMeasurementHandler(IMeasurementService service)
+        /// <param name="measurementService">The measurement service.</param>
+        /// <param name="delegationService">The delegation service.</param>
+        public UpdateMeasurementHandler(IMeasurementService measurementService, IDelegationService delegationService)
         {
-            this.service = service;
+            this.measurementService = measurementService;
+            this.delegationService = delegationService;
         }
 
         #endregion
 
-        #region Members
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
         public override UpdateMeasurementModel Handle(UpdateMeasurement message)
         {
-            var observation = this.service.Get(message.MeasurementId);
-
-            var model = new UpdateMeasurementModel
+            var observation = this.measurementService.Get(message.MeasurementId);
+            if (observation == null)
             {
-                MeasurementId = observation.Id,
-                Name = observation.Name,
-                Instruction = observation.Description,
-                SelectedScale = MeasurementScale.GetNameForScale((MeasurementScale.Scale) Enum.Parse(typeof(MeasurementScale.Scale), observation.Scale)),
-                SelectedUnit = MeasurementScale.GetUnitForScale(observation.Scale),
-                //// UNRESOLVED: Change me!!
-                /*SelectDelegationList = this.service.GetDelegationsList()
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                })*/
+                throw new ArgumentNullException("observation", string.Format("The observation with ID: {0} does not exist.", message.MeasurementId));
+            }
+            return new UpdateMeasurementModel
+            {
+                MeasurementId        = observation.Id,
+                Name                 = observation.Name,
+                Instruction          = observation.Description,
+                SelectedScale        = MeasurementScale.GetNameForScale(observation.Scale),
+                SelectedUnit         = MeasurementScale.GetUnitForScale(observation.Scale),
+                SelectDelegationList = this.delegationService.ListDelegationTaxons().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() })
             };
-            return model;
         }
 
         #endregion

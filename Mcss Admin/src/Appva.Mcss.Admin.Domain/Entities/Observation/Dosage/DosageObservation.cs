@@ -4,6 +4,9 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
+using System;
+using Validation;
+
 namespace Appva.Mcss.Admin.Domain.Entities
 {
     /// <summary>
@@ -31,6 +34,20 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <remarks>An NHibernate visible no-argument constructor.</remarks>
         internal protected DosageObservation()
         {
+        }
+
+        #endregion
+
+        #region Public Methods.
+
+        /// <summary>
+        /// Updates the DosageObservationScale.
+        /// </summary>
+        /// <param name="scale">The scale.</param>
+        public virtual void Update(string scale)
+        {
+            Requires.NotNullOrWhiteSpace(scale, "scale");
+            this.Scale = scale;
         }
 
         #endregion

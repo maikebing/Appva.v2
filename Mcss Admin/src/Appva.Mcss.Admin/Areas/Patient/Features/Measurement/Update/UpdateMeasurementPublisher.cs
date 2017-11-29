@@ -4,10 +4,9 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Models.Handlers
 {
-    #region Imports
+    #region Imports.
 
     using System;
     using Appva.Cqrs;
@@ -16,48 +15,60 @@ namespace Appva.Mcss.Admin.Models.Handlers
     #endregion
 
     /// <summary>
-    /// TODO: Add a descriptive summary to increase readability.
+    /// Class UpdateMeasurementPublisher.
     /// </summary>
+    /// <seealso cref="Appva.Cqrs.RequestHandler{Appva.Mcss.Admin.Models.UpdateMeasurementModel, Appva.Mcss.Admin.Models.ListMeasurement}" />
     public class UpdateMeasurementPublisher : RequestHandler<UpdateMeasurementModel, ListMeasurement>
     {
-        #region Variables
+        #region Variables.
 
         /// <summary>
         /// The Measurement Service
         /// </summary>
-        private readonly IMeasurementService service;
+        private readonly IMeasurementService measurementService;
+
+        /// <summary>
+        /// The taxon service
+        /// </summary>
+        private readonly ITaxonomyService taxonService;
 
         #endregion
 
-        #region Constructor
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateMeasurementPublisher"/> class.
         /// </summary>
-        /// <param name="service">The Measurement Service<see cref="IMeasurementService"/>.</param>
-        public UpdateMeasurementPublisher(IMeasurementService service)
+        /// <param name="measurementService">The measurement service.</param>
+        /// <param name="taxonService">The taxon service.</param>
+        public UpdateMeasurementPublisher(IMeasurementService measurementService, ITaxonomyService taxonService)
         {
-            this.service = service;
+            this.measurementService = measurementService;
+            this.taxonService = taxonService;
         }
 
         #endregion
 
-        #region Members
+        #region RequestHandler Overrides.
 
         /// <inheritdoc />
         public override ListMeasurement Handle(UpdateMeasurementModel message)
         {
-            var observation = this.service.Get(message.MeasurementId);
-
-            if (observation != null)
+            var observation = this.measurementService.Get(message.MeasurementId);
+            if (observation == null)
             {
-                //// UNRESOLVED: Change me!!
-                /*observation.Name = message.Name;
-                observation.Description = message.Instruction;
-                observation.Delegation = this.service.GetTaxon(Guid.Parse(message.SelectedDelegation));
-                this.service.Update(observation);*/
+                throw new ArgumentNullException("observation", string.Format("The observation with ID: {0} does not exist.", message.MeasurementId));
             }
-
+            var delegation = this.taxonService.Get(Guid.Parse(message.SelectedDelegation));
+            if (delegation == null)
+            {
+                observation.Update(message.Name, message.Instruction);
+            }
+            else
+            {
+                observation.Update(message.Name, message.Instruction, delegation);
+            }
+            this.measurementService.Update(observation);
             return new ListMeasurement
             {
                 Id = message.Id,

@@ -26,8 +26,6 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
     /// </summary>
     internal sealed class UpdateInventoryUnitPublisher : RequestHandler<UpdateInventoryUnitModel, Parameterless<ListInventoriesModel>>
     {
-        #region Fields.
-
         /// <summary>
         /// The <see cref="ISettingsService"/>
         /// </summary>
@@ -38,13 +36,13 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// </summary>
         private readonly IPersistenceContext persistence;
 
-        #endregion
-
         #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateInventoryUnitPublisher"/> class.
         /// </summary>
+        /// <param name="settings">The settings.</param>
+        /// <param name="persistence">The persistence.</param>
         public UpdateInventoryUnitPublisher(ISettingsService settings, IPersistenceContext persistence)
         {
             this.settings = settings;
@@ -61,29 +59,27 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             var settings = this.settings.Find<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts);
             var setting  = settings.SingleOrDefault(x => x.Id == message.Id);
 
-            setting.Name = message.Name;
+            setting.Name    = message.Name;
             setting.Feature = message.Feature;
-            setting.Unit = string.IsNullOrWhiteSpace(message.Unit) ? null : message.Unit;
+            setting.Unit    = string.IsNullOrWhiteSpace(message.Unit) ? null : message.Unit;
             setting.Amounts = JsonConvert.DeserializeObject<List<double>>(string.Format("[{0}]", message.Amounts.Replace(" ", "")));
 
             this.settings.Upsert<List<InventoryAmountListModel>>(ApplicationSettings.InventoryUnitsWithAmounts, settings);
 
             var dosageQuery = this.persistence.QueryOver<DosageObservation>()
-                .Where(x => x.IsActive == true)
-                  .And(x => string.IsNullOrEmpty(x.Scale))
-                .List();
+                   .Where(x => x.IsActive == true)
+                     .And(x => x.Scale != null) // string.IsNullOrEmpty(x.Scale)
+                    .List();
 
             foreach (var row in dosageQuery)
             {
                 var scale = JsonConvert.DeserializeObject<InventoryAmountListModel>(row.Scale);
                 if (setting.Id == scale.Id)
                 {
-                    //// UNRESOLVED: Change me!!
-                    /*row.Scale = JsonConvert.SerializeObject(setting);
-                    this.persistence.Update<DosageObservation>(row);*/
+                    row.Update(JsonConvert.SerializeObject(setting));
+                    this.persistence.Save<DosageObservation>(row);
                 }
             }
-
             return new Parameterless<ListInventoriesModel>();
         }
 

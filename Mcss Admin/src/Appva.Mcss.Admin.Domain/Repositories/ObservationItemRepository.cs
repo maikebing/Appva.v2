@@ -19,22 +19,11 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     #endregion
 
-    public interface IObservationItemRepository : IRepository<ObservationItem>
+    public interface IObservationItemRepository : 
+        IRepository<ObservationItem>, 
+        ISaveRepository<ObservationItem>
     {
         #region Fields.
-
-        /// <summary>
-        /// Creates the specified value.
-        /// </summary>
-        /// <param name="item">The item<see cref="ObservationItem"/>.</param>
-        void Create(ObservationItem item);
-
-        /// <summary>
-        /// Gets the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>ObservationItem<see cref="ObservationItem"/>.</returns>
-        ObservationItem Get(Guid id);
 
         /// <summary>
         /// Lists the specified observation identifier.
@@ -51,25 +40,6 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         /// <param name="endDate">The end date.</param>
         /// <returns>IList&lt;ObservationItem&gt;<see cref="ObservationItem"/>.</returns>
         IList<ObservationItem> ListByDate(Guid observationId, DateTime startDate, DateTime endDate);
-
-        /// <summary>
-        /// Updates the specified value.
-        /// </summary>
-        /// <param name="item">The item<see cref="ObservationItem"/>.</param>
-        void Update(ObservationItem item);
-
-        /// <summary>
-        /// Deletes the specified item.
-        /// </summary>
-        /// <param name="item">The item<see cref="ObservationItem"/>.</param>
-        void Delete(ObservationItem item);
-
-
-        /// <summary>
-        /// Deletes all items.
-        /// </summary>
-        /// <param name="items">The items<see cref="ObservationItem"/>.</param>
-        void DeleteAll(IList<ObservationItem> items);
 
         #endregion
     }
@@ -88,50 +58,23 @@ namespace Appva.Mcss.Admin.Domain.Repositories
         #region IObservationItemRepository Members
 
         /// <inheritdoc />
-        public void Create(ObservationItem item)
-        {
-            this.Context.Save<ObservationItem>(item);
-        }
-
-        /// <inheritdoc />
-        public ObservationItem Get(Guid id)
-        {
-            return this.Context.Get<ObservationItem>(id);
-        }
-
-        /// <inheritdoc />
         public IList<ObservationItem> List(Guid observationId)
         {
             return this.Context.QueryOver<ObservationItem>()
-                .Where(x => x.IsActive).And(x => x.Observation.Id == observationId)
+                  .Where(x => x.IsActive).And(x => x.Observation.Id == observationId)
                 .OrderBy(x => x.CreatedAt).Desc
-                .List();
+                   .List();
         }
 
         /// <inheritdoc />
         public IList<ObservationItem> ListByDate(Guid observationId, DateTime startDate, DateTime endDate)
         {
             return this.Context.QueryOver<ObservationItem>()
-                .Where(x => x.IsActive)
-                .And(x => x.Observation.Id == observationId)
-                .And(x => x.CreatedAt > startDate && x.CreatedAt < endDate)
+                  .Where(x => x.IsActive)
+                    .And(x => x.Observation.Id == observationId)
+                    .And(x => x.CreatedAt > startDate && x.CreatedAt < endDate)
                 .OrderBy(x => x.CreatedAt).Desc
-                .List();
-        }
-
-        /// <inheritdoc />
-        public void Delete(ObservationItem item)
-        {
-            this.Context.Delete<ObservationItem>(item);
-        }
-
-        /// <inheritdoc />
-        public void DeleteAll(IList<ObservationItem> items)
-        {
-            foreach (var item in items)
-            {
-                this.Context.Delete<ObservationItem>(item);
-            }
+                   .List();
         }
 
         #endregion

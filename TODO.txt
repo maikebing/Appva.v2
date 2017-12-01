@@ -11,7 +11,7 @@ ChangeMe och Unresolved, lös dessa kommentarer
 - Create Observation skall även uppdatera Sequence (Sequence.Observation)
 
 Uppdatera Vyerna. 
-Loggning på Create/Update i services
+- Loggning på Create/Update i services
 NHibernate mapping SignedData i table under ObservationItem (signature, measurement)
 
 DONEs:

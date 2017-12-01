@@ -11,17 +11,17 @@ namespace Appva.Mcss.Admin.Application.Services
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Persistence;
-    using NHibernate.Criterion;
     using Appva.Core.Extensions;
     using Appva.Mcss.Admin.Application.Auditing;
     using Appva.Mcss.Admin.Application.Models;
+    using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Domain;
+    using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Models;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Mcss.Admin.Application.Security.Identity;
-    using Appva.Repository;
-    using Appva.Mcss.Admin.Domain;
+    using Appva.Persistence;
+    using NHibernate.Criterion;
+
     #endregion
 
     /// <summary>

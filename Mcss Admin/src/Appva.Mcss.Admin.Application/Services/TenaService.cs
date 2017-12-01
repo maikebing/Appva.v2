@@ -255,11 +255,11 @@ namespace Appva.Mcss.Admin.Application.Services
                 var createdAt = new DateTime(item.CreatedAt.Ticks, DateTimeKind.Local);
                 tenaApiList.Add(new ManualEvent
                 {
-                    Id = item.Id.ToString(),
-                    EventType = item.Measurement.Value,
+                    Id         = item.Id.ToString(),
+                    EventType  = item.Measurement.Value,
                     ResidentId = item.Observation.Patient.TenaId,
-                    Timestamp = createdAt.ToUtc(),
-                    Active = item.IsActive
+                    Timestamp  = createdAt.ToUtc(),
+                    Active     = item.IsActive
                 });
             }
             return tenaApiList;

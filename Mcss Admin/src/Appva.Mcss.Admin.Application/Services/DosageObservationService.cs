@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -35,7 +36,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         /// <param name="dosageObservation">The dosage observation.</param>
         /// <param name="scaleId">The scale identifier.</param>
-        void Update(DosageObservation dosageObservation, Guid scaleId);
+        void Update(DosageObservation observation, Guid scaleId);
     }
 
     /// <summary>
@@ -56,6 +57,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly ISettingsService settingsService;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService audit;
+
         #endregion
 
         #region Constructors.
@@ -63,12 +69,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="DosageObservationService"/> class.
         /// </summary>
-        /// <param name="dosageRepository">The dosage repository.</param>
-        /// <param name="settingsService">The settings service.</param>
-        public DosageObservationService(IDosageObservationRepository dosageRepository, ISettingsService settingsService)
+        /// <param name="dosageRepository">The <see cref="IDosageObservationRepository"/>.</param>
+        /// <param name="settingsService">The <see cref="ISettingsService"/>.</param>
+        /// <param name="audit">The <see cref="IAuditService"/>.</param>
+        public DosageObservationService(IDosageObservationRepository dosageRepository, ISettingsService settingsService, IAuditService audit)
         {
             this.dosageRepository = dosageRepository;
             this.settingsService  = settingsService;
+            this.audit            = audit;
         }
 
         #endregion
@@ -81,17 +89,17 @@ namespace Appva.Mcss.Admin.Application.Services
             var scale       = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts).SingleOrDefault(x => x.Id == scaleId);
             var observation = new DosageObservation(patient, "Given mängd", "DosageObservation", scale);
             this.dosageRepository.Save(observation);
-            //// UNRESOLVED: Do audit logging here
+            this.audit.Create(patient, "skapade given mängd observation (ref, {0})", observation.Id);
             return observation;
         }
 
         /// <inheritdoc />
-        public void Update(DosageObservation dosageObservation, Guid scaleId)
+        public void Update(DosageObservation observation, Guid scaleId)
         {
             var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts).SingleOrDefault(x => x.Id == scaleId);
-            dosageObservation.Update(scale);
-            //// UNRESOLVED: Do audit logging here
-            this.dosageRepository.Update(dosageObservation);
+            observation.Update(scale);
+            this.audit.Update(observation.Patient, "ändrade given mängd observation (ref, {0})", observation.Id);
+            this.dosageRepository.Update(observation);
         }
 
         #endregion

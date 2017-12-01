@@ -13,6 +13,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Admin.Domain.VO;
+    using Appva.Mcss.Admin.Application.Auditing;
 
     #endregion
 
@@ -107,6 +108,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// </summary>
         private readonly IObservationItemRepository itemRepository;
 
+        /// <summary>
+        /// The <see cref="IAuditService"/>.
+        /// </summary>
+        private readonly IAuditService audit;
+
         #endregion
 
         #region Constructors.
@@ -114,17 +120,20 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="MeasurementService"/> class.
         /// </summary>
-        /// <param name="measurementRepository">The MeasurementRepository<see cref="IMeasurementRepository"/>.</param>
-        /// <param name="patientRepository">The PatientRepository<see cref="IPatientRepository"/>.</param>
-        /// <param name="itemRepository">The ObservationItemRepository<see cref="IObservationItemRepository"/>.</param>
+        /// <param name="measurementRepository">The <see cref="IMeasurementRepository"/>.</param>
+        /// <param name="patientRepository">The <see cref="IPatientRepository"/>.</param>
+        /// <param name="itemRepository">The <see cref="IObservationItemRepository"/>.</param>
+        /// <param name="audit">The <see cref="IAuditService"/>.</param>
         public MeasurementService(
-            IMeasurementRepository measurementRepository, 
-            IPatientRepository patientRepository, 
-            IObservationItemRepository itemRepository)
+            IMeasurementRepository     measurementRepository, 
+            IPatientRepository         patientRepository, 
+            IObservationItemRepository itemRepository,
+            IAuditService              audit)
         {
             this.measurementRepository = measurementRepository;
             this.patientRepository     = patientRepository;
             this.itemRepository        = itemRepository;
+            this.audit                 = audit;
         }
 
         #endregion
@@ -146,15 +155,16 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void Update(MeasurementObservation observation)
         {
-            //// UNRESOLVED: audit logging
             this.measurementRepository.Update(observation);
+            this.audit.Update(observation.Patient, "ändrade mätning (ref, {0})", observation.Id);
         }
 
         /// <inheritdoc />
         public void Create(Patient patient, string name, string description, string scale, Taxon delegation = null)
         {
-            //// UNRESOLVED: audit logging
-            this.measurementRepository.Save(new MeasurementObservation(patient, name, description, scale, delegation));
+            var observation = new MeasurementObservation(patient, name, description, scale, delegation);
+            this.measurementRepository.Save(observation);
+            this.audit.Create(observation.Patient, "skapade mätning (ref, {0})", observation.Id);
         }
 
         #endregion
@@ -183,11 +193,11 @@ namespace Appva.Mcss.Admin.Application.Services
         public void CreateValue(MeasurementObservation observation, Account account, string value)
         {
             var measurement = new Measurement(value);
-            var data = new List<SignedData> { SignedData.New(new Domain.VO.Base64Binary(value)) };
-            var signature = Signature.New(account, data);
-
-            //// UNRESOLVED: audit logging
-            this.itemRepository.Create(ObservationItem.New(observation, measurement, signature: signature));
+            var data        = new List<SignedData> { SignedData.New(new Domain.VO.Base64Binary(value)) };
+            var signature   = Signature.New(account, data);
+            var item        = ObservationItem.New(observation, measurement, null, signature);
+            this.itemRepository.Save(item);
+            this.audit.Create(observation.Patient, "skapade mätvärde (ref, {0})", item.Id);
         }
 
         #endregion

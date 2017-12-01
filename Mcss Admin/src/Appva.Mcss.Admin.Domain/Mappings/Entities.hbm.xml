@@ -610,7 +610,7 @@
   </class>
 
   <!-- SignedData -->
-  <class name="SignedData" table="SignedDatas">
+  <class name="SignedData" table="SignedData">
     <id name="Id">
       <generator class="guid.comb" />
     </id>

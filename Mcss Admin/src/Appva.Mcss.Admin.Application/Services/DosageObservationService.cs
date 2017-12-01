@@ -9,11 +9,10 @@ namespace Appva.Mcss.Admin.Application.Services
     #region Imports.
 
     using System;
+    using System.Linq;
+    using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Mcss.Admin.Domain.Repositories;
-    using Appva.Mcss.Admin.Application.Services.Settings;
-    using System.Linq;
-    using Appva.Mcss.Admin.Domain;
 
     #endregion
 
@@ -24,10 +23,11 @@ namespace Appva.Mcss.Admin.Application.Services
     public interface IDosageObservationService : IService
     {
         /// <summary>
-        /// Creates the dosage observation for patient.
+        /// Creates the specified patient.
         /// </summary>
         /// <param name="patient">The patient.</param>
         /// <param name="scaleId">The scale identifier.</param>
+        /// <returns>DosageObservation.</returns>
         DosageObservation Create(Patient patient, Guid scaleId);
 
         /// <summary>
@@ -64,10 +64,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// Initializes a new instance of the <see cref="DosageObservationService"/> class.
         /// </summary>
         /// <param name="dosageRepository">The dosage repository.</param>
+        /// <param name="settingsService">The settings service.</param>
         public DosageObservationService(IDosageObservationRepository dosageRepository, ISettingsService settingsService)
         {
             this.dosageRepository = dosageRepository;
-            this.settingsService = settingsService;
+            this.settingsService  = settingsService;
         }
 
         #endregion
@@ -77,7 +78,7 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public DosageObservation Create(Patient patient, Guid scaleId)
         {
-            var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts).SingleOrDefault(x => x.Id == scaleId);
+            var scale       = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts).SingleOrDefault(x => x.Id == scaleId);
             var observation = new DosageObservation(patient, "Given mängd", "DosageObservation", scale);
             this.dosageRepository.Save(observation);
             //// UNRESOLVED: Do audit logging here
@@ -89,6 +90,7 @@ namespace Appva.Mcss.Admin.Application.Services
         {
             var scale = this.settingsService.Find(ApplicationSettings.InventoryUnitsWithAmounts).SingleOrDefault(x => x.Id == scaleId);
             dosageObservation.Update(scale);
+            //// UNRESOLVED: Do audit logging here
             this.dosageRepository.Update(dosageObservation);
         }
 

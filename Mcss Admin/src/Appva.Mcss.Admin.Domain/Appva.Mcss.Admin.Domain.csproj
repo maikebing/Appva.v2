@@ -156,12 +156,8 @@
     <Compile Include="Entities\Sequence\SubSequence.cs" />
     <Compile Include="Entities\Signature\Signature.cs" />
     <Compile Include="Entities\Signature\SignedData.cs" />
-    <Compile Include="Entities\TaskObservationItem.cs" />
     <Compile Include="Entities\Task\SubTask.cs" />
     <Compile Include="Entities\Observation\Tena\TenaObservationPeriod.cs" />
-    <Compile Include="Entities\Observation\Tena\TenaObservationItem.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="Models\DosageScaleModel.cs" />
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Models\LogModel.cs" />

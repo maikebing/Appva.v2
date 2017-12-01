@@ -2,17 +2,17 @@ TODOs:
 MeasurementObservation, borttagna metoder för Save, Create, Find med mera. Fixa omgående.
 Kolla på Observation relaterad repositorys
 Kolla på att göra ObservationRepository generisk för MeasurementObservation, DosageObservation samt TenaObservation.
-UpdateHandlers och Publishers
+- UpdateHandlers och Publishers
 Separera MeasurementObservationRepository från ObservationItemRepository
 
 
 ChangeMe och Unresolved, lös dessa kommentarer
-Skapa ev update metoder där det behövs.
-Create Observation skall även uppdatera Sequence (Sequence.Observation)
+- Skapa ev update metoder där det behövs.
+- Create Observation skall även uppdatera Sequence (Sequence.Observation)
 
 Uppdatera Vyerna. 
 Loggning på Create/Update i services
-
+NHibernate mapping SignedData i table under ObservationItem (signature, measurement)
 
 DONEs:
 
@@ -30,3 +30,15 @@ Q/A
 I dagsläget är den optional,
 se create/update handlers, domänmodellen, services och repositorys, viewModel samt _MeasurementDetails.cshtml
 Borde det inte vara one-to-one relation mellan Sequence och Observation?
+
+
+Q/A 
+ 
+Borttagen Taxon category på Observation? 
+ 
+Permissions gällande delegationTaxon för vad vi får välja på observation nivå. Hur skall vi göra? 
+Taxons/delegations. För specifika observations. 
+Behöver vi en Taxon/delegation för MeasurementObservation ?
+ 
+- TenaObservationItem, skall denna vara kvar? Nej!
+

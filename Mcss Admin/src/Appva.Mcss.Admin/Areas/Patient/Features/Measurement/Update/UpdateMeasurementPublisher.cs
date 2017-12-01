@@ -44,7 +44,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public UpdateMeasurementPublisher(IMeasurementService measurementService, ITaxonomyService taxonService)
         {
             this.measurementService = measurementService;
-            this.taxonService = taxonService;
+            this.taxonService       = taxonService;
         }
 
         #endregion

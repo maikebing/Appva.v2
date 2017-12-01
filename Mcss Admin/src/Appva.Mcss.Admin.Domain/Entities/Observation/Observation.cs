@@ -111,6 +111,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
             internal protected set;
         }
 
+        /// <summary>
+        /// Gets the unproxied Observation.
+        /// </summary>
+        /// <value>The unproxied Obaervation.</value>
         public virtual Observation UnProxied
         {
             get

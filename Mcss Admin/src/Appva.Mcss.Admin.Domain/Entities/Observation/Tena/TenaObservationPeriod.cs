@@ -6,7 +6,7 @@
 // </author>
 namespace Appva.Mcss.Admin.Domain.Entities
 {
-    #region Imports
+    #region Imports.
 
     using System;
     using Validation;
@@ -31,8 +31,8 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="category">The category.</param>
         public TenaObservationPeriod(DateTime startDate, DateTime endDate, Patient patient, string name, string description) 
         {
-            Requires.NotNull(patient, "patient");
-            Requires.NotNullOrWhiteSpace(name, "name");
+            Requires.NotNull(patient,                 "patient");
+            Requires.NotNullOrWhiteSpace(name,        "name");
             Requires.NotNullOrWhiteSpace(description, "description");
             this.Patient     = patient;
             this.Name        = name;

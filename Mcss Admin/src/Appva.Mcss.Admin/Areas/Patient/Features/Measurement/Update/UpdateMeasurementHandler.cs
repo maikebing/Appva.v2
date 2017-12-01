@@ -47,7 +47,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         public UpdateMeasurementHandler(IMeasurementService measurementService, IDelegationService delegationService)
         {
             this.measurementService = measurementService;
-            this.delegationService = delegationService;
+            this.delegationService  = delegationService;
         }
 
         #endregion

@@ -4,16 +4,12 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Domain.Repositories
 {
-    #region Imports
+    #region Imports.
 
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Appva.Mcss.Admin.Domain.Entities;
     using Appva.Persistence;
 
@@ -40,7 +36,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
     /// </summary>
     public class MeasurementRepository : Repository<MeasurementObservation>, IMeasurementRepository
     {
-        #region Constructor
+        #region Constructors.
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MeasurementRepository"/> class.
@@ -53,7 +49,7 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
         #endregion
 
-        #region IMeasurementRepository Members
+        #region IMeasurementRepository Members.
 
         /// <inheritdoc />
         public IList<MeasurementObservation> ListByPatient(Guid patientId)

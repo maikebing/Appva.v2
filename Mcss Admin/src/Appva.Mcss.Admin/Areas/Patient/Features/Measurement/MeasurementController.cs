@@ -4,10 +4,9 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-
 namespace Appva.Mcss.Admin.Areas.Patient
 {
-    #region Imports
+    #region Imports.
 
     using System.Web.Mvc;
     using Appva.Mcss.Admin.Application.Common;
@@ -24,7 +23,7 @@ namespace Appva.Mcss.Admin.Areas.Patient
     [RouteArea("patient"), RoutePrefix("{id:guid}/measurement")]
     public sealed class MeasurementController : Controller
     {
-        #region Routes
+        #region Routes.
 
         #region List
 

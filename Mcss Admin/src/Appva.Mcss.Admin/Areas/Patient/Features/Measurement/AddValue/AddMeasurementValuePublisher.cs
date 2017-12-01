@@ -8,12 +8,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
 {
     #region Imports.
 
-    using System.Collections.Generic;
+    using System;
     using Appva.Cqrs;
     using Appva.Mcss.Admin.Application.Models;
     using Appva.Mcss.Admin.Application.Services;
-    using Appva.Mcss.Admin.Domain.Entities;
-    using Appva.Mcss.Admin.Domain.VO;
 
     #endregion
 
@@ -27,12 +25,12 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The account service
         /// </summary>
-        private readonly IAccountService account;
+        private readonly IAccountService accountService;
 
         /// <summary>
         /// The measurement service
         /// </summary>
-        private readonly IMeasurementService service;
+        private readonly IMeasurementService measurementService;
 
         #endregion
 
@@ -43,10 +41,10 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// </summary>
         /// <param name="account">The account service<see cref="IAccountService"/>.</param>
         /// <param name="service">The measurement service<see cref="IMeasurementService"/>.</param>
-        public AddMeasurementValuePublisher(IAccountService account, IMeasurementService service)
+        public AddMeasurementValuePublisher(IAccountService accountService, IMeasurementService measurementService)
         {
-            this.account = account;
-            this.service = service;
+            this.accountService     = accountService;
+            this.measurementService = measurementService;
         }
 
         #endregion
@@ -56,7 +54,11 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ListMeasurement Handle(AddMeasurementValueModel message)
         {
-            var observation = this.service.Get(message.MeasurementId);
+            var observation = this.measurementService.Get(message.MeasurementId);
+            if (observation == null)
+            {
+                throw new ArgumentNullException("observation", string.Format("MesurementObservation with ID: {0} does not exist.", message.MeasurementId));
+            }
             //// UNRESOLVED: move validation to controller.
 
             if (MeasurementScale.HasValidValue(message.Value, observation.Scale))
@@ -65,7 +67,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     message.Value = MeasurementScale.GetCommonScaleValue(message.Value);
                 }
-                this.service.CreateValue(observation, this.account.CurrentPrincipal(), message.Value);
+                this.measurementService.CreateValue(observation, this.accountService.CurrentPrincipal(), message.Value);
             }
             return new ListMeasurement
             {

@@ -83,9 +83,9 @@ namespace Appva.Mcss.Admin.Domain.Entities
             Requires.NotNullOrWhiteSpace(name, "name");
             Requires.NotNullOrWhiteSpace(instruction, "description");
             Requires.NotNull(delegation, "delegation");
-            this.Name = name;
+            this.Name        = name;
             this.Description = instruction;
-            this.Delegation = delegation;
+            this.Delegation  = delegation;
         }
 
         #endregion

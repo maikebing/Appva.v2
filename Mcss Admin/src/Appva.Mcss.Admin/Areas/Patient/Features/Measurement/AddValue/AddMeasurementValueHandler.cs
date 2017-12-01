@@ -25,7 +25,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <summary>
         /// The measurement service
         /// </summary>
-        private readonly IMeasurementService service;
+        private readonly IMeasurementService measurementService;
 
         #endregion
 
@@ -35,9 +35,9 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// Initializes a new instance of the <see cref="AddMeasurementValueHandler"/> class.
         /// </summary>
         /// <param name="service">The measurement service<see cref="IMeasurementService"/>.</param>
-        public AddMeasurementValueHandler(IMeasurementService service)
+        public AddMeasurementValueHandler(IMeasurementService measurementService)
         {
-            this.service = service;
+            this.measurementService = measurementService;
         }
 
         #endregion
@@ -47,7 +47,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override AddMeasurementValueModel Handle(AddMeasurementValue message)
         {
-            var observation = this.service.Get(message.MeasurementId);
+            var observation = this.measurementService.Get(message.MeasurementId);
             if (observation == null)
             {
                 throw new ArgumentNullException("observation", string.Format("MeasurementObservation with ID: {0} does not exist.", message.MeasurementId));

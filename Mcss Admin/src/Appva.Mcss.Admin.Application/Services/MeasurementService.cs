@@ -22,8 +22,6 @@ namespace Appva.Mcss.Admin.Application.Services
     /// <seealso cref="Appva.Mcss.Admin.Application.Services.IService" />
     public interface IMeasurementService : IService
     {
-        #region Fields.
-
         /// <summary>
         /// Gets the measurement categories.
         /// </summary>
@@ -84,8 +82,6 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="account">The account.</param>
         /// <param name="value">The value.</param>
         void CreateValue(MeasurementObservation observation, Account account, string value);
-
-        #endregion
     }
 
     /// <summary>
@@ -127,8 +123,8 @@ namespace Appva.Mcss.Admin.Application.Services
             IObservationItemRepository itemRepository)
         {
             this.measurementRepository = measurementRepository;
-            this.patientRepository = patientRepository;
-            this.itemRepository = itemRepository;
+            this.patientRepository     = patientRepository;
+            this.itemRepository        = itemRepository;
         }
 
         #endregion
@@ -150,12 +146,14 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <inheritdoc />
         public void Update(MeasurementObservation observation)
         {
+            //// UNRESOLVED: audit logging
             this.measurementRepository.Update(observation);
         }
 
         /// <inheritdoc />
         public void Create(Patient patient, string name, string description, string scale, Taxon delegation = null)
         {
+            //// UNRESOLVED: audit logging
             this.measurementRepository.Save(new MeasurementObservation(patient, name, description, scale, delegation));
         }
 
@@ -188,6 +186,7 @@ namespace Appva.Mcss.Admin.Application.Services
             var data = new List<SignedData> { SignedData.New(new Domain.VO.Base64Binary(value)) };
             var signature = Signature.New(account, data);
 
+            //// UNRESOLVED: audit logging
             this.itemRepository.Create(ObservationItem.New(observation, measurement, signature: signature));
         }
 

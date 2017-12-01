@@ -4,12 +4,15 @@
 // <author>
 //     <a href="mailto:fredrik.andersson@appva.com">Fredrik Andersson</a>
 // </author>
-using Newtonsoft.Json;
-using System;
-using Validation;
-
 namespace Appva.Mcss.Admin.Domain.Entities
 {
+    #region Imports.
+
+    using Newtonsoft.Json;
+    using Validation;
+
+    #endregion
+
     /// <summary>
     /// An implementation of Observation for Dosage units.
     /// </summary>

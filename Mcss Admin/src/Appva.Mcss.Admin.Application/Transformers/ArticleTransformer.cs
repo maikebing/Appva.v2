@@ -67,7 +67,7 @@ namespace Appva.Mcss.Admin.Application.Transformers
                 Id = article.Id,
                 Name = article.Name,
                 Description = article.Description,
-                Category = article.ArticleCategory,
+                Category = article.Category,
                 OrderedBy = article.RefillOrderedBy,
                 OrderDate = article.RefillOrderDate,
                 FormattedOrderDate = article.RefillOrderDate.Value.Day == DateTime.Now.Day ? "idag" : (article.RefillOrderDate.Value.Day == DateTime.Now.Day - 1 ? "igår" : article.RefillOrderDate.Value.ToString("d MMM yyyy")),

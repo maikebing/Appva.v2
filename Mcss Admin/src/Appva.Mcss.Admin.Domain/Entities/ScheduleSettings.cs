@@ -126,7 +126,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
             get;
             set;
         }
-        public virtual ArticleCategory ArticleCategory
+        public virtual Category ArticleCategory
         {
             get;
             set;

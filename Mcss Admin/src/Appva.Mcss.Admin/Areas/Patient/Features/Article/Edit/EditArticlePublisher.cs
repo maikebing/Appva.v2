@@ -84,7 +84,7 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
             var category = this.articleRepository.GetCategory(new Guid(message.SelectedCategory));
             article.Name = message.Name;
             article.Description = message.Description;
-            article.ArticleCategory = category;
+            article.Category = category;
             article.UpdatedAt = DateTime.Now;
             
             this.articleRepository.Update(article);

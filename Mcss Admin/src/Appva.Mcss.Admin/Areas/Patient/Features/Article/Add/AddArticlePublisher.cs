@@ -27,19 +27,20 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         #region Fields.
 
         /// <summary>
-        /// The <see cref="IArticleRepository"/>.
+        /// The <see cref="IArticleService"/>.
         /// </summary>
-        private readonly IArticleRepository articleRepository;
+        private readonly IArticleService articleService;
+
+        /// <summary>
+        /// The <see cref="ICategoryService"/>
+        /// </summary>
+        private readonly ICategoryService categoryService;
 
         /// <summary>
         /// The <see cref="IPatientService"/>.
         /// </summary>
         private readonly IPatientService patientService;
 
-        /// <summary>
-        /// The
-        /// </summary>
-        private readonly IAuditService auditing;
 
         #endregion
 
@@ -47,14 +48,18 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddArticlePublisher"/> class.
-        /// <param name="articleRepository">The <see cref="IArticleRepository"/>.</param>
-        /// <param name="patientService">The <see cref="IPatientService"/>.</param>
         /// </summary>
-        public AddArticlePublisher(IArticleRepository articleRepository, IPatientService patientService, IAuditService auditing)
+        /// <param name="categoryService">The category service.</param>
+        /// <param name="articleService">The article service.</param>
+        /// <param name="patientService">The patient service.</param>
+        public AddArticlePublisher(
+            ICategoryService categoryService,
+            IArticleService articleService,
+            IPatientService patientService)
         {
-            this.articleRepository = articleRepository;
-            this.patientService = patientService;
-            this.auditing = auditing;
+            this.categoryService = categoryService;
+            this.articleService  = articleService;
+            this.patientService  = patientService;
         }
 
         #endregion
@@ -64,30 +69,10 @@ namespace Appva.Mcss.Admin.Areas.Models.Handlers
         /// <inheritdoc />
         public override bool Handle(AddArticleModel message)
         {
-            if(string.IsNullOrEmpty(message.SelectedCategory))
-            {
-                return false;
-            }
+            var category = this.categoryService.Find(new Guid(message.SelectedCategory));
+            var patient  = this.patientService.Get(message.Id);
 
-            var category = this.articleRepository.GetCategory(new Guid(message.SelectedCategory));
-            var patient = this.patientService.Get(message.Id);
-
-            if(patient == null || string.IsNullOrEmpty(message.Name))
-            {
-                return false;
-            }
-
-            var article = new Article
-            {
-                Name = message.Name,
-                Description = message.Description,
-                ArticleCategory = category,
-                Patient = patient,
-                Status = ArticleStatus.NotStarted
-            };
-
-            this.articleRepository.Save(article);
-            this.auditing.Create(patient, "skapade artikeln {0} ({1})", article.Name, article.Id);
+            this.articleService.CreateArticle(message.Name, message.Description, patient, category);
 
             return true;
         }

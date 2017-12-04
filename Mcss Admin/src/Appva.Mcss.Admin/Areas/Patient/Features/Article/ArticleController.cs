@@ -158,7 +158,7 @@ namespace Appva.Mcss.Admin.Areas.Patient.Features.Order
         /// <returns><see cref="PartialViewResult"/>.</returns>
         [Route("~/article/overview")]
         [HttpGet, Dispatch(typeof(ArticleOverview))]
-        [PermissionsAttribute(Permissions.Dashboard.ReadArticleOrderValue)]
+        [PermissionsAttribute(Permissions.Dashboard.ReadOrderRefillValue)]
         public PartialViewResult Overview()
         {
             return this.PartialView();

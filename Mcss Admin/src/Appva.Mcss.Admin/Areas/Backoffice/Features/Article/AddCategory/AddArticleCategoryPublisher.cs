@@ -52,7 +52,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
                 return false;
             }
 
-            var category = new ArticleCategory();
+            var category = new Category();
             category.Name = message.Name;
             category.Description = message.Description;
             this.persistence.Save(category);

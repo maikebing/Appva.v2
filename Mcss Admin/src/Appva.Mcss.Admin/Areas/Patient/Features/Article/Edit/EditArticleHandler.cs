@@ -61,7 +61,7 @@ namespace Appva.Mcss.Admin.Models.Handlers
                 {
                     Text = category.Name,
                     Value = category.Id.ToString(),
-                    Selected = article.ArticleCategory.Id == category.Id ? true : false
+                    Selected = article.Category.Id == category.Id ? true : false
                 });
             }
 

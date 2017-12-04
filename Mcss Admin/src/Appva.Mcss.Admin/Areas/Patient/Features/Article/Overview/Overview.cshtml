@@ -39,7 +39,7 @@
             }
         </div>
         <div class="panel-c">
-            @if (Model.OrderedArticles == null || Model.OrderedArticles.Count == 0)
+            @if (Model.Articles == null || Model.Articles.Count == 0)
             {
                 <div class="no-data">
                     <h3>Inga påfyllningar begärda</h3>
@@ -57,38 +57,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for (int i = 0; i < Model.OrderedArticles.Count; i++)
+                        @for (int i = 0; i < Model.Articles.Count; i++)
                         {
                             <tr class="article-row">
                                 <td>
                                     @if (Html.HasPermissionFor(Permissions.OrderList.Read))
                                     {
-                                        @Html.ActionLink(Model.OrderedArticles[i].Patient.FullName, "List", "Article", new { id = Model.OrderedArticles[i].Patient.Id, Area = "Patient" }, null)
+                                        @Html.ActionLink(Model.Articles[i].Patient.FullName, "List", "Article", new { id = Model.Articles[i].Patient.Id, Area = "Patient" }, null)
                                     }
                                     else
                                     {
-                                        @Model.OrderedArticles[i].Patient.FullName
+                                        @Model.Articles[i].Patient.FullName
                                     }
                                 </td>
-                                <td>@Model.OrderedArticles[i].Name</td>
+                                <td>@Model.Articles[i].Name</td>
                                 <td>
-                                    @Model.OrderedArticles[i].OrderedBy.FullName
-                                    <p class="orderTime">@TimeSpanDifference.ToReadableFromToday(Model.OrderedArticles[i].OrderDate.GetValueOrDefault())</p>
+                                    @Model.Articles[i].OrderedBy.FullName
+                                    <p class="orderTime">@TimeSpanDifference.ToReadableFromToday(Model.Articles[i].OrderDate.GetValueOrDefault())</p>
                                 </td>
                                 @if (Html.HasPermissionFor(Permissions.OrderList.Update))
                                 {
                                     <td class="inliner">
                                         <div class="control-container control-container--select control-container--no-margin">
-                                            @Html.DropDownListFor(x => x.OrderedArticles[i].SelectedOrderOptionKey, new SelectList(Model.OrderOptions, "Key", "Value", Model.OrderedArticles[i].SelectedOrderOptionKey), new { @class = "article-option" })
+                                            @Html.DropDownListFor(x => x.Articles[i].Status, new SelectList(Model.OrderOptions, "Key", "Value", Model.Articles[i].Status), new { @class = "article-option" })
                                         </div>
                                         <div class="control-container control-container--no-margin">
-                                            @Html.HiddenFor(x => x.OrderedArticles[i].Id)
+                                            @Html.HiddenFor(x => x.Articles[i].Id)
                                         </div>
                                     </td>
                                 }
                                 else
                                 {
-                                    <td>@Model.OrderedArticles[i].SelectedOrderOptionValue</td>
+                                    <td>@Model.Articles[i].Status</td>
                                 }
                             </tr>
                         }

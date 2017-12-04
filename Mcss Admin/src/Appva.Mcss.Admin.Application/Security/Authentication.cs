@@ -338,7 +338,7 @@ namespace Appva.Mcss.Admin.Application.Security
         /// </summary>
         /// <param name="account">The account.</param>
         /// <returns></returns>
-        private IEnumerable<ArticleCategory> GetAllArticleCategoriesFor(Account account)
+        private IEnumerable<Category> GetAllArticleCategoriesFor(Account account)
         {
             return account.Roles.SelectMany(x => x.ArticleCategories).Distinct();
         }

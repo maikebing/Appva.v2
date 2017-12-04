@@ -64,7 +64,6 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
         {
             var role = this.roleService.Find(message.Id);
             var schedules = this.persistence.QueryOver<ScheduleSettings>()
-                .Where(x => x.IsActive == true)
                 .OrderBy(x => x.ScheduleType).Asc.ThenBy(x => x.Name).Asc
                 .List();
             return new UpdateRoleSchedule
@@ -91,7 +90,8 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
             var permissions = items.Select(x => new Tickable
             {
                 Id = x.Id.ToString(),
-                Label = x.Name
+                Label = x.Name,
+                HelpText = x.IsActive == false ? "Listan är inaktiverad" : ""
             }).ToList();
             foreach (var permission in permissions)
             {

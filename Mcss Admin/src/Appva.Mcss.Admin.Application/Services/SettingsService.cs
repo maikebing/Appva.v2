@@ -756,35 +756,5 @@ namespace Appva.Mcss.Admin.Application.Services.Settings
         }
 
         #endregion
-
-        #region IOrderListConfiguration Members.
-
-        /// <inheritdoc />
-        /*public bool HasMigratableItems()
-        {
-            return this.GetOrderListItemsFromScheduleSettings().RowCount() > 0 
-                || this.GetOrderListItemsFromSequence(this.persistence.Session).RowCount() > 0;
-        }*/
-
-        /// <inheritdoc />
-        /*public IQueryOver<Sequence, ScheduleSettings> GetOrderListItemsFromSequence(ISession session)
-        {
-            return session.QueryOver<Sequence>()
-                .Where(x => x.Article == null)
-                    .JoinQueryOver(x => x.Schedule)
-                        .JoinQueryOver(x => x.ScheduleSettings)
-                            .Where(x => x.OrderRefill == true)
-                                .And(x => x.ArticleCategory != null);
-        }
-
-        /// <inheritdoc />
-        public IQueryOver<ScheduleSettings, ScheduleSettings> GetOrderListItemsFromScheduleSettings()
-        {
-            return this.persistence.QueryOver<ScheduleSettings>()
-                .Where(x => x.OrderRefill == true)
-                    .And(x => x.ArticleCategory == null);
-        }*/
-
-        #endregion
     }
 }

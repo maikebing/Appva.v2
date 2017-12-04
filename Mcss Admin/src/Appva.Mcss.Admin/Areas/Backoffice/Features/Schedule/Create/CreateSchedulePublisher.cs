@@ -66,7 +66,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override Identity<DetailsScheduleModel> Handle(CreateScheduleModel message)
         {
-            ArticleCategory articleCategory = null;
+            Category articleCategory = null;
 
             if (message.DeviationMessage.IsNull())
             {

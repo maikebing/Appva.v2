@@ -49,7 +49,7 @@ namespace Appva.Mcss.Application.Models
         /// <summary>
         /// The article category.
         /// </summary>
-        public ArticleCategory Category
+        public Category Category
         {
             get;
             set;

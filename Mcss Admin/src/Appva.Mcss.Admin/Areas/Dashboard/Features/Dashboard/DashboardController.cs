@@ -14,6 +14,7 @@ namespace Appva.Mcss.Admin.Controllers
     using Appva.Mcss.Admin.Application.Services.Settings;
     using Appva.Mcss.Admin.Models;
     using Appva.Mvc.Security;
+    using Appva.Mcss.Admin.Domain.VO;
 
     #endregion
 
@@ -60,10 +61,11 @@ namespace Appva.Mcss.Admin.Controllers
         {
             return View(new HomeViewModel
                 {
-                    HasCalendarOverview = this.settingsService.HasCalendarOverview(),
-                    HasOrderOverview = this.settingsService.HasOrderRefill(),
-                    SevenDayStartDate = DateTime.Now.AddDays(-7),
-                    SevenDayEndDate = DateTime.Now   
+                    HasCalendarOverview      = this.settingsService.HasCalendarOverview(),
+                    HasOrderOverview         = this.settingsService.HasOrderRefill(),
+                    ArticleModuleIsInstalled = this.settingsService.Find<OrderListConfiguration>(ApplicationSettings.OrderListSettings).IsInstalled,
+                    SevenDayStartDate        = DateTime.Now.AddDays(-7),
+                    SevenDayEndDate          = DateTime.Now   
                 });
         }
 

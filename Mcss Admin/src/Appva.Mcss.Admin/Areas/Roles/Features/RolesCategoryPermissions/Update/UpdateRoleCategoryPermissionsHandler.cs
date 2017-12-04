@@ -62,8 +62,7 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
         public override UpdateRoleCategoryPermissions Handle(Identity<UpdateRoleCategoryPermissions> message)
         {
             var role = this.roleService.Find(message.Id);
-            var categories = this.persistence.QueryOver<ArticleCategory>()
-                .Where(x => x.IsActive == true)
+            var categories = this.persistence.QueryOver<Category>()
                     .OrderBy(x => x.Name).Asc
                         .List();
 
@@ -80,13 +79,14 @@ namespace Appva.Mcss.Admin.Areas.Roles.Roles.List
         #region Private methods.
 
         /// <inheritdoc />
-        private IList<Tickable> Merge(IList<ArticleCategory> items, IList<ArticleCategory> selected)
+        private IList<Tickable> Merge(IList<Category> items, IList<Category> selected)
         {
             var selections = selected.Select(x => x.Id).ToList();
             var permissions = items.Select(x => new Tickable
             {
                 Id = x.Id.ToString(),
-                Label = x.Name
+                Label = x.Name,
+                HelpText = x.IsActive == false ? "Listan är inaktiverad" : ""
             }).ToList();
 
             foreach (var permission in permissions)

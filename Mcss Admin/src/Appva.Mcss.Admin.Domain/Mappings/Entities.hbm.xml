@@ -158,12 +158,12 @@
     <property name="Status" type="NHibernate.Type.EnumStringType`1[[ Appva.Mcss.Admin.Domain.Entities.ArticleStatus, Appva.Mcss.Admin.Domain]], NHibernate" />
     <many-to-one name="OrderedBy" class="Account" />
     <many-to-one name="RefillOrderedBy" class="Account" />
-    <many-to-one name="ArticleCategory" class="ArticleCategory" />
+    <many-to-one name="Category" class="Category" />
     <many-to-one name="Patient" class="Patient" />
   </class>
 
-  <!-- ArticleCategory -->
-  <class name="ArticleCategory">
+  <!-- Category -->
+  <class name="Category">
     <id name="Id">
       <generator class="guid.comb" />
     </id>
@@ -225,11 +225,11 @@
     </bag>
     <bag name="ArticleCategories" table="RolesArticleCategories">
       <key column="RoleId" />
-      <many-to-many column="ArticleCategoryId" class="ArticleCategory" fetch="join" />
+      <many-to-many column="CategoryId" class="Category" fetch="join" />
     </bag>
     <bag name="DeviceArticleCategories" table="RolesDeviceArticleCategories">
       <key column="RoleId" />
-      <many-to-many column="ArticleCategoryId" class="ArticleCategory" fetch="join" />
+      <many-to-many column="CategoryId" class="Category" fetch="join" />
     </bag>
   </class>
 
@@ -494,7 +494,7 @@
     <property name="NurseConfirmDeviationMessage" />
     <many-to-one name="DelegationTaxon" class="Taxon" />
     <many-to-one name="CombineWith" class="ScheduleSettings" />
-    <many-to-one name="ArticleCategory" class="ArticleCategory" />
+    <many-to-one name="ArticleCategory" class="Category" />
     <property name="ScheduleType" />
     <property name="Absence" />
     <property name="Color" />
@@ -782,19 +782,5 @@
     <many-to-one name="Schedule" class="Schedule" />
   </class>
 
-  <!-- TenaObservervationItem -->
-  <class name="TenaObservationItem">
-    <id name="Id">
-      <generator class="guid.comb" />
-    </id>
-    <property name="Version" />
-    <property name="IsActive" column="Active" />
-    <property name="CreatedAt" column="Created" />
-    <property name="UpdatedAt" column="Modified" />
-    <property name="Measurement" />
-    <property name="Signature" />
-    <property name="Comment" />
-    <many-to-one name="TenaObservationPeriod" class="TenaObservationPeriod" />    
-  </class>
 
 </hibernate-mapping>

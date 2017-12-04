@@ -68,7 +68,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
         /// <inheritdoc />
         public override Identity<DetailsScheduleModel> Handle(UpdateScheduleModel message)
         {
-            ArticleCategory articleCategory = null;
+            Category category = null;
 
             if(message.DeviationMessage.IsNull())
             {
@@ -77,7 +77,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
 
             if (string.IsNullOrEmpty(message.SelectedCategory) == false)
             {
-                articleCategory = this.articleRepository.GetCategory(new Guid(message.SelectedCategory));
+                category = this.articleRepository.GetCategory(new Guid(message.SelectedCategory));
             }
 
             var schedule = this.scheduleService.GetScheduleSettings(message.Id);
@@ -94,7 +94,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Handlers
             schedule.OrderRefill = message.ArticleModuleIsInstalled ? (string.IsNullOrEmpty(message.SelectedCategory) ? false : true) : message.OrderRefill;
             schedule.SpecificNurseConfirmDeviation = message.DeviationMessage.IncludeListOfNurses;
             schedule.DelegationTaxon = message.DelegationTaxon.HasValue ? this.taxonomyService.Load(message.DelegationTaxon.Value) : null;
-            schedule.ArticleCategory = articleCategory;
+            schedule.ArticleCategory = category;
 
             this.scheduleService.UpdateScheduleSetting(schedule);
 

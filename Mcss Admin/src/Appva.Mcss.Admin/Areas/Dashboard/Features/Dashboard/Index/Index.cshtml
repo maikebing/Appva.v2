@@ -48,11 +48,7 @@
         <div id="content-secondary">
             @if (Model.HasOrderOverview && Html.HasPermissionFor(Permissions.Dashboard.ReadOrderRefill))
             {
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Order", widgetArea = "Patient", header = "Påfyllning av läkemedel" });
-            }
-            @if (Html.HasPermissionFor(Permissions.Dashboard.ReadArticleOrder))
-            {
-                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = "Article", widgetArea = "Patient", header = "Påfyllning av artiklar" });
+                Html.RenderAction("Load", "Dashboard", new { action = "Overview", controller = (Model.ArticleModuleIsInstalled ? "Article" : "Order"), widgetArea = "Patient", header = "Påfyllning av läkemedel" });
             }
             @if (Model.HasCalendarOverview && Html.HasPermissionFor(Permissions.Dashboard.ReadCalendar))
             {

@@ -99,40 +99,15 @@ namespace Appva.Mcss.Admin.Models.Handlers
         /// <inheritdoc />
         public override ArticleOverviewViewModel Handle(ArticleOverview message)
         {
-            var userId = this.identityService.PrincipalId;
-            var orderedArticles = new List<ArticleModel>();
-            var account = this.accountService.Find(userId);
-            var categories = this.identityService.ArticleCategoryPermissions().Select(x => new Guid(x.Value));
             var filterTaxon = this.filtering.GetCurrentFilter();
-            ArticleCategory articleCategory = null;
-
-            var orders = this.persistence.QueryOver<Article>()
-                .Where(x => x.IsActive)
-                    .And(x => x.Status == ArticleStatus.RefillRequested)
-                        .Fetch(x => x.RefillOrderedBy).Eager
-                            .JoinAlias(x => x.ArticleCategory, () => articleCategory)
-                                .WhereRestrictionOn(() => articleCategory.Id)
-                                    .IsIn(categories.ToArray());
-
-            orders.JoinQueryOver<Patient>(x => x.Patient)
-                .Where(x => x.IsActive)
-                    .And(x => x.Deceased == false)
-                        .JoinQueryOver<Taxon>(x => x.Taxon)
-                            .Where(Restrictions.On<Taxon>(x => x.Path)
-                                .IsLike(filterTaxon.Id.ToString(), MatchMode.Anywhere));
-
-            foreach (var article in orders.List().OrderBy(x => x.RefillOrderDate))
-            {
-                orderedArticles.Add(this.articleTransformer.ToArticleModel(article));
-            }
+            var articles    = this.articleService.ListOrderedArticles(filterTaxon);
 
             this.auditing.Read("läste beställningslistan från översiktsvyn");
 
             return new ArticleOverviewViewModel
             {
-                OrderedArticles = orderedArticles,
-                OrderOptions = this.articleService.GetArticleStatusOptions(),
-                UserId = userId
+                Articles = articles.Select(x => this.articleTransformer.ToArticleModel(x)).ToList(),
+                OrderOptions = this.articleService.GetArticleStatusOptions()
             };
         }
 

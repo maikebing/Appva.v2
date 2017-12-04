@@ -63,7 +63,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
 
             foreach (var setting in scheduleSettings)
             {
-                var category = new ArticleCategory();
+                var category = new Category();
                 category.Name = setting.Name;
                 this.persistence.Save(category);
 

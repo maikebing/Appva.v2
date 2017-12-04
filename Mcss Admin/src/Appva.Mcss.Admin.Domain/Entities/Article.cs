@@ -52,7 +52,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <summary>
         /// The article category.
         /// </summary>
-        public virtual ArticleCategory ArticleCategory
+        public virtual Category Category
         {
             get;
             set;
@@ -150,10 +150,10 @@ namespace Appva.Mcss.Admin.Domain.Entities
         /// <param name="name">The article name.</param>
         /// <param name="description">The article description.</param>
         /// <param name="patient">The <see cref="Patient"/>.</param>
-        /// <param name="category">The <see cref="ArticleCategory"/>.</param>
+        /// <param name="category">The <see cref="Category"/>.</param>
         /// <param name="orderStatus">The article order status.</param>
         /// <returns>A new <see cref="Article"/>.</returns>
-        public static Article CreateNew(string name, string description, Patient patient, ArticleCategory category, ArticleStatus status)
+        public static Article CreateNew(string name, string description, Patient patient, Category category, ArticleStatus status)
         {
             return new Article
             {
@@ -165,7 +165,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
                 OrderedBy = null,
                 Status = status,
                 Patient = patient,
-                ArticleCategory = category
+                Category = category
             };
         }
 

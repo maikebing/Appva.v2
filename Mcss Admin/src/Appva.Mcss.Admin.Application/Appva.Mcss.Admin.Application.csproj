@@ -244,6 +244,7 @@
     <Compile Include="Security\ResetPasswordMiddleware.cs" />
     <Compile Include="Services\AbstractTaskService.cs" />
     <Compile Include="Services\ArticleService.cs" />
+    <Compile Include="Services\CategoryService.cs" />
     <Compile Include="Services\ChartService.cs" />
     <Compile Include="Services\DelegationService.cs" />
     <Compile Include="Services\EventService.cs" />

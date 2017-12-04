@@ -1,4 +1,4 @@
-﻿// <copyright file="ArticleCategory.cs" company="Appva AB">
+﻿// <copyright file="Category.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -16,14 +16,14 @@ namespace Appva.Mcss.Admin.Domain.Entities
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ArticleCategory : AggregateRoot
+    public class Category : AggregateRoot
     {
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArticleCategory"/> class.
+        /// Initializes a new instance of the <see cref="Category"/> class.
         /// </summary>
-        public ArticleCategory()
+        public Category()
         {
         }
 

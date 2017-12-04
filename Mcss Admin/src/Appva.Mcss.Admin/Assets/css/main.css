@@ -3162,12 +3162,22 @@ form .time {width:4em;}
 	text-align:center;
 }
 .std-form .checkbox-grid .checkbox label {
-	display:block;
+	display:inline-block;
 	font-weight:normal;
 }
 
 .std-form .checkbox-grid {
     list-style-type: none;
+}
+
+.std-form.checkbox-list-inline .checkbox-grid label.checkbox-inline {
+	display:inline-block;
+}
+
+.std-form.checkbox-list-inline .checkbox-grid .help-block {
+    display:inline;
+    font-style: italic;
+    margin-left: 20px;
 }
 
 .std-form .toggle-group {

@@ -88,7 +88,7 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
                 setting, 
                 new RoleService(roleRepository), 
                 new TaxonomyService(cache, new TaxonRepository(context)),
-                new PermissionService(permissionRepository),
+                new PermissionService(setting, permissionRepository),
                 MockedNoOpMailService.CreateNew(), 
                 null,
                 MockedHttpRequestBase.CreateNew());
@@ -140,7 +140,7 @@ namespace Appva.Mcss.Admin.UnitTests.Domain.Handlers
                 setting,
                 new RoleService(roleRepository),
                 new TaxonomyService(cache, new TaxonRepository(context)),
-                new PermissionService(permissionRepository),
+                new PermissionService(setting, permissionRepository),
                 MockedNoOpMailService.CreateNew(),
                 null,
                 MockedHttpRequestBase.CreateNew());

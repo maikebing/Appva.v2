@@ -59,7 +59,7 @@ namespace Appva.Mcss.Admin.Areas.Backoffice.Models.Handlers
 
             int articleCount = this.persistence.QueryOver<Article>()
                 .Where(x => x.IsActive == true)
-                    .And(x => x.ArticleCategory == category)
+                    .And(x => x.Category == category)
                         .RowCount();
 
             if (articleCount > 0)

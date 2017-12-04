@@ -109,7 +109,7 @@ namespace Appva.Mcss.Admin.Features.Accounts.List
                 OrderedBy = null,
                 Status = ArticleStatus.NotStarted,
                 Patient = sequence.Patient,
-                ArticleCategory = sequence.Schedule.ScheduleSettings.ArticleCategory
+                Category = sequence.Schedule.ScheduleSettings.ArticleCategory
             };
 
             if (refillIsNull == false)

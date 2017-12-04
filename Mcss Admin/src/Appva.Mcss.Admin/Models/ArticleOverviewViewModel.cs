@@ -6,7 +6,7 @@ namespace Appva.Mcss.Web.ViewModels
 {
     public class ArticleOverviewViewModel
     {
-        public IList<ArticleModel> OrderedArticles { get; set; }
+        public IList<ArticleModel> Articles { get; set; }
         public IDictionary<string, string> OrderOptions { get; set; }
         public Guid UserId { get; set; }
     }

@@ -4,6 +4,9 @@
 <div class="section section--hspace">
     <h2>Lägg till artikel</h2>
     <div id="add-item-to-order-list">
+        <div class="alert-message">
+            <h2 class="alert-message__heading h3">Lägg till artikel</h2>
+        </div>
         @using (Html.Post(new { @class = "validate" }))
         {
             <div class="width-limiter width-limiter--xs">

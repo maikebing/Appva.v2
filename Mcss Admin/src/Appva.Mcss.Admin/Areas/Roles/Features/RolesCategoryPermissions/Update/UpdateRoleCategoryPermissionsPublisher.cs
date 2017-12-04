@@ -50,12 +50,12 @@ namespace Appva.Mcss.Admin.Areas.Roles.Handlers
         /// <inheritdoc />
         public override bool Handle(UpdateRoleCategoryPermissions message)
         {
-            var categories = this.persistence.QueryOver<ArticleCategory>()
+            var categories = this.persistence.QueryOver<Category>()
                 .AndRestrictionOn(x => x.Id)
                     .IsIn(message.Categories.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray())
                         .List();
 
-            var deviceCategories = this.persistence.QueryOver<ArticleCategory>()
+            var deviceCategories = this.persistence.QueryOver<Category>()
                 .AndRestrictionOn(x => x.Id)
                     .IsIn(message.DeviceCategories.Where(x => x.IsSelected).Select(x => new Guid(x.Id)).ToArray())
                         .List();

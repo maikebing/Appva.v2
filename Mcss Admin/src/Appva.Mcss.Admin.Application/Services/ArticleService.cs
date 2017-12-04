@@ -17,6 +17,7 @@ namespace Appva.Mcss.Admin.Application.Services
     using Appva.Mcss.Admin.Domain.Repositories;
     using Appva.Mcss.Application.Models;
     using Appva.Mcss.Admin.Application.Security.Identity;
+    using Appva.Mcss.Admin.Application.Models;
 
     #endregion
 
@@ -55,10 +56,17 @@ namespace Appva.Mcss.Admin.Application.Services
         IList<Article> ListArticlesFor(Patient patient, ArticleStatus? filterBy);
 
         /// <summary>
+        /// Lists the ordered articles.
+        /// </summary>
+        /// <param name="taxonFilter">The taxon filter.</param>
+        /// <returns></returns>
+        IList<Article> ListOrderedArticles(ITaxon taxonFilter);
+
+        /// <summary>
         /// Lists the categories.
         /// </summary>
         /// <returns></returns>
-        IList<ArticleCategory> ListCategories();
+        IList<Category> ListCategories();
 
         /// <summary>
         /// Inactivates the specified article.
@@ -72,9 +80,9 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
         /// <param name="patient">The patient.</param>
-        /// <param name="articleCategory">The article category.</param>
+        /// <param name="category">The article category.</param>
         /// <returns></returns>
-        Article CreateArticle(string name, string description, Patient patient, ArticleCategory articleCategory);
+        Article CreateArticle(string name, string description, Patient patient, Category category);
     }
 
     /// <summary>
@@ -90,9 +98,9 @@ namespace Appva.Mcss.Admin.Application.Services
         private readonly IArticleRepository articleRepository;
 
         /// <summary>
-        /// The <see cref="IArticleCategoryRepository"/>.
+        /// The <see cref="ICategoryRepository"/>.
         /// </summary>
-        private readonly IArticleCategoryRepository articleCategoryRepository;
+        private readonly ICategoryRepository categoryRepository;
 
         /// <summary>
         /// The <see cref="IAccountRepository"/>.
@@ -103,6 +111,11 @@ namespace Appva.Mcss.Admin.Application.Services
         /// The <see cref="ISequenceService"/>.
         /// </summary>
         private readonly ISequenceService sequenceService;
+
+        /// <summary>
+        /// The <see cref="ITaxonomyService"/>.
+        /// </summary>
+        private readonly ITaxonomyService taxonomyService;
 
         /// <summary>
         /// The <see cref="IIdentityService"/>
@@ -126,16 +139,18 @@ namespace Appva.Mcss.Admin.Application.Services
         /// <param name="auditing">The <see cref="IAuditService"/>.</param>
         public ArticleService(
             IArticleRepository articleRepository, 
-            IArticleCategoryRepository articleCategoryRepository,
+            ICategoryRepository categoryRepository,
             IAccountRepository accountRepository, 
             ISequenceService sequenceService,
+            ITaxonomyService taxonomyService,
             IIdentityService identityService,
             IAuditService auditing)
         {
             this.articleRepository = articleRepository;
-            this.articleCategoryRepository = articleCategoryRepository;
+            this.categoryRepository = categoryRepository;
             this.accountRepository = accountRepository;
             this.sequenceService   = sequenceService;
+            this.taxonomyService   = taxonomyService;
             this.identityService   = identityService;
             this.auditing          = auditing;
         }
@@ -193,10 +208,10 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public IList<ArticleCategory> ListCategories()
+        public IList<Category> ListCategories()
         {
             var categoryIds = this.identityService.ArticleCategoryPermissions().Select(x => new Guid(x.Value)).ToList();
-            return this.articleCategoryRepository.List(categoryIds);
+            return this.categoryRepository.List(categoryIds);
         }
 
         /// <inheritdoc />
@@ -222,18 +237,27 @@ namespace Appva.Mcss.Admin.Application.Services
         }
 
         /// <inheritdoc />
-        public Article CreateArticle(string name, string description, Patient patient, ArticleCategory articleCategory)
+        public Article CreateArticle(string name, string description, Patient patient, Category category)
         {
-            var article = Article.CreateNew(name, description, patient, articleCategory, ArticleStatus.NotStarted);
+            var article = Article.CreateNew(name, description, patient, category, ArticleStatus.NotStarted);
             this.articleRepository.Save(article);
             this.auditing.Create(patient, "skapade artikeln {0} ({1})", article.Name, article.Id);
 
             return article;
         }
 
+        /// <inheritdoc />
+        public IList<Article> ListOrderedArticles(ITaxon taxonFilter)
+        {
+            var taxon = this.taxonomyService.Load(taxonFilter.Id);
+            var articles = this.articleRepository.Search(
+                taxon.Path, 
+                new List<ArticleStatus>() { ArticleStatus.OrderedFromSupplier, ArticleStatus.RefillRequested },
+                this.identityService.ArticleCategoryPermissions().Select(x => new Guid(x.Value)).ToList());
+
+            return articles;
+        }
+
         #endregion
-
-
-        
     }
 }

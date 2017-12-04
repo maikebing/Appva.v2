@@ -125,7 +125,7 @@
     <Compile Include="Configurations\IConfiguration.cs" />
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Article.cs" />
-    <Compile Include="Entities\ArticleCategory.cs" />
+    <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Change.cs" />
     <Compile Include="Entities\ChangeSet.cs" />
     <Compile Include="Entities\Comment\Comment.cs" />
@@ -160,14 +160,11 @@
     <Compile Include="Entities\Signature\SignedData.cs" />
     <Compile Include="Entities\Task\SubTask.cs" />
     <Compile Include="Entities\Observation\Tena\TenaObservationPeriod.cs" />
-    <Compile Include="Entities\Observation\Tena\TenaObservationItem.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="Models\ListTaskModel.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\SearchPatientModel.cs" />
-    <Compile Include="Repositories\ArticleCategoryRepository.cs" />
+    <Compile Include="Repositories\CategoryRepository.cs" />
     <Compile Include="Repositories\ArticleRepository.cs" />
     <Compile Include="Models\SearchProfileModel.cs" />
     <Compile Include="Repositories\AuthenticationRepository.cs" />

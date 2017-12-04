@@ -1,4 +1,4 @@
-﻿// <copyright file="ArticleCategoryRepository.cs" company="Appva AB">
+﻿// <copyright file="CategoryRepository.cs" company="Appva AB">
 //     Copyright (c) Appva AB. All rights reserved.
 // </copyright>
 // <author>
@@ -16,39 +16,39 @@ namespace Appva.Mcss.Admin.Domain.Repositories
 
     #endregion
 
-    public interface IArticleCategoryRepository : IRepository<ArticleCategory>
+    public interface ICategoryRepository : IRepository<Category>
     {
         /// <summary>
         /// Lists the specified category ids.
         /// </summary>
         /// <param name="categoryIds">The category ids.</param>
         /// <returns></returns>
-        IList<ArticleCategory> List(IList<Guid> categoryIds = null);
+        IList<Category> List(IList<Guid> categoryIds = null);
     }
 
     /// <summary>
     /// TODO: Add a descriptive summary to increase readability.
     /// </summary>
-    public class ArticleCategoryRepository : Repository<ArticleCategory>, IArticleCategoryRepository
+    public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
         #region Constructor.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArticleCategoryRepository"/> class.
+        /// Initializes a new instance of the <see cref="CategoryRepository"/> class.
         /// </summary>
-        public ArticleCategoryRepository(IPersistenceContext persistence)
+        public CategoryRepository(IPersistenceContext persistence)
             :base(persistence)
         {
         }
 
         #endregion
 
-        #region IArticleCategoryRepository members.
+        #region ICategoryRepository members.
 
         /// <inheritdoc />
-        public IList<ArticleCategory> List(IList<Guid> categoryIds = null)
+        public IList<Category> List(IList<Guid> categoryIds = null)
         {
-            var query = this.Context.QueryOver<ArticleCategory>()
+            var query = this.Context.QueryOver<Category>()
                 .Where(x => x.IsActive == true);
 
             if(categoryIds != null)

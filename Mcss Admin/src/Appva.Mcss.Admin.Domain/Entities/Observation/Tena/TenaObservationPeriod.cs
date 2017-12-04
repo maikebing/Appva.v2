@@ -54,6 +54,7 @@ namespace Appva.Mcss.Admin.Domain.Entities
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Date at start of period
         /// </summary>

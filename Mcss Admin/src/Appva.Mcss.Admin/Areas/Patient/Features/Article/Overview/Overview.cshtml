@@ -1,31 +1,62 @@
 ﻿@using Appva.Mcss.Admin.Application.Common;
 @model Appva.Mcss.Web.ViewModels.ArticleOverviewViewModel
 <script>
-        $(document).ready(function () {
-            $('.article-option').change(function () {
-                $('#article-update-button').attr('disabled', false);
+    $(document).ready(function () {
+        $('.article-option').change(function () {
+            var spinner = $(this).next('.article-loading-status');
+            spinner.show();
+            $.ajax({
+                type: 'POST', url: '@Url.Action("overviewupdate", "article")', data: $('form').serialize(),
+                success: function (result) {
+                    $('.article-row').each(function () {
+                        var row = $(this);
+                        var option = row.find('.article-option');
+                        row.removeClass("yellow");
+                        row.removeClass("green");
+                        if (option.val() == '@Appva.Mcss.Admin.Domain.Entities.ArticleStatus.NotStarted.ToString()') {
+                            row.addClass("green");
+                        }
+                        if (option.val() == '@Appva.Mcss.Admin.Domain.Entities.ArticleStatus.OrderedFromSupplier.ToString()') {
+                            row.addClass("yellow");
+                        }
+                    });
+                },
+                complete: function (result) {
+                    spinner.hide();
+                }
+                
             });
-            $('#article-update-button').click(function (e) {
-                e.preventDefault();
-                $('#article-update-button').attr('disabled', true);
-                $('.article-loading-status').css({ 'display': 'inline-block' });
-                $.ajax({
-                    type: 'POST', url: '@Url.Action("overviewupdate", "article")', data: $('form').serialize(),
-                    success: function (result) {
-                        $('.article-row').each(function () {
-                            var row = $(this);
-                            var option = row.find('.article-option');
-                            if (option.val() == 'Refilled') {
-                                row.fadeOut(300);
-                            }
-                        });
-                        $('.article-loading-status img').delay(300).fadeOut('fast', function () {
-                            $('#article-update').html(result);
-                        });
+           
+    });
+    $('#article-update-button').click(function (e) {
+        e.preventDefault();
+        var spinner = $(this).next('.article-loading-status');
+        spinner.show();
+        $.ajax({
+            type: 'POST', url: '@Url.Action("overviewupdate", "article")', data: $('form').serialize(),
+            success: function (result) {
+                $('.article-row').each(function () {
+                    var row = $(this);
+                    var option = row.find('.article-option');
+                    row.removeClass("yellow");
+                    row.removeClass("green");
+                    if (option.val() == '@Appva.Mcss.Admin.Domain.Entities.ArticleStatus.NotStarted.ToString()') {
+                        row.addClass("green");
+                    }
+                    if (option.val() == '@Appva.Mcss.Admin.Domain.Entities.ArticleStatus.OrderedFromSupplier.ToString()') {
+                        row.addClass("yellow");
                     }
                 });
-            });
+                spinner.delay(1000).fadeOut('fast', function () {
+                    $('#article-update').html(result);
+                });
+            },
+            complete: function (result) {
+                
+            }
         });
+    });
+    });
 </script>
 <div id="article-update">
     @using (Html.BeginForm())
@@ -34,7 +65,7 @@
             <h2>Påfyllning av artiklar</h2>
             @if(Html.HasPermissionFor(Permissions.OrderList.Update))
             {
-                @Html.Button("Uppdatera alla", new { id = "article-update-button", disabled = "disabled", style = "float:right" })
+                @Html.Button("Uppdatera alla", new { id = "article-update-button", @class="btn", style = "float:right" })
                 <span class="article-loading-status"><img src="@Url.Image("ajax-load.gif")" width="18" alt="Laddar" /></span>
             }
         </div>
@@ -59,11 +90,11 @@
                     <tbody>
                         @for (int i = 0; i < Model.Articles.Count; i++)
                         {
-                            <tr class="article-row">
+                            <tr class="article-row @(Model.Articles[i].Status == Appva.Mcss.Admin.Domain.Entities.ArticleStatus.OrderedFromSupplier ? "yellow" : "" )">
                                 <td>
                                     @if (Html.HasPermissionFor(Permissions.OrderList.Read))
                                     {
-                                        @Html.ActionLink(Model.Articles[i].Patient.FullName, "List", "Article", new { id = Model.Articles[i].Patient.Id, Area = "Patient" }, null)
+                                        @Html.ActionLink(Permissions.OrderList.Read, Model.Articles[i].Patient.FullName, "List", "Article", new { id = Model.Articles[i].Patient.Id, Area = "Patient" }, null)
                                     }
                                     else
                                     {
@@ -80,15 +111,16 @@
                                     <td class="inliner">
                                         <div class="control-container control-container--select control-container--no-margin">
                                             @Html.DropDownListFor(x => x.Articles[i].Status, new SelectList(Model.OrderOptions, "Key", "Value", Model.Articles[i].Status), new { @class = "article-option" })
+                                            <span class="article-loading-status"><img src="@Url.Image("ajax-load.gif")" width="18" alt="Laddar" /></span>
                                         </div>
                                         <div class="control-container control-container--no-margin">
                                             @Html.HiddenFor(x => x.Articles[i].Id)
-                                        </div>
+                                        </div>   
                                     </td>
                                 }
                                 else
                                 {
-                                    <td>@Model.Articles[i].Status</td>
+                                    <td>@Model.OrderOptions[Model.Articles[i].Status.ToString()]</td>
                                 }
                             </tr>
                         }

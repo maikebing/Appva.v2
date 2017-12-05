@@ -148,6 +148,9 @@ namespace Appva.Mcss.Admin.Domain.Repositories
                     .JoinQueryOver(x => x.Taxon)
                     .WhereRestrictionOn(x => x.Path).IsLike(taxonFilter, MatchMode.Start);
 
+            //// Order by ordered-date
+            query = query.OrderBy(x => x.RefillOrderDate).Asc;
+
             return query.List();
         }
 

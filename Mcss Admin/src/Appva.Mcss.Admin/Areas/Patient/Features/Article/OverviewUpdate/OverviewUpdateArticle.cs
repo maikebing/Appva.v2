@@ -27,7 +27,7 @@ namespace Appva.Mcss.Admin.Models
         /// <summary>
         /// A collection of articles.
         /// </summary>
-        public IList<ArticleModel> OrderedArticles
+        public IList<ArticleModel> Articles
         {
             get;
             set;

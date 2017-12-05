@@ -2326,6 +2326,16 @@ form .time {width:4em;}
 }
 .article-loading-status span { display:none; }
 
+#article-update .article-row.yellow {
+    border-left:8px solid rgb(255,166,0);
+    background: rgba(255,166,0,0.15);
+}
+
+#article-update .article-row.green {
+    border-left:8px solid rgb(104,173,87);
+    background: rgba(104,173,87, 0.15)
+}
+
 /* Calendar view */
 
 #calendar {
